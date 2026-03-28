@@ -8,6 +8,12 @@
 [阅读第一部分](book/part-i/index.md){ .md-button }
 [查看参考来源](appendix/sources.md){ .md-button }
 
+## 应该先投入什么
+
+下面这张交互图可以当成一条经验法则：在大多数真实系统里，控制、安全与可观测性通常都比“最大自治”更值得优先建设。
+
+<div class="plot-card" data-plot="agent-priority"></div>
+
 ## 书中内容
 
 - 架构模式：workflow、router、planner、subagents、human-in-the-loop。
@@ -43,4 +49,3 @@
 [^material]: [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
 [^uv]: [uv project guide](https://docs.astral.sh/uv/guides/projects/).
 [^starlight]: [Starlight documentation](https://starlight.astro.build/).
-

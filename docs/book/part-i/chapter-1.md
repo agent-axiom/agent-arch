@@ -2,13 +2,13 @@
 
 ## 1. От надежного агента к безопасной платформе
 
-Статья Дмитрия Викулина правильно ставит базовый вопрос: из каких блоков вообще состоит надежный агент.[^vikulin] Для 2026 года этого уже недостаточно. На практике мировые лидеры сходятся в другом:
+Статья Дмитрия Викулина хорошо ставит стартовый вопрос: из каких блоков вообще состоит надежный агент.[^vikulin] Но если ты хочешь довести такую систему до production в 2026 году, этого уже мало. На практике у сильных команд сходится другая картина:
 
 - сначала выбирается **самый простой исполнимый паттерн**;
 - опасные действия выводятся в отдельный **control plane**;
 - автономность допускается только там, где есть **policy, telemetry и rollback boundary**.[^anthropic][^openai-evals][^langgraph-durable]
 
-Поэтому современную систему удобнее проектировать не как "одного умного агента", а как **платформу безопасного агентного выполнения**.
+Поэтому современную систему удобнее проектировать не как “одного умного агента”, а как **платформу безопасного агентного выполнения**. Это чуть менее романтично, но зато намного надежнее.
 
 ## 2. Принципы архитектуры
 
@@ -16,7 +16,7 @@
 
 Anthropic прямо разделяет `workflows` и `agents` и рекомендует начинать с более простого варианта.[^anthropic] Это хороший базовый принцип для платформы:
 
-- если путь выполнения известен, пишите workflow;
+- если путь выполнения известен, пиши workflow;
 - если нужен выбор инструмента в пределах узкого контура, используйте single-agent loop;
 - если задача естественно делится на независимые подзадачи, вводите subagents;
 - если нельзя объяснить, зачем нужна автономность, значит она пока не нужна.
@@ -50,6 +50,29 @@ OpenAI и другие платформы все сильнее смещают �
 - где именно качество деградировало;
 - сколько стоил каждый шаг по latency и tokens.
 
+Прежде чем идти дальше, полезно увидеть всю систему одним взглядом. Ниже не “идеальная схема на все случаи жизни”, а хороший baseline, от которого можно отталкиваться.
+
+<div class="diagram-card">
+<p>Референсная схема безопасной агентной платформы</p>
+
+``` mermaid
+flowchart TB
+    user["Пользователь / API / Event"] --> interface["Interface layer"]
+    interface --> identity["Identity & session layer"]
+    identity --> control["Agent control plane"]
+    control --> runtime["Orchestration runtime"]
+    runtime --> cognition["Cognition plane"]
+    runtime --> memory["Memory & knowledge plane"]
+    runtime --> tools["Tool execution plane"]
+    runtime --> telemetry["Telemetry & eval plane"]
+    tools --> external["Внешние системы / MCP / SaaS"]
+    memory --> stores["Vector DB / KB / profile memory"]
+    control --> approval["Approval / policy / quotas"]
+    telemetry --> audit["Traces / metrics / audit"]
+```
+
+</div>
+
 ## 3. Референсная архитектура
 
 Ниже схема, которую можно брать как baseline для корпоративной платформы.
@@ -78,6 +101,8 @@ OpenAI и другие платформы все сильнее смещают �
 - идентификатор сессии и трассы.
 
 Это делает аудит и разбор инцидентов возможными уже с первого шага.
+
+Если хочется совсем короткой инженерной формулы, то вот она: **каждый запрос должен войти в систему уже не “просто сообщением”, а нормализованным событием с контекстом доступа и трассировки**.
 
 ### 4.2. Agent control plane
 
@@ -112,6 +137,33 @@ agent_policy:
     require_checkpoint_every_step: true
 ```
 
+А вот так тот же принцип обычно выглядит в runtime-коде:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ToolRequest:
+    tool_name: str
+    actor_id: str
+    risk_class: str
+    payload: dict
+
+
+def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway):
+    decision = policy_engine.evaluate(request)
+    if not decision.allowed:
+        raise PermissionError(decision.reason)
+
+    if decision.requires_approval:
+        approval_service.require_human_signoff(request, decision)
+
+    return gateway.call(request.tool_name, request.payload)
+```
+
+Смысл у этого куска кода очень приземленный: модель может что-то предложить, но **право исполнить действие все равно живет не в модели, а в policy/gateway слое**.
+
 ### 4.3. Orchestration runtime
 
 Этот слой выбирает паттерн исполнения:
@@ -123,6 +175,8 @@ agent_policy:
 - HITL interrupts для операций с высоким риском.[^langgraph-hitl][^openai-builder]
 
 Ключевая инженерная мысль: orchestration runtime должен быть **скучным**. Чем больше в нем "магии", тем сложнее предсказывать стоимость, поведение и отказ.
+
+Это один из тех советов, которые сначала звучат слишком простыми, а потом внезапно экономят тебе месяцы жизни.
 
 ### 4.4. Cognition plane
 
@@ -175,6 +229,33 @@ Anthropic в документации по Claude Code отдельно подч
 
 Если этого нет, команда не управляет агентом, а просто наблюдает за его поведением.
 
+Ниже еще одна полезная картинка: как именно запрос проходит через систему, если ты строишь ее аккуратно.
+
+<div class="diagram-card">
+<p>Путь запроса через ключевые точки контроля</p>
+
+``` mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant I as Interface
+    participant C as Control plane
+    participant R as Runtime
+    participant T as Tool gateway
+    participant A as Audit
+
+    U->>I: Запрос
+    I->>C: Нормализация + principal + tenant + risk
+    C->>R: Разрешенный execution context
+    R->>C: Запрос на model/tool action
+    C->>T: Policy check / approval / quotas
+    T-->>R: Разрешенный результат
+    R->>A: Trace + step metadata
+    R-->>U: Ответ
+```
+
+</div>
+
 ## 5. Где именно живет безопасность
 
 Безопасность в агентной системе не должна концентрироваться в одном "guardrail service". Она распределяется по нескольким точкам:
@@ -213,7 +294,7 @@ Google в корпоративных агентных платформах де�
 5. каждый шаг виден через traces и evals;
 6. человек может остановить или подтвердить опасное действие.
 
-Если убрать любой из этих пунктов, вы получите либо хрупкое демо, либо небезопасную систему.
+Если убрать любой из этих пунктов, ты почти наверняка получишь либо хрупкое демо, либо небезопасную систему.
 
 ## 8. Что читать дальше
 
@@ -238,4 +319,3 @@ Google в корпоративных агентных платформах де�
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
 [^google-agentspace]: [Google Agentspace](https://cloud.google.com/products/agentspace)
 [^google-agent-builder]: [Vertex AI Agent Builder](https://cloud.google.com/products/agent-builder)
-

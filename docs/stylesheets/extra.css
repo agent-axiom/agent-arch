@@ -44,6 +44,50 @@
   border-radius: 999px;
 }
 
+.md-typeset .plot-card {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1rem 0.75rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+[data-md-color-scheme="default"] .md-typeset .plot-card,
+[data-md-color-scheme="default"] .md-typeset .diagram-card {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .plot-card,
+[data-md-color-scheme="slate"] .md-typeset .diagram-card {
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.plot-card__title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.plot-card__caption {
+  margin-top: 0.75rem;
+  opacity: 0.8;
+}
+
+.md-typeset .diagram-card {
+  margin: 1.25rem 0 1.75rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.md-typeset .diagram-card > p:first-child {
+  margin-top: 0;
+  font-weight: 700;
+}
+
+.md-typeset .mermaid {
+  overflow-x: auto;
+}
+
 .md-header__option .md-select > button {
   border-radius: 999px;
   transition:

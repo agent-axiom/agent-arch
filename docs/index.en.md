@@ -8,6 +8,12 @@ A modern practical book for engineers and platform leaders who want to build not
 [Read Part I](book/part-i/index.md){ .md-button }
 [View sources](appendix/sources.md){ .md-button }
 
+## Where to invest first
+
+This interactive chart is a quick rule of thumb: in most real systems, control, safety, and observability deserve attention earlier than maximum autonomy.
+
+<div class="plot-card" data-plot="agent-priority"></div>
+
 ## What is inside
 
 - Architectural patterns: workflow, router, planner, subagents, human-in-the-loop.
@@ -43,4 +49,3 @@ If the project later needs richer UI components and MDX-style composition, `Astr
 [^material]: [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
 [^uv]: [uv project guide](https://docs.astral.sh/uv/guides/projects/).
 [^starlight]: [Starlight documentation](https://starlight.astro.build/).
-
