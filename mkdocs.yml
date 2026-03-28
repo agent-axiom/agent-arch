@@ -27,17 +27,64 @@ theme:
         icon: material/weather-sunny
         name: Светлая тема
   features:
-    - navigation.instant
     - navigation.sections
     - navigation.tabs
     - navigation.top
+    - header.autohide
     - search.highlight
     - search.suggest
     - content.code.copy
     - content.action.edit
     - content.action.view
+    - content.tabs.link
 
 plugins:
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: ru
+          name: Русский
+          default: true
+          build: true
+          site_name: Архитектура Безопасных AI-Агентов
+          nav_translations:
+            Главная: Главная
+            Книга: Книга
+            План книги: План книги
+            Часть I. Основания: Часть I. Основания
+            Глава 1. Современная безопасная архитектура: Глава 1. Современная безопасная архитектура
+            Приложения: Приложения
+            Выбор стека публикации: Выбор стека публикации
+            Источники: Источники
+        - locale: en
+          name: English
+          build: true
+          site_name: Secure AI Agent Architecture
+          nav_translations:
+            Главная: Home
+            Книга: Book
+            План книги: Book Plan
+            Часть I. Основания: Part I. Foundations
+            Глава 1. Современная безопасная архитектура: Chapter 1. Modern Secure Architecture
+            Приложения: Appendix
+            Выбор стека публикации: Publishing Stack
+            Источники: Sources
+        - locale: zh
+          name: 中文
+          build: true
+          site_name: 安全 AI 智能体架构
+          nav_translations:
+            Главная: 首页
+            Книга: 书籍
+            План книги: 全书计划
+            Часть I. Основания: 第一部分：基础
+            Глава 1. Современная безопасная архитектура: 第 1 章：现代安全架构
+            Приложения: 附录
+            Выбор стека публикации: 发布技术栈
+            Источники: 参考来源
   - search
   - glightbox
   - minify:
@@ -85,4 +132,3 @@ nav:
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md
-

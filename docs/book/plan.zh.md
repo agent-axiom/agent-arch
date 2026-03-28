@@ -1,0 +1,69 @@
+# 全书计划
+
+这一版书籍按照工程实践手册来组织，而不是框架综述。每一部分都回答一个实际问题：要让智能体在生产环境中真正可用、安全且可治理，系统中必须具备什么。
+
+## 结构
+
+### 第一部分：基础
+
+- 什么是现代智能体，以及它与 workflow 的区别。
+- 为什么安全架构的起点是 control plane，而不是“聪明的 prompt”。
+- 安全智能体的平台级参考架构。
+
+状态：第一章已发布。
+
+### 第二部分：安全边界
+
+- 智能体身份与 machine IAM。
+- 面向模型、记忆和工具的 policy-as-code。
+- Prompt injection、数据外流、密钥泄漏、工具滥用。
+- 高风险操作的人类审批。
+
+### 第三部分：记忆与知识
+
+- short-term 与 long-term memory。
+- Retrieval、压缩、摘要、profile memory。
+- 何时把 memory 放在热路径，何时放到后台处理。
+
+### 第四部分：工具与执行
+
+- Tool gateway 与 sandbox execution。
+- MCP 与外部系统的契约式集成。
+- 幂等性、重试、速率限制、回滚边界。
+
+### 第五部分：可靠性与可观测性
+
+- Traces、spans、structured events。
+- 智能体系统的 SLO。
+- Offline evals、online evals、trace grading、回归闸门。
+
+### 第六部分：组织模型
+
+- 平台团队与产品团队的分工。
+- Templates、golden paths、shared gateways。
+- 如何避免把智能体平台做成“动物园”。
+
+### 第七部分：参考实现
+
+- 基础 runtime。
+- 安全策略。
+- 工具目录。
+- 生产上线清单。
+
+## 发布路线图
+
+1. 固化架构框架与术语。
+2. 将安全扩展为独立层，而不是附属小节。
+3. 加入参考图和运维检查清单。
+4. 提供实用的 reference implementation。
+5. 补充 eval 示例和策略配置。
+
+## 已完成内容
+
+- GitHub Pages 站点骨架。
+- 书籍导航与结构。
+- 第一部分参考架构。
+- 独立的发布技术栈页面。
+- 后续章节可复用的来源基础。
+
+[进入第一部分](part-i/index.md){ .md-button .md-button--primary }
