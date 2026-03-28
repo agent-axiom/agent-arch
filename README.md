@@ -1,17 +1,26 @@
 # Agent Architecture Book
 
-Публикуемый сайт-книга по современной архитектуре безопасных AI-агентов.
+[Русская версия](README.ru.md)
 
-## Локальный запуск
+Publishable documentation site and book about modern secure AI agent architecture.
+
+## What this repository contains
+
+- a GitHub Pages site built with `MkDocs` and `Material for MkDocs`
+- a multilingual documentation structure
+- the first published part of the book on safe agent architecture
+- a modern Python-first tooling setup based on `uv`
+
+## Local development
 
 ```bash
 uv sync --group docs --group dev
 uv run mkdocs serve
 ```
 
-Сайт будет доступен по адресу `http://127.0.0.1:8000/`.
+The local site will be available at `http://127.0.0.1:8000/`.
 
-## Проверки
+## Checks
 
 ```bash
 uv run ruff check .
@@ -19,36 +28,50 @@ uvx ty check
 uv run mkdocs build --strict
 ```
 
-## Исследовательские зависимости
+## Optional research dependencies
 
-Если понадобятся интерактивные ноутбуки и анализ данных:
+If you want notebooks or data analysis tooling:
 
 ```bash
 uv sync --group research
 ```
 
-В группе `research` уже предусмотрены `marimo` и `polars`.
+The `research` group already includes `marimo` and `polars`.
 
-## Публикация
+## Publishing
 
-В репозитории настроен GitHub Actions workflow для GitHub Pages:
+The repository includes a GitHub Actions workflow for GitHub Pages:
 
-- сборка через `uv`
-- строгая проверка `mkdocs build --strict`
-- публикация артефакта в Pages из ветки `docs-prod`
+- build with `uv`
+- strict `mkdocs build --strict`
+- Pages deployment from the `docs-prod` branch
 
-### Первый запуск GitHub Pages
+## First GitHub Pages setup
 
-У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` не может их активировать автоматически.
+`actions/configure-pages@v5` has an important limitation: if Pages have never been enabled in the repository before, the default `GITHUB_TOKEN` may not be able to bootstrap the Pages site automatically.
 
-Есть два корректных варианта:
+There are two correct ways to handle the first setup:
 
-1. Один раз вручную включить Pages в `Settings -> Pages` и выбрать режим GitHub Actions.
-2. Добавить секрет `PAGES_PAT` с правами, достаточными для включения Pages, и workflow сделает это сам.
+1. Enable Pages once in `Settings -> Pages` and choose `GitHub Actions`.
+2. Add a `PAGES_PAT` secret with sufficient permissions, and the workflow can enable Pages automatically.
 
-Также для environment `github-pages` нужно разрешить деплой именно из ветки `docs-prod`, если включены branch protection rules на environment.
+If the `github-pages` environment has deployment branch restrictions, make sure it explicitly allows deployments from `docs-prod`.
 
-Для `PAGES_PAT` нужен не `GITHUB_TOKEN`, а отдельный токен:
+`PAGES_PAT` should be a real token, not `GITHUB_TOKEN`:
 
-- для Personal Access Token: `repo` или Pages write permission;
-- для GitHub App: `administration:write` и `pages:write`.
+- for a Personal Access Token: `repo` or Pages write permission
+- for a GitHub App: `administration:write` and `pages:write`
+
+## Branch model
+
+- `main` is the source-of-truth development branch
+- `docs-prod` is the publication branch used for GitHub Pages deployment
+
+## Stack
+
+- `uv` for environment and dependency management
+- `ruff` for linting
+- `ty` for type checking
+- `MkDocs + Material for MkDocs` for publishing
+- `Mermaid` and `Observable Plot` for visual content
+
