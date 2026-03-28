@@ -24,7 +24,7 @@ uv run mkdocs serve
 
 ```bash
 uv run ruff check .
-uvx ty check
+uv run ty check
 uv run mkdocs build --strict
 ```
 

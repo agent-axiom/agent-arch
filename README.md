@@ -1,6 +1,7 @@
 # Agent Architecture Book
 
 [Русская версия](README.ru.md)
+[Contributing guide](CONTRIBUTING.md)
 
 Publishable documentation site and book about modern secure AI agent architecture.
 
@@ -24,7 +25,7 @@ The local site will be available at `http://127.0.0.1:8000/`.
 
 ```bash
 uv run ruff check .
-uvx ty check
+uv run ty check
 uv run mkdocs build --strict
 ```
 
@@ -74,4 +75,3 @@ If the `github-pages` environment has deployment branch restrictions, make sure 
 - `ty` for type checking
 - `MkDocs + Material for MkDocs` for publishing
 - `Mermaid` and `Observable Plot` for visual content
-
