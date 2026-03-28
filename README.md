@@ -35,7 +35,7 @@ uv sync --group research
 
 - сборка через `uv`
 - строгая проверка `mkdocs build --strict`
-- публикация артефакта в Pages
+- публикация артефакта в Pages из ветки `docs-prod`
 
 ### Первый запуск GitHub Pages
 
@@ -45,6 +45,8 @@ uv sync --group research
 
 1. Один раз вручную включить Pages в `Settings -> Pages` и выбрать режим GitHub Actions.
 2. Добавить секрет `PAGES_PAT` с правами, достаточными для включения Pages, и workflow сделает это сам.
+
+Также для environment `github-pages` нужно разрешить деплой именно из ветки `docs-prod`, если включены branch protection rules на environment.
 
 Для `PAGES_PAT` нужен не `GITHUB_TOKEN`, а отдельный токен:
 
