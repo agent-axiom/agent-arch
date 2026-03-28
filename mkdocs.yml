@@ -10,6 +10,8 @@ site_dir: site
 theme:
   name: material
   language: ru
+  icon:
+    alternate: material/translate
   font:
     text: IBM Plex Sans
     code: JetBrains Mono
