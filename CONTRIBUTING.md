@@ -2,6 +2,8 @@
 
 Thank you for contributing to **Agent Architecture Book**.
 
+Please also read the [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
+
 This repository is both a documentation site and an evolving book about modern secure AI agent architecture. Good contributions here are not only code changes. They also include:
 
 - improving explanations
@@ -40,6 +42,11 @@ In practice:
 - make changes in a feature branch
 - merge into `main`
 - fast-forward or sync `docs-prod` when publishing
+
+## License
+
+By contributing to this repository, you agree that your contributions will be
+distributed under the repository license: [CC BY-SA 4.0](LICENSE).
 
 ## Local setup
 

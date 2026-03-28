@@ -1,6 +1,8 @@
 # Agent Architecture Book
 
 [English version](README.md)
+[Contributing guide](CONTRIBUTING.md)
+[Code of Conduct](CODE_OF_CONDUCT.md)
 
 Публикуемый сайт и книга о современной архитектуре безопасных AI-агентов.
 
@@ -74,3 +76,7 @@ uv sync --group research
 - `ty` для type checking
 - `MkDocs + Material for MkDocs` для публикации
 - `Mermaid` и `Observable Plot` для визуализаций
+
+## Лицензия
+
+Репозиторий опубликован под лицензией [CC BY-SA 4.0](LICENSE).

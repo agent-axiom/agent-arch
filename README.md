@@ -2,6 +2,7 @@
 
 [Русская версия](README.ru.md)
 [Contributing guide](CONTRIBUTING.md)
+[Code of Conduct](CODE_OF_CONDUCT.md)
 
 Publishable documentation site and book about modern secure AI agent architecture.
 
@@ -75,3 +76,7 @@ If the `github-pages` environment has deployment branch restrictions, make sure 
 - `ty` for type checking
 - `MkDocs + Material for MkDocs` for publishing
 - `Mermaid` and `Observable Plot` for visual content
+
+## License
+
+This repository is published under [CC BY-SA 4.0](LICENSE).
