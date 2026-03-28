@@ -1,8 +1,8 @@
 site_name: Архитектура Безопасных AI-Агентов
 site_description: Современная книга по архитектуре, безопасности, observability и управлению AI-агентами.
-site_url: https://example.github.io/agent-arch/
+site_url: https://agent-axiom.github.io/agent-arch/
 repo_name: agent-arch
-repo_url: https://github.com/your-org/agent-arch
+repo_url: https://github.com/agent-axiom/agent-arch
 edit_uri: edit/main/docs/
 docs_dir: docs
 site_dir: site
@@ -123,7 +123,7 @@ extra_css:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/your-org/agent-arch
+      link: https://github.com/agent-axiom/agent-arch
 
 nav:
   - Главная: index.md
