@@ -17,20 +17,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PAGES_PAT: ${{ secrets.PAGES_PAT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Configure Pages
-        if: ${{ secrets.PAGES_PAT == '' }}
+        if: ${{ env.PAGES_PAT == '' }}
         uses: actions/configure-pages@v5
 
       - name: Enable and configure Pages
-        if: ${{ secrets.PAGES_PAT != '' }}
+        if: ${{ env.PAGES_PAT != '' }}
         uses: actions/configure-pages@v5
         with:
           enablement: true
-          token: ${{ secrets.PAGES_PAT }}
+          token: ${{ env.PAGES_PAT }}
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v6
