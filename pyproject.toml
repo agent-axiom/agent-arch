@@ -1,0 +1,43 @@
+[project]
+name = "agent-architecture-book"
+version = "0.1.0"
+description = "A publishable GitHub Pages book on modern secure AI agent architecture."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+docs = [
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.6,<10",
+  "mkdocs-glightbox>=0.4,<1",
+  "mkdocs-minify-plugin>=0.8,<1",
+  "pymdown-extensions>=10.14,<11",
+]
+dev = [
+  "ruff>=0.15,<0.16",
+]
+research = [
+  "marimo>=0.13,<0.14",
+  "polars>=1.27,<2",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["site"]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+

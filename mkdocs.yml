@@ -1,0 +1,88 @@
+site_name: Архитектура Безопасных AI-Агентов
+site_description: Современная книга по архитектуре, безопасности, observability и управлению AI-агентами.
+site_url: https://example.github.io/agent-arch/
+repo_name: agent-arch
+repo_url: https://github.com/your-org/agent-arch
+edit_uri: edit/main/docs/
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: ru
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Темная тема
+    - scheme: slate
+      primary: blue grey
+      accent: lime
+      toggle:
+        icon: material/weather-sunny
+        name: Светлая тема
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+
+plugins:
+  - search
+  - glightbox
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-org/agent-arch
+
+nav:
+  - Главная: index.md
+  - Книга:
+      - План книги: book/plan.md
+      - Часть I. Основания: book/part-i/index.md
+      - Глава 1. Современная безопасная архитектура: book/part-i/chapter-1.md
+  - Приложения:
+      - Выбор стека публикации: appendix/stack.md
+      - Источники: appendix/sources.md
+

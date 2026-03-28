@@ -1,0 +1,41 @@
+:root {
+  --book-hero-bg:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 116, 144, 0.22), transparent 30%),
+    linear-gradient(135deg, #f6f7f3 0%, #eef2f7 100%);
+  --book-hero-bg-dark:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.12), transparent 28%),
+    linear-gradient(135deg, #0f172a 0%, #111827 100%);
+}
+
+[data-md-color-scheme="default"] .md-main__inner {
+  background: var(--book-hero-bg);
+  border-radius: 1rem;
+  padding: 0 1rem 2rem;
+}
+
+[data-md-color-scheme="slate"] .md-main__inner {
+  background: var(--book-hero-bg-dark);
+  border-radius: 1rem;
+  padding: 0 1rem 2rem;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+}
+
+.md-typeset table:not([class]) {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.md-typeset .md-button {
+  border-radius: 999px;
+}

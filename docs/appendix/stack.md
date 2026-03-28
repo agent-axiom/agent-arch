@@ -1,0 +1,72 @@
+# Выбор стека публикации
+
+## Короткий ответ
+
+`MkDocs + Material for MkDocs` в 2026 году не выглядит устаревшим. Для Markdown-first книги на Python-стеке это все еще один из самых прагматичных вариантов:
+
+- низкий порог входа;
+- быстрый билд;
+- отличный поиск и навигация из коробки;
+- простая публикация в GitHub Pages;
+- естественная интеграция с `uv`, `ruff` и `ty`.[^mkdocs][^material][^uv][^ty]
+
+При этом экосистема сейчас находится в переходной точке: в этом репозитории стек намеренно зафиксирован на `mkdocs<2`, чтобы сохранить совместимость с текущими плагинами и темой и не тащить в первую версию книги ненужный migration-risk.
+
+## Почему я не ушел сразу в Astro Starlight
+
+`Starlight` очень хорош, если вам нужны:
+
+- MDX и собственные UI-компоненты;
+- более тяжелая фронтенд-кастомизация;
+- тесная связка с экосистемой Astro.[^starlight]
+
+Но для этой книги сейчас важнее другое:
+
+- писать быстро;
+- публиковать надежно;
+- держать весь authoring-stack в Python;
+- не усложнять CI и локальную сборку без реальной необходимости.
+
+Поэтому первая версия сделана на MkDocs, а не на Astro.
+
+## Принятая технологическая база
+
+### Базовый стек
+
+- `uv` для управления Python, виртуальной средой и dependency groups;
+- `MkDocs` и `Material for MkDocs` для генерации сайта;
+- `ruff` для linting;
+- `ty` как быстрый type checker по мере появления Python-утилит в репозитории.
+
+### Опциональный research-стек
+
+- `marimo` для интерактивных исследовательских ноутбуков;
+- `polars` для анализа логов, traces и eval datasets.
+
+В текущем каркасе `marimo` и `polars` уже заведены как отдельная группа `research`, но пока не используются в книге напрямую.
+
+## Команды проекта
+
+```bash
+uv sync --group docs --group dev
+uv run mkdocs serve
+uv run mkdocs build --strict
+uv run ruff check .
+uvx ty check
+```
+
+## Когда стоит мигрировать в Starlight
+
+Переход имеет смысл, если в книге появятся:
+
+- React/Vue/Svelte-компоненты внутри глав;
+- много кастомного интерактива;
+- docs-as-app вместо docs-as-book.
+
+Пока таких требований нет.
+
+[^mkdocs]: [MkDocs](https://www.mkdocs.org/)
+[^material]: [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+[^uv]: [uv: Working on projects](https://docs.astral.sh/uv/guides/projects/)
+[^ty]: [ty documentation](https://docs.astral.sh/ty/)
+[^starlight]: [Starlight documentation](https://starlight.astro.build/)
