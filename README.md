@@ -11,6 +11,7 @@ Publishable documentation site and book about modern secure AI agent architectur
 - a GitHub Pages site built with `MkDocs` and `Material for MkDocs`
 - a multilingual documentation structure
 - the first published part of the book on safe agent architecture
+- a small runnable reference package in `agent_runtime_ref/`
 - a modern Python-first tooling setup based on `uv`
 
 ## Local development
@@ -29,6 +30,16 @@ uv run ruff check .
 uv run ty check
 uv run mkdocs build --strict
 ```
+
+## Reference package
+
+The repository now includes a minimal runnable skeleton package:
+
+```bash
+.venv/bin/python -m agent_runtime_ref
+```
+
+It contains a tiny reference runtime, policy layer, capability catalog, telemetry emitter, and rollout readiness gate designed to match Part VII of the book.
 
 ## Optional research dependencies
 
