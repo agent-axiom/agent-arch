@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import json
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -176,6 +177,81 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertGreaterEqual(payload["event_count"], 1)
         self.assertTrue(any(item["event_type"] == "tool_execution" for item in payload["events"]))
+        self.assertTrue(any(item["event_type"] == "run_start" for item in payload["events"]))
+
+    def test_cli_export_and_inspect_trace(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_path = Path(temp_dir) / "trace.jsonl"
+            export_buffer = io.StringIO()
+            with redirect_stdout(export_buffer):
+                export_code = main(
+                    [
+                        "export-events",
+                        "--user-input",
+                        "Please open a ticket for this issue.",
+                        "--trace-id",
+                        "trace-export-001",
+                        "--output",
+                        str(output_path),
+                    ],
+                )
+            export_payload = json.loads(export_buffer.getvalue())
+            self.assertEqual(export_code, 0)
+            self.assertTrue(output_path.exists())
+            self.assertEqual(export_payload["trace_id"], "trace-export-001")
+
+            inspect_buffer = io.StringIO()
+            with redirect_stdout(inspect_buffer):
+                inspect_code = main(
+                    [
+                        "inspect-trace",
+                        "--input",
+                        str(output_path),
+                    ],
+                )
+            inspect_payload = json.loads(inspect_buffer.getvalue())
+            self.assertEqual(inspect_code, 0)
+            self.assertEqual(inspect_payload["trace_id"], "trace-export-001")
+            self.assertTrue(
+                any(
+                    item["event_type"] == "run_complete"
+                    for item in inspect_payload["events"]
+                ),
+            )
+
+    def test_cli_replay_run_uses_exported_trace(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_path = Path(temp_dir) / "trace.jsonl"
+            with redirect_stdout(io.StringIO()):
+                export_code = main(
+                    [
+                        "export-events",
+                        "--user-input",
+                        "What language preference do you remember?",
+                        "--trace-id",
+                        "trace-replay-source",
+                        "--output",
+                        str(output_path),
+                    ],
+                )
+            self.assertEqual(export_code, 0)
+
+            replay_buffer = io.StringIO()
+            with redirect_stdout(replay_buffer):
+                replay_code = main(
+                    [
+                        "replay-run",
+                        "--input",
+                        str(output_path),
+                        "--replay-trace-id",
+                        "trace-replay-target",
+                    ],
+                )
+            replay_payload = json.loads(replay_buffer.getvalue())
+            self.assertEqual(replay_code, 0)
+            self.assertEqual(replay_payload["source_trace_id"], "trace-replay-source")
+            self.assertEqual(replay_payload["replay_trace_id"], "trace-replay-target")
+            self.assertEqual(replay_payload["status"], "success")
 
     def test_cli_check_rollout_reports_missing_signal(self) -> None:
         buffer = io.StringIO()

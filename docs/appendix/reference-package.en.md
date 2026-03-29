@@ -55,6 +55,24 @@ Dump structured events for one run:
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 ```
 
+Export events to JSONL for later inspection and replay:
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+```
+
+Inspect a single trace from a JSONL file:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
+```
+
+Replay a run from a saved trace:
+
+```bash
+.venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
+```
+
 Rollout policy check with signal overrides:
 
 ```bash
@@ -99,4 +117,7 @@ The book now relies not only on Markdown explanations, but also on a real code s
 There is also a practical usability win now:
 
 - `inspect-memory` shows seeded memory and filtering by `tenant` and `memory_class`;
-- `dump-events` shows the structured trace of one run without reading the source code.
+- `dump-events` shows the structured trace of one run without reading the source code;
+- `export-events` persists that trace as JSONL for external inspection;
+- `inspect-trace` reads and filters saved traces;
+- `replay-run` reconstructs a run from the saved `run_start` event.

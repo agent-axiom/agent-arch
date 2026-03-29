@@ -55,6 +55,24 @@
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 ```
 
+Экспорт событий в JSONL для разбора и повторного прогона:
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+```
+
+Просмотр одной трассы из JSONL-файла:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
+```
+
+Повторный прогон по сохраненной трассе:
+
+```bash
+.venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
+```
+
 Проверка политики выкладки с переопределением сигналов:
 
 ```bash
@@ -99,4 +117,7 @@ uv run ty check
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
 
 - `inspect-memory` показывает исходно загруженную память и фильтрацию по `tenant` и `memory_class`;
-- `dump-events` показывает структурированную трассу одного запуска без чтения исходников.
+- `dump-events` показывает структурированную трассу одного запуска без чтения исходников;
+- `export-events` сохраняет трассу в JSONL для разбора вне процесса;
+- `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
+- `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.

@@ -55,6 +55,24 @@
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 ```
 
+把事件导出为 JSONL，方便后续排查和重放：
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+```
+
+从 JSONL 文件里查看某条追踪：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
+```
+
+根据保存下来的追踪重新回放一次运行：
+
+```bash
+.venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
+```
+
 带信号覆盖的上线策略检查：
 
 ```bash
@@ -99,4 +117,7 @@ uv run ty check
 现在还有一个很实用的改进：
 
 - `inspect-memory` 可以直接展示预置记忆，以及按 `tenant` 和 `memory_class` 过滤后的结果；
-- `dump-events` 可以在不读源代码的情况下，直接看到一次运行的结构化追踪。
+- `dump-events` 可以在不读源代码的情况下，直接看到一次运行的结构化追踪；
+- `export-events` 可以把这条追踪保存成 JSONL，便于脱离进程分析；
+- `inspect-trace` 可以读取并筛选保存下来的追踪；
+- `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。

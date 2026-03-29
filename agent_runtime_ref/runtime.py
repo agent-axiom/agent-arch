@@ -40,6 +40,13 @@ class AgentRuntime:
         )
 
     def run(self, request: RunRequest) -> RunResult:
+        self.telemetry.emit(
+            "run_start",
+            request.trace_id,
+            user_input=request.user_input,
+            tenant_id=request.tenant_id,
+            principal_id=request.principal_id,
+        )
         precheck = self.policy.precheck(request)
         self.telemetry.emit(
             "policy_precheck",
@@ -49,7 +56,14 @@ class AgentRuntime:
             policy_id=precheck.policy_id,
         )
         if precheck.action != "allow":
-            return RunResult(output_text="Request denied by policy.", status="denied")
+            result = RunResult(output_text="Request denied by policy.", status="denied")
+            self.telemetry.emit(
+                "run_complete",
+                request.trace_id,
+                status=result.status,
+                output_preview=result.output_text[:80],
+            )
+            return result
 
         context = RunContext(
             tenant_id=request.tenant_id,
@@ -76,7 +90,14 @@ class AgentRuntime:
             model_output = self._call_model(request, context, second_pass=True)
 
         self._schedule_background_updates(request, context, model_output)
-        return RunResult(output_text=model_output.text, status="success")
+        result = RunResult(output_text=model_output.text, status="success")
+        self.telemetry.emit(
+            "run_complete",
+            request.trace_id,
+            status=result.status,
+            output_preview=result.output_text[:80],
+        )
+        return result
 
     def _retrieve_context(self, context: RunContext, request: RunRequest) -> list[str]:
         self.telemetry.emit(
