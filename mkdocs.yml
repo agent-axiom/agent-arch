@@ -76,6 +76,7 @@ plugins:
             Глава 13. Offline evals, online evals и regression gates: Глава 13. Offline evals, online evals и regression gates
             Часть VI. Организационная модель: Часть VI. Организационная модель
             Глава 14. Platform team vs product teams: Глава 14. Platform team vs product teams
+            Глава 15. Golden paths, shared gateways и anti-zoo patterns: Глава 15. Golden paths, shared gateways и anti-zoo patterns
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -107,6 +108,7 @@ plugins:
             Глава 13. Offline evals, online evals и regression gates: Chapter 13. Offline Evals, Online Evals, and Regression Gates
             Часть VI. Организационная модель: Part VI. Organizational Model
             Глава 14. Platform team vs product teams: Chapter 14. Platform Team vs Product Teams
+            Глава 15. Golden paths, shared gateways и anti-zoo patterns: Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -138,6 +140,7 @@ plugins:
             Глава 13. Offline evals, online evals и regression gates: 第 13 章：离线评测、在线评测与回归门禁
             Часть VI. Организационная модель: 第六部分：组织模型
             Глава 14. Platform team vs product teams: 第 14 章：平台团队与产品团队
+            Глава 15. Golden paths, shared gateways и anti-zoo patterns: 第 15 章：黄金路径、共享网关与反“动物园”模式
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -211,6 +214,7 @@ nav:
       - Глава 13. Offline evals, online evals и regression gates: book/part-v/chapter-13.md
       - Часть VI. Организационная модель: book/part-vi/index.md
       - Глава 14. Platform team vs product teams: book/part-vi/chapter-14.md
+      - Глава 15. Golden paths, shared gateways и anti-zoo patterns: book/part-vi/chapter-15.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md

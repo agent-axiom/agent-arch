@@ -22,5 +22,6 @@
 ## В этой части
 
 - [Глава 14. Platform team vs product teams](chapter-14.md)
+- [Глава 15. Golden paths, shared gateways и anti-zoo patterns](chapter-15.md)
 
-Дальше добавим главы про golden paths, shared gateways и anti-zoo patterns.
+Дальше логично добить platform roadmap и перейти к reference implementation.

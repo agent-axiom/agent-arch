@@ -44,10 +44,9 @@
 ### Часть VI. Организационная модель
 
 - Глава 14. Platform team vs product teams.
-- Шаблоны, golden paths, shared gateways.
-- Как не превратить агентную платформу в зоопарк.
+- Глава 15. Golden paths, shared gateways и anti-zoo patterns.
 
-Статус: первая глава части написана.
+Статус: две первые главы части написаны.
 
 ### Часть VII. Reference implementation
 

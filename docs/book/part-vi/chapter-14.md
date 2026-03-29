@@ -193,5 +193,6 @@ governance:
 Следующий естественный шаг в этой части: разобрать, как именно строить shared gateways, reusable templates и anti-zoo patterns, чтобы орг-модель не оставалась только на словах.
 
 - [Глава 13. Offline evals, online evals и regression gates](../part-v/chapter-13.md)
+- [Глава 15. Golden paths, shared gateways и anti-zoo patterns](chapter-15.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)
