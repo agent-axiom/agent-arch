@@ -1,0 +1,147 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Mapping
+
+
+@dataclass(frozen=True, slots=True)
+class MemoryRecord:
+    memory_id: str
+    tenant_id: str
+    memory_class: str
+    kind: str
+    content: str
+    source: str
+    confidence: float
+
+
+@dataclass(frozen=True, slots=True)
+class MemoryCandidate:
+    tenant_id: str
+    memory_class: str
+    kind: str
+    content: str
+    source: str
+    confidence: float
+
+
+class MemoryStore:
+    """Small in-memory store with explicit record classes and tenant filtering."""
+
+    def __init__(self, records: list[MemoryRecord] | None = None) -> None:
+        self._records = list(records or self._default_records())
+        self._counter = len(self._records)
+
+    @staticmethod
+    def _default_records() -> list[MemoryRecord]:
+        return [
+            MemoryRecord(
+                memory_id="mem-001",
+                tenant_id="tenant-acme",
+                memory_class="profile",
+                kind="language_preference",
+                content="User usually prefers concise English answers.",
+                source="trusted_profile",
+                confidence=0.95,
+            ),
+            MemoryRecord(
+                memory_id="mem-002",
+                tenant_id="tenant-acme",
+                memory_class="long_term",
+                kind="validated_fact",
+                content="Support tickets must use the support queue and include requester_id.",
+                source="trusted_service",
+                confidence=0.92,
+            ),
+            MemoryRecord(
+                memory_id="mem-003",
+                tenant_id="tenant-acme",
+                memory_class="short_term",
+                kind="working_note",
+                content="Recent runtime demo used create_ticket as the main write capability.",
+                source="session_state",
+                confidence=0.7,
+            ),
+        ]
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "MemoryStore":
+        raw_memory = data.get("memory", {})
+        if not isinstance(raw_memory, Mapping):
+            raise TypeError("'memory' must be a mapping")
+        raw_records = raw_memory.get("seed_records", [])
+        if not isinstance(raw_records, list):
+            raise TypeError("'seed_records' must be a list")
+        records: list[MemoryRecord] = []
+        for idx, raw_record in enumerate(raw_records, start=1):
+            if not isinstance(raw_record, Mapping):
+                raise TypeError(f"Memory record #{idx} must be a mapping")
+            record = dict(raw_record)
+            records.append(
+                MemoryRecord(
+                    memory_id=str(record.get("memory_id", f"mem-{idx:03d}")),
+                    tenant_id=str(record.get("tenant_id", "")),
+                    memory_class=str(record.get("memory_class", "long_term")),
+                    kind=str(record.get("kind", "note")),
+                    content=str(record.get("content", "")),
+                    source=str(record.get("source", "unknown")),
+                    confidence=float(record.get("confidence", 0.5)),
+                ),
+            )
+        return cls(records=records)
+
+    def all(self) -> tuple[MemoryRecord, ...]:
+        return tuple(self._records)
+
+    def retrieve(self, query: str, tenant_id: str, *, limit: int = 3) -> list[MemoryRecord]:
+        query_tokens = {token for token in query.lower().split() if token}
+        scoped = [record for record in self._records if record.tenant_id == tenant_id]
+        ranked = sorted(
+            scoped,
+            key=lambda record: self._score(record, query_tokens),
+            reverse=True,
+        )
+        return ranked[:limit]
+
+    def persist(self, candidate: MemoryCandidate) -> MemoryRecord:
+        self._counter += 1
+        record = MemoryRecord(
+            memory_id=f"mem-{self._counter:03d}",
+            tenant_id=candidate.tenant_id,
+            memory_class=candidate.memory_class,
+            kind=candidate.kind,
+            content=candidate.content,
+            source=candidate.source,
+            confidence=candidate.confidence,
+        )
+        self._records.append(record)
+        return record
+
+    def compact(self, tenant_id: str) -> int:
+        seen: set[tuple[str, str, str]] = set()
+        compacted: list[MemoryRecord] = []
+        removed = 0
+        for record in self._records:
+            if record.tenant_id != tenant_id:
+                compacted.append(record)
+                continue
+            key = (record.memory_class, record.kind, record.content)
+            if key in seen:
+                removed += 1
+                continue
+            seen.add(key)
+            compacted.append(record)
+        self._records = compacted
+        return removed
+
+    @staticmethod
+    def _score(record: MemoryRecord, query_tokens: set[str]) -> float:
+        content_tokens = set(record.content.lower().split())
+        overlap = len(query_tokens & content_tokens)
+        class_bonus = {
+            "profile": 0.15,
+            "long_term": 0.1,
+            "short_term": 0.05,
+        }.get(record.memory_class, 0.0)
+        trusted_bonus = 0.1 if record.source.startswith("trusted") else 0.0
+        return overlap + record.confidence + class_bonus + trusted_bonus

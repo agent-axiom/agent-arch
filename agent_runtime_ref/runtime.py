@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import cast
 
+from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.execution import execute_tool
+from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import (
     ModelOutput,
     RunContext,
@@ -24,10 +26,18 @@ class AgentRuntime:
         catalog: CapabilityCatalog | None = None,
         policy: PolicyEngine | None = None,
         telemetry: TelemetryEmitter | None = None,
+        memory: MemoryStore | None = None,
+        background: BackgroundWorker | None = None,
     ) -> None:
         self.catalog = catalog or CapabilityCatalog()
         self.policy = policy or PolicyEngine()
         self.telemetry = telemetry or TelemetryEmitter()
+        self.memory = memory or MemoryStore()
+        self.background = background or BackgroundWorker(
+            memory_store=self.memory,
+            policy=self.policy,
+            telemetry=self.telemetry,
+        )
 
     def run(self, request: RunRequest) -> RunResult:
         precheck = self.policy.precheck(request)
@@ -46,7 +56,12 @@ class AgentRuntime:
             principal_id=request.principal_id,
             trace_id=request.trace_id,
         )
-        context.retrieved_context = self._retrieve_context(request)
+        context.retrieved_records = self.memory.retrieve(
+            request.user_input,
+            request.tenant_id,
+            limit=3,
+        )
+        context.retrieved_context = self._retrieve_context(context, request)
 
         model_output = self.telemetry.traced_call(
             request.trace_id,
@@ -63,9 +78,17 @@ class AgentRuntime:
         self._schedule_background_updates(request, context, model_output)
         return RunResult(output_text=model_output.text, status="success")
 
-    def _retrieve_context(self, request: RunRequest) -> list[str]:
-        self.telemetry.emit("retrieval", request.trace_id, source="mock_memory", records="1")
-        return [f"tenant={request.tenant_id}", "knowledge: reference runtime skeleton"]
+    def _retrieve_context(self, context: RunContext, request: RunRequest) -> list[str]:
+        self.telemetry.emit(
+            "retrieval",
+            request.trace_id,
+            source="memory_store",
+            records=str(len(context.retrieved_records)),
+        )
+        return [
+            f"tenant={request.tenant_id}",
+            *[record.content for record in context.retrieved_records],
+        ]
 
     def _call_model(
         self,
@@ -74,10 +97,19 @@ class AgentRuntime:
         *,
         second_pass: bool = False,
     ) -> ModelOutput:
-        del context
         lowered = request.user_input.lower()
         if second_pass:
             return ModelOutput(text="Ticket request accepted and ready for follow-up.")
+        if "language" in lowered or "preference" in lowered:
+            profile_hint = next(
+                (
+                    record.content
+                    for record in context.retrieved_records
+                    if record.memory_class == "profile"
+                ),
+                "No stable preference was found.",
+            )
+            return ModelOutput(text=f"Retrieved profile hint: {profile_hint}")
         if "ticket" in lowered:
             return ModelOutput(
                 text="I need to create a ticket before I can answer fully.",
@@ -91,7 +123,12 @@ class AgentRuntime:
                     },
                 ),
             )
-        return ModelOutput(text="Reference runtime completed without tool usage.")
+        return ModelOutput(
+            text=(
+                "Reference runtime completed without tool usage. "
+                f"Retrieved {len(context.retrieved_records)} memory records."
+            ),
+        )
 
     def _handle_tool_request(
         self,
@@ -142,11 +179,13 @@ class AgentRuntime:
         context: RunContext,
         model_output: ModelOutput,
     ) -> None:
-        decision = self.policy.allow_memory_write("session_summary")
+        result = self.background.process_post_run(request, context, model_output)
         self.telemetry.emit(
             "background_update_scheduled",
             request.trace_id,
-            action=decision.action,
+            action="processed",
+            persisted_records=str(result.persisted_records),
+            compacted_records=str(result.compacted_records),
             tool_results=str(len(context.tool_results)),
             output_preview=model_output.text[:40],
         )

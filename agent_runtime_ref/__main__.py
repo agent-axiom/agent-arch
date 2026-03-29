@@ -9,6 +9,7 @@ from pathlib import Path
 from agent_runtime_ref.config import (
     default_config_dir,
     load_capability_catalog,
+    load_memory_store,
     load_policy_engine,
     load_rollout_policy,
 )
@@ -33,6 +34,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     runtime = AgentRuntime(
         catalog=load_capability_catalog(config_dir / "capabilities.yaml"),
+        memory=load_memory_store(config_dir / "memory.yaml"),
         policy=load_policy_engine(config_dir / "policy.yaml"),
     )
     result = runtime.run(
@@ -47,6 +49,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "result": result.output_text,
         "status": result.status,
         "events": len(runtime.telemetry.events),
+        "memory_records": len(runtime.memory.all()),
         "config_dir": str(config_dir),
     }
 
@@ -76,7 +79,7 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument(
         "--config-dir",
         default=str(config_dir),
-        help="Directory with capabilities.yaml and policy.yaml",
+        help="Directory with capabilities.yaml, memory.yaml, and policy.yaml",
     )
     simulate.add_argument(
         "--user-input",

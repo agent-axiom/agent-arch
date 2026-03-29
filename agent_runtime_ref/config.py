@@ -6,6 +6,7 @@ from typing import Any
 import yaml
 
 from agent_runtime_ref.catalog import CapabilityCatalog
+from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.rollout import RolloutPolicy
 
@@ -32,3 +33,7 @@ def load_policy_engine(path: str | Path) -> PolicyEngine:
 
 def load_rollout_policy(path: str | Path) -> RolloutPolicy:
     return RolloutPolicy.from_dict(load_yaml_file(path))
+
+
+def load_memory_store(path: str | Path) -> MemoryStore:
+    return MemoryStore.from_dict(load_yaml_file(path))

@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from agent_runtime_ref.memory import MemoryRecord
 
 
 @dataclass(slots=True)
@@ -17,6 +21,7 @@ class RunContext:
     principal_id: str
     trace_id: str
     retrieved_context: list[str] = field(default_factory=list)
+    retrieved_records: list[MemoryRecord] = field(default_factory=list)
     tool_results: list["ToolResult"] = field(default_factory=list)
 
 

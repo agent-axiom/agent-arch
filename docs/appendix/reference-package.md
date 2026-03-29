@@ -14,6 +14,10 @@
   Capability registry с operational semantics.
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
   YAML loader для policy, capability catalog и rollout policy.
+- [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
+  Typed memory records, retrieval и tenant-scoped in-memory store.
+- [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
+  Background maintenance path для persistent memory writes и compaction.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
   Простой dispatch capability через contract-aware execution.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
@@ -30,7 +34,7 @@
 Ожидаемый результат:
 
 ```json
-{"result": "Ticket request accepted and ready for follow-up.", "status": "success", "events": 7, "config_dir": ".../agent_runtime_ref/configs"}
+{"result": "Ticket request accepted and ready for follow-up.", "status": "success", "events": 9, "memory_records": 4, "config_dir": ".../agent_runtime_ref/configs"}
 ```
 
 Явный запуск runtime через subcommand:
@@ -45,6 +49,12 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+Запрос, который реально читает profile memory:
+
+```bash
+.venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
+```
+
 ## Как проверить
 
 ```bash
@@ -55,13 +65,14 @@ uv run ty check
 
 ## Примерные конфиги
 
-В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат три стартовых файла:
+В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат четыре стартовых файла:
 
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
+- [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в runtime, policy engine и rollout policy, поэтому package стал ближе к реальному operational skeleton.
+Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в runtime, policy engine, memory store и rollout policy, поэтому package стал ближе к реальному operational skeleton.
 
 ## Зачем это полезно
 
@@ -70,4 +81,5 @@ uv run ty check
 - легче обсуждать архитектуру на уровне файлов и контрактов;
 - легче расширять package следующими примерами;
 - легче перейти от главы к runnable prototype;
-- легче показать config-driven path, а не только hardcoded demo.
+- легче показать config-driven path, а не только hardcoded demo;
+- легче связать reference runtime с главами про memory, retrieval и background updates.

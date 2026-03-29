@@ -40,13 +40,14 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Внутри уже есть reference runtime, policy layer, capability catalog, telemetry emitter, rollout readiness gate и YAML-based config loader под Part VII книги.
+Внутри уже есть reference runtime, policy layer, capability catalog, memory layer, background maintenance path, telemetry emitter, rollout readiness gate и YAML-based config loader под Part III и Part VII книги.
 
 Можно запускать и более явные demo-команды:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
+.venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 
 ## Опциональные исследовательские зависимости

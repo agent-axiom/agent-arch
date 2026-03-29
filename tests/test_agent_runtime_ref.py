@@ -9,9 +9,11 @@ from pathlib import Path
 from agent_runtime_ref.__main__ import main
 from agent_runtime_ref.config import (
     load_capability_catalog,
+    load_memory_store,
     load_policy_engine,
     load_rollout_policy,
 )
+from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import RunRequest
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_for_rollout
@@ -22,8 +24,9 @@ class AgentRuntimeRefTests(unittest.TestCase):
     def test_config_loader_builds_runtime_components(self) -> None:
         config_dir = Path("agent_runtime_ref/configs")
         catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+        memory = load_memory_store(config_dir / "memory.yaml")
         policy = load_policy_engine(config_dir / "policy.yaml")
-        runtime = AgentRuntime(catalog=catalog, policy=policy)
+        runtime = AgentRuntime(catalog=catalog, policy=policy, memory=memory)
         result = runtime.run(
             RunRequest(
                 user_input="Please open a ticket for this issue.",
@@ -35,6 +38,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(result.status, "success")
         self.assertEqual(catalog.get("create_ticket") is not None, True)
         self.assertEqual(policy.allow_memory_write("session_summary").action, "allow")
+        self.assertGreaterEqual(len(memory.all()), 4)
 
     def test_runtime_returns_success_for_plain_request(self) -> None:
         runtime = AgentRuntime()
@@ -48,6 +52,19 @@ class AgentRuntimeRefTests(unittest.TestCase):
         )
         self.assertEqual(result.status, "success")
         self.assertIn("Reference runtime completed", result.output_text)
+
+    def test_runtime_uses_memory_for_preference_query(self) -> None:
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="What language preference do you remember?",
+                tenant_id="tenant-acme",
+                principal_id="user-9",
+                trace_id="trace-pref-001",
+            ),
+        )
+        self.assertEqual(result.status, "success")
+        self.assertIn("Retrieved profile hint", result.output_text)
 
     def test_runtime_uses_tool_path_for_ticket_request(self) -> None:
         runtime = AgentRuntime()
@@ -114,6 +131,12 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertFalse(assessment.ready)
         self.assertIn("direct_tool_access_present", assessment.blocking_signals)
 
+    def test_memory_store_filters_by_tenant(self) -> None:
+        store = MemoryStore()
+        records = store.retrieve("language preference", "tenant-acme", limit=5)
+        self.assertTrue(records)
+        self.assertTrue(all(record.tenant_id == "tenant-acme" for record in records))
+
     def test_cli_simulate_run_returns_json(self) -> None:
         buffer = io.StringIO()
         with redirect_stdout(buffer):
@@ -122,6 +145,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(payload["status"], "success")
         self.assertGreaterEqual(payload["events"], 1)
+        self.assertGreaterEqual(payload["memory_records"], 3)
 
     def test_cli_check_rollout_reports_missing_signal(self) -> None:
         buffer = io.StringIO()

@@ -1,0 +1,23 @@
+memory:
+  seed_records:
+    - memory_id: mem-001
+      tenant_id: tenant-acme
+      memory_class: profile
+      kind: language_preference
+      content: User usually prefers concise English answers.
+      source: trusted_profile
+      confidence: 0.95
+    - memory_id: mem-002
+      tenant_id: tenant-acme
+      memory_class: long_term
+      kind: validated_fact
+      content: Support tickets must use the support queue and include requester_id.
+      source: trusted_service
+      confidence: 0.92
+    - memory_id: mem-003
+      tenant_id: tenant-acme
+      memory_class: short_term
+      kind: working_note
+      content: Recent runtime demo used create_ticket as the main write capability.
+      source: session_state
+      confidence: 0.70
