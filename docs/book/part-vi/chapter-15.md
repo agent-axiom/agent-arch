@@ -194,5 +194,6 @@ platform_defaults:
 Следующий логичный шаг в Part VI: добить тему организационной модели через паттерны platform roadmap, adoption и lifecycle management. А дальше уже переходить к reference implementation.
 
 - [Глава 14. Platform team vs product teams](chapter-14.md)
+- [Глава 16. Базовый runtime blueprint](../part-vii/chapter-16.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)

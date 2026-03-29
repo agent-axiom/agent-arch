@@ -77,6 +77,8 @@ plugins:
             Часть VI. Организационная модель: Часть VI. Организационная модель
             Глава 14. Platform team vs product teams: Глава 14. Platform team vs product teams
             Глава 15. Golden paths, shared gateways и anti-zoo patterns: Глава 15. Golden paths, shared gateways и anti-zoo patterns
+            Часть VII. Reference implementation: Часть VII. Reference implementation
+            Глава 16. Базовый runtime blueprint: Глава 16. Базовый runtime blueprint
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -109,6 +111,8 @@ plugins:
             Часть VI. Организационная модель: Part VI. Organizational Model
             Глава 14. Platform team vs product teams: Chapter 14. Platform Team vs Product Teams
             Глава 15. Golden paths, shared gateways и anti-zoo patterns: Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
+            Часть VII. Reference implementation: Part VII. Reference Implementation
+            Глава 16. Базовый runtime blueprint: Chapter 16. Baseline Runtime Blueprint
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -141,6 +145,8 @@ plugins:
             Часть VI. Организационная модель: 第六部分：组织模型
             Глава 14. Platform team vs product teams: 第 14 章：平台团队与产品团队
             Глава 15. Golden paths, shared gateways и anti-zoo patterns: 第 15 章：黄金路径、共享网关与反“动物园”模式
+            Часть VII. Reference implementation: 第七部分：参考实现
+            Глава 16. Базовый runtime blueprint: 第 16 章：基础运行时蓝图
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -215,6 +221,8 @@ nav:
       - Часть VI. Организационная модель: book/part-vi/index.md
       - Глава 14. Platform team vs product teams: book/part-vi/chapter-14.md
       - Глава 15. Golden paths, shared gateways и anti-zoo patterns: book/part-vi/chapter-15.md
+      - Часть VII. Reference implementation: book/part-vii/index.md
+      - Глава 16. Базовый runtime blueprint: book/part-vii/chapter-16.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md
