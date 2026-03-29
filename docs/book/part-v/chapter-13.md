@@ -204,5 +204,6 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 Part V теперь уже выглядит как цельный operational блок: traces, SLO и eval loop. Дальше логично переходить к организационной модели, потому что такие платформы упираются не только в код, но и в устройство команды.
 
 - [Глава 12. SLO для агентных систем](chapter-12.md)
+- [Глава 14. Platform team vs product teams](../part-vi/chapter-14.md)
 - [Часть V. Надежность и observability](index.md)
 - [Источники](../../appendix/sources.md)

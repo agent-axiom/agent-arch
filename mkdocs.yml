@@ -74,6 +74,8 @@ plugins:
             Глава 11. Traces, spans и structured events: Глава 11. Traces, spans и structured events
             Глава 12. SLO для агентных систем: Глава 12. SLO для агентных систем
             Глава 13. Offline evals, online evals и regression gates: Глава 13. Offline evals, online evals и regression gates
+            Часть VI. Организационная модель: Часть VI. Организационная модель
+            Глава 14. Platform team vs product teams: Глава 14. Platform team vs product teams
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -103,6 +105,8 @@ plugins:
             Глава 11. Traces, spans и structured events: Chapter 11. Traces, Spans, and Structured Events
             Глава 12. SLO для агентных систем: Chapter 12. SLO for Agent Systems
             Глава 13. Offline evals, online evals и regression gates: Chapter 13. Offline Evals, Online Evals, and Regression Gates
+            Часть VI. Организационная модель: Part VI. Organizational Model
+            Глава 14. Platform team vs product teams: Chapter 14. Platform Team vs Product Teams
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -132,6 +136,8 @@ plugins:
             Глава 11. Traces, spans и structured events: 第 11 章：追踪、跨度与结构化事件
             Глава 12. SLO для агентных систем: 第 12 章：智能体系统的 SLO
             Глава 13. Offline evals, online evals и regression gates: 第 13 章：离线评测、在线评测与回归门禁
+            Часть VI. Организационная модель: 第六部分：组织模型
+            Глава 14. Platform team vs product teams: 第 14 章：平台团队与产品团队
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -203,6 +209,8 @@ nav:
       - Глава 11. Traces, spans и structured events: book/part-v/chapter-11.md
       - Глава 12. SLO для агентных систем: book/part-v/chapter-12.md
       - Глава 13. Offline evals, online evals и regression gates: book/part-v/chapter-13.md
+      - Часть VI. Организационная модель: book/part-vi/index.md
+      - Глава 14. Platform team vs product teams: book/part-vi/chapter-14.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md
