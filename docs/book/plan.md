@@ -36,10 +36,10 @@
 ### Часть V. Надежность и observability
 
 - Глава 11. Traces, spans и structured events.
-- SLO для агентских систем.
+- Глава 12. SLO для агентных систем.
 - Offline evals, online evals, trace grading, regression gates.
 
-Статус: первая глава части написана.
+Статус: две первые главы части написаны.
 
 ### Часть VI. Организационная модель
 

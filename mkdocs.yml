@@ -72,6 +72,7 @@ plugins:
             Глава 10. Idempotency, retries, rate limits и rollback boundaries: Глава 10. Idempotency, retries, rate limits и rollback boundaries
             Часть V. Надежность и observability: Часть V. Надежность и observability
             Глава 11. Traces, spans и structured events: Глава 11. Traces, spans и structured events
+            Глава 12. SLO для агентных систем: Глава 12. SLO для агентных систем
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -99,6 +100,7 @@ plugins:
             Глава 10. Idempotency, retries, rate limits и rollback boundaries: Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries
             Часть V. Надежность и observability: Part V. Reliability and Observability
             Глава 11. Traces, spans и structured events: Chapter 11. Traces, Spans, and Structured Events
+            Глава 12. SLO для агентных систем: Chapter 12. SLO for Agent Systems
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -126,6 +128,7 @@ plugins:
             Глава 10. Idempotency, retries, rate limits и rollback boundaries: 第 10 章：幂等性、重试、速率限制与回滚边界
             Часть V. Надежность и observability: 第五部分：可靠性与可观测性
             Глава 11. Traces, spans и structured events: 第 11 章：追踪、跨度与结构化事件
+            Глава 12. SLO для агентных систем: 第 12 章：智能体系统的 SLO
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -195,6 +198,7 @@ nav:
       - Глава 10. Idempotency, retries, rate limits и rollback boundaries: book/part-iv/chapter-10.md
       - Часть V. Надежность и observability: book/part-v/index.md
       - Глава 11. Traces, spans и structured events: book/part-v/chapter-11.md
+      - Глава 12. SLO для агентных систем: book/part-v/chapter-12.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md

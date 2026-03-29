@@ -22,5 +22,6 @@
 ## В этой части
 
 - [Глава 11. Traces, spans и structured events](chapter-11.md)
+- [Глава 12. SLO для агентных систем](chapter-12.md)
 
 Дальше добавим главы про SLO, offline/online evals и regression gates.

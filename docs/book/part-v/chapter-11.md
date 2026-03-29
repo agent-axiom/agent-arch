@@ -219,5 +219,6 @@ Observability не должна превращаться в утечку дан�
 Следующий шаг здесь очень естественный: после traces и structured events нужно формализовать, что вообще считается “здоровой” агентной системой. То есть перейти к SLO.
 
 - [Глава 10. Idempotency, retries, rate limits и rollback boundaries](../part-iv/chapter-10.md)
+- [Глава 12. SLO для агентных систем](chapter-12.md)
 - [Часть V. Надежность и observability](index.md)
 - [Источники](../../appendix/sources.md)
