@@ -235,5 +235,6 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 Следующий шаг в этой части очень естественный: после типов памяти нужно разобрать, как именно агент вытаскивает нужные куски обратно в prompt и почему compaction иногда важнее, чем “больше retrieval”.
 
 - [Глава 5. Зачем агенту память и почему она опасна](chapter-5.md)
+- [Глава 7. Retrieval, compaction и background updates](chapter-7.md)
 - [Часть III. Память и знания](index.md)
 - [Источники](../../appendix/sources.md)

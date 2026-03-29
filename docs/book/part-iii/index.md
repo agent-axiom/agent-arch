@@ -15,5 +15,6 @@
 
 - [Глава 5. Зачем агенту память и почему она опасна](chapter-5.md)
 - [Глава 6. Short-term, long-term и profile memory](chapter-6.md)
+- [Глава 7. Retrieval, compaction и background updates](chapter-7.md)
 
-Дальше добавим еще главы про типы памяти, retrieval, compaction и background updates.
+Дальше можно будет спокойно углубиться в retention, deletion и governance памяти.

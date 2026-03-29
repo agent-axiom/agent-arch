@@ -20,10 +20,10 @@
 
 - Глава 5. Зачем агенту память и почему она опасна.
 - Глава 6. Short-term, long-term и profile memory.
-- Retrieval, compaction, summaries, profile memory.
+- Глава 7. Retrieval, compaction и background updates.
 - Когда память писать в hot path, а когда в background.
 
-Статус: две первые главы части написаны.
+Статус: три главы части написаны.
 
 ### Часть IV. Инструменты и выполнение
 
