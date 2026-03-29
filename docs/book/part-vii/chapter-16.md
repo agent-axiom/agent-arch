@@ -221,5 +221,6 @@ runtime:
 Следующий логичный шаг в Part VII: сделать поверх этого blueprint явный policy layer и capability catalog, чтобы reference implementation стала уже почти operational skeleton.
 
 - [Глава 15. Golden paths, shared gateways и anti-zoo patterns](../part-vi/chapter-15.md)
+- [Глава 17. Policy layer и capability catalog](chapter-17.md)
 - [Часть VII. Reference implementation](index.md)
 - [Источники](../../appendix/sources.md)

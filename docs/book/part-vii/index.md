@@ -21,5 +21,6 @@
 ## В этой части
 
 - [Глава 16. Базовый runtime blueprint](chapter-16.md)
+- [Глава 17. Policy layer и capability catalog](chapter-17.md)
 
-Дальше добавим главы про policy layer, capability catalog и production rollout checklist.
+Дальше логично добавить production rollout checklist.
