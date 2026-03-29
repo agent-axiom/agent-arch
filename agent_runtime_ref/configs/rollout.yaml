@@ -1,0 +1,17 @@
+rollout:
+  require:
+    - trace_coverage
+    - policy_prechecks
+    - capability_owners
+    - offline_eval_pass
+    - slo_defined
+    - rollback_plan
+    - oncall_owner
+  rollout_mode:
+    initial: canary
+    max_tenant_exposure_pct: 5
+    require_shadow_period: true
+  block_if:
+    - unknown_side_effect_path_missing
+    - direct_tool_access_present
+    - policy_decisions_not_traced

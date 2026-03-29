@@ -233,4 +233,5 @@ nav:
       - Глава 18. Production rollout checklist: book/part-vii/chapter-18.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
+      - Reference package: appendix/reference-package.md
       - Источники: appendix/sources.md

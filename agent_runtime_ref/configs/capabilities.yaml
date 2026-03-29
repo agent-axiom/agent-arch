@@ -1,0 +1,14 @@
+capabilities:
+  search_docs:
+    owner: knowledge_platform
+    mode: read
+    transport: mcp
+    timeout_seconds: 5
+    approval: none
+  create_ticket:
+    owner: support_platform
+    mode: write
+    transport: gateway
+    timeout_seconds: 15
+    approval: manager
+    idempotency_key_required: true

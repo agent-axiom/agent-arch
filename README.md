@@ -29,6 +29,7 @@ The local site will be available at `http://127.0.0.1:8000/`.
 uv run ruff check .
 uv run ty check
 uv run mkdocs build --strict
+.venv/bin/python -m unittest discover -s tests
 ```
 
 ## Reference package
@@ -40,6 +41,8 @@ The repository now includes a minimal runnable skeleton package:
 ```
 
 It contains a tiny reference runtime, policy layer, capability catalog, telemetry emitter, and rollout readiness gate designed to match Part VII of the book.
+
+There is also a short docs walkthrough in [docs/appendix/reference-package.md](docs/appendix/reference-package.md).
 
 ## Optional research dependencies
 

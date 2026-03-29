@@ -1,0 +1,16 @@
+policy:
+  run_precheck:
+    require_tenant: true
+    deny_if_principal_missing: true
+  capabilities:
+    search_docs:
+      decision: allow
+    create_ticket:
+      decision: approval_required
+      approver: manager
+    run_shell:
+      decision: deny
+  memory_write:
+    allow_kinds:
+      - validated_fact
+      - session_summary
