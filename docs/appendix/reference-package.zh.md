@@ -1,0 +1,73 @@
+# Reference Package
+
+现在仓库里已经有一个可运行的小型 skeleton：[agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref)。
+
+它的目标不是变成 production framework，而是作为本书 **Part VII** 的最小代码锚点。
+
+## 里面有什么
+
+- [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)
+  核心 `AgentRuntime`，负责组装 run context、retrieval、model step、tool execution 和 background update hook。
+- [policy.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/policy.py)
+  一个带 structured decisions 的小型 policy engine。
+- [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
+  带有 operational semantics 的 capability registry。
+- [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
+  用来加载 policy、capability catalog 和 rollout policy 的 YAML loader。
+- [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
+  一个通过 contract-aware execution 做 capability dispatch 的简单层。
+- [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
+  用于 structured events 和 spans 的 in-memory telemetry emitter。
+- [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)
+  rollout 前的最小 readiness gate。
+
+## 如何运行
+
+```bash
+.venv/bin/python -m agent_runtime_ref
+```
+
+预期输出：
+
+```json
+{"result": "Ticket request accepted and ready for follow-up.", "status": "success", "events": 7, "config_dir": ".../agent_runtime_ref/configs"}
+```
+
+通过显式 subcommand 运行 runtime：
+
+```bash
+.venv/bin/python -m agent_runtime_ref simulate-run
+```
+
+带 signal override 的 rollout policy 检查：
+
+```bash
+.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
+```
+
+## 如何验证
+
+```bash
+uv run ruff check .
+uv run ty check
+.venv/bin/python -m unittest discover -s tests
+```
+
+## 示例配置
+
+在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有三个起步文件：
+
+- [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
+- [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
+- [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
+
+它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进 runtime、policy engine 和 rollout policy，所以这个 package 已经更接近真实的 operational skeleton。
+
+## 为什么它有用
+
+这本书现在不只依赖 Markdown 解释，也依赖真实的代码 skeleton：
+
+- 更容易在文件和 contracts 的层面讨论架构；
+- 更容易继续往 package 里加示例；
+- 更容易从章节直接走到 runnable prototype；
+- 更容易展示 config-driven path，而不只是 hardcoded demo。
