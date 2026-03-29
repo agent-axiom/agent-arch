@@ -28,11 +28,10 @@
 ### Часть IV. Инструменты и выполнение
 
 - Глава 8. Execution model и каталог инструментов.
-- Tool gateway и sandbox execution.
-- MCP и контрактное подключение внешних систем.
+- Глава 9. Sandbox execution и MCP как контракт интеграции.
 - Idempotency, retries, rate limits, rollback boundaries.
 
-Статус: первая глава части написана.
+Статус: две первые главы части написаны.
 
 ### Часть V. Надежность и observability
 

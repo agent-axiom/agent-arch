@@ -68,6 +68,7 @@ plugins:
             Глава 7. Retrieval, compaction и background updates: Глава 7. Retrieval, compaction и background updates
             Часть IV. Инструменты и выполнение: Часть IV. Инструменты и выполнение
             Глава 8. Execution model и каталог инструментов: Глава 8. Execution model и каталог инструментов
+            Глава 9. Sandbox execution и MCP как контракт интеграции: Глава 9. Sandbox execution и MCP как контракт интеграции
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -91,6 +92,7 @@ plugins:
             Глава 7. Retrieval, compaction и background updates: Chapter 7. Retrieval, Compaction, and Background Updates
             Часть IV. Инструменты и выполнение: Part IV. Tools and Execution
             Глава 8. Execution model и каталог инструментов: Chapter 8. Execution Model and Tool Catalog
+            Глава 9. Sandbox execution и MCP как контракт интеграции: Chapter 9. Sandbox Execution and MCP as an Integration Contract
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -114,6 +116,7 @@ plugins:
             Глава 7. Retrieval, compaction и background updates: 第 7 章：检索、压缩与后台更新
             Часть IV. Инструменты и выполнение: 第四部分：工具与执行
             Глава 8. Execution model и каталог инструментов: 第 8 章：执行模型与工具目录
+            Глава 9. Sandbox execution и MCP как контракт интеграции: 第 9 章：沙箱执行与 MCP 作为集成契约
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -179,6 +182,7 @@ nav:
       - Глава 7. Retrieval, compaction и background updates: book/part-iii/chapter-7.md
       - Часть IV. Инструменты и выполнение: book/part-iv/index.md
       - Глава 8. Execution model и каталог инструментов: book/part-iv/chapter-8.md
+      - Глава 9. Sandbox execution и MCP как контракт интеграции: book/part-iv/chapter-9.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md

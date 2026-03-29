@@ -21,5 +21,6 @@
 ## В этой части
 
 - [Глава 8. Execution model и каталог инструментов](chapter-8.md)
+- [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
 
-Дальше добавим главы про MCP, sandbox execution, idempotency, retries и rollback boundaries.
+Дальше добавим главу про idempotency, retries, rate limits и rollback boundaries.
