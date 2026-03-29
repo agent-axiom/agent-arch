@@ -230,5 +230,6 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 Следующая естественная тема в этой части: idempotency, retries, rate limits и rollback boundaries. После sandbox и capability contracts именно она превращает execution model в production-grade слой.
 
 - [Глава 8. Execution model и каталог инструментов](chapter-8.md)
+- [Глава 10. Idempotency, retries, rate limits и rollback boundaries](chapter-10.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
