@@ -147,6 +147,36 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertGreaterEqual(payload["events"], 1)
         self.assertGreaterEqual(payload["memory_records"], 3)
 
+    def test_cli_inspect_memory_filters_records(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "inspect-memory",
+                    "--memory-class",
+                    "profile",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertGreaterEqual(payload["count"], 1)
+        self.assertTrue(all(item["memory_class"] == "profile" for item in payload["records"]))
+
+    def test_cli_dump_events_returns_trace_events(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "dump-events",
+                    "--user-input",
+                    "Please open a ticket for this issue.",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertGreaterEqual(payload["event_count"], 1)
+        self.assertTrue(any(item["event_type"] == "tool_execution" for item in payload["events"]))
+
     def test_cli_check_rollout_reports_missing_signal(self) -> None:
         buffer = io.StringIO()
         with redirect_stdout(buffer):

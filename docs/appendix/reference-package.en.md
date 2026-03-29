@@ -43,6 +43,18 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run
 ```
 
+Inspect memory records:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
+```
+
+Dump structured events for one run:
+
+```bash
+.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
+```
+
 Rollout policy check with signal overrides:
 
 ```bash
@@ -83,3 +95,8 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to move from a chapter to a runnable prototype;
 - it is easier to show a config-driven path instead of only a hardcoded demo;
 - it is easier to connect the reference runtime to the chapters about memory, retrieval, and background updates.
+
+There is also a practical usability win now:
+
+- `inspect-memory` shows seeded memory and filtering by `tenant` and `memory_class`;
+- `dump-events` shows the structured trace of one run without reading the source code.

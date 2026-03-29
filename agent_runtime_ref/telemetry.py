@@ -17,6 +17,16 @@ class TelemetryEmitter:
     def __init__(self) -> None:
         self.events: list[StructuredEvent] = []
 
+    def as_dicts(self) -> list[dict[str, object]]:
+        return [
+            {
+                "event_type": event.event_type,
+                "trace_id": event.trace_id,
+                "payload": dict(event.payload),
+            }
+            for event in self.events
+        ]
+
     def emit(self, event_type: str, trace_id: str, **payload: str) -> None:
         self.events.append(
             StructuredEvent(event_type=event_type, trace_id=trace_id, payload=payload),

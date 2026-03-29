@@ -43,6 +43,18 @@
 .venv/bin/python -m agent_runtime_ref simulate-run
 ```
 
+查看 memory records：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
+```
+
+导出一次 run 的 structured events：
+
+```bash
+.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
+```
+
 带 signal override 的 rollout policy 检查：
 
 ```bash
@@ -83,3 +95,8 @@ uv run ty check
 - 更容易从章节直接走到 runnable prototype；
 - 更容易展示 config-driven path，而不只是 hardcoded demo；
 - 更容易把 reference runtime 和 memory、retrieval、background updates 这些章节连起来。
+
+现在还有一个很实用的改进：
+
+- `inspect-memory` 可以直接展示 seeded memory，以及按 `tenant` 和 `memory_class` 过滤后的结果；
+- `dump-events` 可以在不读源代码的情况下，直接看到一次 run 的 structured trace。

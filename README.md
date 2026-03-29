@@ -46,6 +46,8 @@ You can also run the explicit demo commands:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
+.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 .venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```

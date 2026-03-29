@@ -43,6 +43,18 @@
 .venv/bin/python -m agent_runtime_ref simulate-run
 ```
 
+Просмотр memory records:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
+```
+
+Вывод structured events для одного run:
+
+```bash
+.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
+```
+
 Проверка rollout policy с переопределением сигналов:
 
 ```bash
@@ -83,3 +95,8 @@ uv run ty check
 - легче перейти от главы к runnable prototype;
 - легче показать config-driven path, а не только hardcoded demo;
 - легче связать reference runtime с главами про memory, retrieval и background updates.
+
+Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
+
+- `inspect-memory` показывает seeded memory и фильтрацию по `tenant` и `memory_class`;
+- `dump-events` показывает structured trace для одного run без чтения исходников.

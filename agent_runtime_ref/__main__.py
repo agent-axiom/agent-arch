@@ -54,6 +54,57 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    store = load_memory_store(config_dir / "memory.yaml")
+    records = list(store.all())
+    if args.tenant_id:
+        records = [record for record in records if record.tenant_id == args.tenant_id]
+    if args.memory_class:
+        records = [record for record in records if record.memory_class == args.memory_class]
+    if args.limit is not None:
+        records = records[: args.limit]
+    return {
+        "count": len(records),
+        "config_dir": str(config_dir),
+        "records": [
+            {
+                "memory_id": record.memory_id,
+                "tenant_id": record.tenant_id,
+                "memory_class": record.memory_class,
+                "kind": record.kind,
+                "source": record.source,
+                "confidence": record.confidence,
+                "content": record.content,
+            }
+            for record in records
+        ],
+    }
+
+
+def _dump_events(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime = AgentRuntime(
+        catalog=load_capability_catalog(config_dir / "capabilities.yaml"),
+        memory=load_memory_store(config_dir / "memory.yaml"),
+        policy=load_policy_engine(config_dir / "policy.yaml"),
+    )
+    result = runtime.run(
+        RunRequest(
+            user_input=args.user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=args.trace_id,
+        ),
+    )
+    return {
+        "status": result.status,
+        "result": result.output_text,
+        "event_count": len(runtime.telemetry.events),
+        "events": runtime.telemetry.as_dicts(),
+    }
+
+
 def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     policy = load_rollout_policy(args.config)
     observed = {name: True for name in policy.required_checks}
@@ -89,6 +140,36 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--principal-id", default="user-42")
     simulate.add_argument("--trace-id", default="trace-demo-001")
 
+    inspect_memory = subparsers.add_parser(
+        "inspect-memory",
+        help="Inspect seeded memory records",
+    )
+    inspect_memory.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with memory.yaml",
+    )
+    inspect_memory.add_argument("--tenant-id", default="tenant-acme")
+    inspect_memory.add_argument("--memory-class", default=None)
+    inspect_memory.add_argument("--limit", type=int, default=None)
+
+    dump_events = subparsers.add_parser(
+        "dump-events",
+        help="Run the demo and print structured events",
+    )
+    dump_events.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with capabilities.yaml, memory.yaml, and policy.yaml",
+    )
+    dump_events.add_argument(
+        "--user-input",
+        default="Please create a ticket for this onboarding issue.",
+    )
+    dump_events.add_argument("--tenant-id", default="tenant-acme")
+    dump_events.add_argument("--principal-id", default="user-42")
+    dump_events.add_argument("--trace-id", default="trace-demo-001")
+
     rollout = subparsers.add_parser("check-rollout", help="Evaluate rollout readiness")
     rollout.add_argument(
         "--config",
@@ -117,6 +198,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     command = args.command or "simulate-run"
     if command == "simulate-run":
         payload = _simulate_run(args)
+    elif command == "inspect-memory":
+        payload = _inspect_memory(args)
+    elif command == "dump-events":
+        payload = _dump_events(args)
     elif command == "check-rollout":
         payload = _check_rollout(args)
     else:
