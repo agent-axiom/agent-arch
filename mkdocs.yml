@@ -62,6 +62,8 @@ plugins:
             Часть II. Контур безопасности: Часть II. Контур безопасности
             Глава 3. Контур безопасности и границы доверия: Глава 3. Контур безопасности и границы доверия
             Глава 4. Tool gateway, approval и audit trail: Глава 4. Tool gateway, approval и audit trail
+            Часть III. Память и знания: Часть III. Память и знания
+            Глава 5. Зачем агенту память и почему она опасна: Глава 5. Зачем агенту память и почему она опасна
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -79,6 +81,8 @@ plugins:
             Часть II. Контур безопасности: Part II. Security Perimeter
             Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
             Глава 4. Tool gateway, approval и audit trail: Chapter 4. Tool Gateway, Approval, and Audit Trail
+            Часть III. Память и знания: Part III. Memory and Knowledge
+            Глава 5. Зачем агенту память и почему она опасна: Chapter 5. Why Agents Need Memory and Why It Is Dangerous
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -96,6 +100,8 @@ plugins:
             Часть II. Контур безопасности: 第二部分：安全边界
             Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
             Глава 4. Tool gateway, approval и audit trail: 第 4 章：工具网关、审批与审计链路
+            Часть III. Память и знания: 第三部分：记忆与知识
+            Глава 5. Зачем агенту память и почему она опасна: 第 5 章：为什么智能体需要记忆，以及它为何危险
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -155,6 +161,8 @@ nav:
       - Часть II. Контур безопасности: book/part-ii/index.md
       - Глава 3. Контур безопасности и границы доверия: book/part-ii/chapter-3.md
       - Глава 4. Tool gateway, approval и audit trail: book/part-ii/chapter-4.md
+      - Часть III. Память и знания: book/part-iii/index.md
+      - Глава 5. Зачем агенту память и почему она опасна: book/part-iii/chapter-5.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md
