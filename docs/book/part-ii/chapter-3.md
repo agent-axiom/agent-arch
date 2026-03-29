@@ -121,12 +121,11 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 ## 6. Что читать дальше
 
-Теперь можно переходить к следующему логическому слою: что делать с исполнением, approvals и audit trail, когда агент уже дошел до реальных действий.
+Теперь можно переходить к следующему логическому слою: что делать с исполнением, подтверждениями и журналом аудита, когда агент уже дошел до реальных действий.
 
 - [Часть II. Контур безопасности](index.md)
-- [Глава 4. Tool gateway, approval и audit trail](chapter-4.md)
+- [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](chapter-4.md)
 - [Источники](../../appendix/sources.md)
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
-

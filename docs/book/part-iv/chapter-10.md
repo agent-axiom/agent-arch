@@ -1,4 +1,4 @@
-# Глава 10. Idempotency, retries, rate limits и rollback boundaries
+# Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката
 
 ## 1. Почему самые дорогие сбои часто выглядят как “мы просто повторили вызов”
 
@@ -235,6 +235,6 @@ def next_step(outcome: ExecutionOutcome) -> str:
 Part IV уже закрывает базовый execution layer: contracts, sandbox, capability transport и дисциплину вокруг side effects. Дальше очень логично переходить к observability и reliability на уровне всей агентной системы.
 
 - [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
-- [Глава 11. Traces, spans и structured events](../part-v/chapter-11.md)
+- [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)

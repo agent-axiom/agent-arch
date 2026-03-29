@@ -1,19 +1,19 @@
-# Глава 18. Production rollout checklist
+# Глава 18. Чеклист промышленного запуска
 
-## 1. Почему хороший runtime еще не означает готовность к production
+## 1. Почему хороший рантайм еще не означает готовность к промышленному запуску
 
 Даже если у тебя уже есть:
 
 - аккуратный runtime;
-- policy layer;
-- capability catalog;
+- слой политик;
+- каталог возможностей;
 - observability и eval loop,
 
 это все еще не означает, что систему безопасно выкатывать в production.
 
 Production readiness отличается от “демо работает” одной простой вещью: ты должен понимать не только как система работает в норме, но и как она будет вести себя под давлением, при сбоях и в неприятных сценариях.
 
-Именно поэтому нужен rollout checklist.
+Именно поэтому нужен чеклист запуска.
 
 ## 2. Чеклист нужен не как бюрократия, а как защита от самообмана
 
@@ -26,7 +26,7 @@ Production readiness отличается от “демо работает” �
 
 Чеклист полезен не потому, что команды безответственные. Он полезен потому, что агентные системы слишком легко создают ложное ощущение готовности.
 
-Хороший rollout checklist вытаскивает скрытые дыры до инцидента, а не после.
+Хороший чеклист запуска вытаскивает скрытые дыры до инцидента, а не после.
 
 ## 3. Что обязательно должно быть проверено перед go-live
 
@@ -49,7 +49,7 @@ Production readiness отличается от “демо работает” �
 - проходит ли happy path;
 - ограничено ли число tool hops;
 - корректно ли обрабатываются empty / malformed inputs;
-- не ломается ли run при пустом retrieval;
+- не ломается ли запуск при пустом извлечении контекста;
 - безопасно ли ведет себя runtime при model failure;
 - отделены ли foreground и background actions.
 
@@ -60,7 +60,7 @@ Production readiness отличается от “демо работает” �
 Перед rollout особенно важно проверить:
 
 - есть ли pre-check и egress guardrails;
-- видны ли policy decisions в traces;
+- видны ли решения политик в трассировке;
 - high-risk actions действительно требуют approval;
 - нет ли direct access paths мимо gateway;
 - memory writes ограничены policy;
@@ -100,12 +100,12 @@ flowchart LR
 
 ## 7. Observability and eval readiness
 
-Очень частая ошибка: выкатывать систему, надеясь потом “добавить нормальные traces”.
+Очень частая ошибка: выкатывать систему, надеясь потом “добавить нормальную трассировку”.
 
 До production стоит убедиться, что:
 
 - у каждого run есть `trace_id`;
-- ключевые spans уже есть;
+- ключевые спаны уже есть;
 - policy decisions и tool outcomes видны;
 - SLO заведены;
 - offline evals проходят;
@@ -127,7 +127,7 @@ flowchart LR
 
 Иногда кажется, что это “не про агентов, а про ops”. На деле без этого агентная система остается лабораторной, а не production-grade.
 
-## 9. Пример rollout checklist policy
+## 9. Пример политики чеклиста запуска
 
 Ниже очень практичный шаблон:
 
@@ -185,7 +185,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 Проблемы очень узнаваемы:
 
 - rollout идет сразу на слишком большой трафик;
-- команда считает traces “неблокирующей мелочью”;
+- команда считает трассировку “неблокирующей мелочью”;
 - ownership формально есть, но on-call не готов;
 - rollback plan звучит как “ну откатим, если что”;
 - capability owners не знают о реальном release window;
@@ -199,7 +199,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 - Есть ли формальный readiness gate?
 - Ясны ли owner и on-call на этот rollout?
-- Пройдут ли traces, policy decisions и tool outcomes сквозь telemetry?
+- Пройдут ли трассы, решения политик и результаты инструментов сквозь телеметрию?
 - Есть ли canary/shadow этап?
 - Есть ли rollback plan и ограничение blast radius?
 - Проверены ли high-risk flows отдельно, а не только happy path?
@@ -210,6 +210,6 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 На этом reference implementation уже выглядит как цельный operational skeleton. Дальше можно либо расширять ее примерами кода, либо переходить к polishing: переводы, диаграммы, практические appendices и более конкретные implementation snippets.
 
-- [Глава 17. Policy layer и capability catalog](chapter-17.md)
-- [Часть VII. Reference implementation](index.md)
+- [Глава 17. Слой политик и каталог возможностей](chapter-17.md)
+- [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)

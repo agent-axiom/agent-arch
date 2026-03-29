@@ -1,6 +1,6 @@
-# Глава 17. Policy layer и capability catalog
+# Глава 17. Слой политик и каталог возможностей
 
-## 1. Почему без policy layer reference runtime остается слишком наивным
+## 1. Почему без слоя политик эталонный рантайм остается слишком наивным
 
 Даже если у тебя уже есть аккуратный runtime loop, этого все равно недостаточно. Без явного policy layer система остается слишком доверчивой:
 
@@ -41,7 +41,7 @@
 То есть capability catalog это не “inventory для удобства”, а центральная точка управления способностями платформы.
 
 <div class="diagram-card">
-<p>Policy layer и capability catalog вместе образуют contract core reference implementation</p>
+<p>Слой политик и каталог возможностей вместе образуют договорное ядро эталонной реализации</p>
 
 ``` mermaid
 flowchart LR
@@ -228,7 +228,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Следующий логичный шаг в reference implementation: собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
 
-- [Глава 16. Базовый runtime blueprint](chapter-16.md)
-- [Глава 18. Production rollout checklist](chapter-18.md)
-- [Часть VII. Reference implementation](index.md)
+- [Глава 16. Базовая схема рантайма](chapter-16.md)
+- [Глава 18. Чеклист промышленного запуска](chapter-18.md)
+- [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)

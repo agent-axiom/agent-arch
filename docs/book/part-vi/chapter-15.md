@@ -1,4 +1,4 @@
-# Глава 15. Golden paths, shared gateways и anti-zoo patterns
+# Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы
 
 ## 1. Почему даже хорошая орг-модель без инженерных шаблонов быстро расползается
 
@@ -143,7 +143,7 @@ platform_defaults:
 Когда critical path централизован, platform team может:
 
 - обновлять contracts в одном месте;
-- улучшать audit trail один раз на всех;
+- улучшать журнал аудита один раз на всех;
 - менять rollout guardrails без переписывания десятка продуктов;
 - быстрее внедрять новые policy capabilities;
 - быстрее чинить массовые operational issues.
@@ -193,7 +193,7 @@ platform_defaults:
 
 Следующий логичный шаг в Part VI: добить тему организационной модели через паттерны platform roadmap, adoption и lifecycle management. А дальше уже переходить к reference implementation.
 
-- [Глава 14. Platform team vs product teams](chapter-14.md)
-- [Глава 16. Базовый runtime blueprint](../part-vii/chapter-16.md)
+- [Глава 14. Платформенная команда и продуктовые команды](chapter-14.md)
+- [Глава 16. Базовая схема рантайма](../part-vii/chapter-16.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)

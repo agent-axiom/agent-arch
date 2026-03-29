@@ -11,7 +11,7 @@
 - сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
 - многоязычная структура документации
 - первая опубликованная часть книги о безопасной архитектуре агентов
-- небольшой runnable reference package в `agent_runtime_ref/`
+- небольшой опорный пакет с исполняемым примером в `agent_runtime_ref/`
 - современный Python-first стек на базе `uv`
 
 ## Локальная разработка
@@ -34,15 +34,15 @@ uv run mkdocs build --strict
 
 ## Опорный пакет
 
-В репозитории теперь есть минимальный runnable skeleton package:
+В репозитории есть минимальный опорный пакет, который можно запустить:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Внутри уже есть reference runtime, policy layer, capability catalog, memory layer, background maintenance path, telemetry emitter, rollout readiness gate и YAML-based config loader под Part III и Part VII книги.
+Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, слой памяти, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
 
-Можно запускать и более явные demo-команды:
+Можно запускать и более наглядные демонстрационные команды:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
@@ -95,7 +95,7 @@ uv sync --group research
 
 - `uv` для окружения и зависимостей
 - `ruff` для linting
-- `ty` для type checking
+- `ty` для проверки типов
 - `MkDocs + Material for MkDocs` для публикации
 - `Mermaid` и `Observable Plot` для визуализаций
 

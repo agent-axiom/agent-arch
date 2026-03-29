@@ -1,5 +1,5 @@
 site_name: Архитектура Безопасных AI-Агентов
-site_description: Современная книга по архитектуре, безопасности, observability и управлению AI-агентами.
+site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению AI-агентами.
 site_url: https://agent-axiom.github.io/agent-arch/
 repo_name: agent-arch
 repo_url: https://github.com/agent-axiom/agent-arch
@@ -52,7 +52,7 @@ plugins:
           default: true
           build: true
           site_name: Архитектура Безопасных AI-Агентов
-          site_description: Современная книга по архитектуре, безопасности, observability и управлению AI-агентами.
+          site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению AI-агентами.
           nav_translations:
             Главная: Главная
             Книга: Книга
@@ -62,26 +62,26 @@ plugins:
             Глава 2. Референсная архитектура безопасного агента: Глава 2. Референсная архитектура безопасного агента
             Часть II. Контур безопасности: Часть II. Контур безопасности
             Глава 3. Контур безопасности и границы доверия: Глава 3. Контур безопасности и границы доверия
-            Глава 4. Tool gateway, approval и audit trail: Глава 4. Tool gateway, approval и audit trail
+            Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Глава 4. Инструментальный шлюз, подтверждения и журнал аудита
             Часть III. Память и знания: Часть III. Память и знания
             Глава 5. Зачем агенту память и почему она опасна: Глава 5. Зачем агенту память и почему она опасна
-            Глава 6. Short-term, long-term и profile memory: Глава 6. Short-term, long-term и profile memory
-            Глава 7. Retrieval, compaction и background updates: Глава 7. Retrieval, compaction и background updates
+            Глава 6. Краткосрочная, долгосрочная и профильная память: Глава 6. Краткосрочная, долгосрочная и профильная память
+            Глава 7. Извлечение контекста, уплотнение и фоновые обновления: Глава 7. Извлечение контекста, уплотнение и фоновые обновления
             Часть IV. Инструменты и выполнение: Часть IV. Инструменты и выполнение
-            Глава 8. Execution model и каталог инструментов: Глава 8. Execution model и каталог инструментов
-            Глава 9. Sandbox execution и MCP как контракт интеграции: Глава 9. Sandbox execution и MCP как контракт интеграции
-            Глава 10. Idempotency, retries, rate limits и rollback boundaries: Глава 10. Idempotency, retries, rate limits и rollback boundaries
-            Часть V. Надежность и observability: Часть V. Надежность и observability
-            Глава 11. Traces, spans и structured events: Глава 11. Traces, spans и structured events
+            Глава 8. Модель выполнения и каталог инструментов: Глава 8. Модель выполнения и каталог инструментов
+            Глава 9. Песочница выполнения и MCP как интеграционный контракт: Глава 9. Песочница выполнения и MCP как интеграционный контракт
+            Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката
+            Часть V. Надежность и наблюдаемость: Часть V. Надежность и наблюдаемость
+            Глава 11. Трассы, спаны и структурированные события: Глава 11. Трассы, спаны и структурированные события
             Глава 12. SLO для агентных систем: Глава 12. SLO для агентных систем
-            Глава 13. Offline evals, online evals и regression gates: Глава 13. Offline evals, online evals и regression gates
+            Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы
             Часть VI. Организационная модель: Часть VI. Организационная модель
-            Глава 14. Platform team vs product teams: Глава 14. Platform team vs product teams
-            Глава 15. Golden paths, shared gateways и anti-zoo patterns: Глава 15. Golden paths, shared gateways и anti-zoo patterns
-            Часть VII. Reference implementation: Часть VII. Reference implementation
-            Глава 16. Базовый runtime blueprint: Глава 16. Базовый runtime blueprint
-            Глава 17. Policy layer и capability catalog: Глава 17. Policy layer и capability catalog
-            Глава 18. Production rollout checklist: Глава 18. Production rollout checklist
+            Глава 14. Платформенная команда и продуктовые команды: Глава 14. Платформенная команда и продуктовые команды
+            Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы
+            Часть VII. Эталонная реализация: Часть VII. Эталонная реализация
+            Глава 16. Базовая схема рантайма: Глава 16. Базовая схема рантайма
+            Глава 17. Слой политик и каталог возможностей: Глава 17. Слой политик и каталог возможностей
+            Глава 18. Чеклист промышленного запуска: Глава 18. Чеклист промышленного запуска
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Опорный пакет: Опорный пакет
@@ -100,26 +100,26 @@ plugins:
             Глава 2. Референсная архитектура безопасного агента: Chapter 2. Reference Architecture for a Safe Agent
             Часть II. Контур безопасности: Part II. Security Perimeter
             Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
-            Глава 4. Tool gateway, approval и audit trail: Chapter 4. Tool Gateway, Approval, and Audit Trail
+            Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Chapter 4. Tool Gateway, Approval, and Audit Trail
             Часть III. Память и знания: Part III. Memory and Knowledge
             Глава 5. Зачем агенту память и почему она опасна: Chapter 5. Why Agents Need Memory and Why It Is Dangerous
-            Глава 6. Short-term, long-term и profile memory: Chapter 6. Short-Term, Long-Term, and Profile Memory
-            Глава 7. Retrieval, compaction и background updates: Chapter 7. Retrieval, Compaction, and Background Updates
+            Глава 6. Краткосрочная, долгосрочная и профильная память: Chapter 6. Short-Term, Long-Term, and Profile Memory
+            Глава 7. Извлечение контекста, уплотнение и фоновые обновления: Chapter 7. Retrieval, Compaction, and Background Updates
             Часть IV. Инструменты и выполнение: Part IV. Tools and Execution
-            Глава 8. Execution model и каталог инструментов: Chapter 8. Execution Model and Tool Catalog
-            Глава 9. Sandbox execution и MCP как контракт интеграции: Chapter 9. Sandbox Execution and MCP as an Integration Contract
-            Глава 10. Idempotency, retries, rate limits и rollback boundaries: Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries
-            Часть V. Надежность и observability: Part V. Reliability and Observability
-            Глава 11. Traces, spans и structured events: Chapter 11. Traces, Spans, and Structured Events
+            Глава 8. Модель выполнения и каталог инструментов: Chapter 8. Execution Model and Tool Catalog
+            Глава 9. Песочница выполнения и MCP как интеграционный контракт: Chapter 9. Sandbox Execution and MCP as an Integration Contract
+            Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries
+            Часть V. Надежность и наблюдаемость: Part V. Reliability and Observability
+            Глава 11. Трассы, спаны и структурированные события: Chapter 11. Traces, Spans, and Structured Events
             Глава 12. SLO для агентных систем: Chapter 12. SLO for Agent Systems
-            Глава 13. Offline evals, online evals и regression gates: Chapter 13. Offline Evals, Online Evals, and Regression Gates
+            Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: Chapter 13. Offline Evals, Online Evals, and Regression Gates
             Часть VI. Организационная модель: Part VI. Organizational Model
-            Глава 14. Platform team vs product teams: Chapter 14. Platform Team vs Product Teams
-            Глава 15. Golden paths, shared gateways и anti-zoo patterns: Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
-            Часть VII. Reference implementation: Part VII. Reference Implementation
-            Глава 16. Базовый runtime blueprint: Chapter 16. Baseline Runtime Blueprint
-            Глава 17. Policy layer и capability catalog: Chapter 17. Policy Layer and Capability Catalog
-            Глава 18. Production rollout checklist: Chapter 18. Production Rollout Checklist
+            Глава 14. Платформенная команда и продуктовые команды: Chapter 14. Platform Team vs Product Teams
+            Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
+            Часть VII. Эталонная реализация: Part VII. Reference Implementation
+            Глава 16. Базовая схема рантайма: Chapter 16. Baseline Runtime Blueprint
+            Глава 17. Слой политик и каталог возможностей: Chapter 17. Policy Layer and Capability Catalog
+            Глава 18. Чеклист промышленного запуска: Chapter 18. Production Rollout Checklist
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Опорный пакет: Reference Package
@@ -138,26 +138,26 @@ plugins:
             Глава 2. Референсная архитектура безопасного агента: 第 2 章：安全智能体的参考架构
             Часть II. Контур безопасности: 第二部分：安全边界
             Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
-            Глава 4. Tool gateway, approval и audit trail: 第 4 章：工具网关、审批与审计链路
+            Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: 第 4 章：工具网关、审批与审计链路
             Часть III. Память и знания: 第三部分：记忆与知识
             Глава 5. Зачем агенту память и почему она опасна: 第 5 章：为什么智能体需要记忆，以及它为何危险
-            Глава 6. Short-term, long-term и profile memory: 第 6 章：短期记忆、长期记忆与用户画像记忆
-            Глава 7. Retrieval, compaction и background updates: 第 7 章：检索、压缩与后台更新
+            Глава 6. Краткосрочная, долгосрочная и профильная память: 第 6 章：短期记忆、长期记忆与用户画像记忆
+            Глава 7. Извлечение контекста, уплотнение и фоновые обновления: 第 7 章：检索、压缩与后台更新
             Часть IV. Инструменты и выполнение: 第四部分：工具与执行
-            Глава 8. Execution model и каталог инструментов: 第 8 章：执行模型与工具目录
-            Глава 9. Sandbox execution и MCP как контракт интеграции: 第 9 章：沙箱执行与 MCP 作为集成契约
-            Глава 10. Idempotency, retries, rate limits и rollback boundaries: 第 10 章：幂等性、重试、速率限制与回滚边界
-            Часть V. Надежность и observability: 第五部分：可靠性与可观测性
-            Глава 11. Traces, spans и structured events: 第 11 章：追踪、跨度与结构化事件
+            Глава 8. Модель выполнения и каталог инструментов: 第 8 章：执行模型与工具目录
+            Глава 9. Песочница выполнения и MCP как интеграционный контракт: 第 9 章：沙箱执行与 MCP 作为集成契约
+            Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: 第 10 章：幂等性、重试、速率限制与回滚边界
+            Часть V. Надежность и наблюдаемость: 第五部分：可靠性与可观测性
+            Глава 11. Трассы, спаны и структурированные события: 第 11 章：追踪、跨度与结构化事件
             Глава 12. SLO для агентных систем: 第 12 章：智能体系统的 SLO
-            Глава 13. Offline evals, online evals и regression gates: 第 13 章：离线评测、在线评测与回归门禁
+            Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: 第 13 章：离线评测、在线评测与回归门禁
             Часть VI. Организационная модель: 第六部分：组织模型
-            Глава 14. Platform team vs product teams: 第 14 章：平台团队与产品团队
-            Глава 15. Golden paths, shared gateways и anti-zoo patterns: 第 15 章：黄金路径、共享网关与反“动物园”模式
-            Часть VII. Reference implementation: 第七部分：参考实现
-            Глава 16. Базовый runtime blueprint: 第 16 章：基础运行时蓝图
-            Глава 17. Policy layer и capability catalog: 第 17 章：策略层与能力目录
-            Глава 18. Production rollout checklist: 第 18 章：生产上线检查清单
+            Глава 14. Платформенная команда и продуктовые команды: 第 14 章：平台团队与产品团队
+            Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: 第 15 章：黄金路径、共享网关与反“动物园”模式
+            Часть VII. Эталонная реализация: 第七部分：参考实现
+            Глава 16. Базовая схема рантайма: 第 16 章：基础运行时蓝图
+            Глава 17. Слой политик и каталог возможностей: 第 17 章：策略层与能力目录
+            Глава 18. Чеклист промышленного запуска: 第 18 章：生产上线检查清单
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Опорный пакет: 参考包
@@ -217,26 +217,26 @@ nav:
       - Глава 2. Референсная архитектура безопасного агента: book/part-i/chapter-2.md
       - Часть II. Контур безопасности: book/part-ii/index.md
       - Глава 3. Контур безопасности и границы доверия: book/part-ii/chapter-3.md
-      - Глава 4. Tool gateway, approval и audit trail: book/part-ii/chapter-4.md
+      - Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: book/part-ii/chapter-4.md
       - Часть III. Память и знания: book/part-iii/index.md
       - Глава 5. Зачем агенту память и почему она опасна: book/part-iii/chapter-5.md
-      - Глава 6. Short-term, long-term и profile memory: book/part-iii/chapter-6.md
-      - Глава 7. Retrieval, compaction и background updates: book/part-iii/chapter-7.md
+      - Глава 6. Краткосрочная, долгосрочная и профильная память: book/part-iii/chapter-6.md
+      - Глава 7. Извлечение контекста, уплотнение и фоновые обновления: book/part-iii/chapter-7.md
       - Часть IV. Инструменты и выполнение: book/part-iv/index.md
-      - Глава 8. Execution model и каталог инструментов: book/part-iv/chapter-8.md
-      - Глава 9. Sandbox execution и MCP как контракт интеграции: book/part-iv/chapter-9.md
-      - Глава 10. Idempotency, retries, rate limits и rollback boundaries: book/part-iv/chapter-10.md
-      - Часть V. Надежность и observability: book/part-v/index.md
-      - Глава 11. Traces, spans и structured events: book/part-v/chapter-11.md
+      - Глава 8. Модель выполнения и каталог инструментов: book/part-iv/chapter-8.md
+      - Глава 9. Песочница выполнения и MCP как интеграционный контракт: book/part-iv/chapter-9.md
+      - Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: book/part-iv/chapter-10.md
+      - Часть V. Надежность и наблюдаемость: book/part-v/index.md
+      - Глава 11. Трассы, спаны и структурированные события: book/part-v/chapter-11.md
       - Глава 12. SLO для агентных систем: book/part-v/chapter-12.md
-      - Глава 13. Offline evals, online evals и regression gates: book/part-v/chapter-13.md
+      - Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: book/part-v/chapter-13.md
       - Часть VI. Организационная модель: book/part-vi/index.md
-      - Глава 14. Platform team vs product teams: book/part-vi/chapter-14.md
-      - Глава 15. Golden paths, shared gateways и anti-zoo patterns: book/part-vi/chapter-15.md
-      - Часть VII. Reference implementation: book/part-vii/index.md
-      - Глава 16. Базовый runtime blueprint: book/part-vii/chapter-16.md
-      - Глава 17. Policy layer и capability catalog: book/part-vii/chapter-17.md
-      - Глава 18. Production rollout checklist: book/part-vii/chapter-18.md
+      - Глава 14. Платформенная команда и продуктовые команды: book/part-vi/chapter-14.md
+      - Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: book/part-vi/chapter-15.md
+      - Часть VII. Эталонная реализация: book/part-vii/index.md
+      - Глава 16. Базовая схема рантайма: book/part-vii/chapter-16.md
+      - Глава 17. Слой политик и каталог возможностей: book/part-vii/chapter-17.md
+      - Глава 18. Чеклист промышленного запуска: book/part-vii/chapter-18.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Опорный пакет: appendix/reference-package.md

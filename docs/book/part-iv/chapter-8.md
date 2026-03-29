@@ -1,4 +1,4 @@
-# Глава 8. Execution model и каталог инструментов
+# Глава 8. Модель выполнения и каталог инструментов
 
 ## 1. Почему tool calling это не просто “модель выбрала функцию”
 
@@ -242,7 +242,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 Следующие естественные темы в этой части: sandbox execution, MCP как контракт интеграции и правила для retries и rollback boundaries.
 
-- [Глава 7. Retrieval, compaction и background updates](../part-iii/chapter-7.md)
+- [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](../part-iii/chapter-7.md)
 - [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
