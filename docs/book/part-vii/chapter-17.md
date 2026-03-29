@@ -229,5 +229,6 @@ def get_capability(name: str) -> CapabilitySpec | None:
 Следующий логичный шаг в reference implementation: собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
 
 - [Глава 16. Базовый runtime blueprint](chapter-16.md)
+- [Глава 18. Production rollout checklist](chapter-18.md)
 - [Часть VII. Reference implementation](index.md)
 - [Источники](../../appendix/sources.md)

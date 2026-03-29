@@ -22,5 +22,6 @@
 
 - [Глава 16. Базовый runtime blueprint](chapter-16.md)
 - [Глава 17. Policy layer и capability catalog](chapter-17.md)
+- [Глава 18. Production rollout checklist](chapter-18.md)
 
-Дальше логично добавить production rollout checklist.
+Базовый operational skeleton книги теперь собран; дальше можно углубляться в кодовые примеры и polishing.

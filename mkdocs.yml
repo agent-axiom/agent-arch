@@ -80,6 +80,7 @@ plugins:
             Часть VII. Reference implementation: Часть VII. Reference implementation
             Глава 16. Базовый runtime blueprint: Глава 16. Базовый runtime blueprint
             Глава 17. Policy layer и capability catalog: Глава 17. Policy layer и capability catalog
+            Глава 18. Production rollout checklist: Глава 18. Production rollout checklist
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -115,6 +116,7 @@ plugins:
             Часть VII. Reference implementation: Part VII. Reference Implementation
             Глава 16. Базовый runtime blueprint: Chapter 16. Baseline Runtime Blueprint
             Глава 17. Policy layer и capability catalog: Chapter 17. Policy Layer and Capability Catalog
+            Глава 18. Production rollout checklist: Chapter 18. Production Rollout Checklist
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -150,6 +152,7 @@ plugins:
             Часть VII. Reference implementation: 第七部分：参考实现
             Глава 16. Базовый runtime blueprint: 第 16 章：基础运行时蓝图
             Глава 17. Policy layer и capability catalog: 第 17 章：策略层与能力目录
+            Глава 18. Production rollout checklist: 第 18 章：生产上线检查清单
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -227,6 +230,7 @@ nav:
       - Часть VII. Reference implementation: book/part-vii/index.md
       - Глава 16. Базовый runtime blueprint: book/part-vii/chapter-16.md
       - Глава 17. Policy layer и capability catalog: book/part-vii/chapter-17.md
+      - Глава 18. Production rollout checklist: book/part-vii/chapter-18.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md

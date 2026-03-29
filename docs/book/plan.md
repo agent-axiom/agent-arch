@@ -52,9 +52,9 @@
 
 - Глава 16. Базовый runtime blueprint.
 - Глава 17. Policy layer и capability catalog.
-- Набор проверок перед production rollout.
+- Глава 18. Production rollout checklist.
 
-Статус: две первые главы части написаны.
+Статус: три главы части написаны.
 
 ## Роадмап публикации
 
