@@ -6,6 +6,9 @@ requires-python = ">=3.12"
 name = "agent-architecture-book"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "pyyaml" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -26,6 +29,7 @@ research = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "pyyaml", specifier = ">=6.0.2,<7" }]
 
 [package.metadata.requires-dev]
 dev = [

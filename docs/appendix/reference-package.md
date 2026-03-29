@@ -12,6 +12,8 @@
   Маленький policy engine со structured decisions.
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
   Capability registry с operational semantics.
+- [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
+  YAML loader для policy, capability catalog и rollout policy.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
   Простой dispatch capability через contract-aware execution.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
@@ -28,7 +30,19 @@
 Ожидаемый результат:
 
 ```json
-{"result": "Ticket request accepted and ready for follow-up.", "rollout_ready": true}
+{"result": "Ticket request accepted and ready for follow-up.", "status": "success", "events": 7, "config_dir": ".../agent_runtime_ref/configs"}
+```
+
+Явный запуск runtime через subcommand:
+
+```bash
+.venv/bin/python -m agent_runtime_ref simulate-run
+```
+
+Проверка rollout policy с переопределением сигналов:
+
+```bash
+.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
 ## Как проверить
@@ -47,7 +61,7 @@ uv run ty check
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-Это не runtime loader и не финальный standard. Это просто компактные примеры того, как policy, catalog и rollout readiness выглядят в явной конфигурации.
+Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в runtime, policy engine и rollout policy, поэтому package стал ближе к реальному operational skeleton.
 
 ## Зачем это полезно
 
@@ -55,4 +69,5 @@ uv run ty check
 
 - легче обсуждать архитектуру на уровне файлов и контрактов;
 - легче расширять package следующими примерами;
-- легче перейти от главы к runnable prototype.
+- легче перейти от главы к runnable prototype;
+- легче показать config-driven path, а не только hardcoded demo.

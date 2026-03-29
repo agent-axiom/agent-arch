@@ -11,6 +11,7 @@
 - сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
 - многоязычная структура документации
 - первая опубликованная часть книги о безопасной архитектуре агентов
+- небольшой runnable reference package в `agent_runtime_ref/`
 - современный Python-first стек на базе `uv`
 
 ## Локальная разработка
@@ -28,6 +29,24 @@ uv run mkdocs serve
 uv run ruff check .
 uv run ty check
 uv run mkdocs build --strict
+.venv/bin/python -m unittest discover -s tests
+```
+
+## Reference package
+
+В репозитории теперь есть минимальный runnable skeleton package:
+
+```bash
+.venv/bin/python -m agent_runtime_ref
+```
+
+Внутри уже есть reference runtime, policy layer, capability catalog, telemetry emitter, rollout readiness gate и YAML-based config loader под Part VII книги.
+
+Можно запускать и более явные demo-команды:
+
+```bash
+.venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
 ## Опциональные исследовательские зависимости

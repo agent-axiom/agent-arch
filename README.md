@@ -40,7 +40,14 @@ The repository now includes a minimal runnable skeleton package:
 .venv/bin/python -m agent_runtime_ref
 ```
 
-It contains a tiny reference runtime, policy layer, capability catalog, telemetry emitter, and rollout readiness gate designed to match Part VII of the book.
+It contains a tiny reference runtime, policy layer, capability catalog, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Part VII of the book.
+
+You can also run the explicit demo commands:
+
+```bash
+.venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
+```
 
 There is also a short docs walkthrough in [docs/appendix/reference-package.md](docs/appendix/reference-package.md).
 
