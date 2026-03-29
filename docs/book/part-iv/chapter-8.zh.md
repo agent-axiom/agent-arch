@@ -224,7 +224,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 这是无聊的平台工作，而不是浪漫的即兴发挥。正因为如此，它才可靠。
 
-## 11. Practical checklist
+## 11. 实用检查清单
 
 如果你想快速检查 execution layer，可以问：
 

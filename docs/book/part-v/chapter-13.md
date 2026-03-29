@@ -186,7 +186,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Если это происходит, eval loop превращается в ritual, а не в механизм улучшения.
 
-## 12. Practical checklist
+## 12. Практический чеклист
 
 Если хочешь быстро проверить свой eval loop, пройди по вопросам:
 

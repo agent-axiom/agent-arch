@@ -182,7 +182,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 一旦如此，eval loop 就会退化成 ritual，而不是改进机制。
 
-## 12. Practical checklist
+## 12. 实用检查清单
 
 如果你想快速检查 eval loop，可以问：
 

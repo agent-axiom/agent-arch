@@ -211,7 +211,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Когда это происходит, reference implementation перестает быть reference и снова превращается в связку договоренностей.
 
-## 11. Practical checklist
+## 11. Практический чеклист
 
 Если хочешь быстро проверить этот слой, пройди по вопросам:
 

@@ -198,7 +198,7 @@ Observability 不应该变成数据泄漏渠道。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
 
-## 11. Practical checklist
+## 11. 实用检查清单
 
 如果你想快速检查 observability model，可以问：
 

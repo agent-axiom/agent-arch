@@ -209,7 +209,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 最后这一点尤其重要。如果你已经无法解释为什么某段上下文进入了 prompt，那系统基本已经失去良好控制了。
 
-## 11. Practical Checklist
+## 11. 实用检查清单
 
 如果你想快速检查 retrieval layer，可以问：
 

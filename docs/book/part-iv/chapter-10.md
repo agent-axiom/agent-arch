@@ -216,7 +216,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Все это означает одно: execution layer еще не дорос до production-grade модели отказов.
 
-## 11. Practical checklist
+## 11. Практический чеклист
 
 Если хочешь быстро проверить reliability execution layer, пройди по вопросам:
 

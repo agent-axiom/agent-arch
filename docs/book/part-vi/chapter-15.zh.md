@@ -176,7 +176,7 @@ platform_defaults:
 
 这些指标比单纯统计“有多少团队在用平台”更有意义。
 
-## 11. Practical Checklist
+## 11. 实用检查清单
 
 如果你想快速检查 anti-zoo strategy，可以问自己：
 

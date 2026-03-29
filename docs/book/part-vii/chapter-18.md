@@ -193,7 +193,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 Все это означает, что rollout process у тебя пока еще не production discipline, а просто optimistic shipping.
 
-## 12. Practical checklist
+## 12. Практический чеклист
 
 Если хочешь быстро проверить readiness перед выкладкой, пройди по вопросам:
 

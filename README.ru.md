@@ -32,7 +32,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m unittest discover -s tests
 ```
 
-## Reference package
+## Опорный пакет
 
 В репозитории теперь есть минимальный runnable skeleton package:
 

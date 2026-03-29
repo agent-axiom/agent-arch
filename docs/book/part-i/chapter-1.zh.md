@@ -86,7 +86,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 一旦这些信息从视野里消失，agent 就会开始变成黑箱。
 
-## 7. 一个简短的 practical takeaway
+## 7. 一个简短结论
 
 如果你只想记住这一章的一句话，那就记这句：
 

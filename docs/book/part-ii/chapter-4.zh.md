@@ -136,7 +136,7 @@ sequenceDiagram
 
 这才是 agent platform 上成熟安全的样子。
 
-## 7. Practical Checklist
+## 7. 实用检查清单
 
 如果你想快速评估当前 perimeter，可以过一遍这个清单：
 

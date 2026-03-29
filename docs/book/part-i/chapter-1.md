@@ -86,7 +86,7 @@ Anthropic довольно прямо разделяет `workflows` и `agents`
 
 Как только этот список исчезает из поля зрения, агент начинает превращаться в черный ящик.
 
-## 7. Короткий practical takeaway
+## 7. Короткий вывод
 
 Если тебе нужно запомнить из этой главы только одну мысль, пусть будет эта:
 
@@ -105,4 +105,3 @@ Anthropic довольно прямо разделяет `workflows` и `agents`
 [^langgraph-durable]: [LangGraph, Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 [^openai-sdk]: [OpenAI, Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
 [^openai-evals]: [OpenAI, Agent evals](https://platform.openai.com/docs/guides/agent-evals)
-

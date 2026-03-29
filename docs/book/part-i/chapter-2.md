@@ -188,7 +188,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Смысл тут очень простой: модель может предложить действие, но право на исполнение живет не в модели, а в gateway и policy слое.
 
-## 10. Practical takeaway
+## 10. Практический вывод
 
 Хорошая агентная платформа держится на нескольких скучных, но очень ценных вещах:
 
@@ -212,4 +212,3 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^langgraph-hitl]: [LangChain Deep Agents, Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 [^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
-

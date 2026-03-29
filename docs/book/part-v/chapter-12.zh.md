@@ -219,7 +219,7 @@ def classify_run_health(run: RunHealth) -> str:
 
 一旦如此，SLO 就会变成 dashboard 装饰，而不是平台控制手段。
 
-## 12. Practical checklist
+## 12. 实用检查清单
 
 如果你想快速检查自己的 SLO，可以问：
 

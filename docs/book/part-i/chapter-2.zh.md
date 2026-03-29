@@ -188,7 +188,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 这里的核心意思很简单：模型可以提出动作建议，但真正的执行权不在模型里，而在 gateway 和 policy layer 里。
 
-## 10. Practical Takeaway
+## 10. 实用结论
 
 一个好的 agent platform，通常站在几件很无聊但非常值钱的东西上：
 

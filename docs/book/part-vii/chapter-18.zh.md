@@ -193,7 +193,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 这些都说明 rollout process 还不是 production discipline，而只是 optimistic shipping。
 
-## 12. Practical checklist
+## 12. 实用检查清单
 
 如果你想在上线前快速判断 readiness，可以问：
 

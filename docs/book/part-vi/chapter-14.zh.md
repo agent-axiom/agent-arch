@@ -175,7 +175,7 @@ governance:
 
 这会把组织带向经典岔路：不是平台帮不到人，就是产品团队觉得平台本身就是阻碍。
 
-## 11. Practical Checklist
+## 11. 实用检查清单
 
 如果你想快速检查 operating model，可以问自己：
 

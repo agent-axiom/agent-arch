@@ -211,7 +211,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Именно поэтому sandbox не должен быть checkbox-функцией. Он должен быть частью execution design.
 
-## 11. Practical checklist
+## 11. Практический чеклист
 
 Если хочешь быстро проверить capability layer, пройди по вопросам:
 

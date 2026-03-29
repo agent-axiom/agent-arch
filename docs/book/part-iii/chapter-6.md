@@ -217,7 +217,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 Все это не “дефекты модели”. Это архитектурные дефекты memory layer.
 
-## 12. Practical checklist
+## 12. Практический чеклист
 
 Если хочешь быстро проверить свой дизайн, пройди по вопросам:
 

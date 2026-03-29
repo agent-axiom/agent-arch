@@ -214,7 +214,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 这都说明 execution layer 还没有长成 production-grade 的 failure model。
 
-## 11. Practical checklist
+## 11. 实用检查清单
 
 如果你想快速检查 execution reliability，可以问：
 

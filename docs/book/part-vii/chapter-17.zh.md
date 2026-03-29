@@ -211,7 +211,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 一旦这样，参考实现就不再是 reference，而是又退回成一堆约定。
 
-## 11. Practical checklist
+## 11. 实用检查清单
 
 如果你想快速检查这一层，可以问：
 

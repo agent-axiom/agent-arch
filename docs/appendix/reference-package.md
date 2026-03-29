@@ -1,4 +1,4 @@
-# Reference Package
+# Опорный пакет
 
 В репозитории теперь есть небольшой runnable skeleton: [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref).
 
@@ -86,7 +86,7 @@ uv run ty check
 
 Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в runtime, policy engine, memory store и rollout policy, поэтому package стал ближе к реальному operational skeleton.
 
-## Зачем это полезно
+## Почему это полезно
 
 Книга теперь опирается не только на Markdown-объяснения, но и на реальный кодовый skeleton:
 

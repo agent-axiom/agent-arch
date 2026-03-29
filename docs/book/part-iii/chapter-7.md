@@ -209,7 +209,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 Последний пункт особенно важен. Если ты не можешь объяснить, почему контекст оказался в prompt, система уже плохо управляется.
 
-## 11. Practical checklist
+## 11. Практический чеклист
 
 Если хочешь быстро проверить свой retrieval layer, пройди по вопросам:
 

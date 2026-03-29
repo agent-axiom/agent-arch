@@ -217,7 +217,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 这些都不是“模型问题”，而是 memory layer 的架构问题。
 
-## 12. Practical Checklist
+## 12. 实用检查清单
 
 如果你想快速检查设计，可以问：
 

@@ -203,7 +203,7 @@ runtime:
 
 也就是说，系统可能“能跑”，但 runtime 的形态已经开始阻碍成长。
 
-## 12. Practical checklist
+## 12. 实用检查清单
 
 如果你想快速检查自己的 baseline runtime，可以问：
 
