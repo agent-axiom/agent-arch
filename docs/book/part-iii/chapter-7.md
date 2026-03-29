@@ -227,5 +227,6 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 На этом базовая часть про память уже начинает складываться. Дальше логично либо углубиться в retention и deletion, либо перейти к части про инструменты и выполнение.
 
 - [Глава 6. Short-term, long-term и profile memory](chapter-6.md)
+- [Глава 8. Execution model и каталог инструментов](../part-iv/chapter-8.md)
 - [Часть III. Память и знания](index.md)
 - [Источники](../../appendix/sources.md)
