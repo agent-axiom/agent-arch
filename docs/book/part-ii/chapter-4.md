@@ -1,0 +1,159 @@
+# Глава 4. Tool gateway, approval и audit trail
+
+## 1. Где на самом деле происходят дорогие инциденты
+
+Самые дорогие сбои в агентных системах обычно случаются не тогда, когда модель “не так подумала”, а тогда, когда система перешла к действию:
+
+- что-то записала;
+- что-то отправила;
+- что-то изменила;
+- куда-то выгрузила данные.
+
+Именно поэтому execution boundary важнее, чем многим кажется.
+
+## 2. Tool gateway должен быть скучным и жестким
+
+У хорошего tool gateway очень простая задача: не дать агенту превратить красивое рассуждение в неконтролируемый side effect.
+
+Минимальные требования:
+
+- принимать только разрешенные инструменты;
+- валидировать аргументы;
+- знать риск-класс операции;
+- уметь останавливать вызов до side effect;
+- отправлять опасные операции на human approval;
+- журналировать и решение, и факт исполнения.
+
+Ниже очень практичный шаблон policy для tool execution:
+
+```yaml
+tools:
+  read_kb:
+    risk: low
+    approval: none
+    allowed_roles: ["agent_runtime"]
+  create_ticket:
+    risk: medium
+    approval: manager
+    allowed_roles: ["agent_runtime"]
+  prod_db_write:
+    risk: critical
+    approval: security_and_owner
+    allowed_roles: []
+    environments: ["staging"]
+```
+
+В этом YAML нет ничего “умного”, и именно это хорошо. Security perimeter любит обозримые правила.
+
+## 3. Human approval должен быть нормальным процессом
+
+Есть действия, которые агент не должен завершать самостоятельно вообще:
+
+- изменение production-данных;
+- отправка сообщений во внешние каналы;
+- операции с финансами;
+- доступ к чувствительным документам;
+- любые действия с высоким blast radius.
+
+Для них нужен не просто toggle “approval required”, а нормальный сценарий подтверждения.
+
+<div class="diagram-card">
+<p>Как выглядит approval flow для опасного действия</p>
+
+``` mermaid
+sequenceDiagram
+    autonumber
+    participant R as Agent runtime
+    participant P as Policy engine
+    participant H as Human approver
+    participant T as Tool gateway
+    participant A as Audit trail
+
+    R->>P: Request risky action
+    P-->>R: Approval required
+    R->>H: Ask for approval with context
+    H-->>R: Approve / reject
+    R->>T: Execute only if approved
+    T->>A: Persist action + approval record
+```
+
+</div>
+
+Хороший approval flow всегда хранит:
+
+- кто запросил действие;
+- какой был risk class;
+- что именно собирались сделать;
+- кто подтвердил;
+- в какое время;
+- был ли overridden policy gate.
+
+## 4. На выходе тоже нужна защита
+
+Многие команды старательно фильтруют входящие данные, но почти не думают о выходе. Это ошибка.
+
+Утечка чаще всего происходит на egress:
+
+- агент вставил лишний фрагмент документа в ответ;
+- отправил чувствительный текст во внешний tool;
+- положил приватные данные в лог;
+- вернул пользователю результат из чужого tenant.
+
+Минимальный egress checklist:
+
+- redact PII where required;
+- mask secrets and tokens;
+- validate tenant ownership of retrieved content;
+- restrict outbound destinations;
+- log all sensitive outbound actions.
+
+## 5. Audit trail должен быть пригоден для расследования
+
+Просто “включить tracing” недостаточно. Для security тебе нужен trail, по которому можно восстановить историю события.
+
+На один рискованный run полезно хранить:
+
+- входной request id;
+- principal и tenant;
+- policy decision;
+- prompt assembly metadata;
+- tool call arguments в безопасно редактированном виде;
+- approval records;
+- итоговый egress event.
+
+Если после инцидента команда видит только “модель вызвала tool X”, расследование уже наполовину проиграно.
+
+## 6. Security perimeter как набор привычек
+
+Очень хочется найти одну волшебную библиотеку, которая “сделает безопасность”. Но на практике perimeter состоит из набора привычек:
+
+- недоверенные данные явно маркируются;
+- agent runtime не получает лишних прав;
+- tools идут только через gateway;
+- опасные действия требуют approval;
+- все ключевые шаги попадают в audit trail;
+- система умеет не только выполнять, но и отказывать.
+
+Это и есть взрослая безопасность для агентной платформы.
+
+## 7. Practical checklist
+
+Если хочешь быстро оценить свой текущий контур, пройди по этому списку:
+
+- Есть ли у агента отдельная identity model?
+- Разделены ли trusted instructions и untrusted content?
+- Все ли tools проходят через gateway?
+- Есть ли allowlist и arg validation?
+- Есть ли approval flow для high-risk действий?
+- Есть ли egress filtering?
+- Достаточен ли audit trail для расследования?
+- Видно ли в traces, какой policy gate сработал?
+
+Если на несколько пунктов подряд ответ “нет”, значит эту главу ты открыл очень вовремя.
+
+## 8. Что читать дальше
+
+- [Глава 3. Контур безопасности и границы доверия](chapter-3.md)
+- [Часть II. Контур безопасности](index.md)
+- [Источники](../../appendix/sources.md)
+

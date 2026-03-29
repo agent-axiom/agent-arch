@@ -57,9 +57,11 @@ plugins:
             Книга: Книга
             План книги: План книги
             Часть I. Основания: Часть I. Основания
-            Глава 1. Современная безопасная архитектура: Глава 1. Современная безопасная архитектура
+            Глава 1. Почему агенту нужна платформа, а не магия: Глава 1. Почему агенту нужна платформа, а не магия
+            Глава 2. Референсная архитектура безопасного агента: Глава 2. Референсная архитектура безопасного агента
             Часть II. Контур безопасности: Часть II. Контур безопасности
-            Глава 2. Security Perimeter: Глава 2. Security Perimeter
+            Глава 3. Контур безопасности и границы доверия: Глава 3. Контур безопасности и границы доверия
+            Глава 4. Tool gateway, approval и audit trail: Глава 4. Tool gateway, approval и audit trail
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Источники: Источники
@@ -72,9 +74,11 @@ plugins:
             Книга: Book
             План книги: Book Plan
             Часть I. Основания: Part I. Foundations
-            Глава 1. Современная безопасная архитектура: Chapter 1. Modern Secure Architecture
+            Глава 1. Почему агенту нужна платформа, а не магия: Chapter 1. Why Agents Need a Platform, Not Magic
+            Глава 2. Референсная архитектура безопасного агента: Chapter 2. Reference Architecture for a Safe Agent
             Часть II. Контур безопасности: Part II. Security Perimeter
-            Глава 2. Security Perimeter: Chapter 2. Security Perimeter
+            Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
+            Глава 4. Tool gateway, approval и audit trail: Chapter 4. Tool Gateway, Approval, and Audit Trail
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Источники: Sources
@@ -87,9 +91,11 @@ plugins:
             Книга: 书籍
             План книги: 全书计划
             Часть I. Основания: 第一部分：基础
-            Глава 1. Современная безопасная архитектура: 第 1 章：现代安全架构
+            Глава 1. Почему агенту нужна платформа, а не магия: 第 1 章：为什么智能体需要平台，而不是魔法
+            Глава 2. Референсная архитектура безопасного агента: 第 2 章：安全智能体的参考架构
             Часть II. Контур безопасности: 第二部分：安全边界
-            Глава 2. Security Perimeter: 第 2 章：安全边界
+            Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
+            Глава 4. Tool gateway, approval и audit trail: 第 4 章：工具网关、审批与审计链路
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Источники: 参考来源
@@ -144,9 +150,11 @@ nav:
   - Книга:
       - План книги: book/plan.md
       - Часть I. Основания: book/part-i/index.md
-      - Глава 1. Современная безопасная архитектура: book/part-i/chapter-1.md
+      - Глава 1. Почему агенту нужна платформа, а не магия: book/part-i/chapter-1.md
+      - Глава 2. Референсная архитектура безопасного агента: book/part-i/chapter-2.md
       - Часть II. Контур безопасности: book/part-ii/index.md
-      - Глава 2. Security Perimeter: book/part-ii/chapter-2.md
+      - Глава 3. Контур безопасности и границы доверия: book/part-ii/chapter-3.md
+      - Глава 4. Tool gateway, approval и audit trail: book/part-ii/chapter-4.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Источники: appendix/sources.md

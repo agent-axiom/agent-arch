@@ -18,7 +18,7 @@
 
 ## Навигация
 
-- [Глава 2. Security Perimeter](chapter-2.md)
+- [Глава 3. Контур безопасности и границы доверия](chapter-3.md)
+- [Глава 4. Tool gateway, approval и audit trail](chapter-4.md)
 - [Часть I. Основания](../part-i/index.md)
 - [Источники](../../appendix/sources.md)
-

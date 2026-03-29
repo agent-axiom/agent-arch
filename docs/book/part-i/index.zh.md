@@ -20,10 +20,10 @@
 
 ## 导航
 
-- [第 1 章：现代安全架构](chapter-1.md)
+- [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.md)
+- [第 2 章：安全智能体的参考架构](chapter-2.md)
 - [为什么选择这套发布技术栈](../../appendix/stack.md)
 - [参考文献与来源](../../appendix/sources.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
-

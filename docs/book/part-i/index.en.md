@@ -20,10 +20,10 @@ By the end of Part I, the reader should have:
 
 ## Navigation
 
-- [Chapter 1. Modern secure architecture](chapter-1.md)
+- [Chapter 1. Why agents need a platform, not magic](chapter-1.md)
+- [Chapter 2. Reference architecture for a safe agent](chapter-2.md)
 - [Why this publishing stack was chosen](../../appendix/stack.md)
 - [Bibliography and sources](../../appendix/sources.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
-
