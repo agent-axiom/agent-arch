@@ -19,11 +19,11 @@
 ### Часть III. Память и знания
 
 - Глава 5. Зачем агенту память и почему она опасна.
-- Short-term vs long-term memory.
+- Глава 6. Short-term, long-term и profile memory.
 - Retrieval, compaction, summaries, profile memory.
 - Когда память писать в hot path, а когда в background.
 
-Статус: первая глава части написана.
+Статус: две первые главы части написаны.
 
 ### Часть IV. Инструменты и выполнение
 

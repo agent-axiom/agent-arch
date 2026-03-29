@@ -204,5 +204,6 @@ memory:
 А пока главное takeaway простое: память полезна только тогда, когда она проектируется как управляемый слой системы, а не как бесконтрольное накопление текста.
 
 - [Часть III. Память и знания](index.md)
+- [Глава 6. Short-term, long-term и profile memory](chapter-6.md)
 - [Глава 4. Tool gateway, approval и audit trail](../part-ii/chapter-4.md)
 - [Источники](../../appendix/sources.md)
