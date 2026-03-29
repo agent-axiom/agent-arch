@@ -239,5 +239,6 @@ def classify_run_health(run: RunHealth) -> str:
 После SLO очень естественно перейти к eval loops: offline evals, online evals, trace grading и regression gates. Именно там observability превращается в постоянный контур улучшения.
 
 - [Глава 11. Traces, spans и structured events](chapter-11.md)
+- [Глава 13. Offline evals, online evals и regression gates](chapter-13.md)
 - [Часть V. Надежность и observability](index.md)
 - [Источники](../../appendix/sources.md)

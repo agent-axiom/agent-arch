@@ -37,9 +37,9 @@
 
 - Глава 11. Traces, spans и structured events.
 - Глава 12. SLO для агентных систем.
-- Offline evals, online evals, trace grading, regression gates.
+- Глава 13. Offline evals, online evals и regression gates.
 
-Статус: две первые главы части написаны.
+Статус: три главы части написаны.
 
 ### Часть VI. Организационная модель
 
