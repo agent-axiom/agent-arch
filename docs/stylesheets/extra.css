@@ -79,6 +79,30 @@
   border-radius: 1rem;
 }
 
+.md-typeset .book-cover {
+  margin: 1.25rem 0 2rem;
+  padding: 0.65rem;
+  border-radius: 1.1rem;
+}
+
+.md-typeset .book-cover img {
+  display: block;
+  width: 100%;
+  border-radius: 0.8rem;
+}
+
+[data-md-color-scheme="default"] .md-typeset .book-cover {
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .book-cover {
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
+}
+
 .md-typeset .diagram-card > p:first-child {
   margin-top: 0;
   font-weight: 700;

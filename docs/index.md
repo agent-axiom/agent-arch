@@ -8,6 +8,12 @@
 [Перейти к первой части](book/part-i/index.md){ .md-button }
 [Посмотреть источники](appendix/sources.md){ .md-button }
 
+<div class="book-cover">
+
+![Визуальная обложка книги](assets/images/hero-home.png)
+
+</div>
+
 ## Что внутри
 
 - Архитектурные паттерны: рабочие потоки, маршрутизация, планировщик, подагенты, human-in-the-loop.
