@@ -8,7 +8,7 @@
 [Перейти к первой части](book/part-i/index.md){ .md-button }
 [Посмотреть источники](appendix/sources.md){ .md-button }
 
-<div class="book-cover">
+<div class="book-cover" markdown="1">
 
 ![Визуальная обложка книги](assets/images/hero-home.png)
 
