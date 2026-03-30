@@ -6,6 +6,8 @@
 
 Publishable documentation site and book about modern secure AI agent architecture.
 
+![Agent Architecture Book Preview](docs/assets/images/readme.png)
+
 ## What this repository contains
 
 - a GitHub Pages site built with `MkDocs` and `Material for MkDocs`
