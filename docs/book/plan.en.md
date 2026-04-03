@@ -21,6 +21,7 @@ What I am strengthening next in this part:
 Practical layer already added:
 
 - [Practice. Instructions, routines, and prompt templates](part-i/practical-routines.md)
+- [Practice. Manager pattern vs handoffs](part-i/practical-manager-handoffs.md)
 
 ### Part II. Security Perimeter
 

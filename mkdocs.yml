@@ -62,6 +62,7 @@ plugins:
             Глава 1. Почему агенту нужна платформа, а не магия: Глава 1. Почему агенту нужна платформа, а не магия
             Глава 2. Референсная архитектура безопасного агента: Глава 2. Референсная архитектура безопасного агента
             Практика. Instructions, routines и prompt templates: Практика. Instructions, routines и prompt templates
+            Практика. Manager pattern vs handoffs: Практика. Manager pattern vs handoffs
             Часть II. Контур безопасности: Часть II. Контур безопасности
             Глава 3. Контур безопасности и границы доверия: Глава 3. Контур безопасности и границы доверия
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Глава 4. Инструментальный шлюз, подтверждения и журнал аудита
@@ -103,6 +104,7 @@ plugins:
             Глава 1. Почему агенту нужна платформа, а не магия: Chapter 1. Why Agents Need a Platform, Not Magic
             Глава 2. Референсная архитектура безопасного агента: Chapter 2. Reference Architecture for a Safe Agent
             Практика. Instructions, routines и prompt templates: Practice. Instructions, Routines, and Prompt Templates
+            Практика. Manager pattern vs handoffs: Practice. Manager Pattern vs Handoffs
             Часть II. Контур безопасности: Part II. Security Perimeter
             Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Chapter 4. Tool Gateway, Approval, and Audit Trail
@@ -144,6 +146,7 @@ plugins:
             Глава 1. Почему агенту нужна платформа, а не магия: 第 1 章：为什么智能体需要平台，而不是魔法
             Глава 2. Референсная архитектура безопасного агента: 第 2 章：安全智能体的参考架构
             Практика. Instructions, routines и prompt templates: 实践篇：Instructions、Routines 与 Prompt Templates
+            Практика. Manager pattern vs handoffs: 实践篇：Manager Pattern vs Handoffs
             Часть II. Контур безопасности: 第二部分：安全边界
             Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: 第 4 章：工具网关、审批与审计链路
@@ -226,6 +229,7 @@ nav:
       - Глава 1. Почему агенту нужна платформа, а не магия: book/part-i/chapter-1.md
       - Глава 2. Референсная архитектура безопасного агента: book/part-i/chapter-2.md
       - Практика. Instructions, routines и prompt templates: book/part-i/practical-routines.md
+      - Практика. Manager pattern vs handoffs: book/part-i/practical-manager-handoffs.md
       - Часть II. Контур безопасности: book/part-ii/index.md
       - Глава 3. Контур безопасности и границы доверия: book/part-ii/chapter-3.md
       - Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: book/part-ii/chapter-4.md

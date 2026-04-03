@@ -21,6 +21,7 @@
 已经加入的实践层：
 
 - [实践篇：Instructions、Routines 与 Prompt Templates](part-i/practical-routines.md)
+- [实践篇：Manager Pattern vs Handoffs](part-i/practical-manager-handoffs.md)
 
 ### 第二部分：安全边界
 
