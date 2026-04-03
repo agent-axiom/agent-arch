@@ -23,6 +23,7 @@ By the end of Part I, the reader should have:
 
 - [Chapter 1. Why agents need a platform, not magic](chapter-1.md)
 - [Chapter 2. Reference architecture for a safe agent](chapter-2.md)
+- [Practice. Instructions, routines, and prompt templates](practical-routines.md)
 - [Why this publishing stack was chosen](../../appendix/stack.md)
 - [Bibliography and sources](../../appendix/sources.md)
 

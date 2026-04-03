@@ -17,6 +17,10 @@
 - почему стоит начинать с `single-agent first`, а не с мультиагентного зоопарка;
 - как превращать инструкции, SOP и playbooks в routines, а не в хаотичные prompt-абзацы.
 
+Практический слой уже добавлен:
+
+- [Практика. Instructions, routines и prompt templates](part-i/practical-routines.md)
+
 ### Часть II. Контур безопасности
 
 - Глава 3. Контур безопасности и границы доверия.

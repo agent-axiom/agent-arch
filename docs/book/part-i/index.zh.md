@@ -23,6 +23,7 @@
 
 - [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.md)
+- [实践篇：Instructions、Routines 与 Prompt Templates](practical-routines.md)
 - [为什么选择这套发布技术栈](../../appendix/stack.md)
 - [参考文献与来源](../../appendix/sources.md)
 

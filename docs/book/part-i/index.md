@@ -23,6 +23,7 @@
 
 - [Глава 1. Почему агенту нужна платформа, а не магия](chapter-1.md)
 - [Глава 2. Референсная архитектура безопасного агента](chapter-2.md)
+- [Практика. Instructions, routines и prompt templates](practical-routines.md)
 - [Почему выбран этот стек публикации](../../appendix/stack.md)
 - [Библиография и ссылки](../../appendix/sources.md)
 

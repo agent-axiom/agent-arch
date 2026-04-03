@@ -18,6 +18,10 @@ What I am strengthening next in this part:
 - why `single-agent first` is usually healthier than starting with a multi-agent zoo;
 - how to turn instructions, SOPs, and playbooks into routines rather than chaotic prompt paragraphs.
 
+Practical layer already added:
+
+- [Practice. Instructions, routines, and prompt templates](part-i/practical-routines.md)
+
 ### Part II. Security Perimeter
 
 - Agent identity and machine IAM.

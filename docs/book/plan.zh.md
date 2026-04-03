@@ -18,6 +18,10 @@
 - 为什么 `single-agent first` 往往比一开始就做多智能体更健康；
 - 如何把 instructions、SOP 和 playbooks 变成 routines，而不是混乱的 prompt 段落。
 
+已经加入的实践层：
+
+- [实践篇：Instructions、Routines 与 Prompt Templates](part-i/practical-routines.md)
+
 ### 第二部分：安全边界
 
 - 智能体身份与 machine IAM。
