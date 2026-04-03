@@ -81,6 +81,7 @@ What I am strengthening next in this part:
 - GitHub Pages site scaffold.
 - Book navigation and structure.
 - First part with the reference architecture.
+- The first set of practical case studies for production-like scenarios.
 - Separate page on the publishing stack.
 - Source base for the next chapters.
 

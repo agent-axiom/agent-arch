@@ -107,6 +107,7 @@ Those pages already give you:
 Start with these pages:
 
 - [Book Plan](book/plan.en.md)
+- [Practical Case Studies](appendix/case-studies.en.md)
 - [Community Roadmap](appendix/community-roadmap.en.md)
 - [Sources](appendix/sources.en.md)
 

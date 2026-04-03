@@ -107,6 +107,7 @@
 建议先看这些页面：
 
 - [全书计划](book/plan.zh.md)
+- [实战案例](appendix/case-studies.zh.md)
 - [社区路线图](appendix/community-roadmap.zh.md)
 - [参考来源](appendix/sources.zh.md)
 

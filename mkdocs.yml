@@ -89,6 +89,7 @@ plugins:
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
             Опорный пакет: Опорный пакет
+            Практические кейсы: Практические кейсы
             Источники: Источники
         - locale: en
           name: English
@@ -131,6 +132,7 @@ plugins:
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
             Опорный пакет: Reference Package
+            Практические кейсы: Practical Case Studies
             Источники: Sources
         - locale: zh
           name: 中文
@@ -173,6 +175,7 @@ plugins:
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
             Опорный пакет: 参考包
+            Практические кейсы: 实战案例
             Источники: 参考来源
   - search
   - glightbox
@@ -256,4 +259,5 @@ nav:
       - Выбор стека публикации: appendix/stack.md
       - Дорожная карта для сообщества: appendix/community-roadmap.md
       - Опорный пакет: appendix/reference-package.md
+      - Практические кейсы: appendix/case-studies.md
       - Источники: appendix/sources.md
