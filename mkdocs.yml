@@ -55,6 +55,7 @@ plugins:
           site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению AI-агентами.
           nav_translations:
             Главная: Главная
+            Start Here: Start Here
             Книга: Книга
             План книги: План книги
             Часть I. Основания: Часть I. Основания
@@ -94,6 +95,7 @@ plugins:
           site_description: A modern book on architecture, safety, observability, and governance for AI agents.
           nav_translations:
             Главная: Home
+            Start Here: Start Here
             Книга: Book
             План книги: Book Plan
             Часть I. Основания: Part I. Foundations
@@ -133,6 +135,7 @@ plugins:
           site_description: 一本关于 AI 智能体架构、安全、可观测性与治理的现代书籍。
           nav_translations:
             Главная: 首页
+            Start Here: 从这里开始
             Книга: 书籍
             План книги: 全书计划
             Часть I. Основания: 第一部分：基础
@@ -213,6 +216,7 @@ extra:
 
 nav:
   - Главная: index.md
+  - Start Here: start-here.md
   - Книга:
       - План книги: book/plan.md
       - Часть I. Основания: book/part-i/index.md
