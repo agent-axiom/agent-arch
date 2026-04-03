@@ -37,6 +37,18 @@ In other words, the sandbox answers: "What happens if a tool or adapter behaves 
 
 This is not only security. It is also blast-radius control.
 
+### 2.1. It Helps to Distinguish Levels of Isolation
+
+In practice, the word `sandbox` often hides several different levels:
+
+- `logical isolation`: policy checks, capability contracts, allowlists;
+- `process isolation`: separate process, timeout, resource limits;
+- `runtime isolation`: separate execution environment, reduced filesystem, constrained network egress, minimal secrets.
+
+That matters because many teams think they "have a sandbox" while in reality they only have the first level. For low-risk reads that can be enough, but for high-risk execution you almost always need a stronger runtime boundary.[^google-sandbox]
+
+A good practical question here is: **if the capability behaves worse than expected, what exactly stops it: logic, process boundaries, or the execution environment itself?**
+
 ## 3. You Cannot Treat an External Integration Like a Simple Function
 
 A common mistake looks like this: an external service is wrapped in a function, and the agent sees it as just another call.
@@ -95,6 +107,19 @@ That gives you several immediate benefits:
 - capabilities are easier to test independently of the agent logic.
 
 That matters especially when some tools are read-only, some write into external systems, and some execute code or shell commands.
+
+### 5.1. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
+
+Another useful Google idea is that risky capabilities are often better served by short-lived execution environments.[^google-sandbox]
+
+Why that is usually better:
+
+- there is less chance that state leaks across runs;
+- it is easier to constrain the lifetime of secrets and temporary files;
+- cleanup is easier to explain;
+- one dirty adapter is less likely to poison the next task.
+
+Persistent workers sometimes win on latency, but they often lose on isolation and explainability. So the default stance for high-risk execution should usually be: **ephemeral first, persistence only by explicit need**.
 
 ## 6. Not Every Capability Needs the Same Isolation Level
 
@@ -170,6 +195,25 @@ For investigations and control, it is useful to return:
 
 Then the execution layer can explain not just "the command failed", but something mature like: "the operation was terminated by timeout after 8 seconds, network was denied, side effect is not confirmed".
 
+### 8.1. Network Egress Deserves Its Own Rule Set
+
+Many incidents happen not because a capability "broke," but because it was able to reach a destination nobody expected.
+
+That is why network egress should be described not as a footnote of sandboxing, but as its own contract surface:
+
+- `denied`;
+- `internal_only`;
+- `allowlisted_external`;
+- `brokered_via_gateway`.
+
+If that is not fixed explicitly, it becomes very hard to explain later why a tool suddenly called out to an external destination while technically "breaking no rule."
+
+For a production-grade platform, a good default is often:
+
+- read-only internal tools: `internal_only`;
+- external API adapters: `allowlisted_external`;
+- code execution and shell-like tools: `denied` by default.
+
 ## 9. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.
@@ -216,9 +260,11 @@ If you want to quickly review the capability layer, ask:
 - Are adapters separated from the core runtime?
 - Is there a per-capability execution profile?
 - Are network, filesystem, and secrets constrained?
+- Is it clear which isolation level is used: logical, process, or runtime?
 - Is transport explicit: direct, MCP, sandboxed exec?
 - Does the system distinguish trustworthy from only partially trusted results?
 - Do you store execution facts beyond business payload?
+- Are ephemeral sandboxes used where high-risk execution exists?
 - Can you explain why a capability was allowed in this specific run?
 
 If those answers are vague, the capability layer is still a pile of useful integrations, not a managed platform.
@@ -230,3 +276,5 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 - [Chapter 8. Execution Model and Tool Catalog](chapter-8.en.md)
 - [Part IV. Tools and Execution](index.en.md)
 - [Sources](../../appendix/sources.md)
+
+[^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)

@@ -37,6 +37,18 @@
 
 这不仅仅是安全问题，也是 blast radius 控制。
 
+### 2.1. 最好区分不同层级的隔离
+
+在实践里，`sandbox` 这个词经常把几种完全不同的东西混在一起：
+
+- `logical isolation`：policy checks、capability contracts、allowlists；
+- `process isolation`：独立进程、timeout、resource limits；
+- `runtime isolation`：独立执行环境、受限 filesystem、受控 network egress、最小 secrets。
+
+这很重要，因为很多团队觉得自己“已经有 sandbox 了”，但实际上只有第一层。对 low-risk reads 来说这有时够用，但对 high-risk execution 来说，几乎总要更强的 runtime boundary。[^google-sandbox]
+
+这里有个很实用的问题：**如果 capability 的行为比预期更糟，到底是什么在阻止它：逻辑、进程边界，还是执行环境本身？**
+
 ## 3. 不能把外部集成当成普通函数
 
 一个常见错误是：把外部服务包成一个函数，然后让智能体把它当普通调用使用。
@@ -95,6 +107,19 @@ flowchart LR
 - capability 更容易独立测试。
 
 当某些工具只读、某些会写外部系统、某些甚至执行代码或 shell 时，这一点尤其重要。
+
+### 5.1. Ephemeral sandboxes 通常比常驻环境更好
+
+Google 还有一个很有价值的提醒：对高风险 capability 来说，短生命周期的执行环境往往比常驻 worker 更健康。[^google-sandbox]
+
+原因通常很直接：
+
+- 状态更不容易在 runs 之间泄漏；
+- 更容易限制 secrets 和临时文件的生命周期；
+- cleanup 更容易解释；
+- 一个脏 adapter 更不容易污染下一次任务。
+
+常驻 worker 有时会赢在 latency，但经常输在隔离性和可解释性上。所以面对 high-risk execution，更合理的默认立场通常是：**ephemeral first，只有在明确需要时才保留持久环境**。
 
 ## 6. 不是所有 capability 都需要同等级别的隔离
 
@@ -170,6 +195,25 @@ capabilities:
 
 这样 execution layer 才能解释得更成熟：不是“命令失败了”，而是“操作在 8 秒后超时中止、网络被禁止、side effect 未确认”。
 
+### 8.1. Network egress 应该有自己单独的规则
+
+很多事故发生，不是因为 capability “坏了”，而是因为它能去到没人预期的目的地。
+
+所以 network egress 最好不要只当作 sandbox 的附属字段，而要被当成独立的 contract surface：
+
+- `denied`；
+- `internal_only`；
+- `allowlisted_external`；
+- `brokered_via_gateway`。
+
+如果这里没有显式规则，事后通常很难解释：为什么某个 tool 明明“没违反规则”，却突然跑去访问了外部目标。
+
+对 production-grade 平台来说，一个不错的默认值通常是：
+
+- 只读内部工具：`internal_only`；
+- external API adapters：`allowlisted_external`；
+- code execution 和 shell-like tools：默认 `denied`。
+
 ## 9. 一个简单的 capability dispatch 示例
 
 这个小 skeleton 展示的核心思想是：transport 和 execution profile 来自 capability contract，而不是由模型临时决定。
@@ -216,9 +260,11 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - adapters 是否和 core runtime 分开？
 - 是否存在 per-capability execution profile？
 - network、filesystem 和 secrets 是否被约束？
+- 是否清楚到底使用的是 logical、process 还是 runtime isolation？
 - transport 是否显式：direct、MCP、sandboxed exec？
 - 系统是否区分 trustworthy 和 partially trusted result？
 - business payload 之外是否保留 execution facts？
+- 对 high-risk execution 是否使用了 ephemeral sandboxes？
 - 能否解释为什么某个 capability 会在这个 run 中被允许？
 
 如果这些答案很模糊，那说明 capability layer 还只是“一堆好用的集成”，而不是受管理的平台层。
@@ -230,3 +276,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - [第 8 章：执行模型与工具目录](chapter-8.zh.md)
 - [第四部分：工具与执行](index.zh.md)
 - [参考来源](../../appendix/sources.md)
+
+[^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)

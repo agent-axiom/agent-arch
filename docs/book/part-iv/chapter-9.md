@@ -37,6 +37,18 @@
 
 Это не только безопасность. Это еще и контроль blast radius.
 
+### 2.1. Полезно различать уровни изоляции
+
+На практике слово `sandbox` часто скрывает сразу несколько разных уровней.
+
+- `logical isolation`: policy checks, capability contracts, allowlists;
+- `process isolation`: отдельный процесс, timeout, resource limits;
+- `runtime isolation`: отдельное исполняемое окружение, урезанный filesystem, ограниченный network egress, секреты по минимуму.
+
+Это важно, потому что многие команды считают, что у них “есть sandbox”, хотя на деле у них есть только первый уровень. Для low-risk reads этого иногда хватает, но для high-risk execution почти всегда нужен более жесткий runtime boundary.[^google-sandbox]
+
+Хороший practical question здесь такой: **если capability начнет вести себя хуже нормы, что именно ее остановит: логика, процесс или сама среда исполнения?**
+
 ## 3. Нельзя считать внешнюю интеграцию просто функцией
 
 Обычная ошибка выглядит так: внешний сервис оборачивается в функцию, и дальше агент видит его как обычный вызов.
@@ -95,6 +107,19 @@ flowchart LR
 - проще тестировать capability отдельно от логики агента.
 
 Это особенно ценно, когда одни инструменты работают только на чтение, другие пишут во внешние системы, а третьи вообще выполняют код или shell-команды.
+
+### 5.1. Ephemeral sandboxes лучше постоянных сред почти во всем
+
+Еще одна полезная мысль из Google: для рискованных capability очень выгодно проектировать краткоживущие execution environments.[^google-sandbox]
+
+Почему это обычно лучше:
+
+- меньше шансов, что состояние протечет между runs;
+- проще ограничивать lifetime секретов и временных файлов;
+- легче объяснить cleanup после выполнения;
+- ниже риск, что один грязный adapter испортит следующую задачу.
+
+Постоянные воркеры иногда выигрывают по latency, но почти всегда проигрывают по изоляции и объяснимости. Поэтому default stance для high-risk execution обычно должна быть такой: **ephemeral first, persistence only by explicit need**.
 
 ## 6. Не все capability требуют одинаковый уровень изоляции
 
@@ -172,6 +197,25 @@ capabilities:
 
 Тогда execution layer может объяснить не просто “команда не сработала”, а более взрослое: “операция была прервана по timeout после 8 секунд, сеть была запрещена, side effect не подтвержден”.
 
+### 8.1. Network egress deserves its own rule set
+
+Очень много инцидентов происходит не потому, что capability “сломалась”, а потому, что она смогла уйти в неожиданное место.
+
+Поэтому network egress полезно описывать не как частность sandbox, а как отдельный contract surface:
+
+- `denied`;
+- `internal_only`;
+- `allowlisted_external`;
+- `brokered_via_gateway`.
+
+Если это не зафиксировано явно, потом почти невозможно объяснить, почему конкретный tool внезапно сходил наружу, хотя формально “ничего не нарушал”.
+
+Для production-grade платформы хороший default обычно такой:
+
+- read-only internal tools: `internal_only`;
+- external API adapters: `allowlisted_external`;
+- code execution и shell-like tools: `denied` по умолчанию.
+
 ## 9. Простой кодовый пример capability dispatch
 
 Ниже каркас, который показывает саму идею: transport и execution profile выбираются по capability contract, а не определяются логикой модели на лету.
@@ -218,9 +262,11 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - Отделены ли adapters от core runtime?
 - Есть ли per-capability execution profile?
 - Ограничены ли network, filesystem и secrets?
+- Ясно ли, какой уровень изоляции используется: logical, process или runtime?
 - Явно ли описан transport: direct, MCP, sandboxed exec?
 - Понимает ли система, когда result trustworthy, а когда только partially trusted?
 - Есть ли execution facts помимо business payload?
+- Используются ли ephemeral sandboxes там, где есть high-risk execution?
 - Можно ли объяснить, почему capability была разрешена именно в этом run?
 
 Если ответы расплывчаты, capability layer у тебя пока больше похож на набор удобных интеграций, чем на управляемую платформу.
@@ -233,3 +279,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - [Глава 10. Idempotency, retries, rate limits и rollback boundaries](chapter-10.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
