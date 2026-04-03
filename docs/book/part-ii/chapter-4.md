@@ -45,6 +45,23 @@ tools:
 
 В этом YAML нет ничего “умного”, и именно это хорошо. Security perimeter любит обозримые правила.
 
+### 2.1. Gateway должен знать не только tool, но и actor
+
+Если gateway валидирует только имя инструмента и аргументы, этого мало. Ему еще нужно понимать, **кто именно пытается вызвать capability**.
+
+Минимально полезная модель запроса к gateway обычно включает:
+
+- `actor_id`;
+- `actor_type`;
+- `tenant_id`;
+- `requested_capability`;
+- `risk_class`;
+- `approval_state`.
+
+Тогда gateway может принимать решения не только по правилу “этот tool разрешен”, но и по правилу “этот tool разрешен именно этому actor-у и именно в этом контексте”.
+
+Это и есть момент, где identity превращается в исполняемую границу доступа, а не остается просто записью в IAM-таблице.[^google-secure-agents][^google-ai-controls]
+
 ## 3. Human approval должен быть нормальным процессом
 
 Есть действия, которые агент не должен завершать самостоятельно вообще:
@@ -123,6 +140,27 @@ sequenceDiagram
 
 Если после инцидента команда видит только “модель вызвала tool X”, расследование уже наполовину проиграно.
 
+### 5.1. Что именно должно связываться в audit trail
+
+У хорошего audit trail есть не только события, но и связки между ними:
+
+- какой principal начал run;
+- какой policy decision открыл или закрыл действие;
+- какой approver подтвердил исключение;
+- какой tool principal реально пошел во внешний system;
+- какой response или side effect получился на выходе.
+
+Именно эта связность превращает логи в материал для расследования, а не в склад плохо связанных сообщений.
+
+По сути, audit trail должен отвечать на четыре вопроса:
+
+1. Кто инициировал действие?
+2. Кто разрешил его исполнение?
+3. Под какой identity оно реально ушло наружу?
+4. Какой side effect или ответ это произвело?
+
+Если на любой из этих вопросов нет ответа, у тебя, скорее всего, уже не audit trail, а просто наблюдаемость без достаточной accountability.[^google-ai-controls]
+
 ## 6. Security perimeter как набор привычек
 
 Очень хочется найти одну волшебную библиотеку, которая “сделает безопасность”. Но на практике perimeter состоит из набора привычек:
@@ -148,6 +186,7 @@ sequenceDiagram
 - Есть ли egress filtering?
 - Достаточен ли audit trail для расследования?
 - Видно ли в traces, какой policy gate сработал?
+- Видно ли, какой principal реально исполнил внешний вызов?
 
 Если на несколько пунктов подряд ответ “нет”, значит эту главу ты открыл очень вовремя.
 
@@ -157,3 +196,6 @@ sequenceDiagram
 - [Глава 5. Зачем агенту память и почему она опасна](../part-iii/chapter-5.md)
 - [Часть II. Контур безопасности](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+[^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

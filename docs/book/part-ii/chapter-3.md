@@ -133,6 +133,34 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 Если все это смешать в одну “магическую учетку агента”, безопасность быстро превращается в фикцию.
 
+### 6.1. Identity boundary тоже часть perimeter
+
+Полезная мысль из Google здесь очень простая: identity у агентной системы нельзя считать только IAM-деталью инфраструктуры.[^google-secure-agents][^google-agent-overview] Это одна из основных границ безопасности.
+
+Практически это означает:
+
+- у runtime должна быть своя machine identity;
+- у agent-а должна быть своя operational identity;
+- у каждого tool или connector могут быть свои scoped credentials;
+- user context не должен бесконтрольно “растекаться” во все downstream systems.
+
+Иначе система очень быстро приходит к плохому состоянию: любой tool call выглядит так, будто его сделал один и тот же всемогущий actor, а расследование потом упирается в пустоту.
+
+Хороший вопрос для любой архитектуры здесь звучит так: **сможешь ли ты через неделю после инцидента доказать, какой именно identity инициировал доступ, на каком основании и в чьих интересах?**
+
+Если ответ “не совсем”, perimeter уже дырявый.
+
+### 6.2. Least privilege должен проходить через весь маршрут
+
+Least privilege полезен не только на уровне облачных ролей. Он должен проходить через всю агентную цепочку:
+
+- prompt assembly получает только нужный контекст;
+- retrieval видит только допустимые corpus и tenant scope;
+- tool gateway выдает только разрешенные capabilities;
+- external systems получают только тот principal, который соответствует конкретному действию.
+
+То есть вопрос не в том, “есть ли у нас IAM”. Вопрос в том, **совпадают ли границы прав с границами решения и исполнения**.
+
 ## 7. Что читать дальше
 
 Теперь можно переходить к следующему логическому слою: что делать с исполнением, подтверждениями и журналом аудита, когда агент уже дошел до реальных действий.
@@ -144,3 +172,5 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

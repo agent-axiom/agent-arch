@@ -31,6 +31,8 @@
 - Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
 - Google Cloud, [Google Agentspace](https://cloud.google.com/products/agentspace)
 - Google Cloud, [Vertex AI Agent Builder](https://cloud.google.com/products/agent-builder)
+- Google Cloud, [How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+- Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
 
 ## Наблюдаемость и оценка качества
 

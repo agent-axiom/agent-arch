@@ -45,6 +45,23 @@ tools:
 
 There is nothing "smart" in that YAML, and that is exactly why it is good. Security perimeters like visible rules.
 
+### 2.1. The Gateway Must Know Not Only the Tool, but Also the Actor
+
+If the gateway validates only the tool name and the arguments, that is not enough. It also has to know **who is trying to invoke the capability**.
+
+A minimally useful gateway request model usually includes:
+
+- `actor_id`;
+- `actor_type`;
+- `tenant_id`;
+- `requested_capability`;
+- `risk_class`;
+- `approval_state`.
+
+Then the gateway can make decisions not only by the rule "this tool is allowed," but also by the rule "this tool is allowed for this specific actor in this specific context."
+
+This is the point where identity becomes an executable access boundary instead of remaining just a row in an IAM table.[^google-secure-agents][^google-ai-controls]
+
 ## 3. Human Approval Should Be a Real Process
 
 There are actions the agent should not complete on its own at all:
@@ -123,6 +140,27 @@ For one risky run, it is useful to keep:
 
 If after an incident the team sees only "the model called tool X," the investigation is already half lost.
 
+### 5.1. What Exactly Must Be Linked Inside the Audit Trail
+
+A good audit trail contains not only events, but links between them:
+
+- which principal started the run;
+- which policy decision opened or denied the action;
+- which approver confirmed an exception;
+- which tool principal actually reached the external system;
+- which response or side effect was produced in the end.
+
+That linkage is what turns logs into investigation material instead of a warehouse of weakly connected messages.
+
+In practice, an audit trail should answer four questions:
+
+1. Who initiated the action?
+2. Who allowed it to proceed?
+3. Under which identity did it actually leave the system?
+4. What response or side effect did it produce?
+
+If any of those questions cannot be answered, you most likely do not yet have an audit trail. You have observability without enough accountability.[^google-ai-controls]
+
 ## 6. The Security Perimeter as a Set of Habits
 
 It is very tempting to look for one magic library that will "do safety." In practice, the perimeter is a set of habits:
@@ -148,6 +186,7 @@ If you want to quickly assess your current perimeter, go through this list:
 - Is there egress filtering?
 - Is the audit trail sufficient for investigation?
 - Can you see which policy gate fired in traces?
+- Can you see which principal actually executed the external call?
 
 If the answer is "no" several times in a row, then you opened this chapter at exactly the right moment.
 
@@ -157,3 +196,6 @@ If the answer is "no" several times in a row, then you opened this chapter at ex
 - [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../part-iii/chapter-5.en.md)
 - [Part II. Security Perimeter](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+[^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

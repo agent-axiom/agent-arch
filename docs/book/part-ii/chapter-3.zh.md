@@ -119,6 +119,34 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 如果这些全都混成一套“神奇的 agent 账号”，安全很快就会变成幻觉。
 
+### 5.1. Identity boundary 本身也是 perimeter 的一部分
+
+Google 的一个有用提醒很直接：在 agent system 里，identity 不能只被当成埋在基础设施里的 IAM 细节。[^google-secure-agents][^google-agent-overview] 它本身就是核心安全边界之一。
+
+在实践里，这意味着：
+
+- runtime 应该有自己的 machine identity；
+- agent 应该有自己的 operational identity；
+- 每个 tool 或 connector 可以拥有各自 scoped credentials；
+- user context 不应该不受控制地流进所有 downstream systems。
+
+否则系统很快就会进入一个糟糕状态：所有 tool call 看起来都像同一个全能 actor 发起的，而 incident 调查最后只剩模糊地带。
+
+这里有一个很好的架构问题：**如果一周后发生调查，你能不能证明到底是哪一个 identity 发起了访问、依据是什么、代表谁行动？**
+
+如果答案是“说不太清”，那 perimeter 其实已经开始漏了。
+
+### 5.2. Least privilege 应该贯穿整条链路
+
+Least privilege 不应该只停留在云 IAM 这一层，它应该贯穿整条 agent 路径：
+
+- prompt assembly 只能拿到必要上下文；
+- retrieval 只能看到允许的 corpus 和 tenant scope；
+- tool gateway 只能暴露批准过的 capabilities；
+- external systems 只能收到与具体动作匹配的 principal。
+
+所以真正的问题不是“我们有没有 IAM”，而是：**权限边界是否真的和决策边界、执行边界对齐了。**
+
 ## 6. 接下来读什么
 
 接下来最自然的一层，就是 agent 已经走到真实动作面前之后，该如何处理 execution、approvals 和 audit trail。
@@ -129,3 +157,5 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

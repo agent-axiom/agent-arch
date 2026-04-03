@@ -119,6 +119,34 @@ The minimally useful model:
 
 If all of that is mixed into one "magic agent account," safety quickly becomes fiction.
 
+### 5.1. The Identity Boundary Is Part of the Perimeter Too
+
+One useful Google idea here is simple: in agent systems, identity is not merely an IAM detail buried in infrastructure.[^google-secure-agents][^google-agent-overview] It is one of the core security boundaries.
+
+In practice, this means:
+
+- the runtime should have its own machine identity;
+- the agent should have its own operational identity;
+- each tool or connector may have its own scoped credentials;
+- user context should not leak uncontrolled into every downstream system.
+
+Otherwise the system quickly reaches a bad state: every tool call looks as if it was made by the same all-powerful actor, and incident investigation collapses into ambiguity.
+
+A good architectural question here is: **could you prove, a week after an incident, which exact identity initiated the access, on what basis, and on whose behalf?**
+
+If the answer is "not really," the perimeter is already weak.
+
+### 5.2. Least Privilege Must Span the Whole Route
+
+Least privilege is useful not only at the cloud IAM layer. It has to run through the entire agent path:
+
+- prompt assembly should receive only the necessary context;
+- retrieval should see only allowed corpora and tenant scope;
+- the tool gateway should expose only approved capabilities;
+- external systems should receive only the principal that matches the specific action.
+
+So the real question is not "do we have IAM?" The real question is: **do permission boundaries actually match decision and execution boundaries?**
+
 ## 6. What to Read Next
 
 Now it makes sense to move to the next logical layer: what to do with execution, approvals, and the audit trail once the agent has already reached real actions.
@@ -129,3 +157,5 @@ Now it makes sense to move to the next logical layer: what to do with execution,
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
