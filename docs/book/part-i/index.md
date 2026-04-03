@@ -23,8 +23,8 @@
 
 - [Глава 1. Почему агенту нужна платформа, а не магия](chapter-1.md)
 - [Глава 2. Референсная архитектура безопасного агента](chapter-2.md)
-- [Практика. Instructions, routines и prompt templates](practical-routines.md)
-- [Практика. Manager pattern vs handoffs](practical-manager-handoffs.md)
+- [Практика. Инструкции, сценарии и шаблоны запросов](practical-routines.md)
+- [Практика. Координатор и передача управления](practical-manager-handoffs.md)
 - [Почему выбран этот стек публикации](../../appendix/stack.md)
 - [Библиография и ссылки](../../appendix/sources.md)
 

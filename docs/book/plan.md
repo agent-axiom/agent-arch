@@ -19,8 +19,8 @@
 
 Практический слой уже добавлен:
 
-- [Практика. Instructions, routines и prompt templates](part-i/practical-routines.md)
-- [Практика. Manager pattern vs handoffs](part-i/practical-manager-handoffs.md)
+- [Практика. Инструкции, сценарии и шаблоны запросов](part-i/practical-routines.md)
+- [Практика. Координатор и передача управления](part-i/practical-manager-handoffs.md)
 
 ### Часть II. Контур безопасности
 
