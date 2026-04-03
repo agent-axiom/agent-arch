@@ -261,6 +261,7 @@ nav:
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Дорожная карта для сообщества: appendix/community-roadmap.md
+      - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
       - Policy templates и checklists по кейсам: appendix/policy-templates.md
