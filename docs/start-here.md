@@ -108,6 +108,7 @@
 
 - [План книги](book/plan.md)
 - [Практические кейсы](appendix/case-studies.md)
+- [Policy templates и checklists по кейсам](appendix/policy-templates.md)
 - [Дорожная карта для сообщества](appendix/community-roadmap.md)
 - [Источники](appendix/sources.md)
 

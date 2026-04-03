@@ -108,6 +108,7 @@
 
 - [全书计划](book/plan.zh.md)
 - [实战案例](appendix/case-studies.zh.md)
+- [按场景组织的 Policy Templates 与 Checklists](appendix/policy-templates.zh.md)
 - [社区路线图](appendix/community-roadmap.zh.md)
 - [参考来源](appendix/sources.zh.md)
 

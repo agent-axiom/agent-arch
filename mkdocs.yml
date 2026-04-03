@@ -90,6 +90,7 @@ plugins:
             Дорожная карта для сообщества: Дорожная карта для сообщества
             Опорный пакет: Опорный пакет
             Практические кейсы: Практические кейсы
+            Policy templates и checklists по кейсам: Policy templates и checklists по кейсам
             Источники: Источники
         - locale: en
           name: English
@@ -133,6 +134,7 @@ plugins:
             Дорожная карта для сообщества: Community Roadmap
             Опорный пакет: Reference Package
             Практические кейсы: Practical Case Studies
+            Policy templates и checklists по кейсам: Policy Templates and Checklists by Use Case
             Источники: Sources
         - locale: zh
           name: 中文
@@ -176,6 +178,7 @@ plugins:
             Дорожная карта для сообщества: 社区路线图
             Опорный пакет: 参考包
             Практические кейсы: 实战案例
+            Policy templates и checklists по кейсам: 按场景组织的 Policy Templates 与 Checklists
             Источники: 参考来源
   - search
   - glightbox
@@ -260,4 +263,5 @@ nav:
       - Дорожная карта для сообщества: appendix/community-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
+      - Policy templates и checklists по кейсам: appendix/policy-templates.md
       - Источники: appendix/sources.md

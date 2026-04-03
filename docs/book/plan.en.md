@@ -82,6 +82,7 @@ What I am strengthening next in this part:
 - Book navigation and structure.
 - First part with the reference architecture.
 - The first set of practical case studies for production-like scenarios.
+- The first set of reusable policy templates and checklists by use case.
 - Separate page on the publishing stack.
 - Source base for the next chapters.
 

@@ -108,6 +108,7 @@ Start with these pages:
 
 - [Book Plan](book/plan.en.md)
 - [Practical Case Studies](appendix/case-studies.en.md)
+- [Policy Templates and Checklists by Use Case](appendix/policy-templates.en.md)
 - [Community Roadmap](appendix/community-roadmap.en.md)
 - [Sources](appendix/sources.en.md)
 
