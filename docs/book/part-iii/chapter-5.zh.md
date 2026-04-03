@@ -181,6 +181,36 @@ memory:
 
 这依然不是魔法，而是让写入路径变得可见、可控、可讨论。
 
+## 8.1. 最好把 memory read policy 和 memory write policy 分开
+
+Google 最近材料里一个很实用的提醒是：memory 应该被当成可治理的 subsystem，而不只是“装上下文的 storage”。[^google-agent-overview][^google-govern]
+
+它带来的直接结论是：**读规则和写规则几乎不应该完全一样**。
+
+比如：
+
+- 写入 long-term memory 可能要求 validation、provenance 和 background review；
+- 读取 long-term memory 可能只允许通过 retrieval filters；
+- 写入 profile memory 可能要求 explicit signal 或 high confidence；
+- 读取 profile memory 可能只允许 personalization layer 使用，而不该直接给 policy engine。
+
+如果不把这些路径拆开，系统很快就会活在一种危险逻辑里：任何东西只要曾经被写进去，后面几乎就能在任何地方读出来。
+
+这已经不是 memory design，而是安静制造 incident 的方式。
+
+## 8.2. Persistent memory 默认就应该带 provenance
+
+对于任何能活过一个 run 的记录，最好默认至少保留：
+
+- `source_type`；
+- `source_id`；
+- `writer_identity`；
+- `tenant_id`；
+- `written_at`；
+- `confidence` 或 `validation_state`。
+
+这些字段看起来像额外负担，但一旦 agent 在别的上下文里自信地重复了某个“事实”，团队马上就会想知道它到底从哪里来的。
+
 ## 9. 如果你现在还没有 memory，该从哪里开始
 
 如果你刚开始接触这个主题，一个不错的顺序是：
@@ -207,3 +237,6 @@ memory:
 - [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
 - [第 4 章：Tool Gateway、Approval 与 Audit Trail](../part-ii/chapter-4.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

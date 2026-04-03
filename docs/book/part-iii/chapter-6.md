@@ -126,6 +126,50 @@ memory_classes:
 
 Такой YAML не обязан быть конечной реализацией. Но он заставляет команду принять важное решение: памятью нельзя управлять на уровне “ну это просто текст в базе”.
 
+### 6.1. У каждого слоя должны быть свои revision rules
+
+Еще один полезный шаг к зрелой архитектуре: у разных memory classes должны быть разные правила исправления и обновления.
+
+Например:
+
+- `short-term memory` можно просто перезаписывать или выбрасывать;
+- `long-term memory` полезно обновлять через новую revision, а не через тихое затирание старой;
+- `profile memory` часто требует особенно осторожного merge, потому что там легко испортить personalization.
+
+Если revisions нет вообще, позже ты видишь только “текущее состояние записи”, но не понимаешь:
+
+- кто ее поменял;
+- почему это произошло;
+- какая версия была до этого;
+- был ли апдейт подтвержден или это просто побочный эффект очередного run.
+
+### 6.2. Provenance нужно проектировать вместе с типами памяти
+
+Provenance полезно не добавлять “потом”, а проектировать одновременно с memory classes.[^google-agent-overview]
+
+Практически это значит:
+
+- у `long_term` записей почти всегда должен быть source link или source id;
+- у `profile` записей нужен explainable reason, почему система решила, что это стабильное предпочтение;
+- у `short_term` записей provenance может быть проще, но runtime все равно должен понимать их происхождение.
+
+Ниже очень компактный пример:
+
+```yaml
+memory_classes:
+  short_term:
+    revision_mode: replace
+    provenance: minimal_runtime_metadata
+  long_term:
+    revision_mode: append_revision
+    provenance: source_link_required
+  profile:
+    revision_mode: merge_with_history
+    provenance: explicit_signal_or_review
+```
+
+Это уже переводит разговор из плоскости “где хранить текст” в плоскость “какая у этого знания история и насколько ему можно доверять”.
+
 ## 7. Что обычно должно жить в short-term memory
 
 Полезный practical rule: short-term memory должна помогать агенту действовать сейчас, а не становиться источником долгосрочной истины.
@@ -238,3 +282,5 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 - [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](chapter-7.md)
 - [Часть III. Память и знания](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

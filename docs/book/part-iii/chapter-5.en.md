@@ -181,6 +181,36 @@ memory:
 
 Again, this is not about magic. It is about making the write path visible and safe.
 
+## 8.1. It Is Useful to Separate Memory Read Policy from Memory Write Policy
+
+One practical idea from recent Google material is that memory should be treated as a governable subsystem, not just as "storage for context."[^google-agent-overview][^google-govern]
+
+That has a direct consequence: **read rules and write rules should almost never be identical**.
+
+For example:
+
+- writing to long-term memory may require validation, provenance, and background review;
+- reading from long-term memory may be allowed only through retrieval filters;
+- writing to profile memory may require an explicit signal or high confidence;
+- reading profile memory may be allowed only to the personalization layer, not to the policy engine.
+
+If those paths are not separated, the system starts living by a dangerous rule: everything that was once written can later be read almost everywhere.
+
+That is not memory design. That is a source of quiet incidents.
+
+## 8.2. Persistent Memory Should Have Provenance by Default
+
+For every record that survives longer than one run, it is useful to store at least:
+
+- `source_type`;
+- `source_id`;
+- `writer_identity`;
+- `tenant_id`;
+- `written_at`;
+- `confidence` or `validation_state`.
+
+That may feel like extra bureaucracy only until the first argument about where a "fact" came from after the agent confidently repeated it in another context.
+
 ## 9. Where to Start If You Have No Memory Yet
 
 If you are only approaching this topic, a good order is:
@@ -207,3 +237,6 @@ For now, the main takeaway is simple: memory is useful only when it is designed 
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](chapter-6.en.md)
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](../part-ii/chapter-4.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

@@ -181,6 +181,36 @@ memory:
 
 Опять же, это не про магию. Это про то, чтобы сделать путь записи обозримым и безопасным.
 
+## 8.1. Полезно разделять memory read policy и memory write policy
+
+Одна из самых практичных мыслей из свежих Google-материалов состоит в том, что память надо мыслить как управляемый subsystem, а не как “просто storage для контекста”.[^google-agent-overview][^google-govern]
+
+У этого есть прямое следствие: **правила чтения и правила записи почти никогда не должны быть одинаковыми**.
+
+Например:
+
+- запись в long-term memory может требовать validation, provenance и background review;
+- чтение из long-term memory может быть разрешено только через retrieval filters;
+- запись в profile memory может требовать explicit signal или high confidence;
+- чтение profile memory может быть разрешено только personalization-слою, но не policy engine.
+
+Если не развести эти пути, система начинает жить по странной логике: все, что однажды записалось, потом можно почти автоматически читать отовсюду.
+
+А это уже не memory design, а источник тихих инцидентов.
+
+## 8.2. Persistent memory должна иметь provenance по умолчанию
+
+Для каждой записи, которая живет дольше одного run, полезно по умолчанию хранить хотя бы:
+
+- `source_type`;
+- `source_id`;
+- `writer_identity`;
+- `tenant_id`;
+- `written_at`;
+- `confidence` или `validation_state`.
+
+Это выглядит как дополнительная бюрократия ровно до первого спора о том, откуда взялся “факт”, который агент потом уверенно повторил в другом контексте.
+
 ## 9. С чего начать, если памяти у тебя пока нет
 
 Если ты только подходишь к этой теме, хороший порядок такой:
@@ -207,3 +237,6 @@ memory:
 - [Глава 6. Краткосрочная, долгосрочная и профильная память](chapter-6.md)
 - [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](../part-ii/chapter-4.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

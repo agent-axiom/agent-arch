@@ -126,6 +126,50 @@ memory_classes:
 
 这段 YAML 不一定就是最终实现，但它逼着团队做一个重要决定：memory 不能在“反正就是数据库里的一段文本”这个层面被管理。
 
+### 6.1. 每一层都应该有自己的 revision rules
+
+再往成熟架构走一步，很有帮助的一点是：不同的 memory classes 应该有不同的更新与修正规则。
+
+比如：
+
+- `short-term memory` 往往可以直接替换或丢弃；
+- `long-term memory` 更适合通过新 revision 更新，而不是悄悄覆盖旧值；
+- `profile memory` 往往需要特别谨慎的 merge，因为 personalization 很容易被写坏。
+
+如果根本没有 revisions，后面你看到的就只剩“当前这条记录长什么样”，却回答不了这些问题：
+
+- 是谁改了它；
+- 为什么改；
+- 之前是什么版本；
+- 这次更新是经过验证，还是只是某次 run 的副作用。
+
+### 6.2. Provenance 最好和 memory classes 一起设计
+
+Provenance 最好不要等到后面再补，而是应该和 memory classes 同时设计。[^google-agent-overview]
+
+在实践里，这通常意味着：
+
+- `long_term` 记录几乎总该带 source link 或 source id；
+- `profile` 记录需要有可解释的 reason，说明系统为什么认为这是稳定偏好；
+- `short_term` 记录的 provenance 可以轻一些，但 runtime 仍然应该知道它从哪里来。
+
+下面是一个很紧凑的例子：
+
+```yaml
+memory_classes:
+  short_term:
+    revision_mode: replace
+    provenance: minimal_runtime_metadata
+  long_term:
+    revision_mode: append_revision
+    provenance: source_link_required
+  profile:
+    revision_mode: merge_with_history
+    provenance: explicit_signal_or_review
+```
+
+这就把讨论从“文本存在哪”推进到了“这段知识的历史是什么、它到底值不值得信任”。
+
 ## 7. 什么通常应该放进 short-term memory
 
 一个很有用的 practical rule：short-term memory 应该帮助 agent 现在行动，而不是变成长期真相的来源。
@@ -238,3 +282,5 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 - [第 7 章：Retrieval、Compaction 与 Background Updates](chapter-7.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

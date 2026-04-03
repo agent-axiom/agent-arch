@@ -126,6 +126,50 @@ memory_classes:
 
 That YAML does not have to be the final implementation. But it forces the team to make an important decision: memory cannot be managed at the level of "well, it is just text in a database."
 
+### 6.1. Each Layer Needs Its Own Revision Rules
+
+Another useful step toward a mature architecture is this: different memory classes should have different update and correction rules.
+
+For example:
+
+- `short-term memory` can often just be replaced or dropped;
+- `long-term memory` is usually safer to update through a new revision than by silently overwriting the old one;
+- `profile memory` often needs especially careful merges, because it is easy to corrupt personalization.
+
+If revisions do not exist at all, later you only see "the current state of the record," but you no longer understand:
+
+- who changed it;
+- why it changed;
+- which version existed before;
+- whether the update was validated or was just a side effect of one more run.
+
+### 6.2. Provenance Should Be Designed Together with Memory Classes
+
+Provenance is better designed together with memory classes, not bolted on later.[^google-agent-overview]
+
+In practice, this means:
+
+- `long_term` records should almost always have a source link or source id;
+- `profile` records need an explainable reason why the system decided that this is a stable preference;
+- `short_term` records can have lighter provenance, but the runtime should still understand where they came from.
+
+Here is a compact example:
+
+```yaml
+memory_classes:
+  short_term:
+    revision_mode: replace
+    provenance: minimal_runtime_metadata
+  long_term:
+    revision_mode: append_revision
+    provenance: source_link_required
+  profile:
+    revision_mode: merge_with_history
+    provenance: explicit_signal_or_review
+```
+
+That moves the discussion from "where do we store text" to "what is the history of this knowledge, and how much should we trust it."
+
 ## 7. What Usually Belongs in Short-Term Memory
 
 A useful practical rule: short-term memory should help the agent act now, not become a source of long-term truth.
@@ -238,3 +282,5 @@ The next step in this part is very natural: after memory types, we need to look 
 - [Chapter 7. Retrieval, Compaction, and Background Updates](chapter-7.en.md)
 - [Part III. Memory and Knowledge](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
