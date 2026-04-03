@@ -14,6 +14,7 @@ The first part answers the main question: what should a **modern secure agent ar
 By the end of Part I, the reader should have:
 
 - a reference platform diagram for safe agents;
+- criteria for when an agent is actually needed and when a workflow is the better choice;
 - criteria for choosing between workflow, single-agent, and subagents;
 - a list of mandatory layers without which the system will be fragile;
 - a vocabulary for discussing architecture with platform, security, and product teams.

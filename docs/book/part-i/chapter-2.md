@@ -6,6 +6,14 @@
 
 Именно для этого нужна референсная архитектура. Не как догма, а как baseline.
 
+При этом полезно держать в голове очень простую стартовую рамку из практического гайда OpenAI: минимальная agent system обычно состоит из трех вещей.[^openai-practical]
+
+- `model`, которая рассуждает и выбирает следующий шаг;
+- `tools`, которые дают доступ к данным и действиям;
+- `instructions`, которые объясняют системе, как именно себя вести.
+
+Дальше к этой тройке уже наращиваются control plane, memory, policy и telemetry. Но если ты теряешь эту основу из вида, архитектура начинает раздуваться быстрее, чем становится понятнее.
+
 ## 2. Вид сверху: из чего состоит платформа
 
 Ниже схема, на которую удобно опираться как на стартовую карту.
@@ -103,6 +111,19 @@ Orchestration runtime выбирает паттерн выполнения:
 Лучшее свойство хорошего runtime очень неожиданное: он должен быть скучным.
 
 Чем больше в нем “магии”, тем сложнее предсказывать стоимость, поведение и отказ.
+
+### 5.1. Почему single-agent first это зрелая стратегия
+
+Практический гайд OpenAI отдельно полезен тем, что не романтизирует multi-agent как default choice.[^openai-practical] Сначала один агент, потом разделение, если на это есть реальные причины.
+
+Обычно сигнал к разделению появляется, когда:
+
+- одному run уже тесно в одном контексте;
+- разные подзадачи требуют разных tools и разных guardrails;
+- ownership начинает делиться между командами;
+- параллелизм реально сокращает latency или снижает cognitive load.
+
+Если этих признаков нет, один агент с хорошим workflow graph почти всегда проще отлаживать, дешевле сопровождать и легче объяснять security-команде.
 
 ## 6. Почему cognition plane не равен одной модели
 
@@ -210,5 +231,6 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^vikulin]: [Дмитрий Викулин, «Архитектура надежных AI-агентов»](https://vikulin.ai/library/tpost/ai_agent_architecture)
 [^langgraph-memory]: [LangGraph, Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 [^langgraph-hitl]: [LangChain Deep Agents, Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)

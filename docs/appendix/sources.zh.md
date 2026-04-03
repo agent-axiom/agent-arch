@@ -6,6 +6,7 @@
 
 - Dmitry Vikulin, [“Architecture of Reliable AI Agents”](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
@@ -49,4 +50,3 @@
 2. 架构模式：Anthropic、LangGraph、OpenAI。
 3. 治理与平台控制：Google Cloud、OpenAI、Anthropic。
 4. 工具链与发布：MkDocs、uv、ty、Starlight。
-

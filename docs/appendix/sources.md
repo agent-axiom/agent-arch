@@ -6,6 +6,7 @@
 
 - Дмитрий Викулин, [«Архитектура надежных AI-агентов»](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
@@ -49,4 +50,3 @@
 2. Архитектурные паттерны: Anthropic, LangGraph, OpenAI.
 3. Платформенные контуры управления: Google Cloud, OpenAI, Anthropic.
 4. Tooling и публикация: MkDocs, uv, ty, Starlight.
-

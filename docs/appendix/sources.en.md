@@ -6,6 +6,7 @@ Below is the core set of primary sources used in the current version of the book
 
 - Dmitry Vikulin, [“Architecture of Reliable AI Agents”](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
@@ -49,4 +50,3 @@ If you continue developing the book, the best reading order is:
 2. Architectural patterns: Anthropic, LangGraph, OpenAI.
 3. Governance and platform controls: Google Cloud, OpenAI, Anthropic.
 4. Tooling and publishing: MkDocs, uv, ty, Starlight.
-

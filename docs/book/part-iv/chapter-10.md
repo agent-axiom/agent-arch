@@ -185,7 +185,21 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Важен не код сам по себе, а то, что у системы появляется явная operational decision table.
 
-## 9. Idempotency key должен быть частью протокола, а не опциональной договоренностью
+## 9. У agent loop должны быть явные условия остановки
+
+Еще один практический совет из гайда OpenAI, который очень полезно формализовать: у run loop должны быть понятные stop conditions.[^openai-practical]
+
+Хороший runtime завершает run не “когда модель вроде бы успокоилась”, а по явным причинам:
+
+- получен финальный структурированный результат;
+- больше не требуется tool calls;
+- пришла неустранимая ошибка;
+- достигнут лимит по шагам или бюджету;
+- сработал approval boundary и нужен человек.
+
+Это звучит скучно, но именно такие правила не дают агенту уйти в бесконечный planning, бессмысленные retries или декоративные tool hops.
+
+## 10. Idempotency key должен быть частью протокола, а не опциональной договоренностью
 
 Если write tool формально “поддерживает idempotency”, но ключ:
 
@@ -203,7 +217,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 - логировать его в audit trail;
 - использовать для reconciliation и расследований.
 
-## 10. Что чаще всего ломается в execution reliability
+## 11. Что чаще всего ломается в execution reliability
 
 Проблемы здесь довольно типовые:
 
@@ -216,7 +230,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Все это означает одно: execution layer еще не дорос до production-grade модели отказов.
 
-## 11. Практический чеклист
+## 12. Практический чеклист
 
 Если хочешь быстро проверить reliability execution layer, пройди по вопросам:
 
@@ -230,7 +244,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Если на несколько вопросов подряд ответ “нет”, то следующая нестабильность интеграции почти наверняка превратится в дубль, шум или ручной разбор инцидента.
 
-## 12. Что читать дальше
+## 13. Что читать дальше
 
 Part IV уже закрывает базовый execution layer: contracts, sandbox, capability transport и дисциплину вокруг side effects. Дальше очень логично переходить к observability и reliability на уровне всей агентной системы.
 
@@ -238,3 +252,5 @@ Part IV уже закрывает базовый execution layer: contracts, san
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

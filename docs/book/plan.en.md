@@ -12,6 +12,12 @@ This version of the book is structured as an engineering playbook rather than a 
 
 Status: the first chapter is published.
 
+What I am strengthening next in this part:
+
+- how to decide whether you need an agent at all or a conventional workflow is enough;
+- why `single-agent first` is usually healthier than starting with a multi-agent zoo;
+- how to turn instructions, SOPs, and playbooks into routines rather than chaotic prompt paragraphs.
+
 ### Part II. Security Perimeter
 
 - Agent identity and machine IAM.
@@ -30,6 +36,12 @@ Status: the first chapter is published.
 - Tool gateway and sandbox execution.
 - MCP and contract-based integration with external systems.
 - Idempotency, retries, rate limits, rollback boundaries.
+
+What I am strengthening next in this part:
+
+- a practical taxonomy of tools: `data`, `action`, `orchestration`;
+- explicit run loop exit conditions;
+- criteria for when a single-agent loop should become manager pattern or handoffs.
 
 ### Part V. Reliability and Observability
 
@@ -57,6 +69,7 @@ Status: the first chapter is published.
 3. Add reference diagrams and operational checklists.
 4. Prepare a practical reference implementation.
 5. Add eval examples and policy configs.
+6. Strengthen the book with decision frameworks: when to use an agent, when a workflow is enough, and when not to move into multi-agent too early.
 
 ## What is already done
 

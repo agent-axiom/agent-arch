@@ -89,6 +89,22 @@ flowchart LR
 
 Если read и write operations смешиваются в одну неявную категорию “tool call”, execution layer быстро теряет управляемость.
 
+### 4.1. Полезная taxonomy: data, action, orchestration
+
+В практическом гайде OpenAI есть еще одно полезное упрощение: tools удобно делить не только на `read` и `write`, но и по их роли в системе.[^openai-practical]
+
+- `data tools` читают и возвращают контекст: поиск, retrieval, чтение CRM, чтение тикетов;
+- `action tools` меняют внешний мир: создать тикет, отправить письмо, обновить запись;
+- `orchestration tools` помогают самому runtime: передать задачу другому агенту, вызвать planner, запросить approval, сделать handoff.
+
+Эти две оси хорошо работают вместе:
+
+- `data tools` почти всегда ближе к `read`;
+- `action tools` почти всегда ближе к `write`;
+- `orchestration tools` могут быть и тем, и другим, но у них отдельный operational смысл.
+
+Такой взгляд полезен, потому что помогает быстрее понять, где нужен жесткий контракт данных, где контроль side effects, а где дисциплина самого agent loop.
+
 ## 5. Контракт инструмента должен быть скучным и строгим
 
 Одна из худших привычек в агентных системах: позволять модели импровизировать формат вызова.
@@ -246,3 +262,5 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 - [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

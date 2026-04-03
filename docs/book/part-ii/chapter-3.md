@@ -61,7 +61,21 @@ flowchart LR
 | Cross-tenant access | Identity layer, retrieval, tools | tenant scoping, signed context, metadata filters |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
-## 4. Главное практическое правило: отделяй инструкции от данных
+## 4. Guardrails лучше работают слоями, а не одним “волшебным фильтром”
+
+Практический гайд OpenAI хорошо попадает в инженерную реальность: guardrails полезнее проектировать как layered defense, а не как одну умную проверку на входе.[^openai-practical]
+
+Для production-системы это обычно означает несколько независимых слоев:
+
+- moderation и content policy checks на ingress;
+- маркировка trusted и untrusted content при prompt assembly;
+- фильтры на PII, secrets и tenant boundaries;
+- tool risk rating и approval policy перед side effects;
+- output validation и egress filters перед возвратом ответа наружу.
+
+Это важно по очень прозаической причине: один guardrail почти всегда видит только один класс риска. А реальный инцидент обычно проходит через несколько слоев сразу.
+
+## 5. Главное практическое правило: отделяй инструкции от данных
 
 Это один из самых важных принципов во всей книге.
 
@@ -97,7 +111,7 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 Этот код не “решает prompt injection навсегда”, но он показывает правильный mindset: все найденное и все принесенное извне нужно маркировать как данные, а не как команды.
 
-## 5. Identity first
+## 6. Identity first
 
 Следующая частая ошибка выглядит так: команда делает одного “умного агента”, а потом уже задумывается, кто он с точки зрения IAM.
 
@@ -119,7 +133,7 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 Если все это смешать в одну “магическую учетку агента”, безопасность быстро превращается в фикцию.
 
-## 6. Что читать дальше
+## 7. Что читать дальше
 
 Теперь можно переходить к следующему логическому слою: что делать с исполнением, подтверждениями и журналом аудита, когда агент уже дошел до реальных действий.
 
@@ -129,3 +143,4 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

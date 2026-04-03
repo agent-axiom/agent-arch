@@ -12,6 +12,12 @@
 
 状态：第一章已发布。
 
+这一部分下一步会继续加强：
+
+- 如何判断这里到底需要 agent，还是普通 workflow 就够了；
+- 为什么 `single-agent first` 往往比一开始就做多智能体更健康；
+- 如何把 instructions、SOP 和 playbooks 变成 routines，而不是混乱的 prompt 段落。
+
 ### 第二部分：安全边界
 
 - 智能体身份与 machine IAM。
@@ -30,6 +36,12 @@
 - Tool gateway 与 sandbox execution。
 - MCP 与外部系统的契约式集成。
 - 幂等性、重试、速率限制、回滚边界。
+
+这一部分下一步会继续加强：
+
+- 工具的实用分类：`data`、`action`、`orchestration`；
+- 明确的 run loop 停止条件；
+- 什么时候应该把 single-agent loop 演进成 manager pattern 或 handoffs。
 
 ### 第五部分：可靠性与可观测性
 
@@ -57,6 +69,7 @@
 3. 加入参考图和运维检查清单。
 4. 提供实用的 reference implementation。
 5. 补充 eval 示例和策略配置。
+6. 增强这本书的决策框架：什么时候该用 agent，什么时候 workflow 足够，以及什么时候不该过早走向多智能体。
 
 ## 已完成内容
 

@@ -36,7 +36,32 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 这个建议有点无聊，但它非常有效。
 
-## 4. 为什么“魔法感”比你想的更早失效
+## 4. 什么时候真的需要 agent，什么时候其实不需要
+
+OpenAI 的实用指南里有一个很健康的提醒：不是因为任务“听起来很现代”，就一定该上 agent。[^openai-practical]
+
+通常只有在至少满足下面一个条件时，agent 才真正有意义：
+
+- 系统在执行过程中必须连续做出一些不那么显然的决策；
+- 规则过于分支化，用硬编码维护起来太贵；
+- 关键价值来自非结构化数据，比如邮件、文档、笔记或网页内容。
+
+如果情况更像下面这样，workflow 往往是更诚实的选择：
+
+- 步骤几乎总是固定的；
+- 状态转移很容易形式化；
+- 可解释性和可重复性比灵活推理更重要；
+- write path 的风险很高，但 autonomy 带来的收益并不明显。
+
+一个很实用的判断方式是：
+
+- `workflow` 适合执行路径事先就很清楚的任务；
+- `single-agent loop` 适合路径不固定、但边界很窄的任务；
+- `multi-agent` 只有在一个 loop 已经因为上下文、职责或并行性而变得拥挤时才值得引入。
+
+简短地说：agent 性应该为你买来真正有价值的灵活性，而不是把清楚的设计换成时髦的复杂性。
+
+## 5. 为什么“魔法感”比你想的更早失效
 
 只押注在一个聪明模型上，很快就会变贵，原因通常有这些：
 
@@ -56,7 +81,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 系统就会突然不再是“带工具的 LLM”那么简单。
 
-## 5. 值得依赖的四个原则
+## 6. 值得依赖的四个原则
 
 ### 5.1. 先控制，再自治
 
@@ -74,7 +99,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 如果 agent “看起来很聪明”，但你没有 traces、evals 和 step metadata，那你其实并没有控制这个系统。[^openai-sdk][^openai-evals]
 
-## 6. Production 团队必须始终看见什么
+## 7. Production 团队必须始终看见什么
 
 一个最低可用的集合是：
 
@@ -86,7 +111,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 一旦这些信息从视野里消失，agent 就会开始变成黑箱。
 
-## 7. 一个简短结论
+## 8. 一个简短结论
 
 如果你只想记住这一章的一句话，那就记这句：
 
@@ -94,7 +119,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 这也是为什么下一章不再聊“聪明”，而是聊平台架构：为了安全地运行这样一个系统，到底需要哪些层。
 
-## 8. 接下来读什么
+## 9. 接下来读什么
 
 - [第一部分：基础](index.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
@@ -103,5 +128,6 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 [^vikulin]: [Dmitry Vikulin，《可靠 AI Agents 的架构》](https://vikulin.ai/library/tpost/ai_agent_architecture)
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-durable]: [LangGraph, Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^openai-sdk]: [OpenAI, Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
 [^openai-evals]: [OpenAI, Agent evals](https://platform.openai.com/docs/guides/agent-evals)
