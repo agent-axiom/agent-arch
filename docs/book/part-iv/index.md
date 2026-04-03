@@ -28,6 +28,7 @@
 
 - [Глава 8. Execution model и каталог инструментов](chapter-8.md)
 - [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
+- [Практика. MCP для tools, A2A для agents](practical-mcp-a2a.md)
 - [Глава 10. Idempotency, retries, rate limits и rollback boundaries](chapter-10.md)
 
 Дальше логично переходить к observability, traces и evals.

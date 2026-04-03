@@ -22,6 +22,7 @@
 
 - [第 8 章：执行模型与工具目录](chapter-8.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)
+- [实践篇：MCP 用于 Tools，A2A 用于 Agents](practical-mcp-a2a.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](chapter-10.zh.md)
 
 Part IV 现在已经形成一个完整的 execution block；接下来就可以从工具层转向系统级可靠性与可观测性。

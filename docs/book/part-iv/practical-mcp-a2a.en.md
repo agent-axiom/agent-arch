@@ -1,0 +1,165 @@
+# Practice. MCP for Tools, A2A for Agents
+
+Many teams mix up two different problems too early:
+
+- how to connect tools and external systems;
+- how to organize collaboration between multiple agents.
+
+Because of that, `MCP` and `A2A` start to look interchangeable. In reality, they belong to different architectural levels.
+
+## 1. The Short Rule
+
+If you want the shortest version:
+
+- `MCP` is for working with tools, resources, and adapters;
+- `A2A` is for exchanging tasks, context, and results between agents.
+
+In other words, one protocol is mainly about **agent-to-tool**, while the other is about **agent-to-agent**.[^google-mcp-a2a][^google-multiagent]
+
+## 2. When You Almost Certainly Need MCP
+
+`MCP` is useful when you have one or more external capabilities that need to be connected systematically:
+
+- document search;
+- CRM;
+- helpdesk;
+- internal APIs;
+- file resources;
+- knowledge bases;
+- execution sandboxes.
+
+In that situation, the main goal is not to "build a society of agents," but to:
+
+- standardize the contract;
+- separate adapters from the core runtime;
+- simplify policy checks;
+- centralize logging, auth, and isolation.
+
+That is where `MCP` fits naturally.
+
+## 3. When You Actually Need A2A
+
+`A2A` makes sense when you no longer just have tools, but truly distinct agents with separate responsibility:
+
+- a coordinator;
+- a researcher;
+- an analyst;
+- an executor;
+- a domain specialist.
+
+And they need to:
+
+- hand tasks to each other;
+- delegate work;
+- exchange status;
+- return results not as tool payloads, but as the work product of another agent.
+
+That means `A2A` appears not where you need "one more adapter," but where real agent boundaries already exist in the system.
+
+## 4. The Typical Mistake: Building Multi-Agent Too Early
+
+In practice, the confusion usually looks like this:
+
+1. The team has one runtime.
+2. It needs to connect three systems.
+3. Instead of capability contracts, the team starts designing multi-agent orchestration.
+
+That is almost always unnecessary complexity.
+
+If the system still has no real reason to split responsibility between agents, then:
+
+- tools are better connected through `MCP`;
+- orchestration is better kept inside one runtime;
+- multi-agent coordination is better postponed.
+
+A good practical rule is: **if the entity does not make its own decisions and does not have its own operational role, it is probably not an agent yet. It is a capability**.
+
+## 5. Decision Table
+
+| Question | More likely `MCP` | More likely `A2A` |
+| --- | --- | --- |
+| Do you need to connect an external API or resource? | Yes | No |
+| Do you need a typed contract for tools? | Yes | No |
+| Is there a separate agent with its own role and lifecycle? | No | Yes |
+| Do you need delegation between agents? | No | Yes |
+| Do you need to isolate adapter behavior and policy path? | Yes | Sometimes |
+| Do you need to pass a task to another agent runtime? | No | Yes |
+
+## 6. What This Looks Like in a Mature Architecture
+
+In a mature platform, these ideas do not compete. They sit on different layers.
+
+<div class="diagram-card">
+<p>MCP and A2A complement each other instead of replacing each other</p>
+
+``` mermaid
+flowchart LR
+    A["Coordinator agent"] --> B["A2A handoff"]
+    B --> C["Specialist agent"]
+    A --> D["MCP client"]
+    C --> E["MCP client"]
+    D --> F["Tool / resource server"]
+    E --> G["Tool / resource server"]
+```
+
+</div>
+
+The healthy pattern is:
+
+- an agent works with tools through `MCP`;
+- an agent works with another agent through `A2A`;
+- policy and audit should cover both directions.
+
+## 7. When Not to Use A2A
+
+There are a few red flags:
+
+- you want to use a second agent only as an API wrapper;
+- the second agent has no separate policy surface;
+- it has no separate operational identity;
+- it can be described more simply as a capability contract;
+- parallelism and specialization do not produce clear value.
+
+In all those cases, it is better to stay with `MCP` or even an ordinary gateway/adapter layer.
+
+## 8. Minimal Code Sketch
+
+Below is a very small sketch that shows the difference in thinking:
+
+```python
+def call_tool_via_mcp(tool_name: str, payload: dict) -> dict:
+    return {"kind": "tool_result", "tool": tool_name, "payload": payload}
+
+
+def delegate_via_a2a(agent_name: str, task: dict) -> dict:
+    return {"kind": "agent_result", "agent": agent_name, "task": task}
+```
+
+The point is not the code itself, but the interaction type:
+
+- a tool call returns a capability result;
+- an A2A handoff returns the work result of another agent.
+
+Those are different operational semantics, and it is useful not to blur them together.
+
+## 9. Practical Checklist
+
+If you are unsure, ask:
+
+- Do I need a new agent or just a new capability?
+- Does this entity have its own role, policy surface, and lifecycle?
+- Is this a delegation problem or an integration problem?
+- Can I explain why `MCP` is not enough here?
+- Am I building a multi-agent topology earlier than I actually need?
+
+If those questions are hard to answer, it is usually safer to choose `MCP` first, not `A2A`.
+
+## 10. What to Read Next
+
+- [Part IV. Tools and Execution](index.en.md)
+- [Chapter 9. Sandbox Execution and MCP as an Integration Contract](chapter-9.en.md)
+- [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](chapter-10.en.md)
+- [Sources](../../appendix/sources.en.md)
+
+[^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
+[^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
