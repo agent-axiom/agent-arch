@@ -12,8 +12,10 @@
   Небольшой движок политик со структурированными решениями.
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
   Реестр возможностей с описанием эксплуатационной семантики.
+- [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
+  Явная identity агента и approved inventory возможностей, с которыми рантайм вообще имеет право работать.
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
-  Загрузчик YAML для политик, каталога возможностей и политики выкладки.
+  Загрузчик YAML для identity агента, approved inventory, политик, каталога возможностей и политики выкладки.
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
   Типизированные записи памяти, извлечение контекста и in-memory-хранилище с изоляцией по тенантам.
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
@@ -41,6 +43,12 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+```
+
+Просмотр identity агента и approved inventory:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
 Просмотр записей памяти:
@@ -95,14 +103,15 @@ uv run ty check
 
 ## Примерные конфиги
 
-В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат четыре стартовых файла:
+В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат пять стартовых файлов:
 
+- [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в рантайм, движок политик, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, движок политик, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
 ## Почему это полезно
 

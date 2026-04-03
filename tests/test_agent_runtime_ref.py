@@ -9,6 +9,7 @@ from pathlib import Path
 
 from agent_runtime_ref.__main__ import main
 from agent_runtime_ref.config import (
+    load_agent_profile,
     load_capability_catalog,
     load_memory_store,
     load_policy_engine,
@@ -26,17 +27,23 @@ class AgentRuntimeRefTests(unittest.TestCase):
         config_dir = Path("agent_runtime_ref/configs")
         catalog = load_capability_catalog(config_dir / "capabilities.yaml")
         memory = load_memory_store(config_dir / "memory.yaml")
-        policy = load_policy_engine(config_dir / "policy.yaml")
-        runtime = AgentRuntime(catalog=catalog, policy=policy, memory=memory)
+        agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+        policy = load_policy_engine(
+            config_dir / "policy.yaml",
+            approved_inventory=approved_inventory,
+        )
+        runtime = AgentRuntime(catalog=catalog, policy=policy, memory=memory, agent=agent)
         result = runtime.run(
             RunRequest(
                 user_input="Please open a ticket for this issue.",
                 tenant_id="tenant-acme",
                 principal_id="user-7",
                 trace_id="trace-config-001",
+                agent_id=agent.agent_id,
             ),
         )
         self.assertEqual(result.status, "success")
+        self.assertEqual(agent.agent_id, "support-triage-ref")
         self.assertEqual(catalog.get("create_ticket") is not None, True)
         self.assertEqual(policy.allow_memory_write("session_summary").action, "allow")
         self.assertGreaterEqual(len(memory.all()), 4)
@@ -49,6 +56,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
                 tenant_id="tenant-acme",
                 principal_id="user-1",
                 trace_id="trace-plain-001",
+                agent_id="agent-runtime-ref",
             ),
         )
         self.assertEqual(result.status, "success")
@@ -62,6 +70,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
                 tenant_id="tenant-acme",
                 principal_id="user-9",
                 trace_id="trace-pref-001",
+                agent_id="agent-runtime-ref",
             ),
         )
         self.assertEqual(result.status, "success")
@@ -75,6 +84,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
                 tenant_id="tenant-acme",
                 principal_id="user-2",
                 trace_id="trace-ticket-001",
+                agent_id="agent-runtime-ref",
             ),
         )
         self.assertEqual(result.status, "success")
@@ -88,9 +98,38 @@ class AgentRuntimeRefTests(unittest.TestCase):
                 tenant_id="tenant-acme",
                 principal_id="",
                 trace_id="trace-deny-001",
+                agent_id="agent-runtime-ref",
             ),
         )
         self.assertEqual(decision.action, "deny")
+
+    def test_policy_denies_capability_outside_approved_inventory(self) -> None:
+        config_dir = Path("agent_runtime_ref/configs")
+        catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+        memory = load_memory_store(config_dir / "memory.yaml")
+        agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+        restricted_inventory = type(approved_inventory)(frozenset({"search_docs"}))
+        policy = load_policy_engine(
+            config_dir / "policy.yaml",
+            approved_inventory=restricted_inventory,
+        )
+        runtime = AgentRuntime(catalog=catalog, policy=policy, memory=memory, agent=agent)
+        result = runtime.run(
+            RunRequest(
+                user_input="Please open a ticket for this issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-inventory-001",
+                agent_id=agent.agent_id,
+            ),
+        )
+        self.assertEqual(result.status, "success")
+        tool_event = next(
+            event
+            for event in runtime.telemetry.events
+            if event.event_type == "tool_policy_decision"
+        )
+        self.assertEqual(tool_event.payload["reason"], "capability_not_in_inventory")
 
     def test_rollout_gate_requires_all_flags(self) -> None:
         self.assertTrue(
@@ -144,6 +183,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
             exit_code = main([])
         payload = json.loads(buffer.getvalue())
         self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["agent_id"], "support-triage-ref")
         self.assertEqual(payload["status"], "success")
         self.assertGreaterEqual(payload["events"], 1)
         self.assertGreaterEqual(payload["memory_records"], 3)
@@ -162,6 +202,16 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertGreaterEqual(payload["count"], 1)
         self.assertTrue(all(item["memory_class"] == "profile" for item in payload["records"]))
+
+    def test_cli_inspect_agent_returns_identity_and_inventory(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(["inspect-agent"])
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["agent_id"], "support-triage-ref")
+        self.assertIn("create_ticket", payload["approved_capabilities"])
+        self.assertIn("search_docs", payload["catalog_capabilities"])
 
     def test_cli_dump_events_returns_trace_events(self) -> None:
         buffer = io.StringIO()

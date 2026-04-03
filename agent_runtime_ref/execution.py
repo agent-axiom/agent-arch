@@ -33,6 +33,7 @@ def execute_tool(
         "transport": capability.transport,
         "mode": capability.mode,
         "owner": capability.owner,
+        "tool_principal": capability.tool_principal,
     }
     return ToolResult(
         capability_name=tool_request.capability_name,

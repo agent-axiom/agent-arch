@@ -12,8 +12,10 @@
   一个带结构化决策的小型策略引擎。
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
   带有运行语义的能力注册表。
+- [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
+  智能体的显式身份，以及运行时被允许使用的已批准能力清单。
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
-  用来加载策略、能力目录和上线策略的 YAML 加载器。
+  用来加载智能体身份、已批准能力清单、策略、能力目录和上线策略的 YAML 加载器。
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
   类型化记忆记录、检索和按租户隔离的内存存储。
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
@@ -41,6 +43,12 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+```
+
+查看智能体身份与已批准能力清单：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
 查看记忆记录：
@@ -95,14 +103,15 @@ uv run ty check
 
 ## 示例配置
 
-在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有四个起步文件：
+在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有五个起步文件：
 
+- [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进运行时、策略引擎、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、策略引擎、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
 
 ## 为什么它有用
 

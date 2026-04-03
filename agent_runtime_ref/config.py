@@ -6,6 +6,7 @@ from typing import Any
 import yaml
 
 from agent_runtime_ref.catalog import CapabilityCatalog
+from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.rollout import RolloutPolicy
@@ -27,8 +28,20 @@ def load_capability_catalog(path: str | Path) -> CapabilityCatalog:
     return CapabilityCatalog.from_dict(load_yaml_file(path))
 
 
-def load_policy_engine(path: str | Path) -> PolicyEngine:
-    return PolicyEngine.from_dict(load_yaml_file(path))
+def load_agent_profile(path: str | Path) -> tuple[AgentIdentity, ApprovedInventory]:
+    payload = load_yaml_file(path)
+    return load_agent_identity(payload), ApprovedInventory.from_agent_config(payload)
+
+
+def load_policy_engine(
+    path: str | Path,
+    *,
+    approved_inventory: ApprovedInventory | None = None,
+) -> PolicyEngine:
+    engine = PolicyEngine.from_dict(load_yaml_file(path))
+    if approved_inventory is not None:
+        engine.approved_inventory = approved_inventory
+    return engine
 
 
 def load_rollout_policy(path: str | Path) -> RolloutPolicy:

@@ -1,0 +1,8 @@
+agent:
+  id: support-triage-ref
+  display_name: Support Triage Reference Agent
+  owner_team: agent_platform
+  runtime_principal: svc-support-triage-ref
+  approved_capabilities:
+    - search_docs
+    - create_ticket

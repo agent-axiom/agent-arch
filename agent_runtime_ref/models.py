@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from agent_runtime_ref.identity import AgentIdentity
     from agent_runtime_ref.memory import MemoryRecord
 
 
@@ -13,6 +14,7 @@ class RunRequest:
     tenant_id: str
     principal_id: str
     trace_id: str
+    agent_id: str = "agent-runtime-ref"
 
 
 @dataclass(slots=True)
@@ -20,6 +22,7 @@ class RunContext:
     tenant_id: str
     principal_id: str
     trace_id: str
+    agent: "AgentIdentity | None" = None
     retrieved_context: list[str] = field(default_factory=list)
     retrieved_records: list[MemoryRecord] = field(default_factory=list)
     tool_results: list["ToolResult"] = field(default_factory=list)

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from agent_runtime_ref.catalog import CapabilitySpec
+from agent_runtime_ref.identity import ApprovedInventory
 from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
 
 
@@ -30,11 +31,13 @@ class PolicyEngine:
         deny_if_principal_missing: bool = True,
         capability_policies: Mapping[str, CapabilityPolicy] | None = None,
         allowed_memory_kinds: set[str] | None = None,
+        approved_inventory: ApprovedInventory | None = None,
     ) -> None:
         self.require_tenant = require_tenant
         self.deny_if_principal_missing = deny_if_principal_missing
         self.capability_policies = dict(capability_policies or {})
         self.allowed_memory_kinds = allowed_memory_kinds or {"validated_fact", "session_summary"}
+        self.approved_inventory = approved_inventory
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PolicyEngine":
@@ -82,6 +85,8 @@ class PolicyEngine:
             return PolicyDecision("deny", "tenant_missing", "run_001")
         if self.deny_if_principal_missing and not request.principal_id:
             return PolicyDecision("deny", "principal_missing", "run_002")
+        if not request.agent_id:
+            return PolicyDecision("deny", "agent_identity_missing", "run_003")
         return PolicyDecision("allow", "run_context_valid", "run_010")
 
     def evaluate_tool(
@@ -91,6 +96,10 @@ class PolicyEngine:
         capability: CapabilitySpec | None,
     ) -> PolicyDecision:
         del context
+        if self.approved_inventory is not None and not self.approved_inventory.allows(
+            tool_request.capability_name,
+        ):
+            return PolicyDecision("deny", "capability_not_in_inventory", "cap_403")
         configured = self.capability_policies.get(tool_request.capability_name)
         if configured is not None:
             if configured.decision == "allow":

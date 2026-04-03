@@ -42,12 +42,13 @@ The repository now includes a minimal runnable skeleton package:
 .venv/bin/python -m agent_runtime_ref
 ```
 
-It contains a tiny reference runtime, policy layer, capability catalog, memory layer, background maintenance path, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Parts III and VII of the book.
+It contains a tiny reference runtime, policy layer, capability catalog, explicit agent identity, approved capability inventory, memory layer, background maintenance path, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Parts III and VII of the book.
 
 You can also run the explicit demo commands:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref inspect-agent
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl

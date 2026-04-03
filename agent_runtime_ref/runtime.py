@@ -5,6 +5,7 @@ from typing import cast
 from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.execution import execute_tool
+from agent_runtime_ref.identity import AgentIdentity
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import (
     ModelOutput,
@@ -28,11 +29,18 @@ class AgentRuntime:
         telemetry: TelemetryEmitter | None = None,
         memory: MemoryStore | None = None,
         background: BackgroundWorker | None = None,
+        agent: AgentIdentity | None = None,
     ) -> None:
         self.catalog = catalog or CapabilityCatalog()
         self.policy = policy or PolicyEngine()
         self.telemetry = telemetry or TelemetryEmitter()
         self.memory = memory or MemoryStore()
+        self.agent = agent or AgentIdentity(
+            agent_id="agent-runtime-ref",
+            display_name="Reference Runtime",
+            owner_team="agent_platform",
+            runtime_principal="svc-agent-runtime-ref",
+        )
         self.background = background or BackgroundWorker(
             memory_store=self.memory,
             policy=self.policy,
@@ -46,6 +54,8 @@ class AgentRuntime:
             user_input=request.user_input,
             tenant_id=request.tenant_id,
             principal_id=request.principal_id,
+            agent_id=request.agent_id,
+            runtime_principal=self.agent.runtime_principal,
         )
         precheck = self.policy.precheck(request)
         self.telemetry.emit(
@@ -54,6 +64,7 @@ class AgentRuntime:
             action=precheck.action,
             reason=precheck.reason,
             policy_id=precheck.policy_id,
+            agent_id=request.agent_id,
         )
         if precheck.action != "allow":
             result = RunResult(output_text="Request denied by policy.", status="denied")
@@ -69,6 +80,7 @@ class AgentRuntime:
             tenant_id=request.tenant_id,
             principal_id=request.principal_id,
             trace_id=request.trace_id,
+            agent=self.agent,
         )
         context.retrieved_records = self.memory.retrieve(
             request.user_input,
@@ -107,6 +119,7 @@ class AgentRuntime:
             records=str(len(context.retrieved_records)),
         )
         return [
+            f"agent_id={request.agent_id}",
             f"tenant={request.tenant_id}",
             *[record.content for record in context.retrieved_records],
         ]
@@ -162,6 +175,7 @@ class AgentRuntime:
         self.telemetry.emit(
             "tool_policy_decision",
             request.trace_id,
+            agent_id=request.agent_id,
             capability=tool_request.capability_name,
             action=decision.action,
             reason=decision.reason,
@@ -191,6 +205,7 @@ class AgentRuntime:
             request.trace_id,
             capability=tool_result.capability_name,
             status=tool_result.status,
+            tool_principal=tool_result.payload.get("tool_principal", "n/a"),
         )
         return decision
 

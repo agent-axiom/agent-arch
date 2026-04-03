@@ -11,6 +11,7 @@ class CapabilitySpec:
     mode: str
     transport: str
     timeout_seconds: int
+    tool_principal: str
     approval_required: bool = False
     idempotency_key_required: bool = False
 
@@ -30,6 +31,7 @@ class CapabilityCatalog:
                 mode="read",
                 transport="mcp",
                 timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
             ),
             "create_ticket": CapabilitySpec(
                 name="create_ticket",
@@ -37,6 +39,7 @@ class CapabilityCatalog:
                 mode="write",
                 transport="gateway",
                 timeout_seconds=15,
+                tool_principal="svc-ticket-writer",
                 approval_required=True,
                 idempotency_key_required=True,
             ),
@@ -59,6 +62,7 @@ class CapabilityCatalog:
                 mode=str(raw_spec.get("mode", "read")),
                 transport=str(raw_spec.get("transport", "gateway")),
                 timeout_seconds=int(raw_spec.get("timeout_seconds", 10)),
+                tool_principal=str(raw_spec.get("tool_principal", "svc-unknown")),
                 approval_required=approval != "none",
                 idempotency_key_required=bool(raw_spec.get("idempotency_key_required", False)),
             )

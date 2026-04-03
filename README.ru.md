@@ -40,12 +40,13 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, слой памяти, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
+Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, явная identity агента, approved inventory возможностей, слой памяти, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
 
 Можно запускать и более наглядные демонстрационные команды:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref inspect-agent
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl

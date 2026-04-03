@@ -12,8 +12,10 @@ Its job is not to become a production framework. It exists as a minimal code anc
   A small policy engine with structured decisions.
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
   A capability registry with operational semantics.
+- [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
+  Explicit agent identity and the approved capability inventory the runtime is allowed to use.
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
-  A YAML loader for policy, capability catalog, and rollout policy.
+  A YAML loader for agent identity, approved inventory, policy, capability catalog, and rollout policy.
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
   Typed memory records, retrieval, and a tenant-scoped in-memory store.
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
@@ -41,6 +43,12 @@ Explicit runtime execution via subcommand:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+```
+
+Inspect the agent identity and approved inventory:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
 Inspect memory records:
@@ -95,14 +103,15 @@ uv run ty check
 
 ## Sample Configs
 
-There are four starter files in [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs):
+There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs):
 
+- [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-These are no longer just static examples. `config.py` can load those YAML files into the runtime, the policy engine, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
+These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, the policy engine, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
 
 ## Why This Is Useful
 

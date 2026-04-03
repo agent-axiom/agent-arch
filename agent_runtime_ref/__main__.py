@@ -8,6 +8,7 @@ from pathlib import Path
 
 from agent_runtime_ref.config import (
     default_config_dir,
+    load_agent_profile,
     load_capability_catalog,
     load_memory_store,
     load_policy_engine,
@@ -32,10 +33,15 @@ def _parse_signal(raw_signal: str) -> tuple[str, bool]:
 
 
 def _build_runtime(config_dir: Path) -> AgentRuntime:
+    agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     return AgentRuntime(
+        agent=agent,
         catalog=load_capability_catalog(config_dir / "capabilities.yaml"),
         memory=load_memory_store(config_dir / "memory.yaml"),
-        policy=load_policy_engine(config_dir / "policy.yaml"),
+        policy=load_policy_engine(
+            config_dir / "policy.yaml",
+            approved_inventory=approved_inventory,
+        ),
     )
 
 
@@ -46,6 +52,7 @@ def _run_runtime(
     tenant_id: str,
     principal_id: str,
     trace_id: str,
+    agent_id: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     runtime = _build_runtime(config_dir)
     result = runtime.run(
@@ -54,6 +61,7 @@ def _run_runtime(
             tenant_id=tenant_id,
             principal_id=principal_id,
             trace_id=trace_id,
+            agent_id=agent_id or runtime.agent.agent_id,
         ),
     )
     return runtime, result
@@ -78,8 +86,10 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        agent_id=args.agent_id,
     )
     return {
+        "agent_id": runtime.agent.agent_id,
         "result": result.output_text,
         "status": result.status,
         "trace_id": args.trace_id,
@@ -117,6 +127,20 @@ def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+    catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+    return {
+        "agent_id": agent.agent_id,
+        "display_name": agent.display_name,
+        "owner_team": agent.owner_team,
+        "runtime_principal": agent.runtime_principal,
+        "approved_capabilities": sorted(approved_inventory.capabilities),
+        "catalog_capabilities": sorted(spec.name for spec in catalog.all()),
+    }
+
+
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     runtime, result = _run_runtime(
@@ -125,6 +149,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        agent_id=args.agent_id,
     )
     return {
         "status": result.status,
@@ -143,6 +168,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        agent_id=args.agent_id,
     )
     output_path = runtime.telemetry.export_jsonl(args.output)
     return {
@@ -181,6 +207,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=run_start.payload["tenant_id"],
         principal_id=run_start.payload["principal_id"],
         trace_id=replay_trace_id,
+        agent_id=run_start.payload.get("agent_id"),
     )
     return {
         "source_trace_id": source_trace_id,
@@ -225,6 +252,7 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--tenant-id", default="tenant-acme")
     simulate.add_argument("--principal-id", default="user-42")
     simulate.add_argument("--trace-id", default="trace-demo-001")
+    simulate.add_argument("--agent-id", default=None)
 
     inspect_memory = subparsers.add_parser(
         "inspect-memory",
@@ -238,6 +266,16 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_memory.add_argument("--tenant-id", default="tenant-acme")
     inspect_memory.add_argument("--memory-class", default=None)
     inspect_memory.add_argument("--limit", type=int, default=None)
+
+    inspect_agent = subparsers.add_parser(
+        "inspect-agent",
+        help="Inspect agent identity and approved capability inventory",
+    )
+    inspect_agent.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with agent.yaml and capabilities.yaml",
+    )
 
     dump_events = subparsers.add_parser(
         "dump-events",
@@ -255,6 +293,7 @@ def build_parser() -> argparse.ArgumentParser:
     dump_events.add_argument("--tenant-id", default="tenant-acme")
     dump_events.add_argument("--principal-id", default="user-42")
     dump_events.add_argument("--trace-id", default="trace-demo-001")
+    dump_events.add_argument("--agent-id", default=None)
 
     export_events = subparsers.add_parser(
         "export-events",
@@ -272,6 +311,7 @@ def build_parser() -> argparse.ArgumentParser:
     export_events.add_argument("--tenant-id", default="tenant-acme")
     export_events.add_argument("--principal-id", default="user-42")
     export_events.add_argument("--trace-id", default="trace-demo-001")
+    export_events.add_argument("--agent-id", default=None)
     export_events.add_argument(
         "--output",
         default="artifacts/trace-demo-001.jsonl",
@@ -348,6 +388,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _simulate_run(args)
     elif command == "inspect-memory":
         payload = _inspect_memory(args)
+    elif command == "inspect-agent":
+        payload = _inspect_agent(args)
     elif command == "dump-events":
         payload = _dump_events(args)
     elif command == "export-events":
