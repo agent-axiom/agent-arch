@@ -6,6 +6,28 @@ After the first chapter, you should already have the intuition for why "just a s
 
 That is what a reference architecture is for. Not as dogma, but as a baseline.
 
+It is also useful to keep two complementary frames in your head from the start.
+
+The OpenAI practical guide gives a minimal starting triad:
+
+- `model`
+- `tools`
+- `instructions`
+
+That is the smallest shape of an agent system. But it is not yet a production platform.
+
+### 1.1. The Five Pillars of a Production Platform
+
+Recent Google Cloud material is useful because it describes the move from prototype to production through five platform pillars, not through one "smart agent."[^google-five-pillars]
+
+- `framework`: where orchestration and run lifecycle are defined;
+- `model`: how the agent reasons and how model choice is controlled;
+- `tools`: how the agent reads and acts in the external world;
+- `runtime`: where all of this executes, scales, and is observed;
+- `trust`: how risk, permissions, and data leakage are constrained.
+
+This is a valuable frame because it quickly removes unnecessary magic. If you only have a model and a prompt, but no runtime and no trust layer, you do not yet have a platform. You have a demo.
+
 ## 2. Top View: What the Platform Consists Of
 
 Below is a diagram that works well as a starting map.
@@ -56,6 +78,25 @@ The minimally useful set:
 - trace id.
 
 In short: **the request should enter the system not as a message, but as a managed execution context**.
+
+### 3.1. Why Context Layers Should Be Explicitly Designed
+
+Another useful Google idea is context layering. It disciplines prompt assembly because it stops you from throwing every available piece of context into one bag.[^google-agent-overview][^google-govern]
+
+In practice, it is usually enough to separate at least four layers:
+
+- `static context`: role, policies, allowed capabilities, fixed instructions;
+- `session context`: what belongs to the current session or thread;
+- `turn context`: what belongs only to the current request;
+- `cached context`: data that can be selectively injected instead of always carried forward.
+
+This matters for three reasons:
+
+- you manage prompt budget better;
+- it becomes easier to explain where a decision came from;
+- you can update or delete parts of context without accidentally breaking the whole chain.
+
+A good practical rule here is simple: **the prompt should contain not all available data, but only data with a clear purpose and a clear lifetime**.
 
 ## 4. Why the Control Plane Matters More Than It Seems
 
@@ -212,3 +253,6 @@ Once those are in place, you can move calmly to the more nervous topic: where ex
 [^langgraph-hitl]: [LangChain Deep Agents, Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 [^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
+[^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

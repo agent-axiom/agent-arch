@@ -14,6 +14,18 @@
 
 Дальше к этой тройке уже наращиваются control plane, memory, policy и telemetry. Но если ты теряешь эту основу из вида, архитектура начинает раздуваться быстрее, чем становится понятнее.
 
+### 1.1. Пять опор production-grade платформы
+
+Свежие материалы Google Cloud полезны тем, что раскладывают путь от прототипа к production не вокруг “одного умного агента”, а вокруг пяти опор платформы.[^google-five-pillars]
+
+- `framework`: где ты задаешь orchestration и жизненный цикл run;
+- `model`: чем агент думает и как выбирается модель под задачу;
+- `tools`: чем агент читает и действует во внешнем мире;
+- `runtime`: где все это исполняется, масштабируется и наблюдается;
+- `trust`: как ты ограничиваешь риски, права и утечки.
+
+Это хорошая рамка потому, что она быстро отрезает лишнюю магию. Если у тебя есть только модель и prompt, но нет runtime и trust, у тебя еще не платформа, а демонстрация.
+
 ## 2. Вид сверху: из чего состоит платформа
 
 Ниже схема, на которую удобно опираться как на стартовую карту.
@@ -64,6 +76,25 @@ flowchart TB
 - trace id.
 
 Если говорить совсем коротко: **запрос должен входить в систему уже не как сообщение, а как управляемый execution context**.
+
+### 3.1. Почему context layers стоит проектировать явно
+
+Еще одна практическая идея из Google полезна тем, что дисциплинирует prompt assembly: не надо сваливать весь контекст в одну кучу.[^google-agent-overview][^google-govern]
+
+Обычно достаточно явно развести хотя бы четыре слоя:
+
+- `static context`: role, policies, allowed capabilities, fixed instructions;
+- `session context`: что происходит в рамках текущей сессии или треда;
+- `turn context`: что относится только к текущему запросу;
+- `cached context`: то, что полезно подмешивать выборочно, а не всегда.
+
+Это важно по трем причинам:
+
+- ты лучше управляешь prompt budget;
+- легче объяснить, откуда именно взялось то или иное решение агента;
+- проще удалять или обновлять куски контекста без случайного разрушения всей цепочки.
+
+Хороший practical rule тут очень простой: **в prompt должны попадать не все доступные данные, а только данные с понятным назначением и сроком жизни**.
 
 ## 4. Почему control plane важнее, чем кажется
 
@@ -234,3 +265,6 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
+[^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

@@ -6,6 +6,28 @@
 
 这就是 reference architecture 的意义。不是作为教条，而是作为 baseline。
 
+从一开始就把两套互补的框架放在脑子里，会很有帮助。
+
+OpenAI 的 practical guide 给出的是最小起点：
+
+- `model`
+- `tools`
+- `instructions`
+
+这三样勾勒出一个 agent system 的最小形状，但它还不是 production platform。
+
+### 1.1. Production 平台的五大支柱
+
+Google Cloud 最近的材料有价值的地方在于，它不是围绕“一个聪明 agent”来讲扩展，而是围绕五个支柱来讲如何从 prototype 走向 production。[^google-five-pillars]
+
+- `framework`：定义 orchestration 与 run lifecycle 的地方；
+- `model`：智能体如何推理，以及模型选择如何被控制；
+- `tools`：智能体如何读取信息、如何对外行动；
+- `runtime`：这些东西在哪里执行、扩展、被观测；
+- `trust`：风险、权限与数据泄漏如何被限制。
+
+这个框架很有价值，因为它能快速去掉多余的“魔法感”。如果你只有 model 和 prompt，却没有 runtime 和 trust layer，那么你拥有的还不是平台，而只是一个 demo。
+
 ## 2. 顶层视角：平台由什么组成
 
 下面这张图可以作为很好的起始地图。
@@ -56,6 +78,25 @@ flowchart TB
 - trace id。
 
 如果用一句话说：**请求进入系统时，应该已经不是一条消息，而是一个可管理的 execution context。**
+
+### 3.1. 为什么应该显式设计 context layers
+
+Google 另一条很实用的思路是 context layering。它会让 prompt assembly 更有纪律，因为它阻止你把所有可用上下文一股脑塞进同一个袋子里。[^google-agent-overview][^google-govern]
+
+在实践里，通常至少要分清四层：
+
+- `static context`：role、policies、allowed capabilities、固定 instructions；
+- `session context`：当前 session 或 thread 里持续有效的上下文；
+- `turn context`：只属于当前这一次请求的上下文；
+- `cached context`：可以按需注入、而不是每次都带上的上下文。
+
+这样做至少有三个直接好处：
+
+- 更容易控制 prompt budget；
+- 更容易解释某个决策到底来自哪一层上下文；
+- 更新或删除上下文时，不容易意外破坏整条链路。
+
+这里有一个很好用的 practical rule：**进入 prompt 的不应该是“所有拿得到的数据”，而应该是“用途和生命周期都清楚的数据”。**
 
 ## 4. 为什么 control plane 比看上去更重要
 
@@ -212,3 +253,6 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^langgraph-hitl]: [LangChain Deep Agents, Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 [^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 [^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
+[^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
