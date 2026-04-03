@@ -67,6 +67,33 @@ flowchart LR
 
 </div>
 
+## 4.1. User simulator полезен там, где статичных кейсов уже мало
+
+Свежие материалы Google хорошо подсвечивают еще один практический слой: evaluation loop полезно дополнять user simulator, а не полагаться только на фиксированный набор тестов.[^google-govern]
+
+Это особенно полезно, когда ты хочешь проверить:
+
+- как агент ведет себя в длинном диалоге;
+- как меняется поведение после неидеальных ответов;
+- умеет ли система корректно переспрашивать;
+- не ломается ли policy path в многоходовом сценарии;
+- не деградирует ли orchestration при вариативных пользовательских репликах.
+
+Static eval set хорош для сравнения known cases. User simulator полезен там, где тебе важна динамика поведения, а не только итоговый score на заранее подготовленном примере.
+
+## 4.2. Continuous eval loop должен замыкаться в rollout decisions
+
+Когда online evals, trace grading и simulated conversations уже есть, следующий важный шаг очень простой: результаты должны не просто собираться, а влиять на release process.
+
+Хорошая operational схема обычно выглядит так:
+
+- offline evals блокируют явные regressions до релиза;
+- user simulator помогает проверить сценарии, которые трудно удержать в статичном dataset;
+- online evals и trace grading ловят drift и новые failure modes;
+- rollout gates решают, можно ли расширять выкладку дальше.
+
+То есть eval loop полезно мыслить не как “отдельную аналитическую активность”, а как часть управляемого change management.
+
 ## 5. Trace grading особенно полезен для агентных систем
 
 В обычных приложениях часто хватает business KPI и error rate. В агентных системах этого мало, потому что качество часто сидит внутри run, а не только в финальном ответе.
@@ -173,6 +200,25 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Тогда online evals становятся не просто наблюдением “что-то пошло не так”, а контролируемым этапом выпуска.
 
+### 10.1. Хороший simulator не заменяет реальные данные, а дополняет их
+
+Важно не переоценивать user simulator.
+
+Он не заменяет:
+
+- реальные production traces;
+- реальные complaint patterns;
+- реальные cost and latency distributions;
+- реальные incident postmortems.
+
+Но он очень полезен как промежуточный слой между offline dataset и живым rollout, потому что позволяет быстрее проверить:
+
+- conversational robustness;
+- handoff behavior;
+- escalation discipline;
+- fallback quality;
+- policy-sensitive turns.
+
 ## 11. Что чаще всего ломается в eval culture
 
 Проблемы тут довольно типовые:
@@ -207,3 +253,5 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)
 - [Часть V. Надежность и observability](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

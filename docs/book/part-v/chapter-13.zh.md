@@ -67,6 +67,33 @@ flowchart LR
 
 </div>
 
+## 4.1. 当静态案例不够时，user simulator 很有价值
+
+Google 最近的材料还强调了一个很实用的层次：eval loop 最好不要只靠固定 test set，还可以补上一层 user simulator。[^google-govern]
+
+这在下面这些问题上特别有帮助：
+
+- agent 在长对话里会怎么表现；
+- 回答不完美之后行为会不会跑偏；
+- 系统会不会正确发起澄清；
+- 多轮场景里 policy path 会不会断掉；
+- 用户说法更有变化时 orchestration 会不会退化。
+
+Static eval set 很适合比较 known cases。User simulator 更适合检查行为动态，而不只是看一个预设样例上的分数。
+
+## 4.2. Continuous eval loop 应该反过来影响 rollout decisions
+
+当你已经有了 online evals、trace grading 和 simulated conversations，下一步就很关键：这些结果不能只是被记录下来，它们应该真正影响 release process。
+
+一个健康的 operational 模型通常是：
+
+- offline evals 在发布前拦住明显 regressions；
+- user simulator 帮你测试那些难以固化进静态 dataset 的场景；
+- online evals 和 trace grading 捕捉 drift 与新 failure modes；
+- rollout gates 决定是否继续扩大暴露范围。
+
+也就是说，eval loop 最好不要被看成“独立的分析活动”，而应该被视为 change management 的一部分。
+
 ## 5. Trace grading 对 agent systems 特别有价值
 
 普通应用往往只要 business KPI 和 error rate 就够了。Agent systems 不行，因为质量经常藏在 run 内部，而不只在最终答案上。
@@ -169,6 +196,25 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 这样 online evals 就不只是“上线后看看会不会出事”，而是 release process 中的受控阶段。
 
+### 10.1. 好的 simulator 不会替代真实数据，只会补充真实数据
+
+也要注意不要高估 user simulator。
+
+它不能替代：
+
+- 真实 production traces；
+- 真实 complaint patterns；
+- 真实的 cost 与 latency distributions；
+- 真实 incident postmortems。
+
+但它很适合作为 offline dataset 和 live rollout 之间的中间层，因为它能更快帮助你检查：
+
+- conversational robustness；
+- handoff behavior；
+- escalation discipline；
+- fallback quality；
+- policy-sensitive turns。
+
 ## 11. Eval culture 最常见的崩坏点
 
 这些问题很常见：
@@ -202,3 +248,5 @@ Part V 到这里已经是一个完整的 operational block：traces、SLO 和 ev
 - [第 12 章：智能体系统的 SLO](chapter-12.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.md)
+
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)

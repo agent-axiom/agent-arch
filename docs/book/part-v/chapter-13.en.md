@@ -67,6 +67,33 @@ flowchart LR
 
 </div>
 
+## 4.1. A User Simulator Helps When Static Cases Stop Being Enough
+
+Recent Google material highlights one more practical layer: it is useful to complement the eval loop with a user simulator instead of relying only on a fixed test set.[^google-govern]
+
+That becomes especially useful when you want to check:
+
+- how the agent behaves across a long dialog;
+- how behavior changes after imperfect answers;
+- whether the system asks clarifying questions well;
+- whether the policy path survives multi-turn scenarios;
+- whether orchestration degrades when user turns become more variable.
+
+A static eval set is great for comparing known cases. A user simulator is useful when you care about the dynamics of behavior, not only the score on a prepared example.
+
+## 4.2. The Continuous Eval Loop Should Feed Rollout Decisions
+
+Once you already have online evals, trace grading, and simulated conversations, the next important step is simple: the results should not just be collected. They should influence the release process.
+
+A healthy operational model usually looks like this:
+
+- offline evals block obvious regressions before release;
+- a user simulator helps test scenarios that are hard to preserve inside a static dataset;
+- online evals and trace grading catch drift and new failure modes;
+- rollout gates decide whether exposure can expand further.
+
+That means the eval loop is better treated not as a separate analytics activity, but as part of controlled change management.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.
@@ -169,6 +196,25 @@ It is very useful not to ship large changes to everyone at once, but to use:
 
 That way online evals become not just "something went wrong", but a controlled release stage.
 
+### 10.1. A Good Simulator Does Not Replace Real Data, It Complements It
+
+It is important not to overestimate a user simulator.
+
+It does not replace:
+
+- real production traces;
+- real complaint patterns;
+- real cost and latency distributions;
+- real incident postmortems.
+
+But it is very useful as an intermediate layer between an offline dataset and live rollout, because it lets you check more quickly:
+
+- conversational robustness;
+- handoff behavior;
+- escalation discipline;
+- fallback quality;
+- policy-sensitive turns.
+
 ## 11. What Usually Breaks in Eval Culture
 
 These failures are very typical:
@@ -202,3 +248,5 @@ Part V now looks like a coherent operational block: traces, SLO, and the eval lo
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.md)
+
+[^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
