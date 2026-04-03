@@ -114,6 +114,23 @@ The right way to reduce that zoo is not by banning everything. It is by putting 
 - platform review for risky deviations;
 - a deprecation policy for old bypass paths.
 
+### 6.1. A Registry of Approved Patterns Helps Not Only With Control, but Also With Speed
+
+When the platform has a live list of approved patterns, product teams can answer two common questions much faster:
+
+1. What can be used without separate review?
+2. What already counts as a risky deviation?
+
+A good registry usually contains:
+
+- supported runtime templates;
+- approved gateways;
+- approved capability classes;
+- allowed connector patterns;
+- deprecated local bypasses.
+
+This is useful not only for the security team. It also speeds up engineering work because teams do not start from scratch every time.
+
 ## 7. Example Platform Defaults Policy
 
 Here is a practical template that makes golden paths and deviations explicit:
@@ -137,6 +154,19 @@ platform_defaults:
 ```
 
 That policy does not kill speed. It removes ambiguity.
+
+### 7.1. Registry and Deprecation Policy Should Live Together
+
+A weak pattern looks like this: the platform has "recommended paths," but no formal list of what is no longer acceptable.
+
+A much stronger setup is the combination of:
+
+- an approved registry;
+- visible deviations;
+- deprecation windows;
+- a review path for exceptions.
+
+That is what keeps an anti-zoo strategy from turning into an endless plea to "please use the standard path."
 
 ## 8. Shared Gateways Help Not Only With Safety, but Also With Speed of Evolution
 
@@ -175,6 +205,17 @@ Useful operational metrics here are:
 - time to deprecate unsafe patterns.
 
 That is much more useful than simply counting "how many teams use the platform."
+
+### 10.1. Inventory Drift Is Worth Measuring on Its Own
+
+It is also useful to track drift inside the platform inventory itself:
+
+- how many runtimes are not registered;
+- how many active agents live outside approved templates;
+- how many connectors have no owner;
+- how many deviations remain beyond their review window.
+
+If those numbers rise, the anti-zoo strategy may still exist formally, but it is already losing in practice.
 
 ## 11. Practical Checklist
 

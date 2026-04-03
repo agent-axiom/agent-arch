@@ -103,6 +103,21 @@ It is very useful to decide early who owns what:
 
 If ownership is fuzzy, almost any incident turns into a long organizational ping-pong game.
 
+### 6.1. Platform Inventory Should Have an Owner Too
+
+One useful Google lesson here is that governance does not stop at a policy framework. A platform also needs an explicit inventory of what the organization is actually running.[^google-ai-controls][^google-agent-overview]
+
+At minimum, it is useful to see:
+
+- which agent runtimes exist;
+- which capabilities are approved;
+- which gateways are considered approved;
+- which connectors and secrets are in use;
+- which deviations are active;
+- who owns each of those objects.
+
+Without that inventory, a platform almost inevitably drifts into rumor-driven governance: everything looks "under control" until an incident reveals that nobody really knows which agents and tools are operating in production.
+
 ## 7. Not Every Deviation Should Be Forbidden, But It Should Be Intentional
 
 Sometimes a product team really does need a special case:
@@ -144,6 +159,32 @@ governance:
 
 That YAML will not solve every organizational problem, but it is very good at removing the endless question: "who is actually supposed to decide this?"
 
+### 8.1. An Approved Registry Is Nearly as Important as a Policy Schema
+
+Teams often discuss policy in detail, but barely discuss the registry. Yet the registry answers:
+
+- what is actually platform-approved;
+- what may run without additional review;
+- what currently lives in the exception zone;
+- what should already be retired.
+
+A simple example:
+
+```yaml
+registry:
+  approved_runtimes:
+    - agent_runtime_v3
+    - workflow_runtime_v2
+  approved_gateways:
+    - shared_tool_gateway
+    - approval_gateway
+  deprecated_patterns:
+    - direct_prod_tool_access
+    - local_policy_engine_without_audit
+```
+
+That registry does not replace governance. It makes governance executable.
+
 ## 9. A Platform Should Be Measured by How Much Chaos It Removes
 
 It is important not to fall into vanity metrics like:
@@ -161,6 +202,20 @@ A strong platform should reduce:
 - the number of unsafe deviations.
 
 Otherwise you can build a lot and still fail to get systemically better.
+
+### 9.1. Continuous Controls Are Better Than One-Time Reviews
+
+Another practical upgrade is to catch risky changes not only through manual approvals, but also through continuous controls.
+
+For example, the platform can automatically check:
+
+- whether direct tool access appeared outside the gateway;
+- whether a new connector exists without an owner;
+- whether a runtime drifted away from an approved template;
+- whether a new secret scope appeared without review;
+- whether a deprecated pattern is still alive past its deadline.
+
+That matters because platform governance usually breaks not during the nice architecture presentation, but months later through quiet exceptions and bypasses.
 
 ## 10. What Usually Breaks in the Operating Model
 
@@ -196,3 +251,6 @@ The next natural step in this part is to look at how to build shared gateways, r
 - [Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns](chapter-15.en.md)
 - [Part VI. Operating Model](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

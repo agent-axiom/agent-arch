@@ -103,6 +103,21 @@ flowchart LR
 
 如果 ownership 很模糊，几乎任何 incident 最后都会变成一场很长的组织性乒乓球。
 
+### 6.1. Platform inventory 也应该有人拥有
+
+Google 这里一个很实用的提醒是：governance 不应停留在 policy framework。平台还需要一份明确的 inventory，说明组织里到底在运行什么。[^google-ai-controls][^google-agent-overview]
+
+至少最好看见这些东西：
+
+- 现在有哪些 agent runtimes；
+- 哪些 capabilities 是 approved 的；
+- 哪些 gateways 被视为 approved；
+- 哪些 connectors 和 secrets 正在被使用；
+- 哪些 deviations 仍然活跃；
+- 每个对象的 owner 是谁。
+
+如果没有这份 inventory，平台几乎注定会滑向“凭印象治理”：表面上大家都觉得“事情是可控的”，直到 incident 发生，才发现根本没人真正知道 production 里到底跑着哪些 agents 和 tools。
+
 ## 7. 不是所有 deviation 都要禁止，但它们必须是有意识的
 
 有时候产品团队确实需要一个 special case：
@@ -144,6 +159,32 @@ governance:
 
 这段 YAML 不能解决所有组织问题，但它很擅长解决一个永恒的问题：“这件事到底该谁拍板？”
 
+### 8.1. Approved registry 几乎和 policy schema 一样重要
+
+团队通常会认真讨论 policy，却很少认真讨论 registry。但 registry 实际上回答的是：
+
+- 什么才算 platform-approved；
+- 什么可以不经额外 review 直接运行；
+- 什么目前处于 exception zone；
+- 什么已经应该退出使用。
+
+一个简单例子：
+
+```yaml
+registry:
+  approved_runtimes:
+    - agent_runtime_v3
+    - workflow_runtime_v2
+  approved_gateways:
+    - shared_tool_gateway
+    - approval_gateway
+  deprecated_patterns:
+    - direct_prod_tool_access
+    - local_policy_engine_without_audit
+```
+
+这个 registry 不会替代 governance，但它会让 governance 变得可执行。
+
 ## 9. 平台的衡量标准不该是功能数量，而是它减少了多少混乱
 
 很重要的一点是，不要掉进 vanity metrics 的陷阱，比如：
@@ -161,6 +202,20 @@ governance:
 - unsafe deviations 的数量。
 
 不然你可能建设了很多东西，但系统并没有变得更好。
+
+### 9.1. Continuous controls 比一次性 review 更可靠
+
+另一个很有用的升级是：不要只靠人工审批去抓 risky changes，还要靠 continuous controls。
+
+比如平台可以自动检查：
+
+- 是否出现了绕过 gateway 的 direct tool access；
+- 是否出现了没有 owner 的 connector；
+- 某个 runtime 是否偏离了 approved template；
+- 是否出现了未经 review 的新 secret scope；
+- deprecated pattern 是否超过了下线期限还在运行。
+
+这很重要，因为 platform governance 通常不是在架构宣讲当天坏掉，而是几个月后被一连串安静的 exceptions 和 bypasses 慢慢掏空。
 
 ## 10. Operating model 最常坏在哪里
 
@@ -196,3 +251,6 @@ governance:
 - [第 15 章：Golden Paths、Shared Gateways 与 Anti-Zoo Patterns](chapter-15.zh.md)
 - [第六部分：组织模型](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

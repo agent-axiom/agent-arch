@@ -103,6 +103,21 @@ Golden path обычно включает:
 
 Если ownership размыт, почти любой инцидент превращается в длинный организационный пинг-понг.
 
+### 6.1. Platform inventory тоже должен быть owned
+
+Полезная мысль из Google здесь в том, что governance не заканчивается на policy framework. У платформы должен быть еще и явный inventory того, чем организация вообще пользуется.[^google-ai-controls][^google-agent-overview]
+
+Минимально полезно видеть хотя бы:
+
+- какие agent runtimes существуют;
+- какие capabilities разрешены;
+- какие gateways считаются approved;
+- какие connectors и secrets используются;
+- какие deviations активны;
+- кто owner у каждого из этих объектов.
+
+Если такого inventory нет, платформа почти неизбежно начинает жить в режиме слухов: кажется, что “все под контролем”, пока не случается инцидент и не выясняется, что никто не знает, какие именно агенты и инструменты вообще работают в production.
+
 ## 7. Не все отклонения от платформы нужно запрещать, но их нужно делать осознанными
 
 Иногда продуктовой команде правда нужен special case:
@@ -144,6 +159,32 @@ governance:
 
 Такой YAML не решает все организационные проблемы, но он очень хорошо снимает вечный вопрос “а кто вообще это должен решать?”.
 
+### 8.1. Approved registry полезен не меньше, чем policy schema
+
+Очень часто команды хорошо обсуждают policy, но почти не обсуждают registry. А именно registry отвечает на вопрос:
+
+- что вообще считается platform-approved;
+- что можно запускать без дополнительного review;
+- что находится в exception zone;
+- что уже должно быть выведено из эксплуатации.
+
+Простой пример:
+
+```yaml
+registry:
+  approved_runtimes:
+    - agent_runtime_v3
+    - workflow_runtime_v2
+  approved_gateways:
+    - shared_tool_gateway
+    - approval_gateway
+  deprecated_patterns:
+    - direct_prod_tool_access
+    - local_policy_engine_without_audit
+```
+
+Такой registry не заменяет governance. Он делает governance исполнимым.
+
 ## 9. Платформа должна измеряться не числом фич, а снижением хаоса
 
 Очень важно не попадать в ловушку vanity metrics вроде:
@@ -161,6 +202,20 @@ governance:
 - число unsafe deviations.
 
 Иначе ты можешь много строить, но не становиться системно лучше.
+
+### 9.1. Continuous controls лучше разовых ревью
+
+Еще один practical upgrade: risky changes лучше ловить не только через ручные согласования, но и через continuous controls.
+
+Например, система может автоматически проверять:
+
+- не появился ли direct tool access мимо gateway;
+- не подключен ли новый connector без owner;
+- не ушел ли runtime с approved template;
+- не возник ли новый secret scope без review;
+- не живет ли deprecated pattern дольше установленного срока.
+
+Это важно, потому что platform governance почти всегда ломается не в момент красивой презентации архитектуры, а через месяцы тихих исключений и обходных путей.
 
 ## 10. Что чаще всего ломается в operating model
 
@@ -196,3 +251,6 @@ governance:
 - [Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы](chapter-15.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

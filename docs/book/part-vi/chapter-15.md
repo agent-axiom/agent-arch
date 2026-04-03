@@ -114,6 +114,23 @@ flowchart LR
 - platform review для risky deviations;
 - deprecation policy для старых обходных путей.
 
+### 6.1. Реестр approved patterns нужен не только для контроля, но и для скорости
+
+Когда у платформы есть живой список approved patterns, продуктовым командам проще отвечать на два самых частых вопроса:
+
+1. Что можно брать без отдельного согласования?
+2. Что уже считается risky deviation?
+
+В хороший registry обычно входят:
+
+- supported runtime templates;
+- approved gateways;
+- approved capability classes;
+- allowed connector patterns;
+- deprecated local bypasses.
+
+Это полезно не только security-команде. Это еще и ускоряет разработку: команда не начинает каждый раз с чистого листа.
+
 ## 7. Пример platform defaults policy
 
 Ниже очень практичный шаблон, который показывает, как оформить golden path и deviations явно:
@@ -137,6 +154,19 @@ platform_defaults:
 ```
 
 Такая политика не убивает скорость. Она убирает неявность.
+
+### 7.1. Registry и deprecation policy должны жить вместе
+
+Очень слабый паттерн выглядит так: у платформы есть “рекомендованные пути”, но нет формального списка того, что уже нельзя считать нормой.
+
+Гораздо взрослее работает связка:
+
+- approved registry;
+- visible deviations;
+- deprecation windows;
+- review path для exceptions.
+
+Именно она не дает anti-zoo effort превратиться в бесконечную просьбу “ну пожалуйста, используйте стандартный путь”.
 
 ## 8. Shared gateways хороши не только для безопасности, но и для скорости эволюции
 
@@ -175,6 +205,17 @@ platform_defaults:
 - time to deprecate unsafe patterns.
 
 Это намного полезнее, чем просто считать “сколько команд используют платформу”.
+
+### 10.1. Inventory drift сам по себе полезно считать
+
+Отдельно полезно смотреть на drift в platform inventory:
+
+- сколько runtime-ов не зарегистрировано;
+- сколько активных agents живут вне approved templates;
+- сколько connectors не имеют owner;
+- сколько deviations висят за пределами review window.
+
+Если эти числа растут, anti-zoo strategy формально существует, но practically уже проигрывает.
 
 ## 11. Практический чеклист
 

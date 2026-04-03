@@ -114,6 +114,23 @@ Platform teams 很常见的一个错误，是把 template 做得尽可能中性�
 - risky deviations 需要 platform review；
 - 对旧绕路方案有 deprecation policy。
 
+### 6.1. Approved patterns registry 不只帮助控制，也帮助提速
+
+当平台维护一份活的 approved patterns 列表时，产品团队会更快回答两个常见问题：
+
+1. 什么可以直接使用，不需要单独 review？
+2. 什么已经算 risky deviation？
+
+一个好的 registry 通常会包含：
+
+- supported runtime templates；
+- approved gateways；
+- approved capability classes；
+- allowed connector patterns；
+- deprecated local bypasses。
+
+这不仅对安全团队有帮助，也会提升开发速度，因为团队不需要每次都从零重新判断。
+
 ## 7. 一个 platform defaults policy 示例
 
 下面是一个很实用的模板，用来把 golden path 和 deviations 明确写出来：
@@ -137,6 +154,19 @@ platform_defaults:
 ```
 
 这样的 policy 不会扼杀速度，它只是去掉了模糊地带。
+
+### 7.1. Registry 和 deprecation policy 最好一起存在
+
+一种很弱的模式是：平台有“推荐路径”，但没有正式说明哪些做法已经不该再被接受。
+
+更成熟的组合通常是：
+
+- approved registry；
+- visible deviations；
+- deprecation windows；
+- exceptions 的 review path。
+
+这才不会让 anti-zoo strategy 退化成一句无力的“请大家尽量走标准路径”。
 
 ## 8. Shared gateways 不只提升安全，也能提升演进速度
 
@@ -175,6 +205,17 @@ platform_defaults:
 - 淘汰 unsafe patterns 所需时间。
 
 这些指标比单纯统计“有多少团队在用平台”更有意义。
+
+### 10.1. Inventory drift 本身也值得被计量
+
+还可以单独跟踪 platform inventory 里的 drift：
+
+- 有多少 runtimes 没被注册；
+- 有多少 active agents 运行在 approved templates 之外；
+- 有多少 connectors 没有 owner；
+- 有多少 deviations 超过了 review window 还在继续。
+
+如果这些数字在上涨，那 anti-zoo strategy 也许形式上还存在，但实际上已经在失守。
 
 ## 11. 实用检查清单
 
