@@ -31,11 +31,11 @@
 3. 所有高风险动作都必须经过**policy、approval 与 tracing**。
 4. 质量依赖**evals 与 telemetry**，而不是对模型能力的想象。
 
-## 为什么选择 MkDocs
+## 关于发布技术栈
 
-在 2026 年，`MkDocs + Material for MkDocs` 依然是 Python-first 文档书籍的务实方案：生态仍然活跃、构建速度快、非常适合 Markdown 工作流，并且能自然接入基于 `uv` 的 Python 工具链。[^mkdocs][^material][^uv]
+为什么这本书选择 `MkDocs` 而不是 `Starlight`，完整说明放在单独页面里：
 
-如果后续项目需要更多 UI 组件和接近 MDX 的表达能力，`Astro Starlight` 是最自然的升级方向。但对于第一版公开发布，Python-first 栈更简单，也更稳定。[^starlight]
+- [发布技术栈](appendix/stack.zh.md)
 
 ## 本架构所依据的来源
 
@@ -44,8 +44,3 @@
 - Durable execution、memory 与 HITL： [LangGraph docs](https://docs.langchain.com/oss/javascript/langgraph)
 - Tracing 与 agent evals： [OpenAI docs](https://developers.openai.com/api/docs/guides/agents-sdk)
 - 风险管理与安全控制： [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [OWASP Prompt Injection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
-
-[^mkdocs]: [MkDocs User Guide](https://www.mkdocs.org/).
-[^material]: [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
-[^uv]: [uv project guide](https://docs.astral.sh/uv/guides/projects/).
-[^starlight]: [Starlight documentation](https://starlight.astro.build/).

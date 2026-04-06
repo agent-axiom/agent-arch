@@ -1,5 +1,7 @@
 # 发布技术栈
 
+这里是解释发布技术栈选择的唯一主页面。首页只保留指向这里的简短链接，这样就不会在书里重复同一段说明。
+
 ## 简短回答
 
 在 2026 年，`MkDocs + Material for MkDocs` 仍然不能算过时。对于基于 Python、以 Markdown 为中心的书籍型站点，它依旧是最务实的选择之一：
@@ -70,4 +72,3 @@ uvx ty check
 [^uv]: [uv: Working on projects](https://docs.astral.sh/uv/guides/projects/)
 [^ty]: [ty documentation](https://docs.astral.sh/ty/)
 [^starlight]: [Starlight documentation](https://starlight.astro.build/)
-

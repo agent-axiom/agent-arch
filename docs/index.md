@@ -46,11 +46,11 @@
 - после этого подключить tools через gateway;
 - и только потом расширять память, planner и уровень автономности.
 
-## Почему для публикации выбран MkDocs
+## Про стек публикации
 
-`MkDocs + Material for MkDocs` в 2026 году все еще выглядит прагматичным выбором: стек активно используется, быстро собирается, хорошо работает с книгами, где основой служит Markdown, и естественно дружит с Python-окружением на `uv`.[^mkdocs][^material][^uv]
+Подробное объяснение, почему для книги выбран `MkDocs`, а не `Starlight`, вынесено в отдельную страницу:
 
-Если позже захочется больше кастомного UI и MDX-компонентов, хорошим следующим кандидатом будет `Astro Starlight`. Но для первой версии книги, которую важно быстро публиковать и спокойно поддерживать, Python-first стек проще и надежнее.[^starlight]
+- [Выбор стека публикации](appendix/stack.md)
 
 ## Откуда собрана архитектура
 
@@ -59,8 +59,3 @@
 - Durable execution, memory и HITL: [LangGraph docs](https://docs.langchain.com/oss/javascript/langgraph)
 - Tracing и agent evals: [OpenAI docs](https://developers.openai.com/api/docs/guides/agents-sdk)
 - Risk management и security controls: [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [OWASP Prompt Injection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
-
-[^mkdocs]: [MkDocs User Guide](https://www.mkdocs.org/).
-[^material]: [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
-[^uv]: [uv project guide](https://docs.astral.sh/uv/guides/projects/).
-[^starlight]: [Starlight documentation](https://starlight.astro.build/).

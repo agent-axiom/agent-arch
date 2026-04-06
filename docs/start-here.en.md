@@ -7,6 +7,8 @@ This page exists for two reasons:
 - to help you decide quickly whether this book is relevant to you;
 - to give you a short reading path for your specific role.
 
+If you want the high-level message of the book, use the [homepage](index.en.md). If you need structure and current status, open the [book plan](book/plan.en.md).
+
 ## Who This Book Is For
 
 This book is especially useful if you are:

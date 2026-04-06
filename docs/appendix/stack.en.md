@@ -1,5 +1,7 @@
 # Publishing Stack
 
+This is the canonical place where the publishing-stack decision is explained. The homepage only links here, so the rationale is not duplicated across the book.
+
 ## Short answer
 
 `MkDocs + Material for MkDocs` is still not outdated in 2026. For a Markdown-first book on a Python stack, it remains one of the most pragmatic choices:
@@ -70,4 +72,3 @@ At the moment, those requirements do not exist.
 [^uv]: [uv: Working on projects](https://docs.astral.sh/uv/guides/projects/)
 [^ty]: [ty documentation](https://docs.astral.sh/ty/)
 [^starlight]: [Starlight documentation](https://starlight.astro.build/)
-
