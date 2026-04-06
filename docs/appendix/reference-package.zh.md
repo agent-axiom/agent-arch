@@ -104,7 +104,10 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-approvals
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
+.venv/bin/python -m agent_runtime_ref inspect-session
 ```
+
+`inspect-session` 会显示 session 级别的运行历史，以及关联的 `trace_id`。
 
 一个会真正读取用户画像记忆的请求：
 

@@ -104,7 +104,10 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-approvals
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
+.venv/bin/python -m agent_runtime_ref inspect-session
 ```
+
+`inspect-session` показывает session-level историю запусков и связанные `trace_id`.
 
 Запрос, который действительно читает профильную память:
 

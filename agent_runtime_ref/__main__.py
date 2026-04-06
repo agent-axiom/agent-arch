@@ -57,6 +57,7 @@ def _run_runtime(
     tenant_id: str,
     principal_id: str,
     trace_id: str,
+    session_id: str,
     agent_id: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     runtime = _build_runtime(config_dir)
@@ -66,6 +67,7 @@ def _run_runtime(
             tenant_id=tenant_id,
             principal_id=principal_id,
             trace_id=trace_id,
+            session_id=session_id,
             agent_id=agent_id or runtime.agent.agent_id,
         ),
     )
@@ -91,10 +93,12 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        session_id=args.session_id,
         agent_id=args.agent_id,
     )
     return {
         "agent_id": runtime.agent.agent_id,
+        "session_id": args.session_id,
         "result": result.output_text,
         "status": result.status,
         "trace_id": args.trace_id,
@@ -165,6 +169,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        session_id=args.session_id,
         agent_id=args.agent_id,
     )
     return {
@@ -184,6 +189,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        session_id=args.session_id,
         agent_id=args.agent_id,
     )
     output_path = runtime.telemetry.export_jsonl(args.output)
@@ -223,6 +229,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=run_start.payload["tenant_id"],
         principal_id=run_start.payload["principal_id"],
         trace_id=replay_trace_id,
+        session_id=run_start.payload.get("session_id", "session-replay-001"),
         agent_id=run_start.payload.get("agent_id"),
     )
     return {
@@ -292,11 +299,13 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        session_id=args.session_id,
         agent_id=args.agent_id,
     )
     approvals = runtime.approvals.all()
     return {
         "trace_id": args.trace_id,
+        "session_id": args.session_id,
         "count": len(approvals),
         "approvals": [
             {
@@ -320,6 +329,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
+        session_id=args.session_id,
         agent_id=args.agent_id,
     )
     pending = runtime.approvals.pending()
@@ -341,6 +351,39 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, result = _run_runtime(
+        config_dir,
+        user_input=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        trace_id=args.trace_id,
+        session_id=args.session_id,
+        agent_id=args.agent_id,
+    )
+    session = runtime.sessions.get_session(args.session_id)
+    runs = runtime.sessions.runs_for_session(args.session_id)
+    if session is None:
+        raise ValueError(f"Session not found: {args.session_id}")
+    return {
+        "session_id": session.session_id,
+        "tenant_id": session.tenant_id,
+        "principal_id": session.principal_id,
+        "trace_count": len(session.traces),
+        "latest_status": result.status,
+        "runs": [
+            {
+                "trace_id": run.trace_id,
+                "status": run.status,
+                "user_input": run.user_input,
+                "output_text": run.output_text,
+            }
+            for run in runs
+        ],
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -359,6 +402,7 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--tenant-id", default="tenant-acme")
     simulate.add_argument("--principal-id", default="user-42")
     simulate.add_argument("--trace-id", default="trace-demo-001")
+    simulate.add_argument("--session-id", default="session-demo-001")
     simulate.add_argument("--agent-id", default=None)
 
     inspect_memory = subparsers.add_parser(
@@ -400,6 +444,7 @@ def build_parser() -> argparse.ArgumentParser:
     dump_events.add_argument("--tenant-id", default="tenant-acme")
     dump_events.add_argument("--principal-id", default="user-42")
     dump_events.add_argument("--trace-id", default="trace-demo-001")
+    dump_events.add_argument("--session-id", default="session-demo-001")
     dump_events.add_argument("--agent-id", default=None)
 
     export_events = subparsers.add_parser(
@@ -418,6 +463,7 @@ def build_parser() -> argparse.ArgumentParser:
     export_events.add_argument("--tenant-id", default="tenant-acme")
     export_events.add_argument("--principal-id", default="user-42")
     export_events.add_argument("--trace-id", default="trace-demo-001")
+    export_events.add_argument("--session-id", default="session-demo-001")
     export_events.add_argument("--agent-id", default=None)
     export_events.add_argument(
         "--output",
@@ -510,6 +556,7 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_approvals.add_argument("--tenant-id", default="tenant-acme")
     inspect_approvals.add_argument("--principal-id", default="user-42")
     inspect_approvals.add_argument("--trace-id", default="trace-approval-001")
+    inspect_approvals.add_argument("--session-id", default="session-approval-001")
     inspect_approvals.add_argument("--agent-id", default=None)
 
     resolve_approval = subparsers.add_parser(
@@ -528,6 +575,7 @@ def build_parser() -> argparse.ArgumentParser:
     resolve_approval.add_argument("--tenant-id", default="tenant-acme")
     resolve_approval.add_argument("--principal-id", default="user-42")
     resolve_approval.add_argument("--trace-id", default="trace-approval-001")
+    resolve_approval.add_argument("--session-id", default="session-approval-001")
     resolve_approval.add_argument("--agent-id", default=None)
     resolve_approval.add_argument("--approval-id", default=None)
     resolve_approval.add_argument(
@@ -536,6 +584,25 @@ def build_parser() -> argparse.ArgumentParser:
         default="approved",
     )
     resolve_approval.add_argument("--note", default="")
+
+    inspect_session = subparsers.add_parser(
+        "inspect-session",
+        help="Run the demo and inspect the trace-linked session record",
+    )
+    inspect_session.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with runtime configs",
+    )
+    inspect_session.add_argument(
+        "--user-input",
+        default="Please create a ticket for this onboarding issue.",
+    )
+    inspect_session.add_argument("--tenant-id", default="tenant-acme")
+    inspect_session.add_argument("--principal-id", default="user-42")
+    inspect_session.add_argument("--trace-id", default="trace-session-001")
+    inspect_session.add_argument("--session-id", default="session-demo-001")
+    inspect_session.add_argument("--agent-id", default=None)
 
     return parser
 
@@ -572,6 +639,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _inspect_approvals(args)
     elif command == "resolve-approval":
         payload = _resolve_demo_approval(args)
+    elif command == "inspect-session":
+        payload = _inspect_session(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2

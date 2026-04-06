@@ -17,6 +17,7 @@ from agent_runtime_ref.models import (
     ToolResult,
 )
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
+from agent_runtime_ref.session import SessionStore
 from agent_runtime_ref.telemetry import TelemetryEmitter
 
 
@@ -32,12 +33,14 @@ class AgentRuntime:
         background: BackgroundWorker | None = None,
         agent: AgentIdentity | None = None,
         approvals: ApprovalQueue | None = None,
+        sessions: SessionStore | None = None,
     ) -> None:
         self.catalog = catalog or CapabilityCatalog()
         self.policy = policy or PolicyEngine()
         self.telemetry = telemetry or TelemetryEmitter()
         self.memory = memory or MemoryStore()
         self.approvals = approvals or ApprovalQueue()
+        self.sessions = sessions or SessionStore()
         self.agent = agent or AgentIdentity(
             agent_id="agent-runtime-ref",
             display_name="Reference Runtime",
@@ -57,6 +60,7 @@ class AgentRuntime:
             user_input=request.user_input,
             tenant_id=request.tenant_id,
             principal_id=request.principal_id,
+            session_id=request.session_id,
             agent_id=request.agent_id,
             runtime_principal=self.agent.runtime_principal,
         )
@@ -68,6 +72,7 @@ class AgentRuntime:
             reason=precheck.reason,
             policy_id=precheck.policy_id,
             agent_id=request.agent_id,
+            session_id=request.session_id,
         )
         if precheck.action != "allow":
             result = RunResult(output_text="Request denied by policy.", status="denied")
@@ -83,6 +88,7 @@ class AgentRuntime:
             tenant_id=request.tenant_id,
             principal_id=request.principal_id,
             trace_id=request.trace_id,
+            session_id=request.session_id,
             agent=self.agent,
         )
         context.retrieved_records = self.memory.retrieve(
@@ -94,6 +100,7 @@ class AgentRuntime:
         self.telemetry.emit(
             "context_layers_built",
             request.trace_id,
+            session_id=request.session_id,
             static_items=str(len(context.context_layers.get("static", []))),
             session_items=str(len(context.context_layers.get("session", []))),
             retrieved_items=str(len(context.context_layers.get("retrieved", []))),
@@ -114,9 +121,19 @@ class AgentRuntime:
 
         self._schedule_background_updates(request, context, model_output)
         result = RunResult(output_text=model_output.text, status="success")
+        self.sessions.register_run(
+            session_id=request.session_id,
+            tenant_id=request.tenant_id,
+            principal_id=request.principal_id,
+            trace_id=request.trace_id,
+            status=result.status,
+            user_input=request.user_input,
+            output_text=result.output_text,
+        )
         self.telemetry.emit(
             "run_complete",
             request.trace_id,
+            session_id=request.session_id,
             status=result.status,
             output_preview=result.output_text[:80],
         )
@@ -128,6 +145,7 @@ class AgentRuntime:
             f"runtime_principal={self.agent.runtime_principal}",
         ]
         session_layer = [
+            f"session_id={request.session_id}",
             f"tenant={request.tenant_id}",
             f"principal={request.principal_id}",
         ]
@@ -141,6 +159,7 @@ class AgentRuntime:
         self.telemetry.emit(
             "retrieval",
             request.trace_id,
+            session_id=request.session_id,
             source="memory_store",
             records=str(len(context.retrieved_records)),
         )
@@ -204,6 +223,7 @@ class AgentRuntime:
             "tool_policy_decision",
             request.trace_id,
             agent_id=request.agent_id,
+            session_id=request.session_id,
             capability=tool_request.capability_name,
             action=decision.action,
             reason=decision.reason,
@@ -234,6 +254,7 @@ class AgentRuntime:
             self.telemetry.emit(
                 "approval_requested",
                 request.trace_id,
+                session_id=request.session_id,
                 approval_id=approval_request.approval_id,
                 capability=approval_request.capability_name,
                 reviewer=approval_request.reviewer,
@@ -255,6 +276,7 @@ class AgentRuntime:
             self.telemetry.emit(
                 "tool_execution",
                 request.trace_id,
+                session_id=request.session_id,
                 capability=tool_result.capability_name,
                 status=tool_result.status,
                 tool_principal="pending_review",
@@ -276,6 +298,7 @@ class AgentRuntime:
         self.telemetry.emit(
             "tool_execution",
             request.trace_id,
+            session_id=request.session_id,
             capability=tool_result.capability_name,
             status=tool_result.status,
             tool_principal=tool_result.payload.get("tool_principal", "n/a"),
@@ -292,6 +315,7 @@ class AgentRuntime:
         self.telemetry.emit(
             "background_update_scheduled",
             request.trace_id,
+            session_id=request.session_id,
             action="processed",
             persisted_records=str(result.persisted_records),
             compacted_records=str(result.compacted_records),

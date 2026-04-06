@@ -14,6 +14,7 @@ class RunRequest:
     tenant_id: str
     principal_id: str
     trace_id: str
+    session_id: str = "session-demo-001"
     agent_id: str = "agent-runtime-ref"
 
 
@@ -22,6 +23,7 @@ class RunContext:
     tenant_id: str
     principal_id: str
     trace_id: str
+    session_id: str = "session-demo-001"
     agent: "AgentIdentity | None" = None
     context_layers: dict[str, list[str]] = field(default_factory=dict)
     retrieved_context: list[str] = field(default_factory=list)

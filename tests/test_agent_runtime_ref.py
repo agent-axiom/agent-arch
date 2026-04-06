@@ -288,6 +288,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
         payload = json.loads(buffer.getvalue())
         self.assertEqual(exit_code, 0)
         self.assertEqual(payload["agent_id"], "support-triage-ref")
+        self.assertEqual(payload["session_id"], "session-demo-001")
         self.assertEqual(payload["status"], "success")
         self.assertGreaterEqual(payload["events"], 1)
         self.assertGreaterEqual(payload["memory_records"], 3)
@@ -377,6 +378,12 @@ class AgentRuntimeRefTests(unittest.TestCase):
             self.assertTrue(
                 any(
                     item["event_type"] == "run_complete"
+                    for item in inspect_payload["events"]
+                ),
+            )
+            self.assertTrue(
+                any(
+                    item["payload"].get("session_id") == "session-demo-001"
                     for item in inspect_payload["events"]
                 ),
             )
@@ -473,6 +480,16 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(payload["status"], "approved")
         self.assertEqual(payload["resolution_note"], "manager approved demo request")
+
+    def test_cli_inspect_session_returns_trace_linked_history(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(["inspect-session"])
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["session_id"], "session-demo-001")
+        self.assertGreaterEqual(payload["trace_count"], 1)
+        self.assertEqual(payload["runs"][0]["trace_id"], "trace-session-001")
 
 
 if __name__ == "__main__":
