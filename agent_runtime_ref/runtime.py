@@ -88,6 +88,14 @@ class AgentRuntime:
             limit=3,
         )
         context.retrieved_context = self._retrieve_context(context, request)
+        self.telemetry.emit(
+            "context_layers_built",
+            request.trace_id,
+            static_items=str(len(context.context_layers.get("static", []))),
+            session_items=str(len(context.context_layers.get("session", []))),
+            retrieved_items=str(len(context.context_layers.get("retrieved", []))),
+            tool_items=str(len(context.context_layers.get("tool", []))),
+        )
 
         model_output = self.telemetry.traced_call(
             request.trace_id,
@@ -112,17 +120,28 @@ class AgentRuntime:
         return result
 
     def _retrieve_context(self, context: RunContext, request: RunRequest) -> list[str]:
+        static_layer = [
+            f"agent_id={request.agent_id}",
+            f"runtime_principal={self.agent.runtime_principal}",
+        ]
+        session_layer = [
+            f"tenant={request.tenant_id}",
+            f"principal={request.principal_id}",
+        ]
+        retrieved_layer = [record.content for record in context.retrieved_records]
+        context.context_layers = {
+            "static": static_layer,
+            "session": session_layer,
+            "retrieved": retrieved_layer,
+            "tool": [],
+        }
         self.telemetry.emit(
             "retrieval",
             request.trace_id,
             source="memory_store",
             records=str(len(context.retrieved_records)),
         )
-        return [
-            f"agent_id={request.agent_id}",
-            f"tenant={request.tenant_id}",
-            *[record.content for record in context.retrieved_records],
-        ]
+        return [*static_layer, *session_layer, *retrieved_layer]
 
     def _call_model(
         self,
@@ -200,6 +219,9 @@ class AgentRuntime:
             ),
         )
         context.tool_results.append(tool_result)
+        context.context_layers.setdefault("tool", []).append(
+            f"{tool_result.capability_name}:{tool_result.status}",
+        )
         self.telemetry.emit(
             "tool_execution",
             request.trace_id,

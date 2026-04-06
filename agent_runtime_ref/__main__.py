@@ -120,6 +120,8 @@ def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
                 "kind": record.kind,
                 "source": record.source,
                 "confidence": record.confidence,
+                "provenance": record.provenance,
+                "revision": record.revision,
                 "content": record.content,
             }
             for record in records

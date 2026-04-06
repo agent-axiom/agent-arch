@@ -45,10 +45,21 @@ class BackgroundWorker:
                 action=decision.action,
                 reason=decision.reason,
                 memory_class=candidate.memory_class,
+                provenance=candidate.provenance,
+                revision_mode=candidate.revision_mode,
             )
             if decision.action != "allow":
                 continue
-            self.memory_store.persist(candidate)
+            persisted_record = self.memory_store.persist(candidate)
+            self.telemetry.emit(
+                "memory_persisted",
+                request.trace_id,
+                memory_id=persisted_record.memory_id,
+                memory_class=persisted_record.memory_class,
+                kind=persisted_record.kind,
+                provenance=persisted_record.provenance,
+                revision=str(persisted_record.revision),
+            )
             persisted += 1
         compacted = self.memory_store.compact(request.tenant_id)
         self.telemetry.emit(
@@ -79,6 +90,8 @@ class BackgroundWorker:
                 ),
                 source="approved_summarizer",
                 confidence=0.82,
+                provenance="conversation_summary",
+                revision_mode="replace",
             ),
         ]
         if context.tool_results:
@@ -99,6 +112,8 @@ class BackgroundWorker:
                         ),
                         source="trusted_service",
                         confidence=0.9,
+                        provenance="tool_execution_observation",
+                        revision_mode="append",
                     ),
                 )
         return candidates

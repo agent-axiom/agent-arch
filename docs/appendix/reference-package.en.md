@@ -17,9 +17,9 @@ Its job is not to become a production framework. It exists as a minimal code anc
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
   A YAML loader for agent identity, approved inventory, policy, capability catalog, and rollout policy.
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
-  Typed memory records, retrieval, and a tenant-scoped in-memory store.
+  Typed memory records, provenance, revisions, and a tenant-scoped in-memory store.
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
-  A background maintenance path for persistent memory writes and compaction.
+  A background maintenance path for persistent memory writes, provenance-aware persistence, and compaction.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
   A simple capability dispatch layer through contract-aware execution.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
@@ -56,6 +56,8 @@ Inspect memory records:
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
+
+`inspect-memory` now shows not only content, but also `provenance` and `revision`.
 
 Dump structured events for one run:
 
@@ -111,7 +113,7 @@ There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, the policy engine, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
+These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
 
 ## Why This Is Useful
 
@@ -122,6 +124,7 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to move from a chapter to a runnable prototype;
 - it is easier to show a config-driven path instead of only a hardcoded demo;
 - it is easier to connect the reference runtime to the chapters about memory, retrieval, and background updates.
+- it is easier to discuss where each memory record came from and which revision it represents.
 
 There is also a practical usability win now:
 

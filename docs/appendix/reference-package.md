@@ -17,9 +17,9 @@
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
   Загрузчик YAML для identity агента, approved inventory, политик, каталога возможностей и политики выкладки.
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
-  Типизированные записи памяти, извлечение контекста и in-memory-хранилище с изоляцией по тенантам.
+  Типизированные записи памяти, provenance, ревизии и in-memory-хранилище с изоляцией по тенантам.
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
-  Фоновый контур обслуживания для постоянных записей в память и уплотнения.
+  Фоновый контур обслуживания для постоянных записей в память, provenance-aware сохранения и уплотнения.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
   Простой вызов возможностей через выполнение, учитывающее контракт.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
@@ -56,6 +56,8 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
+
+Теперь `inspect-memory` показывает не только содержимое, но и `provenance` с `revision`.
 
 Вывод структурированных событий для одного запуска:
 
@@ -111,7 +113,7 @@ uv run ty check
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, движок политик, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
 ## Почему это полезно
 
@@ -122,6 +124,7 @@ uv run ty check
 - легче перейти от главы к исполняемому прототипу;
 - легче показать путь, управляемый конфигурацией, а не только жестко зашитое демо;
 - легче связать эталонный рантайм с главами про память, извлечение контекста и фоновые обновления.
+- легче обсуждать, откуда взялся каждый memory record и какая у него ревизия.
 
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
 

@@ -17,9 +17,9 @@
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
   用来加载智能体身份、已批准能力清单、策略、能力目录和上线策略的 YAML 加载器。
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
-  类型化记忆记录、检索和按租户隔离的内存存储。
+  类型化记忆记录、来源证明、修订号以及按租户隔离的内存存储。
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
-  负责持久化记忆写入和压缩整理的后台维护路径。
+  负责持久化记忆写入、基于 provenance 的保存和压缩整理的后台维护路径。
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
   一个通过契约感知执行来分发能力的简单层。
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
@@ -56,6 +56,8 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
+
+现在 `inspect-memory` 不只显示内容，也会显示 `provenance` 和 `revision`。
 
 导出一次运行的结构化事件：
 
@@ -111,7 +113,7 @@ uv run ty check
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 
-它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、策略引擎、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
 
 ## 为什么它有用
 
@@ -122,6 +124,7 @@ uv run ty check
 - 更容易从章节直接走到可运行的原型；
 - 更容易展示配置驱动的路径，而不只是硬编码演示；
 - 更容易把参考运行时和记忆、检索、后台更新这些章节连起来。
+- 更容易讨论每条记忆是从哪里来的，以及它当前属于哪一个 revision。
 
 现在还有一个很实用的改进：
 

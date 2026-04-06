@@ -176,6 +176,47 @@ class AgentRuntimeRefTests(unittest.TestCase):
         records = store.retrieve("language preference", "tenant-acme", limit=5)
         self.assertTrue(records)
         self.assertTrue(all(record.tenant_id == "tenant-acme" for record in records))
+        self.assertTrue(all(record.provenance for record in records))
+
+    def test_background_persisted_records_include_revision_and_provenance(self) -> None:
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Please open a ticket for this issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-3",
+                trace_id="trace-memory-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        self.assertEqual(result.status, "success")
+        persisted_event = next(
+            event
+            for event in runtime.telemetry.events
+            if event.event_type == "memory_persisted"
+        )
+        self.assertIn("provenance", persisted_event.payload)
+        self.assertIn("revision", persisted_event.payload)
+        self.assertEqual(persisted_event.payload["revision"], "1")
+
+    def test_runtime_emits_context_layers(self) -> None:
+        runtime = AgentRuntime()
+        runtime.run(
+            RunRequest(
+                user_input="What language preference do you remember?",
+                tenant_id="tenant-acme",
+                principal_id="user-4",
+                trace_id="trace-context-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        context_event = next(
+            event
+            for event in runtime.telemetry.events
+            if event.event_type == "context_layers_built"
+        )
+        self.assertGreaterEqual(int(context_event.payload["static_items"]), 1)
+        self.assertGreaterEqual(int(context_event.payload["retrieved_items"]), 1)
 
     def test_cli_simulate_run_returns_json(self) -> None:
         buffer = io.StringIO()
@@ -202,6 +243,8 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertGreaterEqual(payload["count"], 1)
         self.assertTrue(all(item["memory_class"] == "profile" for item in payload["records"]))
+        self.assertTrue(all("provenance" in item for item in payload["records"]))
+        self.assertTrue(all("revision" in item for item in payload["records"]))
 
     def test_cli_inspect_agent_returns_identity_and_inventory(self) -> None:
         buffer = io.StringIO()

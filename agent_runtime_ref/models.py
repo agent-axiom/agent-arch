@@ -23,6 +23,7 @@ class RunContext:
     principal_id: str
     trace_id: str
     agent: "AgentIdentity | None" = None
+    context_layers: dict[str, list[str]] = field(default_factory=dict)
     retrieved_context: list[str] = field(default_factory=list)
     retrieved_records: list[MemoryRecord] = field(default_factory=list)
     tool_results: list["ToolResult"] = field(default_factory=list)

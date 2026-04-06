@@ -13,6 +13,8 @@ class MemoryRecord:
     content: str
     source: str
     confidence: float
+    provenance: str = "unknown"
+    revision: int = 1
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,6 +25,8 @@ class MemoryCandidate:
     content: str
     source: str
     confidence: float
+    provenance: str
+    revision_mode: str = "append"
 
 
 class MemoryStore:
@@ -43,6 +47,7 @@ class MemoryStore:
                 content="User usually prefers concise English answers.",
                 source="trusted_profile",
                 confidence=0.95,
+                provenance="user_confirmed_preference",
             ),
             MemoryRecord(
                 memory_id="mem-002",
@@ -52,6 +57,7 @@ class MemoryStore:
                 content="Support tickets must use the support queue and include requester_id.",
                 source="trusted_service",
                 confidence=0.92,
+                provenance="validated_service_rule",
             ),
             MemoryRecord(
                 memory_id="mem-003",
@@ -61,6 +67,7 @@ class MemoryStore:
                 content="Recent runtime demo used create_ticket as the main write capability.",
                 source="session_state",
                 confidence=0.7,
+                provenance="ephemeral_session_note",
             ),
         ]
 
@@ -86,6 +93,8 @@ class MemoryStore:
                     content=str(record.get("content", "")),
                     source=str(record.get("source", "unknown")),
                     confidence=float(record.get("confidence", 0.5)),
+                    provenance=str(record.get("provenance", "unknown")),
+                    revision=int(record.get("revision", 1)),
                 ),
             )
         return cls(records=records)
@@ -104,6 +113,16 @@ class MemoryStore:
         return ranked[:limit]
 
     def persist(self, candidate: MemoryCandidate) -> MemoryRecord:
+        revision = 1
+        if candidate.revision_mode == "replace":
+            prior_revisions = [
+                record.revision
+                for record in self._records
+                if record.tenant_id == candidate.tenant_id
+                and record.memory_class == candidate.memory_class
+                and record.kind == candidate.kind
+            ]
+            revision = (max(prior_revisions) if prior_revisions else 0) + 1
         self._counter += 1
         record = MemoryRecord(
             memory_id=f"mem-{self._counter:03d}",
@@ -113,6 +132,8 @@ class MemoryStore:
             content=candidate.content,
             source=candidate.source,
             confidence=candidate.confidence,
+            provenance=candidate.provenance,
+            revision=revision,
         )
         self._records.append(record)
         return record
