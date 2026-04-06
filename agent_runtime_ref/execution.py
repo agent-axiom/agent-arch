@@ -34,6 +34,9 @@ def execute_tool(
         "mode": capability.mode,
         "owner": capability.owner,
         "tool_principal": capability.tool_principal,
+        "risk_tier": capability.risk_tier,
+        "network_access": capability.network_access,
+        "allowed_egress": ",".join(capability.allowed_egress),
     }
     return ToolResult(
         capability_name=tool_request.capability_name,

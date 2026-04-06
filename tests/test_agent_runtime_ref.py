@@ -133,6 +133,46 @@ class AgentRuntimeRefTests(unittest.TestCase):
         )
         self.assertEqual(tool_event.payload["reason"], "capability_not_in_inventory")
 
+    def test_policy_denies_capability_without_egress_policy(self) -> None:
+        config_dir = Path("agent_runtime_ref/configs")
+        catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+        _, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+        policy = load_policy_engine(
+            config_dir / "policy.yaml",
+            approved_inventory=approved_inventory,
+        )
+        broken_spec = catalog.get("search_docs")
+        assert broken_spec is not None
+        from agent_runtime_ref.catalog import CapabilitySpec
+        from agent_runtime_ref.models import RunContext, ToolRequest
+
+        decision = policy.evaluate_tool(
+            RunContext(
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-egress-001",
+            ),
+            ToolRequest(
+                capability_name="search_docs",
+                arguments={"query": "onboarding policy"},
+            ),
+            CapabilitySpec(
+                name=broken_spec.name,
+                owner=broken_spec.owner,
+                mode=broken_spec.mode,
+                transport=broken_spec.transport,
+                timeout_seconds=broken_spec.timeout_seconds,
+                tool_principal=broken_spec.tool_principal,
+                risk_tier=broken_spec.risk_tier,
+                network_access="restricted",
+                allowed_egress=(),
+                approval_required=broken_spec.approval_required,
+                idempotency_key_required=broken_spec.idempotency_key_required,
+            ),
+        )
+        self.assertEqual(decision.action, "deny")
+        self.assertEqual(decision.reason, "egress_policy_missing")
+
     def test_rollout_gate_requires_all_flags(self) -> None:
         self.assertTrue(
             ready_for_rollout(
@@ -276,7 +316,12 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(payload["agent_id"], "support-triage-ref")
         self.assertIn("create_ticket", payload["approved_capabilities"])
-        self.assertIn("search_docs", payload["catalog_capabilities"])
+        self.assertTrue(
+            any(item["name"] == "search_docs" for item in payload["catalog_capabilities"]),
+        )
+        self.assertTrue(
+            any(item["risk_tier"] == "high" for item in payload["catalog_capabilities"]),
+        )
 
     def test_cli_dump_events_returns_trace_events(self) -> None:
         buffer = io.StringIO()

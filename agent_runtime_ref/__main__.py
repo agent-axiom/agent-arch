@@ -141,7 +141,15 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "owner_team": agent.owner_team,
         "runtime_principal": agent.runtime_principal,
         "approved_capabilities": sorted(approved_inventory.capabilities),
-        "catalog_capabilities": sorted(spec.name for spec in catalog.all()),
+        "catalog_capabilities": [
+            {
+                "name": spec.name,
+                "risk_tier": spec.risk_tier,
+                "network_access": spec.network_access,
+                "allowed_egress": list(spec.allowed_egress),
+            }
+            for spec in sorted(catalog.all(), key=lambda item: item.name)
+        ],
     }
 
 

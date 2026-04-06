@@ -11,7 +11,7 @@
 - [policy.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/policy.py)
   Небольшой движок политик со структурированными решениями.
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
-  Реестр возможностей с описанием эксплуатационной семантики.
+  Реестр возможностей с описанием эксплуатационной семантики, risk tier и egress-контракта.
 - [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
   Явная identity агента и approved inventory возможностей, с которыми рантайм вообще имеет право работать.
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
@@ -21,7 +21,7 @@
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
   Фоновый контур обслуживания для постоянных записей в память, provenance-aware сохранения и уплотнения.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
-  Простой вызов возможностей через выполнение, учитывающее контракт.
+  Простой вызов возможностей через выполнение, учитывающее контракт, risk tier и egress policy.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
   In-memory-эмиттер телеметрии для структурированных событий и спанов.
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)

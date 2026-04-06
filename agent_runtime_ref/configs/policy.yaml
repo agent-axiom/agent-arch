@@ -14,3 +14,7 @@ policy:
     allow_kinds:
       - validated_fact
       - session_summary
+  execution:
+    allow_network_access:
+      - restricted
+      - brokered

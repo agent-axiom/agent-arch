@@ -12,6 +12,9 @@ class CapabilitySpec:
     transport: str
     timeout_seconds: int
     tool_principal: str
+    risk_tier: str
+    network_access: str
+    allowed_egress: tuple[str, ...]
     approval_required: bool = False
     idempotency_key_required: bool = False
 
@@ -32,6 +35,9 @@ class CapabilityCatalog:
                 transport="mcp",
                 timeout_seconds=5,
                 tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
             ),
             "create_ticket": CapabilitySpec(
                 name="create_ticket",
@@ -40,6 +46,9 @@ class CapabilityCatalog:
                 transport="gateway",
                 timeout_seconds=15,
                 tool_principal="svc-ticket-writer",
+                risk_tier="high",
+                network_access="brokered",
+                allowed_egress=("tickets.internal",),
                 approval_required=True,
                 idempotency_key_required=True,
             ),
@@ -63,6 +72,11 @@ class CapabilityCatalog:
                 transport=str(raw_spec.get("transport", "gateway")),
                 timeout_seconds=int(raw_spec.get("timeout_seconds", 10)),
                 tool_principal=str(raw_spec.get("tool_principal", "svc-unknown")),
+                risk_tier=str(raw_spec.get("risk_tier", "medium")),
+                network_access=str(raw_spec.get("network_access", "restricted")),
+                allowed_egress=tuple(
+                    str(item) for item in raw_spec.get("allowed_egress", [])
+                ),
                 approval_required=approval != "none",
                 idempotency_key_required=bool(raw_spec.get("idempotency_key_required", False)),
             )

@@ -4,6 +4,10 @@ capabilities:
     mode: read
     transport: mcp
     tool_principal: svc-knowledge-reader
+    risk_tier: low
+    network_access: restricted
+    allowed_egress:
+      - docs.internal
     timeout_seconds: 5
     approval: none
   create_ticket:
@@ -11,6 +15,10 @@ capabilities:
     mode: write
     transport: gateway
     tool_principal: svc-ticket-writer
+    risk_tier: high
+    network_access: brokered
+    allowed_egress:
+      - tickets.internal
     timeout_seconds: 15
     approval: manager
     idempotency_key_required: true

@@ -11,7 +11,7 @@
 - [policy.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/policy.py)
   一个带结构化决策的小型策略引擎。
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
-  带有运行语义的能力注册表。
+  带有运行语义、风险等级和 egress 契约元数据的能力注册表。
 - [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
   智能体的显式身份，以及运行时被允许使用的已批准能力清单。
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
@@ -21,7 +21,7 @@
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
   负责持久化记忆写入、基于 provenance 的保存和压缩整理的后台维护路径。
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
-  一个通过契约感知执行来分发能力的简单层。
+  一个通过契约感知执行来分发能力的简单层，同时考虑风险等级与 egress 策略。
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
   用于结构化事件和跨度的内存遥测发射器。
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)

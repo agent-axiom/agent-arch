@@ -11,7 +11,7 @@ Its job is not to become a production framework. It exists as a minimal code anc
 - [policy.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/policy.py)
   A small policy engine with structured decisions.
 - [catalog.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/catalog.py)
-  A capability registry with operational semantics.
+  A capability registry with operational semantics, risk tier, and egress contract metadata.
 - [identity.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/identity.py)
   Explicit agent identity and the approved capability inventory the runtime is allowed to use.
 - [config.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/config.py)
@@ -21,7 +21,7 @@ Its job is not to become a production framework. It exists as a minimal code anc
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
   A background maintenance path for persistent memory writes, provenance-aware persistence, and compaction.
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
-  A simple capability dispatch layer through contract-aware execution.
+  A simple capability dispatch layer through contract-aware execution, risk tiers, and egress policy.
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
   An in-memory telemetry emitter for structured events and spans.
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)

@@ -32,12 +32,14 @@ class PolicyEngine:
         capability_policies: Mapping[str, CapabilityPolicy] | None = None,
         allowed_memory_kinds: set[str] | None = None,
         approved_inventory: ApprovedInventory | None = None,
+        allowed_network_access: set[str] | None = None,
     ) -> None:
         self.require_tenant = require_tenant
         self.deny_if_principal_missing = deny_if_principal_missing
         self.capability_policies = dict(capability_policies or {})
         self.allowed_memory_kinds = allowed_memory_kinds or {"validated_fact", "session_summary"}
         self.approved_inventory = approved_inventory
+        self.allowed_network_access = allowed_network_access or {"restricted", "brokered"}
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PolicyEngine":
@@ -71,6 +73,13 @@ class PolicyEngine:
         if not isinstance(allow_kinds, list):
             raise TypeError("'allow_kinds' must be a list")
 
+        raw_execution = raw_policy.get("execution", {})
+        if not isinstance(raw_execution, Mapping):
+            raise TypeError("'execution' must be a mapping")
+        allowed_network_access = raw_execution.get("allow_network_access", [])
+        if not isinstance(allowed_network_access, list):
+            raise TypeError("'allow_network_access' must be a list")
+
         return cls(
             require_tenant=bool(raw_precheck.get("require_tenant", True)),
             deny_if_principal_missing=bool(
@@ -78,6 +87,7 @@ class PolicyEngine:
             ),
             capability_policies=capability_policies,
             allowed_memory_kinds={str(item) for item in allow_kinds},
+            allowed_network_access={str(item) for item in allowed_network_access},
         )
 
     def precheck(self, request: RunRequest) -> PolicyDecision:
@@ -100,6 +110,11 @@ class PolicyEngine:
             tool_request.capability_name,
         ):
             return PolicyDecision("deny", "capability_not_in_inventory", "cap_403")
+        if capability is not None:
+            if capability.network_access not in self.allowed_network_access:
+                return PolicyDecision("deny", "network_access_not_allowed", "cap_405")
+            if capability.network_access != "none" and not capability.allowed_egress:
+                return PolicyDecision("deny", "egress_policy_missing", "cap_406")
         configured = self.capability_policies.get(tool_request.capability_name)
         if configured is not None:
             if configured.decision == "allow":
@@ -110,6 +125,8 @@ class PolicyEngine:
             return PolicyDecision("deny", "configured_deny", "cap_410")
         if capability is None:
             return PolicyDecision("deny", "capability_unknown", "cap_404")
+        if capability.risk_tier == "critical":
+            return PolicyDecision("approval_required", "critical_risk_tier", "cap_211")
         if capability.mode == "read":
             return PolicyDecision("allow", "low_risk_read", "cap_101")
         if capability.approval_required:
