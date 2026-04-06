@@ -90,7 +90,8 @@ class AgentRuntimeRefTests(unittest.TestCase):
             ),
         )
         self.assertEqual(result.status, "success")
-        self.assertIn("Ticket request accepted", result.output_text)
+        self.assertIn("waiting for human approval", result.output_text)
+        self.assertEqual(len(runtime.approvals.pending()), 1)
 
     def test_policy_denies_missing_principal(self) -> None:
         engine = PolicyEngine()
@@ -290,6 +291,7 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(payload["status"], "success")
         self.assertGreaterEqual(payload["events"], 1)
         self.assertGreaterEqual(payload["memory_records"], 3)
+        self.assertGreaterEqual(payload["pending_approvals"], 1)
 
     def test_cli_inspect_memory_filters_records(self) -> None:
         buffer = io.StringIO()
@@ -445,6 +447,32 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertFalse(payload["healthy"])
         self.assertIn("registry_reviewed", payload["missing_controls"])
         self.assertFalse(payload["inventory_drift"]["has_drift"])
+
+    def test_cli_inspect_approvals_returns_pending_item(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(["inspect-approvals"])
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertGreaterEqual(payload["count"], 1)
+        self.assertEqual(payload["approvals"][0]["status"], "pending")
+
+    def test_cli_resolve_approval_marks_item_resolved(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "resolve-approval",
+                    "--decision",
+                    "approved",
+                    "--note",
+                    "manager approved demo request",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["status"], "approved")
+        self.assertEqual(payload["resolution_note"], "manager approved demo request")
 
 
 if __name__ == "__main__":

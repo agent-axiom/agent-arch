@@ -40,7 +40,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, явная identity агента, approved inventory возможностей, сборка context layers, provenance памяти, risk tiers инструментов, egress-aware execution contracts, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
+Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, явная identity агента, approved inventory возможностей, сборка context layers, provenance памяти, risk tiers инструментов, egress-aware execution contracts, approval gates, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
 
 Можно запускать и более наглядные демонстрационные команды:
 
@@ -54,6 +54,8 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
+.venv/bin/python -m agent_runtime_ref inspect-approvals
+.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 

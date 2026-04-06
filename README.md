@@ -42,7 +42,7 @@ The repository now includes a minimal runnable skeleton package:
 .venv/bin/python -m agent_runtime_ref
 ```
 
-It contains a tiny reference runtime, policy layer, capability catalog, explicit agent identity, approved capability inventory, layered context assembly, memory provenance, tool risk tiers, egress-aware execution contracts, background maintenance path, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Parts III and VII of the book.
+It contains a tiny reference runtime, policy layer, capability catalog, explicit agent identity, approved capability inventory, layered context assembly, memory provenance, tool risk tiers, egress-aware execution contracts, approval gates, background maintenance path, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Parts III and VII of the book.
 
 You can also run the explicit demo commands:
 
@@ -56,6 +56,8 @@ You can also run the explicit demo commands:
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
+.venv/bin/python -m agent_runtime_ref inspect-approvals
+.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 

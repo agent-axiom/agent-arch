@@ -5,6 +5,7 @@ from typing import Any
 
 import yaml
 
+from agent_runtime_ref.approvals import ApprovalPolicy
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.controls import ControlsPolicy
 from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
@@ -55,3 +56,7 @@ def load_memory_store(path: str | Path) -> MemoryStore:
 
 def load_controls_policy(path: str | Path) -> ControlsPolicy:
     return ControlsPolicy.from_dict(load_yaml_file(path))
+
+
+def load_approval_policy(path: str | Path) -> ApprovalPolicy:
+    return ApprovalPolicy.from_dict(load_yaml_file(path))

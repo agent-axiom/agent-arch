@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import cast
 
+from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.execution import execute_tool
@@ -30,11 +31,13 @@ class AgentRuntime:
         memory: MemoryStore | None = None,
         background: BackgroundWorker | None = None,
         agent: AgentIdentity | None = None,
+        approvals: ApprovalQueue | None = None,
     ) -> None:
         self.catalog = catalog or CapabilityCatalog()
         self.policy = policy or PolicyEngine()
         self.telemetry = telemetry or TelemetryEmitter()
         self.memory = memory or MemoryStore()
+        self.approvals = approvals or ApprovalQueue()
         self.agent = agent or AgentIdentity(
             agent_id="agent-runtime-ref",
             display_name="Reference Runtime",
@@ -152,6 +155,12 @@ class AgentRuntime:
     ) -> ModelOutput:
         lowered = request.user_input.lower()
         if second_pass:
+            latest_tool = context.tool_results[-1] if context.tool_results else None
+            if latest_tool is not None and latest_tool.status == "approval_required":
+                approval_id = latest_tool.payload.get("approval_id", "pending")
+                return ModelOutput(
+                    text=f"Ticket request is waiting for human approval ({approval_id}).",
+                )
             return ModelOutput(text="Ticket request accepted and ready for follow-up.")
         if "language" in lowered or "preference" in lowered:
             profile_hint = next(
@@ -207,6 +216,48 @@ class AgentRuntime:
                     tool_request=tool_request,
                     decision=PolicyDecision("deny", "capability_unknown", "cap_404"),
                 ),
+            )
+            return decision
+        if decision.action == "approval_required":
+            approver = (
+                decision.reason.split("approver:", 1)[1]
+                if decision.reason.startswith("approver:")
+                else None
+            )
+            approval_request = self.approvals.submit(
+                trace_id=request.trace_id,
+                capability_name=tool_request.capability_name,
+                requested_by=request.principal_id,
+                reviewer=approver,
+                reason=decision.reason,
+            )
+            self.telemetry.emit(
+                "approval_requested",
+                request.trace_id,
+                approval_id=approval_request.approval_id,
+                capability=approval_request.capability_name,
+                reviewer=approval_request.reviewer,
+                status=approval_request.status,
+            )
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="approval_required",
+                payload={
+                    "reason": decision.reason,
+                    "approval_id": approval_request.approval_id,
+                    "reviewer": approval_request.reviewer,
+                },
+            )
+            context.tool_results.append(tool_result)
+            context.context_layers.setdefault("tool", []).append(
+                f"{tool_result.capability_name}:{tool_result.status}",
+            )
+            self.telemetry.emit(
+                "tool_execution",
+                request.trace_id,
+                capability=tool_result.capability_name,
+                status=tool_result.status,
+                tool_principal="pending_review",
             )
             return decision
 

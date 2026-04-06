@@ -1,0 +1,3 @@
+approvals:
+  default_reviewer: manager
+  escalation_sla_minutes: 30

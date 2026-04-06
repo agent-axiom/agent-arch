@@ -6,9 +6,11 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
+from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.config import (
     default_config_dir,
     load_agent_profile,
+    load_approval_policy,
     load_capability_catalog,
     load_controls_policy,
     load_memory_store,
@@ -38,6 +40,7 @@ def _build_runtime(config_dir: Path) -> AgentRuntime:
     agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     return AgentRuntime(
         agent=agent,
+        approvals=ApprovalQueue(load_approval_policy(config_dir / "approvals.yaml")),
         catalog=load_capability_catalog(config_dir / "capabilities.yaml"),
         memory=load_memory_store(config_dir / "memory.yaml"),
         policy=load_policy_engine(
@@ -97,6 +100,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": args.trace_id,
         "events": len(runtime.telemetry.events),
         "memory_records": len(runtime.memory.all()),
+        "pending_approvals": len(runtime.approvals.pending()),
         "config_dir": str(config_dir),
     }
 
@@ -280,6 +284,63 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, _ = _run_runtime(
+        config_dir,
+        user_input=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        trace_id=args.trace_id,
+        agent_id=args.agent_id,
+    )
+    approvals = runtime.approvals.all()
+    return {
+        "trace_id": args.trace_id,
+        "count": len(approvals),
+        "approvals": [
+            {
+                "approval_id": item.approval_id,
+                "capability_name": item.capability_name,
+                "requested_by": item.requested_by,
+                "reviewer": item.reviewer,
+                "reason": item.reason,
+                "status": item.status,
+            }
+            for item in approvals
+        ],
+    }
+
+
+def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, _ = _run_runtime(
+        config_dir,
+        user_input=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        trace_id=args.trace_id,
+        agent_id=args.agent_id,
+    )
+    pending = runtime.approvals.pending()
+    if not pending:
+        raise ValueError("No pending approval requests were generated for this run")
+    target = pending[0] if args.approval_id is None else next(
+        item for item in pending if item.approval_id == args.approval_id
+    )
+    resolved = runtime.approvals.resolve(
+        target.approval_id,
+        decision=args.decision,
+        note=args.note,
+    )
+    return {
+        "approval_id": resolved.approval_id,
+        "status": resolved.status,
+        "reviewer": resolved.reviewer,
+        "resolution_note": resolved.resolution_note,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -433,6 +494,49 @@ def build_parser() -> argparse.ArgumentParser:
         help="Override a control signal, e.g. registry_reviewed=false",
     )
 
+    inspect_approvals = subparsers.add_parser(
+        "inspect-approvals",
+        help="Run the demo and inspect generated approval requests",
+    )
+    inspect_approvals.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with agent, policy, approvals, and capability configs",
+    )
+    inspect_approvals.add_argument(
+        "--user-input",
+        default="Please create a ticket for this onboarding issue.",
+    )
+    inspect_approvals.add_argument("--tenant-id", default="tenant-acme")
+    inspect_approvals.add_argument("--principal-id", default="user-42")
+    inspect_approvals.add_argument("--trace-id", default="trace-approval-001")
+    inspect_approvals.add_argument("--agent-id", default=None)
+
+    resolve_approval = subparsers.add_parser(
+        "resolve-approval",
+        help="Run the demo, create an approval request, and resolve it",
+    )
+    resolve_approval.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with agent, policy, approvals, and capability configs",
+    )
+    resolve_approval.add_argument(
+        "--user-input",
+        default="Please create a ticket for this onboarding issue.",
+    )
+    resolve_approval.add_argument("--tenant-id", default="tenant-acme")
+    resolve_approval.add_argument("--principal-id", default="user-42")
+    resolve_approval.add_argument("--trace-id", default="trace-approval-001")
+    resolve_approval.add_argument("--agent-id", default=None)
+    resolve_approval.add_argument("--approval-id", default=None)
+    resolve_approval.add_argument(
+        "--decision",
+        choices=("approved", "rejected"),
+        default="approved",
+    )
+    resolve_approval.add_argument("--note", default="")
+
     return parser
 
 
@@ -464,6 +568,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _check_rollout(args)
     elif command == "check-controls":
         payload = _check_controls(args)
+    elif command == "inspect-approvals":
+        payload = _inspect_approvals(args)
+    elif command == "resolve-approval":
+        payload = _resolve_demo_approval(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2

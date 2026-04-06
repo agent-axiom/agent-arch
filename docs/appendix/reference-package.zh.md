@@ -28,6 +28,8 @@
   上线前的最小就绪性闸门。
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   用于已批准注册表的 continuous controls 与 inventory drift 检查。
+- [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
+  用于高风险动作的 approval gates 与简单 human review queue。
 
 ## 如何运行
 
@@ -97,6 +99,13 @@
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
 ```
 
+查看并处理 demo approval requests：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-approvals
+.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
+```
+
 一个会真正读取用户画像记忆的请求：
 
 ```bash
@@ -121,6 +130,7 @@ uv run ty check
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
+- [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 
 它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
 

@@ -28,6 +28,8 @@ Its job is not to become a production framework. It exists as a minimal code anc
   A minimal readiness gate before rollout.
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Continuous controls and inventory drift checks for the approved registry.
+- [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
+  Approval gates and a simple human review queue for high-risk actions.
 
 ## How to Run It
 
@@ -97,6 +99,13 @@ Continuous controls and registry drift check:
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
 ```
 
+Inspect and resolve demo approval requests:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-approvals
+.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
+```
+
 A request that actually reads profile memory:
 
 ```bash
@@ -121,6 +130,7 @@ There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
+- [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
 

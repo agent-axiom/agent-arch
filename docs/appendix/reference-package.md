@@ -28,6 +28,8 @@
   Минимальный шлюз проверки готовности перед выкладкой.
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Проверка continuous controls и inventory drift для approved registry.
+- [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
+  Approval gates и простая human review queue для high-risk действий.
 
 ## Как запустить
 
@@ -97,6 +99,13 @@
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
 ```
 
+Просмотр и разрешение demo approval requests:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-approvals
+.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
+```
+
 Запрос, который действительно читает профильную память:
 
 ```bash
@@ -121,6 +130,7 @@ uv run ty check
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
+- [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 
 Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
