@@ -1,0 +1,9 @@
+controls:
+  require:
+    - registry_reviewed
+    - capability_owners_confirmed
+    - memory_provenance_enforced
+    - policy_traces_present
+  block_if:
+    - direct_tool_access_present
+    - unmanaged_runtime_present

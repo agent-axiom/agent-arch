@@ -11,10 +11,12 @@ from agent_runtime_ref.__main__ import main
 from agent_runtime_ref.config import (
     load_agent_profile,
     load_capability_catalog,
+    load_controls_policy,
     load_memory_store,
     load_policy_engine,
     load_rollout_policy,
 )
+from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import RunRequest
 from agent_runtime_ref.policy import PolicyEngine
@@ -170,6 +172,26 @@ class AgentRuntimeRefTests(unittest.TestCase):
         )
         self.assertFalse(assessment.ready)
         self.assertIn("direct_tool_access_present", assessment.blocking_signals)
+
+    def test_controls_policy_detects_inventory_drift(self) -> None:
+        policy = load_controls_policy("agent_runtime_ref/configs/controls.yaml")
+        catalog = load_capability_catalog("agent_runtime_ref/configs/capabilities.yaml")
+        _, approved_inventory = load_agent_profile("agent_runtime_ref/configs/agent.yaml")
+        drift = assess_inventory_drift(approved_inventory, catalog)
+        assessment = assess_controls(
+            policy,
+            {
+                "registry_reviewed": True,
+                "capability_owners_confirmed": True,
+                "memory_provenance_enforced": True,
+                "policy_traces_present": True,
+                "direct_tool_access_present": False,
+                "unmanaged_runtime_present": False,
+            },
+            inventory_drift=drift,
+        )
+        self.assertTrue(assessment.healthy)
+        self.assertFalse(assessment.inventory_drift.has_drift)
 
     def test_memory_store_filters_by_tenant(self) -> None:
         store = MemoryStore()
@@ -362,6 +384,22 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertFalse(payload["ready"])
         self.assertIn("offline_eval_pass", payload["missing_required"])
+
+    def test_cli_check_controls_reports_control_failure(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "check-controls",
+                    "--signal",
+                    "registry_reviewed=false",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertFalse(payload["healthy"])
+        self.assertIn("registry_reviewed", payload["missing_controls"])
+        self.assertFalse(payload["inventory_drift"]["has_drift"])
 
 
 if __name__ == "__main__":

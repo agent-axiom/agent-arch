@@ -26,6 +26,8 @@ Its job is not to become a production framework. It exists as a minimal code anc
   An in-memory telemetry emitter for structured events and spans.
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)
   A minimal readiness gate before rollout.
+- [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
+  Continuous controls and inventory drift checks for the approved registry.
 
 ## How to Run It
 
@@ -89,6 +91,12 @@ Rollout policy check with signal overrides:
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+Continuous controls and registry drift check:
+
+```bash
+.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
+```
+
 A request that actually reads profile memory:
 
 ```bash
@@ -112,6 +120,7 @@ There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
+- [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
 

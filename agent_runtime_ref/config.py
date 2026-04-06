@@ -6,6 +6,7 @@ from typing import Any
 import yaml
 
 from agent_runtime_ref.catalog import CapabilityCatalog
+from agent_runtime_ref.controls import ControlsPolicy
 from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.policy import PolicyEngine
@@ -50,3 +51,7 @@ def load_rollout_policy(path: str | Path) -> RolloutPolicy:
 
 def load_memory_store(path: str | Path) -> MemoryStore:
     return MemoryStore.from_dict(load_yaml_file(path))
+
+
+def load_controls_policy(path: str | Path) -> ControlsPolicy:
+    return ControlsPolicy.from_dict(load_yaml_file(path))

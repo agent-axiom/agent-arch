@@ -26,6 +26,8 @@
   In-memory-эмиттер телеметрии для структурированных событий и спанов.
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)
   Минимальный шлюз проверки готовности перед выкладкой.
+- [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
+  Проверка continuous controls и inventory drift для approved registry.
 
 ## Как запустить
 
@@ -89,6 +91,12 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+Проверка continuous controls и drift по реестру:
+
+```bash
+.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
+```
+
 Запрос, который действительно читает профильную память:
 
 ```bash
@@ -112,6 +120,7 @@ uv run ty check
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
+- [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 
 Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 

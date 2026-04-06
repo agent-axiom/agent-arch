@@ -26,6 +26,8 @@
   用于结构化事件和跨度的内存遥测发射器。
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)
   上线前的最小就绪性闸门。
+- [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
+  用于已批准注册表的 continuous controls 与 inventory drift 检查。
 
 ## 如何运行
 
@@ -89,6 +91,12 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+检查 continuous controls 和注册表 drift：
+
+```bash
+.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
+```
+
 一个会真正读取用户画像记忆的请求：
 
 ```bash
@@ -112,6 +120,7 @@ uv run ty check
 - [capabilities.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/capabilities.yaml)
 - [memory.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/memory.yaml)
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
+- [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 
 它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
 

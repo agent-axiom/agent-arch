@@ -53,6 +53,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
+.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
 .venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 

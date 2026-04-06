@@ -1,6 +1,7 @@
 """Minimal reference runtime package for the book."""
 
 from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
+from agent_runtime_ref.controls import ControlsAssessment, ControlsPolicy
 from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory
 from agent_runtime_ref.models import (
     ModelOutput,
@@ -20,6 +21,8 @@ __all__ = [
     "ApprovedInventory",
     "CapabilityCatalog",
     "CapabilitySpec",
+    "ControlsAssessment",
+    "ControlsPolicy",
     "ModelOutput",
     "PolicyDecision",
     "PolicyEngine",

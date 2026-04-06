@@ -10,10 +10,12 @@ from agent_runtime_ref.config import (
     default_config_dir,
     load_agent_profile,
     load_capability_catalog,
+    load_controls_policy,
     load_memory_store,
     load_policy_engine,
     load_rollout_policy,
 )
+from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.models import RunRequest, RunResult
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
@@ -236,6 +238,40 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _check_controls(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    policy = load_controls_policy(config_dir / "controls.yaml")
+    _, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+    catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+    observed = {
+        "registry_reviewed": True,
+        "capability_owners_confirmed": True,
+        "memory_provenance_enforced": True,
+        "policy_traces_present": True,
+        "direct_tool_access_present": False,
+        "unmanaged_runtime_present": False,
+    }
+    for raw_signal in args.signal:
+        key, value = _parse_signal(raw_signal)
+        observed[key] = value
+    inventory_drift = assess_inventory_drift(approved_inventory, catalog)
+    assessment = assess_controls(
+        policy,
+        observed,
+        inventory_drift=inventory_drift,
+    )
+    return {
+        "healthy": assessment.healthy,
+        "missing_controls": list(assessment.missing_controls),
+        "blocking_findings": list(assessment.blocking_findings),
+        "inventory_drift": {
+            "has_drift": assessment.inventory_drift.has_drift,
+            "missing_from_catalog": list(assessment.inventory_drift.missing_from_catalog),
+            "missing_from_inventory": list(assessment.inventory_drift.missing_from_inventory),
+        },
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -373,6 +409,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Override an observed signal, e.g. trace_coverage=true",
     )
 
+    controls = subparsers.add_parser(
+        "check-controls",
+        help="Evaluate continuous controls and inventory drift",
+    )
+    controls.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with controls.yaml, agent.yaml, and capabilities.yaml",
+    )
+    controls.add_argument(
+        "--signal",
+        action="append",
+        default=[],
+        help="Override a control signal, e.g. registry_reviewed=false",
+    )
+
     return parser
 
 
@@ -402,6 +454,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _replay_run(args)
     elif command == "check-rollout":
         payload = _check_rollout(args)
+    elif command == "check-controls":
+        payload = _check_controls(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2
