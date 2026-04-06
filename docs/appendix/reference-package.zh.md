@@ -4,6 +4,8 @@
 
 它的目标不是变成生产级框架，而是作为本书 **第七部分** 的最小代码锚点。
 
+这里是这个包的唯一主说明页面。README 里只保留简短的 quickstart，完整的 CLI、配置和结构说明都集中放在这里。
+
 ## 里面有什么
 
 - [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)

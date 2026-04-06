@@ -40,28 +40,25 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Внутри уже есть эталонный рантайм, слой политик, каталог возможностей, явная identity агента, approved inventory возможностей, сборка context layers, provenance памяти, risk tiers инструментов, egress-aware execution contracts, approval gates, фоновый контур обслуживания, эмиттер телеметрии, шлюз проверки готовности к запуску и загрузчик конфигурации из YAML для частей III и VII книги.
+Это компактная кодовая опора для книги:
 
-Можно запускать и более наглядные демонстрационные команды:
+- эталонный рантайм и слой политик;
+- каталог возможностей и approved inventory;
+- память, телеметрия, approvals и rollout checks;
+- YAML-конфиги для operational skeleton.
+
+Быстрые примеры:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref inspect-agent
-.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
-.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
-.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
-.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
-.venv/bin/python -m agent_runtime_ref inspect-approvals
-.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
-.venv/bin/python -m agent_runtime_ref session-eval-summary
-.venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
-.venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
+
+Каноническое описание пакета, полный список CLI-команд и обзор конфигов вынесены на отдельную страницу:
+
+- [Опорный пакет](docs/appendix/reference-package.md)
 
 ## Опциональные исследовательские зависимости
 

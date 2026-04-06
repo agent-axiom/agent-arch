@@ -36,36 +36,31 @@ uv run mkdocs build --strict
 
 ## Reference package
 
-The repository now includes a minimal runnable skeleton package:
+The repository includes a minimal runnable skeleton package:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref
 ```
 
-It contains a tiny reference runtime, policy layer, capability catalog, explicit agent identity, approved capability inventory, layered context assembly, memory provenance, tool risk tiers, egress-aware execution contracts, approval gates, background maintenance path, telemetry emitter, rollout readiness gate, and a YAML-based config loader designed to match Parts III and VII of the book.
+It gives you a compact reference runtime for the book:
 
-You can also run the explicit demo commands:
+- runtime and policy layer
+- capability catalog and approved inventory
+- memory path, telemetry, approvals, and rollout checks
+- YAML-driven configs for the operational skeleton
+
+Quick examples:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref inspect-agent
-.venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
-.venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
-.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
-.venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
-.venv/bin/python -m agent_runtime_ref inspect-approvals
-.venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
-.venv/bin/python -m agent_runtime_ref session-eval-summary
-.venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
-.venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 
-There is also a short docs walkthrough in [docs/appendix/reference-package.md](docs/appendix/reference-package.md).
+The canonical walkthrough, full CLI list, and config overview live on the docs page:
+
+- [Reference package](docs/appendix/reference-package.en.md)
 
 ## Optional research dependencies
 

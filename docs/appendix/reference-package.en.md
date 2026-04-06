@@ -4,6 +4,8 @@ The repository now includes a small runnable skeleton: [agent_runtime_ref](/User
 
 Its job is not to become a production framework. It exists as a minimal code anchor for **Part VII** of the book.
 
+This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
+
 ## What Is Inside
 
 - [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)
