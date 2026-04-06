@@ -490,6 +490,19 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(payload["session_id"], "session-demo-001")
         self.assertGreaterEqual(payload["trace_count"], 1)
         self.assertEqual(payload["runs"][0]["trace_id"], "trace-session-001")
+        self.assertEqual(payload["summary"]["total_runs"], 1)
+        self.assertEqual(payload["summary"]["approval_wait_runs"], 1)
+
+    def test_cli_session_eval_summary_returns_compact_metrics(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(["session-eval-summary"])
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["session_id"], "session-demo-001")
+        self.assertEqual(payload["total_runs"], 1)
+        self.assertEqual(payload["approval_wait_runs"], 1)
+        self.assertEqual(payload["latest_trace_id"], "trace-session-001")
 
 
 if __name__ == "__main__":

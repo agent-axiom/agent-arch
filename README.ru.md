@@ -57,6 +57,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref inspect-approvals
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
+.venv/bin/python -m agent_runtime_ref session-eval-summary
 .venv/bin/python -m agent_runtime_ref simulate-run --user-input "What language preference do you remember?"
 ```
 

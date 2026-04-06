@@ -60,3 +60,32 @@ class SessionStore:
 
     def runs_for_session(self, session_id: str) -> tuple[RunRecord, ...]:
         return tuple(run for run in self._runs if run.session_id == session_id)
+
+
+@dataclass(frozen=True, slots=True)
+class SessionEvalSummary:
+    session_id: str
+    total_runs: int
+    success_runs: int
+    approval_wait_runs: int
+    denied_runs: int
+    latest_trace_id: str | None
+    latest_status: str | None
+
+
+def summarize_session(
+    session_id: str,
+    runs: tuple[RunRecord, ...],
+) -> SessionEvalSummary:
+    latest = runs[-1] if runs else None
+    return SessionEvalSummary(
+        session_id=session_id,
+        total_runs=len(runs),
+        success_runs=sum(1 for run in runs if run.status == "success"),
+        approval_wait_runs=sum(
+            1 for run in runs if "waiting for human approval" in run.output_text.lower()
+        ),
+        denied_runs=sum(1 for run in runs if run.status == "denied"),
+        latest_trace_id=latest.trace_id if latest is not None else None,
+        latest_status=latest.status if latest is not None else None,
+    )

@@ -105,9 +105,11 @@ Inspect and resolve demo approval requests:
 .venv/bin/python -m agent_runtime_ref inspect-approvals
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
+.venv/bin/python -m agent_runtime_ref session-eval-summary
 ```
 
 `inspect-session` shows session-level run history and the linked `trace_id` values.
+`session-eval-summary` returns a compact operational summary for the run series.
 
 A request that actually reads profile memory:
 

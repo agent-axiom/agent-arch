@@ -21,6 +21,7 @@ from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.models import RunRequest, RunResult
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
+from agent_runtime_ref.session import summarize_session
 from agent_runtime_ref.telemetry import StructuredEvent, TelemetryEmitter
 
 
@@ -366,12 +367,21 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
     runs = runtime.sessions.runs_for_session(args.session_id)
     if session is None:
         raise ValueError(f"Session not found: {args.session_id}")
+    summary = summarize_session(args.session_id, runs)
     return {
         "session_id": session.session_id,
         "tenant_id": session.tenant_id,
         "principal_id": session.principal_id,
         "trace_count": len(session.traces),
         "latest_status": result.status,
+        "summary": {
+            "total_runs": summary.total_runs,
+            "success_runs": summary.success_runs,
+            "approval_wait_runs": summary.approval_wait_runs,
+            "denied_runs": summary.denied_runs,
+            "latest_trace_id": summary.latest_trace_id,
+            "latest_status": summary.latest_status,
+        },
         "runs": [
             {
                 "trace_id": run.trace_id,
@@ -381,6 +391,30 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             }
             for run in runs
         ],
+    }
+
+
+def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, _ = _run_runtime(
+        config_dir,
+        user_input=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        trace_id=args.trace_id,
+        session_id=args.session_id,
+        agent_id=args.agent_id,
+    )
+    runs = runtime.sessions.runs_for_session(args.session_id)
+    summary = summarize_session(args.session_id, runs)
+    return {
+        "session_id": summary.session_id,
+        "total_runs": summary.total_runs,
+        "success_runs": summary.success_runs,
+        "approval_wait_runs": summary.approval_wait_runs,
+        "denied_runs": summary.denied_runs,
+        "latest_trace_id": summary.latest_trace_id,
+        "latest_status": summary.latest_status,
     }
 
 
@@ -604,6 +638,25 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_session.add_argument("--session-id", default="session-demo-001")
     inspect_session.add_argument("--agent-id", default=None)
 
+    session_eval = subparsers.add_parser(
+        "session-eval-summary",
+        help="Run the demo and compute a compact session evaluation summary",
+    )
+    session_eval.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with runtime configs",
+    )
+    session_eval.add_argument(
+        "--user-input",
+        default="Please create a ticket for this onboarding issue.",
+    )
+    session_eval.add_argument("--tenant-id", default="tenant-acme")
+    session_eval.add_argument("--principal-id", default="user-42")
+    session_eval.add_argument("--trace-id", default="trace-session-001")
+    session_eval.add_argument("--session-id", default="session-demo-001")
+    session_eval.add_argument("--agent-id", default=None)
+
     return parser
 
 
@@ -641,6 +694,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _resolve_demo_approval(args)
     elif command == "inspect-session":
         payload = _inspect_session(args)
+    elif command == "session-eval-summary":
+        payload = _session_eval_summary(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2

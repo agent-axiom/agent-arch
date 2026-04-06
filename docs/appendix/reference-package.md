@@ -105,9 +105,11 @@
 .venv/bin/python -m agent_runtime_ref inspect-approvals
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
+.venv/bin/python -m agent_runtime_ref session-eval-summary
 ```
 
 `inspect-session` показывает session-level историю запусков и связанные `trace_id`.
+`session-eval-summary` возвращает короткую operational summary по серии запусков.
 
 Запрос, который действительно читает профильную память:
 

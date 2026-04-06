@@ -15,7 +15,13 @@ from agent_runtime_ref.models import (
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
 from agent_runtime_ref.rollout import RolloutReadiness, ready_for_rollout
 from agent_runtime_ref.runtime import AgentRuntime
-from agent_runtime_ref.session import RunRecord, SessionRecord, SessionStore
+from agent_runtime_ref.session import (
+    RunRecord,
+    SessionEvalSummary,
+    SessionRecord,
+    SessionStore,
+    summarize_session,
+)
 
 __all__ = [
     "AgentRuntime",
@@ -36,9 +42,11 @@ __all__ = [
     "RunContext",
     "RunRequest",
     "RunResult",
+    "SessionEvalSummary",
     "SessionRecord",
     "SessionStore",
     "ToolRequest",
     "ToolResult",
     "ready_for_rollout",
+    "summarize_session",
 ]
