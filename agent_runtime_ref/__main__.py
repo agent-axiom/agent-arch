@@ -501,6 +501,31 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _export_session(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, _ = _run_session_sequence(
+        config_dir,
+        user_inputs=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        session_id=args.session_id,
+        agent_id=args.agent_id,
+        trace_prefix=args.trace_prefix,
+    )
+    output_path = runtime.sessions.export_session_json(
+        args.session_id,
+        output_path=args.output,
+    )
+    runs = runtime.sessions.runs_for_session(args.session_id)
+    summary = summarize_session(args.session_id, runs)
+    return {
+        "session_id": args.session_id,
+        "output_path": str(output_path),
+        "total_runs": summary.total_runs,
+        "latest_trace_id": summary.latest_trace_id,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -765,6 +790,32 @@ def build_parser() -> argparse.ArgumentParser:
     session_replay.add_argument("--trace-prefix", default="trace-session")
     session_replay.add_argument("--agent-id", default=None)
 
+    export_session = subparsers.add_parser(
+        "export-session",
+        help="Replay a session and export it as structured JSON for eval workflows",
+    )
+    export_session.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with runtime configs",
+    )
+    export_session.add_argument(
+        "--user-input",
+        action="append",
+        default=[],
+        help="Repeatable input for the session export; defaults are used when omitted",
+    )
+    export_session.add_argument("--tenant-id", default="tenant-acme")
+    export_session.add_argument("--principal-id", default="user-42")
+    export_session.add_argument("--session-id", default="session-demo-001")
+    export_session.add_argument("--trace-prefix", default="trace-session")
+    export_session.add_argument("--agent-id", default=None)
+    export_session.add_argument(
+        "--output",
+        default="artifacts/session-demo-001.json",
+        help="Path for structured session export",
+    )
+
     return parser
 
 
@@ -815,6 +866,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 "What language preference do you remember?",
             ]
         payload = _session_replay(args)
+    elif command == "export-session":
+        if not args.user_input:
+            args.user_input = [
+                "Please create a ticket for this onboarding issue.",
+                "What language preference do you remember?",
+            ]
+        payload = _export_session(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2

@@ -543,6 +543,27 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertIn("waiting for human approval", payload["runs"][0]["output_text"])
         self.assertIn("Retrieved profile hint", payload["runs"][1]["output_text"])
 
+    def test_cli_export_session_writes_structured_json(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_path = Path(temp_dir) / "session.json"
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                exit_code = main(
+                    [
+                        "export-session",
+                        "--output",
+                        str(output_path),
+                    ],
+                )
+            payload = json.loads(buffer.getvalue())
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(output_path.exists())
+            self.assertEqual(payload["session_id"], "session-demo-001")
+            self.assertEqual(payload["total_runs"], 2)
+            exported = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(exported["summary"]["total_runs"], 2)
+            self.assertEqual(len(exported["runs"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 
 
 @dataclass(slots=True)
@@ -60,6 +62,49 @@ class SessionStore:
 
     def runs_for_session(self, session_id: str) -> tuple[RunRecord, ...]:
         return tuple(run for run in self._runs if run.session_id == session_id)
+
+    def export_session_json(
+        self,
+        session_id: str,
+        *,
+        output_path: str | Path,
+    ) -> Path:
+        session = self.get_session(session_id)
+        if session is None:
+            raise ValueError(f"Session not found: {session_id}")
+        runs = self.runs_for_session(session_id)
+        summary = summarize_session(session_id, runs)
+        destination = Path(output_path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "session": {
+                "session_id": session.session_id,
+                "tenant_id": session.tenant_id,
+                "principal_id": session.principal_id,
+                "traces": list(session.traces),
+            },
+            "summary": {
+                "total_runs": summary.total_runs,
+                "success_runs": summary.success_runs,
+                "approval_wait_runs": summary.approval_wait_runs,
+                "denied_runs": summary.denied_runs,
+                "latest_trace_id": summary.latest_trace_id,
+                "latest_status": summary.latest_status,
+            },
+            "runs": [
+                {
+                    "trace_id": run.trace_id,
+                    "status": run.status,
+                    "user_input": run.user_input,
+                    "output_text": run.output_text,
+                }
+                for run in runs
+            ],
+        }
+        with destination.open("w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=True, indent=2)
+            handle.write("\n")
+        return destination
 
 
 @dataclass(frozen=True, slots=True)
