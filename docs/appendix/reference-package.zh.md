@@ -106,10 +106,12 @@
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref session-eval-summary
+.venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 ```
 
 `inspect-session` 会显示 session 级别的运行历史，以及关联的 `trace_id`。
 `session-eval-summary` 会返回这一组运行的紧凑 operational summary。
+`session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 
 一个会真正读取用户画像记忆的请求：
 

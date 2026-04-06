@@ -504,6 +504,45 @@ class AgentRuntimeRefTests(unittest.TestCase):
         self.assertEqual(payload["approval_wait_runs"], 1)
         self.assertEqual(payload["latest_trace_id"], "trace-session-001")
 
+    def test_cli_session_replay_runs_multiple_inputs(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "session-replay",
+                    "--user-input",
+                    "Please create a ticket for this onboarding issue.",
+                    "--user-input",
+                    "What language preference do you remember?",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["run_count"], 2)
+        self.assertEqual(payload["summary"]["total_runs"], 2)
+        self.assertEqual(payload["summary"]["approval_wait_runs"], 1)
+        self.assertEqual(payload["summary"]["latest_trace_id"], "trace-session-002")
+        self.assertEqual(payload["runs"][1]["trace_id"], "trace-session-002")
+
+    def test_cli_inspect_session_with_multiple_inputs_returns_both_runs(self) -> None:
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            exit_code = main(
+                [
+                    "inspect-session",
+                    "--user-input",
+                    "Please create a ticket for this onboarding issue.",
+                    "--user-input",
+                    "What language preference do you remember?",
+                ],
+            )
+        payload = json.loads(buffer.getvalue())
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(payload["trace_count"], 2)
+        self.assertEqual(payload["summary"]["total_runs"], 2)
+        self.assertIn("waiting for human approval", payload["runs"][0]["output_text"])
+        self.assertIn("Retrieved profile hint", payload["runs"][1]["output_text"])
+
 
 if __name__ == "__main__":
     unittest.main()

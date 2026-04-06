@@ -62,6 +62,27 @@ def _run_runtime(
     agent_id: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     runtime = _build_runtime(config_dir)
+    return _run_on_runtime(
+        runtime,
+        user_input=user_input,
+        tenant_id=tenant_id,
+        principal_id=principal_id,
+        trace_id=trace_id,
+        session_id=session_id,
+        agent_id=agent_id,
+    )
+
+
+def _run_on_runtime(
+    runtime: AgentRuntime,
+    *,
+    user_input: str,
+    tenant_id: str,
+    principal_id: str,
+    trace_id: str,
+    session_id: str,
+    agent_id: str | None = None,
+) -> tuple[AgentRuntime, RunResult]:
     result = runtime.run(
         RunRequest(
             user_input=user_input,
@@ -73,6 +94,32 @@ def _run_runtime(
         ),
     )
     return runtime, result
+
+
+def _run_session_sequence(
+    config_dir: Path,
+    *,
+    user_inputs: Sequence[str],
+    tenant_id: str,
+    principal_id: str,
+    session_id: str,
+    agent_id: str | None = None,
+    trace_prefix: str = "trace-session",
+) -> tuple[AgentRuntime, list[RunResult]]:
+    runtime = _build_runtime(config_dir)
+    results: list[RunResult] = []
+    for index, user_input in enumerate(user_inputs, start=1):
+        _, result = _run_on_runtime(
+            runtime,
+            user_input=user_input,
+            tenant_id=tenant_id,
+            principal_id=principal_id,
+            trace_id=f"{trace_prefix}-{index:03d}",
+            session_id=session_id,
+            agent_id=agent_id,
+        )
+        results.append(result)
+    return runtime, results
 
 
 def _resolve_trace_id(events: list[StructuredEvent], requested_trace_id: str | None) -> str:
@@ -354,14 +401,14 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
 
 def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
-    runtime, result = _run_runtime(
+    runtime, results = _run_session_sequence(
         config_dir,
-        user_input=args.user_input,
+        user_inputs=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
         session_id=args.session_id,
         agent_id=args.agent_id,
+        trace_prefix=args.trace_prefix,
     )
     session = runtime.sessions.get_session(args.session_id)
     runs = runtime.sessions.runs_for_session(args.session_id)
@@ -373,7 +420,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "tenant_id": session.tenant_id,
         "principal_id": session.principal_id,
         "trace_count": len(session.traces),
-        "latest_status": result.status,
+        "latest_status": results[-1].status if results else None,
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
@@ -396,14 +443,14 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
 
 def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
-    runtime, _ = _run_runtime(
+    runtime, _ = _run_session_sequence(
         config_dir,
-        user_input=args.user_input,
+        user_inputs=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
         session_id=args.session_id,
         agent_id=args.agent_id,
+        trace_prefix=args.trace_prefix,
     )
     runs = runtime.sessions.runs_for_session(args.session_id)
     summary = summarize_session(args.session_id, runs)
@@ -415,6 +462,42 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
         "denied_runs": summary.denied_runs,
         "latest_trace_id": summary.latest_trace_id,
         "latest_status": summary.latest_status,
+    }
+
+
+def _session_replay(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime, results = _run_session_sequence(
+        config_dir,
+        user_inputs=args.user_input,
+        tenant_id=args.tenant_id,
+        principal_id=args.principal_id,
+        session_id=args.session_id,
+        agent_id=args.agent_id,
+        trace_prefix=args.trace_prefix,
+    )
+    runs = runtime.sessions.runs_for_session(args.session_id)
+    summary = summarize_session(args.session_id, runs)
+    return {
+        "session_id": args.session_id,
+        "run_count": len(results),
+        "summary": {
+            "total_runs": summary.total_runs,
+            "success_runs": summary.success_runs,
+            "approval_wait_runs": summary.approval_wait_runs,
+            "denied_runs": summary.denied_runs,
+            "latest_trace_id": summary.latest_trace_id,
+            "latest_status": summary.latest_status,
+        },
+        "runs": [
+            {
+                "trace_id": run.trace_id,
+                "status": run.status,
+                "user_input": run.user_input,
+                "output_text": run.output_text,
+            }
+            for run in runs
+        ],
     }
 
 
@@ -630,12 +713,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     inspect_session.add_argument(
         "--user-input",
-        default="Please create a ticket for this onboarding issue.",
+        action="append",
+        default=[],
+        help="Repeatable input for multi-run session replay; defaults are used when omitted",
     )
     inspect_session.add_argument("--tenant-id", default="tenant-acme")
     inspect_session.add_argument("--principal-id", default="user-42")
-    inspect_session.add_argument("--trace-id", default="trace-session-001")
     inspect_session.add_argument("--session-id", default="session-demo-001")
+    inspect_session.add_argument("--trace-prefix", default="trace-session")
     inspect_session.add_argument("--agent-id", default=None)
 
     session_eval = subparsers.add_parser(
@@ -649,13 +734,36 @@ def build_parser() -> argparse.ArgumentParser:
     )
     session_eval.add_argument(
         "--user-input",
-        default="Please create a ticket for this onboarding issue.",
+        action="append",
+        default=[],
+        help="Repeatable input for multi-run session replay; defaults are used when omitted",
     )
     session_eval.add_argument("--tenant-id", default="tenant-acme")
     session_eval.add_argument("--principal-id", default="user-42")
-    session_eval.add_argument("--trace-id", default="trace-session-001")
     session_eval.add_argument("--session-id", default="session-demo-001")
+    session_eval.add_argument("--trace-prefix", default="trace-session")
     session_eval.add_argument("--agent-id", default=None)
+
+    session_replay = subparsers.add_parser(
+        "session-replay",
+        help="Replay multiple inputs into a single session and inspect the full run series",
+    )
+    session_replay.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with runtime configs",
+    )
+    session_replay.add_argument(
+        "--user-input",
+        action="append",
+        default=[],
+        help="Repeatable input for the session replay; defaults are used when omitted",
+    )
+    session_replay.add_argument("--tenant-id", default="tenant-acme")
+    session_replay.add_argument("--principal-id", default="user-42")
+    session_replay.add_argument("--session-id", default="session-demo-001")
+    session_replay.add_argument("--trace-prefix", default="trace-session")
+    session_replay.add_argument("--agent-id", default=None)
 
     return parser
 
@@ -693,9 +801,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     elif command == "resolve-approval":
         payload = _resolve_demo_approval(args)
     elif command == "inspect-session":
+        if not args.user_input:
+            args.user_input = ["Please create a ticket for this onboarding issue."]
         payload = _inspect_session(args)
     elif command == "session-eval-summary":
+        if not args.user_input:
+            args.user_input = ["Please create a ticket for this onboarding issue."]
         payload = _session_eval_summary(args)
+    elif command == "session-replay":
+        if not args.user_input:
+            args.user_input = [
+                "Please create a ticket for this onboarding issue.",
+                "What language preference do you remember?",
+            ]
+        payload = _session_replay(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2
