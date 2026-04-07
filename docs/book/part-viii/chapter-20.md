@@ -242,6 +242,12 @@ def classify_change(change: ChangeRequest) -> str:
 
 После change management естественно переходить к assurance loop: red teaming, vulnerability management, detection and response. Именно там lifecycle перестает быть только release discipline и превращается в постоянную операционную защиту.
 
+## 16. Полезные reference pages
+
+- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
+- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)

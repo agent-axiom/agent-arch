@@ -242,6 +242,12 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 现在这一部分已经不仅能解释架构，还能作为 production-grade agent systems 的 lifecycle handbook 使用。
 
+## 15. 值得配套阅读的 Reference Pages
+
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Reference Package](../../appendix/reference-package.zh.md)
+
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](chapter-22.zh.md)
 - [第八部分：智能体系统生命周期](index.zh.md)

@@ -242,6 +242,12 @@ If the answer is “no” several times in a row, you do not have change managem
 
 After change management, the natural next step is the assurance loop: red teaming, vulnerability management, detection and response. That is where the lifecycle stops being only release discipline and becomes continuous operational protection.
 
+## 16. Useful Reference Pages
+
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
 - [Chapter 18. Production Rollout Checklist](../part-vii/chapter-18.en.md)

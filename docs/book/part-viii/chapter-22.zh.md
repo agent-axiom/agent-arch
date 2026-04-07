@@ -258,6 +258,12 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 在 supply chain 和 artifact discipline 之后，这一部分最后一个自然主题就是 retirement、replacement 和 end-of-life discipline。成熟的系统不仅要能上线和修复，也要能优雅地下线。
 
+## 15. 值得配套阅读的 Reference Pages
+
+- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Reference Package](../../appendix/reference-package.zh.md)
+
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
 - [第 17 章：策略层与能力目录](../part-vii/chapter-17.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)

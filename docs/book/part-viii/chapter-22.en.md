@@ -258,6 +258,12 @@ If the answer is “no” several times in a row, you do not yet have a real art
 
 After supply chain and artifact discipline, the natural final operational topic in this part is retirement, replacement, and end-of-life discipline. A mature system must not only launch and recover, but also leave the stage cleanly.
 
+## 15. Useful Reference Pages
+
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Reference Package](../../appendix/reference-package.en.md)
+
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
 - [Chapter 17. Policy Layer and Capability Catalog](../part-vii/chapter-17.en.md)
 - [Chapter 18. Production Rollout Checklist](../part-vii/chapter-18.en.md)

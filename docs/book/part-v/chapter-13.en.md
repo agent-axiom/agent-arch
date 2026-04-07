@@ -245,6 +245,12 @@ If the answer is "no" several times in a row, you may already have observability
 
 Part V now looks like a coherent operational block: traces, SLO, and the eval loop. The next natural move is the organizational model, because platforms like this run into team design questions as much as code questions.
 
+## 14. Useful Reference Pages
+
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.md)

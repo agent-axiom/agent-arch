@@ -259,6 +259,12 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 在 assurance loop 之后，最自然的下一步就是 supply chain discipline 和 approved artifacts。因为只要系统持续变化、持续调查、持续修复，你就必须非常清楚：哪些 artifacts 才算可信，哪些东西真正进入过 production。
 
+## 15. 值得配套阅读的 Reference Pages
+
+- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
+- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+
 - [第 20 章：智能体系统的 Change Management](chapter-20.zh.md)
 - [第 14 章：平台团队与产品团队](../part-vi/chapter-14.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)

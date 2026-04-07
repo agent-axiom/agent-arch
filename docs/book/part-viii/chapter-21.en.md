@@ -259,6 +259,12 @@ If the answer is “no” several times in a row, you may have security intentio
 
 After the assurance loop, it is natural to move to supply chain discipline and approved artifacts. As soon as the system changes continuously, investigations happen, and mitigations are applied, it becomes critical to know which artifacts were actually trusted and what exactly reached production.
 
+## 15. Useful Reference Pages
+
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+
 - [Chapter 20. Change Management for Agent Systems](chapter-20.en.md)
 - [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)
 - [Chapter 18. Production Rollout Checklist](../part-vii/chapter-18.en.md)

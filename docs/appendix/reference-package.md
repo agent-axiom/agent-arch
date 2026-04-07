@@ -191,4 +191,5 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема eval datasets и grading contract](eval-schema.md)
 - [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)

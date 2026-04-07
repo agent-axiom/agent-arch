@@ -175,5 +175,6 @@ Reference runtime 有意保持精简，所以更成熟的系统应该很快补�
 
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
+- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)

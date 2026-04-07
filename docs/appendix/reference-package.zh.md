@@ -191,4 +191,5 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
+- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)

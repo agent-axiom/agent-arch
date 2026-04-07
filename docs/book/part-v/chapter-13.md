@@ -249,6 +249,12 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Часть V теперь уже выглядит как цельный эксплуатационный блок: трассировка, SLO и цикл оценки. Дальше логично переходить к организационной модели, потому что такие платформы упираются не только в код, но и в устройство команды.
 
+## 14. Полезные reference pages
+
+- [Схема трасс и каталог событий](../../appendix/trace-schema.md)
+- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
+- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+
 - [Глава 12. SLO для агентных систем](chapter-12.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)
 - [Часть V. Надежность и observability](index.md)

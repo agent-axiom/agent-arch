@@ -228,6 +228,12 @@ If the answer is "no" several times in a row, the skeleton exists, but the contr
 
 The next logical step in the reference implementation is to assemble a production rollout checklist, so you move from blueprint and contract core into a practical go-live framework.
 
+## 13. Useful Reference Pages
+
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Reference Package](../../appendix/reference-package.en.md)
+
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.md)

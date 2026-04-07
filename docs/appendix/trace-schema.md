@@ -175,5 +175,6 @@ Reference runtime intentionally small, поэтому в более взросл
 
 - [Схема eval datasets и grading contract](eval-schema.md)
 - [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
 - [Опорный пакет](reference-package.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)

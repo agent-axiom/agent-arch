@@ -210,6 +210,12 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 到这里，reference implementation 已经长成一个完整的 operational skeleton。接下来你可以继续加更具体的代码示例，也可以进入 polishing：翻译、图示、实操附录，以及更贴近实现的 snippets。
 
+## 14. 值得配套阅读的 Reference Pages
+
+- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
+- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.md)

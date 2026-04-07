@@ -196,5 +196,6 @@ If several answers are “no,” your policy layer exists, but is not yet shaped
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
+- [Lifecycle Artifact Schema](lifecycle-artifact-schema.en.md)
 - [Reference Package](reference-package.en.md)
 - [Policy Templates and Checklists by Use Case](policy-templates.en.md)

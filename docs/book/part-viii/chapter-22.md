@@ -258,6 +258,12 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 После supply chain и artifact discipline логично переходить к последней operational теме этой части: retirement, replacement и end-of-life discipline. Потому что зрелая система должна уметь не только запускаться и исправляться, но и корректно уходить со сцены.
 
+## 15. Полезные reference pages
+
+- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Опорный пакет](../../appendix/reference-package.md)
+
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)

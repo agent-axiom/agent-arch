@@ -196,5 +196,6 @@ approval_contract:
 
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
+- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [按场景组织的 Policy Templates 与 Checklists](policy-templates.zh.md)

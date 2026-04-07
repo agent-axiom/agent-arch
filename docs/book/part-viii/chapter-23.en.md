@@ -244,6 +244,12 @@ This chapter closes Part VIII into a complete operational cycle:
 
 That means this part can now serve not only as architecture explanation, but also as a lifecycle handbook for production-grade agent systems.
 
+## 15. Useful Reference Pages
+
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Reference Package](../../appendix/reference-package.en.md)
+
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
 - [Part VIII. Agent System Lifecycle](index.en.md)

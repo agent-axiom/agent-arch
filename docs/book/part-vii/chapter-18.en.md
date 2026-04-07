@@ -210,6 +210,12 @@ If the answer is "no" several times in a row, the rollout should be considered n
 
 At this point, the reference implementation already looks like a coherent operational skeleton. From here, you can either deepen it with more code examples or move into polishing: translations, diagrams, practical appendices, and more concrete implementation snippets.
 
+## 14. Useful Reference Pages
+
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.md)

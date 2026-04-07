@@ -244,6 +244,12 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Теперь эта часть уже может служить не только как архитектурное объяснение, но и как lifecycle handbook для production-grade agent systems.
 
+## 15. Полезные reference pages
+
+- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Опорный пакет](../../appendix/reference-package.md)
+
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
 - [Часть VIII. Жизненный цикл агентной системы](index.md)
