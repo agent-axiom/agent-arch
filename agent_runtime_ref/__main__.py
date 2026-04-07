@@ -300,13 +300,17 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         session_id=args.session_id,
         agent_id=args.agent_id,
     )
-    output_path = runtime.telemetry.export_jsonl(args.output)
+    output_path = runtime.telemetry.export_jsonl(
+        args.output,
+        redact_fields=tuple(args.redact_field),
+    )
     return {
         "status": result.status,
         "result": result.output_text,
         "trace_id": args.trace_id,
         "event_count": len(runtime.telemetry.events),
         "output_path": str(output_path),
+        "redact_fields": list(args.redact_field),
     }
 
 
@@ -775,6 +779,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--output",
         default="artifacts/trace-demo-001.jsonl",
         help="Path for JSONL trace export",
+    )
+    export_events.add_argument(
+        "--redact-field",
+        action="append",
+        default=[],
+        help="Repeatable payload field to redact at export time, e.g. user_input",
     )
 
     inspect_trace = subparsers.add_parser(

@@ -377,6 +377,39 @@ class TestCli:
             item["payload"].get("session_id") == "session-demo-001"
             for item in inspect_payload["events"]
         )
+        assert all(item["schema_version"] == "1.0" for item in inspect_payload["events"])
+
+    def test_cli_export_trace_supports_redaction(self, cli_json, tmp_path: Path) -> None:
+        output_path = tmp_path / "trace-redacted.jsonl"
+        export_code, export_payload = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please open a ticket for this issue.",
+                "--trace-id",
+                "trace-redacted-001",
+                "--output",
+                str(output_path),
+                "--redact-field",
+                "user_input",
+            ],
+        )
+        assert export_code == 0
+        assert export_payload["redact_fields"] == ["user_input"]
+
+        inspect_code, inspect_payload = cli_json(
+            [
+                "inspect-trace",
+                "--input",
+                str(output_path),
+            ],
+        )
+        assert inspect_code == 0
+        run_start = next(
+            item for item in inspect_payload["events"] if item["event_type"] == "run_start"
+        )
+        assert run_start["payload"]["user_input"] == "[REDACTED]"
+        assert run_start["redacted_fields"] == ["user_input"]
 
     def test_cli_replay_run_uses_exported_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"

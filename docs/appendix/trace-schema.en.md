@@ -60,7 +60,7 @@ In production, this usually needs to grow to include:
 - `span_id`
 - `parent_span_id`
 
-In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect.
+In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version`, and the export path supports redaction for selected fields.
 
 ## How trace and session relate
 
@@ -133,6 +133,7 @@ You can inspect this directly:
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

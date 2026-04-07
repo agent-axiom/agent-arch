@@ -60,7 +60,7 @@
 - `span_id`
 - `parent_span_id`
 
-В reference runtime часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и легко читаемой.
+В reference runtime часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и легко читаемой. При этом сериализованный event уже несет `schema_version`, а export path умеет делать redaction выбранных полей.
 
 ## Как связаны trace и session
 
@@ -133,6 +133,7 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

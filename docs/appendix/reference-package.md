@@ -87,6 +87,12 @@
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
 ```
 
+Если нужен redacted export для внешнего разбора, можно сразу скрыть чувствительные поля:
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
+```
+
 Просмотр одной трассы из JSONL-файла:
 
 ```bash
@@ -176,5 +182,6 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `inspect-memory` показывает исходно загруженную память и фильтрацию по `tenant` и `memory_class`;
 - `dump-events` показывает структурированную трассу одного запуска без чтения исходников;
 - `export-events` сохраняет трассу в JSONL для разбора вне процесса;
+- `export-events` умеет добавлять `schema_version` и делать export-time redaction по выбранным полям;
 - `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
 - `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.

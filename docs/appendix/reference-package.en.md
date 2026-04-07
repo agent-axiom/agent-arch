@@ -87,6 +87,12 @@ Export events to JSONL for later inspection and replay:
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
 ```
 
+If you need a redacted export for external review, you can hide sensitive fields at export time:
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
+```
+
 Inspect a single trace from a JSONL file:
 
 ```bash
@@ -176,5 +182,6 @@ There is also a practical usability win now:
 - `inspect-memory` shows seeded memory and filtering by `tenant` and `memory_class`;
 - `dump-events` shows the structured trace of one run without reading the source code;
 - `export-events` persists that trace as JSONL for external inspection;
+- `export-events` now includes `schema_version` and supports export-time redaction for selected fields;
 - `inspect-trace` reads and filters saved traces;
 - `replay-run` reconstructs a run from the saved `run_start` event.

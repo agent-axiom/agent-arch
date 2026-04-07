@@ -60,7 +60,7 @@
 - `span_id`
 - `parent_span_id`
 
-在 reference runtime 里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。
+在 reference runtime 里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。同时，序列化后的事件现在会带上 `schema_version`，导出路径也支持按字段做 redaction。
 
 ## trace 和 session 的关系
 
@@ -133,6 +133,7 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

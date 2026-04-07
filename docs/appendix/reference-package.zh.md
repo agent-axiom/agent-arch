@@ -87,6 +87,12 @@
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
 ```
 
+如果你需要给外部人员查看 redacted export，也可以在导出时直接隐藏敏感字段：
+
+```bash
+.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
+```
+
 从 JSONL 文件里查看某条追踪：
 
 ```bash
@@ -176,5 +182,6 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `inspect-memory` 可以直接展示预置记忆，以及按 `tenant` 和 `memory_class` 过滤后的结果；
 - `dump-events` 可以在不读源代码的情况下，直接看到一次运行的结构化追踪；
 - `export-events` 可以把这条追踪保存成 JSONL，便于脱离进程分析；
+- `export-events` 现在会带上 `schema_version`，也支持按字段做 export-time redaction；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
