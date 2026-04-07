@@ -310,6 +310,7 @@ nav:
       - Схема eval datasets и grading contract: appendix/eval-schema.md
       - Схема policy bundle и approval contract: appendix/policy-bundle-schema.md
       - Схема approval request и decision record: appendix/approval-schema.md
+      - Схема change review и rollout gate: appendix/change-rollout-schema.md
       - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
