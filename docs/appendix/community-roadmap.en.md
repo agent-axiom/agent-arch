@@ -5,6 +5,7 @@ The book already has a strong core: architecture, safety, memory, execution, obs
 ## What Is Already Done
 
 - a [Start Here](../start-here.en.md) page;
+- a [multilingual glossary](glossary.en.md);
 - a first set of [Practical Case Studies](case-studies.en.md);
 - a first set of [Policy Templates](policy-templates.en.md);
 - a runnable reference package and its [package docs](reference-package.en.md);
@@ -20,22 +21,7 @@ Each item below passes three tests:
 
 ## Next 10 Improvements
 
-### 1. A multilingual glossary
-
-Add a shared `ru/en/zh` glossary for key terms:
-
-- agent runtime;
-- policy gate;
-- trust boundary;
-- profile memory;
-- retrieval;
-- compaction;
-- rollout gate;
-- capability catalog.
-
-Why it matters: the book already has solid terminology, but a glossary will make reading, translation, linking, and community contributions much easier.
-
-### 2. One-page cheat sheets
+### 1. One-page cheat sheets
 
 Add short practical sheets for:
 
@@ -47,7 +33,7 @@ Add short practical sheets for:
 
 Why it matters: these are the pages people actually save, share with teammates, and use the same day.
 
-### 3. Extend the case studies set
+### 2. Extend the case studies set
 
 The current cases are already useful, but the book should add 2-3 more:
 
@@ -57,7 +43,7 @@ The current cases are already useful, but the book should add 2-3 more:
 
 Why it matters: the more recognizable scenarios readers see, the easier it is to map the architecture to their own systems.
 
-### 4. Extend the policy template set
+### 3. Extend the policy template set
 
 The book already contains first examples, but the community needs more explicit templates:
 
@@ -69,7 +55,7 @@ The book already contains first examples, but the community needs more explicit 
 
 Why it matters: a template people can copy and adapt is more valuable than a long explanation of why the template matters.
 
-### 5. A trace schema and event catalog
+### 4. A trace schema and event catalog
 
 Add a dedicated telemetry reference page:
 
@@ -81,7 +67,7 @@ Add a dedicated telemetry reference page:
 
 Why it matters: observability becomes much stronger when the community has a shared event model, not only a shared idea.
 
-### 6. More realistic scenarios in `agent_runtime_ref`
+### 5. More realistic scenarios in `agent_runtime_ref`
 
 The package is already useful, but the next step should add:
 
@@ -92,7 +78,7 @@ The package is already useful, but the next step should add:
 
 Why it matters: a runnable reference package should not only show a happy path. It should teach production-like behavior.
 
-### 7. A contribution kit for the community
+### 6. A contribution kit for the community
 
 Make external contribution easier:
 
@@ -103,7 +89,7 @@ Make external contribution easier:
 
 Why it matters: a good open handbook grows faster when contributors know exactly how to help.
 
-### 8. Stronger internal linking and chapter journeys
+### 7. Stronger internal linking and chapter journeys
 
 The book should make chapter movement easier:
 
@@ -113,7 +99,7 @@ The book should make chapter movement easier:
 
 Why it matters: the book becomes more useful when readers do not get lost between strong but dense sections.
 
-### 9. A discoverability layer
+### 8. A discoverability layer
 
 Add a more systematic discoverability layer:
 
@@ -125,7 +111,7 @@ Add a more systematic discoverability layer:
 
 Why it matters: even a strong book does not help the community if people cannot find it, understand it quickly, and share it easily.
 
-### 10. Social and sharing assets
+### 9. Social and sharing assets
 
 The project should include lightweight sharing assets:
 
@@ -139,9 +125,9 @@ Why it matters: international reach grows when the book is easy not only to read
 
 If only three steps happen next, I would do:
 
-1. Glossary
-2. Cheat sheets
-3. Trace schema and event catalog
+1. Cheat sheets
+2. Trace schema and event catalog
+3. Contribution kit
 
 That would produce the fastest growth in practical value without rewriting the architectural chapters.
 
@@ -157,7 +143,7 @@ If this backlog is executed, the project will gain:
 
 ## The Next Practical Step
 
-If we follow this roadmap, the next best page to build is the multilingual glossary, followed by the first set of cheat sheets.
+If we follow this roadmap, the next best step is the first set of cheat sheets, followed by a trace schema and event catalog.
 
 - [Home](../index.en.md)
 - [Book Plan](../book/plan.en.md)

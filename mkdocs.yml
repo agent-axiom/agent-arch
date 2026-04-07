@@ -89,6 +89,7 @@ plugins:
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
+            Глоссарий терминов: Глоссарий терминов
             Опорный пакет: Опорный пакет
             Практические кейсы: Практические кейсы
             Policy templates и checklists по кейсам: Шаблоны политик и проверочные списки по кейсам
@@ -134,6 +135,7 @@ plugins:
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
+            Глоссарий терминов: Glossary
             Опорный пакет: Reference Package
             Практические кейсы: Practical Case Studies
             Policy templates и checklists по кейсам: Policy Templates and Checklists by Use Case
@@ -179,6 +181,7 @@ plugins:
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
+            Глоссарий терминов: 术语表
             Опорный пакет: 参考包
             Практические кейсы: 实战案例
             Policy templates и checklists по кейсам: 按场景组织的 Policy Templates 与 Checklists
@@ -265,6 +268,7 @@ nav:
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Дорожная карта для сообщества: appendix/community-roadmap.md
+      - Глоссарий терминов: appendix/glossary.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
