@@ -74,6 +74,18 @@
 
 一个很好用的 practical rule 是：**如果这个实体不会独立做决策，也没有独立的 operational role，那它大概率还不是 agent，而只是 capability**。
 
+## 4.1. 当前 multi-agent reliability research 更多是在强化谨慎态度
+
+这里还值得补上一点。最新的 multi-agent reliability 研究，目前并没有给出足够强的理由，支持团队默认把 runtime 提前做得更复杂。相反，它更清楚地展示了：一旦系统在没有明确必要性的前提下被拆开，coordination failures、verification gaps 和 ambiguity 会迅速增长。
+
+所以更实际的解读应该是：
+
+- research 并不是在说“多建一些 agents”；
+- research 更像是在说“如果你已经决定做 multi-agent，就必须有明确 contracts、verification loops 和可诊断的 handoffs”；
+- 当前 best practice 依然是 `single-agent first`。
+
+因此，引入 `A2A` 的理由不应该只是“架构上看起来更漂亮”，而应该是系统里确实已经存在无法再诚实描述成 tools 的独立 operational roles。
+
 ## 5. Decision table
 
 | 问题 | 更像 `MCP` | 更像 `A2A` |
@@ -159,6 +171,7 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 - [第四部分：工具与执行](index.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](chapter-10.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)

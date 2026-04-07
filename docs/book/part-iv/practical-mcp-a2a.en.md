@@ -74,6 +74,18 @@ If the system still has no real reason to split responsibility between agents, t
 
 A good practical rule is: **if the entity does not make its own decisions and does not have its own operational role, it is probably not an agent yet. It is a capability**.
 
+## 4.1. Multi-agent reliability research currently reinforces skepticism
+
+This point is worth one more practical note. Recent papers on multi-agent reliability do not yet provide a strong reason to make runtimes more complex by default. If anything, they show how quickly coordination failures, verification gaps, and ambiguity grow when a system is split without a clear need.
+
+The practical reading is:
+
+- the research does not say “build more agents”;
+- the research says “if you already build multi-agent systems, use explicit contracts, verification loops, and diagnosable handoffs”;
+- the current best practice is still `single-agent first`.
+
+That is why `A2A` should be introduced not because it looks architecturally elegant, but because the system already contains separate operational roles that can no longer be honestly described as tools.
+
 ## 5. Decision Table
 
 | Question | More likely `MCP` | More likely `A2A` |
@@ -159,6 +171,7 @@ If those questions are hard to answer, it is usually safer to choose `MCP` first
 - [Part IV. Tools and Execution](index.en.md)
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](chapter-9.en.md)
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](chapter-10.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 - [Sources](../../appendix/sources.en.md)
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)

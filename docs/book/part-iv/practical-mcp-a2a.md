@@ -74,6 +74,18 @@
 
 Хороший practical rule: **если сущность не принимает собственных решений и не несет собственной operational role, это, скорее всего, еще не агент, а capability**.
 
+## 4.1. Research по multi-agent reliability пока скорее усиливает скепсис
+
+Это место полезно дополнить одной важной мыслью. Свежие research papers по multi-agent reliability пока не дают сильного повода усложнять runtime заранее. Скорее наоборот: они показывают, как быстро растут coordination failures, verification gaps и ambiguity, когда система дробится без явной необходимости.
+
+Поэтому practical reading здесь такая:
+
+- research не говорит “строить больше агентов”;
+- research говорит “если уже строишь multi-agent, то делай contracts, verification loops и diagnosable handoffs”;
+- current best practice все еще остается `single-agent first`.
+
+Именно поэтому `A2A` стоит вводить не потому, что это выглядит технологически красиво, а потому, что у тебя уже есть отдельные operational roles, которые нельзя честно описать как tools.
+
 ## 5. Decision table
 
 | Вопрос | Скорее `MCP` | Скорее `A2A` |
@@ -159,6 +171,7 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Глава 9. Песочница выполнения и MCP как интеграционный контракт](chapter-9.md)
 - [Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката](chapter-10.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 - [Источники](../../appendix/sources.md)
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
