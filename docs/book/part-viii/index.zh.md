@@ -18,5 +18,6 @@
 - [第 20 章：智能体系统的 Change Management](chapter-20.zh.md)
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](chapter-22.zh.md)
+- [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)
 
 这一部分接下来的自然延伸，是 change management、assurance loop、supply chain discipline 和 retirement。

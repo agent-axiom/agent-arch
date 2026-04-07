@@ -18,5 +18,6 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 - [Chapter 20. Change Management for Agent Systems](chapter-20.en.md)
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
+- [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
 
 The next logical chapters in this part are change management, assurance loops, supply chain discipline, and retirement.

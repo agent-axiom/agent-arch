@@ -81,9 +81,9 @@
 - Глава 20. Change management для агентных систем.
 - Глава 21. Assurance loop: red teaming, detection и response.
 - Глава 22. Supply chain, provenance и approved artifacts.
-- Дальше: retirement.
+- Глава 23. Retirement, replacement и end-of-life discipline.
 
-Статус: transition, change management, assurance и artifact governance главы уже добавлены.
+Статус: Part VIII собрана как цельный lifecycle-блок.
 
 ## Роадмап публикации
 

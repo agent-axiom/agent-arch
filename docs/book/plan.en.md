@@ -75,9 +75,9 @@ What I am strengthening next in this part:
 - Chapter 20. Change Management for Agent Systems.
 - Chapter 21. Assurance Loop: Red Teaming, Detection, and Response.
 - Chapter 22. Supply Chain, Provenance, and Approved Artifacts.
-- Next: retirement.
+- Chapter 23. Retirement, Replacement, and End-of-Life Discipline.
 
-Status: the transition, change-management, assurance, and artifact-governance chapters are now added.
+Status: Part VIII is now assembled as a complete lifecycle block.
 
 ## Publishing roadmap
 

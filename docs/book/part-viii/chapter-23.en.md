@@ -1,0 +1,250 @@
+# Chapter 23. Retirement, Replacement, and End-of-Life Discipline
+
+## 1. Why a mature agent system must know how to leave the stage
+
+Many teams think about lifecycle like this:
+
+- invent the system;
+- build it;
+- secure it;
+- observe it;
+- roll changes out safely.
+
+But every production system has one more mandatory stage: at some point it must be replaced, shut down, or retired.
+
+This matters especially for agent systems because they usually leave behind a long operational tail:
+
+- memory state;
+- tool access;
+- approvals and audit trails;
+- external integrations;
+- user expectations;
+- dependent workflows.
+
+In other words, retirement is not “delete the service and forget it.” It is a managed operational process.
+
+## 2. When to start thinking about retirement
+
+It helps to stop treating retirement as a distant and unpleasant topic.
+
+In practice, common triggers include:
+
+- the runtime or model is obsolete;
+- a capability contract is no longer considered safe;
+- maintenance cost is too high;
+- quality has hit a ceiling and replacement is needed;
+- a new platform path is replacing the old one;
+- regulatory or governance requirements changed;
+- the product problem no longer exists.
+
+If the team has no explicit retirement triggers, old agent systems almost always live longer than is safe or useful.
+
+## 3. Retirement and replacement are not the same thing
+
+It is useful to separate two scenarios:
+
+- `retirement`: the system or capability is simply taken out of service;
+- `replacement`: the old system is removed, but only after or alongside a new one taking its place.
+
+That distinction matters.
+
+In retirement, the main question is how to remove the system safely.
+
+In replacement, the main question is how to perform a controlled transition without losing quality, control, or history.
+
+## 4. The biggest risk is leaving the system able to act
+
+One of the ugliest operational mistakes looks like this:
+
+- the team believes the system is “basically off”;
+- but it still has:
+  - an active tool principal;
+  - a live connector;
+  - memory access;
+  - an old rollout path;
+  - a background job.
+
+Formally the system is “dead,” but operationally it can still act.
+
+That is especially dangerous for agents because autonomous and semi-autonomous execution paths are easy to forget.
+
+## 5. Retirement should happen layer by layer
+
+A good end-of-life process rarely looks like one action. It is usually better to break it down by layer:
+
+- stop new rollout waves;
+- disable risky capabilities;
+- move write actions to approval-only or disable them;
+- stop memory writes;
+- stop background jobs;
+- revoke egress access;
+- close principals, secrets, and connectors;
+- record the final audit state.
+
+<div class="diagram-card">
+<p>Retirement works best as a stepwise narrowing of the operational surface</p>
+
+``` mermaid
+flowchart LR
+    A["Freeze rollout"] --> B["Disable risky capabilities"]
+    B --> C["Disable writes and background jobs"]
+    C --> D["Revoke egress and principals"]
+    D --> E["Archive audit and memory state"]
+    E --> F["Mark system retired"]
+```
+
+</div>
+
+## 6. Memory and audit data need their own discipline
+
+As soon as a system is retired, an uncomfortable question appears: what should happen to accumulated state?
+
+The team usually needs to decide separately:
+
+- what to archive;
+- what to delete;
+- what to anonymize;
+- how long traces and approvals should be kept;
+- who remains the owner of archived state;
+- whether old datasets and memory artifacts may be reused by the replacement.
+
+So retirement affects not only the running system, but also the historical operational footprint.
+
+## 7. Replacement should be staged, not binary
+
+When an old system is replaced by a new one, the temptation is obvious: “cut over and move on.”
+
+For agent systems, that is risky.
+
+Staged replacement is safer:
+
+- shadow comparison;
+- limited tenant migration;
+- dual-run for critical scenarios;
+- side-by-side evals;
+- staged traffic shift;
+- final cutover only after confidence is high.
+
+This is where replacement resembles rollout discipline, but adds one more question: how to preserve continuity between the old and new systems.
+
+## 8. Old capabilities and patterns should be formally deprecated
+
+It is useful to maintain not only an `approved inventory`, but also a `deprecated inventory`.
+
+For example:
+
+- a deprecated runtime;
+- a deprecated prompt-bundle family;
+- a deprecated gateway pattern;
+- a deprecated memory strategy;
+- a deprecated capability contract.
+
+This matters because retirement almost always starts not with a shutdown, but with a clear signal:
+
+“this is no longer considered a normal path.”
+
+## 9. User-facing transition is part of lifecycle too
+
+If the agent system affects a user or internal workflow, end-of-life cannot happen only inside the platform layer.
+
+It helps to decide separately:
+
+- who must be notified;
+- which flows will change;
+- which expectations must be reset;
+- which fallback paths will exist;
+- how long old integrations must be supported.
+
+This is especially important for internal agent systems, which quickly become embedded in real team habits.
+
+## 10. Example retirement policy
+
+Here is a practical skeleton:
+
+```yaml
+retirement:
+  triggers:
+    - deprecated_runtime
+    - unsafe_capability_pattern
+    - maintenance_cost_exceeded
+    - replacement_ready
+  required_steps:
+    - freeze_rollout
+    - disable_risky_capabilities
+    - stop_memory_write
+    - revoke_egress
+    - archive_audit_state
+    - set_retired_status
+```
+
+This is useful not because YAML solves the problem, but because retirement becomes an explicit operational contract.
+
+## 11. Example replacement readiness check
+
+This sketch shows the right kind of gate:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ReplacementState:
+    shadow_eval_passed: bool
+    migration_plan_ready: bool
+    risky_capabilities_disabled: bool
+    archive_plan_ready: bool
+
+
+def ready_for_replacement(state: ReplacementState) -> bool:
+    return (
+        state.shadow_eval_passed
+        and state.migration_plan_ready
+        and state.risky_capabilities_disabled
+        and state.archive_plan_ready
+    )
+```
+
+The point is simple: replacement should have a gate too, not just a mood-driven switch.
+
+## 12. What usually breaks in end-of-life discipline
+
+The problems are fairly repetitive:
+
+- the system is considered retired, but principals are still active;
+- background jobs were forgotten;
+- the memory write path remained live;
+- archived state belongs to nobody;
+- deprecated patterns remain usable too long;
+- replacement happens without dual-run or staged migration.
+
+These small details are exactly what turns an “almost complete” lifecycle into a source of fresh incidents.
+
+## 13. Practical checklist
+
+If you want to test your end-of-life discipline quickly, ask:
+
+- Does the system have explicit retirement triggers?
+- Can capabilities be disabled step by step, not only all at once?
+- Is it clear what happens to memory, traces, and approvals after shutdown?
+- Is there a staged replacement plan?
+- Can principals, connectors, and egress access be revoked quickly?
+- Is it clear who owns archived artifacts and historical state?
+
+If the answer is “no” several times in a row, your lifecycle still ends at release, not at real operations.
+
+## 14. What to read next
+
+This chapter closes Part VIII into a complete operational cycle:
+
+- SDLC to ADLC;
+- change management;
+- assurance loop;
+- artifact governance;
+- retirement and replacement.
+
+That means this part can now serve not only as architecture explanation, but also as a lifecycle handbook for production-grade agent systems.
+
+- [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
+- [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
+- [Part VIII. Agent System Lifecycle](index.en.md)
+- [Sources](../../appendix/sources.en.md)

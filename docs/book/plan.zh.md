@@ -75,9 +75,9 @@
 - 第 20 章：智能体系统的 Change Management。
 - 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response。
 - 第 22 章：Supply Chain、Provenance 与 Approved Artifacts。
-- 下一步：retirement。
+- 第 23 章：Retirement、Replacement 与 End-of-Life Discipline。
 
-状态：transition、change-management、assurance 和 artifact governance 章节已加入。
+状态：Part VIII 现在已经组成一个完整的 lifecycle 模块。
 
 ## 发布路线图
 

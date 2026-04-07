@@ -18,5 +18,6 @@
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
+- [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 
 Следующие главы этой части логично строить вокруг change management, assurance loop, supply chain и retirement discipline.
