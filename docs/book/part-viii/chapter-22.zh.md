@@ -1,36 +1,36 @@
-# 第 22 章：Supply Chain、Provenance 与 Approved Artifacts
+# 第 22 章：供应链、来源追踪与已批准工件
 
-## 1. 为什么 agent systems 的 supply chain 比普通服务更宽
+## 1. 为什么 agent systems 的供应链比普通服务更宽
 
 当工程师听到“software supply chain”时，通常会想到一些熟悉的东西：
 
 - package dependencies；
 - containers；
-- CI/CD artifacts；
+- CI/CD 工件；
 - build outputs 的签名和 provenance。
 
 但对 agent systems 来说，这还不够。
 
 问题在于，production behavior 在这里不只依赖代码。它还依赖：
 
-- model artifacts；
+- model 工件；
 - prompt 和 routine bundles；
 - policy configs；
 - retrieval corpora；
 - capability contracts；
 - eval datasets；
 - approval rules；
-- rollout bundles。
+- rollout 工件包。
 
 也就是说，agent 的 supply chain 更宽，是因为系统本身就更宽。
 
-## 2. 什么是智能体系统里的 approved artifact
+## 2. 什么是智能体系统里的已批准工件
 
 这里最好先给出一个很直白的定义：
 
-approved artifact 就是任何一个被允许进入 production 的 artifact，因为它拥有 owner、provenance、review status 和清晰的 operational role。
+已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有 owner、provenance、review status 和清晰的运行角色。
 
-这意味着 approved artifacts 不只是镜像或 wheel files。
+这意味着已批准工件不只是镜像或 wheel 文件。
 
 在 agent platform 里，它们往往包括：
 
@@ -42,7 +42,7 @@ approved artifact 就是任何一个被允许进入 production 的 artifact，�
 - approved eval set；
 - approved rollout template。
 
-如果团队没有这个概念，就很容易落入一种隐式信任： “这个 artifact 应该没问题，因为之前有人用过。”
+如果团队没有这个概念，就很容易落入一种隐式信任：“这个工件应该没问题，因为之前有人用过。”
 
 ## 3. Provenance 是为了回答非常实际的问题
 
@@ -88,7 +88,7 @@ flowchart LR
 
 </div>
 
-## 5. Approved inventory 和 approved artifacts 不是一回事
+## 5. 已批准清单和已批准工件不是一回事
 
 这两个概念很接近，但并不相同。
 
@@ -105,7 +105,7 @@ flowchart LR
 - capability `create_ticket` 可以属于 approved inventory；
 - 但 `policy_bundle_v12` 或 `prompt_bundle_support_v7` 是 approved artifact。
 
-这个区别很重要，因为 inventory 提供 platform-level 框架，而 approved artifacts 提供 release-level 纪律。
+这个区别很重要，因为 inventory 提供平台级框架，而已批准工件提供发布级纪律。
 
 ## 6. 没有 provenance 的 prompt bundle，本质上就是一个 supply-chain 缺口
 
@@ -127,11 +127,11 @@ flowchart LR
 - retrieval configs；
 - approval thresholds。
 
-## 7. Eval datasets 也应该被当成 trusted artifacts
+## 7. Eval 数据集也应该被当成可信工件
 
 很多团队容易把 eval dataset 看得太轻： “这不就是一组例子吗？”
 
-其实它是一个关键的 governance artifact。
+其实它是一个关键的治理工件。
 
 如果它：
 
@@ -159,7 +159,7 @@ flowchart LR
 
 如果这些 contract 被悄悄改动，没有 provenance，也没有 review trail，那么这种 change 可能和未审查代码发布一样危险。
 
-## 9. 一个 approved artifact policy 示例
+## 9. 一个已批准工件策略示例
 
 下面这个 skeleton 很实用：
 
@@ -178,7 +178,7 @@ artifacts:
     - retrieval_source
 ```
 
-它帮助团队把讨论从“看起来像个正常配置”切换成“这是一个真正的 production artifact”。
+它帮助团队把讨论从“看起来像个正常配置”切换成“这是一个真正的生产工件”。
 
 ## 10. 一个 approved inventory policy 示例
 
@@ -226,7 +226,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
     )
 ```
 
-重点很简单：trusted artifact 应该由明确属性定义，而不是靠直觉判断。
+重点很简单：可信工件应该由明确属性定义，而不是靠直觉判断。
 
 ## 12. Artifact discipline 最容易坏在哪里
 
@@ -239,24 +239,24 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - deprecated patterns 在 production 里活得太久；
 - approved inventory 只存在于 wiki，而不存在于 operational tooling。
 
-一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小 artifact 都处于未跟踪状态。
+一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小工件都处于未跟踪状态。
 
 ## 13. 实用检查清单
 
-如果你想快速检查 artifact discipline，可以问：
+如果你想快速检查工件纪律，可以问：
 
-- 所有 production artifacts 都有 owner 吗？
-- model、prompt、policy 和 eval artifacts 都有版本吗？
+- 所有生产工件都有 owner 吗？
+- model、prompt、policy 和 eval 工件都有版本吗？
 - incident review 时能快速恢复 provenance 吗？
 - 平台是否有 approved inventory？
-- 你们能区分 platform-approved pattern 和 release-approved artifact 吗？
-- deprecated artifact 能被快速阻断吗？
+- 你们能区分平台批准的模式和发布批准的工件吗？
+- 已废弃工件能被快速阻断吗？
 
-如果连续几个问题的答案都是“否”，那你们还没有真正的 artifact governance layer。
+如果连续几个问题的答案都是“否”，那你们还没有真正的工件治理层。
 
 ## 14. 接下来读什么
 
-在 supply chain 和 artifact discipline 之后，这一部分最后一个自然主题就是 retirement、replacement 和 end-of-life discipline。成熟的系统不仅要能上线和修复，也要能优雅地下线。
+在供应链和工件纪律之后，这一部分最后一个自然主题就是 retirement、replacement 和 end-of-life discipline。成熟的系统不仅要能上线和修复，也要能优雅地下线。
 
 ## 15. 值得配套阅读的参考页
 

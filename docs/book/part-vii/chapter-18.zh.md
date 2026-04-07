@@ -13,7 +13,7 @@
 
 Production readiness 和“demo 能跑”之间的区别只有一个核心点：你不仅要知道系统在正常情况下怎么工作，还要知道它在压力下、失败时和各种不愉快边缘场景里会怎么表现。
 
-这正是 rollout checklist 存在的原因。
+这正是上线检查清单存在的原因。
 
 ## 2. Checklist 不是官僚流程，它是防止自我欺骗的工具
 
@@ -26,7 +26,7 @@ Production readiness 和“demo 能跑”之间的区别只有一个核心点：
 
 Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容易制造一种虚假的“已经准备好了”的感觉。
 
-好的 rollout checklist 会在事故发生前暴露隐藏缺口，而不是事后补救。
+好的上线检查清单会在事故发生前暴露隐藏缺口，而不是事后补救。
 
 ## 3. Go-live 前必须检查什么
 
@@ -46,7 +46,7 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 
 这一层适合问一些非常接地气的问题：
 
-- happy path 是否通过；
+- 核心顺畅路径是否通过；
 - tool hops 数量是否受限；
 - empty / malformed inputs 是否被正确处理；
 - retrieval 为空时 run 是否仍能安全运行；
@@ -57,12 +57,12 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 
 ## 5. Safety and policy readiness
 
-在 rollout 前尤其要确认：
+在上线前尤其要确认：
 
 - pre-check 和 egress guardrails 是否存在；
 - policy decisions 是否能在 traces 里看到；
 - high-risk actions 是否真的需要 approval；
-- 是否存在绕过 gateway 的 direct access paths；
+- 是否存在绕过 gateway 的直接访问路径；
 - memory writes 是否受 policy 约束；
 - multi-tenant boundaries 是否在真实场景下验证过。
 
@@ -77,7 +77,7 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 - 是否有 timeout；
 - 是否有 retry policy；
 - 是否有 idempotency strategy；
-- unknown side effect path 是否清楚；
+- 未知副作用路径是否清楚；
 - outcome telemetry 是否已经接好。
 
 如果一个 capability 连这个最低标准都没过，那它还不是 production capability，它只是一个方便的集成。
@@ -109,8 +109,8 @@ flowchart LR
 - policy decisions 和 tool outcomes 可见；
 - SLO 已定义；
 - offline evals 通过；
-- regression gate 已经文档化；
-- online monitoring 已经为第一波 rollout 做好准备。
+- 回归门禁已经文档化；
+- 在线监控已经为第一波上线做好准备。
 
 否则第一个事故就会变成盲查。
 
@@ -122,12 +122,12 @@ flowchart LR
 - 是否已经对 SLO burn 和 safety incidents 配好告警；
 - manual fallback 是否清楚；
 - rollback procedure 是否明确；
-- rollout blast radius 是否受限；
+- 上线影响范围是否受限；
 - 常见失败是否有 runbook。
 
 这听起来像“运维的事”，但没有这一层，系统依然只是实验品，而不是 production-grade。
 
-## 9. 一个 rollout checklist policy 示例
+## 9. 一个上线检查清单策略示例
 
 下面是一个很实用的模板：
 
@@ -153,7 +153,7 @@ rollout:
 
 这种 checklist 的价值在于：它把 readiness 变成一个工程讨论对象，而不是靠发布者语气里的自信。
 
-## 10. 一个简单的 readiness gate 示例
+## 10. 一个简单的就绪门禁示例
 
 下面这个 skeleton 展示的是：如何把 readiness 看成一组必须同时满足的条件。
 
@@ -184,31 +184,31 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 这些失败模式非常典型：
 
-- rollout 一上来就放给太多流量；
+- 一上来就把上线放给太多流量；
 - 团队把 traces 当成“非阻塞细节”；
 - ownership 只存在于文档里，on-call 没准备好；
 - rollback plan 实际上只是“出事了再回滚”；
 - capability owners 根本不知道真实 release window；
 - safety regressions 没被当成 blocker。
 
-这些都说明 rollout process 还不是 production discipline，而只是 optimistic shipping。
+这些都说明上线流程还不是生产级纪律，而只是过于乐观的发布。
 
 ## 12. 实用检查清单
 
 如果你想在上线前快速判断 readiness，可以问：
 
-- 是否存在 formal readiness gate？
-- 这次 rollout 的 owner 和 on-call 是否明确？
+- 是否存在正式的就绪门禁？
+- 这次上线的 owner 和 on-call 是否明确？
 - traces、policy decisions 和 tool outcomes 是否都会进入 telemetry？
 - 是否有 canary/shadow 阶段？
 - 是否有 rollback plan 和 blast-radius limit？
-- high-risk flows 是否被单独验证，而不是只测了 happy path？
+- high-risk flows 是否被单独验证，而不是只测了顺畅路径？
 
-如果连续多个答案都是“没有”，那这次 rollout 就应该视为未准备好，即使 demo 看起来很有信心。
+如果连续多个答案都是“没有”，那这次上线就应该视为未准备好，即使 demo 看起来很有信心。
 
 ## 13. 接下来读什么
 
-到这里，reference implementation 已经长成一个完整的 operational skeleton。接下来你可以继续加更具体的代码示例，也可以进入 polishing：翻译、图示、实操附录，以及更贴近实现的 snippets。
+到这里，参考实现已经长成一个完整的运行骨架。接下来你可以继续补更具体的代码示例，也可以进入打磨阶段：翻译、图示、实操附录，以及更贴近实现的代码片段。
 
 ## 14. 值得配套阅读的参考页
 

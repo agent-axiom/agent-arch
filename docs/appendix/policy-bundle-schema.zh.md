@@ -19,18 +19,18 @@
 
 - 如何描述位于 reasoning 和 side effects 之间的治理规则。
 
-## 为什么要把 policy bundle 当成 artifact
+## 为什么要把 policy bundle 当成工件
 
 在 agent systems 里，一个很常见的问题是：
 
 - policy rules 一部分藏在 prompt 里；
-- 一部分在 gateway code 里；
+- 一部分在 gateway 代码里；
 - 一部分在 approval UI 里；
 - 一部分只存在于团队脑子里。
 
-系统还小时也许能勉强运转，但一旦进入 change management、audit 和 staged rollout，这种 policy layer 就会变得太模糊。
+系统还小时也许能勉强运转，但一旦进入 change management、audit 和分阶段上线，这种 policy layer 就会变得太模糊。
 
-所以最好把 `policy bundle` 视作一个一等 artifact。
+所以最好把 `policy bundle` 视作一个一等工件。
 
 ## 什么是 policy bundle
 
@@ -69,7 +69,7 @@ bundle:
 
 这里还不是具体规则本身，而是一个 envelope，用来回答：
 
-“对于这套 agent system，我们到底把哪些东西视为当前的 policy artifact？”
+“对于这套 agent system，我们到底把哪些东西视为当前的 policy 工件？”
 
 ## 为什么 approval contract 不能只写在 prose 里
 
@@ -119,7 +119,7 @@ approval_contract:
 从 Part VIII 里，这里最重要的是两点：
 
 - policy changes 属于 release-bearing changes；
-- policy bundle 应该作为完整 artifact 进入 change management。
+- policy bundle 应该作为完整工件进入 change management。
 
 也就是说，团队不应该只回答：
 
@@ -148,7 +148,7 @@ approval_contract:
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 
-也就是说，这个 package 已经活在一种模型里：policy 和 approvals 不再只是“附带设置”，而是 governed artifacts。
+也就是说，这个 package 已经活在一种模型里：policy 和 approvals 不再只是“附带设置”，而是受治理的工件。
 
 ## production schema 还应该补什么
 
@@ -181,7 +181,7 @@ approval_contract:
 
 ## 实用检查清单
 
-如果你想快速判断自己的 policy artifact layer 是否已经足够成熟，可以问自己：
+如果你想快速判断自己的 policy 工件层是否已经足够成熟，可以问自己：
 
 - 是否有 versioned policy bundle？
 - 能不能把 bundle 和 rollout、incident review 关联起来？
@@ -190,7 +190,7 @@ approval_contract:
 - Policy bundle 和 capability catalog 之间是否有稳定关联？
 - 能不能知道某条 trace 对应的是哪个 policy version？
 
-如果连续几个答案都是“不能”，那说明你的 policy layer 虽然存在，但还没有被塑造成完整的 operational artifact。
+如果连续几个答案都是“不能”，那说明你的 policy layer 虽然存在，但还没有被塑造成完整的运行工件。
 
 ## 延伸阅读
 

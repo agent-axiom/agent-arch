@@ -1,28 +1,28 @@
-# Lifecycle Artifact Schema
+# 生命周期工件规范
 
-这一页把 lifecycle artifacts 的最小 contract layer 放在一起：change record、approved artifact bundle 和 retirement plan。如果 trace schema 回答的是“发生了什么”，eval schema 回答的是“如何评估”，那 lifecycle artifact schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
+这一页把生命周期工件的最小契约层放在一起：change record、approved artifact bundle 和 retirement plan。如果 trace schema 回答的是“发生了什么”，eval schema 回答的是“如何评估”，那 lifecycle artifact schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
 
 ## 1. 为什么需要它
 
-production-grade agent system 里有几类东西，不能只放在团队脑子里或者 wiki 里：
+生产级 agent system 里有几类东西，不能只放在团队脑子里或者 wiki 里：
 
 - change records；
-- approved artifact bundles；
+- 已批准工件包；
 - retirement plans；
 - replacement mappings；
-- operational approvals 和 lifecycle decisions。
+- 运行期审批和生命周期决策。
 
 没有这一层，change management 很快就会退化成口头协商。incident review 也会变成“到底是谁大概改了 policy 或 routing”的追溯游戏。
 
 ## 2. 核心实体
 
-一个最小可用的 lifecycle layer，围绕三个实体就够了：
+一个最小可用的生命周期层，围绕三个实体就够了：
 
 - `change_record`
 - `artifact_bundle`
 - `retirement_plan`
 
-这已经足够把 design review、release gate、assurance loop 和 end-of-life discipline 串起来。
+这已经足够把 design review、release gate、assurance loop 和终止使用纪律串起来。
 
 ## 3. Change record
 
@@ -60,9 +60,9 @@ status: approved
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
 - `status` 是 operational fact，而不是流程摆设。
 
-## 4. Approved artifact bundle
+## 4. 已批准工件包
 
-`artifact_bundle` 记录一组在某个 release configuration 下被认为可信、并且彼此兼容的 artifacts。
+`artifact_bundle` 记录一组在某个发布配置下被认为可信、并且彼此兼容的工件。
 
 ```yaml
 kind: artifact_bundle
@@ -86,12 +86,12 @@ provenance:
 
 这一层的价值主要有两个：
 
-- 它把“artifact 存在”与“artifact 被批准上线”分开；
+- 它把“工件存在”与“工件被批准上线”分开；
 - 它让 incident review 和 rollback 都更短、更明确。
 
 ## 5. Retirement plan
 
-`retirement_plan` 不只是给整个 agent 下线用的。它同样适用于 capability、policy bundle 或 artifact family 的受控替换。
+`retirement_plan` 不只是给整个 agent 下线用的。它同样适用于 capability、policy bundle 或工件族的受控替换。
 
 ```yaml
 kind: retirement_plan
@@ -119,52 +119,52 @@ owner: platform-operations
 - approvals；
 - principals；
 - memory；
-- archived bundles。
+- 已归档的工件包。
 
 ## 6. 它和 Part VIII 的关系
 
 这个 schema 直接支撑了几章核心内容：
 
 - Chapter 20：change management；
-- Chapter 21：assurance findings 作为 lifecycle input；
+- Chapter 21：assurance findings 作为生命周期输入；
 - Chapter 22：approved artifacts 与 provenance；
 - Chapter 23：replacement 与 retirement。
 
-所以 lifecycle artifacts 最好不要只写成 prose-only documentation，而应该作为可评审的 YAML 或 JSON contract 来管理。
+所以生命周期工件最好不要只写成纯文字文档，而应该作为可评审的 YAML 或 JSON 契约来管理。
 
 ## 7. 最小不变量
 
-一个健康的 lifecycle artifact layer，至少应该保证：
+一个健康的生命周期工件层，至少应该保证：
 
 - 每个 high-risk change 都有 `change_record`；
-- 每次 production rollout 都指向一个 `artifact_bundle`；
-- 每个 deprecated artifact 都有 `retirement_plan` 或明确例外；
-- lifecycle artifacts 有 owner 和 version；
+- 每次生产环境上线都指向一个 `artifact_bundle`；
+- 每个已废弃工件都有 `retirement_plan` 或明确例外；
+- 生命周期工件有 owner 和 version；
 - incident review 能还原 `change -> bundle -> run -> retirement`。
 
 ## 8. 最常见的断裂点
 
 常见问题通常很像：
 
-- bundle 只存在于“大家默认知道”，却不是正式 artifact；
+- 工件包只存在于“大家默认知道”，却不是正式工件；
 - change record 和 eval requirements 断开；
 - retirement 只存在于 roadmap，没有落到 operational config；
 - replacement 没有 dual-run semantics；
 - historical state 没有 retention owner；
-- provenance 只到 git commit，进不了 runtime bundle。
+- provenance 只到 git commit，进不了 runtime 工件包。
 
 ## 9. 实用检查清单
 
 你可以快速问自己：
 
 - high-risk changes 是否有显式的 change records？
-- 你是否真的有 approved artifact bundle，而不是“最新几个 YAML 文件”？
+- 你是否真的有已批准工件包，而不是“最新几个 YAML 文件”？
 - 出现 incident trace 时，你能反推出当时激活的 bundle 吗？
 - deprecated capabilities 和 policy bundles 是否有 retirement plan？
 - replacement 之后 archived state 是否还有 owner？
-- lifecycle artifacts 层面的 rollback unit 是否清晰？
+- 生命周期工件层面的 rollback unit 是否清晰？
 
-如果连续几个问题的答案都是“否”，那说明你的 SDLC 和 rollout 也许已经不错，但 lifecycle layer 还没有真正补齐。
+如果连续几个问题的答案都是“否”，那说明你的 SDLC 和上线流程也许已经不错，但生命周期层还没有真正补齐。
 
 ## 延伸阅读
 

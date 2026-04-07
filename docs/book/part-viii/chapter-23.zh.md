@@ -1,8 +1,8 @@
-# 第 23 章：Retirement、Replacement 与 End-of-Life Discipline
+# 第 23 章：退役、替换与终止使用纪律
 
 ## 1. 为什么成熟的智能体系统必须学会“离场”
 
-很多团队对 lifecycle 的理解停留在这里：
+很多团队对生命周期的理解停留在这里：
 
 - 想出系统；
 - 把它做出来；
@@ -33,7 +33,7 @@
 - capability contract 不再被认为安全；
 - maintenance cost 太高；
 - quality 已经到顶，必须 replacement；
-- 新的 platform path 正在替代旧路径；
+- 新的平台路径正在替代旧路径；
 - regulatory 或 governance requirements 发生变化；
 - 产品问题本身已经不存在。
 
@@ -61,7 +61,7 @@
   - active tool principal；
   - live connector；
   - memory access；
-  - 旧 rollout path；
+- 旧的上线路径；
   - background job。
 
 形式上系统已经“死了”，但在 operational 上它仍然能行动。
@@ -72,7 +72,7 @@
 
 好的 end-of-life process 很少是一个动作完成的。通常更适合按层来做：
 
-- 停止新的 rollout waves；
+- 停止新的上线波次；
 - 关闭 risky capabilities；
 - 把 write actions 切到 approval-only 或直接 disable；
 - 停止 memory writes；
@@ -106,7 +106,7 @@ flowchart LR
 - 什么要 anonymize；
 - traces 和 approvals 保留多久；
 - archived state 的 owner 是谁；
-- replacement 是否可以复用旧 datasets 和 memory artifacts。
+- replacement 是否可以复用旧数据集和 memory 工件。
 
 所以 retirement 影响的不只是 running system，还包括整个 historical operational footprint。
 
@@ -125,7 +125,7 @@ flowchart LR
 - staged traffic shift；
 - 只有在信心足够时才 final cutover。
 
-这也是 replacement 和 rollout discipline 最接近的地方，只不过 replacement 还多了一个问题：如何在新旧系统之间保持 continuity。
+这也是 replacement 和上线纪律最接近的地方，只不过 replacement 还多了一个问题：如何在新旧系统之间保持连续性。
 
 ## 8. 老的 capabilities 和 patterns 应该被正式 deprecate
 
@@ -141,7 +141,7 @@ flowchart LR
 
 这很重要，因为 retirement 几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
 
-## 9. 面向用户的过渡也是 lifecycle 的一部分
+## 9. 面向用户的过渡也是生命周期的一部分
 
 如果 agent system 影响到用户或内部 workflow，那么 end-of-life 不能只在 platform layer 内部完成。
 
@@ -150,7 +150,7 @@ flowchart LR
 - 需要通知谁；
 - 哪些 flows 会变化；
 - 哪些 expectations 需要重新设置；
-- 会有哪些 fallback paths；
+- 会有哪些回退路径；
 - 老的 integrations 还要支持多久。
 
 这对 internal agent systems 尤其重要，因为它们很快就会长进团队的真实工作习惯里。
@@ -179,7 +179,7 @@ retirement:
 
 ## 11. 一个 replacement readiness check 示例
 
-下面这个代码片段展示的是正确的 gate 形态：
+下面这个代码片段展示的是正确的门禁形态：
 
 ```python
 from dataclasses import dataclass
@@ -202,7 +202,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
     )
 ```
 
-重点很简单：replacement 也应该有 gate，而不是“凭感觉切换”。
+重点很简单：replacement 也应该有门禁，而不是“凭感觉切换”。
 
 ## 12. End-of-life discipline 最常坏在哪里
 
@@ -226,9 +226,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - shutdown 后 memory、traces 和 approvals 怎么处理，是否清楚？
 - 是否有 staged replacement plan？
 - principals、connectors 和 egress access 能否快速撤销？
-- archived artifacts 和 historical state 的 owner 是否明确？
+- 已归档工件和历史状态的 owner 是否明确？
 
-如果连续几个问题的答案都是“否”，那你的 lifecycle 其实还停留在 release，而不是完整运营。
+如果连续几个问题的答案都是“否”，那你的生命周期其实还停留在发布，而不是完整运营。
 
 ## 14. 接下来读什么
 
@@ -237,10 +237,10 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - SDLC -> ADLC；
 - change management；
 - assurance loop；
-- artifact governance；
+- 工件治理；
 - retirement and replacement。
 
-现在这一部分已经不仅能解释架构，还能作为 production-grade agent systems 的 lifecycle handbook 使用。
+现在这一部分已经不仅能解释架构，还能作为生产级 agent systems 的生命周期手册使用。
 
 ## 15. 值得配套阅读的参考页
 

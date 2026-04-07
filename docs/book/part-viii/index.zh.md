@@ -1,6 +1,6 @@
 # 第八部分：智能体系统生命周期
 
-到这里为止，这本书已经解释了如何搭建架构、加固安全、建立可观测性以及安全地上线。但 production discipline 并不会在 rollout checklist 结束。
+到这里为止，这本书已经解释了如何搭建架构、加固安全、建立可观测性以及安全地上线。但生产级纪律并不会在上线检查清单结束。
 
 只要系统活得比一场 demo 更久，你很快就会遇到另一类问题：
 
@@ -17,8 +17,8 @@
 - 先通过从 SDLC 到 ADLC 的过渡建立共同框架；
 - 再定义哪些智能体系统变更真正属于 release-bearing changes；
 - 接着围绕 red teaming、detection 和 response 建立 assurance loop；
-- 然后把 artifact discipline 和 provenance 固定下来；
-- 最后用 replacement 和 retirement 把整个 lifecycle 收束起来。
+- 然后把工件纪律与来源追踪固定下来；
+- 最后用替换与退役把整个生命周期收束起来。
 
 ## 本部分内容
 
@@ -30,7 +30,7 @@
 
 ## 读完这一部分后，你应该得到什么
 
-- 一套面向 production-grade agent systems 的完整生命周期框架；
-- 一种更成熟的 change review 与 release gate 视角；
+- 一套面向生产级 agent systems 的完整生命周期框架；
+- 一种更成熟的变更评审与发布门禁视角；
 - 对 evals、incidents、provenance 与 ownership 之间关系的清晰理解；
 - 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言。

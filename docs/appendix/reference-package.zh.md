@@ -31,9 +31,9 @@
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   用于已批准注册表的 continuous controls 与 inventory drift 检查。
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  用于高风险动作的 approval gates 与简单 human review queue。
+  用于高风险动作的审批门禁与简单人工评审队列。
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  用于 change record、artifact bundle 和 retirement plan 的 lifecycle artifacts，以及这些状态的 readiness checks。
+  用于 change record、artifact bundle 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
 
 ## 如何运行
 
@@ -59,7 +59,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-查看与 Part VIII 对应的 lifecycle artifacts：
+查看与 Part VIII 对应的生命周期工件：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -133,7 +133,7 @@
 `session-eval-summary` 会返回这一组运行的紧凑 operational summary。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段 session 保存成结构化 JSON，已经可以作为 offline eval 流程的种子数据。
-`export-eval-dataset` 会把几个内置 session 场景打包成一个可直接用于 eval 的 JSON artifact。
+`export-eval-dataset` 会把几个内置 session 场景打包成一个可直接用于 eval 的 JSON 工件。
 
 一个会真正读取用户画像记忆的请求：
 
@@ -151,7 +151,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ## 示例配置
 
-在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有 runtime 和 lifecycle 的起步文件：
+在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有 runtime 和生命周期的起步文件：
 
 - [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
@@ -164,7 +164,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储、上线策略和 lifecycle artifacts，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储、上线策略和生命周期工件，所以这个包已经更接近真实的运行骨架。
 
 ## 为什么它有用
 

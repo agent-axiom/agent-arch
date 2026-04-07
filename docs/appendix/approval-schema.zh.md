@@ -19,7 +19,7 @@
 - 可重复的 audit trail；
 - approval 与具体 run 或 trace 之间的连接。
 
-所以 approval boundary 最好被建模成 machine-readable contract，而不是界面上的一颗按钮。
+所以审批边界最好被建模成 machine-readable contract，而不是界面上的一颗按钮。
 
 ## 2. 核心实体
 
@@ -29,7 +29,7 @@
 - `approval_decision`
 - `approval_audit_record`
 
-这已经足够把 policy layer、runtime、trace schema 和 lifecycle artifacts 串起来。
+这已经足够把 policy layer、runtime、trace schema 和生命周期工件串起来。
 
 ## 3. Approval request
 
@@ -131,7 +131,7 @@ Policy bundle 回答的是：
 - 哪个 capability 需要 approval；
 - 谁可以 approve；
 - 有哪些 risk tiers；
-- 哪些 action 没有人类 gate 就绝对不能执行。
+- 哪些 action 没有人类门禁就绝对不能执行。
 
 Approval schema 回答的是另一层：
 
@@ -185,7 +185,7 @@ Approval schema 回答的是另一层：
 - approval 能不能与真实的 tool execution 对上？
 - approved 和 rejected 两种路径是否都有 audit-friendly record？
 
-如果连续几个答案都是“否”，那说明你虽然已经有 human gate，但还没有真正完整的 approval contract。
+如果连续几个答案都是“否”，那说明你虽然已经有人工门禁，但还没有真正完整的 approval contract。
 
 ## 延伸阅读
 
