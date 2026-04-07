@@ -312,6 +312,7 @@ nav:
       - Схема approval request и decision record: appendix/approval-schema.md
       - Схема change review и rollout gate: appendix/change-rollout-schema.md
       - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
+      - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
