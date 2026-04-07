@@ -110,6 +110,7 @@
 
 - [План книги](book/plan.md)
 - [Глоссарий терминов](appendix/glossary.md)
+- [Шпаргалки](appendix/cheat-sheets.md)
 - [Практические кейсы](appendix/case-studies.md)
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
 - [Дорожная карта для сообщества](appendix/community-roadmap.md)

@@ -110,6 +110,7 @@
 
 - [全书计划](book/plan.zh.md)
 - [术语表](appendix/glossary.zh.md)
+- [Cheat Sheets](appendix/cheat-sheets.zh.md)
 - [实战案例](appendix/case-studies.zh.md)
 - [按场景组织的 Policy Templates 与 Checklists](appendix/policy-templates.zh.md)
 - [社区路线图](appendix/community-roadmap.zh.md)

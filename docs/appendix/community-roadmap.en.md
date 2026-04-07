@@ -6,6 +6,7 @@ The book already has a strong core: architecture, safety, memory, execution, obs
 
 - a [Start Here](../start-here.en.md) page;
 - a [multilingual glossary](glossary.en.md);
+- a [cheat sheets page](cheat-sheets.en.md);
 - a first set of [Practical Case Studies](case-studies.en.md);
 - a first set of [Policy Templates](policy-templates.en.md);
 - a runnable reference package and its [package docs](reference-package.en.md);
@@ -21,19 +22,7 @@ Each item below passes three tests:
 
 ## Next 10 Improvements
 
-### 1. One-page cheat sheets
-
-Add short practical sheets for:
-
-- safety checklist;
-- memory checklist;
-- rollout checklist;
-- observability checklist;
-- tool gateway checklist.
-
-Why it matters: these are the pages people actually save, share with teammates, and use the same day.
-
-### 2. Extend the case studies set
+### 1. Extend the case studies set
 
 The current cases are already useful, but the book should add 2-3 more:
 
@@ -43,7 +32,7 @@ The current cases are already useful, but the book should add 2-3 more:
 
 Why it matters: the more recognizable scenarios readers see, the easier it is to map the architecture to their own systems.
 
-### 3. Extend the policy template set
+### 2. Extend the policy template set
 
 The book already contains first examples, but the community needs more explicit templates:
 
@@ -55,7 +44,7 @@ The book already contains first examples, but the community needs more explicit 
 
 Why it matters: a template people can copy and adapt is more valuable than a long explanation of why the template matters.
 
-### 4. A trace schema and event catalog
+### 3. A trace schema and event catalog
 
 Add a dedicated telemetry reference page:
 
@@ -67,7 +56,7 @@ Add a dedicated telemetry reference page:
 
 Why it matters: observability becomes much stronger when the community has a shared event model, not only a shared idea.
 
-### 5. More realistic scenarios in `agent_runtime_ref`
+### 4. More realistic scenarios in `agent_runtime_ref`
 
 The package is already useful, but the next step should add:
 
@@ -78,7 +67,7 @@ The package is already useful, but the next step should add:
 
 Why it matters: a runnable reference package should not only show a happy path. It should teach production-like behavior.
 
-### 6. A contribution kit for the community
+### 5. A contribution kit for the community
 
 Make external contribution easier:
 
@@ -89,7 +78,7 @@ Make external contribution easier:
 
 Why it matters: a good open handbook grows faster when contributors know exactly how to help.
 
-### 7. Stronger internal linking and chapter journeys
+### 6. Stronger internal linking and chapter journeys
 
 The book should make chapter movement easier:
 
@@ -99,7 +88,7 @@ The book should make chapter movement easier:
 
 Why it matters: the book becomes more useful when readers do not get lost between strong but dense sections.
 
-### 8. A discoverability layer
+### 7. A discoverability layer
 
 Add a more systematic discoverability layer:
 
@@ -111,7 +100,7 @@ Add a more systematic discoverability layer:
 
 Why it matters: even a strong book does not help the community if people cannot find it, understand it quickly, and share it easily.
 
-### 9. Social and sharing assets
+### 8. Social and sharing assets
 
 The project should include lightweight sharing assets:
 
@@ -125,9 +114,9 @@ Why it matters: international reach grows when the book is easy not only to read
 
 If only three steps happen next, I would do:
 
-1. Cheat sheets
-2. Trace schema and event catalog
-3. Contribution kit
+1. Trace schema and event catalog
+2. Contribution kit
+3. Expand the case studies set
 
 That would produce the fastest growth in practical value without rewriting the architectural chapters.
 
@@ -143,7 +132,7 @@ If this backlog is executed, the project will gain:
 
 ## The Next Practical Step
 
-If we follow this roadmap, the next best step is the first set of cheat sheets, followed by a trace schema and event catalog.
+If we follow this roadmap, the next best step is a trace schema and event catalog, followed by a contribution kit.
 
 - [Home](../index.en.md)
 - [Book Plan](../book/plan.en.md)

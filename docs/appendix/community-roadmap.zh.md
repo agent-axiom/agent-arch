@@ -6,6 +6,7 @@
 
 - [从这里开始](../start-here.zh.md) 页面；
 - [多语言术语表](glossary.zh.md)；
+- [一组 cheat sheets](cheat-sheets.zh.md)；
 - 第一组[实战案例](case-studies.zh.md)；
 - 第一组[Policy Templates](policy-templates.zh.md)；
 - 可运行的参考包及其[包文档](reference-package.zh.md)；
@@ -21,19 +22,7 @@
 
 ## 接下来的 10 个改进
 
-### 1. 一页式 cheat sheets
-
-需要几张简短实用的清单页：
-
-- safety checklist；
-- memory checklist；
-- rollout checklist；
-- observability checklist；
-- tool gateway checklist。
-
-为什么重要：这类页面最容易被收藏、转发，也最容易在真实项目里当天就用起来。
-
-### 2. 扩展 case studies 集合
+### 1. 扩展 case studies 集合
 
 现有案例已经有用了，但还应该再补 2-3 个：
 
@@ -43,7 +32,7 @@
 
 为什么重要：可识别场景越多，读者越容易把书里的架构映射到自己的系统上。
 
-### 3. 扩展 policy templates 集合
+### 2. 扩展 policy templates 集合
 
 书里已经有第一批例子，但社区还需要更明确的模板：
 
@@ -55,7 +44,7 @@
 
 为什么重要：可复制、可改造的模板，往往比长篇解释更有价值。
 
-### 4. Trace schema 与 event catalog
+### 3. Trace schema 与 event catalog
 
 需要一张单独的 telemetry reference 页面：
 
@@ -67,7 +56,7 @@
 
 为什么重要：当社区拥有统一事件模型时，可观测性才会真正形成共享实践，而不只是共享概念。
 
-### 5. 扩展 `agent_runtime_ref` 的真实场景
+### 4. 扩展 `agent_runtime_ref` 的真实场景
 
 参考包已经有用了，但下一步还应该补上：
 
@@ -78,7 +67,7 @@
 
 为什么重要：可运行的参考包不该只展示 happy path，它应该教会读者生产环境里的真实行为。
 
-### 6. 面向社区的 contribution kit
+### 5. 面向社区的 contribution kit
 
 要让外部贡献更容易：
 
@@ -89,7 +78,7 @@
 
 为什么重要：好的开放手册会成长得更快，前提是贡献者知道该怎么帮忙。
 
-### 7. 更强的内链与 chapter journeys
+### 6. 更强的内链与 chapter journeys
 
 需要让章节之间的移动更顺：
 
@@ -99,7 +88,7 @@
 
 为什么重要：这本书越不容易让人迷路，它的实际价值就越高。
 
-### 8. discoverability 层
+### 7. discoverability 层
 
 需要更系统的 discoverability 改进：
 
@@ -111,7 +100,7 @@
 
 为什么重要：即使书本身很强，如果别人难以发现、难以快速理解、难以转发，它对社区的帮助也会打折扣。
 
-### 9. Social and sharing assets
+### 8. Social and sharing assets
 
 需要一些轻量的传播素材：
 
@@ -125,9 +114,9 @@
 
 如果接下来只能做三件事，我会这样排：
 
-1. Cheat sheets
-2. Trace schema 与 event catalog
-3. Contribution kit
+1. Trace schema 与 event catalog
+2. Contribution kit
+3. 扩展 case studies 集合
 
 这是在不重写架构章节的前提下，最快提升实际价值的组合。
 
@@ -143,7 +132,7 @@
 
 ## 下一步最实用的动作
 
-如果按这条路线走，下一步最值得做的是第一组 cheat sheets，接着补上 trace schema 和 event catalog。
+如果按这条路线走，下一步最值得做的是 trace schema 与 event catalog，接着是 contribution kit。
 
 - [首页](../index.zh.md)
 - [全书计划](../book/plan.zh.md)

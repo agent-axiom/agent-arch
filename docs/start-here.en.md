@@ -110,6 +110,7 @@ Start with these pages:
 
 - [Book Plan](book/plan.en.md)
 - [Glossary](appendix/glossary.en.md)
+- [Cheat Sheets](appendix/cheat-sheets.en.md)
 - [Practical Case Studies](appendix/case-studies.en.md)
 - [Policy Templates and Checklists by Use Case](appendix/policy-templates.en.md)
 - [Community Roadmap](appendix/community-roadmap.en.md)
