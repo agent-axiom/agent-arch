@@ -9,6 +9,12 @@ This page exists for two reasons:
 
 If you want the high-level message of the book, use the [homepage](index.en.md). If you need structure and current status, open the [book plan](book/plan.en.md). If you need reusable artifacts and contract pages, go to the [reference layer](reference.en.md).
 
+## Project maturity at a glance
+
+- `Published core`: the main parts of the book are already published.
+- `Expanding now`: entry pages, reference pages, and UX navigation are still being improved.
+- `Assets ready`: checklists, case studies, schemas, and the runnable runtime can already be used independently of linear reading.
+
 ## Who This Book Is For
 
 This book is especially useful if you are:

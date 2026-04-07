@@ -29,6 +29,12 @@
 - Справочные схемы для traces, eval datasets, policy bundles, approvals, rollout gates, memory retrieval и lifecycle artifacts.
 - Кейсы, чеклисты и шаблоны политик, которые можно брать как стартовые артефакты.
 
+## Состояние проекта
+
+- `Published core`: восемь частей книги уже опубликованы.
+- `Expanding now`: усиливаются входные страницы, reference-слой и навигация.
+- `Reference assets available`: уже есть схемы, чеклисты, кейсы и runnable runtime.
+
 ## Три удобных маршрута чтения
 
 ### Если ты строишь продуктового агента

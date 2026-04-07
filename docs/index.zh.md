@@ -29,6 +29,12 @@
 - 一组参考页，覆盖 trace schema、eval schema、policy bundles、approvals、rollout gates、memory retrieval 和 lifecycle artifacts。
 - 可以直接复用的案例研究、检查清单和策略模板。
 
+## 项目当前状态
+
+- `Published core`：全书八个部分已经完整发布。
+- `Expanding now`：入口页、参考层与站点导航仍在持续增强。
+- `Reference assets available`：schemas、checklists、case studies 与可运行 runtime 已经可用。
+
 ## 三条实用阅读路径
 
 ### 如果你在做产品型智能体

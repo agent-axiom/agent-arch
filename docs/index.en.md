@@ -29,6 +29,12 @@ This book is for people who want to build not demo magic, but calm, controllable
 - Reference pages for trace schema, eval schema, policy bundles, approvals, rollout gates, memory retrieval, and lifecycle artifacts.
 - Case studies, checklists, and policy templates you can reuse as starting artifacts.
 
+## Project Status
+
+- `Published core`: all eight parts of the book are already published.
+- `Expanding now`: entry pages, the reference layer, and site navigation are actively being improved.
+- `Reference assets available`: schemas, checklists, case studies, and a runnable runtime are already available.
+
 ## Three useful reading paths
 
 ### If you are building a product agent

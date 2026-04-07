@@ -9,6 +9,12 @@
 
 如果你想先看这本书的总体主张，请回到[首页](index.zh.md)。如果你要看结构和当前完成度，请直接打开[全书计划](book/plan.zh.md)。如果你需要可复用的工程工件与 contract pages，请进入[参考层](reference.zh.md)。
 
+## 快速了解项目成熟度
+
+- `Published core`：主要章节已经发布完成。
+- `Expanding now`：入口页、参考页与导航体验仍在持续增强。
+- `Assets ready`：checklists、case studies、schemas 与 runnable runtime 已经可以独立使用。
+
 ## 这本书适合谁
 
 如果你属于下面这些角色，这本书会特别有帮助：
