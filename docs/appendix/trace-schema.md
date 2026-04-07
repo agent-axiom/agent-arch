@@ -170,3 +170,10 @@ Reference runtime intentionally small, поэтому в более взросл
 - Есть ли plan на redaction и schema versioning?
 
 Если на несколько вопросов подряд ответ “нет”, значит у тебя пока есть логирование, но еще нет нормальной trace schema.
+
+## См. также
+
+- [Схема eval datasets и grading contract](eval-schema.md)
+- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Опорный пакет](reference-package.md)
+- [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)

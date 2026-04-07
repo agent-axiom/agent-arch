@@ -212,3 +212,10 @@ If you want to know whether your eval artifact schema is mature enough, ask:
 - Do you have dataset versioning and ownership?
 
 If several answers are “no,” you probably have examples, but not yet a proper eval dataset schema.
+
+## See Also
+
+- [Trace Schema and Event Catalog](trace-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)
+- [Reference Package](reference-package.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../book/part-v/chapter-13.en.md)

@@ -185,3 +185,10 @@ There is also a practical usability win now:
 - `export-events` now includes `schema_version` and supports export-time redaction for selected fields;
 - `inspect-trace` reads and filters saved traces;
 - `replay-run` reconstructs a run from the saved `run_start` event.
+
+## See Also
+
+- [Trace Schema and Event Catalog](trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)
+- [Chapter 17. Policy Layer and Capability Catalog](../book/part-vii/chapter-17.en.md)

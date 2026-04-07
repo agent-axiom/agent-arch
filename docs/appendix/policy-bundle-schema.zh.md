@@ -191,3 +191,10 @@ approval_contract:
 - 能不能知道某条 trace 对应的是哪个 policy version？
 
 如果连续几个答案都是“不能”，那说明你的 policy layer 虽然存在，但还没有被塑造成完整的 operational artifact。
+
+## 延伸阅读
+
+- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
+- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
+- [参考包](reference-package.zh.md)
+- [按场景组织的 Policy Templates 与 Checklists](policy-templates.zh.md)

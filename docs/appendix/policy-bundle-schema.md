@@ -191,3 +191,10 @@ approval_contract:
 - Можно ли понять, какая версия policy была активна в момент trace?
 
 Если несколько ответов подряд “нет”, значит policy layer у тебя пока существует, но еще не оформлен как полноценный operational artifact.
+
+## См. также
+
+- [Схема трасс и каталог событий](trace-schema.md)
+- [Схема eval datasets и grading contract](eval-schema.md)
+- [Опорный пакет](reference-package.md)
+- [Policy templates и checklists по кейсам](policy-templates.md)

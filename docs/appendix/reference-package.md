@@ -185,3 +185,10 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `export-events` умеет добавлять `schema_version` и делать export-time redaction по выбранным полям;
 - `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
 - `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.
+
+## См. также
+
+- [Схема трасс и каталог событий](trace-schema.md)
+- [Схема eval datasets и grading contract](eval-schema.md)
+- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)

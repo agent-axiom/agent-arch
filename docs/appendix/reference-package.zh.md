@@ -185,3 +185,10 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `export-events` 现在会带上 `schema_version`，也支持按字段做 export-time redaction；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
+
+## 延伸阅读
+
+- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
+- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
+- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
+- [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)

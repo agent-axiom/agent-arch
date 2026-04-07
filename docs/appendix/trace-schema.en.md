@@ -170,3 +170,10 @@ If you want to know whether your trace schema is ready for more than local debug
 - Do you have a plan for redaction and schema versioning?
 
 If several answers are “no,” you probably have logging, but not yet a real trace schema.
+
+## See Also
+
+- [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)
+- [Reference Package](reference-package.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../book/part-v/chapter-13.en.md)

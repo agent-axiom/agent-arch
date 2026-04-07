@@ -212,3 +212,10 @@ grading_rules:
 - Есть ли dataset versioning и owner?
 
 Если несколько ответов подряд “нет”, значит у тебя пока есть набор примеров, но еще нет нормальной eval dataset schema.
+
+## См. также
+
+- [Схема трасс и каталог событий](trace-schema.md)
+- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Опорный пакет](reference-package.md)
+- [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)

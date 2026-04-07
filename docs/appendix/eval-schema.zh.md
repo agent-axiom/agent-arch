@@ -212,3 +212,10 @@ grading_rules:
 - 有没有 dataset versioning 和 owner？
 
 如果连续几个答案都是“没有”，那你现在更像是拥有一组例子，而不是拥有真正的 eval dataset schema。
+
+## 延伸阅读
+
+- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
+- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
+- [参考包](reference-package.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
