@@ -123,6 +123,25 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - simulator дает realistic task distribution;
 - adversary дает pressure testing.
 
+## 8.1. Research полезен здесь как источник scenario classes
+
+Свежие papers по behavioral risk и automated red teaming полезны не только выводами, но и vocabulary.
+
+Они помогают команде расширять набор scenario classes, который редко рождается полностью из локального опыта. Именно оттуда удобно брать идеи для таких классов, как:
+
+- concealment;
+- oversight evasion;
+- sabotage-like persistence;
+- coordination breakdown under pressure.
+
+Но engineering discipline здесь должна оставаться жесткой:
+
+- scenario class должен быть отражен в reviewable eval schema;
+- finding должен получать owner и triage path;
+- rollout gate должен видеть operational evidence, а не просто ссылку на paper.
+
+То есть research полезен здесь прежде всего как генератор гипотез и dangerous scenarios, а не как замена собственного eval program.
+
 ## 9. Пример policy для control evals
 
 ```yaml
@@ -207,6 +226,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)

@@ -123,6 +123,25 @@ At a mature level, both roles coexist:
 - the simulator gives you realistic task distribution;
 - the adversary gives you pressure testing.
 
+## 8.1. Research is useful here as a source of scenario classes
+
+Recent work on behavioral risk and automated red teaming is useful not only for its conclusions, but also for its vocabulary.
+
+It helps teams expand a set of scenario classes that rarely emerges fully from local experience alone. This is a good place to borrow ideas for classes such as:
+
+- concealment;
+- oversight evasion;
+- sabotage-like persistence;
+- coordination breakdown under pressure.
+
+But the engineering discipline still needs to stay strict:
+
+- the scenario class must appear in a reviewable eval schema;
+- the finding must get an owner and a triage path;
+- the rollout gate must see operational evidence, not merely a paper citation.
+
+So the best use of research here is as a generator of hypotheses and dangerous scenarios, not as a replacement for your own eval program.
+
 ## 9. Example policy for control evals
 
 ```yaml
@@ -207,6 +226,7 @@ If several answers are “no,” your eval layer exists but is not yet ready for
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)

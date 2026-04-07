@@ -123,6 +123,25 @@ Behavioral evals 和 control evals 不是用来替换它们的，而是在上面
 - simulator 提供 realistic task distribution；
 - adversary 提供 pressure testing。
 
+## 8.1. Research 在这里更适合作为 scenario classes 的来源
+
+最新关于 behavioral risk 与 automated red teaming 的研究，价值不只在于结论，也在于它提供了更丰富的 vocabulary。
+
+它能帮助团队补齐那些很难仅靠本地经验就完整想出的 scenario classes。比如：
+
+- concealment；
+- oversight evasion；
+- sabotage-like persistence；
+- coordination breakdown under pressure。
+
+但 engineering discipline 仍然应该保持严格：
+
+- scenario class 必须进入 reviewable eval schema；
+- finding 必须有 owner 和 triage path；
+- rollout gate 看到的应是 operational evidence，而不只是 paper citation。
+
+所以，research 在这里最好的用途，是帮助生成 hypotheses 和 dangerous scenarios，而不是替代你自己的 eval program。
+
 ## 9. 一个 control evals policy 示例
 
 ```yaml
@@ -207,6 +226,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
