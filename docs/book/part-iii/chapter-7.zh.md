@@ -115,6 +115,30 @@ Background updates 让 memory 变得整洁，而不只是“反应很快”。
 
 它很快就会变得脆弱且难以解释。
 
+## 6.1. Frontier memory 正在走向 adaptive shaping，但 production 仍然需要纪律
+
+最新的 memory research 正在把架构继续往前推：不只是存 records、偶尔做 compaction，而是试图根据真实使用模式逐步重塑整个 memory layer。
+
+这很有吸引力，因为它暗示着一种更聪明的系统：
+
+- summaries 可以持续演化；
+- memory classes 可以变得更丰富；
+- store 可以更贴近真实 recurring tasks。
+
+但也正是在这里，最容易跳过 operational discipline。
+
+在团队还没有稳定建立这些能力之前：
+
+- provenance rules；
+- revision semantics；
+- reviewable memory writes；
+- traceable maintenance jobs；
+- 针对 derived artifacts 的 rollback path，
+
+adaptive memory shaping 更适合被当作 research direction，而不是默认的 production pattern。
+
+从工程上讲，这意味着一件很朴素的事：evolving memory 值得研究，但当前 live system contour 仍然应该建立在 explainable retrieval、controlled compaction 和可验证 provenance 之上。
+
 ## 7. 一个 retrieval 与 background updates 的 policy 示例
 
 下面是一个很实用的模板。它不追求万能，但很清楚地展示了哪些决定应该被写明。
@@ -227,6 +251,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 到这里，关于 memory 的基础部分已经开始成形。接下来你可以继续深入 retention 和 deletion，也可以转去看 tools 和 execution。
 
 - [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 - [第 8 章：Execution Model 与 Tool Catalog](../part-iv/chapter-8.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)

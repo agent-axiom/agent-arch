@@ -115,6 +115,30 @@ flowchart TD
 
 она очень быстро становится хрупкой и плохо объяснимой.
 
+## 6.1. Frontier memory идет в сторону adaptive shaping, но production пока требует дисциплины
+
+Свежие research papers по memory подталкивают архитектуру еще дальше: не просто хранить records и иногда их compact, а постепенно перестраивать memory layer под реальные паттерны использования.
+
+Это выглядит перспективно, потому что намекает на более умную систему:
+
+- summaries могут эволюционировать;
+- memory classes могут становиться богаче;
+- store может лучше отражать реальные recurring tasks.
+
+Но именно здесь важно не перепрыгнуть через operational discipline.
+
+Пока у команды нет устойчивых:
+
+- provenance rules;
+- revision semantics;
+- reviewable memory writes;
+- traceable maintenance jobs;
+- rollback path для derived artifacts,
+
+adaptive memory shaping лучше воспринимать как направление исследований, а не как default production pattern.
+
+Практически это означает простую вещь: evolving memory интересно изучать, но живой system contour пока должен держаться на explainable retrieval, controlled compaction и проверяемом происхождении записей.
+
 ## 7. Пример policy для retrieval и background updates
 
 Ниже очень практичный шаблон. Он не пытается быть универсальным, но хорошо показывает, какие решения стоит сделать явными.
@@ -227,6 +251,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 На этом базовая часть про память уже начинает складываться. Дальше логично либо углубиться в retention и deletion, либо перейти к части про инструменты и выполнение.
 
 - [Глава 6. Краткосрочная, долгосрочная и профильная память](chapter-6.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 - [Глава 8. Модель выполнения и каталог инструментов](../part-iv/chapter-8.md)
 - [Часть III. Память и знания](index.md)
 - [Источники](../../appendix/sources.md)

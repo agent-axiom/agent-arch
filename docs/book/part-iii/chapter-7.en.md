@@ -115,6 +115,30 @@ This matters not only for performance, but also for decision quality. When one c
 
 it quickly becomes fragile and hard to explain.
 
+## 6.1. Frontier memory is moving toward adaptive shaping, but production still needs discipline
+
+Recent memory research pushes the architecture further: not only to store records and compact them occasionally, but to gradually reshape the memory layer around actual usage patterns.
+
+That is promising because it points toward a smarter system:
+
+- summaries can evolve;
+- memory classes can become richer;
+- the store can better reflect recurring tasks.
+
+But this is exactly where it is important not to skip operational discipline.
+
+Until a team has stable:
+
+- provenance rules;
+- revision semantics;
+- reviewable memory writes;
+- traceable maintenance jobs;
+- a rollback path for derived artifacts,
+
+adaptive memory shaping is better treated as a research direction, not as a default production pattern.
+
+Practically, this means something simple: evolving memory is worth studying, but the live system contour should still rest on explainable retrieval, controlled compaction, and verifiable record provenance.
+
 ## 7. Example Policy for Retrieval and Background Updates
 
 Here is a very practical template. It does not try to be universal, but it shows well which decisions are worth making explicit.
@@ -227,6 +251,7 @@ If the answer is "no" several times in a row, then you already have memory, but 
 At this point, the basic part about memory is already coming together. From here it makes sense either to go deeper into retention and deletion, or to move to the section about tools and execution.
 
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](chapter-6.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 - [Chapter 8. Execution Model and Tool Catalog](../part-iv/chapter-8.en.md)
 - [Part III. Memory and Knowledge](index.en.md)
 - [Sources](../../appendix/sources.en.md)
