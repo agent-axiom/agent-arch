@@ -74,9 +74,10 @@
 - 第 19 章：从 SDLC 到 ADLC。
 - 第 20 章：智能体系统的 Change Management。
 - 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response。
-- 下一步：supply chain discipline、retirement。
+- 第 22 章：Supply Chain、Provenance 与 Approved Artifacts。
+- 下一步：retirement。
 
-状态：transition、change-management 和 assurance 章节已加入。
+状态：transition、change-management、assurance 和 artifact governance 章节已加入。
 
 ## 发布路线图
 

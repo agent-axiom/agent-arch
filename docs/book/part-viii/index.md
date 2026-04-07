@@ -17,5 +17,6 @@
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
+- [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
 
 Следующие главы этой части логично строить вокруг change management, assurance loop, supply chain и retirement discipline.

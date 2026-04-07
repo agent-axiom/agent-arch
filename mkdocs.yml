@@ -90,6 +90,7 @@ plugins:
             Глава 19. От SDLC к ADLC: Глава 19. От SDLC к ADLC
             Глава 20. Change management для агентных систем: Глава 20. Change management для агентных систем
             "Глава 21. Assurance loop: red teaming, detection и response": "Глава 21. Assurance loop: red teaming, detection и response"
+            "Глава 22. Supply chain, provenance и approved artifacts": "Глава 22. Supply chain, provenance и approved artifacts"
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
@@ -141,6 +142,7 @@ plugins:
             Глава 19. От SDLC к ADLC: Chapter 19. From SDLC to ADLC
             Глава 20. Change management для агентных систем: Chapter 20. Change Management for Agent Systems
             "Глава 21. Assurance loop: red teaming, detection и response": "Chapter 21. Assurance Loop: Red Teaming, Detection, and Response"
+            "Глава 22. Supply chain, provenance и approved artifacts": "Chapter 22. Supply Chain, Provenance, and Approved Artifacts"
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
@@ -192,6 +194,7 @@ plugins:
             Глава 19. От SDLC к ADLC: 第 19 章：从 SDLC 到 ADLC
             Глава 20. Change management для агентных систем: 第 20 章：智能体系统的 Change Management
             "Глава 21. Assurance loop: red teaming, detection и response": "第 21 章：Assurance Loop：Red Teaming、Detection 与 Response"
+            "Глава 22. Supply chain, provenance и approved artifacts": "第 22 章：Supply Chain、Provenance 与 Approved Artifacts"
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
@@ -284,6 +287,7 @@ nav:
       - Глава 19. От SDLC к ADLC: book/part-viii/chapter-19.md
       - Глава 20. Change management для агентных систем: book/part-viii/chapter-20.md
       - "Глава 21. Assurance loop: red teaming, detection и response": book/part-viii/chapter-21.md
+      - "Глава 22. Supply chain, provenance и approved artifacts": book/part-viii/chapter-22.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Дорожная карта для сообщества: appendix/community-roadmap.md
