@@ -12,6 +12,14 @@ As soon as the system lives longer than a single demo, a different class of ques
 
 This is where classical engineering discipline meets agent-specific behavior. That is why this part should start not with a “magical new process,” but with a transition from classical SDLC to ADLC.
 
+If you read this part as one block, the sequence is straightforward:
+
+- first, establish the frame by moving from SDLC to ADLC;
+- then define which changes in an agent system are truly release-bearing;
+- next, build an assurance loop around red teaming, detection, and response;
+- after that, lock down artifact discipline and provenance;
+- and finally close the lifecycle through replacement and retirement.
+
 ## In this part
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
@@ -20,4 +28,9 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
 
-The next logical chapters in this part are change management, assurance loops, supply chain discipline, and retirement.
+## What you should have by the end
+
+- a coherent lifecycle model for production-grade agent systems;
+- a stronger frame for change reviews and release gates;
+- a clear connection between evals, incidents, provenance, and ownership;
+- a practical language for replacement, retirement, and end-of-life discipline.

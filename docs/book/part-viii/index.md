@@ -12,6 +12,14 @@
 
 Именно здесь обычная инженерная дисциплина встречается с агентной спецификой. Поэтому эту часть логично начинать не с “магического нового процесса”, а с перехода от классического SDLC к ADLC.
 
+Если читать эту часть как единый блок, логика очень простая:
+
+- сначала ты выравниваешь понятийную рамку через переход от SDLC к ADLC;
+- потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
+- затем строишь assurance loop вокруг red teaming, detection и response;
+- после этого закрепляешь artifact discipline и provenance;
+- и только в конце закрываешь lifecycle через replacement и retirement.
+
 ## В этой части
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
@@ -20,4 +28,9 @@
 - [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 
-Следующие главы этой части логично строить вокруг change management, assurance loop, supply chain и retirement discipline.
+## Что ты получишь в конце части
+
+- цельную lifecycle-модель для production-grade agent systems;
+- более взрослую рамку для change reviews и release gates;
+- понятную связь между evals, incidents, provenance и operational ownership;
+- практический язык для разговоров о replacement, retirement и end-of-life discipline.

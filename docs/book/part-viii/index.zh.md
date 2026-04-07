@@ -12,6 +12,14 @@
 
 这正是经典工程纪律与智能体特性相遇的地方。所以这一部分最好的开场，不是“发明一个全新流程”，而是先说明如何从经典 SDLC 过渡到 ADLC。
 
+如果把这一部分当成一个完整模块来读，它的顺序很清晰：
+
+- 先通过从 SDLC 到 ADLC 的过渡建立共同框架；
+- 再定义哪些智能体系统变更真正属于 release-bearing changes；
+- 接着围绕 red teaming、detection 和 response 建立 assurance loop；
+- 然后把 artifact discipline 和 provenance 固定下来；
+- 最后用 replacement 和 retirement 把整个 lifecycle 收束起来。
+
 ## 本部分内容
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
@@ -20,4 +28,9 @@
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](chapter-22.zh.md)
 - [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)
 
-这一部分接下来的自然延伸，是 change management、assurance loop、supply chain discipline 和 retirement。
+## 读完这一部分后，你应该得到什么
+
+- 一套面向 production-grade agent systems 的完整生命周期框架；
+- 一种更成熟的 change review 与 release gate 视角；
+- 对 evals、incidents、provenance 与 ownership 之间关系的清晰理解；
+- 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言。
