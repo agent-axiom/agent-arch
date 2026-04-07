@@ -28,8 +28,8 @@ uv run mkdocs serve
 ```bash
 uv run ruff check .
 uv run ty check
+uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
-.venv/bin/python -m unittest discover -s tests
 ```
 
 ## Опорный пакет

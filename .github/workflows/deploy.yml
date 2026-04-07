@@ -52,6 +52,9 @@ jobs:
       - name: Type check
         run: uv run ty check
 
+      - name: Tests
+        run: uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
+
       - name: Build docs
         run: uv run mkdocs build --strict
 

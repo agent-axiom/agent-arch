@@ -83,10 +83,16 @@ class SessionStore:
         *,
         output_path: str | Path,
         dataset_name: str,
+        eval_specs: dict[str, dict[str, object]] | None = None,
     ) -> Path:
         destination = Path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        sessions = [self._session_payload(session_id) for session_id in session_ids]
+        sessions = []
+        for session_id in session_ids:
+            payload = self._session_payload(session_id)
+            if eval_specs is not None and session_id in eval_specs:
+                payload["eval"] = eval_specs[session_id]
+            sessions.append(payload)
         run_count = sum(
             summarize_session(session_id, self.runs_for_session(session_id)).total_runs
             for session_id in session_ids

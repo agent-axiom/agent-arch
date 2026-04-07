@@ -18,6 +18,8 @@ docs = [
   "pymdown-extensions>=10.21,<11",
 ]
 dev = [
+  "pytest>=8.4,<9",
+  "pytest-cov>=7,<8",
   "ruff>=0.15.8,<0.16",
   "ty>=0.0.26,<0.1",
 ]
@@ -44,3 +46,7 @@ select = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

@@ -130,7 +130,7 @@ A request that actually reads profile memory:
 ```bash
 uv run ruff check .
 uv run ty check
-.venv/bin/python -m unittest discover -s tests
+uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 ```
 
 ## Sample Configs

@@ -46,6 +46,39 @@ EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str]] = {
         "trace-eval-mixed",
     ),
 }
+EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
+    "support_ticket": {
+        "scenario": "support_ticket",
+        "labels": ["write_path", "approval_required", "ticketing"],
+        "expected_outcomes": {
+            "latest_status": "success",
+            "approval_wait_runs": 1,
+            "required_output_substrings": ["waiting for human approval"],
+        },
+    },
+    "profile_memory": {
+        "scenario": "profile_memory",
+        "labels": ["memory_read", "profile_lookup", "grounded_answer"],
+        "expected_outcomes": {
+            "latest_status": "success",
+            "approval_wait_runs": 0,
+            "required_output_substrings": ["Retrieved profile hint"],
+        },
+    },
+    "mixed_session": {
+        "scenario": "mixed_session",
+        "labels": ["multi_run", "approval_then_memory", "session_evals"],
+        "expected_outcomes": {
+            "latest_status": "success",
+            "approval_wait_runs": 1,
+            "required_run_count": 2,
+            "required_output_substrings": [
+                "waiting for human approval",
+                "Retrieved profile hint",
+            ],
+        },
+    },
+}
 
 
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
@@ -554,6 +587,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     runtime = _build_runtime(config_dir)
     selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
     session_ids: list[str] = []
+    eval_specs: dict[str, dict[str, object]] = {}
     for scenario_name in selected_scenarios:
         session_suffix, user_inputs, trace_prefix = EVAL_DATASET_SCENARIOS[scenario_name]
         session_id = f"{args.session_prefix}-{session_suffix.removeprefix('session-eval-')}"
@@ -568,10 +602,12 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 agent_id=args.agent_id,
             )
         session_ids.append(session_id)
+        eval_specs[session_id] = EVAL_DATASET_LABELS[scenario_name]
     output_path = runtime.sessions.export_eval_dataset_json(
         tuple(session_ids),
         output_path=args.output,
         dataset_name=args.dataset_name,
+        eval_specs=eval_specs,
     )
     return {
         "dataset_name": args.dataset_name,

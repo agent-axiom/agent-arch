@@ -75,6 +75,7 @@ Before opening a PR, run:
 ```bash
 uv run ruff check .
 uv run ty check
+uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
