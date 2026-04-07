@@ -1,10 +1,10 @@
 # 参考层
 
-如果这本书回答的是**为什么**安全智能体系统应该这样构建，那么参考层回答的就是：**哪些工件、schemas 与 contract pages 应该被明确固定下来**。
+如果这本书回答的是**为什么**安全智能体系统应该这样构建，那么参考层回答的就是：**哪些工件、schemas 与契约页应该被明确固定下来**。
 
 当你需要下面这些东西时，这一节最有用：
 
-- 快速找到合适的 contract page；
+- 快速找到合适的契约页；
 - 准备 design review 或 rollout review；
 - 为团队抽取可复用的工程工件；
 - 从概念章节切换到更落地的工程材料。
@@ -17,7 +17,7 @@
 2. [速查清单](appendix/cheat-sheets.zh.md)
 3. [参考运行时包](appendix/reference-package.zh.md)
 
-## Schemas 与 contract pages
+## Schemas 与契约页
 
 - [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)

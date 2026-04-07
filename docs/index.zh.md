@@ -10,24 +10,24 @@
 
 <div class="book-cover" markdown="1">
 
-![Book cover](assets/images/hero-home.png)
+![本书封面](assets/images/hero-home.png)
 
 </div>
 
 ## 这本书适合谁
 
-- 正在把 agent 能力接入真实产品的工程师。
-- 正在搭建共享 runtime、policy、registry、approvals 和 observability 层的平台团队。
+- 正在把智能体能力接入真实产品的工程师。
+- 正在搭建共享运行时、策略、注册表、审批与可观测性层的平台团队。
 - 需要看到信任边界与高风险执行路径的安全工程师。
 - 更关心工程纪律而不是“智能体表演”的技术负责人和架构师。
 
 ## 你今天就能带走什么
 
-- 一条从 workflow-first 系统走向受控自治的实践路径。
-- 关于 policy layer、approvals、memory、evals、observability 和 lifecycle 的章节。
-- 一个可运行的 reference runtime，包含 session export、eval dataset export、approvals、controls 和 lifecycle artifacts。
-- 一组 reference pages，覆盖 trace schema、eval schema、policy bundles、approvals、rollout gates、memory retrieval 和 lifecycle artifacts。
-- 可以直接复用的 case studies、checklists 和 policy templates。
+- 一条从“先工作流后智能体”走向受控自治的实践路径。
+- 关于策略层、审批、记忆、评测、可观测性与生命周期的章节。
+- 一个可运行的参考运行时，包含 session export、eval dataset export、approvals、controls 和 lifecycle artifacts。
+- 一组参考页，覆盖 trace schema、eval schema、policy bundles、approvals、rollout gates、memory retrieval 和 lifecycle artifacts。
+- 可以直接复用的案例研究、检查清单和策略模板。
 
 ## 三条实用阅读路径
 
@@ -56,8 +56,8 @@
 
 - 完整的 `ru / en / zh` 三语内容。
 - 带有 `pytest` 覆盖的可运行 [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 包。
-- 一套完整的 reference layer，涵盖 schemas 与 contract pages。
-- 包含案例、速查清单、术语表与 roadmap 的实践型附录。
+- 一套完整的参考层，涵盖 schemas 与 contract pages。
+- 包含案例、速查清单、术语表与路线图的实践型附录。
 
 ## 核心工程观点
 

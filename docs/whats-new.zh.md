@@ -10,9 +10,9 @@ _更新于 2026 年 4 月 8 日。_
 
 现在全书已经包含 `SDLC -> ADLC`、change management、assurance loop、supply chain、retirement、misalignment、behavioral evals、AI-native observability 与 inventory control 的完整内容。
 
-### 可复用的 reference layer
+### 可复用的参考层
 
-站点现在已经包含以下 reference pages：
+站点现在已经包含以下参考页：
 
 - traces 与 event catalog；
 - eval datasets 与 grading contract；
@@ -21,7 +21,7 @@ _更新于 2026 年 4 月 8 日。_
 - lifecycle artifacts；
 - memory retrieval contracts。
 
-### 可运行的 reference runtime
+### 可运行的参考运行时
 
 仓库中的 [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 现在支持：
 
@@ -46,8 +46,8 @@ _更新于 2026 年 4 月 8 日。_
 ## 这对读者意味着什么
 
 - 你可以把这本书当作 handbook 使用。
-- 你可以把 reference pages 当作工程起点复用。
-- 你可以运行示例 runtime，而不仅仅是阅读 Markdown。
+- 你可以把参考页当作工程起点复用。
+- 你可以运行示例运行时，而不仅仅是阅读 Markdown。
 - 你可以把架构建立在 OpenAI、Anthropic、Google、Microsoft 与 NIST 的近年资料之上。
 
 ## 继续阅读
