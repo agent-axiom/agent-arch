@@ -29,6 +29,7 @@
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
+- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
 
 ## Что ты получишь в конце части
 
@@ -36,4 +37,5 @@
 - более взрослую рамку для change reviews и release gates;
 - понятную связь между evals, incidents, provenance и operational ownership;
 - практический язык для разговоров о replacement, retirement и end-of-life discipline;
-- более зрелую рамку для sabotage-like behavior, control failures и automated assurance.
+- более зрелую рамку для sabotage-like behavior, control failures и automated assurance;
+- представление о observability как evidence layer для inventory, detection и governance.

@@ -29,6 +29,7 @@
 - [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)
 - [第 24 章：Agentic Misalignment 与 Insider Risk](chapter-24.zh.md)
 - [第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming](chapter-25.zh.md)
+- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
 
 ## 读完这一部分后，你应该得到什么
 
@@ -36,4 +37,5 @@
 - 一种更成熟的变更评审与发布门禁视角；
 - 对 evals、incidents、provenance 与 ownership 之间关系的清晰理解；
 - 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言；
-- 一套可以讨论 sabotage-like behavior、control failures 与 automated assurance 的更成熟框架。
+- 一套可以讨论 sabotage-like behavior、control failures 与 automated assurance 的更成熟框架；
+- 一套把 observability 当作 inventory、detection 与 governance 证据层的实践视角。

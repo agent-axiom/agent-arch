@@ -29,6 +29,7 @@ If you read this part as one block, the sequence is straightforward:
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
 - [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
 - [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](chapter-25.en.md)
+- [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
 
 ## What you should have by the end
 
@@ -36,4 +37,5 @@ If you read this part as one block, the sequence is straightforward:
 - a stronger frame for change reviews and release gates;
 - a clear connection between evals, incidents, provenance, and ownership;
 - a practical language for replacement, retirement, and end-of-life discipline;
-- a stronger frame for sabotage-like behavior, control failures, and automated assurance.
+- a stronger frame for sabotage-like behavior, control failures, and automated assurance;
+- a clear model of observability as an evidence layer for inventory, detection, and governance.

@@ -78,8 +78,9 @@ What I am strengthening next in this part:
 - Chapter 23. Retirement, Replacement, and End-of-Life Discipline.
 - Chapter 24. Agentic Misalignment and Insider Risk.
 - Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming.
+- Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry.
 
-Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior and control-heavy evals.
+Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior, control-heavy evals, and AI-native observability.
 
 ## Publishing roadmap
 

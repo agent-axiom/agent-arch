@@ -1,0 +1,237 @@
+# Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry
+
+## 1. Why observability for agents cannot stop at latency and errors
+
+In an ordinary service, observability often starts with a simple set:
+
+- latency;
+- error rate;
+- throughput;
+- resource utilization.
+
+For agent systems, that is not enough.
+
+A system can:
+
+- stay up;
+- respond quickly;
+- return HTTP 200;
+- and still behave unsafely, poorly, or uncontrollably.
+
+Microsoft makes this shift very clearly: for agentic systems, we need to evolve traditional logs, metrics, and traces into `AI-native signals` that help reconstruct not only that a request happened, but how the system behaved. [^ms-observability]
+
+## 2. Observability is not only for debugging
+
+In an agent platform, observability serves at least five roles:
+
+- runtime debugging;
+- incident reconstruction;
+- abuse detection;
+- release evidence;
+- governance coverage.
+
+If traces exist only for a developer debugging a local issue, that is no longer enough.
+
+In production, you also need to answer:
+
+- how many agents exist at all;
+- what share of them are observable;
+- which capabilities they actually invoke;
+- where high-risk actions occur;
+- which approvals were requested, granted, or bypassed;
+- which behavior shifts appeared after rollout.
+
+## 3. What AI-native signals are
+
+A useful telemetry contract for agent systems usually includes:
+
+- request identity;
+- `run_id`, `trace_id`, `session_id`;
+- actor and agent identity;
+- retrieval provenance;
+- tool invocations;
+- tool permissions and principals;
+- policy decisions;
+- approvals;
+- output summaries;
+- redaction status;
+- bundle, version, and rollout wave.
+
+In other words, traces must explain not only “what failed,” but also:
+
+- who acted;
+- through which control layer;
+- with which permissions;
+- under which rules;
+- under which artifact bundle;
+- and with which side effect.
+
+## 4. Inventory coverage is also observability
+
+There is an important point that teams often miss: observability begins not with a beautiful trace viewer, but with knowing which systems exist at all.
+
+Microsoft explicitly treats complete production inventory as a prerequisite for trusted telemetry. [^ms-inventory]
+
+For an agent estate, that means you should know:
+
+- which agents are active;
+- which are already deprecated;
+- which connectors and capabilities they have;
+- which principals they use;
+- which of them actually emit telemetry;
+- and which blind spots remain.
+
+If you do not have inventory coverage, you do not have full observability. You have only a partially lit stage.
+
+## 5. Behavioral baselines matter more than raw volume
+
+In agent systems, the signal “we have more requests than usual” does not mean much by itself.
+
+It is much more valuable to detect deviation from normal behavior:
+
+- an unexpected increase in risky tool calls;
+- growth in approval denials;
+- a change in memory-write patterns;
+- a shift in the usual retrieval profile;
+- a spike in unusual egress destinations;
+- growth in session length or tool-hop count.
+
+This is where observability starts to intersect with security detection and operational governance.
+
+## 6. What detection-ready telemetry means
+
+`Detection-ready telemetry` does not just mean “we log something.”
+
+It means the telemetry is already usable for:
+
+- investigation;
+- correlation;
+- abuse detection;
+- control verification.
+
+Practically, that means:
+
+- unified identifiers;
+- stable schemas;
+- redaction rules;
+- retention policy;
+- linkage between traces, approvals, policy decisions, and lifecycle artifacts.
+
+If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, and `rollout_wave`, it may still be useful for debugging, but it is weak as an evidence layer.
+
+## 7. Why governance without observability is fragile
+
+Governance is often expressed as:
+
+- policy bundles;
+- review processes;
+- release gates;
+- approval contracts.
+
+Without observability, all of that can too easily become a paper control plane.
+
+Strong governance requires:
+
+- seeing actual behavior;
+- noticing drift;
+- measuring coverage;
+- distinguishing governed paths from bypass paths.
+
+That is why observability in agent systems is best understood as an `evidence layer for governance`.
+
+<div class="diagram-card">
+<p>AI-native observability is best understood as the combination of telemetry, inventory, and governance evidence</p>
+
+``` mermaid
+flowchart LR
+    A["Inventory coverage"] --> D["AI-native observability"]
+    B["Runtime telemetry"] --> D
+    C["Policy and approval evidence"] --> D
+    D --> E["Incident reconstruction"]
+    D --> F["Behavioral baselines"]
+    D --> G["Abuse detection"]
+    D --> H["Release evidence"]
+```
+
+</div>
+
+## 8. A minimal policy for observability coverage
+
+```yaml
+observability:
+  require:
+    request_identity: true
+    trace_ids: true
+    session_ids: true
+    policy_decisions: true
+    tool_principals: true
+    approval_linkage: true
+    artifact_bundle_linkage: true
+  kpis:
+    min_agent_inventory_coverage_pct: 95
+    min_trace_coverage_pct: 95
+    min_high_risk_action_trace_pct: 100
+  block_if:
+    - untracked_high_risk_agent_exists
+    - approval_events_not_linked
+    - bundle_version_missing
+```
+
+This kind of policy helps teams discuss observability as a required production layer rather than a nice-to-have for the platform team.
+
+## 9. Example coverage check
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ObservabilityCoverage:
+    inventory_coverage_pct: int
+    trace_coverage_pct: int
+    high_risk_trace_coverage_pct: int
+
+
+def observability_ready(state: ObservabilityCoverage) -> bool:
+    return (
+        state.inventory_coverage_pct >= 95
+        and state.trace_coverage_pct >= 95
+        and state.high_risk_trace_coverage_pct == 100
+    )
+```
+
+The point is not the exact numbers. The point is that observability readiness should also become an explicit gate.
+
+## 10. The most common failure modes
+
+- traces exist only for the “main” runtime, not for the real adapters;
+- agents exist outside inventory;
+- approvals are logged separately and never linked to traces;
+- telemetry covers the happy path but not the bypass path;
+- drift is noticed only through user complaints;
+- retention and redaction rules are not aligned with forensic needs.
+
+## 11. Practical checklist
+
+- Do you know how many agents actually exist in your production estate?
+- What percentage of them emits structured telemetry?
+- Can you link a high-risk action to `trace_id`, `approval_id`, `tool_principal`, and `bundle_id`?
+- Do you have behavioral baselines rather than only raw dashboards?
+- Do you treat unobserved agents as a distinct risk class?
+- Can you use observability as release evidence rather than only as a debugging aid?
+
+If several answers are “no,” you already have observability, but it has not yet become a governance layer.
+
+## 12. Useful reference pages
+
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
+
+- [Chapter 11. Traces, Spans, and Structured Events](../part-v/chapter-11.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
+- [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
+
+[^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
+[^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)

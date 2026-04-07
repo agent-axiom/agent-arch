@@ -84,8 +84,9 @@
 - Глава 23. Retirement, replacement и end-of-life discipline.
 - Глава 24. Agentic misalignment и insider-risk.
 - Глава 25. Behavioral evals, control evals и automated red teaming.
+- Глава 26. AI-native observability, inventory coverage и detection-ready telemetry.
 
-Статус: Part VIII собрана как цельный lifecycle-блок и усилена современными темами sabotage-like behavior и control-heavy evals.
+Статус: Part VIII собрана как цельный lifecycle-блок и усилена современными темами sabotage-like behavior, control-heavy evals и AI-native observability.
 
 ## Роадмап публикации
 
