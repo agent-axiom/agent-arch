@@ -245,7 +245,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Part V 到这里已经是一个完整的 operational block：traces、SLO 和 eval loop。下一步自然就是组织模型，因为这种平台最终既会碰到代码问题，也会碰到团队设计问题。
 
-## 14. 值得配套阅读的 Reference Pages
+## 14. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

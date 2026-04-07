@@ -210,7 +210,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 На этом reference implementation уже выглядит как цельный operational skeleton. Дальше можно либо расширять ее примерами кода, либо переходить к polishing: переводы, диаграммы, практические appendices и более конкретные implementation snippets.
 
-## 14. Полезные reference pages
+## 14. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)

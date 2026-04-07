@@ -244,7 +244,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Теперь эта часть уже может служить не только как архитектурное объяснение, но и как lifecycle handbook для production-grade agent systems.
 
-## 15. Полезные reference pages
+## 15. Полезные справочные страницы
 
 - [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)

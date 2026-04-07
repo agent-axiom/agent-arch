@@ -258,7 +258,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 После supply chain и artifact discipline логично переходить к последней operational теме этой части: retirement, replacement и end-of-life discipline. Потому что зрелая система должна уметь не только запускаться и исправляться, но и корректно уходить со сцены.
 
-## 15. Полезные reference pages
+## 15. Полезные справочные страницы
 
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
 - [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)

@@ -228,7 +228,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 参考实现的下一步很自然：组装 production rollout checklist，把 blueprint 和 contract core 变成一个真正可落地的 go-live framework。
 
-## 13. 值得配套阅读的 Reference Pages
+## 13. 值得配套阅读的参考页
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)

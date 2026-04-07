@@ -228,7 +228,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Следующий логичный шаг в reference implementation: собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
 
-## 13. Полезные reference pages
+## 13. Полезные справочные страницы
 
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
 - [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)

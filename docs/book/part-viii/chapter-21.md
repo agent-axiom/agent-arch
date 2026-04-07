@@ -259,7 +259,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 После assurance loop очень логично перейти к supply chain и approved artifacts. Потому что как только у тебя появляются постоянные изменения, расследования и mitigations, сразу становится критично понимать, какие именно артефакты вообще считались доверенными и что именно уехало в production.
 
-## 15. Полезные reference pages
+## 15. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
