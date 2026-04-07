@@ -57,6 +57,7 @@ plugins:
           nav_translations:
             Главная: Главная
             Start Here: С чего начать
+            Reference: Справка
             Книга: Книга
             План книги: План книги
             Часть I. Основания: Часть I. Основания
@@ -114,6 +115,7 @@ plugins:
           nav_translations:
             Главная: Home
             Start Here: Start Here
+            Reference: Reference
             Книга: Book
             План книги: Book Plan
             Часть I. Основания: Part I. Foundations
@@ -171,6 +173,7 @@ plugins:
           nav_translations:
             Главная: 首页
             Start Here: 从这里开始
+            Reference: 参考层
             Книга: 书籍
             План книги: 全书计划
             Часть I. Основания: 第一部分：基础
@@ -269,6 +272,7 @@ extra:
 nav:
   - Главная: index.md
   - Start Here: start-here.md
+  - Reference: reference.md
   - Книга:
       - План книги: book/plan.md
       - Часть I. Основания: book/part-i/index.md
