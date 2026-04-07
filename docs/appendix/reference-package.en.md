@@ -110,12 +110,14 @@ Inspect and resolve demo approval requests:
 .venv/bin/python -m agent_runtime_ref session-eval-summary
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
+.venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
 `inspect-session` shows session-level run history and the linked `trace_id` values.
 `session-eval-summary` returns a compact operational summary for the run series.
 `session-replay` lets you execute multiple related requests inside one `session_id`.
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows.
+`export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact.
 
 A request that actually reads profile memory:
 

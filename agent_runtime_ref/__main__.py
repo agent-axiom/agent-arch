@@ -24,6 +24,29 @@ from agent_runtime_ref.runtime import AgentRuntime
 from agent_runtime_ref.session import summarize_session
 from agent_runtime_ref.telemetry import StructuredEvent, TelemetryEmitter
 
+DEFAULT_SESSION_INPUTS = ("Please create a ticket for this onboarding issue.",)
+DEFAULT_MULTI_RUN_INPUTS = (
+    "Please create a ticket for this onboarding issue.",
+    "What language preference do you remember?",
+)
+EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str]] = {
+    "support_ticket": (
+        "session-eval-support",
+        ("Please create a ticket for this onboarding issue.",),
+        "trace-eval-support",
+    ),
+    "profile_memory": (
+        "session-eval-memory",
+        ("What language preference do you remember?",),
+        "trace-eval-memory",
+    ),
+    "mixed_session": (
+        "session-eval-mixed",
+        DEFAULT_MULTI_RUN_INPUTS,
+        "trace-eval-mixed",
+    ),
+}
+
 
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
@@ -526,6 +549,42 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    runtime = _build_runtime(config_dir)
+    selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
+    session_ids: list[str] = []
+    for scenario_name in selected_scenarios:
+        session_suffix, user_inputs, trace_prefix = EVAL_DATASET_SCENARIOS[scenario_name]
+        session_id = f"{args.session_prefix}-{session_suffix.removeprefix('session-eval-')}"
+        for index, user_input in enumerate(user_inputs, start=1):
+            _run_on_runtime(
+                runtime,
+                user_input=user_input,
+                tenant_id=args.tenant_id,
+                principal_id=args.principal_id,
+                trace_id=f"{trace_prefix}-{index:03d}",
+                session_id=session_id,
+                agent_id=args.agent_id,
+            )
+        session_ids.append(session_id)
+    output_path = runtime.sessions.export_eval_dataset_json(
+        tuple(session_ids),
+        output_path=args.output,
+        dataset_name=args.dataset_name,
+    )
+    return {
+        "dataset_name": args.dataset_name,
+        "output_path": str(output_path),
+        "session_count": len(session_ids),
+        "run_count": sum(
+            summarize_session(session_id, runtime.sessions.runs_for_session(session_id)).total_runs
+            for session_id in session_ids
+        ),
+        "sessions": session_ids,
+    }
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -816,6 +875,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path for structured session export",
     )
 
+    export_eval_dataset = subparsers.add_parser(
+        "export-eval-dataset",
+        help="Export a small multi-session dataset for offline eval workflows",
+    )
+    export_eval_dataset.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with runtime configs",
+    )
+    export_eval_dataset.add_argument(
+        "--scenario",
+        action="append",
+        choices=tuple(EVAL_DATASET_SCENARIOS),
+        default=[],
+        help="Repeatable built-in scenario to include; all scenarios are used when omitted",
+    )
+    export_eval_dataset.add_argument("--tenant-id", default="tenant-acme")
+    export_eval_dataset.add_argument("--principal-id", default="user-42")
+    export_eval_dataset.add_argument("--session-prefix", default="session-eval")
+    export_eval_dataset.add_argument("--agent-id", default=None)
+    export_eval_dataset.add_argument(
+        "--dataset-name",
+        default="agent-runtime-ref-eval-seed",
+        help="Human-readable dataset name stored in the export payload",
+    )
+    export_eval_dataset.add_argument(
+        "--output",
+        default="artifacts/eval-dataset.json",
+        help="Path for structured eval dataset export",
+    )
+
     return parser
 
 
@@ -868,11 +958,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _session_replay(args)
     elif command == "export-session":
         if not args.user_input:
-            args.user_input = [
-                "Please create a ticket for this onboarding issue.",
-                "What language preference do you remember?",
-            ]
+            args.user_input = list(DEFAULT_MULTI_RUN_INPUTS)
         payload = _export_session(args)
+    elif command == "export-eval-dataset":
+        payload = _export_eval_dataset(args)
     else:
         parser.error(f"Unsupported command: {command}")
         return 2

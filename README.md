@@ -56,6 +56,7 @@ Quick examples:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
+.venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
 The canonical walkthrough, full CLI list, and config overview live on the docs page:

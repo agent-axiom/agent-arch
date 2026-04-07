@@ -564,6 +564,30 @@ class AgentRuntimeRefTests(unittest.TestCase):
             self.assertEqual(exported["summary"]["total_runs"], 2)
             self.assertEqual(len(exported["runs"]), 2)
 
+    def test_cli_export_eval_dataset_writes_multi_session_json(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_path = Path(temp_dir) / "eval-dataset.json"
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                exit_code = main(
+                    [
+                        "export-eval-dataset",
+                        "--output",
+                        str(output_path),
+                    ],
+                )
+            payload = json.loads(buffer.getvalue())
+            self.assertEqual(exit_code, 0)
+            self.assertTrue(output_path.exists())
+            self.assertEqual(payload["dataset_name"], "agent-runtime-ref-eval-seed")
+            self.assertEqual(payload["session_count"], 3)
+            self.assertEqual(payload["run_count"], 4)
+            exported = json.loads(output_path.read_text(encoding="utf-8"))
+            self.assertEqual(exported["dataset_name"], "agent-runtime-ref-eval-seed")
+            self.assertEqual(exported["session_count"], 3)
+            self.assertEqual(exported["run_count"], 4)
+            self.assertEqual(len(exported["sessions"]), 3)
+
 
 if __name__ == "__main__":
     unittest.main()

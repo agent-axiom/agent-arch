@@ -69,14 +69,46 @@ class SessionStore:
         *,
         output_path: str | Path,
     ) -> Path:
+        destination = Path(output_path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        payload = self._session_payload(session_id)
+        with destination.open("w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=True, indent=2)
+            handle.write("\n")
+        return destination
+
+    def export_eval_dataset_json(
+        self,
+        session_ids: tuple[str, ...],
+        *,
+        output_path: str | Path,
+        dataset_name: str,
+    ) -> Path:
+        destination = Path(output_path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        sessions = [self._session_payload(session_id) for session_id in session_ids]
+        run_count = sum(
+            summarize_session(session_id, self.runs_for_session(session_id)).total_runs
+            for session_id in session_ids
+        )
+        payload = {
+            "dataset_name": dataset_name,
+            "session_count": len(sessions),
+            "run_count": run_count,
+            "sessions": sessions,
+        }
+        with destination.open("w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=True, indent=2)
+            handle.write("\n")
+        return destination
+
+    def _session_payload(self, session_id: str) -> dict[str, object]:
         session = self.get_session(session_id)
         if session is None:
             raise ValueError(f"Session not found: {session_id}")
         runs = self.runs_for_session(session_id)
         summary = summarize_session(session_id, runs)
-        destination = Path(output_path)
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        payload = {
+        return {
             "session": {
                 "session_id": session.session_id,
                 "tenant_id": session.tenant_id,
@@ -101,10 +133,6 @@ class SessionStore:
                 for run in runs
             ],
         }
-        with destination.open("w", encoding="utf-8") as handle:
-            json.dump(payload, handle, ensure_ascii=True, indent=2)
-            handle.write("\n")
-        return destination
 
 
 @dataclass(frozen=True, slots=True)

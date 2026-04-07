@@ -110,12 +110,14 @@
 .venv/bin/python -m agent_runtime_ref session-eval-summary
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
+.venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
 `inspect-session` 会显示 session 级别的运行历史，以及关联的 `trace_id`。
 `session-eval-summary` 会返回这一组运行的紧凑 operational summary。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段 session 保存成结构化 JSON，已经可以作为 offline eval 流程的种子数据。
+`export-eval-dataset` 会把几个内置 session 场景打包成一个可直接用于 eval 的 JSON artifact。
 
 一个会真正读取用户画像记忆的请求：
 

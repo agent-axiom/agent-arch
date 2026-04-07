@@ -54,6 +54,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref inspect-agent
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
+.venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
 Каноническое описание пакета, полный список CLI-команд и обзор конфигов вынесены на отдельную страницу:
