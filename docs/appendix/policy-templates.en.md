@@ -4,6 +4,8 @@ This page exists so the case studies in the book can be used, not just read.
 
 The idea is not "here is one universal production policy." The point is the opposite: to show how the policy layer starts to differ depending on the scenario.
 
+If you need the narrative context first, start with the [Practical Case Studies](case-studies.en.md). If you want the remaining project backlog, see the [Community Roadmap](community-roadmap.en.md).
+
 ## How to read these templates
 
 Treat them not as finished production YAML, but as a skeleton:

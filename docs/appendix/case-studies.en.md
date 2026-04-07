@@ -4,6 +4,8 @@ This page answers a simple question: what does the book look like not as abstrac
 
 Below are three scenarios where architectural layers, guardrails, and orchestration choices can already be discussed as engineering decisions rather than elegant language.
 
+If you need reusable policy artifacts rather than scenarios, go to [Policy Templates](policy-templates.en.md). If you want the next layer of book improvements, open the [Community Roadmap](community-roadmap.en.md).
+
 ## Case 1. Support Triage Agent
 
 ### What the system does

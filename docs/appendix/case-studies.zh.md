@@ -4,6 +4,8 @@
 
 下面有三个场景。在这些场景里，架构层、guardrails 和 orchestration choices 已经可以被讨论成工程决策，而不只是漂亮的表述。
 
+如果你需要的不是场景，而是可以直接复用的 policy artifacts，请去看[Policy Templates](policy-templates.zh.md)。如果你想看这本书接下来还要补什么，则看[社区路线图](community-roadmap.zh.md)。
+
 ## 案例 1：Support Triage Agent
 
 ### 系统做什么

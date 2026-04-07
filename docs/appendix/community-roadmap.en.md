@@ -1,10 +1,16 @@
 # Community Roadmap
 
-The book already has a strong core: architecture, safety, memory, execution, observability, organizational design, and a runnable reference package. But if the goal is to attract readers from all over the world, the next layer is not "more theory". It is **faster practical value**.
+The book already has a strong core: architecture, safety, memory, execution, observability, organizational design, and a runnable reference package. So what follows is not a general wishlist, but the backlog for the **next layer of value**.
 
-Below is a focused backlog of 10 improvements. These are not abstract wishes. They are concrete upgrades that make the book more useful for engineers, platform teams, security specialists, and open source contributors.
+## What Is Already Done
 
-## Selection Rule
+- a [Start Here](../start-here.en.md) page;
+- a first set of [Practical Case Studies](case-studies.en.md);
+- a first set of [Policy Templates](policy-templates.en.md);
+- a runnable reference package and its [package docs](reference-package.en.md);
+- a dedicated [Publishing Stack](stack.en.md) page.
+
+## How I Select the Next Steps
 
 Each item below passes three tests:
 
@@ -12,21 +18,9 @@ Each item below passes three tests:
 - it helps the wider community, not only the author of the book;
 - it improves international readability, not only technical depth.
 
-## Top 10 Improvements
+## Next 10 Improvements
 
-### 1. A `Start here` page
-
-Add a short landing page for new readers:
-
-- what this book is;
-- who it is for;
-- where engineers should start;
-- where security teams should start;
-- where the ready-to-use templates and code live.
-
-Why it matters: most readers do not begin with chapter 1. They want to find their path quickly.
-
-### 2. A multilingual glossary
+### 1. A multilingual glossary
 
 Add a shared `ru/en/zh` glossary for key terms:
 
@@ -41,7 +35,7 @@ Add a shared `ru/en/zh` glossary for key terms:
 
 Why it matters: the book already has solid terminology, but a glossary will make reading, translation, linking, and community contributions much easier.
 
-### 3. One-page cheat sheets
+### 2. One-page cheat sheets
 
 Add short practical sheets for:
 
@@ -53,21 +47,19 @@ Add short practical sheets for:
 
 Why it matters: these are the pages people actually save, share with teammates, and use the same day.
 
-### 4. A small set of case studies
+### 3. Extend the case studies set
 
-Add 3-5 short real-world scenarios:
+The current cases are already useful, but the book should add 2-3 more:
 
-- support agent;
-- internal knowledge agent;
 - enterprise workflow agent;
 - CRM/task agent;
 - security-sensitive assistant.
 
-Why it matters: case studies help readers recognize their own context and map the architecture to real systems.
+Why it matters: the more recognizable scenarios readers see, the easier it is to map the architecture to their own systems.
 
-### 5. Ready-to-use policy templates
+### 4. Extend the policy template set
 
-The book already contains examples, but the community needs more explicit templates:
+The book already contains first examples, but the community needs more explicit templates:
 
 - tool approval policy;
 - memory write policy;
@@ -77,7 +69,7 @@ The book already contains examples, but the community needs more explicit templa
 
 Why it matters: a template people can copy and adapt is more valuable than a long explanation of why the template matters.
 
-### 6. A trace schema and event catalog
+### 5. A trace schema and event catalog
 
 Add a dedicated telemetry reference page:
 
@@ -89,7 +81,7 @@ Add a dedicated telemetry reference page:
 
 Why it matters: observability becomes much stronger when the community has a shared event model, not only a shared idea.
 
-### 7. More realistic scenarios in `agent_runtime_ref`
+### 6. More realistic scenarios in `agent_runtime_ref`
 
 The package is already useful, but the next step should add:
 
@@ -100,7 +92,7 @@ The package is already useful, but the next step should add:
 
 Why it matters: a runnable reference package should not only show a happy path. It should teach production-like behavior.
 
-### 8. A contribution kit for the community
+### 7. A contribution kit for the community
 
 Make external contribution easier:
 
@@ -111,21 +103,20 @@ Make external contribution easier:
 
 Why it matters: a good open handbook grows faster when contributors know exactly how to help.
 
-### 9. A stronger home page
+### 8. Stronger internal linking and chapter journeys
 
-The home page is already solid, but it can become more useful for first-time visitors:
+The book should make chapter movement easier:
 
-- a clear "Who this is for" block;
-- a "What you can take away in 30 minutes" block;
-- a "What makes this different" block.
+- clearer "what to read next" cues;
+- stronger links between architecture, case studies, and templates;
+- short decision paths inside parts.
 
-Why it matters: global reach starts with clarity, not with chapter count.
+Why it matters: the book becomes more useful when readers do not get lost between strong but dense sections.
 
-### 10. A discoverability layer
+### 9. A discoverability layer
 
 Add a more systematic discoverability layer:
 
-- `Start here`;
 - glossary;
 - cheatsheets;
 - stronger internal linking between chapters;
@@ -134,13 +125,23 @@ Add a more systematic discoverability layer:
 
 Why it matters: even a strong book does not help the community if people cannot find it, understand it quickly, and share it easily.
 
+### 10. Social and sharing assets
+
+The project should include lightweight sharing assets:
+
+- social preview assets;
+- a few shareable cheat sheets;
+- short landing summaries in `ru/en/zh`.
+
+Why it matters: international reach grows when the book is easy not only to read, but also to share.
+
 ## What to Do First
 
 If only three steps happen next, I would do:
 
-1. `Start here`
-2. Glossary
-3. Cheat sheets
+1. Glossary
+2. Cheat sheets
+3. Trace schema and event catalog
 
 That would produce the fastest growth in practical value without rewriting the architectural chapters.
 
@@ -156,7 +157,7 @@ If this backlog is executed, the project will gain:
 
 ## The Next Practical Step
 
-If we follow this roadmap, the next best page to build is `Start here`, followed immediately by the multilingual glossary.
+If we follow this roadmap, the next best page to build is the multilingual glossary, followed by the first set of cheat sheets.
 
 - [Home](../index.en.md)
 - [Book Plan](../book/plan.en.md)
