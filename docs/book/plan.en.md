@@ -79,8 +79,9 @@ What I am strengthening next in this part:
 - Chapter 24. Agentic Misalignment and Insider Risk.
 - Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming.
 - Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry.
+- Chapter 27. Agent Inventory, Registry, and Sprawl Control.
 
-Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior, control-heavy evals, and AI-native observability.
+Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior, control-heavy evals, AI-native observability, and agent-estate governance.
 
 ## Publishing roadmap
 

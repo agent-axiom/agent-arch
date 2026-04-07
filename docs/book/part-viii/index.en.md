@@ -30,6 +30,7 @@ If you read this part as one block, the sequence is straightforward:
 - [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
 - [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](chapter-25.en.md)
 - [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](chapter-27.en.md)
 
 ## What you should have by the end
 
@@ -38,4 +39,5 @@ If you read this part as one block, the sequence is straightforward:
 - a clear connection between evals, incidents, provenance, and ownership;
 - a practical language for replacement, retirement, and end-of-life discipline;
 - a stronger frame for sabotage-like behavior, control failures, and automated assurance;
-- a clear model of observability as an evidence layer for inventory, detection, and governance.
+- a clear model of observability as an evidence layer for inventory, detection, and governance;
+- a working frame for governing an entire agent estate rather than isolated agent systems.

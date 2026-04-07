@@ -30,6 +30,7 @@
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
 - [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
+- [Глава 27. Agent inventory, registry и борьба с sprawl](chapter-27.md)
 
 ## Что ты получишь в конце части
 
@@ -38,4 +39,5 @@
 - понятную связь между evals, incidents, provenance и operational ownership;
 - практический язык для разговоров о replacement, retirement и end-of-life discipline;
 - более зрелую рамку для sabotage-like behavior, control failures и automated assurance;
-- представление о observability как evidence layer для inventory, detection и governance.
+- представление о observability как evidence layer для inventory, detection и governance;
+- рабочую рамку для управления целым estate агентов, а не только отдельными agent systems.

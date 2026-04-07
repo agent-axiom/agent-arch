@@ -85,8 +85,9 @@
 - Глава 24. Agentic misalignment и insider-risk.
 - Глава 25. Behavioral evals, control evals и automated red teaming.
 - Глава 26. AI-native observability, inventory coverage и detection-ready telemetry.
+- Глава 27. Agent inventory, registry и борьба с sprawl.
 
-Статус: Part VIII собрана как цельный lifecycle-блок и усилена современными темами sabotage-like behavior, control-heavy evals и AI-native observability.
+Статус: Part VIII собрана как цельный lifecycle-блок и усилена современными темами sabotage-like behavior, control-heavy evals, AI-native observability и agent-estate governance.
 
 ## Роадмап публикации
 

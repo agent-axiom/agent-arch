@@ -79,8 +79,9 @@
 - 第 24 章：Agentic Misalignment 与 Insider Risk。
 - 第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming。
 - 第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry。
+- 第 27 章：Agent Inventory、Registry 与 Sprawl 治理。
 
-状态：Part VIII 现在已经组成一个完整的生命周期模块，并补上了 sabotage-like behavior、control-heavy evals 与 AI-native observability 这些更前沿的主题。
+状态：Part VIII 现在已经组成一个完整的生命周期模块，并补上了 sabotage-like behavior、control-heavy evals、AI-native observability 与 agent-estate governance 这些更前沿的主题。
 
 ## 发布路线图
 
