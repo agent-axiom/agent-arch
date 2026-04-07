@@ -2,7 +2,7 @@
 
 В репозитории теперь есть небольшой исполняемый каркас: [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref).
 
-Его задача не в том, чтобы стать промышленным фреймворком. Он нужен как минимальная кодовая опора для **части VII** книги.
+Его задача не в том, чтобы стать промышленным фреймворком. Он нужен как минимальная кодовая опора для **частей VII и VIII** книги.
 
 Это каноническая страница про пакет. В README я оставляю только короткий quickstart, а полный разбор CLI, конфигов и структуры держу здесь.
 
@@ -32,6 +32,8 @@
   Проверка continuous controls и inventory drift для approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
   Approval gates и простая human review queue для high-risk действий.
+- [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
+  Lifecycle-артефакты для change record, artifact bundle и retirement plan, плюс readiness-проверки для этих состояний.
 
 ## Как запустить
 
@@ -55,6 +57,14 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
+```
+
+Просмотр lifecycle-артефактов из Part VIII:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-lifecycle
+.venv/bin/python -m agent_runtime_ref check-change --signal offline_eval_passed=false
+.venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
 Просмотр записей памяти:
@@ -135,7 +145,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ## Примерные конфиги
 
-В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат пять стартовых файлов:
+В [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) лежат стартовые файлы для рантайма и lifecycle:
 
 - [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
@@ -144,8 +154,11 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
+- [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти и политику выкладки, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
 ## Почему это полезно
 

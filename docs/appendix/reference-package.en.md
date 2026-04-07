@@ -2,7 +2,7 @@
 
 The repository now includes a small runnable skeleton: [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref).
 
-Its job is not to become a production framework. It exists as a minimal code anchor for **Part VII** of the book.
+Its job is not to become a production framework. It exists as a minimal code anchor for **Parts VII and VIII** of the book.
 
 This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
 
@@ -32,6 +32,8 @@ This is the canonical page for the package. The README keeps only a short quicks
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
   Approval gates and a simple human review queue for high-risk actions.
+- [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
+  Lifecycle artifacts for change records, artifact bundles, and retirement plans, plus readiness checks for those states.
 
 ## How to Run It
 
@@ -55,6 +57,14 @@ Inspect the agent identity and approved inventory:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
+```
+
+Inspect lifecycle artifacts that mirror Part VIII:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-lifecycle
+.venv/bin/python -m agent_runtime_ref check-change --signal offline_eval_passed=false
+.venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
 Inspect memory records:
@@ -135,7 +145,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ## Sample Configs
 
-There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs):
+There are starter files for both runtime and lifecycle in [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs):
 
 - [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
@@ -144,8 +154,11 @@ There are five starter files in [configs](/Users/if/PycharmProjects/agent-axiom/
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
+- [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, and the rollout policy, so the package is now closer to a real operational skeleton.
+These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
 
 ## Why This Is Useful
 

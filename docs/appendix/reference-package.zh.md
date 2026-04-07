@@ -2,7 +2,7 @@
 
 现在仓库里已经有一个可运行的小型代码骨架：[agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref)。
 
-它的目标不是变成生产级框架，而是作为本书 **第七部分** 的最小代码锚点。
+它的目标不是变成生产级框架，而是作为本书 **第七和第八部分** 的最小代码锚点。
 
 这里是这个包的唯一主说明页面。README 里只保留简短的 quickstart，完整的 CLI、配置和结构说明都集中放在这里。
 
@@ -32,6 +32,8 @@
   用于已批准注册表的 continuous controls 与 inventory drift 检查。
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
   用于高风险动作的 approval gates 与简单 human review queue。
+- [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
+  用于 change record、artifact bundle 和 retirement plan 的 lifecycle artifacts，以及这些状态的 readiness checks。
 
 ## 如何运行
 
@@ -55,6 +57,14 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
+```
+
+查看与 Part VIII 对应的 lifecycle artifacts：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-lifecycle
+.venv/bin/python -m agent_runtime_ref check-change --signal offline_eval_passed=false
+.venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
 查看记忆记录：
@@ -135,7 +145,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ## 示例配置
 
-在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有五个起步文件：
+在 [configs](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs) 目录里有 runtime 和 lifecycle 的起步文件：
 
 - [agent.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/agent.yaml)
 - [policy.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/policy.yaml)
@@ -144,8 +154,11 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
+- [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储和上线策略，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、context layers、记忆存储、上线策略和 lifecycle artifacts，所以这个包已经更接近真实的运行骨架。
 
 ## 为什么它有用
 

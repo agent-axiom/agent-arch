@@ -14,6 +14,7 @@ from agent_runtime_ref.config import (
     load_rollout_policy,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
 from agent_runtime_ref.policy import PolicyEngine
@@ -264,6 +265,42 @@ class TestPolicyAndControls:
         assert not assessment.inventory_drift.has_drift
 
 
+class TestLifecycleArtifacts:
+    def test_change_gate_detects_missing_signal(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_change_record
+
+        change = load_change_record(config_dir / "change.yaml")
+        assessment = assess_change_gate(
+            change,
+            {
+                "design_review_passed": True,
+                "offline_eval_passed": False,
+                "policy_diff_reviewed": True,
+                "rollback_plan_ready": True,
+            },
+        )
+        assert not assessment.ready
+        assert assessment.missing_signals == ("offline_eval_passed",)
+
+    def test_retirement_assessment_detects_incomplete_step(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_retirement_plan
+
+        plan = load_retirement_plan(config_dir / "retirement.yaml")
+        assessment = assess_retirement(
+            plan,
+            {
+                "freeze_rollout": True,
+                "disable_risky_capabilities": True,
+                "stop_memory_write": True,
+                "revoke_egress": False,
+                "archive_audit_state": True,
+                "set_retired_status": True,
+            },
+        )
+        assert not assessment.ready
+        assert assessment.missing_steps == ("revoke_egress",)
+
+
 class TestCli:
     def test_cli_simulate_run_returns_json(self, cli_json) -> None:
         exit_code, payload = cli_json([])
@@ -396,6 +433,38 @@ class TestCli:
         assert not payload["healthy"]
         assert "registry_reviewed" in payload["missing_controls"]
         assert not payload["inventory_drift"]["has_drift"]
+
+    def test_cli_inspect_lifecycle_returns_all_artifacts(self, cli_json) -> None:
+        exit_code, payload = cli_json(["inspect-lifecycle"])
+        assert exit_code == 0
+        assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
+        assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
+        assert payload["retirement"]["system_id"] == "support-triage-ref"
+
+    @pytest.mark.parametrize(
+        ("command", "expected_missing"),
+        [
+            (
+                ["check-change", "--signal", "offline_eval_passed=false"],
+                "offline_eval_passed",
+            ),
+            (
+                ["check-retirement", "--step", "revoke_egress=false"],
+                "revoke_egress",
+            ),
+        ],
+    )
+    def test_cli_lifecycle_checks_report_missing_items(
+        self,
+        command: list[str],
+        expected_missing: str,
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(command)
+        assert exit_code == 0
+        assert not payload["ready"]
+        missing = payload.get("missing_signals", payload.get("missing_steps", []))
+        assert expected_missing in missing
 
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])

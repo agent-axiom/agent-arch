@@ -1,0 +1,18 @@
+retirement:
+  system_id: support-triage-ref
+  replacement_mode: staged_replacement
+  triggers:
+    - deprecated_runtime
+    - replacement_ready
+    - unsafe_capability_pattern
+  required_steps:
+    - freeze_rollout
+    - disable_risky_capabilities
+    - stop_memory_write
+    - revoke_egress
+    - archive_audit_state
+    - set_retired_status
+  archive_targets:
+    - telemetry_jsonl
+    - session_exports
+    - approval_history

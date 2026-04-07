@@ -1,0 +1,12 @@
+bundle:
+  bundle_name: support-triage-runtime-bundle
+  version: 2026.04.07
+  provenance_required: true
+  signed: false
+  artifacts:
+    - agent.yaml
+    - capabilities.yaml
+    - policy.yaml
+    - memory.yaml
+    - controls.yaml
+    - approvals.yaml

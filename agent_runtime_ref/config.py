@@ -9,6 +9,7 @@ from agent_runtime_ref.approvals import ApprovalPolicy
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.controls import ControlsPolicy
 from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
+from agent_runtime_ref.lifecycle import ArtifactBundle, ChangeRecord, RetirementPlan
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.rollout import RolloutPolicy
@@ -60,3 +61,15 @@ def load_controls_policy(path: str | Path) -> ControlsPolicy:
 
 def load_approval_policy(path: str | Path) -> ApprovalPolicy:
     return ApprovalPolicy.from_dict(load_yaml_file(path))
+
+
+def load_change_record(path: str | Path) -> ChangeRecord:
+    return ChangeRecord.from_dict(load_yaml_file(path))
+
+
+def load_artifact_bundle(path: str | Path) -> ArtifactBundle:
+    return ArtifactBundle.from_dict(load_yaml_file(path))
+
+
+def load_retirement_plan(path: str | Path) -> RetirementPlan:
+    return RetirementPlan.from_dict(load_yaml_file(path))

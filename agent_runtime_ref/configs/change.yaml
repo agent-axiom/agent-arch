@@ -1,0 +1,18 @@
+change:
+  change_id: chg-2026-04-07-support-runtime
+  change_type: capability_contract_update
+  risk_level: high
+  rollout_strategy: staged_canary
+  artifacts:
+    - agent.yaml
+    - capabilities.yaml
+    - policy.yaml
+    - eval-dataset.json
+  required_signals:
+    - design_review_passed
+    - offline_eval_passed
+    - policy_diff_reviewed
+    - rollback_plan_ready
+  approval_roles:
+    - platform-owner
+    - security-reviewer

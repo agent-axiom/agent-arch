@@ -45,6 +45,7 @@ uv run mkdocs build --strict
 - эталонный рантайм и слой политик;
 - каталог возможностей и approved inventory;
 - память, телеметрия, approvals и rollout checks;
+- lifecycle-артефакты для change record, artifact bundle и retirement plan;
 - YAML-конфиги для operational skeleton.
 
 Быстрые примеры:
@@ -52,6 +53,7 @@ uv run mkdocs build --strict
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref inspect-agent
+.venv/bin/python -m agent_runtime_ref inspect-lifecycle
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

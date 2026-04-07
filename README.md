@@ -47,6 +47,7 @@ It gives you a compact reference runtime for the book:
 - runtime and policy layer
 - capability catalog and approved inventory
 - memory path, telemetry, approvals, and rollout checks
+- lifecycle-oriented artifacts for change records, artifact bundles, and retirement plans
 - YAML-driven configs for the operational skeleton
 
 Quick examples:
@@ -54,6 +55,7 @@ Quick examples:
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref inspect-agent
+.venv/bin/python -m agent_runtime_ref inspect-lifecycle
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

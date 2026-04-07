@@ -11,13 +11,17 @@ from agent_runtime_ref.config import (
     default_config_dir,
     load_agent_profile,
     load_approval_policy,
+    load_artifact_bundle,
     load_capability_catalog,
+    load_change_record,
     load_controls_policy,
     load_memory_store,
     load_policy_engine,
+    load_retirement_plan,
     load_rollout_policy,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
 from agent_runtime_ref.models import RunRequest, RunResult
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
@@ -392,6 +396,71 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
             "missing_from_catalog": list(assessment.inventory_drift.missing_from_catalog),
             "missing_from_inventory": list(assessment.inventory_drift.missing_from_inventory),
         },
+    }
+
+
+def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    change = load_change_record(config_dir / "change.yaml")
+    bundle = load_artifact_bundle(config_dir / "artifacts.yaml")
+    retirement = load_retirement_plan(config_dir / "retirement.yaml")
+    return {
+        "change": {
+            "change_id": change.change_id,
+            "change_type": change.change_type,
+            "risk_level": change.risk_level,
+            "rollout_strategy": change.rollout_strategy,
+            "artifacts": list(change.artifacts),
+            "required_signals": list(change.required_signals),
+            "approval_roles": list(change.approval_roles),
+        },
+        "artifact_bundle": {
+            "bundle_name": bundle.bundle_name,
+            "version": bundle.version,
+            "provenance_required": bundle.provenance_required,
+            "signed": bundle.signed,
+            "artifacts": list(bundle.artifacts),
+        },
+        "retirement": {
+            "system_id": retirement.system_id,
+            "replacement_mode": retirement.replacement_mode,
+            "triggers": list(retirement.triggers),
+            "required_steps": list(retirement.required_steps),
+            "archive_targets": list(retirement.archive_targets),
+        },
+    }
+
+
+def _check_change(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    change = load_change_record(config_dir / "change.yaml")
+    observed = {signal: True for signal in change.required_signals}
+    for raw_signal in args.signal:
+        key, value = _parse_signal(raw_signal)
+        observed[key] = value
+    assessment = assess_change_gate(change, observed)
+    return {
+        "change_id": change.change_id,
+        "ready": assessment.ready,
+        "missing_signals": list(assessment.missing_signals),
+        "rollout_strategy": change.rollout_strategy,
+        "risk_level": change.risk_level,
+    }
+
+
+def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
+    config_dir = Path(args.config_dir)
+    plan = load_retirement_plan(config_dir / "retirement.yaml")
+    observed = {step: True for step in plan.required_steps}
+    for raw_step in args.step:
+        key, value = _parse_signal(raw_step)
+        observed[key] = value
+    assessment = assess_retirement(plan, observed)
+    return {
+        "system_id": plan.system_id,
+        "ready": assessment.ready,
+        "missing_steps": list(assessment.missing_steps),
+        "replacement_mode": plan.replacement_mode,
     }
 
 
@@ -777,6 +846,48 @@ def build_parser() -> argparse.ArgumentParser:
         help="Override a control signal, e.g. registry_reviewed=false",
     )
 
+    inspect_lifecycle = subparsers.add_parser(
+        "inspect-lifecycle",
+        help="Inspect lifecycle-oriented artifacts for change, bundles, and retirement",
+    )
+    inspect_lifecycle.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with change.yaml, artifacts.yaml, and retirement.yaml",
+    )
+
+    check_change = subparsers.add_parser(
+        "check-change",
+        help="Evaluate whether a lifecycle change record is ready for rollout",
+    )
+    check_change.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with change.yaml",
+    )
+    check_change.add_argument(
+        "--signal",
+        action="append",
+        default=[],
+        help="Override a change signal, e.g. offline_eval_passed=false",
+    )
+
+    check_retirement = subparsers.add_parser(
+        "check-retirement",
+        help="Evaluate whether a retirement plan has completed required steps",
+    )
+    check_retirement.add_argument(
+        "--config-dir",
+        default=str(config_dir),
+        help="Directory with retirement.yaml",
+    )
+    check_retirement.add_argument(
+        "--step",
+        action="append",
+        default=[],
+        help="Override a retirement step, e.g. revoke_egress=false",
+    )
+
     inspect_approvals = subparsers.add_parser(
         "inspect-approvals",
         help="Run the demo and inspect generated approval requests",
@@ -973,6 +1084,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         payload = _check_rollout(args)
     elif command == "check-controls":
         payload = _check_controls(args)
+    elif command == "inspect-lifecycle":
+        payload = _inspect_lifecycle(args)
+    elif command == "check-change":
+        payload = _check_change(args)
+    elif command == "check-retirement":
+        payload = _check_retirement(args)
     elif command == "inspect-approvals":
         payload = _inspect_approvals(args)
     elif command == "resolve-approval":
