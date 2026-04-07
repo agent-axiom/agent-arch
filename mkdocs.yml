@@ -98,6 +98,7 @@ plugins:
             Глоссарий терминов: Глоссарий терминов
             Шпаргалки: Шпаргалки
             Схема трасс и каталог событий: Схема трасс и каталог событий
+            Схема eval datasets и grading contract: Схема eval datasets и grading contract
             Опорный пакет: Опорный пакет
             Практические кейсы: Практические кейсы
             Policy templates и checklists по кейсам: Шаблоны политик и проверочные списки по кейсам
@@ -152,6 +153,7 @@ plugins:
             Глоссарий терминов: Glossary
             Шпаргалки: Cheat Sheets
             Схема трасс и каталог событий: Trace Schema and Event Catalog
+            Схема eval datasets и grading contract: Eval Dataset Schema and Grading Contract
             Опорный пакет: Reference Package
             Практические кейсы: Practical Case Studies
             Policy templates и checklists по кейсам: Policy Templates and Checklists by Use Case
@@ -206,6 +208,7 @@ plugins:
             Глоссарий терминов: 术语表
             Шпаргалки: 速查清单
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
+            Схема eval datasets и grading contract: Eval Dataset Schema 与 Grading Contract
             Опорный пакет: 参考包
             Практические кейсы: 实战案例
             Policy templates и checklists по кейсам: 按场景组织的 Policy Templates 与 Checklists
@@ -301,6 +304,7 @@ nav:
       - Глоссарий терминов: appendix/glossary.md
       - Шпаргалки: appendix/cheat-sheets.md
       - Схема трасс и каталог событий: appendix/trace-schema.md
+      - Схема eval datasets и grading contract: appendix/eval-schema.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
