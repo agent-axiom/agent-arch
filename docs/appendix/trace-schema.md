@@ -92,7 +92,7 @@
 | `run_complete` | в конце запуска | замыкает run-level outcome |
 | `span` | вокруг отдельных вызовов | дает простую latency и status telemetry |
 
-Это не “идеальный универсальный каталог”. Это базовый operational vocabulary, на который уже можно опирать:
+Это не “идеальный универсальный каталог”. Это базовый рабочий словарь, на который уже можно опирать:
 
 - trace inspection;
 - regression seeds;
@@ -156,7 +156,7 @@ Reference runtime intentionally small, поэтому в более взросл
 - разделение `display payload` и `machine payload`;
 - redaction rules для чувствительных полей.
 
-Именно эти вещи превращают event stream из debug output в нормальный platform artifact.
+Именно эти вещи превращают event stream из debug output в полноценный артефакт платформы.
 
 ## Практический чеклист
 

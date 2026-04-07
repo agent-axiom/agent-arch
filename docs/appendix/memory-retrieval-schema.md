@@ -1,8 +1,8 @@
 # Схема memory records и retrieval contract
 
-Эта страница собирает в одном месте минимальный contract layer для памяти и retrieval в agent systems: как выглядит memory record, какие поля должны быть у retrieval query, и какие гарантии нужны, чтобы память не превращалась в неуправляемый источник утечек, шума и ложной уверенности.
+Эта страница собирает в одном месте минимальный контрактный слой для памяти и retrieval в agent systems: как выглядит memory record, какие поля должны быть у retrieval query и какие гарантии нужны, чтобы память не превращалась в неуправляемый источник утечек, шума и ложной уверенности.
 
-Если [схема трасс и каталог событий](trace-schema.md) отвечает на вопрос "как это видно в telemetry", а [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос "что считается управляемым operational artifact", то memory-retrieval schema отвечает на вопрос "какие именно записи и фильтры вообще допустимы в memory layer".
+Если [схема трасс и каталог событий](trace-schema.md) отвечает на вопрос "как это видно в telemetry", а [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос "что считается управляемым рабочим артефактом", то эта схема отвечает на вопрос "какие именно записи и фильтры вообще допустимы в memory layer".
 
 ## 1. Зачем нужен отдельный schema layer
 
@@ -16,7 +16,7 @@
   - кто имел право ее читать;
   - по каким правилам она попала в prompt.
 
-Поэтому memory layer полезно описывать не как "у нас есть vector store", а как набор typed records и typed retrieval rules.
+Поэтому memory layer полезно описывать не как "у нас есть vector store", а как набор типизированных записей и типизированных правил retrieval.
 
 ## 2. Базовые сущности
 
@@ -26,7 +26,7 @@
 - `retrieval_query`
 - `retrieval_result`
 
-Этого уже достаточно, чтобы связать chapters 5-7, policy layer, trace schema и reference runtime.
+Этого уже достаточно, чтобы связать главы 5-7, policy layer, trace schema и reference runtime.
 
 ## 3. Memory record
 
@@ -57,7 +57,7 @@ retention: long_term
 
 ## 4. Retrieval query
 
-`retrieval_query` описывает не просто текстовый запрос, а полный operational context чтения памяти.
+`retrieval_query` описывает не просто текстовый запрос, а полный рабочий контекст чтения памяти.
 
 ```yaml
 kind: retrieval_query

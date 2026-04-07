@@ -10,18 +10,18 @@
 - eval datasets;
 - lifecycle discipline.
 
-А здесь собраны темы, которые выглядят перспективно, но еще не стали универсальным operational baseline.
+А здесь собраны темы, которые выглядят перспективно, но еще не стали универсальной инженерной базой.
 
 ## Как читать этот раздел
 
 Полезная практическая рамка такая:
 
-- брать из frontier vocabulary и design questions;
+- брать из research frontier полезные термины и инженерные вопросы;
 - не копировать paper architecture целиком без собственной проверки;
 - отделять promising pattern от production default;
-- смотреть не только на accuracy, но и на explainability, auditability и rollback cost.
+- смотреть не только на accuracy, но и на explainability, auditability и стоимость отката.
 
-Если коротко: research frontier хорош как источник направлений, а не как готовый стандарт платформы.
+Если коротко: research frontier полезен как источник направлений, а не как готовый стандарт платформы.
 
 ## Frontier по памяти
 
@@ -95,7 +95,7 @@
 
 Для книги это важный аргумент в пользу `single-agent first`, manager/handoff discipline и explicit verification loops.
 
-Свежие работы по causal tracing для multi-agent systems дополняют это тем, что reliability надо проектировать не только как orchestration pattern, но и как diagnosable system. Если root cause нельзя локализовать, то формально workflow существует, но operational maturity остается низкой.
+Свежие работы по causal tracing для multi-agent systems дополняют это тем, что reliability надо проектировать не только как orchestration pattern, но и как diagnosable system. Если root cause нельзя локализовать, то формально workflow существует, но рабочая зрелость системы остается низкой.
 
 Что уже можно уверенно брать в практику:
 
@@ -120,14 +120,14 @@
 3. Проверять ее через evals, traces и rollout gates.
 4. Оставлять rollback path проще, чем новая complexity.
 
-Если новый research pattern:
+Если новый исследовательский паттерн:
 
 - не дает audit trail;
 - ломает policy clarity;
 - усложняет incident response;
 - или добавляет state без provenance,
 
-значит ему пока рано становиться частью базового platform contour.
+значит ему пока рано становиться частью базового контура платформы.
 
 ## Что отслеживать дальше
 
