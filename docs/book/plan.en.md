@@ -69,6 +69,13 @@ What I am strengthening next in this part:
 - Tool catalog.
 - Production rollout checklist.
 
+### Part VIII. Agent System Lifecycle
+
+- Chapter 19. From SDLC to ADLC.
+- Next: change management, assurance loops, supply chain discipline, retirement.
+
+Status: the transition chapter is now added.
+
 ## Publishing roadmap
 
 1. Freeze the architectural frame and vocabulary.
@@ -85,6 +92,7 @@ What I am strengthening next in this part:
 - First part with the reference architecture.
 - The first set of practical case studies for production-like scenarios.
 - The first set of reusable policy templates and checklists by use case.
+- A new lifecycle part that links classical SDLC to ADLC.
 - Separate page on the publishing stack.
 - Source base for the next chapters.
 

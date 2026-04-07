@@ -69,6 +69,13 @@
 - 工具目录。
 - 生产上线清单。
 
+### 第八部分：智能体系统生命周期
+
+- 第 19 章：从 SDLC 到 ADLC。
+- 下一步：change management、assurance loop、supply chain discipline、retirement。
+
+状态：过渡章节已加入。
+
 ## 发布路线图
 
 1. 固化架构框架与术语。
@@ -85,6 +92,7 @@
 - 第一部分参考架构。
 - 第一组面向 production-like 场景的实战案例。
 - 第一组可复用的按场景组织的 policy templates 与 checklists。
+- 新增了一部分 lifecycle discipline 内容，用来连接经典 SDLC 与 ADLC。
 - 独立的发布技术栈页面。
 - 后续章节可复用的来源基础。
 
