@@ -57,6 +57,14 @@
 - OpenAI, [Trace grading](https://platform.openai.com/docs/guides/trace-grading)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
 
+## 研究前沿：记忆、可观测性与多智能体可靠性
+
+- OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
+- OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
+- OpenReview, [AgentTrace: A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
+- OpenReview, [AgentTrace: Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
+- OpenReview, [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+
 ## 发布与工具链
 
 - MkDocs, [Official documentation](https://www.mkdocs.org/)

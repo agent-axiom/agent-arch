@@ -100,6 +100,7 @@ plugins:
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема eval datasets и grading contract: Схема eval datasets и grading contract
             Схема policy bundle и approval contract: Схема policy bundle и approval contract
+            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "Research frontier: память, наблюдаемость и надежность multi-agent систем"
             Опорный пакет: Опорный пакет
             Практические кейсы: Практические кейсы
             Policy templates и checklists по кейсам: Шаблоны политик и проверочные списки по кейсам
@@ -156,6 +157,7 @@ plugins:
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема eval datasets и grading contract: Eval Dataset Schema and Grading Contract
             Схема policy bundle и approval contract: Policy Bundle Schema and Approval Contract
+            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "Research Frontier: Memory, Observability, and Multi-Agent Reliability"
             Опорный пакет: Reference Package
             Практические кейсы: Practical Case Studies
             Policy templates и checklists по кейсам: Policy Templates and Checklists by Use Case
@@ -212,6 +214,7 @@ plugins:
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема eval datasets и grading contract: Eval Dataset Schema 与 Grading Contract
             Схема policy bundle и approval contract: Policy Bundle Schema 与 Approval Contract
+            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "研究前沿：记忆、可观测性与多智能体可靠性"
             Опорный пакет: 参考包
             Практические кейсы: 实战案例
             Policy templates и checklists по кейсам: 按场景组织的 Policy Templates 与 Checklists
@@ -317,6 +320,7 @@ nav:
       - Схема change review и rollout gate: appendix/change-rollout-schema.md
       - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
       - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
+      - "Research frontier: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
