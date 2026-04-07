@@ -28,7 +28,7 @@
 
 Полезно заранее дать очень прямое определение:
 
-approved artifact — это любой артефакт, который разрешено использовать в production, потому что у него есть owner, provenance, review status и понятная operational роль.
+approved artifact — это любой артефакт, который разрешено использовать в production, потому что у него есть owner, provenance, review status и понятная рабочая роль.
 
 Это означает, что approved artifacts — это не только образы или wheel-файлы.
 
@@ -46,7 +46,7 @@ approved artifact — это любой артефакт, который раз�
 
 ## 3. Provenance нужен для ответа на очень практичные вопросы
 
-Google Research очень правильно показывает, что provenance для AI systems полезен не только как formal security idea, а как operational necessity.[^google-supply-chain]
+Google Research очень правильно показывает, что provenance для AI systems полезен не только как formal security idea, а как рабочая необходимость.[^google-supply-chain]
 
 Тебе нужно уметь отвечать:
 
@@ -105,7 +105,7 @@ flowchart LR
 - capability `create_ticket` может быть частью approved inventory;
 - но конкретный `policy_bundle_v12` или `prompt_bundle_support_v7` — это уже approved artifact.
 
-Это различие полезно, потому что inventory дает platform-level рамку, а approved artifacts дают release-level дисциплину.
+Это различие полезно, потому что inventory дает рамку уровня платформы, а approved artifacts дают дисциплину уровня конкретного релиза.
 
 ## 6. Prompt bundle без provenance — это такой же supply-chain пробел, как неподписанный build
 
@@ -118,7 +118,7 @@ flowchart LR
 - какие evals ее покрыли;
 - на какой волне rollout она активна;
 
-то этот prompt bundle operationally ничем не лучше артефакта, происхождение которого неизвестно.
+то этот prompt bundle по сути ничем не лучше артефакта, происхождение которого неизвестно.
 
 То же самое относится к:
 
@@ -199,7 +199,7 @@ inventory:
     - unversioned_prompt_override
 ```
 
-Такой inventory полезен не потому, что он “красиво выглядит”, а потому что дает платформе явную карту доверенных и недоверенных operational patterns.
+Такой inventory полезен не потому, что он “красиво выглядит”, а потому что дает платформе явную карту доверенных и недоверенных рабочих паттернов.
 
 ## 11. Пример проверки artifact readiness
 

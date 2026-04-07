@@ -1,6 +1,6 @@
 # Часть VIII. Жизненный цикл агентной системы
 
-До этого момента книга объясняла, как собрать архитектуру, защитить ее, наблюдать за ней и безопасно выкатывать изменения. Но production discipline не заканчивается на rollout checklist.
+До этого момента книга объясняла, как собрать архитектуру, защитить ее, наблюдать за ней и безопасно выкатывать изменения. Но производственная дисциплина не заканчивается на чеклисте выкладки.
 
 Если система живет дольше одной демки, у тебя почти сразу появляются вопросы другого класса:
 
@@ -36,8 +36,8 @@
 
 - цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
-- понятную связь между evals, incidents, provenance и operational ownership;
+- понятную связь между evals, incidents, provenance и рабочей ответственностью;
 - практический язык для разговоров о replacement, retirement и end-of-life discipline;
 - более зрелую рамку для sabotage-like behavior, control failures и automated assurance;
-- представление о observability как evidence layer для inventory, detection и governance;
-- рабочую рамку для управления целым estate агентов, а не только отдельными agent systems.
+- представление о observability как о слое доказательств для inventory, detection и governance;
+- рабочую рамку для управления всем контуром агентов, а не только отдельными agent systems.

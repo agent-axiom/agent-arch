@@ -25,7 +25,7 @@
 
 Я бы определял assurance loop так:
 
-это постоянный operational контур, который помогает не только выпускать изменения, но и системно искать слабые места, замечать новые угрозы, расследовать проблемы и закрывать их.
+это постоянный рабочий контур, который помогает не только выпускать изменения, но и системно искать слабые места, замечать новые угрозы, расследовать проблемы и закрывать их.
 
 В agent systems он обычно включает:
 
@@ -136,7 +136,7 @@ flowchart LR
 - rollout gates;
 - alerting and detection rules.
 
-Если remediation не меняет operational surface, значит система почти ничему не научилась.
+Если remediation не меняет рабочий контур системы, значит она почти ничему не научилась.
 
 ## 8. User reports и incidents должны становиться частью assurance loop
 
@@ -200,7 +200,7 @@ assurance:
       - disable_memory_write
 ```
 
-Это не complete framework, но он хорошо показывает, что assurance тоже можно описывать как operational contract.
+Это не полный framework, но он хорошо показывает, что assurance тоже можно описывать как явный рабочий контракт.
 
 ## 11. Пример кода для emergency response decision
 
@@ -227,7 +227,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
     return "observe"
 ```
 
-Идея здесь в том, что response decision должен быть не импровизацией, а частью заранее продуманного operational surface.
+Идея здесь в том, что response decision должен быть не импровизацией, а частью заранее продуманного рабочего контура.
 
 ## 12. Что чаще всего ломается в assurance loop
 
