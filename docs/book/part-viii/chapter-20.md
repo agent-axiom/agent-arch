@@ -85,7 +85,7 @@ Prompt, routine или instruction change могут:
 - какой риск-класс у изменения;
 - какие evals это покрывают;
 - какие rollback hooks существуют;
-- какой blast radius у rollout.
+- какой радиус воздействия у rollout.
 
 Если change приходит в виде “я тут немного улучшил поведение”, его почти невозможно нормально оценить.
 
@@ -112,7 +112,7 @@ Prompt, routine или instruction change могут:
 - design review;
 - explicit policy review;
 - offline eval pass;
-- limited rollout;
+- ограниченный rollout;
 - monitoring during the first wave;
 - clear rollback path.
 
