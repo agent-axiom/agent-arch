@@ -4,11 +4,16 @@
 
 _更新于 2026 年 4 月 8 日。_
 
-## 最近的重要新增内容
+## Book
 
 ### 第八部分：智能体系统生命周期
 
 现在全书已经包含 `SDLC -> ADLC`、change management、assurance loop、supply chain、retirement、misalignment、behavioral evals、AI-native observability 与 inventory control 的完整内容。
+
+Why it matters：
+- 现在这本书覆盖的不只是架构与上线，还覆盖了智能体系统发布后的生命周期管理。
+
+## Reference
 
 ### 可复用的参考层
 
@@ -21,6 +26,11 @@ _更新于 2026 年 4 月 8 日。_
 - lifecycle artifacts；
 - memory retrieval contracts。
 
+Why it matters：
+- 读者现在可以从解释性章节直接跳到可审阅的 schemas 与 contract artifacts。
+
+## Runtime
+
 ### 可运行的参考运行时
 
 仓库中的 [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 现在支持：
@@ -32,6 +42,11 @@ _更新于 2026 年 4 月 8 日。_
 - eval dataset export；
 - 带 redaction 与 schema versioning 的 trace export。
 
+Why it matters：
+- 这本书现在不只依赖叙述性章节，也有可运行的 reference implementation 作为支撑。
+
+## Practical Appendix
+
 ### 更强的实践附录
 
 站点已经包含：
@@ -42,6 +57,9 @@ _更新于 2026 年 4 月 8 日。_
 - policy templates；
 - research frontier 页面；
 - community roadmap。
+
+Why it matters：
+- 读者现在可以不按线性顺序通读全书，也能直接进入 checklists、case studies、glossary 与 practical assets。
 
 ## 这对读者意味着什么
 
