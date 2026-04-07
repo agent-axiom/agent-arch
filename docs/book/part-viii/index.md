@@ -18,7 +18,7 @@
 - потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
 - затем строишь assurance loop вокруг red teaming, detection и response;
 - после этого закрепляешь artifact discipline и provenance;
-- и только в конце закрываешь lifecycle через replacement и retirement.
+- и только в конце закрываешь жизненный цикл через replacement и retirement.
 
 ## В этой части
 
@@ -30,7 +30,7 @@
 
 ## Что ты получишь в конце части
 
-- цельную lifecycle-модель для production-grade agent systems;
+- цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
 - понятную связь между evals, incidents, provenance и operational ownership;
 - практический язык для разговоров о replacement, retirement и end-of-life discipline.

@@ -2,7 +2,7 @@
 
 Эта страница собирает в одном месте минимальный contract layer для change review и rollout gate в агентных системах. Она нужна в тот момент, когда команда уже понимает, что изменения в policy, prompt, model routing, retrieval или tool exposure нельзя выпускать "по ощущению", но еще не оформила эти проверки в явные артефакты.
 
-Если [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос "какие lifecycle-сущности вообще должны существовать", то change-rollout schema отвечает на вопрос "какие поля нужны, чтобы реально принять решение о выпуске".
+Если [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос "какие сущности жизненного цикла вообще должны существовать", то change-rollout schema отвечает на вопрос "какие поля нужны, чтобы реально принять решение о выпуске".
 
 ## 1. Зачем нужен отдельный schema layer
 
@@ -112,7 +112,7 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 
 То есть eval layer не живет отдельно от release discipline, а становится одной из опор gate.
 
-## 7. Как это связано с trace schema
+## 7. Как это связано со схемой трасс
 
 Rollout gate особенно полезен, когда trace schema уже собрана:
 
@@ -120,9 +120,9 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - по session summaries видно, есть ли regressions;
 - по structured events можно понять, что именно было проверено перед выпуском.
 
-Поэтому у mature team trace и rollout gate почти всегда стоят рядом.
+Поэтому у зрелой команды trace и rollout gate почти всегда стоят рядом.
 
-## 8. Как это связано с reference package
+## 8. Как это связано с опорным пакетом
 
 В [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) уже есть куски этой модели:
 

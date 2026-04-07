@@ -27,7 +27,7 @@
 - retrieval corpus;
 - memory write semantics;
 - eval datasets и grading logic;
-- rollout parameters.
+- параметры rollout.
 
 Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы.
 
@@ -210,7 +210,7 @@ def classify_change(change: ChangeRequest) -> str:
     return "low_risk"
 ```
 
-Это очень простой пример, но он хорошо показывает правильное направление: сначала формализовать reasoning, потом автоматизировать gate.
+Это очень простой пример, но он хорошо показывает правильное направление: сначала формализовать логику решения, потом автоматизировать gate.
 
 ## 13. Что чаще всего ломается в change management
 
@@ -240,7 +240,7 @@ def classify_change(change: ChangeRequest) -> str:
 
 ## 15. Что читать дальше
 
-После change management естественно переходить к assurance loop: red teaming, vulnerability management, detection and response. Именно там lifecycle перестает быть только release discipline и превращается в постоянную операционную защиту.
+После change management естественно переходить к assurance loop: red teaming, vulnerability management, detection and response. Именно там жизненный цикл перестает быть только release discipline и превращается в постоянную операционную защиту.
 
 ## 16. Полезные справочные страницы
 

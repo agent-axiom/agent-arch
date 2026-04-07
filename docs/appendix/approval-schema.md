@@ -1,6 +1,6 @@
 # Схема approval request и decision record
 
-Эта страница описывает минимальный contract layer для human approval в agent systems: как выглядит запрос на подтверждение, как выглядит решение, и что именно должно остаться в audit trail после high-risk действия.
+Эта страница описывает минимальный contract layer для human approval в agent systems: как выглядит запрос на подтверждение, как выглядит решение и что именно должно остаться в audit trail после high-risk действия.
 
 Если [policy bundle](policy-bundle-schema.md) отвечает на вопрос "какие правила вообще действуют", то approval schema отвечает на вопрос "как именно рантайм передает человеку право последнего решения".
 
@@ -140,7 +140,7 @@ Approval schema отвечает на другой слой:
 - как хранится решение;
 - как это решение связывается с выполнением.
 
-## 8. Связь с reference package
+## 8. Связь с опорным пакетом
 
 В [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) уже есть operational primitives, которые поддерживают эту модель:
 
@@ -150,7 +150,7 @@ Approval schema отвечает на другой слой:
   - `inspect-approvals`
   - `resolve-approval`
 
-Это полезно тем, что approval можно не только описывать, но и реально прогонять как часть demo runtime.
+Это полезно тем, что approval можно не только описывать, но и реально прогонять как часть демонстрационного runtime.
 
 ## 9. Минимальные инварианты
 

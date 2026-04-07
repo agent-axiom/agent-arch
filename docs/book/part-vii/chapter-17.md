@@ -9,7 +9,7 @@
 - memory writes живут на отдельных договоренностях;
 - product-specific ограничения быстро просачиваются в orchestration code.
 
-Поэтому следующий обязательный слой reference implementation это policy layer.
+Поэтому следующий обязательный слой опорной реализации - policy layer.
 
 Его задача не в том, чтобы “тормозить систему”. Его задача в том, чтобы решения про доступ, риск и допустимость не были размазаны по случайным `if` в коде.
 
@@ -209,7 +209,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - memory policy и execution policy живут как будто отдельно;
 - catalog и real adapters расходятся по поведению.
 
-Когда это происходит, reference implementation перестает быть reference и снова превращается в связку договоренностей.
+Когда это происходит, опорная реализация перестает быть опорной и снова превращается в связку договоренностей.
 
 ## 11. Практический чеклист
 
@@ -226,7 +226,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 ## 12. Что читать дальше
 
-Следующий логичный шаг в reference implementation: собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
+Следующий логичный шаг в опорной реализации - собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
 
 ## 13. Полезные справочные страницы
 

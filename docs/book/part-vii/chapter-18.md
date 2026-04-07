@@ -28,7 +28,7 @@ Production readiness отличается от “демо работает” �
 
 Хороший чеклист запуска вытаскивает скрытые дыры до инцидента, а не после.
 
-## 3. Что обязательно должно быть проверено перед go-live
+## 3. Что обязательно должно быть проверено перед запуском
 
 Для agent platform обычно есть хотя бы семь обязательных блоков:
 
@@ -62,7 +62,7 @@ Production readiness отличается от “демо работает” �
 - есть ли pre-check и egress guardrails;
 - видны ли решения политик в трассировке;
 - high-risk actions действительно требуют approval;
-- нет ли direct access paths мимо gateway;
+- нет ли прямых путей доступа в обход gateway;
 - memory writes ограничены policy;
 - multi-tenant boundaries проверены на реальных сценариях.
 
@@ -110,7 +110,7 @@ flowchart LR
 - SLO заведены;
 - offline evals проходят;
 - regression gate задокументирован;
-- online monitoring готово к первым rollout waves.
+- online monitoring готово к первым волнам rollout.
 
 Если этого нет, первый же инцидент превращается в расследование вслепую.
 
@@ -122,7 +122,7 @@ flowchart LR
 - есть ли alerting на SLO burn и safety incidents;
 - понятен ли manual fallback;
 - известна ли процедура rollback;
-- есть ли лимиты на rollout blast radius;
+- есть ли лимиты на радиус воздействия rollout;
 - есть ли runbook на частые сбои.
 
 Иногда кажется, что это “не про агентов, а про ops”. На деле без этого агентная система остается лабораторной, а не production-grade.
@@ -180,7 +180,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 Очень простой пример, но он помогает держать одну важную мысль: production readiness должна быть формализуема.
 
-## 11. Что чаще всего ломается в go-live процессе
+## 11. Что чаще всего ломается в процессе запуска
 
 Проблемы очень узнаваемы:
 
@@ -191,7 +191,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - capability owners не знают о реальном release window;
 - safety regressions не считаются blocker'ом.
 
-Все это означает, что rollout process у тебя пока еще не production discipline, а просто optimistic shipping.
+Все это означает, что rollout process у тебя пока еще не production discipline, а просто слишком самоуверенный выпуск изменений.
 
 ## 12. Практический чеклист
 
@@ -204,11 +204,11 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - Есть ли rollback plan и ограничение blast radius?
 - Проверены ли high-risk flows отдельно, а не только happy path?
 
-Если на несколько вопросов подряд ответ “нет”, rollout лучше считать неготовым, даже если демо выглядит уверенно.
+Если на несколько вопросов подряд ответ “нет”, rollout лучше считать неготовым, даже если демо выглядит убедительно.
 
 ## 13. Что читать дальше
 
-На этом reference implementation уже выглядит как цельный operational skeleton. Дальше можно либо расширять ее примерами кода, либо переходить к polishing: переводы, диаграммы, практические appendices и более конкретные implementation snippets.
+На этом опорная реализация уже выглядит как цельный operational skeleton. Дальше можно либо расширять ее примерами кода, либо переходить к polishing: переводам, диаграммам, практическим приложениям и более конкретным implementation snippets.
 
 ## 14. Полезные справочные страницы
 

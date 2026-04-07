@@ -2,7 +2,7 @@
 
 ## 1. Почему зрелая агентная система должна уметь не только запускаться, но и уходить
 
-Очень многие команды думают про lifecycle так:
+Очень многие команды думают про жизненный цикл так:
 
 - придумать систему;
 - построить ее;
@@ -61,7 +61,7 @@
   - active tool principal;
   - живой connector;
   - доступ к memory;
-  - старый rollout path;
+  - старый путь rollout;
   - background job.
 
 То есть формально система уже “мертвая”, а operationally она все еще может делать действия.
@@ -143,7 +143,7 @@ flowchart LR
 
 “это больше не считается нормальным путем”.
 
-## 9. User-facing transition тоже часть lifecycle
+## 9. User-facing transition тоже часть жизненного цикла
 
 Если agent system влияет на пользовательский или внутренний workflow, end-of-life нельзя делать только внутри platform layer.
 
@@ -217,7 +217,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - deprecated patterns остаются рабочими слишком долго;
 - replacement делается без dual-run или staged migration.
 
-Именно такие мелочи превращают “почти завершенный” lifecycle в источник новых инцидентов.
+Именно такие мелочи превращают “почти завершенный” жизненный цикл в источник новых инцидентов.
 
 ## 13. Практический чеклист
 
@@ -230,7 +230,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - Можно ли быстро отозвать principals, connectors и egress access?
 - Понятно ли, кто owner у archived artifacts и historical state?
 
-Если на несколько вопросов подряд ответ “нет”, значит lifecycle у тебя пока все еще заканчивается на релизе, а не на реальной эксплуатации.
+Если на несколько вопросов подряд ответ “нет”, значит жизненный цикл у тебя пока все еще заканчивается на релизе, а не на реальной эксплуатации.
 
 ## 14. Что читать дальше
 
@@ -242,7 +242,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - artifact governance;
 - retirement and replacement.
 
-Теперь эта часть уже может служить не только как архитектурное объяснение, но и как lifecycle handbook для production-grade agent systems.
+Теперь эта часть уже может служить не только как архитектурное объяснение, но и как handbook по жизненному циклу production-grade agent systems.
 
 ## 15. Полезные справочные страницы
 
