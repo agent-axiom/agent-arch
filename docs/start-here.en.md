@@ -118,6 +118,36 @@ Start with these pages:
 
 That is the shortest way to understand where the project is going and how it can help the wider community.
 
+## I Need To...
+
+### I need safe tool execution
+
+- [Chapter 4. Tool Gateway, Approval, and Audit Trail](book/part-ii/chapter-4.en.md)
+- [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
+- [Chapter 9. Sandbox Execution and MCP as an Integration Contract](book/part-iv/chapter-9.en.md)
+- [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](book/part-iv/chapter-10.en.md)
+
+### I need memory design and retrieval discipline
+
+- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](book/part-iii/chapter-5.en.md)
+- [Chapter 6. Short-Term, Long-Term, and Profile Memory](book/part-iii/chapter-6.en.md)
+- [Chapter 7. Retrieval, Compaction, and Background Updates](book/part-iii/chapter-7.en.md)
+- [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
+
+### I need observability and evals
+
+- [Chapter 11. Traces, Spans, and Structured Events](book/part-v/chapter-11.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](book/part-v/chapter-13.en.md)
+- [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
+
+### I need rollout and governance
+
+- [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
+- [Chapter 20. Change Management for Agent Systems](book/part-viii/chapter-20.en.md)
+- [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](book/part-viii/chapter-22.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](book/part-viii/chapter-27.en.md)
+
 ## What Makes This Book Different
 
 The stance of this book is straightforward:

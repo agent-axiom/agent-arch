@@ -118,6 +118,36 @@
 
 Это самый короткий способ понять, куда проект движется и чем он может быть полезен сообществу.
 
+## Мне нужно быстро решить конкретную задачу
+
+### Мне нужно безопасное выполнение инструментов
+
+- [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](book/part-ii/chapter-4.md)
+- [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
+- [Глава 9. Песочница выполнения и MCP как интеграционный контракт](book/part-iv/chapter-9.md)
+- [Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката](book/part-iv/chapter-10.md)
+
+### Мне нужно спроектировать память и retrieval
+
+- [Глава 5. Зачем агенту память и почему она опасна](book/part-iii/chapter-5.md)
+- [Глава 6. Краткосрочная, долгосрочная и профильная память](book/part-iii/chapter-6.md)
+- [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](book/part-iii/chapter-7.md)
+- [Схема memory records и retrieval contract](appendix/memory-retrieval-schema.md)
+
+### Мне нужны observability и evals
+
+- [Глава 11. Трассы, спаны и структурированные события](book/part-v/chapter-11.md)
+- [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
+- [Схема трасс и каталог событий](appendix/trace-schema.md)
+- [Схема eval datasets и grading contract](appendix/eval-schema.md)
+
+### Мне нужны rollout и governance
+
+- [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
+- [Глава 20. Change management для агентных систем](book/part-viii/chapter-20.md)
+- [Глава 22. Supply chain, provenance и approved artifacts](book/part-viii/chapter-22.md)
+- [Глава 27. Agent inventory, registry и борьба с sprawl](book/part-viii/chapter-27.md)
+
 ## Чем эта книга отличается
 
 У этой книги довольно простая позиция:
