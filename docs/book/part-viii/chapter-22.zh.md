@@ -59,6 +59,9 @@ Google Research 的一个关键观点是：AI systems 的 provenance 不只是 f
 
 如果这些问题无法快速回答，change management 和 incident review 很快就会失控。
 
+!!! info "需要 supply-chain 工件？"
+    如果你需要契约层视角，可以直接查看 [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)、[Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md) 和 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)。
+
 ## 4. 智能体需要多条 chains of trust，而不是一条
 
 在普通系统里，团队通常只想一条信任链： “代码在 CI 里构建过，容器也签名了，所以没问题。”

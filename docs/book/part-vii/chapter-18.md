@@ -15,6 +15,9 @@ Production readiness отличается от “демо работает” �
 
 Именно поэтому нужен чеклист запуска.
 
+!!! info "Нужны rollout-артефакты?"
+    Если тебе нужен reviewable слой поверх текста главы, смотри [схему change review и rollout gate](../../appendix/change-rollout-schema.md) и [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md).
+
 ## 2. Чеклист нужен не как бюрократия, а как защита от самообмана
 
 Почти каждая команда хотя бы раз попадала в ситуацию:

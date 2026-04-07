@@ -15,6 +15,9 @@ That no longer works for agent systems. The release-bearing surface is wider, an
 
 That is why change management becomes its own operational function, not just “something got pushed to main.”
 
+!!! info "Need change artifacts?"
+    For the practical layer, open the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md), the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
+
 ## 2. What counts as a change in an agent system
 
 It is useful to treat not only code, but every surface that can materially alter behavior as a change:

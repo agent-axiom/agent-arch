@@ -15,6 +15,9 @@ Production readiness differs from "the demo works" in one simple way: you must u
 
 That is exactly why a rollout checklist matters.
 
+!!! info "Need rollout artifacts?"
+    If you need the reviewable artifact layer, open the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md) and the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md).
+
 ## 2. A Checklist Is Not Bureaucracy, It Protects You From Self-Deception
 
 Almost every team has seen some version of this:

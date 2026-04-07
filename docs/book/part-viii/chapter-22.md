@@ -59,6 +59,9 @@ Google Research очень правильно показывает, что prove
 
 Если на эти вопросы нельзя ответить быстро, change management и incident review начинают ломаться почти сразу.
 
+!!! info "Нужны supply-chain артефакты?"
+    Для contract-level view смотри [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md), [схему policy bundle и approval contract](../../appendix/policy-bundle-schema.md) и [схему change review и rollout gate](../../appendix/change-rollout-schema.md).
+
 ## 4. У агента должно быть несколько цепочек доверия, а не одна
 
 В обычной системе команда часто мыслит одной цепочкой доверия: “код собран в CI, контейнер подписан, значит все хорошо”.

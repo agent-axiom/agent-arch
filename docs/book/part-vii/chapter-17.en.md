@@ -13,6 +13,9 @@ That is why the next mandatory layer in the reference implementation is the poli
 
 Its job is not to "slow the system down". Its job is to make decisions about access, risk, and admissibility explicit instead of scattering them across random `if` branches.
 
+!!! info "Need the contract layer?"
+    For the more applied view, open the [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md), the [Approval Request and Decision Record Schema](../../appendix/approval-schema.en.md), and the [Reference Package](../../appendix/reference-package.en.md).
+
 ## 2. A Policy Layer Should Answer Small and Clear Questions
 
 A weak policy layer tries to become "the smart brain of the system". A strong policy layer does the opposite: it solves a limited set of clear questions.

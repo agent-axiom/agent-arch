@@ -15,6 +15,9 @@ Production readiness 和“demo 能跑”之间的区别只有一个核心点：
 
 这正是上线检查清单存在的原因。
 
+!!! info "需要 rollout 工件？"
+    如果你需要可审阅的工程工件层，可以直接查看 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md) 和 [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)。
+
 ## 2. Checklist 不是官僚流程，它是防止自我欺骗的工具
 
 几乎每个团队都见过类似场景：

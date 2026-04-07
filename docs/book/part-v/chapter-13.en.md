@@ -11,6 +11,9 @@ But the main engineering question remains: how do you avoid shipping regressions
 
 That is where the eval loop begins.
 
+!!! info "Need the schemas and artifacts?"
+    If you need more than rationale, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
+
 ## 2. Offline Evals Exist So You Can Change the System Before Rollout
 
 Offline evals answer a very practical question: "If we change the prompt, policy, retrieval, model routing, or tool behavior, will the system get better or worse on known scenarios?"

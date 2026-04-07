@@ -15,6 +15,9 @@
 
 Именно поэтому change management становится отдельной operational функцией, а не просто “что-то запушили в main”.
 
+!!! info "Нужны change-артефакты?"
+    Для практического слоя открой [схему change review и rollout gate](../../appendix/change-rollout-schema.md), [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md) и [схему eval datasets и grading contract](../../appendix/eval-schema.md).
+
 ## 2. Что в агентной системе вообще считается изменением
 
 Полезно заранее считать изменениями не только код, но и все поверхности, которые реально меняют поведение системы:

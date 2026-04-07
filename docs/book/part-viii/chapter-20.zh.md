@@ -15,6 +15,9 @@
 
 所以 change management 在这里会变成一个独立的 operational function，而不是“有人往 main 推了一点东西”。
 
+!!! info "需要 change 工件？"
+    如果你需要更落地的工程层，可以打开 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)、[Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
+
 ## 2. 在智能体系统里，什么都算 change
 
 最好提前把所有真正会改变系统行为的表面都当成 change，而不只是代码：

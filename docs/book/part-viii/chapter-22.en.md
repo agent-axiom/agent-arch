@@ -59,6 +59,9 @@ You need to be able to answer:
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
 
+!!! info "Need supply-chain artifacts?"
+    For the contract-level view, open the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), the [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md), and the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md).
+
 ## 4. An agent needs several chains of trust, not one
 
 In a normal system, a team often thinks in one trust chain: “the code was built in CI, the container is signed, so things are fine.”

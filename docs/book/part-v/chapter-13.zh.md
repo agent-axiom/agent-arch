@@ -11,6 +11,9 @@ SLO 帮你定义什么叫系统健康。
 
 这就是 eval loop 的起点。
 
+!!! info "需要配套的 schema 和工程工件？"
+    如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
+
 ## 2. Offline evals 的作用，是在 rollout 之前改变系统
 
 Offline evals 回答的是一个非常实际的问题：“如果我们修改 prompt、policy、retrieval、model routing 或 tool behavior，系统在已知场景上会变好还是变坏？”
