@@ -27,10 +27,13 @@ If you read this part as one block, the sequence is straightforward:
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
+- [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
+- [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](chapter-25.en.md)
 
 ## What you should have by the end
 
 - a coherent lifecycle model for production-grade agent systems;
 - a stronger frame for change reviews and release gates;
 - a clear connection between evals, incidents, provenance, and ownership;
-- a practical language for replacement, retirement, and end-of-life discipline.
+- a practical language for replacement, retirement, and end-of-life discipline;
+- a stronger frame for sabotage-like behavior, control failures, and automated assurance.

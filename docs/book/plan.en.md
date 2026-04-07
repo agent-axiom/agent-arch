@@ -76,8 +76,10 @@ What I am strengthening next in this part:
 - Chapter 21. Assurance Loop: Red Teaming, Detection, and Response.
 - Chapter 22. Supply Chain, Provenance, and Approved Artifacts.
 - Chapter 23. Retirement, Replacement, and End-of-Life Discipline.
+- Chapter 24. Agentic Misalignment and Insider Risk.
+- Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming.
 
-Status: Part VIII is now assembled as a complete lifecycle block.
+Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior and control-heavy evals.
 
 ## Publishing roadmap
 

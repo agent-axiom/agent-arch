@@ -27,10 +27,13 @@
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
+- [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
+- [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
 
 ## Что ты получишь в конце части
 
 - цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
 - понятную связь между evals, incidents, provenance и operational ownership;
-- практический язык для разговоров о replacement, retirement и end-of-life discipline.
+- практический язык для разговоров о replacement, retirement и end-of-life discipline;
+- более зрелую рамку для sabotage-like behavior, control failures и automated assurance.

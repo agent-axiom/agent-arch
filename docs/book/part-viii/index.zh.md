@@ -27,10 +27,13 @@
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](chapter-22.zh.md)
 - [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)
+- [第 24 章：Agentic Misalignment 与 Insider Risk](chapter-24.zh.md)
+- [第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming](chapter-25.zh.md)
 
 ## 读完这一部分后，你应该得到什么
 
 - 一套面向生产级 agent systems 的完整生命周期框架；
 - 一种更成熟的变更评审与发布门禁视角；
 - 对 evals、incidents、provenance 与 ownership 之间关系的清晰理解；
-- 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言。
+- 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言；
+- 一套可以讨论 sabotage-like behavior、control failures 与 automated assurance 的更成熟框架。

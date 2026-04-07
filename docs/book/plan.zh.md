@@ -76,8 +76,10 @@
 - 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response。
 - 第 22 章：Supply Chain、Provenance 与 Approved Artifacts。
 - 第 23 章：Retirement、Replacement 与 End-of-Life Discipline。
+- 第 24 章：Agentic Misalignment 与 Insider Risk。
+- 第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming。
 
-状态：Part VIII 现在已经组成一个完整的 lifecycle 模块。
+状态：Part VIII 现在已经组成一个完整的生命周期模块，并补上了 sabotage-like behavior 与 control-heavy evals 这些更前沿的主题。
 
 ## 发布路线图
 
