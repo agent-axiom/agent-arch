@@ -2,7 +2,7 @@
 
 This version of the book is structured as an engineering playbook rather than a framework survey. Each part answers one practical question: what must exist in a production system for an agent to be useful, safe, and manageable?
 
-This page is for structure and status. If you want a role-based reading path, open [Start Here](../start-here.en.md). If you want the publishing-stack rationale, it lives on the dedicated [Publishing Stack](../appendix/stack.en.md) page.
+This page focuses on structure and status. For a role-based reading path, open [Start Here](../start-here.en.md). For the publishing-stack explanation, use the dedicated [Publishing Stack](../appendix/stack.en.md) page.
 
 ## Structure
 

@@ -1,10 +1,10 @@
 # Publishing Stack
 
-This is the canonical place where the publishing-stack decision is explained. The homepage only links here, so the rationale is not duplicated across the book.
+This page explains why the book uses this publishing stack.
 
 ## Short answer
 
-`MkDocs + Material for MkDocs` is still not outdated in 2026. For a Markdown-first book on a Python stack, it remains one of the most pragmatic choices:
+`MkDocs + Material for MkDocs` remains a strong choice for a Markdown-first book on a Python stack:
 
 - low barrier to entry;
 - fast builds;
