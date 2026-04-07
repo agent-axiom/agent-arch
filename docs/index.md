@@ -17,7 +17,7 @@
 ## Для кого эта книга
 
 - Для инженеров, которые добавляют agent features в продукт и не хотят превращать систему в набор промптов и исключений.
-- Для platform teams, которым нужен общий runtime, policy layer, registry, approvals и observability.
+- Для платформенных команд, которым нужен общий рантайм, слой политик, реестр, подтверждения и наблюдаемость.
 - Для security engineers, которым нужно видеть trust boundaries, risky execution paths и surfaces для abuse.
 - Для техлидов и архитекторов, которым нужен не “вау-демо”, а рабочая инженерная дисциплина.
 
@@ -25,15 +25,15 @@
 
 - Маршрут от workflow к agent system без преждевременного усложнения.
 - Практические главы про policy layer, approvals, memory, evals и lifecycle.
-- Runnable reference runtime с session export, eval dataset export, approvals, controls и lifecycle artifacts.
+- Исполняемый опорный рантайм с экспортом сессий, экспортом eval-наборов, подтверждениями, контролями и артефактами жизненного цикла.
 - Справочные схемы для traces, eval datasets, policy bundles, approvals, rollout gates, memory retrieval и lifecycle artifacts.
 - Кейсы, чеклисты и шаблоны политик, которые можно брать как стартовые артефакты.
 
 ## Состояние проекта
 
 - `Published core`: восемь частей книги уже опубликованы.
-- `Expanding now`: усиливаются входные страницы, reference-слой и навигация.
-- `Reference assets available`: уже есть схемы, чеклисты, кейсы и runnable runtime.
+- `Expanding now`: усиливаются входные страницы, справочный слой и навигация.
+- `Reference assets available`: уже есть схемы, чеклисты, кейсы и исполняемый опорный рантайм.
 
 ## Три удобных маршрута чтения
 
@@ -62,8 +62,8 @@
 
 - Полноценная книга на `ru / en / zh`.
 - Исполняемый пакет [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) с `pytest`-покрытием.
-- Reference-слой со схемами и contract pages.
-- Practical appendix с кейсами, чеклистами, glossary и roadmap.
+- Справочный слой со схемами и контрактными страницами.
+- Практическое приложение с кейсами, чеклистами, глоссарием и дорожной картой.
 
 ## Главная инженерная идея
 
@@ -76,16 +76,16 @@
 
 ## Где лежит справочный слой
 
-Если тебе нужны не только главы, но и reusable artifacts, начни с этих страниц:
+Если тебе нужны не только главы, но и готовые артефакты, начни с этих страниц:
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
-- [Схема eval datasets и grading contract](appendix/eval-schema.md)
-- [Схема policy bundle и approval contract](appendix/policy-bundle-schema.md)
+- [Схема eval-наборов и контракта на проверку](appendix/eval-schema.md)
+- [Схема policy bundle и approval-контракта](appendix/policy-bundle-schema.md)
 - [Схема lifecycle-артефактов](appendix/lifecycle-artifact-schema.md)
-- [Схема memory records и retrieval contract](appendix/memory-retrieval-schema.md)
+- [Схема записей памяти и retrieval-контракта](appendix/memory-retrieval-schema.md)
 
 ## Дальше по сайту
 
 [С чего начать](start-here.md){ .md-button .md-button--primary }
-[Открыть reference pages](appendix/trace-schema.md){ .md-button }
+[Открыть справочные страницы](appendix/trace-schema.md){ .md-button }
 [Посмотреть источники](appendix/sources.md){ .md-button }

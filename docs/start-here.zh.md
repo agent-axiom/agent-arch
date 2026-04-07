@@ -7,23 +7,23 @@
 - 让你快速判断这本书是否适合你；
 - 帮你为自己的角色找到一条最短阅读路径。
 
-如果你想先看这本书的总体主张，请回到[首页](index.zh.md)。如果你要看结构和当前完成度，请直接打开[全书计划](book/plan.zh.md)。如果你需要可复用的工程工件与 contract pages，请进入[参考层](reference.zh.md)。
+如果你想先看这本书的总体主张，请回到[首页](index.zh.md)。如果你要看结构和当前完成度，请直接打开[全书计划](book/plan.zh.md)。如果你需要可复用的工程工件与契约页面，请进入[参考层](reference.zh.md)。
 
 ## 快速了解项目成熟度
 
 - `Published core`：主要章节已经发布完成。
 - `Expanding now`：入口页、参考页与导航体验仍在持续增强。
-- `Assets ready`：checklists、case studies、schemas 与 runnable runtime 已经可以独立使用。
+- `Assets ready`：检查清单、案例研究、模式与可运行参考运行时已经可以独立使用。
 
 ## 这本书适合谁
 
 如果你属于下面这些角色，这本书会特别有帮助：
 
 - 正在把智能体能力接入产品的工程师；
-- 想搭建共享 runtime 和 policy layer 的平台工程师；
-- 需要分析 trust boundaries 和高风险执行路径的安全工程师；
-- 试图让智能体系统具备 production discipline 的技术负责人或架构师；
-- 寻找实践型 open handbook，而不是 AI 营销页面的开源贡献者。
+- 想搭建共享运行时和策略层的平台工程师；
+- 需要分析信任边界和高风险执行路径的安全工程师；
+- 试图让智能体系统具备生产纪律的技术负责人或架构师；
+- 寻找实践型开放手册，而不是 AI 营销页面的开源贡献者。
 
 如果你要的是一个冷静、成熟、可解释的系统，而不是“世界上最自主的智能体”，那你来对地方了。
 
@@ -40,10 +40,10 @@
 读完这五章，你就已经能得到：
 
 - 一套可工作的架构框架；
-- 一套 trust boundaries 模型；
-- 对安全 tool execution 的基本理解；
-- 一套 observability 基线；
-- 一套 production go-live discipline。
+- 一套信任边界模型；
+- 对安全工具执行的基本理解；
+- 一套可观测性基线；
+- 一套生产上线纪律。
 
 ## 按角色推荐阅读路径
 
@@ -56,7 +56,7 @@
 3. [第四部分：工具与执行](book/part-iv/index.zh.md)
 4. [第七部分：参考实现](book/part-vii/index.zh.md)
 
-这条路径的目标，是尽快从一个 agent idea 走到 runnable architecture。
+这条路径的目标，是尽快从一个智能体想法走到可运行的架构。
 
 ### 如果你是平台工程师
 
@@ -68,7 +68,7 @@
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 5. [第七部分：参考实现](book/part-vii/index.zh.md)
 
-这条路径的目标，是搭出 platform-grade skeleton，而不只是一个 agent wrapper。
+这条路径的目标，是搭出平台级骨架，而不只是一个智能体外壳。
 
 ### 如果你是安全工程师
 
@@ -80,7 +80,7 @@
 4. [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-这条路径的目标，是不仅理解 prompt risks，还要真正理解 execution risks。
+这条路径的目标，是不仅理解提示风险，还要真正理解执行风险。
 
 ### 如果你是负责人或架构师
 
@@ -91,11 +91,11 @@
 3. [第六部分：组织模型](book/part-vi/index.zh.md)
 4. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-这条路径的目标，是理解如何避免一个智能体项目在运营和 ownership 层面失控。
+这条路径的目标，是理解如何避免一个智能体项目在运营和归属层面失控。
 
 ## 如果你更想先看代码
 
-如果 runnable artifacts 比线性阅读更重要，可以从这里开始：
+如果可运行工件比线性阅读更重要，可以从这里开始：
 
 - [参考包](appendix/reference-package.zh.md)
 - [第 16 章：基础运行时蓝图](book/part-vii/chapter-16.zh.md)
@@ -103,12 +103,12 @@
 
 这些内容已经能给你：
 
-- 最小 runtime；
-- policy layer；
-- capability catalog；
-- memory path；
-- telemetry；
-- rollout checks。
+- 最小运行时；
+- 策略层；
+- 能力目录；
+- 记忆路径；
+- 遥测；
+- 发布检查。
 
 ## 如果你更想看模板和项目方向
 
@@ -116,7 +116,7 @@
 
 - [全书计划](book/plan.zh.md)
 - [术语表](appendix/glossary.zh.md)
-- [Cheat Sheets](appendix/cheat-sheets.zh.md)
+- [速查清单](appendix/cheat-sheets.zh.md)
 - [实战案例](appendix/case-studies.zh.md)
 - [按场景组织的 Policy Templates 与 Checklists](appendix/policy-templates.zh.md)
 - [社区路线图](appendix/community-roadmap.zh.md)

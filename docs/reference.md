@@ -4,9 +4,9 @@
 
 Эта секция полезна, если тебе нужно:
 
-- быстро найти нужную contract page;
+- быстро найти нужную контрактную страницу;
 - подготовить design review или rollout review;
-- вытащить reusable artifacts для своей команды;
+- вытащить готовые артефакты для своей команды;
 - перейти от главы книги к более прикладной инженерной форме.
 
 ## С чего начать
@@ -20,12 +20,12 @@
 ## Схемы и контрактные страницы
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
-- [Схема eval datasets и grading contract](appendix/eval-schema.md)
-- [Схема policy bundle и approval contract](appendix/policy-bundle-schema.md)
-- [Схема approval request и decision record](appendix/approval-schema.md)
+- [Схема eval-наборов и контракта на проверку](appendix/eval-schema.md)
+- [Схема policy bundle и approval-контракта](appendix/policy-bundle-schema.md)
+- [Схема запроса на подтверждение и записи о решении](appendix/approval-schema.md)
 - [Схема change review и rollout gate](appendix/change-rollout-schema.md)
 - [Схема lifecycle-артефактов](appendix/lifecycle-artifact-schema.md)
-- [Схема memory records и retrieval contract](appendix/memory-retrieval-schema.md)
+- [Схема записей памяти и retrieval-контракта](appendix/memory-retrieval-schema.md)
 
 ## Практические страницы
 

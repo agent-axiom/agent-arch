@@ -25,15 +25,15 @@
 
 - 一条从“先工作流后智能体”走向受控自治的实践路径。
 - 关于策略层、审批、记忆、评测、可观测性与生命周期的章节。
-- 一个可运行的参考运行时，包含 session export、eval dataset export、approvals、controls 和 lifecycle artifacts。
-- 一组参考页，覆盖 trace schema、eval schema、policy bundles、approvals、rollout gates、memory retrieval 和 lifecycle artifacts。
+- 一个可运行的参考运行时，包含会话导出、评测数据集导出、审批、控制项和生命周期工件。
+- 一组参考页，覆盖追踪模式、评测模式、策略包、审批、发布门禁、记忆检索和生命周期工件。
 - 可以直接复用的案例研究、检查清单和策略模板。
 
 ## 项目当前状态
 
 - `Published core`：全书八个部分已经完整发布。
 - `Expanding now`：入口页、参考层与站点导航仍在持续增强。
-- `Reference assets available`：schemas、checklists、case studies 与可运行 runtime 已经可用。
+- `Reference assets available`：模式、检查清单、案例研究与可运行参考运行时已经可用。
 
 ## 三条实用阅读路径
 
@@ -49,43 +49,43 @@
 1. [第 2 章：安全智能体的参考架构](book/part-i/chapter-2.zh.md)
 2. [第 4 章：工具网关、审批与审计轨迹](book/part-ii/chapter-4.zh.md)
 3. [第 17 章：策略层与能力目录](book/part-vii/chapter-17.zh.md)
-4. [第 20 章：智能体系统的 Change Management](book/part-viii/chapter-20.zh.md)
+4. [第 20 章：智能体系统的变更管理](book/part-viii/chapter-20.zh.md)
 
 ### 如果你更关注安全、控制与运维
 
-1. [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](book/part-viii/chapter-21.zh.md)
-2. [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](book/part-viii/chapter-22.zh.md)
-3. [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](book/part-viii/chapter-26.zh.md)
-4. [第 27 章：Agent Inventory、Registry 与 Sprawl 控制](book/part-viii/chapter-27.zh.md)
+1. [第 21 章：保障闭环：红队演练、检测与响应](book/part-viii/chapter-21.zh.md)
+2. [第 22 章：供应链、来源链与已批准工件](book/part-viii/chapter-22.zh.md)
+3. [第 26 章：面向 AI 的可观测性、清单覆盖率与可检测遥测](book/part-viii/chapter-26.zh.md)
+4. [第 27 章：智能体清单、注册表与蔓延控制](book/part-viii/chapter-27.zh.md)
 
 ## 这个项目已经具备什么
 
 - 完整的 `ru / en / zh` 三语内容。
 - 带有 `pytest` 覆盖的可运行 [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 包。
-- 一套完整的参考层，涵盖 schemas 与 contract pages。
+- 一套完整的参考层，涵盖模式与契约页面。
 - 包含案例、速查清单、术语表与路线图的实践型附录。
 
 ## 核心工程观点
 
 智能体系统最常见的错误很简单：先追求自治，再补可控性。更稳妥的路径通常是：
 
-1. 先构建**可预测的 workflow**。
+1. 先构建**可预测的工作流**。
 2. 再按局部、可度量的方式加入自治。
-3. 所有高风险动作都经过**policy、approval 与 tracing**。
-4. 用**evals、telemetry 与 lifecycle discipline**维持质量。
+3. 所有高风险动作都经过**策略、审批与追踪**。
+4. 用**评测、遥测与生命周期纪律**维持质量。
 
 ## 参考层在哪里
 
 如果你需要的是可复用的工程产物，先看这些页面：
 
-- [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](appendix/policy-bundle-schema.zh.md)
-- [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.zh.md)
-- [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
+- [追踪模式与事件目录](appendix/trace-schema.zh.md)
+- [评测数据集模式与评分契约](appendix/eval-schema.zh.md)
+- [策略包模式与审批契约](appendix/policy-bundle-schema.zh.md)
+- [生命周期工件模式](appendix/lifecycle-artifact-schema.zh.md)
+- [记忆记录与检索契约模式](appendix/memory-retrieval-schema.zh.md)
 
 ## 继续阅读
 
 [从这里开始](start-here.zh.md){ .md-button .md-button--primary }
-[打开参考页](appendix/trace-schema.zh.md){ .md-button }
+[打开参考页面](appendix/trace-schema.zh.md){ .md-button }
 [查看来源](appendix/sources.zh.md){ .md-button }
