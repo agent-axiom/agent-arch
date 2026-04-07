@@ -89,7 +89,7 @@ OpenAI 的实用指南里有一个很健康的提醒：不是因为任务“听�
 
 ### 5.2. 安全不能挂在边上
 
-如果 policy、identity 和 approvals 没有嵌进 runtime，后面你修的就不是演进，而是 аварийный ремонт。
+如果 policy、identity 和 approvals 没有嵌进 runtime，后面你修的就不是演进，而是在做紧急抢修。
 
 ### 5.3. 状态必须是显式的
 

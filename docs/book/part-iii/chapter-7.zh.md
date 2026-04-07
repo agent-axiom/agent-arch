@@ -240,7 +240,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 - 有没有 records 数量上限和 token budget？
 - ranking 是否不仅考虑 similarity，也考虑 confidence、recency 和 trust？
 - read path 和 maintenance path 是否分开了？
-- compaction 是不是一个 регулярный процесс，而不是手工 уборка？
+- compaction 是不是一个持续的维护过程，而不是偶尔手工清理？
 - summary 能不能看到 provenance？
 - 有没有防止跨 tenant 或错误 class 的 retrieval？
 

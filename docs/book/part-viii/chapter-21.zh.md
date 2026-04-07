@@ -164,7 +164,7 @@ flowchart LR
 
 没有 ownership，assurance 很快就会散掉。
 
-最好 заранее清楚：
+最好提前明确：
 
 - 谁维护 red-team backlog；
 - 谁 triage findings；
@@ -227,7 +227,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
     return "observe"
 ```
 
-重点在于：response decision 不应该完全依赖临场 improvisation，而应该属于 заранее设计好的 operational surface。
+重点在于：response decision 不应该完全依赖临场 improvisation，而应该属于预先设计好的 operational surface。
 
 ## 12. 最常见的断裂点
 
