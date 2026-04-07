@@ -148,6 +148,21 @@ Registry 会把这层关系再拉紧一步：
 
 也就是说，registry 会把 observability 从“原始事件流”提升成受治理的 operational map。
 
+## 8.1. 没有 continuous verification 的 registry 会变得整洁，但不再准确
+
+这里不应该高估 registry 本身。Registry 的存在，并不能自动证明 control layer 真的在工作。
+
+如果 registry：
+
+- 不和真实 telemetry coverage 对账；
+- 不和活跃 principals 对账；
+- 不和 active capabilities 对账；
+- 不参与 retirement hygiene，
+
+那它很快就会变成一幅整洁、但部分失真的 estate 图景。
+
+所以，更成熟的理解方式是：registry 不应只是静态目录，而应该是 continuously verified control surface。
+
 ## 9. Registry 如何连接 approvals 和 policies
 
 Registry 不应该去复制 policy bundle 或 approval contract。
@@ -242,6 +257,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Approval Request 与 Decision Schema](../../appendix/approval-schema.zh.md)
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
 - [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)

@@ -148,6 +148,21 @@ Registry делает эту связь еще жестче:
 
 То есть registry превращает observability из “сырых событий” в управляемую operational map.
 
+## 8.1. Registry без continuous verification быстро становится красивым, но неточным
+
+Здесь важно не переоценить сам реестр. Наличие registry еще не доказывает, что control layer действительно работает.
+
+Если registry:
+
+- не сверяется с реальным telemetry coverage;
+- не проверяется против живых principals;
+- не сопоставляется с active capabilities;
+- не участвует в retirement hygiene,
+
+то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
+
+Поэтому зрелый registry полезно мыслить не как статический каталог, а как continuously verified control surface.
+
 ## 9. Как registry связан с approvals и policies
 
 Registry не должен дублировать policy bundle или approval contract.
@@ -242,6 +257,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
 - [Схема approval request и decision record](../../appendix/approval-schema.md)
 - [Схема trace и event catalog](../../appendix/trace-schema.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)

@@ -148,6 +148,21 @@ Registry makes this connection even tighter:
 
 So registry turns observability from “raw events” into a governed operational map.
 
+## 8.1. A registry without continuous verification becomes neat but inaccurate
+
+It is important not to overestimate the registry itself. The existence of a registry does not prove that the control layer actually works.
+
+If the registry:
+
+- is not reconciled with real telemetry coverage;
+- is not checked against live principals;
+- is not matched against active capabilities;
+- does not participate in retirement hygiene,
+
+then it quickly becomes a tidy but partially fictional picture of the estate.
+
+That is why a mature registry is better understood not as a static catalog, but as a continuously verified control surface.
+
 ## 9. How registry connects to approvals and policies
 
 Registry should not duplicate the policy bundle or approval contract.
@@ -242,6 +257,7 @@ If several answers are “no,” you already have an agent estate but not yet ag
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Approval Request and Decision Schema](../../appendix/approval-schema.en.md)
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
