@@ -139,6 +139,28 @@ Strong governance requires:
 
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
 
+## 8. Where the frontier is pushing observability next
+
+Recent research papers on observability for agents go further: they try to turn traces from a convenient event log into a causal diagnosis layer.
+
+Two ideas are especially useful for this book.
+
+First, a trace viewer by itself is not enough. A polished UI around an event stream still does not provide real answerability if:
+
+- the trace vocabulary is too weak;
+- a run cannot be linked to a session, approval, and artifact bundle;
+- root cause still has to be reconstructed manually from a long transcript.
+
+Second, causal diagnosis looks promising, but it is too early to present it as a solved problem. Research already shows an interesting direction, but production discipline still needs to stand on simpler foundations:
+
+- a stable event catalog;
+- schema versioning;
+- redaction rules;
+- session-aware traces;
+- explicit linkage between telemetry, approvals, and lifecycle artifacts.
+
+In other words, the frontier matters here not because it lets us promise “full explainability,” but because it reminds us that observability should evolve from logging toward diagnosability.
+
 <div class="diagram-card">
 <p>AI-native observability is best understood as the combination of telemetry, inventory, and governance evidence</p>
 
@@ -155,7 +177,7 @@ flowchart LR
 
 </div>
 
-## 8. A minimal policy for observability coverage
+## 9. A minimal policy for observability coverage
 
 ```yaml
 observability:
@@ -179,7 +201,7 @@ observability:
 
 This kind of policy helps teams discuss observability as a required production layer rather than a nice-to-have for the platform team.
 
-## 9. Example coverage check
+## 10. Example coverage check
 
 ```python
 from dataclasses import dataclass
@@ -202,7 +224,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 The point is not the exact numbers. The point is that observability readiness should also become an explicit gate.
 
-## 10. The most common failure modes
+## 11. The most common failure modes
 
 - traces exist only for the “main” runtime, not for the real adapters;
 - agents exist outside inventory;
@@ -211,7 +233,7 @@ The point is not the exact numbers. The point is that observability readiness sh
 - drift is noticed only through user complaints;
 - retention and redaction rules are not aligned with forensic needs.
 
-## 11. Practical checklist
+## 12. Practical checklist
 
 - Do you know how many agents actually exist in your production estate?
 - What percentage of them emits structured telemetry?
@@ -222,12 +244,13 @@ The point is not the exact numbers. The point is that observability readiness sh
 
 If several answers are “no,” you already have observability, but it has not yet become a governance layer.
 
-## 12. Useful reference pages
+## 13. Useful reference pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 11. Traces, Spans, and Structured Events](../part-v/chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)

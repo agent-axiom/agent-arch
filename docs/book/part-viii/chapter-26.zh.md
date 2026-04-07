@@ -139,6 +139,30 @@ Governance 往往会被写成：
 
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
 
+## 8. Research frontier 正在把 observability 推向哪里
+
+最新的 agent observability 研究还在继续往前走：它们试图把 traces 从“方便阅读的事件日志”推进成“因果诊断层”。
+
+这里有两点对本书尤其有价值。
+
+第一，单有 trace viewer 并不够。即使 event stream 的界面再漂亮，也不等于真正具备 answerability。如果：
+
+- trace vocabulary 太弱；
+- 一个 run 无法关联到 session、approval 和 artifact bundle；
+- root cause 仍然只能靠人工通读长 transcript 来重建，
+
+那么可观测性依然不够成熟。
+
+第二，causal diagnosis 很有前景，但现在还不适合被讲成 solved problem。Research 已经给出了值得跟进的方向，但 production discipline 目前仍然要建立在更稳的基础上：
+
+- stable event catalog；
+- schema versioning；
+- redaction rules；
+- session-aware traces；
+- telemetry、approvals 和 lifecycle artifacts 之间的明确 linkage。
+
+也就是说，frontier 的价值不在于让我们承诺“完全 explainability”，而在于提醒我们：observability 的长期方向应该是从 logging 走向 diagnosability。
+
 <div class="diagram-card">
 <p>AI-native observability 最好被理解成 telemetry、inventory 与 governance evidence 的组合</p>
 
@@ -155,7 +179,7 @@ flowchart LR
 
 </div>
 
-## 8. 一个最小 observability coverage policy
+## 9. 一个最小 observability coverage policy
 
 ```yaml
 observability:
@@ -179,7 +203,7 @@ observability:
 
 这样的 policy 能帮助团队把 observability 当成必需的 production layer，而不是平台团队的可选加分项。
 
-## 9. 一个简单的 coverage check
+## 10. 一个简单的 coverage check
 
 ```python
 from dataclasses import dataclass
@@ -202,7 +226,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 这里的重点不是具体数字，而是 observability readiness 也应该变成明确的 gate。
 
-## 10. 最常见的 failure modes
+## 11. 最常见的 failure modes
 
 - traces 只覆盖“主 runtime”，却没覆盖真正的 adapters；
 - agents 存在于 inventory 之外；
@@ -211,7 +235,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与 forensic needs 不一致。
 
-## 11. 实用检查清单
+## 12. 实用检查清单
 
 - 你知道 production estate 里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
@@ -222,12 +246,13 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 如果连续几个答案都是“否”，那你的 observability 虽然已经存在，但还没有变成 governance layer。
 
-## 12. 值得配套阅读的参考页
+## 13. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 11 章：Traces、Spans 与 Structured Events](../part-v/chapter-11.zh.md)
 - [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)

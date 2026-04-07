@@ -139,6 +139,28 @@ Governance нередко оформляют как:
 
 Именно поэтому observability в agent systems лучше воспринимать как `evidence layer for governance`.
 
+## 8. Куда frontier двигает observability дальше
+
+Свежие research papers по observability для agents идут еще дальше: они пытаются превратить traces из удобного журнала событий в слой причинной диагностики.
+
+Из этого для книги полезны две мысли.
+
+Первая: одного trace viewer недостаточно. Красивый UI вокруг event stream еще не дает answerability, если:
+
+- trace vocabulary слишком бедный;
+- run нельзя связать с session, approval и artifact bundle;
+- root cause все равно приходится восстанавливать вручную по длинному transcript.
+
+Вторая: causal diagnosis выглядит очень перспективно, но ее пока рано продавать как solved problem. Research уже показывает интересный путь вперед, но production discipline по-прежнему должна стоять на более приземленных вещах:
+
+- stable event catalog;
+- schema versioning;
+- redaction rules;
+- session-aware traces;
+- явные linkage между telemetry, approvals и lifecycle artifacts.
+
+То есть frontier здесь полезен не как повод обещать “полную explainability”, а как напоминание, что observability должна постепенно эволюционировать от logging к diagnosability.
+
 <div class="diagram-card">
 <p>AI-native observability лучше думать как связку telemetry, inventory и governance evidence</p>
 
@@ -155,7 +177,7 @@ flowchart LR
 
 </div>
 
-## 8. Минимальный policy для observability coverage
+## 9. Минимальный policy для observability coverage
 
 ```yaml
 observability:
@@ -179,7 +201,7 @@ observability:
 
 Такой policy помогает обсуждать observability как обязательный production layer, а не как nice-to-have для платформенной команды.
 
-## 9. Пример простого coverage check
+## 10. Пример простого coverage check
 
 ```python
 from dataclasses import dataclass
@@ -202,7 +224,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 Здесь идея не в цифрах как таковых. Идея в том, что observability readiness тоже должна становиться явным gate.
 
-## 10. Самые частые failure modes
+## 11. Самые частые failure modes
 
 - traces есть только у “основного” runtime, но не у реальных adapters;
 - agents существуют вне inventory;
@@ -211,7 +233,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - drift замечают только по жалобам пользователей;
 - retention и redaction rules не согласованы с forensic needs.
 
-## 11. Практический checklist
+## 12. Практический checklist
 
 - Знаешь ли ты, сколько agents реально живет в production estate?
 - Какой процент из них вообще шлет structured telemetry?
@@ -222,12 +244,13 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 Если несколько ответов подряд “нет”, то observability у тебя уже есть, но она пока не стала governance layer.
 
-## 12. Полезные справочные страницы
+## 13. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
 - [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
