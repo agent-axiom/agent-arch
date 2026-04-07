@@ -96,6 +96,10 @@ plugins:
             "Глава 22. Supply chain, provenance и approved artifacts": "Глава 22. Supply chain, provenance и approved artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Глава 23. Retirement, replacement и end-of-life discipline"
             Приложения: Приложения
+            Concepts: Концепты
+            Schemas: Схемы
+            Practical Assets: Практические артефакты
+            Project Meta: О проекте
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
             Глоссарий терминов: Глоссарий терминов
@@ -155,6 +159,10 @@ plugins:
             "Глава 22. Supply chain, provenance и approved artifacts": "Chapter 22. Supply Chain, Provenance, and Approved Artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Chapter 23. Retirement, Replacement, and End-of-Life Discipline"
             Приложения: Appendix
+            Concepts: Concepts
+            Schemas: Schemas
+            Practical Assets: Practical Assets
+            Project Meta: Project Meta
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
             Глоссарий терминов: Glossary
@@ -214,6 +222,10 @@ plugins:
             "Глава 22. Supply chain, provenance и approved artifacts": "第 22 章：Supply Chain、Provenance 与 Approved Artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "第 23 章：Retirement、Replacement 与 End-of-Life Discipline"
             Приложения: 附录
+            Concepts: 概念页
+            Schemas: 模式与契约
+            Practical Assets: 实践资产
+            Project Meta: 项目信息
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
             Глоссарий терминов: 术语表
@@ -318,20 +330,24 @@ nav:
       - "Глава 26. AI-native observability, inventory coverage и detection-ready telemetry": book/part-viii/chapter-26.md
       - "Глава 27. Agent inventory, registry и борьба с sprawl": book/part-viii/chapter-27.md
   - Приложения:
-      - Выбор стека публикации: appendix/stack.md
-      - Дорожная карта для сообщества: appendix/community-roadmap.md
-      - Глоссарий терминов: appendix/glossary.md
-      - Шпаргалки: appendix/cheat-sheets.md
-      - Схема трасс и каталог событий: appendix/trace-schema.md
-      - Схема eval datasets и grading contract: appendix/eval-schema.md
-      - Схема policy bundle и approval contract: appendix/policy-bundle-schema.md
-      - Схема approval request и decision record: appendix/approval-schema.md
-      - Схема change review и rollout gate: appendix/change-rollout-schema.md
-      - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
-      - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
-      - "Research frontier: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
-      - План интеграции идей Google: appendix/google-integration-roadmap.md
-      - Опорный пакет: appendix/reference-package.md
-      - Практические кейсы: appendix/case-studies.md
-      - Policy templates и checklists по кейсам: appendix/policy-templates.md
-      - Источники: appendix/sources.md
+      - Concepts:
+          - Глоссарий терминов: appendix/glossary.md
+          - Шпаргалки: appendix/cheat-sheets.md
+          - "Research frontier: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
+      - Schemas:
+          - Схема трасс и каталог событий: appendix/trace-schema.md
+          - Схема eval datasets и grading contract: appendix/eval-schema.md
+          - Схема policy bundle и approval contract: appendix/policy-bundle-schema.md
+          - Схема approval request и decision record: appendix/approval-schema.md
+          - Схема change review и rollout gate: appendix/change-rollout-schema.md
+          - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
+          - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
+      - Practical Assets:
+          - Опорный пакет: appendix/reference-package.md
+          - Практические кейсы: appendix/case-studies.md
+          - Policy templates и checklists по кейсам: appendix/policy-templates.md
+      - Project Meta:
+          - Выбор стека публикации: appendix/stack.md
+          - Дорожная карта для сообщества: appendix/community-roadmap.md
+          - План интеграции идей Google: appendix/google-integration-roadmap.md
+          - Источники: appendix/sources.md
