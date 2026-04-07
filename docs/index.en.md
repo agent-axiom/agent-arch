@@ -1,46 +1,85 @@
 # Secure AI Agent Architecture
 
-A modern practical book for engineers and platform leaders who want to build not demo agents, but production systems that are observable, controllable, and safe.
+This book is for people who want to build not demo magic, but calm, controllable, and safe production agent systems.
 
-> This book takes Dmitry Vikulin's article on reliable AI agents as a starting point and expands it into a platform architecture with governance, policy enforcement, human approval, observability, evals, and operational controls.
+> It starts from Dmitry Vikulin's article on reliable AI agents and expands it into a platform-level view: policy enforcement, human approval, observability, evals, operational discipline, and lifecycle management.
 
-[Open the book plan](book/plan.md){ .md-button .md-button--primary }
-[Read Part I](book/part-i/index.md){ .md-button }
-[View sources](appendix/sources.md){ .md-button }
+[Start here](start-here.en.md){ .md-button .md-button--primary }
+[Open the book plan](book/plan.en.md){ .md-button }
+[Explore the reference runtime](appendix/reference-package.en.md){ .md-button }
 
-## Where to invest first
+<div class="book-cover" markdown="1">
 
-This interactive chart is a quick rule of thumb: in most real systems, control, safety, and observability deserve attention earlier than maximum autonomy.
+![Book cover](assets/images/hero-home.png)
 
-<div class="plot-card" data-plot="agent-priority"></div>
+</div>
 
-## What is inside
+## Who this is for
 
-- Architectural patterns: workflow, router, planner, subagents, human-in-the-loop.
-- Security: IAM, policy-as-code, prompt injection defenses, sandboxing, data boundaries.
-- Reliability: checkpoints, idempotency, retries, graceful degradation.
-- Transparency: traces, metrics, evals, regression control.
-- Platform design: gateways, shared runtime, knowledge plane, tool plane, control plane.
+- Engineers shipping agent features into real products.
+- Platform teams building shared runtime, policy, registry, approvals, and observability layers.
+- Security engineers who need explicit trust boundaries and risky execution paths.
+- Tech leads and architects who care more about operational discipline than agent theater.
 
-## The main idea
+## What you can take into work today
 
-The most common mistake in agent systems is to start with autonomy instead of controllability. Practice from Anthropic, OpenAI, LangGraph, and enterprise platforms from Google points to a more stable path:
+- A practical path from workflow-first systems to bounded autonomy.
+- Chapters on policy layers, approvals, memory, evals, observability, and lifecycle.
+- A runnable reference runtime with session export, eval dataset export, approvals, controls, and lifecycle artifacts.
+- Reference pages for trace schema, eval schema, policy bundles, approvals, rollout gates, memory retrieval, and lifecycle artifacts.
+- Case studies, checklists, and policy templates you can reuse as starting artifacts.
+
+## Three useful reading paths
+
+### If you are building a product agent
+
+1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
+2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
+3. [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
+4. [Chapter 13. Offline Evals, Online Evals, and Regression Gates](book/part-v/chapter-13.en.md)
+
+### If you are building platform infrastructure
+
+1. [Chapter 2. Reference Architecture for a Safe Agent](book/part-i/chapter-2.en.md)
+2. [Chapter 4. Tool Gateway, Approval, and Audit Trail](book/part-ii/chapter-4.en.md)
+3. [Chapter 17. Policy Layer and Capability Catalog](book/part-vii/chapter-17.en.md)
+4. [Chapter 20. Change Management for Agent Systems](book/part-viii/chapter-20.en.md)
+
+### If you care about safety, control, and operations
+
+1. [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](book/part-viii/chapter-21.en.md)
+2. [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](book/part-viii/chapter-22.en.md)
+3. [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](book/part-viii/chapter-26.en.md)
+4. [Chapter 27. Agent Inventory, Registry, and Sprawl Control](book/part-viii/chapter-27.en.md)
+
+## What already exists here
+
+- A full book in `ru / en / zh`.
+- A runnable [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) package with `pytest` coverage.
+- A strong reference layer with schema and contract pages.
+- A practical appendix with case studies, checklists, a glossary, and roadmap pages.
+
+## The core engineering idea
+
+The most common mistake in agent systems is simple: teams chase autonomy first and controllability second. In practice, the more stable path is:
 
 1. Build a **predictable workflow** first.
 2. Add autonomy **locally and measurably**.
-3. Route all risky actions through **policy, approval, and tracing**.
-4. Keep quality through **evals and telemetry**, not promises about the model.
+3. Route risky actions through **policy, approval, and tracing**.
+4. Keep quality through **evals, telemetry, and lifecycle discipline**.
 
-## About the publishing stack
+## Where the reference layer lives
 
-The full rationale for choosing `MkDocs` instead of `Starlight` lives on a separate page:
+If you need reusable artifacts, start with:
 
-- [Publishing Stack](appendix/stack.en.md)
+- [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](appendix/policy-bundle-schema.en.md)
+- [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.en.md)
+- [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
 
-## Sources behind this architecture
+## Continue
 
-- Original framing for the agent building blocks: [vikulin.ai](https://vikulin.ai/library/tpost/ai_agent_architecture)
-- "Workflow before agents": [Anthropic, Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
-- Durable execution, memory, and HITL: [LangGraph docs](https://docs.langchain.com/oss/javascript/langgraph)
-- Tracing and agent evals: [OpenAI docs](https://developers.openai.com/api/docs/guides/agents-sdk)
-- Risk management and security controls: [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [OWASP Prompt Injection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+[Start here](start-here.en.md){ .md-button .md-button--primary }
+[Open reference pages](appendix/trace-schema.en.md){ .md-button }
+[View sources](appendix/sources.en.md){ .md-button }

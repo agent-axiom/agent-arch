@@ -1,12 +1,12 @@
 # Архитектура Безопасных AI-Агентов
 
-Это книга для тебя, если ты хочешь строить не “магических агентов из презентации”, а спокойные, управляемые и безопасные production-системы.
+Это книга для тех, кто хочет строить не “магических агентов из презентации”, а спокойные, управляемые и безопасные production-системы.
 
-> За отправную точку я беру статью Дмитрия Викулина о надежных AI-агентах, а дальше расширяю ее до платформенного уровня: с управлением, принудительным применением политик, человеческим подтверждением, наблюдаемостью, оценками и эксплуатационными контурами.
+> За отправную точку я беру статью Дмитрия Викулина о надежных AI-агентах, а дальше расширяю ее до платформенного уровня: с политиками, человеческим подтверждением, наблюдаемостью, оценками, эксплуатационной дисциплиной и жизненным циклом.
 
-[Открыть план книги](book/plan.md){ .md-button .md-button--primary }
-[Перейти к первой части](book/part-i/index.md){ .md-button }
-[Посмотреть источники](appendix/sources.md){ .md-button }
+[С чего начать](start-here.md){ .md-button .md-button--primary }
+[Открыть план книги](book/plan.md){ .md-button }
+[Посмотреть опорный пакет](appendix/reference-package.md){ .md-button }
 
 <div class="book-cover" markdown="1">
 
@@ -14,48 +14,72 @@
 
 </div>
 
-## Что внутри
+## Для кого эта книга
 
-- Архитектурные паттерны: рабочие потоки, маршрутизация, планировщик, подагенты, human-in-the-loop.
-- Безопасность: IAM, policy-as-code, prompt injection defenses, sandboxing, data boundaries.
-- Надежность: checkpoints, idempotency, retries, graceful degradation.
-- Прозрачность: трассы, метрики, оценки и контроль регрессий.
-- Платформенный подход: шлюзы, общий рантайм, слой знаний, слой инструментов и слой управления.
+- Для инженеров, которые добавляют agent features в продукт и не хотят превращать систему в набор промптов и исключений.
+- Для platform teams, которым нужен общий runtime, policy layer, registry, approvals и observability.
+- Для security engineers, которым нужно видеть trust boundaries, risky execution paths и surfaces для abuse.
+- Для техлидов и архитекторов, которым нужен не “вау-демо”, а рабочая инженерная дисциплина.
 
-## Главная идея
+## Что можно забрать в работу уже сегодня
+
+- Маршрут от workflow к agent system без преждевременного усложнения.
+- Практические главы про policy layer, approvals, memory, evals и lifecycle.
+- Runnable reference runtime с session export, eval dataset export, approvals, controls и lifecycle artifacts.
+- Справочные схемы для traces, eval datasets, policy bundles, approvals, rollout gates, memory retrieval и lifecycle artifacts.
+- Кейсы, чеклисты и шаблоны политик, которые можно брать как стартовые артефакты.
+
+## Три удобных маршрута чтения
+
+### Если ты строишь продуктового агента
+
+1. [Глава 1. Почему агенту нужна платформа, а не магия](book/part-i/chapter-1.md)
+2. [Глава 3. Контур безопасности и границы доверия](book/part-ii/chapter-3.md)
+3. [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
+4. [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
+
+### Если ты строишь платформу или runtime
+
+1. [Глава 2. Референсная архитектура безопасного агента](book/part-i/chapter-2.md)
+2. [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](book/part-ii/chapter-4.md)
+3. [Глава 17. Слой политик и каталог возможностей](book/part-vii/chapter-17.md)
+4. [Глава 20. Change management для агентных систем](book/part-viii/chapter-20.md)
+
+### Если тебе важны безопасность, контроль и эксплуатация
+
+1. [Глава 21. Assurance loop: red teaming, detection и response](book/part-viii/chapter-21.md)
+2. [Глава 22. Supply chain, provenance и approved artifacts](book/part-viii/chapter-22.md)
+3. [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](book/part-viii/chapter-26.md)
+4. [Глава 27. Agent inventory, registry и борьба с sprawl](book/part-viii/chapter-27.md)
+
+## Что уже есть в проекте
+
+- Полноценная книга на `ru / en / zh`.
+- Исполняемый пакет [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) с `pytest`-покрытием.
+- Reference-слой со схемами и contract pages.
+- Practical appendix с кейсами, чеклистами, glossary и roadmap.
+
+## Главная инженерная идея
 
 Самая частая ошибка в агентных системах простая: сначала все пытаются добиться автономности, и только потом вспоминают про управляемость. На практике лучше работает другой путь:
 
 1. Сначала ты строишь **предсказуемый workflow**.
 2. Потом добавляешь автономность **локально и измеримо**.
 3. Все опасные действия пропускаешь через **политики, подтверждения и трассировку**.
-4. Качество держишь не обещаниями модели, а **оценками и телеметрией**.
+4. Качество держишь не обещаниями модели, а **оценками, телеметрией и жизненным циклом**.
 
-## С чего обычно лучше начинать
+## Где лежит справочный слой
 
-Ниже интерактивная карта приоритетов. Это не “истина в последней инстанции”, а удобная шпаргалка: если проект только стартует, сначала почти всегда выгоднее инвестировать в контроль, безопасность и наблюдаемость, а не в максимальную автономность.
+Если тебе нужны не только главы, но и reusable artifacts, начни с этих страниц:
 
-<div class="plot-card" data-plot="agent-priority"></div>
+- [Схема трасс и каталог событий](appendix/trace-schema.md)
+- [Схема eval datasets и grading contract](appendix/eval-schema.md)
+- [Схема policy bundle и approval contract](appendix/policy-bundle-schema.md)
+- [Схема lifecycle-артефактов](appendix/lifecycle-artifact-schema.md)
+- [Схема memory records и retrieval contract](appendix/memory-retrieval-schema.md)
 
-## Как выглядит хорошая траектория
+## Дальше по сайту
 
-Если коротко, ламповая и рабочая траектория такая:
-
-- сначала сделать хороший request path;
-- затем ввести policy boundary;
-- после этого подключить tools через gateway;
-- и только потом расширять память, planner и уровень автономности.
-
-## Про стек публикации
-
-Подробное объяснение, почему для книги выбран `MkDocs`, а не `Starlight`, вынесено в отдельную страницу:
-
-- [Выбор стека публикации](appendix/stack.md)
-
-## Откуда собрана архитектура
-
-- Исходная рамка по блокам агента: [vikulin.ai](https://vikulin.ai/library/tpost/ai_agent_architecture)
-- Решение "workflow before agents": [Anthropic, Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
-- Durable execution, memory и HITL: [LangGraph docs](https://docs.langchain.com/oss/javascript/langgraph)
-- Tracing и agent evals: [OpenAI docs](https://developers.openai.com/api/docs/guides/agents-sdk)
-- Risk management и security controls: [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework), [OWASP Prompt Injection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+[С чего начать](start-here.md){ .md-button .md-button--primary }
+[Открыть reference pages](appendix/trace-schema.md){ .md-button }
+[Посмотреть источники](appendix/sources.md){ .md-button }
