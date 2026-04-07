@@ -309,6 +309,7 @@ nav:
       - Схема трасс и каталог событий: appendix/trace-schema.md
       - Схема eval datasets и grading contract: appendix/eval-schema.md
       - Схема policy bundle и approval contract: appendix/policy-bundle-schema.md
+      - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
       - План интеграции идей Google: appendix/google-integration-roadmap.md
       - Опорный пакет: appendix/reference-package.md
       - Практические кейсы: appendix/case-studies.md
