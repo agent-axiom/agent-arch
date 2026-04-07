@@ -73,9 +73,10 @@ What I am strengthening next in this part:
 
 - Chapter 19. From SDLC to ADLC.
 - Chapter 20. Change Management for Agent Systems.
-- Next: assurance loops, supply chain discipline, retirement.
+- Chapter 21. Assurance Loop: Red Teaming, Detection, and Response.
+- Next: supply chain discipline, retirement.
 
-Status: the transition chapter and the change-management chapter are now added.
+Status: the transition, change-management, and assurance chapters are now added.
 
 ## Publishing roadmap
 

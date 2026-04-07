@@ -79,9 +79,10 @@
 
 - Глава 19. От SDLC к ADLC.
 - Глава 20. Change management для агентных систем.
-- Дальше: assurance loop, supply chain discipline, retirement.
+- Глава 21. Assurance loop: red teaming, detection и response.
+- Дальше: supply chain discipline, retirement.
 
-Статус: первая переходная глава и change-management глава добавлены.
+Статус: transition, change management и assurance главы уже добавлены.
 
 ## Роадмап публикации
 
