@@ -109,6 +109,40 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Это особенно ценно, когда финальный результат вроде бы “нормальный”, но система уже начала тихо дорожать, тормозить или рисковать безопасностью.
 
+## 5.1. Behavioral evals и control evals проверяют не только ответ, но и намерение системы
+
+По мере того как agent systems получают больше autonomy, становится полезно оценивать не только “справился ли run с задачей”, но и “какое поведение система продемонстрировала по пути”.
+
+Именно здесь появляются:
+
+- behavioral evals;
+- control evals;
+- automated red teaming.
+
+Они полезны для сценариев, где обычный regression set слишком плоский:
+
+- agent избегает oversight;
+- слишком настойчиво сохраняет state;
+- пытается обойти approval path;
+- делает лишние tool hops;
+- координация между несколькими agents начинает разваливаться.
+
+То есть eval layer должен проверять не только final answer quality, но и failure modes поведения.
+
+## 5.2. Coordination failure тоже должна быть частью eval design
+
+Если система использует handoffs, manager pattern или несколько cooperating agents, то обычной проверки “ответ был правильным” уже мало.
+
+Нужно отдельно смотреть:
+
+- теряется ли контекст при handoff;
+- не появляются ли conflicting actions;
+- не деградирует ли verification discipline;
+- не растет ли число лишних delegation steps;
+- можно ли локализовать coordination failure по traces.
+
+Именно поэтому multi-agent reliability research полезен здесь не как призыв срочно усложнять runtime, а как напоминание: чем сложнее orchestration, тем богаче должен быть eval design.
+
 ## 6. Что стоит включать в eval dataset
 
 Очень частая ошибка: eval dataset состоит из приятных demo-сценариев. Такие наборы почти не помогают.
@@ -254,8 +288,10 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
 - [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 12. SLO для агентных систем](chapter-12.md)
+- [Глава 25. Behavioral evals, control evals и automated red teaming](../part-viii/chapter-25.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)
 - [Часть V. Надежность и observability](index.md)
 - [Источники](../../appendix/sources.md)

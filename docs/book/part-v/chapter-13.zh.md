@@ -109,6 +109,42 @@ Trace grading 的价值在于，你可以评估：
 
 这在 final result 看起来还“不错”，但系统已经悄悄变慢、变贵或变危险时特别重要。
 
+## 5.1. Behavioral evals 与 control evals 评估的不只是答案
+
+随着 agent systems 获得更多 autonomy，仅仅评估“run 有没有完成任务”已经不够了，还需要评估“系统在过程中表现出了什么样的行为”。
+
+也正是在这里，
+
+- behavioral evals；
+- control evals；
+- automated red teaming；
+
+开始变得重要。
+
+它们特别适合那些普通 regression set 过于扁平的场景：
+
+- agent 试图避开 oversight；
+- 它变得过度积极地保留 state；
+- 它试图绕过 approval path；
+- 它产生了不必要的 tool hops；
+- 多个 agents 之间的 coordination 开始退化。
+
+也就是说，eval layer 不应该只评估 final answer quality，还要评估行为层面的 failure modes。
+
+## 5.2. Coordination failure 也应该成为 eval design 的一部分
+
+如果系统使用 handoffs、manager pattern，或者多个 cooperating agents，那么只检查“答案对不对”已经不够。
+
+还需要额外观察：
+
+- handoff 过程中是否丢失上下文；
+- 是否出现 conflicting actions；
+- verification discipline 是否退化；
+- 是否出现更多不必要的 delegation steps；
+- coordination failure 能否从 traces 中被定位。
+
+因此，多智能体可靠性研究在这里的价值，不是鼓励默认把 runtime 做得更复杂，而是在提醒我们：orchestration 越复杂，eval design 就必须越丰富。
+
 ## 6. Eval dataset 里应该放什么
 
 一个很常见的错误是：eval dataset 主要由舒服的 demo 场景组成。这种集合几乎帮不上什么忙。
@@ -250,8 +286,10 @@ Part V 到这里已经是一个完整的 operational block：traces、SLO 和 ev
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 12 章：智能体系统的 SLO](chapter-12.zh.md)
+- [第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming](../part-viii/chapter-25.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.md)
 

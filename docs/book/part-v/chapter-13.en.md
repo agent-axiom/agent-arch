@@ -109,6 +109,42 @@ Trace grading is useful because it lets you evaluate:
 
 That is especially valuable when the final result still looks "fine", but the system has already started getting slower, riskier, or more expensive.
 
+## 5.1. Behavioral evals and control evals look beyond the answer
+
+As agent systems gain more autonomy, it becomes useful to evaluate not only “did the run complete the task,” but also “what kind of behavior did the system display along the way.”
+
+That is where:
+
+- behavioral evals;
+- control evals;
+- automated red teaming;
+
+become important.
+
+They are especially useful for cases where an ordinary regression set is too shallow:
+
+- the agent avoids oversight;
+- it becomes too eager to preserve state;
+- it tries to bypass the approval path;
+- it makes unnecessary tool hops;
+- coordination between multiple agents starts to degrade.
+
+In other words, the eval layer must assess not only final-answer quality, but also behavioral failure modes.
+
+## 5.2. Coordination failure should also be part of eval design
+
+If the system uses handoffs, a manager pattern, or several cooperating agents, then checking only whether “the answer was correct” is no longer enough.
+
+You also need to look at:
+
+- whether context is lost during handoff;
+- whether conflicting actions appear;
+- whether verification discipline degrades;
+- whether unnecessary delegation steps increase;
+- whether coordination failures can be localized from traces.
+
+That is why multi-agent reliability research matters here not as an invitation to make the runtime more complex by default, but as a reminder: the more complex the orchestration, the richer the eval design must be.
+
 ## 6. What to Include in an Eval Dataset
 
 A common mistake is building an eval dataset out of pleasant demo scenarios. Those sets help very little.
@@ -250,8 +286,10 @@ Part V now looks like a coherent operational block: traces, SLO, and the eval lo
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
+- [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](../part-viii/chapter-25.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.md)
 
