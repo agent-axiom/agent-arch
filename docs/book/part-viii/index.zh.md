@@ -15,5 +15,6 @@
 ## 本部分内容
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
+- [第 20 章：智能体系统的 Change Management](chapter-20.zh.md)
 
 这一部分接下来的自然延伸，是 change management、assurance loop、supply chain discipline 和 retirement。

@@ -72,9 +72,10 @@
 ### 第八部分：智能体系统生命周期
 
 - 第 19 章：从 SDLC 到 ADLC。
-- 下一步：change management、assurance loop、supply chain discipline、retirement。
+- 第 20 章：智能体系统的 Change Management。
+- 下一步：assurance loop、supply chain discipline、retirement。
 
-状态：过渡章节已加入。
+状态：过渡章节和 change-management 章节已加入。
 
 ## 发布路线图
 

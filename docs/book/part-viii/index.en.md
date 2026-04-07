@@ -15,5 +15,6 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 ## In this part
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
+- [Chapter 20. Change Management for Agent Systems](chapter-20.en.md)
 
 The next logical chapters in this part are change management, assurance loops, supply chain discipline, and retirement.

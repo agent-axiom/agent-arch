@@ -15,5 +15,6 @@
 ## В этой части
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
+- [Глава 20. Change management для агентных систем](chapter-20.md)
 
 Следующие главы этой части логично строить вокруг change management, assurance loop, supply chain и retirement discipline.

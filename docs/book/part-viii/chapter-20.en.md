@@ -1,0 +1,252 @@
+# Chapter 20. Change Management for Agent Systems
+
+## 1. Why agent systems need explicit change discipline
+
+Once a team accepts that it is already living in ADLC, the next practical question is straightforward: what exactly counts as a change, and how should that change be managed?
+
+In an ordinary service, the answer is often relatively simple:
+
+- code changed;
+- infrastructure changed;
+- schema changed;
+- a release was shipped.
+
+That no longer works for agent systems. The release-bearing surface is wider, and risk can come from places other than code.
+
+That is why change management becomes its own operational function, not just “something got pushed to main.”
+
+## 2. What counts as a change in an agent system
+
+It is useful to treat not only code, but every surface that can materially alter behavior as a change:
+
+- model selection or routing;
+- system prompts, routines, and instructions;
+- policy bundles;
+- capability contracts;
+- approval rules;
+- retrieval corpora;
+- memory write semantics;
+- eval datasets and grading logic;
+- rollout parameters.
+
+If these are released as “small tweaks,” the team will almost certainly lose control of system behavior.
+
+## 3. Not all changes carry the same risk
+
+It helps to introduce a simple change taxonomy.
+
+For example:
+
+- `low-risk`: wording tweaks, harmless retrieval tuning, internal observability changes;
+- `medium-risk`: prompt restructuring, ranking changes, model routing updates;
+- `high-risk`: new write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion.
+
+This is not a perfect classification, but it stops the team from discussing every change in the same tone.
+
+<div class="diagram-card">
+<p>Strong change management starts with explicit change classification</p>
+
+``` mermaid
+flowchart LR
+    A["Change proposed"] --> B["Classify change"]
+    B --> C["Low risk"]
+    B --> D["Medium risk"]
+    B --> E["High risk"]
+    C --> F["Light validation"]
+    D --> G["Eval + review"]
+    E --> H["Formal gate + approval + staged rollout"]
+```
+
+</div>
+
+## 4. A common mistake: treating a prompt change as “not a real release”
+
+One of the most common operational mistakes in agent teams sounds like this: “We did not change code, only the system prompt.”
+
+That is dangerous logic.
+
+A prompt, routine, or instruction change can:
+
+- alter tool selection;
+- change the agent’s risk appetite;
+- increase cost;
+- break escalation discipline;
+- undermine policy intent;
+- degrade performance on critical scenarios.
+
+So in a production-grade system, a prompt change should usually live inside release discipline.
+
+## 5. The minimum change packet should be reviewable
+
+It is useful for any meaningful change to be collected into a small reviewable packet:
+
+- what is changing;
+- why it is changing;
+- the change risk class;
+- which evals cover it;
+- which rollback hooks exist;
+- what the rollout blast radius is.
+
+If a change arrives as “I improved behavior a bit,” it is almost impossible to evaluate properly.
+
+## 6. Evals should map to the change type
+
+Not every change needs the same validation.
+
+A practical model usually looks like this:
+
+- prompt or routine changes -> task evals, policy-sensitive scenarios, cost checks;
+- policy changes -> deny or allow cases, abuse scenarios, audit coverage;
+- retrieval changes -> relevance checks, leakage checks, context budget checks;
+- tool changes -> contract tests, idempotency checks, approval path validation;
+- model routing changes -> quality, latency, safety, and cost deltas.
+
+This is an important practical rule: eval strategy should be tied to the class of change, not treated as one universal test.
+
+## 7. High-risk changes should go through formal gates
+
+When a change affects autonomy, side effects, memory writes, or egress boundaries, visual review alone is not enough.
+
+These changes should usually pass through formal gates:
+
+- design review;
+- explicit policy review;
+- offline eval pass;
+- limited rollout;
+- monitoring during the first wave;
+- a clear rollback path.
+
+OpenAI and Microsoft, in different language, point to the same operational idea: agent systems should be strengthened through measurable readiness, staged adoption, and managed operations, not through hope-driven shipping.[^openai-guide][^microsoft-maturity]
+
+## 8. Rollback is harder than it looks
+
+In a conventional system, rollback is often imagined as “restore the previous deploy.” In an agent system, that is sometimes too coarse.
+
+You often need to roll back independently:
+
+- a prompt or routine bundle;
+- a policy bundle;
+- a model route;
+- a retrieval corpus version;
+- capability exposure;
+- an approval threshold.
+
+If all of those are fused into one indivisible deploy artifact, rollback becomes too blunt and too slow.
+
+## 9. Change management must account for blast radius
+
+A strong process almost always asks: “What is the maximum damage this change can cause if we are wrong?”
+
+Useful ways to bound blast radius include:
+
+- shadow mode;
+- canary tenants;
+- a subset of capabilities;
+- read-only first;
+- approval-required first;
+- staged memory write enablement.
+
+This is especially useful for agents because side effects and policy regressions are often not immediately visible.
+
+## 10. Provenance is not only a supply-chain concept
+
+Google Research makes a strong case that provenance is not just a security concern, but also an operational one.[^google-supply-chain]
+
+For change management, that means you should be able to answer:
+
+- which exact prompt bundle went to production;
+- which policy config was active;
+- which eval set was used;
+- which model route was active;
+- who approved the change.
+
+Without that, change review and incident investigation quickly turn into reconstruction from memory.
+
+## 11. Example change policy
+
+Here is a practical skeleton:
+
+```yaml
+changes:
+  low_risk:
+    require_code_review: true
+    require_offline_eval: false
+    rollout_mode: direct
+  medium_risk:
+    require_code_review: true
+    require_offline_eval: true
+    rollout_mode: canary
+  high_risk:
+    require_code_review: true
+    require_policy_review: true
+    require_offline_eval: true
+    require_approval: true
+    rollout_mode: staged
+```
+
+The point is not the exact fields, but that the change process becomes machine-readable and reviewable.
+
+## 12. Example change classifier
+
+This small code sketch shows the basic idea:
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ChangeRequest:
+    touches_prompt: bool = False
+    touches_policy: bool = False
+    touches_write_capability: bool = False
+    touches_egress: bool = False
+
+
+def classify_change(change: ChangeRequest) -> str:
+    if change.touches_write_capability or change.touches_egress:
+        return "high_risk"
+    if change.touches_policy or change.touches_prompt:
+        return "medium_risk"
+    return "low_risk"
+```
+
+It is intentionally simple, but it shows the right direction: formalize the reasoning first, automate the gate later.
+
+## 13. What usually breaks
+
+The same problems appear again and again:
+
+- prompt changes are not treated as releases;
+- policy changes ship without evals;
+- new tool exposure is treated as a minor technical tweak;
+- rollback exists only on paper;
+- nobody does impact analysis;
+- the same process is forced on both low-risk and high-risk changes.
+
+When that happens, the team either lives in chaos or overburdens itself with process where it is not needed.
+
+## 14. Practical checklist
+
+If you want to test your change process quickly, ask:
+
+- Do you treat prompt, policy, and retrieval changes as real releases?
+- Do you have a risk-based change taxonomy?
+- Are evals tied to the type of change?
+- Is there a formal gate for autonomy, egress, and write-capabilities?
+- Can you roll back prompt, policy, and model route independently?
+- Is the blast radius of every rollout understood?
+
+If the answer is “no” several times in a row, you do not have change management yet. You only have change delivery by inertia.
+
+## 15. What to read next
+
+After change management, the natural next step is the assurance loop: red teaming, vulnerability management, detection and response. That is where the lifecycle stops being only release discipline and becomes continuous operational protection.
+
+- [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
+- [Chapter 18. Production Rollout Checklist](../part-vii/chapter-18.en.md)
+- [Sources](../../appendix/sources.en.md)
+
+[^openai-guide]: [OpenAI, A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
+[^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)

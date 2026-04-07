@@ -78,9 +78,10 @@
 ### Часть VIII. Жизненный цикл агентной системы
 
 - Глава 19. От SDLC к ADLC.
-- Дальше: change management, assurance loop, supply chain discipline, retirement.
+- Глава 20. Change management для агентных систем.
+- Дальше: assurance loop, supply chain discipline, retirement.
 
-Статус: переходная глава добавлена.
+Статус: первая переходная глава и change-management глава добавлены.
 
 ## Роадмап публикации
 

@@ -72,9 +72,10 @@ What I am strengthening next in this part:
 ### Part VIII. Agent System Lifecycle
 
 - Chapter 19. From SDLC to ADLC.
-- Next: change management, assurance loops, supply chain discipline, retirement.
+- Chapter 20. Change Management for Agent Systems.
+- Next: assurance loops, supply chain discipline, retirement.
 
-Status: the transition chapter is now added.
+Status: the transition chapter and the change-management chapter are now added.
 
 ## Publishing roadmap
 

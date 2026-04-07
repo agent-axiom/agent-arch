@@ -88,6 +88,7 @@ plugins:
             Глава 18. Чеклист промышленного запуска: Глава 18. Чеклист промышленного запуска
             Часть VIII. Жизненный цикл агентной системы: Часть VIII. Жизненный цикл агентной системы
             Глава 19. От SDLC к ADLC: Глава 19. От SDLC к ADLC
+            Глава 20. Change management для агентных систем: Глава 20. Change management для агентных систем
             Приложения: Приложения
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
@@ -137,6 +138,7 @@ plugins:
             Глава 18. Чеклист промышленного запуска: Chapter 18. Production Rollout Checklist
             Часть VIII. Жизненный цикл агентной системы: Part VIII. Agent System Lifecycle
             Глава 19. От SDLC к ADLC: Chapter 19. From SDLC to ADLC
+            Глава 20. Change management для агентных систем: Chapter 20. Change Management for Agent Systems
             Приложения: Appendix
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
@@ -186,6 +188,7 @@ plugins:
             Глава 18. Чеклист промышленного запуска: 第 18 章：生产上线检查清单
             Часть VIII. Жизненный цикл агентной системы: 第八部分：智能体系统生命周期
             Глава 19. От SDLC к ADLC: 第 19 章：从 SDLC 到 ADLC
+            Глава 20. Change management для агентных систем: 第 20 章：智能体系统的 Change Management
             Приложения: 附录
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
@@ -276,6 +279,7 @@ nav:
       - Глава 18. Чеклист промышленного запуска: book/part-vii/chapter-18.md
       - Часть VIII. Жизненный цикл агентной системы: book/part-viii/index.md
       - Глава 19. От SDLC к ADLC: book/part-viii/chapter-19.md
+      - Глава 20. Change management для агентных систем: book/part-viii/chapter-20.md
   - Приложения:
       - Выбор стека публикации: appendix/stack.md
       - Дорожная карта для сообщества: appendix/community-roadmap.md
