@@ -105,6 +105,7 @@ plugins:
             Глоссарий терминов: Глоссарий терминов
             Шпаргалки: Шпаргалки
             Rust для платформы агентных систем: Rust для платформы агентных систем
+            Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python и TypeScript для платформы агентных систем
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
@@ -173,6 +174,7 @@ plugins:
             Глоссарий терминов: Glossary
             Шпаргалки: Cheat Sheets
             Rust для платформы агентных систем: Rust for Agent Platforms
+            Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
@@ -241,6 +243,7 @@ plugins:
             Глоссарий терминов: 术语表
             Шпаргалки: 速查清单
             Rust для платформы агентных систем: Rust 与智能体平台
+            Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
@@ -349,6 +352,7 @@ nav:
           - Глоссарий терминов: appendix/glossary.md
           - Шпаргалки: appendix/cheat-sheets.md
           - Rust для платформы агентных систем: appendix/rust-agent-platforms.md
+          - Rust vs Python и TypeScript для платформы агентных систем: appendix/rust-vs-python-typescript.md
           - "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
       - Schemas:
           - Схема трасс и каталог событий: appendix/trace-schema.md
