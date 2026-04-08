@@ -1,66 +1,66 @@
-# 第 14 章：Platform Team vs Product Teams
+# 第 14 章：平台团队与产品团队
 
-## 1. 为什么 agent platform 往往不是坏在代码上，而是坏在 ownership model 上
+## 1. 为什么智能体平台往往不是坏在代码上，而是坏在责任模型上
 
-一开始一切看起来都很简单：几个热心的人，一两个 agent，几条集成，快速实验。这很正常。
+一开始一切看起来都很简单：几个热心的人，一两个智能体，几条集成，快速实验。这很正常。
 
 问题通常出现在后面：
 
-- 产品团队开始各自做本地 agent runtime；
-- 每个团队都用自己的方式写 policy checks；
-- observability 被拆成三种互不兼容的格式；
-- tool adapters 重复建设；
-- 没人确定 platform-grade incident 到底该谁来修。
+- 产品团队开始各自做本地智能体运行时；
+- 每个团队都用自己的方式写策略检查；
+- 可观测性被拆成三种互不兼容的格式；
+- 工具适配器重复建设；
+- 没人确定平台级事故到底该谁来修。
 
 所以系统在技术上也许还能跑，但在组织层面已经开始散开了。
 
-## 2. Platform team 不应该把所有决定都从产品团队手里收走
+## 2. 平台团队不应该把所有决定都从产品团队手里收走
 
-有一种很糟糕的极端：platform team 试图成为所有 agent decision 的唯一审批点。
+有一种很糟糕的极端：平台团队试图成为所有智能体决策的唯一审批点。
 
 然后就会发生这些事：
 
-- 平台变成 bottleneck；
+- 平台变成瓶颈；
 - 产品团队失去速度；
 - 所有改动都排进同一条队列；
-- platform layer 膨胀成一个很重的系统。
+- 平台层膨胀成一个很重的系统。
 
-这个模型是行不通的。Platform team 的职责不是自己把所有 agent feature 都做完，而是提供稳定的共享层和默认安全路径。
+这个模型是行不通的。平台团队的职责不是自己把所有智能体能力都做完，而是提供稳定的共享层和默认安全路径。
 
 ## 3. 反过来的极端也不好：完全联邦化
 
-有些公司会走向另一边：“每个团队自己决定怎么做 agent。”
+有些公司会走向另一边：“每个团队自己决定怎么做智能体。”
 
 这很快就会带来：
 
-- 不兼容的 contracts；
-- 不同的 security posture；
-- 参差不齐的 eval 质量；
-- 参差不齐的 observability；
+- 不兼容的契约；
+- 不同的安全姿态；
+- 参差不齐的评测质量；
+- 参差不齐的可观测性；
 - 每个团队内部又长出自己的小平台。
 
 短期看像自由，长期看几乎总会变成动物园。
 
-## 4. 成熟的模型通常是 platform + product split
+## 4. 成熟的模型通常是平台与产品分工
 
-一个好的 operating model，责任大致会这样拆：
+一个好的运行模型，责任大致会这样拆：
 
-`platform team` 负责：
+`平台团队` 负责：
 
-- orchestration primitives；
-- policy framework；
-- tool 和 capability contracts；
-- observability 与 eval substrate；
-- shared gateways；
-- baseline security model。
+- 编排基础能力；
+- 策略框架；
+- 工具与能力契约；
+- 可观测性与评测底座；
+- 共享网关；
+- 基线安全模型。
 
-`product teams` 负责：
+`产品团队` 负责：
 
-- user workflows；
-- product-specific prompts 和 policies；
-- domain logic；
-- task success 的 acceptance criteria；
-- 把平台 primitives 集成进具体产品。
+- 用户工作流；
+- 产品特定的提示与策略；
+- 领域逻辑；
+- 任务成功的验收标准；
+- 把平台基础能力集成进具体产品。
 
 <div class="diagram-card">
 <p>平台和产品不应该互相复制，因为它们负责的是不同层</p>
@@ -75,67 +75,67 @@ flowchart LR
 
 </div>
 
-## 5. 平台应该提供 golden paths，而不是只给一堆底层零件
+## 5. 平台应该提供黄金路径，而不是只给一堆底层零件
 
-如果 platform team 只交付一个“零件箱”，产品团队最后还是会各自拼出不同的系统。
+如果平台团队只交付一个“零件箱”，产品团队最后还是会各自拼出不同的系统。
 
-一个 golden path 通常包含：
+一条黄金路径通常包含：
 
-- baseline runtime template；
-- 现成的 policy hooks；
-- 标准 tracing 和 eval wiring；
-- approved tool gateway pattern；
-- 关于 memory usage 的建议；
-- rollout 和 regression defaults。
+- 基线运行时模板；
+- 现成的策略钩子；
+- 标准化的追踪与评测接线；
+- 经过批准的工具网关模式；
+- 关于记忆使用的建议；
+- 默认的发布与回归设置。
 
-也就是说，一个好的 platform product 不只是让团队“能做”，而是让团队“默认就做得对”。
+也就是说，一个好的平台产品不只是让团队“能做”，而是让团队“默认就做得对”。
 
-## 6. 每一层的 ownership 都应该是显式的
+## 6. 每一层的责任都应该是显式的
 
 最好尽早把这些事情说清楚：
 
-- 谁可以修改 platform contracts；
+- 谁可以修改平台契约；
 - 谁批准新的 write capabilities；
-- 谁拥有 policy schemas；
-- 谁拥有 telemetry schema；
-- 谁负责 platform incidents 的 on-call；
-- 谁决定什么时候某个产品可以偏离 golden path。
+- 谁拥有策略模式；
+- 谁拥有遥测模式；
+- 谁负责平台事故的值班；
+- 谁决定什么时候某个产品可以偏离黄金路径。
 
-如果 ownership 很模糊，几乎任何 incident 最后都会变成一场很长的组织性乒乓球。
+如果责任很模糊，几乎任何事故最后都会变成一场很长的组织性乒乓球。
 
-### 6.1. Platform inventory 也应该有人拥有
+### 6.1. 平台清单也应该有人拥有
 
-Google 这里一个很实用的提醒是：governance 不应停留在 policy framework。平台还需要一份明确的 inventory，说明组织里到底在运行什么。[^google-ai-controls][^google-agent-overview]
+Google 这里一个很实用的提醒是：治理不应停留在策略框架。平台还需要一份明确的清单，说明组织里到底在运行什么。[^google-ai-controls][^google-agent-overview]
 
 至少最好看见这些东西：
 
-- 现在有哪些 agent runtimes；
-- 哪些 capabilities 是 approved 的；
-- 哪些 gateways 被视为 approved；
-- 哪些 connectors 和 secrets 正在被使用；
-- 哪些 deviations 仍然活跃；
-- 每个对象的 owner 是谁。
+- 现在有哪些智能体运行时；
+- 哪些能力是已批准的；
+- 哪些网关被视为已批准；
+- 哪些连接器和密钥正在被使用；
+- 哪些偏离仍然活跃；
+- 每个对象的负责人是谁。
 
-如果没有这份 inventory，平台几乎注定会滑向“凭印象治理”：表面上大家都觉得“事情是可控的”，直到 incident 发生，才发现根本没人真正知道 production 里到底跑着哪些 agents 和 tools。
+如果没有这份清单，平台几乎注定会滑向“凭印象治理”：表面上大家都觉得“事情是可控的”，直到事故发生，才发现根本没人真正知道生产环境里到底跑着哪些智能体和工具。
 
-## 7. 不是所有 deviation 都要禁止，但它们必须是有意识的
+## 7. 不是所有偏离都要禁止，但它们必须是有意识的
 
-有时候产品团队确实需要一个 special case：
+有时候产品团队确实需要一个特殊情况：
 
-- 非标准 workflow；
-- 单独的 capability；
-- 不同的 latency/cost trade-off；
-- 实验性的 rollout。
+- 非标准工作流；
+- 单独的能力；
+- 不同的延迟/成本权衡；
+- 实验性的发布。
 
-这没有问题。成熟平台和混乱之间的区别在于，deviation 必须：
+这没有问题。成熟平台和混乱之间的区别在于，偏离必须：
 
 - 可见；
 - 被讨论过；
-- blast radius 受限；
-- 有明确 owner；
+- 影响半径受限；
+- 有明确负责人；
 - 不会悄悄变成新的默认标准。
 
-## 8. 一个 agent platform 的 governance policy 示例
+## 8. 一个智能体平台治理策略示例
 
 下面是一个很实用的模板：
 
@@ -159,13 +159,13 @@ governance:
 
 这段 YAML 不能解决所有组织问题，但它很擅长解决一个永恒的问题：“这件事到底该谁拍板？”
 
-### 8.1. Approved registry 几乎和 policy schema 一样重要
+### 8.1. 已批准注册表几乎和策略模式一样重要
 
-团队通常会认真讨论 policy，却很少认真讨论 registry。但 registry 实际上回答的是：
+团队通常会认真讨论策略，却很少认真讨论注册表。但注册表实际上回答的是：
 
-- 什么才算 platform-approved；
-- 什么可以不经额外 review 直接运行；
-- 什么目前处于 exception zone；
+- 什么才算平台批准；
+- 什么可以不经额外审查直接运行；
+- 什么目前处于例外区域；
 - 什么已经应该退出使用。
 
 一个简单例子：
@@ -183,72 +183,72 @@ registry:
     - local_policy_engine_without_audit
 ```
 
-这个 registry 不会替代 governance，但它会让 governance 变得可执行。
+这个注册表不会替代治理，但它会让治理变得可执行。
 
 ## 9. 平台的衡量标准不该是功能数量，而是它减少了多少混乱
 
-很重要的一点是，不要掉进 vanity metrics 的陷阱，比如：
+很重要的一点是，不要掉进虚荣指标的陷阱，比如：
 
-- 增加了多少 tools；
-- 启动了多少 MCP servers；
+- 增加了多少工具；
+- 启动了多少 MCP 服务；
 - 有多少产品团队“接入了平台”。
 
 强平台应该减少的是：
 
 - 重复建设；
 - 自定义绕过路径；
-- 增加新 workflow 的成本；
-- incident 调查时间；
-- unsafe deviations 的数量。
+- 增加新工作流的成本；
+- 事故调查时间；
+- 不安全偏离的数量。
 
 不然你可能建设了很多东西，但系统并没有变得更好。
 
-### 9.1. Continuous controls 比一次性 review 更可靠
+### 9.1. 持续控制比一次性审查更可靠
 
-另一个很有用的升级是：不要只靠人工审批去抓 risky changes，还要靠 continuous controls。
+另一个很有用的升级是：不要只靠人工审批去抓高风险变更，还要靠持续控制。
 
 比如平台可以自动检查：
 
-- 是否出现了绕过 gateway 的 direct tool access；
-- 是否出现了没有 owner 的 connector；
-- 某个 runtime 是否偏离了 approved template；
-- 是否出现了未经 review 的新 secret scope；
-- deprecated pattern 是否超过了下线期限还在运行。
+- 是否出现了绕过网关的直接工具访问；
+- 是否出现了没有负责人的连接器；
+- 某个运行时是否偏离了已批准模板；
+- 是否出现了未经审查的新密钥范围；
+- 已废弃模式是否超过了下线期限还在运行。
 
-这很重要，因为 platform governance 通常不是在架构宣讲当天坏掉，而是几个月后被一连串安静的 exceptions 和 bypasses 慢慢掏空。
+这很重要，因为平台治理通常不是在架构宣讲当天坏掉，而是几个月后被一连串安静的例外和绕过慢慢掏空。
 
-## 10. Operating model 最常坏在哪里
+## 10. 运行模型最常坏在哪里
 
 常见问题基本都很像：
 
-- 平台成了所有决策的 bottleneck；
+- 平台成了所有决策的瓶颈；
 - 产品完全绕开平台；
-- ownership 不清晰；
-- reusable primitives 太底层；
-- 没有 deviations 流程；
-- platform roadmap 和产品团队真实痛点脱节。
+- 责任不清晰；
+- 可复用基础能力太底层；
+- 没有偏离流程；
+- 平台路线图和产品团队真实痛点脱节。
 
 这会把组织带向经典岔路：不是平台帮不到人，就是产品团队觉得平台本身就是阻碍。
 
 ## 11. 实用检查清单
 
-如果你想快速检查 operating model，可以问自己：
+如果你想快速检查运行模型，可以问自己：
 
-- 哪些东西归 platform team，是否清楚？
-- 哪些东西留给 product teams，是否清楚？
-- 你有 golden path 吗，还是只有“一组能力”？
-- 谁批准新的 risky capabilities，这件事清楚吗？
+- 哪些东西归平台团队，是否清楚？
+- 哪些东西留给产品团队，是否清楚？
+- 你有黄金路径吗，还是只有“一组能力”？
+- 谁批准新的高风险能力，这件事清楚吗？
 - 有没有偏离标准路径的流程？
-- 平台是否真的减少了本地 runtime implementation 的数量？
+- 平台是否真的减少了本地运行时实现的数量？
 
 如果连续好几个问题答案都是 “no”，那你大概率遇到的已经不是技术问题，而是组织设计问题。
 
 ## 12. 接下来读什么
 
-这一部分接下来的自然步骤，就是继续看 shared gateways、reusable templates 和 anti-zoo patterns，避免 operating model 只停留在口头上。
+这一部分接下来的自然步骤，就是继续看共享网关、可复用模板和反动物园模式，避免运行模型只停留在口头上。
 
-- [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)
-- [第 15 章：Golden Paths、Shared Gateways 与 Anti-Zoo Patterns](chapter-15.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
+- [第 15 章：黄金路径、共享网关与反动物园模式](chapter-15.zh.md)
 - [第六部分：组织模型](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 

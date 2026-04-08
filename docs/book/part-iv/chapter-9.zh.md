@@ -1,6 +1,6 @@
 # 第 9 章：沙箱执行与 MCP 作为集成契约
 
-## 1. 为什么没有 sandbox 的 execution layer 会很快变得过度信任
+## 1. 为什么缺少沙箱的执行层很快就会变得过度信任
 
 一旦智能体获得了工具访问能力，下一个危险几乎总是同一个：系统边界开始模糊。
 
@@ -13,18 +13,18 @@
 
 如果这一切都“原样执行”，没有隔离和契约，平台很快就会积累问题：
 
-- tool 以意外格式返回不可信 payload；
-- integration 卡住或超出资源预算；
-- side effect 在预期 policy path 之外发生；
-- 一个设计糟糕的 adapter 拖垮整个 runtime。
+- 工具以意外格式返回不可信载荷；
+- 集成调用卡住或超出资源预算；
+- 副作用在预期策略路径之外发生；
+- 一个设计糟糕的适配器拖垮整个运行时。
 
-所以 execution layer 不只是 router，它还是 sandbox boundary。
+所以执行层不只是路由器，它还是沙箱边界。
 
 ## 2. Sandbox 不一定是容器，它首先是一组限制
 
-一说到 “sandbox”，很多人立刻想到 Docker、VM 或独立进程。这些都可以是实现方式，但架构上更重要的是：sandbox 定义了 capability 被允许做什么、不允许做什么。
+一说到 “sandbox”，很多人立刻想到 Docker、VM 或独立进程。这些都可以是实现方式，但架构上更重要的是：沙箱定义了能力被允许做什么、不允许做什么。
 
-好的 sandbox 通常会限制：
+好的沙箱通常会限制：
 
 - 网络访问；
 - 文件系统访问；
@@ -33,7 +33,7 @@
 - allowed syscalls 或 execution mode；
 - 操作生命周期。
 
-也就是说，sandbox 回答的是：“如果 tool 或 adapter 的行为比预期更糟，会发生什么？”
+也就是说，沙箱回答的是：“如果工具或适配器的行为比预期更糟，会发生什么？”
 
 这不仅仅是安全问题，也是 blast radius 控制。
 
@@ -41,11 +41,11 @@
 
 在实践里，`sandbox` 这个词经常把几种完全不同的东西混在一起：
 
-- `logical isolation`：policy checks、capability contracts、allowlists；
+- `logical isolation`：策略检查、能力契约、允许清单；
 - `process isolation`：独立进程、timeout、resource limits；
-- `runtime isolation`：独立执行环境、受限 filesystem、受控 network egress、最小 secrets。
+- `runtime isolation`：独立执行环境、受限文件系统、受控网络出口、最小化密钥。
 
-这很重要，因为很多团队觉得自己“已经有 sandbox 了”，但实际上只有第一层。对 low-risk reads 来说这有时够用，但对 high-risk execution 来说，几乎总要更强的 runtime boundary。[^google-sandbox]
+这很重要，因为很多团队觉得自己“已经有沙箱了”，但实际上只有第一层。对低风险读取来说这有时够用，但对高风险执行来说，几乎总要更强的运行时边界。[^google-sandbox]
 
 这里有个很实用的问题：**如果 capability 的行为比预期更糟，到底是什么在阻止它：逻辑、进程边界，还是执行环境本身？**
 

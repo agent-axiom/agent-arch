@@ -1,4 +1,4 @@
-# 第 15 章：Golden Paths、Shared Gateways 与 Anti-Zoo Patterns
+# 第 15 章：黄金路径、共享网关与反动物园模式
 
 ## 1. 为什么即使有不错的组织模型，没有工程模板也会很快散掉
 
@@ -6,46 +6,46 @@
 
 如果这个问题没有答案，就会出现熟悉的场景：
 
-- 每个团队都写自己的 runtime wrapper；
-- policy hooks 在各处长得都不一样；
-- tool adapters 在 contracts 上逐渐分叉；
-- rollout practices 散落在各自的 wiki 里；
-- observability wiring 靠手工复制，慢慢漂移。
+- 每个团队都写自己的运行时封装；
+- 策略钩子在各处长得都不一样；
+- 工具适配器在契约上逐渐分叉；
+- 发布实践散落在各自的 wiki 里；
+- 可观测性接线靠手工复制，慢慢漂移。
 
-也就是说，形式上你有 operating model，但实际上还是有很多本地系统，它们看起来相似，却互不兼容。
+也就是说，形式上你有运行模型，但实际上还是有很多本地系统，它们看起来相似，却互不兼容。
 
-## 2. Golden path 不是“best practice 文档”，而是默认可工作的路径
+## 2. 黄金路径不是“最佳实践文档”，而是默认可工作的路径
 
-很重要的一点是，不要把 golden path 和一组建议混为一谈。
+很重要的一点是，不要把黄金路径和一组建议混为一谈。
 
 建议会被选择性阅读。
-而一个好的 platform product 里的 golden path，应该是团队真心觉得“直接用它比绕过去更省事”。
+而一个好的平台产品里的黄金路径，应该是团队真心觉得“直接用它比绕过去更省事”。
 
 它通常包含：
 
-- starter runtime template；
-- 预先接好的 tracing 和 eval hooks；
-- 默认接入的 policy integration；
-- approved tool gateway；
-- deployment 和 rollout defaults；
-- 典型 product workflows 的示例。
+- 起步用的运行时模板；
+- 预先接好的追踪与评测钩子；
+- 默认接入的策略集成；
+- 已批准的工具网关；
+- 默认的部署与发布设置；
+- 典型产品工作流的示例。
 
-只有当团队待在这条路径上更划算时，golden path 才是真的有效。
+只有当团队待在这条路径上更划算时，黄金路径才是真的有效。
 
-## 3. Shared gateways 的意义，是避免把关键错误复制到整个组织
+## 3. 共享网关的意义，是避免把关键错误复制到整个组织
 
 有几层能力特别不适合留给各团队自由发挥：
 
-- 访问外部 capabilities；
-- policy enforcement；
-- secret handling；
-- audit trail；
-- approval workflows；
-- telemetry emission。
+- 访问外部能力；
+- 策略执行；
+- 密钥处理；
+- 审计轨迹；
+- 审批工作流；
+- 遥测发出。
 
 如果每个团队都自己实现一遍，组织几乎一定会把同样的错误复制出五个版本。
 
-所以 shared gateway 不是官僚主义。它是把最贵、最敏感的问题集中起来，一次性认真解决的方式。
+所以共享网关不是官僚主义。它是把最贵、最敏感的问题集中起来，一次性认真解决的方式。
 
 <div class="diagram-card">
 <p>Golden path 应该减少关键层的本地实现数量</p>
@@ -60,74 +60,74 @@ flowchart LR
 
 </div>
 
-## 4. Reusable template 应该是 opinionated 的，而不是抽象到失去价值
+## 4. 可复用模板应该带有明确取向，而不是抽象到失去价值
 
-Platform teams 很常见的一个错误，是把 template 做得尽可能中性，好像这样就能“适配所有人”。
+平台团队很常见的一个错误，是把模板做得尽可能中性，好像这样就能“适配所有人”。
 
 现实里这通常帮不到任何人。它太泛化了，需要大量手工拼装，所以团队最后还是会走向自定义实现。
 
-一个好的 template 往往是 opinionated 的：
+一个好的模板往往带有明确取向：
 
-- 它定义了基础 run 结构；
-- 它已经包含 policy hooks；
-- 它已经接好 tracing；
-- 它有 approved deployment path；
+- 它定义了基础运行结构；
+- 它已经包含策略钩子；
+- 它已经接好追踪；
+- 它有已批准的部署路径；
 - 它带有可运行示例；
-- 它只暴露有限的 extension points。
+- 它只暴露有限的扩展点。
 
 是的，这样会少一点“通用性”。但它对真实组织更有用。
 
-## 5. 你不需要为所有类型的 agent 准备一条唯一的 golden path
+## 5. 你不需要为所有类型的智能体准备一条唯一的黄金路径
 
 这里也要有成熟度。单一路径很少能同时适合：
 
-- Q&A agents；
-- workflow agents；
-- approval-heavy agents；
-- high-risk action agents；
-- internal copilots。
+- 问答智能体；
+- 工作流智能体；
+- 审批密集型智能体；
+- 高风险动作智能体；
+- 内部副驾驶。
 
 所以更实际的做法通常是：
 
-- 一个基础 platform core；
-- 2 到 4 条标准 golden paths；
-- shared gateway 和 observability substrate；
-- 为 special cases 提供可控的 deviations。
+- 一个基础平台核心；
+- 2 到 4 条标准黄金路径；
+- 共享网关和可观测性底座；
+- 为特殊情况提供可控的偏离。
 
 这比“一个统治世界的 giant template”或者“完全混乱”都更靠谱。
 
-## 6. Anti-zoo pattern 的起点，是在正确的地方限制自由
+## 6. 反动物园模式的起点，是在正确的地方限制自由
 
-“platform zoo” 这个词通常指的都是类似的问题：
+“平台动物园”这个词通常指的都是类似的问题：
 
-- runtime 太多；
-- 连接 tools 的方式太多；
-- 本地 policy engine 太多；
-- telemetry schema 太多；
-- 几乎一样的 wrapper layers 太多。
+- 运行时太多；
+- 连接工具的方式太多；
+- 本地策略引擎太多；
+- 遥测模式太多；
+- 几乎一样的封装层太多。
 
 减少这个动物园，不应该靠一刀切禁止一切，而是要在关键位置加上清晰的限制：
 
-- 一个统一的 contract layer；
-- 一个 shared gateway；
-- 有限数量的 supported runtime patterns；
-- risky deviations 需要 platform review；
-- 对旧绕路方案有 deprecation policy。
+- 一个统一的契约层；
+- 一个共享网关；
+- 有限数量的受支持运行时模式；
+- 高风险偏离需要平台审查；
+- 对旧绕路方案有淘汰策略。
 
-### 6.1. Approved patterns registry 不只帮助控制，也帮助提速
+### 6.1. 已批准模式注册表不只帮助控制，也帮助提速
 
-当平台维护一份活的 approved patterns 列表时，产品团队会更快回答两个常见问题：
+当平台维护一份活的已批准模式列表时，产品团队会更快回答两个常见问题：
 
-1. 什么可以直接使用，不需要单独 review？
-2. 什么已经算 risky deviation？
+1. 什么可以直接使用，不需要单独审查？
+2. 什么已经算高风险偏离？
 
-一个好的 registry 通常会包含：
+一个好的注册表通常会包含：
 
-- supported runtime templates；
-- approved gateways；
-- approved capability classes；
-- allowed connector patterns；
-- deprecated local bypasses。
+- 受支持的运行时模板；
+- 已批准的网关；
+- 已批准的能力类别；
+- 允许的连接器模式；
+- 已废弃的本地绕过方式。
 
 这不仅对安全团队有帮助，也会提升开发速度，因为团队不需要每次都从零重新判断。
 
@@ -153,88 +153,88 @@ platform_defaults:
     - bypass_of_policy_layer
 ```
 
-这样的 policy 不会扼杀速度，它只是去掉了模糊地带。
+这样的策略不会扼杀速度，它只是去掉了模糊地带。
 
-### 7.1. Registry 和 deprecation policy 最好一起存在
+### 7.1. 注册表和淘汰策略最好一起存在
 
 一种很弱的模式是：平台有“推荐路径”，但没有正式说明哪些做法已经不该再被接受。
 
 更成熟的组合通常是：
 
-- approved registry；
-- visible deviations；
-- deprecation windows；
-- exceptions 的 review path。
+- 已批准注册表；
+- 可见的偏离；
+- 淘汰窗口；
+- 例外情况的审查路径。
 
-这才不会让 anti-zoo strategy 退化成一句无力的“请大家尽量走标准路径”。
+这才不会让反动物园策略退化成一句无力的“请大家尽量走标准路径”。
 
-## 8. Shared gateways 不只提升安全，也能提升演进速度
+## 8. 共享网关不只提升安全，也能提升演进速度
 
-当 critical path 被集中起来以后，platform team 可以：
+当关键路径被集中起来以后，平台团队可以：
 
-- 在一个地方更新 contracts；
-- 一次性改进 audit trail，所有团队都受益；
-- 调整 rollout guardrails，而不用重写十个产品；
-- 更快推出新的 policy capabilities；
-- 更快修复大面积 operational issues。
+- 在一个地方更新契约；
+- 一次性改进审计轨迹，所有团队都受益；
+- 调整发布护栏，而不用重写十个产品；
+- 更快推出新的策略能力；
+- 更快修复大面积运行问题。
 
-所以 shared gateway 不只是控制手段，它也是工程改进可以规模化传播的方式。
+所以共享网关不只是控制手段，它也是工程改进可以规模化传播的方式。
 
-## 9. Anti-zoo efforts 最常坏在哪里
+## 9. 反动物园实践最常坏在哪里
 
 这里也有很多重复出现的错误：
 
-- golden path 太重，团队就绕开；
-- shared gateway 太慢或太难用；
-- exception 逐渐变成常态；
-- templates 很快过时；
-- platform team 没有追踪团队到底在哪些地方偏离路径；
-- 说了要 deprecate，但从来没有真正执行。
+- 黄金路径太重，团队就绕开；
+- 共享网关太慢或太难用；
+- 例外逐渐变成常态；
+- 模板很快过时；
+- 平台团队没有追踪团队到底在哪些地方偏离路径；
+- 说了要淘汰，但从来没有真正执行。
 
 于是组织表面上在谈标准化，实际上只是在继续生产旧混乱的新变体。
 
 ## 10. 如果你真的想对抗“动物园”，该测什么
 
-这里更有价值的 operational metrics 是：
+这里更有价值的运行指标是：
 
-- 本地 runtime forks 的数量；
-- 绕过 gateway 的 direct tool access 路径数量；
-- 使用 supported templates 构建的 agents 占比；
-- 在 golden path 上启动一个新 workflow 的中位时间；
-- 没有 owner 的 active deviations 数量；
-- 淘汰 unsafe patterns 所需时间。
+- 本地运行时分叉的数量；
+- 绕过网关的直接工具访问路径数量；
+- 使用受支持模板构建的智能体占比；
+- 在黄金路径上启动一个新工作流的中位时间；
+- 没有负责人的活跃偏离数量；
+- 淘汰不安全模式所需时间。
 
 这些指标比单纯统计“有多少团队在用平台”更有意义。
 
-### 10.1. Inventory drift 本身也值得被计量
+### 10.1. 清单漂移本身也值得被计量
 
-还可以单独跟踪 platform inventory 里的 drift：
+还可以单独跟踪平台清单里的漂移：
 
-- 有多少 runtimes 没被注册；
-- 有多少 active agents 运行在 approved templates 之外；
-- 有多少 connectors 没有 owner；
-- 有多少 deviations 超过了 review window 还在继续。
+- 有多少运行时没被注册；
+- 有多少活跃智能体运行在已批准模板之外；
+- 有多少连接器没有负责人；
+- 有多少偏离超过了审查窗口还在继续。
 
-如果这些数字在上涨，那 anti-zoo strategy 也许形式上还存在，但实际上已经在失守。
+如果这些数字在上涨，那反动物园策略也许形式上还存在，但实际上已经在失守。
 
 ## 11. 实用检查清单
 
-如果你想快速检查 anti-zoo strategy，可以问自己：
+如果你想快速检查反动物园策略，可以问自己：
 
-- 你真的有一条比绕过去更容易用的 golden path 吗？
-- 敏感 capability 是否有 shared gateway？
-- supported runtime patterns 的集合是否受控？
-- deviations 是否可见，而且有 owner？
-- 平台能不能淘汰 unsafe local patterns？
-- 新的平台层是否真的减少了 copy-paste 和本地 forks？
+- 你真的有一条比绕过去更容易用的黄金路径吗？
+- 敏感能力是否有共享网关？
+- 受支持运行时模式的集合是否受控？
+- 偏离是否可见，而且有负责人？
+- 平台能不能淘汰不安全的本地模式？
+- 新的平台层是否真的减少了复制粘贴和本地分叉？
 
-如果连续好几个问题答案都是 “no”，那你现在做的还不是 platform product，而是一套带着良好愿望的 library。
+如果连续好几个问题答案都是 “no”，那你现在做的还不是平台产品，而是一套带着良好愿望的库。
 
 ## 12. 接下来读什么
 
-Part VI 下一步最自然的延伸，是继续补 platform roadmap、adoption 和 lifecycle management 这些组织层模式。再之后，就可以进入 reference implementation。
+第六部分下一步最自然的延伸，是继续补平台路线图、采用方式和生命周期管理这些组织层模式。再之后，就可以进入参考实现。
 
-- [第 14 章：Platform Team vs Product Teams](chapter-14.zh.md)
+- [第 14 章：平台团队与产品团队](chapter-14.zh.md)
 - [第 16 章：基础 Runtime Blueprint](../part-vii/chapter-16.zh.md)
 - [第六部分：组织模型](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
