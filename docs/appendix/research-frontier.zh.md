@@ -1,41 +1,41 @@
-# Research frontier：记忆、可观测性与多智能体可靠性
+# 研究前沿：记忆、可观测性与多智能体可靠性
 
-这一页的目的，不是把每一篇新论文都立刻变成 production 指南。它更实际的作用，是标出当前 research frontier 所在的位置，并说明哪些方向已经值得工程团队持续关注。
+这一页的目的，不是把每一篇新论文都立刻变成生产指南。它更实际的作用，是标出当前研究前沿所在的位置，并说明哪些方向已经值得工程团队持续关注。
 
 本书主体仍然建立在更稳定的实践之上：
 
-- policy layers；
-- approval gates；
-- trace schema；
-- eval datasets；
-- lifecycle discipline。
+- 策略层；
+- 审批门禁；
+- 追踪模式；
+- 评测数据集；
+- 生命周期纪律。
 
-这个附录收集的是那些看起来很有前景、但尚未成为通用 operational default 的方向。
+这个附录收集的是那些看起来很有前景、但尚未成为通用默认做法的方向。
 
 ## 如何阅读这一附录
 
 一个实用原则是：
 
-- 从 frontier work 中吸收 vocabulary 和 design questions；
+- 从前沿研究中吸收词汇表和设计问题；
 - 不要在没有本地验证的前提下整套照搬论文架构；
-- 区分 promising pattern 与 production default；
-- 评估时不仅看 accuracy，也看 explainability、auditability 和 rollback cost。
+- 区分有前景的模式与生产默认做法；
+- 评估时不仅看准确率，也看可解释性、可审计性和回滚成本。
 
-简而言之：frontier research 更适合作为方向来源，而不是现成的平台标准。
+简而言之：前沿研究更适合作为方向来源，而不是现成的平台标准。
 
-## 记忆方向的 frontier
+## 记忆方向的前沿
 
-最近关于 agent memory 的研究，主要沿着三个方向推进：
+最近关于智能体记忆的研究，主要沿着三个方向推进：
 
-- 用分层记忆替代单一扁平 vector store；
-- 做 self-adaptive memory reorganization；
-- 让 memory 与 reasoning loop 更紧密耦合。
+- 用分层记忆替代单一扁平向量存储；
+- 做自适应记忆重组；
+- 让记忆与推理循环更紧密耦合。
 
 从工程角度看，其中有两个思路尤其重要。
 
-第一，memory 越来越像由多个抽象层组成，而不是无限堆积的原始记录。EVOLVE-MEM 就是一个典型例子：它把 ingestion、summarization 和更高层抽象区分开来。
+第一，记忆越来越像由多个抽象层组成，而不是无限堆积的原始记录。EVOLVE-MEM 就是一个典型例子：它把摄取、摘要和更高层抽象区分开来。
 
-第二，memory 不再只被当成 retrieval 机制。在 MemGen 里，memory 与 reasoning state 直接交织，并影响智能体后续的思考方式。
+第二，记忆不再只被当成检索机制。在 MemGen 里，记忆与推理状态直接交织，并影响智能体后续的思考方式。
 
 哪些内容已经值得吸收到本书和实践里：
 
@@ -50,82 +50,82 @@
 - 在没有强 observability 与 rollback discipline 的情况下做自动 self-reorganization；
 - 使用很“认知化”的说法，却没有 reviewable contracts。
 
-## 可观测性方向的 frontier
+## 可观测性方向的前沿
 
-在 production 实践层面，本书已经把 traces 和 structured events 视为必需。Frontier papers 更进一步，试图把 observability 从“记录日志”提升为“因果分析层”。
+在生产实践层面，本书已经把追踪和结构化事件视为必需。前沿论文更进一步，试图把可观测性从“记录日志”提升为“因果分析层”。
 
 这里有两条特别值得关注的路线。
 
-第一条，是把 structured logging 视为 trust and accountability layer。AgentTrace 就体现了这种思路：它围绕 operational、contextual 与 cognitive traces 组织 observability。
+第一条，是把结构化日志视为信任与问责层。AgentTrace 就体现了这种思路：它围绕运行、上下文与认知追踪组织可观测性。
 
-第二条，是用于 post-hoc root cause analysis 的 causal tracing。在较新的 AgentTrace 多智能体论文中，重点已经不仅是收集 traces，而是重建 causal graphs，以便在不依赖长 transcript 猜测的情况下定位故障来源。
+第二条，是用于事后根因分析的因果追踪。在较新的 AgentTrace 多智能体论文中，重点已经不仅是收集追踪，而是重建因果图，以便在不依赖长对话记录猜测的情况下定位故障来源。
 
 这会给 platform team 带来几个很实际的问题：
 
-- 是否可以在不人工通读整段 dialogue 的情况下重建 root cause；
-- trace vocabulary 是否足以支撑 incident review；
-- evidence fields 是否与 display payload 分离；
-- 系统是否能构建 run graph 与 session graph；
-- 是否已经具备 redaction 和 schema versioning。
+- 是否可以在不人工通读整段对话的情况下重建根因；
+- 追踪词汇表是否足以支撑事故复盘；
+- 证据字段是否与展示载荷分离；
+- 系统是否能构建运行图与会话图；
+- 是否已经具备脱敏和模式版本管理。
 
 哪些内容已经值得放入 production：
 
-- 明确的 event catalog；
-- session-aware traces；
-- schema versioning；
-- redaction rules；
-- trace-linked evals 与 incident review。
+- 明确的事件目录；
+- 具备会话意识的追踪；
+- 模式版本管理；
+- 脱敏规则；
+- 与追踪关联的评测和事故复盘。
 
 哪些内容更适合暂时留在 frontier：
 
-- 把 “cognitive trace” 当成对 reasoning 的直接读取；
-- 对完整 causal explainability 做过强承诺；
-- 仅凭一个漂亮的 trace UI 就推导安全结论。
+- 把“认知追踪”当成对推理过程的直接读取；
+- 对完整因果可解释性做过强承诺；
+- 仅凭一个漂亮的追踪界面就推导安全结论。
 
-## 多智能体可靠性的 frontier
+## 多智能体可靠性的前沿
 
-这是目前最值得本书关注的 research blocks 之一。原因很简单：multi-agent demos 往往很吸引人，但它们的系统性可靠性通常比看上去更弱。
+这是目前最值得本书关注的研究板块之一。原因很简单：多智能体演示往往很吸引人，但它们的系统性可靠性通常比看上去更弱。
 
-Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的不是“多个 agent 一起协作”的空泛叙述，而是一套 failure taxonomy。它表明，多数问题通常落在四类中：
+Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的不是“多个智能体一起协作”的空泛叙述，而是一套失效分类法。它表明，多数问题通常落在四类中：
 
 - specification ambiguities and misalignment；
 - organizational breakdowns；
 - inter-agent conflict and coordination gaps；
 - weak verification and quality control。
 
-这对本书是一个很强的支撑：`single-agent first`、manager/handoff discipline 与 explicit verification loops 不是保守，而是必要。
+这对本书是一个很强的支撑：`single-agent first`、manager/handoff discipline 与显式验证闭环不是保守，而是必要。
 
-关于 multi-agent systems 的 causal tracing 新工作又补充了一点：reliability 不应只被设计成 orchestration pattern，还必须是可诊断的系统。如果 root cause 无法被定位，那么 workflow 虽然存在，但 operational maturity 依然偏低。
+关于多智能体系统的因果追踪新工作又补充了一点：可靠性不应只被设计成编排模式，还必须是可诊断的系统。如果根因无法被定位，那么工作流虽然存在，但运行成熟度依然偏低。
 
 哪些内容已经可以较有把握地吸收到实践中：
 
-- 对 premature multi-agent decomposition 保持怀疑；
-- 明确 handoff contracts；
-- 强化 verification 与 review loops；
-- 把 failure taxonomy 纳入 eval design；
-- 让 observability 面向 coordination failures，而不仅仅是 single-run latency。
+- 对过早拆成多智能体保持怀疑；
+- 明确 handoff 契约；
+- 强化验证与审查闭环；
+- 把失效分类法纳入评测设计；
+- 让可观测性面向协作失效，而不仅仅是单次运行的延迟。
 
 哪些内容仍然属于 frontier：
 
-- 完全自动化的 multi-agent topology optimization；
-- 认为 coordination 主要靠 role prompting 就能解决；
-- 假设 multi-agent architecture 天然提升 robustness。
+- 完全自动化的多智能体拓扑优化；
+- 认为协作主要靠角色提示就能解决；
+- 假设多智能体架构天然提升鲁棒性。
 
-## 如何使用 frontier research，同时不丢掉工程纪律
+## 如何使用前沿研究，同时不丢掉工程纪律
 
-一个好用的 practical rule 是：
+一个好用的实践规则是：
 
-1. 把论文当成 hypotheses 的来源。
-2. 把想法翻译成 reviewable artifact。
-3. 用 evals、traces 和 rollout gates 去验证。
-4. 让 rollback path 比新增 complexity 更简单。
+1. 把论文当成假设的来源。
+2. 把想法翻译成可评审工件。
+3. 用评测、追踪和发布门禁去验证。
+4. 让回滚路径比新增复杂度更简单。
 
 如果一个新的 research pattern：
 
-- 不能提供 audit trail；
-- 会削弱 policy clarity；
-- 会让 incident response 变难；
-- 或者引入了没有 provenance 的 state，
+- 不能提供审计轨迹；
+- 会削弱策略清晰度；
+- 会让事故响应变难；
+- 或者引入了没有来源证明的状态，
 
 那它大概率还不适合进入默认的平台轮廓。
 
@@ -133,9 +133,9 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 
 如果你准备继续扩展这本书，或者围绕它建设 platform team，那么有三类问题尤其值得跟进：
 
-- memory systems 如何在变得更 adaptive 的同时不失去 controllability；
-- observability 如何从 logging 发展到 causal diagnosis；
-- multi-agent reliability 如何获得更严格的 failure taxonomies 与 verification patterns。
+- 记忆系统如何在变得更自适应的同时不失去可控性；
+- 可观测性如何从日志记录发展到因果诊断；
+- 多智能体可靠性如何获得更严格的失效分类法与验证模式。
 
 真正重要的下一波设计变化，很可能就会出现在这三者的交叉点上。
 
@@ -149,9 +149,9 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 
 ## 另请参阅
 
-- [Memory records 与 retrieval contract schema](memory-retrieval-schema.md)
-- [Trace schema 与 event catalog](trace-schema.md)
-- [Eval dataset schema 与 grading contract](eval-schema.md)
-- [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.md)
-- [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.md)
-- [实践篇：MCP 用于 Tools，A2A 用于 Agents](../book/part-iv/practical-mcp-a2a.md)
+- [记忆记录与检索契约模式](memory-retrieval-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与分级契约](eval-schema.zh.md)
+- [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
+- [实践篇：MCP 用于工具，A2A 用于智能体](../book/part-iv/practical-mcp-a2a.zh.md)

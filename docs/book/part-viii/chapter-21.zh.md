@@ -1,114 +1,114 @@
-# 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response
+# 第 21 章：保障闭环：红队测试、检测与响应
 
-## 1. 为什么 lifecycle 不会在 release gates 结束
+## 1. 为什么生命周期不会在发布门禁处结束
 
 到这里为止，我们已经有了一幅更成熟的图景：
 
-- agent system 已经生活在 ADLC 里；
-- changes 会经过 change management；
-- rollout 不再是盲目推进。
+- 智能体系统已经进入 ADLC；
+- 变更会经过变更管理；
+- 发布不再是盲目推进。
 
 但这仍然不够。
 
-因为 agent systems 有一类特别的风险：
+因为智能体系统有一类特别的风险：
 
-- emergent behavior；
-- 通过 prompt 或 tool paths 发生的 abuse；
-- 长流程中的 drift；
-- 隐蔽的 policy bypass；
-- unsafe side effects；
+- 涌现行为；
+- 通过提示或工具路径发生的滥用；
+- 长流程中的漂移；
+- 隐蔽的策略绕过；
+- 不安全的副作用；
 - 团队发现得太晚的退化。
 
-所以在 release discipline 之后，必须再出现一个层：assurance loop。
+所以在发布纪律之外，还必须再补上一层：保障闭环。
 
-## 2. 什么是 assurance loop
+## 2. 什么是保障闭环
 
-我会这样定义 assurance loop：
+可以这样定义保障闭环：
 
-它是一个持续的 operational 循环，帮助团队不只是发布变更，还能系统性地发现薄弱点、察觉新威胁、调查问题并把问题真正关掉。
+它是一套持续运行的循环，帮助团队不只是发布变更，还能系统性地发现薄弱点、察觉新威胁、调查问题并把问题真正关掉。
 
-在 agent systems 里，它通常包括：
+在智能体系统里，它通常包括：
 
-- red teaming；
-- vulnerability management；
-- detection and response；
-- remediation；
-- 把经验重新写回 design 和 rollout。
+- 红队测试；
+- 漏洞管理；
+- 检测与响应；
+- 修复；
+- 把经验重新写回设计和发布流程。
 
-Google Research 在这里给出的核心观点非常清楚：生成式系统的 security assurance 应该是一种持续能力，而不是一次性的 review activity。[^google-assurance]
+Google Research 在这里给出的核心观点很清楚：生成式系统的安全保障应该是一种持续能力，而不是一次性的审查活动。[^google-assurance]
 
-## 3. Red teaming 应该针对真实 failure modes，而不是演示效果
+## 3. 红队测试应该针对真实失效模式，而不是演示效果
 
-太多团队把 red teaming 做成了展示：
+太多团队把红队测试做成了展示：
 
-- 试几个 obvious jailbreak prompts；
+- 试几个明显的越狱提示；
 - 展示系统“扛住了一些东西”；
 - 然后就觉得问题结束了。
 
-这不是强 assurance。
+这不是强保障。
 
-对 agent systems 有价值的 red teaming，应该针对 production-relevant failure modes：
+对智能体系统有价值的红队测试，应该针对与生产环境相关的失效模式：
 
 - prompt injection；
-- hidden instruction override；
-- tool misuse；
-- unsafe egress；
-- approval bypass；
+- 隐蔽指令覆盖；
+- 工具滥用；
+- 不安全的出口访问；
+- 审批绕过；
 - cross-tenant retrieval leakage；
 - memory poisoning；
-- excessive autonomy。
+- 过度自主性。
 
-好的 red teaming 不只是看模型回答，还要看整个 execution path。
+好的红队测试不只看模型回答，还要看整个执行路径。
 
 ## 4. 漏洞应该进入 backlog，而不是停留在感受里
 
 如果 red teaming 只留下“这里感觉有点危险”的印象，团队很难高质量行动。
 
-更成熟的方式是把它放进正常的 vulnerability workflow：
+更成熟的方式是把它放进正常的漏洞工作流：
 
 - 到底发现了什么；
 - 风险等级是什么；
-- exploit path 是什么；
+- 利用路径是什么；
 - 什么算 fix；
-- owner 是谁；
-- remediation 截止时间是什么；
-- 是否需要临时 mitigation。
+- 负责人是谁；
+- 修复截止时间是什么；
+- 是否需要临时缓解措施。
 
-这是一个很典型的 SDLC-like 逻辑：findings 必须成为可管理的工程对象，而不是 workshop 后的印象笔记。
+这是一个很典型的 SDLC 式逻辑：发现结果必须成为可管理的工程对象，而不是工作坊之后的印象笔记。
 
-## 5. Detection 不能只盯着 error rate
+## 5. 检测不能只盯着错误率
 
-在普通服务里，detection 常常围绕 error rate、latency 和基础设施信号展开。对 agent systems 来说，这远远不够。
+在普通服务里，检测常常围绕错误率、延迟和基础设施信号展开。对智能体系统来说，这远远不够。
 
 你还需要能看到：
 
-- denied actions 的异常增长；
-- approval backlog 的堆积；
-- 异常的 tool selection patterns；
-- 新出现的 egress destinations；
-- memory write anomalies；
-- unsafe fallback behavior 的上升；
-- task success 和 safety metrics 的 drift。
+- 被拒动作的异常增长；
+- 审批积压；
+- 异常的工具选择模式；
+- 新出现的出口目标；
+- 记忆写入异常；
+- 不安全回退行为的上升；
+- 任务成功率和安全指标的漂移。
 
-也就是说，这里的 detection 既是 observability，也是 abuse and safety monitoring。
+也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
-## 6. Response 应该是一层独立的运营能力
+## 6. 响应应该是一层独立的运行能力
 
-当一个 agent 开始表现出危险行为时，光说“之后再调 prompt”是不够的。
+当一个智能体开始表现出危险行为时，光说“之后再调提示”是不够的。
 
-更实用的 response layer 应该围绕具体动作来设计：
+更实用的响应层应该围绕具体动作来设计：
 
-- 限制 capability；
-- 把 action 切到 approval-only mode；
-- 收紧 egress policy；
-- 关闭 risky memory writes；
-- 把 rollout wave 切回更安全的 profile；
-- 必要时直接 disable 有问题的 route。
+- 限制能力；
+- 把动作切到仅审批模式；
+- 收紧出口策略；
+- 关闭高风险记忆写入；
+- 把发布波次切回更安全的配置；
+- 必要时直接停用有问题的路由。
 
-这很关键，因为在 agent systems 里，response 往往必须比完整的 root-cause analysis 更快发生。
+这很关键，因为在智能体系统里，响应往往必须比完整的根因分析更快发生。
 
 <div class="diagram-card">
-<p>Assurance loop 更像一个连续循环：发现、检测、遏制、修复、学习</p>
+<p>保障闭环更像一个连续循环：发现、检测、遏制、修复、学习</p>
 
 ``` mermaid
 flowchart LR

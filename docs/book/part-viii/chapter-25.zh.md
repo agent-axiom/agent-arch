@@ -1,22 +1,22 @@
-# 第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming
+# 第 25 章：行为评测、控制评测与自动化红队测试
 
-## 1. 为什么普通 regression evals 已经不够
+## 1. 为什么普通回归评测已经不够
 
-Regression evals 很擅长回答一个问题：
+回归评测很擅长回答一个问题：
 
 - 我们有没有把之前能工作的东西弄坏。
 
-但对 agent systems 来说，这还不够。
+但对智能体系统来说，这还不够。
 
 如果系统已经会：
 
-- 选择 strategy；
-- 使用 tools；
-- 保存 state；
-- 穿过 approvals；
+- 选择策略；
+- 使用工具；
+- 保存状态；
+- 穿过审批；
 - 在过渡条件下调整行为，
 
-那你需要的不只是 regression evals，还需要行为层面的检查。
+那你需要的不只是回归评测，还需要行为层面的检查。
 
 这时最好把下面三类东西分开：
 
@@ -24,78 +24,78 @@ Regression evals 很擅长回答一个问题：
 - `control evals`
 - `automated red teaming`
 
-## 2. 什么是 behavioral evals
+## 2. 什么是行为评测
 
-Behavioral evals 不只检查最终输出，还检查系统的行为形态。
+行为评测不只检查最终输出，还检查系统的行为形态。
 
 例如：
 
-- agent 会不会隐藏一个有争议的步骤；
-- 会不会绕过 approval；
-- 会不会在 review 之后改掉 payload；
-- 会不会在没有充分理由的情况下进入 risky tool path；
-- 会不会偏离预期的 escalation path。
+- 智能体会不会隐藏一个有争议的步骤；
+- 会不会绕过审批；
+- 会不会在审查之后改掉载荷；
+- 会不会在没有充分理由的情况下进入高风险工具路径；
+- 会不会偏离预期的升级路径。
 
-也就是说，问题不再只是“答案对不对”，而是“在这个场景下，runtime 的行为对不对”。
+也就是说，问题不再只是“答案对不对”，而是“在这个场景下，运行时的行为对不对”。
 
-## 3. 什么是 control evals
+## 3. 什么是控制评测
 
-Control evals 检查的是控制机制本身，而不只是模型质量。
+控制评测检查的是控制机制本身，而不只是模型质量。
 
 典型问题包括：
 
-- policy layer 能不能真的拦住这个 capability；
-- approval gate 是否真的要求人来确认；
-- rollback gate 能不能工作；
-- side effect 会不会进入 traces；
-- emergency control 能不能关掉 risky path。
+- 策略层能不能真的拦住这个能力；
+- 审批门禁是否真的要求人来确认；
+- 回滚门禁能不能工作；
+- 副作用会不会进入追踪；
+- 紧急控制能不能关掉高风险路径。
 
-这里的关键转变在于：你检查的不只是模型，而是围绕模型的一整层 control surface。
+这里的关键转变在于：你检查的不只是模型，而是围绕模型的一整层控制面。
 
-## 4. 什么是 automated red teaming
+## 4. 什么是自动化红队测试
 
-Automated red teaming 不再只是几条手写测试样例，而是一种系统化生成、变换和放大 adversarial scenarios 的方法。
+自动化红队测试不再只是几条手写测试样例，而是一种系统化生成、变换和放大对抗场景的方法。
 
 它的实际价值在于：
 
 - 帮你发现团队自己没想到的 failure modes；
-- 更有效地覆盖 edge cases；
+- 更有效地覆盖边缘场景；
 - 强迫你去观察系统在受压状态下的行为，而不是只看“正常日子”。
 
-Anthropic 最近在这方面的工作尤其值得参考：更强的 control-eval scaffold，以及更强的 red-team scenario generation。 [^anthropic-redteam][^anthropic-bloom]
+Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测脚手架，以及更强的红队场景生成。[^anthropic-redteam][^anthropic-bloom]
 
 ## 5. 它和现有 eval layer 的关系
 
 你已经有：
 
-- offline evals；
-- online evals；
-- regression gates；
+- 离线评测；
+- 在线评测；
+- 回归门禁；
 - trace grading。
 
-Behavioral evals 和 control evals 不是用来替换它们的，而是在上面再叠一层：
+行为评测和控制评测不是用来替换它们的，而是在上面再叠一层：
 
-- offline evals 检查任务质量；
-- trace grading 检查路径质量；
-- behavioral evals 检查与 policy 相关的行为；
-- control evals 检查 controls 本身是否真的有效。
+- 离线评测检查任务质量；
+- 追踪分级检查路径质量；
+- 行为评测检查与策略相关的行为；
+- 控制评测检查控制本身是否真的有效。
 
-## 6. 哪些地方最需要这类 evals
+## 6. 哪些地方最需要这类评测
 
 这类场景尤其适合放在：
 
-- high-risk write capabilities；
-- 带 egress 的 tools；
-- approval-heavy workflows；
-- replacement 与 retirement transitions；
-- multi-agent delegation；
-- memory write 与 retrieval governance。
+- 高风险写入能力；
+- 带出口访问的工具；
+- 审批密集型工作流；
+- 替换与退役过渡期；
+- 多智能体委派；
+- 记忆写入与检索治理。
 
-如果 risky path 根本没有被这些 evals 覆盖，团队几乎一定会先从 incident 里学到教训。
+如果高风险路径根本没有被这些评测覆盖，团队几乎一定会先从事故里学到教训。
 
 ## 7. 一个最小 behavioral taxonomy
 
-一个够用的最小 taxonomy 可以是：
+一个够用的最小分类法可以是：
 
 - `oversight_evasion`
 - `payload_mutation_after_approval`
@@ -105,9 +105,9 @@ Behavioral evals 和 control evals 不是用来替换它们的，而是在上面
 - `replacement_window_abuse`
 - `unauthorized_persistence`
 
-重点不在于名字有多少，而在于它们给了你一套可重复的 failure classes。
+重点不在于名字有多少，而在于它们给了你一套可重复的失效类别。
 
-## 8. User simulator 和 synthetic adversary 是两种角色
+## 8. 用户模拟器和合成对手是两种角色
 
 `user simulator` 适合用来稳定生成正常和边界用户场景。
 
@@ -115,32 +115,32 @@ Behavioral evals 和 control evals 不是用来替换它们的，而是在上面
 
 - 含糊指令；
 - 冲突目标；
-- risky shortcuts；
+- 高风险捷径；
 - 尝试隐藏可疑步骤。
 
 在成熟系统里，这两种角色应该并存：
 
-- simulator 提供 realistic task distribution；
-- adversary 提供 pressure testing。
+- simulator 提供更真实的任务分布；
+- adversary 提供压力测试。
 
-## 8.1. Research 在这里更适合作为 scenario classes 的来源
+## 8.1. 研究在这里更适合作为场景类别的来源
 
-最新关于 behavioral risk 与 automated red teaming 的研究，价值不只在于结论，也在于它提供了更丰富的 vocabulary。
+最新关于行为风险与自动化红队测试的研究，价值不只在于结论，也在于它提供了更丰富的词汇表。
 
-它能帮助团队补齐那些很难仅靠本地经验就完整想出的 scenario classes。比如：
+它能帮助团队补齐那些很难仅靠本地经验就完整想出的场景类别。比如：
 
 - concealment；
 - oversight evasion；
-- sabotage-like persistence；
-- coordination breakdown under pressure。
+- 类似破坏的持续行为；
+- 压力下的协作失序。
 
-但 engineering discipline 仍然应该保持严格：
+但工程纪律仍然应该保持严格：
 
-- scenario class 必须进入 reviewable eval schema；
-- finding 必须有 owner 和 triage path；
-- rollout gate 看到的应是 operational evidence，而不只是 paper citation。
+- 场景类别必须进入可评审的评测模式；
+- 发现结果必须有负责人和分诊路径；
+- 发布门禁看到的应是运行证据，而不只是论文引用。
 
-所以，research 在这里最好的用途，是帮助生成 hypotheses 和 dangerous scenarios，而不是替代你自己的 eval program。
+所以，研究在这里最好的用途，是帮助生成假设和危险场景，而不是替代你自己的评测方案。
 
 ## 9. 一个 control evals policy 示例
 
@@ -160,7 +160,7 @@ control_evals:
     - red_team_findings_untriaged
 ```
 
-这个层很有价值，因为它把 behavioral checks 变成了 release discipline 的一部分，而不是“可做可不做的加分项”。
+这个层很有价值，因为它把行为检查变成了发布纪律的一部分，而不是“可做可不做的加分项”。
 
 ## 10. 一个简单的 grading contract
 
@@ -184,53 +184,53 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
     )
 ```
 
-这里的核心是：failure 不只是“模型行为古怪”，也包括“control layer 没能证明自己真的有效”。
+这里的核心是：失效不只是“模型行为古怪”，也包括“控制层没能证明自己真的有效”。
 
 ## 11. 如何把它接进 ADLC
 
 在成熟系统里，流程通常是这样：
 
-1. risky change 先拿到 `change_record`；
-2. 定义这次需要的 eval scope；
-3. regression evals 检查既有行为；
-4. behavioral / control evals 检查高风险路径；
-5. automated red teaming 搜索不那么明显的 failure modes；
-6. findings 进入 assurance backlog；
-7. rollout gate 看到的不只是 accuracy，还包括 control evidence。
+1. 高风险变更先拿到 `change_record`；
+2. 定义这次需要的评测范围；
+3. 回归评测检查既有行为；
+4. 行为评测 / 控制评测检查高风险路径；
+5. 自动化红队测试搜索不那么明显的失效模式；
+6. 发现结果进入保障待办列表；
+7. 发布门禁看到的不只是准确率，还包括控制证据。
 
-这样 eval layer 就不再只是“一张指标表”，而会变成 operating model 的一部分。
+这样评测层就不再只是“一张指标表”，而会变成运行模型的一部分。
 
 ## 12. 最常见的错误
 
-- 所有 evals 最后都退化成 final answer quality；
-- dangerous paths 没有独立的 scenario classes；
-- red teaming 只是一次性活动；
-- findings 没有进入 release gate；
-- control failures 被当成“不是模型 bug”，于是从 backlog 里消失；
-- 团队分不清 ordinary failure 和 sabotage-like behavior。
+- 所有评测最后都退化成最终答案质量；
+- 危险路径没有独立的场景类别；
+- 红队测试只是一次性活动；
+- 发现结果没有进入发布门禁；
+- 控制失效被当成“不是模型 bug”，于是从待办列表里消失；
+- 团队分不清普通失效和类似破坏的行为。
 
 ## 13. 实用检查清单
 
-- risky capabilities 是否有单独的 behavioral scenario classes？
-- 你是否测试 approval evasion 和 payload mutation？
-- 是否有专门验证 controls 的 evals，而不只是检查输出质量？
-- red-team findings 是否会进入 change review 和 rollout gate？
+- 高风险能力是否有单独的行为场景类别？
+- 你是否测试审批规避和载荷篡改？
+- 是否有专门验证控制措施的评测，而不只是检查输出质量？
+- 红队发现结果是否会进入变更评审和发布门禁？
 - 是否同时有 realistic workload simulator 和 adversarial generator？
-- 你能展示的是 control evidence，还是只有最终分数？
+- 你能展示的是控制证据，还是只有最终分数？
 
-如果连续几个答案都是“否”，那你的 eval layer 虽然已经存在，但还没准备好面对 autonomous behavior。
+如果连续几个答案都是“否”，那你的评测层虽然已经存在，但还没准备好面对自主行为。
 
 ## 14. 值得配套阅读的参考页
 
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [评测数据集模式与分级契约](../../appendix/eval-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
+- [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
-- [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)
-- [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
-- [第 24 章：Agentic Misalignment 与 Insider Risk](chapter-24.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
+- [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
+- [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)

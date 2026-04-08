@@ -2,7 +2,7 @@
 
 ## 1. 为什么智能体系统的供应链比普通服务更宽
 
-当工程师听到“software supply chain”时，通常会想到一些熟悉的东西：
+当工程师听到“软件供应链”时，通常会想到一些熟悉的东西：
 
 - 包依赖；
 - 容器；
@@ -11,7 +11,7 @@
 
 但对智能体系统来说，这还不够。
 
-问题在于，production behavior 在这里不只依赖代码。它还依赖：
+问题在于，这里的生产行为不只依赖代码。它还依赖：
 
 - 模型工件；
 - 提示和例程包；
@@ -28,7 +28,7 @@
 
 这里最好先给出一个很直白的定义：
 
-已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有 owner、provenance、review status 和清晰的运行角色。
+已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有负责人、来源证明、审查状态和清晰的运行角色。
 
 这意味着已批准工件不只是镜像或 wheel 文件。
 
@@ -44,7 +44,7 @@
 
 如果团队没有这个概念，就很容易落入一种隐式信任：“这个工件应该没问题，因为之前有人用过。”
 
-## 3. Provenance 是为了回答非常实际的问题
+## 3. 来源证明是为了回答非常实际的问题
 
 Google Research 的一个关键观点是：AI 系统的来源证明不只是正式安全概念，它也是运行上的必需品。[^google-supply-chain]
 
@@ -57,10 +57,10 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 发布是被哪一个评测集验证的；
 - 这个变更是谁批准的。
 
-如果这些问题无法快速回答，change management 和 incident review 很快就会失控。
+如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
 
-!!! info "需要 supply-chain 工件？"
-    如果你需要契约层视角，可以直接查看 [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)、[Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md) 和 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)。
+!!! info "需要供应链工件？"
+    如果你需要契约层视角，可以直接查看 [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
 
 ## 4. 智能体需要多条信任链，而不是一条
 
@@ -77,7 +77,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 评测链。
 
 <div class="diagram-card">
-<p>与其只想一条 supply chain，不如把它看成几条相互关联的 chains of trust</p>
+<p>与其只想一条供应链，不如把它看成几条相互关联的信任链</p>
 
 ``` mermaid
 flowchart LR
@@ -97,18 +97,18 @@ flowchart LR
 
 `approved inventory` 回答的是：
 
-- 平台上哪些 runtimes、gateways、capabilities 和 patterns 本身就是允许的。
+- 平台上哪些运行时、网关、能力和模式本身就是允许的。
 
 `approved artifacts` 回答的是：
 
-- 当前到底有哪些具体版本和 bundles 被批准运行。
+- 当前到底有哪些具体版本和工件包被批准运行。
 
 例如：
 
 - capability `create_ticket` 可以属于 approved inventory；
 - 但 `policy_bundle_v12` 或 `prompt_bundle_support_v7` 是 approved artifact。
 
-这个区别很重要，因为 inventory 提供平台级框架，而已批准工件提供发布级纪律。
+这个区别很重要，因为清单提供平台级框架，而已批准工件提供发布级纪律。
 
 ## 6. 没有 provenance 的 prompt bundle，本质上就是一个 supply-chain 缺口
 

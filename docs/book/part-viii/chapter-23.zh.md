@@ -10,79 +10,79 @@
 - 观察它；
 - 安全地发布变更。
 
-但任何 production system 还有一个必经阶段：它迟早要被替换、关闭或退役。
+但任何生产系统还有一个必经阶段：它迟早要被替换、关闭或退役。
 
-这对 agent systems 尤其重要，因为它们通常会留下很长的 operational tail：
+这对智能体系统尤其重要，因为它们通常会留下很长的运行尾部：
 
-- memory state；
-- tool access；
-- approvals 与 audit trails；
-- external integrations；
-- user expectations；
-- dependent workflows。
+- 记忆状态；
+- 工具访问；
+- 审批与审计轨迹；
+- 外部集成；
+- 用户预期；
+- 依赖它的工作流。
 
-也就是说，retirement 不是“删掉服务然后忘记它”，而是一个被管理的 operational process。
+也就是说，退役不是“删掉服务然后忘记它”，而是一个被管理的运行过程。
 
-## 2. 什么时候应该开始考虑 retirement
+## 2. 什么时候应该开始考虑退役
 
-最好不要把 retirement 当成遥远又尴尬的话题。
+最好不要把退役当成遥远又尴尬的话题。
 
-在实践里，常见 trigger 包括：
+在实践里，常见触发条件包括：
 
-- runtime 或 model 已经过时；
-- capability contract 不再被认为安全；
-- maintenance cost 太高；
-- quality 已经到顶，必须 replacement；
+- 运行时或模型已经过时；
+- 能力契约不再被认为安全；
+- 维护成本太高；
+- 质量已经到顶，必须替换；
 - 新的平台路径正在替代旧路径；
-- regulatory 或 governance requirements 发生变化；
+- 监管或治理要求发生变化；
 - 产品问题本身已经不存在。
 
-如果团队没有明确的 retirement triggers，旧的 agent systems 几乎总会活得比安全和有用所允许的更久。
+如果团队没有明确的退役触发条件，旧的智能体系统几乎总会活得比安全和有用所允许的更久。
 
-## 3. Retirement 和 replacement 不是一回事
+## 3. 退役和替换不是一回事
 
 最好把这两个场景分开：
 
-- `retirement`：系统或 capability 直接退出运行；
+- `retirement`：系统或能力直接退出运行；
 - `replacement`：旧系统下线之前或同时，由一个新系统接手。
 
 这个区别很重要。
 
-在 retirement 里，核心问题是如何安全地下掉旧系统。
+在退役里，核心问题是如何安全地下掉旧系统。
 
-在 replacement 里，核心问题是如何在不丢失质量、控制和历史的前提下完成受控迁移。
+在替换里，核心问题是如何在不丢失质量、控制和历史的前提下完成受控迁移。
 
 ## 4. 最大的风险，是系统虽然“退役了”却仍然能行动
 
-最糟糕的一类 operational 错误通常是这样发生的：
+最糟糕的一类运行错误通常是这样发生的：
 
 - 团队以为系统“基本已经关了”；
 - 但它仍然保留着：
-  - active tool principal；
-  - live connector；
-  - memory access；
+- 活跃的工具主体；
+- 仍然在线的连接器；
+- 记忆访问权；
 - 旧的上线路径；
-  - background job。
+- 后台任务。
 
-形式上系统已经“死了”，但在 operational 上它仍然能行动。
+形式上系统已经“死了”，但在运行上它仍然能行动。
 
-这对 agents 特别危险，因为 autonomous 和 semi-autonomous execution paths 很容易被忘掉。
+这对智能体特别危险，因为自主和半自主的执行路径很容易被忘掉。
 
-## 5. Retirement 最好按层收缩
+## 5. 退役最好按层收缩
 
-好的 end-of-life process 很少是一个动作完成的。通常更适合按层来做：
+好的终止使用流程很少是一个动作完成的。通常更适合按层来做：
 
 - 停止新的上线波次；
-- 关闭 risky capabilities；
-- 把 write actions 切到 approval-only 或直接 disable；
-- 停止 memory writes；
-- 停止 background jobs；
-- 撤销 egress access；
-- 关闭 principals、secrets 和 connectors；
-- 固化 final audit state。
+- 关闭高风险能力；
+- 把写入动作切到仅审批模式，或者直接停用；
+- 停止记忆写入；
+- 停止后台任务；
+- 撤销出口访问；
+- 关闭主体、密钥和连接器；
+- 固化最终审计状态。
 
 <div class="diagram-card">
-<p>更稳妥的 retirement，更像是一步步缩小 operational surface</p>
+<p>更稳妥的退役，更像是一步步缩小运行面</p>
 
 ``` mermaid
 flowchart LR
@@ -95,69 +95,69 @@ flowchart LR
 
 </div>
 
-## 6. Memory 和 audit data 需要单独的纪律
+## 6. 记忆与审计数据需要单独的纪律
 
-一旦系统退役，一个不舒服的问题就出现了：积累下来的 state 该怎么办？
+一旦系统退役，一个不舒服的问题就出现了：积累下来的状态该怎么办？
 
 团队通常需要分别决定：
 
-- 什么要 archive；
-- 什么要 delete；
-- 什么要 anonymize；
-- traces 和 approvals 保留多久；
-- archived state 的 owner 是谁；
-- replacement 是否可以复用旧数据集和 memory 工件。
+- 什么要归档；
+- 什么要删除；
+- 什么要匿名化；
+- 追踪和审批保留多久；
+- 归档状态的负责人是谁；
+- 替换后的系统是否可以复用旧数据集和记忆工件。
 
-所以 retirement 影响的不只是 running system，还包括整个 historical operational footprint。
+所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 
-## 7. Replacement 应该分阶段，而不是二元切换
+## 7. 替换应该分阶段，而不是二元切换
 
-当旧系统被新系统替换时，最自然的冲动是：“直接 cutover，然后继续前进。”
+当旧系统被新系统替换时，最自然的冲动是：“直接切换过去，然后继续前进。”
 
-对 agent systems 来说，这通常太冒险。
+对智能体系统来说，这通常太冒险。
 
-更安全的是 staged replacement：
+更安全的是分阶段替换：
 
-- shadow comparison；
-- limited tenant migration；
-- dual-run for critical scenarios；
-- side-by-side evals；
-- staged traffic shift；
-- 只有在信心足够时才 final cutover。
+- 影子对比；
+- 小范围租户迁移；
+- 在关键场景里双运行；
+- 并行评测；
+- 分阶段切流；
+- 只有在信心足够时才做最终切换。
 
-这也是 replacement 和上线纪律最接近的地方，只不过 replacement 还多了一个问题：如何在新旧系统之间保持连续性。
+这也是替换和上线纪律最接近的地方，只不过替换还多了一个问题：如何在新旧系统之间保持连续性。
 
-## 8. 老的 capabilities 和 patterns 应该被正式 deprecate
+## 8. 老的能力和模式应该被正式废弃
 
 最好不仅有 `approved inventory`，还要有 `deprecated inventory`。
 
 例如：
 
-- deprecated runtime；
-- deprecated prompt bundle family；
-- deprecated gateway pattern；
-- deprecated memory strategy；
-- deprecated capability contract。
+- 已废弃的运行时；
+- 已废弃的提示包族；
+- 已废弃的网关模式；
+- 已废弃的记忆策略；
+- 已废弃的能力契约。
 
-这很重要，因为 retirement 几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
+这很重要，因为退役几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
 
 ## 9. 面向用户的过渡也是生命周期的一部分
 
-如果 agent system 影响到用户或内部 workflow，那么 end-of-life 不能只在 platform layer 内部完成。
+如果智能体系统影响到用户或内部工作流，那么终止使用不能只在平台层内部完成。
 
 最好单独想清楚：
 
 - 需要通知谁；
-- 哪些 flows 会变化；
-- 哪些 expectations 需要重新设置；
+- 哪些流程会变化；
+- 哪些预期需要重新设置；
 - 会有哪些回退路径；
-- 老的 integrations 还要支持多久。
+- 老的集成还要支持多久。
 
-这对 internal agent systems 尤其重要，因为它们很快就会长进团队的真实工作习惯里。
+这对内部智能体系统尤其重要，因为它们很快就会长进团队的真实工作习惯里。
 
 ## 10. 一个 retirement policy 示例
 
-下面这个 skeleton 很实用：
+下面这个骨架很实用：
 
 ```yaml
 retirement:
@@ -175,7 +175,7 @@ retirement:
     - set_retired_status
 ```
 
-它的价值不在于 YAML 本身，而在于把 retirement 变成了明确的 operational contract。
+它的价值不在于 YAML 本身，而在于把退役变成了明确的运行契约。
 
 ## 11. 一个 replacement readiness check 示例
 
@@ -202,53 +202,53 @@ def ready_for_replacement(state: ReplacementState) -> bool:
     )
 ```
 
-重点很简单：replacement 也应该有门禁，而不是“凭感觉切换”。
+重点很简单：替换也应该有门禁，而不是“凭感觉切换”。
 
-## 12. End-of-life discipline 最常坏在哪里
+## 12. 终止使用纪律最常坏在哪里
 
 这些问题非常常见：
 
-- 系统被认为已经 retired，但 principals 还活着；
-- background jobs 没关；
-- memory write path 仍然在工作；
-- archived state 没有 owner；
-- deprecated patterns 存活太久；
-- replacement 没有 dual-run 或 staged migration。
+- 系统被认为已经退役，但主体还活着；
+- 后台任务没关；
+- 记忆写入路径仍然在工作；
+- 归档状态没有负责人；
+- 已废弃模式存活太久；
+- 替换没有双运行或分阶段迁移。
 
 正是这些小细节，会把一个“几乎完整”的 lifecycle 重新变成事故来源。
 
 ## 13. 实用检查清单
 
-如果你想快速检查自己的 end-of-life discipline，可以问：
+如果你想快速检查自己的终止使用纪律，可以问：
 
-- 系统是否有明确的 retirement triggers？
-- capabilities 能否按阶段关闭，而不是只能“一键全关”？
-- shutdown 后 memory、traces 和 approvals 怎么处理，是否清楚？
-- 是否有 staged replacement plan？
-- principals、connectors 和 egress access 能否快速撤销？
-- 已归档工件和历史状态的 owner 是否明确？
+- 系统是否有明确的退役触发条件？
+- 能力能否按阶段关闭，而不是只能“一键全关”？
+- 关闭后记忆、追踪和审批怎么处理，是否清楚？
+- 是否有分阶段替换计划？
+- 主体、连接器和出口访问能否快速撤销？
+- 已归档工件和历史状态的负责人是否明确？
 
 如果连续几个问题的答案都是“否”，那你的生命周期其实还停留在发布，而不是完整运营。
 
 ## 14. 接下来读什么
 
-这章把 Part VIII 真正闭合成一个完整的 operational cycle：
+这章把 Part VIII 真正闭合成一个完整的运行闭环：
 
 - SDLC -> ADLC；
-- change management；
-- assurance loop；
+- 变更管理；
+- 保障闭环；
 - 工件治理；
-- retirement and replacement。
+- 退役与替换。
 
 现在这一部分已经不仅能解释架构，还能作为生产级 agent systems 的生命周期手册使用。
 
 ## 15. 值得配套阅读的参考页
 
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Reference Package](../../appendix/reference-package.zh.md)
+- [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [参考包](../../appendix/reference-package.zh.md)
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
-- [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](chapter-22.zh.md)
+- [第 22 章：供应链、来源追踪与已批准工件](chapter-22.zh.md)
 - [第八部分：智能体系统生命周期](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
