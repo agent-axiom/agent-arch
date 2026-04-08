@@ -1,59 +1,59 @@
 # 第 13 章：离线评测、在线评测与回归门禁
 
-## 1. 为什么只有 traces 和 SLO 还不足以改进系统
+## 1. 为什么只有追踪和 SLO 还不足以改进系统
 
-当你已经有了 traces 和 SLO，很容易产生一种感觉：observability “差不多做完了”。但这其实只是走到一半。
+当你已经有了追踪和 SLO，很容易产生一种感觉：可观测性“差不多做完了”。但这其实只是走到一半。
 
-Traces 帮你理解发生了什么。
+追踪帮你理解发生了什么。
 SLO 帮你定义什么叫系统健康。
 
 但最重要的工程问题还在：如何避免把退化版本发出去，以及如何系统性地提升质量？
 
-这就是 eval loop 的起点。
+这就是评测闭环的起点。
 
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
-## 2. Offline evals 的作用，是在 rollout 之前改变系统
+## 2. 离线评测的作用，是在发布之前改变系统
 
-Offline evals 回答的是一个非常实际的问题：“如果我们修改 prompt、policy、retrieval、model routing 或 tool behavior，系统在已知场景上会变好还是变坏？”
+离线评测回答的是一个非常实际的问题：“如果我们修改提示、策略、检索、模型路由或工具行为，系统在已知场景上会变好还是变坏？”
 
 好的 offline evals 通常围绕这些东西构建：
 
-- curated task sets；
+- 精选任务集；
 - golden answers 或 expected outcomes；
-- 对 policy 敏感的 edge cases；
-- 棘手的 retrieval scenarios；
-- high-risk tool workflows。
+- 对策略敏感的边界场景；
+- 棘手的检索场景；
+- 高风险工具工作流。
 
 它们的价值在于：你可以在生产流量到来之前比较系统版本。
 
-## 3. Online evals 之所以必要，是因为真实世界总比测试集更大
+## 3. 在线评测之所以必要，是因为真实世界总比测试集更大
 
-即使很好的 offline evals，也无法覆盖 production 中真正发生的一切：
+即使很好的离线评测，也无法覆盖生产环境中真正发生的一切：
 
 - 用户会提出新的任务类型；
 - 输入分布会漂移；
 - 外部系统会退化；
-- retrieval 基础会不断变大；
-- policy rules 在新数据上会表现不同。
+- 检索基础会不断变大；
+- 策略规则在新数据上会表现不同。
 
-所以 online evals 不是 offline 的替代，而是第二条闭环：
+所以在线评测不是离线评测的替代，而是第二条闭环：
 
 - 评估真实流量上的行为；
 - 捕捉 drift；
-- 发现 silent regressions；
-- 观察系统在真实 operational 条件下的表现。
+- 发现静默回退；
+- 观察系统在真实运行条件下的表现。
 
-## 4. 最好的形态不是“offline 或 online”，而是两条闭环同时存在
+## 4. 最好的形态不是“离线或在线”，而是两条闭环同时存在
 
 一种非常实用的模型是：
 
-- offline evals 在发布前阻挡明显 regressions；
-- online evals 在发布后发现新问题；
-- traces 提供分析原料；
-- SLO 提供 operational 边界；
-- regression gates 阻止质量悄悄下滑。
+- 离线评测在发布前阻挡明显回退；
+- 在线评测在发布后发现新问题；
+- 追踪提供分析原料；
+- SLO 提供运行边界；
+- 回归门禁阻止质量悄悄下滑。
 
 <div class="diagram-card">
 <p>最好把 eval loop 理解成持续循环，而不是一次性检查</p>
@@ -97,56 +97,56 @@ Static eval set 很适合比较 known cases。User simulator 更适合检查行�
 
 也就是说，eval loop 最好不要被看成“独立的分析活动”，而应该被视为 change management 的一部分。
 
-## 5. Trace grading 对 agent systems 特别有价值
+## 5. 追踪分级对智能体系统特别有价值
 
-普通应用往往只要 business KPI 和 error rate 就够了。Agent systems 不行，因为质量经常藏在 run 内部，而不只在最终答案上。
+普通应用往往只要业务 KPI 和错误率就够了。智能体系统不行，因为质量经常藏在一次运行内部，而不只在最终答案上。
 
-Trace grading 的价值在于，你可以评估：
+追踪分级的价值在于，你可以评估：
 
 - retrieval 是否合适；
-- tool call 是否必要；
+- 工具调用是否必要；
 - prompt 是否被过度塞满；
-- 是否发生 unnecessary escalation；
-- 是否遵守了 policy constraints；
+- 是否发生了不必要的升级；
+- 是否遵守了策略约束；
 - workflow 是否高效。
 
-这在 final result 看起来还“不错”，但系统已经悄悄变慢、变贵或变危险时特别重要。
+这在最终结果看起来还“不错”，但系统已经悄悄变慢、变贵或变危险时特别重要。
 
-## 5.1. Behavioral evals 与 control evals 评估的不只是答案
+## 5.1. 行为评测与控制评测评估的不只是答案
 
-随着 agent systems 获得更多 autonomy，仅仅评估“run 有没有完成任务”已经不够了，还需要评估“系统在过程中表现出了什么样的行为”。
+随着智能体系统获得更多自主性，仅仅评估“一次运行有没有完成任务”已经不够了，还需要评估“系统在过程中表现出了什么样的行为”。
 
 也正是在这里，
 
-- behavioral evals；
-- control evals；
-- automated red teaming；
+- 行为评测；
+- 控制评测；
+- 自动化红队测试；
 
 开始变得重要。
 
 它们特别适合那些普通 regression set 过于扁平的场景：
 
-- agent 试图避开 oversight；
-- 它变得过度积极地保留 state；
-- 它试图绕过 approval path；
-- 它产生了不必要的 tool hops；
-- 多个 agents 之间的 coordination 开始退化。
+- 智能体试图避开监督；
+- 它变得过度积极地保留状态；
+- 它试图绕过审批路径；
+- 它产生了不必要的工具跳转；
+- 多个智能体之间的协作开始退化。
 
-也就是说，eval layer 不应该只评估 final answer quality，还要评估行为层面的 failure modes。
+也就是说，评测层不应该只评估最终答案质量，还要评估行为层面的失效模式。
 
 ## 5.2. Coordination failure 也应该成为 eval design 的一部分
 
-如果系统使用 handoffs、manager pattern，或者多个 cooperating agents，那么只检查“答案对不对”已经不够。
+如果系统使用交接、管理者模式，或者多个协作智能体，那么只检查“答案对不对”已经不够。
 
 还需要额外观察：
 
 - handoff 过程中是否丢失上下文；
 - 是否出现 conflicting actions；
-- verification discipline 是否退化；
-- 是否出现更多不必要的 delegation steps；
-- coordination failure 能否从 traces 中被定位。
+- 验证纪律是否退化；
+- 是否出现更多不必要的委派步骤；
+- 协作失效能否从追踪中被定位。
 
-因此，多智能体可靠性研究在这里的价值，不是鼓励默认把 runtime 做得更复杂，而是在提醒我们：orchestration 越复杂，eval design 就必须越丰富。
+因此，多智能体可靠性研究在这里的价值，不是鼓励默认把运行时做得更复杂，而是在提醒我们：编排越复杂，评测设计就必须越丰富。
 
 ## 6. Eval dataset 里应该放什么
 
@@ -169,15 +169,15 @@ Trace grading 的价值在于，你可以评估：
 
 团队常会说：“我们测过了，感觉没有更差。” 对 production-grade 的 agent system 来说，这远远不够。
 
-Regression gate 更有价值的做法，是把它定义为一组明确规则，例如：
+回归门禁更有价值的做法，是把它定义为一组明确规则，例如：
 
 - critical eval set 上的 success rate 不能下降；
 - safety metrics 不能退化；
 - cost per task 不能超过阈值；
 - escalation rate 不能升高；
-- prompt budget 或 tool count per run 不能超过上限。
+- 提示预算或每次运行的工具数量不能超过上限。
 
-这样 rollout 决策就不会只依赖改动作者的直觉。
+这样发布决策就不会只依赖改动作者的直觉。
 
 ## 8. 一个 eval gate policy 示例
 
@@ -223,7 +223,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 代码刻意很简单。恰恰是这种简单性，让 gate 对团队而言可理解、可讨论。
 
-## 10. Online evals 必须和 rollout strategy 连起来
+## 10. 在线评测必须和发布策略连起来
 
 一个非常有用的做法是不要把大变更一次性打给所有人，而是使用：
 
@@ -233,9 +233,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - model routing experiments；
 - staged policy rollout。
 
-这样 online evals 就不只是“上线后看看会不会出事”，而是 release process 中的受控阶段。
+这样在线评测就不只是“上线后看看会不会出事”，而是发布流程中的受控阶段。
 
-### 10.1. 好的 simulator 不会替代真实数据，只会补充真实数据
+### 10.1. 好的模拟器不会替代真实数据，只会补充真实数据
 
 也要注意不要高估 user simulator。
 

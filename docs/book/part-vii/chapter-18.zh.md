@@ -4,14 +4,14 @@
 
 即使你已经有了：
 
-- 干净的 runtime；
-- policy layer；
-- capability catalog；
-- observability 和 eval loop，
+- 干净的运行时；
+- 策略层；
+- 能力目录；
+- 可观测性和评测闭环，
 
 这仍然不意味着系统已经可以安全上线。
 
-Production readiness 和“demo 能跑”之间的区别只有一个核心点：你不仅要知道系统在正常情况下怎么工作，还要知道它在压力下、失败时和各种不愉快边缘场景里会怎么表现。
+生产就绪性和“demo 能跑”之间的区别只有一个核心点：你不仅要知道系统在正常情况下怎么工作，还要知道它在压力下、失败时和各种不愉快边缘场景里会怎么表现。
 
 这正是上线检查清单存在的原因。
 
@@ -43,7 +43,7 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 - operational readiness；
 - ownership and rollback planning。
 
-只要其中有一块没有真正闭合，系统就已经暴露在各种 unpleasant surprises 之下。
+只要其中有一块没有真正闭合，系统就已经暴露在各种意外之下。
 
 ## 4. Runtime correctness
 
@@ -52,8 +52,8 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 - 核心顺畅路径是否通过；
 - tool hops 数量是否受限；
 - empty / malformed inputs 是否被正确处理；
-- retrieval 为空时 run 是否仍能安全运行；
-- model failure 时 runtime 是否 fail safe；
+- 检索为空时运行是否仍能安全运行；
+- 模型失败时运行时是否安全失效；
 - foreground 与 background actions 是否已经分开。
 
 这是基础层。如果它本身不稳，后面的检查价值都会下降。
@@ -73,17 +73,17 @@ Checklist 的价值不是因为团队不负责，而是因为 agent 系统太容
 
 ## 6. Capability readiness
 
-每个要进 production 的 capability，都值得过一遍简短的 operational 模板：
+每个要进生产环境的能力，都值得过一遍简短的运行模板：
 
 - 是否有 owner；
-- transport 是否明确；
+- 传输方式是否明确；
 - 是否有 timeout；
 - 是否有 retry policy；
 - 是否有 idempotency strategy；
 - 未知副作用路径是否清楚；
-- outcome telemetry 是否已经接好。
+- 结果遥测是否已经接好。
 
-如果一个 capability 连这个最低标准都没过，那它还不是 production capability，它只是一个方便的集成。
+如果一个能力连这个最低标准都没过，那它还不是生产级能力，它只是一个方便的集成。
 
 <div class="diagram-card">
 <p>Go-live readiness 最好理解为多个轮廓的交集，而不是一个总状态灯</p>
@@ -105,13 +105,13 @@ flowchart LR
 
 非常常见的错误是：系统准备上线了，却想着“正常 traces 以后再补”。
 
-进入 production 前，至少应该确认：
+进入生产环境前，至少应该确认：
 
 - 每个 run 都有 `trace_id`；
 - 关键 spans 已经存在；
 - policy decisions 和 tool outcomes 可见；
 - SLO 已定义；
-- offline evals 通过；
+- 离线评测通过；
 - 回归门禁已经文档化；
 - 在线监控已经为第一波上线做好准备。
 
@@ -128,7 +128,7 @@ flowchart LR
 - 上线影响范围是否受限；
 - 常见失败是否有 runbook。
 
-这听起来像“运维的事”，但没有这一层，系统依然只是实验品，而不是 production-grade。
+这听起来像“运维的事”，但没有这一层，系统依然只是实验品，而不是生产级系统。
 
 ## 9. 一个上线检查清单策略示例
 
@@ -154,7 +154,7 @@ rollout:
     - policy_decisions_not_traced
 ```
 
-这种 checklist 的价值在于：它把 readiness 变成一个工程讨论对象，而不是靠发布者语气里的自信。
+这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。
 
 ## 10. 一个简单的就绪门禁示例
 
@@ -181,7 +181,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
     )
 ```
 
-这个例子很简单，但它强化了一件重要的事：production readiness 应该是可形式化的。
+这个例子很简单，但它强化了一件重要的事：生产就绪性应该是可形式化的。
 
 ## 11. Go-live 流程最常见的崩坏点
 
@@ -191,7 +191,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - 团队把 traces 当成“非阻塞细节”；
 - ownership 只存在于文档里，on-call 没准备好；
 - rollback plan 实际上只是“出事了再回滚”；
-- capability owners 根本不知道真实 release window；
+- 能力负责人根本不知道真实发布时间窗；
 - safety regressions 没被当成 blocker。
 
 这些都说明上线流程还不是生产级纪律，而只是过于乐观的发布。
@@ -207,7 +207,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - 是否有 rollback plan 和 blast-radius limit？
 - high-risk flows 是否被单独验证，而不是只测了顺畅路径？
 
-如果连续多个答案都是“没有”，那这次上线就应该视为未准备好，即使 demo 看起来很有信心。
+如果连续多个答案都是“没有”，那这次上线就应该视为未准备好，即使演示看起来很有信心。
 
 ## 13. 接下来读什么
 
