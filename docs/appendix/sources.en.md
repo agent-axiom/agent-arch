@@ -73,6 +73,16 @@ Below is the core set of primary sources used in the current version of the book
 - ty, [Official documentation](https://docs.astral.sh/ty/)
 - Starlight, [Official documentation](https://starlight.astro.build/)
 
+## Rust and the platform layer of agent systems
+
+- AWS, [AWS SDK for Rust is generally available](https://aws.amazon.com/about-aws/whats-new/2023/11/aws-sdk-rust/)
+- AWS Docs, [Code examples for Amazon Bedrock Runtime using AWS SDK for Rust](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/rust_bedrock-runtime_code_examples.html)
+- docs.rs, [aws-sdk-bedrockagentruntime](https://docs.rs/aws-sdk-bedrockagentruntime/latest/aws_sdk_bedrockagentruntime/)
+- Microsoft Learn, [Azure SDK for Rust](https://learn.microsoft.com/en-us/azure/developer/rust/sdk/overview)
+- Rig, [Official documentation](https://docs.rig.rs/)
+- docs.rs, [rig-core](https://docs.rs/rig-core)
+- GitHub, [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig)
+
 ## How to use this list
 
 If you continue developing the book, the best reading order is:
