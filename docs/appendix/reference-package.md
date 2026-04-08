@@ -1,4 +1,4 @@
-# Опорный пакет
+# Справочный пакет
 
 В репозитории теперь есть небольшой исполняемый каркас: [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref).
 

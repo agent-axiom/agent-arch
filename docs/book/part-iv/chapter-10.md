@@ -246,7 +246,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 ## 13. Что читать дальше
 
-Part IV уже закрывает базовый execution layer: contracts, sandbox, capability transport и дисциплину вокруг side effects. Дальше очень логично переходить к observability и reliability на уровне всей агентной системы.
+Part IV уже закрывает базовый execution layer: contracts, sandbox, capability transport и дисциплину вокруг side effects. Дальше стоит переходить к observability и reliability на уровне всей агентной системы.
 
 - [Глава 9. Sandbox execution и MCP как контракт интеграции](chapter-9.md)
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)

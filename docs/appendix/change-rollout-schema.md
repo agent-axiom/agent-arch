@@ -176,6 +176,6 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - [Схема eval datasets и grading contract](eval-schema.md)
 - [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
 - [Схема policy bundle и approval contract](policy-bundle-schema.md)
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 - [Глава 18. Чеклист промышленного запуска](../book/part-vii/chapter-18.md)
 - [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)

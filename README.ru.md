@@ -11,7 +11,7 @@
 - сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
 - многоязычная структура документации
 - первая опубликованная часть книги о безопасной архитектуре агентов
-- небольшой опорный пакет с исполняемым примером в `agent_runtime_ref/`
+- небольшой справочный пакет с исполняемым примером в `agent_runtime_ref/`
 - современный Python-first стек на базе `uv`
 
 ## Локальная разработка
@@ -32,9 +32,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-## Опорный пакет
+## Справочный пакет
 
-В репозитории есть минимальный опорный пакет, который можно запустить:
+В репозитории есть минимальный справочный пакет, который можно запустить:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref
@@ -42,7 +42,7 @@ uv run mkdocs build --strict
 
 Это компактная кодовая опора для книги:
 
-- эталонный рантайм и слой политик;
+- справочный рантайм и слой политик;
 - каталог возможностей и approved inventory;
 - память, телеметрия, approvals и rollout checks;
 - lifecycle-артефакты для change record, artifact bundle и retirement plan;
@@ -61,7 +61,7 @@ uv run mkdocs build --strict
 
 Каноническое описание пакета, полный список CLI-команд и обзор конфигов вынесены на отдельную страницу:
 
-- [Опорный пакет](docs/appendix/reference-package.md)
+- [Справочный пакет](docs/appendix/reference-package.md)
 
 ## Опциональные исследовательские зависимости
 

@@ -8,7 +8,7 @@
 
 И опирается на runnable package:
 
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 
 Если страницы про trace schema и eval schema отвечают на вопросы:
 
@@ -197,5 +197,5 @@ approval_contract:
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема eval datasets и grading contract](eval-schema.md)
 - [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 - [Policy templates и checklists по кейсам](policy-templates.md)

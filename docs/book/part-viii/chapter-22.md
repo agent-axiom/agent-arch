@@ -202,7 +202,7 @@ inventory:
     - unversioned_prompt_override
 ```
 
-Такой inventory полезен не потому, что он “красиво выглядит”, а потому что дает платформе явную карту доверенных и недоверенных рабочих паттернов.
+Такой inventory полезен не внешним видом, а тем, что дает платформе явную карту доверенных и недоверенных рабочих паттернов.
 
 ## 11. Пример проверки artifact readiness
 
@@ -259,13 +259,13 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 ## 14. Что читать дальше
 
-После supply chain и artifact discipline логично переходить к последней operational теме этой части: retirement, replacement и end-of-life discipline. Потому что зрелая система должна уметь не только запускаться и исправляться, но и корректно уходить со сцены.
+После supply chain и artifact discipline остается последняя operational тема этой части: retirement, replacement и end-of-life discipline. Зрелая система должна уметь не только запускаться и исправляться, но и корректно уходить со сцены.
 
 ## 15. Полезные справочные страницы
 
 - [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
 - [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
-- [Опорный пакет](../../appendix/reference-package.md)
+- [Справочный пакет](../../appendix/reference-package.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)

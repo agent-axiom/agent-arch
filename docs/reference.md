@@ -15,7 +15,7 @@
 
 1. [Глоссарий терминов](appendix/glossary.md)
 2. [Шпаргалки](appendix/cheat-sheets.md)
-3. [Опорный пакет](appendix/reference-package.md)
+3. [Справочный пакет](appendix/reference-package.md)
 
 ## Схемы и контрактные страницы
 
@@ -29,7 +29,7 @@
 
 ## Практические страницы
 
-- [Опорный пакет](appendix/reference-package.md)
+- [Справочный пакет](appendix/reference-package.md)
 - [Практические кейсы](appendix/case-studies.md)
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
 
@@ -37,5 +37,5 @@
 
 - [С чего начать](start-here.md)
 - [План книги](book/plan.md)
-- [Research frontier: память, наблюдаемость и надежность multi-agent систем](appendix/research-frontier.md)
+- [Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем](appendix/research-frontier.md)
 - [Источники](appendix/sources.md)

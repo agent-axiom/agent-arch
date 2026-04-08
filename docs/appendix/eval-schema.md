@@ -7,7 +7,7 @@
 
 И связывает их с runnable package:
 
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 
 Если страница про trace schema отвечает на вопрос “как описывать то, что произошло внутри run”, то эта страница отвечает на вопрос “как описывать то, что мы хотим от системы на уровне eval artifact”.
 
@@ -218,5 +218,5 @@ grading_rules:
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема policy bundle и approval contract](policy-bundle-schema.md)
 - [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)

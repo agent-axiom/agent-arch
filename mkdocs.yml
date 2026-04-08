@@ -108,7 +108,7 @@ plugins:
             Схема eval datasets и grading contract: Схема eval datasets и grading contract
             Схема policy bundle и approval contract: Схема policy bundle и approval contract
             "Research frontier: память, наблюдаемость и надежность multi-agent систем": "Research frontier: память, наблюдаемость и надежность multi-agent систем"
-            Опорный пакет: Опорный пакет
+            Справочный пакет: Справочный пакет
             Практические кейсы: Практические кейсы
             Policy templates и checklists по кейсам: Шаблоны политик и проверочные списки по кейсам
             Источники: Источники
@@ -343,7 +343,7 @@ nav:
           - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
           - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
       - Practical Assets:
-          - Опорный пакет: appendix/reference-package.md
+          - Справочный пакет: appendix/reference-package.md
           - Практические кейсы: appendix/case-studies.md
           - Policy templates и checklists по кейсам: appendix/policy-templates.md
       - Project Meta:
