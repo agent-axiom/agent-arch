@@ -1,17 +1,17 @@
 # 第 11 章：追踪、跨度与结构化事件
 
-## 1. 为什么普通日志对 agent system 来说几乎总是不够
+## 1. 为什么普通日志对智能体系统来说几乎总是不够
 
-当系统简单时，一些应用日志和少量指标可能就够了。但 agent system 几乎总是更复杂：
+当系统简单时，一些应用日志和少量指标可能就够了。但智能体系统几乎总是更复杂：
 
 - 一个用户请求会变成多步骤 run；
-- run 内部有 planning、retrieval、prompt assembly、tool calls 和 policy gates；
+- run 内部有 planning、retrieval、prompt assembly、工具调用和策略门禁；
 - 某些步骤会被放到后台；
 - 错误出现的位置可能并不是它真正开始的地方。
 
 如果你只用扁平日志看这些东西，很快就会失去因果关系。你能看到噪音，却看不到一次 run 的完整故事。
 
-这就是为什么 agent observability 更适合从 traces 开始，而不是寄希望于事后用 grep 还原真相。
+这就是为什么智能体可观测性更适合从追踪开始，而不是寄希望于事后用 grep 还原真相。
 
 ## 2. Trace 是一次 run 的故事，span 是其中一个有意义的步骤
 
@@ -21,7 +21,7 @@
 - `span` 描述这条路径中的一个有意义步骤；
 - `structured events` 补充那些不该埋在自由文本里的精确信息。
 
-这对 agent systems 特别有用，因为一次 run 可能包含：
+这对智能体系统特别有用，因为一次 run 可能包含：
 
 - policy evaluation；
 - retrieval；
@@ -63,14 +63,14 @@ flowchart LR
 
 </div>
 
-## 4. Structured events 在 plain text 只会碍事的地方最有价值
+## 4. 结构化事件在 plain text 只会碍事的地方最有价值
 
 一个常见错误是：有价值的 operational facts 被写进了给人看的日志里，结果以后既无法分析，也无法调查。
 
-Structured events 尤其适合这些地方：
+结构化事件尤其适合这些地方：
 
 - policy decisions；
-- tool outcomes；
+- 工具结果；
 - prompt assembly metadata；
 - token usage；
 - cost attribution；
@@ -82,7 +82,7 @@ Structured events 尤其适合这些地方：
 
 ## 5. 好的 trace model 展示的是 control plane，而不只是 LLM latency
 
-如果 observability 最终只剩模型响应时间，团队看到的 picture 会非常扭曲。
+如果可观测性最终只剩模型响应时间，团队看到的 picture 会非常扭曲。
 
 在现实里，run 的失败或退化经常发生在别处：
 
