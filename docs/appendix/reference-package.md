@@ -73,7 +73,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-Теперь `inspect-memory` показывает не только содержимое, но и `provenance` с `revision`.
+`inspect-memory` показывает не только содержимое, но и `provenance` с `revision`.
 
 Вывод структурированных событий для одного запуска:
 
@@ -164,7 +164,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-Теперь это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
 ## Почему это полезно
 
