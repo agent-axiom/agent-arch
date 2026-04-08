@@ -1,6 +1,6 @@
-# 第 20 章：智能体系统的 Change Management
+# 第 20 章：智能体系统的变更管理
 
-## 1. 为什么智能体系统需要单独的 change discipline
+## 1. 为什么智能体系统需要单独的变更纪律
 
 当团队已经承认自己不再只是活在 SDLC，而是已经进入 ADLC 之后，下一个非常实际的问题就是：到底什么算变更，以及这些变更应该如何治理？
 
@@ -11,38 +11,38 @@
 - 数据模式变了；
 - 发布了一个版本。
 
-对智能体系统来说，这已经不够。release-bearing surface 更宽，风险也不只来自代码。
+对智能体系统来说，这已经不够。发布承载表面更宽，风险也不只来自代码。
 
-所以 change management 在这里会变成一个独立的 operational function，而不是“有人往 main 推了一点东西”。
+所以变更管理在这里会变成一个独立的运行职能，而不是“有人往 main 推了一点东西”。
 
 !!! info "需要 change 工件？"
     如果你需要更落地的工程层，可以打开 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)、[Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
-## 2. 在智能体系统里，什么都算 change
+## 2. 在智能体系统里，什么都算变更
 
-最好提前把所有真正会改变系统行为的表面都当成 change，而不只是代码：
+最好提前把所有真正会改变系统行为的表面都当成变更，而不只是代码：
 
-- model selection 或 routing；
-- system prompts、routines 和 instructions；
-- policy bundles；
-- capability contracts；
-- approval rules；
-- retrieval corpora；
-- memory write semantics；
-- eval datasets 与 grading logic；
-- rollout parameters。
+- 模型选择或路由；
+- 系统提示、例程和指令；
+- 策略包；
+- 能力契约；
+- 审批规则；
+- 检索语料；
+- 记忆写入语义；
+- 评测数据集与分级逻辑；
+- 发布参数。
 
 如果这些东西被当成“小调优”直接发出去，团队几乎一定会失去对系统行为的控制。
 
-## 3. 不是所有 change 都一样危险
+## 3. 不是所有变更都一样危险
 
-这里非常适合引入一个简单的 change taxonomy。
+这里非常适合引入一个简单的变更分类。
 
 例如：
 
-- `low-risk`：措辞微调、无害的 retrieval tuning、内部 observability changes；
-- `medium-risk`：prompt restructuring、ranking changes、model routing updates；
-- `high-risk`：new write-capabilities、policy relaxations、memory write expansion、egress changes、autonomy expansion。
+- `low-risk`：措辞微调、无害的检索调优、内部可观测性变更；
+- `medium-risk`：提示重构、排序变更、模型路由更新；
+- `high-risk`：新增写入能力、策略放宽、记忆写入扩张、出口变更、自主性扩张。
 
 这不是完美分类，但它至少能帮助团队不再用同一种语气讨论所有变更。
 
@@ -62,49 +62,49 @@ flowchart LR
 
 </div>
 
-## 4. 最常见的错误：把 prompt change 当成“不算正式发布”
+## 4. 最常见的错误：把提示变更当成“不算正式发布”
 
-智能体团队里最常见的一句话是：“我们又没改代码，只是调了一下 system prompt。”
+智能体团队里最常见的一句话是：“我们又没改代码，只是调了一下系统提示。”
 
 这是一种危险的逻辑。
 
-一个 prompt、routine 或 instruction change 可能会：
+一个提示、例程或指令变更可能会：
 
-- 改变 tool selection；
-- 改变 agent 的 risk appetite；
-- 增加 cost；
-- 打乱 escalation discipline；
-- 偏离原有的 policy intent；
-- 在关键场景上降低 performance。
+- 改变工具选择；
+- 改变智能体的风险偏好；
+- 增加成本；
+- 打乱升级纪律；
+- 偏离原有的策略意图；
+- 在关键场景上降低表现。
 
-所以在 production-grade 系统里，prompt change 通常也应该被纳入 release discipline。
+所以在生产级系统里，提示变更通常也应该被纳入发布纪律。
 
-## 5. 最小 change packet 应该是可评审的
+## 5. 最小变更包应该是可评审的
 
-有意义的 change，最好都能被整理成一个小而完整的 reviewable packet：
+有意义的变更，最好都能被整理成一个小而完整的可评审包：
 
 - 改了什么；
 - 为什么改；
-- 这是什么 risk class；
-- 哪些 evals 能覆盖它；
-- 有哪些 rollback hooks；
-- rollout 的 blast radius 是什么。
+- 这是什么风险等级；
+- 哪些评测能覆盖它；
+- 有哪些回滚钩子；
+- 发布的影响半径是什么。
 
 如果一个变更只以“我稍微优化了一下行为”的形式出现，团队几乎不可能做出高质量评审。
 
-## 6. Evals 应该和 change type 绑定
+## 6. 评测应该和变更类型绑定
 
-不是所有 change 都需要同一套验证方式。
+不是所有变更都需要同一套验证方式。
 
 更实用的逻辑通常是：
 
-- prompt 或 routine changes -> task evals、policy-sensitive scenarios、cost checks；
-- policy changes -> deny/allow cases、abuse scenarios、audit coverage；
-- retrieval changes -> relevance checks、leakage checks、context budget checks；
-- tool changes -> contract tests、idempotency checks、approval path validation；
-- model routing changes -> quality、latency、safety、cost deltas。
+- 提示或例程变更 -> 任务评测、策略敏感场景、成本检查；
+- 策略变更 -> 拒绝/允许场景、滥用场景、审计覆盖；
+- 检索变更 -> 相关性检查、泄漏检查、上下文预算检查；
+- 工具变更 -> 契约测试、幂等性检查、审批路径验证；
+- 模型路由变更 -> 质量、延迟、安全、成本差值。
 
-这是一条很重要的实践原则：eval strategy 应该跟 change class 绑定，而不是拿一套通用检查去覆盖所有变更。
+这是一条很重要的实践原则：评测策略应该跟变更类别绑定，而不是拿一套通用检查去覆盖所有变更。
 
 ## 7. High-risk changes 应该经过 formal gates
 

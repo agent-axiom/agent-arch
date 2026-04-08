@@ -1,39 +1,39 @@
-# Approval Request 与 Decision Schema
+# 审批请求与决策模式
 
-这一页描述 agent systems 里 human approval 的最小 contract layer：approval request 长什么样，decision record 长什么样，以及 high-risk action 之后应该在 audit trail 里留下什么。
+这一页描述智能体系统里人工审批的最小契约层：审批请求长什么样，决策记录长什么样，以及高风险动作之后应该在审计轨迹里留下什么。
 
-如果 [policy bundle](policy-bundle-schema.zh.md) 回答的是“当前到底有哪些规则在生效”，那么 approval schema 回答的就是“runtime 如何把最后一道决定权交给人”。
+如果 [策略包](policy-bundle-schema.zh.md) 回答的是“当前到底有哪些规则在生效”，那么审批模式回答的就是“运行时如何把最后一道决定权交给人”。
 
-## 1. 为什么要单独有 approval schema
+## 1. 为什么要单独有审批模式
 
 一种非常常见的失败路径是：
 
-- policy 说某个 action 属于 high-risk；
-- runtime 返回 `approval_required`；
+- 策略说某个动作属于高风险；
+- 运行时返回 `approval_required`；
 - 后面的逻辑全都散落在 UI 或团队口头约定里。
 
 这样会丢掉：
 
-- 稳定的 request 格式；
-- 可审查的 decision record；
+- 稳定的请求格式；
+- 可审查的决策记录；
 - 可重复的 audit trail；
-- approval 与具体 run 或 trace 之间的连接。
+- 审批与具体运行或追踪之间的连接。
 
-所以审批边界最好被建模成 machine-readable contract，而不是界面上的一颗按钮。
+所以审批边界最好被建模成机器可读的契约，而不是界面上的一颗按钮。
 
 ## 2. 核心实体
 
-一个最小可用的 approval schema，通常围绕三个实体：
+一个最小可用的审批模式，通常围绕三个实体：
 
 - `approval_request`
 - `approval_decision`
 - `approval_audit_record`
 
-这已经足够把 policy layer、runtime、trace schema 和生命周期工件串起来。
+这已经足够把策略层、运行时、追踪模式和生命周期工件串起来。
 
-## 3. Approval request
+## 3. 审批请求
 
-`approval_request` 会在 runtime 遇到不能自动继续的 action 时被创建。
+`approval_request` 会在运行时遇到不能自动继续的动作时被创建。
 
 ```yaml
 kind: approval_request
@@ -57,12 +57,12 @@ status: pending
 
 这里最重要的是：
 
-- `trace_id` 和 `session_id` 把 approval 绑到 run history 上；
-- `capability` 和 `requested_action` 防止 approval 退化成抽象的 yes/no；
+- `trace_id` 和 `session_id` 把审批绑到运行历史上；
+- `capability` 和 `requested_action` 防止审批退化成抽象的是或否；
 - `required_role` 让“谁都能看一眼”与“真正有权限批准的人”区分开；
-- `requested_fields` 固定了人类真正批准的 payload。
+- `requested_fields` 固定了人类真正批准的载荷。
 
-## 4. Approval decision
+## 4. 审批决策
 
 `approval_decision` 用来表达人到底做了什么决定，以及依据是什么。
 
@@ -80,8 +80,8 @@ expires_at: 2026-04-07T12:00:00Z
 
 这里的关键不变量是：
 
-- decision 必须指向具体的 `approval_id`；
-- `decided_by` 和 `role` 要能进入 audit；
+- 决策必须指向具体的 `approval_id`；
+- `decided_by` 和 `role` 要能进入审计；
 - `scope` 必须明确；
 - `expires_at` 对于不能长期复用的 approval 很重要。
 

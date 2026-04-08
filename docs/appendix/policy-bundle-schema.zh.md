@@ -1,54 +1,54 @@
-# Policy Bundle Schema 与 Approval Contract
+# 策略包模式与审批契约
 
 这一页把书里已经写过的几个主题连起来：
 
 - [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
-- [第 20 章：智能体系统的 Change Management](../book/part-viii/chapter-20.zh.md)
+- [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
 
-同时它也依赖可运行的 package：
+同时它也依赖可运行的参考包：
 
 - [参考包](reference-package.zh.md)
 
-如果 trace schema 和 eval schema 那两页回答的是：
+如果追踪模式和评测模式那两页回答的是：
 
 - 如何描述实际行为；
 - 如何描述期望行为；
 
 那么这一页回答的就是第三个问题：
 
-- 如何描述位于 reasoning 和 side effects 之间的治理规则。
+- 如何描述位于推理和副作用之间的治理规则。
 
-## 为什么要把 policy bundle 当成工件
+## 为什么要把策略包当成工件
 
-在 agent systems 里，一个很常见的问题是：
+在智能体系统里，一个很常见的问题是：
 
-- policy rules 一部分藏在 prompt 里；
+- 策略规则一部分藏在提示里；
 - 一部分在 gateway 代码里；
-- 一部分在 approval UI 里；
+- 一部分在审批界面里；
 - 一部分只存在于团队脑子里。
 
-系统还小时也许能勉强运转，但一旦进入 change management、audit 和分阶段上线，这种 policy layer 就会变得太模糊。
+系统还小时也许能勉强运转，但一旦进入变更管理、审计和分阶段上线，这种策略层就会变得太模糊。
 
 所以最好把 `policy bundle` 视作一个一等工件。
 
-## 什么是 policy bundle
+## 什么是策略包
 
 这里可以把 `policy bundle` 理解为一组作为整体发布的相关规则：
 
-- runtime policy；
-- tool policy；
-- approval policy；
-- memory write rules；
-- escalation rules；
-- egress rules。
+- 运行时策略；
+- 工具策略；
+- 审批策略；
+- 记忆写入规则；
+- 升级规则；
+- 出口规则。
 
 重点不在于所有内容必须塞进一个 YAML 文件，而在于这个 bundle 应该是：
 
-- versioned；
-- reviewable；
-- traceable；
-- releasable。
+- 可版本化；
+- 可评审；
+- 可追溯；
+- 可发布。
 
 ## 最小 policy bundle 结构
 
@@ -67,30 +67,30 @@ bundle:
     - controls.yaml
 ```
 
-这里还不是具体规则本身，而是一个 envelope，用来回答：
+这里还不是具体规则本身，而是一个信封结构，用来回答：
 
-“对于这套 agent system，我们到底把哪些东西视为当前的 policy 工件？”
+“对于这套智能体系统，我们到底把哪些东西视为当前的策略工件？”
 
-## 为什么 approval contract 不能只写在 prose 里
+## 为什么审批契约不能只写在叙述文字里
 
-Approval logic 经常只是这样被描述：
+审批逻辑经常只是这样被描述：
 
 - “高风险动作需要确认”；
-- “manager 负责批准建 ticket”；
-- “危险动作需要 security sign-off”。
+- “经理负责批准建单”；
+- “危险动作需要安全团队签字”。
 
 这远远不够。
 
-更好的做法是把 approval contract 写清楚：
+更好的做法是把审批契约写清楚：
 
-- 谁可以 approve；
-- 哪类 action 需要 approval；
-- approval request 必须带哪些字段；
+- 谁可以批准；
+- 哪类动作需要审批；
+- 审批请求必须带哪些字段；
 - 允许哪些决策；
-- reject 之后会发生什么；
-- audit trail 里必须留下什么。
+- 拒绝之后会发生什么；
+- 审计轨迹里必须留下什么。
 
-## approval contract 示例
+## 审批契约示例
 
 下面是一个可工作的 skeleton：
 
@@ -112,7 +112,7 @@ approval_contract:
   on_reject: stop_run
 ```
 
-重点很简单：approval 应该是 machine-readable operational contract，而不只是 UI 上的一颗按钮。
+重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。
 
 ## policy bundle 和 lifecycle 的关系
 
