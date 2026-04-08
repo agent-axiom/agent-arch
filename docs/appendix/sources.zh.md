@@ -1,6 +1,6 @@
 # 参考来源
 
-下面是当前版本书籍所依赖的核心一手来源。访问日期：**2026 年 3 月 29 日**。
+下面是本书当前版本所依赖的核心一手来源。访问日期：**2026 年 3 月 29 日**。
 
 ## 智能体架构与模式
 
@@ -16,7 +16,7 @@
 - Google Cloud, [Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 - Google Cloud Architecture Center, [Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
 
-## 可靠性、记忆与 HITL
+## 可靠性、记忆与人工介入
 
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 - LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)

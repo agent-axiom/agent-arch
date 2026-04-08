@@ -4,7 +4,7 @@
 
 它的目标不是变成生产级框架，而是作为本书 **第七和第八部分** 的最小代码锚点。
 
-这里是这个包的主说明页面。README 里只保留简短的快速上手，完整的命令行、配置和结构说明都集中放在这里。
+这里是这个包的主说明页面。README 里只保留简短的上手说明，完整的命令行、配置和结构说明都集中放在这里。
 
 ## 里面有什么
 
@@ -21,9 +21,9 @@
 - [memory.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/memory.py)
   类型化记忆记录、来源证明、修订号以及按租户隔离的内存存储。
 - [background.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/background.py)
-  负责持久化记忆写入、基于来源证明的保存和压缩整理的后台维护路径。
+  负责持久化记忆写入、基于来源证明的保存，以及压缩整理的后台维护路径。
 - [execution.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/execution.py)
-  一个通过契约感知执行来分发能力的简单层，同时考虑风险等级与出口策略。
+  一个按契约分发能力的简单执行层，同时考虑风险等级与出口策略。
 - [telemetry.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/telemetry.py)
   用于结构化事件和跨度的内存遥测发射器。
 - [rollout.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/rollout.py)
@@ -81,7 +81,7 @@
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
 ```
 
-把事件导出为 JSONL，方便后续排查和重放：
+把事件导出为 JSONL，方便后续排查和回放：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
@@ -117,7 +117,7 @@
 .venv/bin/python -m agent_runtime_ref check-controls --signal registry_reviewed=false
 ```
 
-查看并处理 demo approval requests：
+查看并处理演示用审批请求：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-approvals
@@ -130,7 +130,7 @@
 ```
 
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。
-`session-eval-summary` 会返回这一组运行的紧凑运行摘要。
+`session-eval-summary` 会返回这一组运行的紧凑摘要。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件。
@@ -164,32 +164,32 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例了。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略和生命周期工件，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略和生命周期工件，所以这个包已经更接近真实的运行骨架。
 
 ## 为什么它有用
 
 这本书现在不只依赖文档里的文字说明，也依赖真实的代码骨架：
 
 - 更容易在文件和契约的层面讨论架构；
-- 更容易继续往这个包里加示例；
+- 更容易继续往这个包里补充示例；
 - 更容易从章节直接走到可运行的原型；
-- 更容易展示配置驱动的路径，而不只是硬编码演示；
+- 更容易展示配置驱动的路径，而不只是硬编码的演示；
 - 更容易把参考运行时和记忆、检索、后台更新这些章节连起来。
 - 更容易讨论每条记忆是从哪里来的，以及它当前属于哪一个 revision。
 
-现在还有一个很实用的改进：
+现在还有几项很实用的能力：
 
 - `inspect-memory` 可以直接展示预置记忆，以及按 `tenant` 和 `memory_class` 过滤后的结果；
-- `dump-events` 可以在不读源代码的情况下，直接看到一次运行的结构化追踪；
+- `dump-events` 可以在不读源代码的情况下直接看到一次运行的结构化追踪；
 - `export-events` 可以把这条追踪保存成 JSONL，便于脱离进程分析；
-- `export-events` 现在会带上 `schema_version`，也支持按字段做导出时脱敏；
+- `export-events` 现在会带上 `schema_version`，也支持按字段在导出时脱敏；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
 
 ## 延伸阅读
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与分级契约](eval-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
