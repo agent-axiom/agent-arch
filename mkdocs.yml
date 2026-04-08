@@ -57,7 +57,7 @@ plugins:
           nav_translations:
             Главная: Главная
             Start Here: С чего начать
-            Reference: Справка
+            Reference: Справочный слой
             "What's New": Что нового
             Книга: Книга
             План книги: План книги
@@ -96,7 +96,7 @@ plugins:
             "Глава 22. Supply chain, provenance и approved artifacts": "Глава 22. Supply chain, provenance и approved artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Глава 23. Retirement, replacement и end-of-life discipline"
             Приложения: Приложения
-            Concepts: Концепты
+            Concepts: Обзорные страницы
             Schemas: Схемы
             Practical Assets: Практические артефакты
             Project Meta: О проекте
@@ -105,12 +105,16 @@ plugins:
             Глоссарий терминов: Глоссарий терминов
             Шпаргалки: Шпаргалки
             Схема трасс и каталог событий: Схема трасс и каталог событий
-            Схема eval datasets и grading contract: Схема eval datasets и grading contract
-            Схема policy bundle и approval contract: Схема policy bundle и approval contract
-            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "Research frontier: память, наблюдаемость и надежность multi-agent систем"
+            Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
+            Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
+            Схема запроса на подтверждение и записи о решении: Схема запроса на подтверждение и записи о решении
+            Схема проверки изменений и шлюза раскатки: Схема проверки изменений и шлюза раскатки
+            Схема артефактов жизненного цикла: Схема артефактов жизненного цикла
+            Схема записей памяти и контракта извлечения: Схема записей памяти и контракта извлечения
+            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем"
             Справочный пакет: Справочный пакет
             Практические кейсы: Практические кейсы
-            Policy templates и checklists по кейсам: Шаблоны политик и проверочные списки по кейсам
+            Шаблоны политик и проверочные списки по кейсам: Шаблоны политик и проверочные списки по кейсам
             Источники: Источники
         - locale: en
           name: English
@@ -168,12 +172,16 @@ plugins:
             Глоссарий терминов: Glossary
             Шпаргалки: Cheat Sheets
             Схема трасс и каталог событий: Trace Schema and Event Catalog
-            Схема eval datasets и grading contract: Eval Dataset Schema and Grading Contract
-            Схема policy bundle и approval contract: Policy Bundle Schema and Approval Contract
-            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "Research Frontier: Memory, Observability, and Multi-Agent Reliability"
-            Опорный пакет: Reference Package
+            Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
+            Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
+            Схема запроса на подтверждение и записи о решении: Approval Request and Decision Schema
+            Схема проверки изменений и шлюза раскатки: Change Review and Rollout Gate Schema
+            Схема артефактов жизненного цикла: Lifecycle Artifact Schema
+            Схема записей памяти и контракта извлечения: Memory Record and Retrieval Contract Schema
+            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "Research Frontier: Memory, Observability, and Multi-Agent Reliability"
+            Справочный пакет: Reference Package
             Практические кейсы: Practical Case Studies
-            Policy templates и checklists по кейсам: Policy Templates and Checklists by Use Case
+            Шаблоны политик и проверочные списки по кейсам: Policy Templates and Checklists by Use Case
             Источники: Sources
         - locale: zh
           name: 中文
@@ -231,12 +239,16 @@ plugins:
             Глоссарий терминов: 术语表
             Шпаргалки: 速查清单
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
-            Схема eval datasets и grading contract: Eval Dataset Schema 与 Grading Contract
-            Схема policy bundle и approval contract: Policy Bundle Schema 与 Approval Contract
-            "Research frontier: память, наблюдаемость и надежность multi-agent систем": "研究前沿：记忆、可观测性与多智能体可靠性"
-            Опорный пакет: 参考包
+            Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
+            Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
+            Схема запроса на подтверждение и записи о решении: Approval Request 与 Decision Schema
+            Схема проверки изменений и шлюза раскатки: Change Review 与 Rollout Gate Schema
+            Схема артефактов жизненного цикла: Lifecycle Artifact Schema
+            Схема записей памяти и контракта извлечения: Memory Record 与 Retrieval Contract Schema
+            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "研究前沿：记忆、可观测性与多智能体可靠性"
+            Справочный пакет: 参考运行时包
             Практические кейсы: 实战案例
-            Policy templates и checklists по кейсам: 按场景组织的 Policy Templates 与 Checklists
+            Шаблоны политик и проверочные списки по кейсам: 按场景组织的 Policy Templates 与 Checklists
             Источники: 参考来源
   - search
   - glightbox
@@ -333,19 +345,19 @@ nav:
       - Concepts:
           - Глоссарий терминов: appendix/glossary.md
           - Шпаргалки: appendix/cheat-sheets.md
-          - "Research frontier: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
+          - "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
       - Schemas:
           - Схема трасс и каталог событий: appendix/trace-schema.md
-          - Схема eval datasets и grading contract: appendix/eval-schema.md
-          - Схема policy bundle и approval contract: appendix/policy-bundle-schema.md
-          - Схема approval request и decision record: appendix/approval-schema.md
-          - Схема change review и rollout gate: appendix/change-rollout-schema.md
-          - Схема lifecycle-артефактов: appendix/lifecycle-artifact-schema.md
-          - Схема memory records и retrieval contract: appendix/memory-retrieval-schema.md
+          - Схема наборов для оценки и правил проверки: appendix/eval-schema.md
+          - Схема набора политик и контракта подтверждения: appendix/policy-bundle-schema.md
+          - Схема запроса на подтверждение и записи о решении: appendix/approval-schema.md
+          - Схема проверки изменений и шлюза раскатки: appendix/change-rollout-schema.md
+          - Схема артефактов жизненного цикла: appendix/lifecycle-artifact-schema.md
+          - Схема записей памяти и контракта извлечения: appendix/memory-retrieval-schema.md
       - Practical Assets:
           - Справочный пакет: appendix/reference-package.md
           - Практические кейсы: appendix/case-studies.md
-          - Policy templates и checklists по кейсам: appendix/policy-templates.md
+          - Шаблоны политик и проверочные списки по кейсам: appendix/policy-templates.md
       - Project Meta:
           - Выбор стека публикации: appendix/stack.md
           - Дорожная карта для сообщества: appendix/community-roadmap.md

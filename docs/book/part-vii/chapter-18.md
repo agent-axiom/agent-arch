@@ -216,8 +216,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 ## 14. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
 - [Глава 17. Слой политик и каталог возможностей](chapter-17.md)
 - [Часть VII. Эталонная реализация](index.md)

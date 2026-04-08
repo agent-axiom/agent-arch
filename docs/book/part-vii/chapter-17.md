@@ -233,8 +233,8 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 ## 13. Полезные справочные страницы
 
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
 - [Глава 16. Базовая схема рантайма](chapter-16.md)

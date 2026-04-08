@@ -289,8 +289,8 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 ## 14. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
-- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 12. SLO для агентных систем](chapter-12.md)

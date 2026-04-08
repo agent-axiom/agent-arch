@@ -149,9 +149,9 @@
 
 ## См. также
 
-- [Схема memory records и retrieval contract](memory-retrieval-schema.md)
+- [Схема записей памяти и контракта извлечения](memory-retrieval-schema.md)
 - [Схема трасс и каталог событий](trace-schema.md)
-- [Схема eval datasets и grading contract](eval-schema.md)
+- [Схема наборов для оценки и правил проверки](eval-schema.md)
 - [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](../book/part-iii/chapter-7.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
 - [Практика. MCP для инструментов, A2A для агентов](../book/part-iv/practical-mcp-a2a.md)

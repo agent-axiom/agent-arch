@@ -1,4 +1,4 @@
-# Схема lifecycle-артефактов
+# Схема артефактов жизненного цикла
 
 Эта страница собирает в одном месте минимальный contract layer для lifecycle-артефактов: change record, approved artifact bundle и retirement plan. Если trace schema отвечает на вопрос "что произошло", а eval schema отвечает на вопрос "как это оценивать", то lifecycle artifact schema отвечает на вопрос "что именно было одобрено, изменено, заменено или выведено из эксплуатации".
 
@@ -169,8 +169,8 @@ owner: platform-operations
 ## См. также
 
 - [Схема трасс и каталог событий](trace-schema.md)
-- [Схема eval datasets и grading contract](eval-schema.md)
-- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Схема наборов для оценки и правил проверки](eval-schema.md)
+- [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](../book/part-viii/chapter-22.md)

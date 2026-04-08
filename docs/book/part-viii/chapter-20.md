@@ -247,9 +247,9 @@ def classify_change(change: ChangeRequest) -> str:
 
 ## 16. Полезные справочные страницы
 
-- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)

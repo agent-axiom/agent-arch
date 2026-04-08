@@ -180,7 +180,7 @@ excluded_records: 12
 
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема наборов для оценки и правил проверки](eval-schema.md)
-- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
+- [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 5. Зачем агенту память и почему она опасна](../book/part-iii/chapter-5.md)
 - [Глава 6. Short-term, long-term и profile memory](../book/part-iii/chapter-6.md)

@@ -1,4 +1,4 @@
-# Схема approval request и decision record
+# Схема запроса на подтверждение и записи о решении
 
 Эта страница описывает минимальный контрактный слой для human approval в agent systems: какие данные должен содержать запрос на подтверждение, как фиксируется решение и что должно остаться в audit trail после high-risk действия.
 
@@ -189,9 +189,9 @@ Approval schema отвечает на другой слой:
 
 ## См. также
 
-- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Схема трасс и каталог событий](trace-schema.md)
-- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
+- [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 4. Tool gateway, approval и audit trail](../book/part-ii/chapter-4.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)

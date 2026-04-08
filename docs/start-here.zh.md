@@ -133,21 +133,21 @@
 - [第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 
-### 我需要设计记忆与 retrieval 纪律
+### 我需要设计记忆与检索纪律
 
 - [第 5 章：为什么智能体需要记忆，以及它为何危险](book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](book/part-iii/chapter-6.zh.md)
 - [第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
 
-### 我需要 observability 和 evals
+### 我需要可观测性与评测
 
 - [第 11 章：追踪、跨度与结构化事件](book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 - [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
 
-### 我需要 rollout 与 governance
+### 我需要上线治理与发布控制
 
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的 Change Management](book/part-viii/chapter-20.zh.md)
@@ -172,7 +172,7 @@
 
 - [打开全书计划](book/plan.zh.md){ .md-button .md-button--primary }
 - [进入第一部分](book/part-i/index.zh.md){ .md-button }
-- [查看参考包](appendix/reference-package.zh.md){ .md-button }
+- [查看参考运行时包](appendix/reference-package.zh.md){ .md-button }
 
 如果你想参与贡献：
 

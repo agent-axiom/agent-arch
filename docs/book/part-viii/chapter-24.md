@@ -201,10 +201,10 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 ## 12. Полезные справочные страницы
 
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
-- [Схема approval request и decision record](../../appendix/approval-schema.md)
-- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
-- [Схема lifecycle artifacts](../../appendix/lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема запроса на подтверждение и записи о решении](../../appendix/approval-schema.md)
+- [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)

@@ -222,10 +222,10 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 ## 14. Полезные справочные страницы
 
-- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
-- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)

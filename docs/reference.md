@@ -20,12 +20,12 @@
 ## Схемы и контрактные страницы
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
-- [Схема eval-наборов и контракта на проверку](appendix/eval-schema.md)
-- [Схема policy bundle и approval-контракта](appendix/policy-bundle-schema.md)
+- [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
+- [Схема набора политик и контракта подтверждения](appendix/policy-bundle-schema.md)
 - [Схема запроса на подтверждение и записи о решении](appendix/approval-schema.md)
-- [Схема change review и rollout gate](appendix/change-rollout-schema.md)
-- [Схема lifecycle-артефактов](appendix/lifecycle-artifact-schema.md)
-- [Схема записей памяти и retrieval-контракта](appendix/memory-retrieval-schema.md)
+- [Схема проверки изменений и шлюза раскатки](appendix/change-rollout-schema.md)
+- [Схема артефактов жизненного цикла](appendix/lifecycle-artifact-schema.md)
+- [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
 
 ## Практические страницы
 

@@ -6,7 +6,7 @@
 
 [С чего начать](start-here.md){ .md-button .md-button--primary }
 [Открыть план книги](book/plan.md){ .md-button }
-[Посмотреть опорный пакет](appendix/reference-package.md){ .md-button }
+[Посмотреть справочный пакет](appendix/reference-package.md){ .md-button }
 
 <div class="book-cover" markdown="1">
 
@@ -25,7 +25,7 @@
 
 - Маршрут от workflow к agent system без преждевременного усложнения.
 - Практические главы про policy layer, approvals, memory, evals и lifecycle.
-- Исполняемый опорный рантайм с экспортом сессий, экспортом eval-наборов, подтверждениями, контролями и артефактами жизненного цикла.
+- Исполняемый справочный рантайм с экспортом сессий, экспортом eval-наборов, подтверждениями, контролями и артефактами жизненного цикла.
 - Справочные схемы для traces, eval datasets, policy bundles, approvals, rollout gates, memory retrieval и lifecycle artifacts.
 - Кейсы, чеклисты и шаблоны политик, которые можно брать как стартовые артефакты.
 
@@ -33,7 +33,7 @@
 
 - `Published core`: восемь частей книги уже опубликованы.
 - `Expanding now`: усиливаются входные страницы, справочный слой и навигация.
-- `Reference assets available`: уже есть схемы, чеклисты, кейсы и исполняемый опорный рантайм.
+- `Справочные материалы доступны`: уже есть схемы, чеклисты, кейсы и исполняемый справочный рантайм.
 
 ## Три удобных маршрута чтения
 
@@ -79,10 +79,10 @@
 Если тебе нужны не только главы, но и готовые артефакты, начни с этих страниц:
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
-- [Схема eval-наборов и контракта на проверку](appendix/eval-schema.md)
-- [Схема policy bundle и approval-контракта](appendix/policy-bundle-schema.md)
-- [Схема lifecycle-артефактов](appendix/lifecycle-artifact-schema.md)
-- [Схема записей памяти и retrieval-контракта](appendix/memory-retrieval-schema.md)
+- [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
+- [Схема набора политик и контракта подтверждения](appendix/policy-bundle-schema.md)
+- [Схема артефактов жизненного цикла](appendix/lifecycle-artifact-schema.md)
+- [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
 
 ## Дальше по сайту
 

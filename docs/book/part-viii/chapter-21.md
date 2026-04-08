@@ -262,8 +262,8 @@ def emergency_action(signal: AssuranceSignal) -> str:
 ## 15. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
-- [Схема eval datasets и grading contract](../../appendix/eval-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)

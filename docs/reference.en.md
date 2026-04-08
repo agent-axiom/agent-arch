@@ -15,7 +15,7 @@ For a short path in, start with:
 
 1. [Glossary](appendix/glossary.en.md)
 2. [Cheat Sheets](appendix/cheat-sheets.en.md)
-3. [Reference Runtime Package](appendix/reference-package.en.md)
+3. [Reference Package](appendix/reference-package.en.md)
 
 ## Schemas and contract pages
 
@@ -29,7 +29,7 @@ For a short path in, start with:
 
 ## Practical pages
 
-- [Reference Runtime Package](appendix/reference-package.en.md)
+- [Reference Package](appendix/reference-package.en.md)
 - [Case Studies](appendix/case-studies.en.md)
 - [Policy Templates and Checklists by Use Case](appendix/policy-templates.en.md)
 

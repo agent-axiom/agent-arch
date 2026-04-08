@@ -264,7 +264,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 ## 15. Полезные справочные страницы
 
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)

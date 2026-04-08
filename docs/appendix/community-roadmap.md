@@ -136,5 +136,5 @@
 
 - [Главная](../index.md)
 - [План книги](../book/plan.md)
-- [Опорный пакет](reference-package.md)
+- [Справочный пакет](reference-package.md)
 - [Источники](sources.md)

@@ -253,10 +253,10 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 ## 14. Полезные справочные страницы
 
-- [Схема lifecycle artifacts](../../appendix/lifecycle-artifact-schema.md)
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
-- [Схема approval request и decision record](../../appendix/approval-schema.md)
-- [Схема trace и event catalog](../../appendix/trace-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема запроса на подтверждение и записи о решении](../../appendix/approval-schema.md)
+- [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)

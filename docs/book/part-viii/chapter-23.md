@@ -246,8 +246,8 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 ## 15. Полезные справочные страницы
 
-- [Схема lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md)
-- [Схема policy bundle и approval contract](../../appendix/policy-bundle-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)

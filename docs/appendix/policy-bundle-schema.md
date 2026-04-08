@@ -196,6 +196,6 @@ approval_contract:
 
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема наборов для оценки и правил проверки](eval-schema.md)
-- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
+- [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Шаблоны политик и проверочные списки по кейсам](policy-templates.md)

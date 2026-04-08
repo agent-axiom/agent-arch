@@ -1,4 +1,4 @@
-# Схема change review и rollout gate
+# Схема проверки изменений и шлюза раскатки
 
 Эта страница собирает в одном месте минимальный контрактный слой для change review и rollout gate в агентных системах. Он нужен в тот момент, когда команда уже понимает, что изменения в policy, prompt, model routing, retrieval или tool exposure нельзя выпускать "по ощущению", но еще не оформила эти проверки в явные артефакты.
 
@@ -173,9 +173,9 @@ Rollout gate особенно полезен, когда trace schema уже с�
 
 ## См. также
 
-- [Схема eval datasets и grading contract](eval-schema.md)
-- [Схема lifecycle-артефактов](lifecycle-artifact-schema.md)
-- [Схема policy bundle и approval contract](policy-bundle-schema.md)
+- [Схема наборов для оценки и правил проверки](eval-schema.md)
+- [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
+- [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 18. Чеклист промышленного запуска](../book/part-vii/chapter-18.md)
 - [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)
