@@ -1,28 +1,28 @@
 # 第 22 章：供应链、来源追踪与已批准工件
 
-## 1. 为什么 agent systems 的供应链比普通服务更宽
+## 1. 为什么智能体系统的供应链比普通服务更宽
 
 当工程师听到“software supply chain”时，通常会想到一些熟悉的东西：
 
-- package dependencies；
-- containers；
+- 包依赖；
+- 容器；
 - CI/CD 工件；
-- build outputs 的签名和 provenance。
+- 构建产物的签名和来源证明。
 
-但对 agent systems 来说，这还不够。
+但对智能体系统来说，这还不够。
 
 问题在于，production behavior 在这里不只依赖代码。它还依赖：
 
-- model 工件；
-- prompt 和 routine bundles；
-- policy configs；
-- retrieval corpora；
-- capability contracts；
-- eval datasets；
-- approval rules；
-- rollout 工件包。
+- 模型工件；
+- 提示和例程包；
+- 策略配置；
+- 检索语料；
+- 能力契约；
+- 评测数据集；
+- 审批规则；
+- 发布工件包。
 
-也就是说，agent 的 supply chain 更宽，是因为系统本身就更宽。
+也就是说，智能体的供应链更宽，是因为系统本身就更宽。
 
 ## 2. 什么是智能体系统里的已批准工件
 
@@ -32,49 +32,49 @@
 
 这意味着已批准工件不只是镜像或 wheel 文件。
 
-在 agent platform 里，它们往往包括：
+在智能体平台里，它们往往包括：
 
-- approved model route；
-- approved prompt bundle；
-- approved policy bundle；
-- approved capability contract；
-- approved retrieval source；
-- approved eval set；
-- approved rollout template。
+- 已批准的模型路由；
+- 已批准的提示包；
+- 已批准的策略包；
+- 已批准的能力契约；
+- 已批准的检索来源；
+- 已批准的评测集；
+- 已批准的发布模板。
 
 如果团队没有这个概念，就很容易落入一种隐式信任：“这个工件应该没问题，因为之前有人用过。”
 
 ## 3. Provenance 是为了回答非常实际的问题
 
-Google Research 的一个关键观点是：AI systems 的 provenance 不只是 formal security idea，它也是 operational necessity。[^google-supply-chain]
+Google Research 的一个关键观点是：AI 系统的来源证明不只是正式安全概念，它也是运行上的必需品。[^google-supply-chain]
 
 你必须能快速回答：
 
-- 这个 model 从哪里来；
-- 现在激活的是哪一个 prompt bundle；
-- 事故发生时生效的是哪一个 policy config；
-- 当时使用的是哪一版 retrieval corpus；
-- release 是被哪一个 eval set 验证的；
-- 这个 change 是谁批准的。
+- 这个模型从哪里来；
+- 现在激活的是哪一个提示包；
+- 事故发生时生效的是哪一个策略配置；
+- 当时使用的是哪一版检索语料；
+- 发布是被哪一个评测集验证的；
+- 这个变更是谁批准的。
 
 如果这些问题无法快速回答，change management 和 incident review 很快就会失控。
 
 !!! info "需要 supply-chain 工件？"
     如果你需要契约层视角，可以直接查看 [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)、[Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md) 和 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)。
 
-## 4. 智能体需要多条 chains of trust，而不是一条
+## 4. 智能体需要多条信任链，而不是一条
 
 在普通系统里，团队通常只想一条信任链： “代码在 CI 里构建过，容器也签名了，所以没问题。”
 
-对 agent systems 来说，更好的思路是维护多条相互连接的信任链：
+对智能体系统来说，更好的思路是维护多条相互连接的信任链：
 
-- code and build chain；
-- model chain；
-- prompt and routine chain；
-- policy chain；
-- capability chain；
-- data and retrieval chain；
-- eval chain。
+- 代码与构建链；
+- 模型链；
+- 提示与例程链；
+- 策略链；
+- 能力链；
+- 数据与检索链；
+- 评测链。
 
 <div class="diagram-card">
 <p>与其只想一条 supply chain，不如把它看成几条相互关联的 chains of trust</p>

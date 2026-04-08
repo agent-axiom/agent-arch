@@ -1,18 +1,18 @@
 # 生命周期工件规范
 
-这一页把生命周期工件的最小契约层放在一起：change record、approved artifact bundle 和 retirement plan。如果 trace schema 回答的是“发生了什么”，eval schema 回答的是“如何评估”，那 lifecycle artifact schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
+这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪模式回答的是“发生了什么”，评测模式回答的是“如何评估”，那生命周期工件规范回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
 
 ## 1. 为什么需要它
 
-生产级 agent system 里有几类东西，不能只放在团队脑子里或者 wiki 里：
+生产级智能体系统里有几类东西，不能只放在团队脑子里或者 wiki 里：
 
-- change records；
+- 变更记录；
 - 已批准工件包；
-- retirement plans；
-- replacement mappings；
+- 退役计划；
+- 替换映射；
 - 运行期审批和生命周期决策。
 
-没有这一层，change management 很快就会退化成口头协商。incident review 也会变成“到底是谁大概改了 policy 或 routing”的追溯游戏。
+没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
 ## 2. 核心实体
 
@@ -22,11 +22,11 @@
 - `artifact_bundle`
 - `retirement_plan`
 
-这已经足够把 design review、release gate、assurance loop 和终止使用纪律串起来。
+这已经足够把设计评审、发布门禁、保障闭环和终止使用纪律串起来。
 
 ## 3. Change record
 
-`change_record` 用来描述一个具体变更，以及它的 operational semantics。
+`change_record` 用来描述一个具体变更，以及它的运行语义。
 
 最小字段可以是：
 
@@ -56,9 +56,9 @@ status: approved
 这里最关键的是：
 
 - `affected_surfaces` 不允许团队假装这是一个“小改动”；
-- `eval_requirements` 把 change management 直接连到 eval loop；
+- `eval_requirements` 把变更管理直接连到评测闭环；
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
-- `status` 是 operational fact，而不是流程摆设。
+- `status` 是运行事实，而不是流程摆设。
 
 ## 4. 已批准工件包
 
@@ -87,11 +87,11 @@ provenance:
 这一层的价值主要有两个：
 
 - 它把“工件存在”与“工件被批准上线”分开；
-- 它让 incident review 和 rollback 都更短、更明确。
+- 它让事故复盘和回滚都更短、更明确。
 
 ## 5. Retirement plan
 
-`retirement_plan` 不只是给整个 agent 下线用的。它同样适用于 capability、policy bundle 或工件族的受控替换。
+`retirement_plan` 不只是给整个智能体下线用的。它同样适用于能力、策略包或工件族的受控替换。
 
 ```yaml
 kind: retirement_plan
@@ -115,20 +115,20 @@ owner: platform-operations
 
 它最有价值的地方，在于它逼着团队去考虑 replacement 之后还会留下什么：
 
-- traces；
-- approvals；
-- principals；
-- memory；
+- 追踪；
+- 审批；
+- 主体；
+- 记忆；
 - 已归档的工件包。
 
 ## 6. 它和 Part VIII 的关系
 
 这个 schema 直接支撑了几章核心内容：
 
-- Chapter 20：change management；
-- Chapter 21：assurance findings 作为生命周期输入；
-- Chapter 22：approved artifacts 与 provenance；
-- Chapter 23：replacement 与 retirement。
+- 第 20 章：变更管理；
+- 第 21 章：保障发现结果作为生命周期输入；
+- 第 22 章：已批准工件与来源证明；
+- 第 23 章：替换与退役。
 
 所以生命周期工件最好不要只写成纯文字文档，而应该作为可评审的 YAML 或 JSON 契约来管理。
 
@@ -136,42 +136,42 @@ owner: platform-operations
 
 一个健康的生命周期工件层，至少应该保证：
 
-- 每个 high-risk change 都有 `change_record`；
+- 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
-- 生命周期工件有 owner 和 version；
-- incident review 能还原 `change -> bundle -> run -> retirement`。
+- 生命周期工件有负责人和版本；
+- 事故复盘能还原 `change -> bundle -> run -> retirement`。
 
 ## 8. 最常见的断裂点
 
 常见问题通常很像：
 
 - 工件包只存在于“大家默认知道”，却不是正式工件；
-- change record 和 eval requirements 断开；
-- retirement 只存在于 roadmap，没有落到 operational config；
-- replacement 没有 dual-run semantics；
-- historical state 没有 retention owner；
-- provenance 只到 git commit，进不了 runtime 工件包。
+- 变更记录和评测要求断开；
+- 退役只存在于路线图，没有落到运行配置；
+- 替换没有双运行语义；
+- 历史状态没有保留负责人；
+- 来源证明只到 git commit，进不了运行时工件包。
 
 ## 9. 实用检查清单
 
 你可以快速问自己：
 
-- high-risk changes 是否有显式的 change records？
+- 高风险变更是否有显式的变更记录？
 - 你是否真的有已批准工件包，而不是“最新几个 YAML 文件”？
-- 出现 incident trace 时，你能反推出当时激活的 bundle 吗？
-- deprecated capabilities 和 policy bundles 是否有 retirement plan？
-- replacement 之后 archived state 是否还有 owner？
-- 生命周期工件层面的 rollback unit 是否清晰？
+- 出现事故追踪时，你能反推出当时激活的工件包吗？
+- 已废弃能力和策略包是否有退役计划？
+- 替换之后归档状态是否还有负责人？
+- 生命周期工件层面的回滚单元是否清晰？
 
 如果连续几个问题的答案都是“否”，那说明你的 SDLC 和上线流程也许已经不错，但生命周期层还没有真正补齐。
 
 ## 延伸阅读
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
-- [Reference Package](reference-package.zh.md)
-- [Chapter 20. Agent Systems 的 Change Management](../book/part-viii/chapter-20.zh.md)
-- [Chapter 22. Supply Chain、Provenance 与 Approved Artifacts](../book/part-viii/chapter-22.zh.md)
-- [Chapter 23. Retirement、Replacement 与 End-of-Life Discipline](../book/part-viii/chapter-23.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与分级契约](eval-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [参考包](reference-package.zh.md)
+- [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
+- [第 22 章：供应链、来源追踪与已批准工件](../book/part-viii/chapter-22.zh.md)
+- [第 23 章：退役、替换与终止使用纪律](../book/part-viii/chapter-23.zh.md)
