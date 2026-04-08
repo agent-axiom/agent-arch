@@ -50,7 +50,7 @@ Control evals проверяют сами защитные механизмы, �
 - зафиксируется ли side effect в traces;
 - сможет ли emergency control отключить risky path.
 
-Это очень важный сдвиг: ты проверяешь не только модель, но и контур управления вокруг нее.
+Это важный сдвиг: ты проверяешь не только модель, но и контур управления вокруг нее.
 
 ## 4. Что такое automated red teaming
 
@@ -184,11 +184,11 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
     )
 ```
 
-Здесь идея в том, что failure считается не только “модель повела себя странно”, но и “control layer не доказал свою работоспособность”.
+Здесь failure считается не только “модель повела себя странно”, но и “control layer не доказал свою работоспособность”.
 
 ## 11. Как встроить это в ADLC
 
-В зрелой системе это выглядит так:
+В зрелой системе это обычно устроено так:
 
 1. risky change получает `change_record`;
 2. для него определяется required eval scope;
@@ -198,7 +198,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 6. findings попадают в assurance backlog;
 7. rollout gate видит не только accuracy, но и control evidence.
 
-Именно так eval layer перестает быть “таблицей метрик” и становится частью operating model.
+Так eval layer перестает быть “таблицей метрик” и становится частью operating model.
 
 ## 12. Самые частые ошибки
 

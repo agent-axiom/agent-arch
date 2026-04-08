@@ -18,7 +18,7 @@
 - отдавать HTTP 200;
 - и при этом вести себя опасно, некачественно или неуправляемо.
 
-Microsoft очень точно формулирует этот сдвиг: для agentic systems нужно эволюционировать от обычных logs, metrics и traces к `AI-native signals`, которые помогают восстанавливать не только факт запроса, но и форму поведения системы. [^ms-observability]
+Microsoft точно формулирует этот сдвиг: для agentic systems нужно эволюционировать от обычных logs, metrics и traces к `AI-native signals`, которые помогают восстанавливать не только факт запроса, но и форму поведения системы. [^ms-observability]
 
 ## 2. Observability здесь нужна не только для дебага
 
@@ -137,7 +137,7 @@ Governance нередко оформляют как:
 - измерять coverage;
 - отличать governed path от bypass path.
 
-Именно поэтому observability в agent systems лучше воспринимать как `evidence layer for governance`.
+Поэтому observability в agent systems лучше воспринимать как `evidence layer for governance`.
 
 ## 8. Куда frontier двигает observability дальше
 
@@ -151,7 +151,7 @@ Governance нередко оформляют как:
 - run нельзя связать с session, approval и artifact bundle;
 - root cause все равно приходится восстанавливать вручную по длинному transcript.
 
-Вторая: causal diagnosis выглядит очень перспективно, но ее пока рано продавать как solved problem. Research уже показывает интересный путь вперед, но production discipline по-прежнему должна стоять на более приземленных вещах:
+Вторая: causal diagnosis выглядит перспективно, но ее пока рано считать solved problem. Research уже показывает интересный путь вперед, но production discipline по-прежнему должна стоять на более приземленных вещах:
 
 - stable event catalog;
 - schema versioning;

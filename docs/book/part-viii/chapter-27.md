@@ -118,7 +118,7 @@ Registry отвечает на более строгий вопрос:
 
 ## 7. Sprawl часто начинается с “маленьких исключений”
 
-В реальности zoo rarely starts as an official strategy.
+На практике zoo rarely starts as an official strategy.
 
 Он начинается с маленьких послаблений:
 
@@ -161,7 +161,7 @@ Registry делает эту связь еще жестче:
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
 
-Поэтому зрелый registry полезно мыслить не как статический каталог, а как continuously verified control surface.
+Поэтому зрелый registry лучше мыслить не как статический каталог, а как continuously verified control surface.
 
 ## 9. Как registry связан с approvals и policies
 
