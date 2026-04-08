@@ -24,7 +24,7 @@
 在智能体系统里，一个很常见的问题是：
 
 - 策略规则一部分藏在提示里；
-- 一部分在 gateway 代码里；
+- 一部分在网关代码里；
 - 一部分在审批界面里；
 - 一部分只存在于团队脑子里。
 
@@ -118,8 +118,8 @@ approval_contract:
 
 从 Part VIII 里，这里最重要的是两点：
 
-- policy changes 属于 release-bearing changes；
-- policy bundle 应该作为完整工件进入 change management。
+- 策略变更属于影响发布的变更；
+- 策略包应该作为完整工件进入变更管理。
 
 也就是说，团队不应该只回答：
 
@@ -127,15 +127,15 @@ approval_contract:
 
 还应该回答：
 
-“这个 rollout 或 incident 发生时，到底是哪一个 policy bundle version 在生效？”
+“这个发布或事故发生时，到底是哪一个策略包版本在生效？”
 
 ## policy bundle 和 traces 的关系
 
 它们之间的关系非常直接：
 
-- trace 告诉你，哪一个 policy decision 真正触发了；
-- policy bundle 告诉你，这个 decision 来自哪里；
-- approval contract 告诉你，human gate 本来应该长什么样。
+- 追踪告诉你，哪一个策略决策真正触发了；
+- 策略包告诉你，这个决策来自哪里；
+- 审批契约告诉你，人工门禁本来应该长什么样。
 
 少了这三者的联动，调查很快就会变成猜测。
 
@@ -148,11 +148,11 @@ approval_contract:
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 
-也就是说，这个 package 已经活在一种模型里：policy 和 approvals 不再只是“附带设置”，而是受治理的工件。
+也就是说，这个参考包已经活在一种模型里：策略和审批不再只是“附带设置”，而是受治理的工件。
 
-## production schema 还应该补什么
+## 生产级模式还应该补什么
 
-一旦系统变得更成熟，policy bundle 很快就应该继续补充：
+一旦系统变得更成熟，策略包很快就应该继续补充：
 
 - `bundle_version`
 - `artifact_lineage`
@@ -161,7 +161,7 @@ approval_contract:
 - `deprecated_rules`
 - `redaction_policy`
 
-这会把 policy layer 从“一堆配置文件”提升成真正的 release surface。
+这会把策略层从“一堆配置文件”提升成真正的发布面。
 
 ## 为什么 policy bundle 和 capability catalog 不能彼此漂移
 
@@ -175,27 +175,27 @@ approval_contract:
 
 所以 practical rule 很简单：
 
-- capability catalog 描述系统能做什么；
-- policy bundle 描述这些能力在什么条件下可以被调用；
-- approval contract 描述 reasoning 应该在何处停下并把控制权交给人。
+- 能力目录描述系统能做什么；
+- 策略包描述这些能力在什么条件下可以被调用；
+- 审批契约描述推理应该在何处停下并把控制权交给人。
 
 ## 实用检查清单
 
 如果你想快速判断自己的 policy 工件层是否已经足够成熟，可以问自己：
 
-- 是否有 versioned policy bundle？
-- 能不能把 bundle 和 rollout、incident review 关联起来？
-- Approval contract 是 machine-readable 还是只写在 prose 里？
-- Approval request 必须带哪些字段，是否清楚？
-- Policy bundle 和 capability catalog 之间是否有稳定关联？
-- 能不能知道某条 trace 对应的是哪个 policy version？
+- 是否有带版本的策略包？
+- 能不能把策略包和发布、事故复盘关联起来？
+- 审批契约是机器可读的，还是只写在说明文字里？
+- 审批请求必须带哪些字段，是否清楚？
+- 策略包和能力目录之间是否有稳定关联？
+- 能不能知道某条追踪对应的是哪个策略版本？
 
-如果连续几个答案都是“不能”，那说明你的 policy layer 虽然存在，但还没有被塑造成完整的运行工件。
+如果连续几个答案都是“不能”，那说明你的策略层虽然存在，但还没有被塑造成完整的运行工件。
 
 ## 延伸阅读
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与分级契约](eval-schema.zh.md)
+- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [按场景组织的 Policy Templates 与 Checklists](policy-templates.zh.md)

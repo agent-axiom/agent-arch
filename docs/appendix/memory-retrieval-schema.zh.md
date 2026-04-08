@@ -1,22 +1,22 @@
-# Memory Record 与 Retrieval Contract Schema
+# 记忆记录与检索契约模式
 
-这一页把 agent systems 里的 memory 和 retrieval 所需的最小 contract layer 放在一起：memory record 长什么样、retrieval query 应该带哪些字段、以及 memory layer 至少要满足哪些约束，才能避免它变成泄漏、噪声和错误自信的来源。
+这一页把智能体系统里记忆与检索所需的最小契约层放在一起：记忆记录长什么样、检索请求应该带哪些字段，以及记忆层至少要满足哪些约束，才能避免它变成泄漏、噪声和错误自信的来源。
 
-如果 [trace schema 与 event catalog](trace-schema.zh.md) 回答的是“这些东西如何出现在 telemetry 里”，而 [lifecycle artifact schema](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的 operational artifact”，那么 memory-retrieval schema 回答的就是“memory layer 里到底允许存在什么样的记录和过滤规则”。
+如果 [追踪模式与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件规范](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索模式回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
 
-## 1. 为什么需要单独的 schema layer
+## 1. 为什么需要单独的模式层
 
-memory 里最常见的失败路径通常是这样的：
+记忆里最常见的失败路径通常是这样的：
 
-- agent 记住了某些东西；
-- retrieval 返回了某些东西；
+- 智能体记住了某些东西；
+- 检索返回了某些东西；
 - 但团队已经无法有把握地回答：
   - 这到底是什么类型的记录；
   - 它从哪里来；
   - 谁本来有权读取它；
-  - 它为什么会进入 prompt。
+- 它为什么会进入提示。
 
-所以，把 memory layer 描述成“我们有个 vector store”远远不够。更稳妥的做法是把它描述成 typed records 和 typed retrieval rules。
+所以，把记忆层描述成“我们有个向量存储”远远不够。更稳妥的做法是把它描述成类型化记录和类型化检索规则。
 
 ## 2. 核心实体
 
@@ -30,7 +30,7 @@ memory 里最常见的失败路径通常是这样的：
 
 ## 3. Memory record
 
-`memory_record` 描述 memory layer 里的单条具体记录。
+`memory_record` 描述记忆层里的单条具体记录。
 
 ```yaml
 kind: memory_record
@@ -49,7 +49,7 @@ retention: long_term
 
 这里最关键的是：
 
-- `tenant_id` 防止 retrieval 穿越 tenant boundary；
+- `tenant_id` 防止检索跨越租户边界；
 - `memory_class` 区分 `short_term`、`long_term` 和 `profile`；
 - `source` 与 `provenance` 能帮助区分 observation 和 validated fact；
 - `revision` 让历史不会被静默覆盖；
@@ -57,7 +57,7 @@ retention: long_term
 
 ## 4. Retrieval query
 
-`retrieval_query` 描述的不是一个简单文本搜索，而是完整的 memory read context。
+`retrieval_query` 描述的不是一个简单文本搜索，而是完整的记忆读取上下文。
 
 ```yaml
 kind: retrieval_query
@@ -76,11 +76,11 @@ filters:
 limit: 5
 ```
 
-这很重要，因为 retrieval 不应该是“神秘搜索”，而应该是正常的 gated read path。
+这很重要，因为检索不应该是“神秘搜索”，而应该是正常的受控读取路径。
 
 ## 5. Retrieval result
 
-`retrieval_result` 记录 runtime 最终决定放回上下文里的内容。
+`retrieval_result` 记录运行时最终决定放回上下文里的内容。
 
 ```yaml
 kind: retrieval_result
@@ -104,22 +104,22 @@ excluded_records: 12
 
 这样团队后面就能解释：
 
-- 为什么偏偏是这些记录进了 prompt；
+- 为什么偏偏是这些记录进了提示；
 - 到底哪些限制起了作用；
 - 有多少记录被过滤掉了。
 
 ## 6. 它和 policy layer 的关系
 
-Memory read path 和 memory write path 几乎不应该共用同一套规则：
+记忆读取路径和记忆写入路径几乎不应该共用同一套规则：
 
-- write path 更关注 validation、provenance 和 retention；
-- read path 更关注 tenant boundary、trust filters 和 class restrictions。
+- 写入路径更关注校验、来源证明和保留规则；
+- 读取路径更关注租户边界、信任过滤器和类别限制。
 
-所以，一个好的 memory schema 几乎总是和 policy-as-code 并排存在。
+所以，一个好的记忆模式几乎总是和策略即代码并排存在。
 
 ## 7. 它和 trace schema 的关系
 
-[trace schema](trace-schema.zh.md) 里已经有一些字段和事件直接支撑 memory discipline：
+[追踪模式](trace-schema.zh.md) 里已经有一些字段和事件直接支撑记忆纪律：
 
 - `context_layers_built`
 - `memory_persisted`
@@ -127,7 +127,7 @@ Memory read path 和 memory write path 几乎不应该共用同一套规则：
 - `provenance`
 - `revision`
 
-这说明 memory-retrieval contract 不只是一个独立文档，它还是清晰 telemetry 的基础。
+这说明记忆与检索契约不只是一个独立文档，它还是清晰遥测的基础。
 
 ## 8. 它和 reference package 的关系
 
@@ -139,49 +139,49 @@ Memory read path 和 memory write path 几乎不应该共用同一套规则：
 - CLI：
   - `inspect-memory`
 
-这很有价值，因为书里不只是解释 memory contract，也给出了 runnable skeleton。
+这很有价值，因为书里不只是解释记忆契约，也给出了可运行的骨架。
 
 ## 9. 最小不变量
 
-一个健康的 memory-retrieval layer，至少应该保证：
+一个健康的记忆与检索层，至少应该保证：
 
 - 每条记录都有 `tenant_id` 和 `memory_class`；
 - persistent records 带有 `provenance` 和 `revision`；
-- retrieval 总是受 class 和数量限制；
-- retrieval query 明确知道“谁在读、为什么读”；
-- retrieval result 能从 trace 里还原；
+- 检索总是受类别和数量限制；
+- 检索请求明确知道“谁在读、为什么读”；
+- 检索结果能从追踪里还原；
 - summaries 不是默认真相。
 
 ## 10. 最常见的断裂点
 
 这里的典型问题通常很容易识别：
 
-- retrieval 返回的是“相似”，却不是“有用”；
-- memory records 没有按 trust level 区分；
+- 检索返回的是“相似”，却不是“有用”；
+- 记忆记录没有按信任等级区分；
 - summaries 静默覆盖了更可靠的事实；
-- retrieval 忽略 tenant boundary；
-- prompt 吞进了太多未经筛选的上下文；
-- provenance 只存在于文档里，不存在于 runtime 里。
+- 检索忽略租户边界；
+- 提示吞进了太多未经筛选的上下文；
+- 来源证明只存在于文档里，不存在于运行时里。
 
 ## 11. 实用检查清单
 
 你可以快速问自己：
 
 - 每条记录是否都有 `tenant_id`、`memory_class`、`provenance` 和 `revision`？
-- memory read policy 和 memory write policy 是否真的不同？
-- retrieval 是否受 trust、class 和数量限制？
-- 你能解释某条记录为什么进入了 prompt 吗？
-- 是否有防止跨 tenant retrieval 的保护？
-- memory decisions 是否能在 trace 和 session export 里看到？
+- 记忆读取策略和记忆写入策略是否真的不同？
+- 检索是否受信任等级、类别和数量限制？
+- 你能解释某条记录为什么进入了提示吗？
+- 是否有防止跨租户检索的保护？
+- 记忆决策是否能在追踪和会话导出里看到？
 
-如果连续几个答案都是“否”，那说明你已经有了 memory，但还没有真正的 memory discipline。
+如果连续几个答案都是“否”，那说明你已经有了记忆，但还没有真正的记忆纪律。
 
 ## 延伸阅读
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
-- [Reference Package](reference-package.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与分级契约](eval-schema.zh.md)
+- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
+- [参考包](reference-package.zh.md)
 - [第 5 章：为什么智能体需要记忆，以及它为什么危险](../book/part-iii/chapter-5.zh.md)
-- [第 6 章：Short-Term、Long-Term 与 Profile Memory](../book/part-iii/chapter-6.zh.md)
-- [第 7 章：Retrieval、Compaction 与 Background Updates](../book/part-iii/chapter-7.zh.md)
+- [第 6 章：短期记忆、长期记忆与画像记忆](../book/part-iii/chapter-6.zh.md)
+- [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
