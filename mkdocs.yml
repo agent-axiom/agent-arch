@@ -107,6 +107,7 @@ plugins:
             Rust для платформы агентных систем: Rust для платформы агентных систем
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python и TypeScript для платформы агентных систем
             Плейбук реагирования на инциденты в агентных системах: Плейбук реагирования на инциденты в агентных системах
+            Handbook по agent registry и inventory operations: Handbook по agent registry и inventory operations
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
@@ -177,6 +178,7 @@ plugins:
             Rust для платформы агентных систем: Rust for Agent Platforms
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
             Плейбук реагирования на инциденты в агентных системах: Incident Response Playbook for Agent Systems
+            Handbook по agent registry и inventory operations: Handbook for Agent Registry and Inventory Operations
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
@@ -247,6 +249,7 @@ plugins:
             Rust для платформы агентных систем: Rust 与智能体平台
             Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
+            Handbook по agent registry и inventory operations: 智能体 registry 与 inventory 运维手册
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
@@ -370,6 +373,7 @@ nav:
           - Практические кейсы: appendix/case-studies.md
           - Шаблоны политик и проверочные списки по кейсам: appendix/policy-templates.md
           - Плейбук реагирования на инциденты в агентных системах: appendix/incident-response-playbook.md
+          - Handbook по agent registry и inventory operations: appendix/registry-operations-handbook.md
       - Project Meta:
           - Выбор стека публикации: appendix/stack.md
           - Дорожная карта для сообщества: appendix/community-roadmap.md

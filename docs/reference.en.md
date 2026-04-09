@@ -33,6 +33,7 @@ For a short path in, start with:
 - [Case Studies](appendix/case-studies.en.md)
 - [Policy Templates and Checklists by Use Case](appendix/policy-templates.en.md)
 - [Incident Response Playbook for Agent Systems](appendix/incident-response-playbook.en.md)
+- [Handbook for Agent Registry and Inventory Operations](appendix/registry-operations-handbook.en.md)
 
 ## Continue
 
