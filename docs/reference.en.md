@@ -29,6 +29,7 @@ For a short path in, start with:
 - [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
 - [Causal Debugging and Root-Cause Analysis for Agent Systems](appendix/causal-debugging.en.md)
 - [Memory Eval Patterns for Agent Systems](appendix/memory-eval-patterns.en.md)
+- [Tool Failure Recovery Patterns for Agent Systems](appendix/tool-failure-recovery.en.md)
 
 ## Practical pages
 

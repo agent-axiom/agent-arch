@@ -29,6 +29,7 @@
 - [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
 - [Causal debugging и root-cause analysis для agent systems](appendix/causal-debugging.md)
 - [Memory eval patterns для agent systems](appendix/memory-eval-patterns.md)
+- [Tool failure recovery patterns для agent systems](appendix/tool-failure-recovery.md)
 
 ## Практические страницы
 

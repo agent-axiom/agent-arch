@@ -111,6 +111,7 @@ plugins:
             Шаблон postmortem для агентных систем: Шаблон postmortem для агентных систем
             Causal debugging и root-cause analysis для agent systems: Causal debugging и root-cause analysis для agent systems
             Memory eval patterns для agent systems: Memory eval patterns для agent systems
+            Tool failure recovery patterns для agent systems: Tool failure recovery patterns для agent systems
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
@@ -186,6 +187,7 @@ plugins:
             Шаблон postmortem для агентных систем: Postmortem Template for Agent Systems
             Causal debugging и root-cause analysis для agent systems: Causal Debugging and Root-Cause Analysis for Agent Systems
             Memory eval patterns для agent systems: Memory Eval Patterns for Agent Systems
+            Tool failure recovery patterns для agent systems: Tool Failure Recovery Patterns for Agent Systems
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
@@ -261,6 +263,7 @@ plugins:
             Шаблон postmortem для агентных систем: 智能体系统 Postmortem 模板
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的 Causal Debugging 与 Root-Cause Analysis
             Memory eval patterns для agent systems: 智能体系统的 Memory Eval Patterns
+            Tool failure recovery patterns для agent systems: 智能体系统的 Tool Failure Recovery Patterns
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
@@ -371,6 +374,7 @@ nav:
           - Шпаргалки: appendix/cheat-sheets.md
           - Causal debugging и root-cause analysis для agent systems: appendix/causal-debugging.md
           - Memory eval patterns для agent systems: appendix/memory-eval-patterns.md
+          - Tool failure recovery patterns для agent systems: appendix/tool-failure-recovery.md
           - Rust для платформы агентных систем: appendix/rust-agent-platforms.md
           - Rust vs Python и TypeScript для платформы агентных систем: appendix/rust-vs-python-typescript.md
           - "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
