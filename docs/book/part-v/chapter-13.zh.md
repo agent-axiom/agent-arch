@@ -148,6 +148,24 @@ Static eval set 很适合比较 known cases。User simulator 更适合检查行�
 
 因此，多智能体可靠性研究在这里的价值，不是鼓励默认把运行时做得更复杂，而是在提醒我们：编排越复杂，评测设计就必须越丰富。
 
+## 5.3. Multi-turn consistency 也值得单独检查
+
+最近几个月一个很有价值的信号是：agent 在短场景里看起来可能很合理，但在更长的 interaction loop 中会逐渐滑向自相矛盾。
+
+这在下面这些场景里尤其重要：
+
+- 长对话；
+- 依赖累积 state；
+- 多次重新评估同一个决定；
+- 公开解释自己的 rationale。
+
+因此最好增加明确的 consistency checks：
+
+- run 会不会在多个 turns 之间自我矛盾；
+- 没有新信息时 rationale 会不会自己变；
+- 更长的 deliberation 会不会带来更多而不是更少的 contradiction；
+- temporal drift 能不能通过 traces 被定位出来。
+
 ## 6. Eval dataset 里应该放什么
 
 一个很常见的错误是：eval dataset 主要由舒服的 demo 场景组成。这种集合几乎帮不上什么忙。
@@ -164,6 +182,21 @@ Static eval set 很适合比较 known cases。User simulator 更适合检查行�
 - cross-tenant 和 privacy-sensitive cases。
 
 真正的工程价值，通常正是在这些困难又不舒服的场景里。
+
+## 6.1. Memory layer 也应该显式进入 eval dataset
+
+除了回答质量，还应该单独检查 state 在多次 runs 之间的质量。
+
+这意味着要包含这些 cases：
+
+- write / no-write decisions；
+- stale profile retrieval；
+- profile records 之间的 contradiction；
+- unsafe persistence；
+- deletion 与 revision behavior；
+- long-horizon memory drift。
+
+否则 memory incidents 会反复出现在 postmortem 里，却始终回不到 regression discipline。
 
 ## 7. Regression gate 应该是形式化的，而不是“大家看了一眼”
 

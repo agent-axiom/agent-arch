@@ -86,6 +86,19 @@ The practical reading is:
 
 That is why `A2A` should be introduced not because it looks architecturally elegant, but because the system already contains separate operational roles that can no longer be honestly described as tools.
 
+## 4.2. Agreement between several agents is not independent verification
+
+Even if several agents reach a similar conclusion, that still does not prove the system has produced an independent verification signal.
+
+The common problems are familiar:
+
+- agents see the same contaminated context;
+- the reasoning paths are too similar;
+- the manager agent nudges downstream agents toward the expected answer;
+- the consensus looks convincing while resting on the same bad assumption.
+
+That is why multi-agent agreement is better treated as a signal, not as proof of correctness.
+
 ## 5. Decision Table
 
 | Question | More likely `MCP` | More likely `A2A` |

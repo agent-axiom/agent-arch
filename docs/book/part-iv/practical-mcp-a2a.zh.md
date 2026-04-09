@@ -86,6 +86,19 @@
 
 因此，引入 `A2A` 的理由不应该只是“架构上看起来更漂亮”，而应该是系统里确实已经存在无法再诚实描述成 tools 的独立 operational roles。
 
+## 4.2. 多个 agents 的一致意见不等于独立验证
+
+即便多个 agents 得出了相似结论，也不代表系统已经获得了真正独立的 verification signal。
+
+常见问题通常包括：
+
+- agents 看到的是同一份 contaminated context；
+- reasoning paths 过于相似；
+- manager agent 在无形中把 downstream agents 推向预期答案；
+- consensus 看起来很有说服力，但其实建立在同一个 bad assumption 上。
+
+所以 multi-agent agreement 更适合作为一种 signal，而不是 correctness proof。
+
 ## 5. Decision table
 
 | 问题 | 更像 `MCP` | 更像 `A2A` |

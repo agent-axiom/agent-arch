@@ -63,6 +63,20 @@ Idempotency 回答的是一个极其简单的问题：“如果系统误把这�
 - 交给人处理；
 - 停止 workflow 并明确记录这种不确定性。
 
+## 4.1. Recovery branch 也应该被显式设计
+
+最近关于 tool-failure cases 的研究还强化了另一点：recovery path 不应该只是 execution layer 的临场 improvisation。
+
+最好预先定义：
+
+- 哪些 outcome classes 应该进入 reconcile，而不是 retry；
+- 哪些 partial success 应该生成 follow-up task；
+- recovery 本身在什么情况下也需要 approval；
+- 哪些 branches 必须进入 eval dataset；
+- 哪些 dangerous recovery path 应该直接停下，而不是“再试一次”。
+
+很多严重 incidents 不是发生在 happy path，而是发生在 poorly designed recovery branch。
+
 ## 5. Rate limits 也是 safety design 的一部分
 
 如果团队只把 rate limits 当成性能问题，execution layer 就会低估它的架构意义。

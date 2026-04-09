@@ -146,6 +146,24 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Именно поэтому multi-agent reliability research полезен здесь не как призыв срочно усложнять runtime, а как напоминание: чем сложнее orchestration, тем богаче должен быть eval design.
 
+## 5.3. Multi-turn consistency тоже стоит проверять отдельно
+
+Еще один полезный сигнал свежих работ: agent может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинной interaction loop.
+
+Это особенно важно, когда система:
+
+- ведет длинный диалог;
+- работает с накопленным state;
+- несколько раз пересматривает решение;
+- публично объясняет свои rationale.
+
+Поэтому полезно держать отдельные consistency checks:
+
+- не противоречит ли run самому себе через несколько turns;
+- не меняется ли rationale без новой информации;
+- не начинает ли длинная deliberation плодить больше contradiction, а не меньше;
+- можно ли локализовать temporal drift по traces.
+
 ## 6. Что стоит включать в eval dataset
 
 Очень частая ошибка: eval dataset состоит из приятных demo-сценариев. Такие наборы почти не помогают.
@@ -162,6 +180,21 @@ Trace grading полезен тем, что позволяет оцениват�
 - cross-tenant and privacy-sensitive cases.
 
 Именно сложные и неприятные сценарии чаще всего дают реальную инженерную пользу.
+
+## 6.1. Memory layer тоже должен входить в eval dataset явно
+
+Отдельно полезно проверять не только ответ, но и качество state across runs.
+
+Это означает cases на:
+
+- write / no-write decisions;
+- stale profile retrieval;
+- contradiction между profile records;
+- unsafe persistence;
+- deletion и revision behavior;
+- long-horizon memory drift.
+
+Иначе memory incidents будут попадать в postmortems, но не будут возвращаться в regression discipline.
 
 ## 7. Regression gate должен быть формальным, а не “посмотрели глазами”
 

@@ -148,6 +148,24 @@ You also need to look at:
 
 That is why multi-agent reliability research matters here not as an invitation to make the runtime more complex by default, but as a reminder: the more complex the orchestration, the richer the eval design must be.
 
+## 5.3. Multi-turn consistency also deserves its own checks
+
+Another useful signal from recent work is that an agent may look reasonable in a short scenario while gradually drifting into contradiction across a longer interaction loop.
+
+This matters especially when the system:
+
+- holds a long dialogue;
+- works with accumulated state;
+- revises a decision multiple times;
+- explains its rationale publicly.
+
+That is why it is useful to keep explicit consistency checks:
+
+- does the run contradict itself across multiple turns;
+- does the rationale change without new information;
+- does longer deliberation create more contradiction rather than less;
+- can temporal drift be localized through traces.
+
 ## 6. What to Include in an Eval Dataset
 
 A common mistake is building an eval dataset out of pleasant demo scenarios. Those sets help very little.
@@ -164,6 +182,21 @@ A strong dataset usually includes:
 - cross-tenant and privacy-sensitive cases.
 
 Those difficult and unpleasant cases are exactly where the engineering value lives.
+
+## 6.1. The memory layer should also enter the eval dataset explicitly
+
+It is useful to test not only answers, but also the quality of state across runs.
+
+That means cases for:
+
+- write / no-write decisions;
+- stale profile retrieval;
+- contradiction between profile records;
+- unsafe persistence;
+- deletion and revision behavior;
+- long-horizon memory drift.
+
+Otherwise memory incidents will appear in postmortems without ever returning to regression discipline.
 
 ## 7. A Regression Gate Should Be Formal, Not "We Looked at It"
 

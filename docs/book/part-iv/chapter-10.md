@@ -63,6 +63,20 @@ Idempotency нужна для простого вопроса: “Если си�
 - запросить человека;
 - остановить workflow и зафиксировать неопределенность.
 
+## 4.1. Recovery branch тоже должен проектироваться явно
+
+Свежие работы по tool-failure cases усиливают еще одну мысль: recovery path почти никогда не стоит оставлять как импровизацию execution layer.
+
+Полезно заранее определить:
+
+- какие outcome classes требуют reconcile, а не retry;
+- где partial success должен создавать follow-up task;
+- когда recovery сам требует approval;
+- какие branches должны явно попадать в eval dataset;
+- где dangerous recovery path лучше остановить, чем “помочь пользователю еще раз”.
+
+Многие тяжелые incidents происходят не в happy path, а именно в poorly designed recovery branch.
+
 ## 5. Rate limits это тоже часть safety design
 
 Когда о rate limits думают только как о проблеме производительности, execution layer недооценивает их архитектурную роль.

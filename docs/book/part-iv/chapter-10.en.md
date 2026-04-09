@@ -63,6 +63,20 @@ This is exactly where naive retry is most dangerous. Sometimes the right behavio
 - involve a human;
 - stop the workflow and explicitly record the uncertainty.
 
+## 4.1. The recovery branch should also be designed explicitly
+
+Recent work on tool-failure cases reinforces another practical point: the recovery path should rarely be left as improvisation inside the execution layer.
+
+It is useful to define in advance:
+
+- which outcome classes require reconcile rather than retry;
+- where partial success should create a follow-up task;
+- when recovery itself requires approval;
+- which branches must appear in the eval dataset;
+- where a dangerous recovery path should stop instead of “trying one more time”.
+
+Many severe incidents happen not on the happy path, but in a poorly designed recovery branch.
+
 ## 5. Rate Limits Are Also Part of Safety Design
 
 When teams think about rate limits only as a performance problem, the execution layer underestimates their architectural role.
