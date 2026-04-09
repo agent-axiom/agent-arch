@@ -27,6 +27,7 @@
 - [Схема проверки изменений и шлюза раскатки](appendix/change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](appendix/lifecycle-artifact-schema.md)
 - [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
+- [Causal debugging и root-cause analysis для agent systems](appendix/causal-debugging.md)
 
 ## Практические страницы
 

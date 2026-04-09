@@ -27,6 +27,7 @@ For a short path in, start with:
 - [Change Review and Rollout Gate Schema](appendix/change-rollout-schema.en.md)
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.en.md)
 - [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
+- [Causal Debugging and Root-Cause Analysis for Agent Systems](appendix/causal-debugging.en.md)
 
 ## Practical pages
 

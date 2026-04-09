@@ -109,6 +109,7 @@ plugins:
             Плейбук реагирования на инциденты в агентных системах: Плейбук реагирования на инциденты в агентных системах
             Handbook по agent registry и inventory operations: Handbook по agent registry и inventory operations
             Шаблон postmortem для агентных систем: Шаблон postmortem для агентных систем
+            Causal debugging и root-cause analysis для agent systems: Causal debugging и root-cause analysis для agent systems
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
@@ -182,6 +183,7 @@ plugins:
             Плейбук реагирования на инциденты в агентных системах: Incident Response Playbook for Agent Systems
             Handbook по agent registry и inventory operations: Handbook for Agent Registry and Inventory Operations
             Шаблон postmortem для агентных систем: Postmortem Template for Agent Systems
+            Causal debugging и root-cause analysis для agent systems: Causal Debugging and Root-Cause Analysis for Agent Systems
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
@@ -255,6 +257,7 @@ plugins:
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
             Handbook по agent registry и inventory operations: 智能体 registry 与 inventory 运维手册
             Шаблон postmortem для агентных систем: 智能体系统 Postmortem 模板
+            Causal debugging и root-cause analysis для agent systems: 智能体系统中的 Causal Debugging 与 Root-Cause Analysis
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
@@ -363,6 +366,7 @@ nav:
       - Concepts:
           - Глоссарий терминов: appendix/glossary.md
           - Шпаргалки: appendix/cheat-sheets.md
+          - Causal debugging и root-cause analysis для agent systems: appendix/causal-debugging.md
           - Rust для платформы агентных систем: appendix/rust-agent-platforms.md
           - Rust vs Python и TypeScript для платформы агентных систем: appendix/rust-vs-python-typescript.md
           - "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md

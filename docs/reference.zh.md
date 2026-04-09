@@ -27,6 +27,7 @@
 - [Change Review 与 Rollout Gate Schema](appendix/change-rollout-schema.zh.md)
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
+- [智能体系统中的 Causal Debugging 与 Root-Cause Analysis](appendix/causal-debugging.zh.md)
 
 ## 实践页面
 
