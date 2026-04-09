@@ -35,6 +35,7 @@
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
 - [Плейбук реагирования на инциденты в агентных системах](appendix/incident-response-playbook.md)
 - [Handbook по agent registry и inventory operations](appendix/registry-operations-handbook.md)
+- [Шаблон postmortem для агентных систем](appendix/postmortem-template.md)
 
 ## Для дальнейшего чтения
 
