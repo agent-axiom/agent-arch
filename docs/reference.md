@@ -32,6 +32,7 @@
 - [Справочный пакет](appendix/reference-package.md)
 - [Практические кейсы](appendix/case-studies.md)
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
+- [Плейбук реагирования на инциденты в агентных системах](appendix/incident-response-playbook.md)
 
 ## Для дальнейшего чтения
 

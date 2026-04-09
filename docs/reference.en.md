@@ -32,6 +32,7 @@ For a short path in, start with:
 - [Reference Package](appendix/reference-package.en.md)
 - [Case Studies](appendix/case-studies.en.md)
 - [Policy Templates and Checklists by Use Case](appendix/policy-templates.en.md)
+- [Incident Response Playbook for Agent Systems](appendix/incident-response-playbook.en.md)
 
 ## Continue
 
