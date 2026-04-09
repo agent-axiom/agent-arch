@@ -23,6 +23,7 @@ For a short path in, start with:
 - [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](appendix/policy-bundle-schema.en.md)
 - [Approval Request and Decision Record Schema](appendix/approval-schema.en.md)
+- [Incident Record and Postmortem Linkage Schema](appendix/incident-record-schema.en.md)
 - [Change Review and Rollout Gate Schema](appendix/change-rollout-schema.en.md)
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.en.md)
 - [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)

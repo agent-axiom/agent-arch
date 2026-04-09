@@ -23,6 +23,7 @@
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](appendix/policy-bundle-schema.zh.md)
 - [Approval Request 与 Decision Record Schema](appendix/approval-schema.zh.md)
+- [Incident Record 与 Postmortem Linkage Schema](appendix/incident-record-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](appendix/change-rollout-schema.zh.md)
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)

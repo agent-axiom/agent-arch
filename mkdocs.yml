@@ -112,6 +112,7 @@ plugins:
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
             Схема запроса на подтверждение и записи о решении: Схема запроса на подтверждение и записи о решении
+            Схема incident record и postmortem linkage: Схема incident record и postmortem linkage
             Схема проверки изменений и шлюза раскатки: Схема проверки изменений и шлюза раскатки
             Схема артефактов жизненного цикла: Схема артефактов жизненного цикла
             Схема записей памяти и контракта извлечения: Схема записей памяти и контракта извлечения
@@ -183,6 +184,7 @@ plugins:
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
             Схема запроса на подтверждение и записи о решении: Approval Request and Decision Schema
+            Схема incident record и postmortem linkage: Incident Record and Postmortem Linkage Schema
             Схема проверки изменений и шлюза раскатки: Change Review and Rollout Gate Schema
             Схема артефактов жизненного цикла: Lifecycle Artifact Schema
             Схема записей памяти и контракта извлечения: Memory Record and Retrieval Contract Schema
@@ -254,6 +256,7 @@ plugins:
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
             Схема запроса на подтверждение и записи о решении: Approval Request 与 Decision Schema
+            Схема incident record и postmortem linkage: Incident Record 与 Postmortem Linkage Schema
             Схема проверки изменений и шлюза раскатки: Change Review 与 Rollout Gate Schema
             Схема артефактов жизненного цикла: Lifecycle Artifact Schema
             Схема записей памяти и контракта извлечения: Memory Record 与 Retrieval Contract Schema
@@ -365,6 +368,7 @@ nav:
           - Схема наборов для оценки и правил проверки: appendix/eval-schema.md
           - Схема набора политик и контракта подтверждения: appendix/policy-bundle-schema.md
           - Схема запроса на подтверждение и записи о решении: appendix/approval-schema.md
+          - Схема incident record и postmortem linkage: appendix/incident-record-schema.md
           - Схема проверки изменений и шлюза раскатки: appendix/change-rollout-schema.md
           - Схема артефактов жизненного цикла: appendix/lifecycle-artifact-schema.md
           - Схема записей памяти и контракта извлечения: appendix/memory-retrieval-schema.md
