@@ -1,125 +1,174 @@
 # Chapter 1. Why an Agent Needs a Platform, Not Magic
 
-## 1. Where the Usual Mistake Starts
+## 1. Start with a Failure, Not with Magic
 
-When people build an agent system for the first time, they almost always feel the same temptation:
+Imagine a familiar story.
 
-- take a strong model;
-- connect a couple of tools;
-- write an ambitious prompt;
-- and see how "autonomous" the agent becomes.
+A team builds an internal support agent:
 
-Sometimes that even works in a demo. But the moment you start thinking about production, an unpleasant truth shows up: the main problem is not how smart the agent is. The main problem is how controllable it is.
+- the agent reads a customer email;
+- finds the relevant knowledge-base article;
+- creates a ticket;
+- asks for human approval when needed.
 
-## 2. What Vikulin Framed Well, and What Is No Longer Enough
+In a demo, everything looks great. The agent responds quickly, picks tools with confidence, and feels almost autonomous.
 
-Dmitry Vikulin's article frames the starting question well: what building blocks does a reliable agent actually consist of?[^vikulin] That is a good place to begin. But if you want to bring the system into real use, a list of blocks is no longer enough.
+The problems appear later:
 
-In practice, strong teams quickly move to a different picture:
+- in one scenario, the agent pulls an internal note into the user-facing reply;
+- in another, it creates the same ticket twice after a retry;
+- in a third, the operator cannot tell why the agent escalated the case at all;
+- during the first incident, the team cannot quickly reconstruct what context went into the model or which step actually failed.
 
-- first they choose the **simplest executable pattern**;
-- dangerous actions are moved into a separate **control plane**;
-- autonomy is allowed only where **policy, telemetry, and rollback boundaries** already exist.[^anthropic][^openai-evals][^langgraph-durable]
+This is the central point of the whole book: most of the time, what breaks is not the model's "intelligence." What breaks is the engineering system around it.
 
-Because of that, it is more useful to design a modern system not as "one smart agent", but as a platform for safe agent execution.
+## 2. What These Systems Usually Lack
 
-## 3. Workflow by Default, Agency by Necessity
+When a team thinks about an agent as "an LLM plus a few tools," it almost always underbuilds the most expensive layers:
 
-Anthropic is quite direct about separating `workflows` from `agents` and recommends starting with the simpler option.[^anthropic] This is one of the most useful practical principles in the whole topic.
+- explicit trust boundaries;
+- a control layer for risky actions;
+- approval rules;
+- idempotency and rollback boundaries;
+- step-level observability;
+- a clear lifecycle for change.
 
-If you translate that into engineering language, it sounds like this:
+That is why an agent can look impressive at first and then become expensive, fragile, and hard to operate.
 
-- if the execution path is known, write a workflow;
-- if tool choice is needed inside a narrow boundary, use a single-agent loop;
-- if the task naturally splits into independent subtasks, introduce subagents;
-- if you cannot explain why autonomy is needed, then you probably do not need it yet.
+For that reason, it is more useful to think about a safe agent system not as one smart assistant, but as a platform for controlled execution.
 
-That advice is a bit boring, but it works surprisingly well.
+## 3. What Vikulin Framed Well, and What Is No Longer Enough
 
-## 4. When an Agent Is Actually Needed, and When It Is Not
+Dmitry Vikulin's article asks the right starting question: what building blocks does a reliable agent consist of?[^vikulin] That is a good foundation.
 
-One of the healthiest ideas in OpenAI's practical guide is that an agent is not justified just because the task sounds modern.[^openai-practical]
+But for a production system, a list of blocks is no longer enough. In practice, strong teams move fairly quickly to a stricter engineering frame:
 
-An agent starts to make sense when at least one of these is true:
+- first they choose the simplest executable pattern;
+- risky actions are moved into a separate control layer;
+- autonomy is allowed only where policies, tracing, and rollback boundaries already exist.[^anthropic][^openai-evals][^langgraph-durable]
+
+In other words, the question is no longer only what an agent is made of. The question is how to make its behavior controllable under load, across long sessions, and on real write paths.
+
+## 4. Default to Workflow, Not to Agency
+
+This is one of the most useful practical principles in the entire topic.
+
+Anthropic draws a fairly direct distinction between `workflows` and `agents` and recommends starting with the simpler option.[^anthropic] OpenAI reaches a very similar conclusion: an agent is justified only when it buys real useful flexibility, not when it merely makes the system sound modern.[^openai-practical]
+
+Translated into engineering language, the rule is simple:
+
+- if the execution path is known in advance, build a workflow;
+- if the system needs a constrained choice of next step inside a narrow boundary, use a `single-agent loop`;
+- if the task naturally splits into independent subtasks with different contexts and owners, only then consider `multi-agent`.
+
+This is conservative advice. That is also why it works.
+
+## 5. When an Agent Is Actually Justified
+
+An agent should be justified by the shape of the task, not by style.
+
+Good signs include:
 
 - the system must make a series of non-obvious decisions while working;
 - the rules are too branchy and too expensive to maintain as rigid code;
-- the useful signal lives inside unstructured data such as emails, documents, notes, or web content.
+- the valuable signal lives in unstructured data such as emails, documents, notes, or web content;
+- the cost of manual routing is already higher than the cost of controlled agency;
+- the task changes often enough that constantly rewriting a deterministic workflow is too expensive.
 
-If the situation looks different, a workflow is often the more honest choice:
+The signs in favor of an ordinary workflow look different:
 
 - the steps are almost always the same;
 - transitions are easy to formalize;
+- write-path mistakes are costly;
 - explainability and repeatability matter more than flexible reasoning;
-- the write-path risk is high, while the value of autonomy is weak.
+- "agent autonomy" sounds appealing, but adds little real value.
 
-A practical rule of thumb:
+## 6. Decision Card: Workflow, Single-Agent, or Multi-Agent
 
-- `workflow` is best when the path is known in advance;
-- `single-agent loop` is best when the path is flexible but the boundary is narrow;
-- `multi-agent` is worth it only when one loop is already too crowded in terms of context, ownership, or parallelism.
+This is the most useful short frame to start with.
 
-In short: agency should buy you useful flexibility, not replace a clear design with a fashionable one.
+| If the task looks like this | Start with this | Why |
+| --- | --- | --- |
+| The path is mostly known in advance | `workflow` | Cheaper to operate, easier to test, easier to explain |
+| The system needs a constrained choice of next step or tool | `single-agent loop` | Adds flexibility without early complexity explosion |
+| There are independent subtasks, different contexts, and different owners | `multi-agent` | Separates responsibility and context |
 
-## 5. Why the "Magic" Breaks Earlier Than It Seems
+There is one more practical rule:
 
-There are several reasons why relying only on a smart model becomes expensive very quickly:
+- if you cannot explain in one paragraph why this should be an agent, it probably should not be one yet;
+- if you cannot explain why this should be `multi-agent`, it is almost certainly premature.
 
-- unpredictable cost;
-- behavioral drift;
-- weak auditability;
-- poor repeatability of results;
-- hard incident investigation.
+## 7. Why the "Magic" Breaks Earlier Than It Seems
 
-The most unpleasant part is that the problem is often not visible right away. As long as the scenario is short and safe, everything looks fine. Then you add:
+As long as the scenario is short and safe, things can genuinely look fine. Then the system acquires:
 
 - long context;
 - external systems;
 - private data;
 - approvals;
-- different access roles,
+- multiple access roles;
+- expensive side effects.
 
-and the system suddenly stops being "just an LLM with tools."
+At that point the main problems are no longer just about "answer quality." They shift into something else:
 
-## 6. Four Principles Worth Building On
+- cost becomes unpredictable;
+- behavior starts to drift;
+- results become hard to reproduce;
+- incidents become hard to investigate;
+- the team is no longer sure it actually controls the write path.
 
-### 5.1. Control Before Autonomy
+This is where an "agent" stops being just an LLM with tools and becomes a full engineering system.
 
-First you build a predictable path, and only then expand the agent's freedom.
+## 8. Four Principles Worth Building On
 
-### 5.2. Safety Cannot Live on the Side
+### 8.1. Control Matters More Than Autonomy
 
-If policy, identity, and approvals are not embedded into the runtime, later you will be fixing the architecture in emergency mode instead of evolving it.
+First build a predictable execution path. Only then expand freedom gradually.
 
-### 5.3. State Must Be Explicit
+### 8.2. Safety Cannot Be Bolted On
 
-Long tasks should not lose steps, approvals, or side effects just because someone restarted a process.
+If policy, identity, and approvals are not embedded into the runtime, later you will not be evolving the system. You will be repairing the architecture under pressure.
 
-### 5.4. Observability Matters More Than Impression
+### 8.3. State Must Be Explicit
 
-If the agent "looks smart" but you have no traces, evals, or step metadata, then you simply do not control the system.[^openai-sdk][^openai-evals]
+Long-running tasks should not lose steps, approvals, or side effects just because a process restarted or a request was replayed.
 
-## 7. What a Production Team Should Always See
+### 8.4. Observability Matters More Than Impression
 
-The minimally useful set looks like this:
+If the agent "looks smart" but you have no traces, evals, or step metadata, then you do not control the system.[^openai-sdk][^openai-evals]
 
-- what plan the agent built;
+## 9. What a Production Team Should Always See
+
+The minimally useful set is very concrete:
+
+- what plan the agent constructed;
 - which tools were called;
-- what context was passed into the model;
+- what context was sent into the model;
 - where quality degraded;
+- which approvals were requested;
 - how much each step cost in latency and tokens.
 
 The moment this list disappears from view, the agent starts turning into a black box.
 
-## 8. Short Practical Takeaway
+## 10. What to Do Right After This Chapter
+
+If you are designing an agent system right now, do not start with the prompt. Start with three questions:
+
+1. Where is an ordinary workflow enough?
+2. Which actions are truly risky and require a separate control layer?
+3. Which signals must the team see on day one of production?
+
+If you do not yet have answers to those questions, it is too early to debate "how autonomous" the system should be. First you need an execution platform.
+
+## 11. Short Practical Takeaway
 
 If you remember only one idea from this chapter, let it be this:
 
 > A good agent product starts not with maximum autonomy, but with a predictable platform where autonomy is added gradually.
 
-That is why the next chapter is not about "smartness", but about platform architecture: which layers need to exist so that all of this can be operated safely at all.
+That is why the next chapter is not about "smartness" in the abstract. It is about the architecture of that platform: which layers need to exist so the system can be launched, observed, and evolved safely.
 
-## 9. What to Read Next
+## 12. What to Read Next
 
 - [Part I. Foundations](index.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)
