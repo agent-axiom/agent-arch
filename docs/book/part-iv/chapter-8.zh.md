@@ -1,29 +1,36 @@
 # 第 8 章：执行模型与工具目录
 
-## 1. 为什么工具调用不只是“模型选了一个函数”
+## 1. 继续看同一个支持场景，但这次进入 write path
 
-当智能体开始调用工具时，很多团队最初都会把它看成一个很简单的机制：
+继续沿用前几章的同一个场景。
 
-- 定义工具；
-- 暴露给模型；
-- 接收 function call；
-- 执行动作。
+用户写道：
 
-这在演示里能工作。但在生产环境里，几乎总是不够。
+> 我已经等了三天还没有开通访问权限。请检查状态，如果申请卡住了，就创建一个紧急工单。
 
-工具调用不只是“模型想调用什么”，还涉及：
+乍一看，这个任务很简单：
 
-- 哪些动作本身就允许发生；
-- 在什么上下文中才允许；
-- 谁拥有调用契约；
-- validation、重试和副作用在哪里处理；
-- 部分失败时系统如何表现。
+- 智能体读取消息；
+- 调用检查状态的工具；
+- 如果申请确实卡住，再调用创建工单的工具；
+- 返回答复。
 
-所以执行模型应该被设计成平台层，而不是 LLM API 外面的一层小 helper。
+在演示里，这几乎就够了。在生产环境里，最贵的错误恰恰从这里开始。
+
+因为现在的问题已经不只是 **模型想做什么**。真正的问题是：
+
+- 它究竟被允许调用哪些工具；
+- 在什么 tenant scope 下才允许；
+- 哪些参数才算有效；
+- read 和 write 操作在哪里分开；
+- 如果外部服务在 side effect 之后卡住，该怎么办；
+- 事后怎么证明工单到底创建了一次还是两次。
+
+所以，工具调用不能被设计成模型旁边的小 helper，而必须被设计成平台的 execution layer。
 
 ## 2. 智能体不应该直接接触工具
 
-最有价值的架构习惯之一就是：智能体永远不应该直接获得真实集成的访问权限。
+这里最有价值的工程习惯之一其实很朴素：智能体永远不应该直接获得真实集成的访问权限。
 
 你需要的是一个执行层，它能够：
 
@@ -34,24 +41,43 @@
 - 管理 retries、timeouts 和 idempotency；
 - 发出 audit events。
 
-这在工具会影响真实系统时尤其重要，比如工单、CRM、数据库、文件、消息和支付。
+对于同一个支持场景，这意味着模型不应该直接调用 helpdesk API 或 IAM service。它应该只和 execution layer 说话。
 
-## 3. 工具目录是平台接口，不是随机函数的目录
+## 3. 一个请求如何穿过 execution layer
 
-如果你把目录看成“调用函数的文件夹”，它很快就会变成一个集成垃圾场。更有用的理解方式是：工具目录是执行层的公共接口。
+现在把同一个场景看成一条执行路径。
 
-一个好的工具目录通常会保存：
+### 3.1. 先由模型提出一个 read tool
 
-- 稳定的 tool name；
-- 目的描述；
-- input schema；
-- risk class；
-- side-effect level；
-- allowed callers 或 capabilities；
-- timeout、retry policy 和 idempotency expectations。
+要判断申请是否卡住，智能体需要一个状态检查工具。这是 read path：
+
+- 它不应该改变外部世界；
+- 它需要正确的 tenant scope；
+- 它应该返回干净、结构化的结果。
+
+### 3.2. 然后系统再决定 write tool 是否被允许
+
+如果状态显示申请确实卡住，下一步可能就是 `create_support_ticket`。但这已经进入 write path：
+
+- 这里会产生 side effect；
+- 可能需要 approval；
+- 需要 idempotency key；
+- 需要更严格的 audit trail。
+
+### 3.3. 然后 execution layer 接手那些不体面的现实问题
+
+也正是在这里，演示里很少出现的问题开始出现：
+
+- helpdesk 在创建工单后超时；
+- 工具只返回 partial success；
+- 模型在 retry 后重复调用；
+- 外部服务返回了意外的 payload；
+- runtime 已经无法确定 side effect 是否真的发生。
+
+这已经不是“tool calling”而已，而是执行纪律。
 
 <div class="diagram-card">
-<p>模型不应该直接和外部世界通信，而应该通过 execution layer</p>
+<p>模型不应该直接与外部世界通信，而应该通过执行层</p>
 
 ``` mermaid
 flowchart LR
@@ -69,9 +95,34 @@ flowchart LR
 
 </div>
 
-## 4. Read tools 和 write tools 不是一回事
+## 4. 工具目录是平台接口，不是随机函数的集合
+
+如果你把目录看成“函数调用的文件夹”，它很快就会变成一个集成垃圾场。更有用的理解方式是：工具目录是执行层的公共接口。
+
+在这个支持场景里，目录应该明确告诉你，智能体到底能做什么：
+
+- `check_access_request_status`
+- `get_user_profile`
+- `create_support_ticket`
+- `request_human_approval`
+
+一个好的目录通常会保存：
+
+- 稳定的工具名；
+- 工具目的描述；
+- 输入 schema；
+- risk class；
+- side-effect level；
+- allowed callers 或 capabilities；
+- timeout、retry policy 和 idempotency expectations。
+
+这会让 execution layer 变得可检查：团队看到的不是“模型也许会调什么”，而是一个具体的平台契约。
+
+## 5. 必须区分 read tools 和 write tools
 
 这看上去似乎很明显，但实践里很多系统几乎把它们当成同一类对象来描述。
+
+对于同一个支持智能体，`check_access_request_status` 和 `create_support_ticket` 不是简单的两个工具，而是两种不同的风险类别。
 
 `read tools` 通常：
 
@@ -89,7 +140,21 @@ flowchart LR
 
 如果 read 和 write operations 都被塞进一个模糊的“tool call”概念里，execution layer 很快就会失控。
 
-## 5. 工具契约应该无聊而严格
+### 5.1. 另一个有用的分类：data、action、orchestration
+
+OpenAI 的实践指南里还有一个很有用的简化：tools 不只适合按 `read` 和 `write` 分，也适合按它们在系统中的角色来分。[^openai-practical]
+
+- `data tools` 读取并返回上下文：状态检查、retrieval、CRM 读取；
+- `action tools` 改变外部世界：创建工单、发送邮件、更新记录；
+- `orchestration tools` 帮助 runtime 自身工作：请求 approval、handoff、调用 planner。
+
+这两条分类轴可以一起使用：
+
+- `data tools` 通常更接近 `read`；
+- `action tools` 通常更接近 `write`；
+- `orchestration tools` 可能两者都有，但它们有单独的 operational 含义。
+
+## 6. 工具契约应该无聊而严格
 
 Agent 系统里最糟糕的习惯之一，就是允许模型自己即兴决定调用格式。
 
@@ -101,38 +166,51 @@ Agent 系统里最糟糕的习惯之一，就是允许模型自己即兴决定�
 - 显式的返回格式；
 - timeout 或 duplicate request 时可预测的行为。
 
-正常的工具 schema，远比一整屏“聪明”的描述更有价值。
+对于这个支持场景，它可以长这样：
 
 ```yaml
 tools:
-  create_ticket:
+  check_access_request_status:
+    description: "Read the current status of an access request"
+    kind: "read"
+    risk: "low"
+    timeout_seconds: 10
+    input_schema:
+      required: ["request_id", "tenant_id"]
+      properties:
+        request_id: {type: string}
+        tenant_id: {type: string}
+
+  create_support_ticket:
     description: "Create a support ticket in the internal helpdesk"
     kind: "write"
     risk: "medium"
     idempotent: true
     timeout_seconds: 15
     input_schema:
-      required: ["title", "queue", "requester_id"]
+      required: ["title", "queue", "requester_id", "tenant_id", "idempotency_key"]
       properties:
         title: {type: string, maxLength: 200}
         queue: {type: string, enum: ["support", "security", "ops"]}
         requester_id: {type: string}
+        tenant_id: {type: string}
+        idempotency_key: {type: string}
         description: {type: string}
 ```
 
 它看起来很普通。很好。契约层越少魔法，工具层就越稳定。
 
-## 6. Execution layer 应该统一错误语义
+## 7. Execution layer 应该统一错误语义
 
 另一个非常常见的问题是：每个外部服务都用自己的风格返回错误，而智能体几乎原样接收。
 
-然后模型看到的就成了一锅粥：
+在同一个支持场景里，这很容易变成一锅粥：
 
-- 某处是 HTTP 500；
-- 某处是 `"failed": true`；
-- 某处是 HTML 页面；
-- 某处是 stack trace；
-- 某处是空响应。
+- IAM service 返回 HTTP 500；
+- helpdesk 回了 `"created": true`，却没有 `ticket_id`；
+- 老旧适配器返回 HTML；
+- timeout 发生在 side effect 之后；
+- 下游 API 返回空 body。
 
 Execution layer 应该把这些统一成可用的 outcome：
 
@@ -144,19 +222,21 @@ Execution layer 应该把这些统一成可用的 outcome：
 
 这会大幅提高 explainability，也让智能体能做出更成熟的动作：重试、请求审批、升级给人、或者安全停止。
 
-## 7. Idempotency 和 retries 不能事后再补
+## 8. Idempotency 和 retries 不能事后再补
 
 几乎所有真实集成最终都会给你至少一种不愉快场景：
 
 - side effect 已经发生后才 timeout；
 - retry 之后重复调用；
 - partial success；
-- 多个 run 之间的 race condition；
+- 两个 run 之间出现 race condition；
 - 外部服务响应时间远超预期。
 
 如果 idempotency 没有内建进执行设计，智能体很快就会做出那些在普通系统里已经很难排查的重复动作。
 
-## 8. 一个简单的 execution layer skeleton
+对于这个支持场景，一个很实际的规则是：任何会创建工单、更新记录或发送消息的 write tool，在第一次 production rollout 之前都必须有明确的 idempotency strategy。
+
+## 9. 一个简单的 execution layer skeleton
 
 下面不是 production runtime，而是一个 skeleton，用来展示责任如何拆分：lookup、validate、execute、normalize result。
 
@@ -191,7 +271,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 关键不在于这个例子有多复杂，而在于工具不是直接由模型决定后立刻执行的。
 
-## 9. Tool results 也需要设计
+## 10. Tool results 也需要设计
 
 如果 tool result 太原始，模型就又重新获得了危险的即兴空间。
 
@@ -210,7 +290,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 - 无法区分“没找到”和“系统挂了”；
 - 不说明 side effect 是否真的发生。
 
-## 10. Tool catalog 应该缓慢演化
+## 11. Tool catalog 应该缓慢演化
 
 如果 tools 每天都变、没有兼容性和版本管理，智能体系统很快就会像是在对接一个极不稳定的 private API。
 
@@ -224,24 +304,26 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 这是无聊的平台工作，而不是浪漫的即兴发挥。正因为如此，它才可靠。
 
-## 11. 实用检查清单
+## 12. 读完这一章后先做什么
 
-如果你想快速检查 execution layer，可以问：
+如果你想快速检查 execution layer，可以用这个短清单：
 
-- 你有真正的 tool catalog，而不是一堆函数吗？
-- read 和 write tools 分开了吗？
-- 参数有 schema validation 吗？
-- 外部错误被统一了吗？
-- timeouts、retries 和 idempotency 都考虑了吗？
-- 能看出 side effect 是否发生了吗？
-- 每个工具都有 owner 和 contract lifecycle 吗？
+1. 你有真正的 tool catalog，而不是一堆函数吗？
+2. read 和 write tools 分开了吗？
+3. 参数有 schema validation 吗？
+4. 外部错误被统一了吗？
+5. timeouts、retries 和 idempotency 都考虑了吗？
+6. 能看出 side effect 是否发生了吗？
+7. 每个工具都有 owner 和 contract lifecycle 吗？
 
 如果连续几个答案都是否，那说明你的智能体虽然已经能调用 tools，但 execution model 还远未成熟。
 
-## 12. 接下来读什么
+## 13. 接下来读什么
 
 这一部分接下来的自然主题是：sandbox execution、MCP 作为集成契约，以及 retries 和 rollback boundaries 的规则。
 
-- [第 7 章：检索、压缩与后台更新](../part-iii/chapter-7.md)
+- [第 7 章：检索、压缩与后台更新](../part-iii/chapter-7.zh.md)
 - [第四部分：工具与执行](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)
+
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
