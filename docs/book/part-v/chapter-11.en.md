@@ -1,27 +1,49 @@
 # Chapter 11. Traces, Spans, and Structured Events
 
-## 1. Why Ordinary Logs Are Almost Never Enough for an Agent System
+## 1. Start Not with Logs, but with One Incident Investigation
 
-When a system is simple, a set of application logs and a few metrics can be enough. But an agent system is almost always more complicated:
+Continue with the same support case.
+
+The user writes:
+
+> I have been waiting three days for access activation. Check the status, and create an urgent ticket if the request is stuck.
+
+The agent replies that the ticket was created. Ten minutes later, an operator sees **two** identical tickets in the helpdesk for the same issue.
+
+Now the team has a very concrete question:
+
+- did the model repeat the call itself;
+- did a retry fire after a timeout;
+- did the tool return an ambiguous result;
+- did the side effect happen before the runtime saw the error;
+- or were the tickets created by two different runs.
+
+If all you have is application logs and a few metrics, the answer is usually slow and painful to recover.
+
+That is why observability for agent systems should be built not around "logs in general," but around the ability to reconstruct the history of one run.
+
+## 2. Why Ordinary Logs Are Almost Never Enough
+
+When a system is simple, flat logs and a few metrics can be enough. But an agent system is almost always more complicated:
 
 - one user request turns into a multi-step run;
 - inside the run there is planning, retrieval, prompt assembly, tool calls, and policy gates;
 - some steps go into the background;
 - the failure may show up somewhere other than where it began.
 
-If you look at all of that only through flat logs, you quickly lose cause and effect. You see noise, but not the run history.
+If you look at all of that only through flat logs, you quickly lose cause and effect. You see noise, but not the execution history.
 
-That is why observability for agent systems should start with traces, not with the hope that someone will figure it out later using grep.
+For our support incident, that means a simple thing: without good tracing, the team will not know who created the duplicate ticket or why it happened.
 
-## 2. A Trace Is the Story of One Run, a Span Is a Meaningful Step Inside It
+## 3. A Trace Is the Story of One Run, a Span Is a Meaningful Step
 
 It helps to anchor a simple model:
 
 - a `trace` describes the full path of a request or run;
 - a `span` describes one meaningful step within that path;
-- `structured events` add precise facts you should not hide in free-form text.
+- `structured events` add precise facts that should not be hidden in free-form text.
 
-This is especially useful for agent systems, where one run may include:
+For the same support case, one run may include:
 
 - policy evaluation;
 - retrieval;
@@ -30,13 +52,43 @@ This is especially useful for agent systems, where one run may include:
 - approval wait;
 - background memory update.
 
-When that structure exists, the team stops looking at the system as a chaotic stream of calls and starts seeing it as a chain of observable decisions.
+When that structure exists, the team stops seeing the system as a chaotic stream of calls and starts seeing a chain of observable decisions.
 
-## 3. What Should Become Separate Spans
+## 4. What the Trace Should Look Like in the Support Scenario
+
+The point of the diagram below is not just to look nice. It is to show where the failure can actually happen.
+
+<div class="diagram-card">
+<p>A mature trace should show not only the model, but all major control points</p>
+
+``` mermaid
+flowchart LR
+    A["User request"] --> B["Run trace"]
+    B --> C["Policy span"]
+    B --> D["Retrieval span"]
+    B --> E["Model span"]
+    B --> F["Tool span: check status"]
+    B --> G["Tool span: create ticket"]
+    B --> H["Approval span"]
+    B --> I["Memory update span"]
+```
+
+</div>
+
+If this trace is built correctly, the team should quickly see:
+
+- whether the second tool call happened inside the same run;
+- whether there was a retry;
+- what the `idempotency_key` was;
+- at which step `side_effect_unknown` appeared;
+- whether there was approval;
+- which policy gate allowed the action.
+
+## 5. What Should Become Separate Spans
 
 You do not need a span for every tiny detail. But one giant span for the whole run is almost useless too.
 
-A good practical rule:
+A good practical rule is:
 
 - one span for each orchestration step;
 - one span for retrieval;
@@ -47,25 +99,9 @@ A good practical rule:
 
 That keeps the trace readable while still showing where the time, money, and reliability actually went.
 
-<div class="diagram-card">
-<p>A mature agent run trace should show more than model latency. It should show the important control points.</p>
+## 6. Structured Events Matter Where Plain Text Only Gets in the Way
 
-``` mermaid
-flowchart LR
-    A["User request"] --> B["Run trace"]
-    B --> C["Policy span"]
-    B --> D["Retrieval span"]
-    B --> E["Model span"]
-    B --> F["Tool span"]
-    B --> G["Approval span"]
-    B --> H["Memory update span"]
-```
-
-</div>
-
-## 4. Structured Events Matter Where Plain Text Only Gets in the Way
-
-A common mistake: useful operational facts are written as human-readable logs, and then they become impossible to analyze or investigate programmatically.
+A common mistake is that useful operational facts get written into human-readable logs and later become impossible to analyze or investigate programmatically.
 
 Structured events are especially useful for:
 
@@ -78,24 +114,25 @@ Structured events are especially useful for:
 - tenant and principal context;
 - memory writes.
 
-An event should answer not "what should I write in a log line?" but "what will we need to analyze later as data?"
+An event should answer not "what should I write in a log line?" but "what will we need later as machine-readable evidence?"
 
-## 5. A Good Trace Model Shows the Control Plane, Not Only LLM Latency
+## 7. A Good Trace Model Shows the Control Plane, Not Only LLM Latency
 
-If observability collapses into model response time only, the team gets a very distorted picture.
+If observability collapses into model response time only, the team gets a distorted picture.
 
-In practice a run often fails or degrades elsewhere:
+In reality, the same support run often breaks elsewhere:
 
 - retrieval starts returning noise;
 - the policy engine blocks too much;
 - approval waits become long;
 - a tool adapter degrades;
 - background updates clog a queue;
-- prompt assembly inflates context.
+- prompt assembly inflates context;
+- a write tool returns an ambiguous outcome.
 
 So a good trace model should cover the full control flow, not only the inference step.
 
-## 6. The Minimum Set of Fields for Traces and Spans
+## 8. The Minimum Set of Fields for Traces and Spans
 
 To make the system genuinely investigation-friendly, it helps to have at least:
 
@@ -112,11 +149,11 @@ To make the system genuinely investigation-friendly, it helps to have at least:
 - `tool_name` if there was a tool call
 - `policy_decision_id` if there was a gate
 
-Without that, observability quickly becomes beautiful but not very useful.
+For the support incident, that is already enough to tie together the runtime, the tool gateway, and the specific external side effect.
 
-## 7. Example Structured Event for Tool Execution
+## 9. Example Structured Event for Tool Execution
 
-Here is a simple template that shows the style of thinking:
+Here is a simple template that shows the right style of thinking:
 
 ```yaml
 event_type: tool_execution
@@ -132,11 +169,27 @@ policy_decision_id: pol_441
 side_effect: created
 ```
 
-That event is much more useful than a line like "ticket tool ok".
+That event is much more useful than a line like "ticket tool ok."
 
-## 8. A Simple Span Emission Example
+### 9.1. Four More Fields Matter in This Case
 
-The point here is not to replace a tracing SDK, but to show the principle: every important step should leave behind a structured trace.
+If the goal is not only dashboards but real incident investigation, it is usually worth adding:
+
+- `approval_id`
+- `tool_principal`
+- `request_id` or another business object id
+- `result_class`
+
+Those fields often make the difference between:
+
+- a duplicate tool call;
+- a late retry;
+- the wrong tenant scope;
+- an ambiguous external response.
+
+## 10. A Simple Span Emission Example
+
+Below is a small skeleton that shows the core idea: a span should not only start and stop, but also record the type of step and the outcome in a form suitable for analysis.
 
 ```python
 from dataclasses import dataclass
@@ -167,7 +220,9 @@ def emit_span(result: SpanResult) -> None:
     print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
 ```
 
-## 9. What You Especially Should Not Log As-Is
+This example is intentionally simple. Its point is not to replace a tracing SDK, but to show the principle: every important step should leave behind a structured trace.
+
+## 11. What You Especially Should Not Log As-Is
 
 Observability should not turn into a data leak.
 
@@ -185,7 +240,7 @@ The practical rule is simple:
 - log identifiers and hashes where useful;
 - do not dump full sensitive payloads into generic telemetry pipelines without a very good reason.
 
-## 10. What Usually Breaks in Agent Observability
+## 12. What Usually Breaks in Agent Observability
 
 These problems are very recognizable:
 
@@ -198,24 +253,25 @@ These problems are very recognizable:
 
 When that happens, the team goes back to guesswork and manual log reading.
 
-## 11. Practical Checklist
+## 13. What to Do Right After This Chapter
 
-If you want to quickly review your observability model, ask:
+If you want to review your observability model quickly, ask:
 
-- Can you reconstruct the full path of one run from a single `trace_id`?
-- Are there separate spans for retrieval, model calls, tool calls, and policy gates?
-- Are idempotency keys and policy decision ids logged?
-- Is tenant/principal context present in telemetry?
-- Can you see where the run spent time and where cost increased?
-- Are sensitive payloads kept out of traces?
-- Is the structured event schema stable?
+1. Can you reconstruct the full path of one run from a single `trace_id`?
+2. Are there separate spans for retrieval, model calls, tool calls, and policy gates?
+3. Are idempotency keys and policy decision ids logged?
+4. Is tenant/principal context present in telemetry?
+5. Can you see where the run spent time and where cost increased?
+6. Are sensitive payloads kept out of traces?
+7. Is the structured event schema stable?
 
-If the answer is "no" several times in a row, your observability is decorative, not operational.
+If the answer is "no" several times in a row, your observability is still decorative, not operational.
 
-## 12. What to Read Next
+## 14. What to Read Next
 
-The next natural step is to define what a "healthy" agent system actually means. That means moving to SLO.
+The next natural step is clear: once traces and structured events exist, you need to define what a "healthy" agent system actually means. That means moving to SLO.
 
-- [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../part-iv/chapter-10.md)
+- [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../part-iv/chapter-10.en.md)
+- [Chapter 12. SLOs for Agent Systems](chapter-12.en.md)
 - [Part V. Reliability and Observability](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)

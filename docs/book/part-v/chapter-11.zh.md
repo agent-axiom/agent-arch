@@ -1,27 +1,49 @@
 # 第 11 章：追踪、跨度与结构化事件
 
-## 1. 为什么普通日志对智能体系统来说几乎总是不够
+## 1. 不要先从日志开始，要先从一次事故调查开始
 
-当系统简单时，一些应用日志和少量指标可能就够了。但智能体系统几乎总是更复杂：
+继续沿用同一个支持场景。
+
+用户写道：
+
+> 我已经等了三天还没有开通访问权限。请检查状态，如果申请卡住了，就创建一个紧急工单。
+
+智能体回复说工单已经创建。十分钟后，值班人员在 helpdesk 里看到了 **两张** 一模一样的工单。
+
+这时团队面对的是一个非常具体的问题：
+
+- 是模型自己重复发起了调用；
+- 是 timeout 之后触发了 retry；
+- 是工具返回了含糊不清的结果；
+- 是 side effect 发生在 runtime 看到错误之前；
+- 还是两个不同的 runs 各自创建了一张工单。
+
+如果你手里只有 application logs 和几条指标，这个答案通常既慢又难找。
+
+这就是为什么智能体系统的 observability 不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
+
+## 2. 为什么普通日志几乎总是不够
+
+当系统简单时，扁平日志和少量指标也许够用。但智能体系统几乎总是更复杂：
 
 - 一个用户请求会变成多步骤 run；
-- run 内部有 planning、retrieval、prompt assembly、工具调用和策略门禁；
+- run 内部有 planning、retrieval、prompt assembly、tool calls 和 policy gates；
 - 某些步骤会被放到后台；
 - 错误出现的位置可能并不是它真正开始的地方。
 
-如果你只用扁平日志看这些东西，很快就会失去因果关系。你能看到噪音，却看不到一次 run 的完整故事。
+如果你只用扁平日志看这些东西，很快就会失去因果关系。你能看到噪音，却看不到执行历史。
 
-这就是为什么智能体可观测性更适合从追踪开始，而不是寄希望于事后用 grep 还原真相。
+对于这个支持事故，这意味着一件很简单的事：没有好的 tracing，团队就无法知道是谁创建了重复工单，以及为什么会发生。
 
-## 2. Trace 是一次 run 的故事，span 是其中一个有意义的步骤
+## 3. Trace 是一次 run 的故事，span 是一个有意义的步骤
 
-一个非常有用的简单模型是：
+这里最好先固定一个简单模型：
 
 - `trace` 描述请求或 run 的完整路径；
-- `span` 描述这条路径中的一个有意义步骤；
+- `span` 描述这条路径中的一个重要步骤；
 - `structured events` 补充那些不该埋在自由文本里的精确信息。
 
-这对智能体系统特别有用，因为一次 run 可能包含：
+对于同一个支持场景，一次 run 可能包含：
 
 - policy evaluation；
 - retrieval；
@@ -32,9 +54,39 @@
 
 当这种结构存在后，团队就不再把系统看成杂乱调用流，而是看成一串可观察的决策。
 
-## 3. 哪些东西适合做成独立 span
+## 4. 在这个支持场景里，trace 应该长什么样
 
-没必要给每个细节都建 span，但整个 run 只有一个 giant span 也几乎没用。
+下面这张图的重要性不在“好看”，而在于它能告诉你故障到底可能发生在哪一层。
+
+<div class="diagram-card">
+<p>成熟的 trace 不该只展示模型，还应展示关键 control points</p>
+
+``` mermaid
+flowchart LR
+    A["User request"] --> B["Run trace"]
+    B --> C["Policy span"]
+    B --> D["Retrieval span"]
+    B --> E["Model span"]
+    B --> F["Tool span: check status"]
+    B --> G["Tool span: create ticket"]
+    B --> H["Approval span"]
+    B --> I["Memory update span"]
+```
+
+</div>
+
+如果这个 trace 被正确采集，团队应该能很快看清：
+
+- 第二次 tool call 是否发生在同一个 run 里；
+- 是否出现了 retry；
+- `idempotency_key` 是什么；
+- `side_effect_unknown` 出现在哪一步；
+- 是否存在 approval；
+- 哪个 policy gate 放行了这个动作。
+
+## 5. 哪些东西适合做成独立 span
+
+没必要给每个小细节都建 span，但整个 run 只有一个 giant span 也几乎没用。
 
 一个实用规则是：
 
@@ -47,30 +99,14 @@
 
 这样 trace 既保持可读，又能真正告诉你时间、成本和可靠性到底花在了哪里。
 
-<div class="diagram-card">
-<p>成熟的 agent run trace 不该只展示模型调用，还应展示关键 control points</p>
-
-``` mermaid
-flowchart LR
-    A["User request"] --> B["Run trace"]
-    B --> C["Policy span"]
-    B --> D["Retrieval span"]
-    B --> E["Model span"]
-    B --> F["Tool span"]
-    B --> G["Approval span"]
-    B --> H["Memory update span"]
-```
-
-</div>
-
-## 4. 结构化事件在 plain text 只会碍事的地方最有价值
+## 6. 结构化事件在 plain text 只会碍事的地方最有价值
 
 一个常见错误是：有价值的 operational facts 被写进了给人看的日志里，结果以后既无法分析，也无法调查。
 
 结构化事件尤其适合这些地方：
 
 - policy decisions；
-- 工具结果；
+- tool outcomes；
 - prompt assembly metadata；
 - token usage；
 - cost attribution；
@@ -78,24 +114,25 @@ flowchart LR
 - tenant 和 principal context；
 - memory writes。
 
-也就是说，event 应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器分析”。
+也就是说，event 应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器当作证据来分析”。
 
-## 5. 好的 trace model 展示的是 control plane，而不只是 LLM latency
+## 7. 好的 trace model 展示的是 control plane，而不只是 LLM latency
 
 如果可观测性最终只剩模型响应时间，团队看到的 picture 会非常扭曲。
 
-在现实里，run 的失败或退化经常发生在别处：
+现实里，同一个支持 run 往往坏在别处：
 
 - retrieval 开始返回噪音；
 - policy engine 过度阻断；
 - approval wait 被拉长；
 - tool adapter 退化；
 - background updates 堵住队列；
-- prompt assembly 膨胀了上下文。
+- prompt assembly 膨胀了上下文；
+- write tool 返回了模糊结果。
 
 所以 trace model 应覆盖整个 control flow，而不只是 inference step。
 
-## 6. Trace 和 span 的最小字段集合
+## 8. Trace 和 span 的最小字段集合
 
 如果你希望系统真正便于调查，至少要有：
 
@@ -112,11 +149,11 @@ flowchart LR
 - 如果发生 tool call，则有 `tool_name`
 - 如果有 gate，则有 `policy_decision_id`
 
-否则 observability 很快就会变成“看起来很好”，但实际上不太能用。
+对于这个支持事故，这些字段已经足够把 runtime、tool gateway 和具体的外部 side effect 串起来。
 
-## 7. 一个 tool execution 的 structured event 示例
+## 9. 一个 tool execution 的 structured event 示例
 
-下面这个模板能很好地展示思路：
+下面这个模板能很好地展示正确的思路：
 
 ```yaml
 event_type: tool_execution
@@ -134,9 +171,25 @@ side_effect: created
 
 它远比一条 “ticket tool ok” 的日志有用。
 
-## 8. 一个简单的 span emission 示例
+### 9.1. 对这个案例来说，还有四个字段特别重要
 
-重点不是替代 tracing SDK，而是说明一个原则：每个重要步骤都应该留下结构化的痕迹。
+如果目标不只是做 dashboard，而是真正调查事故，通常还值得补上：
+
+- `approval_id`
+- `tool_principal`
+- `request_id` 或其他业务对象 id
+- `result_class`
+
+正是这些字段，往往能帮你区分：
+
+- duplicate tool call；
+- late retry；
+- 错误的 tenant scope；
+- 模糊的 external response。
+
+## 10. 一个简单的 span emission 示例
+
+下面这个骨架不是为了替代 tracing SDK，而是为了说明一个原则：span 不只是开始和结束，它还必须把步骤类型和结果记录成可分析的结构。
 
 ```python
 from dataclasses import dataclass
@@ -167,7 +220,9 @@ def emit_span(result: SpanResult) -> None:
     print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
 ```
 
-## 9. 哪些东西尤其不能原样写进日志
+这个例子故意很简单。它的重点不是替代 tracing SDK，而是强调：每个重要步骤都应该留下结构化的痕迹。
+
+## 11. 哪些东西尤其不能原样写进日志
 
 Observability 不应该变成数据泄漏渠道。
 
@@ -185,7 +240,7 @@ Observability 不应该变成数据泄漏渠道。
 - 在有帮助时记录 identifiers 和 hashes；
 - 没有充分理由时，不要把完整敏感 payload 丢进通用 telemetry pipeline。
 
-## 10. Agent observability 最常见的崩坏点
+## 12. Agent observability 最常见的崩坏点
 
 这些问题非常典型：
 
@@ -198,24 +253,25 @@ Observability 不应该变成数据泄漏渠道。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
 
-## 11. 实用检查清单
+## 13. 读完这一章后先做什么
 
 如果你想快速检查 observability model，可以问：
 
-- 能否通过一个 `trace_id` 重建完整 run 路径？
-- retrieval、model calls、tool calls 和 policy gates 是否都有独立 spans？
-- idempotency keys 和 policy decision ids 是否被记录？
-- telemetry 中是否带 tenant/principal context？
-- 能否看见 run 时间花在哪里、成本在哪里上涨？
-- 敏感 payloads 是否没有泄露到 traces 中？
-- structured event schema 是否稳定？
+1. 能否通过一个 `trace_id` 重建完整 run 路径？
+2. retrieval、model calls、tool calls 和 policy gates 是否都有独立 spans？
+3. idempotency keys 和 policy decision ids 是否被记录？
+4. telemetry 中是否带 tenant/principal context？
+5. 能否看见 run 时间花在哪里、成本在哪里上涨？
+6. 敏感 payloads 是否没有泄露到 traces 中？
+7. structured event schema 是否稳定？
 
 如果连续几个答案都是否，那 observability 还只是装饰性的，而不是 operational 的。
 
-## 12. 接下来读什么
+## 14. 接下来读什么
 
-下一个自然步骤就是定义什么才算“健康”的 agent system，也就是进入 SLO。
+下一个自然步骤很明确：当 traces 和 structured events 已经存在之后，就要定义什么才算“健康”的 agent system，也就是进入 SLO。
 
-- [第 10 章：幂等性、重试、速率限制与回滚边界](../part-iv/chapter-10.md)
+- [第 10 章：幂等性、重试、速率限制与回滚边界](../part-iv/chapter-10.zh.md)
+- [第 12 章：Agent 系统的 SLO](chapter-12.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)
