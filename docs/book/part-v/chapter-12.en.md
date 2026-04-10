@@ -1,112 +1,140 @@
 # Chapter 12. SLO for Agent Systems
 
-## 1. Why Ordinary Uptime Is Not Enough for Agents
+## 1. Start with the Question: How Do You Know the Support Agent Is Actually Healthy?
 
-Once a system becomes agentic, the classic picture of "the service is up or down" stops covering reality.
+Continue with the same support case.
 
-Even when everything is technically available, an agent system may still be unhealthy:
+The team can already reconstruct incidents from traces. It already knows that a duplicate ticket may come from a bad retry path, that a memory write may be unnecessary, and that a tool adapter may return an ambiguous result.
 
-- runs complete too slowly;
-- cost per request drifts upward;
-- tool calls fail more often;
-- useful-answer rate drops;
-- the system escalates to humans too often;
-- a policy gate blocks normal scenarios too often.
+But after the first investigations, the next question appears:
 
-That is why `99.9% uptime` is almost never enough. You need to measure not only component availability, but the quality of the full run.
+> How do you know not only after an incident, but every day, whether the system is actually healthy?
 
-## 2. SLO for Agents Should Describe System Behavior, Not Library Health
+That is where SLO enter.
 
-A common mistake is to take metrics from individual parts and mistake them for the health of the platform.
+Ordinary uptime answers only one question: "Was the component available or not?"
 
-For example:
+For a support agent, that is too weak. Even when every service is formally available, the system may already be unhealthy:
 
-- model latency;
-- vector store uptime;
-- p95 of one API;
-- adapter error counts.
+- the user waits too long;
+- the agent creates too many unnecessary tickets;
+- escalation rate drifts upward;
+- the cost of the typical request rises;
+- the safety path breaks too many normal scenarios;
+- a policy gate blocks the right action or lets an unnecessary one through.
 
-All of those are useful, but they do not answer the main question: "Is the user getting a good result in reasonable time and in a safe form?"
+SLO exist exactly for this reason: to turn “health” from a feeling into measurable targets.
 
-That is why SLO for agent systems work better when built around run-level outcomes.
+!!! info "Need the schemas and artifacts?"
+    If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md), the [Incident Record Schema](../../appendix/incident-record-schema.en.md), and the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md).
 
-## 3. Which SLO Actually Matter
+## 2. SLO Should Describe Run Behavior, Not the Health of Individual Parts
 
-For a production-grade agent system, at least four groups usually matter:
+A very common mistake looks like this:
+
+- the model responds quickly;
+- the vector store is available;
+- the ticketing API is up;
+- the adapter rarely crashes.
+
+All of that is useful, but none of it answers the main question:
+
+> Is the user getting the right, safe, and timely result?
+
+For the support agent, what matters is not the uptime of one library, but the outcome of the full run:
+
+- the status was found correctly;
+- the ticket was created only when it was actually needed;
+- the approval path fired where it should;
+- the side effect was not duplicated or left unclear;
+- the user was not bounced to a human without reason.
+
+That is why SLO for agent systems are better built around run-level behavior.
+
+## 3. For This Support Agent, Five SLO Groups Actually Matter
+
+In practice, a production-grade agent system usually needs only a compact starting set:
 
 - success SLO;
 - latency SLO;
 - safety SLO;
-- cost SLO.
+- cost SLO;
+- escalation SLO.
 
-Sometimes you also add:
+That is already enough to see not only whether the system is alive, but whether it is:
 
-- escalation SLO;
-- freshness SLO for retrieval;
-- tool success SLO for critical capabilities.
+- useful;
+- getting too slow;
+- eroding the safety boundary;
+- becoming more expensive;
+- overloading humans.
 
-The point is not to measure everything at once. The point is to choose a small set that truly affects user outcome and operational stability.
+Do not try to measure everything at once. Pick the small set that truly affects user outcome and operational stability.
 
 ## 4. Success SLO Should Be Closer to the Task Than to HTTP 200
 
-One of the most dangerous traps is to treat every run that "did not crash" as successful.
+The most dangerous trap is simple: treating every run that did not crash as successful.
 
-But user experience is not about that. A run may:
+But for the support agent, a run may be formally "successful" and still be bad:
 
-- complete formally while producing a useless answer;
-- avoid exceptions but violate policy;
-- return text where an action was expected;
-- create a partial side effect and fail to finish the task.
+- the answer came back, but did not help the user;
+- the status was returned without enough grounding;
+- the agent created a ticket instead of asking a safe clarification;
+- the ticket was created twice;
+- the system ended with text where an action was expected.
 
-So success SLO should be tied to something like:
+That is why success SLO should be tied to things like:
 
-- task completed;
-- expected artifact produced;
-- approved action completed;
-- answer accepted without escalation.
+- the status was found and communicated correctly;
+- a ticket was created once and with the right context;
+- the request was safely stopped or handed to a human when expected;
+- the user got a useful outcome without unnecessary escalation.
 
-That gets much closer to real system quality.
+For a support agent, success must describe not “no exception happened,” but “the task was actually resolved.”
 
-## 5. Latency SLO for Agents Should Be Broken Down by Stage
+## 5. Latency SLO Should Break Delay Down by Stage
 
-Overall p95 run latency is useful, but not enough by itself. Without stage-level visibility, you cannot see what actually drifted:
+If you only see overall p95 run latency, you know the system got slower, but you do not know why.
 
-- retrieval;
-- model inference;
-- tool execution;
-- approval wait;
-- background queue pressure.
+For the same support agent, delay may drift in very different places:
 
-That is why a mature system usually tracks:
+- retrieval takes longer to return request history;
+- the model spends longer because the prompt got bloated;
+- the tool adapter waits too long on the external ticketing system;
+- the approval path stalls on a human;
+- the background queue starts putting pressure on fresh runs.
 
-- end-to-end run latency;
-- p95/p99 model spans;
+That is why it is useful to track not only end-to-end latency, but stages:
+
+- run p95 / p99;
+- retrieval latency;
+- model span latency;
 - tool execution latency;
-- queue wait time;
-- approval delay, if approval is part of the product.
+- approval wait;
+- queue wait time.
 
-That turns latency SLO from a pretty number into a diagnostic tool.
+That turns latency SLO from a pretty number into a diagnostic instrument.
 
-## 6. Safety SLO Are Often More Important Than Pure Speed
+## 6. Safety SLO Must Live Next to Reliability, Not Outside It
 
-For agent systems, safety is not only a policy rule. It is also an observable quality target.
+In an agent system, safety cannot live as a separate security appendix. In production, it is part of system health.
 
-Safety SLO may include:
+For the support agent, it helps to track at least:
 
-- fraction of runs without policy violations;
-- fraction of runs without cross-tenant retrieval;
-- fraction of runs without sensitive egress incidents;
-- fraction of write actions without unknown side effect;
-- approval coverage for high-risk operations.
+- the fraction of runs without policy violations;
+- the fraction of runs without cross-tenant retrieval;
+- the fraction of write actions without unknown side effect;
+- approval coverage for high-risk actions;
+- the fraction of runs without privacy-sensitive egress incidents.
 
-This is especially important when the team focuses too hard on "faster and cheaper" and starts eroding guardrails without noticing.
+This matters especially after incidents like duplicate tickets or unsafe memory writes: if safety never enters SLO, the team quickly starts optimizing the system only for speed and convenience again.
 
 <div class="diagram-card">
-<p>SLO for agent systems almost always live in several dimensions at once</p>
+<p>Agent-system health is almost always multidimensional</p>
 
 ``` mermaid
 flowchart LR
-    A["Agent system health"] --> B["Success"]
+    A["Support agent health"] --> B["Success"]
     A --> C["Latency"]
     A --> D["Safety"]
     A --> E["Cost"]
@@ -115,17 +143,17 @@ flowchart LR
 
 </div>
 
-## 7. Cost SLO Help Stop Silent Degradation
+## 7. Cost SLO Help Catch Silent Degradation Before an Incident
 
-Agent systems have an unpleasant property: cost can rise quietly without a visible outage.
+Agent systems have an unpleasant property: they can keep “working” while the economics quietly collapse.
 
-For example:
+In the support case, that often looks like this:
 
-- retrieval starts returning too much context;
+- retrieval pulls too much context into the prompt;
+- the model calls tools more often without benefit;
 - the planner adds unnecessary steps;
-- the model calls tools more often;
 - retries inflate the run;
-- memory drags too many summaries into the prompt.
+- memory summaries consume too much budget.
 
 That is why cost SLO should at least look at:
 
@@ -134,28 +162,32 @@ That is why cost SLO should at least look at:
 - tool calls per run;
 - expensive-model usage rate.
 
-Otherwise the system may remain "working" while becoming economically unreasonable.
+Without that, the team notices degradation too late: when the agent still “helps,” but now costs materially more.
 
-## 8. Escalation SLO Prevent Overloading Humans
+## 8. Escalation SLO Protect the Humans Around the System
 
-If your system has human-in-the-loop, that is not a free fallback.
+Human-in-the-loop is not a free safety net.
 
-A system that:
+If the support agent:
 
 - requests approval too often;
 - falls into manual reconciliation too often;
-- asks humans to make decisions too often,
+- hands decisions to humans too often;
 
-may look safe, but in practice it is just moving chaos onto operators.
+it may look safe, but in practice it is just moving chaos onto operators.
 
 That is why it helps to track:
 
 - escalation rate;
 - approval rate for high-risk flows;
 - median time to human decision;
-- fraction of runs completed without manual intervention.
+- the fraction of runs completed without manual intervention.
 
-## 9. Example SLO Policy for an Agent Platform
+For the support agent, this is critical: if escalation rate gets too high, automation quickly becomes decorative.
+
+## 9. Example SLO Policy for the Support Agent
+
+The point here is not “canonical” numbers, but explicit discipline:
 
 ```yaml
 slo:
@@ -174,11 +206,11 @@ slo:
     manual_intervention_rate: "< 8%"
 ```
 
-The exact numbers are not universal. The discipline is what matters: the team should agree on what system health means.
+The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
 
 ## 10. A Simple Health Classification Example
 
-This small skeleton shows how one run can be evaluated across several dimensions, not just one metric.
+This small skeleton shows the idea: one run should be evaluated across several dimensions at once, not just one metric.
 
 ```python
 from dataclasses import dataclass
@@ -204,38 +236,46 @@ def classify_run_health(run: RunHealth) -> str:
     return "healthy"
 ```
 
-The idea is simple but useful: a run can be formally successful and still be operationally bad.
+This model is simple, but useful precisely because it does not hide operational quality behind formal “success.”
 
-## 11. What Usually Breaks in SLO for Agent Systems
+## 11. What Usually Breaks in SLO Culture
 
-The same problems show up again and again:
+The problems here are very repetitive:
 
 - success is measured through HTTP status;
-- latency is measured only on model calls;
-- cost is not part of the health model at all;
-- safety is treated separately from reliability;
-- human escalation is not considered part of system health;
-- SLO exist on dashboards but do not influence rollout.
+- latency is visible only at the model-call layer;
+- safety lives separately from reliability;
+- cost never enters the health model;
+- human escalation is not counted as part of system health;
+- SLO exist only on dashboards and do not influence rollout.
 
-When that happens, SLO become dashboard decoration instead of a platform control mechanism.
+When that happens, SLO become decoration. The team looks at numbers, but does not control the platform through them.
 
-## 12. Practical Checklist
+## 12. What to Do Right After This Chapter
 
-If you want to quickly review your SLO, ask:
+If you want to review your support agent quickly, ask:
 
-- Do you have a run-level definition of success?
-- Do you see latency by stage, not only end-to-end?
-- Do you have safety SLO, not only availability?
-- Do you measure cost per useful outcome?
-- Can you see how much load really goes to humans?
-- Are rollout decisions tied to SLO instead of intuition alone?
+1. Do you have a run-level definition of success?
+2. Can you see latency by stage, not only total latency?
+3. Do you have safety SLO, not only uptime?
+4. Do you measure cost per useful outcome?
+5. Can you see how much real load is shifted onto humans?
+6. Do SLO influence rollout decisions?
 
-If the answer is "no" several times in a row, the platform may already be observable, but it is not yet managed through quality targets.
+If the answer is "no" several times in a row, observability may already exist, but system health still is not managed through quality targets.
 
 ## 13. What to Read Next
 
-After SLO, the next natural step is eval loops: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
+After SLO, the next natural step in the same story is the eval loop: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
+
+## 14. Useful Reference Pages
+
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Incident Record Schema](../../appendix/incident-record-schema.en.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 
 - [Chapter 11. Traces, Spans, and Structured Events](chapter-11.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
+- [Chapter 14. Platform Team and Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)
