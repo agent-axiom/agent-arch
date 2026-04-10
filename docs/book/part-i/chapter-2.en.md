@@ -1,36 +1,131 @@
 # Chapter 2. Reference Architecture for a Safe Agent
 
-## 1. Why a Reference Diagram Is Useful at All
+## 1. Start Not with Layers, but with One Live Case
 
-After the first chapter, you should already have the intuition for why "just a smart agent" quickly becomes fragile. The next step is more grounded: understand which layers the system should contain if you want it to survive longer than one presentation.
+Take the same support agent from the previous chapter.
 
-That is what a reference architecture is for. Not as dogma, but as a baseline.
+A user writes:
 
-It is also useful to keep two complementary frames in your head from the start.
+> I have been waiting three days for access activation. Please check the status and create an urgent ticket if the request is stuck.
 
-The OpenAI practical guide gives a minimal starting triad:
+If you look at the task too simplistically, the next steps can seem obvious:
+
+- the model reads the message;
+- selects the right tool;
+- checks the status;
+- creates a ticket;
+- returns a reply.
+
+But a production system cannot run on a hand-wavy version of that flow. Too many important questions remain unanswered:
+
+- who is requesting the action;
+- what rights this request has;
+- whether the agent is allowed to create tickets at all;
+- whether ticket creation requires approval;
+- what context may be sent into the model;
+- what to do if a tool returns a partial or unstable result;
+- how to reconstruct the full path later during an incident.
+
+This is exactly where platform architecture comes from.
+
+## 2. The Minimal Shape of an Agent, and Why It Is Not Enough
+
+The OpenAI practical guide is useful because it starts from a very simple shape: a minimal agent system usually has three things.[^openai-practical]
 
 - `model`
 - `tools`
 - `instructions`
 
-That is the smallest shape of an agent system. But it is not yet a production platform.
+That is a good starting frame. It helps because it prevents early overengineering.
 
-### 1.1. The Five Pillars of a Production Platform
+But it stops being enough for production. The moment you add:
 
-Recent Google Cloud material is useful because it describes the move from prototype to production through five platform pillars, not through one "smart agent."[^google-five-pillars]
+- access to internal systems;
+- private data;
+- long sessions;
+- write-path actions;
+- approvals;
+- multiple teams and access roles,
 
-- `framework`: where orchestration and run lifecycle are defined;
-- `model`: how the agent reasons and how model choice is controlled;
-- `tools`: how the agent reads and acts in the external world;
-- `runtime`: where all of this executes, scales, and is observed;
-- `trust`: how risk, permissions, and data leakage are constrained.
+the minimal triad stops being an architecture. It remains only the core around which a platform must be built.
 
-This is a valuable frame because it quickly removes unnecessary magic. If you only have a model and a prompt, but no runtime and no trust layer, you do not yet have a platform. You have a demo.
+## 3. How One Request Should Move Through the System
 
-## 2. Top View: What the Platform Consists Of
+Now look at the same support case as an architectural path.
 
-Below is a diagram that works well as a starting map.
+### 3.1. Ingress
+
+The message should not go straight into the model. First, the system turns it into a normalized request:
+
+- who the user is;
+- which tenant the request belongs to;
+- which channel it came from;
+- what risk class it has;
+- which session and `trace_id` it belongs to;
+- which policy scope will govern the run.
+
+In other words, what enters the system is not "text," but a managed execution context.
+
+### 3.2. Control Layer
+
+Next the system has to decide what this run is even allowed to do:
+
+- which models may be used;
+- which tools are available;
+- which actions require approval;
+- which limits apply;
+- what is forbidden in the current environment.
+
+This is the control plane. It is not responsible for "intelligence." It is responsible for the system's right to act.
+
+### 3.3. Runtime
+
+Then the request enters the runtime, where the execution pattern is chosen:
+
+- a regular workflow is enough here;
+- a `single-agent loop` is needed here;
+- an approval interrupt is required here;
+- this run must checkpoint and continue later.
+
+A good runtime is boring. It does not impress through magic. It makes execution predictable.
+
+### 3.4. Model Layer
+
+Only after that does the model come into play:
+
+- it receives curated context;
+- decides the next step;
+- proposes a tool call or a text response;
+- returns a structured result to the runtime.
+
+The important distinction is this: the model may propose actions, but it should not be the only place where execution rights are decided.
+
+### 3.5. Tool Layer
+
+If the agent wants to check a request status or create a ticket, it should not go into the outside world directly. That is the job of the tool gateway:
+
+- it checks the policy decision;
+- requires approval when needed;
+- isolates side effects;
+- returns the result to the runtime;
+- writes an event to the trace.
+
+### 3.6. Tracing and Evaluation
+
+At each step, the system should leave a trail:
+
+- what the model decided;
+- which tool was called;
+- which policy gate fired;
+- whether approval was requested;
+- where latency grew;
+- where a failure happened.
+
+Without that, you do not have a platform. You have a complicated black box.
+
+## 4. Now the Full Map Makes Sense
+
+Only now does it become useful to show the whole platform from above.
 
 <div class="diagram-card">
 <p>Reference diagram of a safe agent platform</p>
@@ -53,156 +148,95 @@ flowchart TB
 
 </div>
 
-| Layer | Role | Why it is mandatory |
+The important thing in this diagram is not the elegance of the layers. It is their role:
+
+| Layer | What it does | Why it hurts to skip it |
 | --- | --- | --- |
-| Interface layer | Chat, API, event ingestion, webhooks | Separates user channels from the runtime |
-| Identity and session layer | User, service account, thread, tenant, request scope | Needed for IAM, audit, and isolation |
-| Agent control plane | Policies, approvals, model policies, tool catalog, quotas | This is where controllability lives |
-| Orchestration runtime | Workflow graph, planner, router, subagents, checkpoints | This is where the task is executed |
-| Cognition plane | Model router, prompt compiler, structured outputs, validators | The model becomes a component, not the center of the world |
-| Memory and knowledge plane | Short-term state, long-term memory, retrieval, summaries | Limits context sprawl |
-| Tool execution plane | Sandboxed tools, MCP servers, connectors, side-effect isolation | Reduces blast radius |
-| Telemetry and eval plane | Traces, metrics, logs, datasets, graders, regression gates | Makes quality measurable |
+| Interface layer | Chat, API, webhooks, events | Otherwise channels get mixed with execution logic |
+| Identity and session layer | User, service account, tenant, request scope | Otherwise IAM, audit, and isolation break down |
+| Agent control plane | Policies, approvals, limits, catalogs | Otherwise the system acts without real control |
+| Orchestration runtime | Workflow graph, planner, checkpoints | Otherwise execution falls apart as soon as it becomes complex |
+| Cognition plane | Model router, prompt assembly, validators | Otherwise the model becomes the center of the world |
+| Memory and knowledge plane | State, memory, retrieval | Otherwise context grows without discipline |
+| Tool execution plane | Gateway, sandbox, side-effect isolation | Otherwise blast radius gets too large |
+| Telemetry and eval plane | Traces, metrics, datasets, regression gates | Otherwise quality cannot be measured or investigated |
 
-## 3. What Happens at Ingress
+## 5. The Five Pillars of a Production Platform
 
-An incoming request should not simply "fly into the model." First it has to become a normalized event with context.
+Recent Google Cloud material is useful because it offers another practical frame: not "one smart agent," but five pillars of a production platform.[^google-five-pillars]
 
-The minimally useful set:
+- `framework`
+- `model`
+- `tools`
+- `runtime`
+- `trust`
 
-- `tenant_id`;
-- `principal`;
-- risk class;
-- access policy reference;
-- session identifier;
-- trace id.
+This frame is valuable for a very practical reason. It cuts through self-deception.
 
-In short: **the request should enter the system not as a message, but as a managed execution context**.
+If you only have:
 
-### 3.1. Why Context Layers Should Be Explicitly Designed
+- a strong model;
+- a good prompt;
+- a few tools,
 
-Another useful Google idea is context layering. It disciplines prompt assembly because it stops you from throwing every available piece of context into one bag.[^google-agent-overview][^google-govern]
+but no `runtime` and no `trust`, you still do not have a platform. You have a prototype.
 
-In practice, it is usually enough to separate at least four layers:
+## 6. Which Architectural Decisions Should Be Explicit
+
+Even early on, some decisions should be made explicitly, not implicitly.
+
+### 6.1. Which Context Layers Exist
+
+Google is right to discipline prompt assembly through context layers.[^google-agent-overview][^google-govern]
+
+In practice, it is usually enough to separate:
 
 - `static context`: role, policies, allowed capabilities, fixed instructions;
-- `session context`: what belongs to the current session or thread;
+- `session context`: what lives across the session;
 - `turn context`: what belongs only to the current request;
-- `cached context`: data that can be selectively injected instead of always carried forward.
+- `cached context`: what should be injected selectively.
 
-This matters for three reasons:
+The practical rule is simple: the prompt should contain not all available data, but only data with a clear purpose and a clear lifetime.
 
-- you manage prompt budget better;
-- it becomes easier to explain where a decision came from;
-- you can update or delete parts of context without accidentally breaking the whole chain.
+### 6.2. Where the Right to Act Lives
 
-A good practical rule here is simple: **the prompt should contain not all available data, but only data with a clear purpose and a clear lifetime**.
+The model should not have the direct right to execute an external side effect.
 
-## 4. Why the Control Plane Matters More Than It Seems
+That right should live in the combination of:
 
-This is the layer most demo architectures are missing.
+- policy engine;
+- approval logic;
+- tool gateway.
 
-It is responsible not for intelligence, but for the system's right to act:
+This is why the control plane matters so much: it separates "the model proposed" from "the system is allowed to do it."
 
-- which models may be used;
-- which tools are available;
-- which approvals are required;
-- which limits apply;
-- which rules are active in dev, staging, and prod.
+### 6.3. When to Split into Multiple Agents
 
-Example of policy-as-code:
+The OpenAI practical guide is right not to romanticize `multi-agent` as the default choice.[^openai-practical]
 
-```yaml
-agent_policy:
-  model_access:
-    allowed_models: ["gpt-5.4", "gpt-5-mini", "claude-sonnet"]
-    deny_if_contains: ["pci_raw", "prod_secrets"]
-  tools:
-    read_kb:
-      approval: none
-    jira_create_ticket:
-      approval: manager
-    prod_db_write:
-      approval: security_and_owner
-      allowed_environments: ["staging"]
-  runtime:
-    max_steps: 24
-    max_parallel_subagents: 4
-    require_checkpoint_every_step: true
-```
+Splitting is usually justified when:
 
-## 5. Where Execution Lives
+- one run is already too crowded for a single context;
+- subtasks require different tools and different guardrails;
+- ownership is split across teams;
+- parallelism genuinely reduces latency or cognitive load.
 
-The orchestration runtime chooses the execution pattern:
+If those signs are absent, one agent with a good workflow graph is almost always simpler and more reliable.
 
-- deterministic workflow for regulated scenarios;
-- routed workflow for branch selection;
-- plan-and-execute for long tasks;
-- planner + subagents for independent subtasks;
-- HITL interrupts for high-risk operations.[^langgraph-hitl][^openai-builder]
+## 7. What Should Never Be Mixed Together
 
-The best property of a good runtime is unexpectedly simple: it should be boring.
+There are at least four things worth separating from the beginning:
 
-The more "magic" it contains, the harder it is to predict cost, behavior, and failure.
-
-## 6. Why the Cognition Plane Is Not the Same as One Model
-
-It is more useful to think not in terms of "we have one powerful model", but in terms of a set of manageable components:
-
-- planner model;
-- executor model;
-- classifier/extractor model;
-- structured output validator;
-- fallback model.
-
-That helps with quality, cost, and graceful degradation.[^vikulin][^openai-models]
-
-## 7. Why Memory, Knowledge, and Tools Should Not Be Mixed Together
-
-It is useful to separate at least three independent things:
-
-- **short-term state**: the current execution state of the flow;
+- **short-term state**: the current execution state;
 - **long-term memory**: facts, profiles, episodes;
-- **retrieval**: access to external knowledge.[^langgraph-memory]
-
-And separately, a fourth:
-
+- **retrieval**: access to external knowledge;[^langgraph-memory]
 - **tool execution**: real actions in the outside world.
 
-That separation feels bureaucratic only until the first serious incident.
+This separation can look bureaucratic while the system is still small. After the first serious incident, it starts to look like hygiene.
 
-## 8. What the Request Path Through the System Looks Like
+## 8. A Minimal Code Principle
 
-Below is a more "live" view of how a request moves through the key control points.
-
-<div class="diagram-card">
-<p>Request path through the main control points</p>
-
-``` mermaid
-sequenceDiagram
-    autonumber
-    participant U as User
-    participant I as Interface
-    participant C as Control plane
-    participant R as Runtime
-    participant T as Tool gateway
-    participant A as Audit
-
-    U->>I: Request
-    I->>C: Normalization + principal + tenant + risk
-    C->>R: Allowed execution context
-    R->>C: Request for model/tool action
-    C->>T: Policy check / approval / quotas
-    T-->>R: Allowed result
-    R->>A: Trace + step metadata
-    R-->>U: Response
-```
-
-</div>
-
-## 9. A Minimal Code Principle
-
-If you want to see it in a very compact form, here is a practical template:
+If you want to see the full idea in very compact form, the template looks like this:
 
 ```python
 from dataclasses import dataclass
@@ -227,20 +261,32 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
     return gateway.call(request.tool_name, request.payload)
 ```
 
-The point here is simple: the model may propose an action, but the right to execute lives not in the model, but in the gateway and policy layer.
+The point is one line long: the model may suggest an action, but the right to execute lives in the gateway and the policy layer, not in the model.
 
-## 10. Practical Takeaway
+## 9. What to Take Away from This Chapter
 
-A good agent platform stands on several boring but very valuable things:
+In short, a good agent platform stands on several boring but valuable things:
 
 - explicit ingress context;
 - a control plane;
 - a separate runtime;
 - a separate tool gateway;
-- traces and evals;
-- approvals where they are needed.
+- separate traces and evals;
+- approvals where they are truly needed.
 
-Once those are in place, you can move calmly to the more nervous topic: where exactly the security perimeter sits in such a system.
+Architecture is useful not because it makes the diagram prettier. It is useful because it stops the system from falling apart at the first real complication.
+
+## 10. What to Do Right After This Chapter
+
+If you are designing an agent system right now, write down at least this:
+
+1. Where exactly does your execution context begin?
+2. Where does the right to act live?
+3. Which runtime pattern are you starting with?
+4. Which side effects go only through a gateway?
+5. Which fields must the team see in traces from day one?
+
+If those things are already written down, an architecture is beginning to exist. If not, you still only have an agent idea.
 
 ## 11. What to Read Next
 
@@ -248,11 +294,8 @@ Once those are in place, you can move calmly to the more nervous topic: where ex
 - [Part II. Security Perimeter](../part-ii/index.en.md)
 - [Chapter 3. Security Perimeter and Trust Boundaries](../part-ii/chapter-3.en.md)
 
-[^vikulin]: [Dmitry Vikulin, "Architecture of Reliable AI Agents"](https://vikulin.ai/library/tpost/ai_agent_architecture)
 [^langgraph-memory]: [LangGraph, Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
-[^langgraph-hitl]: [LangChain Deep Agents, Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
-[^openai-builder]: [OpenAI, Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
-[^openai-models]: [OpenAI, Models](https://developers.openai.com/api/docs/models)
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
