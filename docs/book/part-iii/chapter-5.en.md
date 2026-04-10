@@ -1,30 +1,61 @@
 # Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky
 
-## 1. Why an Agent Without Memory Quickly Hits a Ceiling
+## 1. Start with the Mistake That Outlives the Request
 
-If an agent has no memory, every new run starts almost from a blank page. That is acceptable for simple tasks, but it breaks quickly in real life:
+Continue with the same support case from the first chapters.
 
-- the agent does not remember user preferences;
-- it forgets what it did a minute ago;
-- it keeps pulling the same facts again and again;
-- it cannot continue a long process carefully.
+At one point the user writes:
 
-So memory feels like the natural next step. And that is true. But here there is an important fork: memory can make the agent more useful, or it can make the whole system much less predictable.
+> If access is still not activated, just create an urgent ticket. Do not waste time on more clarification.
 
-## 2. Memory Is Not One Box, but Several Different Layers
+The agent handles the email, creates the ticket, and also saves that phrase as a stable user preference.
 
-When a team says "let's add memory," several different things are usually mixed together:
+Two weeks later, a different request arrives:
 
-- short-lived working run context;
-- user profile and stable preferences;
-- extracted facts about the world and business entities;
+> Access works partially, but some roles disappeared. Please check the status and tell me what is actually broken.
+
+In this situation the right move is to inspect the details first, not to escalate immediately. But the agent pulls the old record from profile memory and confidently creates an urgent ticket without the clarification the current case actually needs.
+
+The problem is not one bad answer. The real problem is this:
+
+- the old record survived its original run;
+- the error turned into persistent behavior;
+- the team can no longer quickly tell where that decision came from;
+- the consequences resurface later and in a different context.
+
+That is the main shift memory introduces: it makes mistakes durable.
+
+## 2. Why an Agent Without Memory Still Hits a Ceiling
+
+At the same time, memory is genuinely necessary.
+
+Without memory, the same support agent quickly starts frustrating both users and the team:
+
+- it keeps asking for details it already learned;
+- it forgets that it checked the request status a minute ago;
+- it handles interrupted processes badly;
+- it keeps fetching the same facts and increases the cost of the run.
+
+So the fork is not "do we need memory or not." The fork is this:
+
+- either memory makes the system more useful and more careful;
+- or memory turns it into a less predictable, less safe, and more expensive system to operate.
+
+## 3. Memory Is Not One Box, but Several Different State Layers
+
+When a team says "let's add memory," several different things usually get mixed together:
+
+- short-lived run context;
+- session context that matters only within one session;
+- profile memory with stable preferences;
+- validated facts about a user or business entity;
 - summaries of previous sessions;
-- execution artifacts such as trace notes or tool outputs.
+- execution artifacts such as tool outputs or trace notes.
 
-If all of this is pushed into one place, chaos begins very quickly. So the first rule is simple: do not design memory as one abstract storage. Design it as a set of different boundaries with different lifetimes, trust levels, and write rules.
+If all of this is pushed into one place, chaos starts quickly. So the first rule is simple: do not design memory as one abstract storage. Design it as a set of different boundaries with different lifetimes, owners, and write rules.
 
 <div class="diagram-card">
-<p>It is more useful to think about agent memory as several layers, not one database</p>
+<p>It is more useful to think about agent memory as several state layers, not one database</p>
 
 ``` mermaid
 flowchart TD
@@ -41,33 +72,33 @@ flowchart TD
 
 </div>
 
-## 3. The Main Mistake: Treating Memory as Mere Convenience
+## 4. The Main Mistake: Treating Memory as Mere Convenience
 
-Memory has one unpleasant property: it survives an individual run. Which means a write error lives longer than an error in one model answer.
+Memory has an unpleasant property: it survives an individual run. Which means a write error lives longer than an error in one model answer.
 
 If the agent once:
 
 - saved a false fact as a "user preference";
-- wrote a piece of untrusted text into profile memory;
-- pulled a sensitive document fragment into a summary;
-- inserted something into the retrieval store that should never be returned to that tenant,
+- wrote a fragment from raw user text into profile memory;
+- pulled a sensitive internal note into a summary;
+- inserted data into the retrieval store that should not be returned to that tenant,
 
 then the problem becomes persistent. You do not always see it in a single trace. It starts surfacing later, in other dialogs, other prompts, and sometimes for other users.
 
-That is why the memory write path should be treated as a security-sensitive path, not as a "small technical detail."
+That is why the memory write path should be treated as a sensitive write path, not as convenient automation.
 
-## 4. Memory Has Its Own Trust Boundaries
+## 5. Memory Has Its Own Trust Boundaries
 
 It is very useful to see memory not as neutral storage, but as a trust boundary.
 
-There are at least four different data sources:
+For the same support agent there are at least four different data sources:
 
 - trusted system annotations;
 - validated outputs of internal services;
 - user-provided content;
-- content coming from external tools or documents.
+- content coming from external tools, documents, or emails.
 
-Those are not the same. If you save them without source labeling, later the runtime will be unable to understand what can be used as instruction-grade context and what can only be used as reference.
+Those are not the same. If you save them without source labeling, later the runtime will not be able to tell what can be used as instruction-grade context and what can only be used as reference.
 
 A normal rule looks like this:
 
@@ -76,19 +107,26 @@ A normal rule looks like this:
 - retrieved text should be treated as untrusted until proven otherwise;
 - summaries also have provenance and are not "truth by default."
 
-## 5. The Most Dangerous Path: Writing Memory Directly in the Hot Path Without a Filter
+## 6. The Most Dangerous Path: Writing Long-Term Memory Directly in the Hot Path
 
-Teams often do this: the model replies, the runtime immediately calls `save_memory()`, and from that point it is treated as convenient automation. In the short term, it looks nice. In the long term, problems almost always appear.
+Teams often do this: the model replies, the runtime immediately calls `save_memory()`, and from that point it is treated as convenient automation. In the short term, it looks elegant. Then the problems almost always appear.
 
-Why that is dangerous:
+For the same support agent, that is especially dangerous:
+
+- an accidental user phrase becomes a "stable preference";
+- a piece of tool output enters profile memory without validation;
+- a sensitive email fragment outlives the original request;
+- one bad write influences dozens of later answers.
+
+Why this path is systemically dangerous:
 
 - the write happens under latency pressure;
 - nobody validates what is considered memory-worthy;
 - there is no normalization or cleanup step;
-- there is no tenant-isolation policy;
+- there is no separate tenant-isolation policy;
 - it becomes hard to explain why the fact ended up in memory at all.
 
-That is why even for very "smart" agents it is useful to follow a boring principle: by default, writing to long-term memory should either be explicitly allowed by policy, or moved into a background pipeline.
+That is why even for very capable agents it is useful to follow a boring rule: by default, writing to long-term memory should either be explicitly allowed by policy, or moved into a background pipeline.
 
 Here is a simple example of that logic:
 
@@ -115,11 +153,11 @@ def should_persist(candidate: MemoryCandidate) -> bool:
     return True
 ```
 
-That code is intentionally very simple. Its strength is not in "smartness," but in the fact that the write rules are visible and auditable.
+That code is intentionally simple. Its strength is not in "smartness," but in the fact that the write rules are visible and auditable.
 
-## 6. A Good Memory System Writes Less Than You Want
+## 7. A Good Memory System Writes Less Than You Want
 
-At the beginning, almost everyone feels that there should be a lot of memory. In practice, a good memory system usually wins not through volume, but through strictness of selection.
+At the beginning, almost everyone feels there should be a lot of memory. In practice, a good memory system usually wins not through volume, but through strict selection.
 
 Usually, memory should store only what:
 
@@ -129,30 +167,11 @@ Usually, memory should store only what:
 - does not carry unnecessary sensitive data;
 - will not turn the prompt into a dump.
 
-A very useful question before every write is: "If this fragment surfaces three weeks later in another context, will I be comfortable explaining why it is here?"
+A useful question before every write is this:
+
+> If this fragment surfaces three weeks later in another context, will I be comfortable explaining why it is here?
 
 If the answer feels uncertain, the write is probably unnecessary.
-
-## 7. Memory Affects Not Only Quality, but Also Safety
-
-That is why memory is not just a UX topic:
-
-- it affects data leakage;
-- it changes the prompt-injection surface;
-- it creates long-lived mistakes;
-- it complicates incident investigation;
-- it raises the bar for provenance, retention, and deletion.
-
-In a well-built platform, the memory subsystem usually has:
-
-- separate record types;
-- retention rules;
-- clear ownership;
-- provenance metadata;
-- deletion and correction mechanisms;
-- policy gates before persistent writes.
-
-That is not "chat history" anymore. That is a real architecture layer.
 
 ## 8. A Minimal Policy for Writing Into Memory
 
@@ -179,9 +198,9 @@ memory:
     session_summary: background_only
 ```
 
-Again, this is not about magic. It is about making the write path visible and safe.
+This is not about magic. It is about making the write path visible and safe.
 
-## 8.1. It Is Useful to Separate Memory Read Policy from Memory Write Policy
+### 8.1. It Is Useful to Separate Memory Read Policy from Memory Write Policy
 
 One practical idea from recent Google material is that memory should be treated as a governable subsystem, not just as "storage for context."[^google-agent-overview][^google-govern]
 
@@ -198,7 +217,7 @@ If those paths are not separated, the system starts living by a dangerous rule: 
 
 That is not memory design. That is a source of quiet incidents.
 
-## 8.2. Persistent Memory Should Have Provenance by Default
+### 8.2. Persistent Memory Should Have Provenance by Default
 
 For every record that survives longer than one run, it is useful to store at least:
 
@@ -211,20 +230,33 @@ For every record that survives longer than one run, it is useful to store at lea
 
 That may feel like extra bureaucracy only until the first argument about where a "fact" came from after the agent confidently repeated it in another context.
 
-## 9. Where to Start If You Have No Memory Yet
+## 9. What a Production Team Should Be Able to Answer Quickly
 
-If you are only approaching this topic, a good order is:
+For the same support case, after strange memory-driven behavior the team should be able to answer quickly:
 
-1. First separate session context and persistent memory.
-2. Then define which record types are allowed at all.
-3. After that, add provenance and tenant metadata.
+- which record entered profile memory;
+- where it came from;
+- who wrote it;
+- whether it passed validation;
+- why it was allowed for that tenant;
+- which later runs it has already influenced.
+
+If those questions cannot be answered, the memory subsystem has already become a systemic risk.
+
+## 10. What to Do Right After This Chapter
+
+If you are just approaching memory design, start with a short sequence:
+
+1. Separate session context from persistent memory.
+2. Define which record types are allowed at all.
+3. Add provenance and tenant metadata.
 4. Only then automate the write path.
 
 If you do it in the opposite order, memory quickly becomes the place where the platform dumps everything it failed to design cleanly.
 
-## 10. What to Read Next
+## 11. What to Read Next
 
-In the next chapters of this part, we will calmly go through:
+In the next chapters of this part, we will go through:
 
 - how short-term memory differs from long-term memory;
 - why profile memory should exist separately from the retrieval store;
