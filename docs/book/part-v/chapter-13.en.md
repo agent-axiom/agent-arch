@@ -1,32 +1,46 @@
 # Chapter 13. Offline Evals, Online Evals, and Regression Gates
 
-## 1. Why Traces and SLO Still Do Not Improve the System by Themselves
+## 1. Start with the Question: How Do You Avoid Shipping the Same Failure Twice?
 
-Once you already have traces and SLO, it is tempting to feel that observability is "almost done". But that is only half the journey.
+Continue with the same support case.
 
-Traces help you understand what happened.
-SLO help you define what counts as system health.
+The team has already gone through one unpleasant incident:
 
-But the main engineering question remains: how do you avoid shipping regressions and improve quality systematically?
+- the agent created a duplicate ticket;
+- traces helped reconstruct the run path;
+- the root cause was a bad retry path and weak idempotency discipline;
+- the bug was fixed.
+
+But after that, the main engineering question appears:
+
+> How do you make sure a similar regression does not come back two weeks later after another prompt, policy, or tool-adapter change?
 
 That is where the eval loop begins.
 
+Traces help you understand what happened.
+SLOs help you define what counts as system health.
+
+But the main question remains: how do you improve quality systematically and keep regressions out of rollout?
+
 !!! info "Need the schemas and artifacts?"
-    If you need more than rationale, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
+    If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
 
 ## 2. Offline Evals Exist So You Can Change the System Before Rollout
 
-Offline evals answer a very practical question: "If we change the prompt, policy, retrieval, model routing, or tool behavior, will the system get better or worse on known scenarios?"
+Offline evals answer a very practical question:
 
-Good offline evals are usually built around:
+> If we change the prompt, policy, retrieval, model routing, or tool behavior, will the system get better or worse on known critical scenarios?
 
-- curated task sets;
-- golden answers or expected outcomes;
-- policy-sensitive edge cases;
-- tricky retrieval scenarios;
-- high-risk tool workflows.
+For our support agent, a good offline set should include not only pleasant happy-path cases, but also the things that have already hurt the system:
 
-Their strength is that they let you compare system versions before production traffic.
+- duplicate ticket scenarios;
+- timeout after side effect;
+- ambiguous user requests;
+- approval-required flows;
+- stale memory retrieval;
+- cross-tenant privacy-sensitive cases.
+
+The strength of offline evals is that they let you compare system versions **before** production traffic arrives.
 
 ## 3. Online Evals Matter Because the Real World Is Always Larger Than the Test Set
 
@@ -44,6 +58,13 @@ That is why online evals are not a replacement for offline evals, but a second l
 - catch drift;
 - detect silent regressions;
 - observe how the system behaves under real operational conditions.
+
+For the support agent, that means something simple: even if the critical test set is clean, the team still needs to see whether the agent has started:
+
+- creating unnecessary tickets more often;
+- escalating too early;
+- handling incomplete statuses worse;
+- spending more to complete the same kind of run.
 
 ## 4. The Best Setup Is Not "Offline or Online", but Both
 
@@ -70,6 +91,8 @@ flowchart LR
 
 </div>
 
+For the same support case, that loop means one thing: an incident should not remain only in a postmortem. It should become both an eval case and a rollout rule.
+
 ## 4.1. A User Simulator Helps When Static Cases Stop Being Enough
 
 Recent Google material highlights one more practical layer: it is useful to complement the eval loop with a user simulator instead of relying only on a fixed test set.[^google-govern]
@@ -82,7 +105,14 @@ That becomes especially useful when you want to check:
 - whether the policy path survives multi-turn scenarios;
 - whether orchestration degrades when user turns become more variable.
 
-A static eval set is great for comparing known cases. A user simulator is useful when you care about the dynamics of behavior, not only the score on a prepared example.
+For the support agent, a user simulator is especially useful in scenarios like:
+
+- the user first asks for a status check, then suddenly changes priority;
+- the agent receives an incomplete `request_id`;
+- after a failed tool call, the user sends one more detail;
+- the system must choose between escalation, clarification, or safe stop.
+
+A static eval set is great for comparing known cases. A user simulator is useful when you care about the dynamics of behavior, not only the score on one prepared example.
 
 ## 4.2. The Continuous Eval Loop Should Feed Rollout Decisions
 
@@ -110,9 +140,14 @@ Trace grading is useful because it lets you evaluate:
 - whether policy constraints were respected;
 - whether the workflow was efficient.
 
-That is especially valuable when the final result still looks "fine", but the system has already started getting slower, riskier, or more expensive.
+For our support agent, that is especially valuable when the user-facing answer still looks "fine", but inside the run the system has already started to:
 
-## 5.1. Behavioral evals and control evals look beyond the answer
+- call `create_support_ticket` too often;
+- make unnecessary tool hops;
+- escalate too early;
+- return status without enough grounding.
+
+## 5.1. Behavioral Evals and Control Evals Look Beyond the Answer
 
 As agent systems gain more autonomy, it becomes useful to evaluate not only “did the run complete the task,” but also “what kind of behavior did the system display along the way.”
 
@@ -134,7 +169,7 @@ They are especially useful for cases where an ordinary regression set is too sha
 
 In other words, the eval layer must assess not only final-answer quality, but also behavioral failure modes.
 
-## 5.2. Coordination failure should also be part of eval design
+## 5.2. Coordination Failure Should Also Be Part of Eval Design
 
 If the system uses handoffs, a manager pattern, or several cooperating agents, then checking only whether “the answer was correct” is no longer enough.
 
@@ -148,7 +183,7 @@ You also need to look at:
 
 That is why multi-agent reliability research matters here not as an invitation to make the runtime more complex by default, but as a reminder: the more complex the orchestration, the richer the eval design must be.
 
-## 5.3. Multi-turn consistency also deserves its own checks
+## 5.3. Multi-Turn Consistency Also Deserves Its Own Checks
 
 Another useful signal from recent work is that an agent may look reasonable in a short scenario while gradually drifting into contradiction across a longer interaction loop.
 
@@ -181,9 +216,16 @@ A strong dataset usually includes:
 - approval-required flows;
 - cross-tenant and privacy-sensitive cases.
 
-Those difficult and unpleasant cases are exactly where the engineering value lives.
+For the support agent, that means the dataset should contain not only “check status and reply,” but also:
 
-## 6.1. The memory layer should also enter the eval dataset explicitly
+- “create a ticket, but the tool returned an ambiguous result”;
+- “the user sent an urgent phrase that must not be blindly stored as a preference”;
+- “retrieval returned conflicting statuses”;
+- “the approval path must stop the write action.”
+
+The real engineering value almost always lives in those difficult and uncomfortable cases.
+
+## 6.1. The Memory Layer Should Also Enter the Eval Dataset Explicitly
 
 It is useful to test not only answers, but also the quality of state across runs.
 
@@ -210,9 +252,18 @@ A regression gate is much more useful when it becomes an explicit set of rules, 
 - do not increase escalation rate;
 - do not increase prompt budget or tool count per run beyond limit.
 
+For the support agent, that means a regression is not only “the agent became less accurate,” but also:
+
+- it started repeating write-tool attempts more often;
+- it escalates unnecessarily more often;
+- it writes more unnecessary memory;
+- it became more expensive to solve the same class of tasks.
+
 Then rollout stops depending only on the intuition of whoever made the change.
 
 ## 8. Example Eval Gate Policy
+
+Here is a very practical template:
 
 ```yaml
 gates:
@@ -232,6 +283,8 @@ gates:
 The numbers are not universal. The important part is that the quality gate becomes machine-readable, and disagreements move to the level of criteria instead of vibes.
 
 ## 9. A Simple Regression Decision Example
+
+This small skeleton shows the idea: rollout is tied to measurable thresholds, not to general impression.
 
 ```python
 from dataclasses import dataclass
@@ -266,7 +319,9 @@ It is very useful not to ship large changes to everyone at once, but to use:
 - model routing experiments;
 - staged policy rollout.
 
-That way online evals become not just "something went wrong", but a controlled release stage.
+That way online evals become not just observation that “something went wrong,” but a controlled release stage.
+
+For the same support agent, that means: if a new adapter or prompt changes behavior on difficult status cases, the team should see it in canary or shadow, not only after broad rollout.
 
 ### 10.1. A Good Simulator Does Not Replace Real Data, It Complements It
 
@@ -300,22 +355,22 @@ These failures are very typical:
 
 When that happens, the eval loop becomes a ritual instead of an improvement mechanism.
 
-## 12. Practical Checklist
+## 12. What to Do Right After This Chapter
 
-If you want to quickly review your eval loop, ask:
+If you want to review your eval loop quickly, ask:
 
-- Do you have a curated offline eval set for critical scenarios?
-- Do you have online eval signals connected to traces and SLO?
-- Can you grade not only the final answer, but the run itself?
-- Is there a formal regression gate before rollout?
-- Are safety and cost included, not only task success?
-- Is the eval dataset updated from real incidents?
+1. Do you have a curated offline eval set for critical scenarios?
+2. Do you have online eval signals connected to traces and SLO?
+3. Can you grade not only the final answer, but the run itself?
+4. Is there a formal regression gate before rollout?
+5. Are safety and cost included, not only task success?
+6. Is the eval dataset updated from real incidents?
 
 If the answer is "no" several times in a row, you may already have observability, but you still do not have a learning loop.
 
 ## 13. What to Read Next
 
-Part V now looks like a coherent operational block: traces, SLO, and the eval loop. The next natural move is the organizational model, because platforms like this run into team design questions as much as code questions.
+Part V now forms a coherent operational block: traces, SLO, and the eval loop. The next natural move is the organizational model, because platforms like this run into team design questions as much as code questions.
 
 ## 14. Useful Reference Pages
 
@@ -326,7 +381,8 @@ Part V now looks like a coherent operational block: traces, SLO, and the eval lo
 
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
 - [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](../part-viii/chapter-25.en.md)
+- [Chapter 14. Platform Team and Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)
 
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
