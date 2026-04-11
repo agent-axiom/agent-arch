@@ -1,5 +1,14 @@
 # Chapter 2. Reference Architecture for a Safe Agent
 
+!!! info "How to read this chapter"
+    Do not try to memorize every layer name on the first pass.
+
+    It is more useful to do three things:
+
+    - follow one support request through the system;
+    - see where the system gets the right to act;
+    - write down the few mandatory layers without which the request cannot safely reach an external side effect.
+
 ## 1. Start Not with Layers, but with One Live Case
 
 Take the same support agent from the previous chapter.
@@ -29,6 +38,11 @@ But a production system cannot run on a hand-wavy version of that flow. Too many
 This is exactly where platform architecture comes from.
 
 ## 2. The Minimal Shape of an Agent, and Why It Is Not Enough
+
+It helps not to hold the full map in your head right away. At first, it is enough to distinguish two things:
+
+- the minimal core of an agent system;
+- the production overlay that turns that core into something safer than a prototype.
 
 The OpenAI practical guide is useful because it starts from a very simple shape: a minimal agent system usually has three things.[^openai-practical]
 
@@ -124,6 +138,12 @@ At each step, the system should leave a trail:
 Without that, you do not have a platform. You have a complicated black box.
 
 ## 4. Now the Full Map Makes Sense
+
+If the map still feels dense at this point, do not try to memorize every block name. First answer only three questions:
+
+- where the execution context is formed;
+- where the right to act lives;
+- where the system leaves enough evidence for investigation and release decisions.
 
 Only now does it become useful to show the whole platform from above.
 

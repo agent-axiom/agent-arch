@@ -2,7 +2,16 @@
 
 第一部分回答一个核心问题：如果把智能体系统当作平台型产品而不是玩具来设计，**现代安全智能体架构**应该是什么样子。
 
-## 在实现前必须先理解的事情
+!!! info "第一部分的快速路线"
+    如果时间有限，可以这样读：
+
+    - [第 1 章](chapter-1.md)：先判断这里到底需不需要 agent，而不是普通 workflow；
+    - [第 2 章](chapter-2.md)：顺着一个请求走完参考架构；
+    - [第二部分](../part-ii/index.zh.md)：再去看真正的信任边界在哪里。
+
+    只走完这条路线，也已经足够把系统当作工程轮廓来讨论，而不是停留在概念层面。
+
+## 最先要抓住的事情
 
 - 智能体不等于 LLM。LLM 只负责部分决策。
 - 安全不能作为 MVP 之后的“外层包装”，它必须内建在 runtime 中。
@@ -23,6 +32,7 @@
 
 - [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.md)
+  这一章沿用第 1 章的 support 场景，展示同一个请求如何穿过平台各层。
 - [实践篇：Instructions、Routines 与 Prompt Templates](practical-routines.md)
 - [实践篇：Manager Pattern vs Handoffs](practical-manager-handoffs.md)
 - [为什么选择这套发布技术栈](../../appendix/stack.md)
