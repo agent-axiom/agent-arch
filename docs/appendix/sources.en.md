@@ -1,6 +1,14 @@
 # Sources
 
-Below is the core set of primary sources used in the current version of the book. Access date: **March 29, 2026**.
+Below is the core set of primary sources used in the current version of the book. Access date: **April 11, 2026**.
+
+!!! info "How to read this list"
+    It helps to separate these sources into two layers:
+
+    - `Stable core`: NIST, OWASP, foundational architecture documents, official SDKs, and platform docs;
+    - `Fast-moving layer`: recent material on evals, misalignment, observability, supply chain, and agent governance.
+
+    If you need a dependable frame, start with the stable core. If you need current operational practice for Part V and Part VIII, use the fast-moving layer and pay close attention to publication dates.
 
 ## Agent architecture and patterns
 
@@ -96,3 +104,8 @@ If you continue developing the book, the best reading order is:
 2. Architectural patterns: Anthropic, LangGraph, OpenAI.
 3. Governance and platform controls: Google Cloud, OpenAI, Anthropic.
 4. Tooling and publishing: MkDocs, uv, ty, Starlight.
+
+For the book itself, one more split is useful:
+
+- `Stable core`: architecture, security perimeter, memory, execution, and baseline observability;
+- `Fast-moving layer`: eval tooling, lifecycle governance, observability patterns, agent inventory, and frontier research.

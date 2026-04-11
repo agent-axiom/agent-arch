@@ -4,6 +4,14 @@
 
 这页只负责说明全书结构和当前状态。如果你要按角色选择阅读路线，请看[从这里开始](../start-here.zh.md)。如果你关心发布技术栈的取舍，请看单独的[发布技术栈](../appendix/stack.zh.md)页面。
 
+!!! info "按稳定性来阅读这本书"
+    这本书可以分成两个层次：
+
+    - `稳定内核`：第一到第七部分，尤其是第 1-12 章和第 18 章。它们变化较慢，因为描述的是基础工程纪律。
+    - `快速变化层`：第 13 章、第八部分，以及研究色彩更强的 appendix 页面。它们更新更频繁，因为 vendor tooling 和 research 变化更快。
+
+    如果你是第一次读这本书，先走稳定内核。如果你需要最新的 production contour，再进入快速变化层。
+
 ## 结构
 
 ### 第一部分：基础
@@ -56,6 +64,8 @@
 - 智能体系统的 SLO。
 - Offline evals、online evals、trace grading、回归闸门。
 
+说明：Part V 的核心思想相对稳定，但第 13 章比第 11、12 章变化更快。
+
 ### 第六部分：组织模型
 
 - 平台团队与产品团队的分工。
@@ -82,6 +92,8 @@
 - 第 27 章：Agent Inventory、Registry 与 Sprawl 治理。
 
 状态：Part VIII 现在已经组成一个完整的生命周期模块，并补上了 sabotage-like behavior、control-heavy evals、AI-native observability 与 agent-estate governance 这些更前沿的主题。
+
+说明：这是全书变化最快的部分。原则相对稳定，但 tooling、benchmarks、vendor guidance 和 threat patterns 更新更频繁。
 
 ## 发布路线图
 

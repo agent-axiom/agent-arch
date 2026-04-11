@@ -4,6 +4,14 @@ This version of the book is structured as an engineering playbook rather than a 
 
 This page focuses on structure and status. For a role-based reading path, open [Start Here](../start-here.en.md). For the publishing-stack explanation, use the dedicated [Publishing Stack](../appendix/stack.en.md) page.
 
+!!! info "How to read the book by stability level"
+    The book has two layers:
+
+    - `Stable core`: Parts I-VII, especially Chapters 1-12 and 18. These change more slowly because they describe baseline engineering discipline.
+    - `Fast-moving layer`: Chapter 13, Part VIII, and the research-heavy appendix pages. These change faster because vendor tooling and research move faster.
+
+    If you are reading the book for the first time, start with the stable core. If you need the newest production contour, move to the fast-moving layer afterward.
+
 ## Structure
 
 ### Part I. Foundations
@@ -56,6 +64,8 @@ What I am strengthening next in this part:
 - SLOs for agent systems.
 - Offline evals, online evals, trace grading, regression gates.
 
+Note: the core ideas in Part V are relatively stable, but Chapter 13 moves faster than Chapters 11 and 12.
+
 ### Part VI. Organizational Model
 
 - Platform team vs product teams.
@@ -82,6 +92,8 @@ What I am strengthening next in this part:
 - Chapter 27. Agent Inventory, Registry, and Sprawl Control.
 
 Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior, control-heavy evals, AI-native observability, and agent-estate governance.
+
+Note: this is the fastest-moving block in the book. The principles are stable, but tooling, benchmarks, vendor guidance, and threat patterns change more often.
 
 ## Publishing roadmap
 
