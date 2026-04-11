@@ -20,7 +20,7 @@
 
 如果你手里只有 application logs 和几条指标，这个答案通常既慢又难找。
 
-这就是为什么智能体系统的 observability 不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
+这就是为什么智能体系统的可观测性不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
 
 ## 2. 为什么普通日志几乎总是不够
 
@@ -240,7 +240,7 @@ Observability 不应该变成数据泄漏渠道。
 - 在有帮助时记录 identifiers 和 hashes；
 - 没有充分理由时，不要把完整敏感 payload 丢进通用 telemetry pipeline。
 
-## 12. Agent observability 最常见的崩坏点
+## 12. 智能体可观测性最常见的崩坏点
 
 这些问题非常典型：
 
@@ -255,7 +255,7 @@ Observability 不应该变成数据泄漏渠道。
 
 ## 13. 读完这一章后先做什么
 
-如果你想快速检查 observability model，可以问：
+如果你想快速检查可观测性模型，可以问：
 
 1. 能否通过一个 `trace_id` 重建完整 run 路径？
 2. retrieval、model calls、tool calls 和 policy gates 是否都有独立 spans？
@@ -265,13 +265,14 @@ Observability 不应该变成数据泄漏渠道。
 6. 敏感 payloads 是否没有泄露到 traces 中？
 7. structured event schema 是否稳定？
 
-如果连续几个答案都是否，那 observability 还只是装饰性的，而不是 operational 的。
+如果连续几个答案都是否，那可观测性还只是装饰性的，而不是运行层面的。
 
 ## 14. 接下来读什么
 
-下一个自然步骤很明确：当 traces 和 structured events 已经存在之后，就要定义什么才算“健康”的 agent system，也就是进入 SLO。
+沿着同一条故事线，下一步也很明确：当团队已经能还原一次故障的完整路径后，就该定义什么才算系统每天都处在“健康”状态，也就是进入 SLO。
 
 - [第 10 章：幂等性、重试、速率限制与回滚边界](../part-iv/chapter-10.zh.md)
-- [第 12 章：Agent 系统的 SLO](chapter-12.zh.md)
+- [第 12 章：智能体系统的 SLO](chapter-12.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

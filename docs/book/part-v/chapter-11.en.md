@@ -269,9 +269,10 @@ If the answer is "no" several times in a row, your observability is still decora
 
 ## 14. What to Read Next
 
-The next natural step is clear: once traces and structured events exist, you need to define what a "healthy" agent system actually means. That means moving to SLO.
+The next step in the same story is straightforward: once the team can reconstruct the path of one failure, it needs to define what "healthy" means every day. That means moving to SLO.
 
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../part-iv/chapter-10.en.md)
-- [Chapter 12. SLOs for Agent Systems](chapter-12.en.md)
+- [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
+- [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
