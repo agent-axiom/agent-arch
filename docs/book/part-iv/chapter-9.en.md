@@ -1,6 +1,17 @@
 # Chapter 9. Sandbox Execution and MCP as an Integration Contract
 
+!!! info "How to read this chapter"
+    It helps to keep one concrete transition in mind:
+
+    - the agent has already chosen a capability;
+    - the agent is already about to reach an external tool or adapter;
+    - the platform now has to decide through which transport that action may execute at all and inside which limits.
+
+    If that transition is not explicit, sandboxing and MCP quickly turn into vocabulary rather than execution discipline.
+
 ## 1. Why an Execution Layer Without a Sandbox Quickly Becomes Too Trusting
+
+In the running support case, this is very concrete: the agent has already decided to check the request status or create a ticket through an external system. From this point, the question is no longer "what is the next smart step," but "through which boundary is the system even allowed to execute it."
 
 Once an agent has access to tools, the next danger is almost always the same: system boundaries start to blur.
 
