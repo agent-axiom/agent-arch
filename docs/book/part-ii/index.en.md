@@ -2,6 +2,15 @@
 
 If in the first part we assembled the architectural picture, here the same support agent reaches the first real risks: access to data, tool calls, and actions with side effects.
 
+!!! info "Short path through this part"
+    If you want a fast pass, read it this way:
+
+    - [Chapter 3](chapter-3.en.md): understand where the trust boundaries are;
+    - [Chapter 4](chapter-4.en.md): see where the system must stop before a real action happens;
+    - [Chapter 5](../part-iii/chapter-5.en.md): decide what the agent is allowed to remember after a run like that.
+
+    Those three points already give you not just security vocabulary, but a working production contour.
+
 This part exists so that you do not develop the dangerous illusion that agent security can be "added later." In our running case, this is the moment when it becomes obvious that without a defined perimeter the agent stops helping and starts creating new risk.
 
 - if trust boundaries are not defined in advance, the agent quickly starts pulling in extra context;
@@ -20,6 +29,7 @@ This part exists so that you do not develop the dangerous illusion that agent se
 
 - [Chapter 3. Security Perimeter and Trust Boundaries](chapter-3.en.md)
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](chapter-4.en.md)
+  This chapter continues the same support case at the moment the system is about to turn a decision into an external action.
 - [Part I. Foundations](../part-i/index.en.md)
 - [Sources](../../appendix/sources.en.md)
 

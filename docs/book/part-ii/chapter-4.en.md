@@ -1,5 +1,14 @@
 # Chapter 4. Tool Gateway, Approval, and Audit Trail
 
+!!! info "How to read this chapter"
+    It is more useful to hold one concrete moment in your head than a generic security checklist:
+
+    - the agent has already formed a view;
+    - the agent already wants to call a tool;
+    - the system now has to decide whether that intent may become an external side effect at all.
+
+    If that transition is not handled strictly, the architectural layers from the previous chapters lose value very quickly.
+
 ## 1. Where the Expensive Incidents Actually Happen
 
 The most expensive failures in agent systems usually happen not when the model "thought incorrectly," but when the system moved to action:
@@ -10,6 +19,8 @@ The most expensive failures in agent systems usually happen not when the model "
 - exported data somewhere.
 
 That is why the execution boundary matters much more than many people expect.
+
+In the running support case, this looks very concrete: the agent has already checked the request status and now wants to create an urgent ticket. Up to this point the system could still be wrong mostly inside itself. From this point on, it starts changing the outside world.
 
 ## 2. A Tool Gateway Should Be Boring and Strict
 
