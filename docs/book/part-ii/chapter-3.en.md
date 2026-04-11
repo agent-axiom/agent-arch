@@ -228,7 +228,7 @@ If those things are already defined, the security perimeter is beginning to beco
 
 ## 11. What to Read Next
 
-Now it makes sense to move to the next logical layer: what to do with execution, approvals, and the audit trail once the agent reaches real actions.
+Now it makes sense to move to the next logical layer: what happens when the same support agent reaches real actions and must pass safely through the tool gateway, approval path, and audit trail.
 
 - [Part II. Security Perimeter](index.en.md)
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](chapter-4.en.md)

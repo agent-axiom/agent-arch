@@ -228,7 +228,7 @@ Least privilege 不应该只停留在云 IAM 这一层，它应该贯穿整条 a
 
 ## 11. 接下来读什么
 
-接下来最自然的一层，就是 agent 已经走到真实动作面前之后，该如何处理 execution、approvals 和 audit trail。
+接下来最自然的一层，就是同一个支持智能体已经走到真实动作面前之后，该如何安全地穿过 tool gateway、approval 路径和 audit trail。
 
 - [第二部分：安全边界](index.zh.md)
 - [第 4 章：Tool Gateway、Approval 与 Audit Trail](chapter-4.zh.md)

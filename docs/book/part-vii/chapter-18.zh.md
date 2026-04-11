@@ -276,7 +276,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 13. 接下来读什么
 
-到这里，参考实现已经闭合了最基本的 operational skeleton。接下来可以继续补更具体的代码示例、图示、实操附录，以及更贴近真实实现的场景。
+到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。接下来的自然问题就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
 
 ## 14. 值得配套阅读的参考页
 
@@ -286,4 +286,5 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
 - [第七部分：参考实现](index.zh.md)
+- [第八部分：智能体系统的生命周期](../part-viii/index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

@@ -1,8 +1,8 @@
 # Part II. Security Perimeter
 
-If in the first part we assembled the basic architectural picture, here we begin to examine the most nerve-wracking layer of the whole system: safety.
+If in the first part we assembled the architectural picture, here the same support agent reaches the first real risks: access to data, tool calls, and actions with side effects.
 
-This part exists so that you do not develop the dangerous illusion that agent security can be "added later." In reality, things work the other way around:
+This part exists so that you do not develop the dangerous illusion that agent security can be "added later." In our running case, this is the moment when it becomes obvious that without a defined perimeter the agent stops helping and starts creating new risk.
 
 - if trust boundaries are not defined in advance, the agent quickly starts pulling in extra context;
 - if tools are not isolated, one bad call turns into a real incident;
@@ -22,3 +22,5 @@ This part exists so that you do not develop the dangerous illusion that agent se
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](chapter-4.en.md)
 - [Part I. Foundations](../part-i/index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+The next natural step after this perimeter is deciding what the agent is allowed to remember across runs, and how memory avoids becoming a new source of risk.

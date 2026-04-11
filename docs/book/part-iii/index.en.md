@@ -1,8 +1,8 @@
 # Part III. Memory and Knowledge
 
-At this point, the agent is no longer just reasoning, and no longer just using tools safely. The next temptation appears: give it memory so that it does not start every run from zero.
+At this point, the agent is no longer just reasoning, and no longer just approaching actions safely. In the same support case, the next temptation appears: give it memory so it no longer starts every run from zero and can hold onto user history.
 
-That is the right step, but it is also where many systems start quietly accumulating debt:
+That is the right step, but it is also where many systems start quietly accumulating debt. The same support agent can easily turn useful state into a durable error source unless memory is designed as a controlled layer.
 
 - they save everything into memory;
 - they do not distinguish profile memory from working context;
@@ -17,4 +17,4 @@ In this part, we will look at how to make memory useful without turning it into 
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](chapter-6.en.md)
 - [Chapter 7. Retrieval, Compaction, and Background Updates](chapter-7.en.md)
 
-After that, it will make sense to go deeper into retention, deletion, and memory governance.
+After that, the natural move is the execution layer: how the same agent not only remembers context, but acts through controlled tools.

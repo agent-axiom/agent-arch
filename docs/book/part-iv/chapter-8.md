@@ -320,7 +320,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 ## 13. Что читать дальше
 
-Следующие естественные темы в этой части: sandbox execution, MCP как контракт интеграции и правила для retries и rollback boundaries.
+Следующие естественные темы в этой части: sandbox execution, MCP как контракт интеграции и правила для retries и rollback boundaries. Именно там становится видно, как тот же агент поддержки не просто вызывает tools, а делает это через зрелый execution layer.
 
 - [Глава 7. Извлечение, сжатие и фоновые обновления](../part-iii/chapter-7.md)
 - [Часть IV. Инструменты и выполнение](index.md)

@@ -320,7 +320,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 ## 13. 接下来读什么
 
-这一部分接下来的自然主题是：sandbox execution、MCP 作为集成契约，以及 retries 和 rollback boundaries 的规则。
+这一部分接下来的自然主题是：sandbox execution、MCP 作为集成契约，以及 retries 和 rollback boundaries 的规则。也正是在那里，你会看到同一个支持智能体并不只是“会调工具”，而是通过成熟执行层去调工具。
 
 - [第 7 章：检索、压缩与后台更新](../part-iii/chapter-7.zh.md)
 - [第四部分：工具与执行](index.zh.md)

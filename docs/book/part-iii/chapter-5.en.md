@@ -263,6 +263,8 @@ In the next chapters of this part, we will go through:
 - why summaries are better updated in the background;
 - how compaction helps keep context clean.
 
+For our support case, that is the next step: separating working context, user profile, and durable memory so the execution layer does not act on dirty state later.
+
 For now, the main takeaway is simple: memory is useful only when it is designed as a controlled system layer, not as uncontrolled accumulation of text.
 
 - [Part III. Memory and Knowledge](index.en.md)

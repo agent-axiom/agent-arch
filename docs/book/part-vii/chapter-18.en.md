@@ -276,7 +276,7 @@ If the answer is "no" several times in a row, the rollout should still be consid
 
 ## 13. What to Read Next
 
-At this point, the reference implementation already closes the basic operational skeleton. From here, it can be extended with more code, more diagrams, more practical appendices, and more concrete implementation scenarios.
+At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next natural step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
 
 ## 14. Useful Reference Pages
 
@@ -286,4 +286,5 @@ At this point, the reference implementation already closes the basic operational
 
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
 - [Part VII. Reference Implementation](index.en.md)
+- [Part VIII. Agent System Lifecycle](../part-viii/index.en.md)
 - [Sources](../../appendix/sources.en.md)

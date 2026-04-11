@@ -320,7 +320,7 @@ If the answer is "no" several times in a row, your agent can already call tools,
 
 ## 13. What to Read Next
 
-The next natural topics in this part are sandbox execution, MCP as an integration contract, and the rules for retries and rollback boundaries.
+The next natural topics in this part are sandbox execution, MCP as an integration contract, and the rules for retries and rollback boundaries. That is where it becomes clear how the same support agent not only calls tools, but does so through a mature execution layer.
 
 - [Chapter 7. Retrieval, Compaction, and Background Updates](../part-iii/chapter-7.en.md)
 - [Part IV. Tools and Execution](index.en.md)
