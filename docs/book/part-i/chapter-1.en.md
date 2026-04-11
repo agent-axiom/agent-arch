@@ -83,7 +83,7 @@ The signs in favor of an ordinary workflow look different:
 - explainability and repeatability matter more than flexible reasoning;
 - "agent autonomy" sounds appealing, but adds little real value.
 
-## 6. Decision Card: Workflow, Single-Agent, or Multi-Agent
+## 6. Decision Rules: Workflow, Single-Agent, or Multi-Agent
 
 This is the most useful short frame to start with.
 
@@ -98,7 +98,18 @@ There is one more practical rule:
 - if you cannot explain in one paragraph why this should be an agent, it probably should not be one yet;
 - if you cannot explain why this should be `multi-agent`, it is almost certainly premature.
 
-## 7. Why the "Magic" Breaks Earlier Than It Seems
+## 7. What Teams Most Often Get Wrong at the Start
+
+The same early mistakes keep repeating:
+
+- choosing an agent before describing the workflow clearly enough;
+- calling anything with more than one step `multi-agent`;
+- debating prompts and models before defining trust boundaries, approvals, and observability;
+- measuring success by the demo, not by what happens after the first retry, the first timeout, and the first incident.
+
+If the system still has no answer to those questions, debate about "more capable agency" is almost always premature.
+
+## 8. Why the "Magic" Breaks Earlier Than It Seems
 
 As long as the scenario is short and safe, things can genuinely look fine. Then the system acquires:
 
@@ -119,7 +130,7 @@ At that point the main problems are no longer just about "answer quality." They 
 
 This is where an "agent" stops being just an LLM with tools and becomes a full engineering system.
 
-## 8. Four Principles Worth Building On
+## 9. Four Principles Worth Building On
 
 ### 8.1. Control Matters More Than Autonomy
 
@@ -137,7 +148,7 @@ Long-running tasks should not lose steps, approvals, or side effects just becaus
 
 If the agent "looks smart" but you have no traces, evals, or step metadata, then you do not control the system.[^openai-sdk][^openai-evals]
 
-## 9. What a Production Team Should Always See
+## 10. What a Production Team Should Always See
 
 The minimally useful set is very concrete:
 
@@ -150,7 +161,7 @@ The minimally useful set is very concrete:
 
 The moment this list disappears from view, the agent starts turning into a black box.
 
-## 10. What to Do Right After This Chapter
+## 11. What to Do Right After This Chapter
 
 If you are designing an agent system right now, do not start with the prompt. Start with three questions:
 
@@ -160,7 +171,7 @@ If you are designing an agent system right now, do not start with the prompt. St
 
 If you do not yet have answers to those questions, it is too early to debate "how autonomous" the system should be. First you need an execution platform.
 
-## 11. Short Practical Takeaway
+## 12. Short Practical Takeaway
 
 If you remember only one idea from this chapter, let it be this:
 
@@ -168,7 +179,7 @@ If you remember only one idea from this chapter, let it be this:
 
 That is why the next chapter is not about "smartness" in the abstract. It is about the architecture of that platform: which layers need to exist so the system can be launched, observed, and evolved safely.
 
-## 12. What to Read Next
+## 13. What to Read Next
 
 - [Part I. Foundations](index.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)

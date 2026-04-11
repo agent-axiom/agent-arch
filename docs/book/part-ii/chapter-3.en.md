@@ -200,7 +200,25 @@ Least privilege is useful not only at the cloud IAM layer. It has to run through
 
 So the real question is not "do we have IAM?" The real question is whether permission boundaries actually match decision and execution boundaries.
 
-## 9. What a Production Team Should Be Able to Prove After an Incident
+## 9. Practical Rules for the Perimeter
+
+If you need a short operational frame, stick to rules like these:
+
+1. Treat external documents, emails, and tool outputs as data by default, not as instructions.
+2. Separate any decision that changes the outside world from the execution path itself and run it through policy.
+3. Give every call that touches tenant scope, PII, or side effects an explicit principal and a readable audit trail.
+4. If the team cannot explain in one paragraph what the agent sees, decides, and executes, the perimeter is still too vague.
+
+## 10. What Teams Most Often Get Wrong
+
+Perimeter design usually fails in the same early ways:
+
+- relying on one guardrail instead of a series of control points;
+- giving the agent one all-powerful account instead of separating `user_principal`, `runtime_principal`, and `tool_principal`;
+- mixing user scope, tenant scope, and system scope;
+- allowing tool access before the system has real tracing and investigability.
+
+## 11. What a Production Team Should Be Able to Prove After an Incident
 
 For the same support case, a week after an incident the team should still be able to answer at least these questions:
 
@@ -214,7 +232,7 @@ For the same support case, a week after an incident the team should still be abl
 
 If those questions cannot be answered quickly, the perimeter is already too weak, even if the system formally "has guardrails."
 
-## 10. What to Do Right After This Chapter
+## 12. What to Do Right After This Chapter
 
 If you are designing an agent perimeter right now, start with a very short list:
 
@@ -226,7 +244,7 @@ If you are designing an agent perimeter right now, start with a very short list:
 
 If those things are already defined, the security perimeter is beginning to become real. If not, it still exists mostly as intention.
 
-## 11. What to Read Next
+## 13. What to Read Next
 
 Now it makes sense to move to the next logical layer: what happens when the same support agent reaches real actions and must pass safely through the tool gateway, approval path, and audit trail.
 

@@ -200,7 +200,25 @@ Least privilege 不应该只停留在云 IAM 这一层，它应该贯穿整条 a
 
 所以真正的问题不是“我们有没有 IAM”，而是权限边界是否真的和决策边界、执行边界对齐。
 
-## 9. production 团队在事故后必须能证明什么
+## 9. perimeter 的实用判断规则
+
+如果要把 perimeter 压缩成一组可执行规则，通常就是下面这些：
+
+1. 外部文档、邮件和 tool outputs 默认都当作数据，而不是指令。
+2. 任何会改变外部世界的决策，都要和真正的执行路径分开，并经过 policy layer。
+3. 任何碰到 tenant scope、PII 或 side effects 的调用，都必须带上明确的 principal 和可读的审计轨迹。
+4. 如果团队不能用一小段话说清楚 agent 看见什么、决定什么、执行什么，说明 perimeter 还太模糊。
+
+## 10. 团队最常做错什么
+
+Perimeter 设计通常会在同样的几个早期错误上翻车：
+
+- 指望一个 guardrail 解决全部问题，而不是建立一串控制点；
+- 给 agent 一套全能账号，而不是拆开 `user_principal`、`runtime_principal` 和 `tool_principal`；
+- 把 user scope、tenant scope 和 system scope 混在一起；
+- 在系统还没有真正的 tracing 和可调查性之前，就先开放 tool access。
+
+## 11. production 团队在事故后必须能证明什么
 
 还是这个支持案例。到了事故后一周，团队至少要能回答下面这些问题：
 
@@ -214,7 +232,7 @@ Least privilege 不应该只停留在云 IAM 这一层，它应该贯穿整条 a
 
 如果这些问题不能被快速回答，那 perimeter 就已经太弱了，即使系统形式上“有 guardrails”。
 
-## 10. 读完这一章立刻该做什么
+## 12. 读完这一章立刻该做什么
 
 如果你现在就在设计 agent perimeter，先写下这份很短的清单：
 
@@ -226,7 +244,7 @@ Least privilege 不应该只停留在云 IAM 这一层，它应该贯穿整条 a
 
 如果这些已经定义清楚，安全边界才开始变成现实。如果没有，它现在更多还只是一个意图。
 
-## 11. 接下来读什么
+## 13. 接下来读什么
 
 接下来最自然的一层，就是同一个支持智能体已经走到真实动作面前之后，该如何安全地穿过 tool gateway、approval 路径和 audit trail。
 

@@ -230,7 +230,27 @@ Google 最近材料里一个很实用的提醒是：memory 应该被当成可治
 
 这些字段看起来像额外负担，但一旦智能体在别的上下文里自信地重复了某个“事实”，团队马上就会想知道它到底从哪里来的。
 
-## 9. 生产团队必须能快速回答什么
+## 9. memory design 的实用规则
+
+如果要把最早期的设计决策压缩成一组规则，通常就是这样：
+
+1. 先把 session context 和 persistent memory 分开，再去争论更复杂的 memory features。
+2. 宁可少写，也要写得清楚：validated facts 通常比原始文本更有价值。
+3. 写规则应该比读规则更严格。
+4. 每一条能长期存在的记录，都应该带上 provenance、tenant metadata 和 writer identity。
+5. 只要一条写入可能活过当前 run，默认就更适合放进 background path。
+
+## 10. 团队最常做错什么
+
+最常见的错误会一再出现：
+
+- 把原始用户表述直接保存成稳定偏好；
+- 把 profile memory、retrieval store 和 execution artifacts 混在一起；
+- 让 summaries 在没有 provenance 和 validation state 的情况下长期存在；
+- 在 policy decisions 里使用未经验证的记忆；
+- 很久都不设计删除、复核和记录退役路径。
+
+## 11. 生产团队必须能快速回答什么
 
 对于同一个支持场景，在出现奇怪的 memory-driven behavior 之后，团队应该能很快回答：
 
@@ -243,7 +263,7 @@ Google 最近材料里一个很实用的提醒是：memory 应该被当成可治
 
 如果这些问题回答不了，memory subsystem 就已经成了系统性风险。
 
-## 10. 读完这一章后先做什么
+## 12. 读完这一章后先做什么
 
 如果你刚开始做 memory design，可以先按这个短顺序来：
 
@@ -254,7 +274,7 @@ Google 最近材料里一个很实用的提醒是：memory 应该被当成可治
 
 如果顺序反过来，memory 很快就会变成平台把所有没设计清楚的东西都丢进去的地方。
 
-## 11. 接下来读什么
+## 13. 接下来读什么
 
 这一部分后面的章节会继续拆解：
 

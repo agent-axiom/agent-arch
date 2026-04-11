@@ -230,7 +230,27 @@ For every record that survives longer than one run, it is useful to store at lea
 
 That may feel like extra bureaucracy only until the first argument about where a "fact" came from after the agent confidently repeated it in another context.
 
-## 9. What a Production Team Should Be Able to Answer Quickly
+## 9. Practical Rules for Memory Design
+
+If you need a short frame for the first design decisions, it usually looks like this:
+
+1. Separate session context from persistent memory before debating richer memory features.
+2. Prefer fewer, clearer writes: validated facts are usually worth more than raw text.
+3. Write rules should be stricter than read rules.
+4. Every long-lived record should carry provenance, tenant metadata, and writer identity.
+5. If a write can outlive the run, it is usually safer to move it into a background path by default.
+
+## 10. What Teams Most Often Get Wrong
+
+The same mistakes appear again and again:
+
+- saving raw user phrasing as stable preference;
+- mixing profile memory, retrieval store, and execution artifacts;
+- letting summaries live without provenance or validation state;
+- using unvalidated memory in policy decisions;
+- postponing deletion, review, and record retirement for too long.
+
+## 11. What a Production Team Should Be Able to Answer Quickly
 
 For the same support case, after strange memory-driven behavior the team should be able to answer quickly:
 
@@ -243,7 +263,7 @@ For the same support case, after strange memory-driven behavior the team should 
 
 If those questions cannot be answered, the memory subsystem has already become a systemic risk.
 
-## 10. What to Do Right After This Chapter
+## 12. What to Do Right After This Chapter
 
 If you are just approaching memory design, start with a short sequence:
 
@@ -254,7 +274,7 @@ If you are just approaching memory design, start with a short sequence:
 
 If you do it in the opposite order, memory quickly becomes the place where the platform dumps everything it failed to design cleanly.
 
-## 11. What to Read Next
+## 13. What to Read Next
 
 In the next chapters of this part, we will go through:
 

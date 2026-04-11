@@ -236,7 +236,27 @@ If idempotency is not built into execution design, the agent starts doing exactl
 
 For the support case, the practical rule is simple: any write tool that can create a ticket, update a record, or send a message needs an explicit idempotency strategy before the first production rollout.
 
-## 9. A Simple Execution Layer Skeleton
+## 9. Practical Rules for the Execution Layer
+
+If you need a short set of rules that actually helps in production, it is usually this:
+
+1. Every tool should have an owner, schema, risk class, and contract lifecycle.
+2. Read and write paths must be separated before the first rollout, not after the first incident.
+3. Every write tool needs an idempotency strategy before it sees real traffic.
+4. Every tool outcome should be normalized before it goes back to the model.
+5. If a side effect may already have happened, it is safer to stop than to retry blindly.
+
+## 10. What Teams Most Often Get Wrong
+
+Execution layers usually break in the same ways:
+
+- they give the model direct access to an external API;
+- they collapse read and write tools into one faceless category;
+- they hide retries deep in an adapter without audit trail or idempotency;
+- they return raw payloads to the model instead of normalized results;
+- they never assign an owner or deprecation policy to the catalog layer.
+
+## 11. A Simple Execution Layer Skeleton
 
 This is not a production runtime, but a skeleton that shows the right separation of responsibilities: lookup, validate, execute, normalize result.
 
@@ -271,7 +291,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 What matters is not how rich the example is. What matters is that the tool is not executed directly from the model's choice.
 
-## 10. Tool Results Also Need Design
+## 12. Tool Results Also Need Design
 
 If a tool result is too raw, the model gets dangerous room for improvisation again.
 
@@ -290,7 +310,7 @@ A bad result:
 - does not distinguish "nothing found" from "system failed";
 - hides whether a side effect happened.
 
-## 11. The Tool Catalog Should Evolve Slowly
+## 13. The Tool Catalog Should Evolve Slowly
 
 If tools change every day without compatibility and versioning, the agent system starts behaving like a client built on top of an unstable private API.
 
@@ -304,7 +324,7 @@ That is why the catalog layer benefits from:
 
 This is boring platform work, not romantic improvisation. That is why it works.
 
-## 12. What to Do Right After This Chapter
+## 14. What to Do Right After This Chapter
 
 If you want to review your execution layer quickly, use this short list:
 
@@ -318,7 +338,7 @@ If you want to review your execution layer quickly, use this short list:
 
 If the answer is "no" several times in a row, your agent can already call tools, but the execution model is still immature.
 
-## 13. What to Read Next
+## 15. What to Read Next
 
 The next natural topics in this part are sandbox execution, MCP as an integration contract, and the rules for retries and rollback boundaries. That is where it becomes clear how the same support agent not only calls tools, but does so through a mature execution layer.
 

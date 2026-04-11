@@ -236,7 +236,27 @@ Execution layer 应该把这些统一成可用的 outcome：
 
 对于这个支持场景，一个很实际的规则是：任何会创建工单、更新记录或发送消息的 write tool，在第一次 production rollout 之前都必须有明确的 idempotency strategy。
 
-## 9. 一个简单的 execution layer skeleton
+## 9. execution layer 的实用规则
+
+如果要把 production 里真正有用的规则压缩成一小组，通常就是这些：
+
+1. 每个工具都应该有 owner、schema、risk class 和 contract lifecycle。
+2. Read path 和 write path 必须在第一次 rollout 之前就分开，而不是等第一次 incident 之后再补。
+3. 每个 write tool 在接触真实流量前都必须有 idempotency strategy。
+4. 所有 tool outcomes 都应该先被规范化，再返回给模型。
+5. 只要 side effect 可能已经发生，停下来通常比盲目 retry 更安全。
+
+## 10. 团队最常做错什么
+
+Execution layer 往往会在同样的地方出问题：
+
+- 直接给模型外部 API 的访问权；
+- 把 read tools 和 write tools 混成一个模糊类别；
+- 把 retries 藏在 adapter 深处，却没有 audit trail 和 idempotency；
+- 把原始 payload 直接返回给模型，而不是给出规范化结果；
+- 不给 catalog layer 设 owner 和 deprecation policy。
+
+## 11. 一个简单的 execution layer skeleton
 
 下面不是 production runtime，而是一个 skeleton，用来展示责任如何拆分：lookup、validate、execute、normalize result。
 
@@ -271,7 +291,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 关键不在于这个例子有多复杂，而在于工具不是直接由模型决定后立刻执行的。
 
-## 10. Tool results 也需要设计
+## 12. Tool results 也需要设计
 
 如果 tool result 太原始，模型就又重新获得了危险的即兴空间。
 
@@ -290,7 +310,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 - 无法区分“没找到”和“系统挂了”；
 - 不说明 side effect 是否真的发生。
 
-## 11. Tool catalog 应该缓慢演化
+## 13. Tool catalog 应该缓慢演化
 
 如果 tools 每天都变、没有兼容性和版本管理，智能体系统很快就会像是在对接一个极不稳定的 private API。
 
@@ -304,7 +324,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 这是无聊的平台工作，而不是浪漫的即兴发挥。正因为如此，它才可靠。
 
-## 12. 读完这一章后先做什么
+## 14. 读完这一章后先做什么
 
 如果你想快速检查 execution layer，可以用这个短清单：
 
@@ -318,7 +338,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 如果连续几个答案都是否，那说明你的智能体虽然已经能调用 tools，但 execution model 还远未成熟。
 
-## 13. 接下来读什么
+## 15. 接下来读什么
 
 这一部分接下来的自然主题是：sandbox execution、MCP 作为集成契约，以及 retries 和 rollback boundaries 的规则。也正是在那里，你会看到同一个支持智能体并不只是“会调工具”，而是通过成熟执行层去调工具。
 
