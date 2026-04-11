@@ -263,7 +263,7 @@ When that happens, SLO become decoration. The team looks at numbers, but does no
 
 ## 13. What to Do Right After This Chapter
 
-If you want to review your support agent quickly, ask:
+If you want to review the health model of your support agent quickly, use this short checklist:
 
 1. Do you have a run-level definition of success?
 2. Can you see latency by stage, not only total latency?
@@ -276,7 +276,7 @@ If the answer is "no" several times in a row, observability may already exist, b
 
 ## 14. What to Read Next
 
-After SLO, the next natural step in the same story is the eval loop: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
+After SLO, the next step in the same story is the eval loop: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
 
 ## 15. Useful Reference Pages
 

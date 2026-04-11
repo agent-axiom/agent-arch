@@ -265,7 +265,7 @@ Observability 不应该变成数据泄漏渠道。
 
 ## 14. 读完这一章后先做什么
 
-如果你想快速检查可观测性模型，可以问：
+如果你想快速检查可观测性模型，可以先过一遍这个短清单：
 
 1. 能否通过一个 `trace_id` 重建完整 run 路径？
 2. retrieval、model calls、tool calls 和 policy gates 是否都有独立 spans？

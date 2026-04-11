@@ -273,7 +273,7 @@ When that happens, the rollout process is still optimistic shipping, not product
 
 ## 13. What to Do Right After This Chapter
 
-If you want to assess readiness before rollout quickly, ask:
+If you want to assess readiness before rollout quickly, use this short checklist:
 
 1. Is there a formal readiness gate?
 2. Are owner and on-call clear for this rollout?
@@ -286,7 +286,7 @@ If the answer is "no" several times in a row, the rollout should still be consid
 
 ## 14. What to Read Next
 
-At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next natural step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
+At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
 
 ## 15. Useful Reference Pages
 

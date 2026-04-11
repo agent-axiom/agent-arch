@@ -367,7 +367,7 @@ When that happens, the eval loop becomes a ritual instead of an improvement mech
 
 ## 13. What to Do Right After This Chapter
 
-If you want to review your eval loop quickly, ask:
+If you want to review your eval loop quickly, use this short checklist:
 
 1. Do you have a curated offline eval set for critical scenarios?
 2. Do you have online eval signals connected to traces and SLO?
@@ -380,7 +380,7 @@ If the answer is "no" several times in a row, you may already have observability
 
 ## 14. What to Read Next
 
-Part V now forms a coherent operational block: traces, SLO, and the eval loop. The next natural move is the organizational model, because platforms like this run into team design questions as much as code questions.
+By this point Part V forms a coherent operational block: traces, SLO, and the eval loop. The next step is the organizational model, because platforms like this run into team design questions as much as code questions.
 
 ## 15. Useful Reference Pages
 

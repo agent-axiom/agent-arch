@@ -273,7 +273,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 13. 读完这一章后先做什么
 
-如果你想在 rollout 前快速判断 readiness，可以问：
+如果你想在 rollout 前快速判断 readiness，可以先过一遍这个短清单：
 
 1. 是否存在正式的 readiness gate？
 2. 这次 rollout 的 owner 和 on-call 是否明确？
@@ -286,7 +286,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 14. 接下来读什么
 
-到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。接下来的自然问题就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
+到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。下一步就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
 
 ## 15. 值得配套阅读的参考页
 

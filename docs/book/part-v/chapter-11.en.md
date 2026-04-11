@@ -265,7 +265,7 @@ When that happens, the team goes back to guesswork and manual log reading.
 
 ## 14. What to Do Right After This Chapter
 
-If you want to review your observability model quickly, ask:
+If you want to review your observability model quickly, use this short checklist:
 
 1. Can you reconstruct the full path of one run from a single `trace_id`?
 2. Are there separate spans for retrieval, model calls, tool calls, and policy gates?
