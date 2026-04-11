@@ -1,5 +1,20 @@
 # 第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry
 
+!!! info "时效说明"
+    本章内容截至 2026 年 4 月 11 日。
+
+    变化最快的部分：
+
+    - 面向智能体系统的遥测产品与厂商 tracing 能力；
+    - drift、abuse 和异常工具行为的检测启发式；
+    - diagnosis-ready traces 与跨系统关联的 emerging conventions。
+
+    变化相对较慢的部分：
+
+    - 必须建设 evidence-ready telemetry，而不只是调试日志；
+    - observability 必须和 approvals、policy decisions、tool principals 与 artifact bundles 关联；
+    - 完整的 inventory coverage 仍然是 detection 和 incident review 的前提。
+
 ## 1. 为什么智能体的 observability 不能只看 latency 和 errors
 
 在普通服务里，observability 往往先看一组很熟悉的东西：

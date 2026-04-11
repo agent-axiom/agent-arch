@@ -1,5 +1,20 @@
 # Chapter 27. Agent Inventory, Registry, and Sprawl Control
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - platform features for inventory discovery, registry sync, and governance automation;
+    - vendor approaches to classifying agents, assistants, and agent-like entities;
+    - working practices for drift detection and policy enforcement across estates.
+
+    What changes more slowly:
+
+    - the need to separate inventory from registry;
+    - the requirement for every production agent to have an owner, lifecycle state, and capability record;
+    - the importance of periodic review so sprawl does not turn into a blind spot.
+
 ## 1. Why nearly every successful agent program produces sprawl
 
 As soon as the first agent systems prove useful, the same story usually begins:

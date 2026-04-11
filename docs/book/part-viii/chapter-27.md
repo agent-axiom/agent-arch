@@ -1,5 +1,20 @@
 # Глава 27. Agent inventory, registry и борьба с sprawl
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - платформенные функции для inventory discovery, registry sync и governance automation;
+    - вендорские подходы к классификации agents, assistants и agent-like entities;
+    - рабочие практики для drift detection и policy enforcement across estates.
+
+    Медленнее меняются:
+
+    - необходимость различать inventory и registry;
+    - требование иметь owner, lifecycle state и capability record у production-grade agents;
+    - важность регулярного review, чтобы sprawl не превращался в blind spot.
+
 ## 1. Почему почти у каждой успешной agent-программы появляется sprawl
 
 Как только первые agent systems доказывают полезность, в организации обычно начинается одна и та же история:

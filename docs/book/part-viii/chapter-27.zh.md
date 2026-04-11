@@ -1,5 +1,20 @@
 # 第 27 章：Agent Inventory、Registry 与 Sprawl 治理
 
+!!! info "时效说明"
+    本章内容截至 2026 年 4 月 11 日。
+
+    变化最快的部分：
+
+    - inventory discovery、registry sync 和 governance automation 的平台能力；
+    - 各家平台对 agents、assistants 和 agent-like entities 的分类方法；
+    - 面向大规模 estate 的 drift detection 与 policy enforcement 实践。
+
+    变化相对较慢的部分：
+
+    - 必须区分 inventory 和 registry；
+    - 每个生产级 agent 都需要 owner、lifecycle state 和 capability record；
+    - 定期 review 仍然是避免 sprawl 变成 blind spot 的关键。
+
 ## 1. 为什么几乎每个成功的 agent 计划都会出现 sprawl
 
 一旦第一批 agent systems 证明了价值，组织里通常很快就会出现同一种局面：

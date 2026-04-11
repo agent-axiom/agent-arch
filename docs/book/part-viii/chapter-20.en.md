@@ -1,5 +1,20 @@
 # Chapter 20. Change Management for Agent Systems
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - managed release controls for agent systems, approvals, and staged rollout;
+    - the set of surfaces different platforms treat as release-bearing;
+    - vendor interfaces for policy bundles, routing changes, and managed agent updates.
+
+    What changes more slowly:
+
+    - the core idea of a risk-based change taxonomy;
+    - the need to treat prompts, policies, retrieval, and capability changes as real releases;
+    - the requirement to connect change review to evals, approvals, and rollout gates.
+
 ## 1. Why agent systems need explicit change discipline
 
 Once a team accepts that it is already living in ADLC, the next practical question is straightforward: what exactly counts as a change, and how should that change be managed?

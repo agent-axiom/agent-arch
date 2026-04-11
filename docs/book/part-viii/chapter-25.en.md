@@ -1,5 +1,20 @@
 # Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - adversarial scenario generators and automated red-teaming frameworks;
+    - behavioral and control benchmark suites;
+    - judge-model methods and semi-automated grading patterns.
+
+    What changes more slowly:
+
+    - the need to evaluate runtime behavior, not only final answers;
+    - the requirement to test control layers themselves, not only model quality;
+    - the link between control evals, regression gates, and rollout decisions.
+
 ## 1. Why ordinary regression evals are no longer enough
 
 Regression evals are excellent at answering one question:

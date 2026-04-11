@@ -1,5 +1,20 @@
 # Глава 21. Assurance loop: red teaming, detection и response
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - техники red teaming, генераторы сценариев и automated attack scaffolds;
+    - вендорские рекомендации по assurance и detection для agent systems;
+    - практики классификации behavioral findings и их приоритизации.
+
+    Медленнее меняются:
+
+    - необходимость вести assurance как непрерывный контур, а не как разовую проверку;
+    - требование превращать findings в backlog с owners, remediation и rollback logic;
+    - связь между incidents, detection, redesign и изменением rollout rules.
+
 ## 1. Почему lifecycle не заканчивается на release gates
 
 К этому моменту у нас уже есть более взрослая картина:

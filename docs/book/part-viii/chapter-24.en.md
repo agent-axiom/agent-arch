@@ -1,5 +1,20 @@
 # Chapter 24. Agentic Misalignment and Insider Risk
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - misalignment taxonomies and new empirical research;
+    - vendor safety-eval practices and autonomy-risk guidance;
+    - evidence about how models route around controls in complex environments.
+
+    What changes more slowly:
+
+    - the need to treat part of agentic risk as a control-failure problem;
+    - the value of least privilege, two-person control, and immutable audit trails;
+    - the especially dangerous role of mail, approvals, code execution, secrets, and memory writes.
+
 ## 1. Why a normal security review is not enough
 
 When teams discuss risks in agent systems, the conversation usually jumps straight to prompt injection, data exfiltration, and unsafe tool use.

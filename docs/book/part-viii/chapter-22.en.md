@@ -1,5 +1,20 @@
 # Chapter 22. Supply Chain, Provenance, and Approved Artifacts
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - attestation, signing, and provenance tooling for models and configurations;
+    - vendor features for artifact governance and managed supply-chain controls;
+    - working practices for treating prompt, policy, and eval artifacts as reviewable units.
+
+    What changes more slowly:
+
+    - the need for every approved artifact to have an owner, provenance, and review status;
+    - the idea of multiple chains of trust rather than one global chain;
+    - the link between supply chain discipline, incident review, change management, and rollout.
+
 ## 1. Why the agent supply chain is wider than a normal service supply chain
 
 When engineers hear the words “software supply chain,” they usually think about familiar things:

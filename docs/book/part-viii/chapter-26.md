@@ -1,5 +1,20 @@
 # Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - продукты для телеметрии agent systems и вендорские tracing features;
+    - эвристики обнаружения drift, abuse и suspicious tool behavior;
+    - emerging conventions для diagnosis-ready traces и correlation across systems.
+
+    Медленнее меняются:
+
+    - требование строить evidence-ready telemetry, а не только debugging logs;
+    - связь observability с approvals, policy decisions, tool principals и artifact bundles;
+    - важность полного inventory coverage для detection и incident review.
+
 ## 1. Почему наблюдаемость для агентов нельзя сводить к задержке и ошибкам
 
 В обычном сервисе наблюдаемость часто начинается с простого набора:

@@ -1,5 +1,20 @@
 # Глава 25. Behavioral evals, control evals и automated red teaming
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - генераторы adversarial scenarios и automated red teaming frameworks;
+    - поведенческие и контрольные benchmark-наборы;
+    - подходы с моделями-судьями и semi-automated grading.
+
+    Медленнее меняются:
+
+    - необходимость оценивать не только финальный ответ, но и форму поведения runtime;
+    - требование проверять сами контуры управления, а не только качество модели;
+    - связь между control evals, regression gates и rollout decisions.
+
 ## 1. Почему обычных regression evals уже недостаточно
 
 Regression evals отлично отвечают на вопрос:

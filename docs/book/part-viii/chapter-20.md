@@ -1,5 +1,20 @@
 # Глава 20. Change management для агентных систем
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - готовые средства для управления релизами агентных систем, approvals и staged rollout;
+    - наборы surfaces, которые разные платформы считают release-bearing;
+    - вендорские интерфейсы для policy bundles, routing changes и managed agent updates.
+
+    Медленнее меняются:
+
+    - сама идея risk-based change taxonomy;
+    - требование считать prompts, policies, retrieval и capability changes настоящими релизами;
+    - необходимость связывать change review с evals, approvals и rollout gates.
+
 ## 1. Почему агентной системе нужен отдельный change discipline
 
 После того как команда признала, что живет уже не только в SDLC, а в ADLC, следующий вопрос звучит очень практично: что именно считать изменением и как этим изменением управлять?

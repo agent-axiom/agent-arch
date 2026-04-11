@@ -1,5 +1,20 @@
 # Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - telemetry products for agent systems and vendor tracing features;
+    - heuristics for drift detection, abuse detection, and suspicious tool behavior;
+    - emerging conventions for diagnosis-ready traces and cross-system correlation.
+
+    What changes more slowly:
+
+    - the requirement to build evidence-ready telemetry rather than debugging logs alone;
+    - the link between observability, approvals, policy decisions, tool principals, and artifact bundles;
+    - the importance of full inventory coverage for detection and incident review.
+
 ## 1. Why observability for agents cannot stop at latency and errors
 
 In an ordinary service, observability often starts with a simple set:

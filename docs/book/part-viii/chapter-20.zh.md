@@ -1,5 +1,20 @@
 # 第 20 章：智能体系统的变更管理
 
+!!! info "时效说明"
+    本章内容截至 2026 年 4 月 11 日。
+
+    变化最快的部分：
+
+    - 智能体系统的托管发布控制、审批流与分阶段 rollout 能力；
+    - 不同平台如何界定 release-bearing surfaces；
+    - 围绕 policy bundles、routing changes 和托管更新的厂商接口。
+
+    变化相对较慢的部分：
+
+    - 基于风险的变更分类方法；
+    - 必须把 prompts、policies、retrieval 和 capability changes 当成真正的发布；
+    - 变更评审必须与 evals、approvals 和 rollout gates 连接起来。
+
 ## 1. 为什么智能体系统需要单独的变更纪律
 
 当团队已经承认自己不再只是活在 SDLC，而是已经进入 ADLC 之后，下一个非常实际的问题就是：到底什么算变更，以及这些变更应该如何治理？

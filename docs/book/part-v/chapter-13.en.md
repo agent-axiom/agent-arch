@@ -1,5 +1,20 @@
 # Chapter 13. Offline Evals, Online Evals, and Regression Gates
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - managed eval products, judge-model patterns, and hosted grading workflows;
+    - new benchmark sets for memory, multi-turn consistency, and behavioral evals;
+    - vendor-specific tooling for online evals and release gating.
+
+    What changes more slowly:
+
+    - the need to run offline evals, online evals, and regression gates as one loop;
+    - the link between evals, traces, SLOs, and rollout decisions;
+    - the engineering discipline that critical scenarios must be checked before release, not after an incident.
+
 ## 1. Start with the Question: How Do You Avoid Shipping the Same Failure Twice?
 
 Continue with the same support case.

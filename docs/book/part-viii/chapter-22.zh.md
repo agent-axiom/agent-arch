@@ -1,5 +1,20 @@
 # 第 22 章：供应链、来源追踪与已批准工件
 
+!!! info "时效说明"
+    本章内容截至 2026 年 4 月 11 日。
+
+    变化最快的部分：
+
+    - 面向模型与配置的 attestation、signing 和 provenance 工具；
+    - 围绕 artifact governance 和托管供应链控制的厂商能力；
+    - 将 prompt、policy 和 eval 工件当作可评审单元的实践。
+
+    变化相对较慢的部分：
+
+    - 每个已批准工件都需要 owner、provenance 和 review status；
+    - 应该建立多条 trust chains，而不是只依赖一条总链；
+    - 供应链纪律必须与事故复盘、变更管理和 rollout 连接起来。
+
 ## 1. 为什么智能体系统的供应链比普通服务更宽
 
 当工程师听到“软件供应链”时，通常会想到一些熟悉的东西：

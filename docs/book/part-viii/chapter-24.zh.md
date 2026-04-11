@@ -1,5 +1,20 @@
 # 第 24 章：智能体失配与内部人风险
 
+!!! info "时效说明"
+    本章内容截至 2026 年 4 月 11 日。
+
+    变化最快的部分：
+
+    - 失配场景的分类法与新的实证研究；
+    - 各家平台的 safety eval 实践与 autonomy risk 指引；
+    - 关于模型如何绕过控制的最新证据。
+
+    变化相对较慢的部分：
+
+    - 必须把一部分 agentic risk 视为 control failure；
+    - least privilege、two-person control 和 immutable audit trail 仍然是核心对策；
+    - 邮件、审批、代码执行、secrets 和 memory writes 仍是高危表面。
+
 ## 1. 为什么普通的安全评审还不够
 
 当团队讨论智能体系统的风险时，话题通常会立刻跳到提示注入、数据外流和不安全的工具使用。

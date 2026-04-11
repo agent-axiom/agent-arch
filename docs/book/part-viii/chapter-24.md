@@ -1,5 +1,20 @@
 # Глава 24. Agentic misalignment и insider-risk
 
+!!! info "Актуальность главы"
+    Эта глава актуальна на 11 апреля 2026 года.
+
+    Быстрее всего здесь меняются:
+
+    - таксономии misalignment-сценариев и новые исследовательские результаты;
+    - вендорские safety-eval practices и guidance по autonomy risk;
+    - эмпирические данные о том, как модели обходят контроль в сложных средах.
+
+    Медленнее меняются:
+
+    - необходимость рассматривать часть agentic-risk сценариев как control failures;
+    - полезность least privilege, two-person control и immutable audit trail;
+    - особая опасность почты, approvals, code execution, secrets и memory writes.
+
 ## 1. Почему этого блока не хватает в обычном security review
 
 Когда команда говорит об угрозах для agent system, разговор почти всегда сразу уходит в prompt injection, data exfiltration и unsafe tool use.

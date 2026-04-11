@@ -1,5 +1,20 @@
 # Chapter 21. Assurance Loop: Red Teaming, Detection, and Response
 
+!!! info "Freshness note"
+    This chapter is current as of April 11, 2026.
+
+    What changes fastest here:
+
+    - red-team techniques, scenario generators, and automated attack scaffolds;
+    - vendor assurance guidance and detection content for agent systems;
+    - practical ways to classify and prioritize behavioral findings.
+
+    What changes more slowly:
+
+    - the need to run assurance as a continuous loop rather than a one-time review;
+    - the requirement to track findings as backlog items with owners, remediation, and rollback logic;
+    - the link between incidents, detection, redesign, and rollout-rule changes.
+
 ## 1. Why lifecycle does not end at release gates
 
 By this point, the picture is already more mature:
