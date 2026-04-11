@@ -185,7 +185,17 @@ Human-in-the-loop 不是一个免费的安全网。
 
 对支持智能体来说，这一点很关键：如果升级率太高，自动化很快就会沦为摆设。
 
-## 9. 一个支持智能体的 SLO policy 示例
+## 9. SLO design 的实用规则
+
+如果要把最有用的规则压缩成一小组，通常就是这些：
+
+1. 从 run-level outcome 出发，而不是从单个组件指标出发。
+2. Success 应该描述任务被解决，而不只是没有 exception。
+3. Safety、cost 和 escalation 都应该算进系统健康，而不是挂在 reliability 旁边。
+4. Latency 最好按阶段拆开，否则很难诊断。
+5. 只有当 SLO 会影响 rollout 和 change decisions 时，它们才真正有意义。
+
+## 10. 一个支持智能体的 SLO policy 示例
 
 这里重要的不是“标准答案”，而是明确的纪律：
 
@@ -208,7 +218,7 @@ slo:
 
 重点不在具体阈值，而在于团队提前说清楚：什么才算系统的正常状态。
 
-## 10. 一个简单的 health classification 示例
+## 11. 一个简单的 health classification 示例
 
 下面这个小骨架展示的是一个核心思路：一次运行应该同时在多个维度上被判断，而不是只看单一指标。
 
@@ -238,7 +248,7 @@ def classify_run_health(run: RunHealth) -> str:
 
 这个模型很简单，但它有价值，恰恰因为它不会把运行质量藏在形式上的“成功”后面。
 
-## 11. SLO 文化最常见的崩坏点
+## 12. SLO 文化最常见的崩坏点
 
 这里的问题非常重复：
 
@@ -251,7 +261,7 @@ def classify_run_health(run: RunHealth) -> str:
 
 一旦如此，SLO 就会变成装饰。团队看到了数字，但并没有通过这些数字来控制平台。
 
-## 12. 读完这一章后先做什么
+## 13. 读完这一章后先做什么
 
 如果你想快速检查这个支持智能体，可以问：
 
@@ -264,11 +274,11 @@ def classify_run_health(run: RunHealth) -> str:
 
 如果连续几个答案都是否，那说明可观测性也许已经存在，但系统健康仍然没有通过质量目标被真正管理。
 
-## 13. 接下来读什么
+## 14. 接下来读什么
 
 在这条同一条故事线上，SLO 之后最自然的下一步就是评测闭环：离线评测、在线评测、追踪分级和回归门禁。也正是在那里，可观测性变成持续改进闭环。
 
-## 14. 值得配套阅读的参考页
+## 15. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Incident Record Schema](../../appendix/incident-record-schema.zh.md)

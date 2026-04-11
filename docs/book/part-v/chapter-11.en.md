@@ -151,7 +151,17 @@ To make the system genuinely investigation-friendly, it helps to have at least:
 
 For the support incident, that is already enough to tie together the runtime, the tool gateway, and the specific external side effect.
 
-## 9. Example Structured Event for Tool Execution
+## 9. Practical Rules for Tracing
+
+If you need a short operational frame, rules like these are usually enough:
+
+1. Every run should have one `trace_id` that survives across policy, model, and tool spans.
+2. The trace should cover the control plane, not only model latency.
+3. All tool calls, approval waits, and policy decisions should emit machine-readable events.
+4. Uncertainty should be logged explicitly: `side_effect_unknown` is more useful than fake `success`.
+5. Redaction and schema stability should be designed up front, not after the first incident review.
+
+## 10. Example Structured Event for Tool Execution
 
 Here is a simple template that shows the right style of thinking:
 
@@ -171,7 +181,7 @@ side_effect: created
 
 That event is much more useful than a line like "ticket tool ok."
 
-### 9.1. Four More Fields Matter in This Case
+### 10.1. Four More Fields Matter in This Case
 
 If the goal is not only dashboards but real incident investigation, it is usually worth adding:
 
@@ -187,7 +197,7 @@ Those fields often make the difference between:
 - the wrong tenant scope;
 - an ambiguous external response.
 
-## 10. A Simple Span Emission Example
+## 11. A Simple Span Emission Example
 
 Below is a small skeleton that shows the core idea: a span should not only start and stop, but also record the type of step and the outcome in a form suitable for analysis.
 
@@ -222,7 +232,7 @@ def emit_span(result: SpanResult) -> None:
 
 This example is intentionally simple. Its point is not to replace a tracing SDK, but to show the principle: every important step should leave behind a structured trace.
 
-## 11. What You Especially Should Not Log As-Is
+## 12. What You Especially Should Not Log As-Is
 
 Observability should not turn into a data leak.
 
@@ -240,7 +250,7 @@ The practical rule is simple:
 - log identifiers and hashes where useful;
 - do not dump full sensitive payloads into generic telemetry pipelines without a very good reason.
 
-## 12. What Usually Breaks in Agent Observability
+## 13. What Usually Breaks in Agent Observability
 
 These problems are very recognizable:
 
@@ -253,7 +263,7 @@ These problems are very recognizable:
 
 When that happens, the team goes back to guesswork and manual log reading.
 
-## 13. What to Do Right After This Chapter
+## 14. What to Do Right After This Chapter
 
 If you want to review your observability model quickly, ask:
 
@@ -267,7 +277,7 @@ If you want to review your observability model quickly, ask:
 
 If the answer is "no" several times in a row, your observability is still decorative, not operational.
 
-## 14. What to Read Next
+## 15. What to Read Next
 
 The next step in the same story is straightforward: once the team can reconstruct the path of one failure, it needs to define what "healthy" means every day. That means moving to SLO.
 

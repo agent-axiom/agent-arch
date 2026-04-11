@@ -151,7 +151,17 @@ flowchart LR
 
 对于这个支持事故，这些字段已经足够把 runtime、tool gateway 和具体的外部 side effect 串起来。
 
-## 9. 一个 tool execution 的 structured event 示例
+## 9. tracing 的实用规则
+
+如果要把 tracing 压缩成一组可执行规则，通常这些就够了：
+
+1. 每个 run 都应该有一个不会在 policy、model 和 tool spans 之间丢失的 `trace_id`。
+2. Trace 应该覆盖 control plane，而不只是 model latency。
+3. 所有 tool calls、approval waits 和 policy decisions 都应该留下 machine-readable events。
+4. 不确定性要明确记录：`side_effect_unknown` 比假装成 `success` 更有价值。
+5. Redaction 和 schema stability 应该一开始就设计进去，而不是等第一次 incident review 之后再补。
+
+## 10. 一个 tool execution 的 structured event 示例
 
 下面这个模板能很好地展示正确的思路：
 
@@ -171,7 +181,7 @@ side_effect: created
 
 它远比一条 “ticket tool ok” 的日志有用。
 
-### 9.1. 对这个案例来说，还有四个字段特别重要
+### 10.1. 对这个案例来说，还有四个字段特别重要
 
 如果目标不只是做 dashboard，而是真正调查事故，通常还值得补上：
 
@@ -187,7 +197,7 @@ side_effect: created
 - 错误的 tenant scope；
 - 模糊的 external response。
 
-## 10. 一个简单的 span emission 示例
+## 11. 一个简单的 span emission 示例
 
 下面这个骨架不是为了替代 tracing SDK，而是为了说明一个原则：span 不只是开始和结束，它还必须把步骤类型和结果记录成可分析的结构。
 
@@ -222,7 +232,7 @@ def emit_span(result: SpanResult) -> None:
 
 这个例子故意很简单。它的重点不是替代 tracing SDK，而是强调：每个重要步骤都应该留下结构化的痕迹。
 
-## 11. 哪些东西尤其不能原样写进日志
+## 12. 哪些东西尤其不能原样写进日志
 
 Observability 不应该变成数据泄漏渠道。
 
@@ -240,7 +250,7 @@ Observability 不应该变成数据泄漏渠道。
 - 在有帮助时记录 identifiers 和 hashes；
 - 没有充分理由时，不要把完整敏感 payload 丢进通用 telemetry pipeline。
 
-## 12. 智能体可观测性最常见的崩坏点
+## 13. 智能体可观测性最常见的崩坏点
 
 这些问题非常典型：
 
@@ -253,7 +263,7 @@ Observability 不应该变成数据泄漏渠道。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
 
-## 13. 读完这一章后先做什么
+## 14. 读完这一章后先做什么
 
 如果你想快速检查可观测性模型，可以问：
 
@@ -267,7 +277,7 @@ Observability 不应该变成数据泄漏渠道。
 
 如果连续几个答案都是否，那可观测性还只是装饰性的，而不是运行层面的。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 沿着同一条故事线，下一步也很明确：当团队已经能还原一次故障的完整路径后，就该定义什么才算系统每天都处在“健康”状态，也就是进入 SLO。
 

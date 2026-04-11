@@ -261,7 +261,17 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这样发布决策就不会只依赖改动作者的直觉。
 
-## 8. 一个评测门禁策略示例
+## 8. eval loop 的实用规则
+
+如果要把 engineering 规则压缩成一小组，通常这些就够了：
+
+1. 每个重要 incident 都应该变成一个 eval case 和一条 rollout rule。
+2. Offline 和 online evals 应该一起存在：一个在发布前拦回归，一个在发布后抓漂移。
+3. Trace grading 应该优先覆盖关键 write paths 和 policy-sensitive flows，而不只是 happy path。
+4. Dataset 应该按真实 failures 刷新，而不只是沿用旧 demo cases。
+5. Regression gate 应该是 machine-readable 的，并且不仅阻止质量回归，还要阻止 safety、cost 和 escalation 回归。
+
+## 9. 一个评测门禁策略示例
 
 ```yaml
 gates:
@@ -280,7 +290,7 @@ gates:
 
 这些数字不是普适标准。重要的是门禁要可机读，团队对它的争论应发生在标准层，而不是感觉层。
 
-## 9. 一个简单的回归决策示例
+## 10. 一个简单的回归决策示例
 
 下面这个骨架展示的是一个核心思路：发布要绑定在可度量阈值上，而不是绑定在“总体感觉不错”上。
 
@@ -307,7 +317,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 代码刻意很简单。恰恰是这种简单性，让门禁对团队而言可理解、可讨论。
 
-## 10. 在线评测必须和发布策略连起来
+## 11. 在线评测必须和发布策略连起来
 
 一个非常有用的做法是不要把大变更一次性打给所有人，而是使用：
 
@@ -321,7 +331,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 对这个支持智能体来说，这意味着：如果新的 adapter 或新的 prompt 改变了复杂状态案例上的行为，团队应该在 canary 或 shadow 阶段就看到，而不是等到大范围发布之后。
 
-### 10.1. 好的模拟器不会替代真实数据，只会补充真实数据
+### 11.1. 好的模拟器不会替代真实数据，只会补充真实数据
 
 也要注意不要高估用户模拟器。
 
@@ -340,7 +350,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - 回退质量；
 - 策略敏感轮次。
 
-## 11. 评测文化最常见的崩坏点
+## 12. 评测文化最常见的崩坏点
 
 这些问题很常见：
 
@@ -353,7 +363,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 一旦如此，评测闭环就会退化成仪式，而不是改进机制。
 
-## 12. 读完这一章后先做什么
+## 13. 读完这一章后先做什么
 
 如果你想快速检查评测闭环，可以问：
 
@@ -366,11 +376,11 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 如果连续几个答案都是否，那说明你可能已经有可观测性，但还没有真正的学习闭环。
 
-## 13. 接下来读什么
+## 14. 接下来读什么
 
 第五部分到这里已经是一个完整的运行闭环：追踪、SLO 和评测回路。下一步自然就是组织模型，因为这种平台最终既会碰到代码问题，也会碰到团队设计问题。
 
-## 14. 值得配套阅读的参考页
+## 15. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

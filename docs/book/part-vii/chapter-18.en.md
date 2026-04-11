@@ -188,7 +188,17 @@ For the support case, manual fallback must be especially concrete:
 - how to mark questionable tickets created during the canary wave;
 - who cleans up the consequences of a failed rollout.
 
-## 9. Example Rollout Checklist Policy
+## 9. Practical Rules for Rollout Readiness
+
+If you need a short operational frame, rules like these are usually enough:
+
+1. No rollout should start without trace coverage, a rollback plan, and a clear owner.
+2. No write capability should enter canary without idempotency, outcome normalization, and policy visibility.
+3. High-risk flows should be tested separately from the happy path.
+4. Canary, shadow, and blast-radius limits should be part of the design, not emergency improvisation.
+5. If the team no longer trusts traces or evals, the rollout should stop, not continue as “extra observation in prod”.
+
+## 10. Example Rollout Checklist Policy
 
 Here is a very practical template:
 
@@ -214,7 +224,7 @@ rollout:
 
 This kind of checklist is powerful because it turns readiness into an engineering discussion instead of confidence in someone's tone of voice.
 
-## 10. A Simple Readiness Gate Example
+## 11. A Simple Readiness Gate Example
 
 This small skeleton shows how readiness can be evaluated as a set of required conditions:
 
@@ -241,7 +251,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 Very simple, but it reinforces one important idea: production readiness should be formalizable.
 
-## 11. What Usually Breaks in Go-Live
+## 12. What Usually Breaks in Go-Live
 
 The failure patterns are very recognizable:
 
@@ -261,7 +271,7 @@ For the support agent, that often looks especially dangerous:
 
 When that happens, the rollout process is still optimistic shipping, not production discipline.
 
-## 12. What to Do Right After This Chapter
+## 13. What to Do Right After This Chapter
 
 If you want to assess readiness before rollout quickly, ask:
 
@@ -274,11 +284,11 @@ If you want to assess readiness before rollout quickly, ask:
 
 If the answer is "no" several times in a row, the rollout should still be considered not ready, even if the demo looked good.
 
-## 13. What to Read Next
+## 14. What to Read Next
 
 At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next natural step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
 
-## 14. Useful Reference Pages
+## 15. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)

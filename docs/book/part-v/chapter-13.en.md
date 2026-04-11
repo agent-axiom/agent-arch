@@ -261,7 +261,17 @@ For the support agent, that means a regression is not only “the agent became l
 
 Then rollout stops depending only on the intuition of whoever made the change.
 
-## 8. Example Eval Gate Policy
+## 8. Practical Rules for the Eval Loop
+
+If you need a short engineering frame, rules like these are usually enough:
+
+1. Every meaningful incident should become an eval case and a rollout rule.
+2. Offline and online evals should live together: one catches regressions before release, the other after release.
+3. Trace grading should stay focused on critical write paths and policy-sensitive flows, not only happy paths.
+4. The dataset should be refreshed from real failures, not only old demo cases.
+5. The regression gate should be machine-readable and block not only quality regressions, but also safety, cost, and escalation regressions.
+
+## 9. Example Eval Gate Policy
 
 Here is a very practical template:
 
@@ -282,7 +292,7 @@ gates:
 
 The numbers are not universal. The important part is that the quality gate becomes machine-readable, and disagreements move to the level of criteria instead of vibes.
 
-## 9. A Simple Regression Decision Example
+## 10. A Simple Regression Decision Example
 
 This small skeleton shows the idea: rollout is tied to measurable thresholds, not to general impression.
 
@@ -309,7 +319,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 The code is intentionally simple. That simplicity is exactly what makes the gate understandable to the team.
 
-## 10. Online Evals Must Be Connected to Rollout Strategy
+## 11. Online Evals Must Be Connected to Rollout Strategy
 
 It is very useful not to ship large changes to everyone at once, but to use:
 
@@ -323,7 +333,7 @@ That way online evals become not just observation that “something went wrong,�
 
 For the same support agent, that means: if a new adapter or prompt changes behavior on difficult status cases, the team should see it in canary or shadow, not only after broad rollout.
 
-### 10.1. A Good Simulator Does Not Replace Real Data, It Complements It
+### 11.1. A Good Simulator Does Not Replace Real Data, It Complements It
 
 It is important not to overestimate a user simulator.
 
@@ -342,7 +352,7 @@ But it is very useful as an intermediate layer between an offline dataset and li
 - fallback quality;
 - policy-sensitive turns.
 
-## 11. What Usually Breaks in Eval Culture
+## 12. What Usually Breaks in Eval Culture
 
 These failures are very typical:
 
@@ -355,7 +365,7 @@ These failures are very typical:
 
 When that happens, the eval loop becomes a ritual instead of an improvement mechanism.
 
-## 12. What to Do Right After This Chapter
+## 13. What to Do Right After This Chapter
 
 If you want to review your eval loop quickly, ask:
 
@@ -368,11 +378,11 @@ If you want to review your eval loop quickly, ask:
 
 If the answer is "no" several times in a row, you may already have observability, but you still do not have a learning loop.
 
-## 13. What to Read Next
+## 14. What to Read Next
 
 Part V now forms a coherent operational block: traces, SLO, and the eval loop. The next natural move is the organizational model, because platforms like this run into team design questions as much as code questions.
 
-## 14. Useful Reference Pages
+## 15. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)

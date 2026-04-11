@@ -188,7 +188,17 @@ flowchart LR
 - 如何标记 canary wave 中创建的可疑工单；
 - 失败 rollout 的后果由谁清理。
 
-## 9. 一个上线检查清单策略示例
+## 9. rollout readiness 的实用规则
+
+如果要把最有用的 operational 规则压缩成一组，通常这些就够了：
+
+1. 没有 trace coverage、rollback plan 和明确 owner，就不应该开始 rollout。
+2. 没有 idempotency、outcome normalization 和 policy visibility 的 write capability，不应该进入 canary。
+3. High-risk flows 必须独立于 happy path 单独验证。
+4. Canary、shadow 和 blast-radius limits 应该是设计的一部分，而不是出事后的临时 improvisation。
+5. 如果团队已经不再信任 traces 或 evals，就应该先停 rollout，而不是继续“边上边看”。
+
+## 10. 一个上线检查清单策略示例
 
 下面是一个很实用的模板：
 
@@ -214,7 +224,7 @@ rollout:
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。
 
-## 10. 一个简单的就绪门禁示例
+## 11. 一个简单的就绪门禁示例
 
 下面这个 skeleton 展示的是：如何把 readiness 看成一组必须同时满足的条件。
 
@@ -241,7 +251,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 这个例子很简单，但它强化了一件重要的事：生产就绪性应该是可形式化的。
 
-## 11. Go-live 流程最常见的崩坏点
+## 12. Go-live 流程最常见的崩坏点
 
 这些失败模式非常典型：
 
@@ -261,7 +271,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 一旦这样，rollout process 就还不是生产级纪律，而只是过于乐观的发布。
 
-## 12. 读完这一章后先做什么
+## 13. 读完这一章后先做什么
 
 如果你想在 rollout 前快速判断 readiness，可以问：
 
@@ -274,11 +284,11 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 如果连续多个答案都是“没有”，那这次 rollout 就应该视为未准备好，即使 demo 看起来很顺。
 
-## 13. 接下来读什么
+## 14. 接下来读什么
 
 到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。接下来的自然问题就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
 
-## 14. 值得配套阅读的参考页
+## 15. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)

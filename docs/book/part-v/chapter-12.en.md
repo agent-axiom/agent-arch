@@ -185,7 +185,17 @@ That is why it helps to track:
 
 For the support agent, this is critical: if escalation rate gets too high, automation quickly becomes decorative.
 
-## 9. Example SLO Policy for the Support Agent
+## 9. Practical Rules for SLO Design
+
+If you need a short set of rules that actually helps, it usually looks like this:
+
+1. Start from the run-level outcome, not component metrics.
+2. Success should describe a resolved task, not merely the absence of an exception.
+3. Safety, cost, and escalation should count as part of system health, not as side appendices to reliability.
+4. Latency should be broken down by stage, or it will be hard to diagnose.
+5. SLO only matter when they influence rollout and change decisions.
+
+## 10. Example SLO Policy for the Support Agent
 
 The point here is not “canonical” numbers, but explicit discipline:
 
@@ -208,7 +218,7 @@ slo:
 
 The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
 
-## 10. A Simple Health Classification Example
+## 11. A Simple Health Classification Example
 
 This small skeleton shows the idea: one run should be evaluated across several dimensions at once, not just one metric.
 
@@ -238,7 +248,7 @@ def classify_run_health(run: RunHealth) -> str:
 
 This model is simple, but useful precisely because it does not hide operational quality behind formal “success.”
 
-## 11. What Usually Breaks in SLO Culture
+## 12. What Usually Breaks in SLO Culture
 
 The problems here are very repetitive:
 
@@ -251,7 +261,7 @@ The problems here are very repetitive:
 
 When that happens, SLO become decoration. The team looks at numbers, but does not control the platform through them.
 
-## 12. What to Do Right After This Chapter
+## 13. What to Do Right After This Chapter
 
 If you want to review your support agent quickly, ask:
 
@@ -264,11 +274,11 @@ If you want to review your support agent quickly, ask:
 
 If the answer is "no" several times in a row, observability may already exist, but system health still is not managed through quality targets.
 
-## 13. What to Read Next
+## 14. What to Read Next
 
 After SLO, the next natural step in the same story is the eval loop: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
 
-## 14. Useful Reference Pages
+## 15. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Incident Record Schema](../../appendix/incident-record-schema.en.md)
