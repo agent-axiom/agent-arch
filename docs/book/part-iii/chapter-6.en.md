@@ -1,6 +1,24 @@
 # Chapter 6. Short-Term, Long-Term, and Profile Memory
 
+!!! info "How to read this chapter"
+    It helps not to hold all definitions at once, but to keep one simple question in mind:
+
+    - what from this run matters right now;
+    - what may be useful later;
+    - what really belongs to durable user preference rather than random noise.
+
+    When those three categories are mixed together, the memory layer stops helping and starts quietly damaging the system.
+
 ## 1. Why the Single Word "Memory" Only Gets in the Way
+
+In the running support case, this becomes very concrete. After one run, the team may feel tempted to save everything:
+
+- intermediate checking steps;
+- a temporary case summary;
+- the user's communication language;
+- random observations that should not survive a single run at all.
+
+This is exactly where memory types stop being vocabulary and become an architectural decision.
 
 As soon as memory appears in a system, the team feels tempted to use one word for everything that does not fit into the current prompt. That is a convenient abstraction for conversation, but a bad abstraction for architecture.
 
