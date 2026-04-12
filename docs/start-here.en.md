@@ -9,6 +9,18 @@ This page exists for two reasons:
 
 If you want the high-level message of the book, use the [homepage](index.en.md). If you need structure and current status, open the [book plan](book/plan.en.md). If you need reusable artifacts and contract pages, go to the [reference layer](reference.en.md).
 
+## If you read only one thing
+
+If you want the shortest possible introduction to the book's thesis, read [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md).
+
+That chapter explains the central position of this project: agent systems should be designed as controlled operational systems, not as piles of prompts with a thin wrapper around them.
+
+## What kind of book this is
+
+This is not a framework manual, not a model benchmark, and not a hype tour of the AI ecosystem.
+
+It is a practical architecture book for teams that need to ship agents into real environments with trust boundaries, approvals, telemetry, evals, and operational ownership.
+
 ## Project maturity at a glance
 
 - `Published core`: the main parts of the book are already published.
