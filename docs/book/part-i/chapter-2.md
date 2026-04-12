@@ -232,18 +232,49 @@ Google правильно дисциплинирует prompt assembly чере�
 
 ### 6.3. Когда делить систему на несколько агентов
 
-Практический гайд OpenAI правильно не романтизирует `multi-agent` как default choice.[^openai-practical]
+Практический гайд OpenAI правильно не романтизирует `multi-agent` как default choice.[^openai-practical] Новое архитектурное руководство Microsoft полезно тем, что делает путь усложнения более явным: сначала команда должна спросить, не остается ли задача обычным direct model call, затем достаточно ли одного агента с инструментами, и только потом переходить к multi-agent orchestration.[^microsoft-orchestration]
+
+Эта дисциплина важна, потому что каждый лишний агент добавляет:
+
+- еще одну границу контекста;
+- еще один coordination path;
+- еще один latency hop;
+- еще одну поверхность отказа;
+- еще одну ownership и policy boundary.
 
 Обычно разделение оправдано, когда:
 
 - одному run уже тесно в одном контексте;
 - подзадачи требуют разных инструментов и guardrails;
 - ownership делится между командами;
-- параллелизм действительно уменьшает latency или cognitive load.
+- параллелизм действительно уменьшает latency или cognitive load;
+- security boundaries различаются настолько, что одному агенту нельзя давать все полномочия сразу.
 
 Если этих признаков нет, один агент с хорошим workflow graph почти всегда проще и надежнее.
 
-## 7. Что нельзя смешивать в одну кучу
+Практическая лестница усложнения выглядит так:
+
+1. `direct model call` для одношаговой работы;
+2. `single agent with tools` для одной предметной области с динамическими действиями;
+3. `multi-agent orchestration` только там, где специализация, разделение безопасности или параллельная декомпозиция действительно оправдывают дополнительную runtime complexity.
+
+Эта лестница полезна тем, что превращает архитектуру в явную anti-overengineering discipline. Вопрос должен звучать не как "можно ли разбить это на несколько агентов?", а как "какая минимальная форма сложности все еще надежно работает в production?"
+
+## 7. Быстрый тест зрелости для архитектурной сложности
+
+Команде не стоит считать свою архитектуру зрелой только потому, что у нее уже есть агент, несколько инструментов и многослойная схема.
+
+Более сильная планка такая:
+
+- команда может объяснить, почему текущая задача все еще остается direct model call, single agent with tools или multi-agent system;
+- каждый шаг вверх по этой лестнице оправдан реальным operational pressure, а не новизной ради новизны;
+- дополнительные агенты дают ясную специализацию или контроль, а не расплывчатую "продвинутость";
+- архитектура убирает двусмысленность в том, где живут права на действие, side effects и approvals;
+- получившийся runtime все еще можно объяснить операторам во время инцидента.
+
+Если этих условий нет, система может выглядеть "архитектурно" на слайдах, но на практике уже быть переусложненной.
+
+## 8. Что нельзя смешивать в одну кучу
 
 Есть минимум четыре вещи, которые стоит различать с самого начала:
 
@@ -254,7 +285,7 @@ Google правильно дисциплинирует prompt assembly чере�
 
 Пока система маленькая, это разделение может казаться бюрократией. После первого серьезного инцидента оно начинает выглядеть как инженерная гигиена.
 
-## 8. Минимальный кодовый принцип
+## 9. Минимальный кодовый принцип
 
 Если хочется увидеть всю идею в очень сжатом виде, шаблон выглядит так:
 
@@ -283,7 +314,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Смысл здесь один: модель может предложить действие, но право на исполнение живет не в модели, а в gateway и policy слое.
 
-## 9. Быстрый архитектурный review для своей системы
+## 10. Быстрый архитектурный review для своей системы
 
 Если у тебя уже есть агент или agent-like workflow в production, используй эту главу как короткий review checklist.
 
@@ -298,7 +329,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Если ответы на эти вопросы живут только в промптах, договоренностях или памяти команды, значит архитектура пока слишком неявная.
 
-## 10. Что нужно вынести из этой главы
+## 11. Что нужно вынести из этой главы
 
 Если кратко, хорошая агентная платформа держится на нескольких скучных, но очень ценных вещах:
 
@@ -311,7 +342,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Архитектура полезна не потому, что делает схему красивой. Она полезна потому, что не дает системе рассыпаться при первом реальном усложнении.
 
-## 11. Что делать сразу после этой главы
+## 12. Что делать сразу после этой главы
 
 Если ты проектируешь агентную систему прямо сейчас, зафиксируй хотя бы это:
 
@@ -323,7 +354,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Если эти вещи уже описаны, у тебя начинает появляться архитектура. Если нет, у тебя пока только идея агента.
 
-## 12. Что читать дальше
+## 13. Что читать дальше
 
 - [Глава 1. Почему агенту нужна платформа, а не магия](chapter-1.md)
 - [Часть II. Контур безопасности](../part-ii/index.md)
@@ -334,3 +365,4 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^microsoft-orchestration]: [Microsoft Azure Architecture Center, AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)

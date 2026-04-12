@@ -232,18 +232,49 @@ Google 通过 context layers 来约束 prompt assembly，这一点非常实用�
 
 ### 6.3. 什么时候才值得拆成多个智能体
 
-OpenAI 的 practical guide 有一点很对：不要把 `multi-agent` 当成默认答案。[^openai-practical]
+OpenAI 的 practical guide 有一点很对：不要把 `multi-agent` 当成默认答案。[^openai-practical] Microsoft 最新的架构指南在这里也很有价值，因为它把复杂度升级路径说得更明确了：团队应该先问，这个问题是否仍然只是 direct model call，然后再问一个带工具的单智能体是否已经足够，只有在这之后才进入 multi-agent orchestration。[^microsoft-orchestration]
+
+这条纪律很重要，因为每多一个智能体，通常就会多出：
+
+- 一条新的 context boundary；
+- 一条新的 coordination path；
+- 一次新的 latency hop；
+- 一个新的 failure surface；
+- 一条新的 ownership 与 policy boundary。
 
 通常只有在这些信号出现时，拆分才是合理的：
 
 - 一个 run 的上下文已经太拥挤；
 - 子任务需要不同的工具和不同的 guardrails；
 - ownership 已经分到不同团队；
-- 并行执行确实能降低 latency 或 cognitive load。
+- 并行执行确实能降低 latency 或 cognitive load；
+- security boundaries 差异已经大到不该由一个智能体持有全部权限。
 
 如果这些信号不存在，一个带良好 workflow graph 的单智能体通常更简单，也更可靠。
 
-## 7. 什么东西绝对不要混在一起
+一条实用的复杂度升级阶梯可以写成：
+
+1. `direct model call` 处理单步任务；
+2. `single agent with tools` 处理单一领域中的动态动作；
+3. `multi-agent orchestration` 只在 specialization、安全分离或并行分解确实值得额外 runtime complexity 时才采用。
+
+这条阶梯的价值在于，它把架构变成一种显式的 anti-overengineering discipline。真正该问的问题不是“我们能不能把它拆成多个智能体？”，而是“什么样的最低复杂度形态，仍然能在 production 中可靠运行？”
+
+## 7. 给架构复杂度做一次快速成熟度测试
+
+团队不应该只因为已经有一个智能体、几种工具和一张分层图，就觉得自己的架构已经成熟。
+
+更高的标准应该是：
+
+- 团队能够解释，当前问题为什么仍然是 direct model call、single agent with tools，还是 multi-agent system；
+- 沿着这条阶梯的每一次升级，都来自真实的 operational pressure，而不是新奇感；
+- 新增智能体带来的是清晰的 specialization 或 control gain，而不是模糊的“更高级”；
+- 架构明确消除了 action rights、side effects 和 approvals 究竟放在哪里的歧义；
+- 生成出来的 runtime 在事故发生时仍然能被 operator 解释清楚。
+
+如果这些条件不成立，系统在幻灯片上也许看起来很“有架构”，但在实践里已经开始过度复杂化。
+
+## 8. 什么东西绝对不要混在一起
 
 至少有四样东西，从一开始就值得分开：
 
@@ -254,7 +285,7 @@ OpenAI 的 practical guide 有一点很对：不要把 `multi-agent` 当成默�
 
 系统还小的时候，这种分离看起来可能像官僚主义。等第一起 serious incident 真的发生，它就会看起来像工程卫生。
 
-## 8. 一个最小代码原则
+## 9. 一个最小代码原则
 
 如果你想用最紧凑的方式看清这个设计，下面这个模板就够了：
 
@@ -283,7 +314,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 这里的核心只有一句话：模型可以提议动作，但真正的执行权在 gateway 和 policy layer，不在模型里。
 
-## 9. 给你自己系统做一次快速架构审查
+## 10. 给你自己系统做一次快速架构审查
 
 如果你已经有一个 agent 或 agent-like workflow 在 production 里运行，可以把这一章当作一份简短的审查清单。
 
@@ -298,7 +329,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 如果这些答案只存在于 prompt、口头约定或团队记忆里，那说明这套架构仍然过于隐式。
 
-## 10. 这一章真正要带走什么
+## 11. 这一章真正要带走什么
 
 简短地说，一个好的智能体平台建立在几件很“无聊”、但极其值钱的东西上：
 
@@ -311,7 +342,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 架构之所以重要，不是因为图更好看，而是因为它能阻止系统在第一次真正复杂起来的时候散架。
 
-## 11. 读完这一章立刻该做什么
+## 12. 读完这一章立刻该做什么
 
 如果你现在就在设计一个智能体系统，先写下至少这五件事：
 
@@ -323,7 +354,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 如果这些东西已经写清楚了，架构就开始存在了。如果没有，那你现在还只有一个“智能体想法”。
 
-## 12. 接下来读什么
+## 13. 接下来读什么
 
 - [第 1 章：为什么智能体需要的是平台，而不是魔法](chapter-1.zh.md)
 - [第二部分：安全边界](../part-ii/index.zh.md)
@@ -334,3 +365,4 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^microsoft-orchestration]: [Microsoft Azure Architecture Center, AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)

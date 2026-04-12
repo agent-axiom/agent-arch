@@ -232,18 +232,49 @@ This is why the control plane matters so much: it separates "the model proposed"
 
 ### 6.3. When to Split into Multiple Agents
 
-The OpenAI practical guide is right not to romanticize `multi-agent` as the default choice.[^openai-practical]
+The OpenAI practical guide is right not to romanticize `multi-agent` as the default choice.[^openai-practical] Microsoft’s newer architecture guidance is useful here because it makes the escalation path more explicit: teams should first ask whether the problem is still a direct model call, then whether one agent with tools is enough, and only then move into multi-agent orchestration.[^microsoft-orchestration]
+
+That discipline matters because every extra agent introduces:
+
+- another context boundary;
+- another coordination path;
+- another latency hop;
+- another failure surface;
+- another ownership and policy boundary.
 
 Splitting is usually justified when:
 
 - one run is already too crowded for a single context;
 - subtasks require different tools and different guardrails;
 - ownership is split across teams;
-- parallelism genuinely reduces latency or cognitive load.
+- parallelism genuinely reduces latency or cognitive load;
+- security boundaries differ enough that one agent should not carry all permissions.
 
 If those signs are absent, one agent with a good workflow graph is almost always simpler and more reliable.
 
-## 7. What Should Never Be Mixed Together
+A practical escalation ladder is:
+
+1. `direct model call` for single-step work;
+2. `single agent with tools` for one domain with dynamic actions;
+3. `multi-agent orchestration` only when specialization, security separation, or parallel decomposition clearly justify the extra runtime complexity.
+
+That ladder is useful because it turns architecture into an explicit anti-overengineering discipline. The question is not "can we split this into several agents?" but "what is the lowest-complexity form that still behaves reliably in production?"
+
+## 7. A Fast Maturity Test for Architecture Complexity
+
+A team should not conclude that its architecture is mature only because it already has an agent, some tools, and a layered diagram.
+
+A stronger bar is this:
+
+- the team can explain why the current problem is still a direct model call, a single agent with tools, or a multi-agent system;
+- each step up that ladder is justified by real operational pressure rather than novelty;
+- extra agents introduce clear specialization or control benefits rather than vague sophistication;
+- the architecture removes ambiguity about where action rights, side effects, and approvals live;
+- the resulting runtime is still explainable to operators during incidents.
+
+If those conditions are missing, the system may look architected on slides while still being overcomplicated in practice.
+
+## 8. What Should Never Be Mixed Together
 
 There are at least four things worth separating from the beginning:
 
@@ -254,7 +285,7 @@ There are at least four things worth separating from the beginning:
 
 This separation can look bureaucratic while the system is still small. After the first serious incident, it starts to look like hygiene.
 
-## 8. A Minimal Code Principle
+## 9. A Minimal Code Principle
 
 If you want to see the full idea in very compact form, the template looks like this:
 
@@ -283,7 +314,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 The point is one line long: the model may suggest an action, but the right to execute lives in the gateway and the policy layer, not in the model.
 
-## 9. A Fast Architecture Review for Your Own System
+## 10. A Fast Architecture Review for Your Own System
 
 If you already have an agent or agent-like workflow in production, use this chapter as a short review checklist.
 
@@ -298,7 +329,7 @@ You should be able to answer these questions clearly:
 
 If those answers live only in prompts, conventions, or team memory, the architecture is still too implicit.
 
-## 10. What to Take Away from This Chapter
+## 11. What to Take Away from This Chapter
 
 In short, a good agent platform stands on several boring but valuable things:
 
@@ -311,7 +342,7 @@ In short, a good agent platform stands on several boring but valuable things:
 
 Architecture is useful not because it makes the diagram prettier. It is useful because it stops the system from falling apart at the first real complication.
 
-## 11. What to Do Right After This Chapter
+## 12. What to Do Right After This Chapter
 
 If you are designing an agent system right now, write down at least this:
 
@@ -323,7 +354,7 @@ If you are designing an agent system right now, write down at least this:
 
 If those things are already written down, an architecture is beginning to exist. If not, you still only have an agent idea.
 
-## 12. What to Read Next
+## 13. What to Read Next
 
 - [Chapter 1. Why an Agent Needs a Platform, Not Magic](chapter-1.en.md)
 - [Part II. Security Perimeter](../part-ii/index.en.md)
@@ -334,3 +365,4 @@ If those things are already written down, an architecture is beginning to exist.
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^microsoft-orchestration]: [Microsoft Azure Architecture Center, AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
