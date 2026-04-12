@@ -1,8 +1,19 @@
 # 第 15 章：黄金路径、共享网关与反动物园模式
 
+!!! info "怎样读这一章"
+    不要把这一章当成泛泛的 platform patterns 讨论，更有用的是抓住一个很实际的问题：
+
+    - 怎样确保产品团队不用从头再造一套本地 runtime；
+    - 哪些共享层应该直接带好：gateway、policy hooks、tracing、rollout defaults；
+    - 怎样把组织模型推进到下一章里自然落成 reference implementation。
+
+    如果这个过渡不存在，operating model 就只会停留在声明层，团队仍然会各自重建系统。
+
 ## 1. 为什么即使有不错的组织模型，没有工程模板也会很快散掉
 
 当你已经决定了谁拥有平台、谁拥有产品之后，下一个问题马上就会出现：团队在实践里到底应该复用什么？
+
+在贯穿全书的 support 场景里，这个问题已经非常具体：团队不应该为了同一个 support agent，又把 run loop、policy hooks、tool gateway 和 tracing 各自重搭一遍。如果平台不给出这条现成路径，组织模型就会停留在纸面上，而工程形态很快又退回到一堆本地变体。
 
 如果这个问题没有答案，就会出现熟悉的场景：
 
@@ -232,9 +243,9 @@ platform_defaults:
 
 ## 12. 接下来读什么
 
-第六部分下一步最自然的延伸，是继续补平台路线图、采用方式和生命周期管理这些组织层模式。再之后，就可以进入参考实现。
+这一章之后，下一步已经不再是新的组织图，而是代码骨架：去看 golden path、shared gateway 和 approved runtime patterns 怎样在参考实现里真正固定下来。
 
 - [第 14 章：平台团队与产品团队](chapter-14.zh.md)
-- [第 16 章：基础 Runtime Blueprint](../part-vii/chapter-16.zh.md)
+- [第 16 章：基础运行时蓝图](../part-vii/chapter-16.zh.md)
 - [第六部分：组织模型](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)

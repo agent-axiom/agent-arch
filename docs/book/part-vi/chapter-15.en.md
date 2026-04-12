@@ -1,8 +1,19 @@
 # Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
 
+!!! info "How to read this chapter"
+    It helps to keep one practical question in mind rather than a generic platform-pattern topic:
+
+    - how to make sure a product team does not rebuild its own local runtime from scratch;
+    - which shared layers should arrive preassembled: gateway, policy hooks, tracing, and rollout defaults;
+    - how to push the operating model to the point where the next chapter naturally becomes a reference implementation.
+
+    Without that transition, the operating model stays declarative while teams still rebuild the system separately.
+
 ## 1. Why Even a Good Operating Model Falls Apart Without Engineering Templates
 
 Once you decide who owns the platform and who owns the product, the next question appears: what exactly should teams reuse in practice?
+
+In the running support case, this already turns into something concrete: the team should not have to rebuild the same run loop, policy hooks, tool gateway, and tracing just to launch the same support agent. If the platform does not provide that path, the operating model stays on paper while the engineering shape falls back into local variants.
 
 If there is no answer, the familiar pattern shows up:
 
@@ -232,7 +243,7 @@ If the answer is "no" several times in a row, then you are not building a platfo
 
 ## 12. What to Read Next
 
-The next logical step in Part VI is to complete the operating-model topic through platform roadmap, adoption, and lifecycle-management patterns. After that, it makes sense to move to the reference implementation.
+The next step after this chapter is no longer another org chart. It is the code skeleton: seeing how the golden path, shared gateway, and approved runtime patterns get fixed inside the reference implementation.
 
 - [Chapter 14. Platform Team vs Product Teams](chapter-14.en.md)
 - [Chapter 16. Baseline Runtime Blueprint](../part-vii/chapter-16.en.md)
