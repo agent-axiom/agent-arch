@@ -38,7 +38,7 @@ If you read this part as one block, the sequence is straightforward:
 - after that, lock down artifact discipline and provenance;
 - and finally close the lifecycle through replacement and retirement.
 
-## In this part
+## In This Part
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
 - [Chapter 20. Change Management for Agent Systems](chapter-20.en.md)
