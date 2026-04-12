@@ -110,7 +110,22 @@ A practical field set usually looks like this:
 
 With that contract, the runtime can already behave predictably instead of adapting ad hoc to every capability.
 
-## 6. A Policy Decision Should Be an Object, Not Just a Bool
+## 6. Approval Should Look Like an Interruptible Runtime Path, Not a Side Conversation
+
+A policy layer becomes much more real when approval is modeled as part of runtime control flow rather than as a manual process outside the system. LangGraph's interrupt model is useful here because it makes pause, review, and resume explicit runtime primitives instead of ad hoc human workarounds.[^langgraph-interrupts]
+
+That is the right shape for policy-heavy agent systems too.
+
+When a high-risk capability reaches an approval boundary, the runtime should be able to:
+
+- pause the run;
+- surface the pending action and its context;
+- wait for an external decision;
+- resume with a structured outcome.
+
+That is much stronger than sending a message to an operator and hoping the surrounding code still remembers what it was doing.
+
+## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.
 
@@ -127,11 +142,12 @@ And additionally:
 - reason code;
 - policy id;
 - risk class;
-- optional constraints.
+- optional constraints;
+- optional approval or resume requirements.
 
 That greatly improves explainability and makes telemetry far more useful.
 
-## 7. Example Policy Contract
+## 8. Example Policy Contract
 
 Here is a very simple but practical template:
 
@@ -156,7 +172,7 @@ policy:
 
 Its power is not completeness. Its power is explicitness. You can argue about a specific rule and understand where it applies.
 
-## 8. Example Capability Catalog Contract
+## 9. Example Capability Catalog Contract
 
 It helps to think about the catalog roughly like this:
 
@@ -188,7 +204,22 @@ capabilities:
 
 That kind of catalog already defines operational semantics, not just names. It also makes explicit whether a capability is model-facing, runtime-brokered, or operator-only.
 
-## 9. A Simple Policy Decision Skeleton
+## 10. Structured Outputs Matter Because Contracts Should Survive Contact With Code
+
+Recent OpenAI guidance on structured outputs is useful for the policy layer too.[^openai-structured]
+
+A contract is only half real if the runtime still has to guess whether a policy result, approval request, or capability payload came back in the expected shape.
+
+That is why policy-heavy systems benefit from making key artifacts structurally explicit:
+
+- policy decisions;
+- approval requests;
+- approval outcomes;
+- capability inputs and outputs.
+
+The goal is not elegance for its own sake. The goal is to reduce silent drift between runtime logic, audit records, and the surrounding control surface.
+
+## 11. A Simple Policy Decision Skeleton
 
 The point here is that the runtime receives not only permission, but a structured decision.
 
@@ -201,19 +232,20 @@ class PolicyDecision:
     action: str
     reason: str
     policy_id: str
+    requires_approval: bool = False
 
 
 def evaluate_capability(name: str) -> PolicyDecision:
     if name == "search_docs":
         return PolicyDecision(action="allow", reason="low_risk_read", policy_id="cap_001")
     if name == "create_ticket":
-        return PolicyDecision(action="approval_required", reason="write_action", policy_id="cap_014")
+        return PolicyDecision(action="approval_required", reason="write_action", policy_id="cap_014", requires_approval=True)
     return PolicyDecision(action="deny", reason="unsupported_capability", policy_id="cap_999")
 ```
 
 Even code this small already gives the right shape for telemetry, approval UI flows, and investigations.
 
-## 10. A Simple Capability Lookup Skeleton
+## 12. A Simple Capability Lookup Skeleton
 
 And one more practical piece: the runtime should not know capability details directly, it should fetch them from the catalog.
 
@@ -240,7 +272,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 This also looks boring. Good. The catalog layer should be boring, stable, and inspectable.
 
-## 11. Common Mistakes
+## 13. Common Mistakes
 
 These problems are very typical:
 
@@ -249,12 +281,14 @@ These problems are very typical:
 - tools exposed to the model are treated as if they were automatically approved capabilities;
 - capability ownership is unclear;
 - approval logic is embedded directly into orchestration;
+- approval exists as a human process, but not as an explicit pause/resume path in the runtime;
+- structured contracts are missing, so policy and approval payloads drift in shape;
 - memory policy and execution policy behave as if they were unrelated;
 - the catalog and real adapters drift apart in behavior.
 
 When that happens, the reference implementation stops being a reference and becomes a bundle of conventions again.
 
-## 12. A Fast Maturity Test for the Policy Layer and Capability Catalog
+## 14. A Fast Maturity Test for the Policy Layer and Capability Catalog
 
 A team should not think it has assembled the contract core of its agent system only because it has a few policy checks and a list of tools.
 
@@ -263,12 +297,13 @@ A stronger bar is this:
 - policy decisions are explicit objects rather than scattered booleans;
 - capability contracts carry ownership, transport, exposure, risk, and approval semantics;
 - runtime code depends on the catalog instead of direct calls and ad hoc exceptions;
+- approval is modeled as an explicit interruptible path rather than as an off-path manual workaround;
 - memory policy, execution policy, and approval policy belong to one visible control surface;
 - telemetry can expose not only what happened, but which policy and capability contract governed it.
 
 If most of those conditions are missing, the runtime may exist, but the contract core is still not assembled.
 
-## 13. What to Do Right Away
+## 15. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -277,11 +312,12 @@ Start with this short list and mark every "no" explicitly:
 - Is there a single capability catalog?
 - Do capabilities have owner, transport, exposure, and risk semantics?
 - Does the runtime use the catalog rather than direct calls?
+- Can approval pause and resume a run explicitly?
 - Are policy decisions visible in telemetry?
 
 If the answer is "no" several times in a row, the skeleton exists, but the contract core is not assembled yet.
 
-## 14. What to Do Next
+## 16. What to Do Next
 
 First make policy decisions and capability contracts explicit, then check whether that same system is ready for its first rollout.
 
@@ -293,8 +329,10 @@ The next logical step in the reference implementation is to assemble a productio
 - [Sources](../../appendix/sources.en.md)
 
 [^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
+[^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
+[^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 
-## 15. Useful Reference Pages
+## 17. Useful Reference Pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
