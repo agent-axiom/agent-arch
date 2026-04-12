@@ -283,7 +283,22 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 这里的核心只有一句话：模型可以提议动作，但真正的执行权在 gateway 和 policy layer，不在模型里。
 
-## 9. 这一章真正要带走什么
+## 9. 给你自己系统做一次快速架构审查
+
+如果你已经有一个 agent 或 agent-like workflow 在 production 里运行，可以把这一章当作一份简短的审查清单。
+
+你应该能清楚回答这些问题：
+
+- 请求是在什么地方被标准化为可管理的 execution context？
+- 系统是在什么地方决定“什么被允许”？
+- 哪些动作必须审批，这个约束是在哪里 enforced 的？
+- 哪些 side effects 只能经过 gateway 或 sandbox？
+- 哪些字段一定会进入 traces？
+- 在 retry、partial failure 或 restart 之后，系统会怎样表现？
+
+如果这些答案只存在于 prompt、口头约定或团队记忆里，那说明这套架构仍然过于隐式。
+
+## 10. 这一章真正要带走什么
 
 简短地说，一个好的智能体平台建立在几件很“无聊”、但极其值钱的东西上：
 
@@ -296,7 +311,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 架构之所以重要，不是因为图更好看，而是因为它能阻止系统在第一次真正复杂起来的时候散架。
 
-## 10. 读完这一章立刻该做什么
+## 11. 读完这一章立刻该做什么
 
 如果你现在就在设计一个智能体系统，先写下至少这五件事：
 
@@ -308,7 +323,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 如果这些东西已经写清楚了，架构就开始存在了。如果没有，那你现在还只有一个“智能体想法”。
 
-## 11. 接下来读什么
+## 12. 接下来读什么
 
 - [第 1 章：为什么智能体需要的是平台，而不是魔法](chapter-1.zh.md)
 - [第二部分：安全边界](../part-ii/index.zh.md)

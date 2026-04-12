@@ -283,7 +283,22 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 The point is one line long: the model may suggest an action, but the right to execute lives in the gateway and the policy layer, not in the model.
 
-## 9. What to Take Away from This Chapter
+## 9. A Fast Architecture Review for Your Own System
+
+If you already have an agent or agent-like workflow in production, use this chapter as a short review checklist.
+
+You should be able to answer these questions clearly:
+
+- Where is the request normalized into managed execution context?
+- Where does the system decide what is allowed?
+- Which actions require approval, and where is that enforced?
+- Which side effects go only through a gateway or sandbox?
+- Which fields are guaranteed to appear in traces?
+- What happens after retries, partial failures, or restarts?
+
+If those answers live only in prompts, conventions, or team memory, the architecture is still too implicit.
+
+## 10. What to Take Away from This Chapter
 
 In short, a good agent platform stands on several boring but valuable things:
 
@@ -296,7 +311,7 @@ In short, a good agent platform stands on several boring but valuable things:
 
 Architecture is useful not because it makes the diagram prettier. It is useful because it stops the system from falling apart at the first real complication.
 
-## 10. What to Do Right After This Chapter
+## 11. What to Do Right After This Chapter
 
 If you are designing an agent system right now, write down at least this:
 
@@ -308,7 +323,7 @@ If you are designing an agent system right now, write down at least this:
 
 If those things are already written down, an architecture is beginning to exist. If not, you still only have an agent idea.
 
-## 11. What to Read Next
+## 12. What to Read Next
 
 - [Chapter 1. Why an Agent Needs a Platform, Not Magic](chapter-1.en.md)
 - [Part II. Security Perimeter](../part-ii/index.en.md)
