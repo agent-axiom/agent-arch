@@ -185,9 +185,19 @@ sequenceDiagram
 
 这才是 agent platform 上成熟安全的样子。
 
-## 7. 实用检查清单
+## 7. 常见错误
 
-如果你想快速评估当前 perimeter，可以过一遍这个清单：
+这里反复出现的错误基本都是同一类：
+
+- 为了“临时”集成去绕过 gateway；
+- approval 提得太晚，危险动作已经几乎要执行了；
+- egress rules 只存在于团队默契里，没有写成显式 contract surface；
+- audit trail 里缺少 policy decision、principal 或 approval context；
+- write actions 和 read actions 被按同一种风险来描述。
+
+## 8. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - agent 有没有独立的 identity model？
 - trusted instructions 和 untrusted content 是否分开了？
@@ -201,7 +211,7 @@ sequenceDiagram
 
 如果连续几个问题答案都是 “no”，那说明你现在读到这一章，时间正合适。
 
-## 8. 下一步做什么
+## 9. 下一步做什么
 
 先把真实的 execution boundary 和 approval points 画清楚，再把同一个请求继续带进 memory layer 和后续系统层。
 

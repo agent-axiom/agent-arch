@@ -212,7 +212,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 这同样看起来很“无聊”。很好。Catalog layer 本来就应该无聊、稳定、可审阅。
 
-## 10. Policy 和 catalog 最常见的崩坏点
+## 10. 常见错误
 
 这些问题非常常见：
 
@@ -225,9 +225,9 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 一旦这样，参考实现就不再是 reference，而是又退回成一堆约定。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
 
-如果你想快速检查这一层，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 你有没有独立的 policy layer，而不是一堆散落的 `if`？
 - policy 返回的是不是 structured decision？

@@ -212,7 +212,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 This also looks boring. Good. The catalog layer should be boring, stable, and inspectable.
 
-## 10. Where Policy and Catalog Usually Break
+## 10. Common Mistakes
 
 These problems are very typical:
 
@@ -225,9 +225,9 @@ These problems are very typical:
 
 When that happens, the reference implementation stops being a reference and becomes a bundle of conventions again.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to review this layer quickly, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do you have a separate policy layer instead of a pile of `if` branches?
 - Does policy return a structured decision?

@@ -267,7 +267,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 This example is intentionally very direct. In practice the rules will be richer, but the core idea should remain the same: memory is classified first, not dumped blindly into one shared container.
 
-## 11. Where Teams Most Often Break
+## 11. Common Mistakes
 
 Usually the problems look like this:
 
@@ -279,9 +279,9 @@ Usually the problems look like this:
 
 None of that is a "model defect." Those are memory-layer architecture defects.
 
-## 12. Practical Checklist
+## 12. What to Do Right Away
 
-If you want to review your design quickly, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do you understand how short-term memory differs from long-term memory?
 - Does profile memory have separate semantics, not just a separate table?

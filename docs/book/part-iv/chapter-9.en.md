@@ -251,7 +251,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 It is intentionally simple, but it locks in the right idea: the way execution happens is determined by the platform, not improvised by the model every time.
 
-## 10. What Usually Breaks in the Sandbox and Capability Layer
+## 10. Common Mistakes
 
 The same problems repeat over and over:
 
@@ -264,9 +264,9 @@ The same problems repeat over and over:
 
 That is why sandboxing cannot be a checkbox feature. It has to be part of execution design.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to quickly review the capability layer, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Are adapters separated from the core runtime?
 - Is there a per-capability execution profile?

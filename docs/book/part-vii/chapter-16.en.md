@@ -201,7 +201,7 @@ runtime:
 
 This is useful because it keeps the runtime contract explicit and portable between environments.
 
-## 11. What Usually Breaks in First Runtime Implementations
+## 11. Common Mistakes
 
 Very typical problems:
 
@@ -214,9 +214,9 @@ Very typical problems:
 
 So the system may "work", but the runtime shape is already blocking growth.
 
-## 12. Practical Checklist
+## 12. What to Do Right Away
 
-If you want to quickly review your baseline runtime, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Are orchestration, policy, memory, execution, and telemetry visible as separate layers?
 - Is there a single run context with tenant/principal metadata?

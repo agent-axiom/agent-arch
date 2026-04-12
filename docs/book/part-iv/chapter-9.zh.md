@@ -251,7 +251,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 它非常简单，但把一个正确前提固定下来：执行方式由平台决定，而不是模型每次重新发明。
 
-## 10. Sandbox 和 capability layer 最常见的崩坏点
+## 10. 常见错误
 
 这些问题一再重复：
 
@@ -264,9 +264,9 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 所以 sandbox 不能只是 checkbox-feature，它必须成为 execution design 的一部分。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
 
-如果你想快速检查 capability layer，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - adapters 是否和 core runtime 分开？
 - 是否存在 per-capability execution profile？

@@ -228,7 +228,7 @@ For example, the platform can automatically check:
 
 That matters because platform governance usually breaks not during the nice architecture presentation, but months later through quiet exceptions and bypasses.
 
-## 10. What Usually Breaks in the Operating Model
+## 10. Common Mistakes
 
 The same problems repeat often:
 
@@ -241,9 +241,9 @@ The same problems repeat often:
 
 That leads to the classic fork: either the platform helps nobody, or product teams see it as an obstacle.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to review your operating model quickly, go through these questions:
+Start with this short list and mark every "no" explicitly:
 
 - Is it clear what is owned by the platform team?
 - Is it clear what stays with product teams?

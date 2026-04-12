@@ -201,7 +201,7 @@ runtime:
 
 它的价值在于让 runtime contract 保持显式，也更容易在不同环境之间迁移。
 
-## 11. 第一版 runtime 最常见的崩坏点
+## 11. 常见错误
 
 非常典型的问题有：
 
@@ -214,9 +214,9 @@ runtime:
 
 也就是说，系统可能“能跑”，但 runtime 的形态已经开始阻碍成长。
 
-## 12. 实用检查清单
+## 12. 现在就该做什么
 
-如果你想快速检查自己的 baseline runtime，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - orchestration、policy、memory、execution 和 telemetry 是否已经是独立层？
 - 是否存在统一的 run context，并带有 tenant/principal metadata？

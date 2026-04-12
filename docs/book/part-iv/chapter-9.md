@@ -253,7 +253,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Это простой пример, но он закрепляет правильную мысль: способ исполнения задается платформой, а не придумывается моделью каждый раз заново.
 
-## 10. Что чаще всего ломается в sandbox и capability layer
+## 10. Частые ошибки
 
 Типовые проблемы очень повторяемы:
 
@@ -266,9 +266,9 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Именно поэтому sandbox не должен быть checkbox-функцией. Он должен быть частью execution design.
 
-## 11. Практический чеклист
+## 11. Что сделать сразу
 
-Если хочешь быстро проверить capability layer, пройди по вопросам:
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Отделены ли adapters от core runtime?
 - Есть ли per-capability execution profile?

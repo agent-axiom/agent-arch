@@ -267,7 +267,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 这个例子故意写得很直白。实践里规则会更丰富，但核心思想不该变：memory 要先分类，而不是直接丢进一个共享容器。
 
-## 11. 团队最常坏在哪里
+## 11. 常见错误
 
 常见问题通常长这样：
 
@@ -279,9 +279,9 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 这些都不是“模型问题”，而是 memory layer 的架构问题。
 
-## 12. 实用检查清单
+## 12. 现在就该做什么
 
-如果你想快速检查设计，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 你是否真的理解 short-term memory 和 long-term memory 的区别？
 - profile memory 是否有独立语义，而不只是独立表？

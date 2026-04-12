@@ -185,9 +185,19 @@ It is very tempting to look for one magic library that will "do safety." In prac
 
 That is what mature safety looks like for an agent platform.
 
-## 7. Practical Checklist
+## 7. Common Mistakes
 
-If you want to quickly assess your current perimeter, go through this list:
+The same mistakes show up here again and again:
+
+- the gateway gets bypassed for a "temporary" integration;
+- approval is requested too late, when the risky action is already half-executed;
+- egress rules live in team folklore instead of an explicit contract surface;
+- the audit trail does not retain the policy decision, principal, or approval context;
+- write actions and read actions are described the same way even though their risk is different.
+
+## 8. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Does the agent have a separate identity model?
 - Are trusted instructions separated from untrusted content?
@@ -201,7 +211,7 @@ If you want to quickly assess your current perimeter, go through this list:
 
 If the answer is "no" several times in a row, then you opened this chapter at exactly the right moment.
 
-## 8. What to Do Next
+## 9. What to Do Next
 
 First map the real execution boundaries and approval points, then carry that same request into the memory layer and the rest of the system.
 

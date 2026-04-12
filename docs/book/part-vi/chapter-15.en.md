@@ -191,7 +191,7 @@ When the critical path is centralized, the platform team can:
 
 So a shared gateway is not only about control. It is also about scalable engineering improvement.
 
-## 9. What Usually Breaks in Anti-Zoo Efforts
+## 9. Common Mistakes
 
 There are many recurring mistakes here too:
 
@@ -228,9 +228,9 @@ It is also useful to track drift inside the platform inventory itself:
 
 If those numbers rise, the anti-zoo strategy may still exist formally, but it is already losing in practice.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to review your anti-zoo strategy quickly, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do you have a real golden path that is easier to use than to bypass?
 - Is there a shared gateway for sensitive capabilities?
