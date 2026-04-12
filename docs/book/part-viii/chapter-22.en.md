@@ -259,7 +259,21 @@ The usual problems look like this:
 
 When this happens, the platform loses controllability not because of one giant error, but because of hundreds of small untracked artifacts.
 
-## 13. Practical checklist
+## 13. A Fast Maturity Test for Artifact Governance
+
+A team should not think it has supply-chain discipline only because builds are signed and a few configs are stored in version control.
+
+A stronger bar is this:
+
+- prompt, policy, eval, and capability artifacts are treated as production artifacts;
+- provenance can be restored quickly during incident review and rollout decisions;
+- approved inventory and approved artifacts are kept as distinct control layers;
+- deprecated patterns can be blocked before they quietly persist in production;
+- trust is attached to explicit artifact properties, not inherited socially.
+
+If most of those conditions are missing, the team may have some artifact hygiene, but it still does not have real artifact governance.
+
+## 14. Practical checklist
 
 If you want to test your artifact discipline quickly, ask:
 
@@ -272,11 +286,11 @@ If you want to test your artifact discipline quickly, ask:
 
 If the answer is “no” several times in a row, you do not yet have a real artifact governance layer.
 
-## 14. What to read next
+## 15. What to read next
 
 After supply chain and artifact discipline, the natural final operational topic in this part is retirement, replacement, and end-of-life discipline. A mature system must not only launch and recover, but also leave the stage cleanly.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)

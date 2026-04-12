@@ -259,7 +259,21 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小工件都处于未跟踪状态。
 
-## 13. 实用检查清单
+## 13. 给 artifact governance 做一次快速成熟度测试
+
+团队不应该只因为 builds 已签名、几份 configs 也放进了 version control，就觉得自己已经有 supply-chain discipline。
+
+更高的标准应该是：
+
+- prompt、policy、eval 和 capability artifacts 都被当成 production artifacts；
+- provenance 能在 incident review 和 rollout decisions 中被快速恢复；
+- approved inventory 和 approved artifacts 被当成不同的 control layers 来管理；
+- deprecated patterns 能在它们悄悄留在 production 之前被阻断；
+- trust 绑定在显式 artifact properties 上，而不是靠社会性继承。
+
+如果这些条件大多不成立，那团队也许已经有一些 artifact hygiene，但还没有真正的 artifact governance。
+
+## 14. 实用检查清单
 
 如果你想快速检查工件纪律，可以问：
 
@@ -272,11 +286,11 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 如果连续几个问题的答案都是“否”，那你们还没有真正的工件治理层。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 在供应链和工件纪律之后，这一部分最后一个自然主题就是 retirement、replacement 和 end-of-life discipline。成熟的系统不仅要能上线和修复，也要能优雅地下线。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
