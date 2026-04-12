@@ -88,7 +88,7 @@ TypeScript 特别实用的情况包括：
 - **product integration** —— 往往更适合 TypeScript；
 - **eval 和 experimentation** —— 往往更适合 Python。
 
-## 语言选型前先确定什么
+## 现在就该做什么
 
 在选语言之前，更重要的是先搞清楚：
 
@@ -111,7 +111,7 @@ TypeScript 特别实用的情况包括：
 
 也正因为如此，Rust 在这本书里更适合作为 **agent platform services** 的语言出现，而不是成为“如何构建智能体”的唯一主线。
 
-## 延伸阅读
+## 下一步做什么
 
 - [Rust 与智能体平台](rust-agent-platforms.zh.md)
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)

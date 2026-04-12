@@ -118,7 +118,7 @@ Rust 已经值得进入这本书，但位置应该是 **智能体平台层**：
 
 它还不应该成为本书里“如何构建智能体”的主线。更诚实的表述是：**Rust 已经很适合 agent infrastructure，但未必适合最快的 agent iteration loop**。
 
-## 延伸阅读
+## 下一步做什么
 
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](../book/part-iv/chapter-9.zh.md)

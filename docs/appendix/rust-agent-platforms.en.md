@@ -116,7 +116,7 @@ Rust already belongs in the book as a language for the **platform layer of agent
 
 But it still should not become a mainline “how to build agents” path in the book. The more honest framing today is: **Rust is strong for agent infrastructure, not necessarily for the fastest agent iteration loop**.
 
-## See also
+## What to Do Next
 
 - [Chapter 8. Execution Model and Tool Catalog](../book/part-iv/chapter-8.en.md)
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](../book/part-iv/chapter-9.en.md)

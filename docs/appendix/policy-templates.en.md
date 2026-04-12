@@ -185,7 +185,7 @@ Regardless of the use case, ask:
 
 If the answer is "no" several times in a row, the policy layer is still too implicit.
 
-## Where to go next
+## What to Do Next
 
 - [Practical Case Studies](case-studies.en.md)
 - [Chapter 3. Security Perimeter and Trust Boundaries](../book/part-ii/chapter-3.en.md)

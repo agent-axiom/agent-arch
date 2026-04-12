@@ -148,7 +148,7 @@ A good starting shape is usually:
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../book/part-iv/chapter-10.en.md)
 - [Chapter 18. Production Rollout Checklist](../book/part-vii/chapter-18.en.md)
 
-## How to use these case studies
+## What to Do Next
 
 The best way to read them is not sequentially, but as a map:
 

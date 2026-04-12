@@ -185,7 +185,7 @@ audit:
 
 如果连续几个问题的答案都是“不能”，说明你的 policy layer 仍然过于隐式。
 
-## 接下来读什么
+## 下一步做什么
 
 - [实战案例](case-studies.zh.md)
 - [第 3 章：安全边界与信任边界](../book/part-ii/chapter-3.zh.md)

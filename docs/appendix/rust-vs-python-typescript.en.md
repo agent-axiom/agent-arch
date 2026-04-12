@@ -88,7 +88,7 @@ If the layer is primarily about:
 - **product integration** — often TypeScript;
 - **eval and experimentation** — often Python.
 
-## What to define first
+## What to Do Right Away
 
 Before choosing a language, it helps to fix:
 
@@ -111,7 +111,7 @@ The more mature answer is usually:
 
 That is why Rust fits the book best as a language for **agent platform services**, not as the single mainline path for building agents.
 
-## See also
+## What to Do Next
 
 - [Rust for Agent Platforms](rust-agent-platforms.en.md)
 - [Chapter 8. Execution Model and Tool Catalog](../book/part-iv/chapter-8.en.md)
