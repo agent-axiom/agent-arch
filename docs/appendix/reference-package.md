@@ -186,7 +186,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
 - `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.
 
-## См. также
+## Что делать дальше
 
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема наборов для оценки и правил проверки](eval-schema.md)

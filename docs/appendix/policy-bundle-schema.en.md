@@ -179,9 +179,9 @@ So the practical rule is simple:
 - the policy bundle describes how and under which conditions that capability may be used;
 - the approval contract describes where reasoning must stop and hand control to a human.
 
-## Practical checklist
+## What to Do Right Away
 
-If you want to know whether your policy artifact layer is mature enough, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do you have a versioned policy bundle?
 - Can you connect the bundle to rollout and incident review?
@@ -192,7 +192,7 @@ If you want to know whether your policy artifact layer is mature enough, ask:
 
 If several answers are “no,” your policy layer exists, but is not yet shaped as a full operational artifact.
 
-## See Also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)

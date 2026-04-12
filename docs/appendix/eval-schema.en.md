@@ -200,9 +200,9 @@ Several mistakes are very common:
 
 That makes eval culture fragile.
 
-## Practical checklist
+## What to Do Right Away
 
-If you want to know whether your eval artifact schema is mature enough, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Does every scenario have a stable `scenario_id`?
 - Are labels separate from expected outcomes?
@@ -213,7 +213,7 @@ If you want to know whether your eval artifact schema is mature enough, ask:
 
 If several answers are “no,” you probably have examples, but not yet a proper eval dataset schema.
 
-## See Also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)

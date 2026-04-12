@@ -186,7 +186,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
 
-## 延伸阅读
+## 下一步做什么
 
 - [追踪模式与事件目录](trace-schema.zh.md)
 - [评测数据集模式与分级契约](eval-schema.zh.md)

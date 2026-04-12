@@ -158,9 +158,9 @@
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
-## 实用检查清单
+## 现在就该做什么
 
-如果你想快速判断自己的追踪模式是否已经不只是本地调试工具，可以问自己：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 有没有稳定的事件目录？
 - 是否清楚区分了 `trace_id` 和 `session_id`？
@@ -171,7 +171,7 @@
 
 如果连续几个答案都是“没有”，那你现在更像是拥有日志，而不是拥有真正的追踪模式。
 
-## 延伸阅读
+## 下一步做什么
 
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)

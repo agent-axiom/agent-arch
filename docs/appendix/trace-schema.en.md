@@ -158,9 +158,9 @@ The reference runtime is intentionally small, so a more mature system should qui
 
 That is what turns an event stream from debug output into a real platform artifact.
 
-## Practical checklist
+## What to Do Right Away
 
-If you want to know whether your trace schema is ready for more than local debugging, check these questions:
+Start with this short list and mark every "no" explicitly:
 
 - Do you have a stable event catalog?
 - Do you clearly separate `trace_id` and `session_id`?
@@ -171,7 +171,7 @@ If you want to know whether your trace schema is ready for more than local debug
 
 If several answers are “no,” you probably have logging, but not yet a real trace schema.
 
-## See Also
+## What to Do Next
 
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)

@@ -186,7 +186,7 @@ There is also a practical usability win now:
 - `inspect-trace` reads and filters saved traces;
 - `replay-run` reconstructs a run from the saved `run_start` event.
 
-## See Also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
