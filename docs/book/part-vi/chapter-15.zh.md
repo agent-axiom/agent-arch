@@ -228,7 +228,21 @@ platform_defaults:
 
 如果这些数字在上涨，那反动物园策略也许形式上还存在，但实际上已经在失守。
 
-## 11. 现在就该做什么
+## 11. 给 golden paths 和 anti-zoo patterns 做一次快速成熟度测试
+
+团队不应该只因为已经发布了 templates、gateway 和推荐的 architecture diagram，就觉得自己已经有了真正的 platform path。
+
+更高的标准应该是：
+
+- golden path 真的比绕过去更容易使用；
+- shared gateways 能帮各团队消除重复出现的关键错误；
+- supported runtime patterns 是被有意识限制的；
+- deviations 是可见的、有 owner 的，并且会被推向 review 或 deprecation；
+- platform defaults 能可度量地减少 forks、copy-paste 和 local wrappers。
+
+如果这些条件大多不成立，那组织也许已经有一些 platform assets，但还没有真正的 anti-zoo operating model。
+
+## 12. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -241,7 +255,7 @@ platform_defaults:
 
 如果连续好几个问题答案都是 “no”，那你现在做的还不是平台产品，而是一套带着良好愿望的库。
 
-## 12. 下一步做什么
+## 13. 下一步做什么
 
 先确认 golden path 和 shared gateway 真的比绕路更容易用，再去看这条路径怎样落成 runtime code。
 

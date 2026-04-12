@@ -228,7 +228,21 @@ It is also useful to track drift inside the platform inventory itself:
 
 If those numbers rise, the anti-zoo strategy may still exist formally, but it is already losing in practice.
 
-## 11. What to Do Right Away
+## 11. A Fast Maturity Test for Golden Paths and Anti-Zoo Patterns
+
+A team should not think it has a real platform path only because it published templates, a gateway, and a recommended architecture diagram.
+
+A stronger bar is this:
+
+- the golden path is easier to use than to bypass;
+- shared gateways remove repeated critical mistakes across teams;
+- supported runtime patterns are intentionally limited;
+- deviations are visible, owned, and pushed toward review or deprecation;
+- platform defaults measurably reduce forks, copy-paste, and local wrappers.
+
+If most of those conditions are missing, the organization may have platform assets, but it still does not have a real anti-zoo operating model.
+
+## 12. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -241,7 +255,7 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, then you are not building a platform product yet. You are building a library with good intentions.
 
-## 12. What to Do Next
+## 13. What to Do Next
 
 First verify that the golden path and shared gateway are genuinely easier to use than to bypass, then see how that path becomes runtime code.
 
