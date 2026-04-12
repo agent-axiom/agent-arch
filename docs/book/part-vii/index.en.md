@@ -31,6 +31,7 @@ In this part, I gradually assemble a minimally mature platform:
 
 - it gathers architecture, memory, execution, and observability into one runtime skeleton;
 - it fixes the contract core through the policy layer and capability catalog;
+- it treats approval and governed capability access as explicit runtime behavior rather than side process;
 - it brings that skeleton up to first-rollout readiness;
 - it turns the operating model from Part VI into an executable runtime and rollout shape.
 
@@ -39,12 +40,12 @@ In this part, I gradually assemble a minimally mature platform:
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
   This chapter continues the same support case at the code layer: where the run loop should live, how to separate policy, memory, and execution, and how not to spread logic across local handlers.
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
-  This chapter lifts the same skeleton into the contract layer: which capabilities are allowed at all, where approval is required, and how not to hardcode risk logic into orchestration.
+  This chapter lifts the same skeleton into the contract layer: which capabilities are allowed at all, where approval is required, how pause/resume approval paths should work, and how not to hardcode risk logic into orchestration.
 - [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
-  This chapter closes the same story through the first limited rollout: whether the support agent is ready for real deployment and what must already be visible before scaling.
+  This chapter closes the same story through the first limited rollout: whether the support agent is ready for real deployment, whether approval/policy signals are observable, and what must already be visible before scaling.
 
 ## Where It Leads Next
 
-After this part, it becomes clear how architecture, safety, memory, execution, and observability form one operational skeleton. But production discipline does not stop there: once the same agent survives its first rollout, the next questions are about change management, assurance, provenance, and retirement.
+After this part, it becomes clear how architecture, safety, memory, execution, observability, and approval control form one operational skeleton. But production discipline does not stop there: once the same agent survives its first rollout, the next questions are about change management, assurance, provenance, and retirement.
 
 That is why the next natural step after the reference implementation is [Part VIII. Agent System Lifecycle](../part-viii/index.en.md).

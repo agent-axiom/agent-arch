@@ -31,6 +31,7 @@
 
 - 把架构、记忆、执行与可观测性收拢成一个 runtime skeleton；
 - 通过 policy layer 和 capability catalog 固定 contract core；
+- 把 approval 与 governed capability access 变成 runtime 内显式行为，而不是旁路人工流程；
 - 把这套骨架推进到 first rollout readiness；
 - 把 Part VI 的 operating model 继续落实成可执行的 runtime 与 rollout shape。
 
@@ -39,12 +40,12 @@
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
   这一章把同一个 support 场景推进到代码层：run loop 应该放在哪里，policy、memory 和 execution 怎样拆开，以及怎样避免逻辑散落在本地处理器里。
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
-  这一章把同一套骨架抬到契约层：哪些 capability 根本允许存在，哪里必须经过 approval，以及怎样避免把风险逻辑直接写死在 orchestration 里。
+  这一章把同一套骨架抬到契约层：哪些 capability 根本允许存在，哪里必须经过 approval，approval 的 pause/resume path 应该怎样工作，以及怎样避免把风险逻辑直接写死在 orchestration 里。
 - [第 18 章：生产上线检查清单](chapter-18.zh.md)
-  这一章用第一次受控 rollout 收束同一条故事线：support agent 是否已经能真正上线，以及在扩大范围前必须先看到什么。
+  这一章用第一次受控 rollout 收束同一条故事线：support agent 是否已经能真正上线，approval/policy signals 是否可观测，以及在扩大范围前必须先看到什么。
 
 ## 这一部分之后去哪里
 
-到这一部分，架构、安全、记忆、执行和可观测性已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束：一旦同一个 agent 撑过第一次 rollout，接下来的问题就会变成 change management、assurance、provenance 和 retirement。
+到这一部分，架构、安全、记忆、执行、可观测性和 approval control 已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束：一旦同一个 agent 撑过第一次 rollout，接下来的问题就会变成 change management、assurance、provenance 和 retirement。
 
 这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)。
