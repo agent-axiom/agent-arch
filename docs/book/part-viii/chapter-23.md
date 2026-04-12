@@ -219,7 +219,21 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Именно такие мелочи превращают “почти завершенный” жизненный цикл в источник новых инцидентов.
 
-## 13. Практический чеклист
+## 13. Быстрый тест зрелости для end-of-life discipline
+
+Команде не стоит думать, что она умеет делать retirement, только потому, что умеет отвести трафик в сторону и пометить систему как deprecated.
+
+Более сильная планка такая:
+
+- система теряет право действовать до того, как ее объявляют retired;
+- principals, connectors, memory writes и background jobs сужаются осознанно, а не по остаточному принципу;
+- replacement идет staged, а не как бинарный cutover;
+- у archived state есть owner и решение по retention;
+- deprecated patterns превращаются в заблокированные paths, а не только в warnings.
+
+Если большинство этих условий не выполняется, у команды уже может быть shutdown mechanics, но реального end-of-life discipline у нее пока нет.
+
+## 14. Практический чеклист
 
 Если хочешь быстро проверить свою end-of-life discipline, пройди по вопросам:
 
@@ -232,7 +246,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Если на несколько вопросов подряд ответ “нет”, значит жизненный цикл у тебя пока все еще заканчивается на релизе, а не на реальной эксплуатации.
 
-## 14. Что читать дальше
+## 15. Что читать дальше
 
 Эта глава замыкает Part VIII в цельный operational цикл:
 
@@ -244,7 +258,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Эта часть работает не только как архитектурное объяснение, но и как handbook по жизненному циклу production-grade agent systems.
 
-## 15. Полезные справочные страницы
+## 16. Полезные справочные страницы
 
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)

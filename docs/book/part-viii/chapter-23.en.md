@@ -219,7 +219,21 @@ The problems are fairly repetitive:
 
 These small details are exactly what turns an “almost complete” lifecycle into a source of fresh incidents.
 
-## 13. Practical checklist
+## 13. A Fast Maturity Test for End-of-Life Discipline
+
+A team should not think it handles retirement well only because it can switch traffic away and mark a system as deprecated.
+
+A stronger bar is this:
+
+- the system loses the ability to act before it is called retired;
+- principals, connectors, memory writes, and background jobs are narrowed down deliberately;
+- replacement is staged rather than treated as a binary cutover;
+- archived state has an owner and a retention decision;
+- deprecated patterns are turned into blocked paths, not only warnings.
+
+If most of those conditions are missing, the team may have shutdown mechanics, but it still does not have real end-of-life discipline.
+
+## 14. Practical checklist
 
 If you want to test your end-of-life discipline quickly, ask:
 
@@ -232,7 +246,7 @@ If you want to test your end-of-life discipline quickly, ask:
 
 If the answer is “no” several times in a row, your lifecycle still ends at release, not at real operations.
 
-## 14. What to read next
+## 15. What to read next
 
 This chapter closes Part VIII into a complete operational cycle:
 
@@ -244,7 +258,7 @@ This chapter closes Part VIII into a complete operational cycle:
 
 That means this part can now serve not only as architecture explanation, but also as a lifecycle handbook for production-grade agent systems.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)

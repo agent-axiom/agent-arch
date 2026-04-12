@@ -217,7 +217,21 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 正是这些小细节，会把一个“几乎完整”的 lifecycle 重新变成事故来源。
 
-## 13. 实用检查清单
+## 13. 给 end-of-life discipline 做一次快速成熟度测试
+
+团队不应该只因为会把流量切走、再把系统标成 deprecated，就觉得自己已经会做 retirement。
+
+更高的标准应该是：
+
+- 系统会在被宣布 retired 之前先失去行动能力；
+- principals、connectors、memory writes 和 background jobs 会被有意识地逐层收缩；
+- replacement 是 staged 的，而不是二元 cutover；
+- archived state 有 owner，也有 retention decision；
+- deprecated patterns 会变成真正被阻断的 paths，而不只是 warnings。
+
+如果这些条件大多不成立，那团队也许已经有一些 shutdown mechanics，但还没有真正的 end-of-life discipline。
+
+## 14. 实用检查清单
 
 如果你想快速检查自己的终止使用纪律，可以问：
 
@@ -230,7 +244,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 如果连续几个问题的答案都是“否”，那你的生命周期其实还停留在发布，而不是完整运营。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 这章把 Part VIII 真正闭合成一个完整的运行闭环：
 
@@ -242,7 +256,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 现在这一部分已经不仅能解释架构，还能作为生产级 agent systems 的生命周期手册使用。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
