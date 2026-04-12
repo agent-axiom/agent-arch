@@ -225,7 +225,21 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Когда это происходит, справочная реализация перестает быть опорой и снова превращается в связку договоренностей.
 
-## 11. Что сделать сразу
+## 11. Быстрый тест зрелости для policy layer и capability catalog
+
+Команде не стоит думать, что она уже собрала contract core своей agent system, только потому, что у нее есть несколько policy checks и список tools.
+
+Более сильная планка такая:
+
+- policy decisions существуют как явные объекты, а не как размазанные booleans;
+- capability contracts несут ownership, transport, risk и approval semantics;
+- runtime code зависит от catalog, а не от direct calls и ad hoc exceptions;
+- memory policy, execution policy и approval policy принадлежат одному видимому control surface;
+- telemetry умеет показать не только что произошло, но и какой policy и capability contract этим управлял.
+
+Если большинство этих условий не выполняется, runtime уже может существовать, но contract core у системы пока не собран.
+
+## 12. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
@@ -238,7 +252,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Если на несколько вопросов подряд ответ “нет”, skeleton у тебя уже есть, но contract core пока еще не собран.
 
-## 12. Что делать дальше
+## 13. Что делать дальше
 
 Сначала сделай policy decisions и capability contracts явными, а потом проверь, готова ли эта же система к первому rollout.
 
@@ -249,7 +263,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
 
-## 13. Полезные справочные страницы
+## 14. Полезные справочные страницы
 
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)

@@ -225,7 +225,21 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 一旦这样，参考实现就不再是 reference，而是又退回成一堆约定。
 
-## 11. 现在就该做什么
+## 11. 给 policy layer 和 capability catalog 做一次快速成熟度测试
+
+团队不应该只因为已经有几条 policy checks 和一张 tools 列表，就觉得自己已经搭好了 agent system 的 contract core。
+
+更高的标准应该是：
+
+- policy decisions 是显式对象，而不是散落的 booleans；
+- capability contracts 携带 ownership、transport、risk 和 approval semantics；
+- runtime code 依赖 catalog，而不是 direct calls 和 ad hoc exceptions；
+- memory policy、execution policy 和 approval policy 属于同一个可见的 control surface；
+- telemetry 不只展示发生了什么，还能展示是哪条 policy 和哪个 capability contract 在起作用。
+
+如果这些条件大多不成立，那 runtime 也许已经存在，但 contract core 还没有真正搭起来。
+
+## 12. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -238,7 +252,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 如果连续多个答案都是“没有”，那说明 skeleton 已经有了，但 contract core 还没真正搭起来。
 
-## 12. 下一步做什么
+## 13. 下一步做什么
 
 先把 policy decisions 和 capability contracts 固定下来，再检查同一套系统是否已经准备好 first rollout。
 
@@ -249,7 +263,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 
-## 13. 值得配套阅读的参考页
+## 14. 值得配套阅读的参考页
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)

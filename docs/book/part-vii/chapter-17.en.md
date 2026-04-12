@@ -225,7 +225,21 @@ These problems are very typical:
 
 When that happens, the reference implementation stops being a reference and becomes a bundle of conventions again.
 
-## 11. What to Do Right Away
+## 11. A Fast Maturity Test for the Policy Layer and Capability Catalog
+
+A team should not think it has assembled the contract core of its agent system only because it has a few policy checks and a list of tools.
+
+A stronger bar is this:
+
+- policy decisions are explicit objects rather than scattered booleans;
+- capability contracts carry ownership, transport, risk, and approval semantics;
+- runtime code depends on the catalog instead of direct calls and ad hoc exceptions;
+- memory policy, execution policy, and approval policy belong to one visible control surface;
+- telemetry can expose not only what happened, but which policy and capability contract governed it.
+
+If most of those conditions are missing, the runtime may exist, but the contract core is still not assembled.
+
+## 12. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -238,7 +252,7 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, the skeleton exists, but the contract core is not assembled yet.
 
-## 12. What to Do Next
+## 13. What to Do Next
 
 First make policy decisions and capability contracts explicit, then check whether that same system is ready for its first rollout.
 
@@ -249,7 +263,7 @@ The next logical step in the reference implementation is to assemble a productio
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-## 13. Useful Reference Pages
+## 14. Useful Reference Pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
