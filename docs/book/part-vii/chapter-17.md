@@ -238,9 +238,16 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Если на несколько вопросов подряд ответ “нет”, skeleton у тебя уже есть, но contract core пока еще не собран.
 
-## 12. Что читать дальше
+## 12. Что делать дальше
+
+Сначала сделай policy decisions и capability contracts явными, а потом проверь, готова ли эта же система к первому rollout.
 
 Следующий логичный шаг в опорной реализации - собрать production rollout checklist, чтобы из blueprint и contract core выйти в практический go-live framework.
+
+- [Глава 16. Базовая схема рантайма](chapter-16.md)
+- [Глава 18. Чеклист промышленного запуска](chapter-18.md)
+- [Часть VII. Эталонная реализация](index.md)
+- [Источники](../../appendix/sources.md)
 
 ## 13. Полезные справочные страницы
 

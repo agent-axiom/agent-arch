@@ -241,7 +241,9 @@ If you want to review your anti-zoo strategy quickly, ask:
 
 If the answer is "no" several times in a row, then you are not building a platform product yet. You are building a library with good intentions.
 
-## 12. What to Read Next
+## 12. What to Do Next
+
+First verify that the golden path and shared gateway are genuinely easier to use than to bypass, then see how that path becomes runtime code.
 
 The next step after this chapter is no longer another org chart. It is the code skeleton: seeing how the golden path, shared gateway, and approved runtime patterns get fixed inside the reference implementation.
 

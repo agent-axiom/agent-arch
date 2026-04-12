@@ -280,12 +280,15 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 如果这些答案很模糊，那说明 capability layer 还只是“一堆好用的集成”，而不是受管理的平台层。
 
-## 12. 接下来读什么
+## 12. 下一步做什么
+
+先把 execution profile 和 isolation boundaries 固定下来，再进入重试、速率限制和回滚边界。
 
 这一部分下一个自然主题是：幂等性、重试、速率限制和回滚边界。经过 sandbox 和 capability contracts 之后，这才是把 execution model 变成 production-grade 的关键。
 
 - [第 8 章：执行模型与工具目录](chapter-8.zh.md)
+- [第 10 章：幂等性、重试、速率限制与回滚边界](chapter-10.zh.md)
 - [第四部分：工具与执行](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)

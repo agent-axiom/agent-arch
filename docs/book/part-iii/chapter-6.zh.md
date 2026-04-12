@@ -292,7 +292,9 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 
 如果这些问题都很难回答，那 memory 架构值得被简化，并按职责重新拆开。
 
-## 13. 接下来读什么
+## 13. 下一步做什么
+
+先把 memory classes 和 retention rules 拆清楚，再进入 retrieval、compaction 和 background updates。
 
 这一部分接下来的自然步骤，就是讨论 agent 如何把正确片段拉回 prompt，以及为什么 compaction 有时候比“更多 retrieval”更重要。
 

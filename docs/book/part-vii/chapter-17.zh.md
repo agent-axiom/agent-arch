@@ -238,9 +238,16 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 如果连续多个答案都是“没有”，那说明 skeleton 已经有了，但 contract core 还没真正搭起来。
 
-## 12. 接下来读什么
+## 12. 下一步做什么
+
+先把 policy decisions 和 capability contracts 固定下来，再检查同一套系统是否已经准备好 first rollout。
 
 参考实现的下一步很自然：组装 production rollout checklist，把 blueprint 和 contract core 变成一个真正可落地的 go-live framework。
+
+- [第 16 章：基础运行时蓝图](chapter-16.zh.md)
+- [第 18 章：生产上线检查清单](chapter-18.zh.md)
+- [第七部分：参考实现](index.zh.md)
+- [参考来源](../../appendix/sources.zh.md)
 
 ## 13. 值得配套阅读的参考页
 
@@ -249,5 +256,6 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Reference Package](../../appendix/reference-package.zh.md)
 
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
+- [第 18 章：生产上线检查清单](chapter-18.zh.md)
 - [第七部分：参考实现](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)

@@ -292,7 +292,9 @@ If you want to review your design quickly, ask:
 
 If these questions are hard to answer, the memory architecture should be simplified and separated by role.
 
-## 13. What to Read Next
+## 13. What to Do Next
+
+First separate memory classes and retention rules, then move to retrieval, compaction, and background updates.
 
 The next step in this part is very natural: after memory types, we need to look at how the agent pulls the right fragments back into the prompt and why compaction is sometimes more important than "more retrieval."
 

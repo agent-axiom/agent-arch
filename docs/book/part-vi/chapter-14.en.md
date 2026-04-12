@@ -254,7 +254,9 @@ If you want to review your operating model quickly, go through these questions:
 
 If the answer is "no" several times in a row, you probably no longer have a technical problem. You have an organizational design problem.
 
-## 12. What to Read Next
+## 12. What to Do Next
+
+First make ownership explicit, then see how that ownership model becomes golden paths, shared gateways, and anti-zoo patterns.
 
 The next natural step in this part is to look at how to build shared gateways, reusable templates, and anti-zoo patterns so that the operating model does not remain just words.
 

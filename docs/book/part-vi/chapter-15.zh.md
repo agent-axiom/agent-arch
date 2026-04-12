@@ -241,7 +241,9 @@ platform_defaults:
 
 如果连续好几个问题答案都是 “no”，那你现在做的还不是平台产品，而是一套带着良好愿望的库。
 
-## 12. 接下来读什么
+## 12. 下一步做什么
+
+先确认 golden path 和 shared gateway 真的比绕路更容易用，再去看这条路径怎样落成 runtime code。
 
 这一章之后，下一步已经不再是新的组织图，而是代码骨架：去看 golden path、shared gateway 和 approved runtime patterns 怎样在参考实现里真正固定下来。
 

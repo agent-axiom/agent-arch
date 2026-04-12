@@ -238,9 +238,16 @@ If you want to review this layer quickly, ask:
 
 If the answer is "no" several times in a row, the skeleton exists, but the contract core is not assembled yet.
 
-## 12. What to Read Next
+## 12. What to Do Next
+
+First make policy decisions and capability contracts explicit, then check whether that same system is ready for its first rollout.
 
 The next logical step in the reference implementation is to assemble a production rollout checklist, so you move from blueprint and contract core into a practical go-live framework.
+
+- [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
+- [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
+- [Part VII. Reference Implementation](index.en.md)
+- [Sources](../../appendix/sources.en.md)
 
 ## 13. Useful Reference Pages
 
@@ -249,5 +256,6 @@ The next logical step in the reference implementation is to assemble a productio
 - [Reference Package](../../appendix/reference-package.en.md)
 
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
+- [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
 - [Part VII. Reference Implementation](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)

@@ -227,10 +227,13 @@ runtime:
 
 如果连续多个问题的答案都是“没有”，那你现在还没有 reference runtime，你只是把模型早期接进了产品里。
 
-## 13. 接下来读什么
+## 13. 下一步做什么
+
+先把 runtime shape 固定下来，再在这个骨架上加 policy layer 和 capability contracts。
 
 Part VII 的下一个自然步骤，是在这个 blueprint 上加上显式的 policy layer 和 capability catalog，让参考实现进一步接近一个可运行的 operational skeleton。
 
-- [第 15 章：黄金路径、共享网关与反“动物园”模式](../part-vi/chapter-15.md)
+- [第 15 章：黄金路径、共享网关与反动物园模式](../part-vi/chapter-15.zh.md)
+- [第 17 章：策略层与能力目录](chapter-17.zh.md)
 - [第七部分：参考实现](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)

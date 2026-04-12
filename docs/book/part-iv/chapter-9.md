@@ -282,7 +282,9 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Если ответы расплывчаты, capability layer у тебя пока больше похож на набор удобных интеграций, чем на управляемую платформу.
 
-## 12. Что читать дальше
+## 12. Что делать дальше
+
+Сначала зафиксируй execution profile и isolation boundaries, а потом переходи к retries, rate limits и rollback boundaries.
 
 Следующая естественная тема в этой части: idempotency, retries, rate limits и rollback boundaries. После sandbox и capability contracts именно она превращает execution model в production-grade слой.
 

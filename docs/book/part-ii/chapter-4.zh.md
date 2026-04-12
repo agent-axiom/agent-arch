@@ -201,7 +201,9 @@ sequenceDiagram
 
 如果连续几个问题答案都是 “no”，那说明你现在读到这一章，时间正合适。
 
-## 8. 接下来读什么
+## 8. 下一步做什么
+
+先把真实的 execution boundary 和 approval points 画清楚，再把同一个请求继续带进 memory layer 和后续系统层。
 
 - [第 3 章：安全边界与信任边界](chapter-3.zh.md)
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../part-iii/chapter-5.zh.md)

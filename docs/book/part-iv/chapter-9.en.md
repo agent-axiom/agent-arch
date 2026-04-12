@@ -280,12 +280,15 @@ If you want to quickly review the capability layer, ask:
 
 If those answers are vague, the capability layer is still a pile of useful integrations, not a managed platform.
 
-## 12. What to Read Next
+## 12. What to Do Next
+
+First lock down execution profiles and isolation boundaries, then move to retries, rate limits, and rollback boundaries.
 
 The next natural topic in this part is idempotency, retries, rate limits, and rollback boundaries. After sandboxing and capability contracts, that is what turns the execution model into a production-grade layer.
 
 - [Chapter 8. Execution Model and Tool Catalog](chapter-8.en.md)
+- [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](chapter-10.en.md)
 - [Part IV. Tools and Execution](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)

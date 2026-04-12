@@ -201,7 +201,9 @@ If you want to quickly assess your current perimeter, go through this list:
 
 If the answer is "no" several times in a row, then you opened this chapter at exactly the right moment.
 
-## 8. What to Read Next
+## 8. What to Do Next
+
+First map the real execution boundaries and approval points, then carry that same request into the memory layer and the rest of the system.
 
 - [Chapter 3. Security Perimeter and Trust Boundaries](chapter-3.en.md)
 - [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../part-iii/chapter-5.en.md)

@@ -227,10 +227,13 @@ If you want to quickly review your baseline runtime, ask:
 
 If the answer is "no" several times in a row, you do not have a reference runtime yet. You just have an early model integration in a product.
 
-## 13. What to Read Next
+## 13. What to Do Next
+
+First make the runtime shape explicit, then add the policy layer and capability contracts on top of it.
 
 The next logical step in Part VII is to add an explicit policy layer and capability catalog on top of this blueprint, so the reference implementation becomes close to an operational skeleton.
 
-- [Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns](../part-vi/chapter-15.md)
+- [Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns](../part-vi/chapter-15.en.md)
+- [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
 - [Part VII. Reference Implementation](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)
