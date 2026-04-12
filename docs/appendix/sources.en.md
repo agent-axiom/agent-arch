@@ -23,12 +23,14 @@ Below is the core set of primary sources used in the current version of the book
 - Google Cloud, [More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 - Google Cloud, [Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 - Google Cloud Architecture Center, [Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
+- Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
 
 ## Reliability, memory, and HITL
 
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 - LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 - LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
+- LangGraph, [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 
 ## Security and governance
 
@@ -63,6 +65,9 @@ Below is the core set of primary sources used in the current version of the book
 
 - OpenAI, [Agent evals](https://platform.openai.com/docs/guides/agent-evals)
 - OpenAI, [Trace grading](https://platform.openai.com/docs/guides/trace-grading)
+- OpenAI, [Background mode](https://developers.openai.com/api/docs/guides/background)
+- OpenAI, [Using tools](https://developers.openai.com/api/docs/guides/tools)
+- OpenAI, [Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
 
 ## Research frontier: memory, observability, and multi-agent reliability
