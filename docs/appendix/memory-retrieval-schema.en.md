@@ -163,9 +163,9 @@ The common failure modes are very recognizable:
 - the prompt receives too much context without filters;
 - provenance exists only on paper and not in runtime.
 
-## 11. Practical checklist
+## 11. What to Do Right Away
 
-Use these questions for a quick review:
+Start with this short list and mark every "no" explicitly:
 
 - Does every record have `tenant_id`, `memory_class`, `provenance`, and `revision`?
 - Are memory read policy and memory write policy distinct?
@@ -176,7 +176,7 @@ Use these questions for a quick review:
 
 If the answer is “no” several times in a row, you already have memory, but not yet real memory discipline.
 
-## See Also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)

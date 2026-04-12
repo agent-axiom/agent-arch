@@ -174,9 +174,9 @@ Approval schema 回答的是另一层：
 - side effect 执行时用的 payload 和批准时不是同一个；
 - 事后没人能还原到底是谁批准了这个 risky action。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
 
-你可以快速问自己：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - approval request 是否有明确的 `approval_id`？
 - approval 是否绑定到 `trace_id` 和 `session_id`？
@@ -187,7 +187,7 @@ Approval schema 回答的是另一层：
 
 如果连续几个答案都是“否”，那说明你虽然已经有人工门禁，但还没有真正完整的 approval contract。
 
-## 延伸阅读
+## 下一步做什么
 
 - [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)

@@ -174,9 +174,9 @@ The common failure modes are easy to recognize:
 - the side effect runs with a payload different from the approved one;
 - nobody can later reconstruct who approved the risky action.
 
-## 11. Practical checklist
+## 11. What to Do Right Away
 
-Use these questions for a quick review:
+Start with this short list and mark every "no" explicitly:
 
 - Does the approval request have an explicit `approval_id`?
 - Is approval tied to `trace_id` and `session_id`?
@@ -187,7 +187,7 @@ Use these questions for a quick review:
 
 If the answer is “no” several times in a row, you may have a human gate in principle, but not yet a full approval contract.
 
-## See Also
+## What to Do Next
 
 - [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)
 - [Trace Schema and Event Catalog](trace-schema.en.md)

@@ -153,9 +153,9 @@ The failure modes are usually familiar:
 - historical state has no retention owner;
 - provenance stops at the git commit and never reaches the runtime bundle.
 
-## 9. Practical checklist
+## 9. What to Do Right Away
 
-Use these questions for a quick review:
+Start with this short list and mark every "no" explicitly:
 
 - Do high-risk changes have explicit change records?
 - Do you have an approved artifact bundle instead of a list of latest YAML files?
@@ -166,7 +166,7 @@ Use these questions for a quick review:
 
 If the answer is "no" several times in a row, your SDLC and rollout may already be decent, but the lifecycle layer is still incomplete.
 
-## See Also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)

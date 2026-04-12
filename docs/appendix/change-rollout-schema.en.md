@@ -158,9 +158,9 @@ The common failure modes are familiar:
 - the rollout wave is described too vaguely;
 - nobody can explain why the change was allowed into canary at all.
 
-## 11. Practical checklist
+## 11. What to Do Right Away
 
-Use these questions for a quick review:
+Start with this short list and mark every "no" explicitly:
 
 - Is there an explicit review record for high-risk changes?
 - Is there a separate rollout gate, not just “review approved”?
@@ -171,7 +171,7 @@ Use these questions for a quick review:
 
 If the answer is “no” several times in a row, you may already have a change process, but not yet a complete rollout gate layer.
 
-## See Also
+## What to Do Next
 
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.en.md)
