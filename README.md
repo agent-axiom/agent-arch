@@ -4,17 +4,44 @@
 [Contributing guide](CONTRIBUTING.md)
 [Code of Conduct](CODE_OF_CONDUCT.md)
 
-Publishable documentation site and book about modern secure AI agent architecture.
+A practical book and documentation site about secure, governable, production-grade AI agent architecture.
+
+This project is for people who want to build not demo magic, but calm, controllable, and safe agent systems that can survive contact with real users, real tools, and real operations.
 
 ![Agent Architecture Book Preview](docs/assets/images/readme.png)
 
+## Why this repository exists
+
+Most agent tutorials optimize for fast demos. Real systems need more than clever prompting or tool calling. They need:
+
+- explicit trust boundaries
+- policy enforcement and approvals
+- memory discipline
+- observability and evals
+- rollout control and lifecycle management
+
+This repository exists to document that full operating model.
+
 ## What this repository contains
 
-- a GitHub Pages site built with `MkDocs` and `Material for MkDocs`
-- a multilingual documentation structure
-- the first published part of the book on safe agent architecture
-- a small runnable reference package in `agent_runtime_ref/`
+- a multilingual book on secure AI agent architecture
+- a GitHub Pages documentation site built with `MkDocs` and `Material for MkDocs`
+- a runnable reference runtime in `agent_runtime_ref/`
+- practical schemas, checklists, and operational artifacts
 - a modern Python-first tooling setup based on `uv`
+
+## Why read it
+
+- **Vendor-neutral architecture.** The book focuses on principles and operating models that outlive any single framework or model provider.
+- **Production reality over agent theater.** It emphasizes policy, approvals, observability, evals, and lifecycle discipline.
+- **A runnable reference layer.** The repository includes executable reference assets, not just prose.
+
+## Start here
+
+- Read the site: <https://agent-axiom.github.io/agent-arch/>
+- Start with the book homepage: [docs/index.en.md](docs/index.en.md)
+- Open the guided entry page: [docs/start-here.en.md](docs/start-here.en.md)
+- Explore the reference runtime: [docs/appendix/reference-package.en.md](docs/appendix/reference-package.en.md)
 
 ## Local development
 
