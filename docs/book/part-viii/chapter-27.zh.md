@@ -255,7 +255,21 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - 多个 registry 之间发生漂移；
 - platform team 认识一批 agents，而 security team 认识另一批。
 
-## 13. 实用检查清单
+## 13. 给 agent governance 做一次快速成熟度测试
+
+团队不应该只因为已经有一张 registry spreadsheet 和一个大概的 deployed agents 数量，就觉得自己已经控制住了整个 agent estate。
+
+更高的标准应该是：
+
+- inventory 和 registry 被当成不同的 control surfaces；
+- 每个 production agent 都有 owner、lifecycle state 和 policy linkage；
+- telemetry coverage 能持续和 registry 对账；
+- deprecated 和 orphaned agents 能在变成 blind spots 之前被找到；
+- governance 能区分 discovered entities 和 approved production agents。
+
+如果这些条件大多不成立，那团队也许已经有一些 visibility fragments，但还没有真正的 agent governance。
+
+## 14. 实用检查清单
 
 - 你能快速说出 active、deprecated 和 retired agents 的数量吗？
 - 每个 production agent 都有 owner 吗？
@@ -266,7 +280,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 如果连续几个答案都是“否”，那说明你已经有 agent estate，但还没有真正的 agent governance。
 
-## 14. 值得配套阅读的参考页
+## 15. 值得配套阅读的参考页
 
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)

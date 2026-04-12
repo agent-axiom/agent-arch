@@ -255,7 +255,21 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - разные реестры расходятся между собой;
 - platform team знает одних агентов, а security team — других.
 
-## 13. Практический checklist
+## 13. Быстрый тест зрелости для agent governance
+
+Команде не стоит думать, что она контролирует свой agent estate, только потому, что у нее есть registry spreadsheet и примерное число развернутых agents.
+
+Более сильная планка такая:
+
+- inventory и registry живут как разные control surfaces;
+- у каждого production agent есть owner, lifecycle state и policy linkage;
+- telemetry coverage можно непрерывно сверять с registry;
+- deprecated и orphaned agents можно найти до того, как они станут blind spots;
+- governance умеет различать discovered entities и approved production agents.
+
+Если большинство этих условий не выполняется, у команды уже могут быть visibility fragments, но реального agent governance у нее пока нет.
+
+## 14. Практический checklist
 
 - Можешь ли ты быстро назвать число active, deprecated и retired agents?
 - У каждого production agent есть owner?
@@ -266,7 +280,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 Если несколько ответов подряд “нет”, то agent estate у тебя уже есть, а agent governance еще нет.
 
-## 14. Полезные справочные страницы
+## 15. Полезные справочные страницы
 
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)

@@ -255,7 +255,21 @@ The logic is straightforward: an agent without an owner, lifecycle state, and ob
 - multiple registries drift apart;
 - the platform team knows one set of agents while the security team knows another.
 
-## 13. Practical checklist
+## 13. A Fast Maturity Test for Agent Governance
+
+A team should not think it has control of its agent estate only because it has a registry spreadsheet and a rough count of deployed agents.
+
+A stronger bar is this:
+
+- inventory and registry are treated as different control surfaces;
+- every production agent has an owner, lifecycle state, and policy linkage;
+- telemetry coverage can be checked against the registry continuously;
+- deprecated and orphaned agents can be found before they become blind spots;
+- governance can distinguish discovered entities from approved production agents.
+
+If most of those conditions are missing, the team may have visibility fragments, but it still does not have real agent governance.
+
+## 14. Practical checklist
 
 - Can you quickly name the number of active, deprecated, and retired agents?
 - Does every production agent have an owner?
@@ -266,7 +280,7 @@ The logic is straightforward: an agent without an owner, lifecycle state, and ob
 
 If several answers are “no,” you already have an agent estate but not yet agent governance.
 
-## 14. Useful reference pages
+## 15. Useful reference pages
 
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
