@@ -378,7 +378,21 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 一旦如此，评测闭环就会退化成仪式，而不是改进机制。
 
-## 13. 读完这一章后先做什么
+## 13. 给 eval loop 做一次快速成熟度测试
+
+团队不应该只因为会跑 benchmark set、偶尔看几项 online metrics，就觉得自己已经有 evaluation discipline。
+
+更高的标准应该是：
+
+- incidents 会被转化成 eval cases 和 rollout rules；
+- offline 和 online evals 作为同一个闭环运行，而不是两个分开的 ritual；
+- regression gates 不只拦 task failure，也会拦 safety、cost 和 escalation regressions；
+- traces 被当成 evidence 来 grading，而不是被动堆成 telemetry；
+- dataset 会持续从真实 failures 中学习。
+
+如果这些条件大多不成立，那团队也许已经有一些 evaluation activity，但还没有真正的 learning loop。
+
+## 14. 读完这一章后先做什么
 
 如果你想快速检查评测闭环，可以先过一遍这个短清单：
 
@@ -391,11 +405,11 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 如果连续几个答案都是否，那说明你可能已经有可观测性，但还没有真正的学习闭环。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 到这里，第五部分已经形成一个完整的运行闭环：追踪、SLO 和评测回路。下一步就是组织模型，因为这种平台最终既会碰到代码问题，也会碰到团队设计问题。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

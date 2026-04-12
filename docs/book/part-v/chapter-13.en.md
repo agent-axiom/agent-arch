@@ -380,7 +380,21 @@ These failures are very typical:
 
 When that happens, the eval loop becomes a ritual instead of an improvement mechanism.
 
-## 13. What to Do Right After This Chapter
+## 13. A Fast Maturity Test for the Eval Loop
+
+A team should not think it has evaluation discipline only because it runs a benchmark set and glances at a few online metrics.
+
+A stronger bar is this:
+
+- incidents are converted into eval cases and rollout rules;
+- offline and online evals work as one loop rather than separate rituals;
+- regression gates block safety, cost, and escalation regressions, not only task failure;
+- traces are graded as evidence, not stored as passive telemetry;
+- the dataset keeps learning from real failures.
+
+If most of those conditions are missing, the team may have evaluation activity, but it still does not have a real learning loop.
+
+## 14. What to Do Right After This Chapter
 
 If you want to review your eval loop quickly, use this short checklist:
 
@@ -393,11 +407,11 @@ If you want to review your eval loop quickly, use this short checklist:
 
 If the answer is "no" several times in a row, you may already have observability, but you still do not have a learning loop.
 
-## 14. What to Read Next
+## 15. What to Read Next
 
 By this point Part V forms a coherent operational block: traces, SLO, and the eval loop. The next step is the organizational model, because platforms like this run into team design questions as much as code questions.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
