@@ -248,7 +248,21 @@ The point is not the exact numbers. The point is that observability readiness sh
 - drift is noticed only through user complaints;
 - retention and redaction rules are not aligned with forensic needs.
 
-## 12. Practical checklist
+## 12. A Fast Maturity Test for AI-Native Observability
+
+A team should not think it has production observability only because it has traces, dashboards, and a log pipeline.
+
+A stronger bar is this:
+
+- inventory coverage and telemetry coverage are treated as one control problem;
+- high-risk actions can be linked to approvals, principals, and artifact bundles;
+- behavioral baselines exist alongside raw telemetry;
+- unobserved agents are treated as a governance risk rather than an accounting gap;
+- release and incident decisions can rely on telemetry as evidence.
+
+If most of those conditions are missing, the team may have observability tooling, but it still does not have AI-native observability as a governance layer.
+
+## 13. Practical checklist
 
 - Do you know how many agents actually exist in your production estate?
 - What percentage of them emits structured telemetry?
@@ -259,7 +273,7 @@ The point is not the exact numbers. The point is that observability readiness sh
 
 If several answers are “no,” you already have observability, but it has not yet become a governance layer.
 
-## 13. Useful reference pages
+## 14. Useful reference pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)

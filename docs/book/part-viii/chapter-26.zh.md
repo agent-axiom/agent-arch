@@ -250,7 +250,21 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与 forensic needs 不一致。
 
-## 12. 实用检查清单
+## 12. 给 AI-native observability 做一次快速成熟度测试
+
+团队不应该只因为已经有 traces、dashboards 和 log pipeline，就觉得自己已经具备 production observability。
+
+更高的标准应该是：
+
+- inventory coverage 和 telemetry coverage 被当成同一个 control problem；
+- high-risk actions 能关联到 approvals、principals 和 artifact bundles；
+- 除了 raw telemetry 之外，还有 behavioral baselines；
+- unobserved agents 被当成 governance risk，而不只是记账缺口；
+- telemetry 能作为 release 和 incident decisions 的 evidence。
+
+如果这些条件大多不成立，那团队也许已经有 observability tooling，但还没有真正作为 governance layer 的 AI-native observability。
+
+## 13. 实用检查清单
 
 - 你知道 production estate 里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
@@ -261,7 +275,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 如果连续几个答案都是“否”，那你的 observability 虽然已经存在，但还没有变成 governance layer。
 
-## 13. 值得配套阅读的参考页
+## 14. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

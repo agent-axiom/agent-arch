@@ -248,7 +248,21 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
 
-## 12. Практический чеклист
+## 12. Быстрый тест зрелости для AI-native observability
+
+Команде не стоит думать, что у нее уже есть production observability, только потому, что у нее есть traces, dashboards и log pipeline.
+
+Более сильная планка такая:
+
+- inventory coverage и telemetry coverage считаются одной control problem;
+- high-risk actions можно связать с approvals, principals и artifact bundles;
+- alongside raw telemetry существуют behavioral baselines;
+- unobserved agents считаются governance risk, а не просто пробелом в учете;
+- на телеметрию можно опираться как на evidence в release и incident decisions.
+
+Если большинство этих условий не выполняется, у команды уже может быть observability tooling, но AI-native observability как governance layer у нее пока нет.
+
+## 13. Практический чеклист
 
 - Знаешь ли ты, сколько агентов реально живет в рабочей среде?
 - Какой процент из них вообще шлет структурированную телеметрию?
@@ -259,7 +273,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 Если несколько ответов подряд «нет», то наблюдаемость у тебя уже есть, но она пока не стала частью контура управления.
 
-## 13. Полезные справочные страницы
+## 14. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
