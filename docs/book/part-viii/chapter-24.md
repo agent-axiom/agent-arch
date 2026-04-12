@@ -199,7 +199,21 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 Идея простая: high-risk autonomy вообще не должна существовать без явного набора control preconditions.
 
-## 10. Практический checklist
+## 10. Быстрый тест зрелости для agentic-risk controls
+
+Команде не стоит думать, что она уже контролирует agentic risk, только потому, что у нее есть policy layer, approval step и общий security review.
+
+Более сильная планка такая:
+
+- sabotage-like behavior проверяется отдельно от ordinary failure;
+- high-risk actions привязаны к exact payload approval и dedicated principals;
+- во время rollout, replacement и retirement автономия не расслабляется, а сужается;
+- traces умеют связать intent, approval, artifact bundle и side effect;
+- emergency containment умеет сузить capability family без ожидания полного shutdown.
+
+Если большинство этих условий не выполняется, у команды уже могут быть какие-то security controls, но достаточного control layer для high-risk autonomy у нее пока нет.
+
+## 11. Практический checklist
 
 - Проверяешь ли ты sabotage-like behavior отдельно от ordinary failures?
 - Можно ли связать risky side effect с конкретным `approval_id` и `tool_principal`?
@@ -210,11 +224,11 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 Если на несколько вопросов подряд ответ “нет”, то у тебя уже есть autonomy, но еще нет достаточного control layer.
 
-## 11. Что читать дальше
+## 12. Что читать дальше
 
 Следующий шаг после этой главы — научиться проверять такие риски через behavioral evals, control evals и automated red teaming.
 
-## 12. Полезные справочные страницы
+## 13. Полезные справочные страницы
 
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема запроса на подтверждение и записи о решении](../../appendix/approval-schema.md)

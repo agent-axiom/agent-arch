@@ -199,7 +199,21 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 The point is simple: high-risk autonomy should not exist without explicit control preconditions.
 
-## 10. Practical checklist
+## 10. A Fast Maturity Test for Agentic-Risk Controls
+
+A team should not think it controls agentic risk only because it has a policy layer, an approval step, and a general security review.
+
+A stronger bar is this:
+
+- sabotage-like behavior is tested separately from ordinary failure;
+- high-risk actions are tied to exact payload approval and dedicated principals;
+- transitions such as rollout, replacement, and retirement tighten autonomy rather than relax it;
+- traces can connect intent, approval, artifact bundle, and side effect;
+- emergency containment can narrow a capability family without waiting for a full shutdown.
+
+If most of those conditions are missing, the team may have some security controls, but it still does not have enough control for high-risk autonomy.
+
+## 11. Practical checklist
 
 - Do you test sabotage-like behavior separately from ordinary failures?
 - Can you link a risky side effect to a specific `approval_id` and `tool_principal`?
@@ -210,11 +224,11 @@ The point is simple: high-risk autonomy should not exist without explicit contro
 
 If several answers are “no,” you already have autonomy but not enough control.
 
-## 11. What to read next
+## 12. What to read next
 
 The next logical step after this chapter is not just “more security,” but learning how to test these risks through behavioral evals, control evals, and automated red teaming.
 
-## 12. Useful reference pages
+## 13. Useful reference pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Approval Request and Decision Schema](../../appendix/approval-schema.en.md)

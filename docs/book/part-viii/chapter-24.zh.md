@@ -199,7 +199,21 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 核心很简单：高风险自主性根本不应该在缺少明确控制前提的情况下存在。
 
-## 10. 实用检查清单
+## 10. 给 agentic-risk controls 做一次快速成熟度测试
+
+团队不应该只因为已经有 policy layer、approval step 和一般性的 security review，就觉得自己已经控制住了 agentic risk。
+
+更高的标准应该是：
+
+- sabotage-like behavior 会被独立于 ordinary failure 单独测试；
+- high-risk actions 会绑定到 exact payload approval 和 dedicated principals；
+- rollout、replacement 和 retirement 这些过渡期里，自主性会被收紧，而不是放松；
+- traces 能把 intent、approval、artifact bundle 和 side effect 连起来；
+- emergency containment 能缩小某个 capability family，而不用等整套系统 shutdown。
+
+如果这些条件大多不成立，那团队也许已经有一些 security controls，但还没有足够支撑 high-risk autonomy 的 control layer。
+
+## 11. 实用检查清单
 
 - 你是否把类似破坏的行为和普通失效分开测试？
 - risky side effect 能不能反推出具体的 `approval_id` 与 `tool_principal`？
@@ -210,11 +224,11 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 如果连续几个答案都是“否”，那你已经拥有自主性，但还没有足够的控制层。
 
-## 11. 接下来读什么
+## 12. 接下来读什么
 
 这章之后，最自然的下一步不是“再读一遍安全章节”，而是学习如何用行为评测、控制评测和自动化红队测试去验证这些风险。
 
-## 12. 值得配套阅读的参考页
+## 13. 值得配套阅读的参考页
 
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
 - [审批请求与决策模式](../../appendix/approval-schema.zh.md)
