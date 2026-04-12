@@ -27,7 +27,7 @@
 ## 这一部分解决什么问题
 
 - 把 reference implementation 推进成可管理的 lifecycle；
-- 把 change management、assurance、provenance、incidents 与 retirement 接成一个 operational contour；
+- 把 change management、assurance、provenance、incidents、retirement、observability 与 agent-estate governance 接成一个 operational contour；
 - 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。
 
 如果把这一部分当成一个完整模块来读，它的顺序很清晰：
@@ -36,7 +36,8 @@
 - 再定义哪些智能体系统变更真正属于 release-bearing changes；
 - 接着围绕 red teaming、detection 和 response 建立 assurance loop；
 - 然后把工件纪律与来源追踪固定下来；
-- 最后用替换与退役把整个生命周期收束起来。
+- 再用替换与退役把生命周期先收束起来；
+- 最后把同一套纪律扩展到 misalignment、behavioral assurance、AI-native observability 和整个 agent estate 的治理。
 
 ## 本部分内容
 
@@ -58,4 +59,5 @@
 - 一套可以真正讨论 replacement、retirement 与 end-of-life discipline 的实践语言；
 - 一套可以讨论 sabotage-like behavior、control failures 与 automated assurance 的更成熟框架；
 - 一套把 observability 当作 inventory、detection 与 governance 证据层的实践视角；
-- 一套治理整个 agent estate 而不是单个 agent system 的工作框架。
+- 一套治理整个 agent estate 而不是单个 agent system 的工作框架；
+- 更清晰地理解 Part VIII 不是几章松散的安全内容，而是一套连续的 operating model。

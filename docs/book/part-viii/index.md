@@ -27,7 +27,7 @@
 ## Что решает эта часть
 
 - переводит reference implementation в управляемый lifecycle;
-- связывает change management, assurance, provenance, incidents и retirement в один operational contour;
+- связывает change management, assurance, provenance, incidents, retirement, observability и agent-estate governance в один operational contour;
 - отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
 
 Если читать эту часть как единый блок, порядок такой:
@@ -36,7 +36,8 @@
 - потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
 - затем строишь assurance loop вокруг red teaming, detection и response;
 - после этого закрепляешь artifact discipline и provenance;
-- и только в конце закрываешь жизненный цикл через replacement и retirement.
+- затем закрываешь жизненный цикл через replacement и retirement;
+- и в конце расширяешь тот же контур на misalignment, behavioral assurance, AI-native observability и управление всем agent estate.
 
 ## В этой части
 
@@ -58,4 +59,5 @@
 - практический язык для разговоров о replacement, retirement и end-of-life discipline;
 - более зрелую рамку для sabotage-like behavior, control failures и automated assurance;
 - представление о observability как о слое доказательств для inventory, detection и governance;
-- рабочую рамку для управления всем контуром агентов, а не только отдельными agent systems.
+- рабочую рамку для управления всем контуром агентов, а не только отдельными agent systems;
+- более ясное ощущение, что Part VIII работает как единая operating model, а не как набор разрозненных security chapters.

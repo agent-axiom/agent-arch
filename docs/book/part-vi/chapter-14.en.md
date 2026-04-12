@@ -241,7 +241,21 @@ The same problems repeat often:
 
 That leads to the classic fork: either the platform helps nobody, or product teams see it as an obstacle.
 
-## 11. What to Do Right Away
+## 11. A Fast Maturity Test for the Platform Operating Model
+
+A team should not think it has solved platform ownership only because it created a platform team and documented a few review rules.
+
+A stronger bar is this:
+
+- platform and product ownership are explicit at the layer where incidents actually happen;
+- golden paths remove chaos rather than just publish reusable pieces;
+- deviations are visible, owned, and bounded rather than socially tolerated;
+- platform inventory and approved registry make governance executable;
+- the platform is measured by reduced duplication and bypasses, not adoption theater.
+
+If most of those conditions are missing, the organization may have a platform label, but it still does not have a real platform operating model.
+
+## 12. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -254,7 +268,7 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, you probably no longer have a technical problem. You have an organizational design problem.
 
-## 12. What to Do Next
+## 13. What to Do Next
 
 First make ownership explicit, then see how that ownership model becomes golden paths, shared gateways, and anti-zoo patterns.
 

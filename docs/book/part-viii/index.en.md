@@ -27,7 +27,7 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 ## What This Part Solves
 
 - it turns the reference implementation into a managed lifecycle;
-- it connects change management, assurance, provenance, incidents, and retirement into one operational contour;
+- it connects change management, assurance, provenance, incidents, retirement, observability, and estate governance into one operational contour;
 - it separates stable engineering discipline from fast-moving vendor and research details.
 
 If you read this part as one block, the sequence is straightforward:
@@ -36,7 +36,8 @@ If you read this part as one block, the sequence is straightforward:
 - then define which changes in an agent system are truly release-bearing;
 - next, build an assurance loop around red teaming, detection, and response;
 - after that, lock down artifact discipline and provenance;
-- and finally close the lifecycle through replacement and retirement.
+- then close the lifecycle through replacement and retirement;
+- and finally extend the same discipline into misalignment, behavioral assurance, AI-native observability, and whole-estate governance.
 
 ## In This Part
 
@@ -58,4 +59,5 @@ If you read this part as one block, the sequence is straightforward:
 - a practical language for replacement, retirement, and end-of-life discipline;
 - a stronger frame for sabotage-like behavior, control failures, and automated assurance;
 - a clear model of observability as an evidence layer for inventory, detection, and governance;
-- a working frame for governing an entire agent estate rather than isolated agent systems.
+- a working frame for governing an entire agent estate rather than isolated agent systems;
+- a clearer sense of how Part VIII works as one continuous operating model rather than a loose set of security chapters.

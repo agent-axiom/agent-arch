@@ -241,7 +241,21 @@ registry:
 
 这会把组织带向经典岔路：不是平台帮不到人，就是产品团队觉得平台本身就是阻碍。
 
-## 11. 现在就该做什么
+## 11. 给 platform operating model 做一次快速成熟度测试
+
+团队不应该只因为已经组建了 platform team、写下了几条 review rules，就觉得 platform ownership 问题已经解决。
+
+更高的标准应该是：
+
+- platform 和 product ownership 在真正发生 incidents 的层上是清楚的；
+- golden paths 真正在减少混乱，而不只是发布 reusable pieces；
+- deviations 是可见的、有 owner 的、blast radius 受限的，而不是被默认容忍；
+- platform inventory 和 approved registry 让 governance 变得可执行；
+- 平台的衡量标准是 duplication 和 bypasses 的减少，而不是 adoption theater。
+
+如果这些条件大多不成立，那组织也许已经有了 platform 这个标签，但还没有真正的 platform operating model。
+
+## 12. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -254,7 +268,7 @@ registry:
 
 如果连续好几个问题答案都是 “no”，那你大概率遇到的已经不是技术问题，而是组织设计问题。
 
-## 12. 下一步做什么
+## 13. 下一步做什么
 
 先把 ownership 说清楚，再看这些责任边界如何落成 golden paths、shared gateways 和 anti-zoo patterns。
 
