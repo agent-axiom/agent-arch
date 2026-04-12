@@ -147,11 +147,11 @@ The next truly important design shifts will likely emerge at the intersection of
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
 
-## See also
+## What to Do Next
 
-- [Memory record and retrieval contract schema](memory-retrieval-schema.md)
-- [Trace schema and event catalog](trace-schema.md)
-- [Eval dataset schema and grading contract](eval-schema.md)
-- [Chapter 7. Retrieval, compaction, and background updates](../book/part-iii/chapter-7.md)
-- [Chapter 13. Offline evals, online evals, and regression gates](../book/part-v/chapter-13.md)
-- [Practice. MCP for tools, A2A for agents](../book/part-iv/practical-mcp-a2a.md)
+- [Memory record and retrieval contract schema](memory-retrieval-schema.en.md)
+- [Trace schema and event catalog](trace-schema.en.md)
+- [Eval dataset schema and grading contract](eval-schema.en.md)
+- [Chapter 7. Retrieval, compaction, and background updates](../book/part-iii/chapter-7.en.md)
+- [Chapter 13. Offline evals, online evals, and regression gates](../book/part-v/chapter-13.en.md)
+- [Practice. MCP for tools, A2A for agents](../book/part-iv/practical-mcp-a2a.en.md)

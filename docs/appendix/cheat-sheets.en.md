@@ -78,7 +78,7 @@ Read next:
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](../book/part-iv/chapter-9.en.md)
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../book/part-iv/chapter-10.en.md)
 
-## How to use these sheets
+## What to Do Next
 
 - Before a design review: run through the safety, memory, and tool gateway blocks.
 - Before launch: run through the rollout and observability blocks.

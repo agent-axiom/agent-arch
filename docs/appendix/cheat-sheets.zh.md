@@ -78,7 +78,7 @@
 - [第 9 章：沙箱执行与 MCP 作为集成契约](../book/part-iv/chapter-9.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](../book/part-iv/chapter-10.zh.md)
 
-## 如何使用这些清单
+## 下一步做什么
 
 - 在 design review 前：快速过一遍 safety、memory 和 tool gateway。
 - 在上线前：重点过一遍 rollout 和 observability。

@@ -147,7 +147,7 @@
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
 
-## См. также
+## Что делать дальше
 
 - [Схема записей памяти и контракта извлечения](memory-retrieval-schema.md)
 - [Схема трасс и каталог событий](trace-schema.md)
