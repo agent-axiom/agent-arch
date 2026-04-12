@@ -263,7 +263,21 @@ These problems are very recognizable:
 
 When that happens, the team goes back to guesswork and manual log reading.
 
-## 14. What to Do Right After This Chapter
+## 14. A Fast Maturity Test for Agent Observability
+
+A team should not consider observability mature only because it has dashboards, logs, and model latency charts.
+
+A stronger bar is this:
+
+- one run can be reconstructed end to end;
+- policy, model, tool, and approval layers are all visible;
+- uncertainty is preserved instead of flattened into fake success;
+- telemetry can support both incident review and release decisions;
+- sensitive data handling is designed, not improvised.
+
+If those conditions are missing, the system may emit telemetry, but it still does not have operational observability.
+
+## 15. What to Do Right After This Chapter
 
 If you want to review your observability model quickly, use this short checklist:
 
@@ -277,7 +291,7 @@ If you want to review your observability model quickly, use this short checklist
 
 If the answer is "no" several times in a row, your observability is still decorative, not operational.
 
-## 15. What to Read Next
+## 16. What to Read Next
 
 The next step in the same story is straightforward: once the team can reconstruct the path of one failure, it needs to define what "healthy" means every day. That means moving to SLO.
 

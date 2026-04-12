@@ -263,7 +263,21 @@ Observability 不应该变成数据泄漏渠道。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
 
-## 14. 读完这一章后先做什么
+## 14. 给智能体可观测性做一次快速成熟度测试
+
+团队不应该只因为已经有 dashboards、logs 和 model latency 图表，就把 observability 叫做成熟。
+
+更高的标准应该是：
+
+- 一次 run 可以被 end to end 重建出来；
+- policy、model、tool 和 approval layers 都真正可见；
+- 不确定性不会被压扁成伪装的 success；
+- telemetry 既能支持 incident review，也能支持 release decisions；
+- 敏感数据处理是被设计好的，而不是临时 improvisation。
+
+如果这些条件不满足，系统也许已经会发 telemetry，但它还没有 operational observability。
+
+## 15. 读完这一章后先做什么
 
 如果你想快速检查可观测性模型，可以先过一遍这个短清单：
 
@@ -277,7 +291,7 @@ Observability 不应该变成数据泄漏渠道。
 
 如果连续几个答案都是否，那可观测性还只是装饰性的，而不是运行层面的。
 
-## 15. 接下来读什么
+## 16. 接下来读什么
 
 沿着同一条故事线，下一步也很明确：当团队已经能还原一次故障的完整路径后，就该定义什么才算系统每天都处在“健康”状态，也就是进入 SLO。
 

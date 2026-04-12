@@ -243,7 +243,21 @@ The same problems appear again and again:
 
 When that happens, the team either lives in chaos or overburdens itself with process where it is not needed.
 
-## 14. Practical checklist
+## 14. A Fast Maturity Test for Change Discipline
+
+A team should not call its release process mature only because changes are reviewed and pushed through CI.
+
+A stronger bar is this:
+
+- prompt, policy, retrieval, and capability changes are treated as real releases;
+- change risk is classified explicitly rather than guessed socially;
+- evals and gates are matched to the type of change;
+- blast radius is bounded before rollout, not explained afterward;
+- rollback works at the level where the risk actually lives.
+
+If most of those conditions are missing, the team may have delivery mechanics, but it still does not have real change discipline for agent systems.
+
+## 15. Practical checklist
 
 If you want to test your change process quickly, ask:
 
@@ -256,11 +270,11 @@ If you want to test your change process quickly, ask:
 
 If the answer is “no” several times in a row, you do not have change management yet. You only have change delivery by inertia.
 
-## 15. What to read next
+## 16. What to read next
 
 After change management, the natural next step is the assurance loop: red teaming, vulnerability management, detection and response. That is where the lifecycle stops being only release discipline and becomes continuous operational protection.
 
-## 16. Useful Reference Pages
+## 17. Useful Reference Pages
 
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)

@@ -243,7 +243,21 @@ def classify_change(change: ChangeRequest) -> str:
 
 如果这样做，团队要么活在混乱里，要么把自己压进过重的流程里。
 
-## 14. 实用检查清单
+## 14. 给 change discipline 做一次快速成熟度测试
+
+团队不应该只因为 changes 会经过 review 并跑过 CI，就把 release process 称为成熟。
+
+更高的标准应该是：
+
+- prompt、policy、retrieval 和 capability changes 都被当成真正的 releases；
+- change risk 是被显式分类的，而不是靠感觉猜；
+- evals 和 gates 是按变更类型匹配的；
+- blast radius 在 rollout 前就被限制，而不是事后再解释；
+- rollback 能在真正承载风险的层面上工作。
+
+如果这些条件大多不成立，那团队也许已经有 delivery mechanics，但还没有真正适用于 agent systems 的 change discipline。
+
+## 15. 实用检查清单
 
 如果你想快速判断自己的 change process 是否成熟，可以问：
 
@@ -256,11 +270,11 @@ def classify_change(change: ChangeRequest) -> str:
 
 如果连续几个问题的答案都是“否”，那你们现在还没有 change management，只有惯性下的变更交付。
 
-## 15. 接下来读什么
+## 16. 接下来读什么
 
 在 change management 之后，最自然的下一步就是 assurance loop：red teaming、vulnerability management、detection and response。到那一步，lifecycle 就不再只是 release discipline，而会真正变成持续运营的保护机制。
 
-## 16. 值得配套阅读的参考页
+## 17. 值得配套阅读的参考页
 
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
