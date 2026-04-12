@@ -2,6 +2,8 @@
 
 Up to this point, the book explained how to assemble the architecture, secure it, observe it, and roll it out safely. But production discipline does not end with a rollout checklist.
 
+In the running support case, this means the system already has a working runtime, policy layer, capability catalog, and limited rollout. Now the question changes: how do you live with that system for months, change it without losing control, and decide when to stop, replace, or retire it.
+
 As soon as the system lives longer than a single demo, a different class of questions appears:
 
 - how agent initiatives enter delivery;
@@ -11,6 +13,16 @@ As soon as the system lives longer than a single demo, a different class of ques
 - how to investigate incidents and when to retire a system.
 
 This is where classical engineering discipline meets agent-specific behavior. That is why this part should start not with a “magical new process,” but with a transition from classical SDLC to ADLC.
+
+!!! info "Short path through this part"
+    If you want a fast pass, read it this way:
+
+    - [Chapter 19](chapter-19.en.md): establish the frame through the move from SDLC to ADLC;
+    - [Chapter 20](chapter-20.en.md): define which agent changes are truly release-bearing;
+    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, and artifact discipline;
+    - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement and retirement.
+
+    Chapters 24-27 extend the same contour through misalignment, behavioral evals, AI-native observability, and agent-estate governance.
 
 If you read this part as one block, the sequence is straightforward:
 

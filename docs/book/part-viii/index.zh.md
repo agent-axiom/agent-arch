@@ -2,6 +2,8 @@
 
 到这里为止，这本书已经解释了如何搭建架构、加固安全、建立可观测性以及安全地上线。但生产级纪律并不会在上线检查清单结束。
 
+在贯穿全书的 support 场景里，到这里已经有了可运行的 runtime、policy layer、capability catalog 和一次受控 rollout。现在问题变了：怎样让这套系统稳定运行几个月，怎样在不失控的前提下持续修改它，以及什么时候应该停止、替换或退役。
+
 只要系统活得比一场 demo 更久，你很快就会遇到另一类问题：
 
 - 智能体项目如何正式进入交付流程；
@@ -11,6 +13,16 @@
 - 事故发生后如何调查，以及系统何时应该退役。
 
 这正是经典工程纪律与智能体特性相遇的地方。所以这一部分最好的开场，不是“发明一个全新流程”，而是先说明如何从经典 SDLC 过渡到 ADLC。
+
+!!! info "这一部分的快速路线"
+    如果你想快速读完关键部分，可以这样走：
+
+    - [第 19 章](chapter-19.zh.md)：先用从 SDLC 到 ADLC 的过渡建立共同框架；
+    - [第 20 章](chapter-20.zh.md)：再定义哪些 agent changes 真正属于 release-bearing；
+    - [第 21 章](chapter-21.zh.md) 和 [第 22 章](chapter-22.zh.md)：补齐 assurance、provenance 与 artifact discipline；
+    - [第 23 章](chapter-23.zh.md)：再用 replacement 和 retirement 把生命周期收束起来。
+
+    第 24 到 27 章则在同一条线上继续扩展：misalignment、behavioral evals、AI-native observability，以及 agent estate 的治理。
 
 如果把这一部分当成一个完整模块来读，它的顺序很清晰：
 
