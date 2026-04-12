@@ -214,7 +214,21 @@ runtime:
 
 也就是说，系统可能“能跑”，但 runtime 的形态已经开始阻碍成长。
 
-## 12. 现在就该做什么
+## 12. 给 baseline runtime 做一次快速成熟度测试
+
+团队不应该只因为已经有一个 working agent、几个模块和一些成功 demo，就觉得自己已经有了 reference runtime。
+
+更高的标准应该是：
+
+- orchestration、policy、memory、execution 和 telemetry 是清晰分开的层；
+- run context 从一开始就携带 identity 与 control metadata；
+- capability execution 通过 contracts 走，而不是 direct adapter calls；
+- tracing 和 background hooks 在 base path 里就存在，而不是靠后期 retrofit；
+- 一次 run 可以被解释成稳定的 skeleton，而不是散落的 local logic。
+
+如果这些条件大多不成立，那团队也许已经有一个 implementation，但还没有真正的 baseline runtime blueprint。
+
+## 13. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -227,7 +241,7 @@ runtime:
 
 如果连续多个问题的答案都是“没有”，那你现在还没有 reference runtime，你只是把模型早期接进了产品里。
 
-## 13. 下一步做什么
+## 14. 下一步做什么
 
 先把 runtime shape 固定下来，再在这个骨架上加 policy layer 和 capability contracts。
 

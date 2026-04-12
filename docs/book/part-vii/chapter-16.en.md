@@ -214,7 +214,21 @@ Very typical problems:
 
 So the system may "work", but the runtime shape is already blocking growth.
 
-## 12. What to Do Right Away
+## 12. A Fast Maturity Test for the Baseline Runtime
+
+A team should not think it has a reference runtime only because it has a working agent, a few modules, and successful demos.
+
+A stronger bar is this:
+
+- orchestration, policy, memory, execution, and telemetry are visibly separate layers;
+- the run context carries identity and control metadata from the start;
+- capability execution flows through contracts rather than direct adapter calls;
+- tracing and background hooks exist in the base path rather than as retrofits;
+- one run can be explained as a stable skeleton, not as scattered local logic.
+
+If most of those conditions are missing, the team may have an implementation, but it still does not have a real baseline runtime blueprint.
+
+## 13. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -227,7 +241,7 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, you do not have a reference runtime yet. You just have an early model integration in a product.
 
-## 13. What to Do Next
+## 14. What to Do Next
 
 First make the runtime shape explicit, then add the policy layer and capability contracts on top of it.
 
