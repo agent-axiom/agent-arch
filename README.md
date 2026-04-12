@@ -1,6 +1,7 @@
 # Agent Architecture Book
 
 [Русская версия](README.ru.md)
+[中文版](README.zh.md)
 [Contributing guide](CONTRIBUTING.md)
 [Code of Conduct](CODE_OF_CONDUCT.md)
 
