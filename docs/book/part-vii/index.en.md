@@ -32,6 +32,7 @@ In this part, I gradually assemble a minimally mature platform:
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
   This chapter continues the same support case at the code layer: where the run loop should live, how to separate policy, memory, and execution, and how not to spread logic across local handlers.
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
+  This chapter lifts the same skeleton into the contract layer: which capabilities are allowed at all, where approval is required, and how not to hardcode risk logic into orchestration.
 - [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
 
 After this part, it becomes clear how architecture, safety, memory, execution, and observability form one operational skeleton. From there, the next natural step is lifecycle and long-term operating discipline.

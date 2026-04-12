@@ -1,8 +1,19 @@
 # Chapter 17. Policy Layer and Capability Catalog
 
+!!! info "How to read this chapter"
+    It helps to keep one practical question in mind rather than an abstract policy topic:
+
+    - who decides whether the same support agent may start this run at all;
+    - who decides whether it may read context, open a ticket, or write into memory;
+    - where those decisions should live so they do not dissolve into orchestration code.
+
+    If those answers are hidden in random code paths, the runtime exists, but the contract core of the system is still missing.
+
 ## 1. Why a Reference Runtime Is Still Too Naive Without a Policy Layer
 
 Even if you already have a clean runtime loop, that is still not enough. Without an explicit policy layer, the system remains too trusting:
+
+In the running support case, this appears immediately after Chapter 16. The runtime can already accept a request, assemble context, call the model, and reach the gateway. But the moment the agent is about to open an urgent ticket, write a summary into memory, or request another external step, the system needs more than a loop. It needs an explicit decision about admissibility and risk.
 
 - you cannot reliably distinguish allowed runs from forbidden ones;
 - tool calls are hard to control consistently;
