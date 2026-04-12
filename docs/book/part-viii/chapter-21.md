@@ -257,7 +257,21 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 Если это происходит, assurance loop превращается в красивую презентацию, а не в защитный механизм.
 
-## 13. Практический чеклист
+## 13. Быстрый тест зрелости для assurance loop
+
+Команде не стоит говорить, что у нее уже есть assurance, только потому, что она провела несколько red-team exercises и записала несколько findings.
+
+Более сильная планка такая:
+
+- findings превращаются в инженерные объекты с owner;
+- detection ищет unsafe behavior, а не только errors и latency;
+- response actions существуют до следующего инцидента, а не появляются после него;
+- remediation меняет operating system, а не только document trail;
+- incidents возвращаются обратно в evals, policies и rollout rules.
+
+Если большинство этих условий не выполняется, у команды уже может быть security activity, но assurance loop у нее пока нет.
+
+## 14. Практический чеклист
 
 Если хочешь быстро проверить свою assurance discipline, пройди по вопросам:
 
@@ -270,11 +284,11 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 Если на несколько вопросов подряд ответ “нет”, у тебя пока есть security intentions, но еще нет assurance loop.
 
-## 14. Что читать дальше
+## 15. Что читать дальше
 
 Следующая тема здесь естественная: supply chain и approved artifacts. Как только у системы появляются постоянные изменения, расследования и mitigations, становится критично понимать, какие артефакты считались доверенными и что именно попало в production.
 
-## 15. Полезные справочные страницы
+## 16. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)

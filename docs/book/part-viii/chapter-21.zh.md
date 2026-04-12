@@ -257,7 +257,21 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 一旦这样，assurance loop 就会变成一套漂亮的 presentation，而不是防护机制。
 
-## 13. 实用检查清单
+## 13. 给 assurance loop 做一次快速成熟度测试
+
+团队不应该只因为做过几次 red-team exercises、记下了几个 findings，就宣称自己已经有 assurance。
+
+更高的标准应该是：
+
+- findings 会变成有 owner 的 engineering objects；
+- detection 寻找的是 unsafe behavior，而不只是 errors 和 latency；
+- response actions 在下一次 incident 之前就已经存在，而不是事后才补；
+- remediation 会改变 operating system，而不只是文档痕迹；
+- incidents 会回流进 evals、policies 和 rollout rules。
+
+如果这些条件大多不成立，那团队也许已经有一些 security activity，但还没有真正的 assurance loop。
+
+## 14. 实用检查清单
 
 如果你想快速判断 assurance discipline 是否成形，可以问：
 
@@ -270,11 +284,11 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 如果连续几个问题的答案都是“否”，那你现在可能只有安全意图，还没有 assurance loop。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 在 assurance loop 之后，最自然的下一步就是 supply chain discipline 和 approved artifacts。因为只要系统持续变化、持续调查、持续修复，你就必须非常清楚：哪些 artifacts 才算可信，哪些东西真正进入过 production。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

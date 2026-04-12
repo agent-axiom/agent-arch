@@ -261,7 +261,21 @@ The problems here are very repetitive:
 
 When that happens, SLO become decoration. The team looks at numbers, but does not control the platform through them.
 
-## 13. What to Do Right After This Chapter
+## 13. A Fast Maturity Test for SLO Discipline
+
+A team should not think it has healthy service management only because it tracks uptime, p95 latency, and a few dashboard alerts.
+
+A stronger bar is this:
+
+- health is defined at the run level, not only at the component level;
+- safety, cost, and escalation are treated as first-class health dimensions;
+- success means a resolved task, not just the absence of an exception;
+- SLO influence rollout, rollback, and change decisions;
+- humans are protected from silent load transfer.
+
+If most of those conditions are missing, the team may have metrics, but it still does not have real SLO discipline for agent systems.
+
+## 14. What to Do Right After This Chapter
 
 If you want to review the health model of your support agent quickly, use this short checklist:
 
@@ -274,11 +288,11 @@ If you want to review the health model of your support agent quickly, use this s
 
 If the answer is "no" several times in a row, observability may already exist, but system health still is not managed through quality targets.
 
-## 14. What to Read Next
+## 15. What to Read Next
 
 After SLO, the next step in the same story is the eval loop: offline evals, online evals, trace grading, and regression gates. That is where observability turns into a continuous improvement loop.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Incident Record Schema](../../appendix/incident-record-schema.en.md)

@@ -261,7 +261,21 @@ def classify_run_health(run: RunHealth) -> str:
 
 一旦如此，SLO 就会变成装饰。团队看到了数字，但并没有通过这些数字来控制平台。
 
-## 13. 读完这一章后先做什么
+## 13. 给 SLO discipline 做一次快速成熟度测试
+
+团队不应该只因为在看 uptime、p95 latency 和几个 dashboard alerts，就觉得自己已经有了健康的 service management。
+
+更高的标准应该是：
+
+- health 是在 run level 上定义的，而不只是 component level；
+- safety、cost 和 escalation 被当成一等 health dimensions；
+- success 意味着任务真的被解决，而不只是没有 exception；
+- SLO 会影响 rollout、rollback 和 change decisions；
+- 人不会被系统悄悄转移过来的负担压垮。
+
+如果这些条件大多不成立，那团队也许已经有 metrics，但还没有真正适用于 agent systems 的 SLO discipline。
+
+## 14. 读完这一章后先做什么
 
 如果你想快速检查这个支持智能体的 health model，可以先过一遍这个短清单：
 
@@ -274,11 +288,11 @@ def classify_run_health(run: RunHealth) -> str:
 
 如果连续几个答案都是否，那说明可观测性也许已经存在，但系统健康仍然没有通过质量目标被真正管理。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 在这条同一条故事线上，SLO 之后的下一步就是评测闭环：离线评测、在线评测、追踪分级和回归门禁。也正是在那里，可观测性变成持续改进闭环。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Incident Record Schema](../../appendix/incident-record-schema.zh.md)

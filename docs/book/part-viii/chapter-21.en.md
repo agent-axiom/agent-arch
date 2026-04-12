@@ -257,7 +257,21 @@ The failures are fairly repetitive:
 
 When that happens, the assurance loop becomes a good slide deck instead of a defensive mechanism.
 
-## 13. Practical checklist
+## 13. A Fast Maturity Test for the Assurance Loop
+
+A team should not claim it has assurance only because it ran a few red-team exercises and wrote down several findings.
+
+A stronger bar is this:
+
+- findings become owned engineering objects;
+- detection looks for unsafe behavior, not only errors and latency;
+- response actions exist before the next incident, not after it;
+- remediation changes the operating system, not only the document trail;
+- incidents feed back into evals, policies, and rollout rules.
+
+If most of those conditions are missing, the team may have security activity, but it still does not have an assurance loop.
+
+## 14. Practical checklist
 
 If you want to test your assurance discipline quickly, ask:
 
@@ -270,11 +284,11 @@ If you want to test your assurance discipline quickly, ask:
 
 If the answer is “no” several times in a row, you may have security intentions, but not yet an assurance loop.
 
-## 14. What to read next
+## 15. What to read next
 
 After the assurance loop, it is natural to move to supply chain discipline and approved artifacts. As soon as the system changes continuously, investigations happen, and mitigations are applied, it becomes critical to know which artifacts were actually trusted and what exactly reached production.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
