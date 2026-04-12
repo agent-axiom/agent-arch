@@ -17,7 +17,7 @@ This part exists so that you do not develop the dangerous illusion that agent se
 - if tools are not isolated, one bad call turns into a real incident;
 - if policy, approval, and audit are not built into the runtime, the team loses control at the worst possible moment.
 
-## What You Get in This Part
+## What This Part Solves
 
 - a map of the key threats in agent systems;
 - a practical model of the security perimeter;
@@ -25,7 +25,7 @@ This part exists so that you do not develop the dangerous illusion that agent se
 - examples of policy-as-code and gated execution;
 - a solid base for discussing the system with a security team without abstract hand-waving.
 
-## Navigation
+## In This Part
 
 - [Chapter 3. Security Perimeter and Trust Boundaries](chapter-3.en.md)
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](chapter-4.en.md)
@@ -33,4 +33,6 @@ This part exists so that you do not develop the dangerous illusion that agent se
 - [Part I. Foundations](../part-i/index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-The next natural step after this perimeter is deciding what the agent is allowed to remember across runs, and how memory avoids becoming a new source of risk.
+## Where It Leads Next
+
+The next natural step after this perimeter is [Part III](../part-iii/index.en.md): deciding what the agent is allowed to remember across runs, how retrieval returns context, and how memory avoids becoming a new source of risk.

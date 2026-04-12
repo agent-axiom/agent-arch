@@ -28,10 +28,14 @@ In this part, we will look at the operating model: who owns what, how to build g
 
     Together, this shows that the operating model is not for org charts. It is for keeping the production system stable.
 
+## What This Part Solves
+
 ## In This Part
 
 - [Chapter 14. Platform Team vs Product Teams](chapter-14.en.md)
   This chapter continues the same support case at the ownership layer: who should own the runtime, policies, gateways, and platform-grade incidents.
 - [Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns](chapter-15.en.md)
 
-The next natural step after this part is to complete the platform roadmap and move into the reference implementation.
+## Where It Leads Next
+
+The next natural step after this part is [Part VII](../part-vii/index.en.md): moving from ownership boundaries and golden paths into the reference implementation where those decisions become runtime structure, policy layers, and rollout shape.

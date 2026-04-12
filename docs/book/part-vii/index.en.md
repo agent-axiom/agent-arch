@@ -42,6 +42,8 @@ In this part, I gradually assemble a minimally mature platform:
 - [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
   This chapter closes the same story through the first limited rollout: whether the support agent is ready for real deployment and what must already be visible before scaling.
 
+## Where It Leads Next
+
 After this part, it becomes clear how architecture, safety, memory, execution, and observability form one operational skeleton. But production discipline does not stop there: once the same agent survives its first rollout, the next questions are about change management, assurance, provenance, and retirement.
 
 That is why the next natural step after the reference implementation is [Part VIII. Agent System Lifecycle](../part-viii/index.en.md).

@@ -28,10 +28,14 @@
 
     这三步合在一起，说明 operating model 不是给组织结构图看的，而是用来稳住整套 production system 的。
 
+## 这一部分解决什么问题
+
 ## 本部分内容
 
 - [第 14 章：平台团队与产品团队](chapter-14.zh.md)
   这一章继续同一个 support 场景，但切到 ownership 层：runtime、policies、gateways 和 platform incidents 到底该由谁负责。
 - [第 15 章：黄金路径、共享网关与反动物园模式](chapter-15.zh.md)
 
-这一部分之后，下一步就是补完平台路线图，然后进入参考实现。
+## 这一部分之后去哪里
+
+这一部分之后，下一步就是进入 [第七部分](../part-vii/index.zh.md)：把 ownership 边界、golden paths 和 shared gateways 继续固定进 reference implementation、policy layer 和 rollout skeleton。

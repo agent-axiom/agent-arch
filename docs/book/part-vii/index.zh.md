@@ -42,6 +42,8 @@
 - [第 18 章：生产上线检查清单](chapter-18.zh.md)
   这一章用第一次受控 rollout 收束同一条故事线：support agent 是否已经能真正上线，以及在扩大范围前必须先看到什么。
 
+## 这一部分之后去哪里
+
 到这一部分，架构、安全、记忆、执行和可观测性已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束：一旦同一个 agent 撑过第一次 rollout，接下来的问题就会变成 change management、assurance、provenance 和 retirement。
 
 这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)。

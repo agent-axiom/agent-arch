@@ -17,7 +17,7 @@
 - 如果 tools 没有隔离，一个糟糕的调用就会变成真实 incident；
 - 如果 policy、approval 和 audit 没有嵌进 runtime，团队会在最不合适的时候失去控制。
 
-## 这一部分你会得到什么
+## 这一部分解决什么问题
 
 - agent systems 关键威胁的地图；
 - 一套实用的 security perimeter 模型；
@@ -25,7 +25,7 @@
 - policy-as-code 和 gated execution 示例；
 - 一个能和 security 团队认真讨论的基础，而不是只停留在抽象口号上。
 
-## 导航
+## 本部分内容
 
 - [第 3 章：安全边界与信任边界](chapter-3.zh.md)
 - [第 4 章：Tool Gateway、Approval 与 Audit Trail](chapter-4.zh.md)
@@ -33,4 +33,6 @@
 - [第一部分：基础](../part-i/index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 
-这一部分之后，下一步自然就是决定智能体到底允许记住什么，以及怎样不让记忆层变成新的风险来源。
+## 这一部分之后去哪里
+
+这一部分之后，下一步自然就是进入 [第三部分](../part-iii/index.zh.md)：决定智能体到底允许记住什么，retrieval 怎样把上下文带回来，以及怎样不让记忆层变成新的风险来源。
