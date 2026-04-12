@@ -37,7 +37,8 @@
 
 - собирает архитектуру, память, execution и observability в один runtime skeleton;
 - закрепляет contract core через policy layer и capability catalog;
-- доводит этот каркас до first rollout readiness.
+- доводит этот каркас до first rollout readiness;
+- превращает operating model из Part VI в исполнимую форму рантайма и rollout shape.
 
 ## В этой части
 

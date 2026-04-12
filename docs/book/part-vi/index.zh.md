@@ -30,11 +30,16 @@
 
 ## 这一部分解决什么问题
 
+- 在平台先从组织层面漂移之前，把 ownership boundaries 先说清楚；
+- 说明 platform ownership 如何进一步落成 golden paths、shared gateways 和 controlled deviations；
+- 为从 operating model 走向 reference implementation 做准备。
+
 ## 本部分内容
 
 - [第 14 章：平台团队与产品团队](chapter-14.zh.md)
   这一章继续同一个 support 场景，但切到 ownership 层：runtime、policies、gateways 和 platform incidents 到底该由谁负责。
 - [第 15 章：黄金路径、共享网关与反动物园模式](chapter-15.zh.md)
+  这一章把 ownership boundaries 继续落成工程 defaults：哪些共享路径应该比本地重造更容易，哪些敏感层应该由 gateway 统一承接，以及怎样防止平台退化成动物园。
 
 ## 这一部分之后去哪里
 

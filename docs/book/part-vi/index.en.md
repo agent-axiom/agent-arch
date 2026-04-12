@@ -30,11 +30,16 @@ In this part, we will look at the operating model: who owns what, how to build g
 
 ## What This Part Solves
 
+- it makes ownership boundaries explicit before the platform turns into organizational drift;
+- it shows how platform ownership becomes golden paths, shared gateways, and controlled deviations;
+- it prepares the move from operating model into the reference implementation.
+
 ## In This Part
 
 - [Chapter 14. Platform Team vs Product Teams](chapter-14.en.md)
   This chapter continues the same support case at the ownership layer: who should own the runtime, policies, gateways, and platform-grade incidents.
 - [Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns](chapter-15.en.md)
+  This chapter turns ownership boundaries into engineering defaults: which shared paths should be easier than local reinvention, where gateways should centralize sensitive concerns, and how to keep the platform from becoming a zoo.
 
 ## Where It Leads Next
 

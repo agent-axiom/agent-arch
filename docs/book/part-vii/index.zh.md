@@ -31,7 +31,8 @@
 
 - 把架构、记忆、执行与可观测性收拢成一个 runtime skeleton；
 - 通过 policy layer 和 capability catalog 固定 contract core；
-- 把这套骨架推进到 first rollout readiness。
+- 把这套骨架推进到 first rollout readiness；
+- 把 Part VI 的 operating model 继续落实成可执行的 runtime 与 rollout shape。
 
 ## 本部分内容
 

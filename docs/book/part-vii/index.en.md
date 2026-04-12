@@ -31,7 +31,8 @@ In this part, I gradually assemble a minimally mature platform:
 
 - it gathers architecture, memory, execution, and observability into one runtime skeleton;
 - it fixes the contract core through the policy layer and capability catalog;
-- it brings that skeleton up to first-rollout readiness.
+- it brings that skeleton up to first-rollout readiness;
+- it turns the operating model from Part VI into an executable runtime and rollout shape.
 
 ## In This Part
 
