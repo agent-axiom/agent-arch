@@ -1,8 +1,19 @@
 # Chapter 16. Baseline Runtime Blueprint
 
+!!! info "How to read this chapter"
+    It helps to keep one practical question in mind rather than an abstract runtime topic:
+
+    - where the run loop for the same support agent should actually live;
+    - how not to collapse policy, memory, execution, and telemetry into one handler;
+    - how to build a skeleton that survives not only the demo, but the rollout that follows.
+
+    If those answers are fuzzy, the system usually keeps working only until the first serious change or incident.
+
 ## 1. Why a Reference Runtime Matters If You Already Have an Architecture
 
 The architecture chapters are useful because they give you language and a frame. But at some point almost everyone asks the same question: "Fine, but what should this look like as a system you can actually build?"
+
+In the running support case, that is no longer theoretical. The agent can already check status, read memory, open a ticket through the gateway, and emit traces. But without an explicit runtime shape, those steps quickly spread across local handlers, ad hoc retries, and accidental integration bypasses.
 
 That is where the reference runtime matters.
 
