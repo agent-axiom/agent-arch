@@ -127,6 +127,7 @@
 建议先看这些页面：
 
 - [全书计划](book/plan.zh.md)
+- [为什么会有这本书](appendix/why-this-book.zh.md)
 - [术语表](appendix/glossary.zh.md)
 - [速查清单](appendix/cheat-sheets.zh.md)
 - [实战案例](appendix/case-studies.zh.md)

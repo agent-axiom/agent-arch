@@ -179,6 +179,7 @@ plugins:
             Выбор стека публикации: Publishing Stack
             Дорожная карта для сообщества: Community Roadmap
             Глоссарий терминов: Glossary
+            Зачем нужна эта книга: Why This Book Exists
             Шпаргалки: Cheat Sheets
             Rust для платформы агентных систем: Rust for Agent Platforms
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
@@ -255,6 +256,7 @@ plugins:
             Выбор стека публикации: 发布技术栈
             Дорожная карта для сообщества: 社区路线图
             Глоссарий терминов: 术语表
+            Зачем нужна эта книга: 为什么会有这本书
             Шпаргалки: 速查清单
             Rust для платформы агентных систем: Rust 与智能体平台
             Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
@@ -371,6 +373,7 @@ nav:
   - Приложения:
       - Concepts:
           - Глоссарий терминов: appendix/glossary.md
+          - Зачем нужна эта книга: appendix/why-this-book.md
           - Шпаргалки: appendix/cheat-sheets.md
           - Causal debugging и root-cause analysis для agent systems: appendix/causal-debugging.md
           - Memory eval patterns для agent systems: appendix/memory-eval-patterns.md

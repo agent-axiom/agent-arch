@@ -127,6 +127,7 @@ Those pages already give you:
 Start with these pages:
 
 - [Book Plan](book/plan.en.md)
+- [Why This Book Exists](appendix/why-this-book.en.md)
 - [Glossary](appendix/glossary.en.md)
 - [Cheat Sheets](appendix/cheat-sheets.en.md)
 - [Practical Case Studies](appendix/case-studies.en.md)

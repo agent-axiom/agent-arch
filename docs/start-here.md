@@ -127,6 +127,7 @@
 Начни с этих страниц:
 
 - [План книги](book/plan.md)
+- [Зачем нужна эта книга](appendix/why-this-book.md)
 - [Глоссарий терминов](appendix/glossary.md)
 - [Шпаргалки](appendix/cheat-sheets.md)
 - [Практические кейсы](appendix/case-studies.md)
