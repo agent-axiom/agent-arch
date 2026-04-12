@@ -324,7 +324,21 @@ That is why the catalog layer benefits from:
 
 This is boring platform work, not romantic improvisation. That is why it works.
 
-## 14. What to Do Right After This Chapter
+## 14. A Quick Maturity Test for Your Tool Layer
+
+A team should not call its execution layer mature just because tools can be invoked.
+
+A stronger standard is this:
+
+- the catalog is explicit and owned;
+- read, write, and orchestration semantics are visible;
+- idempotency is designed before incidents force it;
+- uncertainty is preserved instead of being hidden behind fake success;
+- the model never becomes the direct integration surface.
+
+If one or two of those are missing, the system may still function. If most of them are missing, the tool layer is still only a prototype wrapper.
+
+## 15. What to Do Right After This Chapter
 
 If you want to review your execution layer quickly, use this short list:
 
@@ -338,7 +352,7 @@ If you want to review your execution layer quickly, use this short list:
 
 If the answer is "no" several times in a row, your agent can already call tools, but the execution model is still immature.
 
-## 15. What to Read Next
+## 16. What to Read Next
 
 The next natural topics in this part are sandbox execution, MCP as an integration contract, and the rules for retries and rollback boundaries. That is where it becomes clear how the same support agent not only calls tools, but does so through a mature execution layer.
 

@@ -18,6 +18,17 @@ The first part answers the main question: what should a **modern secure agent ar
 - Most production use cases benefit less from maximum autonomy than from the right combination of `workflow + guarded autonomy`.
 - Multi-agent design is useful not for aesthetics but for context isolation, team ownership, and parallelism.[^anthropic][^langgraph-multi]
 
+## A Fast Self-Check Before You Move On
+
+Before moving into the security perimeter, a reader should already be able to answer four basic questions about their own system:
+
+- Why is this an agent and not just a workflow?
+- Where does the right to act actually live?
+- Which layers are mandatory before the first risky write path?
+- What should stay single-agent for now, and what would justify a split later?
+
+If those answers are still vague, Part I should be treated as a working frame to revisit, not only as introductory theory.
+
 ## What You Should Have by the End
 
 By the end of Part I, the reader should have:

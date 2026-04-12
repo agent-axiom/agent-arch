@@ -324,7 +324,21 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 这是无聊的平台工作，而不是浪漫的即兴发挥。正因为如此，它才可靠。
 
-## 14. 读完这一章后先做什么
+## 14. 给 tool layer 做一次快速成熟度测试
+
+团队不应该只因为 tools 已经能被调用，就把 execution layer 叫做成熟。
+
+更强的标准应该是这样：
+
+- 目录是显式的，并且有人负责；
+- read、write 和 orchestration 语义可以被清楚区分；
+- idempotency 是在事故发生前设计好的；
+- 不确定性不会被伪装成 success；
+- 模型不会变成直接对接外部集成的表面。
+
+如果只缺一两项，系统也许还能运行。但如果大多数都缺失，那这个 tool layer 仍然只是原型包装层。
+
+## 15. 读完这一章后先做什么
 
 如果你想快速检查 execution layer，可以用这个短清单：
 
@@ -338,7 +352,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 如果连续几个答案都是否，那说明你的智能体虽然已经能调用 tools，但 execution model 还远未成熟。
 
-## 15. 接下来读什么
+## 16. 接下来读什么
 
 这一部分接下来的自然主题是：sandbox execution、MCP 作为集成契约，以及 retries 和 rollback boundaries 的规则。也正是在那里，你会看到同一个支持智能体并不只是“会调工具”，而是通过成熟执行层去调工具。
 
