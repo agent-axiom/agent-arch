@@ -141,7 +141,9 @@ postmortem:
     bundle_id: bundle-2026-04-09-b
 ```
 
-## 12. Практический чеклист
+## 12. Что сделать сразу
+
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Есть ли в postmortem точный `incident_id`?
 - Восстановлены ли `trace_id`, `session_id`, `bundle_id` и `change_id`?
@@ -151,7 +153,7 @@ postmortem:
 - Понятно ли, какие lifecycle artifacts должны обновиться?
 - Возвращается ли incident в evals и rollout criteria?
 
-## См. также
+## Что делать дальше
 
 - [Плейбук реагирования на инциденты в агентных системах](incident-response-playbook.md)
 - [Схема incident record и postmortem linkage](incident-record-schema.md)

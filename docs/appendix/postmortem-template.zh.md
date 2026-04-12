@@ -141,7 +141,9 @@ postmortem:
     bundle_id: bundle-2026-04-09-b
 ```
 
-## 12. 实用检查清单
+## 12. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - Postmortem 里是否有精确的 `incident_id`？
 - 是否恢复了 `trace_id`、`session_id`、`bundle_id` 与 `change_id`？
@@ -151,7 +153,7 @@ postmortem:
 - 是否明确了要更新哪些 lifecycle artifacts？
 - Incident 是否回流到了 evals 与 rollout criteria？
 
-## 延伸阅读
+## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [Incident Record 与 Postmortem Linkage Schema](incident-record-schema.zh.md)

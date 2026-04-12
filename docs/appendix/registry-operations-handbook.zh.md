@@ -132,7 +132,9 @@ registry 之所以失真，通常不是因为设计不好，而是因为 operati
 
 这种 review 最好保持简短，但持续进行。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 每个 active agent 都有 owner 吗？
 - inventory 和 registry 分开了吗？
@@ -142,7 +144,7 @@ registry 之所以失真，通常不是因为设计不好，而是因为 operati
 - deprecated agents 会失去 principals 与 tool access 吗？
 - incidents 会推动 registry hygiene 改进吗？
 
-## 延伸阅读
+## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)

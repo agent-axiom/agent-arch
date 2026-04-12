@@ -109,7 +109,9 @@ A useful postmortem for an agent system usually includes:
 
 A good postmortem ends not only with a document, but with updated lifecycle artifacts.
 
-## 9. Short checklist
+## 9. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Can you disable one capability quickly?
 - Can you reconstruct `trace -> session -> bundle -> rollout wave`?
@@ -119,7 +121,7 @@ A good postmortem ends not only with a document, but with updated lifecycle arti
 - Is ownership for containment actions clear?
 - Do incidents flow back into evals and rollout gates?
 
-## See also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](policy-bundle-schema.en.md)

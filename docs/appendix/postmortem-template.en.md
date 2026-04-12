@@ -141,7 +141,9 @@ postmortem:
     bundle_id: bundle-2026-04-09-b
 ```
 
-## 12. Practical checklist
+## 12. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Does the postmortem include a precise `incident_id`?
 - Are `trace_id`, `session_id`, `bundle_id`, and `change_id` reconstructed?
@@ -151,7 +153,7 @@ postmortem:
 - Is it clear which lifecycle artifacts must change?
 - Does the incident flow back into evals and rollout criteria?
 
-## See also
+## What to Do Next
 
 - [Incident Response Playbook for Agent Systems](incident-response-playbook.en.md)
 - [Incident Record and Postmortem Linkage Schema](incident-record-schema.en.md)

@@ -132,7 +132,9 @@ A short review can be built around a few questions:
 
 This review is best kept short, but regular.
 
-## 11. Practical checklist
+## 11. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Does every active agent have an owner?
 - Are inventory and registry separated?
@@ -142,7 +144,7 @@ This review is best kept short, but regular.
 - Do deprecated agents lose principals and tool access?
 - Do incidents improve registry hygiene?
 
-## See also
+## What to Do Next
 
 - [Incident Response Playbook for Agent Systems](incident-response-playbook.en.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.en.md)

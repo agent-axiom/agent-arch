@@ -109,7 +109,9 @@
 
 好的 postmortem 不只是留下文档，还会更新 lifecycle artifacts。
 
-## 9. 简短检查清单
+## 9. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 能否快速禁用单个 capability？
 - 能否恢复 `trace -> session -> bundle -> rollout wave`？
@@ -119,7 +121,7 @@
 - containment actions 的 owner 是否明确？
 - incidents 是否会回流到 evals 与 rollout gates？
 
-## 延伸阅读
+## 下一步做什么
 
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
