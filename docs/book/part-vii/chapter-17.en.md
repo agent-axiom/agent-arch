@@ -70,7 +70,30 @@ flowchart LR
 
 </div>
 
-## 4. What Is Worth Storing in a Capability Catalog
+## 4. A Tool Surface Is Not the Same Thing as a Governed Capability Surface
+
+Recent OpenAI tooling guidance is useful because it makes a distinction many teams blur in practice: a model may see tools, MCP servers, hosted capabilities, or local functions, but the runtime still has to decide what kind of control surface those things belong to.[^openai-tools]
+
+That distinction matters.
+
+A weak implementation says:
+
+- here is a list of tools the model can call.
+
+A stronger implementation says:
+
+- here is the governed capability surface;
+- here is which part of it is exposed to the model;
+- here is which transport carries execution;
+- here is which capabilities are callable directly, which are brokered through a gateway, and which are not exposed at all.
+
+This is why a capability catalog should sit above raw tool definitions. It prevents the runtime from confusing:
+
+- what the model can mention;
+- what the runtime can route;
+- what the platform is actually willing to execute.
+
+## 5. What Is Worth Storing in a Capability Catalog
 
 A practical field set usually looks like this:
 
@@ -78,6 +101,7 @@ A practical field set usually looks like this:
 - owner;
 - mode: read / write / high_risk;
 - transport: mcp / gateway / sandboxed_exec;
+- exposure: direct / brokered / restricted;
 - input schema;
 - output shape;
 - approval requirement;
@@ -86,7 +110,7 @@ A practical field set usually looks like this:
 
 With that contract, the runtime can already behave predictably instead of adapting ad hoc to every capability.
 
-## 5. A Policy Decision Should Be an Object, Not Just a Bool
+## 6. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.
 
@@ -107,7 +131,7 @@ And additionally:
 
 That greatly improves explainability and makes telemetry far more useful.
 
-## 6. Example Policy Contract
+## 7. Example Policy Contract
 
 Here is a very simple but practical template:
 
@@ -132,7 +156,7 @@ policy:
 
 Its power is not completeness. Its power is explicitness. You can argue about a specific rule and understand where it applies.
 
-## 7. Example Capability Catalog Contract
+## 8. Example Capability Catalog Contract
 
 It helps to think about the catalog roughly like this:
 
@@ -142,12 +166,14 @@ capabilities:
     owner: knowledge_platform
     mode: read
     transport: mcp
+    exposure: direct
     timeout_seconds: 5
     approval: none
   create_ticket:
     owner: support_platform
     mode: write
     transport: gateway
+    exposure: brokered
     timeout_seconds: 15
     approval: manager
     idempotency_key_required: true
@@ -155,13 +181,14 @@ capabilities:
     owner: platform_runtime
     mode: high_risk
     transport: sandboxed_exec
+    exposure: restricted
     timeout_seconds: 10
     approval: always
 ```
 
-That kind of catalog already defines operational semantics, not just names.
+That kind of catalog already defines operational semantics, not just names. It also makes explicit whether a capability is model-facing, runtime-brokered, or operator-only.
 
-## 8. A Simple Policy Decision Skeleton
+## 9. A Simple Policy Decision Skeleton
 
 The point here is that the runtime receives not only permission, but a structured decision.
 
@@ -186,7 +213,7 @@ def evaluate_capability(name: str) -> PolicyDecision:
 
 Even code this small already gives the right shape for telemetry, approval UI flows, and investigations.
 
-## 9. A Simple Capability Lookup Skeleton
+## 10. A Simple Capability Lookup Skeleton
 
 And one more practical piece: the runtime should not know capability details directly, it should fetch them from the catalog.
 
@@ -199,25 +226,27 @@ class CapabilitySpec:
     name: str
     mode: str
     transport: str
+    exposure: str
     timeout_seconds: int
 
 
 def get_capability(name: str) -> CapabilitySpec | None:
     registry = {
-        "search_docs": CapabilitySpec("search_docs", "read", "mcp", 5),
-        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", 15),
+        "search_docs": CapabilitySpec("search_docs", "read", "mcp", "direct", 5),
+        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", "brokered", 15),
     }
     return registry.get(name)
 ```
 
 This also looks boring. Good. The catalog layer should be boring, stable, and inspectable.
 
-## 10. Common Mistakes
+## 11. Common Mistakes
 
 These problems are very typical:
 
 - policy rules are scattered across runtime code;
 - the capability contract is incomplete;
+- tools exposed to the model are treated as if they were automatically approved capabilities;
 - capability ownership is unclear;
 - approval logic is embedded directly into orchestration;
 - memory policy and execution policy behave as if they were unrelated;
@@ -225,34 +254,34 @@ These problems are very typical:
 
 When that happens, the reference implementation stops being a reference and becomes a bundle of conventions again.
 
-## 11. A Fast Maturity Test for the Policy Layer and Capability Catalog
+## 12. A Fast Maturity Test for the Policy Layer and Capability Catalog
 
 A team should not think it has assembled the contract core of its agent system only because it has a few policy checks and a list of tools.
 
 A stronger bar is this:
 
 - policy decisions are explicit objects rather than scattered booleans;
-- capability contracts carry ownership, transport, risk, and approval semantics;
+- capability contracts carry ownership, transport, exposure, risk, and approval semantics;
 - runtime code depends on the catalog instead of direct calls and ad hoc exceptions;
 - memory policy, execution policy, and approval policy belong to one visible control surface;
 - telemetry can expose not only what happened, but which policy and capability contract governed it.
 
 If most of those conditions are missing, the runtime may exist, but the contract core is still not assembled.
 
-## 12. What to Do Right Away
+## 13. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
 - Do you have a separate policy layer instead of a pile of `if` branches?
 - Does policy return a structured decision?
 - Is there a single capability catalog?
-- Do capabilities have owner, transport, and risk semantics?
+- Do capabilities have owner, transport, exposure, and risk semantics?
 - Does the runtime use the catalog rather than direct calls?
 - Are policy decisions visible in telemetry?
 
 If the answer is "no" several times in a row, the skeleton exists, but the contract core is not assembled yet.
 
-## 13. What to Do Next
+## 14. What to Do Next
 
 First make policy decisions and capability contracts explicit, then check whether that same system is ready for its first rollout.
 
@@ -263,7 +292,9 @@ The next logical step in the reference implementation is to assemble a productio
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-## 14. Useful Reference Pages
+[^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
+
+## 15. Useful Reference Pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)

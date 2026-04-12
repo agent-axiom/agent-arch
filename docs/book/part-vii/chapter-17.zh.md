@@ -70,7 +70,30 @@ flowchart LR
 
 </div>
 
-## 4. Capability catalog 里值得存什么
+## 4. Tool surface 不等于 governed capability surface
+
+OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团队在实践里会把它混掉：模型也许能看到 tools、MCP servers、hosted capabilities 或 local functions，但 runtime 仍然必须决定这些东西究竟属于哪一种 control surface。[^openai-tools]
+
+这个区分很重要。
+
+弱实现会说：
+
+- 这里有一张模型可调用的 tools 列表。
+
+更强的实现会说：
+
+- 这里是 governed capability surface；
+- 其中哪一部分会暴露给模型；
+- 执行通过哪一种 transport 走；
+- 哪些 capabilities 可以直接调用，哪些必须通过 gateway broker，哪些根本不暴露。
+
+这就是为什么 capability catalog 必须放在原始 tool definitions 之上。它防止 runtime 混淆：
+
+- 模型可以提到什么；
+- runtime 可以路由什么；
+- 平台真正愿意执行什么。
+
+## 5. Capability catalog 里值得存什么
 
 一个实用的字段集合通常包括：
 
@@ -78,6 +101,7 @@ flowchart LR
 - owner；
 - mode: read / write / high_risk；
 - transport: mcp / gateway / sandboxed_exec；
+- exposure: direct / brokered / restricted；
 - input schema；
 - output shape；
 - approval requirement；
@@ -86,7 +110,7 @@ flowchart LR
 
 有了这样的 contract，runtime 才能以可预测的方式运行，而不是对每个 capability 临时适配。
 
-## 5. Policy decision 应该是对象，而不只是 bool
+## 6. Policy decision 应该是对象，而不只是 bool
 
 一个很有用的工程习惯：不要把 policy decision 简化成 `True/False`。
 
@@ -107,7 +131,7 @@ flowchart LR
 
 这会大幅提升 explainability，也让 telemetry 更有价值。
 
-## 6. 一个 policy contract 示例
+## 7. 一个 policy contract 示例
 
 下面是一个非常简单但实用的模板：
 
@@ -132,7 +156,7 @@ policy:
 
 它的价值不在完整，而在显式。你可以围绕具体规则讨论，并且知道它到底应用在什么地方。
 
-## 7. 一个 capability catalog contract 示例
+## 8. 一个 capability catalog contract 示例
 
 你可以把 catalog 大致设计成这样：
 
@@ -142,12 +166,14 @@ capabilities:
     owner: knowledge_platform
     mode: read
     transport: mcp
+    exposure: direct
     timeout_seconds: 5
     approval: none
   create_ticket:
     owner: support_platform
     mode: write
     transport: gateway
+    exposure: brokered
     timeout_seconds: 15
     approval: manager
     idempotency_key_required: true
@@ -155,13 +181,14 @@ capabilities:
     owner: platform_runtime
     mode: high_risk
     transport: sandboxed_exec
+    exposure: restricted
     timeout_seconds: 10
     approval: always
 ```
 
-这样的 catalog 已经在定义 operational semantics，而不只是 capability 名字。
+这样的 catalog 已经在定义 operational semantics，而不只是 capability 名字。它还明确了某个 capability 是 model-facing、runtime-brokered，还是仅供 operator 使用。
 
-## 8. 一个简单的 policy decision skeleton
+## 9. 一个简单的 policy decision skeleton
 
 重点在于：runtime 拿到的不只是“准不准”，而是结构化决策。
 
@@ -186,7 +213,7 @@ def evaluate_capability(name: str) -> PolicyDecision:
 
 即使这么简单的代码，也已经给 telemetry、approval UI flow 和事后调查提供了正确的形状。
 
-## 9. 一个简单的 capability lookup skeleton
+## 10. 一个简单的 capability lookup skeleton
 
 再来一个很实用的点：runtime 不应该直接知道 capability 细节，而应该从 catalog 中取。
 
@@ -199,25 +226,27 @@ class CapabilitySpec:
     name: str
     mode: str
     transport: str
+    exposure: str
     timeout_seconds: int
 
 
 def get_capability(name: str) -> CapabilitySpec | None:
     registry = {
-        "search_docs": CapabilitySpec("search_docs", "read", "mcp", 5),
-        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", 15),
+        "search_docs": CapabilitySpec("search_docs", "read", "mcp", "direct", 5),
+        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", "brokered", 15),
     }
     return registry.get(name)
 ```
 
 这同样看起来很“无聊”。很好。Catalog layer 本来就应该无聊、稳定、可审阅。
 
-## 10. 常见错误
+## 11. 常见错误
 
 这些问题非常常见：
 
 - policy rules 散落在 runtime 代码各处；
 - capability contract 不完整；
+- 暴露给模型的 tools 被误当成自动获批的 capabilities；
 - capability ownership 不清晰；
 - approval logic 直接嵌进 orchestration；
 - memory policy 和 execution policy 好像互不相干；
@@ -225,34 +254,34 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 一旦这样，参考实现就不再是 reference，而是又退回成一堆约定。
 
-## 11. 给 policy layer 和 capability catalog 做一次快速成熟度测试
+## 12. 给 policy layer 和 capability catalog 做一次快速成熟度测试
 
 团队不应该只因为已经有几条 policy checks 和一张 tools 列表，就觉得自己已经搭好了 agent system 的 contract core。
 
 更高的标准应该是：
 
 - policy decisions 是显式对象，而不是散落的 booleans；
-- capability contracts 携带 ownership、transport、risk 和 approval semantics；
+- capability contracts 携带 ownership、transport、exposure、risk 和 approval semantics；
 - runtime code 依赖 catalog，而不是 direct calls 和 ad hoc exceptions；
 - memory policy、execution policy 和 approval policy 属于同一个可见的 control surface；
 - telemetry 不只展示发生了什么，还能展示是哪条 policy 和哪个 capability contract 在起作用。
 
 如果这些条件大多不成立，那 runtime 也许已经存在，但 contract core 还没有真正搭起来。
 
-## 12. 现在就该做什么
+## 13. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 你有没有独立的 policy layer，而不是一堆散落的 `if`？
 - policy 返回的是不是 structured decision？
 - 你有没有统一的 capability catalog？
-- capabilities 是否拥有 owner、transport 和 risk semantics？
+- capabilities 是否拥有 owner、transport、exposure 和 risk semantics？
 - runtime 是否使用 catalog，而不是 direct calls？
 - policy decisions 是否能在 telemetry 里看到？
 
 如果连续多个答案都是“没有”，那说明 skeleton 已经有了，但 contract core 还没真正搭起来。
 
-## 13. 下一步做什么
+## 14. 下一步做什么
 
 先把 policy decisions 和 capability contracts 固定下来，再检查同一套系统是否已经准备好 first rollout。
 
@@ -263,7 +292,9 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 
-## 14. 值得配套阅读的参考页
+[^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
+
+## 15. 值得配套阅读的参考页
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)

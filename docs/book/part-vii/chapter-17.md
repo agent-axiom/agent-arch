@@ -70,7 +70,30 @@ flowchart LR
 
 </div>
 
-## 4. Что полезно хранить в capability catalog
+## 4. Tool surface это не то же самое, что governed capability surface
+
+Свежий material OpenAI по tooling полезен тем, что проводит различие, которое на практике размывают многие команды: модель может видеть tools, MCP servers, hosted capabilities или local functions, но runtime все равно должен решать, к какому control surface все это относится.[^openai-tools]
+
+Это различие важно.
+
+Слабая реализация говорит так:
+
+- вот список tools, которые модель может вызывать.
+
+Более сильная реализация говорит так:
+
+- вот governed capability surface;
+- вот какая его часть вообще видна модели;
+- вот через какой transport идет исполнение;
+- вот какие capabilities можно звать напрямую, какие идут через gateway, а какие вообще не экспонируются.
+
+Именно поэтому capability catalog должен стоять выше сырых tool definitions. Он не дает runtime перепутать:
+
+- что модель может упомянуть;
+- что runtime может маршрутизировать;
+- что платформа вообще готова исполнять.
+
+## 5. Что полезно хранить в capability catalog
 
 Практически полезный набор полей обычно такой:
 
@@ -78,6 +101,7 @@ flowchart LR
 - owner;
 - mode: read / write / high_risk;
 - transport: mcp / gateway / sandboxed_exec;
+- exposure: direct / brokered / restricted;
 - input schema;
 - output shape;
 - approval requirement;
@@ -86,7 +110,7 @@ flowchart LR
 
 С таким контрактом runtime уже может вести себя предсказуемо, а не подстраиваться под каждый capability ad hoc.
 
-## 5. Policy decision должен быть объектом, а не просто bool
+## 6. Policy decision должен быть объектом, а не просто bool
 
 Очень полезная инженерная привычка: policy decision не должен сводиться к `True/False`.
 
@@ -107,7 +131,7 @@ flowchart LR
 
 Это резко повышает explainability и делает telemetry намного полезнее.
 
-## 6. Пример policy contract
+## 7. Пример policy contract
 
 Ниже очень простой, но практичный шаблон:
 
@@ -132,7 +156,7 @@ policy:
 
 Его сила не в полноте, а в явности. Ты можешь спорить с конкретным правилом и понимать, где оно применяется.
 
-## 7. Пример capability catalog contract
+## 8. Пример capability catalog contract
 
 Catalog полезно мыслить примерно так:
 
@@ -142,12 +166,14 @@ capabilities:
     owner: knowledge_platform
     mode: read
     transport: mcp
+    exposure: direct
     timeout_seconds: 5
     approval: none
   create_ticket:
     owner: support_platform
     mode: write
     transport: gateway
+    exposure: brokered
     timeout_seconds: 15
     approval: manager
     idempotency_key_required: true
@@ -155,13 +181,14 @@ capabilities:
     owner: platform_runtime
     mode: high_risk
     transport: sandboxed_exec
+    exposure: restricted
     timeout_seconds: 10
     approval: always
 ```
 
-Такой catalog уже задает operational semantics, а не просто список имен.
+Такой catalog уже задает operational semantics, а не просто список имен. Он еще и явно показывает, какая capability видна модели, какая идет через runtime-broker, а какая остается только у операторского контура.
 
-## 8. Простой кодовый каркас policy decision
+## 9. Простой кодовый каркас policy decision
 
 Ниже каркас, который показывает, что runtime получает не просто разрешение, а структурированное решение.
 
@@ -186,7 +213,7 @@ def evaluate_capability(name: str) -> PolicyDecision:
 
 Даже такой простой код уже задает правильную форму для telemetry, UI approval flows и расследований.
 
-## 9. Простой кодовый каркас capability lookup
+## 10. Простой кодовый каркас capability lookup
 
 И еще один практичный кусок: runtime не должен знать capability details напрямую, он должен вытаскивать их из catalog.
 
@@ -199,25 +226,27 @@ class CapabilitySpec:
     name: str
     mode: str
     transport: str
+    exposure: str
     timeout_seconds: int
 
 
 def get_capability(name: str) -> CapabilitySpec | None:
     registry = {
-        "search_docs": CapabilitySpec("search_docs", "read", "mcp", 5),
-        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", 15),
+        "search_docs": CapabilitySpec("search_docs", "read", "mcp", "direct", 5),
+        "create_ticket": CapabilitySpec("create_ticket", "write", "gateway", "brokered", 15),
     }
     return registry.get(name)
 ```
 
 Это скучный слой. И это хорошо. Catalog layer как раз и должен быть стабильным и обозримым.
 
-## 10. Частые ошибки
+## 11. Частые ошибки
 
 Проблемы здесь очень типовые:
 
 - policy rules размазаны по runtime;
 - capability contract неполный;
+- tools, видимые модели, воспринимаются так, будто это автоматически разрешенные capabilities;
 - ownership capability неясен;
 - approval logic вшита прямо в orchestration;
 - memory policy и execution policy живут как будто отдельно;
@@ -225,34 +254,34 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Когда это происходит, справочная реализация перестает быть опорой и снова превращается в связку договоренностей.
 
-## 11. Быстрый тест зрелости для policy layer и capability catalog
+## 12. Быстрый тест зрелости для policy layer и capability catalog
 
 Команде не стоит думать, что она уже собрала contract core своей agent system, только потому, что у нее есть несколько policy checks и список tools.
 
 Более сильная планка такая:
 
 - policy decisions существуют как явные объекты, а не как размазанные booleans;
-- capability contracts несут ownership, transport, risk и approval semantics;
+- capability contracts несут ownership, transport, exposure, risk и approval semantics;
 - runtime code зависит от catalog, а не от direct calls и ad hoc exceptions;
 - memory policy, execution policy и approval policy принадлежат одному видимому control surface;
 - telemetry умеет показать не только что произошло, но и какой policy и capability contract этим управлял.
 
 Если большинство этих условий не выполняется, runtime уже может существовать, но contract core у системы пока не собран.
 
-## 12. Что сделать сразу
+## 13. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Есть ли у тебя отдельный policy layer, а не набор `if` по коду?
 - Возвращает ли policy structured decision?
 - Есть ли единый capability catalog?
-- Есть ли у capabilities owner, transport и risk semantics?
+- Есть ли у capabilities owner, transport, exposure и risk semantics?
 - Использует ли runtime catalog, а не прямые вызовы?
 - Видны ли policy decisions в telemetry?
 
 Если на несколько вопросов подряд ответ “нет”, skeleton у тебя уже есть, но contract core пока еще не собран.
 
-## 13. Что делать дальше
+## 14. Что делать дальше
 
 Сначала сделай policy decisions и capability contracts явными, а потом проверь, готова ли эта же система к первому rollout.
 
@@ -263,7 +292,9 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
 
-## 14. Полезные справочные страницы
+[^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
+
+## 15. Полезные справочные страницы
 
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
