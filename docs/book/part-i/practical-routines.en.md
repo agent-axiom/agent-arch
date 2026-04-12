@@ -195,9 +195,9 @@ At that point it is usually helpful to:
 - split analyst-like and action-like roles;
 - consider whether a handoff or manager pattern is needed.
 
-## 10. Practical Checklist
+## 10. What to Do Right Away
 
-If you want to quickly assess the maturity of your instruction layer, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do you distinguish between instructions, routines, and templates?
 - Can someone read the routine without the raw prompt and still understand the scenario logic?
@@ -208,7 +208,7 @@ If you want to quickly assess the maturity of your instruction layer, ask:
 
 If the answer is "no" several times in a row, your agent behavior is still stored too implicitly.
 
-## 11. What to Read Next
+## 11. What to Do Next
 
 - [Chapter 1. Why Agents Need a Platform, Not Magic](chapter-1.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)

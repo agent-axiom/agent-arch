@@ -115,7 +115,7 @@ Typical examples:
 
 Here, handoff is often more natural than a central manager pretending to understand everything equally well.
 
-## 7. Where Systems Fail Most Often
+## 7. Common Mistakes
 
 Both patterns have typical failure modes.
 
@@ -207,9 +207,9 @@ If you use handoffs, check:
 
 So safety here is not something "on top of orchestration." It is part of orchestration semantics itself.
 
-## 13. Practical Checklist
+## 13. What to Do Right Away
 
-If you want to quickly assess your orchestration choice, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Who owns the global run goal?
 - Who owns the final outcome?
@@ -221,7 +221,7 @@ If you want to quickly assess your orchestration choice, ask:
 
 If the answers are blurry, the pattern is not mature yet.
 
-## 14. What to Read Next
+## 14. What to Do Next
 
 - [Practice. Instructions, Routines, and Prompt Templates](practical-routines.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)

@@ -167,9 +167,9 @@ The point is not the code itself, but the interaction type:
 
 Those are different operational semantics, and it is useful not to blur them together.
 
-## 9. Practical Checklist
+## 9. What to Do Right Away
 
-If you are unsure, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do I need a new agent or just a new capability?
 - Does this entity have its own role, policy surface, and lifecycle?
@@ -179,7 +179,7 @@ If you are unsure, ask:
 
 If those questions are hard to answer, it is usually safer to choose `MCP` first, not `A2A`.
 
-## 10. What to Read Next
+## 10. What to Do Next
 
 - [Part IV. Tools and Execution](index.en.md)
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](chapter-9.en.md)

@@ -115,7 +115,7 @@ handoffs 通常在这些情况下更有优势：
 
 这里 handoff 往往比一个假装什么都懂的 central manager 更自然。
 
-## 7. 系统最常在哪里出问题
+## 7. 常见错误
 
 这两种模式都有自己的典型失败方式。
 
@@ -207,9 +207,9 @@ def handoff(state: dict, next_agent: callable) -> dict:
 
 也就是说，这里的安全不是“叠加在 orchestration 上面”的东西，而是 orchestration semantics 本身的一部分。
 
-## 13. 实用检查清单
+## 13. 现在就该做什么
 
-如果你想快速评估 orchestration pattern 的选择，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 谁拥有全局 run goal？
 - 谁对 final outcome 负责？
@@ -221,7 +221,7 @@ def handoff(state: dict, next_agent: callable) -> dict:
 
 如果这些答案都很模糊，说明模式还没真正架构化成熟。
 
-## 14. 接下来读什么
+## 14. 下一步做什么
 
 - [实践篇：Instructions、Routines 与 Prompt Templates](practical-routines.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)

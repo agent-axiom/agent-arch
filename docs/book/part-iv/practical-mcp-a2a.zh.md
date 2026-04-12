@@ -167,9 +167,9 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 
 这两者的 operational semantics 不一样，最好不要混在一起。
 
-## 9. 实用检查清单
+## 9. 现在就该做什么
 
-如果你拿不准，就问自己：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 我需要的是一个新 agent，还是一个新 capability？
 - 这个实体是否拥有自己的 role、policy surface 和 lifecycle？
@@ -179,7 +179,7 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 
 如果这些问题都答得不太稳，通常更安全的选择是先用 `MCP`，而不是 `A2A`。
 
-## 10. 接下来读什么
+## 10. 下一步做什么
 
 - [第四部分：工具与执行](index.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)

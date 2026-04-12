@@ -195,9 +195,9 @@ def render_prompt(*, instructions: str, routine: str, user_input: str, retrieved
 - 把 analyst-like 和 action-like 角色拆开；
 - 重新判断是不是需要 handoff 或 manager pattern。
 
-## 10. 实用检查清单
+## 10. 现在就该做什么
 
-如果你想快速评估 instruction layer 的成熟度，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 你有没有明确区分 instructions、routines 和 templates？
 - 不看原始 prompt，光看 routine 能不能理解这个场景的逻辑？
@@ -208,7 +208,7 @@ def render_prompt(*, instructions: str, routine: str, user_input: str, retrieved
 
 如果连续几个问题答案都是“不能”，那说明你的 agent 行为还被存得太隐式。
 
-## 11. 接下来读什么
+## 11. 下一步做什么
 
 - [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
