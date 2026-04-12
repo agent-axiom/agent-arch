@@ -220,7 +220,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 - 丢失日期和数据 owner；
 - 被当作 trusted instruction 喂给模型。
 
-## 10. Retrieval systems 最常坏在哪里
+## 10. 常见错误
 
 这些问题通常会一遍遍重复：
 
@@ -233,9 +233,9 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 最后这一点尤其重要。如果你已经无法解释为什么某段上下文进入了 prompt，那系统基本已经失去良好控制了。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
 
-如果你想快速检查 retrieval layer，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 有没有 records 数量上限和 token budget？
 - ranking 是否不仅考虑 similarity，也考虑 confidence、recency 和 trust？
@@ -246,7 +246,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 如果连续几个问题答案都是 “no”，那说明你已经有了 memory，但还没有形成 memory discipline。
 
-## 12. 接下来读什么
+## 12. 下一步做什么
 
 到这里，关于 memory 的基础部分已经开始成形。接下来你可以继续深入 retention 和 deletion，也可以转去看 tools 和 execution。
 

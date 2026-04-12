@@ -215,7 +215,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 - 在 audit trail 里记录它；
 - 用它做 reconciliation 和调查。
 
-## 10. Execution reliability 最常见的崩坏点
+## 10. 常见错误
 
 这些问题非常典型：
 
@@ -228,9 +228,9 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 这都说明 execution layer 还没有长成 production-grade 的 failure model。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
 
-如果你想快速检查 execution reliability，可以问：
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - write tools 是否有明确的 idempotency strategy？
 - 系统是否区分 `retryable_failure` 和 `side_effect_unknown`？
@@ -242,10 +242,10 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 如果连续几个答案都是否，那下一次 integration 不稳定时，几乎一定会变成重复写入、噪音或手工事故排查。
 
-## 12. 接下来读什么
+## 12. 下一步做什么
 
 Part IV 到这里已经把基础 execution layer 收束起来了：contracts、sandbox、capability transport，以及 side effects discipline。接下来就很自然地进入整个 agent system 层面的 reliability 和 observability。
 
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)
 - [第四部分：工具与执行](index.zh.md)
-- [参考来源](../../appendix/sources.md)
+- [参考来源](../../appendix/sources.zh.md)

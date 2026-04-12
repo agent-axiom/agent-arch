@@ -231,7 +231,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 - логировать его в audit trail;
 - использовать для reconciliation и расследований.
 
-## 11. Что чаще всего ломается в execution reliability
+## 11. Частые ошибки
 
 Проблемы здесь довольно типовые:
 
@@ -244,9 +244,9 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Все это означает одно: execution layer еще не дорос до production-grade модели отказов.
 
-## 12. Практический чеклист
+## 12. Что сделать сразу
 
-Если хочешь быстро проверить reliability execution layer, пройди по вопросам:
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Есть ли у write tools явная idempotency strategy?
 - Различает ли система `retryable_failure` и `side_effect_unknown`?
@@ -258,7 +258,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Если на несколько вопросов подряд ответ “нет”, то следующая нестабильность интеграции почти наверняка превратится в дубль, шум или ручной разбор инцидента.
 
-## 13. Что читать дальше
+## 13. Что делать дальше
 
 Part IV уже закрывает базовый execution layer: contracts, sandbox, capability transport и дисциплину вокруг side effects. Дальше стоит переходить к observability и reliability на уровне всей агентной системы.
 

@@ -215,7 +215,7 @@ Good practice:
 - log it in audit trails;
 - use it for reconciliation and investigations.
 
-## 10. What Usually Breaks in Execution Reliability
+## 10. Common Mistakes
 
 Typical failures repeat:
 
@@ -228,9 +228,9 @@ Typical failures repeat:
 
 All of this means the execution layer has not yet grown into a production-grade failure model.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to quickly review execution reliability, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Do write tools have an explicit idempotency strategy?
 - Does the system distinguish `retryable_failure` from `side_effect_unknown`?
@@ -242,10 +242,10 @@ If you want to quickly review execution reliability, ask:
 
 If the answer is "no" several times in a row, the next unstable integration will almost certainly turn into duplication, noise, or a manual incident review.
 
-## 12. What to Read Next
+## 12. What to Do Next
 
 Part IV now closes the basic execution layer: contracts, sandboxing, capability transport, and side-effect discipline. The next logical move is reliability and observability at the whole agent-system level.
 
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](chapter-9.en.md)
 - [Part IV. Tools and Execution](index.en.md)
-- [Sources](../../appendix/sources.md)
+- [Sources](../../appendix/sources.en.md)

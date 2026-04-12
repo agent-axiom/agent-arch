@@ -11,6 +11,8 @@ At this point, the agent is no longer just reasoning, and no longer just approac
 
     Together, these three steps give you a memory layer you can discuss as an engineering system, not as an abstract “let's add memory”.
 
+## What This Part Solves
+
 That is the right step, but it is also where many systems start quietly accumulating debt. The same support agent can easily turn useful state into a durable error source unless memory is designed as a controlled layer.
 
 - they save everything into memory;
@@ -27,4 +29,6 @@ In this part, we will look at how to make memory useful without turning it into 
   This chapter continues the same support case at the moment the team decides what should still be remembered after the run and what should never harden into memory.
 - [Chapter 7. Retrieval, Compaction, and Background Updates](chapter-7.en.md)
 
-After that, the natural move is the execution layer: how the same agent not only remembers context, but acts through controlled tools.
+## Where It Leads Next
+
+After this part, the natural next move is [Part IV](../part-iv/index.en.md): how the same agent not only remembers context, but acts through controlled tools, sandboxing, and execution contracts.

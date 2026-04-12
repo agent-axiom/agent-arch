@@ -220,7 +220,7 @@ A bad summary:
 - loses date and data owner;
 - is fed to the model as a trusted instruction.
 
-## 10. What Usually Breaks in Retrieval Systems
+## 10. Common Mistakes
 
 The same problems repeat:
 
@@ -233,9 +233,9 @@ The same problems repeat:
 
 The last point is especially important. If you cannot explain why a piece of context landed in the prompt, then the system is already poorly controlled.
 
-## 11. Practical Checklist
+## 11. What to Do Right Away
 
-If you want to review your retrieval layer quickly, ask:
+Start with this short list and mark every "no" explicitly:
 
 - Is there a limit on record count and token budget?
 - Does ranking consider not only similarity, but also confidence, recency, and trust?
@@ -246,7 +246,7 @@ If you want to review your retrieval layer quickly, ask:
 
 If the answer is "no" several times in a row, then you already have memory, but you do not yet have memory discipline.
 
-## 12. What to Read Next
+## 12. What to Do Next
 
 At this point, the basic part about memory is already coming together. From here it makes sense either to go deeper into retention and deletion, or to move to the section about tools and execution.
 

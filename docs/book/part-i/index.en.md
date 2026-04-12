@@ -11,14 +11,14 @@ The first part answers the main question: what should a **modern secure agent ar
 
     That is already enough to discuss the system as an engineering contour, not as an idea.
 
-## What matters first
+## What This Part Solves
 
 - An agent is not the same as an LLM. The LLM makes only part of the decisions.
 - Security cannot be a wrapper added after the MVP. It must be embedded into the runtime.
 - Most production use cases benefit less from maximum autonomy than from the right combination of `workflow + guarded autonomy`.
 - Multi-agent design is useful not for aesthetics but for context isolation, team ownership, and parallelism.[^anthropic][^langgraph-multi]
 
-## Outcome of this part
+## What You Should Have by the End
 
 By the end of Part I, the reader should have:
 
@@ -28,15 +28,21 @@ By the end of Part I, the reader should have:
 - a list of mandatory layers without which the system will be fragile;
 - a vocabulary for discussing architecture with platform, security, and product teams.
 
-## Navigation
+## In This Part
 
-- [Chapter 1. Why agents need a platform, not magic](chapter-1.md)
-- [Chapter 2. Reference architecture for a safe agent](chapter-2.md)
+- [Chapter 1. Why agents need a platform, not magic](chapter-1.en.md)
+- [Chapter 2. Reference architecture for a safe agent](chapter-2.en.md)
   This chapter continues the same support case from Chapter 1 and shows how one request moves through the platform layers.
-- [Practice. Instructions, routines, and prompt templates](practical-routines.md)
-- [Practice. Manager pattern vs handoffs](practical-manager-handoffs.md)
+- [Practice. Instructions, routines, and prompt templates](practical-routines.en.md)
+- [Practice. Manager pattern vs handoffs](practical-manager-handoffs.en.md)
 - [Why this publishing stack was chosen](../../appendix/stack.md)
-- [Bibliography and sources](../../appendix/sources.md)
+- [Bibliography and sources](../../appendix/sources.en.md)
+
+## Where It Leads Next
+
+After this part, the reader should already have a working frame: whether an agent is justified here, what the baseline platform looks like, and where its real trust boundaries begin.
+
+The next logical move is [Part II](../part-ii/index.en.md): take that same request and inspect how it crosses the security perimeter, the tool gateway, and the approval boundary.
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
