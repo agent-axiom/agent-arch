@@ -24,6 +24,12 @@
 
     Главы 24-27 расширяют этот же контур через misalignment, behavioral evals, AI-native observability и управление agent estate.
 
+## Что решает эта часть
+
+- переводит reference implementation в управляемый lifecycle;
+- связывает change management, assurance, provenance, incidents и retirement в один operational contour;
+- отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
+
 Если читать эту часть как единый блок, порядок такой:
 
 - сначала ты выравниваешь понятийную рамку через переход от SDLC к ADLC;

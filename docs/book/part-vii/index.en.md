@@ -27,6 +27,12 @@ In this part, I gradually assemble a minimally mature platform:
 - telemetry wiring;
 - a rollout checklist.
 
+## What This Part Solves
+
+- it gathers architecture, memory, execution, and observability into one runtime skeleton;
+- it fixes the contract core through the policy layer and capability catalog;
+- it brings that skeleton up to first-rollout readiness.
+
 ## In This Part
 
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)

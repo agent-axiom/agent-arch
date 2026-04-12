@@ -24,6 +24,12 @@
 
     第 24 到 27 章则在同一条线上继续扩展：misalignment、behavioral evals、AI-native observability，以及 agent estate 的治理。
 
+## 这一部分解决什么问题
+
+- 把 reference implementation 推进成可管理的 lifecycle；
+- 把 change management、assurance、provenance、incidents 与 retirement 接成一个 operational contour；
+- 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。
+
 如果把这一部分当成一个完整模块来读，它的顺序很清晰：
 
 - 先通过从 SDLC 到 ADLC 的过渡建立共同框架；

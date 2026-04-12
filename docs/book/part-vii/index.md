@@ -33,6 +33,12 @@
 - telemetry wiring;
 - чеклист выкладки.
 
+## Что решает эта часть
+
+- собирает архитектуру, память, execution и observability в один runtime skeleton;
+- закрепляет contract core через policy layer и capability catalog;
+- доводит этот каркас до first rollout readiness.
+
 ## В этой части
 
 - [Глава 16. Базовая схема рантайма](chapter-16.md)

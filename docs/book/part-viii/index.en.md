@@ -24,6 +24,12 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 
     Chapters 24-27 extend the same contour through misalignment, behavioral evals, AI-native observability, and agent-estate governance.
 
+## What This Part Solves
+
+- it turns the reference implementation into a managed lifecycle;
+- it connects change management, assurance, provenance, incidents, and retirement into one operational contour;
+- it separates stable engineering discipline from fast-moving vendor and research details.
+
 If you read this part as one block, the sequence is straightforward:
 
 - first, establish the frame by moving from SDLC to ADLC;

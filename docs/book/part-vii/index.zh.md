@@ -27,6 +27,12 @@
 - telemetry 接线；
 - 上线检查清单。
 
+## 这一部分解决什么问题
+
+- 把架构、记忆、执行与可观测性收拢成一个 runtime skeleton；
+- 通过 policy layer 和 capability catalog 固定 contract core；
+- 把这套骨架推进到 first rollout readiness。
+
 ## 本部分内容
 
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
