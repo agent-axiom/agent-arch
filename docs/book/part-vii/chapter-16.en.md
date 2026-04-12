@@ -156,7 +156,28 @@ def run_agent(request: RunRequest) -> RunResult:
 
 The core point is simple: even the baseline runtime should already show policy, retrieval, tool execution, and background updates as separate stages.
 
-## 8. What Is Worth Building Into the Baseline From the Start
+## 8. Long-Running Runs Are Part of the Baseline, Not an Advanced Add-On
+
+A common runtime mistake is to assume that every useful run should complete in one synchronous request. That assumption holds only while the system is still demo-shaped.
+
+In a real support case, some runs are naturally longer-lived:
+
+- waiting for approval;
+- waiting for a tool with unstable latency;
+- waiting for a second model pass after tool execution;
+- waiting for a deferred follow-up or background update.
+
+Recent OpenAI guidance is useful here because it treats background execution as a first-class runtime concern rather than a workaround for timeout problems.[^openai-background]
+
+That is the right mental model for a baseline runtime too. The runtime should already distinguish between:
+
+- `synchronous runs` that can safely finish in one foreground pass;
+- `background runs` that continue after the initial response;
+- `resumable runs` that pause on approval, external input, or deferred work.
+
+If the runtime has no explicit shape for those cases, long-running work usually leaks into ad hoc retries, duplicated requests, and hidden state transitions.
+
+## 9. What Is Worth Building Into the Baseline From the Start
 
 Some things are tempting to "add later", but in practice it is better to include them from day one:
 
@@ -165,11 +186,46 @@ Some things are tempting to "add later", but in practice it is better to include
 - policy decision hooks;
 - a capability registry instead of direct calls;
 - structured telemetry;
-- a basic background task hook.
+- a basic background task hook;
+- a visible run status model such as `queued / in_progress / completed / failed / canceled`;
+- a way to poll, resume, or cancel long-running work without inventing a second hidden runtime.
 
 If those are absent from the baseline, the system usually reaches them later through a painful retrofit.
 
-## 9. What You Do Not Need to Overcomplicate in the First Reference Version
+## 10. A Minimal Skeleton for Background and Resumable Work
+
+Even a baseline runtime should have a simple way to represent work that outlives the first request.
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class RunHandle:
+    run_id: str
+    status: str
+
+
+def start_run(request: RunRequest) -> RunHandle:
+    run_id = create_run_record(request)
+    enqueue_run(run_id)
+    return RunHandle(run_id=run_id, status="queued")
+
+
+def continue_run(run_id: str):
+    run = load_run(run_id)
+    if run.status in {"canceled", "completed", "failed"}:
+        return run
+
+    update_status(run_id, "in_progress")
+    result = execute_run_steps(run)
+    update_status(run_id, result.status)
+    return result
+```
+
+The point is not complexity. The point is to make long-lived work explicit enough that operators can observe it, clients can poll it, and the runtime can resume or cancel it without guesswork.
+
+## 11. What You Do Not Need to Overcomplicate in the First Reference Version
 
 At the start, you do not need all of this immediately:
 
@@ -181,7 +237,7 @@ At the start, you do not need all of this immediately:
 
 The value of a reference runtime is not maximal power. It is clarity of form. A small clean implementation is better than a universal machine nobody understands.
 
-## 10. Example Runtime Configuration
+## 12. Example Runtime Configuration
 
 Here is an example config that defines the runtime shape without hardcoding every decision:
 
@@ -197,11 +253,15 @@ runtime:
     emit_structured_events: true
   execution:
     gateway_required: true
+  background:
+    enabled: true
+    resumable_runs: true
+    allow_cancel: true
 ```
 
 This is useful because it keeps the runtime contract explicit and portable between environments.
 
-## 11. Common Mistakes
+## 13. Common Mistakes
 
 Very typical problems:
 
@@ -210,11 +270,13 @@ Very typical problems:
 - memory is attached as a random helper;
 - tool calls bypass catalog/gateway;
 - background updates are missing;
-- telemetry was added as an afterthought.
+- telemetry was added as an afterthought;
+- long-running work is hidden behind retries instead of being modeled explicitly;
+- background execution exists, but operators cannot poll, resume, or cancel it cleanly.
 
 So the system may "work", but the runtime shape is already blocking growth.
 
-## 12. A Fast Maturity Test for the Baseline Runtime
+## 14. A Fast Maturity Test for the Baseline Runtime
 
 A team should not think it has a reference runtime only because it has a working agent, a few modules, and successful demos.
 
@@ -224,11 +286,12 @@ A stronger bar is this:
 - the run context carries identity and control metadata from the start;
 - capability execution flows through contracts rather than direct adapter calls;
 - tracing and background hooks exist in the base path rather than as retrofits;
+- long-running work has an explicit status and continuation model rather than hidden retries;
 - one run can be explained as a stable skeleton, not as scattered local logic.
 
 If most of those conditions are missing, the team may have an implementation, but it still does not have a real baseline runtime blueprint.
 
-## 13. What to Do Right Away
+## 15. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -237,11 +300,12 @@ Start with this short list and mark every "no" explicitly:
 - Is there a capability registry instead of direct calls?
 - Are tracing hooks built into the base path?
 - Is there a safe point for background updates?
+- Can long-running work be queued, observed, resumed, and canceled explicitly?
 - Can you explain one run flow without reading ten files at once?
 
 If the answer is "no" several times in a row, you do not have a reference runtime yet. You just have an early model integration in a product.
 
-## 14. What to Do Next
+## 16. What to Do Next
 
 First make the runtime shape explicit, then add the policy layer and capability contracts on top of it.
 
@@ -251,3 +315,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)

@@ -156,7 +156,28 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Идея здесь очень простая: даже базовый runtime уже должен явно показывать policy, retrieval, tool execution и background updates как отдельные этапы.
 
-## 8. Что важно встроить в baseline с самого начала
+## 8. Длинные run не optional add-on, а часть baseline
+
+Частая ошибка рантайма в том, что команда молча предполагает: любой полезный run должен завершаться в одном синхронном запросе. Это верно только пока система остается demo-shaped.
+
+В реальном support-кейсе часть запусков по природе длиннее:
+
+- ожидание approval;
+- ожидание tools с нестабильной latency;
+- ожидание второго model pass после tool execution;
+- ожидание deferred follow-up или background update.
+
+Свежий материал OpenAI полезен тем, что рассматривает background execution как first-class concern рантайма, а не как обход timeout-проблем.[^openai-background]
+
+Именно так на это и стоит смотреть в baseline runtime. Рантайм должен уже на старте различать:
+
+- `synchronous runs`, которые безопасно завершаются в одном foreground pass;
+- `background runs`, которые продолжаются после первого ответа;
+- `resumable runs`, которые ставятся на паузу из-за approval, внешнего ввода или отложенной работы.
+
+Если у рантайма нет явной формы для этих случаев, длинная работа почти всегда утекает в ad hoc retries, дублирующиеся запросы и скрытые переходы состояния.
+
+## 9. Что важно встроить в baseline с самого начала
 
 Есть вещи, которые кажется соблазнительным “добавить потом”, но на деле их лучше заложить сразу:
 
@@ -165,11 +186,46 @@ def run_agent(request: RunRequest) -> RunResult:
 - policy decision hooks;
 - capability registry вместо direct calls;
 - structured telemetry;
-- basic background task hook.
+- basic background task hook;
+- явную модель статусов run вроде `queued / in_progress / completed / failed / canceled`;
+- способ poll / resume / cancel для длинной работы без изобретения второго скрытого рантайма.
 
 Если этого нет в baseline, потом система обычно дорастает до них через болезненный retrofit.
 
-## 9. Что можно не усложнять в первой reference версии
+## 10. Минимальный каркас для background и resumable work
+
+Даже baseline runtime должен иметь простой способ представлять работу, которая живет дольше первого запроса.
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class RunHandle:
+    run_id: str
+    status: str
+
+
+def start_run(request: RunRequest) -> RunHandle:
+    run_id = create_run_record(request)
+    enqueue_run(run_id)
+    return RunHandle(run_id=run_id, status="queued")
+
+
+def continue_run(run_id: str):
+    run = load_run(run_id)
+    if run.status in {"canceled", "completed", "failed"}:
+        return run
+
+    update_status(run_id, "in_progress")
+    result = execute_run_steps(run)
+    update_status(run_id, result.status)
+    return result
+```
+
+Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а runtime мог ее продолжать или отменять без догадок.
+
+## 11. Что можно не усложнять в первой reference версии
 
 На старте не обязательно сразу добавлять:
 
@@ -181,7 +237,7 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Reference runtime полезен не максимальной мощностью, а ясностью формы. Лучше небольшая, но чистая реализация, чем “универсальный комбайн”, который никто не понимает.
 
-## 10. Пример конфигурации рантайма
+## 12. Пример конфигурации рантайма
 
 Ниже пример конфигурации, которая задает shape runtime, не вшивая все решения в код:
 
@@ -197,11 +253,15 @@ runtime:
     emit_structured_events: true
   execution:
     gateway_required: true
+  background:
+    enabled: true
+    resumable_runs: true
+    allow_cancel: true
 ```
 
 Это полезно, потому что помогает держать contract runtime явным и переносимым между средами.
 
-## 11. Частые ошибки
+## 13. Частые ошибки
 
 Очень типовые проблемы:
 
@@ -210,11 +270,13 @@ runtime:
 - memory подключена как случайный helper;
 - tool calls идут мимо catalog/gateway;
 - background updates отсутствуют;
-- telemetry добавлена как afterthought.
+- telemetry добавлена как afterthought;
+- длинная работа спрятана за ретраями, а не смоделирована явно;
+- background execution вроде бы есть, но операторы не могут нормально делать poll, resume или cancel.
 
 То есть система вроде бы “работает”, но shape runtime уже мешает ее взрослению.
 
-## 12. Быстрый тест зрелости для baseline runtime
+## 14. Быстрый тест зрелости для baseline runtime
 
 Команде не стоит думать, что у нее уже есть reference runtime, только потому, что у нее есть working agent, несколько модулей и успешные демо.
 
@@ -224,11 +286,12 @@ runtime:
 - run context с самого начала несет identity и control metadata;
 - capability execution идет через contracts, а не через direct adapter calls;
 - tracing и background hooks встроены в base path, а не появляются как retrofit;
+- длинная работа имеет явную модель статусов и продолжения, а не прячется в скрытых ретраях;
 - один run можно объяснить как устойчивый skeleton, а не как рассыпанную local logic.
 
 Если большинство этих условий не выполняется, у команды уже может быть implementation, но реального baseline runtime blueprint у нее пока нет.
 
-## 13. Что сделать сразу
+## 15. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
@@ -237,11 +300,12 @@ runtime:
 - Есть ли capability registry вместо прямых вызовов?
 - Встроены ли tracing hooks в базовый путь?
 - Есть ли безопасная точка для background updates?
+- Можно ли длинную работу явно поставить в очередь, наблюдать, продолжить и отменить?
 - Можно ли объяснить поток одного run без чтения десяти файлов сразу?
 
 Если на несколько вопросов подряд ответ “нет”, у тебя пока не эталонный рантайм, а просто ранняя интеграция модели в продукт.
 
-## 14. Что делать дальше
+## 16. Что делать дальше
 
 Сначала зафиксируй shape runtime, а потом добавляй поверх него policy layer и capability contracts.
 
@@ -251,3 +315,5 @@ runtime:
 - [Глава 17. Слой политик и каталог возможностей](chapter-17.md)
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)

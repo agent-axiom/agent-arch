@@ -156,7 +156,28 @@ def run_agent(request: RunRequest) -> RunResult:
 
 核心想法很简单：哪怕是 baseline runtime，也应该把 policy、retrieval、tool execution 和 background updates 明确表现成独立阶段。
 
-## 8. 从一开始就值得内置进去的东西
+## 8. 长时间运行的 run 不是 optional add-on，而是 baseline 的一部分
+
+一个常见的 runtime 错误，是默认认为所有有用的 run 都应该在一次同步请求里完成。只有在系统还停留在 demo 形态时，这种假设才成立。
+
+在真实的 support 场景里，有些 run 天然就是长生命周期的：
+
+- 等待 approval；
+- 等待 latency 不稳定的工具；
+- 在 tool execution 之后等待第二次 model pass；
+- 等待 deferred follow-up 或 background update。
+
+OpenAI 最近关于 background mode 的材料很有帮助，因为它把 background execution 当成 runtime 的 first-class concern，而不是超时问题的补丁。[^openai-background]
+
+这也应该成为 baseline runtime 的思维方式。runtime 从一开始就应该区分：
+
+- `synchronous runs`，可以在一次 foreground pass 中安全完成；
+- `background runs`，会在首次响应之后继续执行；
+- `resumable runs`，会因为 approval、外部输入或延迟工作而暂停后再继续。
+
+如果 runtime 对这些情况没有显式形态，长时间工作最终通常都会泄漏成 ad hoc retries、重复请求和隐藏状态迁移。
+
+## 9. 从一开始就值得内置进去的东西
 
 有些东西很容易让人想“以后再补”，但实际上最好第一天就放进去：
 
@@ -165,11 +186,46 @@ def run_agent(request: RunRequest) -> RunResult:
 - policy decision hooks；
 - capability registry，而不是 direct calls；
 - structured telemetry；
-- 一个基本的 background task hook。
+- 一个基本的 background task hook；
+- 一套显式的 run status model，比如 `queued / in_progress / completed / failed / canceled`；
+- 一种对长时间工作做 poll / resume / cancel 的方式，而不是偷偷长出第二套隐藏 runtime。
 
 如果 baseline 里没有这些，系统往往会在以后通过一次很痛苦的 retrofit 才补回来。
 
-## 9. 第一版参考实现不必过度复杂化的部分
+## 10. 一个用于 background 与 resumable work 的最小 skeleton
+
+即使是 baseline runtime，也应该有一种简单方式来表达那些活得比第一次请求更久的工作。
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass
+class RunHandle:
+    run_id: str
+    status: str
+
+
+def start_run(request: RunRequest) -> RunHandle:
+    run_id = create_run_record(request)
+    enqueue_run(run_id)
+    return RunHandle(run_id=run_id, status="queued")
+
+
+def continue_run(run_id: str):
+    run = load_run(run_id)
+    if run.status in {"canceled", "completed", "failed"}:
+        return run
+
+    update_status(run_id, "in_progress")
+    result = execute_run_steps(run)
+    update_status(run_id, result.status)
+    return result
+```
+
+重点不在复杂，而在显式。长生命周期工作必须清楚到 operator 能观察、client 能轮询、runtime 能恢复或取消，而不是靠猜。
+
+## 11. 第一版参考实现不必过度复杂化的部分
 
 一开始你并不需要立刻上这些东西：
 
@@ -181,7 +237,7 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Reference runtime 的价值不在于功能最大化，而在于形态清晰。一个小而干净的实现，远比一个谁都看不懂的“万能机器”更有用。
 
-## 10. 一个 runtime configuration 示例
+## 12. 一个 runtime configuration 示例
 
 下面是一个通过配置定义 runtime 形态、而不是把所有决定都写死在代码里的例子：
 
@@ -197,11 +253,15 @@ runtime:
     emit_structured_events: true
   execution:
     gateway_required: true
+  background:
+    enabled: true
+    resumable_runs: true
+    allow_cancel: true
 ```
 
 它的价值在于让 runtime contract 保持显式，也更容易在不同环境之间迁移。
 
-## 11. 常见错误
+## 13. 常见错误
 
 非常典型的问题有：
 
@@ -210,11 +270,13 @@ runtime:
 - memory 只是一个临时 helper；
 - tool calls 绕过 catalog/gateway；
 - 缺少 background updates；
-- telemetry 是后补的。
+- telemetry 是后补的；
+- 长时间工作被藏在 retries 后面，而不是被显式建模；
+- background execution 明明存在，但 operator 却无法干净地 poll、resume 或 cancel。
 
 也就是说，系统可能“能跑”，但 runtime 的形态已经开始阻碍成长。
 
-## 12. 给 baseline runtime 做一次快速成熟度测试
+## 14. 给 baseline runtime 做一次快速成熟度测试
 
 团队不应该只因为已经有一个 working agent、几个模块和一些成功 demo，就觉得自己已经有了 reference runtime。
 
@@ -224,11 +286,12 @@ runtime:
 - run context 从一开始就携带 identity 与 control metadata；
 - capability execution 通过 contracts 走，而不是 direct adapter calls；
 - tracing 和 background hooks 在 base path 里就存在，而不是靠后期 retrofit；
+- 长时间工作拥有显式的状态与 continuation model，而不是藏在隐式 retries 里；
 - 一次 run 可以被解释成稳定的 skeleton，而不是散落的 local logic。
 
 如果这些条件大多不成立，那团队也许已经有一个 implementation，但还没有真正的 baseline runtime blueprint。
 
-## 13. 现在就该做什么
+## 15. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -237,11 +300,12 @@ runtime:
 - 是否有 capability registry，而不是 direct calls？
 - tracing hooks 是否已经接进基础路径？
 - 是否有安全的 background updates 接入点？
+- 长时间工作能否被显式排队、观察、恢复和取消？
 - 是否不用读十个文件就能解释清一次 run 的流程？
 
 如果连续多个问题的答案都是“没有”，那你现在还没有 reference runtime，你只是把模型早期接进了产品里。
 
-## 14. 下一步做什么
+## 16. 下一步做什么
 
 先把 runtime shape 固定下来，再在这个骨架上加 policy layer 和 capability contracts。
 
@@ -251,3 +315,5 @@ Part VII 的下一个自然步骤，是在这个 blueprint 上加上显式的 po
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
