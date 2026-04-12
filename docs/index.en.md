@@ -2,6 +2,8 @@
 
 This book is for people who want to build not demo magic, but calm, controllable, and safe production agent systems.
 
+It is a practical book about secure, governable, production-grade AI agent architecture, aimed at teams that need more than prompts and tool calls. It focuses on the operational system around agents: trust boundaries, policy enforcement, approvals, observability, evals, and lifecycle management.
+
 > It starts from Dmitry Vikulin's article on reliable AI agents and expands it into a platform-level view: policy enforcement, human approval, observability, evals, operational discipline, and lifecycle management.
 
 [Start here](start-here.en.md){ .md-button .md-button--primary }
@@ -13,6 +15,10 @@ This book is for people who want to build not demo magic, but calm, controllable
 ![Book cover](assets/images/hero-home.png)
 
 </div>
+
+## Why this book exists
+
+Most agent material optimizes for fast demos. Real systems need something stricter: explicit trust boundaries, policy-controlled execution, memory discipline, observability, and rollout control. This book exists to document that fuller operating model.
 
 ## Who this is for
 
@@ -61,7 +67,7 @@ This book is for people who want to build not demo magic, but calm, controllable
 ## What already exists here
 
 - A full book in `ru / en / zh`.
-- A runnable [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) package with `pytest` coverage.
+- A runnable `agent_runtime_ref` package with `pytest` coverage.
 - A strong reference layer with schema and contract pages.
 - A practical appendix with case studies, checklists, a glossary, and roadmap pages.
 
