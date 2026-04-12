@@ -224,7 +224,21 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - control failures считаются “не багом модели”, а потому не попадают в backlog;
 - команда не умеет отличать ordinary failure от sabotage-like behavior.
 
-## 13. Практический checklist
+## 13. Быстрый тест зрелости для behavioral и control evals
+
+Команде не стоит думать, что она уже готова к автономному поведению, только потому, что у нее есть regression evals, simulator и несколько adversarial prompts.
+
+Более сильная планка такая:
+
+- у risky paths есть явные behavioral scenario classes;
+- control evals проверяют, что сам control layer работает под давлением;
+- red-team findings попадают в rollout и change gates, а не живут отдельными отчетами;
+- realistic simulation и adversarial generation играют разные, дополняющие роли;
+- release decisions умеют опираться на control evidence, а не только на quality scores.
+
+Если большинство этих условий не выполняется, у команды уже может быть evaluation activity, но достаточного behavioral и control coverage у нее пока нет.
+
+## 14. Практический checklist
 
 - Есть ли у risky capabilities отдельные behavioral scenario classes?
 - Проверяешь ли ты approval evasion и payload mutation?
@@ -235,7 +249,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 Если на несколько вопросов подряд ответ “нет”, то твой eval layer уже есть, но он еще не готов к автономному поведению.
 
-## 14. Полезные справочные страницы
+## 15. Полезные справочные страницы
 
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)

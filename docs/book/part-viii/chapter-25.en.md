@@ -224,7 +224,21 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 - control failures are treated as “not really model bugs” and never enter the backlog;
 - the team cannot distinguish ordinary failure from sabotage-like behavior.
 
-## 13. Practical checklist
+## 13. A Fast Maturity Test for Behavioral and Control Evals
+
+A team should not think it is ready for autonomous behavior only because it has regression evals, a simulator, and a few adversarial prompts.
+
+A stronger bar is this:
+
+- risky paths have explicit behavioral scenario classes;
+- control evals verify that the control layer itself works under pressure;
+- red-team findings enter rollout and change gates rather than staying as separate reports;
+- realistic simulation and adversarial generation play different, complementary roles;
+- release decisions can point to control evidence, not only quality scores.
+
+If most of those conditions are missing, the team may have evaluation activity, but it still does not have enough behavioral and control coverage.
+
+## 14. Practical checklist
 
 - Do risky capabilities have dedicated behavioral scenario classes?
 - Do you test approval evasion and payload mutation?
@@ -235,7 +249,7 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 
 If several answers are “no,” your eval layer exists but is not yet ready for autonomous behavior.
 
-## 14. Useful reference pages
+## 15. Useful reference pages
 
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)

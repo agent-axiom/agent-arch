@@ -224,7 +224,21 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - 控制失效被当成“不是模型 bug”，于是从待办列表里消失；
 - 团队分不清普通失效和类似破坏的行为。
 
-## 13. 实用检查清单
+## 13. 给 behavioral 和 control evals 做一次快速成熟度测试
+
+团队不应该只因为已经有 regression evals、simulator 和几条 adversarial prompts，就觉得自己已经准备好面对 autonomous behavior。
+
+更高的标准应该是：
+
+- risky paths 有明确的 behavioral scenario classes；
+- control evals 会验证 control layer 本身在压力下是否真的有效；
+- red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
+- realistic simulation 和 adversarial generation 扮演不同但互补的角色；
+- release decisions 能拿出 control evidence，而不只是 quality scores。
+
+如果这些条件大多不成立，那团队也许已经有一些 evaluation activity，但还没有足够的 behavioral 和 control coverage。
+
+## 14. 实用检查清单
 
 - 高风险能力是否有单独的行为场景类别？
 - 你是否测试审批规避和载荷篡改？
@@ -235,7 +249,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 如果连续几个答案都是“否”，那你的评测层虽然已经存在，但还没准备好面对自主行为。
 
-## 14. 值得配套阅读的参考页
+## 15. 值得配套阅读的参考页
 
 - [评测数据集模式与分级契约](../../appendix/eval-schema.zh.md)
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
