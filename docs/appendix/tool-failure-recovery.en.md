@@ -113,7 +113,9 @@ Tool failure recovery should appear explicitly in the eval dataset:
 
 This matters because many severe production incidents happen not on the happy path, but in the recovery branch.
 
-## 9. Practical checklist
+## 9. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Does the execution layer distinguish `retryable_failure` from `side_effect_unknown`?
 - Is there an explicit recovery path for partial success?
@@ -122,7 +124,7 @@ This matters because many severe production incidents happen not on the happy pa
 - Are recovery branches included in the eval dataset?
 - Can a dangerous recovery path require human review?
 
-## See also
+## What to Do Next
 
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](../book/part-iv/chapter-10.en.md)
 - [Trace Schema and Event Catalog](trace-schema.en.md)

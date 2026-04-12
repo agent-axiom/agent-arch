@@ -104,7 +104,9 @@ Memory evals не живут отдельно от [главы про evals](../
 
 То есть memory layer должен входить в regression discipline так же явно, как tools или policy.
 
-## 9. Практический чеклист
+## 9. Что сделать сразу
+
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Есть ли отдельные cases на write / no-write decisions?
 - Проверяется ли retrieval на длинных сериях runs?
@@ -113,7 +115,7 @@ Memory evals не живут отдельно от [главы про evals](../
 - Есть ли deletion и revision cases?
 - Возвращаются ли memory incidents в eval dataset?
 
-## См. также
+## Что делать дальше
 
 - [Схема наборов для оценки и правил проверки](eval-schema.md)
 - [Схема записей памяти и контракта извлечения](memory-retrieval-schema.md)

@@ -113,7 +113,9 @@ Tool failure recovery полезно явно проверять в eval dataset
 
 Это особенно важно потому, что многие тяжелые production incidents происходят не на happy path, а именно в recovery branch.
 
-## 9. Практический чеклист
+## 9. Что сделать сразу
+
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Различает ли execution layer `retryable_failure` и `side_effect_unknown`?
 - Есть ли explicit recovery path для partial success?
@@ -122,7 +124,7 @@ Tool failure recovery полезно явно проверять в eval dataset
 - Есть ли cases на recovery branch в eval dataset?
 - Может ли dangerous recovery path требовать human review?
 
-## См. также
+## Что делать дальше
 
 - [Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката](../book/part-iv/chapter-10.md)
 - [Схема трасс и каталог событий](trace-schema.md)

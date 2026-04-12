@@ -143,7 +143,9 @@ Good root-cause analysis should usually end with one of these updates:
 
 If diagnosis does not lead to artifact changes, it may be interesting, but it is not operationally strong.
 
-## 10. Practical checklist
+## 10. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Can the team separate the trigger from cascade effects?
 - Can it distinguish a bad decision from correct containment?
@@ -152,7 +154,7 @@ If diagnosis does not lead to artifact changes, it may be interesting, but it is
 - Is it clear which corrective action changes the root cause?
 - Does the team avoid reducing root cause to “the model failed” without deeper localization?
 
-## See also
+## What to Do Next
 
 - [Trace Schema and Event Catalog](trace-schema.en.md)
 - [Incident Record and Postmortem Linkage Schema](incident-record-schema.en.md)

@@ -104,7 +104,9 @@ Memory evals 不会替代 [主 eval 章节](../book/part-v/chapter-13.zh.md)，�
 
 换句话说，memory layer 应该像 tools 和 policy 一样，明确进入 regression discipline。
 
-## 9. 实用检查清单
+## 9. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 是否有单独的 write / no-write cases？
 - retrieval 是否跨长序列 runs 被检查？
@@ -113,7 +115,7 @@ Memory evals 不会替代 [主 eval 章节](../book/part-v/chapter-13.zh.md)，�
 - deletion 与 revision cases 是否被覆盖？
 - memory incidents 会回流到 eval dataset 吗？
 
-## 延伸阅读
+## 下一步做什么
 
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](memory-retrieval-schema.zh.md)

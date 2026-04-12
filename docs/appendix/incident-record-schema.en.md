@@ -155,7 +155,9 @@ Common failure modes are usually:
 - incidents never enter eval datasets or rollout criteria;
 - a retired path remains alive after a supposedly closed incident.
 
-## 11. Practical checklist
+## 11. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Does the incident have a stable `incident_id`?
 - Can the team quickly recover `trace_id`, `session_id`, `bundle_id`, and `change_id`?
@@ -164,7 +166,7 @@ Common failure modes are usually:
 - Is there a clear incident -> postmortem -> corrective action link?
 - Do incidents flow back into evals, rollout gates, and lifecycle updates?
 
-## See also
+## What to Do Next
 
 - [Incident Response Playbook for Agent Systems](incident-response-playbook.en.md)
 - [Trace Schema and Event Catalog](trace-schema.en.md)

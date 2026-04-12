@@ -155,7 +155,9 @@ Incident review редко заканчивается только containment p
 - incidents не попадают в eval dataset и rollout criteria;
 - retired path продолжает жить после supposedly closed incident.
 
-## 11. Практический чеклист
+## 11. Что сделать сразу
+
+Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
 - Есть ли у incident стабильный `incident_id`?
 - Можно ли быстро восстановить `trace_id`, `session_id`, `bundle_id` и `change_id`?
@@ -164,7 +166,7 @@ Incident review редко заканчивается только containment p
 - Есть ли связь incident -> postmortem -> corrective action?
 - Возвращаются ли incidents в evals, rollout gates и lifecycle updates?
 
-## См. также
+## Что делать дальше
 
 - [Плейбук реагирования на инциденты в агентных системах](incident-response-playbook.md)
 - [Схема трасс и каталог событий](trace-schema.md)

@@ -104,7 +104,9 @@ Memory evals do not replace the [main eval chapter](../book/part-v/chapter-13.en
 
 In other words, the memory layer should be part of regression discipline as explicitly as tools or policy.
 
-## 9. Practical checklist
+## 9. What to Do Right Away
+
+Start with this short list and mark every "no" explicitly:
 
 - Are there separate cases for write / no-write decisions?
 - Is retrieval tested across longer run sequences?
@@ -113,7 +115,7 @@ In other words, the memory layer should be part of regression discipline as expl
 - Are deletion and revision cases covered?
 - Do memory incidents flow back into the eval dataset?
 
-## See also
+## What to Do Next
 
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
 - [Memory Record and Retrieval Contract Schema](memory-retrieval-schema.en.md)

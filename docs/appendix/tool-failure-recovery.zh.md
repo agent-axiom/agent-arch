@@ -113,7 +113,9 @@ Tool failure recovery 最好显式进入 eval dataset：
 
 这很重要，因为很多严重的 production incidents 不是发生在 happy path，而是发生在 recovery branch。
 
-## 9. 实用检查清单
+## 9. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - Execution layer 会区分 `retryable_failure` 和 `side_effect_unknown` 吗？
 - partial success 是否有明确的 recovery path？
@@ -122,7 +124,7 @@ Tool failure recovery 最好显式进入 eval dataset：
 - eval dataset 是否包含 recovery branch？
 - dangerous recovery path 能要求 human review 吗？
 
-## 延伸阅读
+## 下一步做什么
 
 - [第 10 章：幂等性、重试、速率限制与回滚边界](../book/part-iv/chapter-10.zh.md)
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)

@@ -155,7 +155,9 @@ Incident review 很少止步于 containment。
 - incidents 从不进入 eval datasets 或 rollout criteria；
 - supposedly closed 的 incident 之后，retired path 仍然活着。
 
-## 11. 实用检查清单
+## 11. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - incident 有稳定的 `incident_id` 吗？
 - 团队能否快速恢复 `trace_id`、`session_id`、`bundle_id` 和 `change_id`？
@@ -164,7 +166,7 @@ Incident review 很少止步于 containment。
 - 是否存在清晰的 incident -> postmortem -> corrective action 链路？
 - incidents 会回流到 evals、rollout gates 与 lifecycle updates 吗？
 
-## 延伸阅读
+## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)

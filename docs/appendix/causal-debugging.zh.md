@@ -143,7 +143,9 @@ Causal debugging 不替代 [Trace Schema 与 Event Catalog](trace-schema.zh.md)�
 
 如果 diagnosis 最终没有落到 artifact updates，它也许有洞见，但 operational 价值不强。
 
-## 10. 实用检查清单
+## 10. 现在就该做什么
+
+先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
 - 团队能区分 trigger 和 cascade effects 吗？
 - 团队能区分 bad decision 与正确的 containment 吗？
@@ -152,7 +154,7 @@ Causal debugging 不替代 [Trace Schema 与 Event Catalog](trace-schema.zh.md)�
 - 能明确哪种 corrective action 会改变 root cause 吗？
 - 团队会不会把 root cause 简化成“模型失败了”而没有继续定位？
 
-## 延伸阅读
+## 下一步做什么
 
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)
 - [Incident Record 与 Postmortem Linkage Schema](incident-record-schema.zh.md)
