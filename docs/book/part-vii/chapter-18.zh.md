@@ -271,7 +271,21 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 一旦这样，rollout process 就还不是生产级纪律，而只是过于乐观的发布。
 
-## 13. 读完这一章后先做什么
+## 13. 给 rollout readiness 做一次快速成熟度测试
+
+团队不应该只因为 demo 能跑、checklist 看起来大多是绿色、第一波 canary 似乎很小，就觉得自己已经准备好进 production。
+
+更高的标准应该是：
+
+- high-risk paths 被独立于 happy path 单独验证；
+- traces、policy visibility 和 rollback 在扩大暴露前就值得信任；
+- write capabilities 具备 idempotency 和明确的 unknown-outcome path；
+- blast radius 是按设计被限制的，而不是靠乐观控制；
+- ownership、on-call 和 manual fallback 都足够具体。
+
+如果这些条件大多不成立，那团队也许已经有 launch momentum，但还没有真正的 rollout readiness。
+
+## 14. 读完这一章后先做什么
 
 如果你想在 rollout 前快速判断 readiness，可以先过一遍这个短清单：
 
@@ -284,11 +298,11 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 如果连续多个答案都是“没有”，那这次 rollout 就应该视为未准备好，即使 demo 看起来很顺。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。下一步就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
 
-## 15. 值得配套阅读的参考页
+## 16. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)

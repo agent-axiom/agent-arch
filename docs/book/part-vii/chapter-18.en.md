@@ -271,7 +271,21 @@ For the support agent, that often looks especially dangerous:
 
 When that happens, the rollout process is still optimistic shipping, not production discipline.
 
-## 13. What to Do Right After This Chapter
+## 13. A Fast Maturity Test for Rollout Readiness
+
+A team should not think it is ready for production only because the demo works, the checklist looks mostly green, and the first canary feels small.
+
+A stronger bar is this:
+
+- high-risk paths are tested separately from the happy path;
+- traces, policy visibility, and rollback are trusted before exposure expands;
+- write capabilities have idempotency and an explicit unknown-outcome path;
+- blast radius is bounded by design rather than by optimism;
+- ownership, on-call, and manual fallback are concrete.
+
+If most of those conditions are missing, the team may have launch momentum, but it still does not have real rollout readiness.
+
+## 14. What to Do Right After This Chapter
 
 If you want to assess readiness before rollout quickly, use this short checklist:
 
@@ -284,11 +298,11 @@ If you want to assess readiness before rollout quickly, use this short checklist
 
 If the answer is "no" several times in a row, the rollout should still be considered not ready, even if the demo looked good.
 
-## 14. What to Read Next
+## 15. What to Read Next
 
 At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
 
-## 15. Useful Reference Pages
+## 16. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
