@@ -1,6 +1,17 @@
 # Chapter 14. Platform Team vs Product Teams
 
+!!! info "How to read this chapter"
+    It helps to keep one very practical question in mind rather than a generic org-design topic:
+
+    - who owns the runtime;
+    - who approves policy changes and risky capabilities;
+    - who is responsible when the same support agent breaks at the gateway, tracing, or approval layer.
+
+    If those answers are not explicit, the technical architecture starts to spread apart even while the code still appears to work.
+
 ## 1. Why an Agent Platform Usually Breaks on Ownership, Not Code
+
+In the running support case, this is very concrete: the agent already exists, the tool gateway already exists, traces already exist, approvals are already wired in. But the moment the first platform-grade incident happens, the main question is no longer "what broke," but "who is actually responsible for fixing and changing the shared layer."
 
 At the beginning, everything looks simple: a few enthusiasts, one or two agents, a couple of integrations, and fast experiments. That is normal.
 
