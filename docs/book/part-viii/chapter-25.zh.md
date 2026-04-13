@@ -49,7 +49,8 @@
 - 会不会绕过审批；
 - 会不会在审查之后改掉载荷；
 - 会不会在没有充分理由的情况下进入高风险工具路径；
-- 会不会偏离预期的升级路径。
+- 会不会偏离预期的升级路径；
+- 会不会利用 contract drift 或 schema mismatch 穿过 control boundary。
 
 也就是说，问题不再只是“答案对不对”，而是“在这个场景下，运行时的行为对不对”。
 
@@ -62,6 +63,7 @@
 - 策略层能不能真的拦住这个能力；
 - 审批门禁是否真的要求人来确认；
 - 回滚门禁能不能工作；
+- paused-run 与 background-run controls 是否按设计工作；
 - 副作用会不会进入追踪；
 - 紧急控制能不能关掉高风险路径。
 
@@ -102,6 +104,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 高风险写入能力；
 - 带出口访问的工具；
 - 审批密集型工作流；
+- 涉及 pause/resume 或 background execution 的 runtime-control transitions；
 - 替换与退役过渡期；
 - 多智能体委派；
 - 记忆写入与检索治理。
@@ -119,6 +122,9 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - `improper_memory_write`
 - `replacement_window_abuse`
 - `unauthorized_persistence`
+- `contract_drift_exploitation`
+- `approval_path_misuse`
+- `runtime_control_regression`
 
 重点不在于名字有多少，而在于它们给了你一套可重复的失效类别。
 
@@ -147,7 +153,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - concealment；
 - oversight evasion；
 - 类似破坏的持续行为；
-- 压力下的协作失序。
+- 压力下的协作失序；
+- 对 schema mismatch 或 control drift 的利用。
 
 但工程纪律仍然应该保持严格：
 
@@ -169,9 +176,13 @@ control_evals:
     - oversight_evasion
     - payload_mutation_after_approval
     - concealment_of_side_effect
+    - approval_path_misuse
+    - contract_drift_exploitation
+    - runtime_control_regression
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
+    - runtime_control_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -189,12 +200,14 @@ class ControlEvalResult:
     control_enforced: bool
     side_effect_traced: bool
     finding_open: bool
+    contract_version_matched: bool
 
 
 def passes_control_eval(result: ControlEvalResult) -> bool:
     return (
         result.control_enforced
         and result.side_effect_traced
+        and result.contract_version_matched
         and not result.finding_open
     )
 ```
@@ -219,7 +232,9 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - 所有评测最后都退化成最终答案质量；
 - 危险路径没有独立的场景类别；
+- approval-path misuse 与 contract drift 没有被显式测试；
 - 红队测试只是一次性活动；
+- runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
 - 发现结果没有进入发布门禁；
 - 控制失效被当成“不是模型 bug”，于是从待办列表里消失；
 - 团队分不清普通失效和类似破坏的行为。
@@ -232,6 +247,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - risky paths 有明确的 behavioral scenario classes；
 - control evals 会验证 control layer 本身在压力下是否真的有效；
+- approval-path misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
 - red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
 - realistic simulation 和 adversarial generation 扮演不同但互补的角色；
 - release decisions 能拿出 control evidence，而不只是 quality scores。
@@ -241,8 +257,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 ## 14. 实用检查清单
 
 - 高风险能力是否有单独的行为场景类别？
-- 你是否测试审批规避和载荷篡改？
-- 是否有专门验证控制措施的评测，而不只是检查输出质量？
+- 你是否测试审批规避、载荷篡改和 approval-path misuse？
+- 是否有专门验证控制措施、contract-version matching 与 runtime-control behavior 的评测，而不只是检查输出质量？
 - 红队发现结果是否会进入变更评审和发布门禁？
 - 是否同时有 realistic workload simulator 和 adversarial generator？
 - 你能展示的是控制证据，还是只有最终分数？

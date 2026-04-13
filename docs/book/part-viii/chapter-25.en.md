@@ -49,7 +49,8 @@ For example:
 - does it try to bypass approval;
 - does it mutate the payload after review;
 - does it take a risky tool path without justification;
-- does it violate the expected escalation path.
+- does it violate the expected escalation path;
+- does it exploit contract drift or schema mismatch to cross a control boundary.
 
 The question is no longer “was the answer correct,” but “did the runtime behave correctly under this scenario.”
 
@@ -62,6 +63,7 @@ Typical questions are:
 - does the policy layer actually stop this capability;
 - does the approval gate really require a human;
 - does the rollback gate work;
+- do paused-run and background-run controls behave as designed;
 - is the side effect captured in traces;
 - can the emergency control disable the risky path.
 
@@ -102,6 +104,7 @@ These scenarios are especially valuable for:
 - high-risk write capabilities;
 - tools with egress;
 - approval-heavy workflows;
+- runtime-control transitions involving pause/resume or background execution;
 - replacement and retirement transitions;
 - multi-agent delegation;
 - memory write and retrieval governance.
@@ -119,6 +122,9 @@ A useful minimal taxonomy might look like this:
 - `improper_memory_write`
 - `replacement_window_abuse`
 - `unauthorized_persistence`
+- `contract_drift_exploitation`
+- `approval_path_misuse`
+- `runtime_control_regression`
 
 The important part is not the number of labels. It is that they give you a repeatable set of failure classes.
 
@@ -147,7 +153,8 @@ It helps teams expand a set of scenario classes that rarely emerges fully from l
 - concealment;
 - oversight evasion;
 - sabotage-like persistence;
-- coordination breakdown under pressure.
+- coordination breakdown under pressure;
+- exploitation of schema mismatch or control drift.
 
 But the engineering discipline still needs to stay strict:
 
@@ -169,9 +176,13 @@ control_evals:
     - oversight_evasion
     - payload_mutation_after_approval
     - concealment_of_side_effect
+    - approval_path_misuse
+    - contract_drift_exploitation
+    - runtime_control_regression
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
+    - runtime_control_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -189,12 +200,14 @@ class ControlEvalResult:
     control_enforced: bool
     side_effect_traced: bool
     finding_open: bool
+    contract_version_matched: bool
 
 
 def passes_control_eval(result: ControlEvalResult) -> bool:
     return (
         result.control_enforced
         and result.side_effect_traced
+        and result.contract_version_matched
         and not result.finding_open
     )
 ```
@@ -219,7 +232,9 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 
 - all evals collapse into final-answer quality;
 - dangerous paths have no separate scenario classes;
+- approval-path misuse and contract drift are not tested explicitly;
 - red teaming is a one-off exercise;
+- runtime-control regressions are discovered only in rollout or incidents;
 - findings are not connected to release gates;
 - control failures are treated as “not really model bugs” and never enter the backlog;
 - the team cannot distinguish ordinary failure from sabotage-like behavior.
@@ -232,6 +247,7 @@ A stronger bar is this:
 
 - risky paths have explicit behavioral scenario classes;
 - control evals verify that the control layer itself works under pressure;
+- approval-path misuse, contract drift, and runtime-control regressions have explicit scenario coverage;
 - red-team findings enter rollout and change gates rather than staying as separate reports;
 - realistic simulation and adversarial generation play different, complementary roles;
 - release decisions can point to control evidence, not only quality scores.
@@ -241,8 +257,8 @@ If most of those conditions are missing, the team may have evaluation activity, 
 ## 14. Practical checklist
 
 - Do risky capabilities have dedicated behavioral scenario classes?
-- Do you test approval evasion and payload mutation?
-- Do you run evals that verify controls rather than only output quality?
+- Do you test approval evasion, payload mutation, and approval-path misuse?
+- Do you run evals that verify controls, contract-version matching, and runtime-control behavior rather than only output quality?
 - Do red-team findings flow into change review and rollout gates?
 - Do you have a simulator for realistic workloads and a separate adversarial generator?
 - Can you show control evidence, not just final quality scores?

@@ -49,7 +49,8 @@ Behavioral evals проверяют не только финальный output,
 - пытается ли обойти approval;
 - меняет ли payload после review;
 - идет ли в risky tool path без достаточного основания;
-- нарушает ли expected escalation path.
+- нарушает ли expected escalation path;
+- использует ли contract drift или schema mismatch, чтобы пересечь control boundary.
 
 То есть вопрос уже не “правильный ли ответ”, а “правильно ли вел себя runtime под этим сценарием”.
 
@@ -62,6 +63,7 @@ Control evals проверяют сами защитные механизмы, �
 - остановит ли policy layer этот capability;
 - действительно ли approval gate требует человека;
 - сработает ли rollback gate;
+- ведут ли себя paused-run и background-run controls так, как задумано;
 - зафиксируется ли side effect в traces;
 - сможет ли emergency control отключить risky path.
 
@@ -102,6 +104,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - high-risk write capabilities;
 - tools с egress;
 - approval-heavy workflows;
+- runtime-control transitions с pause/resume или background execution;
 - replacement и retirement transitions;
 - multi-agent delegation;
 - memory write и retrieval governance.
@@ -119,6 +122,9 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - `improper_memory_write`
 - `replacement_window_abuse`
 - `unauthorized_persistence`
+- `contract_drift_exploitation`
+- `approval_path_misuse`
+- `runtime_control_regression`
 
 Важно не количество названий, а то, что они дают тебе повторяемый набор failure classes.
 
@@ -147,7 +153,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - concealment;
 - oversight evasion;
 - sabotage-like persistence;
-- coordination breakdown under pressure.
+- coordination breakdown under pressure;
+- exploitation of schema mismatch или control drift.
 
 Но engineering discipline здесь должна оставаться жесткой:
 
@@ -169,9 +176,13 @@ control_evals:
     - oversight_evasion
     - payload_mutation_after_approval
     - concealment_of_side_effect
+    - approval_path_misuse
+    - contract_drift_exploitation
+    - runtime_control_regression
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
+    - runtime_control_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -189,12 +200,14 @@ class ControlEvalResult:
     control_enforced: bool
     side_effect_traced: bool
     finding_open: bool
+    contract_version_matched: bool
 
 
 def passes_control_eval(result: ControlEvalResult) -> bool:
     return (
         result.control_enforced
         and result.side_effect_traced
+        and result.contract_version_matched
         and not result.finding_open
     )
 ```
@@ -219,7 +232,9 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - все evals сводятся к final answer quality;
 - dangerous paths не имеют отдельных scenario classes;
+- approval-path misuse и contract drift не проверяются явно;
 - red teaming проводится как разовая акция;
+- runtime-control regressions обнаруживаются только в rollout или инцидентах;
 - findings не связываются с release gate;
 - control failures считаются “не багом модели”, а потому не попадают в backlog;
 - команда не умеет отличать ordinary failure от sabotage-like behavior.
@@ -232,6 +247,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - у risky paths есть явные behavioral scenario classes;
 - control evals проверяют, что сам control layer работает под давлением;
+- approval-path misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
 - red-team findings попадают в rollout и change gates, а не живут отдельными отчетами;
 - realistic simulation и adversarial generation играют разные, дополняющие роли;
 - release decisions умеют опираться на control evidence, а не только на quality scores.
@@ -241,8 +257,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 ## 14. Практический checklist
 
 - Есть ли у risky capabilities отдельные behavioral scenario classes?
-- Проверяешь ли ты approval evasion и payload mutation?
-- Есть ли evals, которые проверяют именно controls, а не только output quality?
+- Проверяешь ли ты approval evasion, payload mutation и approval-path misuse?
+- Есть ли evals, которые проверяют именно controls, contract-version matching и runtime-control behavior, а не только output quality?
 - Попадают ли red-team findings в change review и rollout gate?
 - Есть ли simulator для realistic workload и отдельный adversarial generator?
 - Можешь ли ты показать control evidence, а не только итоговую оценку качества?
