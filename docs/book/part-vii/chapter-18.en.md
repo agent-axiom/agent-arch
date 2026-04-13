@@ -168,7 +168,30 @@ For the support agent, this matters even more because the first canary tenants w
 
 then the first rollout wave is already turning into a lottery.
 
-## 8. Operational Readiness
+## 8. Approval Path Readiness
+
+Once approval becomes an explicit runtime path, rollout readiness must include that path too.
+
+A team may have correct policy rules on paper and still be unready for production if approval creates hidden queues, unclear ownership, or indefinitely paused runs.
+
+Before rollout, it is worth checking:
+
+- is approval latency measured;
+- is there an owner for the approval queue;
+- is there a timeout or expiry rule for paused runs;
+- is there a visible backlog threshold;
+- is resume/cancel behavior defined;
+- is there a fallback when human review is unavailable.
+
+For the same support agent, this matters immediately. If a ticket-creation path pauses for approval, the team must know whether the run will wait for five seconds, thirty minutes, or forever. That is not a UX detail. It is part of production behavior.
+
+A very practical rollout gate is this:
+
+> Do we know how many runs are currently paused for approval, how long they have been waiting, and what the system will do when nobody answers in time?
+
+If the answer is no, then approval is still acting like an unmanaged side channel.
+
+## 9. Operational Readiness
 
 There is another layer teams often forget:
 
@@ -188,7 +211,7 @@ For the support case, manual fallback must be especially concrete:
 - how to mark questionable tickets created during the canary wave;
 - who cleans up the consequences of a failed rollout.
 
-## 9. Practical Rules for Rollout Readiness
+## 10. Practical Rules for Rollout Readiness
 
 If you need a short operational frame, rules like these are usually enough:
 
@@ -196,9 +219,10 @@ If you need a short operational frame, rules like these are usually enough:
 2. No write capability should enter canary without idempotency, outcome normalization, and policy visibility.
 3. High-risk flows should be tested separately from the happy path.
 4. Canary, shadow, and blast-radius limits should be part of the design, not emergency improvisation.
-5. If the team no longer trusts traces or evals, the rollout should stop, not continue as “extra observation in prod”.
+5. Approval queues, paused-run age, and human-review backlog should be treated as rollout signals, not invisible operational noise.
+6. If the team no longer trusts traces, approval handling, or evals, the rollout should stop, not continue as “extra observation in prod”.
 
-## 10. Example Rollout Checklist Policy
+## 11. Example Rollout Checklist Policy
 
 Here is a very practical template:
 
@@ -212,6 +236,7 @@ rollout:
     - slo_defined
     - rollback_plan
     - oncall_owner
+    - approval_queue_owner
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -220,11 +245,13 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
+    - approval_backlog_unbounded
+    - paused_runs_without_expiry
 ```
 
 This kind of checklist is powerful because it turns readiness into an engineering discussion instead of confidence in someone's tone of voice.
 
-## 11. A Simple Readiness Gate Example
+## 12. A Simple Readiness Gate Example
 
 This small skeleton shows how readiness can be evaluated as a set of required conditions:
 
@@ -238,6 +265,7 @@ class RolloutReadiness:
     offline_eval_pass: bool
     slo_defined: bool
     rollback_plan: bool
+    approval_path_defined: bool
 
 
 def ready_for_rollout(state: RolloutReadiness) -> bool:
@@ -246,12 +274,13 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
         and state.offline_eval_pass
         and state.slo_defined
         and state.rollback_plan
+        and state.approval_path_defined
     )
 ```
 
 Very simple, but it reinforces one important idea: production readiness should be formalizable.
 
-## 12. What Usually Breaks in Go-Live
+## 13. What Usually Breaks in Go-Live
 
 The failure patterns are very recognizable:
 
@@ -260,7 +289,9 @@ The failure patterns are very recognizable:
 - ownership exists on paper, but on-call is not ready;
 - the rollback plan is basically "we will roll back if something happens";
 - capability owners do not know the real release window;
-- safety regressions are not treated as blockers.
+- safety regressions are not treated as blockers;
+- paused runs accumulate because nobody owns the approval queue;
+- approval latency is invisible until customers are already waiting.
 
 For the support agent, that often looks especially dangerous:
 
@@ -271,7 +302,7 @@ For the support agent, that often looks especially dangerous:
 
 When that happens, the rollout process is still optimistic shipping, not production discipline.
 
-## 13. A Fast Maturity Test for Rollout Readiness
+## 14. A Fast Maturity Test for Rollout Readiness
 
 A team should not think it is ready for production only because the demo works, the checklist looks mostly green, and the first canary feels small.
 
@@ -281,11 +312,12 @@ A stronger bar is this:
 - traces, policy visibility, and rollback are trusted before exposure expands;
 - write capabilities have idempotency and an explicit unknown-outcome path;
 - blast radius is bounded by design rather than by optimism;
+- approval backlog, timeout, and resume/cancel behavior are explicit;
 - ownership, on-call, and manual fallback are concrete.
 
 If most of those conditions are missing, the team may have launch momentum, but it still does not have real rollout readiness.
 
-## 14. What to Do Right After This Chapter
+## 15. What to Do Right After This Chapter
 
 If you want to assess readiness before rollout quickly, use this short checklist:
 
@@ -295,14 +327,15 @@ If you want to assess readiness before rollout quickly, use this short checklist
 4. Is there a canary/shadow phase?
 5. Is there a rollback plan and blast-radius limit?
 6. Were high-risk flows tested separately, not only the happy path?
+7. Does approval have a visible timeout/backlog rule for paused runs?
 
 If the answer is "no" several times in a row, the rollout should still be considered not ready, even if the demo looked good.
 
-## 15. What to Read Next
+## 16. What to Read Next
 
 At this point, the reference implementation already closes the basic operational skeleton of the same support agent and its platform. The next step is lifecycle discipline: how to change, ship, investigate, and retire such a system without losing control.
 
-## 16. Useful Reference Pages
+## 17. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)

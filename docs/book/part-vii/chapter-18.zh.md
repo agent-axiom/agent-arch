@@ -168,7 +168,30 @@ flowchart LR
 
 那第一波 rollout 本身就已经变成了彩票。
 
-## 8. Operational readiness
+## 8. Approval path readiness
+
+一旦 approval 被建模成显式 runtime path，rollout readiness 也必须把这条路径算进去。
+
+团队也许已经在纸面上写好了 policy rules，但如果 approval 造成隐藏队列、ownership 不清，或者 run 会无限期停在 paused 状态，系统依然还没准备好进 production。
+
+在 rollout 前，至少应该检查：
+
+- approval latency 是否被度量；
+- approval queue 是否有 owner；
+- paused runs 是否有 timeout 或 expiry rule；
+- 是否有可见的 backlog threshold；
+- resume/cancel 行为是否明确；
+- human review 不可用时是否存在 fallback。
+
+这对同一个支持智能体会立刻变得重要。如果创建工单的路径会因为 approval 而暂停，团队就必须知道这次 run 会等五秒、三十分钟，还是无限期等待。这不是 UX 细节，而是 production behavior 的一部分。
+
+一个非常实用的 rollout gate 是：
+
+> 我们是否知道现在有多少 runs 正在等待 approval，它们已经等了多久，以及如果没有人在时限内响应，系统会做什么？
+
+如果答案是否定的，那 approval 仍然只是一个未被治理的 side channel。
+
+## 9. Operational readiness
 
 还有一个团队很容易忘记的层：
 
@@ -188,7 +211,7 @@ flowchart LR
 - 如何标记 canary wave 中创建的可疑工单；
 - 失败 rollout 的后果由谁清理。
 
-## 9. rollout readiness 的实用规则
+## 10. rollout readiness 的实用规则
 
 如果要把最有用的 operational 规则压缩成一组，通常这些就够了：
 
@@ -196,9 +219,10 @@ flowchart LR
 2. 没有 idempotency、outcome normalization 和 policy visibility 的 write capability，不应该进入 canary。
 3. High-risk flows 必须独立于 happy path 单独验证。
 4. Canary、shadow 和 blast-radius limits 应该是设计的一部分，而不是出事后的临时 improvisation。
-5. 如果团队已经不再信任 traces 或 evals，就应该先停 rollout，而不是继续“边上边看”。
+5. Approval queue、paused-run age 和 human-review backlog 应该被当成 rollout signals，而不是看不见的运维噪音。
+6. 如果团队已经不再信任 traces、approval handling 或 evals，就应该先停 rollout，而不是继续“边上边看”。
 
-## 10. 一个上线检查清单策略示例
+## 11. 一个上线检查清单策略示例
 
 下面是一个很实用的模板：
 
@@ -212,6 +236,7 @@ rollout:
     - slo_defined
     - rollback_plan
     - oncall_owner
+    - approval_queue_owner
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -220,11 +245,13 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
+    - approval_backlog_unbounded
+    - paused_runs_without_expiry
 ```
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。
 
-## 11. 一个简单的就绪门禁示例
+## 12. 一个简单的就绪门禁示例
 
 下面这个 skeleton 展示的是：如何把 readiness 看成一组必须同时满足的条件。
 
@@ -238,6 +265,7 @@ class RolloutReadiness:
     offline_eval_pass: bool
     slo_defined: bool
     rollback_plan: bool
+    approval_path_defined: bool
 
 
 def ready_for_rollout(state: RolloutReadiness) -> bool:
@@ -246,12 +274,13 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
         and state.offline_eval_pass
         and state.slo_defined
         and state.rollback_plan
+        and state.approval_path_defined
     )
 ```
 
 这个例子很简单，但它强化了一件重要的事：生产就绪性应该是可形式化的。
 
-## 12. Go-live 流程最常见的崩坏点
+## 13. Go-live 流程最常见的崩坏点
 
 这些失败模式非常典型：
 
@@ -260,7 +289,9 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - ownership 只存在于文档里，on-call 没准备好；
 - rollback plan 实际上只是“出事了再回滚”；
 - 能力负责人根本不知道真实发布时间窗；
-- safety regressions 没被当成 blocker。
+- safety regressions 没被当成 blocker；
+- paused runs 不断累积，因为 approval queue 没有 owner；
+- approval latency 直到用户已经在等待时才第一次被看见。
 
 对于这个支持智能体，这些问题往往会更危险地表现出来：
 
@@ -271,7 +302,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 一旦这样，rollout process 就还不是生产级纪律，而只是过于乐观的发布。
 
-## 13. 给 rollout readiness 做一次快速成熟度测试
+## 14. 给 rollout readiness 做一次快速成熟度测试
 
 团队不应该只因为 demo 能跑、checklist 看起来大多是绿色、第一波 canary 似乎很小，就觉得自己已经准备好进 production。
 
@@ -281,11 +312,12 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - traces、policy visibility 和 rollback 在扩大暴露前就值得信任；
 - write capabilities 具备 idempotency 和明确的 unknown-outcome path；
 - blast radius 是按设计被限制的，而不是靠乐观控制；
+- approval backlog、timeout 与 resume/cancel behavior 都被明确规定；
 - ownership、on-call 和 manual fallback 都足够具体。
 
 如果这些条件大多不成立，那团队也许已经有 launch momentum，但还没有真正的 rollout readiness。
 
-## 14. 读完这一章后先做什么
+## 15. 读完这一章后先做什么
 
 如果你想在 rollout 前快速判断 readiness，可以先过一遍这个短清单：
 
@@ -295,14 +327,15 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 4. 是否有 canary/shadow 阶段？
 5. 是否有 rollback plan 和 blast-radius limit？
 6. high-risk flows 是否被单独验证，而不是只测了顺畅路径？
+7. approval 是否对 paused runs 设有可见的 timeout/backlog 规则？
 
 如果连续多个答案都是“没有”，那这次 rollout 就应该视为未准备好，即使 demo 看起来很顺。
 
-## 15. 接下来读什么
+## 16. 接下来读什么
 
 到这里，参考实现已经闭合了同一个支持智能体及其平台最基本的运行骨架。下一步就是生命周期纪律：如何变更、发布、调查和下线这样的系统，同时不丢掉控制力。
 
-## 16. 值得配套阅读的参考页
+## 17. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)

@@ -168,7 +168,30 @@ flowchart LR
 
 то первая волна выкладки уже превращается в лотерею.
 
-## 8. Operational readiness
+## 8. Readiness approval path
+
+Как только approval становится явным runtime path, readiness rollout должен включать и этот путь.
+
+У команды могут быть правильные policy rules на бумаге, но система все равно не готова к production, если approval создает скрытые очереди, неясное ownership или бесконечно paused runs.
+
+Перед rollout полезно проверить:
+
+- измеряется ли approval latency;
+- есть ли owner у approval queue;
+- есть ли timeout или expiry rule для paused runs;
+- есть ли видимый backlog threshold;
+- определено ли resume/cancel поведение;
+- есть ли fallback на случай, если human review недоступен.
+
+Для того же support-агента это важно сразу. Если path создания тикета ставится на approval pause, команда должна знать, будет ли run ждать пять секунд, тридцать минут или вечно. Это не UX-деталь, а часть production behavior.
+
+Очень практичный rollout gate звучит так:
+
+> Понимаем ли мы, сколько run сейчас стоит на approval pause, как долго они уже ждут и что система сделает, если вовремя никто не ответит?
+
+Если ответ нет, значит approval все еще работает как неуправляемый side channel.
+
+## 9. Operational readiness
 
 Отдельный слой, который часто забывают:
 
@@ -188,7 +211,7 @@ flowchart LR
 - как пометить сомнительные тикеты, созданные в canary wave;
 - кто и как чистит последствия неудачного rollout.
 
-## 9. Практические правила для rollout readiness
+## 10. Практические правила для rollout readiness
 
 Если нужен короткий operational каркас, обычно достаточно таких правил:
 
@@ -196,9 +219,10 @@ flowchart LR
 2. Ни один write capability не должен идти в canary без idempotency, outcome normalization и policy visibility.
 3. High-risk flows нужно проверять отдельно от happy path.
 4. Canary, shadow и blast-radius limits должны быть частью design, а не аварийной импровизацией.
-5. Если команда уже не доверяет traces или evals, rollout надо останавливать, а не “донаблюдать в проде”.
+5. Approval queues, возраст paused runs и backlog human review должны считаться rollout signals, а не невидимым операционным шумом.
+6. Если команда уже не доверяет traces, approval handling или evals, rollout надо останавливать, а не “донаблюдать в проде”.
 
-## 10. Пример политики чеклиста запуска
+## 11. Пример политики чеклиста запуска
 
 Ниже очень практичный шаблон:
 
@@ -212,6 +236,7 @@ rollout:
     - slo_defined
     - rollback_plan
     - oncall_owner
+    - approval_queue_owner
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -220,11 +245,13 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
+    - approval_backlog_unbounded
+    - paused_runs_without_expiry
 ```
 
 Такой checklist хорош тем, что делает readiness предметом инженерного разговора, а не уверенности в голосе автора релиза.
 
-## 11. Простой кодовый пример readiness gate
+## 12. Простой кодовый пример readiness gate
 
 Ниже каркас, который показывает, как readiness можно оценивать как набор обязательных условий:
 
@@ -238,6 +265,7 @@ class RolloutReadiness:
     offline_eval_pass: bool
     slo_defined: bool
     rollback_plan: bool
+    approval_path_defined: bool
 
 
 def ready_for_rollout(state: RolloutReadiness) -> bool:
@@ -246,12 +274,13 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
         and state.offline_eval_pass
         and state.slo_defined
         and state.rollback_plan
+        and state.approval_path_defined
     )
 ```
 
 Очень простой пример, но он помогает удерживать одну важную мысль: production readiness должна быть формализуема.
 
-## 12. Что чаще всего ломается в процессе запуска
+## 13. Что чаще всего ломается в процессе запуска
 
 Проблемы очень узнаваемы:
 
@@ -260,7 +289,9 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - ownership формально есть, но on-call не готов;
 - rollback plan звучит как “ну откатим, если что”;
 - capability owners не знают о реальном release window;
-- safety regressions не считаются blocker'ом.
+- safety regressions не считаются blocker'ом;
+- paused runs накапливаются, потому что у approval queue нет owner;
+- approval latency становится видимой только тогда, когда пользователи уже ждут.
 
 Для support-агента это часто выглядит особенно опасно:
 
@@ -271,7 +302,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 Если это происходит, rollout process у тебя пока еще не production discipline, а просто слишком самоуверенный выпуск изменений.
 
-## 13. Быстрый тест зрелости для rollout readiness
+## 14. Быстрый тест зрелости для rollout readiness
 
 Команде не стоит думать, что она готова к production, только потому, что demo работает, checklist в целом зеленый, а первый canary кажется маленьким.
 
@@ -281,11 +312,12 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - traces, policy visibility и rollback действительно заслуживают доверия до расширения rollout;
 - write capabilities имеют idempotency и явный unknown-outcome path;
 - blast radius ограничен дизайном, а не оптимизмом команды;
+- backlog approval, timeout и resume/cancel behavior заданы явно;
 - ownership, on-call и manual fallback описаны конкретно.
 
 Если большинство этих условий не выполняется, у команды уже может быть launch momentum, но реального rollout readiness у нее пока нет.
 
-## 14. Что делать сразу после этой главы
+## 15. Что делать сразу после этой главы
 
 Если хочешь быстро проверить readiness перед выкладкой, пройди по короткому списку:
 
@@ -295,14 +327,15 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 4. Есть ли canary/shadow этап?
 5. Есть ли rollback plan и ограничение blast radius?
 6. Проверены ли high-risk flows отдельно, а не только happy path?
+7. Есть ли у approval видимое правило timeout/backlog для paused runs?
 
 Если на несколько вопросов подряд ответ “нет”, rollout лучше считать неготовым, даже если демо прошло хорошо.
 
-## 15. Что читать дальше
+## 16. Что читать дальше
 
 На этом эталонная реализация уже закрывает базовый operational skeleton того же support-агента и его платформы. Следующий шаг здесь уже lifecycle discipline: как менять, выпускать, расследовать и выводить из эксплуатации такую систему без потери управляемости.
 
-## 16. Полезные справочные страницы
+## 17. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
