@@ -9,6 +9,8 @@ retirement:
     - freeze_rollout
     - disable_risky_capabilities
     - stop_memory_write
+    - expire_paused_runs
+    - stop_background_routes
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -16,3 +18,5 @@ retirement:
     - telemetry_jsonl
     - session_exports
     - approval_history
+    - paused_run_state
+    - runtime_control_bundle

@@ -10,3 +10,5 @@ bundle:
     - memory.yaml
     - controls.yaml
     - approvals.yaml
+    - runtime-controls.yaml
+    - eval-dataset.json

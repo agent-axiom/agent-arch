@@ -1,0 +1,7 @@
+runtime_controls:
+  pause_allowed: true
+  resume_allowed: true
+  background_mode_allowed: true
+  max_wait_seconds: 1800
+  on_expiry: cancel_run
+  contract_version: capability-contract-v5

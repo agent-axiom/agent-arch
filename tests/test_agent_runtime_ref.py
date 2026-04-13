@@ -130,6 +130,60 @@ class TestRuntimeCore:
         assert all(record.provenance for record in records)
 
 
+class TestRuntimeControlPaths:
+    def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
+        runtime = AgentRuntime()
+        trace_id = "trace-approval-signals-001"
+        session_id = "session-approval-signals-001"
+        result = runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this onboarding issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-22",
+                trace_id=trace_id,
+                session_id=session_id,
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        assert result.status == "success"
+        approval_requested = next(
+            event for event in runtime.telemetry.events if event.event_type == "approval_requested"
+        )
+        tool_execution = next(
+            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
+        )
+        assert approval_requested.trace_id == trace_id
+        assert approval_requested.payload["status"] == "pending"
+        assert tool_execution.payload["status"] == "approval_required"
+        assert tool_execution.payload["tool_principal"] == "pending_review"
+        assert len(runtime.approvals.pending()) == 1
+
+    def test_cli_check_retirement_detects_runtime_control_shutdown_gaps(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "check-retirement",
+                "--step",
+                "expire_paused_runs=false",
+                "--step",
+                "stop_background_routes=false",
+            ],
+        )
+        assert exit_code == 0
+        assert not payload["ready"]
+        assert "expire_paused_runs" in payload["missing_steps"]
+        assert "stop_background_routes" in payload["missing_steps"]
+
+    def test_cli_check_change_accepts_runtime_control_signal_contract(self, cli_json) -> None:
+        exit_code, payload = cli_json([
+            "check-change",
+            "--signal",
+            "offline_eval_passed=true",
+        ])
+        assert exit_code == 0
+        assert "ready" in payload
+        assert "rollout_strategy" in payload
+
+
 class TestPolicyAndControls:
     def test_policy_denies_missing_principal(self) -> None:
         engine = PolicyEngine()
@@ -292,6 +346,8 @@ class TestLifecycleArtifacts:
                 "freeze_rollout": True,
                 "disable_risky_capabilities": True,
                 "stop_memory_write": True,
+                "expire_paused_runs": True,
+                "stop_background_routes": True,
                 "revoke_egress": False,
                 "archive_audit_state": True,
                 "set_retired_status": True,
@@ -472,7 +528,10 @@ class TestCli:
         assert exit_code == 0
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
+        assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
         assert payload["retirement"]["system_id"] == "support-triage-ref"
+        assert "expire_paused_runs" in payload["retirement"]["required_steps"]
+        assert "stop_background_routes" in payload["retirement"]["required_steps"]
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
@@ -598,3 +657,11 @@ class TestCli:
         assert len(exported["sessions"]) == 3
         assert exported["sessions"][0]["eval"]["labels"]
         assert "expected_outcomes" in exported["sessions"][0]["eval"]
+        assert any(
+            session["summary"]["approval_wait_runs"] >= 1
+            for session in exported["sessions"]
+        )
+        assert any(
+            session["summary"]["total_runs"] >= 2
+            for session in exported["sessions"]
+        )
