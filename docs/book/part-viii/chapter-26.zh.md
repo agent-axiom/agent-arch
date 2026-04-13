@@ -68,9 +68,12 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 - tool permissions 与 principals；
 - policy decisions；
 - approvals；
+- paused runs 的状态与等待时长；
+- approval backlog signals；
+- background runs 的状态与运行时长；
 - output summaries；
 - redaction status；
-- bundle、version 与 rollout wave。
+- bundle、version、rollout wave 与 contract version。
 
 也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
 
@@ -106,6 +109,7 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 
 - risky tool calls 异常增多；
 - approval denials 上升；
+- approval backlog 老化或 stuck paused runs 出现；
 - memory write pattern 变化；
 - retrieval profile 改变；
 - unusual egress destinations 激增；
@@ -130,9 +134,9 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states 和 lifecycle artifacts 之间的链接。
 
-如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle` 和 `rollout_wave`，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
+如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version` 和 `rollout_wave`，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
 ## 7. 为什么没有 observability 的 governance 往往很脆
 
@@ -150,7 +154,8 @@ Governance 往往会被写成：
 - 看到真实行为；
 - 发现 drift；
 - 衡量 coverage；
-- 区分 governed path 和 bypass path。
+- 区分 governed path 和 bypass path；
+- 在事故发生前发现 stuck approvals、aging background runs 与 contract mismatches。
 
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
 
@@ -205,6 +210,9 @@ observability:
     policy_decisions: true
     tool_principals: true
     approval_linkage: true
+    paused_run_visibility: true
+    background_run_visibility: true
+    contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
     min_agent_inventory_coverage_pct: 95
@@ -213,6 +221,8 @@ observability:
   block_if:
     - untracked_high_risk_agent_exists
     - approval_events_not_linked
+    - paused_runs_not_visible
+    - contract_version_missing
     - bundle_version_missing
 ```
 
@@ -229,6 +239,7 @@ class ObservabilityCoverage:
     inventory_coverage_pct: int
     trace_coverage_pct: int
     high_risk_trace_coverage_pct: int
+    paused_run_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -236,6 +247,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         state.inventory_coverage_pct >= 95
         and state.trace_coverage_pct >= 95
         and state.high_risk_trace_coverage_pct == 100
+        and state.paused_run_visibility
     )
 ```
 
@@ -246,7 +258,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - traces 只覆盖“主 runtime”，却没覆盖真正的 adapters；
 - agents 存在于 inventory 之外；
 - approvals 单独记录，却不和 traces 关联；
+- paused runs 与 background runs 明明存在，但它们的年龄和 ownership 在 telemetry 中不可见；
 - telemetry 覆盖了 happy path，却没覆盖 bypass path；
+- contract-version drift 只有在 payload 不再匹配预期时才被发现；
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与 forensic needs 不一致。
 
@@ -257,8 +271,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 更高的标准应该是：
 
 - inventory coverage 和 telemetry coverage 被当成同一个 control problem；
-- high-risk actions 能关联到 approvals、principals 和 artifact bundles；
+- high-risk actions 能关联到 approvals、principals、artifact bundles 与 contract versions；
 - 除了 raw telemetry 之外，还有 behavioral baselines；
+- paused-run age、approval backlog 与 background-run aging 都是 first-class signals；
 - unobserved agents 被当成 governance risk，而不只是记账缺口；
 - telemetry 能作为 release 和 incident decisions 的 evidence。
 
@@ -268,8 +283,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - 你知道 production estate 里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
-- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal` 和 `bundle_id` 吗？
+- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version` 和 `bundle_id` 吗？
 - 你有没有 behavioral baselines，而不只是 raw dashboards？
+- 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
 - 你会不会把 unobserved agents 当成一个单独的 risk class？
 - 你能把 observability 当成 release evidence，而不是只当 debug aid 吗？
 

@@ -68,9 +68,12 @@ Microsoft точно формулирует этот сдвиг: для аген
 - права инструментов и принципалы;
 - решения политик;
 - подтверждения;
+- состояние и возраст paused runs;
+- сигналы backlog по approval;
+- состояние и возраст background runs;
 - краткие итоги ответа;
 - статус маскирования данных;
-- набор артефактов, версию и волну раскатки.
+- набор артефактов, версию, волну раскатки и contract version.
 
 То есть трассы должны рассказывать не только «что упало», но и:
 
@@ -106,6 +109,7 @@ Microsoft отдельно подчеркивает полный произво�
 
 - неожиданное увеличение рискованных вызовов инструментов;
 - рост отказов в подтверждении;
+- стареющий approval backlog или stuck paused runs;
 - изменение характера записей в память;
 - смену обычного профиля извлечения;
 - всплеск необычных направлений сетевого выхода;
@@ -130,9 +134,9 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states и артефактами жизненного цикла.
 
-Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle` и `rollout_wave`, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
+Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version` и `rollout_wave`, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
@@ -150,7 +154,8 @@ Microsoft отдельно подчеркивает полный произво�
 - видеть фактическое поведение;
 - замечать дрейф;
 - измерять покрытие;
-- отличать управляемый путь от обходного.
+- отличать управляемый путь от обходного;
+- замечать stuck approvals, aging background runs и contract mismatches до того, как они станут инцидентами.
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
@@ -203,6 +208,9 @@ observability:
     policy_decisions: true
     tool_principals: true
     approval_linkage: true
+    paused_run_visibility: true
+    background_run_visibility: true
+    contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
     min_agent_inventory_coverage_pct: 95
@@ -211,6 +219,8 @@ observability:
   block_if:
     - untracked_high_risk_agent_exists
     - approval_events_not_linked
+    - paused_runs_not_visible
+    - contract_version_missing
     - bundle_version_missing
 ```
 
@@ -227,6 +237,7 @@ class ObservabilityCoverage:
     inventory_coverage_pct: int
     trace_coverage_pct: int
     high_risk_trace_coverage_pct: int
+    paused_run_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -234,6 +245,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         state.inventory_coverage_pct >= 95
         and state.trace_coverage_pct >= 95
         and state.high_risk_trace_coverage_pct == 100
+        and state.paused_run_visibility
     )
 ```
 
@@ -244,7 +256,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - трассы есть только у основного рантайма, но не у реальных адаптеров;
 - агенты существуют вне реестра;
 - подтверждения журналируются отдельно и не связываются с трассами;
+- paused runs и background runs существуют, но их возраст и ownership не видны в телеметрии;
 - телеметрия покрывает штатный путь, но не обходной;
+- contract-version drift замечают только после того, как payloads перестают соответствовать ожиданиям;
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
 
@@ -255,8 +269,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 Более сильная планка такая:
 
 - inventory coverage и telemetry coverage считаются одной control problem;
-- high-risk actions можно связать с approvals, principals и artifact bundles;
+- high-risk actions можно связать с approvals, principals, artifact bundles и contract versions;
 - alongside raw telemetry существуют behavioral baselines;
+- возраст paused runs, approval backlog и старение background runs видны как first-class signals;
 - unobserved agents считаются governance risk, а не просто пробелом в учете;
 - на телеметрию можно опираться как на evidence в release и incident decisions.
 
@@ -266,8 +281,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - Знаешь ли ты, сколько агентов реально живет в рабочей среде?
 - Какой процент из них вообще шлет структурированную телеметрию?
-- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal` и `bundle_id`?
+- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal`, `contract_version` и `bundle_id`?
 - Есть ли поведенческие базовые линии, а не только сырые дашборды?
+- Видишь ли ты возраст paused runs, approval backlog и стареющие background runs до жалоб пользователей?
 - Видишь ли ты ненаблюдаемые агенты как отдельный класс риска?
 - Можешь ли ты использовать наблюдаемость как доказательную базу для выпуска, а не только как средство отладки?
 
