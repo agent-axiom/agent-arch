@@ -17,6 +17,7 @@
 - 记忆状态；
 - 工具访问；
 - 审批与审计轨迹；
+- paused-run state 与 background-run state；
 - 外部集成；
 - 用户预期；
 - 依赖它的工作流。
@@ -62,7 +63,9 @@
 - 仍然在线的连接器；
 - 记忆访问权；
 - 旧的上线路径；
-- 后台任务。
+- 后台任务；
+- 可恢复的 paused approval path；
+- 仍被 gateways 接受的旧 runtime-control schema。
 
 形式上系统已经“死了”，但在运行上它仍然能行动。
 
@@ -76,7 +79,8 @@
 - 关闭高风险能力；
 - 把写入动作切到仅审批模式，或者直接停用；
 - 停止记忆写入；
-- 停止后台任务；
+- 让 paused runs 过期或直接取消；
+- 停止后台任务与 background routes；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
 - 固化最终审计状态。
@@ -137,7 +141,9 @@ flowchart LR
 - 已废弃的提示包族；
 - 已废弃的网关模式；
 - 已废弃的记忆策略；
-- 已废弃的能力契约。
+- 已废弃的能力契约；
+- 已废弃的 approval schema；
+- 已废弃的 runtime-control schema。
 
 这很重要，因为退役几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
 
@@ -170,6 +176,8 @@ retirement:
     - freeze_rollout
     - disable_risky_capabilities
     - stop_memory_write
+    - expire_paused_runs
+    - stop_background_routes
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -191,6 +199,7 @@ class ReplacementState:
     migration_plan_ready: bool
     risky_capabilities_disabled: bool
     archive_plan_ready: bool
+    paused_runs_drained: bool
 
 
 def ready_for_replacement(state: ReplacementState) -> bool:
@@ -199,6 +208,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
         and state.migration_plan_ready
         and state.risky_capabilities_disabled
         and state.archive_plan_ready
+        and state.paused_runs_drained
     )
 ```
 
@@ -211,7 +221,10 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 系统被认为已经退役，但主体还活着；
 - 后台任务没关；
 - 记忆写入路径仍然在工作；
+- paused approvals 在 retirement 之后仍然可以 resume；
+- background routes 被遗忘没有关闭；
 - 归档状态没有负责人；
+- deprecated schemas 仍然被 gateways 或 runtimes 接受；
 - 已废弃模式存活太久；
 - 替换没有双运行或分阶段迁移。
 
@@ -224,8 +237,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 更高的标准应该是：
 
 - 系统会在被宣布 retired 之前先失去行动能力；
-- principals、connectors、memory writes 和 background jobs 会被有意识地逐层收缩；
+- principals、connectors、memory writes、paused runs 与 background jobs 会被有意识地逐层收缩；
 - replacement 是 staged 的，而不是二元 cutover；
+- deprecated approval 与 runtime-control schemas 会被真正关闭，而不是作为隐藏兼容路径长期残留；
 - archived state 有 owner，也有 retention decision；
 - deprecated patterns 会变成真正被阻断的 paths，而不只是 warnings。
 
@@ -237,9 +251,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 - 系统是否有明确的退役触发条件？
 - 能力能否按阶段关闭，而不是只能“一键全关”？
-- 关闭后记忆、追踪和审批怎么处理，是否清楚？
+- 关闭后记忆、追踪、审批和 paused-run state 怎么处理，是否清楚？
 - 是否有分阶段替换计划？
-- 主体、连接器和出口访问能否快速撤销？
+- 主体、连接器、出口访问、paused approvals 和 background routes 能否快速撤销或排空？
 - 已归档工件和历史状态的负责人是否明确？
 
 如果连续几个问题的答案都是“否”，那你的生命周期其实还停留在发布，而不是完整运营。
