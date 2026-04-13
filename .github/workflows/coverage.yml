@@ -1,0 +1,64 @@
+name: coverage
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Setup Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --group dev
+
+      - name: Run tests with coverage
+        run: uv run pytest --cov=agent_runtime_ref --cov-report=term-missing --cov-report=xml --cov-report=html
+
+      - name: Add coverage summary to GitHub job
+        run: |
+          {
+            echo "## Coverage Summary"
+            echo
+            echo '```'
+            uv run pytest --cov=agent_runtime_ref --cov-report=term-missing -q | tail -n 30
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage.xml
+            htmlcov/
+
+      - name: Ensure badge directory exists
+        run: mkdir -p docs/assets/badges
+
+      - name: Generate coverage badge
+        uses: tj-actions/coverage-badge-py@v2
+        with:
+          output: docs/assets/badges/coverage.svg
+          overwrite: true
+
+      - name: Commit coverage badge
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: "Update coverage badge"
+          file_pattern: docs/assets/badges/coverage.svg
