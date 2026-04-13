@@ -13,7 +13,7 @@
 
     - the need to treat part of agentic risk as a control-failure problem;
     - the value of least privilege, two-person control, and immutable audit trails;
-    - the especially dangerous role of mail, approvals, code execution, secrets, and memory writes.
+    - the especially dangerous role of mail, approvals, paused or resumable control paths, code execution, secrets, and memory writes.
 
 ## 1. Why a normal security review is not enough
 
@@ -84,7 +84,8 @@ That is why the most effective mitigations look similar to mature insider-risk c
 - two-person control for high-risk actions;
 - immutable audit trails;
 - behavioral monitoring;
-- emergency containment.
+- emergency containment;
+- strong linkage between runtime-control paths and governed contract versions.
 
 Google Research compresses this into three practical principles: human controllers, limited powers, and observable actions. [^google-secure-agents]
 

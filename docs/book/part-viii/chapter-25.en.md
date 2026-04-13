@@ -13,7 +13,7 @@
 
     - the need to evaluate runtime behavior, not only final answers;
     - the requirement to test control layers themselves, not only model quality;
-    - the link between control evals, regression gates, and rollout decisions.
+    - the link between control evals, regression gates, contract-version discipline, and rollout decisions.
 
 ## 1. Why ordinary regression evals are no longer enough
 
@@ -95,7 +95,8 @@ Behavioral evals and control evals do not replace them. They add another layer:
 - offline evals test task quality;
 - trace grading tests path quality;
 - behavioral evals test policy-relevant behavior;
-- control evals test whether the controls themselves work.
+- control evals test whether the controls themselves work;
+- runtime-control evals verify pause/resume, background, and contract-version behavior under pressure.
 
 ## 6. Where these evals matter most
 

@@ -12,7 +12,7 @@
     变化相对较慢的部分：
 
     - 必须建设 evidence-ready telemetry，而不只是调试日志；
-    - observability 必须和 approvals、policy decisions、tool principals 与 artifact bundles 关联；
+    - observability 必须和 approvals、runtime-control states、policy decisions、tool principals、contract versions 与 artifact bundles 关联；
     - 完整的 inventory coverage 仍然是 detection 和 incident review 的前提。
 
 ## 1. 为什么智能体的 observability 不能只看 latency 和 errors
@@ -83,6 +83,8 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 - 依据哪套规则；
 - 属于哪个 artifact bundle；
 - 最终造成了什么 side effect。
+
+这也正是为什么 runtime-control signals 不能继续被当成隐藏的 implementation detail。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于 evidence layer。
 
 ## 4. Inventory coverage 其实也是 observability
 

@@ -12,7 +12,7 @@
     What changes more slowly:
 
     - the requirement to build evidence-ready telemetry rather than debugging logs alone;
-    - the link between observability, approvals, policy decisions, tool principals, and artifact bundles;
+    - the link between observability, approvals, runtime-control states, policy decisions, tool principals, contract versions, and artifact bundles;
     - the importance of full inventory coverage for detection and incident review.
 
 ## 1. Why observability for agents cannot stop at latency and errors
@@ -83,6 +83,8 @@ In other words, traces must explain not only “what failed,” but also:
 - under which rules;
 - under which artifact bundle;
 - and with which side effect.
+
+This is exactly why runtime-control signals cannot remain a hidden implementation detail. Once pause/resume paths, background execution, and contract-version transitions exist, they become part of the evidence layer too.
 
 ## 4. Inventory coverage is also observability
 

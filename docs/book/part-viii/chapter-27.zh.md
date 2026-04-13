@@ -12,7 +12,7 @@
     变化相对较慢的部分：
 
     - 必须区分 inventory 和 registry；
-    - 每个生产级 agent 都需要 owner、lifecycle state 和 capability record；
+    - 每个生产级 agent 都需要 owner、lifecycle state、capability record 和 runtime-control ownership；
     - 定期 review 仍然是避免 sprawl 变成 blind spot 的关键。
 
 ## 1. 为什么几乎每个成功的 agent 计划都会出现 sprawl
@@ -31,7 +31,8 @@
 - 它们的 owner 是谁；
 - 它们有哪些 capabilities；
 - 用了哪些 identities、connectors 和 tool principals；
-- 哪些其实还活着。
+- 哪些其实还活着；
+- 哪些仍然挂着 paused approvals、background routes 或 deprecated contract paths。
 
 这正是值得被称作 `agent sprawl` 的状态。
 

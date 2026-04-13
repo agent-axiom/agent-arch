@@ -12,7 +12,7 @@
     What changes more slowly:
 
     - the need to separate inventory from registry;
-    - the requirement for every production agent to have an owner, lifecycle state, and capability record;
+    - the requirement for every production agent to have an owner, lifecycle state, capability record, and runtime-control ownership;
     - the importance of periodic review so sprawl does not turn into a blind spot.
 
 ## 1. Why nearly every successful agent program produces sprawl
@@ -31,7 +31,8 @@ Each decision may be reasonable on its own. The problem starts later, when nobod
 - who owns them;
 - which capabilities they have;
 - which identities, connectors, and tool principals they use;
-- which of them are still alive.
+- which of them are still alive;
+- which of them still own paused approvals, background routes, or deprecated contract paths.
 
 That is the state worth calling `agent sprawl`.
 

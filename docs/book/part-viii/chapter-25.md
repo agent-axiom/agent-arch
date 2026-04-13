@@ -13,7 +13,7 @@
 
     - необходимость оценивать не только финальный ответ, но и форму поведения runtime;
     - требование проверять сами контуры управления, а не только качество модели;
-    - связь между control evals, regression gates и rollout decisions.
+    - связь между control evals, regression gates, contract-version discipline и rollout decisions.
 
 ## 1. Почему обычных regression evals уже недостаточно
 
@@ -95,7 +95,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - offline evals проверяют task quality;
 - trace grading проверяет path quality;
 - behavioral evals проверяют policy-relevant behavior;
-- control evals проверяют, что сами controls действительно работают.
+- control evals проверяют, что сами controls действительно работают;
+- runtime-control evals проверяют pause/resume, background и contract-version behavior под давлением.
 
 ## 6. Где такие evals особенно нужны
 

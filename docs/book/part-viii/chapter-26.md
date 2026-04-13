@@ -12,7 +12,7 @@
     Медленнее меняются:
 
     - требование строить evidence-ready telemetry, а не только debugging logs;
-    - связь observability с approvals, policy decisions, tool principals и artifact bundles;
+    - связь observability с approvals, runtime-control states, policy decisions, tool principals, contract versions и artifact bundles;
     - важность полного inventory coverage для detection и incident review.
 
 ## 1. Почему наблюдаемость для агентов нельзя сводить к задержке и ошибкам
@@ -83,6 +83,8 @@ Microsoft точно формулирует этот сдвиг: для аген
 - по каким правилам;
 - в рамках какого набора артефактов;
 - и с каким внешним действием.
+
+Именно поэтому runtime-control signals больше нельзя считать скрытой implementation detail. Как только появляются pause/resume paths, background execution и contract-version transitions, они тоже становятся частью evidence layer.
 
 ## 4. Покрытие реестра — это тоже наблюдаемость
 

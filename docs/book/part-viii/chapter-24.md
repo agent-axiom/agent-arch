@@ -13,7 +13,7 @@
 
     - необходимость рассматривать часть agentic-risk сценариев как control failures;
     - полезность least privilege, two-person control и immutable audit trail;
-    - особая опасность почты, approvals, code execution, secrets и memory writes.
+    - особая опасность почты, approvals, paused/resumable control paths, code execution, secrets и memory writes.
 
 ## 1. Почему этого блока не хватает в обычном security review
 
@@ -84,7 +84,8 @@ Misalignment устроен иначе:
 - two-person control для high-risk actions;
 - immutable audit trail;
 - behavioral monitoring;
-- emergency containment.
+- emergency containment;
+- жесткая связь между runtime-control paths и governed contract versions.
 
 Google Research формулирует это через три простых принципа: human controllers, limited powers и observable actions. [^google-secure-agents]
 

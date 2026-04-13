@@ -12,7 +12,7 @@
     Медленнее меняются:
 
     - необходимость различать inventory и registry;
-    - требование иметь owner, lifecycle state и capability record у production-grade agents;
+    - требование иметь owner, lifecycle state, capability record и runtime-control ownership у production-grade agents;
     - важность регулярного review, чтобы sprawl не превращался в blind spot.
 
 ## 1. Почему почти у каждой успешной agent-программы появляется sprawl
@@ -31,7 +31,8 @@
 - кто их owner;
 - какие capabilities у них есть;
 - какие identities, connectors и tool principals они используют;
-- какие из них вообще еще живы.
+- какие из них вообще еще живы;
+- какие из них все еще владеют paused approvals, background routes или deprecated contract paths.
 
 Именно это состояние и стоит называть `agent sprawl`.
 

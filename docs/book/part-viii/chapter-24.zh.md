@@ -13,7 +13,7 @@
 
     - 必须把一部分 agentic risk 视为 control failure；
     - least privilege、two-person control 和 immutable audit trail 仍然是核心对策；
-    - 邮件、审批、代码执行、secrets 和 memory writes 仍是高危表面。
+    - 邮件、审批、paused/resumable control paths、代码执行、secrets 和 memory writes 仍是高危表面。
 
 ## 1. 为什么普通的安全评审还不够
 
@@ -84,7 +84,8 @@
 - 面向高风险动作的双人控制；
 - 不可篡改的审计轨迹；
 - 行为监测；
-- 紧急遏制。
+- 紧急遏制；
+- runtime-control paths 与 governed contract versions 之间的强链接。
 
 Google Research 把这压缩成三个很实用的原则：human controllers、limited powers 和 observable actions。 [^google-secure-agents]
 

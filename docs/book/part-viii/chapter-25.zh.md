@@ -13,7 +13,7 @@
 
     - 必须评估 runtime 的行为，而不只是最终答案；
     - 必须验证控制层本身，而不只是模型质量；
-    - control evals、regression gates 和 rollout decisions 必须连起来。
+    - control evals、regression gates、contract-version discipline 和 rollout decisions 必须连起来。
 
 ## 1. 为什么普通回归评测已经不够
 
@@ -95,7 +95,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 离线评测检查任务质量；
 - 追踪分级检查路径质量；
 - 行为评测检查与策略相关的行为；
-- 控制评测检查控制本身是否真的有效。
+- 控制评测检查控制本身是否真的有效；
+- runtime-control evals 还要验证 pause/resume、background 与 contract-version behavior 在受压场景下是否按预期工作。
 
 ## 6. 哪些地方最需要这类评测
 
