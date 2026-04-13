@@ -19,15 +19,15 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 
     - [Chapter 19](chapter-19.en.md): establish the frame through the move from SDLC to ADLC;
     - [Chapter 20](chapter-20.en.md): define which agent changes are truly release-bearing;
-    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, and artifact discipline;
-    - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement and retirement.
+    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, artifact discipline, and contract/schema governance;
+    - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, and runtime-control shutdown.
 
     Chapters 24-27 extend the same contour through misalignment, behavioral evals, AI-native observability, and agent-estate governance.
 
 ## What This Part Solves
 
 - it turns the reference implementation into a managed lifecycle;
-- it connects change management, assurance, provenance, incidents, retirement, observability, and estate governance into one operational contour;
+- it connects change management, assurance, provenance, incidents, retirement, observability, runtime-control governance, and estate governance into one operational contour;
 - it separates stable engineering discipline from fast-moving vendor and research details.
 
 If you read this part as one block, the sequence is straightforward:
@@ -35,8 +35,8 @@ If you read this part as one block, the sequence is straightforward:
 - first, establish the frame by moving from SDLC to ADLC;
 - then define which changes in an agent system are truly release-bearing;
 - next, build an assurance loop around red teaming, detection, and response;
-- after that, lock down artifact discipline and provenance;
-- then close the lifecycle through replacement and retirement;
+- after that, lock down artifact discipline, provenance, and contract/schema governance;
+- then close the lifecycle through replacement, retirement, and runtime-control shutdown;
 - and finally extend the same discipline into misalignment, behavioral assurance, AI-native observability, and whole-estate governance.
 
 ## In This Part
@@ -56,8 +56,8 @@ If you read this part as one block, the sequence is straightforward:
 - a coherent lifecycle model for production-grade agent systems;
 - a stronger frame for change reviews and release gates;
 - a clear connection between evals, incidents, provenance, and ownership;
-- a practical language for replacement, retirement, and end-of-life discipline;
-- a stronger frame for sabotage-like behavior, control failures, and automated assurance;
-- a clear model of observability as an evidence layer for inventory, detection, and governance;
+- a practical language for replacement, retirement, end-of-life discipline, and runtime-control shutdown;
+- a stronger frame for sabotage-like behavior, control failures, contract drift, and automated assurance;
+- a clear model of observability as an evidence layer for inventory, detection, runtime-control signals, and governance;
 - a working frame for governing an entire agent estate rather than isolated agent systems;
 - a clearer sense of how Part VIII works as one continuous operating model rather than a loose set of security chapters.

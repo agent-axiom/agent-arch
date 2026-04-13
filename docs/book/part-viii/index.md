@@ -19,15 +19,15 @@
 
     - [Глава 19](chapter-19.md): выровнять рамку через переход от SDLC к ADLC;
     - [Глава 20](chapter-20.md): понять, какие agent changes вообще считаются release-bearing;
-    - [Глава 21](chapter-21.md) и [Глава 22](chapter-22.md): собрать assurance, provenance и artifact discipline;
-    - [Глава 23](chapter-23.md): закрыть lifecycle через replacement и retirement.
+    - [Глава 21](chapter-21.md) и [Глава 22](chapter-22.md): собрать assurance, provenance, artifact discipline и contract/schema governance;
+    - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement и shutdown runtime-control surfaces.
 
     Главы 24-27 расширяют этот же контур через misalignment, behavioral evals, AI-native observability и управление agent estate.
 
 ## Что решает эта часть
 
 - переводит reference implementation в управляемый lifecycle;
-- связывает change management, assurance, provenance, incidents, retirement, observability и agent-estate governance в один operational contour;
+- связывает change management, assurance, provenance, incidents, retirement, observability, runtime-control governance и agent-estate governance в один operational contour;
 - отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
 
 Если читать эту часть как единый блок, порядок такой:
@@ -35,8 +35,8 @@
 - сначала ты выравниваешь понятийную рамку через переход от SDLC к ADLC;
 - потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
 - затем строишь assurance loop вокруг red teaming, detection и response;
-- после этого закрепляешь artifact discipline и provenance;
-- затем закрываешь жизненный цикл через replacement и retirement;
+- после этого закрепляешь artifact discipline, provenance и contract/schema governance;
+- затем закрываешь жизненный цикл через replacement, retirement и shutdown runtime-control surfaces;
 - и в конце расширяешь тот же контур на misalignment, behavioral assurance, AI-native observability и управление всем agent estate.
 
 ## В этой части
@@ -56,8 +56,8 @@
 - цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
 - понятную связь между evals, incidents, provenance и рабочей ответственностью;
-- практический язык для разговоров о replacement, retirement и end-of-life discipline;
-- более зрелую рамку для sabotage-like behavior, control failures и automated assurance;
-- представление о observability как о слое доказательств для inventory, detection и governance;
+- практический язык для разговоров о replacement, retirement, end-of-life discipline и shutdown runtime-control surfaces;
+- более зрелую рамку для sabotage-like behavior, control failures, contract drift и automated assurance;
+- представление о observability как о слое доказательств для inventory, detection, runtime-control signals и governance;
 - рабочую рамку для управления всем контуром агентов, а не только отдельными agent systems;
 - более ясное ощущение, что Part VIII работает как единая operating model, а не как набор разрозненных security chapters.
