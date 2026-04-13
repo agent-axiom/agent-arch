@@ -10,6 +10,7 @@
 - approved artifact bundles;
 - retirement plans;
 - replacement mappings;
+- runtime-control schemas и contract-version linkages;
 - operational approvals и lifecycle decisions.
 
 Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
@@ -40,6 +41,7 @@ owner: platform-safety
 affected_surfaces:
   - policy_bundle
   - capability_contract
+  - runtime_control_schema
   - rollout_rules
 eval_requirements:
   - offline_regression
@@ -73,8 +75,10 @@ artifacts:
   policy_bundle: policy-v4
   approvals_bundle: approvals-v3
   controls_bundle: controls-v2
+  runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  contract_version: capability-contract-v5
 status: approved
 release_scope: canary
 provenance:
@@ -103,6 +107,8 @@ phases:
   - freeze_new_rollouts
   - dual_run
   - traffic_shift
+  - expire_paused_runs
+  - stop_background_routes
   - revoke_principal
   - archive_artifacts
 historical_state:
@@ -117,6 +123,8 @@ owner: platform-operations
 
 - traces;
 - approvals;
+- paused-run state;
+- ownership фоновых маршрутов;
 - principals;
 - memory;
 - archived bundles.
@@ -138,6 +146,7 @@ owner: platform-operations
 
 - каждый high-risk change имеет `change_record`;
 - каждый production rollout указывает на `artifact_bundle`;
+- каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - lifecycle artifacts имеют owner и version;
 - incident review может восстановить связку `change -> bundle -> run -> retirement`.

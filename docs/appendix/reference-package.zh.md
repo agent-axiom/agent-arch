@@ -31,9 +31,9 @@
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  用于高风险动作的审批门禁与简单人工评审队列。
+  用于高风险动作的审批门禁、pause/resume semantics 与简单人工评审队列。
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  用于 change record、artifact bundle 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
+  用于 change record、artifact bundle、runtime-control schemas 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
 
 ## 如何运行
 
@@ -59,7 +59,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-查看与第八部分对应的生命周期工件：
+查看与第八部分对应的生命周期工件，包括 runtime-control linkage：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -174,8 +174,8 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易继续往这个包里补充示例；
 - 更容易从章节直接走到可运行的原型；
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
-- 更容易把参考运行时和记忆、检索、后台更新这些章节连起来。
-- 更容易讨论每条记忆是从哪里来的，以及它当前属于哪一个 revision。
+- 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来。
+- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version。
 
 现在还有几项很实用的能力：
 

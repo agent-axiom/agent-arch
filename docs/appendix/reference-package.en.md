@@ -31,9 +31,9 @@ This is the canonical page for the package. The README keeps only a short quicks
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  Approval gates and a simple human review queue for high-risk actions.
+  Approval gates, pause/resume semantics, and a simple human review queue for high-risk actions.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  Lifecycle artifacts for change records, artifact bundles, and retirement plans, plus readiness checks for those states.
+  Lifecycle artifacts for change records, artifact bundles, runtime-control schemas, and retirement plans, plus readiness checks for those states.
 
 ## How to Run It
 
@@ -59,7 +59,7 @@ Inspect the agent identity and approved inventory:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Inspect lifecycle artifacts that mirror Part VIII:
+Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -162,6 +162,7 @@ There are starter files for both runtime and lifecycle in [configs](/Users/if/Py
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
@@ -174,8 +175,8 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to extend the package with more examples;
 - it is easier to move from a chapter to a runnable prototype;
 - it is easier to show a config-driven path instead of only a hardcoded demo;
-- it is easier to connect the reference runtime to the chapters about memory, retrieval, and background updates.
-- it is easier to discuss where each memory record came from and which revision it represents.
+- it is easier to connect the reference runtime to the chapters about memory, retrieval, background updates, and runtime-control governance.
+- it is easier to discuss where each memory record came from, which revision it represents, and which contract/runtime-control version was active.
 
 There is also a practical usability win now:
 

@@ -10,6 +10,7 @@
 - 已批准工件包；
 - 退役计划；
 - 替换映射；
+- runtime-control schemas 与 contract-version linkages；
 - 运行期审批和生命周期决策。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
@@ -40,6 +41,7 @@ owner: platform-safety
 affected_surfaces:
   - policy_bundle
   - capability_contract
+  - runtime_control_schema
   - rollout_rules
 eval_requirements:
   - offline_regression
@@ -73,8 +75,10 @@ artifacts:
   policy_bundle: policy-v4
   approvals_bundle: approvals-v3
   controls_bundle: controls-v2
+  runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  contract_version: capability-contract-v5
 status: approved
 release_scope: canary
 provenance:
@@ -103,6 +107,8 @@ phases:
   - freeze_new_rollouts
   - dual_run
   - traffic_shift
+  - expire_paused_runs
+  - stop_background_routes
   - revoke_principal
   - archive_artifacts
 historical_state:
@@ -117,6 +123,8 @@ owner: platform-operations
 
 - 追踪；
 - 审批；
+- paused-run state；
+- background-route ownership；
 - 主体；
 - 记忆；
 - 已归档的工件包。
@@ -138,6 +146,7 @@ owner: platform-operations
 
 - 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
+- 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 生命周期工件有负责人和版本；
 - 事故复盘能还原 `change -> bundle -> run -> retirement`。

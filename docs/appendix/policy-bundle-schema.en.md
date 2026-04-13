@@ -39,6 +39,7 @@ Here, it is useful to define a `policy bundle` as a related set of rules that sh
 - runtime policy;
 - tool policy;
 - approval policy;
+- runtime-control rules for pause/resume and background paths;
 - memory write rules;
 - escalation rules;
 - egress rules.
@@ -65,6 +66,7 @@ bundle:
     - policy.yaml
     - approvals.yaml
     - controls.yaml
+  contract_version: capability-contract-v3
 ```
 
 This is not yet the rules themselves. It is the envelope that answers:
@@ -88,6 +90,7 @@ It is useful to make the approval contract explicit:
 - which fields must appear in the approval request;
 - which decisions are allowed;
 - what happens after rejection;
+- whether a run may pause, resume, expire, or cancel;
 - what must remain in the audit trail.
 
 ## Example approval contract
@@ -109,6 +112,10 @@ approval_contract:
   allowed_decisions:
     - approved
     - rejected
+  runtime_controls:
+    pause_allowed: true
+    max_wait_seconds: 1800
+    on_expiry: cancel_run
   on_reject: stop_run
 ```
 
@@ -158,6 +165,8 @@ As soon as the system grows up, it is useful to add at least:
 - `artifact_lineage`
 - `change_id`
 - `approval_contracts`
+- `runtime_control_schema`
+- `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
 

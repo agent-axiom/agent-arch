@@ -39,6 +39,7 @@
 - 运行时策略；
 - 工具策略；
 - 审批策略；
+- 用于 pause/resume 与 background paths 的 runtime-control rules；
 - 记忆写入规则；
 - 升级规则；
 - 出口规则。
@@ -65,6 +66,7 @@ bundle:
     - policy.yaml
     - approvals.yaml
     - controls.yaml
+  contract_version: capability-contract-v3
 ```
 
 这里还不是具体规则本身，而是一个信封结构，用来回答：
@@ -88,6 +90,7 @@ bundle:
 - 审批请求必须带哪些字段；
 - 允许哪些决策；
 - 拒绝之后会发生什么；
+- 一次 run 是否可以 pause、resume、expire 或 cancel；
 - 审计轨迹里必须留下什么。
 
 ## 审批契约示例
@@ -109,6 +112,10 @@ approval_contract:
   allowed_decisions:
     - approved
     - rejected
+  runtime_controls:
+    pause_allowed: true
+    max_wait_seconds: 1800
+    on_expiry: cancel_run
   on_reject: stop_run
 ```
 
@@ -158,6 +165,8 @@ approval_contract:
 - `artifact_lineage`
 - `change_id`
 - `approval_contracts`
+- `runtime_control_schema`
+- `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
 

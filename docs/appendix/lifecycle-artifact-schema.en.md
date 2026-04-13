@@ -10,6 +10,7 @@ Production-grade agent systems have several artifact classes that should not liv
 - approved artifact bundles;
 - retirement plans;
 - replacement mappings;
+- runtime-control schemas and contract-version linkages;
 - operational approvals and lifecycle decisions.
 
 Without them, change management turns into oral tradition. Incident review then becomes an exercise in reconstructing who "probably changed the policy or routing."
@@ -40,6 +41,7 @@ owner: platform-safety
 affected_surfaces:
   - policy_bundle
   - capability_contract
+  - runtime_control_schema
   - rollout_rules
 eval_requirements:
   - offline_regression
@@ -73,8 +75,10 @@ artifacts:
   policy_bundle: policy-v4
   approvals_bundle: approvals-v3
   controls_bundle: controls-v2
+  runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  contract_version: capability-contract-v5
 status: approved
 release_scope: canary
 provenance:
@@ -103,6 +107,8 @@ phases:
   - freeze_new_rollouts
   - dual_run
   - traffic_shift
+  - expire_paused_runs
+  - stop_background_routes
   - revoke_principal
   - archive_artifacts
 historical_state:
@@ -117,6 +123,8 @@ Its strength is that it forces the team to think not only about replacement, but
 
 - traces;
 - approvals;
+- paused-run state;
+- background-route ownership;
 - principals;
 - memory;
 - archived bundles.
@@ -138,6 +146,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 
 - every high-risk change has a `change_record`;
 - every production rollout points to an `artifact_bundle`;
+- every artifact bundle links runtime-control schema and contract version when those controls exist;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - lifecycle artifacts have an owner and version;
 - incident review can reconstruct `change -> bundle -> run -> retirement`.

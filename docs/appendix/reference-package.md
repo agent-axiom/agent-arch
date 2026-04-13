@@ -31,9 +31,9 @@
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Проверка continuous controls и inventory drift для approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  Approval gates и простая human review queue для high-risk действий.
+  Approval gates, pause/resume semantics и простая human review queue для high-risk действий.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  Lifecycle-артефакты для change record, artifact bundle и retirement plan, плюс readiness-проверки для этих состояний.
+  Lifecycle-артефакты для change record, artifact bundle, runtime-control schemas и retirement plan, плюс readiness-проверки для этих состояний.
 
 ## Как запустить
 
@@ -59,7 +59,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Просмотр lifecycle-артефактов из Part VIII:
+Просмотр lifecycle-артефактов из Part VIII, включая runtime-control linkage:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -174,8 +174,8 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - легче расширять пакет следующими примерами;
 - легче перейти от главы к исполняемому прототипу;
 - легче показать путь, управляемый конфигурацией, а не только жестко зашитое демо;
-- легче связать эталонный рантайм с главами про память, извлечение контекста и фоновые обновления.
-- легче обсуждать, откуда взялся каждый memory record и какая у него ревизия.
+- легче связать эталонный рантайм с главами про память, извлечение контекста, фоновые обновления и runtime-control governance.
+- легче обсуждать, откуда взялся каждый memory record, какая у него ревизия и какая contract/runtime-control version была активна.
 
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
 

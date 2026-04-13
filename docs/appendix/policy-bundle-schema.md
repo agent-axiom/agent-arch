@@ -39,6 +39,7 @@
 - runtime policy;
 - tool policy;
 - approval policy;
+- runtime-control rules для pause/resume и background paths;
 - memory write rules;
 - escalation rules;
 - egress rules.
@@ -65,6 +66,7 @@ bundle:
     - policy.yaml
     - approvals.yaml
     - controls.yaml
+  contract_version: capability-contract-v3
 ```
 
 Это еще не сами правила. Это оболочка, которая отвечает на вопрос:
@@ -88,6 +90,7 @@ bundle:
 - какие поля должны попасть в запрос на подтверждение;
 - какие решения допустимы;
 - что происходит после reject;
+- может ли run pause, resume, expire или cancel;
 - что должно остаться в журнале аудита.
 
 ## Пример контракта подтверждения
@@ -109,6 +112,10 @@ approval_contract:
   allowed_decisions:
     - approved
     - rejected
+  runtime_controls:
+    pause_allowed: true
+    max_wait_seconds: 1800
+    on_expiry: cancel_run
   on_reject: stop_run
 ```
 
@@ -158,6 +165,8 @@ approval_contract:
 - `artifact_lineage`
 - `change_id`
 - `approval_contracts`
+- `runtime_control_schema`
+- `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
 
