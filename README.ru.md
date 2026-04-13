@@ -1,5 +1,7 @@
 # Agent Architecture Book
 
+![Coverage](docs/assets/badges/coverage.svg)
+
 [English version](README.md)
 [中文版](README.zh.md)
 [Contributing guide](CONTRIBUTING.md)
