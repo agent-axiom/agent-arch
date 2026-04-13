@@ -99,11 +99,14 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 - 被拒动作的异常增长；
 - 审批积压；
+- stuck paused approvals 或异常偏大的 paused-run age；
 - 异常的工具选择模式；
 - 新出现的出口目标；
 - 记忆写入异常；
 - 不安全回退行为的上升；
-- 任务成功率和安全指标的漂移。
+- 任务成功率和安全指标的漂移；
+- stale background runs；
+- 预期 payload 形态与实际观测形态之间的 contract drift。
 
 也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
@@ -115,6 +118,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 - 限制能力；
 - 把动作切到仅审批模式；
+- 取消或使 stuck paused runs 过期；
+- 对 stale executions 的 route 暂停 background mode；
 - 收紧出口策略；
 - 关闭高风险记忆写入；
 - 把发布波次切回更安全的配置；
@@ -162,6 +167,8 @@ flowchart LR
 - production traces；
 - user complaints；
 - approval queue anomalies；
+- stale background-run reports；
+- contract-mismatch alerts；
 - postmortems；
 - online eval drift；
 - red-team findings。
@@ -203,6 +210,8 @@ assurance:
       - tool_misuse
       - memory_poisoning
       - egress_abuse
+      - paused_approval_saturation
+      - contract_drift
   findings:
     require_owner: true
     require_severity: true
@@ -213,6 +222,8 @@ assurance:
       - require_approval
       - restrict_egress
       - disable_memory_write
+      - expire_paused_runs
+      - suspend_background_route
 ```
 
 它不是 complete framework，但足以说明 assurance 也可以被组织成明确的 operational contract。
@@ -230,6 +241,9 @@ class AssuranceSignal:
     unsafe_egress_detected: bool = False
     memory_poisoning_suspected: bool = False
     approval_bypass_detected: bool = False
+    paused_approval_saturation: bool = False
+    stale_background_runs: bool = False
+    contract_drift_detected: bool = False
 
 
 def emergency_action(signal: AssuranceSignal) -> str:
@@ -237,6 +251,12 @@ def emergency_action(signal: AssuranceSignal) -> str:
         return "restrict_egress"
     if signal.approval_bypass_detected:
         return "require_approval"
+    if signal.paused_approval_saturation:
+        return "expire_paused_runs"
+    if signal.stale_background_runs:
+        return "suspend_background_route"
+    if signal.contract_drift_detected:
+        return "disable_capability"
     if signal.memory_poisoning_suspected:
         return "disable_memory_write"
     return "observe"
@@ -252,6 +272,9 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - findings 没有 owner；
 - incidents 从不进入 eval datasets；
 - detection 只看 latency 和 errors；
+- paused approval saturation 在 operations 里可见，却没有被当成 assurance signal；
+- stale background runs 悄悄累积；
+- contract drift 只有在 runtime failures 扩散后才被发现；
 - response actions 太粗或太慢；
 - remediation 没有真正改变系统。
 
@@ -265,6 +288,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - findings 会变成有 owner 的 engineering objects；
 - detection 寻找的是 unsafe behavior，而不只是 errors 和 latency；
+- paused approvals、stale background runs 与 contract drift 都被当成真实 assurance signals；
 - response actions 在下一次 incident 之前就已经存在，而不是事后才补；
 - remediation 会改变 operating system，而不只是文档痕迹；
 - incidents 会回流进 evals、policies 和 rollout rules。
@@ -277,8 +301,8 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - red teaming 是不是定期进行，而不是一次性 exercise？
 - findings 是否以 engineering backlog item 的形式被追踪？
-- 除了 infra health，是否还有针对 unsafe behavior 的 monitors？
-- 在不完全 shutdown 的情况下，是否有快速 emergency actions？
+- 除了 infra health，是否还有针对 unsafe behavior、paused-approval saturation 和 stale background runs 的 monitors？
+- 在不完全 shutdown 的情况下，是否有快速 emergency actions，包括让 paused runs 过期或暂停某条 background route？
 - incidents 会不会回流到 evals 和 rollout rules？
 - detection、response 和 remediation 的 owner 是否清楚？
 

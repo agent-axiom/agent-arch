@@ -99,11 +99,14 @@ Google Research очень хорошо формулирует здесь гла
 
 - всплеск denied actions;
 - рост approval backlog;
+- stuck paused approvals или необычный возраст paused runs;
 - странные tool selection patterns;
 - новые egress destinations;
 - memory write anomalies;
 - рост unsafe fallback behavior;
-- drift в task success и safety metrics.
+- drift в task success и safety metrics;
+- stale background runs;
+- contract drift между ожидаемой и наблюдаемой формой payloads.
 
 То есть detection здесь должна работать не только как observability, но и как abuse and safety monitoring.
 
@@ -115,6 +118,8 @@ Response layer полезно строить вокруг очень конкр�
 
 - ограничить capability;
 - перевести action в approval-only mode;
+- отменить или истечь stuck paused runs;
+- отключить background mode для route с stale executions;
 - сузить egress policy;
 - выключить risky memory writes;
 - переключить rollout wave на более безопасный профиль;
@@ -162,6 +167,8 @@ flowchart LR
 - production traces;
 - user complaints;
 - approval queue anomalies;
+- сигналы про stale background runs;
+- contract-mismatch alerts;
 - postmortems;
 - online eval drift;
 - red-team findings.
@@ -203,6 +210,8 @@ assurance:
       - tool_misuse
       - memory_poisoning
       - egress_abuse
+      - paused_approval_saturation
+      - contract_drift
   findings:
     require_owner: true
     require_severity: true
@@ -213,6 +222,8 @@ assurance:
       - require_approval
       - restrict_egress
       - disable_memory_write
+      - expire_paused_runs
+      - suspend_background_route
 ```
 
 Это не полный framework, но он хорошо показывает, что assurance тоже можно описывать как явный рабочий контракт.
@@ -230,6 +241,9 @@ class AssuranceSignal:
     unsafe_egress_detected: bool = False
     memory_poisoning_suspected: bool = False
     approval_bypass_detected: bool = False
+    paused_approval_saturation: bool = False
+    stale_background_runs: bool = False
+    contract_drift_detected: bool = False
 
 
 def emergency_action(signal: AssuranceSignal) -> str:
@@ -237,6 +251,12 @@ def emergency_action(signal: AssuranceSignal) -> str:
         return "restrict_egress"
     if signal.approval_bypass_detected:
         return "require_approval"
+    if signal.paused_approval_saturation:
+        return "expire_paused_runs"
+    if signal.stale_background_runs:
+        return "suspend_background_route"
+    if signal.contract_drift_detected:
+        return "disable_capability"
     if signal.memory_poisoning_suspected:
         return "disable_memory_write"
     return "observe"
@@ -252,6 +272,9 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - findings не получают owners;
 - incidents не попадают в eval datasets;
 - detection смотрит только на latency и errors;
+- paused approval saturation видна operations, но не считается assurance signal;
+- stale background runs тихо накапливаются;
+- contract drift обнаруживается только после того, как runtime failures уже разошлись;
 - response tools слишком грубые или слишком медленные;
 - remediation не меняет реальную систему.
 
@@ -265,6 +288,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - findings превращаются в инженерные объекты с owner;
 - detection ищет unsafe behavior, а не только errors и latency;
+- paused approvals, stale background runs и contract drift считаются реальными assurance signals;
 - response actions существуют до следующего инцидента, а не появляются после него;
 - remediation меняет operating system, а не только document trail;
 - incidents возвращаются обратно в evals, policies и rollout rules.
@@ -277,8 +301,8 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - Есть ли регулярный red teaming, а не разовый exercise?
 - Ведутся ли findings как инженерный backlog?
-- Есть ли monitors не только на infra health, но и на unsafe behavior?
-- Есть ли быстрые emergency actions без полного shutdown?
+- Есть ли monitors не только на infra health, но и на unsafe behavior, paused-approval saturation и stale background runs?
+- Есть ли быстрые emergency actions без полного shutdown, включая истечение paused runs или остановку background route?
 - Возвращаются ли incidents обратно в evals и rollout rules?
 - Понятно ли, кто owner у detection, response и remediation?
 

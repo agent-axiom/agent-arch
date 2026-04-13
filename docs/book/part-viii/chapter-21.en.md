@@ -99,11 +99,14 @@ You need to notice things like:
 
 - spikes in denied actions;
 - growth in approval backlog;
+- stuck paused approvals or unusual paused-run age;
 - unusual tool selection patterns;
 - new egress destinations;
 - memory write anomalies;
 - growth in unsafe fallback behavior;
-- drift in task success and safety metrics.
+- drift in task success and safety metrics;
+- stale background runs;
+- contract drift between expected and observed payload shapes.
 
 In other words, detection here has to function not only as observability, but also as abuse and safety monitoring.
 
@@ -115,6 +118,8 @@ A practical response layer is built around concrete actions:
 
 - restrict a capability;
 - force an action into approval-only mode;
+- cancel or expire stuck paused runs;
+- suspend background mode for a route with stale executions;
 - narrow the egress policy;
 - disable risky memory writes;
 - move the rollout wave to a safer profile;
@@ -162,6 +167,8 @@ Useful sources of new failure modes include:
 - production traces;
 - user complaints;
 - approval queue anomalies;
+- stale background-run reports;
+- contract-mismatch alerts;
 - postmortems;
 - online eval drift;
 - red-team findings.
@@ -203,6 +210,8 @@ assurance:
       - tool_misuse
       - memory_poisoning
       - egress_abuse
+      - paused_approval_saturation
+      - contract_drift
   findings:
     require_owner: true
     require_severity: true
@@ -213,6 +222,8 @@ assurance:
       - require_approval
       - restrict_egress
       - disable_memory_write
+      - expire_paused_runs
+      - suspend_background_route
 ```
 
 It is not a complete framework, but it shows clearly that assurance can also be described as an operational contract.
@@ -230,6 +241,9 @@ class AssuranceSignal:
     unsafe_egress_detected: bool = False
     memory_poisoning_suspected: bool = False
     approval_bypass_detected: bool = False
+    paused_approval_saturation: bool = False
+    stale_background_runs: bool = False
+    contract_drift_detected: bool = False
 
 
 def emergency_action(signal: AssuranceSignal) -> str:
@@ -237,6 +251,12 @@ def emergency_action(signal: AssuranceSignal) -> str:
         return "restrict_egress"
     if signal.approval_bypass_detected:
         return "require_approval"
+    if signal.paused_approval_saturation:
+        return "expire_paused_runs"
+    if signal.stale_background_runs:
+        return "suspend_background_route"
+    if signal.contract_drift_detected:
+        return "disable_capability"
     if signal.memory_poisoning_suspected:
         return "disable_memory_write"
     return "observe"
@@ -252,6 +272,9 @@ The failures are fairly repetitive:
 - findings get no owners;
 - incidents never enter eval datasets;
 - detection watches only latency and errors;
+- paused approval saturation is visible in operations but not treated as an assurance signal;
+- stale background runs quietly accumulate;
+- contract drift is discovered only after runtime failures spread;
 - response actions are too coarse or too slow;
 - remediation does not change the real system.
 
@@ -265,6 +288,7 @@ A stronger bar is this:
 
 - findings become owned engineering objects;
 - detection looks for unsafe behavior, not only errors and latency;
+- paused approvals, stale background runs, and contract drift are treated as real assurance signals;
 - response actions exist before the next incident, not after it;
 - remediation changes the operating system, not only the document trail;
 - incidents feed back into evals, policies, and rollout rules.
@@ -277,8 +301,8 @@ If you want to test your assurance discipline quickly, ask:
 
 - Is red teaming regular, not one-off?
 - Are findings tracked as engineering backlog items?
-- Are there monitors not only for infra health, but also for unsafe behavior?
-- Are there fast emergency actions short of full shutdown?
+- Are there monitors not only for infra health, but also for unsafe behavior, paused-approval saturation, and stale background runs?
+- Are there fast emergency actions short of full shutdown, including expiring paused runs or suspending a background route?
 - Do incidents flow back into evals and rollout rules?
 - Is it clear who owns detection, response, and remediation?
 
