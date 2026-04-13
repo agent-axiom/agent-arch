@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   coverage:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -62,3 +63,4 @@ jobs:
           branch: main
           commit_message: "Update coverage badge"
           file_pattern: docs/assets/badges/coverage.svg
+          skip_fetch: true
