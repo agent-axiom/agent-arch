@@ -34,7 +34,8 @@ The problem is that production behavior here depends on more than code. It also 
 - retrieval corpora;
 - capability contracts;
 - eval datasets;
-- approval rules;
+- approval rules and schemas;
+- runtime-control schemas;
 - rollout bundles.
 
 In other words, the agent supply chain is wider because the system itself is wider.
@@ -53,6 +54,8 @@ In an agent platform, they often include:
 - an approved prompt bundle;
 - an approved policy bundle;
 - an approved capability contract;
+- an approved approval schema;
+- an approved runtime-control schema;
 - an approved retrieval source;
 - an approved eval set;
 - an approved rollout template.
@@ -70,6 +73,7 @@ You need to be able to answer:
 - which policy config was active during the incident;
 - which retrieval corpus was used;
 - which eval set validated the release;
+- which contract version and approval schema were active;
 - who approved the change.
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
@@ -88,6 +92,7 @@ For agent systems, it is better to think in several linked chains:
 - prompt and routine chain;
 - policy chain;
 - capability chain;
+- approval and runtime-control chain;
 - data and retrieval chain;
 - eval chain.
 
@@ -101,7 +106,8 @@ flowchart LR
     C["Prompt and routine bundles"] --> G
     D["Policy bundles"] --> G
     E["Capability contracts"] --> G
-    F["Eval datasets and reports"] --> G
+    F["Approval and runtime-control schemas"] --> G
+    H["Eval datasets and reports"] --> G
 ```
 
 </div>
@@ -143,7 +149,8 @@ The same is true for:
 - routines;
 - policy YAML;
 - retrieval configs;
-- approval thresholds.
+- approval thresholds;
+- runtime-control schemas that define paused/background behavior.
 
 ## 7. Eval datasets should also be trusted artifacts
 
@@ -177,6 +184,8 @@ For a capability, the team should know:
 
 If the contract changes quietly, without provenance or review trail, that change can be as dangerous as an unreviewed code deploy.
 
+The same is true for approval and runtime-control schemas. If a team changes timeout, pause/resume behavior, expiry semantics, or expected payload structure without governed artifact discipline, it is changing production behavior even if no model or source file moved.
+
 ## 9. Example approved artifact policy
 
 Here is a practical skeleton:
@@ -192,6 +201,8 @@ artifacts:
     - prompt_bundle
     - policy_bundle
     - capability_contract
+    - approval_schema
+    - runtime_control_schema
     - eval_dataset
     - retrieval_source
 ```
@@ -212,6 +223,7 @@ inventory:
   approved_patterns:
     - staged_rollout
     - approval_required_for_high_risk
+    - governed_background_mode
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -233,6 +245,7 @@ class ArtifactRecord:
     has_version: bool
     has_provenance: bool
     review_passed: bool
+    schema_linked: bool
 
 
 def artifact_ready(record: ArtifactRecord) -> bool:
@@ -241,6 +254,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
         and record.has_version
         and record.has_provenance
         and record.review_passed
+        and record.schema_linked
     )
 ```
 
@@ -253,7 +267,9 @@ The usual problems look like this:
 - prompt bundles are not versioned;
 - eval datasets change quietly;
 - capability contracts are edited without review trail;
+- approval or runtime-control schemas change without version discipline;
 - nobody knows which exact artifact was active during an incident;
+- contract-version linkage is missing from incident evidence;
 - deprecated patterns remain in production too long;
 - approved inventory exists in a wiki, but not in operational tooling.
 
@@ -265,7 +281,7 @@ A team should not think it has supply-chain discipline only because builds are s
 
 A stronger bar is this:
 
-- prompt, policy, eval, and capability artifacts are treated as production artifacts;
+- prompt, policy, eval, capability, approval, and runtime-control artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
 - approved inventory and approved artifacts are kept as distinct control layers;
 - deprecated patterns can be blocked before they quietly persist in production;
@@ -278,8 +294,8 @@ If most of those conditions are missing, the team may have some artifact hygiene
 If you want to test your artifact discipline quickly, ask:
 
 - Do all production artifacts have owners?
-- Do model, prompt, policy, and eval artifacts have versions?
-- Can provenance be restored quickly during incident review?
+- Do model, prompt, policy, approval-schema, runtime-control, and eval artifacts have versions?
+- Can provenance and active contract/schema versions be restored quickly during incident review?
 - Does the platform have an approved inventory?
 - Do you distinguish a platform-approved pattern from a release-approved artifact?
 - Can a deprecated artifact be blocked quickly?

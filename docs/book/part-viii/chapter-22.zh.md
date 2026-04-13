@@ -34,7 +34,8 @@
 - 检索语料；
 - 能力契约；
 - 评测数据集；
-- 审批规则；
+- 审批规则与 schemas；
+- runtime-control schemas；
 - 发布工件包。
 
 也就是说，智能体的供应链更宽，是因为系统本身就更宽。
@@ -53,6 +54,8 @@
 - 已批准的提示包；
 - 已批准的策略包；
 - 已批准的能力契约；
+- 已批准的 approval schema；
+- 已批准的 runtime-control schema；
 - 已批准的检索来源；
 - 已批准的评测集；
 - 已批准的发布模板。
@@ -70,6 +73,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个策略配置；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
+- 当时生效的是哪个 contract version 与 approval schema；
 - 这个变更是谁批准的。
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
@@ -88,6 +92,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 提示与例程链；
 - 策略链；
 - 能力链；
+- approval 与 runtime-control 链；
 - 数据与检索链；
 - 评测链。
 
@@ -101,7 +106,8 @@ flowchart LR
     C["Prompt and routine bundles"] --> G
     D["Policy bundles"] --> G
     E["Capability contracts"] --> G
-    F["Eval datasets and reports"] --> G
+    F["Approval and runtime-control schemas"] --> G
+    H["Eval datasets and reports"] --> G
 ```
 
 </div>
@@ -143,7 +149,8 @@ flowchart LR
 - routines；
 - policy YAML；
 - retrieval configs；
-- approval thresholds。
+- approval thresholds；
+- 用来定义 paused/background behavior 的 runtime-control schemas。
 
 ## 7. Eval 数据集也应该被当成可信工件
 
@@ -177,6 +184,8 @@ flowchart LR
 
 如果这些 contract 被悄悄改动，没有 provenance，也没有 review trail，那么这种 change 可能和未审查代码发布一样危险。
 
+approval 与 runtime-control schemas 也是一样。如果团队在没有 governed artifact discipline 的情况下修改 timeout、pause/resume behavior、expiry semantics 或预期 payload 结构，那么即使模型和源码都没动，production behavior 也已经变了。
+
 ## 9. 一个已批准工件策略示例
 
 下面这个 skeleton 很实用：
@@ -192,6 +201,8 @@ artifacts:
     - prompt_bundle
     - policy_bundle
     - capability_contract
+    - approval_schema
+    - runtime_control_schema
     - eval_dataset
     - retrieval_source
 ```
@@ -212,6 +223,7 @@ inventory:
   approved_patterns:
     - staged_rollout
     - approval_required_for_high_risk
+    - governed_background_mode
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -233,6 +245,7 @@ class ArtifactRecord:
     has_version: bool
     has_provenance: bool
     review_passed: bool
+    schema_linked: bool
 
 
 def artifact_ready(record: ArtifactRecord) -> bool:
@@ -241,6 +254,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
         and record.has_version
         and record.has_provenance
         and record.review_passed
+        and record.schema_linked
     )
 ```
 
@@ -253,7 +267,9 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - prompt bundles 没有版本；
 - eval datasets quietly 变化；
 - capability contracts 被编辑却没有 review trail；
+- approval 或 runtime-control schemas 发生变化，却没有 version discipline；
 - 没有人知道 incident 发生时到底是哪一个 exact artifact 在运行；
+- incident evidence 中缺少 contract-version linkage；
 - deprecated patterns 在 production 里活得太久；
 - approved inventory 只存在于 wiki，而不存在于 operational tooling。
 
@@ -265,7 +281,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 更高的标准应该是：
 
-- prompt、policy、eval 和 capability artifacts 都被当成 production artifacts；
+- prompt、policy、eval、capability、approval 和 runtime-control artifacts 都被当成 production artifacts；
 - provenance 能在 incident review 和 rollout decisions 中被快速恢复；
 - approved inventory 和 approved artifacts 被当成不同的 control layers 来管理；
 - deprecated patterns 能在它们悄悄留在 production 之前被阻断；
@@ -278,8 +294,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 如果你想快速检查工件纪律，可以问：
 
 - 所有生产工件都有 owner 吗？
-- model、prompt、policy 和 eval 工件都有版本吗？
-- incident review 时能快速恢复 provenance 吗？
+- model、prompt、policy、approval-schema、runtime-control 和 eval 工件都有版本吗？
+- incident review 时能快速恢复 provenance 与生效中的 contract/schema versions 吗？
 - 平台是否有 approved inventory？
 - 你们能区分平台批准的模式和发布批准的工件吗？
 - 已废弃工件能被快速阻断吗？

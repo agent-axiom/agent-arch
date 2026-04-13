@@ -34,7 +34,8 @@
 - корпуса для извлечения;
 - контракты возможностей;
 - наборы для оценки;
-- правила подтверждения;
+- правила и схемы подтверждения;
+- схемы runtime-control;
 - наборы для раскатки.
 
 То есть цепочка поставки у агента шире, потому что сама система шире.
@@ -53,6 +54,8 @@
 - утвержденный набор prompt-правил;
 - утвержденный набор политик;
 - утвержденный контракт возможности;
+- утвержденная approval schema;
+- утвержденная runtime-control schema;
 - утвержденный источник для извлечения;
 - утвержденный набор для оценки;
 - утвержденный шаблон раскатки.
@@ -70,6 +73,7 @@ Google Research очень правильно показывает, что пр�
 - какая конфигурация политик была во время инцидента;
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
+- какая contract version и approval schema были активны;
 - кто одобрил это изменение.
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
@@ -88,6 +92,7 @@ Google Research очень правильно показывает, что пр�
 - цепочкой prompt- и routine-правил;
 - цепочкой политик;
 - цепочкой возможностей;
+- цепочкой approval и runtime-control;
 - цепочкой данных и извлечения;
 - цепочкой оценки.
 
@@ -101,7 +106,8 @@ flowchart LR
     C["Prompt and routine bundles"] --> G
     D["Policy bundles"] --> G
     E["Capability contracts"] --> G
-    F["Eval datasets and reports"] --> G
+    F["Approval and runtime-control schemas"] --> G
+    H["Eval datasets and reports"] --> G
 ```
 
 </div>
@@ -143,7 +149,8 @@ flowchart LR
 - routines;
 - policy YAML;
 - конфигурациям извлечения;
-- порогам подтверждения.
+- порогам подтверждения;
+- runtime-control schemas, которые определяют paused/background behavior.
 
 ## 7. Наборы для оценки тоже должны быть доверенными артефактами
 
@@ -177,6 +184,8 @@ flowchart LR
 
 Если контракт меняется тихо, без происхождения и без следа проверки, то такое изменение может быть не менее опасно, чем непроверенный деплой кода.
 
+То же самое верно и для approval и runtime-control schemas. Если команда меняет timeout, pause/resume behavior, expiry semantics или ожидаемую форму payloads без governed artifact discipline, она меняет production behavior, даже если ни модель, ни исходный код не сдвинулись.
+
 ## 9. Пример политики доверенных артефактов
 
 Ниже очень рабочий skeleton:
@@ -192,6 +201,8 @@ artifacts:
     - prompt_bundle
     - policy_bundle
     - capability_contract
+    - approval_schema
+    - runtime_control_schema
     - eval_dataset
     - retrieval_source
 ```
@@ -212,6 +223,7 @@ inventory:
   approved_patterns:
     - staged_rollout
     - approval_required_for_high_risk
+    - governed_background_mode
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -233,6 +245,7 @@ class ArtifactRecord:
     has_version: bool
     has_provenance: bool
     review_passed: bool
+    schema_linked: bool
 
 
 def artifact_ready(record: ArtifactRecord) -> bool:
@@ -241,6 +254,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
         and record.has_version
         and record.has_provenance
         and record.review_passed
+        and record.schema_linked
     )
 ```
 
@@ -253,7 +267,9 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы prompt-правил не версионируются;
 - наборы для оценки тихо меняются;
 - контракты возможностей редактируются без следа проверки;
+- approval или runtime-control schemas меняются без version discipline;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
+- в evidence layer отсутствует contract-version linkage;
 - устаревшие шаблоны живут в промышленной среде слишком долго;
 - утвержденный реестр существует в wiki, но не в рабочих инструментах.
 
@@ -265,7 +281,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 Более сильная планка такая:
 
-- prompt, policy, eval и capability artifacts считаются полноценными production artifacts;
+- prompt, policy, eval, capability, approval и runtime-control artifacts считаются полноценными production artifacts;
 - provenance можно быстро восстановить и для incident review, и для rollout decisions;
 - approved inventory и approved artifacts живут как разные control layers;
 - deprecated patterns можно заблокировать до того, как они тихо закрепятся в production;
@@ -278,8 +294,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 Если хочешь быстро проверить свою дисциплину артефактов, пройди по вопросам:
 
 - У всех рабочих артефактов есть владелец?
-- У model, prompt, policy и eval-артефактов есть версии?
-- Можно ли быстро восстановить происхождение для разбора инцидента?
+- У model, prompt, policy, approval-schema, runtime-control и eval-артефактов есть версии?
+- Можно ли быстро восстановить происхождение и активные contract/schema versions для разбора инцидента?
 - Есть ли утвержденный реестр платформы?
 - Отличаете ли вы шаблон, разрешенный на уровне платформы, от артефакта, разрешенного к выпуску?
 - Можно ли быстро заблокировать устаревший артефакт?
