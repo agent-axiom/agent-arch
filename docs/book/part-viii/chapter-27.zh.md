@@ -84,6 +84,7 @@ Registry 回答的是更严格的问题：
 - runtime identity
 - tool principals
 - approval requirements
+- paused runs 与 background runs 的 ownership
 - observability status
 - artifact bundle linkage
 - retirement plan linkage
@@ -195,6 +196,18 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - traces 变强了；
 - 但没人知道到底哪些 agents 本来就该用这些 controls。
 
+当 approval 和 long-running work 都变成显式 runtime paths 之后，这一点会更加重要。
+
+这时 registry 还应该帮助回答：
+
+- 哪些 agents 被允许因为 approval 而暂停 run；
+- 哪些 agents 可以继续使用 background mode；
+- stuck paused runs 由谁负责；
+- aging background runs 由谁负责；
+- 它们的 approval 与 capability payload 应该遵循哪个 contract version。
+
+否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
+
 ## 10. 一个最小 agent registry record 示例
 
 ```yaml
@@ -211,6 +224,11 @@ agent:
     - ticket_write
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
+  runtime_controls:
+    approval_pause_allowed: true
+    background_mode_allowed: true
+    paused_run_owner: support-ops
+    contract_version: capability-contract-v3
   observability:
     trace_enabled: true
     inventory_covered: true
@@ -233,6 +251,7 @@ class AgentRegistryState:
     has_lifecycle_state: bool
     has_policy_linkage: bool
     has_observability: bool
+    has_runtime_control_linkage: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -241,6 +260,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_lifecycle_state
         and state.has_policy_linkage
         and state.has_observability
+        and state.has_runtime_control_linkage
     )
 ```
 
@@ -252,6 +272,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - inventory 存在，但 lifecycle states 没有维护；
 - registry 不知道 principals 和 approvals；
 - deprecated agents 还保留着 tool paths 的访问权；
+- registry record 无法说明谁负责 paused approvals 或 aging background runs；
+- contract versions 已经漂移，但 registry 仍指向过时的 control assumptions；
 - 多个 registry 之间发生漂移；
 - platform team 认识一批 agents，而 security team 认识另一批。
 
@@ -264,6 +286,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - inventory 和 registry 被当成不同的 control surfaces；
 - 每个 production agent 都有 owner、lifecycle state 和 policy linkage；
 - telemetry coverage 能持续和 registry 对账；
+- paused approvals、background-run ownership 与 contract versions 也是 registry control surface 的一部分；
 - deprecated 和 orphaned agents 能在变成 blind spots 之前被找到；
 - governance 能区分 discovered entities 和 approved production agents。
 
@@ -273,7 +296,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 - 你能快速说出 active、deprecated 和 retired agents 的数量吗？
 - 每个 production agent 都有 owner 吗？
-- registry record 是否和 policy bundle、approval mode、bundle_id 关联？
+- registry record 是否和 policy bundle、approval mode、runtime-control ownership、bundle_id 关联？
 - inventory 能不能显示哪些 agents 没有发 telemetry？
 - 你能不能快速找出 orphaned 或 deprecated、但 principals 还活着的 agents？
 - 你有没有明确区分“被发现”与“被批准进入 production”？

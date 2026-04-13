@@ -84,6 +84,7 @@ Registry отвечает на более строгий вопрос:
 - runtime identity;
 - tool principals;
 - approval requirements;
+- ownership для paused runs и background runs;
 - observability status;
 - artifact bundle linkage;
 - retirement plan linkage.
@@ -195,6 +196,18 @@ Registry не должен дублировать policy bundle или approval 
 - traces стали богаче;
 - но никто не знает, какие именно agents вообще должны этим пользоваться.
 
+Это становится еще важнее, когда approval и long-running work превращаются в явные runtime paths.
+
+Тогда registry должен помогать отвечать на вопросы:
+
+- какие agents вообще имеют право ставить run на approval pause;
+- какие agents могут продолжать работу в background mode;
+- кто owner у stuck paused runs;
+- кто owner у aging background runs;
+- какой contract version должны соблюдать их approval и capability payloads.
+
+Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
+
 ## 10. Пример минимального agent registry record
 
 ```yaml
@@ -211,6 +224,11 @@ agent:
     - ticket_write
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
+  runtime_controls:
+    approval_pause_allowed: true
+    background_mode_allowed: true
+    paused_run_owner: support-ops
+    contract_version: capability-contract-v3
   observability:
     trace_enabled: true
     inventory_covered: true
@@ -233,6 +251,7 @@ class AgentRegistryState:
     has_lifecycle_state: bool
     has_policy_linkage: bool
     has_observability: bool
+    has_runtime_control_linkage: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -241,6 +260,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_lifecycle_state
         and state.has_policy_linkage
         and state.has_observability
+        and state.has_runtime_control_linkage
     )
 ```
 
@@ -252,6 +272,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - inventory существует, но lifecycle states не поддерживаются;
 - registry не знает про principals и approvals;
 - deprecated agents остаются с доступом к tool paths;
+- registry record не показывает, кто отвечает за paused approvals или aging background runs;
+- contract versions дрейфуют, пока registry все еще указывает на устаревшие control assumptions;
 - разные реестры расходятся между собой;
 - platform team знает одних агентов, а security team — других.
 
@@ -264,6 +286,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - inventory и registry живут как разные control surfaces;
 - у каждого production agent есть owner, lifecycle state и policy linkage;
 - telemetry coverage можно непрерывно сверять с registry;
+- paused approvals, ownership фоновых запусков и contract versions входят в registry control surface;
 - deprecated и orphaned agents можно найти до того, как они станут blind spots;
 - governance умеет различать discovered entities и approved production agents.
 
@@ -273,7 +296,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 - Можешь ли ты быстро назвать число active, deprecated и retired agents?
 - У каждого production agent есть owner?
-- Связан ли registry record с policy bundle, approval mode и bundle_id?
+- Связан ли registry record с policy bundle, approval mode, runtime-control ownership и bundle_id?
 - Видно ли из inventory, какие agents не шлют telemetry?
 - Можно ли быстро найти orphaned или deprecated agents с живыми principals?
 - Есть ли у тебя distinction между “обнаружен” и “одобрен для production”?

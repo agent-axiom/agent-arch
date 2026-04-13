@@ -84,6 +84,7 @@ A minimal registry record for production-grade agent systems should usually incl
 - runtime identity;
 - tool principals;
 - approval requirements;
+- paused-run and background-run ownership;
 - observability status;
 - artifact-bundle linkage;
 - retirement-plan linkage.
@@ -195,6 +196,18 @@ Without that linkage, it becomes easy to end up in a state where:
 - traces improved;
 - but nobody knows which agents were supposed to use those controls.
 
+This gets even more important once approval and long-running work become explicit runtime paths.
+
+Then the registry should help answer:
+
+- which agents are allowed to pause for approval;
+- which agents may continue work in background mode;
+- who owns stuck paused runs;
+- who owns aging background runs;
+- which contract version their approval and capability payloads are expected to follow.
+
+Otherwise, the estate may look governed while still hiding operational ambiguity.
+
 ## 10. Example of a minimal agent registry record
 
 ```yaml
@@ -211,6 +224,11 @@ agent:
     - ticket_write
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
+  runtime_controls:
+    approval_pause_allowed: true
+    background_mode_allowed: true
+    paused_run_owner: support-ops
+    contract_version: capability-contract-v3
   observability:
     trace_enabled: true
     inventory_covered: true
@@ -233,6 +251,7 @@ class AgentRegistryState:
     has_lifecycle_state: bool
     has_policy_linkage: bool
     has_observability: bool
+    has_runtime_control_linkage: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -241,6 +260,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_lifecycle_state
         and state.has_policy_linkage
         and state.has_observability
+        and state.has_runtime_control_linkage
     )
 ```
 
@@ -252,6 +272,8 @@ The logic is straightforward: an agent without an owner, lifecycle state, and ob
 - inventory exists but lifecycle states are not maintained;
 - registry knows nothing about principals and approvals;
 - deprecated agents still have access to tool paths;
+- registry records do not say who owns paused approvals or aging background runs;
+- contract versions drift while registry still points to obsolete control assumptions;
 - multiple registries drift apart;
 - the platform team knows one set of agents while the security team knows another.
 
@@ -264,6 +286,7 @@ A stronger bar is this:
 - inventory and registry are treated as different control surfaces;
 - every production agent has an owner, lifecycle state, and policy linkage;
 - telemetry coverage can be checked against the registry continuously;
+- paused approvals, background-run ownership, and contract versions are part of the registry control surface;
 - deprecated and orphaned agents can be found before they become blind spots;
 - governance can distinguish discovered entities from approved production agents.
 
@@ -273,7 +296,7 @@ If most of those conditions are missing, the team may have visibility fragments,
 
 - Can you quickly name the number of active, deprecated, and retired agents?
 - Does every production agent have an owner?
-- Is the registry record linked to a policy bundle, approval mode, and bundle ID?
+- Is the registry record linked to a policy bundle, approval mode, runtime-control ownership, and bundle ID?
 - Can inventory show which agents do not emit telemetry?
 - Can you quickly find orphaned or deprecated agents with live principals?
 - Do you distinguish between “discovered” and “approved for production”?
