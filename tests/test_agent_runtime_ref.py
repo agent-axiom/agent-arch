@@ -14,10 +14,11 @@ from agent_runtime_ref.config import (
     load_rollout_policy,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.execution import execute_tool
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
-from agent_runtime_ref.policy import PolicyEngine
+from agent_runtime_ref.policy import CapabilityPolicy, PolicyDecision, PolicyEngine
 from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_for_rollout
 from agent_runtime_ref.runtime import AgentRuntime
 
@@ -109,6 +110,192 @@ class TestFailurePaths:
                 "--trace-id",
                 "trace-does-not-exist",
             ])
+
+
+class TestExecutionAndPolicyBranches:
+    def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
+            PolicyDecision("deny", "configured_deny", "cap_410"),
+        )
+        assert result.status == "denied"
+        assert result.payload["reason"] == "configured_deny"
+
+    def test_execute_tool_returns_approval_required_payload(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("create_ticket")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(capability_name="create_ticket", arguments={"title": "x"}),
+            PolicyDecision("approval_required", "write_action", "cap_201"),
+        )
+        assert result.status == "approval_required"
+        assert result.payload["reason"] == "write_action"
+
+    def test_execute_tool_returns_validation_failure_without_idempotency_key(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("create_ticket")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(capability_name="create_ticket", arguments={"title": "x"}),
+            PolicyDecision("allow", "approved_write", "cap_202"),
+        )
+        assert result.status == "validation_failure"
+        assert result.payload["reason"] == "missing_idempotency_key"
+
+    def test_execute_tool_success_includes_contract_payload(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(capability_name="search_docs", arguments={"query": "architecture"}),
+            PolicyDecision("allow", "low_risk_read", "cap_101"),
+        )
+        assert result.status == "success"
+        assert result.payload["transport"] == capability.transport
+        assert result.payload["tool_principal"] == capability.tool_principal
+
+    def test_policy_from_dict_rejects_bad_shapes(self) -> None:
+        with pytest.raises(TypeError, match="'policy' must be a mapping"):
+            PolicyEngine.from_dict({"policy": []})
+        with pytest.raises(TypeError, match="'run_precheck' must be a mapping"):
+            PolicyEngine.from_dict({"policy": {"run_precheck": []}})
+        with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
+            PolicyEngine.from_dict({"policy": {"capabilities": []}})
+        with pytest.raises(TypeError, match="'memory_write' must be a mapping"):
+            PolicyEngine.from_dict({"policy": {"memory_write": []}})
+        with pytest.raises(TypeError, match="'execution' must be a mapping"):
+            PolicyEngine.from_dict({"policy": {"execution": []}})
+
+    def test_policy_precheck_denies_missing_tenant_and_agent(self) -> None:
+        engine = PolicyEngine()
+        tenant_missing = engine.precheck(
+            RunRequest(
+                user_input="hi",
+                tenant_id="",
+                principal_id="user-1",
+                trace_id="trace-precheck-tenant",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        agent_missing = engine.precheck(
+            RunRequest(
+                user_input="hi",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-precheck-agent",
+                agent_id="",
+            ),
+        )
+        assert tenant_missing.reason == "tenant_missing"
+        assert agent_missing.reason == "agent_identity_missing"
+
+    def test_policy_evaluate_tool_covers_configured_allow_and_deny(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        context = RunContext(tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-001")
+        allow_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("allow")})
+        deny_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("deny")})
+        allow_decision = allow_engine.evaluate_tool(
+            context,
+            ToolRequest(capability_name="search_docs", arguments={"query": "x"}),
+            capability,
+        )
+        deny_decision = deny_engine.evaluate_tool(
+            context,
+            ToolRequest(capability_name="search_docs", arguments={"query": "x"}),
+            capability,
+        )
+        assert allow_decision.reason == "configured_allow"
+        assert deny_decision.reason == "configured_deny"
+
+    def test_policy_evaluate_tool_covers_network_and_mode_branches(self) -> None:
+        from agent_runtime_ref.catalog import CapabilitySpec
+
+        engine = PolicyEngine(allowed_network_access={"restricted"})
+        context = RunContext(tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-002")
+        blocked_network = CapabilitySpec(
+            name="external_tool",
+            owner="platform",
+            mode="read",
+            transport="gateway",
+            timeout_seconds=5,
+            tool_principal="svc-external",
+            risk_tier="low",
+            network_access="open",
+            allowed_egress=("example.com",),
+        )
+        approved_write = CapabilitySpec(
+            name="write_tool",
+            owner="platform",
+            mode="write",
+            transport="gateway",
+            timeout_seconds=5,
+            tool_principal="svc-write",
+            risk_tier="medium",
+            network_access="restricted",
+            allowed_egress=("internal",),
+            approval_required=False,
+        )
+        unsupported_mode = CapabilitySpec(
+            name="odd_tool",
+            owner="platform",
+            mode="admin",
+            transport="gateway",
+            timeout_seconds=5,
+            tool_principal="svc-admin",
+            risk_tier="medium",
+            network_access="restricted",
+            allowed_egress=("internal",),
+        )
+        blocked = engine.evaluate_tool(
+            context,
+            ToolRequest(capability_name="external_tool", arguments={}),
+            blocked_network,
+        )
+        write_allowed = engine.evaluate_tool(
+            context,
+            ToolRequest(capability_name="write_tool", arguments={}),
+            approved_write,
+        )
+        unsupported = engine.evaluate_tool(
+            context,
+            ToolRequest(capability_name="odd_tool", arguments={}),
+            unsupported_mode,
+        )
+        assert blocked.reason == "network_access_not_allowed"
+        assert write_allowed.reason == "approved_write"
+        assert unsupported.reason == "unsupported_mode"
+
+    def test_policy_evaluate_tool_covers_critical_risk_branch(self) -> None:
+        from agent_runtime_ref.catalog import CapabilitySpec
+
+        capability = CapabilitySpec(
+            name="critical_tool",
+            owner="platform",
+            mode="read",
+            transport="gateway",
+            timeout_seconds=5,
+            tool_principal="svc-critical",
+            risk_tier="critical",
+            network_access="restricted",
+            allowed_egress=("internal",),
+        )
+        decision = PolicyEngine().evaluate_tool(
+            RunContext(tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-003"),
+            ToolRequest(capability_name="critical_tool", arguments={}),
+            capability,
+        )
+        assert decision.action == "approval_required"
+        assert decision.reason == "critical_risk_tier"
+
+    def test_policy_allow_memory_write_denies_unknown_kind(self) -> None:
+        decision = PolicyEngine(allowed_memory_kinds={"profile"}).allow_memory_write("session_summary")
+        assert decision.action == "deny"
+        assert decision.reason == "memory_kind_denied"
 
 
 class TestRuntimeCore:
