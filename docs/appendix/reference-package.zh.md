@@ -6,6 +6,13 @@
 
 这里是这个包的主说明页面。README 里只保留简短的上手说明，完整的命令行、配置和结构说明都集中放在这里。
 
+一个实用的阅读路径是：
+
+- 第 17 章看 policy layer 与 capability contracts，
+- 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
+- 第 21 章看 assurance response，
+- 第 22 章配合 lifecycle schema 看 governed artifact linkage。
+
 ## 里面有什么
 
 - [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)

@@ -6,6 +6,13 @@ Its job is not to become a production framework. It exists as a minimal code anc
 
 This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
 
+A practical reading path is:
+
+- Chapter 17 for policy layer and capability contracts,
+- Chapter 18 for rollout gates around approval and runtime behavior,
+- Chapter 21 for assurance response,
+- Chapter 22 and the lifecycle schema for governed artifact linkage.
+
 ## What Is Inside
 
 - [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)

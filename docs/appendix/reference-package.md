@@ -6,6 +6,13 @@
 
 Здесь собран полный разбор пакета: CLI, конфиги, структура и связь с книгой.
 
+Практичный маршрут чтения такой:
+
+- Chapter 17 для policy layer и capability contracts,
+- Chapter 18 для rollout gates вокруг approval и runtime behavior,
+- Chapter 21 для assurance response,
+- Chapter 22 и lifecycle schema для governed artifact linkage.
+
 ## Что внутри
 
 - [runtime.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/runtime.py)
