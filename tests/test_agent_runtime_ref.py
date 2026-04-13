@@ -22,6 +22,95 @@ from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_fo
 from agent_runtime_ref.runtime import AgentRuntime
 
 
+class TestFailurePaths:
+    def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bad_config = tmp_path / "bad.yaml"
+        bad_config.write_text("- not\n- a\n- mapping\n", encoding="utf-8")
+
+        with pytest.raises(TypeError, match="must be a mapping"):
+            load_yaml_file(bad_config)
+
+    def test_runtime_denied_precheck_returns_denied_and_no_session_record(self) -> None:
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="hi",
+                tenant_id="tenant-acme",
+                principal_id="",
+                trace_id="trace-denied-001",
+                session_id="session-denied-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        assert result.status == "denied"
+        assert runtime.sessions.get_session("session-denied-001") is None
+        event_types = [event.event_type for event in runtime.telemetry.events]
+        assert event_types == ["run_start", "policy_precheck", "run_complete"]
+
+    def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(self, cli_json, tmp_path: Path) -> None:
+        first = tmp_path / "first.jsonl"
+        second = tmp_path / "second.jsonl"
+        merged = tmp_path / "merged.jsonl"
+
+        code_a, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--trace-id",
+                "trace-multi-a",
+                "--output",
+                str(first),
+            ],
+        )
+        code_b, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "What language preference do you remember?",
+                "--trace-id",
+                "trace-multi-b",
+                "--output",
+                str(second),
+            ],
+        )
+        assert code_a == 0 and code_b == 0
+        merged.write_text(first.read_text(encoding="utf-8") + second.read_text(encoding="utf-8"), encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="multiple trace IDs"):
+            main(["inspect-trace", "--input", str(merged)])
+
+    def test_cli_replay_run_rejects_missing_trace_id(self, cli_json, tmp_path: Path) -> None:
+        output_path = tmp_path / "trace.jsonl"
+        code, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "What language preference do you remember?",
+                "--trace-id",
+                "trace-replay-source-2",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert code == 0
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Trace ID not found"):
+            main([
+                "replay-run",
+                "--input",
+                str(output_path),
+                "--trace-id",
+                "trace-does-not-exist",
+            ])
+
+
 class TestRuntimeCore:
     def test_config_loader_builds_runtime_components(
         self,
