@@ -341,6 +341,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 
+这一章把第 17 章里的 governed runtime path 变成 rollout discipline。相同的 approval、pause/resume 与 control signals，接下来会在第 21 章里继续作为 assurance loop 的一部分出现。
+
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
 - [第七部分：参考实现](index.zh.md)
 - [第八部分：智能体系统的生命周期](../part-viii/index.zh.md)

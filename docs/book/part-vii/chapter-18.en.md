@@ -341,6 +341,8 @@ At this point, the reference implementation already closes the basic operational
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 
+This chapter turns the governed runtime path from Chapter 17 into rollout discipline. The same approval, pause/resume, and control signals continue directly into Chapter 21 as part of the assurance loop.
+
 - [Chapter 17. Policy Layer and Capability Catalog](chapter-17.en.md)
 - [Part VII. Reference Implementation](index.en.md)
 - [Part VIII. Agent System Lifecycle](../part-viii/index.en.md)

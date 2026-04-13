@@ -315,8 +315,11 @@ def emergency_action(signal: AssuranceSignal) -> str:
 ## 16. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+
+Эта глава замыкает контур, открытый в Chapters 17 и 18. Там policy, approval и runtime-control paths становятся явными, а здесь эти же пути превращаются в detection, containment и response surfaces.
 
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)

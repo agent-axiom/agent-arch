@@ -338,6 +338,8 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
+Эта глава служит контрактным шарниром для всего runtime-control cluster. Дальше полезнее всего идти в Chapter 18 за rollout gates и в Chapter 21 за assurance response, построенный на тех же approval и policy paths.
+
 - [Глава 16. Базовая схема рантайма](chapter-16.md)
 - [Глава 18. Чеклист промышленного запуска](chapter-18.md)
 - [Часть VII. Эталонная реализация](index.md)

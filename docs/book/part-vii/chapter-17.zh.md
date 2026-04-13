@@ -338,6 +338,8 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 - [Reference Package](../../appendix/reference-package.zh.md)
 
+这一章是整个 runtime-control cluster 的契约枢纽。最值得继续看的下一步，是第 18 章里把这些路径变成 rollout gates，以及第 21 章里把同样的 approval 与 policy paths 变成 assurance response。
+
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
 - [第 18 章：生产上线检查清单](chapter-18.zh.md)
 - [第七部分：参考实现](index.zh.md)

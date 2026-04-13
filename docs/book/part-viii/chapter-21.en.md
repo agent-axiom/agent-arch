@@ -315,8 +315,11 @@ After the assurance loop, it is natural to move to supply chain discipline and a
 ## 16. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+
+This chapter closes the loop opened in Chapters 17 and 18. Policy, approval, and runtime-control paths become explicit there, while here those same paths become detection, containment, and response surfaces.
 
 - [Chapter 20. Change Management for Agent Systems](chapter-20.en.md)
 - [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)

@@ -341,6 +341,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
+Эта глава превращает governed runtime path из Chapter 17 в rollout discipline. Те же approval, pause/resume и control signals затем прямо продолжаются в Chapter 21 уже как часть assurance loop.
+
 - [Глава 17. Слой политик и каталог возможностей](chapter-17.md)
 - [Часть VII. Эталонная реализация](index.md)
 - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md)

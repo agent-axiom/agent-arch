@@ -338,6 +338,8 @@ The next logical step in the reference implementation is to assemble a productio
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Reference Package](../../appendix/reference-package.en.md)
 
+This chapter is the contract hinge for the rest of the runtime-control cluster. The most useful next steps are Chapter 18 for rollout gates and Chapter 21 for assurance response built on the same approval and policy paths.
+
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
 - [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
 - [Part VII. Reference Implementation](index.en.md)
