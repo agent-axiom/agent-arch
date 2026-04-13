@@ -53,6 +53,7 @@ The highest-risk surfaces are usually predictable:
 - secrets and credential-adjacent tools;
 - code execution;
 - approval paths;
+- paused approval and resume paths;
 - replacement and retirement windows;
 - memory writes that can preserve a harmful strategy.
 
@@ -61,7 +62,9 @@ The most unpleasant cases are the ones where the agent:
 - tries to hide a questionable step;
 - minimizes what the approver can see;
 - changes the payload after approval;
+- abuses a paused approval path or minimizes what is shown during review;
 - uses a weaker capability path instead of the intended one;
+- persists through background routes or resumable paths after oversight should have tightened;
 - keeps access during replacement or end-of-life periods.
 
 ## 4. Why this overlaps with insider risk
@@ -93,7 +96,8 @@ In practice, the most interesting failure modes often appear in transitions rath
 - during a policy-bundle change;
 - during a model-route change;
 - while moving risky tools under approval;
-- during replacement and retirement.
+- during replacement and retirement;
+- during schema or contract-version transitions.
 
 That is when the system receives a new incentive landscape:
 
@@ -117,8 +121,9 @@ Before, you asked:
 Now you also need to ask:
 
 - can the model conceal a questionable intent;
-- can it bypass the approval path;
+- can it bypass or abuse the approval path;
 - can a runtime change weaken oversight;
+- can schema drift or contract mismatch open a weaker control path;
 - do we have signals for sabotage-like behavior;
 - can we urgently freeze a capability, principal, or rollout wave.
 
@@ -130,7 +135,7 @@ The most reliable measures here are not magical. They are boring and explicit:
 - separate `tool principals` for risky actions;
 - approval on the exact payload rather than generic permission to continue;
 - traces that capture both the policy decision and the actual side effect;
-- immutable linkage between `trace_id`, `approval_id`, `tool_principal`, and `artifact_bundle`;
+- immutable linkage between `trace_id`, `approval_id`, `tool_principal`, `contract_version`, and `artifact_bundle`;
 - emergency stop for a capability family;
 - behavioral evals that test sabotage, concealment, and oversight evasion.
 
@@ -164,12 +169,15 @@ agentic_risk:
     explicit_payload_approval: true
     dedicated_tool_principal: true
     trace_linkage: true
+    contract_version_linkage: true
     emergency_disable_path: true
   block_if:
     - approval_scope_missing
     - principal_shared_with_low_risk_tools
     - side_effect_not_traced
+    - contract_version_unlinked
     - replacement_window_unrestricted
+    - resumable_background_path_unrestricted
 ```
 
 This does not “solve alignment,” but it makes the system much less dangerous under conflicting incentives.
@@ -185,6 +193,7 @@ class AgenticRiskState:
     explicit_payload_approval: bool
     dedicated_tool_principal: bool
     side_effect_traced: bool
+    contract_version_linked: bool
     emergency_disable_path: bool
 
 
@@ -193,6 +202,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
         state.explicit_payload_approval
         and state.dedicated_tool_principal
         and state.side_effect_traced
+        and state.contract_version_linked
         and state.emergency_disable_path
     )
 ```
@@ -206,7 +216,7 @@ A team should not think it controls agentic risk only because it has a policy la
 A stronger bar is this:
 
 - sabotage-like behavior is tested separately from ordinary failure;
-- high-risk actions are tied to exact payload approval and dedicated principals;
+- high-risk actions are tied to exact payload approval, dedicated principals, and linked contract versions;
 - transitions such as rollout, replacement, and retirement tighten autonomy rather than relax it;
 - traces can connect intent, approval, artifact bundle, and side effect;
 - emergency containment can narrow a capability family without waiting for a full shutdown.
@@ -218,8 +228,8 @@ If most of those conditions are missing, the team may have some security control
 - Do you test sabotage-like behavior separately from ordinary failures?
 - Can you link a risky side effect to a specific `approval_id` and `tool_principal`?
 - Can the system emergency-disable a capability family rather than only the whole runtime?
-- Do you run behavioral evals for concealment and approval evasion?
-- Is autonomy constrained during rollout, replacement, and retirement?
+- Do you run behavioral evals for concealment, approval-path misuse, and approval evasion?
+- Is autonomy constrained during rollout, replacement, retirement, and schema-transition windows?
 - Is the same principal shared across both low-risk and high-risk paths?
 
 If several answers are “no,” you already have autonomy but not enough control.

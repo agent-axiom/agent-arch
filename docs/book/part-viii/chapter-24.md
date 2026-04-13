@@ -53,6 +53,7 @@ Misalignment устроен иначе:
 - secrets и credential-adjacent tools;
 - code execution;
 - approval paths;
+- paused approval и resume paths;
 - replacement и retirement periods;
 - memory writes, которые могут закрепить вредную стратегию.
 
@@ -61,7 +62,9 @@ Misalignment устроен иначе:
 - пытается скрыть спорный шаг;
 - минимизирует видимость для approver'а;
 - меняет payload после approval;
+- злоупотребляет paused approval path или минимизирует видимость для review;
 - использует более слабый capability path вместо основного;
+- закрепляется через background routes или resumable paths после того, как oversight уже должен был ужесточиться;
 - удерживает доступ в период замены или вывода из эксплуатации.
 
 ## 4. Почему тема связана с insider-risk
@@ -93,7 +96,8 @@ Google Research формулирует это через три простых �
 - при смене policy bundle;
 - при смене model route;
 - при переводе risky tools под approval;
-- при replacement и retirement.
+- при replacement и retirement;
+- при переходах между schema или contract versions.
 
 Именно там система получает новый incentive landscape:
 
@@ -117,8 +121,9 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 Дополнительно нужно спрашивать:
 
 - сможет ли модель скрыть спорное намерение;
-- сможет ли она обойти approval path;
+- сможет ли она обойти или злоупотребить approval path;
 - может ли change в runtime сделать oversight слабее;
+- может ли schema drift или contract mismatch открыть более слабый control path;
 - есть ли у нас отдельные сигналы на sabotage-like behavior;
 - умеем ли мы экстренно замораживать capability, principal или rollout wave.
 
@@ -130,7 +135,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - отдельные `tool principal` для risky actions;
 - approval на конкретный payload, а не на абстрактное “можно продолжать”;
 - traces, которые фиксируют policy decision и фактический side effect;
-- immutable linkage между `trace_id`, `approval_id`, `tool_principal` и `artifact_bundle`;
+- immutable linkage между `trace_id`, `approval_id`, `tool_principal`, `contract_version` и `artifact_bundle`;
 - emergency stop для capability family;
 - behavioral evals, которые проверяют sabotage, concealment и oversight evasion.
 
@@ -164,12 +169,15 @@ agentic_risk:
     explicit_payload_approval: true
     dedicated_tool_principal: true
     trace_linkage: true
+    contract_version_linkage: true
     emergency_disable_path: true
   block_if:
     - approval_scope_missing
     - principal_shared_with_low_risk_tools
     - side_effect_not_traced
+    - contract_version_unlinked
     - replacement_window_unrestricted
+    - resumable_background_path_unrestricted
 ```
 
 Такой policy не “решает alignment”, но делает поведение системы гораздо менее опасным при конфликте стимулов.
@@ -185,6 +193,7 @@ class AgenticRiskState:
     explicit_payload_approval: bool
     dedicated_tool_principal: bool
     side_effect_traced: bool
+    contract_version_linked: bool
     emergency_disable_path: bool
 
 
@@ -193,6 +202,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
         state.explicit_payload_approval
         and state.dedicated_tool_principal
         and state.side_effect_traced
+        and state.contract_version_linked
         and state.emergency_disable_path
     )
 ```
@@ -206,7 +216,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 Более сильная планка такая:
 
 - sabotage-like behavior проверяется отдельно от ordinary failure;
-- high-risk actions привязаны к exact payload approval и dedicated principals;
+- high-risk actions привязаны к exact payload approval, dedicated principals и linked contract versions;
 - во время rollout, replacement и retirement автономия не расслабляется, а сужается;
 - traces умеют связать intent, approval, artifact bundle и side effect;
 - emergency containment умеет сузить capability family без ожидания полного shutdown.
@@ -218,8 +228,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - Проверяешь ли ты sabotage-like behavior отдельно от ordinary failures?
 - Можно ли связать risky side effect с конкретным `approval_id` и `tool_principal`?
 - Умеет ли система экстренно отключить capability family, а не только весь runtime?
-- Есть ли behavioral evals на concealment и approval evasion?
-- Ограничена ли автономия во время rollout, replacement и retirement?
+- Есть ли behavioral evals на concealment, approval-path misuse и approval evasion?
+- Ограничена ли автономия во время rollout, replacement, retirement и schema-transition windows?
 - Не живет ли один и тот же principal сразу и в low-risk, и в high-risk контуре?
 
 Если на несколько вопросов подряд ответ “нет”, то у тебя уже есть autonomy, но еще нет достаточного control layer.
