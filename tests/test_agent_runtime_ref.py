@@ -466,6 +466,63 @@ class TestCli:
         )
         assert run_start["payload"]["user_input"] == "[REDACTED]"
         assert run_start["redacted_fields"] == ["user_input"]
+        run_complete = next(
+            item for item in inspect_payload["events"] if item["event_type"] == "run_complete"
+        )
+        assert run_complete["redacted_fields"] == []
+
+    def test_cli_export_trace_preserves_runtime_control_event_order(self, cli_json, tmp_path: Path) -> None:
+        output_path = tmp_path / "trace-ordered.jsonl"
+        export_code, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--trace-id",
+                "trace-ordered-001",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert export_code == 0
+
+        inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
+        assert inspect_code == 0
+        event_types = [item["event_type"] for item in inspect_payload["events"]]
+        assert event_types[0] == "run_start"
+        assert event_types[-1] == "run_complete"
+        assert "policy_precheck" in event_types
+        assert "approval_requested" in event_types
+        assert "tool_execution" in event_types
+        assert event_types.index("approval_requested") < event_types.index("tool_execution") < event_types.index("run_complete")
+
+    def test_cli_export_trace_keeps_single_trace_and_session_consistent(self, cli_json, tmp_path: Path) -> None:
+        output_path = tmp_path / "trace-consistent.jsonl"
+        export_code, export_payload = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--trace-id",
+                "trace-consistent-001",
+                "--session-id",
+                "session-consistent-001",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert export_code == 0
+        assert export_payload["trace_id"] == "trace-consistent-001"
+
+        inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
+        assert inspect_code == 0
+        assert all(item["trace_id"] == "trace-consistent-001" for item in inspect_payload["events"])
+        session_ids = {
+            item["payload"]["session_id"]
+            for item in inspect_payload["events"]
+            if "session_id" in item["payload"]
+        }
+        assert session_ids == {"session-consistent-001"}
 
     def test_cli_replay_run_uses_exported_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
