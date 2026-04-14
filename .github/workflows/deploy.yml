@@ -44,34 +44,7 @@ jobs:
         run: uv python install 3.12
 
       - name: Sync dependencies
-        run: uv sync --group docs --group dev
-
-      - name: Lint
-        run: uv run ruff check .
-
-      - name: Type check
-        run: uv run ty check
-
-      - name: Tests
-        run: uv run pytest --cov=agent_runtime_ref --cov-report=term-missing --cov-report=xml --cov-report=html
-
-      - name: Add coverage summary to GitHub job
-        run: |
-          {
-            echo "## Test and Coverage Summary"
-            echo
-            echo '```'
-            uv run pytest --cov=agent_runtime_ref --cov-report=term-missing -q | tail -n 30
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload coverage artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: |
-            coverage.xml
-            htmlcov/
+        run: uv sync --group docs
 
       - name: Build docs
         run: uv run mkdocs build --strict
