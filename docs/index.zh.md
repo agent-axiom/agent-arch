@@ -6,9 +6,13 @@
 
 > 它以 Dmitry Vikulin 关于可靠 AI 智能体的文章为起点，进一步扩展为平台级视角：策略执行、人工审批、可观测性、评测体系、运维纪律与生命周期管理。
 
+<div class="hero-actions" markdown="1">
+
 [从这里开始](start-here.zh.md){ .md-button .md-button--primary }
 [查看全书计划](book/plan.zh.md){ .md-button }
 [查看参考运行时](appendix/reference-package.zh.md){ .md-button }
+
+</div>
 
 <div class="book-cover" markdown="1">
 

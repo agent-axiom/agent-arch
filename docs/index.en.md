@@ -6,9 +6,13 @@ It is a practical book about secure, governable, production-grade AI agent archi
 
 > It starts from Dmitry Vikulin's article on reliable AI agents and expands it into a platform-level view: policy enforcement, human approval, observability, evals, operational discipline, and lifecycle management.
 
+<div class="hero-actions" markdown="1">
+
 [Start here](start-here.en.md){ .md-button .md-button--primary }
 [Open the book plan](book/plan.en.md){ .md-button }
 [Explore the reference runtime](appendix/reference-package.en.md){ .md-button }
+
+</div>
 
 <div class="book-cover" markdown="1">
 

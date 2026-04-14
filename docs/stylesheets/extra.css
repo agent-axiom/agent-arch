@@ -44,6 +44,63 @@
   border-radius: 999px;
 }
 
+.md-typeset .hero-actions,
+.md-typeset .button-stack {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1.25rem 0 1.75rem;
+  max-width: 42rem;
+}
+
+.md-typeset .hero-actions .md-button,
+.md-typeset .button-stack .md-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 3.35rem;
+  margin: 0;
+  padding: 0.8rem 1.4rem;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: normal;
+  box-sizing: border-box;
+}
+
+[data-md-color-scheme="default"] .md-typeset .hero-actions .md-button,
+[data-md-color-scheme="default"] .md-typeset .button-stack .md-button {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(71, 85, 105, 0.35);
+}
+
+[data-md-color-scheme="default"] .md-typeset .hero-actions .md-button--primary,
+[data-md-color-scheme="default"] .md-typeset .button-stack .md-button--primary {
+  background: linear-gradient(135deg, #6b8798 0%, #7f9baa 100%);
+  border-color: transparent;
+  box-shadow: 0 10px 24px rgba(100, 116, 139, 0.18);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .hero-actions .md-button,
+[data-md-color-scheme="slate"] .md-typeset .button-stack .md-button {
+  background: rgba(15, 23, 42, 0.18);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: rgba(226, 232, 240, 0.94);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .hero-actions .md-button--primary,
+[data-md-color-scheme="slate"] .md-typeset .button-stack .md-button--primary {
+  background: linear-gradient(135deg, #6f8797 0%, #87a3b3 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.32);
+}
+
+.md-typeset .hero-actions .md-button:hover,
+.md-typeset .button-stack .md-button:hover {
+  transform: translateY(-1px);
+}
+
 .md-typeset .plot-card {
   margin: 1.5rem 0 2rem;
   padding: 1rem 1rem 0.75rem;
