@@ -183,9 +183,13 @@
 
 Если хочешь начать прямо сейчас:
 
-- [Открыть план книги](book/plan.md){ .md-button .md-button--primary }
-- [Перейти к первой части](book/part-i/index.md){ .md-button }
-- [Посмотреть справочный пакет](appendix/reference-package.md){ .md-button }
+<div class="button-stack" markdown="1">
+
+[Открыть план книги](book/plan.md){ .md-button .md-button--primary }
+[Перейти к первой части](book/part-i/index.md){ .md-button }
+[Посмотреть справочный пакет](appendix/reference-package.md){ .md-button }
+
+</div>
 
 Если хочешь внести вклад:
 

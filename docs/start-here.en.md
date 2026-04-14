@@ -183,9 +183,13 @@ So this is not a book about "the most autonomous agent." It is a book about a ma
 
 If you want to start right now:
 
-- [Open the Book Plan](book/plan.en.md){ .md-button .md-button--primary }
-- [Go to Part I](book/part-i/index.en.md){ .md-button }
-- [Open the Reference Package](appendix/reference-package.en.md){ .md-button }
+<div class="button-stack" markdown="1">
+
+[Open the Book Plan](book/plan.en.md){ .md-button .md-button--primary }
+[Go to Part I](book/part-i/index.en.md){ .md-button }
+[Open the Reference Package](appendix/reference-package.en.md){ .md-button }
+
+</div>
 
 If you want to contribute:
 

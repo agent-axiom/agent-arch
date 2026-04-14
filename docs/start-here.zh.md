@@ -183,9 +183,13 @@
 
 如果你想马上开始：
 
-- [打开全书计划](book/plan.zh.md){ .md-button .md-button--primary }
-- [进入第一部分](book/part-i/index.zh.md){ .md-button }
-- [查看参考运行时包](appendix/reference-package.zh.md){ .md-button }
+<div class="button-stack" markdown="1">
+
+[打开全书计划](book/plan.zh.md){ .md-button .md-button--primary }
+[进入第一部分](book/part-i/index.zh.md){ .md-button }
+[查看参考运行时包](appendix/reference-package.zh.md){ .md-button }
+
+</div>
 
 如果你想参与贡献：
 
