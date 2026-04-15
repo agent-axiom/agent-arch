@@ -100,6 +100,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 被拒动作的异常增长；
 - 审批积压；
 - stuck paused approvals 或异常偏大的 paused-run age；
+- capability-session expiry 的异常升高；
+- stateful capability paths 中无法解释的 re-initialization rate 上升；
 - 异常的工具选择模式；
 - 新出现的出口目标；
 - 记忆写入异常；
@@ -122,6 +124,7 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 对 stale executions 的 route 暂停 background mode；
 - 收紧出口策略；
 - 关闭高风险记忆写入；
+- 冻结 stateful capability path 的 re-initialization；
 - 把发布波次切回更安全的配置；
 - 必要时直接停用有问题的路由。
 
@@ -168,6 +171,7 @@ flowchart LR
 - user complaints；
 - approval queue anomalies；
 - stale background-run reports；
+- capability-session expiry alerts 或 re-init anomalies；
 - contract-mismatch alerts；
 - postmortems；
 - online eval drift；
@@ -211,6 +215,8 @@ assurance:
       - memory_poisoning
       - egress_abuse
       - paused_approval_saturation
+      - capability_session_expiry_regression
+      - reinit_control_drift
       - contract_drift
   findings:
     require_owner: true
@@ -224,6 +230,7 @@ assurance:
       - disable_memory_write
       - expire_paused_runs
       - suspend_background_route
+      - freeze_reinitialization
 ```
 
 它不是 complete framework，但足以说明 assurance 也可以被组织成明确的 operational contract。
@@ -242,6 +249,8 @@ class AssuranceSignal:
     memory_poisoning_suspected: bool = False
     approval_bypass_detected: bool = False
     paused_approval_saturation: bool = False
+    capability_session_expiry_regression: bool = False
+    reinit_control_drift: bool = False
     stale_background_runs: bool = False
     contract_drift_detected: bool = False
 
@@ -251,6 +260,8 @@ def emergency_action(signal: AssuranceSignal) -> str:
         return "restrict_egress"
     if signal.approval_bypass_detected:
         return "require_approval"
+    if signal.capability_session_expiry_regression or signal.reinit_control_drift:
+        return "freeze_reinitialization"
     if signal.paused_approval_saturation:
         return "expire_paused_runs"
     if signal.stale_background_runs:

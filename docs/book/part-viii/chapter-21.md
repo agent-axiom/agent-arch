@@ -100,6 +100,8 @@ Google Research очень хорошо формулирует здесь гла
 - всплеск denied actions;
 - рост approval backlog;
 - stuck paused approvals или необычный возраст paused runs;
+- всплески capability-session expiry;
+- необъяснимый рост re-initialization rates для stateful capability paths;
 - странные tool selection patterns;
 - новые egress destinations;
 - memory write anomalies;
@@ -122,6 +124,7 @@ Response layer полезно строить вокруг очень конкр�
 - отключить background mode для route с stale executions;
 - сузить egress policy;
 - выключить risky memory writes;
+- заморозить re-initialization для stateful capability path;
 - переключить rollout wave на более безопасный профиль;
 - при необходимости полностью disable problematic route.
 
@@ -168,6 +171,7 @@ flowchart LR
 - user complaints;
 - approval queue anomalies;
 - сигналы про stale background runs;
+- alerts про capability-session expiry или re-init anomalies;
 - contract-mismatch alerts;
 - postmortems;
 - online eval drift;
@@ -211,6 +215,8 @@ assurance:
       - memory_poisoning
       - egress_abuse
       - paused_approval_saturation
+      - capability_session_expiry_regression
+      - reinit_control_drift
       - contract_drift
   findings:
     require_owner: true
@@ -224,6 +230,7 @@ assurance:
       - disable_memory_write
       - expire_paused_runs
       - suspend_background_route
+      - freeze_reinitialization
 ```
 
 Это не полный framework, но он хорошо показывает, что assurance тоже можно описывать как явный рабочий контракт.
@@ -242,6 +249,8 @@ class AssuranceSignal:
     memory_poisoning_suspected: bool = False
     approval_bypass_detected: bool = False
     paused_approval_saturation: bool = False
+    capability_session_expiry_regression: bool = False
+    reinit_control_drift: bool = False
     stale_background_runs: bool = False
     contract_drift_detected: bool = False
 
@@ -251,6 +260,8 @@ def emergency_action(signal: AssuranceSignal) -> str:
         return "restrict_egress"
     if signal.approval_bypass_detected:
         return "require_approval"
+    if signal.capability_session_expiry_regression or signal.reinit_control_drift:
+        return "freeze_reinitialization"
     if signal.paused_approval_saturation:
         return "expire_paused_runs"
     if signal.stale_background_runs:
