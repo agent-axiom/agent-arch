@@ -18,6 +18,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - tool access;
 - approvals and audit trails;
 - paused-run state and background-run state;
+- capability-session state and interruption lineage;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -65,6 +66,7 @@ One of the ugliest operational mistakes looks like this:
   - an old rollout path;
   - a background job;
   - a resumable paused approval path;
+  - an expired capability session that can still be re-initialized through an old path;
   - an old runtime-control schema still accepted by gateways.
 
 Formally the system is “dead,” but operationally it can still act.
@@ -81,6 +83,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - stop memory writes;
 - expire or cancel paused runs;
 - stop background jobs and background routes;
+- close or archive capability-session state and block uncontrolled re-init;
 - revoke egress access;
 - close principals, secrets, and connectors;
 - record the final audit state.
@@ -143,7 +146,8 @@ For example:
 - a deprecated memory strategy;
 - a deprecated capability contract;
 - a deprecated approval schema;
-- a deprecated runtime-control schema.
+- a deprecated runtime-control schema;
+- a deprecated capability-session contract.
 
 This matters because retirement almost always starts not with a shutdown, but with a clear signal:
 
@@ -180,6 +184,7 @@ retirement:
     - stop_memory_write
     - expire_paused_runs
     - stop_background_routes
+    - freeze_reinitialization
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -202,6 +207,7 @@ class ReplacementState:
     risky_capabilities_disabled: bool
     archive_plan_ready: bool
     paused_runs_drained: bool
+    capability_sessions_resolved: bool
 
 
 def ready_for_replacement(state: ReplacementState) -> bool:
@@ -211,6 +217,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
         and state.risky_capabilities_disabled
         and state.archive_plan_ready
         and state.paused_runs_drained
+        and state.capability_sessions_resolved
     )
 ```
 
@@ -224,6 +231,7 @@ The problems are fairly repetitive:
 - background jobs were forgotten;
 - the memory write path remained live;
 - paused approvals were left resumable after retirement;
+- expired capability sessions could still be re-initialized through stale control paths;
 - background routes were forgotten;
 - archived state belongs to nobody;
 - deprecated schemas still remain accepted by gateways or runtimes;
@@ -239,7 +247,7 @@ A team should not think it handles retirement well only because it can switch tr
 A stronger bar is this:
 
 - the system loses the ability to act before it is called retired;
-- principals, connectors, memory writes, paused runs, and background jobs are narrowed down deliberately;
+- principals, connectors, memory writes, paused runs, capability sessions, and background jobs are narrowed down deliberately;
 - replacement is staged rather than treated as a binary cutover;
 - deprecated approval and runtime-control schemas are turned off instead of lingering as hidden compatibility paths;
 - archived state has an owner and a retention decision;
@@ -253,9 +261,9 @@ If you want to test your end-of-life discipline quickly, ask:
 
 - Does the system have explicit retirement triggers?
 - Can capabilities be disabled step by step, not only all at once?
-- Is it clear what happens to memory, traces, approvals, and paused-run state after shutdown?
+- Is it clear what happens to memory, traces, approvals, paused-run state, and capability-session state after shutdown?
 - Is there a staged replacement plan?
-- Can principals, connectors, egress access, paused approvals, and background routes be revoked or drained quickly?
+- Can principals, connectors, egress access, paused approvals, capability-session re-init, and background routes be revoked or drained quickly?
 - Is it clear who owns archived artifacts and historical state?
 
 If the answer is “no” several times in a row, your lifecycle still ends at release, not at real operations.

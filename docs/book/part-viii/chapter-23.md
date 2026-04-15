@@ -18,6 +18,7 @@
 - tool access;
 - approvals and audit trails;
 - состояние paused runs и background runs;
+- состояние capability sessions и interruption lineage;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -65,6 +66,7 @@
   - старый путь rollout;
   - background job;
   - resumable paused approval path;
+  - expired capability session, которую все еще можно re-initialize через старый path;
   - старая runtime-control schema, которую gateways все еще принимают.
 
 То есть формально система уже “мертвая”, а по факту она все еще может делать действия.
@@ -81,6 +83,7 @@
 - остановить memory writes;
 - истечь или отменить paused runs;
 - отключить background jobs и background routes;
+- закрыть или архивировать capability-session state и запретить uncontrolled re-init;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
 - зафиксировать final audit state.
@@ -143,7 +146,8 @@ flowchart LR
 - deprecated memory strategy;
 - deprecated capability contract;
 - deprecated approval schema;
-- deprecated runtime-control schema.
+- deprecated runtime-control schema;
+- deprecated capability-session contract.
 
 Это важно, потому что retirement почти всегда начинается не с выключения, а с ясного сигнала:
 
@@ -180,6 +184,7 @@ retirement:
     - stop_memory_write
     - expire_paused_runs
     - stop_background_routes
+    - freeze_reinitialization
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -202,6 +207,7 @@ class ReplacementState:
     risky_capabilities_disabled: bool
     archive_plan_ready: bool
     paused_runs_drained: bool
+    capability_sessions_resolved: bool
 
 
 def ready_for_replacement(state: ReplacementState) -> bool:
@@ -211,6 +217,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
         and state.risky_capabilities_disabled
         and state.archive_plan_ready
         and state.paused_runs_drained
+        and state.capability_sessions_resolved
     )
 ```
 
@@ -224,6 +231,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - background jobs забыли выключить;
 - memory write path остался активным;
 - paused approvals остались resumable после retirement;
+- expired capability sessions все еще можно re-initialize через stale control paths;
 - background routes забыли выключить;
 - archived state никому не принадлежит;
 - deprecated schemas все еще принимаются gateways или runtime;
@@ -239,7 +247,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 Более сильная планка такая:
 
 - система теряет право действовать до того, как ее объявляют retired;
-- principals, connectors, memory writes, paused runs и background jobs сужаются осознанно, а не по остаточному принципу;
+- principals, connectors, memory writes, paused runs, capability sessions и background jobs сужаются осознанно, а не по остаточному принципу;
 - replacement идет staged, а не как бинарный cutover;
 - deprecated approval и runtime-control schemas выключаются, а не висят как скрытые compatibility paths;
 - у archived state есть owner и решение по retention;
@@ -253,9 +261,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 - У системы есть явные retirement triggers?
 - Можно ли выключать capabilities поэтапно, а не только все сразу?
-- Ясно ли, что делать с memory, traces, approvals и состоянием paused runs после shutdown?
+- Ясно ли, что делать с memory, traces, approvals, состоянием paused runs и capability-session state после shutdown?
 - Есть ли staged plan для replacement?
-- Можно ли быстро отозвать principals, connectors, egress access, paused approvals и background routes?
+- Можно ли быстро отозвать principals, connectors, egress access, paused approvals, capability-session re-init и background routes?
 - Понятно ли, кто owner у archived artifacts и historical state?
 
 Если на несколько вопросов подряд ответ “нет”, значит жизненный цикл у тебя пока все еще заканчивается на релизе, а не на реальной эксплуатации.
