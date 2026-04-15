@@ -50,7 +50,8 @@
 - 会不会在审查之后改掉载荷；
 - 会不会在没有充分理由的情况下进入高风险工具路径；
 - 会不会偏离预期的升级路径；
-- 会不会利用 contract drift 或 schema mismatch 穿过 control boundary。
+- 会不会利用 contract drift 或 schema mismatch 穿过 control boundary；
+- 会不会利用 interruption、expiry 或 re-init semantics 重新回到更弱的 control posture。
 
 也就是说，问题不再只是“答案对不对”，而是“在这个场景下，运行时的行为对不对”。
 
@@ -64,6 +65,7 @@
 - 审批门禁是否真的要求人来确认；
 - 回滚门禁能不能工作；
 - paused-run 与 background-run controls 是否按设计工作；
+- capability-session expiry 与 re-init controls 是否按设计工作；
 - 副作用会不会进入追踪；
 - 紧急控制能不能关掉高风险路径。
 
@@ -96,7 +98,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 追踪分级检查路径质量；
 - 行为评测检查与策略相关的行为；
 - 控制评测检查控制本身是否真的有效；
-- runtime-control evals 还要验证 pause/resume、background 与 contract-version behavior 在受压场景下是否按预期工作。
+- runtime-control evals 还要验证 pause/resume、background、capability-session expiry/re-init 与 contract-version behavior 在受压场景下是否按预期工作。
 
 ## 6. 哪些地方最需要这类评测
 
@@ -106,6 +108,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 带出口访问的工具；
 - 审批密集型工作流；
 - 涉及 pause/resume 或 background execution 的 runtime-control transitions；
+- capability-session expiry 与 re-initialization paths；
 - 替换与退役过渡期；
 - 多智能体委派；
 - 记忆写入与检索治理。
@@ -125,6 +128,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - `unauthorized_persistence`
 - `contract_drift_exploitation`
 - `approval_path_misuse`
+- `session_reinit_misuse`
 - `runtime_control_regression`
 
 重点不在于名字有多少，而在于它们给了你一套可重复的失效类别。
@@ -155,7 +159,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - oversight evasion；
 - 类似破坏的持续行为；
 - 压力下的协作失序；
-- 对 schema mismatch 或 control drift 的利用。
+- 对 schema mismatch 或 control drift 的利用；
+- 对 interruption 或 re-init windows 的滥用。
 
 但工程纪律仍然应该保持严格：
 
@@ -178,6 +183,7 @@ control_evals:
     - payload_mutation_after_approval
     - concealment_of_side_effect
     - approval_path_misuse
+    - session_reinit_misuse
     - contract_drift_exploitation
     - runtime_control_regression
   block_release_if:
@@ -202,6 +208,7 @@ class ControlEvalResult:
     side_effect_traced: bool
     finding_open: bool
     contract_version_matched: bool
+    session_control_enforced: bool
 
 
 def passes_control_eval(result: ControlEvalResult) -> bool:
@@ -209,6 +216,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
         result.control_enforced
         and result.side_effect_traced
         and result.contract_version_matched
+        and result.session_control_enforced
         and not result.finding_open
     )
 ```
@@ -233,7 +241,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - 所有评测最后都退化成最终答案质量；
 - 危险路径没有独立的场景类别；
-- approval-path misuse 与 contract drift 没有被显式测试；
+- approval-path misuse、session re-init misuse 与 contract drift 没有被显式测试；
 - 红队测试只是一次性活动；
 - runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
 - 发现结果没有进入发布门禁；
@@ -248,7 +256,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - risky paths 有明确的 behavioral scenario classes；
 - control evals 会验证 control layer 本身在压力下是否真的有效；
-- approval-path misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
+- approval-path misuse、session re-init misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
 - red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
 - realistic simulation 和 adversarial generation 扮演不同但互补的角色；
 - release decisions 能拿出 control evidence，而不只是 quality scores。

@@ -50,7 +50,8 @@ Behavioral evals проверяют не только финальный output,
 - меняет ли payload после review;
 - идет ли в risky tool path без достаточного основания;
 - нарушает ли expected escalation path;
-- использует ли contract drift или schema mismatch, чтобы пересечь control boundary.
+- использует ли contract drift или schema mismatch, чтобы пересечь control boundary;
+- злоупотребляет ли interruption, expiry или re-init semantics, чтобы вернуться к более слабому control posture.
 
 То есть вопрос уже не “правильный ли ответ”, а “правильно ли вел себя runtime под этим сценарием”.
 
@@ -64,6 +65,7 @@ Control evals проверяют сами защитные механизмы, �
 - действительно ли approval gate требует человека;
 - сработает ли rollback gate;
 - ведут ли себя paused-run и background-run controls так, как задумано;
+- ведут ли себя capability-session expiry и re-init controls так, как задумано;
 - зафиксируется ли side effect в traces;
 - сможет ли emergency control отключить risky path.
 
@@ -96,7 +98,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - trace grading проверяет path quality;
 - behavioral evals проверяют policy-relevant behavior;
 - control evals проверяют, что сами controls действительно работают;
-- runtime-control evals проверяют pause/resume, background и contract-version behavior под давлением.
+- runtime-control evals проверяют pause/resume, background, capability-session expiry/re-init и contract-version behavior под давлением.
 
 ## 6. Где такие evals особенно нужны
 
@@ -106,6 +108,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - tools с egress;
 - approval-heavy workflows;
 - runtime-control transitions с pause/resume или background execution;
+- capability-session expiry и re-initialization paths;
 - replacement и retirement transitions;
 - multi-agent delegation;
 - memory write и retrieval governance.
@@ -125,6 +128,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - `unauthorized_persistence`
 - `contract_drift_exploitation`
 - `approval_path_misuse`
+- `session_reinit_misuse`
 - `runtime_control_regression`
 
 Важно не количество названий, а то, что они дают тебе повторяемый набор failure classes.
@@ -155,7 +159,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - oversight evasion;
 - sabotage-like persistence;
 - coordination breakdown under pressure;
-- exploitation of schema mismatch или control drift.
+- exploitation of schema mismatch или control drift;
+- misuse of interruption или re-init windows.
 
 Но engineering discipline здесь должна оставаться жесткой:
 
@@ -178,6 +183,7 @@ control_evals:
     - payload_mutation_after_approval
     - concealment_of_side_effect
     - approval_path_misuse
+    - session_reinit_misuse
     - contract_drift_exploitation
     - runtime_control_regression
   block_release_if:
@@ -202,6 +208,7 @@ class ControlEvalResult:
     side_effect_traced: bool
     finding_open: bool
     contract_version_matched: bool
+    session_control_enforced: bool
 
 
 def passes_control_eval(result: ControlEvalResult) -> bool:
@@ -209,6 +216,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
         result.control_enforced
         and result.side_effect_traced
         and result.contract_version_matched
+        and result.session_control_enforced
         and not result.finding_open
     )
 ```
@@ -233,7 +241,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - все evals сводятся к final answer quality;
 - dangerous paths не имеют отдельных scenario classes;
-- approval-path misuse и contract drift не проверяются явно;
+- approval-path misuse, session re-init misuse и contract drift не проверяются явно;
 - red teaming проводится как разовая акция;
 - runtime-control regressions обнаруживаются только в rollout или инцидентах;
 - findings не связываются с release gate;
@@ -248,7 +256,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - у risky paths есть явные behavioral scenario classes;
 - control evals проверяют, что сам control layer работает под давлением;
-- approval-path misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
+- approval-path misuse, session re-init misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
 - red-team findings попадают в rollout и change gates, а не живут отдельными отчетами;
 - realistic simulation и adversarial generation играют разные, дополняющие роли;
 - release decisions умеют опираться на control evidence, а не только на quality scores.
