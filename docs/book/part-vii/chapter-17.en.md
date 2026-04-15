@@ -95,6 +95,19 @@ This is why a capability catalog should sit above raw tool definitions. It preve
 
 ## 5. What Is Worth Storing in a Capability Catalog
 
+Once the platform accepts stateful MCP-style capabilities, the catalog also has to describe more than transport and risk. It should help the runtime know whether a capability is sessionless, session-bound, interruptible, or resumable across multiple turns.
+
+That means a mature catalog may also need fields such as:
+
+- capability session mode: `stateless / stateful`;
+- whether elicitation is allowed;
+- whether progress events are emitted;
+- session expiry behavior;
+- whether resume requires a fresh approval or may continue under the existing decision;
+- whether the capability may reinitialize its remote session automatically.
+
+Without those fields, the policy layer can approve a capability in principle but still fail to govern how its live runtime session behaves in practice.
+
 A practical field set usually looks like this:
 
 - capability name;
@@ -205,6 +218,19 @@ capabilities:
 That kind of catalog already defines operational semantics, not just names. It also makes explicit whether a capability is model-facing, runtime-brokered, or operator-only.
 
 ## 10. Structured Outputs Matter Because Contracts Should Survive Contact With Code
+
+Stateful capability flows make this even more important. If approval, pause/resume, session expiry, and re-init decisions are all encoded only in prose, the runtime cannot safely decide whether it is continuing the same governed session or accidentally opening a new one.
+
+That is why policy artifacts should increasingly capture structured fields like:
+
+- `capability_session_id`
+- `capability_session_mode`
+- `resume_policy`
+- `on_session_expiry`
+- `progress_event_policy`
+- `elicitation_policy`
+
+Those fields help the runtime keep approval control and capability session control aligned instead of letting them drift into separate implicit systems.
 
 Recent OpenAI guidance on structured outputs is useful for the policy layer too.[^openai-structured]
 

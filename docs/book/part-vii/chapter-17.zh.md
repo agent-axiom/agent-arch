@@ -95,6 +95,19 @@ OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团�
 
 ## 5. Capability catalog 里值得存什么
 
+一旦平台开始接入类似 stateful MCP 的 capability，catalog 就不能只描述 transport 和 risk，还必须帮助 runtime 判断：这个 capability 是 sessionless、session-bound、interruptible，还是可以跨多个 turns resumable。
+
+因此，更成熟的 catalog 往往还需要补充这类字段：
+
+- capability session mode：`stateless / stateful`；
+- 是否允许 elicitation；
+- 是否会发出 progress events；
+- session expiry 的处理方式；
+- resume 是不是需要新的 approval，还是可以沿用现有 decision；
+- capability 是否允许自动 reinitialize remote session。
+
+如果没有这些字段，policy layer 可能在原则上批准了某个 capability，却仍然无法治理它在真实 runtime session 中的行为。
+
 一个实用的字段集合通常包括：
 
 - capability name；
@@ -205,6 +218,19 @@ capabilities:
 这样的 catalog 已经在定义 operational semantics，而不只是 capability 名字。它还明确了某个 capability 是 model-facing、runtime-brokered，还是仅供 operator 使用。
 
 ## 10. Structured outputs 很重要，因为 contracts 必须在接触代码后仍然成立
+
+对 stateful capability flows 来说，这一点会更加严格。如果 approval、pause/resume、session expiry 和 re-init decisions 都只写在 prose 里，runtime 就无法安全判断：自己是在继续同一个受治理的 session，还是无意中打开了一个新的 session。
+
+因此，policy artifacts 最好逐步把这些字段也结构化下来：
+
+- `capability_session_id`
+- `capability_session_mode`
+- `resume_policy`
+- `on_session_expiry`
+- `progress_event_policy`
+- `elicitation_policy`
+
+这些字段可以帮助 runtime 把 approval control 和 capability session control 放进同一套模型里，而不是任由它们漂移成两套隐含系统。
 
 OpenAI 最近关于 structured outputs 的材料，对 policy layer 也很有帮助。[^openai-structured]
 

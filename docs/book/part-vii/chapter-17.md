@@ -95,6 +95,19 @@ flowchart LR
 
 ## 5. Что полезно хранить в capability catalog
 
+Как только платформа начинает работать с stateful MCP-подобными capability, catalog уже должен описывать не только transport и risk, но и то, является ли capability sessionless, session-bound, interruptible или resumable через несколько turns.
+
+Из-за этого mature catalog часто полезно дополнить такими полями:
+
+- capability session mode: `stateless / stateful`;
+- допускается ли elicitation;
+- испускаются ли progress events;
+- как ведет себя session expiry;
+- требует ли resume нового approval или может продолжаться под уже выданным решением;
+- можно ли capability автоматически reinitialize remote session.
+
+Без этих полей policy layer может формально разрешить capability, но не суметь нормально управлять тем, как ее живая runtime session ведет себя на практике.
+
 Практически полезный набор полей обычно такой:
 
 - capability name;
@@ -205,6 +218,19 @@ capabilities:
 Такой catalog уже задает operational semantics, а не просто список имен. Он еще и явно показывает, какая capability видна модели, какая идет через runtime-broker, а какая остается только у операторского контура.
 
 ## 10. Structured outputs важны потому, что contracts должны переживать встречу с кодом
+
+Stateful capability flows делают это требование еще жестче. Если approval, pause/resume, session expiry и re-init decisions описаны только словами, runtime уже не может безопасно различить, продолжает ли он ту же управляемую session или случайно открывает новую.
+
+Именно поэтому policy artifacts все чаще стоит делать структурно явными по таким полям, как:
+
+- `capability_session_id`;
+- `capability_session_mode`;
+- `resume_policy`;
+- `on_session_expiry`;
+- `progress_event_policy`;
+- `elicitation_policy`.
+
+Эти поля помогают держать approval control и capability session control в одной модели, а не давать им расползаться в две разные неявные системы.
 
 Свежий материал OpenAI по structured outputs полезен и для policy layer.[^openai-structured]
 

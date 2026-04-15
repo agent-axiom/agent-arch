@@ -159,6 +159,19 @@ approval_contract:
 
 ## Что должна добавить промышленная схема
 
+Как только в runtime появляются stateful MCP и resumable capability sessions, набор политик уже должен описывать не только допустимость capability “в принципе”, но и то, как управляется ее живая session lifecycle.
+
+Здесь почти сразу становятся полезны такие поля:
+
+- `capability_session_mode`
+- `resume_policy`
+- `on_session_expiry`
+- `progress_event_policy`
+- `elicitation_policy`
+- `reinit_requires_approval`
+
+Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
+
 Как только система взрослеет, для набора политик почти сразу полезно добавить:
 
 - `bundle_version`

@@ -159,6 +159,19 @@ So the package already lives in a model where policy and approvals are not “se
 
 ## What a production schema should add
 
+As stateful MCP and resumable capability sessions enter the runtime, the policy bundle also needs to describe how those sessions are governed, not just whether a capability is allowed in principle.
+
+Useful additions now include:
+
+- `capability_session_mode`
+- `resume_policy`
+- `on_session_expiry`
+- `progress_event_policy`
+- `elicitation_policy`
+- `reinit_requires_approval`
+
+That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
+
 As soon as the system grows up, it is useful to add at least:
 
 - `bundle_version`

@@ -159,6 +159,19 @@ approval_contract:
 
 ## 生产级模式还应该补什么
 
+一旦 runtime 开始包含 stateful MCP 与 resumable capability sessions，policy bundle 就不能只描述 capability 原则上能不能用，还必须描述这些 live session 是如何被治理的。
+
+这时几乎立刻就会需要补上这些字段：
+
+- `capability_session_mode`
+- `resume_policy`
+- `on_session_expiry`
+- `progress_event_policy`
+- `elicitation_policy`
+- `reinit_requires_approval`
+
+这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
+
 一旦系统变得更成熟，策略包很快就应该继续补充：
 
 - `bundle_version`
