@@ -44,6 +44,7 @@ It is useful to treat not only code, but every surface that can materially alter
 - approval rules;
 - retrieval corpora;
 - memory write semantics;
+- capability-session interruption and expiry semantics;
 - eval datasets and grading logic;
 - rollout parameters.
 
@@ -57,7 +58,7 @@ For example:
 
 - `low-risk`: wording tweaks, harmless retrieval tuning, internal observability changes;
 - `medium-risk`: prompt restructuring, ranking changes, model routing updates;
-- `high-risk`: new write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion.
+- `high-risk`: new write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion, or changes to interruption / re-init behavior for approval-bound stateful capabilities.
 
 This is not a perfect classification, but it stops the team from discussing every change in the same tone.
 
@@ -117,6 +118,7 @@ A practical model usually looks like this:
 - policy changes -> deny or allow cases, abuse scenarios, audit coverage;
 - retrieval changes -> relevance checks, leakage checks, context budget checks;
 - tool changes -> contract tests, idempotency checks, approval path validation;
+- interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
 - model routing changes -> quality, latency, safety, and cost deltas.
 
 This is an important practical rule: eval strategy should be tied to the class of change, not treated as one universal test.
@@ -134,6 +136,12 @@ These changes should usually pass through formal gates:
 - monitoring during the first wave;
 - a clear rollback path.
 
+And if the change affects approval-bound or stateful capability flows, the gate should usually ask one extra question explicitly:
+
+> Did we change interruption behavior, expiry handling, or re-initialization semantics in a way that can alter runtime control without changing the user-visible feature set?
+
+That class of change is easy to underestimate because the product surface may look unchanged while the operational risk profile has shifted materially.
+
 OpenAI and Microsoft, in different language, point to the same operational idea: agent systems should be strengthened through measurable readiness, staged adoption, and managed operations, not through hope-driven shipping.[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback is harder than it looks
@@ -147,7 +155,8 @@ You often need to roll back independently:
 - a model route;
 - a retrieval corpus version;
 - capability exposure;
-- an approval threshold.
+- an approval threshold;
+- interruption and expiry semantics for approval-bound capability sessions.
 
 If all of those are fused into one indivisible deploy artifact, rollback becomes too blunt and too slow.
 
@@ -179,6 +188,13 @@ For change management, that means you should be able to answer:
 - who approved the change.
 
 Without that, change review and incident investigation quickly turn into reconstruction from memory.
+
+That provenance should increasingly include runtime-control details too:
+
+- which pause/resume policy was active;
+- which expiry rule governed paused runs;
+- whether re-init was allowed, denied, or approval-bound;
+- which capability-session contract version was active when the incident occurred.
 
 ## 11. Example change policy
 

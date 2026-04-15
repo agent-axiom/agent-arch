@@ -44,6 +44,7 @@
 - approval rules;
 - retrieval corpus;
 - memory write semantics;
+- interruption и expiry semantics для capability sessions;
 - eval datasets и grading logic;
 - параметры rollout.
 
@@ -57,7 +58,7 @@
 
 - `low-risk`: wording tweaks, harmless retrieval tuning, internal observability changes;
 - `medium-risk`: prompt restructuring, ranking changes, model routing updates;
-- `high-risk`: новые write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion.
+- `high-risk`: новые write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion, а также changes в interruption / re-init behavior для approval-bound stateful capabilities.
 
 Это не идеальная классификация, но она помогает перестать обсуждать все изменения в одном тоне.
 
@@ -117,6 +118,7 @@ Prompt, routine или instruction change могут:
 - policy changes -> deny/allow cases, abuse scenarios, audit coverage;
 - retrieval changes -> relevance checks, leakage checks, context budget checks;
 - tool changes -> contract tests, idempotency checks, approval path validation;
+- interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
 - model routing changes -> quality, latency, safety, cost deltas.
 
 Это важный практический принцип: eval strategy должна быть привязана к классу изменения, а не быть одной универсальной проверкой на все случаи.
@@ -134,6 +136,12 @@ Prompt, routine или instruction change могут:
 - monitoring during the first wave;
 - clear rollback path.
 
+А если change затрагивает approval-bound или stateful capability flows, gate почти всегда должен задавать еще один явный вопрос:
+
+> Не поменяли ли мы interruption behavior, expiry handling или re-initialization semantics так, что runtime control уже изменилась, хотя user-visible feature set остался прежним?
+
+Именно этот класс изменений особенно легко недооценить: продуктовая поверхность может выглядеть прежней, а operational risk profile уже заметно сдвинулся.
+
 OpenAI и Microsoft в разных формулировках приходят к одной и той же operational мысли: agent systems нужно усиливать через measurable readiness, staged adoption и managed operations, а не через hope-driven shipping.[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback в агентных системах сложнее, чем кажется
@@ -147,7 +155,8 @@ OpenAI и Microsoft в разных формулировках приходят 
 - model route;
 - retrieval corpus version;
 - capability exposure;
-- approval threshold.
+- approval threshold;
+- interruption и expiry semantics для approval-bound capability sessions.
 
 Если все эти вещи смешаны в один неделимый deploy artifact, rollback становится слишком грубым и слишком медленным.
 
@@ -179,6 +188,13 @@ Google Research хорошо показывает, что provenance полез�
 - кто approved этот change.
 
 Без этого change review и incident investigation быстро превращаются в реконструкцию “по памяти”.
+
+И provenance здесь все чаще должна включать еще и runtime-control details:
+
+- какая pause/resume policy была активна;
+- какое expiry rule управляло paused runs;
+- был ли re-init allowed, denied или approval-bound;
+- какая capability-session contract version действовала в момент инцидента.
 
 ## 11. Пример change policy
 

@@ -44,6 +44,7 @@
 - 审批规则；
 - 检索语料；
 - 记忆写入语义；
+- capability-session interruption 与 expiry semantics；
 - 评测数据集与分级逻辑；
 - 发布参数。
 
@@ -57,7 +58,7 @@
 
 - `low-risk`：措辞微调、无害的检索调优、内部可观测性变更；
 - `medium-risk`：提示重构、排序变更、模型路由更新；
-- `high-risk`：新增写入能力、策略放宽、记忆写入扩张、出口变更、自主性扩张。
+- `high-risk`：新增写入能力、策略放宽、记忆写入扩张、出口变更、自主性扩张，以及 approval-bound stateful capabilities 的 interruption / re-init behavior 变更。
 
 这不是完美分类，但它至少能帮助团队不再用同一种语气讨论所有变更。
 
@@ -117,6 +118,7 @@ flowchart LR
 - 策略变更 -> 拒绝/允许场景、滥用场景、审计覆盖；
 - 检索变更 -> 相关性检查、泄漏检查、上下文预算检查；
 - 工具变更 -> 契约测试、幂等性检查、审批路径验证；
+- interruption-governance 变更 -> paused-run expiry checks、re-init behavior checks、telemetry linkage checks、approval-resume invariants；
 - 模型路由变更 -> 质量、延迟、安全、成本差值。
 
 这是一条很重要的实践原则：评测策略应该跟变更类别绑定，而不是拿一套通用检查去覆盖所有变更。
@@ -134,6 +136,12 @@ flowchart LR
 - first wave monitoring；
 - clear rollback path。
 
+而如果 change 影响的是 approval-bound 或 stateful capability flows，门禁通常还应该明确追问一个问题：
+
+> 我们是否改变了 interruption behavior、expiry handling 或 re-initialization semantics，从而在不改变 user-visible feature set 的情况下，实质性改变了 runtime control？
+
+这一类变化特别容易被低估，因为产品表面看起来没变，但 operational risk profile 已经发生了实质漂移。
+
 OpenAI 和 Microsoft 虽然表述不同，但都指向同一个 operational 结论：agent systems 应该通过 measurable readiness、staged adoption 和 managed operations 来增强，而不是靠 hope-driven shipping。[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback 比看起来更难
@@ -147,7 +155,8 @@ OpenAI 和 Microsoft 虽然表述不同，但都指向同一个 operational 结�
 - model route；
 - retrieval corpus version；
 - capability exposure；
-- approval threshold。
+- approval threshold；
+- approval-bound capability sessions 的 interruption 与 expiry semantics。
 
 如果这些东西都被塞进一个不可分的 deploy artifact，rollback 就会太粗暴，也太慢。
 
@@ -179,6 +188,13 @@ Google Research 很清楚地表明，provenance 不只是 security 概念，它�
 - 谁批准了这个 change。
 
 如果回答不了这些问题，change review 和 incident investigation 很快就会退化成“靠记忆回溯”。
+
+而这些 provenance 信息也越来越应该包含 runtime-control details：
+
+- 当时生效的是哪条 pause/resume policy；
+- paused runs 受哪条 expiry rule 管理；
+- re-init 是 allowed、denied 还是 approval-bound；
+- 事故发生时生效的是哪一个 capability-session contract version。
 
 ## 11. 一个 change policy 示例
 
