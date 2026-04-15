@@ -36,6 +36,7 @@ The problem is that production behavior here depends on more than code. It also 
 - eval datasets;
 - approval rules and schemas;
 - runtime-control schemas;
+- capability-session interruption and re-initialization rules;
 - rollout bundles.
 
 In other words, the agent supply chain is wider because the system itself is wider.
@@ -74,6 +75,7 @@ You need to be able to answer:
 - which retrieval corpus was used;
 - which eval set validated the release;
 - which contract version and approval schema were active;
+- which interruption or expiry policy governed the run;
 - who approved the change.
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
@@ -93,6 +95,7 @@ For agent systems, it is better to think in several linked chains:
 - policy chain;
 - capability chain;
 - approval and runtime-control chain;
+- capability-session governance chain;
 - data and retrieval chain;
 - eval chain.
 
@@ -184,7 +187,14 @@ For a capability, the team should know:
 
 If the contract changes quietly, without provenance or review trail, that change can be as dangerous as an unreviewed code deploy.
 
-The same is true for approval and runtime-control schemas. If a team changes timeout, pause/resume behavior, expiry semantics, or expected payload structure without governed artifact discipline, it is changing production behavior even if no model or source file moved.
+The same is true for approval and runtime-control schemas. If a team changes timeout, pause/resume behavior, expiry semantics, re-initialization rules, or expected payload structure without governed artifact discipline, it is changing production behavior even if no model or source file moved.
+
+That means provenance should increasingly preserve not only that a runtime-control schema existed, but also which interruption-governance version was active:
+
+- whether paused runs expired or waited indefinitely;
+- whether capability-session re-init was allowed, denied, or approval-bound;
+- whether telemetry was expected to link the original and reinitialized capability sessions;
+- whether approval and session-control logic were governed under one contract version or had already drifted apart.
 
 ## 9. Example approved artifact policy
 
@@ -203,6 +213,7 @@ artifacts:
     - capability_contract
     - approval_schema
     - runtime_control_schema
+    - capability_session_contract
     - eval_dataset
     - retrieval_source
 ```

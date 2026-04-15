@@ -36,6 +36,7 @@
 - наборы для оценки;
 - правила и схемы подтверждения;
 - схемы runtime-control;
+- правила interruption и re-initialization для capability sessions;
 - наборы для раскатки.
 
 То есть цепочка поставки у агента шире, потому что сама система шире.
@@ -74,6 +75,7 @@ Google Research очень правильно показывает, что пр�
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
 - какая contract version и approval schema были активны;
+- какая interruption или expiry policy управляла этим run;
 - кто одобрил это изменение.
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
@@ -93,6 +95,7 @@ Google Research очень правильно показывает, что пр�
 - цепочкой политик;
 - цепочкой возможностей;
 - цепочкой approval и runtime-control;
+- цепочкой governance для capability sessions;
 - цепочкой данных и извлечения;
 - цепочкой оценки.
 
@@ -184,7 +187,14 @@ flowchart LR
 
 Если контракт меняется тихо, без происхождения и без следа проверки, то такое изменение может быть не менее опасно, чем непроверенный деплой кода.
 
-То же самое верно и для approval и runtime-control schemas. Если команда меняет timeout, pause/resume behavior, expiry semantics или ожидаемую форму payloads без governed artifact discipline, она меняет production behavior, даже если ни модель, ни исходный код не сдвинулись.
+То же самое верно и для approval и runtime-control schemas. Если команда меняет timeout, pause/resume behavior, expiry semantics, правила re-initialization или ожидаемую форму payloads без governed artifact discipline, она меняет production behavior, даже если ни модель, ни исходный код не сдвинулись.
+
+Это означает, что provenance все чаще должна хранить не только сам факт существования runtime-control schema, но и то, какая версия interruption-governance реально была активна:
+
+- paused runs истекали или могли ждать бесконечно;
+- capability-session re-init была allowed, denied или approval-bound;
+- telemetry обязана была связывать исходную и reinitialized capability sessions или нет;
+- approval и session-control logic еще управлялись одним contract version или уже начали расходиться.
 
 ## 9. Пример политики доверенных артефактов
 
@@ -203,6 +213,7 @@ artifacts:
     - capability_contract
     - approval_schema
     - runtime_control_schema
+    - capability_session_contract
     - eval_dataset
     - retrieval_source
 ```

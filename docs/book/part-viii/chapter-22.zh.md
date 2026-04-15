@@ -36,6 +36,7 @@
 - 评测数据集；
 - 审批规则与 schemas；
 - runtime-control schemas；
+- capability-session interruption 与 re-initialization rules；
 - 发布工件包。
 
 也就是说，智能体的供应链更宽，是因为系统本身就更宽。
@@ -74,6 +75,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
 - 当时生效的是哪个 contract version 与 approval schema；
+- 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
 - 这个变更是谁批准的。
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
@@ -93,6 +95,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 策略链；
 - 能力链；
 - approval 与 runtime-control 链；
+- capability-session governance 链；
 - 数据与检索链；
 - 评测链。
 
@@ -184,7 +187,14 @@ flowchart LR
 
 如果这些 contract 被悄悄改动，没有 provenance，也没有 review trail，那么这种 change 可能和未审查代码发布一样危险。
 
-approval 与 runtime-control schemas 也是一样。如果团队在没有 governed artifact discipline 的情况下修改 timeout、pause/resume behavior、expiry semantics 或预期 payload 结构，那么即使模型和源码都没动，production behavior 也已经变了。
+approval 与 runtime-control schemas 也是一样。如果团队在没有 governed artifact discipline 的情况下修改 timeout、pause/resume behavior、expiry semantics、re-initialization rules 或预期 payload 结构，那么即使模型和源码都没动，production behavior 也已经变了。
+
+这也意味着 provenance 不应只记录“存在某个 runtime-control schema”，还应该逐步记录当时生效的是哪一个 interruption-governance version：
+
+- paused runs 是会过期，还是可以无限等待；
+- capability-session re-init 是 allowed、denied，还是 approval-bound；
+- telemetry 是否应该把原始 capability session 和 reinitialized capability session 关联起来；
+- approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移。
 
 ## 9. 一个已批准工件策略示例
 
@@ -203,6 +213,7 @@ artifacts:
     - capability_contract
     - approval_schema
     - runtime_control_schema
+    - capability_session_contract
     - eval_dataset
     - retrieval_source
 ```
