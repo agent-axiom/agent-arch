@@ -85,7 +85,7 @@ Registry отвечает на более строгий вопрос:
 - runtime identity;
 - tool principals;
 - approval requirements;
-- ownership для paused runs и background runs;
+- ownership для paused runs, background runs и capability sessions;
 - observability status;
 - artifact bundle linkage;
 - retirement plan linkage.
@@ -203,8 +203,10 @@ Registry не должен дублировать policy bundle или approval 
 
 - какие agents вообще имеют право ставить run на approval pause;
 - какие agents могут продолжать работу в background mode;
+- какие agents могут re-initialize stateful capability sessions и в каком approval mode;
 - кто owner у stuck paused runs;
 - кто owner у aging background runs;
+- кто owner у capability-session expiry drift и emergency freeze actions;
 - какой contract version должны соблюдать их approval и capability payloads.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
@@ -228,7 +230,10 @@ agent:
   runtime_controls:
     approval_pause_allowed: true
     background_mode_allowed: true
+    capability_session_mode: stateful
+    reinit_policy: approval_bound
     paused_run_owner: support-ops
+    capability_session_owner: support-ops
     contract_version: capability-contract-v3
   observability:
     trace_enabled: true
@@ -253,6 +258,7 @@ class AgentRegistryState:
     has_policy_linkage: bool
     has_observability: bool
     has_runtime_control_linkage: bool
+    has_capability_session_owner: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -262,6 +268,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_policy_linkage
         and state.has_observability
         and state.has_runtime_control_linkage
+        and state.has_capability_session_owner
     )
 ```
 

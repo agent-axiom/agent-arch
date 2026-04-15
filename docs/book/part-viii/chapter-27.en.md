@@ -85,7 +85,7 @@ A minimal registry record for production-grade agent systems should usually incl
 - runtime identity;
 - tool principals;
 - approval requirements;
-- paused-run and background-run ownership;
+- paused-run, background-run, and capability-session ownership;
 - observability status;
 - artifact-bundle linkage;
 - retirement-plan linkage.
@@ -203,8 +203,10 @@ Then the registry should help answer:
 
 - which agents are allowed to pause for approval;
 - which agents may continue work in background mode;
+- which agents may re-initialize stateful capability sessions, and under what approval mode;
 - who owns stuck paused runs;
 - who owns aging background runs;
+- who owns capability-session expiry drift and emergency freeze actions;
 - which contract version their approval and capability payloads are expected to follow.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
@@ -228,7 +230,10 @@ agent:
   runtime_controls:
     approval_pause_allowed: true
     background_mode_allowed: true
+    capability_session_mode: stateful
+    reinit_policy: approval_bound
     paused_run_owner: support-ops
+    capability_session_owner: support-ops
     contract_version: capability-contract-v3
   observability:
     trace_enabled: true
@@ -253,6 +258,7 @@ class AgentRegistryState:
     has_policy_linkage: bool
     has_observability: bool
     has_runtime_control_linkage: bool
+    has_capability_session_owner: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -262,6 +268,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_policy_linkage
         and state.has_observability
         and state.has_runtime_control_linkage
+        and state.has_capability_session_owner
     )
 ```
 

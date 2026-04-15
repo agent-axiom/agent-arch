@@ -85,7 +85,7 @@ Registry 回答的是更严格的问题：
 - runtime identity
 - tool principals
 - approval requirements
-- paused runs 与 background runs 的 ownership
+- paused runs、background runs 与 capability sessions 的 ownership
 - observability status
 - artifact bundle linkage
 - retirement plan linkage
@@ -203,8 +203,10 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 
 - 哪些 agents 被允许因为 approval 而暂停 run；
 - 哪些 agents 可以继续使用 background mode；
+- 哪些 agents 可以 re-initialize stateful capability sessions，以及对应的 approval mode 是什么；
 - stuck paused runs 由谁负责；
 - aging background runs 由谁负责；
+- capability-session expiry drift 与 emergency freeze actions 由谁负责；
 - 它们的 approval 与 capability payload 应该遵循哪个 contract version。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
@@ -228,7 +230,10 @@ agent:
   runtime_controls:
     approval_pause_allowed: true
     background_mode_allowed: true
+    capability_session_mode: stateful
+    reinit_policy: approval_bound
     paused_run_owner: support-ops
+    capability_session_owner: support-ops
     contract_version: capability-contract-v3
   observability:
     trace_enabled: true
@@ -253,6 +258,7 @@ class AgentRegistryState:
     has_policy_linkage: bool
     has_observability: bool
     has_runtime_control_linkage: bool
+    has_capability_session_owner: bool
 
 
 def registry_ready(state: AgentRegistryState) -> bool:
@@ -262,6 +268,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
         and state.has_policy_linkage
         and state.has_observability
         and state.has_runtime_control_linkage
+        and state.has_capability_session_owner
     )
 ```
 
