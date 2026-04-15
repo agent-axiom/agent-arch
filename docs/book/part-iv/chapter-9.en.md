@@ -178,7 +178,38 @@ Why that is usually better:
 
 Persistent workers sometimes win on latency, but they often lose on isolation and explainability. So the default stance for high-risk execution should usually be: **ephemeral first, persistence only by explicit need**.
 
-## 6. Not Every Capability Needs the Same Isolation Level
+## 6. Stateful MCP Changes What the Runtime Must Track
+
+Another recent AWS signal is useful here: once MCP clients and servers support more stateful interaction patterns, MCP stops being just a stateless tool envelope and starts looking more like a sessioned runtime protocol.[^aws-stateful-mcp]
+
+That changes the execution contract in several practical ways:
+
+- the runtime may need to keep a `session_id` per MCP interaction, not just per user run;
+- capabilities may emit progress notifications before a final result exists;
+- the server may request elicitation or additional user input mid-flow;
+- expiry and re-initialization become part of the normal lifecycle rather than edge cases;
+- telemetry must explain not only which tool was called, but which MCP session instance carried the work.
+
+If the platform keeps treating MCP as fully stateless after those patterns appear, pause/resume logic, approval routing, and trace reconstruction all become much harder than they need to be.
+
+### 6.1. Stateless MCP and Stateful MCP Need Different Contracts
+
+A useful distinction is simple:
+
+- `stateless MCP`: one request, one response, little or no session continuity;
+- `stateful MCP`: a bounded interaction session with progress, intermediate prompts, and possible resume or re-init semantics.
+
+The second model usually needs more from the platform contract:
+
+- session lifecycle ownership;
+- expiry handling;
+- resumability rules;
+- telemetry for progress and elicitation events;
+- policy fields that describe whether a paused session may resume automatically or requires renewed approval.
+
+That does not make stateless MCP obsolete. It simply means the platform should not pretend both modes are operationally identical.
+
+## 7. Not Every Capability Needs the Same Isolation Level
 
 It is useful to split integrations into at least three classes:
 

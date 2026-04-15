@@ -178,7 +178,38 @@ Google 还有一个很有价值的提醒：对高风险 capability 来说，短�
 
 常驻 worker 有时会赢在 latency，但经常输在隔离性和可解释性上。所以面对 high-risk execution，更合理的默认立场通常是：**ephemeral first，只有在明确需要时才保留持久环境**。
 
-## 6. 不是所有 capability 都需要同等级别的隔离
+## 6. Stateful MCP 会改变 runtime 必须追踪的东西
+
+AWS 最近的另一个信号也很有价值：一旦 MCP clients 和 servers 开始支持更强的 stateful interaction patterns，MCP 就不再只是一个 stateless tool envelope，而会更像一种带 session 的 runtime protocol。[^aws-stateful-mcp]
+
+这会在几个非常实际的地方改变 execution contract：
+
+- runtime 需要维护的不只是 user run，还可能包括每次 MCP interaction 的独立 `session_id`；
+- capability 可能在最终结果出现之前先发送 progress notifications；
+- server 可能在流程中途请求 elicitation 或额外 user input；
+- expiry 与 re-initialization 会变成正常 lifecycle 的一部分，而不再只是 edge case；
+- telemetry 不仅要说明调用了哪个 tool，还要说明是哪一个 MCP session instance 承载了这段工作。
+
+如果平台在这些模式已经出现后，仍然把 MCP 当成完全 stateless 的东西，那么 pause/resume logic、approval routing 和 trace reconstruction 很快就会变得比本来复杂得多。
+
+### 6.1. Stateless MCP 和 Stateful MCP 需要不同契约
+
+这里一个很有用的区分是：
+
+- `stateless MCP`：一次 request，对应一次 response，几乎没有 session continuity；
+- `stateful MCP`：一个有边界的 interaction session，包含 progress、中间提示，以及可能的 resume / re-init 语义。
+
+第二种模式通常要求平台提供更多控制：
+
+- session lifecycle ownership；
+- expiry handling；
+- resumability rules；
+- 面向 progress 和 elicitation events 的 telemetry；
+- 能描述暂停后是否可自动恢复、还是必须重新审批的 policy fields。
+
+这并不意味着 stateless MCP 过时了。它只是说明，平台不应该假装这两种模式在 operational 上完全一样。
+
+## 7. 不是所有 capability 都需要同等级别的隔离
 
 把集成至少分成三类会很有帮助：
 

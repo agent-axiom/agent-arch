@@ -177,7 +177,48 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Если у рантайма нет явной формы для этих случаев, длинная работа почти всегда утекает в ad hoc retries, дублирующиеся запросы и скрытые переходы состояния.
 
-## 9. Что важно встроить в baseline с самого начала
+## 9. Stateful tool sessions тоже должны входить в baseline
+
+Как только execution layer начинает работать с stateful MCP-подобными capability, у baseline runtime появляется еще одна обязательная граница: **состояние user-visible run не равно состоянию capability session**.[^aws-stateful-mcp]
+
+Это важно потому, что один пользовательский run теперь может включать:
+
+- один runtime `run_id`;
+- один или несколько MCP `session_id` для внешних capability;
+- progress notifications до финального ответа;
+- elicitation или промежуточные запросы, которые ставят run на паузу до нового ввода;
+- re-initialization, если capability session истекла до завершения run.
+
+Если все это слепить в один непрозрачный state object, оператор уже не сможет объяснить, что именно resumed, что expired и что надо retry заново.
+
+### 9.1. Runtime должен относиться к capability session lifecycle как к first-class state
+
+Минимально зрелый runtime обычно уже должен уметь хранить хотя бы:
+
+- `run_id`;
+- `trace_id`;
+- `capability_session_id`;
+- `capability_session_status`;
+- `expires_at`;
+- `resume_token` или другой continuation handle;
+- `approval_state`, если stateful tool flow был поставлен на паузу из-за approval.
+
+Это не означает, что каждому tool нужен тяжелый session model. Это означает, что у рантайма должно быть место, где такой session state можно выразить, когда protocol этого требует.
+
+### 9.2. Progress и elicitation должны входить в ту же модель resume-control
+
+Еще один полезный вывод из stateful MCP guidance: progress events и elicitation requests нельзя считать экзотическим побочным каналом. Они должны входить в ту же runtime control model, что approvals и background resumption.
+
+На практике baseline runtime выигрывает от одной общей модели состояний для:
+
+- `in_progress` работы, которая еще жива внутри capability session;
+- пауз `waiting_for_input` или `waiting_for_approval`;
+- `resumable` работы, которую можно продолжить в той же capability session;
+- `reinitialize_required` работы, где capability session истекла и ее нужно поднять заново перед продолжением.
+
+Без этих различий expiry session обычно выглядит как случайная ошибка, хотя на деле это нормальное lifecycle event.
+
+## 10. Что важно встроить в baseline с самого начала
 
 Есть вещи, которые кажется соблазнительным “добавить потом”, но на деле их лучше заложить сразу:
 
@@ -192,7 +233,7 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Если этого нет в baseline, потом система обычно дорастает до них через болезненный retrofit.
 
-## 10. Минимальный каркас для background и resumable work
+## 11. Минимальный каркас для background и resumable work
 
 Даже baseline runtime должен иметь простой способ представлять работу, которая живет дольше первого запроса.
 
@@ -225,7 +266,7 @@ def continue_run(run_id: str):
 
 Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а runtime мог ее продолжать или отменять без догадок.
 
-## 11. Что можно не усложнять в первой reference версии
+## 12. Что можно не усложнять в первой reference версии
 
 На старте не обязательно сразу добавлять:
 
@@ -237,7 +278,7 @@ def continue_run(run_id: str):
 
 Reference runtime полезен не максимальной мощностью, а ясностью формы. Лучше небольшая, но чистая реализация, чем “универсальный комбайн”, который никто не понимает.
 
-## 12. Пример конфигурации рантайма
+## 13. Пример конфигурации рантайма
 
 Ниже пример конфигурации, которая задает shape runtime, не вшивая все решения в код:
 
@@ -257,6 +298,10 @@ runtime:
     enabled: true
     resumable_runs: true
     allow_cancel: true
+  capability_sessions:
+    track_session_ids: true
+    emit_progress_events: true
+    support_reinit_on_expiry: true
 ```
 
 Это полезно, потому что помогает держать contract runtime явным и переносимым между средами.

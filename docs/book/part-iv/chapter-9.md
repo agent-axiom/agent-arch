@@ -178,7 +178,38 @@ flowchart LR
 
 Постоянные воркеры иногда выигрывают по latency, но почти всегда проигрывают по изоляции и объяснимости. Поэтому default stance для high-risk execution обычно должна быть такой: **ephemeral first, persistence only by explicit need**.
 
-## 6. Не все capability требуют одинаковый уровень изоляции
+## 6. Stateful MCP меняет то, что runtime вообще обязан отслеживать
+
+Еще один полезный свежий сигнал дает AWS: как только MCP clients и servers начинают поддерживать stateful interaction patterns, MCP перестает быть просто stateless tool envelope и начинает вести себя как sessioned runtime protocol.[^aws-stateful-mcp]
+
+Это меняет execution contract сразу в нескольких практических местах:
+
+- runtime уже может хранить не только user run, но и отдельный `session_id` для MCP interaction;
+- capability может присылать progress notifications до финального результата;
+- server может запросить elicitation или дополнительный user input посередине flow;
+- expiry и re-initialization становятся нормальной частью lifecycle, а не редким edge case;
+- telemetry должна уметь объяснить не только, какой tool был вызван, но и какая MCP session instance несла этот шаг.
+
+Если платформа продолжает считать MCP полностью stateless и после появления таких паттернов, то pause/resume logic, approval routing и trace reconstruction быстро становятся намного сложнее, чем должны быть.
+
+### 6.1. Stateless MCP и Stateful MCP требуют разных контрактов
+
+Полезное различие здесь очень простое:
+
+- `stateless MCP`: один request, один response, почти без session continuity;
+- `stateful MCP`: ограниченная interaction session с progress, промежуточными запросами и возможностью resume или re-init.
+
+Вторая модель почти всегда требует от платформы большего:
+
+- ownership session lifecycle;
+- правила обработки expiry;
+- resumability rules;
+- telemetry для progress и elicitation events;
+- policy fields, которые фиксируют, можно ли resumed session продолжать автоматически или нужно повторное approval.
+
+Это не делает stateless MCP устаревшим. Это лишь означает, что платформа не должна притворяться, будто оба режима operationally одинаковы.
+
+## 7. Не все capability требуют одинаковый уровень изоляции
 
 Удобно разделить интеграции хотя бы на три класса:
 

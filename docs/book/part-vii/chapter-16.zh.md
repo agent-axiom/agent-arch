@@ -177,7 +177,48 @@ OpenAI 最近关于 background mode 的材料很有帮助，因为它把 backgro
 
 如果 runtime 对这些情况没有显式形态，长时间工作最终通常都会泄漏成 ad hoc retries、重复请求和隐藏状态迁移。
 
-## 9. 从一开始就值得内置进去的东西
+## 9. Stateful tool sessions 也应该属于 baseline
+
+一旦 execution layer 开始接入类似 stateful MCP 的 capability，baseline runtime 就会多出一条必须明确的边界：**user-visible run 的状态，不等于 capability session 的状态**。[^aws-stateful-mcp]
+
+这很重要，因为一个用户看到的 run 现在可能同时包含：
+
+- 一个 runtime `run_id`；
+- 一个或多个面向外部 capability 的 MCP `session_id`；
+- 在最终答案出现前先发出的 progress notifications；
+- 由于 elicitation 或中间提示而暂停、等待更多输入的 run；
+- capability session 在 run 完成前过期时触发的 re-initialization。
+
+如果这些状态都被压进一个不透明对象里，operator 就很难解释：到底什么被 resumed 了，什么 expired 了，什么必须重新 retry。
+
+### 9.1. Runtime 应该把 capability session lifecycle 当作 first-class state
+
+一个最小成熟 runtime 通常至少应该能追踪：
+
+- `run_id`
+- `trace_id`
+- `capability_session_id`
+- `capability_session_status`
+- `expires_at`
+- `resume_token` 或其他 continuation handle
+- 当 stateful tool flow 因审批暂停时的 `approval_state`
+
+这并不意味着每个 tool 都要有沉重的 session model。它只是意味着：当 protocol 需要时，runtime 必须有地方表达这类状态。
+
+### 9.2. Progress 和 elicitation 应该进入同一套 resume-control model
+
+stateful MCP guidance 的另一个重要含义是：progress events 和 elicitation requests 不应被当成奇怪的旁路信号。它们应该和 approvals、background resumption 一起进入同一套 runtime control model。
+
+在实践里，baseline runtime 很适合为这些状态使用统一规则：
+
+- capability session 内仍然存活的 `in_progress` 工作；
+- `waiting_for_input` 或 `waiting_for_approval` 这样的暂停；
+- 可以在同一个 capability session 中继续的 `resumable` 工作；
+- capability session 已过期、继续前必须重建的 `reinitialize_required` 工作。
+
+如果没有这些区分，session expiry 往往会被误看成随机故障，而不是正常 lifecycle event。
+
+## 10. 从一开始就值得内置进去的东西
 
 有些东西很容易让人想“以后再补”，但实际上最好第一天就放进去：
 
@@ -192,7 +233,7 @@ OpenAI 最近关于 background mode 的材料很有帮助，因为它把 backgro
 
 如果 baseline 里没有这些，系统往往会在以后通过一次很痛苦的 retrofit 才补回来。
 
-## 10. 一个用于 background 与 resumable work 的最小 skeleton
+## 11. 一个用于 background 与 resumable work 的最小 skeleton
 
 即使是 baseline runtime，也应该有一种简单方式来表达那些活得比第一次请求更久的工作。
 
@@ -225,7 +266,7 @@ def continue_run(run_id: str):
 
 重点不在复杂，而在显式。长生命周期工作必须清楚到 operator 能观察、client 能轮询、runtime 能恢复或取消，而不是靠猜。
 
-## 11. 第一版参考实现不必过度复杂化的部分
+## 12. 第一版参考实现不必过度复杂化的部分
 
 一开始你并不需要立刻上这些东西：
 
@@ -237,7 +278,7 @@ def continue_run(run_id: str):
 
 Reference runtime 的价值不在于功能最大化，而在于形态清晰。一个小而干净的实现，远比一个谁都看不懂的“万能机器”更有用。
 
-## 12. 一个 runtime configuration 示例
+## 13. 一个 runtime configuration 示例
 
 下面是一个通过配置定义 runtime 形态、而不是把所有决定都写死在代码里的例子：
 
@@ -257,6 +298,10 @@ runtime:
     enabled: true
     resumable_runs: true
     allow_cancel: true
+  capability_sessions:
+    track_session_ids: true
+    emit_progress_events: true
+    support_reinit_on_expiry: true
 ```
 
 它的价值在于让 runtime contract 保持显式，也更容易在不同环境之间迁移。

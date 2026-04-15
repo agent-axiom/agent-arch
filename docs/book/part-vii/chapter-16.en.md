@@ -177,7 +177,48 @@ That is the right mental model for a baseline runtime too. The runtime should al
 
 If the runtime has no explicit shape for those cases, long-running work usually leaks into ad hoc retries, duplicated requests, and hidden state transitions.
 
-## 9. What Is Worth Building Into the Baseline From the Start
+## 9. Stateful Tool Sessions Belong in the Baseline Too
+
+Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
+
+That distinction matters because a single user-visible run may now involve:
+
+- one runtime `run_id`;
+- one or more MCP `session_id` values for external capabilities;
+- progress notifications emitted before the final answer;
+- elicitation or intermediate prompts that pause the run until more input arrives;
+- re-initialization if the capability session expires before the run is complete.
+
+If those states are collapsed into one opaque object, operators cannot explain what resumed, what expired, and what has to be retried.
+
+### 9.1. The Runtime Should Treat Capability Session Lifecycle as First-Class State
+
+A minimally mature runtime should usually track at least:
+
+- `run_id`
+- `trace_id`
+- `capability_session_id`
+- `capability_session_status`
+- `expires_at`
+- `resume_token` or equivalent continuation handle
+- `approval_state` when a stateful tool flow pauses on approval
+
+That does not mean every tool needs a heavyweight session model. It means the runtime should have a place to represent one when the protocol requires it.
+
+### 9.2. Progress and Elicitation Should Feed the Same Resume Model
+
+Another useful implication from stateful MCP guidance is that progress events and elicitation requests should not be treated as exotic side channels. They should enter the same runtime control model as approvals and background resumption.
+
+In practice, that means the baseline runtime benefits from one shared set of rules for:
+
+- `in_progress` work that is still alive inside a capability session;
+- `waiting_for_input` or `waiting_for_approval` pauses;
+- `resumable` work that can continue with the same capability session;
+- `reinitialize_required` work where the capability session expired and must be rebuilt before continuing.
+
+Without those distinctions, session expiry tends to look like a random failure even when it is actually a normal lifecycle event.
+
+## 10. What Is Worth Building Into the Baseline From the Start
 
 Some things are tempting to "add later", but in practice it is better to include them from day one:
 
@@ -192,7 +233,7 @@ Some things are tempting to "add later", but in practice it is better to include
 
 If those are absent from the baseline, the system usually reaches them later through a painful retrofit.
 
-## 10. A Minimal Skeleton for Background and Resumable Work
+## 11. A Minimal Skeleton for Background and Resumable Work
 
 Even a baseline runtime should have a simple way to represent work that outlives the first request.
 
@@ -225,7 +266,7 @@ def continue_run(run_id: str):
 
 The point is not complexity. The point is to make long-lived work explicit enough that operators can observe it, clients can poll it, and the runtime can resume or cancel it without guesswork.
 
-## 11. What You Do Not Need to Overcomplicate in the First Reference Version
+## 12. What You Do Not Need to Overcomplicate in the First Reference Version
 
 At the start, you do not need all of this immediately:
 
@@ -237,7 +278,7 @@ At the start, you do not need all of this immediately:
 
 The value of a reference runtime is not maximal power. It is clarity of form. A small clean implementation is better than a universal machine nobody understands.
 
-## 12. Example Runtime Configuration
+## 13. Example Runtime Configuration
 
 Here is an example config that defines the runtime shape without hardcoding every decision:
 
@@ -257,6 +298,10 @@ runtime:
     enabled: true
     resumable_runs: true
     allow_cancel: true
+  capability_sessions:
+    track_session_ids: true
+    emit_progress_events: true
+    support_reinit_on_expiry: true
 ```
 
 This is useful because it keeps the runtime contract explicit and portable between environments.
