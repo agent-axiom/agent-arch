@@ -500,6 +500,145 @@ class TestRuntimeControlPaths:
         assert "rollout_strategy" in payload
 
 
+class TestMeaningfulMemoryAndLifecycleCoverage:
+    def test_memory_store_from_dict_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.memory import MemoryStore
+
+        with pytest.raises(TypeError, match="'memory' must be a mapping"):
+            MemoryStore.from_dict({"memory": []})
+        with pytest.raises(TypeError, match="'seed_records' must be a list"):
+            MemoryStore.from_dict({"memory": {"seed_records": "x"}})
+        with pytest.raises(TypeError, match="Memory record #1 must be a mapping"):
+            MemoryStore.from_dict({"memory": {"seed_records": ["x"]}})
+
+    def test_memory_store_replace_revision_increments_prior_version(self) -> None:
+        from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
+
+        store = MemoryStore()
+        first = store.persist(
+            MemoryCandidate(
+                tenant_id="tenant-acme",
+                memory_class="long_term",
+                kind="validated_fact",
+                content="First version",
+                source="trusted_service",
+                confidence=0.9,
+                provenance="policy_review",
+                revision_mode="replace",
+            ),
+        )
+        second = store.persist(
+            MemoryCandidate(
+                tenant_id="tenant-acme",
+                memory_class="long_term",
+                kind="validated_fact",
+                content="Second version",
+                source="trusted_service",
+                confidence=0.95,
+                provenance="policy_review",
+                revision_mode="replace",
+            ),
+        )
+        assert first.revision >= 2
+        assert second.revision == first.revision + 1
+
+    def test_memory_store_compaction_is_tenant_scoped(self) -> None:
+        from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
+
+        store = MemoryStore()
+        store.persist(
+            MemoryCandidate(
+                tenant_id="tenant-acme",
+                memory_class="short_term",
+                kind="working_note",
+                content="Duplicate note",
+                source="session_state",
+                confidence=0.5,
+                provenance="demo",
+            ),
+        )
+        store.persist(
+            MemoryCandidate(
+                tenant_id="tenant-acme",
+                memory_class="short_term",
+                kind="working_note",
+                content="Duplicate note",
+                source="session_state",
+                confidence=0.5,
+                provenance="demo",
+            ),
+        )
+        store.persist(
+            MemoryCandidate(
+                tenant_id="tenant-other",
+                memory_class="short_term",
+                kind="working_note",
+                content="Duplicate note",
+                source="session_state",
+                confidence=0.5,
+                provenance="demo",
+            ),
+        )
+        removed = store.compact("tenant-acme")
+        assert removed >= 1
+        remaining_other = [record for record in store.all() if record.tenant_id == "tenant-other"]
+        assert len(remaining_other) == 1
+
+    def test_memory_score_prefers_trusted_profile_signal(self) -> None:
+        from agent_runtime_ref.memory import MemoryRecord, MemoryStore
+
+        low = MemoryRecord(
+            memory_id="mem-low",
+            tenant_id="tenant-acme",
+            memory_class="short_term",
+            kind="note",
+            content="language preference maybe english",
+            source="session_state",
+            confidence=0.4,
+        )
+        high = MemoryRecord(
+            memory_id="mem-high",
+            tenant_id="tenant-acme",
+            memory_class="profile",
+            kind="language_preference",
+            content="language preference concise english",
+            source="trusted_profile",
+            confidence=0.9,
+        )
+        assert MemoryStore._score(high, {"language", "preference"}) > MemoryStore._score(low, {"language", "preference"})
+
+    def test_lifecycle_helpers_reject_bad_shapes(self) -> None:
+        from agent_runtime_ref.lifecycle import ArtifactBundle, ChangeRecord, RetirementPlan
+
+        with pytest.raises(TypeError, match="change config must be a mapping"):
+            ChangeRecord.from_dict({"change": []})
+        with pytest.raises(TypeError, match="artifact bundle config must be a mapping"):
+            ArtifactBundle.from_dict({"bundle": []})
+        with pytest.raises(TypeError, match="retirement config must be a mapping"):
+            RetirementPlan.from_dict({"retirement": []})
+        with pytest.raises(TypeError, match="artifacts must be a list"):
+            ChangeRecord.from_dict({"change": {"change_id": "x", "change_type": "y", "risk_level": "z", "rollout_strategy": "gradual", "artifacts": "bad", "required_signals": [], "approval_roles": []}})
+
+    def test_lifecycle_assessments_report_ready_when_complete(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_change_record, load_retirement_plan
+
+        change = load_change_record(config_dir / "change.yaml")
+        change_assessment = assess_change_gate(
+            change,
+            {signal: True for signal in change.required_signals},
+        )
+        assert change_assessment.ready
+        assert change_assessment.missing_signals == ()
+
+        plan = load_retirement_plan(config_dir / "retirement.yaml")
+        retirement_assessment = assess_retirement(
+            plan,
+            {step: True for step in plan.required_steps},
+        )
+        assert retirement_assessment.ready
+        assert retirement_assessment.missing_steps == ()
+
+
 class TestLowCoverageModuleBranches:
     def test_controls_policy_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.controls import ControlsPolicy
