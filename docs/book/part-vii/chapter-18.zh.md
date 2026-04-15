@@ -181,15 +181,31 @@ flowchart LR
 - paused runs 是否有 timeout 或 expiry rule；
 - 是否有可见的 backlog threshold；
 - resume/cancel 行为是否明确；
-- human review 不可用时是否存在 fallback。
+- human review 不可用时是否存在 fallback；
+- capability-session expiry 是否被当成可见 rollout signal，而不是隐藏 transport failure；
+- 当 stateful capability session 已无法安全 resume 时，re-initialization behavior 是否已定义。
 
 这对同一个支持智能体会立刻变得重要。如果创建工单的路径会因为 approval 而暂停，团队就必须知道这次 run 会等五秒、三十分钟，还是无限期等待。这不是 UX 细节，而是 production behavior 的一部分。
 
 一个非常实用的 rollout gate 是：
 
-> 我们是否知道现在有多少 runs 正在等待 approval，它们已经等了多久，以及如果没有人在时限内响应，系统会做什么？
+> 我们是否知道现在有多少 runs 正在等待 approval，它们已经等了多久，如果没有人在时限内响应系统会做什么，以及当底层 capability session 更早过期时 runtime 又会做什么？
 
 如果答案是否定的，那 approval 仍然只是一个未被治理的 side channel。
+
+### 8.1. Stateful capability 的 interruptions 也必须进入 rollout readiness
+
+一旦 approval 和 stateful MCP 或其他可恢复的 capability session 结合在一起，rollout readiness 就必须把 interruption semantics 直接纳入检查。
+
+这意味着团队至少要能回答这些问题：
+
+- 有多少 runs 正在等待 human approval，同时 capability session 仍然存活；
+- 有多少 runs 已经越过 capability-session expiry，现在需要 re-init；
+- re-initialization 是保留同一个 user-visible run id，还是创建新的 operational thread；
+- re-init 之后的下一步是否会触发 fresh policy decision；
+- telemetry 能否把原始 paused state 与 resumed 或 reinitialized state 关联起来。
+
+如果这些问题答不上来，rollout 可能在 approval layer 看起来正常，但在 capability-session layer 已经开始退化。
 
 ## 9. Operational readiness
 
@@ -237,6 +253,7 @@ rollout:
     - rollback_plan
     - oncall_owner
     - approval_queue_owner
+    - session_expiry_signals_visible
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -247,6 +264,7 @@ rollout:
     - policy_decisions_not_traced
     - approval_backlog_unbounded
     - paused_runs_without_expiry
+    - capability_session_reinit_unmodeled
 ```
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。

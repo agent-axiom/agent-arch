@@ -181,15 +181,31 @@ Before rollout, it is worth checking:
 - is there a timeout or expiry rule for paused runs;
 - is there a visible backlog threshold;
 - is resume/cancel behavior defined;
-- is there a fallback when human review is unavailable.
+- is there a fallback when human review is unavailable;
+- is capability-session expiry treated as a visible rollout signal rather than a hidden transport failure;
+- is re-initialization behavior defined when a stateful capability session cannot resume safely.
 
 For the same support agent, this matters immediately. If a ticket-creation path pauses for approval, the team must know whether the run will wait for five seconds, thirty minutes, or forever. That is not a UX detail. It is part of production behavior.
 
 A very practical rollout gate is this:
 
-> Do we know how many runs are currently paused for approval, how long they have been waiting, and what the system will do when nobody answers in time?
+> Do we know how many runs are currently paused for approval, how long they have been waiting, what happens when nobody answers in time, and what the runtime does when the underlying capability session expires first?
 
 If the answer is no, then approval is still acting like an unmanaged side channel.
+
+### 8.1. Stateful Capability Interruptions Must Be Part of Rollout Readiness Too
+
+Once approval is combined with stateful MCP or other resumable capability sessions, rollout readiness has to include interruption semantics directly.
+
+That means the team should be able to answer questions like:
+
+- how many runs are waiting on human approval while their capability session is still alive;
+- how many are already past capability-session expiry and now require re-init;
+- whether re-initialization preserves the same user-visible run id or creates a new operational thread;
+- whether the next step after re-init triggers a fresh policy decision;
+- whether telemetry can connect the original paused state to the resumed or reinitialized state.
+
+Without those answers, a rollout may look healthy at the approval layer while already degrading underneath at the capability-session layer.
 
 ## 9. Operational Readiness
 
@@ -237,6 +253,7 @@ rollout:
     - rollback_plan
     - oncall_owner
     - approval_queue_owner
+    - session_expiry_signals_visible
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -247,6 +264,7 @@ rollout:
     - policy_decisions_not_traced
     - approval_backlog_unbounded
     - paused_runs_without_expiry
+    - capability_session_reinit_unmodeled
 ```
 
 This kind of checklist is powerful because it turns readiness into an engineering discussion instead of confidence in someone's tone of voice.

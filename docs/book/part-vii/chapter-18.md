@@ -181,15 +181,31 @@ flowchart LR
 - есть ли timeout или expiry rule для paused runs;
 - есть ли видимый backlog threshold;
 - определено ли resume/cancel поведение;
-- есть ли fallback на случай, если human review недоступен.
+- есть ли fallback на случай, если human review недоступен;
+- считается ли capability-session expiry видимым rollout signal, а не скрытым transport failure;
+- определено ли re-initialization behavior, если stateful capability session уже нельзя safely resume.
 
 Для того же support-агента это важно сразу. Если path создания тикета ставится на approval pause, команда должна знать, будет ли run ждать пять секунд, тридцать минут или вечно. Это не UX-деталь, а часть production behavior.
 
 Очень практичный rollout gate звучит так:
 
-> Понимаем ли мы, сколько run сейчас стоит на approval pause, как долго они уже ждут и что система сделает, если вовремя никто не ответит?
+> Понимаем ли мы, сколько run сейчас стоит на approval pause, как долго они уже ждут, что система сделает, если вовремя никто не ответит, и что runtime сделает, если underlying capability session истечет еще раньше?
 
 Если ответ нет, значит approval все еще работает как неуправляемый side channel.
+
+### 8.1. Interruptions в stateful capability тоже должны входить в rollout readiness
+
+Как только approval сочетается со stateful MCP или другой resumable capability session, rollout readiness уже обязана включать interruption semantics напрямую.
+
+Это означает, что команда должна уметь отвечать хотя бы на такие вопросы:
+
+- сколько runs ждут human approval, пока capability session еще жива;
+- сколько уже прошло через capability-session expiry и теперь требуют re-init;
+- сохраняет ли re-initialization тот же user-visible run id или создает новую operational thread;
+- запускает ли шаг после re-init fresh policy decision;
+- может ли telemetry связать исходное paused state с resumed или reinitialized state.
+
+Без этих ответов rollout может выглядеть здоровым на approval layer, но уже деградировать глубже, на capability-session layer.
 
 ## 9. Operational readiness
 
@@ -237,6 +253,7 @@ rollout:
     - rollback_plan
     - oncall_owner
     - approval_queue_owner
+    - session_expiry_signals_visible
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -247,6 +264,7 @@ rollout:
     - policy_decisions_not_traced
     - approval_backlog_unbounded
     - paused_runs_without_expiry
+    - capability_session_reinit_unmodeled
 ```
 
 Такой checklist хорош тем, что делает readiness предметом инженерного разговора, а не уверенности в голосе автора релиза.
