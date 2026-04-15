@@ -500,6 +500,100 @@ class TestRuntimeControlPaths:
         assert "rollout_strategy" in payload
 
 
+class TestLowCoverageModuleBranches:
+    def test_controls_policy_from_dict_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.controls import ControlsPolicy
+
+        with pytest.raises(TypeError, match="'controls' must be a mapping"):
+            ControlsPolicy.from_dict({"controls": []})
+        with pytest.raises(TypeError, match="'controls.require' must be a list"):
+            ControlsPolicy.from_dict({"controls": {"require": "x"}})
+        with pytest.raises(TypeError, match="'controls.block_if' must be a list"):
+            ControlsPolicy.from_dict({"controls": {"require": [], "block_if": "x"}})
+
+    def test_assess_controls_marks_inventory_drift_as_blocking(self) -> None:
+        from agent_runtime_ref.controls import ControlsPolicy, InventoryDrift, assess_controls
+
+        assessment = assess_controls(
+            ControlsPolicy(required_controls=("registry_reviewed",), blocked_findings=("manual_override",)),
+            {"registry_reviewed": True, "manual_override": False},
+            inventory_drift=InventoryDrift(
+                missing_from_catalog=("ghost_cap",),
+                missing_from_inventory=(),
+            ),
+        )
+        assert not assessment.healthy
+        assert "inventory_drift_present" in assessment.blocking_findings
+
+    def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.telemetry import StructuredEvent
+
+        with pytest.raises(TypeError, match="payload must be a mapping"):
+            StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": []})
+        with pytest.raises(TypeError, match="redacted_fields must be a list"):
+            StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"})
+
+    def test_telemetry_events_for_trace_and_unredacted_export(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        emitter = TelemetryEmitter()
+        emitter.emit("run_start", "trace-a", user_input="hello")
+        emitter.emit("run_complete", "trace-b", status="success")
+        assert len(emitter.events_for_trace("trace-a")) == 1
+
+        output_path = tmp_path / "events.jsonl"
+        emitter.export_jsonl(output_path)
+        loaded = TelemetryEmitter.load_jsonl(output_path)
+        assert len(loaded) == 2
+        assert loaded[0].payload["user_input"] == "hello"
+
+    def test_traced_call_emits_failure_span(self) -> None:
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        emitter = TelemetryEmitter()
+        with pytest.raises(RuntimeError, match="boom"):
+            emitter.traced_call("trace-fail", "failing_span", lambda: (_ for _ in ()).throw(RuntimeError("boom")))
+        span = emitter.events[-1]
+        assert span.event_type == "span"
+        assert span.payload["status"] == "failure"
+
+    def test_rollout_policy_from_dict_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.rollout import RolloutPolicy
+
+        with pytest.raises(TypeError, match="'rollout' must be a mapping"):
+            RolloutPolicy.from_dict({"rollout": []})
+        with pytest.raises(TypeError, match="'require' must be a list"):
+            RolloutPolicy.from_dict({"rollout": {"require": "x"}})
+        with pytest.raises(TypeError, match="'block_if' must be a list"):
+            RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": "x"}})
+        with pytest.raises(TypeError, match="'rollout_mode' must be a mapping"):
+            RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [], "rollout_mode": []}})
+
+    def test_ready_for_rollout_false_when_flags_missing(self) -> None:
+        assert not ready_for_rollout(
+            RolloutReadiness(
+                trace_coverage=True,
+                offline_eval_pass=True,
+                slo_defined=False,
+                rollback_plan=True,
+            ),
+        )
+
+    def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
+        from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity
+
+        with pytest.raises(TypeError, match="'agent' must be a mapping"):
+            ApprovedInventory.from_agent_config({"agent": []})
+        with pytest.raises(TypeError, match="'approved_capabilities' must be a list"):
+            ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": "x"}})
+        with pytest.raises(TypeError, match="'agent' must be a mapping"):
+            load_agent_identity({"agent": []})
+
+        inventory = ApprovedInventory(capabilities=frozenset({"search_docs"}))
+        assert inventory.allows("search_docs")
+        assert not inventory.allows("create_ticket")
+
+
 class TestPolicyAndControls:
     def test_policy_denies_missing_principal(self) -> None:
         engine = PolicyEngine()
