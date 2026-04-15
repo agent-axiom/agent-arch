@@ -90,6 +90,8 @@ decided_by:
 
 This layer matters because even a good change review does not automatically imply rollout readiness.
 
+Once approval and stateful capability sessions are part of the runtime, the gate should also say whether interruption behavior was reviewed explicitly, not assumed.
+
 ## 5. How change review differs from the rollout gate
 
 These two layers are often confused, but they solve different questions:
@@ -100,7 +102,7 @@ These two layers are often confused, but they solve different questions:
 That is why the fields differ:
 
 - the review cares more about change type, risk, and required evals;
-- the rollout gate cares more about telemetry, on-call readiness, rollback, traffic scope, and live readiness.
+- the rollout gate cares more about telemetry, on-call readiness, rollback, traffic scope, live readiness, and interruption handling for approval-bound or stateful capability paths.
 
 ## 6. How this connects to the eval schema
 
@@ -118,7 +120,8 @@ The rollout gate becomes much stronger once the trace schema is in place:
 
 - traces show whether high-risk paths were exercised;
 - session summaries show whether regressions are appearing;
-- structured events show what was actually checked before release.
+- structured events show what was actually checked before release;
+- interruption and expiry signals show whether approval-bound runs are degrading before operators notice.
 
 That is why mature teams usually keep trace and rollout gate layers close together.
 
@@ -130,6 +133,7 @@ The [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_r
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
 - [configs/rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [configs/change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [configs/runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - CLI:
   - `check-rollout`
   - `check-change`
@@ -145,6 +149,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - required checks and blocking findings are explicit;
 - every decision has an owner;
 - review and gate can be reconstructed from an incident trace;
+- interruption behavior for approval-bound or stateful capability sessions is checked before rollout;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks
@@ -155,6 +160,7 @@ The common failure modes are familiar:
 - gating criteria are not versioned;
 - telemetry readiness is judged informally;
 - safety findings are not treated as blockers;
+- capability-session expiry or re-init behavior is left unmodeled;
 - the rollout wave is described too vaguely;
 - nobody can explain why the change was allowed into canary at all.
 

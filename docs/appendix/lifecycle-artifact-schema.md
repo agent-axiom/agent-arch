@@ -11,7 +11,8 @@
 - retirement plans;
 - replacement mappings;
 - runtime-control schemas и contract-version linkages;
-- operational approvals и lifecycle decisions.
+- operational approvals и lifecycle decisions;
+- capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract.
 
 Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
 
@@ -61,6 +62,8 @@ status: approved
 - `eval_requirements` связывает change management с eval loop;
 - `rollback_unit` заставляет заранее понимать, что именно откатывается;
 - `status` нужен не как бюрократия, а как operational fact.
+
+А если в системе уже есть approval-bound или stateful capability sessions, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling и re-init semantics в reviewed surface.
 
 ## 4. Approved artifact bundle
 
@@ -127,7 +130,8 @@ owner: platform-operations
 - ownership фоновых маршрутов;
 - principals;
 - memory;
-- archived bundles.
+- archived bundles;
+- expired capability-session state, если он все еще важен для audit или delayed operator response.
 
 ## 6. Как это связано с Part VIII
 
@@ -148,6 +152,7 @@ owner: platform-operations
 - каждый production rollout указывает на `artifact_bundle`;
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
+- retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
 - lifecycle artifacts имеют owner и version;
 - incident review может восстановить связку `change -> bundle -> run -> retirement`.
 
@@ -160,7 +165,8 @@ owner: platform-operations
 - retirement есть в roadmap, но не в operational config;
 - replacement делается без dual-run semantics;
 - historical state не имеет retention owner;
-- provenance заканчивается на уровне git commit и не доходит до runtime bundle.
+- provenance заканчивается на уровне git commit и не доходит до runtime bundle;
+- paused-run и expired-session state теряются при replacement, хотя они еще могут быть нужны операторам.
 
 ## 9. Что сделать сразу
 

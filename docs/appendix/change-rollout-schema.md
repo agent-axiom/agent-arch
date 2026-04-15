@@ -90,6 +90,8 @@ decided_by:
 
 Этот слой нужен потому, что даже хороший change review еще не означает автоматическую готовность к rollout.
 
+Как только в runtime появляются approval и stateful capability sessions, gate еще должен явно фиксировать, было ли interruption behavior отдельно проверено, а не просто принято по умолчанию.
+
 ## 5. Чем change review отличается от rollout gate
 
 Эти два слоя часто путают, хотя задачи у них разные:
@@ -100,7 +102,7 @@ decided_by:
 Из-за этого у них и поля разные:
 
 - review больше смотрит на тип изменения, риски и required evals;
-- rollout gate больше смотрит на telemetry, on-call, rollback, traffic scope и live readiness.
+- rollout gate больше смотрит на telemetry, on-call, rollback, traffic scope, live readiness и interruption handling для approval-bound или stateful capability paths.
 
 ## 6. Как это связано с eval schema
 
@@ -118,7 +120,8 @@ Rollout gate особенно полезен, когда trace schema уже с�
 
 - по traces видно, прошли ли high-risk paths;
 - по session summaries видно, есть ли regressions;
-- по structured events можно понять, что именно было проверено перед выпуском.
+- по structured events можно понять, что именно было проверено перед выпуском;
+- по interruption и expiry signals видно, не деградируют ли approval-bound runs раньше, чем это заметят операторы.
 
 Поэтому у зрелой команды trace и rollout gate почти всегда стоят рядом.
 
@@ -130,6 +133,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
 - [configs/rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [configs/change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [configs/runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - CLI:
   - `check-rollout`
   - `check-change`
@@ -145,6 +149,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - required checks и blocking findings видны явно;
 - decision всегда имеет owner;
 - review и gate можно восстановить по incident trace;
+- interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
 - rollback plan не живет только в головах команды.
 
 ## 10. Что чаще всего ломается
@@ -155,6 +160,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - gating criteria не versioned;
 - telemetry readiness проверяется "на глаз";
 - safety findings не считаются blocker'ами;
+- capability-session expiry или re-init behavior остаются неоформленными;
 - rollout wave описан слишком расплывчато;
 - никто не может объяснить, почему изменение вообще было допущено в canary.
 

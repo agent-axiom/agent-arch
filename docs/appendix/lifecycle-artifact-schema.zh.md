@@ -11,7 +11,8 @@
 - 退役计划；
 - 替换映射；
 - runtime-control schemas 与 contract-version linkages；
-- 运行期审批和生命周期决策。
+- 运行期审批和生命周期决策；
+- 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
@@ -61,6 +62,8 @@ status: approved
 - `eval_requirements` 把变更管理直接连到评测闭环；
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
 - `status` 是运行事实，而不是流程摆设。
+
+而一旦系统里已经存在 approval-bound 或 stateful capability sessions，change record 通常也应该能看出 interruption behavior、expiry handling 和 re-init semantics 是否属于被审查的 surface。
 
 ## 4. 已批准工件包
 
@@ -127,7 +130,8 @@ owner: platform-operations
 - background-route ownership；
 - 主体；
 - 记忆；
-- 已归档的工件包。
+- 已归档的工件包；
+- 对审计或延迟 operator response 仍然有意义的 expired capability-session state。
 
 ## 6. 它和 Part VIII 的关系
 
@@ -148,6 +152,7 @@ owner: platform-operations
 - 每次生产环境上线都指向一个 `artifact_bundle`；
 - 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
+- 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
 - 生命周期工件有负责人和版本；
 - 事故复盘能还原 `change -> bundle -> run -> retirement`。
 
@@ -160,7 +165,8 @@ owner: platform-operations
 - 退役只存在于路线图，没有落到运行配置；
 - 替换没有双运行语义；
 - 历史状态没有保留负责人；
-- 来源证明只到 git commit，进不了运行时工件包。
+- 来源证明只到 git commit，进不了运行时工件包；
+- replacement 发生时，paused-run 与 expired-session state 被遗忘，但 operator 其实还需要它们。
 
 ## 9. 现在就该做什么
 

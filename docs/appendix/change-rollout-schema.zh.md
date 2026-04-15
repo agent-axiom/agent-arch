@@ -90,6 +90,8 @@ decided_by:
 
 这一层重要的原因在于：一个好的变更评审，并不自动等于“现在就可以发布”。
 
+一旦 runtime 里已经有 approval 和 stateful capability sessions，门禁还应该明确说明：interruption behavior 是否被单独审过，而不是默认“应该没问题”。
+
 ## 5. Change review 和 rollout gate 的区别
 
 这两层经常被混在一起，但它们其实回答的是不同问题：
@@ -100,7 +102,7 @@ decided_by:
 所以字段也应该不同：
 
 - 评审更关注变更类型、风险和必需评测；
-- 发布门禁更关注遥测、值班、回滚、流量范围和上线准备度。
+- 发布门禁更关注遥测、值班、回滚、流量范围、上线准备度，以及 approval-bound 或 stateful capability paths 的 interruption handling。
 
 ## 6. 它和评测模式的关系
 
@@ -118,7 +120,8 @@ decided_by:
 
 - 追踪能看出高风险路径是否真的被覆盖；
 - 会话摘要能看出是否已经出现回归；
-- 结构化事件能说明上线前到底检查了什么。
+- 结构化事件能说明上线前到底检查了什么；
+- interruption 与 expiry signals 能看出 approval-bound runs 是否在 operator 注意到之前就已经开始退化。
 
 这也是为什么成熟团队里，追踪与发布门禁往往是并排建设的。
 
@@ -130,6 +133,7 @@ decided_by:
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
 - [configs/rollout.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/rollout.yaml)
 - [configs/change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
+- [configs/runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - CLI：
   - `check-rollout`
   - `check-change`
@@ -145,6 +149,7 @@ decided_by:
 - required checks 和 blocking findings 必须显式可见；
 - 每个决定都有负责人；
 - 事故追踪可以还原出评审和门禁；
+- approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
@@ -155,6 +160,7 @@ decided_by:
 - 门禁标准没有版本；
 - 遥测准备度靠肉眼判断；
 - 安全发现结果没有被当作阻断项；
+- capability-session expiry 或 re-init behavior 没有被建模；
 - 发布波次的定义太模糊；
 - 没人能解释为什么这个变更居然能进 canary。
 

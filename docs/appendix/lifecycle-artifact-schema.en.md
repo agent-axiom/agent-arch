@@ -11,7 +11,8 @@ Production-grade agent systems have several artifact classes that should not liv
 - retirement plans;
 - replacement mappings;
 - runtime-control schemas and contract-version linkages;
-- operational approvals and lifecycle decisions.
+- operational approvals and lifecycle decisions;
+- capability-session interruption, expiry, and re-initialization rules when those are part of the runtime contract.
 
 Without them, change management turns into oral tradition. Incident review then becomes an exercise in reconstructing who "probably changed the policy or routing."
 
@@ -61,6 +62,8 @@ The important parts are:
 - `eval_requirements` ties change management to the eval loop;
 - `rollback_unit` forces teams to know what can be reverted;
 - `status` acts as an operational fact, not just paperwork.
+
+And once approval-bound or stateful capability sessions exist, the change record should usually make it visible whether interruption behavior, expiry handling, and re-init semantics were part of the reviewed surface.
 
 ## 4. Approved artifact bundle
 
@@ -127,7 +130,8 @@ Its strength is that it forces the team to think not only about replacement, but
 - background-route ownership;
 - principals;
 - memory;
-- archived bundles.
+- archived bundles;
+- expired capability-session state that may still matter for audit or delayed operator response.
 
 ## 6. How this connects to Part VIII
 
@@ -148,6 +152,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every production rollout points to an `artifact_bundle`;
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
+- retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
 - lifecycle artifacts have an owner and version;
 - incident review can reconstruct `change -> bundle -> run -> retirement`.
 
@@ -160,7 +165,8 @@ The failure modes are usually familiar:
 - retirement lives in the roadmap but not in operational config;
 - replacement happens without dual-run semantics;
 - historical state has no retention owner;
-- provenance stops at the git commit and never reaches the runtime bundle.
+- provenance stops at the git commit and never reaches the runtime bundle;
+- paused-run and expired-session state are forgotten during replacement even though operators may still need them.
 
 ## 9. What to Do Right Away
 
