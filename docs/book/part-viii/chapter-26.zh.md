@@ -70,6 +70,7 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 - approvals；
 - paused runs 的状态与等待时长；
 - approval backlog signals；
+- capability sessions 的状态、expiry reason 与 re-init status；
 - background runs 的状态与运行时长；
 - output summaries；
 - redaction status；
@@ -115,6 +116,8 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - memory write pattern 变化；
 - retrieval profile 改变；
 - unusual egress destinations 激增；
+- capability-session expiry spikes 或异常 re-init rate；
+- interruption 之后 approval 与 resume 的不匹配；
 - session length 或 tool hop count 拉长。
 
 从这里开始，observability 就真正和 security detection、operational governance 连在一起了。
@@ -136,7 +139,7 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions、runtime-control states 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states、capability-session events 和 lifecycle artifacts 之间的链接。
 
 如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version` 和 `rollout_wave`，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
@@ -157,7 +160,7 @@ Governance 往往会被写成：
 - 发现 drift；
 - 衡量 coverage；
 - 区分 governed path 和 bypass path；
-- 在事故发生前发现 stuck approvals、aging background runs 与 contract mismatches。
+- 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse 与 contract mismatches。
 
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
 
@@ -213,6 +216,7 @@ observability:
     tool_principals: true
     approval_linkage: true
     paused_run_visibility: true
+    capability_session_visibility: true
     background_run_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
@@ -224,6 +228,7 @@ observability:
     - untracked_high_risk_agent_exists
     - approval_events_not_linked
     - paused_runs_not_visible
+    - capability_session_events_not_visible
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -242,6 +247,7 @@ class ObservabilityCoverage:
     trace_coverage_pct: int
     high_risk_trace_coverage_pct: int
     paused_run_visibility: bool
+    capability_session_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -250,6 +256,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.trace_coverage_pct >= 95
         and state.high_risk_trace_coverage_pct == 100
         and state.paused_run_visibility
+        and state.capability_session_visibility
     )
 ```
 

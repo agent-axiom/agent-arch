@@ -70,6 +70,7 @@ A useful telemetry contract for agent systems usually includes:
 - approvals;
 - paused-run state and age;
 - approval backlog signals;
+- capability-session state, expiry reason, and re-init status;
 - background-run state and age;
 - output summaries;
 - redaction status;
@@ -115,6 +116,8 @@ It is much more valuable to detect deviation from normal behavior:
 - a change in memory-write patterns;
 - a shift in the usual retrieval profile;
 - a spike in unusual egress destinations;
+- capability-session expiry spikes or unusual re-init rates;
+- approval-resume mismatches after interruption;
 - growth in session length or tool-hop count.
 
 This is where observability starts to intersect with security detection and operational governance.
@@ -136,7 +139,7 @@ Practically, that means:
 - stable schemas;
 - redaction rules;
 - retention policy;
-- linkage between traces, approvals, policy decisions, runtime-control states, and lifecycle artifacts.
+- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, and lifecycle artifacts.
 
 If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, and `rollout_wave`, it may still be useful for debugging, but it is weak as an evidence layer.
 
@@ -157,7 +160,7 @@ Strong governance requires:
 - noticing drift;
 - measuring coverage;
 - distinguishing governed paths from bypass paths;
-- spotting stuck approvals, aging background runs, and contract mismatches before they become incidents.
+- spotting stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, and contract mismatches before they become incidents.
 
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
 
@@ -211,6 +214,7 @@ observability:
     tool_principals: true
     approval_linkage: true
     paused_run_visibility: true
+    capability_session_visibility: true
     background_run_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
@@ -222,6 +226,7 @@ observability:
     - untracked_high_risk_agent_exists
     - approval_events_not_linked
     - paused_runs_not_visible
+    - capability_session_events_not_visible
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -240,6 +245,7 @@ class ObservabilityCoverage:
     trace_coverage_pct: int
     high_risk_trace_coverage_pct: int
     paused_run_visibility: bool
+    capability_session_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -248,6 +254,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.trace_coverage_pct >= 95
         and state.high_risk_trace_coverage_pct == 100
         and state.paused_run_visibility
+        and state.capability_session_visibility
     )
 ```
 

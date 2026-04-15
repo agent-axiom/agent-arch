@@ -70,6 +70,7 @@ Microsoft точно формулирует этот сдвиг: для аген
 - подтверждения;
 - состояние и возраст paused runs;
 - сигналы backlog по approval;
+- состояние capability sessions, причины expiry и статус re-init;
 - состояние и возраст background runs;
 - краткие итоги ответа;
 - статус маскирования данных;
@@ -115,6 +116,8 @@ Microsoft отдельно подчеркивает полный произво�
 - изменение характера записей в память;
 - смену обычного профиля извлечения;
 - всплеск необычных направлений сетевого выхода;
+- всплески capability-session expiry или необычный рост re-init rate;
+- несовпадения между approval и resume после interruption;
 - рост длины сессии или числа переходов между инструментами.
 
 Именно здесь наблюдаемость начинает пересекаться с обнаружением угроз и рабочим управлением.
@@ -136,7 +139,7 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик, runtime-control states и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events и артефактами жизненного цикла.
 
 Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version` и `rollout_wave`, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
@@ -157,7 +160,7 @@ Microsoft отдельно подчеркивает полный произво�
 - замечать дрейф;
 - измерять покрытие;
 - отличать управляемый путь от обходного;
-- замечать stuck approvals, aging background runs и contract mismatches до того, как они станут инцидентами.
+- замечать stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse и contract mismatches до того, как они станут инцидентами.
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
@@ -211,6 +214,7 @@ observability:
     tool_principals: true
     approval_linkage: true
     paused_run_visibility: true
+    capability_session_visibility: true
     background_run_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
@@ -222,6 +226,7 @@ observability:
     - untracked_high_risk_agent_exists
     - approval_events_not_linked
     - paused_runs_not_visible
+    - capability_session_events_not_visible
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -240,6 +245,7 @@ class ObservabilityCoverage:
     trace_coverage_pct: int
     high_risk_trace_coverage_pct: int
     paused_run_visibility: bool
+    capability_session_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -248,6 +254,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.trace_coverage_pct >= 95
         and state.high_risk_trace_coverage_pct == 100
         and state.paused_run_visibility
+        and state.capability_session_visibility
     )
 ```
 
