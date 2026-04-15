@@ -109,6 +109,16 @@ flowchart LR
 
 ## 5. Why Move Adapters Out of the Core Runtime
 
+Once MCP adoption grows beyond one or two hand-maintained integrations, another concern appears: **who governs the MCP surface as a platform, not just as a local developer convenience?** Recent enterprise guidance from Cloudflare is useful here because it shows that the hard part is no longer merely “can the agent speak MCP,” but “how do teams discover, approve, route, and audit MCP endpoints at scale.”[^cloudflare-mcp]
+
+That shift usually pushes the platform toward an explicit MCP control plane:
+
+- local ad hoc MCP servers for experimentation;
+- governed remote MCP servers for shared production capabilities;
+- a discovery or portal layer for approved servers;
+- identity enforcement at the access boundary;
+- audit and DLP controls around the MCP path itself.
+
 That gives you several immediate benefits:
 
 - failures in one integration affect the central runtime less;
@@ -119,7 +129,43 @@ That gives you several immediate benefits:
 
 That matters especially when some tools are read-only, some write into external systems, and some execute code or shell commands.
 
-### 5.1. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
+### 5.1. Enterprise MCP Usually Needs a Control Plane, Not Just a Protocol
+
+This is where many teams repeat the same maturity mistake. They standardize on MCP as a protocol, but they keep onboarding servers informally: somebody posts an endpoint in chat, another team copies it into a local config, and soon nobody can explain which MCP servers are approved, which ones are experimental, and which ones quietly bypass normal review.
+
+A more mature model treats remote MCP as part of the platform control plane:
+
+- the platform publishes approved MCP endpoints through a registry or portal;
+- capability owners are explicit;
+- authentication is mediated by a central identity layer rather than hidden inside each desktop client;
+- policy and DLP checks can observe MCP traffic as a governed surface;
+- retirement of an MCP endpoint is handled like any other lifecycle event.
+
+That same model also clarifies when **local MCP** is still appropriate: prototyping, isolated experiments, or narrow team-local workflows. But the default for shared business capabilities should usually be: **remote, governed, discoverable, and auditable**.
+
+### 5.2. Shadow MCP Is the New Shadow API Problem
+
+Once MCP becomes easy to attach, teams can accidentally create a new variant of shadow IT: unregistered MCP servers that expose real business actions without clear ownership or review.[^cloudflare-mcp]
+
+That anti-pattern usually has recognizable warning signs:
+
+- capabilities are consumed from private config snippets rather than an approved catalog;
+- nobody can name the owner of the MCP server;
+- auth is handled with long-lived local secrets;
+- no common audit trail exists for which agent used which MCP endpoint;
+- the platform team discovers the server only after an incident.
+
+A useful platform checklist is simple:
+
+- Is this MCP server in the approved registry?
+- Who owns its lifecycle and incident response?
+- Which identity boundary protects access?
+- Which policy bundle governs write actions and approvals?
+- What telemetry proves which agent called it and with what decision context?
+
+If those answers are missing, the issue is not just “an integration is undocumented.” The issue is that the platform has created a shadow capability path outside its own control model.
+
+### 5.3. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
 
 Another useful Google idea is that risky capabilities are often better served by short-lived execution environments.[^google-sandbox]
 
@@ -252,6 +298,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 It is intentionally simple, but it locks in the right idea: the way execution happens is determined by the platform, not improvised by the model every time.
 
 ## 10. Common Mistakes
+
+The same problems now repeat at two levels: at the individual adapter level, and at the MCP estate level.
 
 The same problems repeat over and over:
 

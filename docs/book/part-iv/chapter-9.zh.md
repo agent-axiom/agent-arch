@@ -109,6 +109,16 @@ flowchart LR
 
 ## 5. 为什么要把 adapters 移出 core runtime
 
+一旦 MCP 不再只是一个或两个手工接入的集成，问题就会升级为：**谁在把 MCP surface 当作平台资产来治理，而不是当作开发者本地便利工具？** Cloudflare 最近的材料很有价值，因为它把重点从“agent 会不会说 MCP”转向“团队怎样在规模化条件下发现、批准、路由和审计 MCP endpoints”。[^cloudflare-mcp]
+
+这通常会把平台推向一个显式的 MCP control plane：
+
+- 用于实验的 local ad hoc MCP servers；
+- 用于共享生产能力的 governed remote MCP servers；
+- 用于 approved servers 的 discovery / portal layer；
+- 位于访问边界的 identity enforcement；
+- 围绕 MCP path 本身的 audit 与 DLP controls。
+
 这会带来很多直接收益：
 
 - 单个 integration 的失败不容易拖垮 central runtime；
@@ -119,7 +129,43 @@ flowchart LR
 
 当某些工具只读、某些会写外部系统、某些甚至执行代码或 shell 时，这一点尤其重要。
 
-### 5.1. Ephemeral sandboxes 通常比常驻环境更好
+### 5.1. Enterprise MCP 需要的不只是 protocol，而是 control plane
+
+很多团队都会在这里犯同一种成熟度错误。他们把 MCP 标准化成 protocol，却仍然用非正式方式接入服务器：有人把 endpoint 发进群聊，另一个团队把它复制进本地 config，很快就没人说得清哪些 MCP servers 是 approved，哪些只是实验性的，哪些则悄悄绕过了正常 review。
+
+更成熟的模型会把 remote MCP 当作 platform control plane 的一部分：
+
+- 平台通过 registry 或 portal 发布 approved MCP endpoints；
+- capability owner 被明确标注；
+- authentication 由统一 identity layer 中介，而不是藏在每个 desktop client 里；
+- policy 与 DLP checks 可以把 MCP traffic 当作受治理表面来观察；
+- MCP endpoint 的 retirement 被当作正常 lifecycle event 处理。
+
+同一套模型也能解释 **local MCP** 什么时候仍然合理：原型验证、隔离实验，或者非常窄的 team-local workflows。但对共享 business capabilities 来说，更合理的默认值通常应是：**remote、governed、discoverable、auditable**。
+
+### 5.2. Shadow MCP 是 shadow API problem 的新版本
+
+当 MCP 变得非常容易接入时，团队也会得到一种新的 shadow IT 形式：未登记的 MCP servers 已经承载真实 business actions，但其 ownership、review 和 control model 却没有被正式化。[^cloudflare-mcp]
+
+这个 anti-pattern 往往有很明显的信号：
+
+- capability 来自私人 config snippet，而不是 approved catalog；
+- 没有人能说清 MCP server 的 owner；
+- auth 依赖 long-lived local secrets；
+- 没有统一 audit trail 可以说明哪个 agent 调用了哪个 MCP endpoint；
+- platform team 往往要到 incident 之后才知道它存在。
+
+一个有用的 platform checklist 可以很简单：
+
+- 这个 MCP server 是否在 approved registry 里？
+- 谁负责它的 lifecycle 与 incident response？
+- 哪一层 identity boundary 在保护访问？
+- 哪个 policy bundle 管理 write actions 与 approvals？
+- 哪些 telemetry 字段能证明哪个 agent 在什么 decision context 下调用了它？
+
+如果这些问题答不上来，问题就已经不只是“集成文档不完整”，而是平台在自己的控制模型之外制造了一条 shadow capability path。
+
+### 5.3. Ephemeral sandboxes 通常比常驻环境更好
 
 Google 还有一个很有价值的提醒：对高风险 capability 来说，短生命周期的执行环境往往比常驻 worker 更健康。[^google-sandbox]
 
@@ -252,6 +298,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 它非常简单，但把一个正确前提固定下来：执行方式由平台决定，而不是模型每次重新发明。
 
 ## 10. 常见错误
+
+这些问题现在会在两个层面重复出现：单个 adapter 层面，以及整个 MCP estate 层面。
 
 这些问题一再重复：
 

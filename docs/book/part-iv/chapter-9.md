@@ -109,6 +109,16 @@ flowchart LR
 
 ## 5. Зачем выносить adapters из core runtime
 
+Как только MCP перестает быть одной-двумя вручную подключенными интеграциями, возникает следующий вопрос: **кто вообще управляет MCP-поверхностью как частью платформы, а не как набором локальных удобств разработчиков?** Здесь полезен недавний материал Cloudflare, потому что он смещает акцент с “умеет ли агент говорить по MCP” на “как команда открывает, утверждает, маршрутизирует и аудирует MCP endpoints в масштабе”.[^cloudflare-mcp]
+
+Обычно это довольно быстро ведет к явному MCP control plane:
+
+- local ad hoc MCP servers для экспериментов;
+- governed remote MCP servers для общих production-capabilities;
+- discovery или portal layer для approved servers;
+- identity enforcement на границе доступа;
+- audit и DLP controls вокруг самого MCP path.
+
 Это дает сразу несколько выгод:
 
 - сбои в интеграции меньше влияют на центральный runtime;
@@ -119,7 +129,43 @@ flowchart LR
 
 Это особенно ценно, когда одни инструменты работают только на чтение, другие пишут во внешние системы, а третьи вообще выполняют код или shell-команды.
 
-### 5.1. Ephemeral sandboxes лучше постоянных сред почти во всем
+### 5.1. Enterprise MCP почти всегда требует control plane, а не только protocol
+
+Именно здесь многие команды повторяют одну и ту же maturity mistake. Они стандартизируют protocol, но продолжают подключать MCP servers неформально: кто-то кидает endpoint в чат, кто-то копирует его в локальный config, и очень быстро уже нельзя ответить, какие MCP servers вообще approved, какие только экспериментальные, а какие тихо обходят normal review.
+
+Более зрелая модель относится к remote MCP как к части platform control plane:
+
+- платформа публикует approved MCP endpoints через registry или portal;
+- owner каждой capability обозначен явно;
+- authentication проходит через общий identity layer, а не прячется внутри каждого desktop client;
+- policy и DLP checks могут наблюдать MCP traffic как управляемую поверхность;
+- retirement MCP endpoint оформляется как обычное lifecycle event.
+
+Эта же модель помогает понять, где **local MCP** все еще уместен: прототипирование, изолированные эксперименты или очень узкие team-local workflows. Но default для shared business capabilities обычно должен быть таким: **remote, governed, discoverable, auditable**.
+
+### 5.2. Shadow MCP это новая версия shadow API problem
+
+Когда MCP становится слишком легко подключать, у команды появляется новый вариант shadow IT: неучтенные MCP servers, через которые уже проходят реальные business actions, но ownership, review и control model у них остаются неоформленными.[^cloudflare-mcp]
+
+У этого anti-pattern обычно быстро видны характерные признаки:
+
+- capability потребляется из приватного config snippet, а не из approved catalog;
+- никто не может назвать owner MCP server;
+- auth живет в long-lived local secrets;
+- нет общего audit trail, показывающего, какой agent использовал какой MCP endpoint;
+- platform team узнает о сервере уже после инцидента.
+
+Полезный platform checklist здесь очень простой:
+
+- Этот MCP server есть в approved registry?
+- Кто отвечает за его lifecycle и incident response?
+- Какая identity boundary защищает доступ?
+- Какой policy bundle управляет write actions и approvals?
+- Какая telemetry доказывает, какой agent вызывал endpoint и в каком decision context?
+
+Если на эти вопросы нет ответа, проблема уже не в том, что “интеграция плохо документирована”. Проблема в том, что платформа создала shadow capability path вне собственной модели управления.
+
+### 5.3. Ephemeral sandboxes лучше постоянных сред почти во всем
 
 Еще одна полезная мысль из Google: для рискованных capability очень выгодно проектировать краткоживущие execution environments.[^google-sandbox]
 
@@ -254,6 +300,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 Это простой пример, но он закрепляет правильную мысль: способ исполнения задается платформой, а не придумывается моделью каждый раз заново.
 
 ## 10. Частые ошибки
+
+Теперь типовые проблемы повторяются уже на двух уровнях: на уровне отдельного adapter и на уровне всего MCP estate.
 
 Типовые проблемы очень повторяемы:
 
