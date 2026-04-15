@@ -54,6 +54,8 @@ class AgentRuntime:
         )
 
     def run(self, request: RunRequest) -> RunResult:
+        capability_session_id = ""
+        capability_session_status = ""
         self.telemetry.emit(
             "run_start",
             request.trace_id,
@@ -117,6 +119,10 @@ class AgentRuntime:
 
         if model_output.tool_request is not None:
             self._handle_tool_request(context, request, model_output.tool_request)
+            latest_tool = context.tool_results[-1] if context.tool_results else None
+            if latest_tool is not None:
+                capability_session_id = latest_tool.payload.get("capability_session_id", "")
+                capability_session_status = latest_tool.payload.get("capability_session_status", latest_tool.status)
             model_output = self._call_model(request, context, second_pass=True)
 
         self._schedule_background_updates(request, context, model_output)
@@ -129,6 +135,8 @@ class AgentRuntime:
             status=result.status,
             user_input=request.user_input,
             output_text=result.output_text,
+            capability_session_id=capability_session_id,
+            capability_session_status=capability_session_status,
         )
         self.telemetry.emit(
             "run_complete",
@@ -250,6 +258,7 @@ class AgentRuntime:
                 requested_by=request.principal_id,
                 reviewer=approver,
                 reason=decision.reason,
+                session_id=request.session_id,
             )
             self.telemetry.emit(
                 "approval_requested",
@@ -259,6 +268,8 @@ class AgentRuntime:
                 capability=approval_request.capability_name,
                 reviewer=approval_request.reviewer,
                 status=approval_request.status,
+                capability_session_id=approval_request.capability_session_id,
+                capability_session_status=approval_request.capability_session_status,
             )
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
@@ -267,6 +278,8 @@ class AgentRuntime:
                     "reason": decision.reason,
                     "approval_id": approval_request.approval_id,
                     "reviewer": approval_request.reviewer,
+                    "capability_session_id": approval_request.capability_session_id,
+                    "capability_session_status": approval_request.capability_session_status,
                 },
             )
             context.tool_results.append(tool_result)

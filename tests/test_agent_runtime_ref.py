@@ -428,11 +428,51 @@ class TestRuntimeControlPaths:
         tool_execution = next(
             event for event in runtime.telemetry.events if event.event_type == "tool_execution"
         )
+        session_record = runtime.sessions.get_session(session_id)
         assert approval_requested.trace_id == trace_id
         assert approval_requested.payload["status"] == "pending"
+        assert approval_requested.payload["capability_session_id"].startswith("cap-session-")
+        assert approval_requested.payload["capability_session_status"] == "pending"
         assert tool_execution.payload["status"] == "approval_required"
         assert tool_execution.payload["tool_principal"] == "pending_review"
         assert len(runtime.approvals.pending()) == 1
+        assert session_record is not None
+        run_record = runtime.sessions.runs_for_session(session_id)[0]
+        assert run_record.capability_session_id.startswith("cap-session-")
+        assert run_record.capability_session_status == "pending"
+
+    def test_approval_queue_resolution_updates_capability_session_status(self) -> None:
+        queue = AgentRuntime().approvals
+        request = queue.submit(
+            trace_id="trace-approval-resolve-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-resolve-001",
+        )
+        resolved = queue.resolve(request.approval_id, decision="approved", note="ok")
+        assert resolved.status == "approved"
+        assert resolved.capability_session_status == "approved"
+
+    def test_session_export_includes_capability_session_fields(self, tmp_path: Path) -> None:
+        runtime = AgentRuntime()
+        session_id = "session-export-capability-001"
+        runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this onboarding issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-55",
+                trace_id="trace-export-capability-001",
+                session_id=session_id,
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        output_path = tmp_path / "session.json"
+        runtime.sessions.export_session_json(session_id, output_path=output_path)
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_status"] == "pending"
 
     def test_cli_check_retirement_detects_runtime_control_shutdown_gaps(self, cli_json) -> None:
         exit_code, payload = cli_json(

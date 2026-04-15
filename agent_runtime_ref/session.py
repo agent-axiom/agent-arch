@@ -12,6 +12,8 @@ class RunRecord:
     status: str
     user_input: str
     output_text: str
+    capability_session_id: str = ""
+    capability_session_status: str = ""
 
 
 @dataclass(slots=True)
@@ -37,6 +39,8 @@ class SessionStore:
         status: str,
         user_input: str,
         output_text: str,
+        capability_session_id: str = "",
+        capability_session_status: str = "",
     ) -> RunRecord:
         session = self._sessions.setdefault(
             session_id,
@@ -53,6 +57,8 @@ class SessionStore:
             status=status,
             user_input=user_input,
             output_text=output_text,
+            capability_session_id=capability_session_id,
+            capability_session_status=capability_session_status,
         )
         self._runs.append(record)
         return record
@@ -135,6 +141,8 @@ class SessionStore:
                     "status": run.status,
                     "user_input": run.user_input,
                     "output_text": run.output_text,
+                    "capability_session_id": run.capability_session_id,
+                    "capability_session_status": run.capability_session_status,
                 }
                 for run in runs
             ],

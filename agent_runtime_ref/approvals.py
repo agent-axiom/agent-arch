@@ -28,6 +28,9 @@ class ApprovalRequest:
     requested_by: str
     reviewer: str
     reason: str
+    session_id: str = ""
+    capability_session_id: str = ""
+    capability_session_status: str = "pending"
     status: str = "pending"
     resolution_note: str = ""
 
@@ -49,6 +52,7 @@ class ApprovalQueue:
         requested_by: str,
         reviewer: str | None,
         reason: str,
+        session_id: str = "",
     ) -> ApprovalRequest:
         self._counter += 1
         request = ApprovalRequest(
@@ -58,6 +62,8 @@ class ApprovalQueue:
             requested_by=requested_by,
             reviewer=reviewer or self.policy.default_reviewer,
             reason=reason,
+            session_id=session_id,
+            capability_session_id=f"cap-session-{self._counter:03d}",
         )
         self._items.append(request)
         return request
@@ -72,6 +78,7 @@ class ApprovalQueue:
         for item in self._items:
             if item.approval_id == approval_id:
                 item.status = decision
+                item.capability_session_status = decision
                 item.resolution_note = note
                 return item
         raise ValueError(f"Approval request not found: {approval_id}")
