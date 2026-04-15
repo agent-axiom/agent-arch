@@ -54,6 +54,7 @@
 - 代码执行；
 - 审批路径；
 - paused approval 与 resume paths；
+- capability-session interruption 与 re-initialization paths；
 - 替换与退役窗口；
 - 会把有害策略写进去的记忆写入。
 
@@ -63,6 +64,7 @@
 - 尽量减少审批人能看到的上下文；
 - 在审批之后换掉载荷；
 - 滥用 paused approval path，或在 review 时故意减少可见上下文；
+- 故意把系统推入 capability-session expiry 或 re-init path，以重新获得更弱的 control posture；
 - 改走更弱的能力路径；
 - 在监督本应收紧之后，仍通过 background routes 或 resumable paths 悄悄维持执行；
 - 在替换或退役期间继续保留访问权。
@@ -123,6 +125,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 
 - 模型能不能隐藏一个有问题的意图；
 - 它能不能绕过或滥用审批路径；
+- 它能不能利用 interruption、expiry 或 re-init semantics 重新获得更多自主性；
 - 某次运行时变更会不会削弱监督；
 - schema drift 或 contract mismatch 会不会打开更弱的控制路径；
 - 我们有没有单独针对类似破坏行为的信号；
@@ -135,6 +138,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 能力范围足够小；
 - risky actions 使用独立的 `tool principal`；
 - 审批针对的是具体载荷，而不是抽象的“可以继续”；
+- capability-session re-init 在 denied、allowed 或 approval-bound 之间有明确控制；
 - 追踪同时记录策略决策和实际副作用；
 - `trace_id`、`approval_id`、`tool_principal`、`contract_version` 与 `artifact_bundle` 之间有不可断开的链接；
 - 能力族有紧急停用路径；
@@ -178,6 +182,7 @@ agentic_risk:
     - side_effect_not_traced
     - contract_version_unlinked
     - replacement_window_unrestricted
+    - capability_session_reinit_unrestricted
     - resumable_background_path_unrestricted
 ```
 
@@ -196,6 +201,7 @@ class AgenticRiskState:
     side_effect_traced: bool
     contract_version_linked: bool
     emergency_disable_path: bool
+    capability_session_reinit_controlled: bool
 
 
 def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
@@ -205,6 +211,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
         and state.side_effect_traced
         and state.contract_version_linked
         and state.emergency_disable_path
+        and state.capability_session_reinit_controlled
     )
 ```
 
@@ -217,7 +224,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 更高的标准应该是：
 
 - sabotage-like behavior 会被独立于 ordinary failure 单独测试；
-- high-risk actions 会绑定到 exact payload approval、dedicated principals 与 linked contract versions；
+- high-risk actions 会绑定到 exact payload approval、dedicated principals、linked contract versions 与 governed re-init behavior；
 - rollout、replacement 和 retirement 这些过渡期里，自主性会被收紧，而不是放松；
 - traces 能把 intent、approval、artifact bundle 和 side effect 连起来；
 - emergency containment 能缩小某个 capability family，而不用等整套系统 shutdown。
@@ -229,8 +236,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - 你是否把类似破坏的行为和普通失效分开测试？
 - risky side effect 能不能反推出具体的 `approval_id` 与 `tool_principal`？
 - 系统能不能紧急停掉某个 capability family，而不是只能整套 runtime 一起关？
-- 你是否有针对 concealment、approval-path misuse 和 approval evasion 的行为评测？
-- 发布、替换、退役以及 schema-transition windows 期间的自主性是否被收紧？
+- 你是否有针对 concealment、approval-path misuse、approval evasion 和 session re-init misuse 的行为评测？
+- 发布、替换、退役、interruption 以及 schema-transition windows 期间的自主性是否被收紧？
 - 同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里？
 
 如果连续几个答案都是“否”，那你已经拥有自主性，但还没有足够的控制层。

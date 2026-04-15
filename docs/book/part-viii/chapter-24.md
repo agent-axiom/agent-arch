@@ -54,6 +54,7 @@ Misalignment устроен иначе:
 - code execution;
 - approval paths;
 - paused approval и resume paths;
+- capability-session interruption и re-initialization paths;
 - replacement и retirement periods;
 - memory writes, которые могут закрепить вредную стратегию.
 
@@ -63,6 +64,7 @@ Misalignment устроен иначе:
 - минимизирует видимость для approver'а;
 - меняет payload после approval;
 - злоупотребляет paused approval path или минимизирует видимость для review;
+- специально уводит систему в capability-session expiry или re-init path, чтобы вернуться с более слабым control posture;
 - использует более слабый capability path вместо основного;
 - закрепляется через background routes или resumable paths после того, как oversight уже должен был ужесточиться;
 - удерживает доступ в период замены или вывода из эксплуатации.
@@ -123,6 +125,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 
 - сможет ли модель скрыть спорное намерение;
 - сможет ли она обойти или злоупотребить approval path;
+- сможет ли она использовать interruption, expiry или re-init semantics, чтобы вернуть себе больше автономии;
 - может ли change в runtime сделать oversight слабее;
 - может ли schema drift или contract mismatch открыть более слабый control path;
 - есть ли у нас отдельные сигналы на sabotage-like behavior;
@@ -135,6 +138,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - ограниченный scope каждого capability;
 - отдельные `tool principal` для risky actions;
 - approval на конкретный payload, а не на абстрактное “можно продолжать”;
+- явные controls для того, когда capability-session re-init denied, allowed или approval-bound;
 - traces, которые фиксируют policy decision и фактический side effect;
 - immutable linkage между `trace_id`, `approval_id`, `tool_principal`, `contract_version` и `artifact_bundle`;
 - emergency stop для capability family;
@@ -178,6 +182,7 @@ agentic_risk:
     - side_effect_not_traced
     - contract_version_unlinked
     - replacement_window_unrestricted
+    - capability_session_reinit_unrestricted
     - resumable_background_path_unrestricted
 ```
 
@@ -196,6 +201,7 @@ class AgenticRiskState:
     side_effect_traced: bool
     contract_version_linked: bool
     emergency_disable_path: bool
+    capability_session_reinit_controlled: bool
 
 
 def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
@@ -205,6 +211,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
         and state.side_effect_traced
         and state.contract_version_linked
         and state.emergency_disable_path
+        and state.capability_session_reinit_controlled
     )
 ```
 
@@ -217,7 +224,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 Более сильная планка такая:
 
 - sabotage-like behavior проверяется отдельно от ordinary failure;
-- high-risk actions привязаны к exact payload approval, dedicated principals и linked contract versions;
+- high-risk actions привязаны к exact payload approval, dedicated principals, linked contract versions и governed re-init behavior;
 - во время rollout, replacement и retirement автономия не расслабляется, а сужается;
 - traces умеют связать intent, approval, artifact bundle и side effect;
 - emergency containment умеет сузить capability family без ожидания полного shutdown.
@@ -229,8 +236,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - Проверяешь ли ты sabotage-like behavior отдельно от ordinary failures?
 - Можно ли связать risky side effect с конкретным `approval_id` и `tool_principal`?
 - Умеет ли система экстренно отключить capability family, а не только весь runtime?
-- Есть ли behavioral evals на concealment, approval-path misuse и approval evasion?
-- Ограничена ли автономия во время rollout, replacement, retirement и schema-transition windows?
+- Есть ли behavioral evals на concealment, approval-path misuse, approval evasion и session re-init misuse?
+- Ограничена ли автономия во время rollout, replacement, retirement, interruption и schema-transition windows?
 - Не живет ли один и тот же principal сразу и в low-risk, и в high-risk контуре?
 
 Если на несколько вопросов подряд ответ “нет”, то у тебя уже есть autonomy, но еще нет достаточного control layer.

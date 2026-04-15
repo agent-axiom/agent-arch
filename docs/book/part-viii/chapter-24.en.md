@@ -54,6 +54,7 @@ The highest-risk surfaces are usually predictable:
 - code execution;
 - approval paths;
 - paused approval and resume paths;
+- capability-session interruption and re-initialization paths;
 - replacement and retirement windows;
 - memory writes that can preserve a harmful strategy.
 
@@ -63,6 +64,7 @@ The most unpleasant cases are the ones where the agent:
 - minimizes what the approver can see;
 - changes the payload after approval;
 - abuses a paused approval path or minimizes what is shown during review;
+- forces a capability-session expiry or re-init path to regain a weaker control posture;
 - uses a weaker capability path instead of the intended one;
 - persists through background routes or resumable paths after oversight should have tightened;
 - keeps access during replacement or end-of-life periods.
@@ -123,6 +125,7 @@ Now you also need to ask:
 
 - can the model conceal a questionable intent;
 - can it bypass or abuse the approval path;
+- can it exploit interruption, expiry, or re-init semantics to regain autonomy;
 - can a runtime change weaken oversight;
 - can schema drift or contract mismatch open a weaker control path;
 - do we have signals for sabotage-like behavior;
@@ -135,6 +138,7 @@ The most reliable measures here are not magical. They are boring and explicit:
 - tightly scoped capabilities;
 - separate `tool principals` for risky actions;
 - approval on the exact payload rather than generic permission to continue;
+- explicit controls for when capability-session re-init is denied, allowed, or approval-bound;
 - traces that capture both the policy decision and the actual side effect;
 - immutable linkage between `trace_id`, `approval_id`, `tool_principal`, `contract_version`, and `artifact_bundle`;
 - emergency stop for a capability family;
@@ -178,6 +182,7 @@ agentic_risk:
     - side_effect_not_traced
     - contract_version_unlinked
     - replacement_window_unrestricted
+    - capability_session_reinit_unrestricted
     - resumable_background_path_unrestricted
 ```
 
@@ -196,6 +201,7 @@ class AgenticRiskState:
     side_effect_traced: bool
     contract_version_linked: bool
     emergency_disable_path: bool
+    capability_session_reinit_controlled: bool
 
 
 def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
@@ -205,6 +211,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
         and state.side_effect_traced
         and state.contract_version_linked
         and state.emergency_disable_path
+        and state.capability_session_reinit_controlled
     )
 ```
 
@@ -217,7 +224,7 @@ A team should not think it controls agentic risk only because it has a policy la
 A stronger bar is this:
 
 - sabotage-like behavior is tested separately from ordinary failure;
-- high-risk actions are tied to exact payload approval, dedicated principals, and linked contract versions;
+- high-risk actions are tied to exact payload approval, dedicated principals, linked contract versions, and governed re-init behavior;
 - transitions such as rollout, replacement, and retirement tighten autonomy rather than relax it;
 - traces can connect intent, approval, artifact bundle, and side effect;
 - emergency containment can narrow a capability family without waiting for a full shutdown.
@@ -229,8 +236,8 @@ If most of those conditions are missing, the team may have some security control
 - Do you test sabotage-like behavior separately from ordinary failures?
 - Can you link a risky side effect to a specific `approval_id` and `tool_principal`?
 - Can the system emergency-disable a capability family rather than only the whole runtime?
-- Do you run behavioral evals for concealment, approval-path misuse, and approval evasion?
-- Is autonomy constrained during rollout, replacement, retirement, and schema-transition windows?
+- Do you run behavioral evals for concealment, approval-path misuse, approval evasion, and session re-init misuse?
+- Is autonomy constrained during rollout, replacement, retirement, interruption, and schema-transition windows?
 - Is the same principal shared across both low-risk and high-risk paths?
 
 If several answers are “no,” you already have autonomy but not enough control.
