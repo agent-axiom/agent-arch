@@ -8,6 +8,7 @@ This is the canonical page for the package. The README keeps only a short quicks
 
 A practical reading path is:
 
+- Chapter 16 for the baseline runtime and capability session state,
 - Chapter 17 for policy layer and capability contracts,
 - Chapter 18 for rollout gates around approval and runtime behavior,
 - Chapter 21 for assurance response,
@@ -38,7 +39,7 @@ A practical reading path is:
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  Approval gates, pause/resume semantics, and a simple human review queue for high-risk actions.
+  Approval gates, pause/resume semantics, simple human review queues for high-risk actions, and the control surface where approval state has to stay aligned with capability session state.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   Lifecycle artifacts for change records, artifact bundles, runtime-control schemas, and retirement plans, plus readiness checks for those states.
 
@@ -142,6 +143,14 @@ Inspect and resolve demo approval requests:
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows.
 `export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact.
 
+Together, those commands now help illustrate an important runtime distinction from Chapters 16 and 17:
+
+- the user-visible `session_id` that groups related runs,
+- the per-run `trace_id` used for investigation,
+- and the capability-side session state that may pause, expire, resume, or require re-initialization.
+
+The package is still deliberately small, but it now reflects that a governed runtime may need to explain all three without collapsing them into one opaque object.
+
 A request that actually reads profile memory:
 
 ```bash
@@ -169,10 +178,12 @@ There are starter files for both runtime and lifecycle in [configs](/Users/if/Py
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
-- [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
+
+The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, and the contract boundary between a user run and a capability-side session.
 
 ## Why This Is Useful
 
@@ -182,8 +193,9 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to extend the package with more examples;
 - it is easier to move from a chapter to a runnable prototype;
 - it is easier to show a config-driven path instead of only a hardcoded demo;
-- it is easier to connect the reference runtime to the chapters about memory, retrieval, background updates, and runtime-control governance.
-- it is easier to discuss where each memory record came from, which revision it represents, and which contract/runtime-control version was active.
+- it is easier to connect the reference runtime to the chapters about memory, retrieval, background updates, and runtime-control governance;
+- it is easier to discuss where each memory record came from, which revision it represents, and which contract/runtime-control version was active;
+- it is easier to make approval state, runtime session state, and capability session state visible as separate but linked control concepts.
 
 There is also a practical usability win now:
 

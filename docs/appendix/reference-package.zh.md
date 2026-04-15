@@ -8,6 +8,7 @@
 
 一个实用的阅读路径是：
 
+- 第 16 章看 baseline runtime 与 capability session state，
 - 第 17 章看 policy layer 与 capability contracts，
 - 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
 - 第 21 章看 assurance response，
@@ -38,7 +39,7 @@
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  用于高风险动作的审批门禁、pause/resume semantics 与简单人工评审队列。
+  用于高风险动作的审批门禁、pause/resume semantics、简单人工评审队列，以及 approval state 必须与 capability session state 保持一致的那层 control surface。
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   用于 change record、artifact bundle、runtime-control schemas 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
 
@@ -142,6 +143,14 @@
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件。
 
+这些命令现在也更清楚地体现了第 16、17 章里的一个关键区分：
+
+- 用来串起多次 runs 的用户可见 `session_id`；
+- 用于排查和审计的单次运行 `trace_id`；
+- 以及 capability 一侧可能 pause、expire、resume 或需要 re-initialization 的 session state。
+
+这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的 runtime 有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
+
 一个会真正读取用户画像记忆的请求：
 
 ```bash
@@ -169,9 +178,12 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
 它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略和生命周期工件，所以这个包已经更接近真实的运行骨架。
+
+其中 runtime-control bundle 现在也被用来显式承载 approval 与 session-governance 规则，包括 pause/resume、background handling、expiry，以及 user run 与 capability-side session 之间的契约边界。
 
 ## 为什么它有用
 
@@ -181,8 +193,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易继续往这个包里补充示例；
 - 更容易从章节直接走到可运行的原型；
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
-- 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来。
-- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version。
+- 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来；
+- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version；
+- 更容易把 approval state、runtime session state 和 capability session state 区分开来，同时仍保持它们之间的治理关联。
 
 现在还有几项很实用的能力：
 

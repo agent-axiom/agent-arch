@@ -5,3 +5,11 @@ runtime_controls:
   max_wait_seconds: 1800
   on_expiry: cancel_run
   contract_version: capability-contract-v5
+  capability_sessions:
+    session_mode: stateful
+    track_session_ids: true
+    allow_progress_events: true
+    allow_elicitation: true
+    resume_policy: resume_existing_session_if_valid
+    on_session_expiry: reinitialize_or_cancel
+    reinit_requires_approval: false

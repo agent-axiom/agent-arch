@@ -8,6 +8,7 @@
 
 Практичный маршрут чтения такой:
 
+- Chapter 16 для baseline runtime и capability session state,
 - Chapter 17 для policy layer и capability contracts,
 - Chapter 18 для rollout gates вокруг approval и runtime behavior,
 - Chapter 21 для assurance response,
@@ -38,7 +39,7 @@
 - [controls.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/controls.py)
   Проверка continuous controls и inventory drift для approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
-  Approval gates, pause/resume semantics и простая human review queue для high-risk действий.
+  Approval gates, pause/resume semantics, простая human review queue для high-risk действий и тот control surface, где approval state должен оставаться синхронизирован с capability session state.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   Lifecycle-артефакты для change record, artifact bundle, runtime-control schemas и retirement plan, плюс readiness-проверки для этих состояний.
 
@@ -142,6 +143,14 @@
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals.
 `export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact.
 
+Вместе эти команды теперь помогают показать важное различие из Chapters 16 и 17:
+
+- пользовательскую `session_id`, которая связывает несколько runs;
+- `trace_id` каждого конкретного run для расследований;
+- capability-side session state, которая может pause, expire, resume или требовать re-initialization.
+
+Пакет по-прежнему намеренно маленький, но теперь он уже отражает, что governed runtime иногда обязан объяснять все три контура отдельно, не сливая их в один непрозрачный state object.
+
 Запрос, который действительно читает профильную память:
 
 ```bash
@@ -169,9 +178,12 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [approvals.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 - [artifacts.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/artifacts.yaml)
+- [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
 Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+
+При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry и границу между user run и capability-side session.
 
 ## Почему это полезно
 
@@ -181,8 +193,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - легче расширять пакет следующими примерами;
 - легче перейти от главы к исполняемому прототипу;
 - легче показать путь, управляемый конфигурацией, а не только жестко зашитое демо;
-- легче связать эталонный рантайм с главами про память, извлечение контекста, фоновые обновления и runtime-control governance.
-- легче обсуждать, откуда взялся каждый memory record, какая у него ревизия и какая contract/runtime-control version была активна.
+- легче связать эталонный рантайм с главами про память, извлечение контекста, фоновые обновления и runtime-control governance;
+- легче обсуждать, откуда взялся каждый memory record, какая у него ревизия и какая contract/runtime-control version была активна;
+- легче держать отдельно, но согласованно, approval state, runtime session state и capability session state.
 
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
 

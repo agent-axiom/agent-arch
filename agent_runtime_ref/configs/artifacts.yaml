@@ -1,6 +1,6 @@
 bundle:
   bundle_name: support-triage-runtime-bundle
-  version: 2026.04.07
+  version: 2026.04.15
   provenance_required: true
   signed: false
   artifacts:
@@ -11,4 +11,6 @@ bundle:
     - controls.yaml
     - approvals.yaml
     - runtime-controls.yaml
+    - change.yaml
+    - retirement.yaml
     - eval-dataset.json
