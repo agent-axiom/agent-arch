@@ -209,6 +209,33 @@ flowchart LR
 
 Это не делает stateless MCP устаревшим. Это лишь означает, что платформа не должна притворяться, будто оба режима operationally одинаковы.
 
+### 6.2. Progress, elicitation и expiry - это runtime events, а не транспортные мелочи
+
+Полезный operational lesson из AWS stateful MCP direction состоит в том, что сложность не заканчивается на хранении session handle.[^aws-stateful-mcp] Более трудный вопрос в том, как runtime должен реагировать, когда capability шлет progress, запрашивает дополнительный input или истекает до завершения работы.
+
+Это почти всегда заставляет платформу явно определить поведение хотя бы для четырех случаев:
+
+- `progress_update`: capability все еще работает, и runtime должен показать liveness, не считая вызов зависшим;
+- `elicitation_requested`: capability не может продолжить, пока user или operator не даст дополнительный input;
+- `session_expired`: прежнюю capability session уже нельзя безопасно resume;
+- `reinitialized_session`: runtime осознанно поднял новую capability session, но связал ее с тем же user-visible run.
+
+Это не мелкие transport details. Именно они формируют, как дальше ведут себя approval, telemetry и operator response.
+
+### 6.3. Хороший MCP contract должен объяснять, что происходит после interruption
+
+Если stateful capability ставится на паузу посередине flow, платформа не должна импровизировать recovery logic на месте.
+
+Полезно явно зафиксировать хотя бы такие правила:
+
+- может ли та же capability session продолжиться после human approval;
+- приводит ли expiry к cancel run или к re-initialization;
+- требует ли следующий шаг fresh policy evaluation;
+- сохраняет ли runtime тот же user-visible run, если capability-side session была заменена;
+- как telemetry связывает старую и новую capability sessions при расследовании.
+
+Без этих ответов команда может формально поддерживать stateful MCP, но все равно не сумеет объяснить, что реально произошло после interruption.
+
 ## 7. Не все capability требуют одинаковый уровень изоляции
 
 Удобно разделить интеграции хотя бы на три класса:
@@ -258,6 +285,10 @@ capabilities:
     secrets: service_account_helpdesk
     timeout_seconds: 15
     approval: manager_for_high_priority
+    session_mode: stateful
+    progress_events: true
+    elicitation: manager_or_requester
+    on_session_expiry: reinitialize_or_cancel
   run_shell:
     transport: sandboxed_exec
     mode: high_risk

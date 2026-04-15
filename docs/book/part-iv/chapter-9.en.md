@@ -209,6 +209,33 @@ The second model usually needs more from the platform contract:
 
 That does not make stateless MCP obsolete. It simply means the platform should not pretend both modes are operationally identical.
 
+### 6.2. Progress, Elicitation, and Expiry Are Runtime Events, Not Transport Trivia
+
+A useful operational lesson from AWS's stateful MCP direction is that the hard part is not merely storing a session handle.[^aws-stateful-mcp] The harder part is deciding how the runtime should react when the capability emits progress, requests more input, or expires before the work is done.
+
+That usually forces the platform to define explicit behavior for at least four cases:
+
+- `progress_update`: the capability is still working and the runtime should expose liveness without treating the call as stuck;
+- `elicitation_requested`: the capability cannot continue until the user or operator supplies more input;
+- `session_expired`: the prior capability session can no longer be resumed safely;
+- `reinitialized_session`: the runtime deliberately opened a fresh capability session and linked it to the same higher-level user run.
+
+Those are not small transport details. They shape how approval, telemetry, and operator response all behave.
+
+### 6.3. A Good MCP Contract Should Explain What Happens After Interruption
+
+If a stateful capability pauses mid-flow, the platform should not improvise its recovery logic.
+
+It helps to make at least these rules explicit:
+
+- whether the same capability session may resume after human approval;
+- whether expiry cancels the run or triggers re-initialization;
+- whether the next step requires fresh policy evaluation;
+- whether the runtime preserves the same user-visible run while rotating the capability-side session;
+- how telemetry links the old and new capability sessions during investigation.
+
+Without those answers, a team may technically support stateful MCP while still leaving operators unable to explain what happened after an interruption.
+
 ## 7. Not Every Capability Needs the Same Isolation Level
 
 It is useful to split integrations into at least three classes:
@@ -256,6 +283,10 @@ capabilities:
     secrets: service_account_helpdesk
     timeout_seconds: 15
     approval: manager_for_high_priority
+    session_mode: stateful
+    progress_events: true
+    elicitation: manager_or_requester
+    on_session_expiry: reinitialize_or_cancel
   run_shell:
     transport: sandboxed_exec
     mode: high_risk

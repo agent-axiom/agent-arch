@@ -209,6 +209,33 @@ AWS 最近的另一个信号也很有价值：一旦 MCP clients 和 servers 开
 
 这并不意味着 stateless MCP 过时了。它只是说明，平台不应该假装这两种模式在 operational 上完全一样。
 
+### 6.2. Progress、elicitation 和 expiry 是 runtime events，不是 transport trivia
+
+AWS 关于 stateful MCP 的方向还有一个很有价值的 operational lesson：难点不只是保存一个 session handle。[^aws-stateful-mcp] 更难的是，当 capability 发出 progress、请求更多输入，或在工作完成前先过期时，runtime 应该如何响应。
+
+这通常会迫使平台至少把下面四类情况定义清楚：
+
+- `progress_update`：capability 仍在工作，runtime 应该暴露 liveness，而不是把它误判成卡死；
+- `elicitation_requested`：capability 不能继续，直到 user 或 operator 提供更多 input；
+- `session_expired`：原来的 capability session 已经不能安全 resume；
+- `reinitialized_session`：runtime 有意识地重新打开了一个新的 capability session，但仍把它挂在同一个更高层 user run 下。
+
+这些并不是小小的 transport details。它们会直接塑造 approval、telemetry 和 operator response 的行为。
+
+### 6.3. 好的 MCP contract 必须解释 interruption 之后会发生什么
+
+如果一个 stateful capability 在中途暂停，平台不应该临时拼凑 recovery logic。
+
+至少应该把这些规则写清楚：
+
+- 同一个 capability session 在 human approval 之后是否还能 resume；
+- expiry 是取消 run，还是触发 re-initialization；
+- 下一步是否需要 fresh policy evaluation；
+- 当 capability-side session 被轮换时，runtime 是否仍然保持同一个 user-visible run；
+- 在排障时，telemetry 如何把旧 capability session 和新 capability session 关联起来。
+
+如果这些问题没有答案，团队即使“技术上支持” stateful MCP，运营上仍然解释不清 interruption 之后到底发生了什么。
+
 ## 7. 不是所有 capability 都需要同等级别的隔离
 
 把集成至少分成三类会很有帮助：
@@ -256,6 +283,10 @@ capabilities:
     secrets: service_account_helpdesk
     timeout_seconds: 15
     approval: manager_for_high_priority
+    session_mode: stateful
+    progress_events: true
+    elicitation: manager_or_requester
+    on_session_expiry: reinitialize_or_cancel
   run_shell:
     transport: sandboxed_exec
     mode: high_risk

@@ -69,6 +69,7 @@
 - OpenAI, [Using tools](https://developers.openai.com/api/docs/guides/tools)
 - OpenAI, [Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
+- AWS, [Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
 
 ## 研究前沿：记忆、可观测性与多智能体可靠性
 
