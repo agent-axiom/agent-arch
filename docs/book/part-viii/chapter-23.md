@@ -19,6 +19,7 @@
 - approvals and audit trails;
 - состояние paused runs и background runs;
 - состояние capability sessions и interruption lineage;
+- lineage для orchestration patterns и worker-boundary decisions;
 - delegated authorization lineage и revoke state;
 - external integrations;
 - user expectations;
@@ -85,6 +86,7 @@
 - истечь или отменить paused runs;
 - отключить background jobs и background routes;
 - закрыть или архивировать capability-session state и запретить uncontrolled re-init;
+- выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
 - отозвать delegated authorization paths и архивировать их final lineage;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
@@ -150,6 +152,7 @@ flowchart LR
 - deprecated capability contract;
 - deprecated approval schema;
 - deprecated runtime-control schema;
+- deprecated orchestration pattern или worker-boundary policy;
 - deprecated capability-session contract.
 
 Это важно, потому что retirement почти всегда начинается не с выключения, а с ясного сигнала:
@@ -188,6 +191,8 @@ retirement:
     - expire_paused_runs
     - stop_background_routes
     - freeze_reinitialization
+    - disable_deprecated_patterns
+    - revoke_worker_capability_exposure
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -235,6 +240,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - memory write path остался активным;
 - paused approvals остались resumable после retirement;
 - expired capability sessions все еще можно re-initialize через stale control paths;
+- deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement;
 - background routes забыли выключить;
 - archived state никому не принадлежит;
 - deprecated schemas все еще принимаются gateways или runtime;
@@ -250,7 +256,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 Более сильная планка такая:
 
 - система теряет право действовать до того, как ее объявляют retired;
-- principals, connectors, memory writes, paused runs, capability sessions и background jobs сужаются осознанно, а не по остаточному принципу;
+- principals, connectors, memory writes, paused runs, capability sessions, orchestration patterns и background jobs сужаются осознанно, а не по остаточному принципу;
 - replacement идет staged, а не как бинарный cutover;
 - deprecated approval и runtime-control schemas выключаются, а не висят как скрытые compatibility paths;
 - у archived state есть owner и решение по retention;

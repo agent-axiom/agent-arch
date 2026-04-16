@@ -19,6 +19,7 @@
 - 审批与审计轨迹；
 - paused-run state 与 background-run state；
 - capability-session state 与 interruption lineage；
+- orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
 - 外部集成；
 - 用户预期；
@@ -85,6 +86,7 @@
 - 让 paused runs 过期或直接取消；
 - 停止后台任务与 background routes；
 - 关闭或归档 capability-session state，并阻断不受控的 re-init；
+- 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
@@ -150,6 +152,7 @@ flowchart LR
 - 已废弃的能力契约；
 - 已废弃的 approval schema；
 - 已废弃的 runtime-control schema；
+- 已废弃的 orchestration pattern 或 worker-boundary policy；
 - 已废弃的 capability-session contract。
 
 这很重要，因为退役几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
@@ -186,6 +189,8 @@ retirement:
     - expire_paused_runs
     - stop_background_routes
     - freeze_reinitialization
+    - disable_deprecated_patterns
+    - revoke_worker_capability_exposure
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -233,6 +238,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 记忆写入路径仍然在工作；
 - paused approvals 在 retirement 之后仍然可以 resume；
 - 已过期 capability sessions 仍可通过陈旧控制路径 re-initialize；
+- 已废弃的 orchestration patterns 或 worker-boundary policies 在 retirement 后仍然可用；
 - background routes 被遗忘没有关闭；
 - 归档状态没有负责人；
 - deprecated schemas 仍然被 gateways 或 runtimes 接受；
@@ -248,7 +254,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 更高的标准应该是：
 
 - 系统会在被宣布 retired 之前先失去行动能力；
-- principals、connectors、memory writes、paused runs、capability sessions 与 background jobs 会被有意识地逐层收缩；
+- principals、connectors、memory writes、paused runs、capability sessions、orchestration patterns 与 background jobs 会被有意识地逐层收缩；
 - replacement 是 staged 的，而不是二元 cutover；
 - deprecated approval 与 runtime-control schemas 会被真正关闭，而不是作为隐藏兼容路径长期残留；
 - archived state 有 owner，也有 retention decision；

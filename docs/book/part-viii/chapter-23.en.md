@@ -19,6 +19,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - approvals and audit trails;
 - paused-run state and background-run state;
 - capability-session state and interruption lineage;
+- orchestration-pattern lineage and worker-boundary decisions;
 - delegated authorization lineage and revoke state;
 - external integrations;
 - user expectations;
@@ -85,6 +86,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - expire or cancel paused runs;
 - stop background jobs and background routes;
 - close or archive capability-session state and block uncontrolled re-init;
+- disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
 - revoke delegated authorization paths and archive their final lineage;
 - revoke egress access;
 - close principals, secrets, and connectors;
@@ -150,6 +152,7 @@ For example:
 - a deprecated capability contract;
 - a deprecated approval schema;
 - a deprecated runtime-control schema;
+- a deprecated orchestration pattern or worker-boundary policy;
 - a deprecated capability-session contract.
 
 This matters because retirement almost always starts not with a shutdown, but with a clear signal:
@@ -188,6 +191,8 @@ retirement:
     - expire_paused_runs
     - stop_background_routes
     - freeze_reinitialization
+    - disable_deprecated_patterns
+    - revoke_worker_capability_exposure
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -235,6 +240,7 @@ The problems are fairly repetitive:
 - the memory write path remained live;
 - paused approvals were left resumable after retirement;
 - expired capability sessions could still be re-initialized through stale control paths;
+- deprecated orchestration patterns or worker-boundary policies remained usable after retirement;
 - background routes were forgotten;
 - archived state belongs to nobody;
 - deprecated schemas still remain accepted by gateways or runtimes;
@@ -250,7 +256,7 @@ A team should not think it handles retirement well only because it can switch tr
 A stronger bar is this:
 
 - the system loses the ability to act before it is called retired;
-- principals, connectors, memory writes, paused runs, capability sessions, and background jobs are narrowed down deliberately;
+- principals, connectors, memory writes, paused runs, capability sessions, orchestration patterns, and background jobs are narrowed down deliberately;
 - replacement is staged rather than treated as a binary cutover;
 - deprecated approval and runtime-control schemas are turned off instead of lingering as hidden compatibility paths;
 - archived state has an owner and a retention decision;
