@@ -169,8 +169,15 @@ approval_contract:
 - `progress_event_policy`
 - `elicitation_policy`
 - `reinit_requires_approval`
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict_policy`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
 
 这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
+
+它们也能防止第二类漂移：delegated approval path 已经存在于产品行为里，但还没有被表示成受治理的 contract。
 
 一旦系统变得更成熟，策略包很快就应该继续补充：
 

@@ -138,6 +138,18 @@ When a high-risk capability reaches an approval boundary, the runtime should be 
 
 That is much stronger than sending a message to an operator and hoping the surrounding code still remembers what it was doing.
 
+A useful next step is to distinguish two approval patterns:
+
+- direct human approval for rare or very high-risk actions;
+- classifier-mediated approval paths for repetitive low-context decisions where manual review causes approval fatigue.
+
+That second path should not be treated as “approval removed.” It should be treated as delegated control with stricter evidence requirements:
+
+- what classifier or gate made the decision;
+- what evidence was visible to it;
+- when it must escalate to a human;
+- how subagent or follow-on actions inherit or lose that delegated approval.
+
 ## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.
@@ -232,6 +244,16 @@ That is why policy artifacts should increasingly capture structured fields like:
 
 Those fields help the runtime keep approval control and capability session control aligned instead of letting them drift into separate implicit systems.
 
+As approval systems mature, the contract may also need fields for classifier-backed approval control, such as:
+
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
+
+Those additions help the runtime represent a delegated approval path explicitly instead of hiding it in product logic or UI behavior.
+
 Recent OpenAI guidance on structured outputs is useful for the policy layer too.[^openai-structured]
 
 A contract is only half real if the runtime still has to guess whether a policy result, approval request, or capability payload came back in the expected shape.
@@ -258,6 +280,8 @@ class PolicyDecision:
     action: str
     reason: str
     policy_id: str
+    approval_mode: str = "human"
+    escalate_to_human: bool = False
     requires_approval: bool = False
 
 

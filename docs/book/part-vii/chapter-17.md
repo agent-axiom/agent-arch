@@ -138,6 +138,18 @@ Policy layer становится намного реальнее, когда ap
 
 Это намного сильнее, чем просто отправить сообщение оператору и надеяться, что окружающий код все еще помнит, на чем остановился.
 
+Полезно сразу различать два approval pattern:
+
+- прямой human approval для редких или действительно high-risk actions;
+- classifier-mediated approval paths для повторяющихся low-context решений, где ручной review создает approval fatigue.
+
+Второй путь не надо воспринимать как “approval убрали”. Его лучше мыслить как delegated control с более жесткими требованиями к evidence:
+
+- какой classifier или gate принял решение;
+- какой evidence был ему виден;
+- когда он обязан escalate к человеку;
+- как subagent или follow-on actions наследуют такое delegated approval или теряют его.
+
 ## 7. Policy decision должен быть объектом, а не просто bool
 
 Очень полезная инженерная привычка: policy decision не должен сводиться к `True/False`.
@@ -232,6 +244,16 @@ Stateful capability flows делают это требование еще жес
 
 Эти поля помогают держать approval control и capability session control в одной модели, а не давать им расползаться в две разные неявные системы.
 
+По мере взросления approval system в контракт почти сразу полезно добавлять и поля для classifier-backed approval control, например:
+
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
+
+Такие поля помогают делать delegated approval path явным, а не прятать его в product logic или поведении UI.
+
 Свежий материал OpenAI по structured outputs полезен и для policy layer.[^openai-structured]
 
 Контракт наполовину нереален, если runtime все равно вынужден догадываться, вернулись ли policy result, approval request или capability payload в ожидаемой форме.
@@ -258,6 +280,8 @@ class PolicyDecision:
     action: str
     reason: str
     policy_id: str
+    approval_mode: str = "human"
+    escalate_to_human: bool = False
     requires_approval: bool = False
 
 

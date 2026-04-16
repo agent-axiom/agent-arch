@@ -169,8 +169,15 @@ approval_contract:
 - `progress_event_policy`
 - `elicitation_policy`
 - `reinit_requires_approval`
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict_policy`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
 
 Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
+
+Заодно они помогают избежать и второго дрейфа: когда delegated approval path уже существует в product behavior, но все еще не представлен как governed contract.
 
 Как только система взрослеет, для набора политик почти сразу полезно добавить:
 

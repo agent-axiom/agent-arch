@@ -138,6 +138,18 @@ OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团�
 
 这比“给 operator 发条消息，然后希望外围代码还记得自己停在哪”强得多。
 
+进一步看，最好把 approval 分成两种模式：
+
+- 面向少量真正高风险动作的直接人工审批；
+- 面向重复性、低上下文决策的 classifier-mediated approval path，用来减少人工 review 带来的 approval fatigue。
+
+第二种路径不该被理解成“去掉审批”，而应被理解成 delegated control，只是它需要更严格的 evidence：
+
+- 是哪个 classifier 或 gate 做出的判断；
+- 它当时看到了什么 evidence；
+- 在什么条件下必须升级给人工；
+- subagent 或 follow-on actions 如何继承这种 delegated approval，或者在什么条件下失效。
+
 ## 7. Policy decision 应该是对象，而不只是 bool
 
 一个很有用的工程习惯：不要把 policy decision 简化成 `True/False`。
@@ -232,6 +244,16 @@ capabilities:
 
 这些字段可以帮助 runtime 把 approval control 和 capability session control 放进同一套模型里，而不是任由它们漂移成两套隐含系统。
 
+随着 approval system 继续成熟，contract 往往还需要补充 classifier-backed approval control 的字段，例如：
+
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
+
+这些字段能让 delegated approval path 变成显式的 runtime contract，而不是藏在产品逻辑或 UI 行为里。
+
 OpenAI 最近关于 structured outputs 的材料，对 policy layer 也很有帮助。[^openai-structured]
 
 如果 runtime 仍然需要猜测 policy result、approval request 或 capability payload 是否按预期形态返回，那么 contract 其实只完成了一半。
@@ -258,6 +280,8 @@ class PolicyDecision:
     action: str
     reason: str
     policy_id: str
+    approval_mode: str = "human"
+    escalate_to_human: bool = False
     requires_approval: bool = False
 
 

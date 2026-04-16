@@ -169,8 +169,15 @@ Useful additions now include:
 - `progress_event_policy`
 - `elicitation_policy`
 - `reinit_requires_approval`
+- `approval_mode`
+- `approval_delegate`
+- `classifier_verdict_policy`
+- `escalate_to_human_if`
+- `subagent_handoff_policy`
 
 That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
+
+It also helps prevent a second drift: delegated approval paths that exist in product behavior, but are not actually represented in the governed contract.
 
 As soon as the system grows up, it is useful to add at least:
 
