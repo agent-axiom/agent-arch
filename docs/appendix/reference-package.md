@@ -12,7 +12,8 @@
 - Chapter 17 для policy layer и capability contracts,
 - Chapter 18 для rollout gates вокруг approval и runtime behavior,
 - Chapter 21 для assurance response,
-- Chapter 22 и lifecycle schema для governed artifact linkage.
+- Chapter 22 и lifecycle schema для governed artifact linkage,
+- Chapters 23-27 для interruption, expiry, re-init, observability и registry ownership вокруг capability sessions.
 
 ## Что внутри
 
@@ -183,7 +184,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
-При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry и границу между user run и capability-side session.
+При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry, re-init policy, ownership capability sessions и границу между user run и capability-side session.
 
 ## Почему это полезно
 

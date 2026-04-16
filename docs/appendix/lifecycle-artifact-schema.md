@@ -96,6 +96,13 @@ provenance:
 - он отделяет "есть артефакт" от "артефакт одобрен для релиза";
 - он делает incident review и rollback гораздо короче.
 
+А когда capability-session governance уже оформлена явно, bundle почти всегда стоит делать достаточно подробным, чтобы было видно не только contract version, но и какие session-control assumptions были одобрены вместе с ним:
+
+- expiry policy;
+- re-init policy;
+- ownership для stuck или expired capability-session state;
+- ожидания по linkage между approval events и session events.
+
 ## 5. Retirement plan
 
 `retirement_plan` нужен не только для полного выключения агента, но и для controlled replacement capability, policy bundle или artifact family.
@@ -154,7 +161,8 @@ owner: platform-operations
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
 - lifecycle artifacts имеют owner и version;
-- incident review может восстановить связку `change -> bundle -> run -> retirement`.
+- incident review может восстановить связку `change -> bundle -> run -> retirement`;
+- session-control ownership можно восстановить для expired, paused или re-initialized capability paths.
 
 ## 8. Что чаще всего ломается
 

@@ -104,6 +104,12 @@ That is why the fields differ:
 - the review cares more about change type, risk, and required evals;
 - the rollout gate cares more about telemetry, on-call readiness, rollback, traffic scope, live readiness, and interruption handling for approval-bound or stateful capability paths.
 
+In practice, that usually means the gate should also make explicit:
+
+- whether capability-session expiry behavior was exercised before rollout;
+- whether re-init is denied, allowed, or approval-bound for the affected path;
+- who owns emergency freeze if interruption semantics start drifting after release.
+
 ## 6. How this connects to the eval schema
 
 Change review and rollout gates are tightly connected to the [eval schema](eval-schema.en.md):
@@ -150,6 +156,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - every decision has an owner;
 - review and gate can be reconstructed from an incident trace;
 - interruption behavior for approval-bound or stateful capability sessions is checked before rollout;
+- expiry and re-init behavior for capability sessions is checked before rollout;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks

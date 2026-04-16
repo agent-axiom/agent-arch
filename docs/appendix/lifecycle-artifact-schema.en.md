@@ -96,6 +96,13 @@ This layer is useful because:
 - it separates "artifact exists" from "artifact is approved for release";
 - it makes incident review and rollback much shorter.
 
+And once capability-session governance is explicit, the bundle should usually make visible not only the contract version, but also the session-control assumptions that were approved together:
+
+- expiry policy;
+- re-init policy;
+- ownership for stuck or expired capability-session state;
+- linkage expectations between approval events and session events.
+
 ## 5. Retirement plan
 
 `retirement_plan` is useful not only for shutting down a whole agent, but also for controlled replacement of a capability, policy bundle, or artifact family.
@@ -154,7 +161,8 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
 - lifecycle artifacts have an owner and version;
-- incident review can reconstruct `change -> bundle -> run -> retirement`.
+- incident review can reconstruct `change -> bundle -> run -> retirement`;
+- session-control ownership can be reconstructed for expired, paused, or re-initialized capability paths.
 
 ## 8. What usually breaks
 

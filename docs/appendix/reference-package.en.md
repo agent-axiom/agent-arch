@@ -12,7 +12,8 @@ A practical reading path is:
 - Chapter 17 for policy layer and capability contracts,
 - Chapter 18 for rollout gates around approval and runtime behavior,
 - Chapter 21 for assurance response,
-- Chapter 22 and the lifecycle schema for governed artifact linkage.
+- Chapter 22 and the lifecycle schema for governed artifact linkage,
+- Chapters 23-27 for interruption, expiry, re-init, observability, and registry ownership around capability sessions.
 
 ## What Is Inside
 
@@ -183,7 +184,7 @@ There are starter files for both runtime and lifecycle in [configs](/Users/if/Py
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
 
-The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, and the contract boundary between a user run and a capability-side session.
+The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, and the contract boundary between a user run and a capability-side session.
 
 ## Why This Is Useful
 

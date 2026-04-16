@@ -96,6 +96,13 @@ provenance:
 - 它把“工件存在”与“工件被批准上线”分开；
 - 它让事故复盘和回滚都更短、更明确。
 
+而一旦 capability-session governance 已经进入显式管理，artifact bundle 通常也应该把和它一同被批准的 session-control assumptions 说清楚，而不只是写一个 contract version：
+
+- expiry policy；
+- re-init policy；
+- stuck 或 expired capability-session state 的 ownership；
+- approval events 与 session events 之间应有怎样的 linkage。
+
 ## 5. Retirement plan
 
 `retirement_plan` 不只是给整个智能体下线用的。它同样适用于能力、策略包或工件族的受控替换。
@@ -154,7 +161,8 @@ owner: platform-operations
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
 - 生命周期工件有负责人和版本；
-- 事故复盘能还原 `change -> bundle -> run -> retirement`。
+- 事故复盘能还原 `change -> bundle -> run -> retirement`；
+- 对 expired、paused 或 re-initialized capability paths 的 session-control ownership 也能被还原出来。
 
 ## 8. 最常见的断裂点
 

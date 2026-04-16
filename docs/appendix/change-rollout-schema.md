@@ -104,6 +104,12 @@ decided_by:
 - review больше смотрит на тип изменения, риски и required evals;
 - rollout gate больше смотрит на telemetry, on-call, rollback, traffic scope, live readiness и interruption handling для approval-bound или stateful capability paths.
 
+На практике это обычно означает, что gate должен еще явно фиксировать:
+
+- проверялось ли capability-session expiry behavior до rollout;
+- является ли re-init для затронутого path denied, allowed или approval-bound;
+- кто owner у emergency freeze, если interruption semantics начнут дрейфовать после релиза.
+
 ## 6. Как это связано с eval schema
 
 Change review и rollout gate тесно связаны с [eval schema](eval-schema.md):
@@ -150,6 +156,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - decision всегда имеет owner;
 - review и gate можно восстановить по incident trace;
 - interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
+- expiry и re-init behavior для capability sessions проверяются до rollout;
 - rollback plan не живет только в головах команды.
 
 ## 10. Что чаще всего ломается

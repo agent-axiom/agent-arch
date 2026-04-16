@@ -104,6 +104,12 @@ decided_by:
 - 评审更关注变更类型、风险和必需评测；
 - 发布门禁更关注遥测、值班、回滚、流量范围、上线准备度，以及 approval-bound 或 stateful capability paths 的 interruption handling。
 
+在实践里，这通常还意味着门禁需要显式说明：
+
+- rollout 前是否验证过 capability-session expiry behavior；
+- 对受影响路径而言，re-init 是 denied、allowed 还是 approval-bound；
+- 如果 interruption semantics 在发布后开始漂移，emergency freeze 由谁负责。
+
 ## 6. 它和评测模式的关系
 
 变更评审与发布门禁和 [评测模式](eval-schema.zh.md) 是紧密耦合的：
@@ -150,6 +156,7 @@ decided_by:
 - 每个决定都有负责人；
 - 事故追踪可以还原出评审和门禁；
 - approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
+- capability sessions 的 expiry 与 re-init behavior 会在 rollout 前被检查；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
