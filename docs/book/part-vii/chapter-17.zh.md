@@ -108,6 +108,17 @@ OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团�
 
 如果没有这些字段，policy layer 可能在原则上批准了某个 capability，却仍然无法治理它在真实 runtime session 中的行为。
 
+Anthropic 的 workflow taxonomy 又补上了一个缺失的 governance 维度。[^anthropic] policy layer 不应该只决定某个 capability 单独看来能不能用，它还应该决定这个 capability 可以出现在什么 orchestration patterns 里。
+
+例如，policy contract 可能需要明确说明一个 capability：
+
+- 可以安全地用于 `prompt chaining`，但不能用于 unconstrained loop；
+- 只允许在 `routing` 的某些请求类别里被调用；
+- 只有在各分支都是 read-only 时，才允许放进 `parallelization`；
+- 是否允许被 `orchestrator-workers` 里的 delegated workers 调用，还是只允许 parent runtime 调用。
+
+这样 capability governance 才会绑定到 runtime shape 上，而不是假装同一个 tool contract 在任何 execution pattern 里都同样安全。
+
 一个实用的字段集合通常包括：
 
 - capability name；
@@ -168,6 +179,7 @@ OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团�
 - policy id；
 - risk class；
 - optional constraints；
+- allowed orchestration patterns 或明确的 pattern restrictions；
 - 必要时还包括 approval 或 resume requirements。
 
 这会大幅提升 explainability，也让 telemetry 更有价值。
@@ -253,6 +265,13 @@ capabilities:
 - `subagent_handoff_policy`
 
 这些字段能让 delegated approval path 变成显式的 runtime contract，而不是藏在产品逻辑或 UI 行为里。
+
+同样的纪律也应该延伸到 delegated workers。如果 runtime 支持 `orchestrator-workers` 路径，policy layer 应该能够明确说明：
+
+- worker 是否继承 parent 的 approval context；
+- delegated approval 是否会在 handoff boundary 失效；
+- worker 是否可以请求额外 capabilities，还是只能使用 worker-safe subset；
+- 在任何 write-capability 被执行之前，worker output 是否必须先经过 review。
 
 同样的纪律也应该延伸到 identity boundary。如果某个 capability 通过 MCP 或其他 brokered transport 使用 delegated user authorization，那么 policy layer 也应该能明确说明：
 

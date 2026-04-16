@@ -108,6 +108,17 @@ flowchart LR
 
 Без этих полей policy layer может формально разрешить capability, но не суметь нормально управлять тем, как ее живая runtime session ведет себя на практике.
 
+Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно недостающее измерение governance.[^anthropic] Policy layer должен решать не только то, разрешена ли capability сама по себе. Он еще должен решать, в каких orchestration patterns эту capability вообще допустимо вызывать.
+
+Например, policy contract может требовать явного ответа на то, что capability:
+
+- безопасна внутри `prompt chaining`, но не внутри unconstrained loop;
+- допустима в `routing` только для некоторых классов запросов;
+- может использоваться в `parallelization` только если ветки read-only;
+- доступна delegated workers в `orchestrator-workers` или остается только у parent runtime.
+
+Так governance capability остается привязанным к форме runtime, а не делает вид, будто один и тот же tool contract одинаково безопасен в любом execution pattern.
+
 Практически полезный набор полей обычно такой:
 
 - capability name;
@@ -168,6 +179,7 @@ Policy layer становится намного реальнее, когда ap
 - policy id;
 - risk class;
 - optional constraints;
+- allowed orchestration patterns или явные pattern restrictions;
 - при необходимости approval или resume requirements.
 
 Это резко повышает explainability и делает telemetry намного полезнее.
@@ -253,6 +265,13 @@ Stateful capability flows делают это требование еще жес
 - `subagent_handoff_policy`
 
 Такие поля помогают делать delegated approval path явным, а не прятать его в product logic или поведении UI.
+
+Та же дисциплина нужна и для delegated workers. Если runtime поддерживает путь `orchestrator-workers`, policy layer должен уметь явно сказать:
+
+- наследует ли worker родительский approval context;
+- истекает ли delegated approval на handoff boundary;
+- может ли worker запрашивать дополнительные capabilities или работает только с worker-safe subset;
+- должен ли worker output пройти review до того, как будет выполнена любая write-capability.
 
 Тот же уровень дисциплины нужен и на identity boundary. Если capability использует delegated user authorization через MCP или другой brokered transport, policy layer должен уметь явно зафиксировать:
 

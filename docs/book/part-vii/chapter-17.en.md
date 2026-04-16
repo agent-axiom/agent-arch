@@ -108,6 +108,17 @@ That means a mature catalog may also need fields such as:
 
 Without those fields, the policy layer can approve a capability in principle but still fail to govern how its live runtime session behaves in practice.
 
+Anthropic's workflow taxonomy adds one more missing governance dimension here.[^anthropic] The policy layer should not only decide whether a capability is allowed in isolation. It should also decide which orchestration patterns are allowed to invoke it.
+
+For example, a policy contract may need to express whether a capability is:
+
+- safe inside `prompt chaining` but not inside unconstrained loops;
+- allowed in `routing` only for certain classes of requests;
+- usable inside `parallelization` only when branches are read-only;
+- callable by delegated workers in `orchestrator-workers`, or restricted to the parent runtime only.
+
+That keeps capability governance tied to runtime shape instead of pretending the same tool contract is equally safe in every execution pattern.
+
 A practical field set usually looks like this:
 
 - capability name;
@@ -168,6 +179,7 @@ And additionally:
 - policy id;
 - risk class;
 - optional constraints;
+- allowed orchestration patterns or explicit pattern restrictions;
 - optional approval or resume requirements.
 
 That greatly improves explainability and makes telemetry far more useful.
@@ -253,6 +265,13 @@ As approval systems mature, the contract may also need fields for classifier-bac
 - `subagent_handoff_policy`
 
 Those additions help the runtime represent a delegated approval path explicitly instead of hiding it in product logic or UI behavior.
+
+The same pattern discipline should extend to delegated workers. If the runtime supports an `orchestrator-workers` path, the policy layer should be able to say:
+
+- whether the worker inherits the parent approval context;
+- whether delegated approval expires at handoff boundaries;
+- whether the worker may request additional capabilities or only use a worker-safe subset;
+- whether worker output must be reviewed before any write-capability is exercised.
 
 The same discipline should hold across the identity boundary too. If a capability uses delegated user authorization through MCP or another brokered transport, the policy layer should be able to state whether:
 
