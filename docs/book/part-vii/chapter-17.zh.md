@@ -263,6 +263,8 @@ capabilities:
 
 这样 delegated approval 和 delegated authorization 才能留在同一套 governed contract model 里，而不会演变成彼此无关的例外。
 
+现在参考 runtime 也已经把这些假设直接带进 execution artifacts：`run_start`、`approval_requested`、`tool_execution`、`run_complete`、approval records 和 session export 都可以保留同一份 delegated authorization context。这样 rollout 和事故调查就不需要再从侧面线索里反推 delegated identity。
+
 OpenAI 最近关于 structured outputs 的材料，对 policy layer 也很有帮助。[^openai-structured]
 
 如果 runtime 仍然需要猜测 policy result、approval request 或 capability payload 是否按预期形态返回，那么 contract 其实只完成了一半。

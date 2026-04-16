@@ -207,6 +207,15 @@ flowchart LR
 
 Без этих ответов rollout может выглядеть здоровым на approval layer, но уже деградировать глубже, на capability-session layer.
 
+То же самое верно и для delegated authorization. Если runtime поддерживает user-delegated access, readiness rollout должна включать еще и такие вопросы:
+
+- сохраняют ли traces `authorization_mode`, delegated principal и delegated scope;
+- удерживают ли approval records тот же authorization context, что и исходный run;
+- показывает ли session export, под какой delegated identity вообще выполнялось действие;
+- что делает runtime, если delegated access отзывают, пока run стоит на паузе.
+
+Иначе команда может казаться готовой по policy и approval, но все еще не сумеет объяснить, кто именно авторизовал write path в production.
+
 ## 9. Operational readiness
 
 Отдельный слой, который часто забывают:

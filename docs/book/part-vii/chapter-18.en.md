@@ -207,6 +207,15 @@ That means the team should be able to answer questions like:
 
 Without those answers, a rollout may look healthy at the approval layer while already degrading underneath at the capability-session layer.
 
+The same is true for delegated authorization. If the runtime supports user-delegated access, rollout readiness should also include:
+
+- whether traces preserve `authorization_mode`, delegated principal, and delegated scope;
+- whether approval records keep the same authorization context as the run that requested them;
+- whether session export still shows which delegated identity the action ran under;
+- what the runtime does if delegated access is revoked while the run is paused.
+
+Otherwise the team may appear ready on policy and approval, while still being unable to explain who actually authorized the write path in production.
+
 ## 9. Operational Readiness
 
 There is another layer teams often forget:

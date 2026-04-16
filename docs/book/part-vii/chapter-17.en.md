@@ -263,6 +263,8 @@ The same discipline should hold across the identity boundary too. If a capabilit
 
 That keeps delegated approval and delegated authorization inside one governed contract model instead of letting them evolve as unrelated exceptions.
 
+The reference runtime now carries those assumptions directly in execution artifacts too: `run_start`, `approval_requested`, `tool_execution`, `run_complete`, approval records, and session export can all preserve the same delegated authorization context. That matters because rollout and investigation should not have to reconstruct delegated identity from side channels.
+
 Recent OpenAI guidance on structured outputs is useful for the policy layer too.[^openai-structured]
 
 A contract is only half real if the runtime still has to guess whether a policy result, approval request, or capability payload came back in the expected shape.

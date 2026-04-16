@@ -143,7 +143,7 @@ Inspect and resolve demo approval requests:
 `inspect-session` shows session-level run history and the linked `trace_id` values.
 `session-eval-summary` returns a compact operational summary for the run series.
 `session-replay` lets you execute multiple related requests inside one `session_id`.
-`export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows.
+`export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`.
 `export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact.
 
 Together, those commands now help illustrate an important runtime distinction from Chapters 16 and 17:
@@ -153,6 +153,8 @@ Together, those commands now help illustrate an important runtime distinction fr
 - and the capability-side session state that may pause, expire, resume, or require re-initialization.
 
 The package is still deliberately small, but it now reflects that a governed runtime may need to explain all three without collapsing them into one opaque object.
+
+It also reflects a fourth operational concern: the delegated authorization context under which the action ran. That context now appears in run telemetry, approval records, and session export so the runtime can explain not only what happened, but under whose delegated identity and scope it happened.
 
 A request that actually reads profile memory:
 

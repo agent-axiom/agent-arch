@@ -143,7 +143,7 @@
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。
 `session-eval-summary` 会返回这一组运行的紧凑摘要。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
-`export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。
+`export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件。
 
 这些命令现在也更清楚地体现了第 16、17 章里的一个关键区分：
@@ -153,6 +153,8 @@
 - 以及 capability 一侧可能 pause、expire、resume 或需要 re-initialization 的 session state。
 
 这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的 runtime 有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
+
+现在它也体现了第四个 operational concern：动作究竟是在什么 delegated authorization context 下执行的。这个上下文现在会出现在 run telemetry、approval records 和 session export 里，让 runtime 不仅能解释发生了什么，还能解释它是在谁的 delegated identity 与 scope 下发生的。
 
 一个会真正读取用户画像记忆的请求：
 

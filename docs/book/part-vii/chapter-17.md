@@ -263,6 +263,8 @@ Stateful capability flows делают это требование еще жес
 
 Так delegated approval и delegated authorization остаются внутри одной governed contract model, а не превращаются в два несвязанных исключения.
 
+Справочный runtime теперь несет эти предположения и прямо в execution artifacts: `run_start`, `approval_requested`, `tool_execution`, `run_complete`, approval records и session export могут сохранять один и тот же delegated authorization context. Это важно, потому что rollout и расследование не должны восстанавливать delegated identity по побочным следам.
+
 Свежий материал OpenAI по structured outputs полезен и для policy layer.[^openai-structured]
 
 Контракт наполовину нереален, если runtime все равно вынужден догадываться, вернулись ли policy result, approval request или capability payload в ожидаемой форме.

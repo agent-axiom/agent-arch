@@ -207,6 +207,15 @@ flowchart LR
 
 如果这些问题答不上来，rollout 可能在 approval layer 看起来正常，但在 capability-session layer 已经开始退化。
 
+对 delegated authorization 也是一样。如果 runtime 支持 user-delegated access，那么 rollout readiness 还应该覆盖：
+
+- traces 是否保留 `authorization_mode`、delegated principal 与 delegated scope；
+- approval records 是否保持与原始 run 相同的 authorization context；
+- session export 是否还能说明动作到底是在谁的 delegated identity 下执行；
+- 如果 run 正在暂停中而 delegated access 被撤销，runtime 会怎么处理。
+
+否则团队在 policy 和 approval 维度上看起来准备好了，但在生产里依然解释不清到底是谁授权了 write path。
+
 ## 9. Operational readiness
 
 还有一个团队很容易忘记的层：
