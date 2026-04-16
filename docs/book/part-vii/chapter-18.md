@@ -207,6 +207,17 @@ flowchart LR
 
 Без этих ответов rollout может выглядеть здоровым на approval layer, но уже деградировать глубже, на capability-session layer.
 
+Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно rollout-измерение.[^anthropic] Pattern-aware runtime должен считать изменения orchestration pattern release-bearing behavior, а не невидимой деталью реализации.
+
+Перед rollout команда должна уметь явно сказать:
+
+- использует ли path теперь `routing`, хотя раньше там был fixed workflow;
+- приносит ли `parallelization` новый риск вокруг join-state, duplicate-read или approval-ordering;
+- добавляет ли `orchestrator-workers` delegated worker surfaces, worker-safe catalogs или новые review points;
+- вставляет ли `prompt chaining` новые checkpoints, в которых меняются expiry, pause или retry semantics.
+
+Это важно, потому что pattern changes меняют production behavior, даже если user-facing feature на словах остается той же.
+
 То же самое верно и для delegated authorization. Если runtime поддерживает user-delegated access, readiness rollout должна включать еще и такие вопросы:
 
 - сохраняют ли traces `authorization_mode`, delegated principal и delegated scope;
@@ -245,7 +256,8 @@ flowchart LR
 3. High-risk flows нужно проверять отдельно от happy path.
 4. Canary, shadow и blast-radius limits должны быть частью design, а не аварийной импровизацией.
 5. Approval queues, возраст paused runs и backlog human review должны считаться rollout signals, а не невидимым операционным шумом.
-6. Если команда уже не доверяет traces, approval handling или evals, rollout надо останавливать, а не “донаблюдать в проде”.
+6. Изменения в выборе orchestration pattern должны рассматриваться как runtime-control changes и проходить явный review до rollout.
+7. Если команда уже не доверяет traces, approval handling или evals, rollout надо останавливать, а не “донаблюдать в проде”.
 
 ## 11. Пример политики чеклиста запуска
 
@@ -263,6 +275,7 @@ rollout:
     - oncall_owner
     - approval_queue_owner
     - session_expiry_signals_visible
+    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -274,6 +287,7 @@ rollout:
     - approval_backlog_unbounded
     - paused_runs_without_expiry
     - capability_session_reinit_unmodeled
+    - orchestration_pattern_change_unreviewed
 ```
 
 Такой checklist хорош тем, что делает readiness предметом инженерного разговора, а не уверенности в голосе автора релиза.

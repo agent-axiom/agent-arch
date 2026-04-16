@@ -207,6 +207,17 @@ flowchart LR
 
 如果这些问题答不上来，rollout 可能在 approval layer 看起来正常，但在 capability-session layer 已经开始退化。
 
+Anthropic 的 workflow taxonomy 在这里又增加了一个 rollout 维度。[^anthropic] 对于 pattern-aware runtime，orchestration pattern 的变化应该被视为 release-bearing behavior，而不是不可见的实现细节。
+
+在 rollout 前，团队应该能够明确说出：
+
+- 某条路径现在是否改成了 `routing`，而过去还是 fixed workflow；
+- `parallelization` 是否引入了新的 join-state、duplicate-read 或 approval-ordering 风险；
+- `orchestrator-workers` 是否增加了 delegated worker surfaces、worker-safe catalogs 或新的 review points；
+- `prompt chaining` 是否插入了新的 checkpoints，从而改变 expiry、pause 或 retry semantics。
+
+这很重要，因为 pattern changes 即使不改变表面功能描述，也会改变 production behavior。
+
 对 delegated authorization 也是一样。如果 runtime 支持 user-delegated access，那么 rollout readiness 还应该覆盖：
 
 - traces 是否保留 `authorization_mode`、delegated principal 与 delegated scope；
@@ -245,7 +256,8 @@ flowchart LR
 3. High-risk flows 必须独立于 happy path 单独验证。
 4. Canary、shadow 和 blast-radius limits 应该是设计的一部分，而不是出事后的临时 improvisation。
 5. Approval queue、paused-run age 和 human-review backlog 应该被当成 rollout signals，而不是看不见的运维噪音。
-6. 如果团队已经不再信任 traces、approval handling 或 evals，就应该先停 rollout，而不是继续“边上边看”。
+6. orchestration pattern 选择的变化应该被当成 runtime-control changes，并在 rollout 前显式 review。
+7. 如果团队已经不再信任 traces、approval handling 或 evals，就应该先停 rollout，而不是继续“边上边看”。
 
 ## 11. 一个上线检查清单策略示例
 
@@ -263,6 +275,7 @@ rollout:
     - oncall_owner
     - approval_queue_owner
     - session_expiry_signals_visible
+    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -274,6 +287,7 @@ rollout:
     - approval_backlog_unbounded
     - paused_runs_without_expiry
     - capability_session_reinit_unmodeled
+    - orchestration_pattern_change_unreviewed
 ```
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。

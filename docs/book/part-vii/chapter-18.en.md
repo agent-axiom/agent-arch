@@ -207,6 +207,17 @@ That means the team should be able to answer questions like:
 
 Without those answers, a rollout may look healthy at the approval layer while already degrading underneath at the capability-session layer.
 
+Anthropic's workflow taxonomy adds another rollout dimension here.[^anthropic] Pattern-aware runtimes should treat orchestration-pattern changes as release-bearing behavior, not as an invisible implementation detail.
+
+Before rollout, the team should be able to say:
+
+- whether a path now uses `routing` where it previously used a fixed workflow;
+- whether `parallelization` introduces new join-state, duplicate-read, or approval-ordering risk;
+- whether `orchestrator-workers` adds delegated worker surfaces, worker-safe catalogs, or new review points;
+- whether `prompt chaining` inserts new checkpoints where expiry, pause, or retry semantics can change.
+
+That matters because pattern changes alter production behavior even when the user-facing feature sounds the same.
+
 The same is true for delegated authorization. If the runtime supports user-delegated access, rollout readiness should also include:
 
 - whether traces preserve `authorization_mode`, delegated principal, and delegated scope;
@@ -245,7 +256,8 @@ If you need a short operational frame, rules like these are usually enough:
 3. High-risk flows should be tested separately from the happy path.
 4. Canary, shadow, and blast-radius limits should be part of the design, not emergency improvisation.
 5. Approval queues, paused-run age, and human-review backlog should be treated as rollout signals, not invisible operational noise.
-6. If the team no longer trusts traces, approval handling, or evals, the rollout should stop, not continue as “extra observation in prod”.
+6. Changes in orchestration pattern selection should be treated like runtime-control changes and reviewed explicitly before rollout.
+7. If the team no longer trusts traces, approval handling, or evals, the rollout should stop, not continue as “extra observation in prod”.
 
 ## 11. Example Rollout Checklist Policy
 
@@ -263,6 +275,7 @@ rollout:
     - oncall_owner
     - approval_queue_owner
     - session_expiry_signals_visible
+    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -274,6 +287,7 @@ rollout:
     - approval_backlog_unbounded
     - paused_runs_without_expiry
     - capability_session_reinit_unmodeled
+    - orchestration_pattern_change_unreviewed
 ```
 
 This kind of checklist is powerful because it turns readiness into an engineering discussion instead of confidence in someone's tone of voice.
