@@ -175,6 +175,10 @@ def run_agent(request: RunRequest) -> RunResult:
 - `background runs`, которые продолжаются после первого ответа;
 - `resumable runs`, которые ставятся на паузу из-за approval, внешнего ввода или отложенной работы.
 
+Таксономия workflow-паттернов у Anthropic делает это еще острее, потому что разные orchestration patterns создают разные checkpoint-needs.[^anthropic] У `prompt chaining` checkpoint обычно нужен между фиксированными стадиями, у `routing` он часто нужен только на границе классификации и handoff, `parallelization` требует видимости join-state, а `orchestrator-workers` требует parent/worker coordination state, который переживает частичное завершение.
+
+То есть bounded autonomy это не только вопрос policy. Это еще и вопрос дизайна runtime state: каждый разрешенный execution pattern приносит с собой собственную семантику pause, resume и completion.
+
 Если у рантайма нет явной формы для этих случаев, длинная работа почти всегда утекает в ad hoc retries, дублирующиеся запросы и скрытые переходы состояния.
 
 ## 9. Stateful tool sessions тоже должны входить в baseline
@@ -208,6 +212,8 @@ def run_agent(request: RunRequest) -> RunResult:
 ### 9.2. Progress и elicitation должны входить в ту же модель resume-control
 
 Еще один полезный вывод из stateful MCP guidance: progress events и elicitation requests нельзя считать экзотическим побочным каналом. Они должны входить в ту же runtime control model, что approvals и background resumption.
+
+Это становится еще важнее, когда runtime поддерживает несколько orchestration patterns. Progress из ветки `parallelization`, из worker, делегированного через `orchestrator-workers`, или из gated-стадии `prompt chaining` не должен пропадать внутри pattern-specific adapters. Он должен попадать в одну общую control surface для status, resumption, expiry и operator visibility.
 
 На практике baseline runtime выигрывает от одной общей модели состояний для:
 

@@ -175,6 +175,10 @@ OpenAI 最近关于 background mode 的材料很有帮助，因为它把 backgro
 - `background runs`，会在首次响应之后继续执行；
 - `resumable runs`，会因为 approval、外部输入或延迟工作而暂停后再继续。
 
+Anthropic 的 workflow taxonomy 又把这个问题压得更具体了，因为不同 orchestration patterns 会带来不同的 checkpoint needs。[^anthropic] `prompt chaining` 往往需要在固定阶段之间 checkpoint，`routing` 往往只需要在分类和 handoff 边界 checkpoint，`parallelization` 需要 join-state 可见性，而 `orchestrator-workers` 需要能跨部分完成而存活的 parent/worker coordination state。
+
+所以 bounded autonomy 不只是 policy 问题，也是一种 runtime-state 设计问题：每一种被允许的 execution pattern，都会带来自己的一套 pause、resume 和 completion semantics。
+
 如果 runtime 对这些情况没有显式形态，长时间工作最终通常都会泄漏成 ad hoc retries、重复请求和隐藏状态迁移。
 
 ## 9. Stateful tool sessions 也应该属于 baseline
@@ -208,6 +212,8 @@ OpenAI 最近关于 background mode 的材料很有帮助，因为它把 backgro
 ### 9.2. Progress 和 elicitation 应该进入同一套 resume-control model
 
 stateful MCP guidance 的另一个重要含义是：progress events 和 elicitation requests 不应被当成奇怪的旁路信号。它们应该和 approvals、background resumption 一起进入同一套 runtime control model。
+
+当 runtime 开始支持多种 orchestration patterns 时，这一点会更重要。来自 `parallelization` 分支的 progress、由 `orchestrator-workers` 委派出去的 worker progress，或者来自 gated `prompt chaining` 阶段的 progress，都不应该被困在 pattern-specific adapters 里。它们应该进入同一个共享 control surface，用来支撑 status、resumption、expiry 和 operator visibility。
 
 在实践里，baseline runtime 很适合为这些状态使用统一规则：
 

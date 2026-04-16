@@ -175,6 +175,10 @@ That is the right mental model for a baseline runtime too. The runtime should al
 - `background runs` that continue after the initial response;
 - `resumable runs` that pause on approval, external input, or deferred work.
 
+Anthropic's workflow taxonomy sharpens this further because different orchestration patterns create different checkpoint needs.[^anthropic] A `prompt chaining` path may checkpoint between fixed stages, `routing` may checkpoint only at classification and handoff boundaries, `parallelization` needs join-state visibility, and `orchestrator-workers` needs parent/worker coordination state that survives partial completion.
+
+So bounded autonomy is not only a policy issue. It is also a runtime-state design issue: every allowed execution pattern implies its own pause, resume, and completion semantics.
+
 If the runtime has no explicit shape for those cases, long-running work usually leaks into ad hoc retries, duplicated requests, and hidden state transitions.
 
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
@@ -208,6 +212,8 @@ That does not mean every tool needs a heavyweight session model. It means the ru
 ### 9.2. Progress and Elicitation Should Feed the Same Resume Model
 
 Another useful implication from stateful MCP guidance is that progress events and elicitation requests should not be treated as exotic side channels. They should enter the same runtime control model as approvals and background resumption.
+
+That becomes even more important once the runtime supports multiple orchestration patterns. Progress from a `parallelization` branch, a worker delegated by `orchestrator-workers`, or a gated `prompt chaining` stage should not disappear into pattern-specific adapters. It should feed one shared control surface for status, resumption, expiry, and operator visibility.
 
 In practice, that means the baseline runtime benefits from one shared set of rules for:
 
