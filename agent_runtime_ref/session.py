@@ -14,6 +14,9 @@ class RunRecord:
     output_text: str
     capability_session_id: str = ""
     capability_session_status: str = ""
+    authorization_mode: str = "platform_owned"
+    delegated_principal_id: str = ""
+    delegated_scope: str = ""
 
 
 @dataclass(slots=True)
@@ -41,6 +44,9 @@ class SessionStore:
         output_text: str,
         capability_session_id: str = "",
         capability_session_status: str = "",
+        authorization_mode: str = "platform_owned",
+        delegated_principal_id: str = "",
+        delegated_scope: str = "",
     ) -> RunRecord:
         session = self._sessions.setdefault(
             session_id,
@@ -59,6 +65,9 @@ class SessionStore:
             output_text=output_text,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         )
         self._runs.append(record)
         return record
@@ -143,6 +152,9 @@ class SessionStore:
                     "output_text": run.output_text,
                     "capability_session_id": run.capability_session_id,
                     "capability_session_status": run.capability_session_status,
+                    "authorization_mode": run.authorization_mode,
+                    "delegated_principal_id": run.delegated_principal_id,
+                    "delegated_scope": run.delegated_scope,
                 }
                 for run in runs
             ],

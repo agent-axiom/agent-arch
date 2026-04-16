@@ -31,6 +31,9 @@ class ApprovalRequest:
     session_id: str = ""
     capability_session_id: str = ""
     capability_session_status: str = "pending"
+    authorization_mode: str = "platform_owned"
+    delegated_principal_id: str = ""
+    delegated_scope: str = ""
     status: str = "pending"
     resolution_note: str = ""
 
@@ -53,6 +56,9 @@ class ApprovalQueue:
         reviewer: str | None,
         reason: str,
         session_id: str = "",
+        authorization_mode: str = "platform_owned",
+        delegated_principal_id: str = "",
+        delegated_scope: str = "",
     ) -> ApprovalRequest:
         self._counter += 1
         request = ApprovalRequest(
@@ -64,6 +70,9 @@ class ApprovalQueue:
             reason=reason,
             session_id=session_id,
             capability_session_id=f"cap-session-{self._counter:03d}",
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         )
         self._items.append(request)
         return request

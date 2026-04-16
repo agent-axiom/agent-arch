@@ -16,6 +16,9 @@ class RunRequest:
     trace_id: str
     session_id: str = "session-demo-001"
     agent_id: str = "agent-runtime-ref"
+    authorization_mode: str = "platform_owned"
+    delegated_principal_id: str = ""
+    delegated_scope: str = ""
 
 
 @dataclass(slots=True)

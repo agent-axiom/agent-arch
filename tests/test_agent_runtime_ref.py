@@ -923,6 +923,63 @@ class TestDelegatedAuthorizationConfig:
         assert delegated["subagent_inheritance"] == "explicit_only"
 
 
+class TestDelegatedAuthorizationRuntime:
+    def test_runtime_emits_and_exports_delegated_authorization_fields(self) -> None:
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this onboarding issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-authz-001",
+                session_id="session-authz-001",
+                agent_id="agent-runtime-ref",
+                authorization_mode="user_delegated",
+                delegated_principal_id="user-1",
+                delegated_scope="tickets.write",
+            ),
+        )
+        assert result.status == "success"
+
+        approval_request = runtime.approvals.all()[0]
+        assert approval_request.authorization_mode == "user_delegated"
+        assert approval_request.delegated_principal_id == "user-1"
+        assert approval_request.delegated_scope == "tickets.write"
+
+        approval_event = next(event for event in runtime.telemetry.events if event.event_type == "approval_requested")
+        assert approval_event.payload["authorization_mode"] == "user_delegated"
+        assert approval_event.payload["delegated_principal_id"] == "user-1"
+        assert approval_event.payload["delegated_scope"] == "tickets.write"
+
+        session_run = runtime.sessions.runs_for_session("session-authz-001")[0]
+        assert session_run.authorization_mode == "user_delegated"
+        assert session_run.delegated_principal_id == "user-1"
+        assert session_run.delegated_scope == "tickets.write"
+
+    def test_session_export_includes_delegated_authorization_fields(self, tmp_path: Path) -> None:
+        runtime = AgentRuntime()
+        runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this onboarding issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-authz-export-001",
+                session_id="session-authz-export-001",
+                agent_id="agent-runtime-ref",
+                authorization_mode="user_delegated",
+                delegated_principal_id="user-1",
+                delegated_scope="tickets.write",
+            ),
+        )
+        output_path = tmp_path / "session-authz.json"
+        runtime.sessions.export_session_json("session-authz-export-001", output_path=output_path)
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+        run = payload["runs"][0]
+        assert run["authorization_mode"] == "user_delegated"
+        assert run["delegated_principal_id"] == "user-1"
+        assert run["delegated_scope"] == "tickets.write"
+
+
 class TestLifecycleArtifacts:
     def test_change_gate_detects_missing_signal(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record

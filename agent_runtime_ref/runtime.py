@@ -56,6 +56,9 @@ class AgentRuntime:
     def run(self, request: RunRequest) -> RunResult:
         capability_session_id = ""
         capability_session_status = ""
+        authorization_mode = request.authorization_mode
+        delegated_principal_id = request.delegated_principal_id
+        delegated_scope = request.delegated_scope
         self.telemetry.emit(
             "run_start",
             request.trace_id,
@@ -65,6 +68,9 @@ class AgentRuntime:
             session_id=request.session_id,
             agent_id=request.agent_id,
             runtime_principal=self.agent.runtime_principal,
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         )
         precheck = self.policy.precheck(request)
         self.telemetry.emit(
@@ -123,6 +129,9 @@ class AgentRuntime:
             if latest_tool is not None:
                 capability_session_id = latest_tool.payload.get("capability_session_id", "")
                 capability_session_status = latest_tool.payload.get("capability_session_status", latest_tool.status)
+                authorization_mode = latest_tool.payload.get("authorization_mode", authorization_mode)
+                delegated_principal_id = latest_tool.payload.get("delegated_principal_id", delegated_principal_id)
+                delegated_scope = latest_tool.payload.get("delegated_scope", delegated_scope)
             model_output = self._call_model(request, context, second_pass=True)
 
         self._schedule_background_updates(request, context, model_output)
@@ -137,6 +146,9 @@ class AgentRuntime:
             output_text=result.output_text,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         )
         self.telemetry.emit(
             "run_complete",
@@ -144,6 +156,9 @@ class AgentRuntime:
             session_id=request.session_id,
             status=result.status,
             output_preview=result.output_text[:80],
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         )
         return result
 
@@ -259,6 +274,9 @@ class AgentRuntime:
                 reviewer=approver,
                 reason=decision.reason,
                 session_id=request.session_id,
+                authorization_mode=request.authorization_mode,
+                delegated_principal_id=request.delegated_principal_id,
+                delegated_scope=request.delegated_scope,
             )
             self.telemetry.emit(
                 "approval_requested",
@@ -270,6 +288,9 @@ class AgentRuntime:
                 status=approval_request.status,
                 capability_session_id=approval_request.capability_session_id,
                 capability_session_status=approval_request.capability_session_status,
+                authorization_mode=approval_request.authorization_mode,
+                delegated_principal_id=approval_request.delegated_principal_id,
+                delegated_scope=approval_request.delegated_scope,
             )
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
@@ -280,6 +301,9 @@ class AgentRuntime:
                     "reviewer": approval_request.reviewer,
                     "capability_session_id": approval_request.capability_session_id,
                     "capability_session_status": approval_request.capability_session_status,
+                    "authorization_mode": approval_request.authorization_mode,
+                    "delegated_principal_id": approval_request.delegated_principal_id,
+                    "delegated_scope": approval_request.delegated_scope,
                 },
             )
             context.tool_results.append(tool_result)
@@ -304,6 +328,9 @@ class AgentRuntime:
                 lambda: execute_tool(capability, tool_request, decision),
             ),
         )
+        tool_result.payload["authorization_mode"] = tool_result.payload.get("authorization_mode", request.authorization_mode)
+        tool_result.payload["delegated_principal_id"] = tool_result.payload.get("delegated_principal_id", request.delegated_principal_id)
+        tool_result.payload["delegated_scope"] = tool_result.payload.get("delegated_scope", request.delegated_scope)
         context.tool_results.append(tool_result)
         context.context_layers.setdefault("tool", []).append(
             f"{tool_result.capability_name}:{tool_result.status}",
@@ -315,6 +342,9 @@ class AgentRuntime:
             capability=tool_result.capability_name,
             status=tool_result.status,
             tool_principal=tool_result.payload.get("tool_principal", "n/a"),
+            authorization_mode=tool_result.payload.get("authorization_mode", request.authorization_mode),
+            delegated_principal_id=tool_result.payload.get("delegated_principal_id", request.delegated_principal_id),
+            delegated_scope=tool_result.payload.get("delegated_scope", request.delegated_scope),
         )
         return decision
 
