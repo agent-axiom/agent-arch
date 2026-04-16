@@ -254,6 +254,15 @@ capabilities:
 
 这些字段能让 delegated approval path 变成显式的 runtime contract，而不是藏在产品逻辑或 UI 行为里。
 
+同样的纪律也应该延伸到 identity boundary。如果某个 capability 通过 MCP 或其他 brokered transport 使用 delegated user authorization，那么 policy layer 也应该能明确说明：
+
+- 访问到底是 platform-owned 还是 user-delegated；
+- delegated scopes 在 paused run 之后能否继续复用；
+- revoked authorization 会触发 cancel、re-approval 还是 re-initialization；
+- subagents 是否可以继承同一份 delegated authorization context。
+
+这样 delegated approval 和 delegated authorization 才能留在同一套 governed contract model 里，而不会演变成彼此无关的例外。
+
 OpenAI 最近关于 structured outputs 的材料，对 policy layer 也很有帮助。[^openai-structured]
 
 如果 runtime 仍然需要猜测 policy result、approval request 或 capability payload 是否按预期形态返回，那么 contract 其实只完成了一半。

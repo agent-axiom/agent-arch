@@ -254,6 +254,15 @@ Stateful capability flows делают это требование еще жес
 
 Такие поля помогают делать delegated approval path явным, а не прятать его в product logic или поведении UI.
 
+Тот же уровень дисциплины нужен и на identity boundary. Если capability использует delegated user authorization через MCP или другой brokered transport, policy layer должен уметь явно зафиксировать:
+
+- доступ platform-owned или user-delegated;
+- можно ли reuse delegated scopes после paused run;
+- ведет ли revoked authorization к cancel, re-approval или re-initialization;
+- могут ли subagents наследовать тот же delegated authorization context.
+
+Так delegated approval и delegated authorization остаются внутри одной governed contract model, а не превращаются в два несвязанных исключения.
+
 Свежий материал OpenAI по structured outputs полезен и для policy layer.[^openai-structured]
 
 Контракт наполовину нереален, если runtime все равно вынужден догадываться, вернулись ли policy result, approval request или capability payload в ожидаемой форме.

@@ -41,6 +41,8 @@ A practical reading path is:
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
   Approval gates, pause/resume semantics, simple human review queues for high-risk actions, and the control surface where approval state has to stay aligned with capability session state.
+
+That same runtime-control surface is also the natural place to keep delegated authorization assumptions explicit: which principal delegated access, whether that authorization may survive pause/resume, and what the runtime does if delegated access is revoked before the action completes.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   Lifecycle artifacts for change records, artifact bundles, runtime-control schemas, and retirement plans, plus readiness checks for those states.
 
@@ -184,7 +186,7 @@ There are starter files for both runtime and lifecycle in [configs](/Users/if/Py
 
 These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
 
-The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, and the contract boundary between a user run and a capability-side session.
+The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, delegated authorization assumptions, and the contract boundary between a user run and a capability-side session.
 
 ## Why This Is Useful
 

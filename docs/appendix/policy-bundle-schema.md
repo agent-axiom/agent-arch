@@ -174,6 +174,10 @@ approval_contract:
 - `classifier_verdict_policy`
 - `escalate_to_human_if`
 - `subagent_handoff_policy`
+- `authorization_mode`
+- `delegated_principal_policy`
+- `token_reuse_policy`
+- `on_authorization_revoke`
 
 Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
 
@@ -206,7 +210,8 @@ approval_contract:
 
 - каталог возможностей описывает, что система умеет;
 - набор политик описывает, как и при каких условиях это можно использовать;
-- контракт подтверждения описывает, где система обязана остановиться и уступить человеку.
+- контракт подтверждения описывает, где система обязана остановиться и уступить человеку;
+- authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено.
 
 ## Что сделать сразу
 

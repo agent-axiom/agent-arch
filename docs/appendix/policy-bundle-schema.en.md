@@ -174,6 +174,10 @@ Useful additions now include:
 - `classifier_verdict_policy`
 - `escalate_to_human_if`
 - `subagent_handoff_policy`
+- `authorization_mode`
+- `delegated_principal_policy`
+- `token_reuse_policy`
+- `on_authorization_revoke`
 
 That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
 
@@ -206,7 +210,8 @@ So the practical rule is simple:
 
 - the capability catalog describes what the system can do;
 - the policy bundle describes how and under which conditions that capability may be used;
-- the approval contract describes where reasoning must stop and hand control to a human.
+- the approval contract describes where reasoning must stop and hand control to a human;
+- the authorization contract describes under whose identity and delegated scope the action may execute.
 
 ## What to Do Right Away
 

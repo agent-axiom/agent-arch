@@ -41,6 +41,8 @@
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
   用于高风险动作的审批门禁、pause/resume semantics、简单人工评审队列，以及 approval state 必须与 capability session state 保持一致的那层 control surface。
+
+同一层 runtime-control surface 也天然适合承载 delegated authorization assumptions：是谁委托了访问，这份授权能否跨过 pause/resume 继续有效，以及如果 delegated access 在动作完成前被撤销，runtime 应该如何处理。
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   用于 change record、artifact bundle、runtime-control schemas 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
 

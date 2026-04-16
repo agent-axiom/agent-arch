@@ -174,6 +174,10 @@ approval_contract:
 - `classifier_verdict_policy`
 - `escalate_to_human_if`
 - `subagent_handoff_policy`
+- `authorization_mode`
+- `delegated_principal_policy`
+- `token_reuse_policy`
+- `on_authorization_revoke`
 
 这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
 
@@ -206,7 +210,8 @@ approval_contract:
 
 - 能力目录描述系统能做什么；
 - 策略包描述这些能力在什么条件下可以被调用；
-- 审批契约描述推理应该在何处停下并把控制权交给人。
+- 审批契约描述推理应该在何处停下并把控制权交给人；
+- authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行。
 
 ## 现在就该做什么
 

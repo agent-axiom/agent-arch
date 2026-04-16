@@ -254,6 +254,15 @@ As approval systems mature, the contract may also need fields for classifier-bac
 
 Those additions help the runtime represent a delegated approval path explicitly instead of hiding it in product logic or UI behavior.
 
+The same discipline should hold across the identity boundary too. If a capability uses delegated user authorization through MCP or another brokered transport, the policy layer should be able to state whether:
+
+- access is platform-owned or user-delegated;
+- delegated scopes may be reused across a paused run;
+- revoked authorization forces cancel, re-approval, or re-initialization;
+- subagents are allowed to inherit the same delegated authorization context.
+
+That keeps delegated approval and delegated authorization inside one governed contract model instead of letting them evolve as unrelated exceptions.
+
 Recent OpenAI guidance on structured outputs is useful for the policy layer too.[^openai-structured]
 
 A contract is only half real if the runtime still has to guess whether a policy result, approval request, or capability payload came back in the expected shape.
