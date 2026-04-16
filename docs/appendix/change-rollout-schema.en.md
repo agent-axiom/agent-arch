@@ -110,6 +110,7 @@ In practice, that usually means the gate should also make explicit:
 - whether capability-session expiry behavior was exercised before rollout;
 - whether re-init is denied, allowed, or approval-bound for the affected path;
 - whether delegated authorization continuity was checked across run traces, approval records, and session export;
+- whether orchestration-pattern changes were reviewed as runtime-control changes before rollout;
 - who owns emergency freeze if interruption semantics start drifting after release.
 
 ## 6. How this connects to the eval schema
@@ -160,6 +161,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - interruption behavior for approval-bound or stateful capability sessions is checked before rollout;
 - expiry and re-init behavior for capability sessions is checked before rollout;
 - delegated authorization continuity between run traces, approval records, and session export is checked before rollout;
+- orchestration-pattern changes are reviewed before rollout, especially when they add routing, parallelization, or delegated worker surfaces;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks
@@ -171,6 +173,7 @@ The common failure modes are familiar:
 - telemetry readiness is judged informally;
 - safety findings are not treated as blockers;
 - capability-session expiry or re-init behavior is left unmodeled;
+- orchestration-pattern changes slip through as “implementation detail” without explicit review;
 - the rollout wave is described too vaguely;
 - nobody can explain why the change was allowed into canary at all.
 

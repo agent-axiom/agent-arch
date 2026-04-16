@@ -110,6 +110,7 @@ decided_by:
 - проверялось ли capability-session expiry behavior до rollout;
 - является ли re-init для затронутого path denied, allowed или approval-bound;
 - проверялась ли delegated authorization continuity между run traces, approval records и session export;
+- были ли changes в orchestration pattern отдельно reviewed как runtime-control changes до rollout;
 - кто owner у emergency freeze, если interruption semantics начнут дрейфовать после релиза.
 
 ## 6. Как это связано с eval schema
@@ -160,6 +161,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
 - expiry и re-init behavior для capability sessions проверяются до rollout;
 - delegated authorization continuity между run traces, approval records и session export проверяется до rollout;
+- changes в orchestration pattern проверяются до rollout, особенно если они добавляют routing, parallelization или delegated worker surfaces;
 - rollback plan не живет только в головах команды.
 
 ## 10. Что чаще всего ломается
@@ -171,6 +173,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - telemetry readiness проверяется "на глаз";
 - safety findings не считаются blocker'ами;
 - capability-session expiry или re-init behavior остаются неоформленными;
+- changes в orchestration pattern проходят как «деталь реализации» без явного review;
 - rollout wave описан слишком расплывчато;
 - никто не может объяснить, почему изменение вообще было допущено в canary.
 

@@ -110,6 +110,7 @@ decided_by:
 - rollout 前是否验证过 capability-session expiry behavior；
 - 对受影响路径而言，re-init 是 denied、allowed 还是 approval-bound；
 - run traces、approval records 与 session export 之间的 delegated authorization continuity 是否已验证；
+- orchestration-pattern changes 是否在 rollout 前被当成 runtime-control changes 单独评审；
 - 如果 interruption semantics 在发布后开始漂移，emergency freeze 由谁负责。
 
 ## 6. 它和评测模式的关系
@@ -160,6 +161,7 @@ decided_by:
 - approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
 - capability sessions 的 expiry 与 re-init behavior 会在 rollout 前被检查；
 - run traces、approval records 与 session export 之间的 delegated authorization continuity 会在 rollout 前被检查；
+- orchestration-pattern changes 会在 rollout 前被检查，尤其是它们引入 routing、parallelization 或 delegated worker surfaces 时；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
@@ -171,6 +173,7 @@ decided_by:
 - 遥测准备度靠肉眼判断；
 - 安全发现结果没有被当作阻断项；
 - capability-session expiry 或 re-init behavior 没有被建模；
+- orchestration-pattern changes 被当成“实现细节”溜过去，没有显式评审；
 - 发布波次的定义太模糊；
 - 没人能解释为什么这个变更居然能进 canary。
 
