@@ -63,6 +63,8 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 这个建议很保守。也正因为保守，它非常有效。
 
+Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先上 framework。[^anthropic] 如果直接调用 API 再加上一层很薄的 orchestration 就已经足够解决问题，那么过早引入额外抽象，通常只会让调试、prompt 检查和 operational ownership 变得更糟，而不是更好。
+
 ## 5. 什么时候 agent 才是真的合理
 
 是否需要 agent，应该由任务形态决定，而不是由风格决定。
@@ -104,6 +106,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 - 在 workflow 还没描述清楚之前，就先决定“这里要上 agent”；
 - 只要系统不止一个步骤，就把它叫作 `multi-agent`；
+- 团队还说不清 underlying prompts、tool contracts 和 failure paths 时，就先把 framework 引进来；
 - 在 trust boundaries、approvals 和 observability 还没定义前，就先争论 prompt 和模型；
 - 用 demo 的表现衡量成败，而不是看第一次 retry、第一次 timeout 和第一次 incident 之后会发生什么。
 
@@ -157,6 +160,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 - 哪些上下文被送进了模型；
 - 质量到底在哪一步下降了；
 - 请求过哪些审批；
+- runtime 走的是 fixed workflow、constrained loop，还是 delegated multi-agent path；
 - 每一步花掉了多少延迟和 token。
 
 一旦这些东西从视野里消失，智能体就会开始变成黑箱。

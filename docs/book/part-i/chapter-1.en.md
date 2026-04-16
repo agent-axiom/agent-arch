@@ -63,6 +63,8 @@ Translated into engineering language, the rule is simple:
 
 This is conservative advice. That is also why it works.
 
+One of Anthropic's most useful practical points is that teams should resist framework-first thinking in the early phase.[^anthropic] If a direct API call plus a small amount of orchestration already solves the task, adding another abstraction layer too early usually makes debugging, prompt inspection, and operational ownership worse, not better.
+
 ## 5. When an Agent Is Actually Justified
 
 An agent should be justified by the shape of the task, not by style.
@@ -104,6 +106,7 @@ The same early mistakes keep repeating:
 
 - choosing an agent before describing the workflow clearly enough;
 - calling anything with more than one step `multi-agent`;
+- adding a framework before the team can clearly explain the underlying prompts, tool contracts, and failure paths;
 - debating prompts and models before defining trust boundaries, approvals, and observability;
 - measuring success by the demo, not by what happens after the first retry, the first timeout, and the first incident.
 
@@ -157,6 +160,7 @@ The minimally useful set is very concrete:
 - what context was sent into the model;
 - where quality degraded;
 - which approvals were requested;
+- whether the runtime followed a fixed workflow, a constrained loop, or a delegated multi-agent path;
 - how much each step cost in latency and tokens.
 
 The moment this list disappears from view, the agent starts turning into a black box.
