@@ -45,6 +45,7 @@ It is useful to treat not only code, but every surface that can materially alter
 - delegated authorization rules and token-handling assumptions;
 - retrieval corpora;
 - memory write semantics;
+- orchestration-pattern selection and worker-delegation boundaries;
 - capability-session interruption and expiry semantics;
 - eval datasets and grading logic;
 - rollout parameters.
@@ -121,6 +122,7 @@ A practical model usually looks like this:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior, trace and approval-record continuity;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
+- orchestration-pattern changes -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks, and pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, and cost deltas.
 
 This is an important practical rule: eval strategy should be tied to the class of change, not treated as one universal test.
@@ -144,6 +146,8 @@ And if the change affects approval-bound or stateful capability flows, the gate 
 
 That class of change is easy to underestimate because the product surface may look unchanged while the operational risk profile has shifted materially.
 
+The same is true when the runtime changes orchestration pattern without changing the visible feature description. Moving a path from a fixed workflow to `routing`, adding `parallelization`, or introducing `orchestrator-workers` can materially alter checkpoint behavior, approval ordering, delegated worker exposure, and failure recovery. Those should be treated as release-bearing runtime-control changes too.
+
 OpenAI and Microsoft, in different language, point to the same operational idea: agent systems should be strengthened through measurable readiness, staged adoption, and managed operations, not through hope-driven shipping.[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback is harder than it looks
@@ -158,7 +162,8 @@ You often need to roll back independently:
 - a retrieval corpus version;
 - capability exposure;
 - an approval threshold;
-- interruption and expiry semantics for approval-bound capability sessions.
+- interruption and expiry semantics for approval-bound capability sessions;
+- orchestration-pattern selection, worker-safe catalog exposure, and delegated worker review boundaries.
 
 If all of those are fused into one indivisible deploy artifact, rollback becomes too blunt and too slow.
 
@@ -255,6 +260,7 @@ The same problems appear again and again:
 
 - prompt changes are not treated as releases;
 - policy changes ship without evals;
+- orchestration-pattern changes are waved through as “implementation detail”;
 - new tool exposure is treated as a minor technical tweak;
 - rollback exists only on paper;
 - nobody does impact analysis;

@@ -45,6 +45,7 @@
 - delegated authorization rules и assumptions про token handling;
 - retrieval corpus;
 - memory write semantics;
+- выбор orchestration pattern и boundaries для worker delegation;
 - interruption и expiry semantics для capability sessions;
 - eval datasets и grading logic;
 - параметры rollout.
@@ -121,6 +122,7 @@ Prompt, routine или instruction change могут:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior и continuity между traces и approval records;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
+- changes в orchestration pattern -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks и pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, cost deltas.
 
 Это важный практический принцип: eval strategy должна быть привязана к классу изменения, а не быть одной универсальной проверкой на все случаи.
@@ -144,6 +146,8 @@ Prompt, routine или instruction change могут:
 
 Именно этот класс изменений особенно легко недооценить: продуктовая поверхность может выглядеть прежней, а operational risk profile уже заметно сдвинулся.
 
+То же самое верно и для ситуации, когда runtime меняет orchestration pattern без изменения user-visible feature description. Перевод path с fixed workflow на `routing`, добавление `parallelization` или внедрение `orchestrator-workers` могут существенно поменять checkpoint behavior, approval ordering, delegated worker exposure и failure recovery. Такие изменения тоже нужно считать release-bearing runtime-control changes.
+
 OpenAI и Microsoft в разных формулировках приходят к одной и той же operational мысли: agent systems нужно усиливать через measurable readiness, staged adoption и managed operations, а не через hope-driven shipping.[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback в агентных системах сложнее, чем кажется
@@ -158,7 +162,8 @@ OpenAI и Microsoft в разных формулировках приходят 
 - retrieval corpus version;
 - capability exposure;
 - approval threshold;
-- interruption и expiry semantics для approval-bound capability sessions.
+- interruption и expiry semantics для approval-bound capability sessions;
+- orchestration-pattern selection, worker-safe catalog exposure и delegated worker review boundaries.
 
 Если все эти вещи смешаны в один неделимый deploy artifact, rollback становится слишком грубым и слишком медленным.
 
@@ -255,6 +260,7 @@ def classify_change(change: ChangeRequest) -> str:
 
 - prompt changes не считаются релизами;
 - policy changes выкатываются без evals;
+- changes в orchestration pattern проходят как «деталь реализации»;
 - new tool exposure проходит как “техническая мелочь”;
 - rollback существует только на словах;
 - impact analysis никто не делает;

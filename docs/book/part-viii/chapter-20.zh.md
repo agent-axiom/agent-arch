@@ -45,6 +45,7 @@
 - delegated authorization rules 与 token-handling assumptions；
 - 检索语料；
 - 记忆写入语义；
+- orchestration-pattern selection 与 worker-delegation boundaries；
 - capability-session interruption 与 expiry semantics；
 - 评测数据集与分级逻辑；
 - 发布参数。
@@ -121,6 +122,7 @@ flowchart LR
 - 工具变更 -> 契约测试、幂等性检查、审批路径验证；
 - delegated authorization changes -> principal-binding checks、scope-visibility checks、revoke-during-pause behavior，以及 traces 与 approval records 的 continuity；
 - interruption-governance 变更 -> paused-run expiry checks、re-init behavior checks、telemetry linkage checks、approval-resume invariants；
+- orchestration-pattern changes -> routing-class coverage、join-state checks、worker-boundary checks、review-point checks，以及 pattern-specific trace continuity；
 - 模型路由变更 -> 质量、延迟、安全、成本差值。
 
 这是一条很重要的实践原则：评测策略应该跟变更类别绑定，而不是拿一套通用检查去覆盖所有变更。
@@ -144,6 +146,8 @@ flowchart LR
 
 这一类变化特别容易被低估，因为产品表面看起来没变，但 operational risk profile 已经发生了实质漂移。
 
+runtime 在不改变表面功能描述的情况下改变 orchestration pattern 时也是一样。把某条路径从 fixed workflow 改成 `routing`、加入 `parallelization`，或者引入 `orchestrator-workers`，都可能实质性改变 checkpoint behavior、approval ordering、delegated worker exposure 和 failure recovery。这些也应该被当成 release-bearing runtime-control changes。
+
 OpenAI 和 Microsoft 虽然表述不同，但都指向同一个 operational 结论：agent systems 应该通过 measurable readiness、staged adoption 和 managed operations 来增强，而不是靠 hope-driven shipping。[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback 比看起来更难
@@ -158,7 +162,8 @@ OpenAI 和 Microsoft 虽然表述不同，但都指向同一个 operational 结�
 - retrieval corpus version；
 - capability exposure；
 - approval threshold；
-- approval-bound capability sessions 的 interruption 与 expiry semantics。
+- approval-bound capability sessions 的 interruption 与 expiry semantics；
+- orchestration-pattern selection、worker-safe catalog exposure 与 delegated worker review boundaries。
 
 如果这些东西都被塞进一个不可分的 deploy artifact，rollback 就会太粗暴，也太慢。
 
@@ -255,6 +260,7 @@ def classify_change(change: ChangeRequest) -> str:
 
 - prompt changes 不被当成正式发布；
 - policy changes 没有 evals 就直接上线；
+- orchestration-pattern changes 被当成“实现细节”放过去；
 - new tool exposure 被当成“技术小改动”；
 - rollback 只停留在口头上；
 - 没有人做 impact analysis；
