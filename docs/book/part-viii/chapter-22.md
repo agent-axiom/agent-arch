@@ -36,6 +36,7 @@
 - наборы для оценки;
 - правила и схемы подтверждения;
 - схемы runtime-control;
+- правила governance для orchestration pattern и определения worker-safe catalog;
 - правила interruption и re-initialization для capability sessions;
 - наборы для раскатки.
 
@@ -76,6 +77,7 @@ Google Research очень правильно показывает, что пр�
 - какой набор для оценки подтвердил выпуск;
 - какая contract version и approval schema были активны;
 - какая interruption или expiry policy управляла этим run;
+- какой orchestration pattern и какая worker-boundary policy управляли этим run;
 - какой delegated authorization mode, principal binding и revoke policy управляли этим run;
 - кто одобрил это изменение.
 
@@ -196,6 +198,7 @@ flowchart LR
 - paused runs истекали или могли ждать бесконечно;
 - capability-session re-init была allowed, denied или approval-bound;
 - telemetry обязана была связывать исходную и reinitialized capability sessions или нет;
+- какой orchestration pattern был утвержден для этого path и действовали ли worker-safe catalog boundaries;
 - approval и session-control logic еще управлялись одним contract version или уже начали расходиться;
 - delegated access была platform-owned или user-delegated;
 - какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
@@ -239,6 +242,9 @@ inventory:
     - staged_rollout
     - approval_required_for_high_risk
     - governed_background_mode
+    - reviewed_routing
+    - bounded_parallelization
+    - worker_safe_orchestrator_workers
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -283,6 +289,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы для оценки тихо меняются;
 - контракты возможностей редактируются без следа проверки;
 - approval или runtime-control schemas меняются без version discipline;
+- changes в governance orchestration pattern не имеют artifact lineage;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в evidence layer отсутствует contract-version linkage;
 - устаревшие шаблоны живут в промышленной среде слишком долго;

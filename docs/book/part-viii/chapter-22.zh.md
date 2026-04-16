@@ -36,6 +36,7 @@
 - 评测数据集；
 - 审批规则与 schemas；
 - runtime-control schemas；
+- orchestration-pattern governance rules 与 worker-safe catalog definitions；
 - capability-session interruption 与 re-initialization rules；
 - 发布工件包。
 
@@ -76,6 +77,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 发布是被哪一个评测集验证的；
 - 当时生效的是哪个 contract version 与 approval schema；
 - 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
+- 当时是哪一种 orchestration pattern 与 worker-boundary policy 在治理这次 run；
 - 当时是哪种 delegated authorization mode、principal binding 与 revoke policy 在治理这次 run；
 - 这个变更是谁批准的。
 
@@ -196,6 +198,7 @@ approval 与 runtime-control schemas 也是一样。如果团队在没有 govern
 - paused runs 是会过期，还是可以无限等待；
 - capability-session re-init 是 allowed、denied，还是 approval-bound；
 - telemetry 是否应该把原始 capability session 和 reinitialized capability session 关联起来；
+- 当时这条路径批准的是哪一种 orchestration pattern，以及 worker-safe catalog boundaries 是否生效；
 - approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移；
 - delegated access 是 platform-owned 还是 user-delegated；
 - 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
@@ -239,6 +242,9 @@ inventory:
     - staged_rollout
     - approval_required_for_high_risk
     - governed_background_mode
+    - reviewed_routing
+    - bounded_parallelization
+    - worker_safe_orchestrator_workers
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -283,6 +289,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - eval datasets quietly 变化；
 - capability contracts 被编辑却没有 review trail；
 - approval 或 runtime-control schemas 发生变化，却没有 version discipline；
+- orchestration-pattern governance changes 没有 artifact lineage；
 - 没有人知道 incident 发生时到底是哪一个 exact artifact 在运行；
 - incident evidence 中缺少 contract-version linkage；
 - deprecated patterns 在 production 里活得太久；

@@ -36,6 +36,7 @@ The problem is that production behavior here depends on more than code. It also 
 - eval datasets;
 - approval rules and schemas;
 - runtime-control schemas;
+- orchestration-pattern governance rules and worker-safe catalog definitions;
 - capability-session interruption and re-initialization rules;
 - rollout bundles.
 
@@ -76,6 +77,7 @@ You need to be able to answer:
 - which eval set validated the release;
 - which contract version and approval schema were active;
 - which interruption or expiry policy governed the run;
+- which orchestration pattern and worker-boundary policy governed the run;
 - which delegated authorization mode, principal binding, and revoke policy governed the run;
 - who approved the change.
 
@@ -196,6 +198,7 @@ That means provenance should increasingly preserve not only that a runtime-contr
 - whether paused runs expired or waited indefinitely;
 - whether capability-session re-init was allowed, denied, or approval-bound;
 - whether telemetry was expected to link the original and reinitialized capability sessions;
+- which orchestration pattern was approved for the path, and whether worker-safe catalog boundaries were in force;
 - whether approval and session-control logic were governed under one contract version or had already drifted apart;
 - whether delegated access was platform-owned or user-delegated;
 - which principal-binding rule and revoke behavior governed in-flight or paused actions.
@@ -239,6 +242,9 @@ inventory:
     - staged_rollout
     - approval_required_for_high_risk
     - governed_background_mode
+    - reviewed_routing
+    - bounded_parallelization
+    - worker_safe_orchestrator_workers
   deprecated_patterns:
     - direct_prod_tool_access
     - unversioned_prompt_override
@@ -283,6 +289,7 @@ The usual problems look like this:
 - eval datasets change quietly;
 - capability contracts are edited without review trail;
 - approval or runtime-control schemas change without version discipline;
+- orchestration-pattern governance changes have no artifact lineage;
 - nobody knows which exact artifact was active during an incident;
 - contract-version linkage is missing from incident evidence;
 - deprecated patterns remain in production too long;
