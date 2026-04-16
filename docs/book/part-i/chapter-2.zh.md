@@ -143,7 +143,8 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 - execution context 是从哪里形成的；
 - 行动权到底放在哪里；
-- 系统在哪里留下了足够支撑排障和发布决策的证据。
+- 系统在哪里留下了足够支撑排障和发布决策的证据；
+- runtime 针对这一类任务到底选择了哪一种 orchestration pattern。
 
 现在再回头看平台全图，就更容易理解它为什么存在。
 
@@ -257,6 +258,18 @@ OpenAI 的 practical guide 有一点很对：不要把 `multi-agent` 当成默�
 1. `direct model call` 处理单步任务；
 2. `single agent with tools` 处理单一领域中的动态动作；
 3. `multi-agent orchestration` 只在 specialization、安全分离或并行分解确实值得额外 runtime complexity 时才采用。
+
+Anthropic 的模式目录让这条阶梯变得不那么抽象，因为它把团队在走向完整 agent autonomy 之前，通常真正需要的中间 workflow 形态点了出来。[^anthropic] 在实践里，真正容易漏掉的问题往往不是“我们需不需要 agent？”，而是“哪一种更小的 orchestration pattern 已经足够安全地解决这个问题？”
+
+这通常意味着应该先检查这些选项：
+
+- `prompt chaining`，适用于可以拆成固定串行步骤、并在中间插入 gates 的任务；
+- `routing`，适用于输入可以分成少数几类，而这些类别值得走不同 prompts、tools 或 downstream paths 的任务；
+- `parallelization`，适用于把独立检查拆开后能提高置信度或降低延迟的任务；
+- `orchestrator-workers`，只在子任务事先无法知道、必须动态委派时才采用；
+- `evaluator-optimizer`，适用于迭代式批评能实质改善产物的任务。
+
+这在架构上很重要，因为这些不只是 prompting tricks。每一种模式都会改变 runtime 里 checkpoints、approvals、retries、trace boundaries 和 ownership 应该放在哪里。
 
 这条阶梯的价值在于，它把架构变成一种显式的 anti-overengineering discipline。真正该问的问题不是“我们能不能把它拆成多个智能体？”，而是“什么样的最低复杂度形态，仍然能在 production 中可靠运行？”
 

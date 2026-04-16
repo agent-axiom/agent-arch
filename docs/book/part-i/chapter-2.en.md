@@ -143,7 +143,8 @@ If the map still feels dense at this point, do not try to memorize every block n
 
 - where the execution context is formed;
 - where the right to act lives;
-- where the system leaves enough evidence for investigation and release decisions.
+- where the system leaves enough evidence for investigation and release decisions;
+- which orchestration pattern the runtime actually chose for this class of work.
 
 Only now does it become useful to show the whole platform from above.
 
@@ -257,6 +258,18 @@ A practical escalation ladder is:
 1. `direct model call` for single-step work;
 2. `single agent with tools` for one domain with dynamic actions;
 3. `multi-agent orchestration` only when specialization, security separation, or parallel decomposition clearly justify the extra runtime complexity.
+
+Anthropic's pattern catalog helps make that ladder less abstract because it names the intermediate workflow shapes teams usually need before full agent autonomy.[^anthropic] In practice, the missing question is often not "do we need an agent?" but "which smaller orchestration pattern already solves this safely enough?"
+
+That usually means checking for these options first:
+
+- `prompt chaining` when the task can be decomposed into fixed serial steps with gates between them;
+- `routing` when incoming requests fall into a few classes that deserve different prompts, tools, or downstream paths;
+- `parallelization` when confidence or latency improves by splitting independent checks;
+- `orchestrator-workers` only when the subtasks are not knowable in advance and must be delegated dynamically;
+- `evaluator-optimizer` when iterative critique materially improves the artifact.
+
+This matters architecturally because these are not just prompting tricks. Each pattern changes where checkpoints, approvals, retries, trace boundaries, and ownership should sit in the runtime.
 
 That ladder is useful because it turns architecture into an explicit anti-overengineering discipline. The question is not "can we split this into several agents?" but "what is the lowest-complexity form that still behaves reliably in production?"
 
