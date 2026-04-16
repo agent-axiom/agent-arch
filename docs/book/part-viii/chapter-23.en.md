@@ -19,6 +19,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - approvals and audit trails;
 - paused-run state and background-run state;
 - capability-session state and interruption lineage;
+- delegated authorization lineage and revoke state;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -84,6 +85,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - expire or cancel paused runs;
 - stop background jobs and background routes;
 - close or archive capability-session state and block uncontrolled re-init;
+- revoke delegated authorization paths and archive their final lineage;
 - revoke egress access;
 - close principals, secrets, and connectors;
 - record the final audit state.
@@ -113,7 +115,8 @@ The team usually needs to decide separately:
 - what to anonymize;
 - how long traces and approvals should be kept;
 - who remains the owner of archived state;
-- whether old datasets and memory artifacts may be reused by the replacement.
+- whether old datasets and memory artifacts may be reused by the replacement;
+- whether delegated authorization records must be retained to explain under whose identity old actions ran.
 
 So retirement affects not only the running system, but also the historical operational footprint.
 

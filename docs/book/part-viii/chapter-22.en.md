@@ -76,6 +76,7 @@ You need to be able to answer:
 - which eval set validated the release;
 - which contract version and approval schema were active;
 - which interruption or expiry policy governed the run;
+- which delegated authorization mode, principal binding, and revoke policy governed the run;
 - who approved the change.
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
@@ -96,6 +97,7 @@ For agent systems, it is better to think in several linked chains:
 - capability chain;
 - approval and runtime-control chain;
 - capability-session governance chain;
+- delegated authorization chain;
 - data and retrieval chain;
 - eval chain.
 
@@ -194,7 +196,9 @@ That means provenance should increasingly preserve not only that a runtime-contr
 - whether paused runs expired or waited indefinitely;
 - whether capability-session re-init was allowed, denied, or approval-bound;
 - whether telemetry was expected to link the original and reinitialized capability sessions;
-- whether approval and session-control logic were governed under one contract version or had already drifted apart.
+- whether approval and session-control logic were governed under one contract version or had already drifted apart;
+- whether delegated access was platform-owned or user-delegated;
+- which principal-binding rule and revoke behavior governed in-flight or paused actions.
 
 ## 9. Example approved artifact policy
 

@@ -19,6 +19,7 @@
 - 审批与审计轨迹；
 - paused-run state 与 background-run state；
 - capability-session state 与 interruption lineage；
+- delegated authorization lineage 与 revoke state；
 - 外部集成；
 - 用户预期；
 - 依赖它的工作流。
@@ -84,6 +85,7 @@
 - 让 paused runs 过期或直接取消；
 - 停止后台任务与 background routes；
 - 关闭或归档 capability-session state，并阻断不受控的 re-init；
+- 撤销 delegated authorization paths，并归档它们最终的 lineage；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
 - 固化最终审计状态。
@@ -113,7 +115,8 @@ flowchart LR
 - 什么要匿名化；
 - 追踪和审批保留多久；
 - 归档状态的负责人是谁；
-- 替换后的系统是否可以复用旧数据集和记忆工件。
+- 替换后的系统是否可以复用旧数据集和记忆工件；
+- 是否需要保留 delegated authorization records，以说明旧动作到底在谁的 identity 下执行。
 
 所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 

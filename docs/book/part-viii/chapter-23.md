@@ -19,6 +19,7 @@
 - approvals and audit trails;
 - состояние paused runs и background runs;
 - состояние capability sessions и interruption lineage;
+- delegated authorization lineage и revoke state;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -84,6 +85,7 @@
 - истечь или отменить paused runs;
 - отключить background jobs и background routes;
 - закрыть или архивировать capability-session state и запретить uncontrolled re-init;
+- отозвать delegated authorization paths и архивировать их final lineage;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
 - зафиксировать final audit state.
@@ -113,7 +115,8 @@ flowchart LR
 - что anonymize;
 - как долго хранить traces и approvals;
 - кто остается owner у archived state;
-- можно ли использовать старые datasets и memory artifacts в replacement.
+- можно ли использовать старые datasets и memory artifacts в replacement;
+- нужно ли сохранять delegated authorization records, чтобы объяснять, под чьей identity исполнялись старые действия.
 
 То есть retirement затрагивает не только running system, но и накопленный рабочий след системы.
 

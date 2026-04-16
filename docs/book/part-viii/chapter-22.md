@@ -76,6 +76,7 @@ Google Research очень правильно показывает, что пр�
 - какой набор для оценки подтвердил выпуск;
 - какая contract version и approval schema были активны;
 - какая interruption или expiry policy управляла этим run;
+- какой delegated authorization mode, principal binding и revoke policy управляли этим run;
 - кто одобрил это изменение.
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
@@ -96,6 +97,7 @@ Google Research очень правильно показывает, что пр�
 - цепочкой возможностей;
 - цепочкой approval и runtime-control;
 - цепочкой governance для capability sessions;
+- цепочкой delegated authorization;
 - цепочкой данных и извлечения;
 - цепочкой оценки.
 
@@ -194,7 +196,9 @@ flowchart LR
 - paused runs истекали или могли ждать бесконечно;
 - capability-session re-init была allowed, denied или approval-bound;
 - telemetry обязана была связывать исходную и reinitialized capability sessions или нет;
-- approval и session-control logic еще управлялись одним contract version или уже начали расходиться.
+- approval и session-control logic еще управлялись одним contract version или уже начали расходиться;
+- delegated access была platform-owned или user-delegated;
+- какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
 
 ## 9. Пример политики доверенных артефактов
 

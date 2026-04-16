@@ -76,6 +76,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 发布是被哪一个评测集验证的；
 - 当时生效的是哪个 contract version 与 approval schema；
 - 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
+- 当时是哪种 delegated authorization mode、principal binding 与 revoke policy 在治理这次 run；
 - 这个变更是谁批准的。
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
@@ -96,6 +97,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 能力链；
 - approval 与 runtime-control 链；
 - capability-session governance 链；
+- delegated authorization 链；
 - 数据与检索链；
 - 评测链。
 
@@ -194,7 +196,9 @@ approval 与 runtime-control schemas 也是一样。如果团队在没有 govern
 - paused runs 是会过期，还是可以无限等待；
 - capability-session re-init 是 allowed、denied，还是 approval-bound；
 - telemetry 是否应该把原始 capability session 和 reinitialized capability session 关联起来；
-- approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移。
+- approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移；
+- delegated access 是 platform-owned 还是 user-delegated；
+- 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
 
 ## 9. 一个已批准工件策略示例
 
