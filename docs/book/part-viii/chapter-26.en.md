@@ -309,6 +309,8 @@ If several answers are “no,” you already have observability, but it has not 
 - [Chapter 11. Traces, Spans, and Structured Events](../part-v/chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
+- [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](chapter-25.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](chapter-27.en.md)
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)

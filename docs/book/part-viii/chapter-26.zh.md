@@ -311,6 +311,8 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [第 11 章：Traces、Spans 与 Structured Events](../part-v/chapter-11.zh.md)
 - [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
+- [第 25 章：行为评测、控制评测与自动化红队测试](chapter-25.zh.md)
+- [第 27 章：Agent Inventory、Registry 与 Sprawl 治理](chapter-27.zh.md)
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)

@@ -319,8 +319,9 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
+- [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
+- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

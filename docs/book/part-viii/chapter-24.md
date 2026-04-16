@@ -254,7 +254,9 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
+- [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
+- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)

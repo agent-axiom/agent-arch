@@ -319,8 +319,9 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
-- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
 - [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](chapter-23.zh.md)
+- [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
+- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

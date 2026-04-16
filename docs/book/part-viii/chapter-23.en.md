@@ -288,5 +288,7 @@ That means this part can now serve not only as architecture explanation, but als
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](chapter-22.en.md)
+- [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](chapter-27.en.md)
 - [Part VIII. Agent System Lifecycle](index.en.md)
 - [Sources](../../appendix/sources.en.md)

@@ -254,7 +254,9 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
 
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
+- [第 23 章：退役、替换与终止使用纪律](chapter-23.zh.md)
 - [第 25 章：行为评测、控制评测与自动化红队测试](chapter-25.zh.md)
+- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)

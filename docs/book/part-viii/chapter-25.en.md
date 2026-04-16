@@ -285,6 +285,8 @@ If several answers are “no,” your eval layer exists but is not yet ready for
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
 - [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
+- [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](chapter-27.en.md)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)

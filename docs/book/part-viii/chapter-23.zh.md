@@ -286,5 +286,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
 - [第 22 章：供应链、来源追踪与已批准工件](chapter-22.zh.md)
+- [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
+- [第 27 章：Agent Inventory、Registry 与 Sprawl 治理](chapter-27.zh.md)
 - [第八部分：智能体系统生命周期](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

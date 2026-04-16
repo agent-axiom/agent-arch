@@ -319,8 +319,9 @@ If several answers are “no,” you already have an agent estate but not yet ag
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
-- [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
+- [Chapter 24. Agentic Misalignment and Insider Risk](chapter-24.en.md)
+- [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

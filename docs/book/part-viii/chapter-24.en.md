@@ -254,7 +254,9 @@ The next logical step after this chapter is not just “more security,” but le
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
+- [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
 - [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](chapter-25.en.md)
+- [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](chapter-26.en.md)
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
