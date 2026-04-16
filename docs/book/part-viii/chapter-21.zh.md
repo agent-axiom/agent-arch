@@ -111,7 +111,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 不安全回退行为的上升；
 - 任务成功率和安全指标的漂移；
 - stale background runs；
-- 预期 payload 形态与实际观测形态之间的 contract drift。
+- 预期 payload 形态与实际观测形态之间的 contract drift；
+- orchestration-pattern regressions，例如意外的 routing-path drift、不稳定的 join-state behavior，或超出 reviewed boundaries 的 delegated worker activity。
 
 也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
@@ -177,6 +178,7 @@ flowchart LR
 - capability-session expiry alerts 或 re-init anomalies；
 - delegated-authorization mismatch alerts；
 - contract-mismatch alerts；
+- orchestration-pattern drift alerts；
 - postmortems；
 - online eval drift；
 - red-team findings。
@@ -222,6 +224,7 @@ assurance:
       - capability_session_expiry_regression
       - reinit_control_drift
       - delegated_authorization_mismatch
+      - orchestration_pattern_regression
       - contract_drift
   findings:
     require_owner: true
@@ -290,6 +293,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - incidents 从不进入 eval datasets；
 - detection 只看 latency 和 errors；
 - paused approval saturation 在 operations 里可见，却没有被当成 assurance signal；
+- orchestration-pattern regressions 往往要等 runtime behavior 在 production 里漂移之后才会被发现；
 - stale background runs 悄悄累积；
 - contract drift 只有在 runtime failures 扩散后才被发现；
 - response actions 太粗或太慢；
@@ -305,7 +309,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - findings 会变成有 owner 的 engineering objects；
 - detection 寻找的是 unsafe behavior，而不只是 errors 和 latency；
-- paused approvals、stale background runs 与 contract drift 都被当成真实 assurance signals；
+- paused approvals、capability-session lifecycle regressions、orchestration-pattern regressions、stale background runs 与 contract drift 都被当成真实 assurance signals；
 - response actions 在下一次 incident 之前就已经存在，而不是事后才补；
 - remediation 会改变 operating system，而不只是文档痕迹；
 - incidents 会回流进 evals、policies 和 rollout rules。

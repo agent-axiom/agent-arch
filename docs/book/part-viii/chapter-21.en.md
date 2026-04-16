@@ -111,7 +111,8 @@ You need to notice things like:
 - growth in unsafe fallback behavior;
 - drift in task success and safety metrics;
 - stale background runs;
-- contract drift between expected and observed payload shapes.
+- contract drift between expected and observed payload shapes;
+- orchestration-pattern regressions such as unexpected routing-path drift, unstable join-state behavior, or delegated worker activity outside reviewed boundaries.
 
 In other words, detection here has to function not only as observability, but also as abuse and safety monitoring.
 
@@ -177,6 +178,7 @@ Useful sources of new failure modes include:
 - capability-session expiry alerts or re-init anomalies;
 - delegated-authorization mismatch alerts;
 - contract-mismatch alerts;
+- orchestration-pattern drift alerts;
 - postmortems;
 - online eval drift;
 - red-team findings.
@@ -222,6 +224,7 @@ assurance:
       - capability_session_expiry_regression
       - reinit_control_drift
       - delegated_authorization_mismatch
+      - orchestration_pattern_regression
       - contract_drift
   findings:
     require_owner: true
@@ -291,6 +294,7 @@ The failures are fairly repetitive:
 - detection watches only latency and errors;
 - paused approval saturation is visible in operations but not treated as an assurance signal;
 - capability-session expiry and re-init regressions are visible only after user-facing failures;
+- orchestration-pattern regressions are discovered only after runtime behavior drifts in production;
 - stale background runs quietly accumulate;
 - contract drift is discovered only after runtime failures spread;
 - response actions are too coarse or too slow;
@@ -306,7 +310,7 @@ A stronger bar is this:
 
 - findings become owned engineering objects;
 - detection looks for unsafe behavior, not only errors and latency;
-- paused approvals, capability-session expiry regressions, stale background runs, and contract drift are treated as real assurance signals;
+- paused approvals, capability-session expiry regressions, orchestration-pattern regressions, stale background runs, and contract drift are treated as real assurance signals;
 - response actions exist before the next incident, not after it;
 - remediation changes the operating system, not only the document trail;
 - incidents feed back into evals, policies, and rollout rules.

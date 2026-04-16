@@ -111,7 +111,8 @@ Google Research очень хорошо формулирует здесь гла
 - рост unsafe fallback behavior;
 - drift в task success и safety metrics;
 - stale background runs;
-- contract drift между ожидаемой и наблюдаемой формой payloads.
+- contract drift между ожидаемой и наблюдаемой формой payloads;
+- regressions в orchestration pattern, например неожиданный routing-path drift, нестабильное join-state behavior или delegated worker activity вне reviewed boundaries.
 
 То есть detection здесь должна работать не только как observability, но и как abuse and safety monitoring.
 
@@ -177,6 +178,7 @@ flowchart LR
 - alerts про capability-session expiry или re-init anomalies;
 - delegated-authorization mismatch alerts;
 - contract-mismatch alerts;
+- alerts про orchestration-pattern drift;
 - postmortems;
 - online eval drift;
 - red-team findings.
@@ -222,6 +224,7 @@ assurance:
       - capability_session_expiry_regression
       - reinit_control_drift
       - delegated_authorization_mismatch
+      - orchestration_pattern_regression
       - contract_drift
   findings:
     require_owner: true
@@ -290,6 +293,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - incidents не попадают в eval datasets;
 - detection смотрит только на latency и errors;
 - paused approval saturation видна operations, но не считается assurance signal;
+- regressions в orchestration pattern замечают только после drift в runtime behavior уже в production;
 - stale background runs тихо накапливаются;
 - contract drift обнаруживается только после того, как runtime failures уже разошлись;
 - response tools слишком грубые или слишком медленные;
@@ -305,7 +309,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - findings превращаются в инженерные объекты с owner;
 - detection ищет unsafe behavior, а не только errors и latency;
-- paused approvals, stale background runs и contract drift считаются реальными assurance signals;
+- paused approvals, regressions в capability-session lifecycle, orchestration-pattern regressions, stale background runs и contract drift считаются реальными assurance signals;
 - response actions существуют до следующего инцидента, а не появляются после него;
 - remediation меняет operating system, а не только document trail;
 - incidents возвращаются обратно в evals, policies и rollout rules.
