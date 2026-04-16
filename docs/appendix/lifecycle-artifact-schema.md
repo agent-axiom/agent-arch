@@ -12,7 +12,8 @@
 - replacement mappings;
 - runtime-control schemas и contract-version linkages;
 - operational approvals и lifecycle decisions;
-- capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract.
+- capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract;
+- delegated authorization rules, assumptions про principal binding и revoke behavior, если они уже входят в runtime contract.
 
 Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
 
@@ -101,7 +102,10 @@ provenance:
 - expiry policy;
 - re-init policy;
 - ownership для stuck или expired capability-session state;
-- ожидания по linkage между approval events и session events.
+- ожидания по linkage между approval events и session events;
+- delegated authorization mode;
+- требования к principal binding;
+- revoke behavior для paused или in-flight actions.
 
 ## 5. Retirement plan
 
@@ -160,6 +164,7 @@ owner: platform-operations
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
+- delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
 - lifecycle artifacts имеют owner и version;
 - incident review может восстановить связку `change -> bundle -> run -> retirement`;
 - session-control ownership можно восстановить для expired, paused или re-initialized capability paths.

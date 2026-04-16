@@ -45,6 +45,7 @@ risk_level: high
 affected_surfaces:
   - policy_bundle
   - approval_contract
+  - delegated_authorization_contract
   - rollout_rules
 required_reviews:
   - engineering
@@ -157,6 +158,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - review и gate можно восстановить по incident trace;
 - interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
 - expiry и re-init behavior для capability sessions проверяются до rollout;
+- delegated authorization continuity между run traces, approval records и session export проверяется до rollout;
 - rollback plan не живет только в головах команды.
 
 ## 10. Что чаще всего ломается

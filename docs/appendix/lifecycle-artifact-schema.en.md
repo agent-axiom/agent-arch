@@ -12,7 +12,8 @@ Production-grade agent systems have several artifact classes that should not liv
 - replacement mappings;
 - runtime-control schemas and contract-version linkages;
 - operational approvals and lifecycle decisions;
-- capability-session interruption, expiry, and re-initialization rules when those are part of the runtime contract.
+- capability-session interruption, expiry, and re-initialization rules when those are part of the runtime contract;
+- delegated authorization rules, principal-binding assumptions, and revoke behavior when those are part of the runtime contract.
 
 Without them, change management turns into oral tradition. Incident review then becomes an exercise in reconstructing who "probably changed the policy or routing."
 
@@ -101,7 +102,10 @@ And once capability-session governance is explicit, the bundle should usually ma
 - expiry policy;
 - re-init policy;
 - ownership for stuck or expired capability-session state;
-- linkage expectations between approval events and session events.
+- linkage expectations between approval events and session events;
+- delegated authorization mode;
+- principal-binding requirements;
+- revoke behavior for paused or in-flight actions.
 
 ## 5. Retirement plan
 
@@ -160,6 +164,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
+- delegated authorization ownership and revoke behavior can be reconstructed for affected runs when those controls exist;
 - lifecycle artifacts have an owner and version;
 - incident review can reconstruct `change -> bundle -> run -> retirement`;
 - session-control ownership can be reconstructed for expired, paused, or re-initialized capability paths.

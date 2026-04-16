@@ -45,6 +45,7 @@ risk_level: high
 affected_surfaces:
   - policy_bundle
   - approval_contract
+  - delegated_authorization_contract
   - rollout_rules
 required_reviews:
   - engineering
@@ -157,6 +158,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - review and gate can be reconstructed from an incident trace;
 - interruption behavior for approval-bound or stateful capability sessions is checked before rollout;
 - expiry and re-init behavior for capability sessions is checked before rollout;
+- delegated authorization continuity between run traces, approval records, and session export is checked before rollout;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks

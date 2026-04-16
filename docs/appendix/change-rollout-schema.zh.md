@@ -45,6 +45,7 @@ risk_level: high
 affected_surfaces:
   - policy_bundle
   - approval_contract
+  - delegated_authorization_contract
   - rollout_rules
 required_reviews:
   - engineering
@@ -157,6 +158,7 @@ decided_by:
 - 事故追踪可以还原出评审和门禁；
 - approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
 - capability sessions 的 expiry 与 re-init behavior 会在 rollout 前被检查；
+- run traces、approval records 与 session export 之间的 delegated authorization continuity 会在 rollout 前被检查；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点

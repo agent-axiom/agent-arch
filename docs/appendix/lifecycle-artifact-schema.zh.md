@@ -12,7 +12,8 @@
 - 替换映射；
 - runtime-control schemas 与 contract-version linkages；
 - 运行期审批和生命周期决策；
-- 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules。
+- 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules；
+- 当这些能力已进入 runtime contract 时，delegated authorization rules、principal-binding assumptions 与 revoke behavior。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
@@ -101,7 +102,10 @@ provenance:
 - expiry policy；
 - re-init policy；
 - stuck 或 expired capability-session state 的 ownership；
-- approval events 与 session events 之间应有怎样的 linkage。
+- approval events 与 session events 之间应有怎样的 linkage；
+- delegated authorization mode；
+- principal-binding requirements；
+- paused 或 in-flight actions 的 revoke behavior。
 
 ## 5. Retirement plan
 
@@ -160,6 +164,7 @@ owner: platform-operations
 - 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
+- 当这些控制存在时，delegated authorization ownership 与 revoke behavior 也必须能够对受影响 runs 被还原出来；
 - 生命周期工件有负责人和版本；
 - 事故复盘能还原 `change -> bundle -> run -> retirement`；
 - 对 expired、paused 或 re-initialized capability paths 的 session-control ownership 也能被还原出来。
