@@ -407,6 +407,40 @@ class TestRuntimeCore:
 
 
 class TestRuntimeControlPaths:
+    def test_runtime_control_config_exposes_session_governance_ownership(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        payload = load_yaml_file(config_dir / "runtime-controls.yaml")
+        controls = payload["runtime_controls"]
+        capability_sessions = controls["capability_sessions"]
+
+        assert controls["capability_session_owner"] == "support-ops"
+        assert controls["expiry_signal_owner"] == "support-ops"
+        assert controls["emergency_freeze_owner"] == "platform-runtime"
+        assert capability_sessions["expiry_policy"] == "reinitialize_or_cancel"
+        assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
+
+    def test_lifecycle_configs_expose_session_governance_ownership(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        assert "capability_session_contract" in change["affected_surfaces"]
+        assert "session_expiry_behavior_checked" in change["required_signals"]
+        assert change["session_control_owner"] == "support-ops"
+        assert change["emergency_freeze_owner"] == "platform-runtime"
+
+        assert "freeze_reinitialization" in retirement["required_steps"]
+        assert "capability_session_state" in retirement["archive_targets"]
+        assert retirement["session_control_owner"] == "support-ops"
+        assert retirement["emergency_freeze_owner"] == "platform-runtime"
+
+        assert bundle["version"] == "2026.04.16"
+        assert bundle["session_control_owner"] == "support-ops"
+        assert "runtime-control-bundle-metadata" in bundle["artifacts"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
@@ -883,7 +917,11 @@ class TestLifecycleArtifacts:
             },
         )
         assert not assessment.ready
-        assert assessment.missing_signals == ("offline_eval_passed",)
+        assert assessment.missing_signals == (
+            "offline_eval_passed",
+            "session_expiry_behavior_checked",
+            "reinit_policy_reviewed",
+        )
 
     def test_retirement_assessment_detects_incomplete_step(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_retirement_plan
@@ -903,7 +941,7 @@ class TestLifecycleArtifacts:
             },
         )
         assert not assessment.ready
-        assert assessment.missing_steps == ("revoke_egress",)
+        assert assessment.missing_steps == ("freeze_reinitialization", "revoke_egress")
 
 
 class TestCli:
