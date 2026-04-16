@@ -12,6 +12,7 @@ from agent_runtime_ref.config import (
     load_memory_store,
     load_policy_engine,
     load_rollout_policy,
+    load_yaml_file,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.execution import execute_tool
@@ -900,6 +901,26 @@ class TestPolicyAndControls:
         )
         assert assessment.healthy
         assert not assessment.inventory_drift.has_drift
+
+
+class TestDelegatedAuthorizationConfig:
+    def test_runtime_controls_capture_delegated_authorization_contract(self, config_dir: Path) -> None:
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")
+        delegated = runtime_controls["runtime_controls"]["delegated_authorization"]
+        assert delegated["authorization_mode"] == "user_delegated_or_platform_owned"
+        assert delegated["delegated_principal_policy"] == "explicit_principal_binding_required"
+        assert delegated["token_reuse_policy"] == "reuse_within_valid_paused_run_only"
+        assert delegated["on_authorization_revoke"] == "cancel_or_reapprove"
+        assert delegated["subagent_inheritance"] == "denied_by_default"
+
+    def test_approvals_capture_delegated_authorization_review_rules(self, config_dir: Path) -> None:
+        approvals = load_yaml_file(config_dir / "approvals.yaml")
+        delegated = approvals["approvals"]["delegated_authorization"]
+        assert delegated["reviewer_required_for_user_delegation"] == "manager"
+        assert delegated["require_principal_binding"] is True
+        assert delegated["require_scope_visibility"] is True
+        assert delegated["on_scope_revoked"] == "cancel_or_reapprove"
+        assert delegated["subagent_inheritance"] == "explicit_only"
 
 
 class TestLifecycleArtifacts:

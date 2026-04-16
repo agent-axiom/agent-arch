@@ -18,3 +18,9 @@ runtime_controls:
     expiry_policy: reinitialize_or_cancel
     reinit_policy: resume_existing_session_if_valid
     reinit_requires_approval: false
+  delegated_authorization:
+    authorization_mode: user_delegated_or_platform_owned
+    delegated_principal_policy: explicit_principal_binding_required
+    token_reuse_policy: reuse_within_valid_paused_run_only
+    on_authorization_revoke: cancel_or_reapprove
+    subagent_inheritance: denied_by_default

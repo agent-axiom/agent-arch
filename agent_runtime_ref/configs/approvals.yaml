@@ -1,3 +1,9 @@
 approvals:
   default_reviewer: manager
   escalation_sla_minutes: 30
+  delegated_authorization:
+    reviewer_required_for_user_delegation: manager
+    require_principal_binding: true
+    require_scope_visibility: true
+    on_scope_revoked: cancel_or_reapprove
+    subagent_inheritance: explicit_only
