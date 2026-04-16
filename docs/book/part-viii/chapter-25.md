@@ -98,7 +98,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - trace grading проверяет path quality;
 - behavioral evals проверяют policy-relevant behavior;
 - control evals проверяют, что сами controls действительно работают;
-- runtime-control evals проверяют pause/resume, background, capability-session expiry/re-init и contract-version behavior под давлением.
+- runtime-control evals проверяют pause/resume, background, capability-session expiry/re-init, contract-version behavior и поведение orchestration patterns под давлением.
 
 ## 6. Где такие evals особенно нужны
 
@@ -111,6 +111,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - capability-session expiry и re-initialization paths;
 - replacement и retirement transitions;
 - multi-agent delegation;
+- orchestration-pattern selection и delegated worker boundaries;
 - memory write и retrieval governance.
 
 Если risky path вообще не покрыт такими evals, команда почти наверняка узнает о проблеме уже из инцидента.
@@ -130,6 +131,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - `approval_path_misuse`
 - `session_reinit_misuse`
 - `runtime_control_regression`
+- `delegated_worker_misuse`
+- `orchestration_pattern_drift`
 
 Важно не количество названий, а то, что они дают тебе повторяемый набор failure classes.
 
@@ -160,7 +163,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - sabotage-like persistence;
 - coordination breakdown under pressure;
 - exploitation of schema mismatch или control drift;
-- misuse of interruption или re-init windows.
+- misuse of interruption или re-init windows;
+- misuse of delegated worker paths или drift в worker boundaries.
 
 Но engineering discipline здесь должна оставаться жесткой:
 
@@ -186,6 +190,8 @@ control_evals:
     - session_reinit_misuse
     - contract_drift_exploitation
     - runtime_control_regression
+    - delegated_worker_misuse
+    - orchestration_pattern_drift
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
@@ -241,7 +247,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - все evals сводятся к final answer quality;
 - dangerous paths не имеют отдельных scenario classes;
-- approval-path misuse, session re-init misuse и contract drift не проверяются явно;
+- approval-path misuse, session re-init misuse, delegated-worker misuse и contract drift не проверяются явно;
 - red teaming проводится как разовая акция;
 - runtime-control regressions обнаруживаются только в rollout или инцидентах;
 - findings не связываются с release gate;
@@ -256,7 +262,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - у risky paths есть явные behavioral scenario classes;
 - control evals проверяют, что сам control layer работает под давлением;
-- approval-path misuse, session re-init misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
+- approval-path misuse, session re-init misuse, delegated-worker misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
 - red-team findings попадают в rollout и change gates, а не живут отдельными отчетами;
 - realistic simulation и adversarial generation играют разные, дополняющие роли;
 - release decisions умеют опираться на control evidence, а не только на quality scores.
@@ -266,8 +272,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 ## 14. Практический checklist
 
 - Есть ли у risky capabilities отдельные behavioral scenario classes?
-- Проверяешь ли ты approval evasion, payload mutation и approval-path misuse?
-- Есть ли evals, которые проверяют именно controls, contract-version matching и runtime-control behavior, а не только output quality?
+- Проверяешь ли ты approval evasion, payload mutation, approval-path misuse и delegated-worker misuse?
+- Есть ли evals, которые проверяют именно controls, contract-version matching, runtime-control behavior и orchestration-pattern boundaries, а не только output quality?
 - Попадают ли red-team findings в change review и rollout gate?
 - Есть ли simulator для realistic workload и отдельный adversarial generator?
 - Можешь ли ты показать control evidence, а не только итоговую оценку качества?

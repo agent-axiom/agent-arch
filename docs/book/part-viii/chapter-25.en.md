@@ -98,7 +98,7 @@ Behavioral evals and control evals do not replace them. They add another layer:
 - trace grading tests path quality;
 - behavioral evals test policy-relevant behavior;
 - control evals test whether the controls themselves work;
-- runtime-control evals verify pause/resume, background, capability-session expiry/re-init, and contract-version behavior under pressure.
+- runtime-control evals verify pause/resume, background, capability-session expiry/re-init, contract-version behavior, and orchestration-pattern behavior under pressure.
 
 ## 6. Where these evals matter most
 
@@ -111,6 +111,7 @@ These scenarios are especially valuable for:
 - capability-session expiry and re-initialization paths;
 - replacement and retirement transitions;
 - multi-agent delegation;
+- orchestration-pattern selection and delegated worker boundaries;
 - memory write and retrieval governance.
 
 If risky paths are not covered here, the team will usually discover the issue through an incident.
@@ -130,6 +131,8 @@ A useful minimal taxonomy might look like this:
 - `approval_path_misuse`
 - `session_reinit_misuse`
 - `runtime_control_regression`
+- `delegated_worker_misuse`
+- `orchestration_pattern_drift`
 
 The important part is not the number of labels. It is that they give you a repeatable set of failure classes.
 
@@ -160,7 +163,8 @@ It helps teams expand a set of scenario classes that rarely emerges fully from l
 - sabotage-like persistence;
 - coordination breakdown under pressure;
 - exploitation of schema mismatch or control drift;
-- misuse of interruption or re-init windows.
+- misuse of interruption or re-init windows;
+- misuse of delegated worker paths or worker-boundary drift.
 
 But the engineering discipline still needs to stay strict:
 
@@ -186,6 +190,8 @@ control_evals:
     - session_reinit_misuse
     - contract_drift_exploitation
     - runtime_control_regression
+    - delegated_worker_misuse
+    - orchestration_pattern_drift
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
@@ -241,7 +247,7 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 
 - all evals collapse into final-answer quality;
 - dangerous paths have no separate scenario classes;
-- approval-path misuse, session re-init misuse, and contract drift are not tested explicitly;
+- approval-path misuse, session re-init misuse, delegated-worker misuse, and contract drift are not tested explicitly;
 - red teaming is a one-off exercise;
 - runtime-control regressions are discovered only in rollout or incidents;
 - findings are not connected to release gates;
@@ -256,7 +262,7 @@ A stronger bar is this:
 
 - risky paths have explicit behavioral scenario classes;
 - control evals verify that the control layer itself works under pressure;
-- approval-path misuse, session re-init misuse, contract drift, and runtime-control regressions have explicit scenario coverage;
+- approval-path misuse, session re-init misuse, delegated-worker misuse, contract drift, and runtime-control regressions have explicit scenario coverage;
 - red-team findings enter rollout and change gates rather than staying as separate reports;
 - realistic simulation and adversarial generation play different, complementary roles;
 - release decisions can point to control evidence, not only quality scores.
@@ -266,8 +272,8 @@ If most of those conditions are missing, the team may have evaluation activity, 
 ## 14. Practical checklist
 
 - Do risky capabilities have dedicated behavioral scenario classes?
-- Do you test approval evasion, payload mutation, and approval-path misuse?
-- Do you run evals that verify controls, contract-version matching, and runtime-control behavior rather than only output quality?
+- Do you test approval evasion, payload mutation, approval-path misuse, and delegated-worker misuse?
+- Do you run evals that verify controls, contract-version matching, runtime-control behavior, and orchestration-pattern boundaries rather than only output quality?
 - Do red-team findings flow into change review and rollout gates?
 - Do you have a simulator for realistic workloads and a separate adversarial generator?
 - Can you show control evidence, not just final quality scores?

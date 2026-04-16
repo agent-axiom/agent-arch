@@ -98,7 +98,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 追踪分级检查路径质量；
 - 行为评测检查与策略相关的行为；
 - 控制评测检查控制本身是否真的有效；
-- runtime-control evals 还要验证 pause/resume、background、capability-session expiry/re-init 与 contract-version behavior 在受压场景下是否按预期工作。
+- runtime-control evals 还要验证 pause/resume、background、capability-session expiry/re-init、contract-version behavior，以及 orchestration-pattern behavior 在受压场景下是否按预期工作。
 
 ## 6. 哪些地方最需要这类评测
 
@@ -111,6 +111,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - capability-session expiry 与 re-initialization paths；
 - 替换与退役过渡期；
 - 多智能体委派；
+- orchestration-pattern selection 与 delegated worker boundaries；
 - 记忆写入与检索治理。
 
 如果高风险路径根本没有被这些评测覆盖，团队几乎一定会先从事故里学到教训。
@@ -130,6 +131,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - `approval_path_misuse`
 - `session_reinit_misuse`
 - `runtime_control_regression`
+- `delegated_worker_misuse`
+- `orchestration_pattern_drift`
 
 重点不在于名字有多少，而在于它们给了你一套可重复的失效类别。
 
@@ -160,7 +163,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 类似破坏的持续行为；
 - 压力下的协作失序；
 - 对 schema mismatch 或 control drift 的利用；
-- 对 interruption 或 re-init windows 的滥用。
+- 对 interruption 或 re-init windows 的滥用；
+- 对 delegated worker paths 的滥用或 worker-boundary drift。
 
 但工程纪律仍然应该保持严格：
 
@@ -186,6 +190,8 @@ control_evals:
     - session_reinit_misuse
     - contract_drift_exploitation
     - runtime_control_regression
+    - delegated_worker_misuse
+    - orchestration_pattern_drift
   block_release_if:
     - control_eval_missing
     - behavioral_eval_regression
@@ -241,7 +247,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - 所有评测最后都退化成最终答案质量；
 - 危险路径没有独立的场景类别；
-- approval-path misuse、session re-init misuse 与 contract drift 没有被显式测试；
+- approval-path misuse、session re-init misuse、delegated-worker misuse 与 contract drift 没有被显式测试；
 - 红队测试只是一次性活动；
 - runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
 - 发现结果没有进入发布门禁；
@@ -256,7 +262,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - risky paths 有明确的 behavioral scenario classes；
 - control evals 会验证 control layer 本身在压力下是否真的有效；
-- approval-path misuse、session re-init misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
+- approval-path misuse、session re-init misuse、delegated-worker misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
 - red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
 - realistic simulation 和 adversarial generation 扮演不同但互补的角色；
 - release decisions 能拿出 control evidence，而不只是 quality scores。
@@ -266,8 +272,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 ## 14. 实用检查清单
 
 - 高风险能力是否有单独的行为场景类别？
-- 你是否测试审批规避、载荷篡改和 approval-path misuse？
-- 是否有专门验证控制措施、contract-version matching 与 runtime-control behavior 的评测，而不只是检查输出质量？
+- 你是否测试审批规避、载荷篡改、approval-path misuse 与 delegated-worker misuse？
+- 是否有专门验证控制措施、contract-version matching、runtime-control behavior 与 orchestration-pattern boundaries 的评测，而不只是检查输出质量？
 - 红队发现结果是否会进入变更评审和发布门禁？
 - 是否同时有 realistic workload simulator 和 adversarial generator？
 - 你能展示的是控制证据，还是只有最终分数？
