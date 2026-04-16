@@ -154,6 +154,17 @@ flowchart LR
 - `action tools` почти всегда ближе к `write`;
 - `orchestration tools` могут быть и тем, и другим, но у них отдельный operational смысл.
 
+Таксономия workflow-паттернов у Anthropic добавляет сюда еще одну полезную дисциплину.[^anthropic] Каталог должен не только сообщать модели, какие tools вообще существуют. Он еще должен делать явным, в каких orchestration patterns этим tools безопасно участвовать.
+
+Например:
+
+- `data tool` может быть безопасен внутри `routing`, `prompt chaining` или `parallelization`;
+- `write action tool` может быть допустим только после approval interrupt или внутри жестко ограниченного workflow;
+- `orchestration tool` вроде `request_human_approval` или `handoff_to_specialist` меняет сам execution graph и потому требует более строгих trace и ownership rules;
+- паттерн `orchestrator-workers` может требовать явного worker-safe поднабора каталога, а не всей родительской tool surface.
+
+Именно поэтому зрелый tool catalog со временем перестает быть просто списком вызываемых функций. Он становится boundary contract между execution patterns и допустимыми side effects.
+
 ## 6. Контракт инструмента должен быть скучным и строгим
 
 Одна из худших привычек в агентных системах: позволять модели импровизировать формат вызова.
@@ -252,6 +263,7 @@ Execution layer почти всегда ломают одинаково:
 
 - дают модели прямой доступ к внешнему API;
 - смешивают read и write tools в одну безликую категорию;
+- позволяют tools утекать между orchestration patterns без явного ответа, где вообще разрешены routing, parallelization, approval interrupts и worker delegation;
 - прячут retries глубоко в адаптере без audit trail и idempotency;
 - возвращают модели сырые payload вместо нормализованных результатов;
 - не назначают owner и deprecation policy для catalog layer.

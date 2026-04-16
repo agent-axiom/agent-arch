@@ -154,6 +154,17 @@ OpenAI 的实践指南里还有一个很有用的简化：tools 不只适合按 
 - `action tools` 通常更接近 `write`；
 - `orchestration tools` 可能两者都有，但它们有单独的 operational 含义。
 
+Anthropic 的 workflow taxonomy 在这里又补上了一层很有用的纪律。[^anthropic] 目录不应该只告诉模型“有哪些工具存在”，还应该说明“这些工具在哪些 orchestration patterns 里才是安全可用的”。
+
+例如：
+
+- `data tool` 也许适合放进 `routing`、`prompt chaining` 或 `parallelization`；
+- `write action tool` 也许只适合出现在 approval interrupt 之后，或者只适合放进边界非常紧的 workflow；
+- `orchestration tool`，比如 `request_human_approval` 或 `handoff_to_specialist`，会直接改变 execution graph，因此需要更严格的 trace 和 ownership rules；
+- `orchestrator-workers` 模式可能需要一个显式的 worker-safe catalog 子集，而不是把父级全部 tool surface 都暴露出去。
+
+所以，成熟的 tool catalog 最终不会只是一个“可调用函数列表”。它会变成 execution patterns 与允许 side effects 之间的 boundary contract。
+
 ## 6. 工具契约应该无聊而严格
 
 Agent 系统里最糟糕的习惯之一，就是允许模型自己即兴决定调用格式。
@@ -252,6 +263,7 @@ Execution layer 往往会在同样的地方出问题：
 
 - 直接给模型外部 API 的访问权；
 - 把 read tools 和 write tools 混成一个模糊类别；
+- 让 tools 在不同 orchestration patterns 之间随意泄漏，却没有说明 routing、parallelization、approval interrupts 和 worker delegation 到底哪些才被允许；
 - 把 retries 藏在 adapter 深处，却没有 audit trail 和 idempotency；
 - 把原始 payload 直接返回给模型，而不是给出规范化结果；
 - 不给 catalog layer 设 owner 和 deprecation policy。

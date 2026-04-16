@@ -154,6 +154,17 @@ Those two axes work well together:
 - `action tools` are usually close to `write`;
 - `orchestration tools` can be either, but they have a separate operational meaning.
 
+Anthropic's workflow taxonomy adds another useful discipline here.[^anthropic] The catalog should not only tell the model which tools exist. It should also make it clear which orchestration patterns those tools are safe to participate in.
+
+For example:
+
+- a `data tool` may be safe inside `routing`, `prompt chaining`, or `parallelization`;
+- a `write action tool` may be safe only after an approval interrupt or inside a tightly bounded workflow;
+- an `orchestration tool` like `request_human_approval` or `handoff_to_specialist` changes the execution graph itself and therefore needs stronger trace and ownership rules;
+- an `orchestrator-workers` pattern may require explicit worker-safe subsets of the catalog rather than the full parent tool surface.
+
+That is why a mature tool catalog eventually stops being just a list of callable functions. It becomes a boundary contract between execution patterns and allowed side effects.
+
 ## 6. A Tool Contract Should Be Boring and Strict
 
 One of the worst habits in agent systems is allowing the model to improvise the call format.
@@ -252,6 +263,7 @@ Execution layers usually break in the same ways:
 
 - they give the model direct access to an external API;
 - they collapse read and write tools into one faceless category;
+- they let tools leak across orchestration patterns without clarifying where routing, parallelization, approval interrupts, or worker delegation are actually allowed;
 - they hide retries deep in an adapter without audit trail or idempotency;
 - they return raw payloads to the model instead of normalized results;
 - they never assign an owner or deprecation policy to the catalog layer.
