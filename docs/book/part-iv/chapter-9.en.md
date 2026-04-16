@@ -141,6 +141,15 @@ A more mature model treats remote MCP as part of the platform control plane:
 - policy and DLP checks can observe MCP traffic as a governed surface;
 - retirement of an MCP endpoint is handled like any other lifecycle event.
 
+Once identity becomes central, another design question appears: **who is actually authorizing the MCP call, and with whose user context?** A managed OAuth boundary is useful here because it prevents each MCP server from inventing its own ad hoc credential story.
+
+That usually means:
+
+- user delegation is issued through a governed identity layer;
+- tokens are short-lived and attributable to a concrete principal;
+- the MCP server receives scoped access rather than broad standing secrets;
+- the platform can revoke or rotate access without rewriting every adapter.
+
 That same model also clarifies when **local MCP** is still appropriate: prototyping, isolated experiments, or narrow team-local workflows. But the default for shared business capabilities should usually be: **remote, governed, discoverable, and auditable**.
 
 ### 5.2. Shadow MCP Is the New Shadow API Problem
@@ -164,6 +173,15 @@ A useful platform checklist is simple:
 - What telemetry proves which agent called it and with what decision context?
 
 If those answers are missing, the issue is not just “an integration is undocumented.” The issue is that the platform has created a shadow capability path outside its own control model.
+
+A good follow-up question is also: **can the platform explain the authorization chain for this MCP action?** In a governed setup, operators should be able to reconstruct:
+
+- which user or service principal delegated access;
+- which identity layer minted or brokered the token;
+- which MCP server accepted the delegated scope;
+- which agent run used that authorization to perform the action.
+
+If that chain is missing, auditability is weaker than the protocol surface suggests.
 
 ### 5.3. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
 
@@ -257,6 +275,13 @@ If every tool gets the same soft execution profile, the platform becomes either 
 Many teams do a decent job describing input schema, but the operational contract is missing. In practice, that part is often more important.
 
 It helps to define explicitly:
+
+- authentication mode;
+- whether access is platform-owned or user-delegated;
+- token lifetime and renewal rules;
+- scope boundaries per capability;
+- what gets logged about delegated authorization;
+- what happens when delegated access is revoked mid-session.
 
 - read or write nature;
 - network policy;

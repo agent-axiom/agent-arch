@@ -141,6 +141,15 @@ flowchart LR
 - policy 与 DLP checks 可以把 MCP traffic 当作受治理表面来观察；
 - MCP endpoint 的 retirement 被当作正常 lifecycle event 处理。
 
+一旦 identity 成为中心问题，下一个设计问题就会出现：**到底是谁在为这次 MCP action 授权，它使用的是谁的 user context？** 这里需要 managed OAuth boundary，因为它能避免每个 MCP server 各自发明一套临时 credential story。
+
+这通常意味着：
+
+- user delegation 通过受治理的 identity layer 发放；
+- token 是短生命周期的，并且可归因到具体 principal；
+- MCP server 拿到的是 scoped access，而不是宽泛的长期 secrets；
+- 平台可以在不重写每个 adapter 的情况下 revoke 或 rotate access。
+
 同一套模型也能解释 **local MCP** 什么时候仍然合理：原型验证、隔离实验，或者非常窄的 team-local workflows。但对共享 business capabilities 来说，更合理的默认值通常应是：**remote、governed、discoverable、auditable**。
 
 ### 5.2. Shadow MCP 是 shadow API problem 的新版本
@@ -164,6 +173,15 @@ flowchart LR
 - 哪些 telemetry 字段能证明哪个 agent 在什么 decision context 下调用了它？
 
 如果这些问题答不上来，问题就已经不只是“集成文档不完整”，而是平台在自己的控制模型之外制造了一条 shadow capability path。
+
+这里还有一个很关键的追问：**平台能否重建这次 MCP action 的 authorization chain？** 在成熟模型里，operator 应该能追溯出：
+
+- 是哪个 user 或 service principal 委托了访问；
+- 是哪个 identity layer 签发或代理了 token；
+- 是哪个 MCP server 接受了这份 delegated scope；
+- 是哪个 agent run 使用这份授权执行了动作。
+
+如果这条链路无法重建，那么平台的 auditability 就比 protocol surface 看起来要弱得多。
 
 ### 5.3. Ephemeral sandboxes 通常比常驻环境更好
 
@@ -257,6 +275,13 @@ AWS 关于 stateful MCP 的方向还有一个很有价值的 operational lesson�
 很多团队对 input schema 还能描述得不错，但 operational contract 常常完全缺失。而实践中，这部分往往更关键。
 
 最好明确写出：
+
+- authentication mode；
+- 访问是 platform-owned 还是 user-delegated；
+- token lifetime 与 renewal rules；
+- 每个 capability 的 scope boundaries；
+- delegated authorization 需要记录哪些日志字段；
+- 如果 delegated access 在 session 中途被撤销，runtime 应该怎么处理。
 
 - read 或 write 属性；
 - network policy；

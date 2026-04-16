@@ -141,6 +141,15 @@ flowchart LR
 - policy и DLP checks могут наблюдать MCP traffic как управляемую поверхность;
 - retirement MCP endpoint оформляется как обычное lifecycle event.
 
+Как только identity становится центральной частью этой модели, появляется еще один важный вопрос: **кто именно авторизует MCP action и в чьем user context это происходит?** Managed OAuth boundary полезна здесь тем, что не дает каждому MCP server придумывать свою ad hoc credential story.
+
+Обычно это означает следующее:
+
+- user delegation выдается через governed identity layer;
+- tokens короткоживущие и привязаны к конкретному principal;
+- MCP server получает scoped access вместо широких постоянных секретов;
+- платформа может revoke или rotate доступ без переписывания каждого adapter.
+
 Эта же модель помогает понять, где **local MCP** все еще уместен: прототипирование, изолированные эксперименты или очень узкие team-local workflows. Но default для shared business capabilities обычно должен быть таким: **remote, governed, discoverable, auditable**.
 
 ### 5.2. Shadow MCP это новая версия shadow API problem
@@ -164,6 +173,15 @@ flowchart LR
 - Какая telemetry доказывает, какой agent вызывал endpoint и в каком decision context?
 
 Если на эти вопросы нет ответа, проблема уже не в том, что “интеграция плохо документирована”. Проблема в том, что платформа создала shadow capability path вне собственной модели управления.
+
+Следующий хороший вопрос здесь такой: **может ли платформа восстановить authorization chain для этого MCP action?** В зрелой модели оператор должен уметь восстановить:
+
+- какой user или service principal делегировал доступ;
+- какой identity layer выпустил или проброкерил token;
+- какой MCP server принял этот delegated scope;
+- какой agent run использовал эту авторизацию для выполнения действия.
+
+Если эта цепочка не восстанавливается, auditability у платформы слабее, чем кажется по одному protocol surface.
 
 ### 5.3. Ephemeral sandboxes лучше постоянных сред почти во всем
 
@@ -257,6 +275,13 @@ flowchart LR
 Часто schema инструмента описана неплохо, а вот operational contract нигде не зафиксирован. Но именно он часто критичен.
 
 Полезно явно задавать:
+
+- режим authentication;
+- platform-owned это доступ или user-delegated;
+- время жизни token и правила renewal;
+- scope boundaries per capability;
+- что именно логируется про delegated authorization;
+- что происходит, если delegated access отзывают посередине session.
 
 - read или write nature;
 - network policy;
