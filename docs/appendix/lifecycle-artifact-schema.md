@@ -64,7 +64,7 @@ status: approved
 - `rollback_unit` заставляет заранее понимать, что именно откатывается;
 - `status` нужен не как бюрократия, а как operational fact.
 
-А если в системе уже есть approval-bound или stateful capability sessions, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling и re-init semantics в reviewed surface.
+А если в системе уже есть approval-bound или stateful capability sessions, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling, re-init semantics и delegated authorization rules в reviewed surface.
 
 ## 4. Approved artifact bundle
 

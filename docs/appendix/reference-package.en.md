@@ -12,8 +12,8 @@ A practical reading path is:
 - Chapter 17 for policy layer and capability contracts,
 - Chapter 18 for rollout gates around approval and runtime behavior,
 - Chapter 21 for assurance response,
-- Chapter 22 and the lifecycle schema for governed artifact linkage,
-- Chapters 23-27 for interruption, expiry, re-init, observability, and registry ownership around capability sessions.
+- Chapter 22 and the lifecycle schema for governed artifact linkage and delegated authorization provenance,
+- Chapters 23-27 for interruption, expiry, re-init, retirement, observability, registry ownership, and delegated-authorization lifecycle control around capability sessions.
 
 ## What Is Inside
 

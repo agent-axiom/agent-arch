@@ -109,6 +109,7 @@ In practice, that usually means the gate should also make explicit:
 
 - whether capability-session expiry behavior was exercised before rollout;
 - whether re-init is denied, allowed, or approval-bound for the affected path;
+- whether delegated authorization continuity was checked across run traces, approval records, and session export;
 - who owns emergency freeze if interruption semantics start drifting after release.
 
 ## 6. How this connects to the eval schema

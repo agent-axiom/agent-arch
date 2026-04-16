@@ -64,7 +64,7 @@ status: approved
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
 - `status` 是运行事实，而不是流程摆设。
 
-而一旦系统里已经存在 approval-bound 或 stateful capability sessions，change record 通常也应该能看出 interruption behavior、expiry handling 和 re-init semantics 是否属于被审查的 surface。
+而一旦系统里已经存在 approval-bound 或 stateful capability sessions，change record 通常也应该能看出 interruption behavior、expiry handling、re-init semantics 与 delegated authorization rules 是否属于被审查的 surface。
 
 ## 4. 已批准工件包
 

@@ -12,8 +12,8 @@
 - Chapter 17 для policy layer и capability contracts,
 - Chapter 18 для rollout gates вокруг approval и runtime behavior,
 - Chapter 21 для assurance response,
-- Chapter 22 и lifecycle schema для governed artifact linkage,
-- Chapters 23-27 для interruption, expiry, re-init, observability и registry ownership вокруг capability sessions.
+- Chapter 22 и lifecycle schema для governed artifact linkage и delegated authorization provenance,
+- Chapters 23-27 для interruption, expiry, re-init, retirement, observability, registry ownership и delegated-authorization lifecycle control вокруг capability sessions.
 
 ## Что внутри
 

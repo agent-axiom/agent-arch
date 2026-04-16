@@ -64,7 +64,7 @@ The important parts are:
 - `rollback_unit` forces teams to know what can be reverted;
 - `status` acts as an operational fact, not just paperwork.
 
-And once approval-bound or stateful capability sessions exist, the change record should usually make it visible whether interruption behavior, expiry handling, and re-init semantics were part of the reviewed surface.
+And once approval-bound or stateful capability sessions exist, the change record should usually make it visible whether interruption behavior, expiry handling, re-init semantics, and delegated authorization rules were part of the reviewed surface.
 
 ## 4. Approved artifact bundle
 

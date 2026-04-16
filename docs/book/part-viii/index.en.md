@@ -19,14 +19,14 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 
     - [Chapter 19](chapter-19.en.md): establish the frame through the move from SDLC to ADLC;
     - [Chapter 20](chapter-20.en.md): define which agent changes are truly release-bearing;
-    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, artifact discipline, and contract/schema governance;
-    - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, and runtime-control shutdown;
+    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, artifact discipline, contract/schema governance, and delegated authorization lineage;
+    - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, runtime-control shutdown, and delegated-authorization revocation/archival;
     - [Chapters 24-27](chapter-24.en.md): extend the same contour through misalignment, behavioral evals, AI-native observability, and agent-estate governance for interruption, expiry, and re-init paths.
 
 ## What This Part Solves
 
 - it turns the reference implementation into a managed lifecycle;
-- it connects change management, assurance, provenance, incidents, retirement, observability, runtime-control governance, interruption/expiry/re-init discipline, and estate governance into one operational contour;
+- it connects change management, assurance, provenance, incidents, retirement, observability, runtime-control governance, interruption/expiry/re-init discipline, delegated authorization lineage, and estate governance into one operational contour;
 - it separates stable engineering discipline from fast-moving vendor and research details.
 
 If you read this part as one block, the sequence is straightforward:

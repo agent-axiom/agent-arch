@@ -19,14 +19,14 @@
 
     - [第 19 章](chapter-19.zh.md)：先用从 SDLC 到 ADLC 的过渡建立共同框架；
     - [第 20 章](chapter-20.zh.md)：再定义哪些 agent changes 真正属于 release-bearing；
-    - [第 21 章](chapter-21.zh.md) 和 [第 22 章](chapter-22.zh.md)：补齐 assurance、provenance、artifact discipline 与 contract/schema governance；
-    - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement 和 runtime-control shutdown 把生命周期收束起来；
+    - [第 21 章](chapter-21.zh.md) 和 [第 22 章](chapter-22.zh.md)：补齐 assurance、provenance、artifact discipline、contract/schema governance 与 delegated authorization lineage；
+    - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement、runtime-control shutdown 与 delegated-authorization revocation/archival 把生命周期收束起来；
     - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 misalignment、behavioral evals、AI-native observability，以及围绕 interruption、expiry 与 re-init paths 的 agent estate 治理。
 
 ## 这一部分解决什么问题
 
 - 把 reference implementation 推进成可管理的 lifecycle；
-- 把 change management、assurance、provenance、incidents、retirement、observability、runtime-control governance、interruption/expiry/re-init discipline 与 agent-estate governance 接成一个 operational contour；
+- 把 change management、assurance、provenance、incidents、retirement、observability、runtime-control governance、interruption/expiry/re-init discipline、delegated authorization lineage 与 agent-estate governance 接成一个 operational contour；
 - 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。
 
 如果把这一部分当成一个完整模块来读，它的顺序很清晰：

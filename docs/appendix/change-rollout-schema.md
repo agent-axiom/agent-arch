@@ -109,6 +109,7 @@ decided_by:
 
 - проверялось ли capability-session expiry behavior до rollout;
 - является ли re-init для затронутого path denied, allowed или approval-bound;
+- проверялась ли delegated authorization continuity между run traces, approval records и session export;
 - кто owner у emergency freeze, если interruption semantics начнут дрейфовать после релиза.
 
 ## 6. Как это связано с eval schema

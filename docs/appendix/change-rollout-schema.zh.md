@@ -109,6 +109,7 @@ decided_by:
 
 - rollout 前是否验证过 capability-session expiry behavior；
 - 对受影响路径而言，re-init 是 denied、allowed 还是 approval-bound；
+- run traces、approval records 与 session export 之间的 delegated authorization continuity 是否已验证；
 - 如果 interruption semantics 在发布后开始漂移，emergency freeze 由谁负责。
 
 ## 6. 它和评测模式的关系

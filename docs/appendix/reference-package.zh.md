@@ -12,8 +12,8 @@
 - 第 17 章看 policy layer 与 capability contracts，
 - 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
 - 第 21 章看 assurance response，
-- 第 22 章配合 lifecycle schema 看 governed artifact linkage，
-- 第 23 到 27 章看 capability sessions 周围的 interruption、expiry、re-init、observability 与 registry ownership。
+- 第 22 章配合 lifecycle schema 看 governed artifact linkage 与 delegated authorization provenance，
+- 第 23 到 27 章看 capability sessions 周围的 interruption、expiry、re-init、retirement、observability、registry ownership 与 delegated-authorization lifecycle control。
 
 ## 里面有什么
 
