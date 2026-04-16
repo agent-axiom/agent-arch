@@ -181,6 +181,23 @@ Useful additions now include:
 
 That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
 
+Anthropic's workflow taxonomy adds another useful contract dimension here.[^anthropic] Mature policy bundles increasingly need to state not only whether a capability is allowed, but which orchestration patterns it is allowed to participate in.
+
+Useful additions now include fields such as:
+
+- `allowed_orchestration_patterns`
+- `disallowed_orchestration_patterns`
+- `worker_inheritance_policy`
+- `worker_capability_subset`
+- `review_required_before_worker_write`
+
+Those fields help the governed contract answer questions like:
+
+- whether a capability may run inside `prompt chaining`, `routing`, or `parallelization`;
+- whether delegated workers in `orchestrator-workers` inherit approval or delegated authorization context;
+- whether a worker may request additional capabilities or only use a constrained subset;
+- whether worker output must be reviewed before any write-capability is exercised.
+
 It also helps prevent a second drift: delegated approval paths that exist in product behavior, but are not actually represented in the governed contract.
 
 As soon as the system grows up, it is useful to add at least:
@@ -209,7 +226,7 @@ Then problems appear quickly:
 So the practical rule is simple:
 
 - the capability catalog describes what the system can do;
-- the policy bundle describes how and under which conditions that capability may be used;
+- the policy bundle describes how, under which conditions, and in which orchestration patterns that capability may be used;
 - the approval contract describes where reasoning must stop and hand control to a human;
 - the authorization contract describes under whose identity and delegated scope the action may execute.
 

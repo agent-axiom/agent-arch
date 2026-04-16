@@ -181,6 +181,23 @@ approval_contract:
 
 Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
 
+Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно полезное контрактное измерение.[^anthropic] По мере взросления policy bundle должен описывать не только то, разрешена ли capability вообще, но и в каких orchestration patterns она допустима.
+
+Здесь быстро становятся полезны и такие поля, как:
+
+- `allowed_orchestration_patterns`
+- `disallowed_orchestration_patterns`
+- `worker_inheritance_policy`
+- `worker_capability_subset`
+- `review_required_before_worker_write`
+
+Именно они помогают governed contract отвечать на вопросы:
+
+- можно ли вызывать capability внутри `prompt chaining`, `routing` или `parallelization`;
+- наследуют ли delegated workers в `orchestrator-workers` approval или delegated authorization context;
+- может ли worker запросить дополнительные capabilities или работает только с ограниченным subset;
+- должен ли worker output пройти review до того, как будет выполнена любая write-capability.
+
 Заодно они помогают избежать и второго дрейфа: когда delegated approval path уже существует в product behavior, но все еще не представлен как governed contract.
 
 Как только система взрослеет, для набора политик почти сразу полезно добавить:
@@ -209,7 +226,7 @@ approval_contract:
 Поэтому практическое правило простое:
 
 - каталог возможностей описывает, что система умеет;
-- набор политик описывает, как и при каких условиях это можно использовать;
+- набор политик описывает, как, при каких условиях и в каких orchestration patterns это можно использовать;
 - контракт подтверждения описывает, где система обязана остановиться и уступить человеку;
 - authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено.
 

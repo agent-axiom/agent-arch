@@ -181,6 +181,23 @@ approval_contract:
 
 这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
 
+Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度。[^anthropic] 成熟的 policy bundle 不应只说明 capability 原则上能不能用，还应说明它可以出现在哪些 orchestration patterns 里。
+
+这时很快就会需要补上这些字段：
+
+- `allowed_orchestration_patterns`
+- `disallowed_orchestration_patterns`
+- `worker_inheritance_policy`
+- `worker_capability_subset`
+- `review_required_before_worker_write`
+
+这些字段能让 governed contract 回答这样的问题：
+
+- 某个 capability 能不能进入 `prompt chaining`、`routing` 或 `parallelization`；
+- `orchestrator-workers` 里的 delegated workers 是否继承 approval 或 delegated authorization context；
+- worker 是否可以再请求额外 capabilities，还是只能使用受限 subset；
+- 在任何 write-capability 被执行前，worker output 是否必须先经过 review。
+
 它们也能防止第二类漂移：delegated approval path 已经存在于产品行为里，但还没有被表示成受治理的 contract。
 
 一旦系统变得更成熟，策略包很快就应该继续补充：
@@ -209,7 +226,7 @@ approval_contract:
 所以 practical rule 很简单：
 
 - 能力目录描述系统能做什么；
-- 策略包描述这些能力在什么条件下可以被调用；
+- 策略包描述这些能力在什么条件下、通过哪些 orchestration patterns 可以被调用；
 - 审批契约描述推理应该在何处停下并把控制权交给人；
 - authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行。
 
