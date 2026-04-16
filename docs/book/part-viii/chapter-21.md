@@ -102,6 +102,9 @@ Google Research очень хорошо формулирует здесь гла
 - stuck paused approvals или необычный возраст paused runs;
 - всплески capability-session expiry;
 - необъяснимый рост re-initialization rates для stateful capability paths;
+- mismatch между delegated principal в run и approval records;
+- reuse delegated scope вне ожидаемых pause/resume rules;
+- случаи, когда revoked authorization все равно дошла до execution;
 - странные tool selection patterns;
 - новые egress destinations;
 - memory write anomalies;
@@ -172,6 +175,7 @@ flowchart LR
 - approval queue anomalies;
 - сигналы про stale background runs;
 - alerts про capability-session expiry или re-init anomalies;
+- delegated-authorization mismatch alerts;
 - contract-mismatch alerts;
 - postmortems;
 - online eval drift;
@@ -217,6 +221,7 @@ assurance:
       - paused_approval_saturation
       - capability_session_expiry_regression
       - reinit_control_drift
+      - delegated_authorization_mismatch
       - contract_drift
   findings:
     require_owner: true
@@ -231,6 +236,7 @@ assurance:
       - expire_paused_runs
       - suspend_background_route
       - freeze_reinitialization
+      - revoke_delegated_authorization
 ```
 
 Это не полный framework, но он хорошо показывает, что assurance тоже можно описывать как явный рабочий контракт.

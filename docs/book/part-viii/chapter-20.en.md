@@ -42,6 +42,7 @@ It is useful to treat not only code, but every surface that can materially alter
 - policy bundles;
 - capability contracts;
 - approval rules;
+- delegated authorization rules and token-handling assumptions;
 - retrieval corpora;
 - memory write semantics;
 - capability-session interruption and expiry semantics;
@@ -118,6 +119,7 @@ A practical model usually looks like this:
 - policy changes -> deny or allow cases, abuse scenarios, audit coverage;
 - retrieval changes -> relevance checks, leakage checks, context budget checks;
 - tool changes -> contract tests, idempotency checks, approval path validation;
+- delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior, trace and approval-record continuity;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
 - model routing changes -> quality, latency, safety, and cost deltas.
 
@@ -194,6 +196,7 @@ That provenance should increasingly include runtime-control details too:
 - which pause/resume policy was active;
 - which expiry rule governed paused runs;
 - whether re-init was allowed, denied, or approval-bound;
+- which delegated authorization mode, principal-binding rule, and revoke behavior were active;
 - which capability-session contract version was active when the incident occurred.
 
 ## 11. Example change policy

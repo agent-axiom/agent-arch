@@ -42,6 +42,7 @@
 - policy bundles;
 - capability contracts;
 - approval rules;
+- delegated authorization rules и assumptions про token handling;
 - retrieval corpus;
 - memory write semantics;
 - interruption и expiry semantics для capability sessions;
@@ -118,6 +119,7 @@ Prompt, routine или instruction change могут:
 - policy changes -> deny/allow cases, abuse scenarios, audit coverage;
 - retrieval changes -> relevance checks, leakage checks, context budget checks;
 - tool changes -> contract tests, idempotency checks, approval path validation;
+- delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior и continuity между traces и approval records;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
 - model routing changes -> quality, latency, safety, cost deltas.
 
@@ -194,6 +196,7 @@ Google Research хорошо показывает, что provenance полез�
 - какая pause/resume policy была активна;
 - какое expiry rule управляло paused runs;
 - был ли re-init allowed, denied или approval-bound;
+- какой delegated authorization mode, principal-binding rule и revoke behavior действовали;
 - какая capability-session contract version действовала в момент инцидента.
 
 ## 11. Пример change policy

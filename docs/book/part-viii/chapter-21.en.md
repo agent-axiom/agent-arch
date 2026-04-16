@@ -102,6 +102,9 @@ You need to notice things like:
 - stuck paused approvals or unusual paused-run age;
 - capability-session expiry spikes;
 - unexplained re-initialization rates for stateful capability paths;
+- delegated-principal mismatches between runs and approval records;
+- delegated-scope reuse outside expected pause/resume rules;
+- revoked-authorization actions that still reached execution;
 - unusual tool selection patterns;
 - new egress destinations;
 - memory write anomalies;
@@ -172,6 +175,7 @@ Useful sources of new failure modes include:
 - approval queue anomalies;
 - stale background-run reports;
 - capability-session expiry alerts or re-init anomalies;
+- delegated-authorization mismatch alerts;
 - contract-mismatch alerts;
 - postmortems;
 - online eval drift;
@@ -217,6 +221,7 @@ assurance:
       - paused_approval_saturation
       - capability_session_expiry_regression
       - reinit_control_drift
+      - delegated_authorization_mismatch
       - contract_drift
   findings:
     require_owner: true
@@ -231,6 +236,7 @@ assurance:
       - expire_paused_runs
       - suspend_background_route
       - freeze_reinitialization
+      - revoke_delegated_authorization
 ```
 
 It is not a complete framework, but it shows clearly that assurance can also be described as an operational contract.

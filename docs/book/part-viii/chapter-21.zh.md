@@ -102,6 +102,9 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - stuck paused approvals 或异常偏大的 paused-run age；
 - capability-session expiry 的异常升高；
 - stateful capability paths 中无法解释的 re-initialization rate 上升；
+- run 与 approval records 之间的 delegated principal mismatch；
+- 超出预期 pause/resume rules 的 delegated scope reuse；
+- revoked authorization 仍然抵达 execution 的情况；
 - 异常的工具选择模式；
 - 新出现的出口目标；
 - 记忆写入异常；
@@ -172,6 +175,7 @@ flowchart LR
 - approval queue anomalies；
 - stale background-run reports；
 - capability-session expiry alerts 或 re-init anomalies；
+- delegated-authorization mismatch alerts；
 - contract-mismatch alerts；
 - postmortems；
 - online eval drift；
@@ -217,6 +221,7 @@ assurance:
       - paused_approval_saturation
       - capability_session_expiry_regression
       - reinit_control_drift
+      - delegated_authorization_mismatch
       - contract_drift
   findings:
     require_owner: true
@@ -231,6 +236,7 @@ assurance:
       - expire_paused_runs
       - suspend_background_route
       - freeze_reinitialization
+      - revoke_delegated_authorization
 ```
 
 它不是 complete framework，但足以说明 assurance 也可以被组织成明确的 operational contract。

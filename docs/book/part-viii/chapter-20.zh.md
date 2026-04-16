@@ -42,6 +42,7 @@
 - 策略包；
 - 能力契约；
 - 审批规则；
+- delegated authorization rules 与 token-handling assumptions；
 - 检索语料；
 - 记忆写入语义；
 - capability-session interruption 与 expiry semantics；
@@ -118,6 +119,7 @@ flowchart LR
 - 策略变更 -> 拒绝/允许场景、滥用场景、审计覆盖；
 - 检索变更 -> 相关性检查、泄漏检查、上下文预算检查；
 - 工具变更 -> 契约测试、幂等性检查、审批路径验证；
+- delegated authorization changes -> principal-binding checks、scope-visibility checks、revoke-during-pause behavior，以及 traces 与 approval records 的 continuity；
 - interruption-governance 变更 -> paused-run expiry checks、re-init behavior checks、telemetry linkage checks、approval-resume invariants；
 - 模型路由变更 -> 质量、延迟、安全、成本差值。
 
@@ -194,6 +196,7 @@ Google Research 很清楚地表明，provenance 不只是 security 概念，它�
 - 当时生效的是哪条 pause/resume policy；
 - paused runs 受哪条 expiry rule 管理；
 - re-init 是 allowed、denied 还是 approval-bound；
+- 当时生效的是哪种 delegated authorization mode、principal-binding rule 和 revoke behavior；
 - 事故发生时生效的是哪一个 capability-session contract version。
 
 ## 11. 一个 change policy 示例
