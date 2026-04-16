@@ -1,8 +1,9 @@
 bundle:
   bundle_name: support-triage-runtime-bundle
-  version: 2026.04.15
+  version: 2026.04.16
   provenance_required: true
   signed: false
+  session_control_owner: support-ops
   artifacts:
     - agent.yaml
     - capabilities.yaml
@@ -14,3 +15,4 @@ bundle:
     - change.yaml
     - retirement.yaml
     - eval-dataset.json
+    - runtime-control-bundle-metadata

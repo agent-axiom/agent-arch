@@ -5,6 +5,9 @@ runtime_controls:
   max_wait_seconds: 1800
   on_expiry: cancel_run
   contract_version: capability-contract-v5
+  capability_session_owner: support-ops
+  expiry_signal_owner: support-ops
+  emergency_freeze_owner: platform-runtime
   capability_sessions:
     session_mode: stateful
     track_session_ids: true
@@ -12,4 +15,6 @@ runtime_controls:
     allow_elicitation: true
     resume_policy: resume_existing_session_if_valid
     on_session_expiry: reinitialize_or_cancel
+    expiry_policy: reinitialize_or_cancel
+    reinit_policy: resume_existing_session_if_valid
     reinit_requires_approval: false

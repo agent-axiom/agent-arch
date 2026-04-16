@@ -11,12 +11,16 @@ retirement:
     - stop_memory_write
     - expire_paused_runs
     - stop_background_routes
+    - freeze_reinitialization
     - revoke_egress
     - archive_audit_state
     - set_retired_status
+  session_control_owner: support-ops
+  emergency_freeze_owner: platform-runtime
   archive_targets:
     - telemetry_jsonl
     - session_exports
     - approval_history
     - paused_run_state
+    - capability_session_state
     - runtime_control_bundle

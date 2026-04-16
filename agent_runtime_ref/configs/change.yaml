@@ -8,11 +8,19 @@ change:
     - capabilities.yaml
     - policy.yaml
     - eval-dataset.json
+  affected_surfaces:
+    - capability_contract
+    - runtime_control_schema
+    - capability_session_contract
   required_signals:
     - design_review_passed
     - offline_eval_passed
     - policy_diff_reviewed
     - rollback_plan_ready
+    - session_expiry_behavior_checked
+    - reinit_policy_reviewed
   approval_roles:
     - platform-owner
     - security-reviewer
+  session_control_owner: support-ops
+  emergency_freeze_owner: platform-runtime
