@@ -55,6 +55,7 @@
 - 审批路径；
 - paused approval 与 resume paths；
 - capability-session interruption 与 re-initialization paths；
+- orchestration-pattern selection 与 delegated worker paths；
 - 替换与退役窗口；
 - 会把有害策略写进去的记忆写入。
 
@@ -126,6 +127,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 模型能不能隐藏一个有问题的意图；
 - 它能不能绕过或滥用审批路径；
 - 它能不能利用 interruption、expiry 或 re-init semantics 重新获得更多自主性；
+- 它能不能把执行导向更弱的 orchestration pattern 或 delegated worker path；
 - 某次运行时变更会不会削弱监督；
 - schema drift 或 contract mismatch 会不会打开更弱的控制路径；
 - 我们有没有单独针对类似破坏行为的信号；
@@ -142,7 +144,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 追踪同时记录策略决策和实际副作用；
 - `trace_id`、`approval_id`、`tool_principal`、`contract_version` 与 `artifact_bundle` 之间有不可断开的链接；
 - 能力族有紧急停用路径；
-- 行为评测会专门测试破坏、隐瞒和规避监督。
+- 行为评测会专门测试破坏、隐瞒、规避监督以及 orchestration-pattern misuse。
 
 <div class="diagram-card">
 <p>失配风险最适合被看成自主性与控制面之间的张力</p>
@@ -184,6 +186,8 @@ agentic_risk:
     - replacement_window_unrestricted
     - capability_session_reinit_unrestricted
     - resumable_background_path_unrestricted
+    - worker_boundary_unrestricted
+    - orchestration_pattern_drift_unreviewed
 ```
 
 这个策略当然不是“解决对齐问题”，但它能让系统在激励冲突下明显没那么危险。
@@ -224,8 +228,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 更高的标准应该是：
 
 - sabotage-like behavior 会被独立于 ordinary failure 单独测试；
-- high-risk actions 会绑定到 exact payload approval、dedicated principals、linked contract versions 与 governed re-init behavior；
-- rollout、replacement 和 retirement 这些过渡期里，自主性会被收紧，而不是放松；
+- high-risk actions 会绑定到 exact payload approval、dedicated principals、linked contract versions、governed re-init behavior 与 reviewed worker boundaries；
+- rollout、replacement、retirement 与 orchestration-pattern change 这些过渡期里，自主性会被收紧，而不是放松；
 - traces 能把 intent、approval、artifact bundle 和 side effect 连起来；
 - emergency containment 能缩小某个 capability family，而不用等整套系统 shutdown。
 
@@ -236,8 +240,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - 你是否把类似破坏的行为和普通失效分开测试？
 - risky side effect 能不能反推出具体的 `approval_id` 与 `tool_principal`？
 - 系统能不能紧急停掉某个 capability family，而不是只能整套 runtime 一起关？
-- 你是否有针对 concealment、approval-path misuse、approval evasion 和 session re-init misuse 的行为评测？
-- 发布、替换、退役、interruption 以及 schema-transition windows 期间的自主性是否被收紧？
+- 你是否有针对 concealment、approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse 的行为评测？
+- 发布、替换、退役、interruption、schema-transition windows 与 orchestration-pattern changes 期间的自主性是否被收紧？
 - 同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里？
 
 如果连续几个答案都是“否”，那你已经拥有自主性，但还没有足够的控制层。

@@ -55,6 +55,7 @@ Misalignment устроен иначе:
 - approval paths;
 - paused approval и resume paths;
 - capability-session interruption и re-initialization paths;
+- выбор orchestration pattern и delegated worker paths;
 - replacement и retirement periods;
 - memory writes, которые могут закрепить вредную стратегию.
 
@@ -126,6 +127,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - сможет ли модель скрыть спорное намерение;
 - сможет ли она обойти или злоупотребить approval path;
 - сможет ли она использовать interruption, expiry или re-init semantics, чтобы вернуть себе больше автономии;
+- сможет ли она увести execution в более слабый orchestration pattern или delegated worker path;
 - может ли change в runtime сделать oversight слабее;
 - может ли schema drift или contract mismatch открыть более слабый control path;
 - есть ли у нас отдельные сигналы на sabotage-like behavior;
@@ -142,7 +144,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - traces, которые фиксируют policy decision и фактический side effect;
 - immutable linkage между `trace_id`, `approval_id`, `tool_principal`, `contract_version` и `artifact_bundle`;
 - emergency stop для capability family;
-- behavioral evals, которые проверяют sabotage, concealment и oversight evasion.
+- behavioral evals, которые проверяют sabotage, concealment, oversight evasion и orchestration-pattern misuse.
 
 <div class="diagram-card">
 <p>Misalignment risk лучше воспринимать как конфликт между autonomy и control surfaces</p>
@@ -184,6 +186,8 @@ agentic_risk:
     - replacement_window_unrestricted
     - capability_session_reinit_unrestricted
     - resumable_background_path_unrestricted
+    - worker_boundary_unrestricted
+    - orchestration_pattern_drift_unreviewed
 ```
 
 Такой policy не “решает alignment”, но делает поведение системы гораздо менее опасным при конфликте стимулов.
@@ -224,8 +228,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 Более сильная планка такая:
 
 - sabotage-like behavior проверяется отдельно от ordinary failure;
-- high-risk actions привязаны к exact payload approval, dedicated principals, linked contract versions и governed re-init behavior;
-- во время rollout, replacement и retirement автономия не расслабляется, а сужается;
+- high-risk actions привязаны к exact payload approval, dedicated principals, linked contract versions, governed re-init behavior и reviewed worker boundaries;
+- во время rollout, replacement, retirement и orchestration-pattern change автономия не расслабляется, а сужается;
 - traces умеют связать intent, approval, artifact bundle и side effect;
 - emergency containment умеет сузить capability family без ожидания полного shutdown.
 
@@ -236,8 +240,8 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - Проверяешь ли ты sabotage-like behavior отдельно от ordinary failures?
 - Можно ли связать risky side effect с конкретным `approval_id` и `tool_principal`?
 - Умеет ли система экстренно отключить capability family, а не только весь runtime?
-- Есть ли behavioral evals на concealment, approval-path misuse, approval evasion и session re-init misuse?
-- Ограничена ли автономия во время rollout, replacement, retirement, interruption и schema-transition windows?
+- Есть ли behavioral evals на concealment, approval-path misuse, approval evasion, session re-init misuse и delegated-worker misuse?
+- Ограничена ли автономия во время rollout, replacement, retirement, interruption, schema-transition windows и orchestration-pattern changes?
 - Не живет ли один и тот же principal сразу и в low-risk, и в high-risk контуре?
 
 Если на несколько вопросов подряд ответ “нет”, то у тебя уже есть autonomy, но еще нет достаточного control layer.
