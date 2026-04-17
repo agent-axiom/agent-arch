@@ -22,6 +22,8 @@ If all you have is application logs and a few metrics, the answer is usually slo
 
 That is why observability for agent systems should be built not around "logs in general," but around the ability to reconstruct the history of one run.
 
+In this chapter, that means something deliberately limited: tracing is the capture layer for one run, not yet the estate-wide substrate for detection, correlation, and operations across many runs.
+
 The role of tracing in this book is narrower than the whole observability layer. Tracing captures the raw history of execution. Later chapters will show how observability turns that history into an evidence substrate, how evals turn it into judgments, and how assurance or governance consume those outputs.
 
 ## 2. Why Ordinary Logs Are Almost Never Enough
@@ -55,6 +57,8 @@ For the same support case, one run may include:
 - background memory update.
 
 When that structure exists, the team stops seeing the system as a chaotic stream of calls and starts seeing a chain of observable decisions.
+
+That distinction matters because this chapter is not asking how to aggregate, correlate, or alert across the estate. It is asking what raw execution history must survive so those later functions can exist at all.
 
 ## 4. What the Trace Should Look Like in the Support Scenario
 
@@ -136,6 +140,8 @@ In reality, the same support run often breaks elsewhere:
 - a write tool returns an ambiguous outcome.
 
 So a good trace model should cover the full control flow, not only the inference step.
+
+But it should still remain a trace model. It captures execution history for later investigation. The later observability layer is where teams connect many traces into estate-wide evidence, detection logic, and operational visibility.
 
 This chapter therefore stays at the capture boundary: what must be recorded, how it should be structured, and what must survive later review. The later observability chapter is about estate-wide evidence and detection, not about redefining what a trace is.
 

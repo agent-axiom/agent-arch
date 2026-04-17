@@ -22,6 +22,8 @@
 
 这就是为什么智能体系统的可观测性不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
 
+而在本章里，这个说法有一个刻意收窄的含义：tracing 是单次 run 的 capture layer，还不是那个跨越许多 runs 的 estate-wide substrate，用来做 detection、correlation 与运营可见性。
+
 在本书里，tracing 的角色比整个 observability layer 更窄。Tracing 负责捕获执行的原始历史。后面的章节会分别说明 observability 如何把这段历史转成 evidence substrate，evals 如何把它转成 judgments，以及 assurance 或 governance 如何消费这些结果。
 
 ## 2. 为什么普通日志几乎总是不够
@@ -55,6 +57,8 @@
 - background memory update。
 
 当这种结构存在后，团队就不再把系统看成杂乱调用流，而是看成一串可观察的决策。
+
+这个区分很重要，因为本章并不在讨论如何在整个 estate 上聚合、关联或告警。它讨论的是，哪些原始执行历史必须被保留下来，后面的那些功能才有可能成立。
 
 ## 4. 在这个支持场景里，trace 应该长什么样
 
@@ -136,6 +140,8 @@ flowchart LR
 - write tool 返回了模糊结果。
 
 所以 trace model 应覆盖整个 control flow，而不只是 inference step。
+
+但它仍然应该保持为 trace model。它负责为后续调查保留执行历史。更靠后的 observability layer 才负责把许多 traces 连接成 estate 级的 evidence、detection logic 与 operational visibility。
 
 因此，本章会停留在 capture boundary 上：哪些东西必须被记录、应该如何结构化，以及哪些内容必须在后续 review 中幸存下来。后面的 observability chapter 讨论的是 estate 级 evidence 与 detection，而不是重新定义什么叫 trace。
 
