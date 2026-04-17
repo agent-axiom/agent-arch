@@ -23,6 +23,7 @@
 - оболочку трассы;
 - каталог событий;
 - контракты полезной нагрузки;
+- identity verifier contract;
 - verifier evidence linkage.
 
 Даже если первый рантайм еще маленький.
@@ -127,6 +128,7 @@
 Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract и для verifier evidence, например:
 
 - `verifier_id`
+- `verifier_contract_version`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
@@ -168,7 +170,8 @@
 - версионирование схемы событий;
 - разделение `display payload` и `machine payload`;
 - правила маскирования чувствительных полей;
-- явный способ связывать трассы с verifier evidence, screenshots или grading artifacts.
+- явный способ связывать трассы с verifier evidence, screenshots или grading artifacts;
+- стабильный способ фиксировать, какая версия verifier contract породила grading output.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 
@@ -182,6 +185,7 @@
 - Можно ли по трассе восстановить решение политики и путь инструмента?
 - Можно ли по экспорту сессии собирать набор для оценки?
 - Можно ли связать трассу с verifier evidence, которое использовалось для grading или rollout review?
+- Можно ли понять, какая версия verifier contract породила этот grading output?
 - Есть ли план по маскированию данных и версионированию схемы?
 
 Если на несколько вопросов подряд ответ «нет», значит у тебя пока есть логирование, но еще нет полноценной схемы трасс.

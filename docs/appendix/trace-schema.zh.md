@@ -23,6 +23,7 @@
 - `trace envelope`
 - `event catalog`
 - `payload contracts`
+- `verifier contract identity`
 - `verifier evidence linkage`
 
 哪怕 runtime 还很小，也值得这样做。
@@ -127,6 +128,7 @@
 如果系统依赖 verifier-aware evals，也很适合单独定义一个 event 或 linked payload contract 来承载 verifier evidence，例如：
 
 - `verifier_id`
+- `verifier_contract_version`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
@@ -168,7 +170,8 @@
 - schema version 字段；
 - `display payload` 与 `machine payload` 的分离；
 - 敏感字段的脱敏规则；
-- 把 traces 与 verifier evidence、screenshots 或 grading artifacts 显式关联起来的方式。
+- 把 traces 与 verifier evidence、screenshots 或 grading artifacts 显式关联起来的方式；
+- 稳定记录是哪个 verifier contract version 产出该 grading output 的方式。
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
@@ -182,6 +185,7 @@
 - 能不能从追踪里还原出策略决策和工具路径？
 - 能不能从会话导出结果构建评测数据集？
 - 能不能把 trace 关联到用于 grading 或 rollout review 的 verifier evidence？
+- 能不能看出是哪一个 verifier contract version 产出了这份 grading output？
 - 有没有脱敏与模式版本化的计划？
 
 如果连续几个答案都是“没有”，那你现在更像是拥有日志，而不是拥有真正的追踪模式。

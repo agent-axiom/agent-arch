@@ -23,6 +23,7 @@ That is why it is useful to separate:
 - `trace envelope`
 - `event catalog`
 - `payload contracts`
+- `verifier contract identity`
 - `verifier evidence linkage`
 
 Even in a small runtime.
@@ -127,6 +128,7 @@ And `memory_persisted` should usually include:
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
 
 - `verifier_id`
+- `verifier_contract_version`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
@@ -168,7 +170,8 @@ The reference runtime is intentionally small, so a more mature system should qui
 - version fields for the schema;
 - a split between `display payload` and `machine payload`;
 - redaction rules for sensitive fields;
-- an explicit way to link traces to verifier evidence, screenshots, or grading artifacts.
+- an explicit way to link traces to verifier evidence, screenshots, or grading artifacts;
+- a stable way to record which verifier contract version produced the grading output.
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -182,6 +185,7 @@ Start with this short list and mark every "no" explicitly:
 - Can you reconstruct the policy decision and tool path from a trace?
 - Can you build an eval dataset from a session export?
 - Can you link a trace to verifier evidence used in grading or rollout review?
+- Can you tell which verifier contract version produced that grading output?
 - Do you have a plan for redaction and schema versioning?
 
 If several answers are “no,” you probably have logging, but not yet a real trace schema.
