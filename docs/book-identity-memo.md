@@ -26,6 +26,8 @@ This book helps the reader stop thinking about agents as prompt tricks and start
 - raw evidence capture, health budgets, and eval judgment
 - lifecycle, accountability, and estate governance
 
+That promise should also be felt structurally. The manuscript should read as a sequence of reader outcomes, not just as a dense inventory of topics.
+
 ## What the book is
 
 - a practical architecture book
@@ -59,10 +61,13 @@ This means the manuscript should:
 - sharpen chapter jobs-to-be-done so adjacent chapters do not blur together
 - preserve role clarity between adjacent operational chapters
 - raise the evidence floor beyond vendor docs and short code sketches
+- make entry surfaces, part indexes, and chapter intros sound like outcome promises rather than topic lists
 
 ## Editorial geometry
 
 The book is getting stronger when readers can feel a non-overlapping progression of roles rather than one repeated governance discussion.
+
+It is getting stronger again when that role progression is visible as promise shape: the reader should feel what each part gives them, not only what each part contains.
 
 ### Part V
 - Chapter 11 = raw evidence capture
@@ -78,6 +83,8 @@ The book is getting stronger when readers can feel a non-overlapping progression
 
 This geometry is part of the book's identity, not just an editing convenience.
 
+Promise shape is also part of that identity. If a page drifts back into inventory-style prose, it weakens the book even if the underlying concepts remain correct.
+
 ## Book promise in one sentence
 
-Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, evidence, judgment, health, and accountability.
+Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, evidence, judgment, health, and accountability, presented as a reader journey of distinct promises rather than a pile of controls.
