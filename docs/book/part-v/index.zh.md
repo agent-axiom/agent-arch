@@ -4,18 +4,18 @@
 
 这一部分继续沿着同一条故事线推进：
 
-- 在[第 11 章](chapter-11.zh.md)里，还原一次真实故障的路径；
-- 在[第 12 章](chapter-12.zh.md)里，明确什么才算系统健康；
-- 在[第 13 章](chapter-13.zh.md)里，把学习闭环补齐，避免同类故障再次回到 rollout。
+- 在[第 11 章](chapter-11.zh.md)里，还原一次真实故障的原始路径；
+- 在[第 12 章](chapter-12.zh.md)里，明确什么才算系统的 health budget 与 risk budget；
+- 在[第 13 章](chapter-13.zh.md)里，产出 reviewable judgments，避免同类故障再次回到 rollout。
 
 !!! info "这一部分的快速路线"
     如果你想快速读完关键部分，可以这样走：
 
-    - [第 11 章](chapter-11.zh.md)：先还原一次真实故障的路径；
-    - [第 12 章](chapter-12.zh.md)：再定义什么才算系统健康；
-    - [第 13 章](chapter-13.zh.md)：最后补齐 eval loop，避免同样的故障再次进入 rollout。
+    - [第 11 章](chapter-11.zh.md)：先捕获一次真实故障的 raw run history；
+    - [第 12 章](chapter-12.zh.md)：再定义系统允许消耗的 health budget 与 risk budget；
+    - [第 13 章](chapter-13.zh.md)：最后把系统行为变成可供 rollout 使用的 reviewable eval judgments。
 
-    这三步合在一起，说明 agent system 要从“某些东西能跑”走向受控运营，缺一不可。
+    这三步合在一起，说明 agent system 要通过三个不同层次从“某些东西能跑”走向受控运营：capture、health 与 judgment。
 
 如果没有好的可观测性，再强的架构也会很快退化成猜测：
 
@@ -27,11 +27,13 @@
 
 这一部分会拆解如何构建追踪、SLO 和评测闭环，让智能体系统不只是“能上线”，而是真正可以在第一版演示之后继续稳定运营。
 
+这里的 editorial boundary 也很重要。Tracing 是 raw capture layer；SLO 是 health-and-budget layer；evals 是 judgment layer。后面的章节会在这些基础之上继续展开 assurance、observability 与 governance，而不是过早把它们混成一团。
+
 ## 这一部分解决什么问题
 
 - 帮你还原真实的 run 路径，而不是只靠症状猜测；
-- 通过 SLO、cost、safety 和 escalation 建立明确的健康模型；
-- 通过 offline evals、online signals 和 regression gates 补齐学习闭环。
+- 通过 SLO、cost、safety 和 escalation 建立明确的 health budgets 与 risk budgets；
+- 通过 offline evals、online signals 和 regression gates 产出 reviewable judgments。
 
 ## 本部分内容
 

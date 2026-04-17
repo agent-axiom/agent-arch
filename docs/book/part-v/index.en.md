@@ -4,18 +4,18 @@ At this point, we already have the architecture, the security perimeter, memory,
 
 This part continues the same story:
 
-- in [Chapter 11](chapter-11.en.md), you reconstruct the path of a real failure;
-- in [Chapter 12](chapter-12.en.md), you define what system health actually means;
-- in [Chapter 13](chapter-13.en.md), you close the learning loop so the same failure does not re-enter rollout.
+- in [Chapter 11](chapter-11.en.md), you reconstruct the raw path of a real failure;
+- in [Chapter 12](chapter-12.en.md), you define what system health and risk budgets actually mean;
+- in [Chapter 13](chapter-13.en.md), you produce reviewable judgments so the same failure does not re-enter rollout.
 
 !!! info "Short path through this part"
     If you want a fast pass, read it this way:
 
-    - [Chapter 11](chapter-11.en.md): reconstruct the path of one real failure;
-    - [Chapter 12](chapter-12.en.md): define what system health should mean;
-    - [Chapter 13](chapter-13.en.md): close the eval loop so the same failure does not return to rollout.
+    - [Chapter 11](chapter-11.en.md): capture the raw run history of one real failure;
+    - [Chapter 12](chapter-12.en.md): define the health and risk budgets the system is allowed to consume;
+    - [Chapter 13](chapter-13.en.md): turn behavior into reviewable eval judgments for rollout.
 
-    Together, this shows how an agent system moves from “something works” to controlled operation.
+    Together, this shows how an agent system moves from “something works” to controlled operation through three distinct layers: capture, health, and judgment.
 
 Without good observability, even a strong architecture quickly collapses into guesswork:
 
@@ -27,11 +27,13 @@ Without good observability, even a strong architecture quickly collapses into gu
 
 In this part, we break down how to build traces, SLO, and eval loops so the agent system can be not only launched, but also operated steadily after the first impressive demo.
 
+The editorial boundary matters here. Tracing is the raw capture layer. SLO are the health-and-budget layer. Evals are the judgment layer. Later chapters in the book will build assurance, observability, and governance on top of those foundations rather than collapsing them together too early.
+
 ## What This Part Solves
 
 - it helps you reconstruct the real run path instead of guessing from symptoms;
-- it defines an explicit health model through SLO, cost, safety, and escalation;
-- it closes the learning loop through offline evals, online signals, and regression gates.
+- it defines explicit health and risk budgets through SLO, cost, safety, and escalation;
+- it produces reviewable judgments through offline evals, online signals, and regression gates.
 
 ## In This Part
 
