@@ -77,7 +77,7 @@
 - `labels` как описание класса сценария;
 - `expected_outcomes` как описание ожидаемого результата;
 - `grading_rules` как описание того, как именно это проверяется;
-- `verifier_outputs` как структурированный результат проверки.
+- `verifier_outputs` как структурированный результат проверки, включая verifier identity и contract version.
 
 ## Что такое правила проверки
 
@@ -153,6 +153,8 @@
 - `notes_for_review`
 - `verifier_outputs`
 - `failure_attribution`
+- `verifier_id`
+- `verifier_contract_version`
 - `verifier_evidence_refs`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
@@ -177,6 +179,8 @@ grading_rules:
     expected: true
     blocking: true
 verifier_outputs:
+  verifier_id: fara-process-review
+  verifier_contract_version: verifier-v2
   process_score: 0.92
   outcome_score: 0.35
   failure_attribution: uncontrollable_environment
@@ -226,6 +230,7 @@ verifier_outputs:
 - Есть ли правила проверки, а не только описания от руки?
 - Можно ли оценивать не только текст, но и поведение?
 - Умеет ли verifier выдавать отдельно `process_score`, `outcome_score` и `failure_attribution`?
+- Можно ли понять, какой verifier identity и contract version породили этот grading output?
 - Поддерживаются ли многошаговые сессии?
 - Есть ли версионирование набора и владелец?
 

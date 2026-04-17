@@ -77,7 +77,7 @@
 - `labels` 作为场景类别；
 - `expected_outcomes` 作为期望结果；
 - `grading_rules` 作为检查逻辑；
-- `verifier_outputs` 作为结构化的分级结果。
+- `verifier_outputs` 作为结构化的分级结果，并包含 verifier identity 与 contract version。
 
 ## 什么是分级契约
 
@@ -153,6 +153,8 @@
 - `notes_for_review`
 - `verifier_outputs`
 - `failure_attribution`
+- `verifier_id`
+- `verifier_contract_version`
 - `verifier_evidence_refs`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
@@ -177,6 +179,8 @@ grading_rules:
     expected: true
     blocking: true
 verifier_outputs:
+  verifier_id: fara-process-review
+  verifier_contract_version: verifier-v2
   process_score: 0.92
   outcome_score: 0.35
   failure_attribution: uncontrollable_environment
@@ -226,6 +230,7 @@ verifier_outputs:
 - 有没有分级规则，而不只是人工描述？
 - 能不能评估行为，而不只是文本？
 - verifier 能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
+- 能不能看出是哪一个 verifier identity 与 contract version 产出了这份 grading output？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 

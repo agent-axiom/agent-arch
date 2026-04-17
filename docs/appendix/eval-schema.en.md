@@ -77,7 +77,7 @@ That is why an eval dataset should usually separate:
 - `labels` as the scenario class;
 - `expected_outcomes` as the desired result;
 - `grading_rules` as the check logic;
-- `verifier_outputs` as the structured grading result.
+- `verifier_outputs` as the structured grading result, including verifier identity and contract version.
 
 ## What a grading contract is
 
@@ -153,6 +153,8 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `notes_for_review`
 - `verifier_outputs`
 - `failure_attribution`
+- `verifier_id`
+- `verifier_contract_version`
 - `verifier_evidence_refs`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
@@ -177,6 +179,8 @@ grading_rules:
     expected: true
     blocking: true
 verifier_outputs:
+  verifier_id: fara-process-review
+  verifier_contract_version: verifier-v2
   process_score: 0.92
   outcome_score: 0.35
   failure_attribution: uncontrollable_environment
@@ -226,6 +230,7 @@ Start with this short list and mark every "no" explicitly:
 - Do you have grading rules, not just reviewer prose?
 - Can you evaluate behavior, not only text?
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
+- Can you tell which verifier identity and contract version produced that grading output?
 - Do you support multi-run sessions?
 - Do you have dataset versioning and ownership?
 
