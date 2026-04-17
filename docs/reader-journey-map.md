@@ -7,9 +7,9 @@ The reader should move through the book in this order:
 1. stop treating agents as magical prompt wrappers
 2. understand where trust and execution boundaries really live
 3. see why memory and tools create system risk, not just capability
-4. understand that observability and evals are required for operation, not polish
+4. understand that capture, health budgets, and judgment are required for operation, not polish
 5. understand that platform ownership and runtime contracts are necessary
-6. understand that rollout, assurance, provenance, and retirement are one lifecycle
+6. understand that lifecycle work is a sequence of distinct roles, not one governance blur
 7. understand that mature agent systems must be governed as an estate, not as isolated demos
 
 ## Strong target arc
@@ -23,6 +23,11 @@ A production agent system is really a layered platform with boundaries, contract
 ### Stage 3. Operational realism
 Memory, tools, tracing, SLO, and evals are not add-ons. They are what prevents drift and blind failure.
 
+Reader promise inside this stage:
+- first learn to capture what actually happened;
+- then learn to define what degradation can be tolerated;
+- then learn to judge whether a change deserves trust.
+
 ### Stage 4. Runtime embodiment
 Those ideas have to become a runtime, policy layer, and rollout shape.
 
@@ -34,6 +39,11 @@ Once the system is alive, the reader should see a clean late-book geometry:
 - observability as evidence substrate
 - registry as accountability layer
 - retirement as lifecycle closure
+
+Reader promise inside this stage:
+- first learn how change becomes lifecycle risk;
+- then learn how response, lineage, judgment, evidence, and accountability divide cleanly;
+- finally learn how the whole estate stays governable across replacement and retirement.
 
 ### Stage 6. Estate governance
 The mature problem is no longer one agent. It is governing many systems, contracts, sessions, and approvals coherently.
@@ -72,6 +82,8 @@ Each part should answer one reader question:
 - Part VII: how those ideas become a runnable governed runtime
 - Part VIII: how the system survives change, risk, drift, accountability, and eventual retirement
 
+And each mature part should make explicit reader promises, not only name topics.
+
 ## Rewrite implication
 
 Every chapter introduction should explicitly state:
@@ -91,10 +103,12 @@ The manuscript is getting stronger when each cluster has a non-overlapping role.
 
 ### Part VIII geometry
 - Chapter 21 = assurance response
-- Chapter 22 = evidence backbone and lineage
+- Chapter 22 = governed lineage and evidence backbone
 - Chapter 25 = eval judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
 - Chapter 27 = estate accountability and reconciliation
 
 ### Book-level rule
 When a chapter starts to sound like its neighbor, rewrite toward role clarity, not just more detail.
+
+The same rule now applies to part indexes and entry pages: if they sound like topic lists instead of outcome promises, rewrite them until the reader journey is visible.
