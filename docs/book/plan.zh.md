@@ -14,6 +14,8 @@
 
 ## 结构
 
+这本书现在有了更明确的内部几何。它不只是主题的顺序，也是读者需要逐步学会区分的一组角色顺序。
+
 ### 第一部分：基础
 
 - 什么是现代智能体，以及它与 workflow 的区别。
@@ -60,11 +62,13 @@
 
 ### 第五部分：可靠性与可观测性
 
-- Traces、spans、structured events。
-- 智能体系统的 SLO。
-- Offline evals、online evals、trace grading、回归闸门。
+- 第 11 章：traces、spans 与 structured events，作为 raw evidence capture。
+- 第 12 章：智能体系统的 SLO，作为 health 与 risk budgets。
+- 第 13 章：offline evals、online evals、trace grading 与回归闸门，作为 judgment discipline。
 
 说明：Part V 的核心思想相对稳定，但第 13 章比第 11、12 章变化更快。
+
+编辑形状：Part V 现在作为一个三步块来工作，capture -> health -> judgment。
 
 ### 第六部分：组织模型
 
@@ -72,12 +76,16 @@
 - Templates、golden paths、shared gateways。
 - 如何避免把智能体平台做成“动物园”。
 
+编辑形状：Part VI 是 ownership bridge，用来决定 Part V 在技术上定义的那些层分别由谁负责，以及 Part VII 将怎样把它们落成可运行结构。
+
 ### 第七部分：参考实现
 
 - 基础 runtime。
 - 安全策略。
 - 工具目录。
 - 生产上线清单。
+
+编辑形状：Part VII 是 embodiment bridge，在这里，architecture、policy、ownership 与 rollout 会落成 runnable structure。
 
 ### 第八部分：智能体系统生命周期
 
@@ -95,6 +103,8 @@
 
 说明：这是全书变化最快的部分。原则相对稳定，但 tooling、benchmarks、vendor guidance 和 threat patterns 更新更频繁。
 
+编辑形状：Part VIII 现在作为一个镜像式的后段轮廓来工作，response -> evidence backbone -> judgment under pressure -> evidence substrate -> accountability -> retirement。
+
 ## 发布路线图
 
 1. 固化架构框架与术语。
@@ -103,6 +113,7 @@
 4. 提供实用的 reference implementation。
 5. 补充 eval 示例和策略配置。
 6. 增强这本书的决策框架：什么时候该用 agent，什么时候 workflow 足够，以及什么时候不该过早走向多智能体。
+7. 保护 editorial role clarity，避免相邻的 operational chapters 再次塌回重复与 overlap。
 
 ## 已完成内容
 
