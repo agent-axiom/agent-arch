@@ -32,17 +32,29 @@ Actions:
 
 ### Priority 3. Late-book role separation
 Files likely involved:
+- chapter-11*
+- chapter-12*
 - chapter-13*
 - chapter-21*
+- chapter-22*
 - chapter-25*
 - chapter-26*
 - chapter-27*
+- part-v/index*
 - part-viii/index*
 
 Actions:
 - cut overlap
 - reinforce unique jobs-to-be-done
-- make transitions explicit: learning loop -> assurance response -> adversarial validation -> evidence substrate -> estate governance
+- preserve the new role grammar:
+  - tracing = raw evidence capture
+  - SLO = health and risk budgets
+  - evals = judgment
+  - assurance = response
+  - provenance/artifacts = evidence backbone
+  - observability = evidence substrate
+  - registry = estate accountability
+- make transitions explicit instead of allowing adjacent chapters to collapse into one broad governance blob
 
 ### Priority 4. Evidence reinforcement
 Files likely involved:
@@ -81,10 +93,11 @@ Expected effect:
 - stronger causal setup for everything that follows
 
 ### Slice C
-Part VIII de-duplication
+Part V and Part VIII role separation
 Expected effect:
 - less conceptual fatigue
-- clearer reason to read Chapters 21, 25, 26, 27 separately
+- clearer reason to read Chapters 11, 12, 13, 21, 22, 25, 26, 27 separately
+- stronger mirrored editorial geometry between the reliability block and the lifecycle block
 
 ### Slice D
 Evidence and bibliography upgrade
@@ -101,6 +114,15 @@ Expected effect:
 
 1. finalize identity memo and reader journey
 2. revise homepage/start-here/Part I framing
-3. revise Part VIII framing and late-chapter boundaries
+3. revise Part V and Part VIII framing around role clarity
 4. expand evidence base for the most important claims
 5. run full editorial consistency pass
+
+## Current editorial geometry checkpoint
+
+Already established in manuscript and should now be treated as a constraint, not an experiment:
+
+- Part V = capture, health, judgment
+- Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
+
+If a future rewrite weakens those distinctions, it should be treated as regression, not stylistic drift.
