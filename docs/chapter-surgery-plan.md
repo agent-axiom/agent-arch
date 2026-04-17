@@ -2,7 +2,7 @@
 
 ## Goal
 
-Move the manuscript from a strong handbook/reference project toward a stronger book by improving argument shape, reader journey, case continuity, and role clarity between adjacent chapters.
+Move the manuscript from a strong handbook/reference project toward a stronger book by improving argument shape, reader journey, case continuity, role clarity between adjacent chapters, and explicit promise-shape across parts and entry surfaces.
 
 ## Surgery priorities
 
@@ -29,8 +29,9 @@ Actions:
 - give each part one dominant question
 - ensure each part closes by creating the need for the next one
 - reduce the feeling of topic accumulation
+- rewrite indexes and entry surfaces until they sound like outcome promises, not topic lists
 
-### Priority 3. Late-book role separation
+### Priority 3. Late-book role separation and promise hardening
 Files likely involved:
 - chapter-11*
 - chapter-12*
@@ -55,6 +56,7 @@ Actions:
   - observability = evidence substrate
   - registry = estate accountability
 - make transitions explicit instead of allowing adjacent chapters to collapse into one broad governance blob
+- make each part/chapter intro promise a distinct reader outcome, not just a thematic area
 
 ### Priority 4. Evidence reinforcement
 Files likely involved:
@@ -98,6 +100,7 @@ Expected effect:
 - less conceptual fatigue
 - clearer reason to read Chapters 11, 12, 13, 21, 22, 25, 26, 27 separately
 - stronger mirrored editorial geometry between the reliability block and the lifecycle block
+- clearer outcome promises at the part-index level
 
 ### Slice D
 Evidence and bibliography upgrade
@@ -115,8 +118,9 @@ Expected effect:
 1. finalize identity memo and reader journey
 2. revise homepage/start-here/Part I framing
 3. revise Part V and Part VIII framing around role clarity
-4. expand evidence base for the most important claims
-5. run full editorial consistency pass
+4. harden promise-shape across part indexes and supporting planning docs
+5. expand evidence base for the most important claims
+6. run full editorial consistency pass
 
 ## Current editorial geometry checkpoint
 
@@ -124,5 +128,10 @@ Already established in manuscript and should now be treated as a constraint, not
 
 - Part V = capture, health, judgment
 - Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
+
+Already established in planning/manuscript shaping and should now also be treated as a constraint:
+
+- part indexes and entry surfaces should read as reader promises, not inventory lists
+- late-book clarity work is now promise-shape hardening, not just overlap cleanup
 
 If a future rewrite weakens those distinctions, it should be treated as regression, not stylistic drift.
