@@ -32,7 +32,7 @@ Each decision may be reasonable on its own. The problem starts later, when nobod
 - which capabilities they have;
 - which identities, connectors, and tool principals they use;
 - which of them are still alive;
-- which of them still own paused approvals, background routes, or deprecated contract paths.
+- which of them still own paused approvals, background routes, deprecated contract paths, or stale verifier contracts.
 
 That is the state worth calling `agent sprawl`.
 
@@ -88,6 +88,7 @@ A minimal registry record for production-grade agent systems should usually incl
 - paused-run, background-run, and capability-session ownership;
 - observability status;
 - verifier or eval-evidence status;
+- active and deprecated verifier-contract linkage;
 - artifact-bundle linkage;
 - retirement-plan linkage.
 
@@ -210,7 +211,8 @@ Then the registry should help answer:
 - who owns aging background runs;
 - who owns capability-session expiry drift and emergency freeze actions;
 - which contract version their approval and capability payloads are expected to follow;
-- which verifier or grading contract is trusted for their high-risk eval evidence.
+- which verifier or grading contract is trusted for their high-risk eval evidence;
+- whether deprecated verifier contracts are still referenced anywhere in the estate.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
 
@@ -243,12 +245,16 @@ agent:
     inventory_covered: true
     verifier_evidence_linked: true
   verifier_contract: verifier-v2
+  deprecated_verifier_contracts:
+    - verifier-v1
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
 That record is already enough to connect the agent to ownership, controls, lifecycle, and verifier-aware evidence expectations.
+
+At estate scale, this also helps answer a registry question that teams otherwise miss: which verifier contracts are active, which are deprecated, and which agents still depend on the old ones.
 
 ## 11. Example registry health check
 

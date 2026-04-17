@@ -32,7 +32,7 @@
 - какие capabilities у них есть;
 - какие identities, connectors и tool principals они используют;
 - какие из них вообще еще живы;
-- какие из них все еще владеют paused approvals, background routes или deprecated contract paths.
+- какие из них все еще владеют paused approvals, background routes, deprecated contract paths или stale verifier contracts.
 
 Именно это состояние и стоит называть `agent sprawl`.
 
@@ -88,6 +88,7 @@ Registry отвечает на более строгий вопрос:
 - ownership для paused runs, background runs и capability sessions;
 - observability status;
 - статус verifier или eval evidence;
+- linkage на active и deprecated verifier contracts;
 - artifact bundle linkage;
 - retirement plan linkage.
 
@@ -210,7 +211,8 @@ Registry не должен дублировать policy bundle или approval 
 - кто owner у aging background runs;
 - кто owner у capability-session expiry drift и emergency freeze actions;
 - какой contract version должны соблюдать их approval и capability payloads;
-- какой verifier или grading contract считается доверенным для их high-risk eval evidence.
+- какой verifier или grading contract считается доверенным для их high-risk eval evidence;
+- не ссылаются ли где-то в estate на deprecated verifier contracts.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
 
@@ -243,12 +245,16 @@ agent:
     inventory_covered: true
     verifier_evidence_linked: true
   verifier_contract: verifier-v2
+  deprecated_verifier_contracts:
+    - verifier-v1
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
 Такой record уже достаточно полезен, чтобы связывать agent с ownership, controls, lifecycle и verifier-aware evidence expectations.
+
+На масштабе estate это еще и помогает отвечать на вопрос, который команды часто упускают: какие verifier contracts сейчас активны, какие уже deprecated и какие agents все еще зависят от старых версий.
 
 ## 11. Пример registry health check
 

@@ -32,7 +32,7 @@
 - 它们有哪些 capabilities；
 - 用了哪些 identities、connectors 和 tool principals；
 - 哪些其实还活着；
-- 哪些仍然挂着 paused approvals、background routes 或 deprecated contract paths。
+- 哪些仍然挂着 paused approvals、background routes、deprecated contract paths 或 stale verifier contracts。
 
 这正是值得被称作 `agent sprawl` 的状态。
 
@@ -88,6 +88,7 @@ Registry 回答的是更严格的问题：
 - paused runs、background runs 与 capability sessions 的 ownership
 - observability status
 - verifier 或 eval evidence status
+- active 与 deprecated verifier-contract linkage
 - artifact bundle linkage
 - retirement plan linkage
 
@@ -210,7 +211,8 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - aging background runs 由谁负责；
 - capability-session expiry drift 与 emergency freeze actions 由谁负责；
 - 它们的 approval 与 capability payload 应该遵循哪个 contract version；
-- 哪个 verifier 或 grading contract 被信任为它们 high-risk eval evidence 的依据。
+- 哪个 verifier 或 grading contract 被信任为它们 high-risk eval evidence 的依据；
+- estate 里是否还有地方在引用 deprecated verifier contracts。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
 
@@ -243,12 +245,16 @@ agent:
     inventory_covered: true
     verifier_evidence_linked: true
   verifier_contract: verifier-v2
+  deprecated_verifier_contracts:
+    - verifier-v1
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
 这个 record 已经足以把 agent 和 ownership、controls、lifecycle 以及 verifier-aware evidence expectations 连接起来。
+
+放到 estate scale 上看，它还能帮助回答一个团队很容易漏掉的问题：哪些 verifier contracts 仍在 active 使用，哪些已经 deprecated，以及哪些 agents 还依赖旧版本。
 
 ## 11. 一个简单的 registry health check
 
