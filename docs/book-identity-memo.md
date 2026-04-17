@@ -23,14 +23,15 @@ This book helps the reader stop thinking about agents as prompt tricks and start
 - explicit trust boundaries
 - policy and approval control
 - memory discipline
-- observability and eval loops
-- lifecycle and estate governance
+- raw evidence capture, health budgets, and eval judgment
+- lifecycle, accountability, and estate governance
 
 ## What the book is
 
 - a practical architecture book
 - an operating model for production-grade agent systems
 - a field guide for moving from local agent hacks to platform discipline
+- a manuscript with deliberately separated operational layers, not a blended governance blob
 
 ## What the book is not
 
@@ -56,8 +57,27 @@ This means the manuscript should:
 - prioritize recurring cases over disconnected examples
 - treat appendices and reference pages as support layers, not as the main reading experience
 - sharpen chapter jobs-to-be-done so adjacent chapters do not blur together
+- preserve role clarity between adjacent operational chapters
 - raise the evidence floor beyond vendor docs and short code sketches
+
+## Editorial geometry
+
+The book is getting stronger when readers can feel a non-overlapping progression of roles rather than one repeated governance discussion.
+
+### Part V
+- Chapter 11 = raw evidence capture
+- Chapter 12 = health and risk budgets
+- Chapter 13 = reviewable judgment and regression discipline
+
+### Part VIII
+- Chapter 21 = assurance response
+- Chapter 22 = evidence backbone and lineage
+- Chapter 25 = judgment under adversarial pressure
+- Chapter 26 = evidence substrate and detection-ready visibility
+- Chapter 27 = estate accountability and reconciliation
+
+This geometry is part of the book's identity, not just an editing convenience.
 
 ## Book promise in one sentence
 
-Agents need a platform, not magic, and this book shows how to build that platform as a governed production system.
+Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, evidence, judgment, health, and accountability.
