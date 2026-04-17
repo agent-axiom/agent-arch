@@ -48,6 +48,7 @@
 - выбор orchestration pattern и boundaries для worker delegation;
 - interruption и expiry semantics для capability sessions;
 - eval datasets и grading logic;
+- verifier rubric, assumptions про evidence linkage и rules для failure attribution;
 - параметры rollout.
 
 Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы.
@@ -122,6 +123,7 @@ Prompt, routine или instruction change могут:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior и continuity между traces и approval records;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
+- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, consistency между process/outcome grading и review для failure attribution;
 - changes в orchestration pattern -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks и pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, cost deltas.
 
@@ -145,6 +147,8 @@ Prompt, routine или instruction change могут:
 > Не поменяли ли мы interruption behavior, expiry handling или re-initialization semantics так, что runtime control уже изменилась, хотя user-visible feature set остался прежним?
 
 Именно этот класс изменений особенно легко недооценить: продуктовая поверхность может выглядеть прежней, а operational risk profile уже заметно сдвинулся.
+
+Та же осторожность нужна и там, где release evidence зависит от verifier outputs. Если меняются verifier rubric, process/outcome grading или evidence linkage, это тоже нужно считать release-bearing control change, а не невидимой частью eval plumbing.
 
 То же самое верно и для ситуации, когда runtime меняет orchestration pattern без изменения user-visible feature description. Перевод path с fixed workflow на `routing`, добавление `parallelization` или внедрение `orchestrator-workers` могут существенно поменять checkpoint behavior, approval ordering, delegated worker exposure и failure recovery. Такие изменения тоже нужно считать release-bearing runtime-control changes.
 
@@ -192,6 +196,7 @@ Google Research хорошо показывает, что provenance полез�
 - какой policy config действовал;
 - какой eval set использовался;
 - какой model route был активен;
+- какой verifier contract и rules для evidence linkage действовали;
 - кто approved этот change.
 
 Без этого change review и incident investigation быстро превращаются в реконструкцию “по памяти”.

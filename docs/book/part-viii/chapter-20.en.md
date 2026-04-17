@@ -48,6 +48,7 @@ It is useful to treat not only code, but every surface that can materially alter
 - orchestration-pattern selection and worker-delegation boundaries;
 - capability-session interruption and expiry semantics;
 - eval datasets and grading logic;
+- verifier rubric, evidence-linkage assumptions, and failure-attribution rules;
 - rollout parameters.
 
 If these are released as “small tweaks,” the team will almost certainly lose control of system behavior.
@@ -122,6 +123,7 @@ A practical model usually looks like this:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior, trace and approval-record continuity;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
+- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, process/outcome grading consistency, and failure-attribution review;
 - orchestration-pattern changes -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks, and pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, and cost deltas.
 
@@ -145,6 +147,8 @@ And if the change affects approval-bound or stateful capability flows, the gate 
 > Did we change interruption behavior, expiry handling, or re-initialization semantics in a way that can alter runtime control without changing the user-visible feature set?
 
 That class of change is easy to underestimate because the product surface may look unchanged while the operational risk profile has shifted materially.
+
+The same caution should apply when release evidence depends on verifier outputs. If verifier rubric, process/outcome grading, or evidence linkage changes, the team should treat that as a release-bearing control change, not as invisible eval plumbing.
 
 The same is true when the runtime changes orchestration pattern without changing the visible feature description. Moving a path from a fixed workflow to `routing`, adding `parallelization`, or introducing `orchestrator-workers` can materially alter checkpoint behavior, approval ordering, delegated worker exposure, and failure recovery. Those should be treated as release-bearing runtime-control changes too.
 
@@ -192,6 +196,7 @@ For change management, that means you should be able to answer:
 - which policy config was active;
 - which eval set was used;
 - which model route was active;
+- which verifier contract and evidence-linkage rules were active;
 - who approved the change.
 
 Without that, change review and incident investigation quickly turn into reconstruction from memory.

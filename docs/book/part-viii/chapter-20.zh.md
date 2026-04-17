@@ -48,6 +48,7 @@
 - orchestration-pattern selection 与 worker-delegation boundaries；
 - capability-session interruption 与 expiry semantics；
 - 评测数据集与分级逻辑；
+- verifier rubric、evidence linkage assumptions 与 failure attribution rules；
 - 发布参数。
 
 如果这些东西被当成“小调优”直接发出去，团队几乎一定会失去对系统行为的控制。
@@ -122,6 +123,7 @@ flowchart LR
 - 工具变更 -> 契约测试、幂等性检查、审批路径验证；
 - delegated authorization changes -> principal-binding checks、scope-visibility checks、revoke-during-pause behavior，以及 traces 与 approval records 的 continuity；
 - interruption-governance 变更 -> paused-run expiry checks、re-init behavior checks、telemetry linkage checks、approval-resume invariants；
+- verifier changes -> false-positive checks、false-negative checks、evidence-linkage checks、process/outcome grading consistency，以及 failure-attribution review；
 - orchestration-pattern changes -> routing-class coverage、join-state checks、worker-boundary checks、review-point checks，以及 pattern-specific trace continuity；
 - 模型路由变更 -> 质量、延迟、安全、成本差值。
 
@@ -145,6 +147,8 @@ flowchart LR
 > 我们是否改变了 interruption behavior、expiry handling 或 re-initialization semantics，从而在不改变 user-visible feature set 的情况下，实质性改变了 runtime control？
 
 这一类变化特别容易被低估，因为产品表面看起来没变，但 operational risk profile 已经发生了实质漂移。
+
+当 release evidence 依赖 verifier outputs 时，也应保持同样的警惕。如果 verifier rubric、process/outcome grading 或 evidence linkage 发生变化，团队也应把它视为 release-bearing control change，而不是隐藏在 eval plumbing 里的小改动。
 
 runtime 在不改变表面功能描述的情况下改变 orchestration pattern 时也是一样。把某条路径从 fixed workflow 改成 `routing`、加入 `parallelization`，或者引入 `orchestrator-workers`，都可能实质性改变 checkpoint behavior、approval ordering、delegated worker exposure 和 failure recovery。这些也应该被当成 release-bearing runtime-control changes。
 
@@ -192,6 +196,7 @@ Google Research 很清楚地表明，provenance 不只是 security 概念，它�
 - 当时启用的是哪一个 policy config；
 - 用的是哪一版 eval set；
 - 哪条 model route 在生效；
+- 当时启用的是哪一版 verifier contract 与 evidence-linkage rules；
 - 谁批准了这个 change。
 
 如果回答不了这些问题，change review 和 incident investigation 很快就会退化成“靠记忆回溯”。
