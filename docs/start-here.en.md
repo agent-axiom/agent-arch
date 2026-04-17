@@ -1,6 +1,8 @@
 # Start Here
 
-If you just arrived at this book, you do not need to read it strictly from top to bottom. This is not a novel and not a survey of everything in the AI ecosystem. It is a practical handbook on how to build safe, controllable AI agents without turning the project into a pile of prompts, scripts, and hope.
+If you just arrived at this book, start with one framing question: are you trying to build an impressive demo, or a system that can survive production reality?
+
+This book is for the second case. You do not need to read it strictly from top to bottom, but you should read it as one argument about how agent systems mature from prompt-heavy prototypes into governed operating systems.
 
 This page exists for two reasons:
 
@@ -19,7 +21,9 @@ That chapter explains the central position of this project: agent systems should
 
 This is not a framework manual, not a model benchmark, and not a hype tour of the AI ecosystem.
 
-It is a practical architecture book for teams that need to ship agents into real environments with trust boundaries, approvals, telemetry, evals, and operational ownership.
+It is a practical architecture and operating-model book for teams that need to ship agents into real environments with trust boundaries, approvals, telemetry, evals, and operational ownership.
+
+Its core thesis is simple: agents need a platform, not magic.
 
 ## Project maturity at a glance
 
@@ -41,7 +45,7 @@ If you want a calm, mature system instead of "the most autonomous agent in the w
 
 ## What You Can Take Away in 30 Minutes
 
-If you only have a short window, I would read this path:
+If you only have a short window, read this as one compressed story:
 
 1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
@@ -49,13 +53,13 @@ If you only have a short window, I would read this path:
 4. [Chapter 11. Traces, Spans, and Structured Events](book/part-v/chapter-11.en.md)
 5. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 
-After those five chapters, you will already have:
+After those five chapters, you should already understand:
 
-- a working architectural frame;
-- a model for trust boundaries;
-- a picture of safe tool execution;
-- a practical observability baseline;
-- a production go-live discipline.
+- why naive agent framing breaks down;
+- where trust and action boundaries really live;
+- what safe tool execution looks like;
+- why observability is part of the operating model rather than polish;
+- what production go-live discipline actually demands.
 
 ## Reading Paths by Role
 

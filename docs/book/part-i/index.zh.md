@@ -1,6 +1,6 @@
 # 第一部分：基础
 
-第一部分回答一个核心问题：如果把智能体系统当作平台型产品而不是玩具来设计，**现代安全智能体架构**应该是什么样子。
+第一部分回答一个决定整本书是否成立的问题：如果把智能体系统当作平台型产品而不是玩具来设计，**现代安全智能体架构**到底应该是什么样子？
 
 !!! info "第一部分的快速路线"
     如果时间有限，可以这样读：
@@ -13,10 +13,10 @@
 
 ## 这一部分解决什么问题
 
-- 智能体不等于 LLM。LLM 只负责部分决策。
-- 安全不能作为 MVP 之后的“外层包装”，它必须内建在 runtime 中。
-- 大多数生产场景受益的并不是最大自治，而是正确组合 `workflow + guarded autonomy`。
-- 多智能体设计的价值不在“好看”，而在上下文隔离、团队职责边界和并行执行。[^anthropic][^langgraph-multi]
+- 它解释为什么智能体不等于 LLM，以及为什么 LLM 只负责部分决策。
+- 它说明为什么安全不能作为 MVP 之后的“外层包装”，而必须内建在 runtime 中。
+- 它论证大多数生产场景真正受益的不是最大自治，而是正确组合 `workflow + guarded autonomy`。
+- 它把多智能体设计框定为控制与 ownership 决策，而不是一种美学选择。[^anthropic][^langgraph-multi]
 
 ## 继续往下读之前的快速自检
 
@@ -53,7 +53,7 @@
 
 读完这一部分之后，你应该已经有了一个可以落地的基本轮廓：这里到底需不需要 agent、最小平台长什么样、真实的信任边界从哪里开始。
 
-下一步就很自然地进入 [第二部分](../part-ii/index.zh.md)：把同一个请求带进 security perimeter、tool gateway 和 approval boundary。
+接下来就会自然出现下一个问题：如果这套架构是真的，它到底会从哪里开始变得危险？所以下一步就是进入 [第二部分](../part-ii/index.zh.md)，把同一个请求带进 security perimeter、tool gateway 和 approval boundary。
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)

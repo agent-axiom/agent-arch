@@ -1,6 +1,6 @@
 # Part I. Foundations
 
-The first part answers the main question: what should a **modern secure agent architecture** look like if it is designed not as a toy, but as a platform product.
+The first part answers the question that decides whether the rest of the book will even make sense: what should a **modern secure agent architecture** look like if it is designed not as a toy, but as a platform product?
 
 !!! info "Short path through Part I"
     If time is tight, take this route:
@@ -13,10 +13,10 @@ The first part answers the main question: what should a **modern secure agent ar
 
 ## What This Part Solves
 
-- An agent is not the same as an LLM. The LLM makes only part of the decisions.
-- Security cannot be a wrapper added after the MVP. It must be embedded into the runtime.
-- Most production use cases benefit less from maximum autonomy than from the right combination of `workflow + guarded autonomy`.
-- Multi-agent design is useful not for aesthetics but for context isolation, team ownership, and parallelism.[^anthropic][^langgraph-multi]
+- It explains why an agent is not the same thing as an LLM and why the LLM makes only part of the decisions.
+- It shows why security cannot be a wrapper added after the MVP, but has to be built into the runtime.
+- It argues that most production use cases benefit less from maximum autonomy than from the right combination of `workflow + guarded autonomy`.
+- It frames multi-agent design as a control and ownership decision, not an aesthetic one.[^anthropic][^langgraph-multi]
 
 ## A Fast Self-Check Before You Move On
 
@@ -53,7 +53,7 @@ By the end of Part I, the reader should have:
 
 After this part, the reader should already have a working frame: whether an agent is justified here, what the baseline platform looks like, and where its real trust boundaries begin.
 
-The next logical move is [Part II](../part-ii/index.en.md): take that same request and inspect how it crosses the security perimeter, the tool gateway, and the approval boundary.
+That naturally creates the next question: if this architecture is real, where exactly does it become dangerous? The next logical move is [Part II](../part-ii/index.en.md), where the same request crosses the security perimeter, the tool gateway, and the approval boundary.
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
