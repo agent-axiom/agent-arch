@@ -75,6 +75,7 @@ Microsoft точно формулирует этот сдвиг: для аген
 - состояние и возраст background runs;
 - краткие итоги ответа;
 - статус маскирования данных;
+- verifier outputs вроде `process_score`, `outcome_score` и `failure_attribution`;
 - набор артефактов, версию, волну раскатки и contract version.
 
 То есть трассы должны рассказывать не только «что упало», но и:
@@ -141,9 +142,9 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence и артефактами жизненного цикла.
 
-Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version` и `rollout_wave`, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
+Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и verifier evidence о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
@@ -162,7 +163,7 @@ Microsoft отдельно подчеркивает полный произво�
 - замечать дрейф;
 - измерять покрытие;
 - отличать управляемый путь от обходного;
-- замечать stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, orchestration-pattern drift и contract mismatches до того, как они станут инцидентами.
+- замечать stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, orchestration-pattern drift, verifier-quality drift и contract mismatches до того, как они станут инцидентами.
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
@@ -220,6 +221,7 @@ observability:
     background_run_visibility: true
     orchestration_pattern_visibility: true
     worker_boundary_visibility: true
+    verifier_evidence_linkage: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -233,6 +235,7 @@ observability:
     - capability_session_events_not_visible
     - orchestration_pattern_events_not_visible
     - worker_boundary_crossings_not_visible
+    - verifier_evidence_not_linked
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -253,6 +256,7 @@ class ObservabilityCoverage:
     paused_run_visibility: bool
     capability_session_visibility: bool
     orchestration_pattern_visibility: bool
+    verifier_evidence_linked: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -263,6 +267,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.paused_run_visibility
         and state.capability_session_visibility
         and state.orchestration_pattern_visibility
+        and state.verifier_evidence_linked
     )
 ```
 
@@ -277,6 +282,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - телеметрия покрывает штатный путь, но не обходной;
 - contract-version drift замечают только после того, как payloads перестают соответствовать ожиданиям;
 - orchestration-pattern drift или crossings worker boundaries не видны как first-class telemetry;
+- verifier evidence оторван от traces или screenshots;
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
 
@@ -287,7 +293,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 Более сильная планка такая:
 
 - inventory coverage и telemetry coverage считаются одной control problem;
-- high-risk actions можно связать с approvals, principals, artifact bundles, contract versions и reviewed orchestration patterns;
+- high-risk actions можно связать с approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns и verifier evidence;
 - alongside raw telemetry существуют behavioral baselines;
 - возраст paused runs, approval backlog и старение background runs видны как first-class signals;
 - unobserved agents считаются governance risk, а не просто пробелом в учете;
@@ -299,7 +305,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - Знаешь ли ты, сколько агентов реально живет в рабочей среде?
 - Какой процент из них вообще шлет структурированную телеметрию?
-- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id` и активным orchestration pattern?
+- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, активным orchestration pattern и verifier evidence?
 - Есть ли поведенческие базовые линии, а не только сырые дашборды?
 - Видишь ли ты возраст paused runs, approval backlog и стареющие background runs до жалоб пользователей?
 - Видишь ли ты ненаблюдаемые агенты как отдельный класс риска?
