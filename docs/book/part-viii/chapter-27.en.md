@@ -38,6 +38,8 @@ That is the state worth calling `agent sprawl`.
 
 The registry layer exists for one reason above all: to make the estate answerable. It should be possible to ask of any production agent who owns it, which controls govern it, which evidence describes it, and who must act when it drifts.
 
+That answerability is the center of gravity here. Registry does not own the evidence backbone or the telemetry substrate. It owns the mapping from governed entities to owners, states, and accountability paths.
+
 ## 2. Why sprawl is not only an organizational problem
 
 At first glance, this looks like a management problem: too many entities, too much entropy.
@@ -169,7 +171,11 @@ Registry makes this connection even tighter:
 
 So registry turns observability from “raw events” into a governed operational map.
 
+But it should not be confused with provenance. Provenance preserves which approved artifact set and version justified behavior. Registry preserves which named production entity, owner, and lifecycle state that behavior belonged to.
+
 That is also the clean boundary between the two chapters. Observability preserves evidence. Registry assigns that evidence to named entities, owners, lifecycle states, and accountability paths across the estate.
+
+And that is the boundary from the provenance chapter too. Provenance answers what governed version or approved bundle the system ran under. Registry answers which production entity owned that path and who is accountable for it now.
 
 ## 8.1. A registry without continuous verification becomes neat but inaccurate
 
@@ -221,6 +227,8 @@ Then the registry should help answer:
 - whether shadow MCP endpoints have appeared outside the approved registry.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
+
+Registry is therefore less about preserving release lineage than about preserving operational answerability. It is the estate-level ownership map that keeps decisions, incidents, and drift attached to the right entity.
 
 That ambiguity is usually what hurts first in incidents. Teams may have telemetry, policies, and approvals, but still lose time on the most basic estate question: which exact production entity is accountable for this path right now?
 

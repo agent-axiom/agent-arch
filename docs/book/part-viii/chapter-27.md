@@ -38,6 +38,8 @@
 
 Registry layer нужен здесь прежде всего для одной вещи, чтобы весь estate был answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют, какой evidence его описывает и кто обязан действовать, если он начинает drift.
 
+Именно эта answerability, главный центр тяжести этой главы. Registry не владеет evidence backbone и не владеет telemetry substrate. Он владеет привязкой governed entities к owners, states и accountability paths.
+
 ## 2. Почему sprawl опасен не только организационно
 
 На первый взгляд это кажется чисто управленческой проблемой: много сущностей, сложно поддерживать порядок.
@@ -169,7 +171,11 @@ Registry делает эту связь еще жестче:
 
 То есть registry превращает observability из “сырых событий” в управляемую operational map.
 
+Но его не нужно путать с provenance. Provenance хранит, какой approved artifact set и какая version обосновывали поведение. Registry хранит, какой named production entity, owner и lifecycle state принадлежали этому path.
+
 Именно здесь и проходит чистая граница между двумя главами. Observability сохраняет evidence. Registry привязывает этот evidence к named entities, owners, lifecycle states и accountability paths по всему estate.
+
+И это же граница с главой про provenance. Provenance отвечает, под какой governed version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
 ## 8.1. Registry без continuous verification быстро становится красивым, но неточным
 
@@ -221,6 +227,8 @@ Registry не должен дублировать policy bundle или approval 
 - не появились ли shadow MCP endpoints вне approved registry.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
+
+Поэтому registry, это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
 
 Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 

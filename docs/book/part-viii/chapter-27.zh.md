@@ -38,6 +38,8 @@
 
 Registry layer 首先是为了一件事而存在，让整个 estate 具备 answerability。对于任何 production agent，团队都应该能快速回答：谁拥有它、哪些 controls 约束它、哪些 evidence 描述它，以及一旦它发生 drift 该由谁采取行动。
 
+这种 answerability 就是本章的重心。Registry 不拥有 evidence backbone，也不拥有 telemetry substrate。它拥有的是 governed entities 到 owners、states 与 accountability paths 之间的映射。
+
 ## 2. 为什么 sprawl 不只是组织问题
 
 表面上看，这像是一个管理问题：对象太多、秩序太差。
@@ -169,7 +171,11 @@ Registry 会把这层关系再拉紧一步：
 
 也就是说，registry 会把 observability 从“原始事件流”提升成受治理的 operational map。
 
+但它不应该和 provenance 混在一起。Provenance 保留的是哪一组 approved artifacts 与哪一个 version 支撑了行为；registry 保留的是，这条 path 属于哪一个 named production entity、owner 与 lifecycle state。
+
 这也是本章和上一章之间最清晰的边界。Observability 保存 evidence；registry 则把这些 evidence 绑定到整个 estate 里的 named entities、owners、lifecycle states 与 accountability paths。
+
+这同样也是它和 provenance chapter 的边界。Provenance 回答系统运行在什么 governed version 或 approved bundle 之下；registry 回答的是，哪一个 production entity 拥有这条 path，以及现在该由谁负责。
 
 ## 8.1. 没有 continuous verification 的 registry 会变得整洁，但不再准确
 
@@ -221,6 +227,8 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - approved registry 之外是否已经出现了 shadow MCP endpoints。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
+
+所以 registry 与其说是 release lineage 层，不如说是 operational answerability 层。它是一张 estate 级 ownership map，确保 decisions、incidents 与 drift 始终挂在正确的实体上。
 
 而这种模糊通常最先在 incident response 里造成伤害。团队可能已经有 telemetry、policies 和 approvals，却仍然会卡在一个最基本的 estate 问题上：此刻到底是哪一个 production entity 应该为这条 path 负责？
 
