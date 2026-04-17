@@ -2,18 +2,23 @@
 
 ## Scope
 
-Primary overlap risk is concentrated in:
+Primary overlap risk was concentrated in:
+- Chapter 11
+- Chapter 12
 - Chapter 13
 - Chapter 21
+- Chapter 22
 - Chapter 25
 - Chapter 26
 - Chapter 27
-- Part VIII framing pages
+- Part V and Part VIII framing pages
 - appendix schemas and reference-package pages that echo the same governance concepts
 
 ## Core diagnosis
 
-The late manuscript is strong in content but at risk of repeating the same control/governance logic through slightly different lenses:
+The late manuscript is strong in content but was at risk of repeating the same control/governance logic through slightly different lenses:
+- tracing
+- SLO
 - eval loop
 - assurance
 - behavioral/control evals
@@ -24,7 +29,41 @@ The late manuscript is strong in content but at risk of repeating the same contr
 
 This is useful material, but the jobs-to-be-done need sharper walls.
 
+## Current status
+
+A substantial editorial separation pass has now landed.
+
+Already tightened in manuscript:
+- Chapter 11 as raw evidence capture
+- Chapter 12 as health and risk budget layer
+- Chapter 13 as eval judgment layer
+- Chapter 21 as assurance response loop
+- Chapter 22 as evidence backbone / lineage layer
+- Chapter 25 as judgment under adversarial pressure
+- Chapter 26 as evidence substrate / detection-ready visibility
+- Chapter 27 as estate accountability layer
+- Part V reframed around capture, health, judgment
+- Part VIII reframed around response, evidence, judgment, accountability
+
+So this audit should now be read as a checkpoint: which overlaps have been reduced, and which still need watching.
+
 ## Recommended chapter jobs-to-be-done
+
+### Chapter 11
+Job: capture raw run history and structured evidence at the execution level.
+
+Should not dominate:
+- estate-wide observability claims
+- eval judgments
+- assurance response logic
+
+### Chapter 12
+Job: define health and risk budgets for the running system.
+
+Should not dominate:
+- detailed eval mechanics
+- tracing implementation details
+- broad assurance/governance prose
 
 ### Chapter 13
 Job: explain how systems learn from failure and prevent recurrence through offline evals, online signals, and regression gates.
@@ -68,19 +107,31 @@ Should not dominate:
 
 ## Severity-ranked overlap findings
 
-### High severity
-1. Chapter 13 and Chapter 25 can blur when both discuss richer grading, verifier outputs, and regression discipline.
-2. Chapter 21 and Chapter 26 can blur when both discuss signals, drift, evidence, and detection.
-3. Chapter 26 and Chapter 27 can blur when telemetry coverage, inventory coverage, and registry governance are all presented as evidence/control surfaces.
+### Closed or substantially reduced
+1. Chapter 13 and Chapter 25 were blurred around richer grading, verifier outputs, and regression discipline. This is now substantially reduced by explicit judgment-layer framing in both chapters, with Chapter 13 owning the eval loop and Chapter 25 owning adversarial/control pressure.
+2. Chapter 21 and Chapter 26 were blurred around signals, drift, evidence, and detection. This is now substantially reduced by explicit response-loop versus evidence-substrate framing.
+3. Chapter 26 and Chapter 27 were blurred when telemetry coverage, inventory coverage, and registry governance were all presented as evidence/control surfaces. This is now substantially reduced by explicit evidence versus accountability framing.
+4. Part V and Part VIII framing previously explained too many neighboring concepts at once. This is now substantially reduced by mirrored editorial geometry in both indexes.
 
-### Medium severity
-4. Chapter 22, Chapter 27, and appendix lifecycle/reference pages can repeat provenance / ownership / contract lineage language.
-5. Part VIII framing may try to explain too many late-book concepts at once.
-
-### Low severity
-6. Reference-package pages sometimes restate chapter claims instead of only anchoring them.
+### Still medium risk
+5. Chapter 22, Chapter 27, and appendix lifecycle/reference pages can still repeat provenance / ownership / contract lineage language.
+6. Reference-package and schema pages can still drift from anchoring into retelling.
+7. Chapter 11 and Chapter 26 must keep a clean boundary between raw trace capture and estate-scale observability evidence.
+8. Chapter 12 and Chapter 21 can still blur if health-budget language drifts into response procedure language.
 
 ## Surgical guidance
+
+### Keep in Chapter 11
+- raw run history
+- spans and structured events
+- capture discipline
+- machine-readable execution evidence
+
+### Keep in Chapter 12
+- health budgets
+- risk budgets
+- acceptable degradation
+- cost, safety, latency, escalation as operating constraints
 
 ### Keep in Chapter 13
 - learning loop
@@ -112,8 +163,8 @@ Should not dominate:
 
 ## Smallest high-impact rewrite sequence
 
-1. tighten Part VIII framing so each late chapter has one sentence of unique responsibility
-2. line-edit Chapter 13 and Chapter 25 to reduce conceptual echo
-3. line-edit Chapter 21 and Chapter 26 to distinguish response loop vs evidence substrate
-4. line-edit Chapter 26 and Chapter 27 to distinguish telemetry visibility vs estate governance
+1. keep Part V and Part VIII indexes aligned with the new role grammar
+2. protect Chapter 11 vs Chapter 26 from collapsing back into one observability blob
+3. protect Chapter 12 vs Chapter 21 from collapsing back into one health/response blob
+4. trim Chapter 22 / Chapter 27 / appendix repetition where accountability and lineage language starts to duplicate
 5. trim reference-package repetition where it retells, not anchors
