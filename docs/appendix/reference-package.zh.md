@@ -12,8 +12,8 @@
 - 第 17 章看 policy layer 与 capability contracts，
 - 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
 - 第 21 章看 assurance response，
-- 第 22 章配合 lifecycle schema 看 governed artifact linkage 与 delegated authorization provenance，
-- 第 23 到 27 章看 capability sessions 周围的 interruption、expiry、re-init、retirement、observability、registry ownership 与 delegated-authorization lifecycle control。
+- 第 22 章配合 lifecycle schema 看 governed artifact linkage、verifier-contract lineage 与 delegated authorization provenance，
+- 第 23 到 27 章看 capability sessions 周围的 interruption、expiry、re-init、retirement、observability、registry ownership、verifier-evidence obligations 与 delegated-authorization lifecycle control。
 
 ## 里面有什么
 
@@ -44,7 +44,7 @@
 
 同一层 runtime-control surface 也天然适合承载 delegated authorization assumptions：是谁委托了访问，这份授权能否跨过 pause/resume 继续有效，以及如果 delegated access 在动作完成前被撤销，runtime 应该如何处理。
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  用于 change record、artifact bundle、runtime-control schemas 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
+  用于 change record、artifact bundle、runtime-control schemas、verifier-contract lineage 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
 
 ## 如何运行
 
@@ -158,6 +158,8 @@
 
 它现在也适合作为 verifier-aware governance 的锚点：如果 rollout 或 assurance 依赖 eval output，runtime 就应该保留足够的 trace、session 与 artifact linkage，来解释不只是发生了什么，还包括 verifier 为什么会这样判定这次 run。
 
+这种能力也应延伸到 lifecycle handling。一个受治理的 reference runtime 应该能说明某次 release 当时启用了哪一版 verifier contract，以及在 retirement 之后还必须保留哪些 evidence，才能为早先的 rollout 或 assurance decisions 提供解释。
+
 现在它也体现了第四个 operational concern：动作究竟是在什么 delegated authorization context 下执行的。这个上下文现在会出现在 run telemetry、approval records 和 session export 里，让 runtime 不仅能解释发生了什么，还能解释它是在谁的 delegated identity 与 scope 下发生的。
 
 一个会真正读取用户画像记忆的请求：
@@ -204,6 +206,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
 - 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来；
 - 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version；
+- 更容易把 verifier-contract lineage 与 retirement obligations 和 runtime-control、artifact decisions 放在一起看清楚；
 - 更容易把 approval state、runtime session state、capability session state 与 verifier evidence 区分开来，同时仍保持它们之间的治理关联。
 
 现在还有几项很实用的能力：

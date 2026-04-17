@@ -12,8 +12,8 @@ A practical reading path is:
 - Chapter 17 for policy layer and capability contracts,
 - Chapter 18 for rollout gates around approval and runtime behavior,
 - Chapter 21 for assurance response,
-- Chapter 22 and the lifecycle schema for governed artifact linkage and delegated authorization provenance,
-- Chapters 23-27 for interruption, expiry, re-init, retirement, observability, registry ownership, and delegated-authorization lifecycle control around capability sessions.
+- Chapter 22 and the lifecycle schema for governed artifact linkage, verifier-contract lineage, and delegated authorization provenance,
+- Chapters 23-27 for interruption, expiry, re-init, retirement, observability, registry ownership, verifier-evidence obligations, and delegated-authorization lifecycle control around capability sessions.
 
 ## What Is Inside
 
@@ -44,7 +44,7 @@ A practical reading path is:
 
 That same runtime-control surface is also the natural place to keep delegated authorization assumptions explicit: which principal delegated access, whether that authorization may survive pause/resume, and what the runtime does if delegated access is revoked before the action completes.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  Lifecycle artifacts for change records, artifact bundles, runtime-control schemas, and retirement plans, plus readiness checks for those states.
+  Lifecycle artifacts for change records, artifact bundles, runtime-control schemas, verifier-contract lineage, and retirement plans, plus readiness checks for those states.
 
 ## How to Run It
 
@@ -158,6 +158,8 @@ The package is still deliberately small, but it now reflects that a governed run
 
 It is also a useful anchor for verifier-aware governance: if rollout or assurance depends on eval output, the runtime should preserve enough trace, session, and artifact linkage to explain not only what happened, but why a verifier judged the run the way it did.
 
+That should extend through lifecycle handling too. A governed reference runtime should be able to explain which verifier contract was active for a release, and what evidence must still be retained after retirement to justify earlier rollout or assurance decisions.
+
 It also reflects a fourth operational concern: the delegated authorization context under which the action ran. That context now appears in run telemetry, approval records, and session export so the runtime can explain not only what happened, but under whose delegated identity and scope it happened.
 
 A request that actually reads profile memory:
@@ -204,6 +206,7 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to show a config-driven path instead of only a hardcoded demo;
 - it is easier to connect the reference runtime to the chapters about memory, retrieval, background updates, and runtime-control governance;
 - it is easier to discuss where each memory record came from, which revision it represents, and which contract/runtime-control version was active;
+- it is easier to keep verifier-contract lineage and retirement obligations visible alongside runtime-control and artifact decisions;
 - it is easier to make approval state, runtime session state, capability session state, and verifier evidence visible as separate but linked control concepts.
 
 There is also a practical usability win now:
