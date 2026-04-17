@@ -118,7 +118,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - stale background runs；
 - 预期 payload 形态与实际观测形态之间的 contract drift；
 - orchestration-pattern regressions，例如意外的 routing-path drift、不稳定的 join-state behavior，或超出 reviewed boundaries 的 delegated worker activity；
-- verifier drift，例如它在 process quality、outcome quality 或 failure attribution 上与人工评审失去一致性。
+- verifier drift，例如它在 process quality、outcome quality 或 failure attribution 上与人工评审失去一致性；
+- 未经 reviewed rollout control 的 verifier contract version changes，它们会悄悄改变 grading behavior。
 
 也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
@@ -161,7 +162,7 @@ flowchart LR
 
 更强的 remediation 通常会真正修改至少一个 operational surface：
 
-- verifier rubric 或 grading contract；
+- verifier rubric、verifier contract version 或 grading contract；
 
 - policy rules；
 - approval thresholds；
@@ -190,7 +191,7 @@ flowchart LR
 - postmortems；
 - online eval drift；
 - red-team findings；
-- verifier regressions 或与 human review 的分歧。
+- verifier regressions、verifier contract version changes 或与 human review 的分歧。
 
 这些信号应该重新流回：
 
@@ -235,6 +236,7 @@ assurance:
       - delegated_authorization_mismatch
       - orchestration_pattern_regression
       - contract_drift
+      - verifier_contract_drift
   findings:
     require_owner: true
     require_severity: true

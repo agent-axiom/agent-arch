@@ -118,7 +118,8 @@ You need to notice things like:
 - stale background runs;
 - contract drift between expected and observed payload shapes;
 - orchestration-pattern regressions such as unexpected routing-path drift, unstable join-state behavior, or delegated worker activity outside reviewed boundaries;
-- verifier drift, such as loss of agreement on process quality, outcome quality, or failure attribution.
+- verifier drift, such as loss of agreement on process quality, outcome quality, or failure attribution;
+- unexpected verifier contract version changes that alter grading behavior without reviewed rollout control.
 
 In other words, detection here has to function not only as observability, but also as abuse and safety monitoring.
 
@@ -161,7 +162,7 @@ A common weakness is this: the incident is reviewed, a document is written, but 
 
 Strong remediation usually changes at least one real layer:
 
-- verifier rubric or grading contract;
+- verifier rubric, verifier contract version, or grading contract;
 
 - policy rules;
 - approval thresholds;
@@ -190,7 +191,7 @@ Useful sources of new failure modes include:
 - postmortems;
 - online eval drift;
 - red-team findings;
-- verifier regressions or disagreements with human review.
+- verifier regressions, verifier contract version changes, or disagreements with human review.
 
 Those signals should flow back into:
 
@@ -235,6 +236,7 @@ assurance:
       - delegated_authorization_mismatch
       - orchestration_pattern_regression
       - contract_drift
+      - verifier_contract_drift
   findings:
     require_owner: true
     require_severity: true

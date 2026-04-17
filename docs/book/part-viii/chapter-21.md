@@ -118,7 +118,8 @@ Google Research очень хорошо формулирует здесь гла
 - stale background runs;
 - contract drift между ожидаемой и наблюдаемой формой payloads;
 - regressions в orchestration pattern, например неожиданный routing-path drift, нестабильное join-state behavior или delegated worker activity вне reviewed boundaries;
-- verifier drift, например потерю согласованности по process quality, outcome quality или failure attribution.
+- verifier drift, например потерю согласованности по process quality, outcome quality или failure attribution;
+- неожиданные changes в verifier contract version, которые меняют grading behavior без reviewed rollout control.
 
 То есть detection здесь должна работать не только как observability, но и как abuse and safety monitoring.
 
@@ -161,7 +162,7 @@ flowchart LR
 
 Сильная remediation обычно меняет хотя бы один из реальных слоев:
 
-- verifier rubric или grading contract;
+- verifier rubric, verifier contract version или grading contract;
 
 - policy rules;
 - approval thresholds;
@@ -190,7 +191,7 @@ flowchart LR
 - postmortems;
 - online eval drift;
 - red-team findings;
-- verifier regressions или расхождения с human review.
+- verifier regressions, changes в verifier contract version или расхождения с human review.
 
 Именно эти сигналы должны возвращаться обратно в:
 
@@ -235,6 +236,7 @@ assurance:
       - delegated_authorization_mismatch
       - orchestration_pattern_regression
       - contract_drift
+      - verifier_contract_drift
   findings:
     require_owner: true
     require_severity: true
