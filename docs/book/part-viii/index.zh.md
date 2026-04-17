@@ -26,6 +26,14 @@
 
 ## 这一部分解决什么问题
 
+这一部分向读者给出一串连续的承诺：
+
+- 读完前几章后，你应该能把 agent system 看成 governed lifecycle，而不是一次性的 launch；
+- 读完中段章节后，你应该能把 response、provenance、retirement、judgment、observability 与 accountability 区分成不同的 operational roles；
+- 到这一部分结束时，你应该能把 production agent estate 读成一个受管理的 contour，而不是一堆松散 controls 的堆积。
+
+更具体地说，这一部分：
+
 - 把 reference implementation 推进成可管理的 lifecycle；
 - 把 change management、assurance response、evidence lineage、eval judgment、observability evidence、runtime-control governance、interruption/expiry/re-init discipline、delegated authorization lineage 与整个 agent estate 的 accountability 接成一个 operational contour；
 - 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。

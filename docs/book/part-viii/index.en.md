@@ -26,9 +26,17 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 
 ## What This Part Solves
 
-- it turns the reference implementation into a managed lifecycle;
-- it connects change management, assurance response, evidence lineage, eval judgment, observability evidence, runtime-control governance, interruption/expiry/re-init discipline, delegated authorization lineage, and estate accountability into one operational contour;
-- it separates stable engineering discipline from fast-moving vendor and research details.
+This part makes a sequence of reader promises:
+
+- after the opening chapters, you should be able to see an agent system as a governed lifecycle rather than a one-time launch;
+- after the middle chapters, you should be able to distinguish response, provenance, retirement, judgment, observability, and accountability as separate operational roles;
+- by the end, you should be able to read a production agent estate as one managed contour rather than a loose pile of controls.
+
+More concretely, this part:
+
+- turns the reference implementation into a managed lifecycle;
+- connects change management, assurance response, evidence lineage, eval judgment, observability evidence, runtime-control governance, interruption/expiry/re-init discipline, delegated authorization lineage, and estate accountability into one operational contour;
+- separates stable engineering discipline from fast-moving vendor and research details.
 
 If you read this part as one block, the sequence is straightforward:
 

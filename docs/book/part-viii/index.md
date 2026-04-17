@@ -26,6 +26,14 @@
 
 ## Что решает эта часть
 
+Эта часть дает читателю последовательность обещаний:
+
+- после первых глав ты должен видеть agent system как governed lifecycle, а не как одноразовый launch;
+- после средних глав ты должен различать response, provenance, retirement, judgment, observability и accountability как разные operational roles;
+- к концу части ты должен уметь читать production agent estate как один управляемый contour, а не как рыхлую кучу controls.
+
+Более конкретно эта часть:
+
 - переводит reference implementation в управляемый lifecycle;
 - связывает change management, assurance response, evidence lineage, eval judgment, observability evidence, runtime-control governance, discipline для interruption/expiry/re-init, delegated authorization lineage и accountability всего agent estate в один operational contour;
 - отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
