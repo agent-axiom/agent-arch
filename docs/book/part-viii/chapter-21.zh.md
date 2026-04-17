@@ -64,6 +64,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 对智能体系统有价值的红队测试，应该针对与生产环境相关的失效模式：
 
+同时，也应该单独测试 verifier layer，尤其是在团队依赖 automated grading 或 computer-use trajectory judges 时。薄弱的 verifier 可能把不安全行为误判成安全，也可能把 environment-caused failure 放大成嘈杂的 false alarms。
+
 - prompt injection；
 - 隐蔽指令覆盖；
 - 工具滥用；
@@ -97,6 +99,9 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 你还需要能看到：
 
+- verifier 在 unsafe trajectories 上的 false-positive spikes；
+- verifier 在 blocked-but-correct trajectories 上的 false-negative spikes；
+
 - 被拒动作的异常增长；
 - 审批积压；
 - stuck paused approvals 或异常偏大的 paused-run age；
@@ -112,7 +117,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 任务成功率和安全指标的漂移；
 - stale background runs；
 - 预期 payload 形态与实际观测形态之间的 contract drift；
-- orchestration-pattern regressions，例如意外的 routing-path drift、不稳定的 join-state behavior，或超出 reviewed boundaries 的 delegated worker activity。
+- orchestration-pattern regressions，例如意外的 routing-path drift、不稳定的 join-state behavior，或超出 reviewed boundaries 的 delegated worker activity；
+- verifier drift，例如它在 process quality、outcome quality 或 failure attribution 上与人工评审失去一致性。
 
 也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
@@ -155,6 +161,8 @@ flowchart LR
 
 更强的 remediation 通常会真正修改至少一个 operational surface：
 
+- verifier rubric 或 grading contract；
+
 - policy rules；
 - approval thresholds；
 - tool exposure；
@@ -181,7 +189,8 @@ flowchart LR
 - orchestration-pattern drift alerts；
 - postmortems；
 - online eval drift；
-- red-team findings。
+- red-team findings；
+- verifier regressions 或与 human review 的分歧。
 
 这些信号应该重新流回：
 
@@ -230,6 +239,7 @@ assurance:
     require_owner: true
     require_severity: true
     require_remediation_due_date: true
+    require_verifier_review_for_high_risk: true
   response:
     emergency_actions:
       - disable_capability
@@ -243,6 +253,8 @@ assurance:
 ```
 
 它不是 complete framework，但足以说明 assurance 也可以被组织成明确的 operational contract。
+
+如果 release 或 training decisions 依赖 verifier，这个 contract 也应该把 verifier 本身纳入其中。
 
 ## 11. 一个 emergency response 决策示例
 

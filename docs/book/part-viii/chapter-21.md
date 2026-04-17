@@ -64,6 +64,8 @@ Google Research очень хорошо формулирует здесь гла
 
 Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а production-relevant failure modes:
 
+Отдельно полезно тестировать и сам verifier layer, особенно когда команда опирается на automated grading или judges для computer-use trajectories. Слабый verifier может превращать unsafe behavior в ложную уверенность или, наоборот, превращать environment-caused failure в шумные false alarms.
+
 - prompt injection;
 - hidden instruction override;
 - tool misuse;
@@ -97,6 +99,9 @@ Google Research очень хорошо формулирует здесь гла
 
 Нужно уметь замечать:
 
+- всплески verifier false positives на unsafe trajectories;
+- всплески verifier false negatives на blocked-but-correct trajectories;
+
 - всплеск denied actions;
 - рост approval backlog;
 - stuck paused approvals или необычный возраст paused runs;
@@ -112,7 +117,8 @@ Google Research очень хорошо формулирует здесь гла
 - drift в task success и safety metrics;
 - stale background runs;
 - contract drift между ожидаемой и наблюдаемой формой payloads;
-- regressions в orchestration pattern, например неожиданный routing-path drift, нестабильное join-state behavior или delegated worker activity вне reviewed boundaries.
+- regressions в orchestration pattern, например неожиданный routing-path drift, нестабильное join-state behavior или delegated worker activity вне reviewed boundaries;
+- verifier drift, например потерю согласованности по process quality, outcome quality или failure attribution.
 
 То есть detection здесь должна работать не только как observability, но и как abuse and safety monitoring.
 
@@ -155,6 +161,8 @@ flowchart LR
 
 Сильная remediation обычно меняет хотя бы один из реальных слоев:
 
+- verifier rubric или grading contract;
+
 - policy rules;
 - approval thresholds;
 - tool exposure;
@@ -181,7 +189,8 @@ flowchart LR
 - alerts про orchestration-pattern drift;
 - postmortems;
 - online eval drift;
-- red-team findings.
+- red-team findings;
+- verifier regressions или расхождения с human review.
 
 Именно эти сигналы должны возвращаться обратно в:
 
@@ -230,6 +239,7 @@ assurance:
     require_owner: true
     require_severity: true
     require_remediation_due_date: true
+    require_verifier_review_for_high_risk: true
   response:
     emergency_actions:
       - disable_capability
@@ -243,6 +253,8 @@ assurance:
 ```
 
 Это не полный framework, но он хорошо показывает, что assurance тоже можно описывать как явный рабочий контракт.
+
+И в этот контракт полезно включать сам verifier, если от него зависят release или training decisions.
 
 ## 11. Пример кода для emergency response decision
 

@@ -64,6 +64,8 @@ That is weak assurance.
 
 Useful red teaming for agent systems should target production-relevant failure modes:
 
+It is also useful to test the verifier layer itself, especially when the team relies on automated grading or computer-use trajectory judges. Weak verifiers can turn unsafe behavior into false reassurance, or turn environment-caused failure into noisy false alarms.
+
 - prompt injection;
 - hidden instruction override;
 - tool misuse;
@@ -97,6 +99,9 @@ For ordinary services, detection often revolves around error rate, latency, and 
 
 You need to notice things like:
 
+- verifier false-positive spikes on unsafe trajectories;
+- verifier false-negative spikes on blocked-but-correct trajectories;
+
 - spikes in denied actions;
 - growth in approval backlog;
 - stuck paused approvals or unusual paused-run age;
@@ -112,7 +117,8 @@ You need to notice things like:
 - drift in task success and safety metrics;
 - stale background runs;
 - contract drift between expected and observed payload shapes;
-- orchestration-pattern regressions such as unexpected routing-path drift, unstable join-state behavior, or delegated worker activity outside reviewed boundaries.
+- orchestration-pattern regressions such as unexpected routing-path drift, unstable join-state behavior, or delegated worker activity outside reviewed boundaries;
+- verifier drift, such as loss of agreement on process quality, outcome quality, or failure attribution.
 
 In other words, detection here has to function not only as observability, but also as abuse and safety monitoring.
 
@@ -155,6 +161,8 @@ A common weakness is this: the incident is reviewed, a document is written, but 
 
 Strong remediation usually changes at least one real layer:
 
+- verifier rubric or grading contract;
+
 - policy rules;
 - approval thresholds;
 - tool exposure;
@@ -181,7 +189,8 @@ Useful sources of new failure modes include:
 - orchestration-pattern drift alerts;
 - postmortems;
 - online eval drift;
-- red-team findings.
+- red-team findings;
+- verifier regressions or disagreements with human review.
 
 Those signals should flow back into:
 
@@ -230,6 +239,7 @@ assurance:
     require_owner: true
     require_severity: true
     require_remediation_due_date: true
+    require_verifier_review_for_high_risk: true
   response:
     emergency_actions:
       - disable_capability
@@ -243,6 +253,8 @@ assurance:
 ```
 
 It is not a complete framework, but it shows clearly that assurance can also be described as an operational contract.
+
+That contract should include the verifier itself whenever release or training decisions depend on it.
 
 ## 11. Example code for emergency response
 
