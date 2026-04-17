@@ -4,7 +4,7 @@ This book is for people who want to build not demo magic, but calm, controllable
 
 Its central argument is simple: **agents need a platform, not magic**. If a team treats an agent as a prompt with tools attached, the system may look impressive in a demo and still fail as soon as risky actions, memory, approvals, rollout, and lifecycle pressure appear.
 
-This is a practical book about secure, governable, production-grade AI agent architecture for teams that need more than prompts and tool calls. It focuses on the operational system around agents: trust boundaries, policy enforcement, approvals, observability, evals, and lifecycle management.
+This is a practical book about secure, governable, production-grade AI agent architecture for teams that need more than prompts and tool calls. It focuses on the operational system around agents: trust boundaries, policy enforcement, approvals, evidence capture, health budgets, eval judgment, and lifecycle management.
 
 > It starts from Dmitry Vikulin's article on reliable AI agents and expands it into a platform-level view: policy enforcement, human approval, observability, evals, operational discipline, and lifecycle management.
 
@@ -49,6 +49,16 @@ This is primarily a practical architecture and operating-model book for producti
 
 It is not a framework manual, not a prompt-engineering guide, and not a hype tour of the AI ecosystem. The reference pages and runnable runtime exist to support the book's argument, not to replace it.
 
+It is also a deliberately shaped book, not just a pile of good topics. The operational chapters are separated by role so the reader can feel how production discipline is assembled:
+
+- traces capture raw run history;
+- SLO define health and risk budgets;
+- evals produce reviewable judgments;
+- assurance handles response;
+- provenance and artifacts preserve evidence backbone;
+- observability provides evidence substrate;
+- registry assigns estate accountability.
+
 ## Project Status
 
 - `Published core`: all eight parts of the book are already published.
@@ -92,7 +102,7 @@ The most common mistake in agent systems is simple: teams chase autonomy first a
 1. Build a **predictable workflow** first.
 2. Add autonomy **locally and measurably**.
 3. Route risky actions through **policy, approval, and tracing**.
-4. Keep quality through **evals, telemetry, and lifecycle discipline**.
+4. Keep quality through **health budgets, eval judgment, telemetry, and lifecycle discipline**.
 
 ## Where the reference layer lives
 

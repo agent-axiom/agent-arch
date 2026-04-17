@@ -4,7 +4,7 @@
 
 它的中心论点很简单：**智能体需要平台，而不是魔法**。如果团队把智能体当成“带工具的 prompt”，它也许会在 demo 中显得聪明，但一旦出现高风险动作、记忆、审批、发布和长期运维压力，系统就会暴露出真正的问题。
 
-这是一本关于安全、可治理、可用于生产环境的 AI 智能体架构的实践型书籍。它面向那些已经意识到，提示词和工具调用远远不够，还需要围绕智能体建立完整运行体系的团队，包括信任边界、策略执行、审批、可观测性、评测与生命周期管理。
+这是一本关于安全、可治理、可用于生产环境的 AI 智能体架构的实践型书籍。它面向那些已经意识到，提示词和工具调用远远不够，还需要围绕智能体建立完整运行体系的团队，包括信任边界、策略执行、审批、evidence capture、health budgets、eval judgment 与生命周期管理。
 
 > 它以 Dmitry Vikulin 关于可靠 AI 智能体的文章为起点，进一步扩展为平台级视角：策略执行、人工审批、可观测性、评测体系、运维纪律与生命周期管理。
 
@@ -49,6 +49,16 @@
 
 它不是某个框架的手册，不是 prompt engineering 指南，也不是 AI 生态热点巡礼。参考页和可运行运行时存在，是为了支撑本书的论证，而不是取代本书本身。
 
+它也是一部刻意塑形的书，而不只是把许多好主题堆在一起。Operational chapters 被按角色拆开，让读者能感觉到 production discipline 是如何被搭起来的：
+
+- traces 捕获 raw run history；
+- SLO 定义 health budgets 与 risk budgets；
+- evals 产出 reviewable judgments；
+- assurance 负责 response；
+- provenance 与 artifacts 保存 evidence backbone；
+- observability 提供 evidence substrate；
+- registry 负责整个 estate 的 accountability。
+
 ## 项目当前状态
 
 - `Published core`：全书八个部分已经完整发布。
@@ -92,7 +102,7 @@
 1. 先构建**可预测的工作流**。
 2. 再按局部、可度量的方式加入自治。
 3. 所有高风险动作都经过**策略、审批与追踪**。
-4. 用**评测、遥测与生命周期纪律**维持质量。
+4. 用**health budgets、eval judgment、遥测与生命周期纪律**维持质量。
 
 ## 参考层在哪里
 
