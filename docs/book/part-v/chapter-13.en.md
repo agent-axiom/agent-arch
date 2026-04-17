@@ -57,6 +57,14 @@ For our support agent, a good offline set should include not only pleasant happy
 
 The strength of offline evals is that they let you compare system versions **before** production traffic arrives.
 
+A useful refinement from recent verifier work is that offline evals should not depend only on a binary success label. For long-horizon agents, a richer grading signal is often needed:
+
+- `process quality`;
+- `outcome quality`;
+- failure attribution for `controllable` versus `uncontrollable` causes.
+
+Otherwise the team cannot tell the difference between a run that behaved correctly but was blocked by the environment, and a run that reached the nominal result through a weak or unsafe path.
+
 ## 3. Online Evals Matter Because the Real World Is Always Larger Than the Test Set
 
 Even very good offline evals do not cover everything that happens in production:
@@ -142,6 +150,8 @@ A healthy operational model usually looks like this:
 
 That means the eval loop is better treated not as a separate analytics activity, but as part of controlled change management.
 
+This also means release discipline should be careful about what it rewards. A single end-state score is often too weak: it can hide partial success, blocked-but-correct behavior, or lucky success through a bad control path. Mature eval loops use richer verifier outputs so rollout decisions can reflect how the system behaved, not only whether the last screen looked acceptable.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.
@@ -183,6 +193,8 @@ They are especially useful for cases where an ordinary regression set is too sha
 - coordination between multiple agents starts to degrade.
 
 In other words, the eval layer must assess not only final-answer quality, but also behavioral failure modes.
+
+That is also why verifier design matters. If the grading layer cannot separate process failure from outcome failure, it will produce weak evidence for both training and release control.
 
 ## 5.2. Coordination Failure Should Also Be Part of Eval Design
 
@@ -239,6 +251,8 @@ For the support agent, that means the dataset should contain not only “check s
 - “the approval path must stop the write action.”
 
 The real engineering value almost always lives in those difficult and uncomfortable cases.
+
+It is also useful to include cases where the right behavior still ends in an incomplete outcome because of environment-side constraints. Without those cases, teams often overfit to binary completion and underinvest in judging whether the system behaved correctly under pressure.
 
 ## 6.1. The Memory Layer Should Also Enter the Eval Dataset Explicitly
 

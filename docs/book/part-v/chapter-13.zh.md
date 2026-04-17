@@ -57,6 +57,14 @@ SLO 帮你定义什么叫系统健康。
 
 离线评测的价值就在于：它们让你可以在生产流量到来之前比较系统版本。
 
+最近 verifier design 的一个有用补充是，离线评测不该只依赖 binary success label。对于 long-horizon agents，往往需要更丰富的 grading signal：
+
+- `process quality`；
+- `outcome quality`；
+- 针对 `controllable` 与 `uncontrollable` causes 的 failure attribution。
+
+否则，团队就分不清一次 run 是“行为正确但被环境阻断”，还是“通过薄弱或 unsafe path 达成了 nominal result”。
+
 ## 3. 在线评测之所以必要，是因为真实世界永远比测试集更大
 
 即使很好的离线评测，也无法覆盖生产环境中真正发生的一切：
@@ -142,6 +150,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 也就是说，评测闭环最好不要被看成“独立的分析活动”，而应该被视为变更管理的一部分。
 
+这还意味着，release discipline 必须谨慎决定自己在奖励什么。单一的 end-state score 往往太弱，因为它会掩盖 partial success、blocked-but-correct behavior，或者通过 bad control path 获得的 lucky success。成熟的 eval loop 会使用 richer verifier outputs，让 rollout decisions 反映的不只是最后一个 screen 看起来是否正常，而是系统到底如何行动的。
+
 ## 5. 追踪分级对智能体系统特别有价值
 
 普通应用往往只要业务 KPI 和错误率就够了。智能体系统不行，因为质量经常藏在一次运行内部，而不只在最终答案上。
@@ -183,6 +193,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - 多个智能体之间的协作开始退化。
 
 也就是说，评测层不应该只评估最终答案质量，还要评估行为层面的失效模式。
+
+这也是 verifier design 为什么重要。如果 grading layer 无法区分 process failure 与 outcome failure，它就无法为 training 和 release control 提供足够强的 evidence。
 
 ## 5.2. 协作失效也应该成为评测设计的一部分
 
@@ -239,6 +251,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - “approval path 必须阻止 write action”。
 
 真正的工程价值，通常正是在这些困难又不舒服的场景里。
+
+还应该加入这样一类 cases：行为是正确的，但因为环境侧限制，最终 outcome 仍然不完整。没有这类样本，团队很容易过度优化 binary completion，而忽略系统在压力下是否仍然行为正确。
 
 ## 6.1. 记忆层也应该显式进入评测数据集
 

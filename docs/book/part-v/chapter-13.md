@@ -57,6 +57,14 @@ SLO помогают определить, что считается здоро�
 
 Сила offline evals в том, что они позволяют сравнивать версии системы **до** production traffic.
 
+Полезное уточнение из свежих работ по verifier design состоит в том, что offline evals не стоит завязывать только на binary success label. Для long-horizon agents часто нужен более богатый grading signal:
+
+- `process quality`;
+- `outcome quality`;
+- failure attribution для `controllable` и `uncontrollable` причин.
+
+Иначе команда не сможет отличить run, который вел себя правильно, но был заблокирован средой, от run, который дошел до nominal result через слабый или unsafe path.
+
 ## 3. Online evals нужны, потому что реальный мир всегда шире тестового набора
 
 Даже очень хорошие offline evals не покрывают все, что происходит в production:
@@ -142,6 +150,8 @@ Static eval set хорош для сравнения known cases. User simulator
 
 То есть eval loop полезно мыслить не как “отдельную аналитическую активность”, а как часть управляемого change management.
 
+Это означает и еще одну вещь: release discipline должна аккуратно выбирать, что именно она вознаграждает. Single end-state score часто слишком слаб, потому что скрывает partial success, blocked-but-correct behavior или lucky success через bad control path. Зрелый eval loop использует richer verifier outputs, чтобы rollout decisions отражали не только то, как выглядел последний экран, но и то, как именно система себя вела.
+
 ## 5. Trace grading особенно полезен для агентных систем
 
 В обычных приложениях часто хватает business KPI и error rate. В агентных системах этого мало, потому что качество часто сидит внутри run, а не только в финальном ответе.
@@ -181,6 +191,8 @@ Trace grading полезен тем, что позволяет оцениват�
 - координация между несколькими agents начинает разваливаться.
 
 То есть eval layer должен проверять не только final answer quality, но и failure modes поведения.
+
+Именно поэтому verifier design здесь тоже важен. Если grading layer не умеет разделять process failure и outcome failure, он будет давать слабую evidence base и для training, и для release control.
 
 ## 5.2. Coordination failure тоже должна быть частью eval design
 
@@ -237,6 +249,8 @@ Trace grading полезен тем, что позволяет оцениват�
 - “approval path должен остановить write action”.
 
 Именно сложные и неприятные сценарии чаще всего дают реальную инженерную пользу.
+
+Полезно также включать cases, где правильное поведение все равно заканчивается неполным outcome из-за ограничений среды. Без таких cases команды часто переобучаются на binary completion и недооценивают вопрос, вело ли себя system correctly под давлением.
 
 ## 6.1. Memory layer тоже должен входить в eval dataset явно
 
