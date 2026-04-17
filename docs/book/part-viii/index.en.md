@@ -19,14 +19,14 @@ This is where classical engineering discipline meets agent-specific behavior. Th
 
     - [Chapter 19](chapter-19.en.md): establish the frame through the move from SDLC to ADLC;
     - [Chapter 20](chapter-20.en.md): define which agent changes are truly release-bearing;
-    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, artifact discipline, contract/schema governance, and delegated authorization lineage;
+    - [Chapter 21](chapter-21.en.md) and [Chapter 22](chapter-22.en.md): assemble assurance, provenance, artifact discipline, contract/schema governance, delegated authorization lineage, and verifier-aware evidence discipline;
     - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, runtime-control shutdown, and delegated-authorization revocation/archival;
-    - [Chapters 24-27](chapter-24.en.md): extend the same contour through misalignment, behavioral evals, AI-native observability, and agent-estate governance for interruption, expiry, and re-init paths.
+    - [Chapters 24-27](chapter-24.en.md): extend the same contour through misalignment, behavioral evals, verifier-aware observability, and agent-estate governance for interruption, expiry, and re-init paths.
 
 ## What This Part Solves
 
 - it turns the reference implementation into a managed lifecycle;
-- it connects change management, assurance, provenance, incidents, retirement, observability, runtime-control governance, interruption/expiry/re-init discipline, delegated authorization lineage, and estate governance into one operational contour;
+- it connects change management, assurance, provenance, incidents, retirement, observability, verifier-aware evidence, runtime-control governance, interruption/expiry/re-init discipline, delegated authorization lineage, and estate governance into one operational contour;
 - it separates stable engineering discipline from fast-moving vendor and research details.
 
 If you read this part as one block, the sequence is straightforward:
@@ -36,7 +36,7 @@ If you read this part as one block, the sequence is straightforward:
 - next, build an assurance loop around red teaming, detection, and response;
 - after that, lock down artifact discipline, provenance, and contract/schema governance;
 - then close the lifecycle through replacement, retirement, and runtime-control shutdown;
-- and finally extend the same discipline into misalignment, behavioral assurance, AI-native observability, whole-estate governance, and explicit control over interruption, expiry, and re-init paths.
+- and finally extend the same discipline into misalignment, behavioral assurance, verifier-aware AI-native observability, whole-estate governance, and explicit control over interruption, expiry, and re-init paths.
 
 ## In This Part
 
@@ -57,6 +57,6 @@ If you read this part as one block, the sequence is straightforward:
 - a clear connection between evals, incidents, provenance, ownership, and session-control responsibilities;
 - a practical language for replacement, retirement, end-of-life discipline, runtime-control shutdown, and interruption/expiry/re-init governance;
 - a stronger frame for sabotage-like behavior, control failures, contract drift, and automated assurance;
-- a clear model of observability as an evidence layer for inventory, detection, runtime-control signals, and governance;
+- a clear model of observability as an evidence layer for inventory, detection, runtime-control signals, verifier judgments, and governance;
 - a working frame for governing an entire agent estate rather than isolated agent systems;
 - a clearer sense of how Part VIII works as one continuous operating model rather than a loose set of security chapters.

@@ -19,14 +19,14 @@
 
     - [第 19 章](chapter-19.zh.md)：先用从 SDLC 到 ADLC 的过渡建立共同框架；
     - [第 20 章](chapter-20.zh.md)：再定义哪些 agent changes 真正属于 release-bearing；
-    - [第 21 章](chapter-21.zh.md) 和 [第 22 章](chapter-22.zh.md)：补齐 assurance、provenance、artifact discipline、contract/schema governance 与 delegated authorization lineage；
+    - [第 21 章](chapter-21.zh.md) 和 [第 22 章](chapter-22.zh.md)：补齐 assurance、provenance、artifact discipline、contract/schema governance、delegated authorization lineage 与 verifier-aware evidence discipline；
     - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement、runtime-control shutdown 与 delegated-authorization revocation/archival 把生命周期收束起来；
-    - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 misalignment、behavioral evals、AI-native observability，以及围绕 interruption、expiry 与 re-init paths 的 agent estate 治理。
+    - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 misalignment、behavioral evals、verifier-aware AI-native observability，以及围绕 interruption、expiry 与 re-init paths 的 agent estate 治理。
 
 ## 这一部分解决什么问题
 
 - 把 reference implementation 推进成可管理的 lifecycle；
-- 把 change management、assurance、provenance、incidents、retirement、observability、runtime-control governance、interruption/expiry/re-init discipline、delegated authorization lineage 与 agent-estate governance 接成一个 operational contour；
+- 把 change management、assurance、provenance、incidents、retirement、observability、verifier-aware evidence、runtime-control governance、interruption/expiry/re-init discipline、delegated authorization lineage 与 agent-estate governance 接成一个 operational contour；
 - 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。
 
 如果把这一部分当成一个完整模块来读，它的顺序很清晰：
@@ -36,7 +36,7 @@
 - 接着围绕 red teaming、detection 和 response 建立 assurance loop；
 - 然后把工件纪律、来源追踪与 contract/schema governance 固定下来；
 - 再用替换、退役与 runtime-control shutdown 把生命周期先收束起来；
-- 最后把同一套纪律扩展到 misalignment、behavioral assurance、AI-native observability、整个 agent estate 的治理，以及对 interruption、expiry 与 re-init paths 的显式控制。
+- 最后把同一套纪律扩展到 misalignment、behavioral assurance、verifier-aware AI-native observability、整个 agent estate 的治理，以及对 interruption、expiry 与 re-init paths 的显式控制。
 
 ## 本部分内容
 
@@ -57,6 +57,6 @@
 - 对 evals、incidents、provenance、ownership 与 session-control responsibilities 之间关系的清晰理解；
 - 一套可以真正讨论 replacement、retirement、end-of-life discipline、runtime-control shutdown 与 interruption/expiry/re-init governance 的实践语言；
 - 一套可以讨论 sabotage-like behavior、control failures、contract drift 与 automated assurance 的更成熟框架；
-- 一套把 observability 当作 inventory、detection、runtime-control signals 与 governance 证据层的实践视角；
+- 一套把 observability 当作 inventory、detection、runtime-control signals、verifier judgments 与 governance 证据层的实践视角；
 - 一套治理整个 agent estate 而不是单个 agent system 的工作框架；
 - 更清晰地理解 Part VIII 不是几章松散的安全内容，而是一套连续的 operating model。

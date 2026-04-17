@@ -19,14 +19,14 @@
 
     - [Глава 19](chapter-19.md): выровнять рамку через переход от SDLC к ADLC;
     - [Глава 20](chapter-20.md): понять, какие agent changes вообще считаются release-bearing;
-    - [Глава 21](chapter-21.md) и [Глава 22](chapter-22.md): собрать assurance, provenance, artifact discipline, contract/schema governance и delegated authorization lineage;
+    - [Глава 21](chapter-21.md) и [Глава 22](chapter-22.md): собрать assurance, provenance, artifact discipline, contract/schema governance, delegated authorization lineage и verifier-aware evidence discipline;
     - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement, shutdown runtime-control surfaces и revoke/archive delegated authorization;
-    - [Главы 24-27](chapter-24.md): расширить этот же контур на misalignment, behavioral evals, AI-native observability и управление agent estate для interruption, expiry и re-init paths.
+    - [Главы 24-27](chapter-24.md): расширить этот же контур на misalignment, behavioral evals, verifier-aware AI-native observability и управление agent estate для interruption, expiry и re-init paths.
 
 ## Что решает эта часть
 
 - переводит reference implementation в управляемый lifecycle;
-- связывает change management, assurance, provenance, incidents, retirement, observability, runtime-control governance, discipline для interruption/expiry/re-init, delegated authorization lineage и agent-estate governance в один operational contour;
+- связывает change management, assurance, provenance, incidents, retirement, observability, verifier-aware evidence, runtime-control governance, discipline для interruption/expiry/re-init, delegated authorization lineage и agent-estate governance в один operational contour;
 - отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
 
 Если читать эту часть как единый блок, порядок такой:
@@ -36,7 +36,7 @@
 - затем строишь assurance loop вокруг red teaming, detection и response;
 - после этого закрепляешь artifact discipline, provenance и contract/schema governance;
 - затем закрываешь жизненный цикл через replacement, retirement и shutdown runtime-control surfaces;
-- и в конце расширяешь тот же контур на misalignment, behavioral assurance, AI-native observability, управление всем agent estate и явный control над interruption, expiry и re-init paths.
+- и в конце расширяешь тот же контур на misalignment, behavioral assurance, verifier-aware AI-native observability, управление всем agent estate и явный control над interruption, expiry и re-init paths.
 
 ## В этой части
 
@@ -57,6 +57,6 @@
 - понятную связь между evals, incidents, provenance, рабочей ответственностью и session-control responsibilities;
 - практический язык для разговоров о replacement, retirement, end-of-life discipline, shutdown runtime-control surfaces и governance для interruption/expiry/re-init;
 - более зрелую рамку для sabotage-like behavior, control failures, contract drift и automated assurance;
-- представление о observability как о слое доказательств для inventory, detection, runtime-control signals и governance;
+- представление о observability как о слое доказательств для inventory, detection, runtime-control signals, verifier judgments и governance;
 - рабочую рамку для управления всем контуром агентов, а не только отдельными agent systems;
 - более ясное ощущение, что Part VIII работает как единая operating model, а не как набор разрозненных security chapters.
