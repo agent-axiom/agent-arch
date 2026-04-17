@@ -2,12 +2,16 @@
 
 如果这本书回答的是**为什么**安全智能体系统应该这样构建，那么参考层回答的就是：**哪些工件、模式页与契约页应该被明确固定下来**。
 
+这一层是有意作为支持层存在的，而不是主要阅读入口。它的作用是用可复用的工程材料来支撑本书的论证，而不是替代本书本身的 reader journey。
+
 当你需要下面这些东西时，这一节最有用：
 
 - 快速找到合适的契约页；
 - 准备 design review 或 rollout review；
 - 为团队抽取可复用的工程工件；
 - 从概念章节切换到更落地的工程材料。
+
+如果你刚进入这个项目，最好先读本书本体。等你需要 supporting schemas、checklists 和 contract surfaces 来支撑主要论证时，再来到这里。
 
 ## 从这里开始
 
@@ -46,3 +50,7 @@
 - [全书计划](book/plan.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](appendix/research-frontier.zh.md)
 - [参考来源](appendix/sources.zh.md)
+
+最简单的规则是：
+- 用本书理解 argument 与 sequencing；
+- 用参考层查看 support artifacts 与 implementation-facing detail。
