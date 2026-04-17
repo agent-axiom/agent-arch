@@ -41,6 +41,8 @@
 - доводит этот каркас до first rollout readiness;
 - превращает operating model из Part VI в исполнимую форму рантайма и rollout shape.
 
+Именно здесь книга превращает абстрактные слои в runnable system. Это мост между ранним архитектурным аргументом и более поздним lifecycle argument.
+
 ## В этой части
 
 - [Глава 16. Базовая схема рантайма](chapter-16.md)
@@ -52,6 +54,15 @@
 
 ## Куда она ведет дальше
 
-После этой части становится видно, как архитектура, безопасность, память, выполнение, наблюдаемость и approval control складываются в один operational skeleton. Но на этом production discipline не заканчивается: как только тот же агент переживает первый rollout, начинаются вопросы про change management, assurance, provenance и retirement.
+После этой части становится видно, как архитектура, безопасность, память, выполнение, наблюдаемость и approval control складываются в один operational skeleton. Но на этом production discipline не заканчивается.
+
+Как только тот же агент переживает первый rollout, следующие вопросы уже естественно расходятся по новым ролям:
+
+- change management решает, какие changes считаются release-bearing;
+- assurance решает, как отвечать на drift и findings;
+- provenance и approved artifacts сохраняют evidence backbone того, что реально было выкатано;
+- observability вырастает из runtime wiring в evidence substrate на масштабе estate;
+- registry и governance решают, кто за что отвечает по всему estate;
+- retirement закрывает lifecycle, когда систему больше нельзя держать активной.
 
 Именно поэтому следующий естественный шаг после reference implementation - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md).

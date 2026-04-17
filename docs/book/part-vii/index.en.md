@@ -35,6 +35,8 @@ In this part, I gradually assemble a minimally mature platform:
 - it brings that skeleton up to first-rollout readiness;
 - it turns the operating model from Part VI into an executable runtime and rollout shape.
 
+This part is where the book turns abstract layers into a runnable system. It is the bridge between the earlier architectural argument and the later lifecycle argument.
+
 ## In This Part
 
 - [Chapter 16. Baseline Runtime Blueprint](chapter-16.en.md)
@@ -46,6 +48,15 @@ In this part, I gradually assemble a minimally mature platform:
 
 ## Where It Leads Next
 
-After this part, it becomes clear how architecture, safety, memory, execution, observability, and approval control form one operational skeleton. But production discipline does not stop there: once the same agent survives its first rollout, the next questions are about change management, assurance, provenance, and retirement.
+After this part, it becomes clear how architecture, safety, memory, execution, observability, and approval control form one operational skeleton. But production discipline does not stop there.
+
+Once the same agent survives its first rollout, the next questions separate cleanly into new roles:
+
+- change management decides which changes are release-bearing;
+- assurance decides how to respond when drift and findings appear;
+- provenance and approved artifacts preserve the evidence backbone of what was actually deployed;
+- observability expands from runtime wiring into estate-level evidence substrate;
+- registry and governance decide who is accountable across the estate;
+- retirement closes the lifecycle when the system should no longer remain active.
 
 That is why the next natural step after the reference implementation is [Part VIII. Agent System Lifecycle](../part-viii/index.en.md).

@@ -35,6 +35,8 @@
 - 把这套骨架推进到 first rollout readiness；
 - 把 Part VI 的 operating model 继续落实成可执行的 runtime 与 rollout shape。
 
+也正是在这里，本书把前面那些抽象层真正落成 runnable system。它是前半本架构论证与后半本 lifecycle 论证之间的桥。
+
 ## 本部分内容
 
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
@@ -46,6 +48,15 @@
 
 ## 这一部分之后去哪里
 
-到这一部分，架构、安全、记忆、执行、可观测性和 approval control 已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束：一旦同一个 agent 撑过第一次 rollout，接下来的问题就会变成 change management、assurance、provenance 和 retirement。
+到这一部分，架构、安全、记忆、执行、可观测性和 approval control 已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束。
+
+一旦同一个 agent 撑过第一次 rollout，接下来的问题就会自然分化成新的角色：
+
+- change management 决定哪些 changes 属于 release-bearing；
+- assurance 决定 drift 与 findings 出现后该如何 response；
+- provenance 与 approved artifacts 保存实际部署内容的 evidence backbone；
+- observability 从 runtime wiring 扩展成 estate 级的 evidence substrate；
+- registry 与 governance 决定整个 estate 上的 accountability；
+- retirement 在系统不应继续 active 时关闭整个 lifecycle。
 
 这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)。
