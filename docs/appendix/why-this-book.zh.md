@@ -31,6 +31,8 @@
 
 这就是它最核心的差异。
 
+这本书也试图把这些层清楚地呈现成读者可以感受到的 distinct promises，而不只是一个主题清单。读者应该能看见每一层究竟给了他们什么、为什么需要它，以及为什么它不能被随意压扁到相邻章节里。
+
 ## 与框架文档相比
 
 框架文档适合在你已经知道自己要构建什么系统时使用。
@@ -104,5 +106,13 @@
 - 可在生产环境中运营
 
 同时也帮助读者看到，这些性质并不是由某一个魔法层单独带来的。它们来自多个不同层次在纪律之下共同工作。
+
+更具体地说，这本书应该让读者带着几项被兑现的 promises 离开：
+
+- 他们能看清 trust 与 action boundaries 真正在哪里；
+- 他们能捕获 run behavior，而不是只靠症状猜测；
+- 他们能定义可容忍的 health budgets 与 risk budgets；
+- 他们能对 change 与 regression risk 产出 reviewable judgments；
+- 他们能理解 response、lineage、observability 与 accountability 如何在生命周期里被分开承担。
 
 如果这比智能体表演更吸引你，那这本书就是写给你的。

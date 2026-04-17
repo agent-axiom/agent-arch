@@ -31,6 +31,8 @@ This project treats agent systems as operational systems with:
 
 That is the core difference.
 
+The book is also trying to make those layers legible as distinct promises to the reader, not just as a list of concerns. It should help the reader see what each layer gives them, why it exists, and why it cannot be collapsed into a neighboring chapter.
+
 ## Compared with framework docs
 
 Framework docs are useful when you already know what system you want to build.
@@ -104,5 +106,13 @@ The goal is to help build an agent system that is:
 - operable in production
 
 And to help the reader see that these properties do not come from one magical layer. They come from several distinct layers working together under discipline.
+
+More specifically, the book should leave the reader with several distinct promises fulfilled:
+
+- they can see where trust and action boundaries actually live;
+- they can capture run behavior instead of guessing from symptoms;
+- they can define tolerated health and risk budgets;
+- they can produce reviewable judgments about change and regression risk;
+- they can understand how response, lineage, observability, and accountability divide across the lifecycle.
 
 If that sounds more interesting than agent theater, this book is for you.
