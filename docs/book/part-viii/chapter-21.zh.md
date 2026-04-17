@@ -36,6 +36,8 @@
 
 所以在发布纪律之外，还必须再补上一层：保障闭环。
 
+这里有一个关键区分：eval loop 负责帮助团队判断系统行为是在变好还是变坏；assurance loop 负责决定应该立刻遏制什么、谁来响应，以及当新风险出现时怎样强制把系统拉回到更安全的状态。
+
 ## 2. 什么是保障闭环
 
 可以这样定义保障闭环：
@@ -123,6 +125,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 也就是说，这里的检测既是可观测性，也是滥用与安全监测。
 
+这也是本章必须和 observability layer 保持边界的地方。Observability 提供 evidence substrate；assurance 决定哪些信号此刻重要、哪些信号要触发 containment，以及哪个 owner 必须行动。
+
 ## 6. 响应应该是一层独立的运行能力
 
 当一个智能体开始表现出危险行为时，光说“之后再调提示”是不够的。
@@ -140,6 +144,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 必要时直接停用有问题的路由。
 
 这很关键，因为在智能体系统里，响应往往必须比完整的根因分析更快发生。
+
+所以这里的 assurance 更应该被理解成 response function，而不只是 detection catalog。它的职责，是尽量缩短 signal 与 safe containment 之间的时间。
 
 <div class="diagram-card">
 <p>保障闭环更像一个连续循环：发现、检测、遏制、修复、学习</p>
@@ -201,6 +207,8 @@ flowchart LR
 - rollout policy。
 
 否则团队会一遍又一遍撞上同样的 surprise。
+
+但这里的第一责任仍然是运行责任，而不是研究责任：一旦某个 signal 足够可信，系统就必须知道谁拥有 response，以及在更深层 redesign 开始之前允许采取哪些 containment moves。
 
 ## 9. 好的 assurance loop 一定和 ownership 绑定
 

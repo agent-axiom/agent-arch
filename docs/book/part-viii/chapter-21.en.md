@@ -36,6 +36,8 @@ The reason is that agent systems have a special class of risks:
 
 That is why release discipline must be followed by another layer: the assurance loop.
 
+The important distinction is this: the eval loop helps the team learn whether behavior is getting better or worse. The assurance loop exists to decide what to contain, who responds, and how the system is forced back into a safer state when new risk appears.
+
 ## 2. What an assurance loop is
 
 I would define the assurance loop like this:
@@ -123,6 +125,8 @@ You need to notice things like:
 
 In other words, detection here has to function not only as observability, but also as abuse and safety monitoring.
 
+This is also where the chapter should stay distinct from the observability layer. Observability provides the evidence substrate. Assurance decides which signals matter now, which ones trigger containment, and which owner must act.
+
 ## 6. Response should be its own operational function
 
 When an agent starts behaving unsafely, it is not enough to say “we will tune the prompt later.”
@@ -140,6 +144,8 @@ A practical response layer is built around concrete actions:
 - fully disable the problematic route when necessary.
 
 This matters because in agent systems, response often has to happen faster than full root-cause analysis.
+
+That is why assurance should be read as a response function, not merely as a detection catalog. Its job is to shorten the time between signal and safe containment.
 
 <div class="diagram-card">
 <p>The assurance loop works as a continuous cycle: search, detect, contain, fix, learn</p>
@@ -201,6 +207,8 @@ Those signals should flow back into:
 - rollout policy.
 
 Otherwise the team will keep rediscovering the same surprises.
+
+But the first obligation is still operational, not academic: once a signal is credible, the system must know who owns the response and which containment moves are allowed before the deeper redesign work begins.
 
 ## 9. A good assurance loop is tied to ownership
 
