@@ -20,7 +20,7 @@
     - [Глава 19](chapter-19.md): выровнять рамку через переход от SDLC к ADLC;
     - [Глава 20](chapter-20.md): понять, какие agent changes вообще считаются release-bearing;
     - [Глава 21](chapter-21.md): собрать assurance как operational response loop для drift, findings и containment;
-    - [Глава 22](chapter-22.md): закрепить provenance, approved artifacts и contract lineage как evidence backbone;
+    - [Глава 22](chapter-22.md): закрепить provenance, approved artifacts и contract lineage как evidence backbone, которая сохраняет, что именно было одобрено, какая версия была активна и на какой governed artifact потом опиралось решение;
     - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement и shutdown runtime-control surfaces;
     - [Главы 24-27](chapter-24.md): расширить тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
@@ -35,7 +35,7 @@
 - сначала ты выравниваешь понятийную рамку через переход от SDLC к ADLC;
 - потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
 - затем рассматриваешь assurance как operational response loop для drift, findings и control failure;
-- после этого закрепляешь artifact discipline, provenance и contract/schema governance как evidence backbone;
+- после этого закрепляешь artifact discipline, provenance и contract/schema governance как evidence backbone, которая хранит identity релиза и lineage решений, а не detection telemetry или ownership всего estate;
 - затем закрываешь жизненный цикл через replacement, retirement и shutdown runtime-control surfaces;
 - и в конце расширяешь тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
@@ -55,7 +55,7 @@
 
 - цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
-- более ясное различие между assurance response, evidence lineage, eval judgment, observability evidence и accountability всего estate;
+- более ясное различие между assurance response, provenance/evidence backbone, eval judgment, observability evidence и accountability всего estate;
 - практический язык для разговоров о replacement, retirement, end-of-life discipline и shutdown runtime-control surfaces;
 - более зрелую рамку для sabotage-like behavior, control failures, contract drift и adversarial assurance;
 - представление о observability как о слое доказательств, а не просто о generic telemetry bucket;

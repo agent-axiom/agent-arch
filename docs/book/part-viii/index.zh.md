@@ -20,7 +20,7 @@
     - [第 19 章](chapter-19.zh.md)：先用从 SDLC 到 ADLC 的过渡建立共同框架；
     - [第 20 章](chapter-20.zh.md)：再定义哪些 agent changes 真正属于 release-bearing；
     - [第 21 章](chapter-21.zh.md)：把 assurance 理解成围绕 drift、findings 与 containment 的 operational response loop；
-    - [第 22 章](chapter-22.zh.md)：把 provenance、approved artifacts 与 contract lineage 锁定为 evidence backbone；
+    - [第 22 章](chapter-22.zh.md)：把 provenance、approved artifacts 与 contract lineage 锁定为 evidence backbone，用来保留当时究竟批准了什么、哪一个版本处于激活状态，以及后续决策依赖的是哪一组 governed artifacts；
     - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement 与 runtime-control shutdown 把生命周期收束起来；
     - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
 
@@ -35,7 +35,7 @@
 - 先通过从 SDLC 到 ADLC 的过渡建立共同框架；
 - 再定义哪些智能体系统变更真正属于 release-bearing changes；
 - 接着把 assurance 看成围绕 drift、findings 与 control failure 的 operational response loop；
-- 然后把工件纪律、来源追踪与 contract/schema governance 固定为 evidence backbone；
+- 然后把工件纪律、来源追踪与 contract/schema governance 固定为 evidence backbone，用来保留 release identity 与 decision lineage，而不是去承担 detection telemetry 或 estate ownership 的职责；
 - 再用替换、退役与 runtime-control shutdown 把生命周期收束起来；
 - 最后把同一套纪律扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
 
@@ -55,7 +55,7 @@
 
 - 一套面向生产级 agent systems 的完整生命周期框架；
 - 一种更成熟的变更评审与发布门禁视角；
-- 更清楚地区分 assurance response、evidence lineage、eval judgment、observability evidence 与整个 estate 的 accountability；
+- 更清楚地区分 assurance response、provenance/evidence backbone、eval judgment、observability evidence 与整个 estate 的 accountability；
 - 一套可以真正讨论 replacement、retirement、end-of-life discipline 与 runtime-control shutdown 的实践语言；
 - 一套可以讨论 sabotage-like behavior、control failures、contract drift 与 adversarial assurance 的更成熟框架；
 - 一套把 observability 当作 evidence layer，而不是 generic telemetry bucket 的实践视角；

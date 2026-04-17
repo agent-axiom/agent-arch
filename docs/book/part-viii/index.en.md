@@ -20,7 +20,7 @@ This is where classical engineering discipline meets agent-specific behavior. Th
     - [Chapter 19](chapter-19.en.md): establish the frame through the move from SDLC to ADLC;
     - [Chapter 20](chapter-20.en.md): define which agent changes are truly release-bearing;
     - [Chapter 21](chapter-21.en.md): treat drift, findings, and containment as one assurance response loop;
-    - [Chapter 22](chapter-22.en.md): lock down provenance, approved artifacts, and contract lineage as the evidence backbone;
+    - [Chapter 22](chapter-22.en.md): lock down provenance, approved artifacts, and contract lineage as the evidence backbone that preserves what was approved, what version was active, and which governed artifact set a later decision relied on;
     - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, and runtime-control shutdown;
     - [Chapters 24-27](chapter-24.en.md): extend the same discipline into adversarial pressure, eval judgment, observability evidence, and estate accountability.
 
@@ -35,7 +35,7 @@ If you read this part as one block, the sequence is straightforward:
 - first, establish the frame by moving from SDLC to ADLC;
 - then define which changes in an agent system are truly release-bearing;
 - next, treat assurance as the operational response loop for drift, findings, and control failure;
-- after that, lock down artifact discipline, provenance, and contract/schema governance as the evidence backbone;
+- after that, lock down artifact discipline, provenance, and contract/schema governance as the evidence backbone that preserves release identity and decision lineage, rather than detection telemetry or estate ownership;
 - then close the lifecycle through replacement, retirement, and runtime-control shutdown;
 - and finally extend the same discipline into adversarial pressure, eval judgment, observability evidence, and whole-estate accountability.
 
@@ -55,7 +55,7 @@ If you read this part as one block, the sequence is straightforward:
 
 - a coherent lifecycle model for production-grade agent systems;
 - a stronger frame for change reviews and release gates;
-- a clear distinction between assurance response, evidence lineage, eval judgment, observability evidence, and estate accountability;
+- a clear distinction between assurance response, provenance/evidence backbone, eval judgment, observability evidence, and estate accountability;
 - a practical language for replacement, retirement, end-of-life discipline, and runtime-control shutdown;
 - a stronger frame for sabotage-like behavior, control failures, contract drift, and adversarial assurance;
 - a clear model of observability as an evidence layer rather than a generic telemetry bucket;
