@@ -2,7 +2,9 @@
 
 This book is for people who want to build not demo magic, but calm, controllable, and safe production agent systems.
 
-It is a practical book about secure, governable, production-grade AI agent architecture, aimed at teams that need more than prompts and tool calls. It focuses on the operational system around agents: trust boundaries, policy enforcement, approvals, observability, evals, and lifecycle management.
+Its central argument is simple: **agents need a platform, not magic**. If a team treats an agent as a prompt with tools attached, the system may look impressive in a demo and still fail as soon as risky actions, memory, approvals, rollout, and lifecycle pressure appear.
+
+This is a practical book about secure, governable, production-grade AI agent architecture for teams that need more than prompts and tool calls. It focuses on the operational system around agents: trust boundaries, policy enforcement, approvals, observability, evals, and lifecycle management.
 
 > It starts from Dmitry Vikulin's article on reliable AI agents and expands it into a platform-level view: policy enforcement, human approval, observability, evals, operational discipline, and lifecycle management.
 
@@ -22,7 +24,9 @@ It is a practical book about secure, governable, production-grade AI agent archi
 
 ## Why this book exists
 
-Most agent material optimizes for fast demos. Real systems need something stricter: explicit trust boundaries, policy-controlled execution, memory discipline, observability, and rollout control. This book exists to document that fuller operating model.
+Most agent material optimizes for fast demos. Real systems fail somewhere else: at the boundary between reasoning and action, at the memory layer, in approval paths, in rollout, in drift, and in long-lived operational ownership. This book exists to describe that fuller operating model.
+
+The goal is not to help readers build the most autonomous agent in the room. The goal is to help them build an agent system that can survive production reality.
 
 ## Who this is for
 
@@ -39,10 +43,16 @@ Most agent material optimizes for fast demos. Real systems need something strict
 - Reference pages for trace schema, eval schema, policy bundles, approvals, rollout gates, memory retrieval, and lifecycle artifacts.
 - Case studies, checklists, and policy templates you can reuse as starting artifacts.
 
+## What kind of book this is
+
+This is primarily a practical architecture and operating-model book for production agent systems.
+
+It is not a framework manual, not a prompt-engineering guide, and not a hype tour of the AI ecosystem. The reference pages and runnable runtime exist to support the book's argument, not to replace it.
+
 ## Project Status
 
 - `Published core`: all eight parts of the book are already published.
-- `Expanding now`: entry pages, the reference layer, and site navigation are actively being improved.
+- `Expanding now`: entry pages, the reference layer, and site navigation are still being sharpened.
 - `Reference assets available`: schemas, checklists, case studies, and a runnable runtime are already available.
 
 ## Three useful reading paths
