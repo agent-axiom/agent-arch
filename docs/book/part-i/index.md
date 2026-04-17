@@ -17,6 +17,7 @@
 - Она показывает, почему безопасность не может быть "обвязкой после MVP", а должна быть встроена в runtime.
 - Она аргументирует, что большинство production-кейсов выигрывают не от максимальной автономности, а от правильного сочетания `workflow + guarded autonomy`.
 - Она задает мультиагентность как решение про control и ownership, а не про эстетику.[^anthropic][^langgraph-multi]
+- Она заранее закладывает весь дальнейший reader journey: trust boundaries, memory discipline, execution contracts, evidence capture, health budgets, judgment loops, ownership, runtime embodiment и lifecycle governance.
 
 ## Быстрый self-check перед следующим шагом
 
@@ -54,6 +55,16 @@
 После этой части у читателя уже должен появиться рабочий каркас: нужен ли здесь агент, как выглядит базовая платформа и где у нее проходят реальные границы доверия.
 
 Именно отсюда возникает следующий вопрос: если эта архитектура реальна, то где именно она становится опасной? Дальше логичный шаг один: перейти в [Часть II](../part-ii/index.md) и разобрать, как тот же запрос проходит через security perimeter, tool gateway и approval boundary.
+
+Дальше книга расширяет тот же аргумент уже по порядку:
+
+- Part II находит trust и action boundaries;
+- Part III делает memory частью operating model;
+- Part IV превращает execution в contracts и governed tool use;
+- Part V вводит capture, health и judgment;
+- Part VI раздает ownership;
+- Part VII превращает модель в runnable structure;
+- Part VIII управляет системой через change, response, evidence и accountability.
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)

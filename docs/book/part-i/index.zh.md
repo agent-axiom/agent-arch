@@ -17,6 +17,7 @@
 - 它说明为什么安全不能作为 MVP 之后的“外层包装”，而必须内建在 runtime 中。
 - 它论证大多数生产场景真正受益的不是最大自治，而是正确组合 `workflow + guarded autonomy`。
 - 它把多智能体设计框定为控制与 ownership 决策，而不是一种美学选择。[^anthropic][^langgraph-multi]
+- 它也提前埋下整本书的 reader journey：trust boundaries、memory discipline、execution contracts、evidence capture、health budgets、judgment loops、ownership、runtime embodiment 与 lifecycle governance。
 
 ## 继续往下读之前的快速自检
 
@@ -54,6 +55,16 @@
 读完这一部分之后，你应该已经有了一个可以落地的基本轮廓：这里到底需不需要 agent、最小平台长什么样、真实的信任边界从哪里开始。
 
 接下来就会自然出现下一个问题：如果这套架构是真的，它到底会从哪里开始变得危险？所以下一步就是进入 [第二部分](../part-ii/index.zh.md)，把同一个请求带进 security perimeter、tool gateway 和 approval boundary。
+
+从那里开始，全书会按顺序继续展开同一个论证：
+
+- Part II 找到 trust 与 action boundaries；
+- Part III 让 memory 成为 operating model 的一部分；
+- Part IV 把 execution 变成 contracts 与 governed tool use；
+- Part V 引入 capture、health 与 judgment；
+- Part VI 分配 ownership；
+- Part VII 把模型落成 runnable structure；
+- Part VIII 再通过 change、response、evidence 与 accountability 来治理系统。
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
