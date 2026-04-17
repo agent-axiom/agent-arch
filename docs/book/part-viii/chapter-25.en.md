@@ -43,6 +43,8 @@ This is where it is useful to distinguish:
 
 Behavioral evals do not only test the final output. They test the shape of the system's behavior.
 
+A useful lesson from recent verifier work for computer-use agents is that a single binary judgment is often too weak for long-horizon trajectories. An agent may follow the right process and still fail because the environment blocks it, or may reach the nominal outcome through an unsafe path. That is why verifier design should separate `process verification` from `outcome verification` rather than collapsing both into one score.
+
 For example:
 
 - does the agent conceal a questionable step;
@@ -61,6 +63,9 @@ Control evals test the control mechanisms themselves, not just model quality.
 
 Typical questions are:
 
+- does the verifier itself use a reviewable rubric rather than an opaque single verdict;
+- does it distinguish controllable failure from uncontrollable failure;
+
 - does the policy layer actually stop this capability;
 - does the approval gate really require a human;
 - does the rollback gate work;
@@ -70,6 +75,8 @@ Typical questions are:
 - can the emergency control disable the risky path.
 
 This is an important shift: you are testing not only the model, but the control surface around it.
+
+In a mature program, the verifier is part of that control surface. If it produces false confidence, rollout and training loops inherit the mistake. So verifier design should be treated as governed infrastructure, not as a convenient helper prompt.
 
 ## 4. What automated red teaming is
 
@@ -229,6 +236,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 The point is that failure is not only “the model behaved oddly,” but also “the control layer failed to prove it worked.”
 
+The grading contract also gets stronger when it can represent richer evidence than pass/fail alone, for example separate process and outcome judgments plus failure attribution for controllable versus uncontrollable causes.
+
 ## 11. How to embed this into ADLC
 
 In a mature system, the flow looks like this:
@@ -248,6 +257,8 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 - all evals collapse into final-answer quality;
 - dangerous paths have no separate scenario classes;
 - approval-path misuse, session re-init misuse, delegated-worker misuse, and contract drift are not tested explicitly;
+- verifier outputs collapse long trajectories into a weak pass/fail label;
+- controllable and uncontrollable failures are not separated;
 - red teaming is a one-off exercise;
 - runtime-control regressions are discovered only in rollout or incidents;
 - findings are not connected to release gates;
@@ -262,6 +273,7 @@ A stronger bar is this:
 
 - risky paths have explicit behavioral scenario classes;
 - control evals verify that the control layer itself works under pressure;
+- verifier outputs separate process quality, outcome quality, and failure attribution rather than collapsing everything into one binary judgment;
 - approval-path misuse, session re-init misuse, delegated-worker misuse, contract drift, and runtime-control regressions have explicit scenario coverage;
 - red-team findings enter rollout and change gates rather than staying as separate reports;
 - realistic simulation and adversarial generation play different, complementary roles;
@@ -273,7 +285,8 @@ If most of those conditions are missing, the team may have evaluation activity, 
 
 - Do risky capabilities have dedicated behavioral scenario classes?
 - Do you test approval evasion, payload mutation, approval-path misuse, and delegated-worker misuse?
-- Do you run evals that verify controls, contract-version matching, runtime-control behavior, and orchestration-pattern boundaries rather than only output quality?
+- Do you run evals that verify controls, contract-version matching, runtime-control behavior, orchestration-pattern boundaries, and verifier quality rather than only output quality?
+- Can your verifier distinguish process failure, outcome failure, and uncontrollable environment failure?
 - Do red-team findings flow into change review and rollout gates?
 - Do you have a simulator for realistic workloads and a separate adversarial generator?
 - Can you show control evidence, not just final quality scores?

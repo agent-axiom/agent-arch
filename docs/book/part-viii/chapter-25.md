@@ -43,6 +43,8 @@ Regression evals отлично отвечают на вопрос:
 
 Behavioral evals проверяют не только финальный output, но и форму поведения системы.
 
+Полезный урок из свежих работ по verifier design для computer-use agents состоит в том, что одного бинарного verdict часто недостаточно для long-horizon trajectories. Агент может идти по правильному process, но упереться в environment block, или дойти до nominal outcome через unsafe path. Поэтому verifier design полезно разделять на `process verification` и `outcome verification`, а не схлопывать все в один score.
+
 Например:
 
 - скрывает ли агент спорный шаг;
@@ -61,6 +63,9 @@ Control evals проверяют сами защитные механизмы, �
 
 Их типичные вопросы такие:
 
+- использует ли verifier reviewable rubric, а не opaque single verdict;
+- различает ли он controllable failure и uncontrollable failure;
+
 - остановит ли policy layer этот capability;
 - действительно ли approval gate требует человека;
 - сработает ли rollback gate;
@@ -70,6 +75,8 @@ Control evals проверяют сами защитные механизмы, �
 - сможет ли emergency control отключить risky path.
 
 Это важный сдвиг: ты проверяешь не только модель, но и контур управления вокруг нее.
+
+В зрелой программе сам verifier тоже становится частью control surface. Если он дает ложную уверенность, эту ошибку наследуют rollout и training loops. Поэтому verifier design стоит рассматривать как governed infrastructure, а не как удобный helper prompt.
 
 ## 4. Что такое automated red teaming
 
@@ -229,6 +236,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 Здесь failure считается не только “модель повела себя странно”, но и “control layer не доказал свою работоспособность”.
 
+Grading contract становится сильнее, если умеет хранить не только pass/fail verdict, но и отдельные process/outcome judgments плюс failure attribution для controllable и uncontrollable причин.
+
 ## 11. Как встроить это в ADLC
 
 В зрелой системе это обычно устроено так:
@@ -248,6 +257,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - все evals сводятся к final answer quality;
 - dangerous paths не имеют отдельных scenario classes;
 - approval-path misuse, session re-init misuse, delegated-worker misuse и contract drift не проверяются явно;
+- verifier outputs схлопывают длинные trajectories в слабый pass/fail label;
+- controllable и uncontrollable failures не разделяются;
 - red teaming проводится как разовая акция;
 - runtime-control regressions обнаруживаются только в rollout или инцидентах;
 - findings не связываются с release gate;
@@ -262,6 +273,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - у risky paths есть явные behavioral scenario classes;
 - control evals проверяют, что сам control layer работает под давлением;
+- verifier outputs разделяют process quality, outcome quality и failure attribution, а не схлопывают все в один binary judgment;
 - approval-path misuse, session re-init misuse, delegated-worker misuse, contract drift и runtime-control regressions имеют явное scenario coverage;
 - red-team findings попадают в rollout и change gates, а не живут отдельными отчетами;
 - realistic simulation и adversarial generation играют разные, дополняющие роли;
@@ -273,7 +285,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - Есть ли у risky capabilities отдельные behavioral scenario classes?
 - Проверяешь ли ты approval evasion, payload mutation, approval-path misuse и delegated-worker misuse?
-- Есть ли evals, которые проверяют именно controls, contract-version matching, runtime-control behavior и orchestration-pattern boundaries, а не только output quality?
+- Есть ли evals, которые проверяют именно controls, contract-version matching, runtime-control behavior, orchestration-pattern boundaries и качество verifier'а, а не только output quality?
+- Умеет ли verifier различать process failure, outcome failure и uncontrollable environment failure?
 - Попадают ли red-team findings в change review и rollout gate?
 - Есть ли simulator для realistic workload и отдельный adversarial generator?
 - Можешь ли ты показать control evidence, а не только итоговую оценку качества?

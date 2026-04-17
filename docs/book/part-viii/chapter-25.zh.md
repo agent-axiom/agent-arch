@@ -43,6 +43,8 @@
 
 行为评测不只检查最终输出，还检查系统的行为形态。
 
+最近关于 computer-use agents verifier design 的一个重要经验是，对于 long-horizon trajectories，单一的二元 verdict 往往太弱。智能体可能走对了 process，却因为 environment block 而失败，也可能通过 unsafe path 达成 nominal outcome。所以 verifier design 最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个 score。
+
 例如：
 
 - 智能体会不会隐藏一个有争议的步骤；
@@ -61,6 +63,9 @@
 
 典型问题包括：
 
+- verifier 本身是否使用了可评审的 rubric，而不是 opaque single verdict；
+- 它是否区分 controllable failure 和 uncontrollable failure；
+
 - 策略层能不能真的拦住这个能力；
 - 审批门禁是否真的要求人来确认；
 - 回滚门禁能不能工作；
@@ -70,6 +75,8 @@
 - 紧急控制能不能关掉高风险路径。
 
 这里的关键转变在于：你检查的不只是模型，而是围绕模型的一整层控制面。
+
+在成熟体系里，verifier 本身也属于 control surface。如果它制造了虚假的信心，rollout 和 training loops 就会继承这个错误。所以 verifier design 应该被当成 governed infrastructure，而不只是一个方便的 helper prompt。
 
 ## 4. 什么是自动化红队测试
 
@@ -229,6 +236,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这里的核心是：失效不只是“模型行为古怪”，也包括“控制层没能证明自己真的有效”。
 
+如果 grading contract 能表达的不只是 pass/fail verdict，而是分开的 process/outcome judgments，以及 controllable 与 uncontrollable causes 的 failure attribution，它就会更强。
+
 ## 11. 如何把它接进 ADLC
 
 在成熟系统里，流程通常是这样：
@@ -248,6 +257,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - 所有评测最后都退化成最终答案质量；
 - 危险路径没有独立的场景类别；
 - approval-path misuse、session re-init misuse、delegated-worker misuse 与 contract drift 没有被显式测试；
+- verifier outputs 把长轨迹压缩成了过于薄弱的 pass/fail label；
+- controllable 与 uncontrollable failures 没有被分开；
 - 红队测试只是一次性活动；
 - runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
 - 发现结果没有进入发布门禁；
@@ -262,6 +273,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - risky paths 有明确的 behavioral scenario classes；
 - control evals 会验证 control layer 本身在压力下是否真的有效；
+- verifier outputs 会分开表示 process quality、outcome quality 与 failure attribution，而不是把一切压成单一 binary judgment；
 - approval-path misuse、session re-init misuse、delegated-worker misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
 - red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
 - realistic simulation 和 adversarial generation 扮演不同但互补的角色；
@@ -273,7 +285,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - 高风险能力是否有单独的行为场景类别？
 - 你是否测试审批规避、载荷篡改、approval-path misuse 与 delegated-worker misuse？
-- 是否有专门验证控制措施、contract-version matching、runtime-control behavior 与 orchestration-pattern boundaries 的评测，而不只是检查输出质量？
+- 是否有专门验证控制措施、contract-version matching、runtime-control behavior、orchestration-pattern boundaries 与 verifier quality 的评测，而不只是检查输出质量？
+- verifier 能否区分 process failure、outcome failure 与 uncontrollable environment failure？
 - 红队发现结果是否会进入变更评审和发布门禁？
 - 是否同时有 realistic workload simulator 和 adversarial generator？
 - 你能展示的是控制证据，还是只有最终分数？
