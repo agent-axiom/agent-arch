@@ -64,7 +64,7 @@ Each major chapter should show:
 - what false fix teams often try
 - what architectural layer actually resolves or contains the problem
 
-### 3. Role-clarity and late-book de-duplication
+### 3. Role-clarity, promise-shape hardening, and late-book de-duplication
 Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 11: tracing as raw evidence capture
 - Chapter 12: SLO as health and risk budgets
@@ -78,6 +78,11 @@ Sharpen chapter jobs-to-be-done, especially across:
 Preserve the mirrored editorial geometry already found in the manuscript:
 - Part V = capture, health, judgment
 - Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
+
+And harden promise shape at the same time:
+- part indexes should read as reader outcomes, not topic lists
+- chapter intros should say what distinct promise this layer makes
+- overlap control should happen through role clarity plus visible reader promises, not only through topical separation
 
 ### 4. Evidence expansion
 Broaden support beyond vendor docs with more:
@@ -95,6 +100,7 @@ Perform a dedicated book-level pass for:
 - repetition cleanup
 - removal of draft-like phrasing
 - protection of chapter role grammar so neighboring chapters do not collapse into each other
+- protection of promise shape so entry/index pages do not drift back into inventory-style prose
 
 ### 6. Book vs reference separation
 Keep in chapters:
@@ -122,6 +128,7 @@ Push to appendix/reference/runtime where appropriate:
 6. reinforce recurring cases
 7. protect Part V role clarity
 8. protect Part VIII role clarity
+9. harden promise shape across entry surfaces, part indexes, and planning docs
 
 ### Phase C. Authority and finish
 9. expand evidence base
@@ -146,6 +153,8 @@ This is no longer just a hypothesis. It is now a working manuscript constraint.
 
 ### Rewrite rule
 When a rewrite makes one chapter sound like its neighbor, prefer restoring role clarity over adding more content.
+
+When an index, intro, or planning page starts sounding like a topic inventory instead of a reader outcome, rewrite toward promise shape rather than adding more summary text.
 
 ## Working Deliverables
 
@@ -201,3 +210,4 @@ We should consider this phase successful when we have:
 - a concrete overlap-reduction plan
 - a stronger evidence strategy
 - a chapter rewrite queue that improves the book as a book, not just as a website
+- visible promise-shape consistency across homepage, start-here, part indexes, and planning docs
