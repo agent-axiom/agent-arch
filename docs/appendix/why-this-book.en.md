@@ -26,8 +26,8 @@ This project treats agent systems as operational systems with:
 - policy-controlled execution
 - approval paths for risky actions
 - memory discipline
-- observability and evals
-- rollout control and lifecycle management
+- evidence capture, health budgets, and eval judgment
+- rollout control, accountability, and lifecycle management
 
 That is the core difference.
 
@@ -75,6 +75,8 @@ They tell you what to watch for. They do not always tell you how to structure ru
 
 This book tries to connect security concerns with concrete runtime design.
 
+It also tries to keep the major operational layers distinct instead of blending them into one vague governance story: traces should capture, SLO should bound health, evals should judge, assurance should respond, observability should preserve evidence at scale, and registry should assign accountability.
+
 ## Compared with cloud reference architectures
 
 Cloud blueprints are good at showing deployment shapes.
@@ -100,5 +102,7 @@ The goal is to help build an agent system that is:
 - reviewable
 - governable
 - operable in production
+
+And to help the reader see that these properties do not come from one magical layer. They come from several distinct layers working together under discipline.
 
 If that sounds more interesting than agent theater, this book is for you.

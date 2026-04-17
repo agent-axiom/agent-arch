@@ -26,8 +26,8 @@
 - 受策略控制的执行
 - 面向高风险动作的审批路径
 - 记忆治理
-- 可观测性与评测
-- 发布控制与生命周期管理
+- evidence capture、health budgets 与 eval judgment
+- 发布控制、accountability 与生命周期管理
 
 这就是它最核心的差异。
 
@@ -75,6 +75,8 @@
 
 这本书试图把安全问题和具体运行时设计连接起来。
 
+它也试图避免把主要 operational layers 混成一个模糊的 governance story：traces 应该负责捕获，SLO 应该负责约束健康，evals 应该负责判断，assurance 应该负责响应，observability 应该负责在系统尺度上保存 evidence，而 registry 应该负责分配 accountability。
+
 ## 与云参考架构相比
 
 云厂商蓝图很擅长展示部署形态。
@@ -100,5 +102,7 @@
 - 可审查
 - 可治理
 - 可在生产环境中运营
+
+同时也帮助读者看到，这些性质并不是由某一个魔法层单独带来的。它们来自多个不同层次在纪律之下共同工作。
 
 如果这比智能体表演更吸引你，那这本书就是写给你的。
