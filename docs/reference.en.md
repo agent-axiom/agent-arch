@@ -2,12 +2,16 @@
 
 If the book explains **why** a safe agent system should be built this way, the reference layer helps answer **what exactly should be captured in artifacts, schemas, and contract pages**.
 
+This layer is intentionally supportive, not primary. It exists to anchor the book's argument in reusable engineering materials, not to replace the reader journey of the book itself.
+
 Use this section when you need to:
 
 - find the right contract page quickly;
 - prepare a design review or rollout review;
 - extract reusable artifacts for your team;
 - move from conceptual chapters to applied engineering materials.
+
+If you are new to the project, start with the book first. Come here when you want the supporting schemas, checklists, and contract surfaces behind the main argument.
 
 ## Start here
 
@@ -46,3 +50,7 @@ For a short path in, start with:
 - [Book Plan](book/plan.en.md)
 - [Research Frontier: Memory, Observability, and Multi-Agent Reliability](appendix/research-frontier.en.md)
 - [Sources](appendix/sources.en.md)
+
+The simplest rule is:
+- use the book for argument and sequencing;
+- use the reference layer for support artifacts and implementation-facing detail.
