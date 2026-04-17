@@ -10,6 +10,8 @@
 
 但接下来，瓶颈通常不再是技术，而是组织本身。
 
+Part V 已经说明了系统应该如何被观察、如何被判断。接下来的问题不同了：这些层到底该由谁拥有，谁来维护 shared defaults，以及谁有权把产品团队约束在 production discipline 之内。
+
 即使是一个不错的智能体平台，也很快会遇到这些问题：
 
 - 谁拥有底层能力；
@@ -32,6 +34,7 @@
 
 - 在平台先从组织层面漂移之前，把 ownership boundaries 先说清楚；
 - 说明 platform ownership 如何进一步落成 golden paths、shared gateways 和 controlled deviations；
+- 解释前面那些已经被技术性定义出来的层，到底应该由谁拥有；
 - 为从 operating model 走向 reference implementation 做准备。
 
 ## 本部分内容
@@ -44,3 +47,10 @@
 ## 这一部分之后去哪里
 
 这一部分之后，下一步就是进入 [第七部分](../part-vii/index.zh.md)：把 ownership 边界、golden paths 和 shared gateways 继续固定进 reference implementation、policy layer 和 rollout skeleton。
+
+所以这里的桥接是刻意设计的：
+
+- Part V 定义 capture、health 与 judgment；
+- Part VI 为这些 concerns 分配 ownership；
+- Part VII 把这种组织模型落成 runnable structure；
+- Part VIII 则在 rollout 之后通过 response、evidence 与 accountability 来治理系统。

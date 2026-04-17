@@ -10,6 +10,8 @@
 
 Но дальше почти всегда начинается не техническое, а организационное узкое место.
 
+Part V уже объяснила, как систему наблюдать и как выносить judgments о ее поведении. Следующий вопрос другой: кто владеет этими слоями, кто поддерживает shared defaults и у кого вообще есть право удерживать продуктовые команды внутри production discipline.
+
 Даже хорошая агентная платформа быстро упрется в вопросы:
 
 - кто владеет базовыми слоями;
@@ -32,6 +34,7 @@
 
 - делает ownership boundaries явными до того, как платформа расползется организационно;
 - показывает, как platform ownership превращается в golden paths, shared gateways и controlled deviations;
+- объясняет, кто должен владеть теми слоями, которые предыдущие части уже определили технически;
 - подготавливает переход от operating model к reference implementation.
 
 ## В этой части
@@ -44,3 +47,10 @@
 ## Куда она ведет дальше
 
 Следом идет [Часть VII](../part-vii/index.md): путь от ownership model и golden paths к reference implementation, где эти решения уже закрепляются в runtime, policy layer и rollout skeleton.
+
+То есть мост здесь намеренный:
+
+- Part V задает capture, health и judgment;
+- Part VI раздает ownership для этих concerns;
+- Part VII превращает эту орг-модель в runnable structure;
+- Part VIII управляет системой после rollout через response, evidence и accountability.

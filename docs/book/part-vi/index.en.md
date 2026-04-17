@@ -10,6 +10,8 @@ By this point, we already have most of the technical frame:
 
 But after that, the bottleneck is usually not technical anymore. It becomes organizational.
 
+Part V already established how the system is observed and judged. The next question is different: who owns those layers, who maintains the shared defaults, and who has the authority to keep product teams inside production discipline.
+
 Even a good agent platform quickly runs into questions like:
 
 - who owns the base layers;
@@ -32,6 +34,7 @@ In this part, we will look at the operating model: who owns what, how to build g
 
 - it makes ownership boundaries explicit before the platform turns into organizational drift;
 - it shows how platform ownership becomes golden paths, shared gateways, and controlled deviations;
+- it explains who should own the layers that earlier parts already defined in technical terms;
 - it prepares the move from operating model into the reference implementation.
 
 ## In This Part
@@ -44,3 +47,10 @@ In this part, we will look at the operating model: who owns what, how to build g
 ## Where It Leads Next
 
 The next natural step after this part is [Part VII](../part-vii/index.en.md): moving from ownership boundaries and golden paths into the reference implementation where those decisions become runtime structure, policy layers, and rollout shape.
+
+So the bridge is deliberate:
+
+- Part V defines capture, health, and judgment;
+- Part VI assigns ownership for those concerns;
+- Part VII turns that ownership model into runnable structure;
+- Part VIII governs the system after rollout through response, evidence, and accountability.
