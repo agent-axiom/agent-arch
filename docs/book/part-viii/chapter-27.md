@@ -87,6 +87,7 @@ Registry отвечает на более строгий вопрос:
 - approval requirements;
 - ownership для paused runs, background runs и capability sessions;
 - observability status;
+- статус verifier или eval evidence;
 - artifact bundle linkage;
 - retirement plan linkage.
 
@@ -161,7 +162,7 @@ Registry делает эту связь еще жестче:
 - traces можно enrich'ить registry metadata;
 - detections можно строить по lifecycle state;
 - incidents можно фильтровать по owner, risk tier и approval mode;
-- release evidence можно проверять не только по traces, но и по статусу registry record.
+- release evidence можно проверять не только по traces, но и по статусу registry record и verifier-evidence linkage.
 
 То есть registry превращает observability из “сырых событий” в управляемую operational map.
 
@@ -174,6 +175,7 @@ Registry делает эту связь еще жестче:
 - не сверяется с реальным telemetry coverage;
 - не проверяется против живых principals;
 - не сопоставляется с active capabilities;
+- не сверяется с verifier evidence, на которое опираются rollout или assurance;
 - не участвует в retirement hygiene,
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
@@ -207,7 +209,8 @@ Registry не должен дублировать policy bundle или approval 
 - кто owner у stuck paused runs;
 - кто owner у aging background runs;
 - кто owner у capability-session expiry drift и emergency freeze actions;
-- какой contract version должны соблюдать их approval и capability payloads.
+- какой contract version должны соблюдать их approval и capability payloads;
+- какой verifier или grading contract считается доверенным для их high-risk eval evidence.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
 
@@ -238,12 +241,14 @@ agent:
   observability:
     trace_enabled: true
     inventory_covered: true
+    verifier_evidence_linked: true
+  verifier_contract: verifier-v2
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
-Такой record уже достаточно полезен, чтобы связывать agent с ownership, controls и lifecycle.
+Такой record уже достаточно полезен, чтобы связывать agent с ownership, controls, lifecycle и verifier-aware evidence expectations.
 
 ## 11. Пример registry health check
 

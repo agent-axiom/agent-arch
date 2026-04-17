@@ -87,6 +87,7 @@ Registry 回答的是更严格的问题：
 - approval requirements
 - paused runs、background runs 与 capability sessions 的 ownership
 - observability status
+- verifier 或 eval evidence status
 - artifact bundle linkage
 - retirement plan linkage
 
@@ -161,7 +162,7 @@ Registry 会把这层关系再拉紧一步：
 - traces 可以挂上 registry metadata；
 - detections 可以按 lifecycle state 来做；
 - incidents 可以按 owner、risk tier 和 approval mode 过滤；
-- release evidence 不只看 traces，也可以看 registry record 的状态。
+- release evidence 不只看 traces，也可以看 registry record 的状态与 verifier-evidence linkage。
 
 也就是说，registry 会把 observability 从“原始事件流”提升成受治理的 operational map。
 
@@ -174,6 +175,7 @@ Registry 会把这层关系再拉紧一步：
 - 不和真实 telemetry coverage 对账；
 - 不和活跃 principals 对账；
 - 不和 active capabilities 对账；
+- 不和 rollout 或 assurance 依赖的 verifier evidence 对账；
 - 不参与 retirement hygiene，
 
 那它很快就会变成一幅整洁、但部分失真的 estate 图景。
@@ -207,7 +209,8 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - stuck paused runs 由谁负责；
 - aging background runs 由谁负责；
 - capability-session expiry drift 与 emergency freeze actions 由谁负责；
-- 它们的 approval 与 capability payload 应该遵循哪个 contract version。
+- 它们的 approval 与 capability payload 应该遵循哪个 contract version；
+- 哪个 verifier 或 grading contract 被信任为它们 high-risk eval evidence 的依据。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
 
@@ -238,12 +241,14 @@ agent:
   observability:
     trace_enabled: true
     inventory_covered: true
+    verifier_evidence_linked: true
+  verifier_contract: verifier-v2
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
-这个 record 已经足以把 agent 和 ownership、controls、lifecycle 连接起来。
+这个 record 已经足以把 agent 和 ownership、controls、lifecycle 以及 verifier-aware evidence expectations 连接起来。
 
 ## 11. 一个简单的 registry health check
 

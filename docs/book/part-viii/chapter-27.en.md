@@ -87,6 +87,7 @@ A minimal registry record for production-grade agent systems should usually incl
 - approval requirements;
 - paused-run, background-run, and capability-session ownership;
 - observability status;
+- verifier or eval-evidence status;
 - artifact-bundle linkage;
 - retirement-plan linkage.
 
@@ -161,7 +162,7 @@ Registry makes this connection even tighter:
 - traces can be enriched with registry metadata;
 - detections can be built around lifecycle state;
 - incidents can be filtered by owner, risk tier, and approval mode;
-- release evidence can be checked not only through traces, but also through registry status.
+- release evidence can be checked not only through traces, but also through registry status and verifier-evidence linkage.
 
 So registry turns observability from “raw events” into a governed operational map.
 
@@ -174,6 +175,7 @@ If the registry:
 - is not reconciled with real telemetry coverage;
 - is not checked against live principals;
 - is not matched against active capabilities;
+- is not reconciled with verifier evidence used in rollout or assurance;
 - does not participate in retirement hygiene,
 
 then it quickly becomes a tidy but partially fictional picture of the estate.
@@ -207,7 +209,8 @@ Then the registry should help answer:
 - who owns stuck paused runs;
 - who owns aging background runs;
 - who owns capability-session expiry drift and emergency freeze actions;
-- which contract version their approval and capability payloads are expected to follow.
+- which contract version their approval and capability payloads are expected to follow;
+- which verifier or grading contract is trusted for their high-risk eval evidence.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
 
@@ -238,12 +241,14 @@ agent:
   observability:
     trace_enabled: true
     inventory_covered: true
+    verifier_evidence_linked: true
+  verifier_contract: verifier-v2
   artifacts:
     bundle_id: bundle-2026-04-07-a
   retirement_plan: retire-support-v1
 ```
 
-That record is already enough to connect the agent to ownership, controls, and lifecycle.
+That record is already enough to connect the agent to ownership, controls, lifecycle, and verifier-aware evidence expectations.
 
 ## 11. Example registry health check
 
