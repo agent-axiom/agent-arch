@@ -21,13 +21,19 @@ The naive agent framing is too weak.
 A production agent system is really a layered platform with boundaries, contracts, and ownership.
 
 ### Stage 3. Operational realism
-Memory, tools, observability, and evals are not add-ons. They are what prevents drift and blind failure.
+Memory, tools, tracing, SLO, and evals are not add-ons. They are what prevents drift and blind failure.
 
 ### Stage 4. Runtime embodiment
 Those ideas have to become a runtime, policy layer, and rollout shape.
 
 ### Stage 5. Lifecycle discipline
-Once the system is alive, change management, assurance, provenance, and retirement become unavoidable.
+Once the system is alive, the reader should see a clean late-book geometry:
+- assurance as response
+- provenance and approved artifacts as evidence backbone
+- evals as judgment
+- observability as evidence substrate
+- registry as accountability layer
+- retirement as lifecycle closure
 
 ### Stage 6. Estate governance
 The mature problem is no longer one agent. It is governing many systems, contracts, sessions, and approvals coherently.
@@ -51,6 +57,7 @@ To make this arc memorable, the manuscript should repeatedly return to:
 - homepage/start-here still present the project partly as a handbook/site rather than a must-read argument
 - later lifecycle chapters are rich, but the progression can feel like dense topic accumulation rather than an inevitable narrative progression
 - the reader is not always reminded what misconception is being corrected at this stage
+- Part V and Part VIII need to preserve role clarity so adjacent chapters do not collapse into one broad governance blob
 
 ## Chapter transition principle
 
@@ -60,10 +67,10 @@ Each part should answer one reader question:
 - Part II: where do trust and action boundaries live
 - Part III: why memory changes the operating model
 - Part IV: why tools and execution need hard contracts
-- Part V: how to observe, grade, and learn from behavior
+- Part V: how to capture raw run history, set health budgets, and produce reviewable judgments
 - Part VI: who owns this system and how teams organize around it
 - Part VII: how those ideas become a runnable governed runtime
-- Part VIII: how the system survives change, risk, drift, and eventual retirement
+- Part VIII: how the system survives change, risk, drift, accountability, and eventual retirement
 
 ## Rewrite implication
 
@@ -71,3 +78,23 @@ Every chapter introduction should explicitly state:
 - what the reader probably still underestimates
 - what kind of failure or ambiguity appears next
 - why the next layer is necessary rather than merely nice to have
+- what role this chapter plays that adjacent chapters do not
+
+## Editorial geometry to preserve
+
+The manuscript is getting stronger when each cluster has a non-overlapping role.
+
+### Part V geometry
+- Chapter 11 = raw evidence capture
+- Chapter 12 = health and risk budgets
+- Chapter 13 = judgment and regression discipline
+
+### Part VIII geometry
+- Chapter 21 = assurance response
+- Chapter 22 = evidence backbone and lineage
+- Chapter 25 = eval judgment under adversarial pressure
+- Chapter 26 = evidence substrate and detection-ready visibility
+- Chapter 27 = estate accountability and reconciliation
+
+### Book-level rule
+When a chapter starts to sound like its neighbor, rewrite toward role clarity, not just more detail.
