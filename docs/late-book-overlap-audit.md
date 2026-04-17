@@ -29,6 +29,8 @@ The late manuscript is strong in content but was at risk of repeating the same c
 
 This is useful material, but the jobs-to-be-done need sharper walls.
 
+The newer editorial answer is not only topical separation. It is role clarity plus promise shape: each chapter and part intro should state a distinct reader outcome, so overlap becomes easier to detect and harder to reintroduce by accident.
+
 ## Current status
 
 A substantial editorial separation pass has now landed.
@@ -45,7 +47,7 @@ Already tightened in manuscript:
 - Part V reframed around capture, health, judgment
 - Part VIII reframed around response, evidence, judgment, accountability
 
-So this audit should now be read as a checkpoint: which overlaps have been reduced, and which still need watching.
+So this audit should now be read as a checkpoint: which overlaps have been reduced, which still need watching, and where promise-shape now helps keep the separation stable.
 
 ## Recommended chapter jobs-to-be-done
 
@@ -111,13 +113,15 @@ Should not dominate:
 1. Chapter 13 and Chapter 25 were blurred around richer grading, verifier outputs, and regression discipline. This is now substantially reduced by explicit judgment-layer framing in both chapters, with Chapter 13 owning the eval loop and Chapter 25 owning adversarial/control pressure.
 2. Chapter 21 and Chapter 26 were blurred around signals, drift, evidence, and detection. This is now substantially reduced by explicit response-loop versus evidence-substrate framing.
 3. Chapter 26 and Chapter 27 were blurred when telemetry coverage, inventory coverage, and registry governance were all presented as evidence/control surfaces. This is now substantially reduced by explicit evidence versus accountability framing.
-4. Part V and Part VIII framing previously explained too many neighboring concepts at once. This is now substantially reduced by mirrored editorial geometry in both indexes.
+4. Chapter 22 and Chapter 26 were blurred around evidence language. This is now substantially reduced by explicit provenance-as-governed-lineage versus observability-as-evidence-substrate framing.
+5. Part V and Part VIII framing previously explained too many neighboring concepts at once. This is now substantially reduced by mirrored editorial geometry in both indexes and by turning those indexes into reader-promise pages instead of topic lists.
 
 ### Still medium risk
-5. Chapter 22, Chapter 27, and appendix lifecycle/reference pages can still repeat provenance / ownership / contract lineage language.
-6. Reference-package and schema pages can still drift from anchoring into retelling.
-7. Chapter 11 and Chapter 26 must keep a clean boundary between raw trace capture and estate-scale observability evidence.
-8. Chapter 12 and Chapter 21 can still blur if health-budget language drifts into response procedure language.
+6. Chapter 22, Chapter 27, and appendix lifecycle/reference pages can still repeat provenance / ownership / contract lineage language.
+7. Reference-package and schema pages can still drift from anchoring into retelling.
+8. Chapter 11 and Chapter 26 must keep a clean boundary between raw trace capture and estate-scale observability evidence.
+9. Chapter 12 and Chapter 21 can still blur if health-budget language drifts into response procedure language.
+10. Part indexes and chapter intros can still regress from outcome promises back into dense inventory-style summaries if future edits accumulate too much topical detail.
 
 ## Surgical guidance
 
@@ -134,7 +138,7 @@ Should not dominate:
 - cost, safety, latency, escalation as operating constraints
 
 ### Keep in Chapter 13
-- learning loop
+- judgment loop
 - regression prevention
 - dataset refresh from failure
 - online/offline relationship
@@ -163,8 +167,9 @@ Should not dominate:
 
 ## Smallest high-impact rewrite sequence
 
-1. keep Part V and Part VIII indexes aligned with the new role grammar
+1. keep Part V and Part VIII indexes aligned with the new role grammar and reader-promise shape
 2. protect Chapter 11 vs Chapter 26 from collapsing back into one observability blob
 3. protect Chapter 12 vs Chapter 21 from collapsing back into one health/response blob
 4. trim Chapter 22 / Chapter 27 / appendix repetition where accountability and lineage language starts to duplicate
 5. trim reference-package repetition where it retells, not anchors
+6. keep planning docs synchronized so the manuscript does not drift back to topic accumulation language
