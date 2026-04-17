@@ -78,6 +78,8 @@ This is an important shift: you are testing not only the model, but the control 
 
 In a mature program, the verifier is part of that control surface. If it produces false confidence, rollout and training loops inherit the mistake. So verifier design should be treated as governed infrastructure, not as a convenient helper prompt.
 
+That includes verifier contract swaps. An eval regression may come not only from model or runtime behavior, but from an unreviewed verifier contract version change that silently alters grading standards.
+
 ## 4. What automated red teaming is
 
 Automated red teaming is no longer just a set of hand-written test cases. It is a systematic way to generate, vary, and scale adversarial scenarios.
@@ -203,6 +205,7 @@ control_evals:
     - control_eval_missing
     - behavioral_eval_regression
     - runtime_control_regression_open
+    - verifier_contract_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -258,6 +261,7 @@ That is how the eval layer stops being “a metrics table” and becomes part of
 - dangerous paths have no separate scenario classes;
 - approval-path misuse, session re-init misuse, delegated-worker misuse, and contract drift are not tested explicitly;
 - verifier outputs collapse long trajectories into a weak pass/fail label;
+- verifier contract swaps change grading behavior without being treated as release-bearing eval regressions;
 - controllable and uncontrollable failures are not separated;
 - red teaming is a one-off exercise;
 - runtime-control regressions are discovered only in rollout or incidents;

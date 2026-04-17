@@ -78,6 +78,8 @@ Control evals проверяют сами защитные механизмы, �
 
 В зрелой программе сам verifier тоже становится частью control surface. Если он дает ложную уверенность, эту ошибку наследуют rollout и training loops. Поэтому verifier design стоит рассматривать как governed infrastructure, а не как удобный helper prompt.
 
+Сюда же относятся и verifier contract swaps. Eval regression может прийти не только из model или runtime behavior, но и из unreviewed change в verifier contract version, которая тихо меняет grading standards.
+
 ## 4. Что такое automated red teaming
 
 Automated red teaming — это уже не набор заранее написанных примеров, а систематический способ генерировать, варьировать и масштабировать adversarial scenarios.
@@ -203,6 +205,7 @@ control_evals:
     - control_eval_missing
     - behavioral_eval_regression
     - runtime_control_regression_open
+    - verifier_contract_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -258,6 +261,7 @@ Grading contract становится сильнее, если умеет хра
 - dangerous paths не имеют отдельных scenario classes;
 - approval-path misuse, session re-init misuse, delegated-worker misuse и contract drift не проверяются явно;
 - verifier outputs схлопывают длинные trajectories в слабый pass/fail label;
+- verifier contract swaps меняют grading behavior, но не считаются release-bearing eval regressions;
 - controllable и uncontrollable failures не разделяются;
 - red teaming проводится как разовая акция;
 - runtime-control regressions обнаруживаются только в rollout или инцидентах;

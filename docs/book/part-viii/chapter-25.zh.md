@@ -78,6 +78,8 @@
 
 在成熟体系里，verifier 本身也属于 control surface。如果它制造了虚假的信心，rollout 和 training loops 就会继承这个错误。所以 verifier design 应该被当成 governed infrastructure，而不只是一个方便的 helper prompt。
 
+这也包括 verifier contract swaps。eval regression 不一定只来自 model 或 runtime behavior，也可能来自未经审查的 verifier contract version changes，它们会悄悄改变 grading standards。
+
 ## 4. 什么是自动化红队测试
 
 自动化红队测试不再只是几条手写测试样例，而是一种系统化生成、变换和放大对抗场景的方法。
@@ -203,6 +205,7 @@ control_evals:
     - control_eval_missing
     - behavioral_eval_regression
     - runtime_control_regression_open
+    - verifier_contract_regression_open
     - red_team_findings_untriaged
 ```
 
@@ -258,6 +261,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - 危险路径没有独立的场景类别；
 - approval-path misuse、session re-init misuse、delegated-worker misuse 与 contract drift 没有被显式测试；
 - verifier outputs 把长轨迹压缩成了过于薄弱的 pass/fail label；
+- verifier contract swaps 改变了 grading behavior，却没有被当成 release-bearing eval regressions；
 - controllable 与 uncontrollable failures 没有被分开；
 - 红队测试只是一次性活动；
 - runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
