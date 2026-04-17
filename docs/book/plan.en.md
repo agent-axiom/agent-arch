@@ -14,6 +14,8 @@ This page focuses on structure and status. For a role-based reading path, open [
 
 ## Structure
 
+The manuscript now has a more explicit internal geometry. It is not only a sequence of topics, but a sequence of roles the reader learns to distinguish.
+
 ### Part I. Foundations
 
 - What a modern agent is and how it differs from a workflow.
@@ -60,11 +62,13 @@ What I am strengthening next in this part:
 
 ### Part V. Reliability and Observability
 
-- Traces, spans, structured events.
-- SLOs for agent systems.
-- Offline evals, online evals, trace grading, regression gates.
+- Chapter 11: traces, spans, and structured events as raw evidence capture.
+- Chapter 12: SLOs for agent systems as health and risk budgets.
+- Chapter 13: offline evals, online evals, trace grading, and regression gates as judgment discipline.
 
 Note: the core ideas in Part V are relatively stable, but Chapter 13 moves faster than Chapters 11 and 12.
+
+Editorial shape: Part V now works as one three-step block, capture -> health -> judgment.
 
 ### Part VI. Organizational Model
 
@@ -72,12 +76,16 @@ Note: the core ideas in Part V are relatively stable, but Chapter 13 moves faste
 - Templates, golden paths, shared gateways.
 - How not to turn an agent platform into a zoo.
 
+Editorial shape: Part VI is the ownership bridge. It decides who owns the layers that Part V defined technically and that Part VII will embody in code.
+
 ### Part VII. Reference Implementation
 
 - Base runtime.
 - Security policies.
 - Tool catalog.
 - Production rollout checklist.
+
+Editorial shape: Part VII is the embodiment bridge, where architecture, policy, ownership, and rollout become runnable structure.
 
 ### Part VIII. Agent System Lifecycle
 
@@ -95,6 +103,8 @@ Status: Part VIII is now assembled as a lifecycle block reinforced with current 
 
 Note: this is the fastest-moving block in the book. The principles are stable, but tooling, benchmarks, vendor guidance, and threat patterns change more often.
 
+Editorial shape: Part VIII now works as a mirrored late-book contour, response -> evidence backbone -> judgment under pressure -> evidence substrate -> accountability -> retirement.
+
 ## Publishing roadmap
 
 1. Freeze the architectural frame and vocabulary.
@@ -103,6 +113,7 @@ Note: this is the fastest-moving block in the book. The principles are stable, b
 4. Prepare a practical reference implementation.
 5. Add eval examples and policy configs.
 6. Strengthen the book with decision frameworks: when to use an agent, when a workflow is enough, and when not to move into multi-agent too early.
+7. Preserve editorial role clarity so adjacent operational chapters do not collapse back into overlap.
 
 ## What is already done
 
