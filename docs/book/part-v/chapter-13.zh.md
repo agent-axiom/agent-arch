@@ -37,6 +37,8 @@ SLO 帮你定义什么叫系统健康。
 
 但最重要的问题还在：怎样系统性地提升质量，并把回退挡在发布之前？
 
+在本书里，eval loop 的角色是很具体的：它负责产出关于质量、行为与 regression risk 的 reviewable judgments。后面的章节会分别说明 assurance 如何响应 findings，observability 如何保存 evidence，以及 registry/governance 如何分配 accountability。这里的重点只放在团队如何判断到底测试了什么、发生了什么变化，以及这个 change 是否值得被信任。
+
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
@@ -149,6 +151,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - 发布门禁决定是否继续扩大暴露范围。
 
 也就是说，评测闭环最好不要被看成“独立的分析活动”，而应该被视为变更管理的一部分。
+
+这个边界很重要，因为 evals 不应该被塞进生命周期里的所有职责。它们的任务是产出 rollout 可以消费的 judgments，而不是替代 incident response、telemetry design 或 estate ownership。
 
 这还意味着，release discipline 必须谨慎决定自己在奖励什么。单一的 end-state score 往往太弱，因为它会掩盖 partial success、blocked-but-correct behavior，或者通过 bad control path 获得的 lucky success。成熟的 eval loop 会使用 richer verifier outputs，让 rollout decisions 反映的不只是最后一个 screen 看起来是否正常，而是系统到底如何行动的。
 
@@ -419,7 +423,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 5. 是否把安全和成本也放进了门禁，而不只是任务成功率？
 6. 评测数据集是否会依据真实事故持续更新？
 
-如果连续几个答案都是否，那说明你可能已经有可观测性，但还没有真正的学习闭环。
+如果连续几个答案都是否，那说明你可能已经有 eval layer，但还没有真正强健的 judgment layer。
+
+这时团队也许已经有 scoring activity，但还没有形成那种足以让后续 operational functions 稳定依赖的 reviewable eval discipline。
 
 ## 15. 接下来读什么
 

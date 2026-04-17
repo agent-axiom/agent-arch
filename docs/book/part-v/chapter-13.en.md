@@ -37,6 +37,8 @@ SLOs help you define what counts as system health.
 
 But the main question remains: how do you improve quality systematically and keep regressions out of rollout?
 
+The role of the eval loop in this book is specific: it is the layer that produces reviewable judgments about quality, behavior, and regression risk. Later chapters will show how assurance responds to findings, how observability preserves evidence, and how registry/governance assign accountability. Here the focus stays on how the team decides what was tested, what changed, and whether the change deserves trust.
+
 !!! info "Need the schemas and artifacts?"
     If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
 
@@ -149,6 +151,8 @@ A healthy operational model usually looks like this:
 - rollout gates decide whether exposure can expand further.
 
 That means the eval loop is better treated not as a separate analytics activity, but as part of controlled change management.
+
+This boundary matters because evals should not be overloaded with every other job in the lifecycle. Their job is to produce judgments that rollout can consume, not to replace incident response, telemetry design, or estate ownership.
 
 This also means release discipline should be careful about what it rewards. A single end-state score is often too weak: it can hide partial success, blocked-but-correct behavior, or lucky success through a bad control path. Mature eval loops use richer verifier outputs so rollout decisions can reflect how the system behaved, not only whether the last screen looked acceptable.
 
@@ -408,7 +412,7 @@ A stronger bar is this:
 - traces are graded as evidence, not stored as passive telemetry;
 - the dataset keeps learning from real failures.
 
-If most of those conditions are missing, the team may have evaluation activity, but it still does not have a real learning loop.
+If most of those conditions are missing, the team may have evaluation activity, but it still does not have a strong judgment layer.
 
 ## 14. What to Do Right After This Chapter
 
@@ -421,7 +425,9 @@ If you want to review your eval loop quickly, use this short checklist:
 5. Are safety and cost included, not only task success?
 6. Is the eval dataset updated from real incidents?
 
-If the answer is "no" several times in a row, you may already have observability, but you still do not have a learning loop.
+If the answer is "no" several times in a row, you may already have an eval layer, but you still do not have a strong judgment layer.
+
+At that point, the team may have scoring activity, but it still does not have the kind of reviewable eval discipline that later operational functions can rely on with confidence.
 
 ## 15. What to Read Next
 

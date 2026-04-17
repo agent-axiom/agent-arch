@@ -37,6 +37,8 @@ SLO помогают определить, что считается здоро�
 
 Но остается главный вопрос: как системно улучшать качество и не выпускать regressions обратно в rollout?
 
+Роль eval loop в этой книге вполне конкретна: это слой, который производит reviewable judgments о качестве, поведении системы и regression risk. Дальше в книге отдельные главы покажут, как assurance отвечает на findings, как observability сохраняет evidence и как registry/governance распределяют accountability. Здесь же фокус остается на том, как команда решает, что именно было протестировано, что изменилось и заслуживает ли change доверия.
+
 !!! info "Нужны схемы и артефакты?"
     Если тебе нужны не только объяснения, но и рабочие схемы, открой [схему трасс и каталог событий](../../appendix/trace-schema.md) и [схему eval-наборов и контракта на проверку](../../appendix/eval-schema.md).
 
@@ -149,6 +151,8 @@ Static eval set хорош для сравнения known cases. User simulator
 - rollout gates решают, можно ли расширять выкладку дальше.
 
 То есть eval loop полезно мыслить не как “отдельную аналитическую активность”, а как часть управляемого change management.
+
+Эта граница важна, потому что evals не стоит перегружать чужими функциями по lifecycle. Их задача, производить judgments, которыми rollout может пользоваться дальше, а не заменять incident response, telemetry design или ownership по estate.
 
 Это означает и еще одну вещь: release discipline должна аккуратно выбирать, что именно она вознаграждает. Single end-state score часто слишком слаб, потому что скрывает partial success, blocked-but-correct behavior или lucky success через bad control path. Зрелый eval loop использует richer verifier outputs, чтобы rollout decisions отражали не только то, как выглядел последний экран, но и то, как именно система себя вела.
 
@@ -419,7 +423,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 5. Учитываются ли safety и cost, а не только task success?
 6. Обновляется ли eval dataset по следам реальных инцидентов?
 
-Если на несколько вопросов подряд ответ “нет”, значит observability у тебя уже есть, а вот learning loop еще не собран.
+Если на несколько вопросов подряд ответ “нет”, значит eval layer у тебя уже есть, но сильный judgment layer еще не собран.
+
+В этот момент у команды уже может быть scoring activity, но еще нет того типа reviewable eval discipline, на который последующие operational functions могут уверенно опираться.
 
 ## 15. Что читать дальше
 
