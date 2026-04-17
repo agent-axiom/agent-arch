@@ -38,6 +38,8 @@
 
 这里有一个关键区分：eval loop 负责帮助团队判断系统行为是在变好还是变坏；assurance loop 负责决定应该立刻遏制什么、谁来响应，以及当新风险出现时怎样强制把系统拉回到更安全的状态。
 
+这意味着，本章正是从那些 budget-setting chapters 停下来的地方开始。SLO 定义可容忍的 health budgets 与 risk budgets；assurance 则在这些 budgets 受到威胁、已经失守，或者已经不再值得信任时开始要求团队采取行动。
+
 ## 2. 什么是保障闭环
 
 可以这样定义保障闭环：
@@ -127,6 +129,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 这也是本章必须和 observability layer 保持边界的地方。Observability 提供 evidence substrate；assurance 决定哪些信号此刻重要、哪些信号要触发 containment，以及哪个 owner 必须行动。
 
+它也必须和 SLO 保持边界。SLO 说明还能容忍多少退化或不安全行为；assurance 则是在这种容忍度不再可接受时，负责升级、遏制并分配响应责任的闭环。
+
 ## 6. 响应应该是一层独立的运行能力
 
 当一个智能体开始表现出危险行为时，光说“之后再调提示”是不够的。
@@ -146,6 +150,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 这很关键，因为在智能体系统里，响应往往必须比完整的根因分析更快发生。
 
 所以这里的 assurance 更应该被理解成 response function，而不只是 detection catalog。它的职责，是尽量缩短 signal 与 safe containment 之间的时间。
+
+Budget 可以告诉你系统现在已经不健康了；assurance 则告诉你，谁来 freeze route、谁来 tighten control surface，以及谁负责把系统带回安全状态。
 
 <div class="diagram-card">
 <p>保障闭环更像一个连续循环：发现、检测、遏制、修复、学习</p>

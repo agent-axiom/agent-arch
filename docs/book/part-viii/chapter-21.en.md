@@ -38,6 +38,8 @@ That is why release discipline must be followed by another layer: the assurance 
 
 The important distinction is this: the eval loop helps the team learn whether behavior is getting better or worse. The assurance loop exists to decide what to contain, who responds, and how the system is forced back into a safer state when new risk appears.
 
+That means this chapter begins where budget-setting chapters stop. SLO define tolerated health and risk budgets. Assurance starts when those budgets are threatened, breached, or no longer trusted, and the team must act.
+
 ## 2. What an assurance loop is
 
 I would define the assurance loop like this:
@@ -127,6 +129,8 @@ In other words, detection here has to function not only as observability, but al
 
 This is also where the chapter should stay distinct from the observability layer. Observability provides the evidence substrate. Assurance decides which signals matter now, which ones trigger containment, and which owner must act.
 
+It should also stay distinct from SLO. SLO state how much degradation or unsafe behavior can be tolerated. Assurance is the loop that escalates, contains, and assigns response once that tolerance is no longer acceptable.
+
 ## 6. Response should be its own operational function
 
 When an agent starts behaving unsafely, it is not enough to say “we will tune the prompt later.”
@@ -146,6 +150,8 @@ A practical response layer is built around concrete actions:
 This matters because in agent systems, response often has to happen faster than full root-cause analysis.
 
 That is why assurance should be read as a response function, not merely as a detection catalog. Its job is to shorten the time between signal and safe containment.
+
+A budget can tell you that the system is now unhealthy. Assurance tells you who freezes the route, who tightens the control surface, and who owns the path back to safety.
 
 <div class="diagram-card">
 <p>The assurance loop works as a continuous cycle: search, detect, contain, fix, learn</p>
