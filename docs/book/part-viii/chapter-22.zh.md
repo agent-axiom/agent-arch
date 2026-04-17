@@ -34,6 +34,7 @@
 - 检索语料；
 - 能力契约；
 - 评测数据集；
+- verifier contracts、rubric definitions 与 evidence-linkage rules；
 - 审批规则与 schemas；
 - runtime-control schemas；
 - orchestration-pattern governance rules 与 worker-safe catalog definitions；
@@ -75,6 +76,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个策略配置；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
+- 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
 - 当时生效的是哪个 contract version 与 approval schema；
 - 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
 - 当时是哪一种 orchestration pattern 与 worker-boundary policy 在治理这次 run；
@@ -176,6 +178,8 @@ flowchart LR
 
 所以成熟的 ADLC 应该把 eval datasets 纳入 approved artifact model。
 
+对 verifier contracts 也越来越应该如此。如果 release 或 assurance 依赖 process scores、outcome scores、failure attribution 或 linked evidence，那么 verifier layer 就不再只是非正式的辅助逻辑，而是一个需要治理的 production artifact。
+
 ## 8. Capability contracts 和 egress rules 也属于 supply chain
 
 在 agent systems 里，tool contract 不只是文档，它本身就是 trusted operational surface 的一部分。
@@ -221,6 +225,7 @@ artifacts:
     - approval_schema
     - runtime_control_schema
     - capability_session_contract
+    - verifier_contract
     - eval_dataset
     - retrieval_source
 ```

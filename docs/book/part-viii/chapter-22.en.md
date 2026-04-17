@@ -176,6 +176,8 @@ then the team starts making release decisions on a shaky foundation.
 
 That is why a good ADLC should treat eval datasets as part of the approved artifact model.
 
+The same should increasingly be true for verifier contracts. If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
+
 ## 8. Capability contracts and egress rules are part of the supply chain too
 
 In an agent system, a tool contract is not just documentation. It is part of the trusted operational surface.
@@ -221,6 +223,7 @@ artifacts:
     - approval_schema
     - runtime_control_schema
     - capability_session_contract
+    - verifier_contract
     - eval_dataset
     - retrieval_source
 ```

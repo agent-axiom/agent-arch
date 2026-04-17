@@ -34,6 +34,7 @@
 - корпуса для извлечения;
 - контракты возможностей;
 - наборы для оценки;
+- verifier contracts, rubric definitions и rules для evidence linkage;
 - правила и схемы подтверждения;
 - схемы runtime-control;
 - правила governance для orchestration pattern и определения worker-safe catalog;
@@ -75,6 +76,7 @@ Google Research очень правильно показывает, что пр�
 - какая конфигурация политик была во время инцидента;
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
+- какой verifier contract, grading rubric и rules для evidence linkage были активны;
 - какая contract version и approval schema были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
@@ -176,6 +178,8 @@ flowchart LR
 
 Поэтому хороший ADLC должен относиться к наборам для оценки как к части модели доверенных артефактов.
 
+То же все больше верно и для verifier contracts. Если release или assurance зависят от process scores, outcome scores, failure attribution или linked evidence, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный governed production artifact.
+
 ## 8. Контракты возможностей и правила сетевого выхода тоже входят в цепочку поставки
 
 В агентных системах контракт инструмента — это не просто документация, а часть доверенной рабочей поверхности.
@@ -221,6 +225,7 @@ artifacts:
     - approval_schema
     - runtime_control_schema
     - capability_session_contract
+    - verifier_contract
     - eval_dataset
     - retrieval_source
 ```
