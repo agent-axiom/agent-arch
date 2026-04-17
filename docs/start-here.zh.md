@@ -50,16 +50,30 @@
 1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
 3. [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
-4. [第 11 章：追踪、跨度与结构化事件](book/part-v/chapter-11.zh.md)
+4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-读完这五章，你应该已经理解：
+读完这五个停靠点，你应该已经理解：
 
 - 为什么天真的 agent framing 很快会失效；
 - 真正的 trust 与 action boundaries 在哪里；
 - 安全工具执行应该长什么样；
-- 为什么 observability 是 operating model 的一部分，而不是后期润色；
+- 为什么 production systems 需要把 evidence capture、health budgets 与 eval judgment 分成不同层；
 - 生产上线纪律真正要求什么。
+
+## 这本书的内部结构
+
+这本书之所以读起来不像一本松散的 handbook，一个重要原因是它把 operational chapters 按角色明确分开了：
+
+- tracing 负责捕获 raw run history；
+- SLO 负责定义 health budgets 与 risk budgets；
+- evals 负责产出 reviewable judgments；
+- assurance 负责 response；
+- provenance 负责保存 evidence backbone；
+- observability 负责提供 evidence substrate；
+- registry 负责整个 estate 的 accountability。
+
+你不需要一开始就记住这张图，但它能帮助你理解：为什么书里会刻意保持相邻章节的边界，而不是把它们混成一个宽泛的 governance discussion。
 
 ## 按角色推荐阅读路径
 

@@ -50,16 +50,30 @@ If you only have a short window, read this as one compressed story:
 1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
 3. [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
-4. [Chapter 11. Traces, Spans, and Structured Events](book/part-v/chapter-11.en.md)
+4. [Part V. Reliability and Observability](book/part-v/index.en.md)
 5. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 
-After those five chapters, you should already understand:
+After those five stops, you should already understand:
 
 - why naive agent framing breaks down;
 - where trust and action boundaries really live;
 - what safe tool execution looks like;
-- why observability is part of the operating model rather than polish;
+- why production systems need separate layers for evidence capture, health budgets, and eval judgment;
 - what production go-live discipline actually demands.
+
+## How the Book Is Shaped
+
+One reason this book reads differently from a loose handbook is that its operating chapters are deliberately separated by job:
+
+- tracing captures raw run history;
+- SLO define health and risk budgets;
+- evals produce reviewable judgments;
+- assurance handles response;
+- provenance preserves evidence backbone;
+- observability provides evidence substrate;
+- registry assigns estate accountability.
+
+You do not need to memorize that map up front, but it helps explain why the book spends effort keeping adjacent chapters distinct instead of blending them into one broad governance discussion.
 
 ## Reading Paths by Role
 

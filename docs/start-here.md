@@ -50,16 +50,30 @@
 1. [Глава 1. Почему агенту нужна платформа, а не магия](book/part-i/chapter-1.md)
 2. [Глава 3. Контур безопасности и границы доверия](book/part-ii/chapter-3.md)
 3. [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
-4. [Глава 11. Трассы, спаны и структурированные события](book/part-v/chapter-11.md)
+4. [Часть V. Надежность и наблюдаемость](book/part-v/index.md)
 5. [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
 
-После этих пяти глав ты уже должен понимать:
+После этих пяти остановок ты уже должен понимать:
 
 - почему наивная agent framing быстро ломается;
 - где реально проходят trust и action boundaries;
 - как выглядит безопасное исполнение инструментов;
-- почему observability является частью operating model, а не полировкой;
+- почему production systems требуют отдельных слоев для evidence capture, health budgets и eval judgment;
 - что на самом деле требует production go-live discipline.
+
+## Как устроена эта книга
+
+Одна из причин, почему эта книга читается не как разрозненный handbook, в том, что ее operational chapters намеренно разведены по ролям:
+
+- tracing захватывает raw run history;
+- SLO задают health и risk budgets;
+- evals производят reviewable judgments;
+- assurance отвечает за response;
+- provenance сохраняет evidence backbone;
+- observability дает evidence substrate;
+- registry задает accountability всего estate.
+
+Запоминать эту карту заранее не обязательно, но она помогает понять, почему книга так настойчиво разводит соседние главы, а не сливает их в один общий governance discussion.
 
 ## Маршруты по ролям
 
