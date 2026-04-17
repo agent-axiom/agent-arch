@@ -71,6 +71,7 @@ A useful telemetry contract for agent systems usually includes:
 - paused-run state and age;
 - approval backlog signals;
 - capability-session state, expiry reason, and re-init status;
+- orchestration-pattern selection and delegated worker lineage;
 - background-run state and age;
 - output summaries;
 - redaction status;
@@ -118,6 +119,7 @@ It is much more valuable to detect deviation from normal behavior:
 - a spike in unusual egress destinations;
 - capability-session expiry spikes or unusual re-init rates;
 - approval-resume mismatches after interruption;
+- unexpected shifts in orchestration-pattern selection or worker-boundary crossings;
 - growth in session length or tool-hop count.
 
 This is where observability starts to intersect with security detection and operational governance.
@@ -139,7 +141,7 @@ Practically, that means:
 - stable schemas;
 - redaction rules;
 - retention policy;
-- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, and lifecycle artifacts.
+- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, and lifecycle artifacts.
 
 If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, and `rollout_wave`, it may still be useful for debugging, but it is weak as an evidence layer.
 
@@ -160,7 +162,7 @@ Strong governance requires:
 - noticing drift;
 - measuring coverage;
 - distinguishing governed paths from bypass paths;
-- spotting stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, and contract mismatches before they become incidents.
+- spotting stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, orchestration-pattern drift, and contract mismatches before they become incidents.
 
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
 
@@ -216,6 +218,8 @@ observability:
     paused_run_visibility: true
     capability_session_visibility: true
     background_run_visibility: true
+    orchestration_pattern_visibility: true
+    worker_boundary_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -227,6 +231,8 @@ observability:
     - approval_events_not_linked
     - paused_runs_not_visible
     - capability_session_events_not_visible
+    - orchestration_pattern_events_not_visible
+    - worker_boundary_crossings_not_visible
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -246,6 +252,7 @@ class ObservabilityCoverage:
     high_risk_trace_coverage_pct: int
     paused_run_visibility: bool
     capability_session_visibility: bool
+    orchestration_pattern_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -255,6 +262,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.high_risk_trace_coverage_pct == 100
         and state.paused_run_visibility
         and state.capability_session_visibility
+        and state.orchestration_pattern_visibility
     )
 ```
 
@@ -268,6 +276,7 @@ The point is not the exact numbers. The point is that observability readiness sh
 - paused runs and background runs exist, but their age and ownership are not visible in telemetry;
 - telemetry covers the happy path but not the bypass path;
 - contract-version drift is noticed only after payloads stop matching expectations;
+- orchestration-pattern drift or worker-boundary crossings are not visible as first-class telemetry;
 - drift is noticed only through user complaints;
 - retention and redaction rules are not aligned with forensic needs.
 
@@ -278,7 +287,7 @@ A team should not think it has production observability only because it has trac
 A stronger bar is this:
 
 - inventory coverage and telemetry coverage are treated as one control problem;
-- high-risk actions can be linked to approvals, principals, artifact bundles, and contract versions;
+- high-risk actions can be linked to approvals, principals, artifact bundles, contract versions, and reviewed orchestration patterns;
 - behavioral baselines exist alongside raw telemetry;
 - paused-run age, approval backlog, and background-run aging are observable as first-class signals;
 - unobserved agents are treated as a governance risk rather than an accounting gap;
@@ -290,7 +299,7 @@ If most of those conditions are missing, the team may have observability tooling
 
 - Do you know how many agents actually exist in your production estate?
 - What percentage of them emits structured telemetry?
-- Can you link a high-risk action to `trace_id`, `approval_id`, `tool_principal`, `contract_version`, and `bundle_id`?
+- Can you link a high-risk action to `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, and the active orchestration pattern?
 - Do you have behavioral baselines rather than only raw dashboards?
 - Can you see paused-run age, approval backlog, and aging background runs before users complain?
 - Do you treat unobserved agents as a distinct risk class?

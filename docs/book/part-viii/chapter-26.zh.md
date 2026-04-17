@@ -71,6 +71,7 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 - paused runs 的状态与等待时长；
 - approval backlog signals；
 - capability sessions 的状态、expiry reason 与 re-init status；
+- orchestration-pattern selection 与 delegated worker lineage；
 - background runs 的状态与运行时长；
 - output summaries；
 - redaction status；
@@ -118,6 +119,7 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - unusual egress destinations 激增；
 - capability-session expiry spikes 或异常 re-init rate；
 - interruption 之后 approval 与 resume 的不匹配；
+- orchestration-pattern selection 或 worker-boundary crossings 的异常变化；
 - session length 或 tool hop count 拉长。
 
 从这里开始，observability 就真正和 security detection、operational governance 连在一起了。
@@ -139,7 +141,7 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions、runtime-control states、capability-session events 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events 和 lifecycle artifacts 之间的链接。
 
 如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version` 和 `rollout_wave`，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
@@ -160,7 +162,7 @@ Governance 往往会被写成：
 - 发现 drift；
 - 衡量 coverage；
 - 区分 governed path 和 bypass path；
-- 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse 与 contract mismatches。
+- 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse、orchestration-pattern drift 与 contract mismatches。
 
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
 
@@ -218,6 +220,8 @@ observability:
     paused_run_visibility: true
     capability_session_visibility: true
     background_run_visibility: true
+    orchestration_pattern_visibility: true
+    worker_boundary_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -229,6 +233,8 @@ observability:
     - approval_events_not_linked
     - paused_runs_not_visible
     - capability_session_events_not_visible
+    - orchestration_pattern_events_not_visible
+    - worker_boundary_crossings_not_visible
     - contract_version_missing
     - bundle_version_missing
 ```
@@ -248,6 +254,7 @@ class ObservabilityCoverage:
     high_risk_trace_coverage_pct: int
     paused_run_visibility: bool
     capability_session_visibility: bool
+    orchestration_pattern_visibility: bool
 
 
 def observability_ready(state: ObservabilityCoverage) -> bool:
@@ -257,6 +264,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
         and state.high_risk_trace_coverage_pct == 100
         and state.paused_run_visibility
         and state.capability_session_visibility
+        and state.orchestration_pattern_visibility
     )
 ```
 
@@ -270,6 +278,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - paused runs 与 background runs 明明存在，但它们的年龄和 ownership 在 telemetry 中不可见；
 - telemetry 覆盖了 happy path，却没覆盖 bypass path；
 - contract-version drift 只有在 payload 不再匹配预期时才被发现；
+- orchestration-pattern drift 或 worker-boundary crossings 没有成为 first-class telemetry；
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与 forensic needs 不一致。
 
@@ -280,7 +289,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 更高的标准应该是：
 
 - inventory coverage 和 telemetry coverage 被当成同一个 control problem；
-- high-risk actions 能关联到 approvals、principals、artifact bundles 与 contract versions；
+- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions 与 reviewed orchestration patterns；
 - 除了 raw telemetry 之外，还有 behavioral baselines；
 - paused-run age、approval backlog 与 background-run aging 都是 first-class signals；
 - unobserved agents 被当成 governance risk，而不只是记账缺口；
@@ -292,7 +301,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - 你知道 production estate 里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
-- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version` 和 `bundle_id` 吗？
+- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id` 和当前 orchestration pattern 吗？
 - 你有没有 behavioral baselines，而不只是 raw dashboards？
 - 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
 - 你会不会把 unobserved agents 当成一个单独的 risk class？
