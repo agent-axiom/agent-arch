@@ -15,7 +15,7 @@ But the current manuscript still underperforms the idea in six ways:
 1. argument density is lower than the confidence of the prose
 2. there is too much architectural inventory and not enough causal narrative
 3. genre identity is still blurred
-4. late-book chapter boundaries are not sharp enough
+4. role clarity between adjacent operational chapters must be continuously protected
 5. evidence and bibliography are still too vendor-doc heavy
 6. editorial finish is not yet at book level
 
@@ -64,13 +64,20 @@ Each major chapter should show:
 - what false fix teams often try
 - what architectural layer actually resolves or contains the problem
 
-### 3. Late-book de-duplication
+### 3. Role-clarity and late-book de-duplication
 Sharpen chapter jobs-to-be-done, especially across:
-- Chapter 13: eval loop as learning system
+- Chapter 11: tracing as raw evidence capture
+- Chapter 12: SLO as health and risk budgets
+- Chapter 13: eval loop as judgment and regression discipline
 - Chapter 21: assurance as response to drift and findings
-- Chapter 25: behavioral/control evals as adversarial validation
+- Chapter 22: provenance/artifacts as evidence backbone
+- Chapter 25: behavioral/control evals as judgment under adversarial pressure
 - Chapter 26: observability as evidence substrate
-- Chapter 27: registry/inventory as estate governance
+- Chapter 27: registry/inventory as estate accountability
+
+Preserve the mirrored editorial geometry already found in the manuscript:
+- Part V = capture, health, judgment
+- Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
 
 ### 4. Evidence expansion
 Broaden support beyond vendor docs with more:
@@ -87,6 +94,7 @@ Perform a dedicated book-level pass for:
 - cross-links and heading rhythm
 - repetition cleanup
 - removal of draft-like phrasing
+- protection of chapter role grammar so neighboring chapters do not collapse into each other
 
 ### 6. Book vs reference separation
 Keep in chapters:
@@ -112,12 +120,32 @@ Push to appendix/reference/runtime where appropriate:
 ### Phase B. Structural revision
 5. sharpen opening and framing chapters
 6. reinforce recurring cases
-7. de-duplicate late lifecycle/evals/observability/governance cluster
+7. protect Part V role clarity
+8. protect Part VIII role clarity
 
 ### Phase C. Authority and finish
-8. expand evidence base
-9. editorial polish pass
-10. final book/reference boundary cleanup
+9. expand evidence base
+10. editorial polish pass
+11. final book/reference boundary cleanup
+
+## Established editorial geometry
+
+This is no longer just a hypothesis. It is now a working manuscript constraint.
+
+### Part V
+- Chapter 11 = raw evidence capture
+- Chapter 12 = health and risk budgets
+- Chapter 13 = reviewable judgment and regression discipline
+
+### Part VIII
+- Chapter 21 = assurance response
+- Chapter 22 = evidence backbone and lineage
+- Chapter 25 = judgment under adversarial pressure
+- Chapter 26 = evidence substrate and detection-ready visibility
+- Chapter 27 = estate accountability and reconciliation
+
+### Rewrite rule
+When a rewrite makes one chapter sound like its neighbor, prefer restoring role clarity over adding more content.
 
 ## Working Deliverables
 
