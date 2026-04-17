@@ -42,7 +42,8 @@ Here, it is useful to define a `policy bundle` as a related set of rules that sh
 - runtime-control rules for pause/resume and background paths;
 - memory write rules;
 - escalation rules;
-- egress rules.
+- egress rules;
+- trusted verifier-contract expectations for high-risk eval and rollout evidence.
 
 The point is not that everything must live in one YAML file. The point is that the bundle should be:
 
@@ -163,6 +164,9 @@ As stateful MCP and resumable capability sessions enter the runtime, the policy 
 
 Useful additions now include:
 
+- `trusted_verifier_contracts`
+- `verifier_contract_required_for_high_risk`
+- `on_untrusted_verifier_contract`
 - `capability_session_mode`
 - `resume_policy`
 - `on_session_expiry`
@@ -228,7 +232,8 @@ So the practical rule is simple:
 - the capability catalog describes what the system can do;
 - the policy bundle describes how, under which conditions, and in which orchestration patterns that capability may be used;
 - the approval contract describes where reasoning must stop and hand control to a human;
-- the authorization contract describes under whose identity and delegated scope the action may execute.
+- the authorization contract describes under whose identity and delegated scope the action may execute;
+- the verifier contract policy describes which verifier contracts may be trusted for high-risk grading, rollout evidence, or assurance decisions.
 
 ## What to Do Right Away
 
@@ -240,6 +245,7 @@ Start with this short list and mark every "no" explicitly:
 - Is it clear which fields an approval request must contain?
 - Is there a stable link between the policy bundle and the capability catalog?
 - Can you tell which policy version was active for a given trace?
+- Is it explicit which verifier contracts are trusted for high-risk grading or rollout evidence?
 
 If several answers are “no,” your policy layer exists, but is not yet shaped as a full operational artifact.
 

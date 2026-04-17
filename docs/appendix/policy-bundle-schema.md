@@ -42,7 +42,8 @@
 - runtime-control rules для pause/resume и background paths;
 - memory write rules;
 - escalation rules;
-- egress rules.
+- egress rules;
+- expectations around trusted verifier contracts for high-risk eval и rollout evidence.
 
 Смысл не в том, что все должно лежать в одном YAML-файле. Смысл в том, что такой набор должен быть:
 
@@ -163,6 +164,9 @@ approval_contract:
 
 Здесь почти сразу становятся полезны такие поля:
 
+- `trusted_verifier_contracts`
+- `verifier_contract_required_for_high_risk`
+- `on_untrusted_verifier_contract`
 - `capability_session_mode`
 - `resume_policy`
 - `on_session_expiry`
@@ -228,7 +232,8 @@ approval_contract:
 - каталог возможностей описывает, что система умеет;
 - набор политик описывает, как, при каких условиях и в каких orchestration patterns это можно использовать;
 - контракт подтверждения описывает, где система обязана остановиться и уступить человеку;
-- authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено.
+- authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено;
+- verifier contract policy описывает, каким verifier contracts вообще можно доверять для high-risk grading, rollout evidence или assurance decisions.
 
 ## Что сделать сразу
 
@@ -240,6 +245,7 @@ approval_contract:
 - Ясно ли, какие поля обязан содержать запрос на подтверждение?
 - Есть ли связь между набором политик и каталогом возможностей?
 - Можно ли понять, какая версия политики была активна в момент трассы?
+- Явно ли описано, каким verifier contracts можно доверять для high-risk grading или rollout evidence?
 
 Если несколько ответов подряд «нет», значит слой политик у тебя пока существует, но еще не оформлен как полноценный рабочий артефакт.
 

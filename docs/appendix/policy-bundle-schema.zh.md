@@ -42,7 +42,8 @@
 - 用于 pause/resume 与 background paths 的 runtime-control rules；
 - 记忆写入规则；
 - 升级规则；
-- 出口规则。
+- 出口规则；
+- 面向 high-risk eval 与 rollout evidence 的 trusted verifier-contract expectations。
 
 重点不在于所有内容必须塞进一个 YAML 文件，而在于这个 bundle 应该是：
 
@@ -163,6 +164,9 @@ approval_contract:
 
 这时几乎立刻就会需要补上这些字段：
 
+- `trusted_verifier_contracts`
+- `verifier_contract_required_for_high_risk`
+- `on_untrusted_verifier_contract`
 - `capability_session_mode`
 - `resume_policy`
 - `on_session_expiry`
@@ -228,7 +232,8 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - 能力目录描述系统能做什么；
 - 策略包描述这些能力在什么条件下、通过哪些 orchestration patterns 可以被调用；
 - 审批契约描述推理应该在何处停下并把控制权交给人；
-- authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行。
+- authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行；
+- verifier contract policy 描述哪些 verifier contracts 可以被信任用于 high-risk grading、rollout evidence 或 assurance decisions。
 
 ## 现在就该做什么
 
@@ -240,6 +245,7 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - 审批请求必须带哪些字段，是否清楚？
 - 策略包和能力目录之间是否有稳定关联？
 - 能不能知道某条追踪对应的是哪个策略版本？
+- 是否明确写出了哪些 verifier contracts 可以被信任用于 high-risk grading 或 rollout evidence？
 
 如果连续几个答案都是“不能”，那说明你的策略层虽然存在，但还没有被塑造成完整的运行工件。
 
