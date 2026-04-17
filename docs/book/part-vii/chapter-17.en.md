@@ -38,7 +38,8 @@ For example:
 - can this capability be invoked;
 - is approval required;
 - can this be written into memory;
-- can this result be returned outward.
+- can this result be returned outward;
+- which verifier contracts may be trusted when high-risk rollout or assurance decisions depend on graded evidence.
 
 When those questions are explicit, the runtime becomes easier to explain, and guardrail changes stop being chaotic.
 
@@ -159,7 +160,8 @@ That second path should not be treated as “approval removed.” It should be t
 - what classifier or gate made the decision;
 - what evidence was visible to it;
 - when it must escalate to a human;
-- how subagent or follow-on actions inherit or lose that delegated approval.
+- how subagent or follow-on actions inherit or lose that delegated approval;
+- which verifier contracts are trusted to grade those same high-risk paths when rollout or assurance depends on verifier output.
 
 ## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
@@ -180,6 +182,7 @@ And additionally:
 - risk class;
 - optional constraints;
 - allowed orchestration patterns or explicit pattern restrictions;
+- trusted verifier contracts or verifier-contract requirements for high-risk paths;
 - optional approval or resume requirements.
 
 That greatly improves explainability and makes telemetry far more useful.
@@ -208,6 +211,8 @@ policy:
 ```
 
 Its power is not completeness. Its power is explicitness. You can argue about a specific rule and understand where it applies.
+
+As verifier-aware governance becomes part of the production model, the same explicitness should extend to verifier trust too. High-risk paths should not rely on whatever verifier happens to be present. The policy layer should be able to say which verifier contracts are trusted, when they are required, and what happens if an untrusted verifier contract appears in the release path.
 
 ## 9. Example Capability Catalog Contract
 

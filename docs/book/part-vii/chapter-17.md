@@ -38,7 +38,8 @@
 - можно ли вызывать эту capability;
 - нужен ли approval;
 - можно ли записывать это в память;
-- можно ли вернуть этот результат наружу.
+- можно ли вернуть этот результат наружу;
+- каким verifier contracts вообще можно доверять, если high-risk rollout или assurance зависят от graded evidence.
 
 Когда эти вопросы оформлены явно, runtime становится объяснимее, а изменения в guardrails перестают быть хаотичными.
 
@@ -159,7 +160,8 @@ Policy layer становится намного реальнее, когда ap
 - какой classifier или gate принял решение;
 - какой evidence был ему виден;
 - когда он обязан escalate к человеку;
-- как subagent или follow-on actions наследуют такое delegated approval или теряют его.
+- как subagent или follow-on actions наследуют такое delegated approval или теряют его;
+- каким verifier contracts можно доверять для grading тех же high-risk paths, если rollout или assurance зависят от verifier output.
 
 ## 7. Policy decision должен быть объектом, а не просто bool
 
@@ -180,6 +182,7 @@ Policy layer становится намного реальнее, когда ap
 - risk class;
 - optional constraints;
 - allowed orchestration patterns или явные pattern restrictions;
+- trusted verifier contracts или verifier-contract requirements для high-risk paths;
 - при необходимости approval или resume requirements.
 
 Это резко повышает explainability и делает telemetry намного полезнее.
@@ -208,6 +211,8 @@ policy:
 ```
 
 Его сила не в полноте, а в явности. Ты можешь спорить с конкретным правилом и понимать, где оно применяется.
+
+По мере того как verifier-aware governance становится частью production model, такая же явность нужна и для доверия к verifier. High-risk paths не должны зависеть от «любого доступного verifier». Policy layer должен уметь сказать, какие verifier contracts считаются trusted, когда они обязательны и что происходит, если в release path появляется untrusted verifier contract.
 
 ## 9. Пример capability catalog contract
 

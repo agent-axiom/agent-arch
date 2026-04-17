@@ -38,7 +38,8 @@
 - 这个 capability 能不能调用；
 - 是否需要 approval；
 - 这段内容能不能写入 memory；
-- 这个结果能不能向外返回。
+- 这个结果能不能向外返回；
+- 当 high-risk rollout 或 assurance 依赖 graded evidence 时，哪些 verifier contracts 可以被信任。
 
 当这些问题被明确表达出来后，runtime 会更容易解释，guardrails 的修改也不再混乱。
 
@@ -159,7 +160,8 @@ Anthropic 的 workflow taxonomy 又补上了一个缺失的 governance 维度。
 - 是哪个 classifier 或 gate 做出的判断；
 - 它当时看到了什么 evidence；
 - 在什么条件下必须升级给人工；
-- subagent 或 follow-on actions 如何继承这种 delegated approval，或者在什么条件下失效。
+- subagent 或 follow-on actions 如何继承这种 delegated approval，或者在什么条件下失效；
+- 当 rollout 或 assurance 依赖 verifier output 时，哪些 verifier contracts 可以被信任来给这些 high-risk paths 分级。
 
 ## 7. Policy decision 应该是对象，而不只是 bool
 
@@ -180,6 +182,7 @@ Anthropic 的 workflow taxonomy 又补上了一个缺失的 governance 维度。
 - risk class；
 - optional constraints；
 - allowed orchestration patterns 或明确的 pattern restrictions；
+- 面向 high-risk paths 的 trusted verifier contracts 或 verifier-contract requirements；
 - 必要时还包括 approval 或 resume requirements。
 
 这会大幅提升 explainability，也让 telemetry 更有价值。
@@ -208,6 +211,8 @@ policy:
 ```
 
 它的价值不在完整，而在显式。你可以围绕具体规则讨论，并且知道它到底应用在什么地方。
+
+随着 verifier-aware governance 成为 production model 的一部分，这种显式性也应该扩展到 verifier trust。High-risk paths 不应依赖“碰巧存在的某个 verifier”。policy layer 应该能明确说明哪些 verifier contracts 是 trusted 的、什么时候必须要求它们，以及如果 release path 中出现 untrusted verifier contract 应该怎么办。
 
 ## 9. 一个 capability catalog contract 示例
 
