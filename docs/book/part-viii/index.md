@@ -19,15 +19,15 @@
 
     - [Глава 19](chapter-19.md): выровнять рамку через переход от SDLC к ADLC;
     - [Глава 20](chapter-20.md): понять, какие agent changes вообще считаются release-bearing;
-    - [Глава 21](chapter-21.md): собрать assurance как operational loop для drift, findings и response;
-    - [Глава 22](chapter-22.md): закрепить provenance, approved artifacts и contract lineage;
+    - [Глава 21](chapter-21.md): собрать assurance как operational response loop для drift, findings и containment;
+    - [Глава 22](chapter-22.md): закрепить provenance, approved artifacts и contract lineage как evidence backbone;
     - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement и shutdown runtime-control surfaces;
-    - [Главы 24-27](chapter-24.md): расширить тот же контур на misalignment, adversarial evaluation, observability как evidence substrate и управление всем agent estate.
+    - [Главы 24-27](chapter-24.md): расширить тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
 ## Что решает эта часть
 
 - переводит reference implementation в управляемый lifecycle;
-- связывает change management, assurance, provenance, incidents, retirement, observability, verifier-aware evidence, runtime-control governance, discipline для interruption/expiry/re-init, delegated authorization lineage и agent-estate governance в один operational contour;
+- связывает change management, assurance response, evidence lineage, eval judgment, observability evidence, runtime-control governance, discipline для interruption/expiry/re-init, delegated authorization lineage и accountability всего agent estate в один operational contour;
 - отделяет устойчивую инженерную дисциплину от быстро меняющихся vendor- и research-layer деталей.
 
 Если читать эту часть как единый блок, порядок такой:
@@ -35,9 +35,9 @@
 - сначала ты выравниваешь понятийную рамку через переход от SDLC к ADLC;
 - потом понимаешь, какие изменения в агентной системе вообще считаются release-bearing;
 - затем рассматриваешь assurance как operational response loop для drift, findings и control failure;
-- после этого закрепляешь artifact discipline, provenance и contract/schema governance;
+- после этого закрепляешь artifact discipline, provenance и contract/schema governance как evidence backbone;
 - затем закрываешь жизненный цикл через replacement, retirement и shutdown runtime-control surfaces;
-- и в конце расширяешь тот же контур на misalignment, adversarial evaluation, observability как evidence substrate и управление всем agent estate.
+- и в конце расширяешь тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
 ## В этой части
 
@@ -55,7 +55,7 @@
 
 - цельную модель жизненного цикла для production-grade agent systems;
 - более взрослую рамку для change reviews и release gates;
-- более ясное различие между eval loop, assurance response, observability evidence и estate governance;
+- более ясное различие между assurance response, evidence lineage, eval judgment, observability evidence и accountability всего estate;
 - практический язык для разговоров о replacement, retirement, end-of-life discipline и shutdown runtime-control surfaces;
 - более зрелую рамку для sabotage-like behavior, control failures, contract drift и adversarial assurance;
 - представление о observability как о слое доказательств, а не просто о generic telemetry bucket;
