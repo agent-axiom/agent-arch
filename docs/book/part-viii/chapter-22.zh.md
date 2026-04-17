@@ -85,6 +85,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
 
+这也是为什么本章里的 provenance 应该被狭义而具体地理解。它不是整个 evidence layer。它是围绕 approved artifacts、release identity 与 decision-bearing versions 的 governed lineage layer。
+
 !!! info "需要供应链工件？"
     如果你需要契约层视角，可以直接查看 [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
 
@@ -139,6 +141,8 @@ flowchart LR
 - 但 `policy_bundle_v12` 或 `prompt_bundle_support_v7` 是 approved artifact。
 
 这个区别很重要，因为清单提供平台级框架，而已批准工件提供发布级纪律。
+
+而这里 provenance 的核心，正是这种发布级纪律。问题不只是系统有没有 telemetry，而是系统当时究竟运行在什么 governed version、approved bundle 或 reviewed schema 之下。
 
 ## 6. 没有 provenance 的 prompt bundle，本质上就是一个 supply-chain 缺口
 
@@ -206,6 +210,8 @@ approval 与 runtime-control schemas 也是一样。如果团队在没有 govern
 - approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移；
 - delegated access 是 platform-owned 还是 user-delegated；
 - 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
+
+这些之所以是 provenance 问题，正是因为它们定义的是行为的 governed identity，而不只是说明这些行为有没有在 telemetry 里被看见。
 
 ## 9. 一个已批准工件策略示例
 

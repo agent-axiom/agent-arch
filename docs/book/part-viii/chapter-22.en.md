@@ -83,6 +83,8 @@ You need to be able to answer:
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
 
+That is why provenance in this chapter should be read narrowly and concretely. It is not the whole evidence layer. It is the governed lineage layer for approved artifacts, release identity, and decision-bearing versions.
+
 !!! info "Need supply-chain artifacts?"
     For the contract-level view, open the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), the [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md), and the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md).
 
@@ -137,6 +139,8 @@ For example:
 - but `policy_bundle_v12` or `prompt_bundle_support_v7` is an approved artifact.
 
 This distinction is useful because inventory provides the platform-level frame, while approved artifacts provide release-level discipline.
+
+That release-level discipline is the heart of provenance here. The question is not only whether telemetry exists, but which governed version, approved bundle, or reviewed schema the system was actually running under.
 
 ## 6. A prompt bundle without provenance is a supply-chain gap
 
@@ -204,6 +208,8 @@ That means provenance should increasingly preserve not only that a runtime-contr
 - whether approval and session-control logic were governed under one contract version or had already drifted apart;
 - whether delegated access was platform-owned or user-delegated;
 - which principal-binding rule and revoke behavior governed in-flight or paused actions.
+
+Those are provenance questions because they determine the governed identity of the behavior, not merely whether the behavior was visible in telemetry.
 
 ## 9. Example approved artifact policy
 

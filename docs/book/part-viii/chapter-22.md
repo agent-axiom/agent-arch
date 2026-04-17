@@ -85,6 +85,8 @@ Google Research очень правильно показывает, что пр�
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
 
+Именно поэтому provenance в этой главе стоит читать узко и предметно. Это не весь evidence layer целиком. Это governed lineage layer для trusted artifacts, release identity и decision-bearing versions.
+
 !!! info "Нужны артефакты цепочки поставки?"
     Для формального описания смотри [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md), [схему набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md) и [схему change review и rollout gate](../../appendix/change-rollout-schema.md).
 
@@ -139,6 +141,8 @@ flowchart LR
 - но конкретный `policy_bundle_v12` или `prompt_bundle_support_v7` — это уже доверенный артефакт.
 
 Это различие полезно, потому что реестр дает рамку уровня платформы, а доверенные артефакты дают дисциплину уровня конкретного выпуска.
+
+Именно эта дисциплина уровня релиза и составляет здесь сердцевину provenance. Вопрос не только в том, есть ли телеметрия, а в том, под какой governed version, approved bundle или reviewed schema система реально работала.
 
 ## 6. Набор prompt-правил без происхождения — это такой же пробел, как неподписанная сборка
 
@@ -206,6 +210,8 @@ flowchart LR
 - approval и session-control logic еще управлялись одним contract version или уже начали расходиться;
 - delegated access была platform-owned или user-delegated;
 - какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
+
+Это вопросы provenance именно потому, что они определяют governed identity поведения, а не просто факт того, что поведение было видно в telemetry.
 
 ## 9. Пример политики доверенных артефактов
 
