@@ -26,6 +26,8 @@
 
 SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
+在本章里，这首先意味着一种 budget 语言。SLO 还不是 response process。它定义的是，在另一个层次必须介入之前，系统还能容忍多少退化、不安全行为、operator load 或 verifier-quality erosion。
+
 在本书里，SLO 的角色也很具体。Traces 捕获原始历史；evals 产出 judgments；observability 在系统尺度上保存 evidence；assurance 响应 findings；而 SLO 定义的是平台在运行中允许消耗的 health budget 与 risk budget。
 
 !!! info "需要配套的 schema 和工程工件？"
@@ -119,6 +121,8 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 - queue wait time。
 
 这样 latency SLO 才不只是漂亮数字，而会变成诊断工具。
+
+但它仍然是 budget instrument，而不是 response loop。Latency SLO 告诉团队，在必须采取行动之前，还能容忍多少变慢。后面的 assurance chapter 才负责在这个容忍度被突破之后处理 containment、ownership 与 response。
 
 ## 6. Safety SLO 必须和 reliability 放在一起
 
@@ -230,6 +234,8 @@ slo:
 重点不在具体阈值，而在于团队提前说清楚：什么才算系统的正常状态。
 
 正是这种约定，才把 metrics 变成 operating constraint。没有这一步，系统也许仍然在被测量，但还没有通过明确的 health budgets 与 risk budgets 被治理。
+
+这也正是它与 assurance 的清晰边界。SLO 说明平台还能容忍多少 pain、drift、cost、不安全行为或 human load；assurance 决定的是，当这些 budgets 不再被尊重时，接下来该怎么做。
 
 现在，这种约定也可以把 verifier layer 纳入其中，尤其是在 rollout、assurance 或 post-incident classification 依赖它判断结果的时候。
 

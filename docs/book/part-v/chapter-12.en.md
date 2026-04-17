@@ -26,6 +26,8 @@ For a support agent, that is too weak. Even when every service is formally avail
 
 SLO exist exactly for this reason: to turn “health” from a feeling into measurable targets.
 
+In this chapter, that means budget language first. SLO are not yet the response process. They define what level of degradation, unsafe behavior, operator load, or verifier-quality erosion the system is allowed to consume before another layer must react.
+
 The role of SLO in this book is also specific. Traces capture raw history. Evals produce judgments. Observability preserves evidence at system scale. Assurance responds to findings. SLO define the health budget and risk budget the platform is allowed to consume while it operates.
 
 !!! info "Need the schemas and artifacts?"
@@ -119,6 +121,8 @@ That is why it is useful to track not only end-to-end latency, but stages:
 - queue wait time.
 
 That turns latency SLO from a pretty number into a diagnostic instrument.
+
+But it is still a budget instrument, not a response loop. A latency SLO tells the team how much slowness can be tolerated before action is required. The later assurance chapter handles containment, ownership, and response when that tolerance is breached.
 
 ## 6. Safety SLO Must Live Next to Reliability, Not Outside It
 
@@ -230,6 +234,8 @@ slo:
 The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
 
 That agreement is what turns metrics into an operating constraint. Without it, the system may still be measured, but it is not yet being governed through explicit health and risk budgets.
+
+That is also the clean boundary with assurance. SLO say how much pain, drift, cost, unsafe behavior, or human load the platform can tolerate. Assurance decides what to do once those budgets are no longer being respected.
 
 That agreement may now include the verifier layer too, especially when rollout, assurance, or post-incident classification relies on its judgments.
 
