@@ -13,7 +13,8 @@ Production-grade agent systems have several artifact classes that should not liv
 - runtime-control schemas and contract-version linkages;
 - operational approvals and lifecycle decisions;
 - capability-session interruption, expiry, and re-initialization rules when those are part of the runtime contract;
-- delegated authorization rules, principal-binding assumptions, and revoke behavior when those are part of the runtime contract.
+- delegated authorization rules, principal-binding assumptions, and revoke behavior when those are part of the runtime contract;
+- verifier contracts, grading rubrics, and evidence-linkage rules when release or assurance depends on verifier output.
 
 Without them, change management turns into oral tradition. Incident review then becomes an exercise in reconstructing who "probably changed the policy or routing."
 
@@ -82,6 +83,7 @@ artifacts:
   runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  verifier_contract: verifier-v2
   contract_version: capability-contract-v5
 status: approved
 release_scope: canary
@@ -105,7 +107,8 @@ And once capability-session governance is explicit, the bundle should usually ma
 - linkage expectations between approval events and session events;
 - delegated authorization mode;
 - principal-binding requirements;
-- revoke behavior for paused or in-flight actions.
+- revoke behavior for paused or in-flight actions;
+- verifier contract version, grading rubric, and evidence-linkage expectations when rollout or assurance depends on verifier judgments.
 
 ## 5. Retirement plan
 
@@ -162,6 +165,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every high-risk change has a `change_record`;
 - every production rollout points to an `artifact_bundle`;
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
+- verifier contract lineage can be reconstructed when release or assurance depends on graded outcomes;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
 - delegated authorization ownership and revoke behavior can be reconstructed for affected runs when those controls exist;
@@ -179,7 +183,8 @@ The failure modes are usually familiar:
 - replacement happens without dual-run semantics;
 - historical state has no retention owner;
 - provenance stops at the git commit and never reaches the runtime bundle;
-- paused-run and expired-session state are forgotten during replacement even though operators may still need them.
+- paused-run and expired-session state are forgotten during replacement even though operators may still need them;
+- verifier contract lineage is lost even though rollout or assurance decisions depended on it.
 
 ## 9. What to Do Right Away
 

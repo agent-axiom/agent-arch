@@ -13,7 +13,8 @@
 - runtime-control schemas и contract-version linkages;
 - operational approvals и lifecycle decisions;
 - capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract;
-- delegated authorization rules, assumptions про principal binding и revoke behavior, если они уже входят в runtime contract.
+- delegated authorization rules, assumptions про principal binding и revoke behavior, если они уже входят в runtime contract;
+- verifier contracts, grading rubrics и rules для evidence linkage, если release или assurance зависят от verifier output.
 
 Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
 
@@ -82,6 +83,7 @@ artifacts:
   runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  verifier_contract: verifier-v2
   contract_version: capability-contract-v5
 status: approved
 release_scope: canary
@@ -105,7 +107,8 @@ provenance:
 - ожидания по linkage между approval events и session events;
 - delegated authorization mode;
 - требования к principal binding;
-- revoke behavior для paused или in-flight actions.
+- revoke behavior для paused или in-flight actions;
+- версия verifier contract, grading rubric и ожидания по evidence linkage, если rollout или assurance зависят от verifier judgments.
 
 ## 5. Retirement plan
 
@@ -162,6 +165,7 @@ owner: platform-operations
 - каждый high-risk change имеет `change_record`;
 - каждый production rollout указывает на `artifact_bundle`;
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
+- lineage verifier contract можно восстановить, если release или assurance зависят от graded outcomes;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
 - delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
@@ -179,7 +183,8 @@ owner: platform-operations
 - replacement делается без dual-run semantics;
 - historical state не имеет retention owner;
 - provenance заканчивается на уровне git commit и не доходит до runtime bundle;
-- paused-run и expired-session state теряются при replacement, хотя они еще могут быть нужны операторам.
+- paused-run и expired-session state теряются при replacement, хотя они еще могут быть нужны операторам;
+- lineage verifier contract теряется, хотя от него зависели rollout или assurance decisions.
 
 ## 9. Что сделать сразу
 

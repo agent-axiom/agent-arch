@@ -13,7 +13,8 @@
 - runtime-control schemas 与 contract-version linkages；
 - 运行期审批和生命周期决策；
 - 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules；
-- 当这些能力已进入 runtime contract 时，delegated authorization rules、principal-binding assumptions 与 revoke behavior。
+- 当这些能力已进入 runtime contract 时，delegated authorization rules、principal-binding assumptions 与 revoke behavior；
+- 当 release 或 assurance 依赖 verifier output 时，verifier contracts、grading rubrics 与 evidence-linkage rules。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
@@ -82,6 +83,7 @@ artifacts:
   runtime_control_schema: runtime-controls-v2
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
+  verifier_contract: verifier-v2
   contract_version: capability-contract-v5
 status: approved
 release_scope: canary
@@ -105,7 +107,8 @@ provenance:
 - approval events 与 session events 之间应有怎样的 linkage；
 - delegated authorization mode；
 - principal-binding requirements；
-- paused 或 in-flight actions 的 revoke behavior。
+- paused 或 in-flight actions 的 revoke behavior；
+- 当 rollout 或 assurance 依赖 verifier judgments 时，verifier contract version、grading rubric 与 evidence-linkage expectations。
 
 ## 5. Retirement plan
 
@@ -162,6 +165,7 @@ owner: platform-operations
 - 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
 - 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
+- 当 release 或 assurance 依赖 graded outcomes 时，verifier contract lineage 也必须可追溯；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
 - 当这些控制存在时，delegated authorization ownership 与 revoke behavior 也必须能够对受影响 runs 被还原出来；
@@ -179,7 +183,8 @@ owner: platform-operations
 - 替换没有双运行语义；
 - 历史状态没有保留负责人；
 - 来源证明只到 git commit，进不了运行时工件包；
-- replacement 发生时，paused-run 与 expired-session state 被遗忘，但 operator 其实还需要它们。
+- replacement 发生时，paused-run 与 expired-session state 被遗忘，但 operator 其实还需要它们；
+- verifier contract lineage 丢失了，尽管 rollout 或 assurance decisions 曾依赖它。
 
 ## 9. 现在就该做什么
 
