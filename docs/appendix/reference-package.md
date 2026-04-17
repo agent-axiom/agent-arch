@@ -146,6 +146,8 @@
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`.
 `export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact.
 
+Этот eval path теперь полезно читать вместе с richer verifier contract из appendix: для long-horizon scenarios пакет должен помогать представить, как dataset со временем может нести `process_score`, `outcome_score`, `failure_attribution` и linked verifier evidence, а не только один тонкий verdict.
+
 Вместе эти команды теперь помогают показать важное различие из Chapters 16 и 17:
 
 - пользовательскую `session_id`, которая связывает несколько runs;
@@ -153,6 +155,8 @@
 - capability-side session state, которая может pause, expire, resume или требовать re-initialization.
 
 Пакет по-прежнему намеренно маленький, но теперь он уже отражает, что governed runtime иногда обязан объяснять все три контура отдельно, не сливая их в один непрозрачный state object.
+
+Это еще и полезный якорь для verifier-aware governance: если rollout или assurance зависят от eval output, runtime должен сохранять достаточно связей между trace, session и artifacts, чтобы объяснять не только что произошло, но и почему verifier оценил run именно так.
 
 Теперь в нем отражен и четвертый operational concern: delegated authorization context, под которым вообще исполнялось действие. Этот контекст теперь появляется в run telemetry, approval records и session export, чтобы runtime мог объяснять не только что произошло, но и под чьей delegated identity и scope это произошло.
 
@@ -200,7 +204,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - легче показать путь, управляемый конфигурацией, а не только жестко зашитое демо;
 - легче связать эталонный рантайм с главами про память, извлечение контекста, фоновые обновления и runtime-control governance;
 - легче обсуждать, откуда взялся каждый memory record, какая у него ревизия и какая contract/runtime-control version была активна;
-- легче держать отдельно, но согласованно, approval state, runtime session state и capability session state.
+- легче держать отдельно, но согласованно, approval state, runtime session state, capability session state и verifier evidence.
 
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
 

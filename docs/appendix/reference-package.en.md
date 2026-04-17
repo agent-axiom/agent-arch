@@ -146,6 +146,8 @@ Inspect and resolve demo approval requests:
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`.
 `export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact.
 
+That eval path should now be read together with the richer verifier contract in the appendix: for long-horizon scenarios, the package is meant to illustrate how a dataset can eventually carry `process_score`, `outcome_score`, `failure_attribution`, and linked verifier evidence rather than a single thin verdict.
+
 Together, those commands now help illustrate an important runtime distinction from Chapters 16 and 17:
 
 - the user-visible `session_id` that groups related runs,
@@ -153,6 +155,8 @@ Together, those commands now help illustrate an important runtime distinction fr
 - and the capability-side session state that may pause, expire, resume, or require re-initialization.
 
 The package is still deliberately small, but it now reflects that a governed runtime may need to explain all three without collapsing them into one opaque object.
+
+It is also a useful anchor for verifier-aware governance: if rollout or assurance depends on eval output, the runtime should preserve enough trace, session, and artifact linkage to explain not only what happened, but why a verifier judged the run the way it did.
 
 It also reflects a fourth operational concern: the delegated authorization context under which the action ran. That context now appears in run telemetry, approval records, and session export so the runtime can explain not only what happened, but under whose delegated identity and scope it happened.
 
@@ -200,7 +204,7 @@ The book now relies not only on Markdown explanations, but also on a real code s
 - it is easier to show a config-driven path instead of only a hardcoded demo;
 - it is easier to connect the reference runtime to the chapters about memory, retrieval, background updates, and runtime-control governance;
 - it is easier to discuss where each memory record came from, which revision it represents, and which contract/runtime-control version was active;
-- it is easier to make approval state, runtime session state, and capability session state visible as separate but linked control concepts.
+- it is easier to make approval state, runtime session state, capability session state, and verifier evidence visible as separate but linked control concepts.
 
 There is also a practical usability win now:
 

@@ -146,6 +146,8 @@
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件。
 
+现在这条 eval path 也应该和 appendix 里的 richer verifier contract 一起理解：对于 long-horizon scenarios，这个包要帮助读者看到，dataset 未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与 linked verifier evidence，而不只是一个单薄 verdict。
+
 这些命令现在也更清楚地体现了第 16、17 章里的一个关键区分：
 
 - 用来串起多次 runs 的用户可见 `session_id`；
@@ -153,6 +155,8 @@
 - 以及 capability 一侧可能 pause、expire、resume 或需要 re-initialization 的 session state。
 
 这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的 runtime 有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
+
+它现在也适合作为 verifier-aware governance 的锚点：如果 rollout 或 assurance 依赖 eval output，runtime 就应该保留足够的 trace、session 与 artifact linkage，来解释不只是发生了什么，还包括 verifier 为什么会这样判定这次 run。
 
 现在它也体现了第四个 operational concern：动作究竟是在什么 delegated authorization context 下执行的。这个上下文现在会出现在 run telemetry、approval records 和 session export 里，让 runtime 不仅能解释发生了什么，还能解释它是在谁的 delegated identity 与 scope 下发生的。
 
@@ -200,7 +204,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
 - 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来；
 - 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version；
-- 更容易把 approval state、runtime session state 和 capability session state 区分开来，同时仍保持它们之间的治理关联。
+- 更容易把 approval state、runtime session state、capability session state 与 verifier evidence 区分开来，同时仍保持它们之间的治理关联。
 
 现在还有几项很实用的能力：
 
