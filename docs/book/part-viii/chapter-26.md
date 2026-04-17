@@ -92,6 +92,8 @@ Microsoft точно формулирует этот сдвиг: для аген
 
 Именно поэтому runtime-control signals больше нельзя считать скрытой implementation detail. Как только появляются pause/resume paths, background execution и contract-version transitions, они тоже становятся частью evidence layer.
 
+Но это еще не делает observability владельцем artifact lineage. Observability сохраняет и коррелирует evidence поперек runs. А provenance layer по-прежнему отвечает на вопрос, какой governed artifact, approved version или release identity потом поддерживали решение.
+
 ## 4. Покрытие реестра — это тоже наблюдаемость
 
 Есть важная мысль, которую часто упускают: наблюдаемость начинается не с красивого средства просмотра трасс, а с понимания, какие системы вообще существуют.
@@ -129,6 +131,8 @@ Microsoft отдельно подчеркивает полный произво�
 Именно здесь наблюдаемость начинает пересекаться с обнаружением угроз и рабочим управлением.
 
 Но она не должна в них растворяться. Observability, это evidence substrate, который позволяет assurance, rollout и registry functions опираться на одну и ту же traceable record, а не на конкурирующие dashboards, screenshots или воспоминания участников.
+
+Этот substrate говорит о usable telemetry на масштабе множества runs и systems. Это не то же самое, что provenance backbone, которая хранит approved artifact identity и decision lineage во времени.
 
 ## 6. Что значит телеметрия, готовая к обнаружению проблем
 
@@ -173,6 +177,8 @@ Microsoft отдельно подчеркивает полный произво�
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
 Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability, это общий слой, который делает обе функции audit-friendly.
+
+И ее же важно удерживать отдельно от provenance chapter. Observability спрашивает, emitted ли система достаточно evidence, coverage и correlation для расследования и detection. Provenance спрашивает, какой approved artifact set, contract version или governed bundle потом обосновывали решение.
 
 ## 8. Куда исследовательская повестка двигает наблюдаемость дальше
 

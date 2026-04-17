@@ -92,6 +92,8 @@ In other words, traces must explain not only “what failed,” but also:
 
 This is exactly why runtime-control signals cannot remain a hidden implementation detail. Once pause/resume paths, background execution, and contract-version transitions exist, they become part of the evidence layer too.
 
+But that does not make observability the owner of artifact lineage. Observability preserves and correlates cross-run evidence. The provenance layer still answers which governed artifact, approved version, or release identity a later decision depended on.
+
 ## 4. Inventory coverage is also observability
 
 There is an important point that teams often miss: observability begins not with a beautiful trace viewer, but with knowing which systems exist at all.
@@ -129,6 +131,8 @@ It is much more valuable to detect deviation from normal behavior:
 This is where observability starts to intersect with security detection and operational governance.
 
 But it should not collapse into them. Observability is the evidence substrate that lets assurance, rollout, and registry functions reason from the same traceable record instead of from competing dashboards, screenshots, or recollections.
+
+That substrate is about usable telemetry across runs and systems. It is not the same thing as the provenance backbone that preserves approved artifact identity and decision lineage over time.
 
 ## 6. What detection-ready telemetry means
 
@@ -173,6 +177,8 @@ Strong governance requires:
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
 
 That framing also keeps this chapter separate from the assurance chapter and the registry chapter. Assurance is about containment and response. Registry is about estate accountability. Observability is the shared substrate that makes both of those functions auditable.
+
+It should also stay separate from the provenance chapter. Observability asks whether the system emitted enough evidence, coverage, and correlation to investigate or detect. Provenance asks which approved artifact set, contract version, or governed bundle later justified the decision.
 
 ## 8. Where the frontier is pushing observability next
 

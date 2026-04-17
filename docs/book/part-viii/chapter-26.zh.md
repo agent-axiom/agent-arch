@@ -92,6 +92,8 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 
 这也正是为什么 runtime-control signals 不能继续被当成隐藏的 implementation detail。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于 evidence layer。
 
+但这并不意味着 observability 成了 artifact lineage 的拥有者。Observability 负责在跨 runs 的范围内保留和关联 evidence；而 provenance layer 仍然回答，后续决策依赖的是哪一个 governed artifact、approved version 或 release identity。
+
 ## 4. Inventory coverage 其实也是 observability
 
 一个经常被忽略的关键点是：observability 的起点不是漂亮的 trace viewer，而是先知道到底有哪些 systems 存在。
@@ -129,6 +131,8 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 从这里开始，observability 就真正和 security detection、operational governance 连在一起了。
 
 但它不应该直接塌缩成这些功能本身。Observability 是 evidence substrate，它让 assurance、rollout 与 registry functions 能基于同一份 traceable record 推理，而不是依赖彼此冲突的 dashboards、screenshots 或事后回忆。
+
+这个 substrate 讨论的是跨 runs 与 systems 可用的 telemetry。它并不等同于 provenance backbone，后者负责长期保留 approved artifact identity 与 decision lineage。
 
 ## 6. 什么叫 detection-ready telemetry
 
@@ -173,6 +177,8 @@ Governance 往往会被写成：
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
 
 这种 framing 也把本章和 assurance chapter、registry chapter 清楚地区分开来。Assurance 负责 containment 与 response；registry 负责 estate accountability；observability 则是让二者都可审计的 shared substrate。
+
+它也应该和 provenance chapter 保持分离。Observability 关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和 detection；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
 
 ## 8. Research frontier 正在把 observability 推向哪里
 
