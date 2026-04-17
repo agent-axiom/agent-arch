@@ -21,7 +21,8 @@ For a support agent, that is too weak. Even when every service is formally avail
 - escalation rate drifts upward;
 - the cost of the typical request rises;
 - the safety path breaks too many normal scenarios;
-- a policy gate blocks the right action or lets an unnecessary one through.
+- a policy gate blocks the right action or lets an unnecessary one through;
+- the verifier or grading layer drifts and starts labeling unsafe or low-quality runs as healthy.
 
 SLO exist exactly for this reason: to turn “health” from a feeling into measurable targets.
 
@@ -129,6 +130,8 @@ For the support agent, it helps to track at least:
 
 This matters especially after incidents like duplicate tickets or unsafe memory writes: if safety never enters SLO, the team quickly starts optimizing the system only for speed and convenience again.
 
+As eval and verifier layers become part of release discipline, it also becomes useful to watch their quality as a health dimension. A system is not fully healthy if runtime behavior looks acceptable only because the verifier has become noisy or over-trusting.
+
 <div class="diagram-card">
 <p>Agent-system health is almost always multidimensional</p>
 
@@ -194,6 +197,7 @@ If you need a short set of rules that actually helps, it usually looks like this
 3. Safety, cost, and escalation should count as part of system health, not as side appendices to reliability.
 4. Latency should be broken down by stage, or it will be hard to diagnose.
 5. SLO only matter when they influence rollout and change decisions.
+6. If release control depends on verifier output, verifier quality should be monitored as part of system health.
 
 ## 10. Example SLO Policy for the Support Agent
 
@@ -214,9 +218,14 @@ slo:
     avg_cost_per_successful_run_usd: "<= 0.12"
   escalation:
     manual_intervention_rate: "< 8%"
+  verifier:
+    false_positive_rate_high_risk: "< 1%"
+    failure_attribution_agreement_rate: ">= 95%"
 ```
 
 The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
+
+That agreement may now include the verifier layer too, especially when rollout, assurance, or post-incident classification relies on its judgments.
 
 ## 11. A Simple Health Classification Example
 
@@ -257,6 +266,7 @@ The problems here are very repetitive:
 - safety lives separately from reliability;
 - cost never enters the health model;
 - human escalation is not counted as part of system health;
+- verifier quality is assumed instead of measured;
 - SLO exist only on dashboards and do not influence rollout.
 
 When that happens, SLO become decoration. The team looks at numbers, but does not control the platform through them.

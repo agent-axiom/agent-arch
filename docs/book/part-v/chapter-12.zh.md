@@ -21,7 +21,8 @@
 - 升级率悄悄上升；
 - 典型请求的成本变高；
 - 安全路径开始过度打断正常场景；
-- 策略门禁要么拦错动作，要么放过多余动作。
+- 策略门禁要么拦错动作，要么放过多余动作；
+- verifier 或 grading layer 发生漂移，开始把 unsafe 或 low-quality runs 误判为健康。
 
 SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
@@ -129,6 +130,8 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
 这在 duplicate ticket 或 unsafe memory write 之后尤其重要：如果 safety 从不进入 SLO，团队很快又会只按速度和便利性优化系统。
 
+随着 eval 与 verifier layers 成为 release discipline 的一部分，把它们的质量也纳入健康模型会越来越有价值。如果 runtime behavior 看起来“没问题”只是因为 verifier 变得更嘈杂或更轻信，那系统其实并不健康。
+
 <div class="diagram-card">
 <p>智能体系统的健康几乎总是多维的</p>
 
@@ -194,6 +197,7 @@ Human-in-the-loop 不是一个免费的安全网。
 3. Safety、cost 和 escalation 都应该算进系统健康，而不是挂在 reliability 旁边。
 4. Latency 最好按阶段拆开，否则很难诊断。
 5. 只有当 SLO 会影响 rollout 和 change decisions 时，它们才真正有意义。
+6. 如果 release control 依赖 verifier output，verifier quality 也应该成为 system health 的一部分。
 
 ## 10. 一个支持智能体的 SLO policy 示例
 
@@ -214,9 +218,14 @@ slo:
     avg_cost_per_successful_run_usd: "<= 0.12"
   escalation:
     manual_intervention_rate: "< 8%"
+  verifier:
+    false_positive_rate_high_risk: "< 1%"
+    failure_attribution_agreement_rate: ">= 95%"
 ```
 
 重点不在具体阈值，而在于团队提前说清楚：什么才算系统的正常状态。
+
+现在，这种约定也可以把 verifier layer 纳入其中，尤其是在 rollout、assurance 或 post-incident classification 依赖它判断结果的时候。
 
 ## 11. 一个简单的 health classification 示例
 
@@ -257,6 +266,7 @@ def classify_run_health(run: RunHealth) -> str:
 - safety 和 reliability 分家；
 - cost 从不进入健康模型；
 - human escalation 不被当成系统健康的一部分；
+- verifier quality 被默认假定，而不是被测量；
 - SLO 只挂在 dashboard 上，却不影响 rollout。
 
 一旦如此，SLO 就会变成装饰。团队看到了数字，但并没有通过这些数字来控制平台。

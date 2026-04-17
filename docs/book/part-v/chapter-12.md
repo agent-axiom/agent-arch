@@ -21,7 +21,8 @@
 - escalation rate медленно ползет вверх;
 - стоимость типового запроса растет;
 - safety path слишком часто ломает нормальные сценарии;
-- policy gate не пускает нужное действие или, наоборот, пропускает лишнее.
+- policy gate не пускает нужное действие или, наоборот, пропускает лишнее;
+- verifier или grading layer дрейфует и начинает считать unsafe или low-quality runs здоровыми.
 
 SLO нужны именно для этого: переводить разговор о “здоровье” из ощущения в измеримые цели.
 
@@ -129,6 +130,8 @@ SLO нужны именно для этого: переводить разгов
 
 Это особенно важно после инцидентов вроде duplicate ticket или unsafe memory write: если safety не попадает в SLO, команда очень быстро снова начинает оптимизировать систему только по скорости и convenience.
 
+По мере того как eval и verifier layers становятся частью release discipline, полезно отслеживать и их качество как отдельное измерение здоровья. Система не вполне здорова, если runtime behavior кажется приемлемым только потому, что verifier стал шумным или слишком доверчивым.
+
 <div class="diagram-card">
 <p>У агентной системы здоровье почти всегда многомерно</p>
 
@@ -194,6 +197,7 @@ Human-in-the-loop не является бесплатным safety net.
 3. Safety, cost и escalation должны считаться частью здоровья системы, а не отдельными приложениями к reliability.
 4. Latency полезно раскладывать по этапам, иначе она плохо диагностируется.
 5. SLO имеют смысл только тогда, когда влияют на rollout и change decisions.
+6. Если release control зависит от verifier output, качество verifier тоже должно входить в health model.
 
 ## 10. Пример SLO policy для агента поддержки
 
@@ -214,9 +218,14 @@ slo:
     avg_cost_per_successful_run_usd: "<= 0.12"
   escalation:
     manual_intervention_rate: "< 8%"
+  verifier:
+    false_positive_rate_high_risk: "< 1%"
+    failure_attribution_agreement_rate: ">= 95%"
 ```
 
 Главное здесь не точные проценты. Главное, что команда заранее договорилась, как выглядит нормальное состояние системы.
+
+Теперь эта договоренность может включать и verifier layer, особенно если rollout, assurance или post-incident classification зависят от его judgments.
 
 ## 11. Простой кодовый пример health classification
 
@@ -257,6 +266,7 @@ def classify_run_health(run: RunHealth) -> str:
 - safety живет отдельно от reliability;
 - cost вообще не попадает в health model;
 - human escalation не считается частью system health;
+- качество verifier предполагается, а не измеряется;
 - SLO существуют только на дашборде и не влияют на rollout.
 
 Если так происходит, SLO становятся декорацией. Команда смотрит на цифры, но не управляет платформой через них.
