@@ -36,6 +36,8 @@
 
 Именно это состояние и стоит называть `agent sprawl`.
 
+Registry layer нужен здесь прежде всего для одной вещи, чтобы весь estate был answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют, какой evidence его описывает и кто обязан действовать, если он начинает drift.
+
 ## 2. Почему sprawl опасен не только организационно
 
 На первый взгляд это кажется чисто управленческой проблемой: много сущностей, сложно поддерживать порядок.
@@ -71,7 +73,7 @@ Registry отвечает на более строгий вопрос:
 - registry нужен для governance.
 
 Без inventory ты не знаешь полный estate.
-Без registry ты не можешь уверенно сказать, какие агенты считаются approved и governed.
+Без registry ты не можешь уверенно сказать, какие агенты считаются approved, governed и операционно answerable.
 
 ## 4. Что должно быть в минимальной записи агента
 
@@ -167,6 +169,8 @@ Registry делает эту связь еще жестче:
 
 То есть registry превращает observability из “сырых событий” в управляемую operational map.
 
+Именно здесь и проходит чистая граница между двумя главами. Observability сохраняет evidence. Registry привязывает этот evidence к named entities, owners, lifecycle states и accountability paths по всему estate.
+
 ## 8.1. Registry без continuous verification быстро становится красивым, но неточным
 
 Здесь важно не переоценить сам реестр. Наличие registry еще не доказывает, что control layer действительно работает.
@@ -217,6 +221,8 @@ Registry не должен дублировать policy bundle или approval 
 - не появились ли shadow MCP endpoints вне approved registry.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
+
+Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 
 ## 10. Пример минимального agent registry record
 
@@ -318,6 +324,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - governance умеет различать discovered entities и approved production agents.
 
 Если большинство этих условий не выполняется, у команды уже могут быть visibility fragments, но реального agent governance у нее пока нет.
+
+В этот момент registry все еще ведет себя как loose catalog. Зрелый registry ведет себя скорее как accountability layer, которая непрерывно сверяет production entities, control ownership и lifecycle truth.
 
 ## 14. Практический checklist
 

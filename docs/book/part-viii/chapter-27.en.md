@@ -36,6 +36,8 @@ Each decision may be reasonable on its own. The problem starts later, when nobod
 
 That is the state worth calling `agent sprawl`.
 
+The registry layer exists for one reason above all: to make the estate answerable. It should be possible to ask of any production agent who owns it, which controls govern it, which evidence describes it, and who must act when it drifts.
+
 ## 2. Why sprawl is not only an organizational problem
 
 At first glance, this looks like a management problem: too many entities, too much entropy.
@@ -71,7 +73,7 @@ So:
 - registry exists for governance.
 
 Without inventory, you do not know the full estate.
-Without registry, you cannot confidently say which agents are approved and governed.
+Without registry, you cannot confidently say which agents are approved, governed, and operationally answerable.
 
 ## 4. What a minimal agent record should contain
 
@@ -167,6 +169,8 @@ Registry makes this connection even tighter:
 
 So registry turns observability from “raw events” into a governed operational map.
 
+That is also the clean boundary between the two chapters. Observability preserves evidence. Registry assigns that evidence to named entities, owners, lifecycle states, and accountability paths across the estate.
+
 ## 8.1. A registry without continuous verification becomes neat but inaccurate
 
 It is important not to overestimate the registry itself. The existence of a registry does not prove that the control layer actually works.
@@ -217,6 +221,8 @@ Then the registry should help answer:
 - whether shadow MCP endpoints have appeared outside the approved registry.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
+
+That ambiguity is usually what hurts first in incidents. Teams may have telemetry, policies, and approvals, but still lose time on the most basic estate question: which exact production entity is accountable for this path right now?
 
 ## 10. Example of a minimal agent registry record
 
@@ -318,6 +324,8 @@ A stronger bar is this:
 - governance can distinguish discovered entities from approved production agents.
 
 If most of those conditions are missing, the team may have visibility fragments, but it still does not have real agent governance.
+
+At that point, the registry is still acting like a loose catalog. A mature registry acts more like an accountability layer that continuously reconciles production entities, control ownership, and lifecycle truth.
 
 ## 14. Practical checklist
 

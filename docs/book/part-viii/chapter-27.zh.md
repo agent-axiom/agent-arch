@@ -36,6 +36,8 @@
 
 这正是值得被称作 `agent sprawl` 的状态。
 
+Registry layer 首先是为了一件事而存在，让整个 estate 具备 answerability。对于任何 production agent，团队都应该能快速回答：谁拥有它、哪些 controls 约束它、哪些 evidence 描述它，以及一旦它发生 drift 该由谁采取行动。
+
 ## 2. 为什么 sprawl 不只是组织问题
 
 表面上看，这像是一个管理问题：对象太多、秩序太差。
@@ -71,7 +73,7 @@ Registry 回答的是更严格的问题：
 - registry 解决的是治理。
 
 没有 inventory，你不知道完整 estate。
-没有 registry，你就无法有把握地说哪些 agents 是 approved 和 governed 的。
+没有 registry，你就无法有把握地说哪些 agents 是 approved、governed 且在运行上可被追责的。
 
 ## 4. 一个最小 agent record 应该包含什么
 
@@ -167,6 +169,8 @@ Registry 会把这层关系再拉紧一步：
 
 也就是说，registry 会把 observability 从“原始事件流”提升成受治理的 operational map。
 
+这也是本章和上一章之间最清晰的边界。Observability 保存 evidence；registry 则把这些 evidence 绑定到整个 estate 里的 named entities、owners、lifecycle states 与 accountability paths。
+
 ## 8.1. 没有 continuous verification 的 registry 会变得整洁，但不再准确
 
 这里不应该高估 registry 本身。Registry 的存在，并不能自动证明 control layer 真的在工作。
@@ -217,6 +221,8 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - approved registry 之外是否已经出现了 shadow MCP endpoints。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
+
+而这种模糊通常最先在 incident response 里造成伤害。团队可能已经有 telemetry、policies 和 approvals，却仍然会卡在一个最基本的 estate 问题上：此刻到底是哪一个 production entity 应该为这条 path 负责？
 
 ## 10. 一个最小 agent registry record 示例
 
@@ -318,6 +324,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - governance 能区分 discovered entities 和 approved production agents。
 
 如果这些条件大多不成立，那团队也许已经有一些 visibility fragments，但还没有真正的 agent governance。
+
+这时的 registry 仍然更像 loose catalog。成熟的 registry 更像一个 accountability layer，会持续对账 production entities、control ownership 与 lifecycle truth。
 
 ## 14. 实用检查清单
 
