@@ -32,6 +32,8 @@ But after that, the main engineering question appears:
 
 That is where the eval loop begins.
 
+And in this chapter, the eval loop should be read as a judgment layer, not as a response layer. Its job is to produce reviewable decisions about quality and regression risk before rollout expands or confidence is granted.
+
 Traces help you understand what happened.
 SLOs help you define what counts as system health.
 
@@ -154,6 +156,8 @@ That means the eval loop is better treated not as a separate analytics activity,
 
 This boundary matters because evals should not be overloaded with every other job in the lifecycle. Their job is to produce judgments that rollout can consume, not to replace incident response, telemetry design, or estate ownership.
 
+That also means evals do not own containment. They do not freeze the route, disable the capability, or assign emergency response. They tell the team whether the change deserves trust, where regression risk sits, and whether rollout should proceed.
+
 This also means release discipline should be careful about what it rewards. A single end-state score is often too weak: it can hide partial success, blocked-but-correct behavior, or lucky success through a bad control path. Mature eval loops use richer verifier outputs so rollout decisions can reflect how the system behaved, not only whether the last screen looked acceptable.
 
 The same discipline should apply to verifier contract changes. If grading standards change because a verifier contract version changed, the eval loop should surface that as a release-bearing regression signal rather than quietly treating the new verdicts as directly comparable to the old ones.
@@ -201,6 +205,8 @@ They are especially useful for cases where an ordinary regression set is too sha
 In other words, the eval layer must assess not only final-answer quality, but also behavioral failure modes.
 
 That is also why verifier design matters. If the grading layer cannot separate process failure from outcome failure, it will produce weak evidence for both training and release control.
+
+A good eval judgment may say "do not expand rollout" or "this scenario is no longer trustworthy." But the operational response to that judgment belongs to later layers, especially rollout control and assurance ownership.
 
 ## 5.2. Coordination Failure Should Also Be Part of Eval Design
 

@@ -32,6 +32,8 @@
 
 这就是评测闭环开始的地方。
 
+而在本章里，eval loop 应该被理解成 judgment layer，而不是 response layer。它的任务是在 rollout 扩大或 change 获得信任之前，产出关于质量与 regression risk 的 reviewable decisions。
+
 追踪帮你理解发生了什么。
 SLO 帮你定义什么叫系统健康。
 
@@ -154,6 +156,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这个边界很重要，因为 evals 不应该被塞进生命周期里的所有职责。它们的任务是产出 rollout 可以消费的 judgments，而不是替代 incident response、telemetry design 或 estate ownership。
 
+这也意味着 evals 不拥有 containment。它们不会 freeze route、disable capability，也不会分配 emergency response。它们告诉团队，这个 change 是否值得被信任、regression risk 在哪里，以及 rollout 是否应该继续。
+
 这还意味着，release discipline 必须谨慎决定自己在奖励什么。单一的 end-state score 往往太弱，因为它会掩盖 partial success、blocked-but-correct behavior，或者通过 bad control path 获得的 lucky success。成熟的 eval loop 会使用 richer verifier outputs，让 rollout decisions 反映的不只是最后一个 screen 看起来是否正常，而是系统到底如何行动的。
 
 同样的纪律也应该适用于 verifier contract changes。如果 grading standards 因 verifier contract version changes 而改变，eval loop 就应该把它显式暴露为 release-bearing regression signal，而不是悄悄把新的 verdicts 当作与旧结果可直接比较。
@@ -201,6 +205,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 也就是说，评测层不应该只评估最终答案质量，还要评估行为层面的失效模式。
 
 这也是 verifier design 为什么重要。如果 grading layer 无法区分 process failure 与 outcome failure，它就无法为 training 和 release control 提供足够强的 evidence。
+
+一个好的 eval judgment 可以说“不要继续扩大 rollout”或者“这个场景已经不再可信”；但对这种 judgment 的 operational response 属于后面的层次，尤其是 rollout control 与 assurance ownership。
 
 ## 5.2. 协作失效也应该成为评测设计的一部分
 

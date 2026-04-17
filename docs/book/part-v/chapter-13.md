@@ -32,6 +32,8 @@
 
 Вот здесь и начинается eval loop.
 
+И в этой главе eval loop стоит читать именно как judgment layer, а не как response layer. Его задача, производить reviewable decisions о качестве и regression risk до того, как rollout будет расширен или change получит доверие.
+
 Traces помогают понять, что произошло.
 SLO помогают определить, что считается здоровьем системы.
 
@@ -154,6 +156,8 @@ Static eval set хорош для сравнения known cases. User simulator
 
 Эта граница важна, потому что evals не стоит перегружать чужими функциями по lifecycle. Их задача, производить judgments, которыми rollout может пользоваться дальше, а не заменять incident response, telemetry design или ownership по estate.
 
+Это означает и то, что evals не владеют containment. Они не freeze'ят route, не disable'ят capability и не назначают emergency response. Они говорят команде, заслуживает ли change доверия, где сидит regression risk и можно ли продолжать rollout.
+
 Это означает и еще одну вещь: release discipline должна аккуратно выбирать, что именно она вознаграждает. Single end-state score часто слишком слаб, потому что скрывает partial success, blocked-but-correct behavior или lucky success через bad control path. Зрелый eval loop использует richer verifier outputs, чтобы rollout decisions отражали не только то, как выглядел последний экран, но и то, как именно система себя вела.
 
 Та же дисциплина должна распространяться и на verifier contract changes. Если grading standards меняются из-за новой verifier contract version, eval loop должен поднимать это как release-bearing regression signal, а не тихо считать новые verdicts напрямую сопоставимыми со старыми.
@@ -199,6 +203,8 @@ Trace grading полезен тем, что позволяет оцениват�
 То есть eval layer должен проверять не только final answer quality, но и failure modes поведения.
 
 Именно поэтому verifier design здесь тоже важен. Если grading layer не умеет разделять process failure и outcome failure, он будет давать слабую evidence base и для training, и для release control.
+
+Хороший eval judgment может сказать: "rollout дальше расширять нельзя" или "этому сценарию больше нельзя доверять". Но operational response на такой judgment уже принадлежит более поздним слоям, прежде всего rollout control и assurance ownership.
 
 ## 5.2. Coordination failure тоже должна быть частью eval design
 
