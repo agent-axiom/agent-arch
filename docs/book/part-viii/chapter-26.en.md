@@ -76,6 +76,7 @@ A useful telemetry contract for agent systems usually includes:
 - output summaries;
 - redaction status;
 - verifier outputs such as `process_score`, `outcome_score`, and `failure_attribution`;
+- active verifier contract and verifier contract version;
 - bundle, version, rollout wave, and contract version.
 
 In other words, traces must explain not only “what failed,” but also:
@@ -142,7 +143,7 @@ Practically, that means:
 - stable schemas;
 - redaction rules;
 - retention policy;
-- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, verifier evidence, and lifecycle artifacts.
+- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, verifier evidence, verifier contract identity, and lifecycle artifacts.
 
 If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, and verifier evidence for how the run was judged, it may still be useful for debugging, but it is weak as an evidence layer.
 
@@ -222,6 +223,7 @@ observability:
     orchestration_pattern_visibility: true
     worker_boundary_visibility: true
     verifier_evidence_linkage: true
+    verifier_contract_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -236,6 +238,7 @@ observability:
     - orchestration_pattern_events_not_visible
     - worker_boundary_crossings_not_visible
     - verifier_evidence_not_linked
+    - verifier_contract_missing
     - contract_version_missing
     - bundle_version_missing
 ```

@@ -76,6 +76,7 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 - output summaries；
 - redaction status；
 - verifier outputs，例如 `process_score`、`outcome_score` 与 `failure_attribution`；
+- active verifier contract 与 verifier contract version；
 - bundle、version、rollout wave 与 contract version。
 
 也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
@@ -142,7 +143,7 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、verifier evidence 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、verifier evidence、verifier contract identity 和 lifecycle artifacts 之间的链接。
 
 如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 verifier evidence，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
@@ -224,6 +225,7 @@ observability:
     orchestration_pattern_visibility: true
     worker_boundary_visibility: true
     verifier_evidence_linkage: true
+    verifier_contract_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -238,6 +240,7 @@ observability:
     - orchestration_pattern_events_not_visible
     - worker_boundary_crossings_not_visible
     - verifier_evidence_not_linked
+    - verifier_contract_missing
     - contract_version_missing
     - bundle_version_missing
 ```

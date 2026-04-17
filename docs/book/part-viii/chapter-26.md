@@ -76,6 +76,7 @@ Microsoft точно формулирует этот сдвиг: для аген
 - краткие итоги ответа;
 - статус маскирования данных;
 - verifier outputs вроде `process_score`, `outcome_score` и `failure_attribution`;
+- active verifier contract и версию verifier contract;
 - набор артефактов, версию, волну раскатки и contract version.
 
 То есть трассы должны рассказывать не только «что упало», но и:
@@ -142,7 +143,7 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence, identity verifier contract и артефактами жизненного цикла.
 
 Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и verifier evidence о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
@@ -222,6 +223,7 @@ observability:
     orchestration_pattern_visibility: true
     worker_boundary_visibility: true
     verifier_evidence_linkage: true
+    verifier_contract_visibility: true
     contract_version_linkage: true
     artifact_bundle_linkage: true
   kpis:
@@ -236,6 +238,7 @@ observability:
     - orchestration_pattern_events_not_visible
     - worker_boundary_crossings_not_visible
     - verifier_evidence_not_linked
+    - verifier_contract_missing
     - contract_version_missing
     - bundle_version_missing
 ```
