@@ -76,7 +76,8 @@
 
 - `labels` 作为场景类别；
 - `expected_outcomes` 作为期望结果；
-- `grading_rules` 作为检查逻辑。
+- `grading_rules` 作为检查逻辑；
+- `verifier_outputs` 作为结构化的分级结果。
 
 ## 什么是分级契约
 
@@ -103,6 +104,9 @@
 - `approval_required`
 - `policy_violation_absent`
 - `memory_write_absent`
+- `process_score_present`
+- `outcome_score_present`
+- `failure_attribution_valid`
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
@@ -147,6 +151,9 @@
 - `grader_type`
 - `blocking`
 - `notes_for_review`
+- `verifier_outputs`
+- `failure_attribution`
+- `verifier_evidence_refs`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
 
@@ -169,9 +176,18 @@ grading_rules:
   - type: approval_required
     expected: true
     blocking: true
+verifier_outputs:
+  process_score: 0.92
+  outcome_score: 0.35
+  failure_attribution: uncontrollable_environment
+  verifier_evidence_refs:
+    - trace:trace_123
+    - screenshot:step_7
 ```
 
 重点在于，这个契约评估的不只是最终文本，也包括行为是否呈现出了正确的运行形态。
+
+这对 long-horizon agents 尤其重要，因为二元 pass/fail verdict 往往会掩盖这样一种差异：一种是行为正确但 outcome 被环境阻断，另一种是行为不安全却碰巧拿到了 nominal success。
 
 ## 为什么 multi-run sessions 很重要
 
@@ -196,7 +212,8 @@ grading_rules:
 - 不显式声明期望结果；
 - 只评最终答案，不看策略或工具行为；
 - 不给数据集做版本管理；
-- 不把数据集条目和追踪证据或事故历史关联起来。
+- 不把数据集条目和追踪证据或事故历史关联起来；
+- 把 verifier output 压成一个薄弱的单一 verdict，没有 process/outcome split 和 failure attribution。
 
 这样会让 eval culture 变得很脆弱。
 
@@ -208,6 +225,7 @@ grading_rules:
 - 标签和期望结果是否分开？
 - 有没有分级规则，而不只是人工描述？
 - 能不能评估行为，而不只是文本？
+- verifier 能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 

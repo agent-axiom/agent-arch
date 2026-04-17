@@ -76,7 +76,8 @@
 
 - `labels` как описание класса сценария;
 - `expected_outcomes` как описание ожидаемого результата;
-- `grading_rules` как описание того, как именно это проверяется.
+- `grading_rules` как описание того, как именно это проверяется;
+- `verifier_outputs` как структурированный результат проверки.
 
 ## Что такое правила проверки
 
@@ -103,6 +104,9 @@
 - `approval_required`
 - `policy_violation_absent`
 - `memory_write_absent`
+- `process_score_present`
+- `outcome_score_present`
+- `failure_attribution_valid`
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -147,6 +151,9 @@
 - `grader_type`
 - `blocking`
 - `notes_for_review`
+- `verifier_outputs`
+- `failure_attribution`
+- `verifier_evidence_refs`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
 
@@ -169,9 +176,18 @@ grading_rules:
   - type: approval_required
     expected: true
     blocking: true
+verifier_outputs:
+  process_score: 0.92
+  outcome_score: 0.35
+  failure_attribution: uncontrollable_environment
+  verifier_evidence_refs:
+    - trace:trace_123
+    - screenshot:step_7
 ```
 
 Смысл здесь в том, что правила проверки оценивают не только финальный текст, но и правильную рабочую форму поведения.
+
+Это особенно важно для long-horizon agents, где binary pass/fail verdict часто скрывает разницу между корректным поведением с blocked outcome и unsafe behavior, которое случайно закончилось nominal success.
 
 ## Почему особенно важны многошаговые сессии
 
@@ -196,7 +212,8 @@ grading_rules:
 - не фиксировать ожидаемые результаты явно;
 - оценивать только финальный ответ и игнорировать поведение политики и инструментов;
 - не версионировать набор;
-- не связывать элементы набора с данными трасс или историей инцидентов.
+- не связывать элементы набора с данными трасс или историей инцидентов;
+- схлопывать verifier output в один слабый verdict без process/outcome split и failure attribution.
 
 Все это делает культуру оценки хрупкой.
 
@@ -208,6 +225,7 @@ grading_rules:
 - Метки отделены от ожидаемых результатов?
 - Есть ли правила проверки, а не только описания от руки?
 - Можно ли оценивать не только текст, но и поведение?
+- Умеет ли verifier выдавать отдельно `process_score`, `outcome_score` и `failure_attribution`?
 - Поддерживаются ли многошаговые сессии?
 - Есть ли версионирование набора и владелец?
 

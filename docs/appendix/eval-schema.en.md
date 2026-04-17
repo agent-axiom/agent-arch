@@ -76,7 +76,8 @@ That is why an eval dataset should usually separate:
 
 - `labels` as the scenario class;
 - `expected_outcomes` as the desired result;
-- `grading_rules` as the check logic.
+- `grading_rules` as the check logic;
+- `verifier_outputs` as the structured grading result.
 
 ## What a grading contract is
 
@@ -103,6 +104,9 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `approval_required`
 - `policy_violation_absent`
 - `memory_write_absent`
+- `process_score_present`
+- `outcome_score_present`
+- `failure_attribution_valid`
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
@@ -147,6 +151,9 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `grader_type`
 - `blocking`
 - `notes_for_review`
+- `verifier_outputs`
+- `failure_attribution`
+- `verifier_evidence_refs`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
 
@@ -169,9 +176,18 @@ grading_rules:
   - type: approval_required
     expected: true
     blocking: true
+verifier_outputs:
+  process_score: 0.92
+  outcome_score: 0.35
+  failure_attribution: uncontrollable_environment
+  verifier_evidence_refs:
+    - trace:trace_123
+    - screenshot:step_7
 ```
 
 The point is that the contract evaluates not only the final text, but also the correct operational shape of behavior.
+
+This becomes especially important for long-horizon agents, where a binary pass/fail verdict often hides the difference between correct behavior with a blocked outcome and unsafe behavior that happened to end in nominal success.
 
 ## Why multi-run sessions matter
 
@@ -196,7 +212,8 @@ Several mistakes are very common:
 - not declaring expected outcomes explicitly;
 - grading only the final answer and ignoring policy or tool behavior;
 - not versioning the dataset;
-- not linking dataset items to trace evidence or incident history.
+- not linking dataset items to trace evidence or incident history;
+- collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution.
 
 That makes eval culture fragile.
 
@@ -208,6 +225,7 @@ Start with this short list and mark every "no" explicitly:
 - Are labels separate from expected outcomes?
 - Do you have grading rules, not just reviewer prose?
 - Can you evaluate behavior, not only text?
+- Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Do you support multi-run sessions?
 - Do you have dataset versioning and ownership?
 
