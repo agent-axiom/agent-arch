@@ -152,6 +152,8 @@ That means the eval loop is better treated not as a separate analytics activity,
 
 This also means release discipline should be careful about what it rewards. A single end-state score is often too weak: it can hide partial success, blocked-but-correct behavior, or lucky success through a bad control path. Mature eval loops use richer verifier outputs so rollout decisions can reflect how the system behaved, not only whether the last screen looked acceptable.
 
+The same discipline should apply to verifier contract changes. If grading standards change because a verifier contract version changed, the eval loop should surface that as a release-bearing regression signal rather than quietly treating the new verdicts as directly comparable to the old ones.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.
@@ -298,7 +300,7 @@ If you need a short engineering frame, rules like these are usually enough:
 2. Offline and online evals should live together: one catches regressions before release, the other after release.
 3. Trace grading should stay focused on critical write paths and policy-sensitive flows, not only happy paths.
 4. The dataset should be refreshed from real failures, not only old demo cases.
-5. The regression gate should be machine-readable and block not only quality regressions, but also safety, cost, and escalation regressions.
+5. The regression gate should be machine-readable and block not only quality regressions, but also safety, cost, escalation, and verifier-contract regressions.
 
 ## 9. Example Eval Gate Policy
 
@@ -402,7 +404,7 @@ A stronger bar is this:
 
 - incidents are converted into eval cases and rollout rules;
 - offline and online evals work as one loop rather than separate rituals;
-- regression gates block safety, cost, and escalation regressions, not only task failure;
+- regression gates block safety, cost, escalation, and verifier-contract regressions, not only task failure;
 - traces are graded as evidence, not stored as passive telemetry;
 - the dataset keeps learning from real failures.
 

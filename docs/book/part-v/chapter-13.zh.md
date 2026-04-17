@@ -152,6 +152,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这还意味着，release discipline 必须谨慎决定自己在奖励什么。单一的 end-state score 往往太弱，因为它会掩盖 partial success、blocked-but-correct behavior，或者通过 bad control path 获得的 lucky success。成熟的 eval loop 会使用 richer verifier outputs，让 rollout decisions 反映的不只是最后一个 screen 看起来是否正常，而是系统到底如何行动的。
 
+同样的纪律也应该适用于 verifier contract changes。如果 grading standards 因 verifier contract version changes 而改变，eval loop 就应该把它显式暴露为 release-bearing regression signal，而不是悄悄把新的 verdicts 当作与旧结果可直接比较。
+
 ## 5. 追踪分级对智能体系统特别有价值
 
 普通应用往往只要业务 KPI 和错误率就够了。智能体系统不行，因为质量经常藏在一次运行内部，而不只在最终答案上。
@@ -298,7 +300,7 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 2. Offline 和 online evals 应该一起存在：一个在发布前拦回归，一个在发布后抓漂移。
 3. Trace grading 应该优先覆盖关键 write paths 和 policy-sensitive flows，而不只是 happy path。
 4. Dataset 应该按真实 failures 刷新，而不只是沿用旧 demo cases。
-5. Regression gate 应该是 machine-readable 的，并且不仅阻止质量回归，还要阻止 safety、cost 和 escalation 回归。
+5. Regression gate 应该是 machine-readable 的，并且不仅阻止质量回归，还要阻止 safety、cost、escalation 和 verifier-contract 回归。
 
 ## 9. 一个评测门禁策略示例
 
@@ -400,7 +402,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 - incidents 会被转化成 eval cases 和 rollout rules；
 - offline 和 online evals 作为同一个闭环运行，而不是两个分开的 ritual；
-- regression gates 不只拦 task failure，也会拦 safety、cost 和 escalation regressions；
+- regression gates 不只拦 task failure，也会拦 safety、cost、escalation 和 verifier-contract regressions；
 - traces 被当成 evidence 来 grading，而不是被动堆成 telemetry；
 - dataset 会持续从真实 failures 中学习。
 

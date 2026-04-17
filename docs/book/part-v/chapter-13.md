@@ -152,6 +152,8 @@ Static eval set хорош для сравнения known cases. User simulator
 
 Это означает и еще одну вещь: release discipline должна аккуратно выбирать, что именно она вознаграждает. Single end-state score часто слишком слаб, потому что скрывает partial success, blocked-but-correct behavior или lucky success через bad control path. Зрелый eval loop использует richer verifier outputs, чтобы rollout decisions отражали не только то, как выглядел последний экран, но и то, как именно система себя вела.
 
+Та же дисциплина должна распространяться и на verifier contract changes. Если grading standards меняются из-за новой verifier contract version, eval loop должен поднимать это как release-bearing regression signal, а не тихо считать новые verdicts напрямую сопоставимыми со старыми.
+
 ## 5. Trace grading особенно полезен для агентных систем
 
 В обычных приложениях часто хватает business KPI и error rate. В агентных системах этого мало, потому что качество часто сидит внутри run, а не только в финальном ответе.
@@ -296,7 +298,7 @@ Regression gate полезно строить как явный набор пр�
 2. Offline и online evals должны жить вместе: один контур ловит regressions до релиза, другой после релиза.
 3. Trace grading стоит держать на критичных write paths и policy-sensitive flows, а не только на happy path.
 4. Dataset нужно обновлять по реальным failures, а не только по старым demo cases.
-5. Regression gate должен быть машиночитаемым и блокировать не только quality regressions, но и safety, cost и escalation regressions.
+5. Regression gate должен быть машиночитаемым и блокировать не только quality regressions, но и safety, cost, escalation и verifier-contract regressions.
 
 ## 9. Пример policy для eval gates
 
@@ -400,7 +402,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 - incidents превращаются в eval cases и rollout rules;
 - offline и online evals работают как единый контур, а не как отдельные ритуалы;
-- regression gates блокируют не только task failure, но и safety, cost и escalation regressions;
+- regression gates блокируют не только task failure, но и safety, cost, escalation и verifier-contract regressions;
 - traces оцениваются как evidence, а не просто складируются как passive telemetry;
 - dataset продолжает учиться на реальных failures.
 
