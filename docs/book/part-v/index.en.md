@@ -31,9 +31,11 @@ The editorial boundary matters here. Tracing is the raw capture layer. SLO are t
 
 ## What This Part Solves
 
-- it helps you reconstruct the real run path instead of guessing from symptoms;
-- it defines explicit health and risk budgets through SLO, cost, safety, and escalation;
-- it produces reviewable judgments through offline evals, online signals, and regression gates.
+This part makes three distinct promises to the reader:
+
+- after Chapter 11, you should be able to reconstruct the real run path instead of guessing from symptoms;
+- after Chapter 12, you should be able to state explicit health and risk budgets through SLO, cost, safety, and escalation;
+- after Chapter 13, you should be able to produce reviewable judgments through offline evals, online signals, and regression gates.
 
 ## In This Part
 
@@ -44,3 +46,5 @@ The editorial boundary matters here. Tracing is the raw capture layer. SLO are t
 ## Where It Leads Next
 
 The next natural step after this part is organizational design: who owns the platform, who owns quality targets, and who decides whether rollout can expand.
+
+That is why Part VI follows naturally from Part V. Once you can capture behavior, define tolerated budgets, and judge changes, the next question is ownership: who is responsible for those promises in the real organization.

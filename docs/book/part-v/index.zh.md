@@ -31,9 +31,11 @@
 
 ## 这一部分解决什么问题
 
-- 帮你还原真实的 run 路径，而不是只靠症状猜测；
-- 通过 SLO、cost、safety 和 escalation 建立明确的 health budgets 与 risk budgets；
-- 通过 offline evals、online signals 和 regression gates 产出 reviewable judgments。
+这一部分向读者给出三个不同的承诺：
+
+- 读完第 11 章后，你应该能还原真实的 run 路径，而不是只靠症状猜测；
+- 读完第 12 章后，你应该能通过 SLO、cost、safety 和 escalation 说清楚明确的 health budgets 与 risk budgets；
+- 读完第 13 章后，你应该能通过 offline evals、online signals 和 regression gates 产出 reviewable judgments。
 
 ## 本部分内容
 
@@ -44,3 +46,5 @@
 ## 这一部分之后去哪里
 
 读完这一部分，接下来的自然问题就是组织模型：谁拥有平台，谁拥有质量目标，以及谁来决定 rollout 能不能继续扩大。
+
+这也是为什么 Part VI 会自然接在 Part V 后面。只要你已经能够捕获行为、定义可容忍的 budgets，并对 changes 做出 judgments，下一个问题就会变成 ownership：在真实组织里，究竟由谁来为这些承诺负责。
