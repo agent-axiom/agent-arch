@@ -154,6 +154,7 @@ Before production, you should be confident that:
 - policy decisions and tool outcomes are visible;
 - SLO are defined;
 - offline evals pass;
+- verifier quality is reviewed where release evidence depends on graded judgments;
 - the regression gate is documented;
 - online monitoring is ready for the first rollout waves.
 
@@ -257,7 +258,8 @@ If you need a short operational frame, rules like these are usually enough:
 4. Canary, shadow, and blast-radius limits should be part of the design, not emergency improvisation.
 5. Approval queues, paused-run age, and human-review backlog should be treated as rollout signals, not invisible operational noise.
 6. Changes in orchestration pattern selection should be treated like runtime-control changes and reviewed explicitly before rollout.
-7. If the team no longer trusts traces, approval handling, or evals, the rollout should stop, not continue as “extra observation in prod”.
+7. If release evidence depends on verifier judgments, the rollout should stop when verifier quality or evidence linkage is no longer trusted.
+8. If the team no longer trusts traces, approval handling, or evals, the rollout should stop, not continue as “extra observation in prod”.
 
 ## 11. Example Rollout Checklist Policy
 

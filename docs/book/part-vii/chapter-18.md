@@ -154,6 +154,7 @@ flowchart LR
 - policy decisions и tool outcomes видны;
 - SLO заведены;
 - offline evals проходят;
+- качество verifier'а reviewed там, где release evidence зависит от graded judgments;
 - regression gate задокументирован;
 - online monitoring готово к первым волнам выкладки.
 
@@ -257,7 +258,8 @@ flowchart LR
 4. Canary, shadow и blast-radius limits должны быть частью design, а не аварийной импровизацией.
 5. Approval queues, возраст paused runs и backlog human review должны считаться rollout signals, а не невидимым операционным шумом.
 6. Изменения в выборе orchestration pattern должны рассматриваться как runtime-control changes и проходить явный review до rollout.
-7. Если команда уже не доверяет traces, approval handling или evals, rollout надо останавливать, а не “донаблюдать в проде”.
+7. Если release evidence зависит от verifier judgments, rollout надо останавливать, когда команда больше не доверяет качеству verifier'а или linkage его evidence.
+8. Если команда уже не доверяет traces, approval handling или evals, rollout надо останавливать, а не “донаблюдать в проде”.
 
 ## 11. Пример политики чеклиста запуска
 

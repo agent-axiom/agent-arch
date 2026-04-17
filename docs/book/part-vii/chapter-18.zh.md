@@ -154,6 +154,7 @@ flowchart LR
 - policy decisions 和 tool outcomes 可见；
 - SLO 已定义；
 - 离线评测通过；
+- 当 release evidence 依赖 graded judgments 时，verifier quality 已被审查；
 - 回归门禁已经文档化；
 - 在线监控已经为第一波上线做好准备。
 
@@ -257,7 +258,8 @@ Anthropic 的 workflow taxonomy 在这里又增加了一个 rollout 维度。[^a
 4. Canary、shadow 和 blast-radius limits 应该是设计的一部分，而不是出事后的临时 improvisation。
 5. Approval queue、paused-run age 和 human-review backlog 应该被当成 rollout signals，而不是看不见的运维噪音。
 6. orchestration pattern 选择的变化应该被当成 runtime-control changes，并在 rollout 前显式 review。
-7. 如果团队已经不再信任 traces、approval handling 或 evals，就应该先停 rollout，而不是继续“边上边看”。
+7. 如果 release evidence 依赖 verifier judgments，那么一旦 verifier quality 或 evidence linkage 不再可信，就应先停 rollout。
+8. 如果团队已经不再信任 traces、approval handling 或 evals，就应该先停 rollout，而不是继续“边上边看”。
 
 ## 11. 一个上线检查清单策略示例
 
