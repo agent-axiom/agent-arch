@@ -13,6 +13,12 @@
 
 如果你刚进入这个项目，最好先读本书本体。等你需要 supporting schemas、checklists 和 contract surfaces 来支撑主要论证时，再来到这里。
 
+这一层**不**承诺的事情是：
+
+- 它不会取代本书本身的 reader journey；
+- 它不会按章节去解释主要的 causal argument；
+- 它也不应该成为读者学习 trade-offs 与层间边界的主要地方。
+
 ## 从这里开始
 
 如果只想快速进入，建议按这个顺序看：

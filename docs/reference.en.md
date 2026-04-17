@@ -13,6 +13,12 @@ Use this section when you need to:
 
 If you are new to the project, start with the book first. Come here when you want the supporting schemas, checklists, and contract surfaces behind the main argument.
 
+What this layer does **not** promise:
+
+- it does not replace the book's reader journey;
+- it does not explain the main causal argument chapter by chapter;
+- it does not try to be the primary place where trade-offs and layer boundaries are learned.
+
 ## Start here
 
 For a short path in, start with:
