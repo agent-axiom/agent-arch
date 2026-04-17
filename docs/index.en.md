@@ -59,6 +59,10 @@ It is also a deliberately shaped book, not just a pile of good topics. The opera
 - observability provides evidence substrate;
 - registry assigns estate accountability.
 
+That shape is meant to be felt as reader outcomes, not only as chapter taxonomy:
+- Part V teaches the reader to capture run history, define tolerated budgets, and produce reviewable judgments;
+- Part VIII teaches the reader to manage lifecycle response, governed lineage, evidence visibility, and estate accountability as one production contour.
+
 ## Project Status
 
 - `Published core`: all eight parts of the book are already published.

@@ -59,6 +59,10 @@
 - observability 提供 evidence substrate；
 - registry 负责整个 estate 的 accountability。
 
+而这种形状也应该被读者感受到为一串 outcomes，而不只是 chapter taxonomy：
+- Part V 教会读者如何捕获 run history、定义可容忍的 budgets，并产出 reviewable judgments；
+- Part VIII 教会读者如何把 lifecycle response、governed lineage、evidence visibility 与整个 estate 的 accountability 读成一个 production contour。
+
 ## 项目当前状态
 
 - `Published core`：全书八个部分已经完整发布。

@@ -59,6 +59,10 @@
 - observability дает evidence substrate;
 - registry задает accountability всего estate.
 
+И эта форма должна чувствоваться как reader outcomes, а не только как chapter taxonomy:
+- Part V учит читателя захватывать run history, задавать допустимые budgets и производить reviewable judgments;
+- Part VIII учит читателя управлять lifecycle response, governed lineage, evidence visibility и accountability всего estate как одним production contour.
+
 ## Состояние проекта
 
 - `Published core`: восемь частей книги уже опубликованы.
