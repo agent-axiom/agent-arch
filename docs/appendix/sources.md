@@ -70,6 +70,8 @@
 - OpenAI, [Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
 - AWS, [Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+- arXiv, [The Art of Building Verifiers for Computer Use Agents](https://arxiv.org/abs/2604.06240v1)
+- GitHub, [microsoft/fara](https://github.com/microsoft/fara)
 
 ## Research frontier: память, наблюдаемость и multi-agent reliability
 
@@ -114,4 +116,4 @@
 Для чтения самой книги полезно держать еще одну простую развилку:
 
 - `Устойчивое ядро`: архитектура, периметр безопасности, память, execution, базовая наблюдаемость;
-- `Быстро меняющийся слой`: eval tooling, lifecycle governance, observability patterns, agent inventory, frontier research.
+- `Быстро меняющийся слой`: eval tooling, lifecycle governance, observability patterns, agent inventory, verifier design и frontier research.

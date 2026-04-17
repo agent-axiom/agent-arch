@@ -70,6 +70,8 @@ Below is the core set of primary sources used in the current version of the book
 - OpenAI, [Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
 - AWS, [Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+- arXiv, [The Art of Building Verifiers for Computer Use Agents](https://arxiv.org/abs/2604.06240v1)
+- GitHub, [microsoft/fara](https://github.com/microsoft/fara)
 
 ## Research frontier: memory, observability, and multi-agent reliability
 
@@ -114,4 +116,4 @@ If you continue developing the book, the best reading order is:
 For the book itself, one more split is useful:
 
 - `Stable core`: architecture, security perimeter, memory, execution, and baseline observability;
-- `Fast-moving layer`: eval tooling, lifecycle governance, observability patterns, agent inventory, and frontier research.
+- `Fast-moving layer`: eval tooling, lifecycle governance, observability patterns, agent inventory, verifier design, and frontier research.
