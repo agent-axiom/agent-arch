@@ -2,6 +2,8 @@
 
 ## 1. Start with a Failure, Not with Magic
 
+If there is one mistake this book keeps resisting, it is the habit of starting with apparent smartness instead of operational failure.
+
 Imagine a familiar story.
 
 A team builds an internal support agent:
@@ -22,6 +24,8 @@ The problems appear later:
 
 This is the central point of the whole book: most of the time, what breaks is not the model's "intelligence." What breaks is the engineering system around it.
 
+That is why this book is not really about how to make an agent feel magical. It is about how to stop the magic from collapsing the first time the system meets retries, side effects, approvals, long context, or incident pressure.
+
 ## 2. What These Systems Usually Lack
 
 When a team thinks about an agent as "an LLM plus a few tools," it almost always underbuilds the most expensive layers:
@@ -36,6 +40,8 @@ When a team thinks about an agent as "an LLM plus a few tools," it almost always
 That is why an agent can look impressive at first and then become expensive, fragile, and hard to operate.
 
 For that reason, it is more useful to think about a safe agent system not as one smart assistant, but as a platform for controlled execution.
+
+This is the book's main claim in its shortest form: **agents need a platform, not magic**.
 
 ## 3. What Vikulin Framed Well, and What Is No Longer Enough
 
@@ -180,6 +186,8 @@ If you do not yet have answers to those questions, it is too early to debate "ho
 If you remember only one idea from this chapter, let it be this:
 
 > A good agent product starts not with maximum autonomy, but with a predictable platform where autonomy is added gradually.
+
+That principle is intentionally less exciting than most agent demos. It is also what gives the rest of the book its shape.
 
 That is why the next chapter is not about "smartness" in the abstract. It is about the architecture of that platform: which layers need to exist so the system can be launched, observed, and evolved safely.
 
