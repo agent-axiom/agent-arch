@@ -22,6 +22,8 @@
 
 这就是为什么智能体系统的可观测性不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
 
+在本书里，tracing 的角色比整个 observability layer 更窄。Tracing 负责捕获执行的原始历史。后面的章节会分别说明 observability 如何把这段历史转成 evidence substrate，evals 如何把它转成 judgments，以及 assurance 或 governance 如何消费这些结果。
+
 ## 2. 为什么普通日志几乎总是不够
 
 当系统简单时，扁平日志和少量指标也许够用。但智能体系统几乎总是更复杂：
@@ -117,6 +119,8 @@ flowchart LR
 
 也就是说，event 应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器当作证据来分析”。
 
+这个区分很重要。Trace 还不是 verdict，不是 policy decision，也不是 incident response action。它是最底层的 raw capture layer，没有它，后续这些功能都无法可靠成立。
+
 ## 7. 好的 trace model 展示的是 control plane，而不只是 LLM latency
 
 如果可观测性最终只剩模型响应时间，团队看到的 picture 会非常扭曲。
@@ -132,6 +136,8 @@ flowchart LR
 - write tool 返回了模糊结果。
 
 所以 trace model 应覆盖整个 control flow，而不只是 inference step。
+
+因此，本章会停留在 capture boundary 上：哪些东西必须被记录、应该如何结构化，以及哪些内容必须在后续 review 中幸存下来。后面的 observability chapter 讨论的是 estate 级 evidence 与 detection，而不是重新定义什么叫 trace。
 
 ## 8. Trace 和 span 的最小字段集合
 
@@ -270,6 +276,8 @@ Observability 不应该变成数据泄漏渠道。
 - event schema 经常变化，导致分析系统失效。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
+
+这时系统也许已经产生了很多 telemetry exhaust，但仍然没有可靠的 raw run history。
 
 ## 14. 给智能体可观测性做一次快速成熟度测试
 

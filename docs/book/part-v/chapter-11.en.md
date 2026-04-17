@@ -22,6 +22,8 @@ If all you have is application logs and a few metrics, the answer is usually slo
 
 That is why observability for agent systems should be built not around "logs in general," but around the ability to reconstruct the history of one run.
 
+The role of tracing in this book is narrower than the whole observability layer. Tracing captures the raw history of execution. Later chapters will show how observability turns that history into an evidence substrate, how evals turn it into judgments, and how assurance or governance consume those outputs.
+
 ## 2. Why Ordinary Logs Are Almost Never Enough
 
 When a system is simple, flat logs and a few metrics can be enough. But an agent system is almost always more complicated:
@@ -117,6 +119,8 @@ Structured events are especially useful for:
 
 An event should answer not "what should I write in a log line?" but "what will we need later as machine-readable evidence?"
 
+That distinction matters. A trace is not yet a verdict, a policy decision, or an incident response action. It is the raw capture layer that makes those later functions possible.
+
 ## 7. A Good Trace Model Shows the Control Plane, Not Only LLM Latency
 
 If observability collapses into model response time only, the team gets a distorted picture.
@@ -132,6 +136,8 @@ In reality, the same support run often breaks elsewhere:
 - a write tool returns an ambiguous outcome.
 
 So a good trace model should cover the full control flow, not only the inference step.
+
+This chapter therefore stays at the capture boundary: what must be recorded, how it should be structured, and what must survive later review. The later observability chapter is about estate-wide evidence and detection, not about redefining what a trace is.
 
 ## 8. The Minimum Set of Fields for Traces and Spans
 
@@ -272,6 +278,8 @@ These problems are very recognizable:
 - event schema changes chaotically, and analytics break.
 
 When that happens, the team goes back to guesswork and manual log reading.
+
+At that point, the system may have telemetry exhaust, but it still does not have reliable raw run history.
 
 ## 14. A Fast Maturity Test for Agent Observability
 
