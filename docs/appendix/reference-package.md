@@ -4,6 +4,8 @@
 
 Его задача не в том, чтобы стать промышленным фреймворком. Он нужен как минимальная кодовая опора для **частей VII и VIII** книги.
 
+Этот пакет намеренно задуман как implementation anchor, а не как параллельный продукт. Его ценность в том, что читатель может посмотреть на runnable structure, которая стоит за аргументом книги, не превращая проект в framework manual.
+
 Здесь собран полный разбор пакета: CLI, конфиги, структура и связь с книгой.
 
 Практичный маршрут чтения такой:
@@ -217,6 +219,12 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `export-events` умеет добавлять `schema_version` и делать export-time redaction по выбранным полям;
 - `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
 - `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.
+
+Проще всего читать этот пакет так:
+
+- книгу использовать для architecture, sequence и operating-model argument;
+- этот пакет использовать для runnable structure, config surfaces и inspection examples;
+- appendix schemas использовать, чтобы видеть contract boundaries, которые runtime пытается сделать явными.
 
 ## Что делать дальше
 

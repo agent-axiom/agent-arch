@@ -4,6 +4,8 @@
 
 它的目标不是变成生产级框架，而是作为本书 **第七和第八部分** 的最小代码锚点。
 
+这个包被有意定位成 implementation anchor，而不是一个平行产品。它的价值在于，让读者能够看到本书论证背后的 runnable structure，而不会把整个项目重新变成 framework manual。
+
 这里是这个包的主说明页面。README 里只保留简短的上手说明，完整的命令行、配置和结构说明都集中放在这里。
 
 一个实用的阅读路径是：
@@ -217,6 +219,12 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - `export-events` 现在会带上 `schema_version`，也支持按字段在导出时脱敏；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
+
+阅读这个包最简单的方式是：
+
+- 用本书理解 architecture、sequence 与 operating-model argument；
+- 用这个包查看 runnable structure、config surfaces 与 inspection examples；
+- 用 appendix schemas 理解 runtime 想要明确表达的 contract boundaries。
 
 ## 下一步做什么
 

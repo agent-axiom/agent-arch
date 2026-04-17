@@ -4,6 +4,8 @@ The repository now includes a small runnable skeleton: [agent_runtime_ref](/User
 
 Its job is not to become a production framework. It exists as a minimal code anchor for **Parts VII and VIII** of the book.
 
+This package is intentionally an implementation anchor, not a parallel product. Its value is that it lets the reader inspect runnable structure behind the book's argument without turning the project into a framework manual.
+
 This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
 
 A practical reading path is:
@@ -217,6 +219,12 @@ There is also a practical usability win now:
 - `export-events` now includes `schema_version` and supports export-time redaction for selected fields;
 - `inspect-trace` reads and filters saved traces;
 - `replay-run` reconstructs a run from the saved `run_start` event.
+
+The simplest way to read this package is:
+
+- use the book for architecture, sequence, and operating-model argument;
+- use this package for runnable structure, config surfaces, and inspection examples;
+- use the appendix schemas to understand the contract boundaries the runtime is trying to make explicit.
 
 ## What to Do Next
 
