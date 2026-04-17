@@ -55,6 +55,7 @@ required_evals:
   - offline_regression
   - targeted_safety_eval
   - trace_regression_check
+  - verifier_quality_check
 status: approved
 ```
 
@@ -91,6 +92,8 @@ decided_by:
 
 这一层重要的原因在于：一个好的变更评审，并不自动等于“现在就可以发布”。
 
+当 rollout 依赖 richer verifier outputs，而不是只看 binary pass/fail status 时，这一点会更重要。此时 gate record 应该显式写出：受影响的 high-risk paths 是否已经审过 verifier quality 与 evidence linkage。
+
 一旦 runtime 里已经有 approval 和 stateful capability sessions，门禁还应该明确说明：interruption behavior 是否被单独审过，而不是默认“应该没问题”。
 
 ## 5. Change review 和 rollout gate 的区别
@@ -119,7 +122,8 @@ decided_by:
 
 - 评审会声明哪些评测是必须的；
 - 门禁会判断这些结果是否足够支撑当前发布波次；
-- 事故与发现结果后续还会回流进必需检查。
+- 事故与发现结果后续还会回流进必需检查；
+- verifier regressions 与 evidence-linkage failures 也会成为 rollout-relevant findings。
 
 也就是说，评测层不是独立存在的，而是门禁的一根支柱。
 
@@ -130,7 +134,8 @@ decided_by:
 - 追踪能看出高风险路径是否真的被覆盖；
 - 会话摘要能看出是否已经出现回归；
 - 结构化事件能说明上线前到底检查了什么；
-- interruption 与 expiry signals 能看出 approval-bound runs 是否在 operator 注意到之前就已经开始退化。
+- interruption 与 expiry signals 能看出 approval-bound runs 是否在 operator 注意到之前就已经开始退化；
+- verifier evidence 能说明 rollout review 所依赖的 process/outcome judgments 是否真的可追溯。
 
 这也是为什么成熟团队里，追踪与发布门禁往往是并排建设的。
 
@@ -161,6 +166,7 @@ decided_by:
 - approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
 - capability sessions 的 expiry 与 re-init behavior 会在 rollout 前被检查；
 - run traces、approval records 与 session export 之间的 delegated authorization continuity 会在 rollout 前被检查；
+- 如果 release control 依赖 graded outcomes，verifier quality 与 evidence linkage 也会在 rollout 前被检查；
 - orchestration-pattern changes 会在 rollout 前被检查，尤其是它们引入 routing、parallelization 或 delegated worker surfaces 时；
 - 回滚计划不能只存在于人的脑子里。
 
@@ -172,6 +178,7 @@ decided_by:
 - 门禁标准没有版本；
 - 遥测准备度靠肉眼判断；
 - 安全发现结果没有被当作阻断项；
+- verifier quality 或 evidence linkage 被默认假定，而不是被检查；
 - capability-session expiry 或 re-init behavior 没有被建模；
 - orchestration-pattern changes 被当成“实现细节”溜过去，没有显式评审；
 - 发布波次的定义太模糊；
@@ -185,6 +192,7 @@ decided_by:
 - 是否真的有独立的发布门禁，而不是只有一句“review approved”？
 - 是否能清楚看到发布前必须通过哪些检查？
 - 是否能看到 `change_id -> bundle_id -> rollout_wave` 这条链？
+- 当 graded outcomes 会影响 release 时，verifier quality 与 evidence-linkage checks 是否可见？
 - 阻断性发现结果和决策负责人是否被保留？
 - 事故复盘时能不能还原出到底是哪个门禁放行了这个变化？
 

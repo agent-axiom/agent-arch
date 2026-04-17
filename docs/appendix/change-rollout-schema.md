@@ -55,6 +55,7 @@ required_evals:
   - offline_regression
   - targeted_safety_eval
   - trace_regression_check
+  - verifier_quality_check
 status: approved
 ```
 
@@ -91,6 +92,8 @@ decided_by:
 
 Этот слой нужен потому, что даже хороший change review еще не означает автоматическую готовность к rollout.
 
+Это еще важнее, когда rollout опирается на richer verifier outputs, а не только на binary pass/fail status. Тогда gate record должен явно показывать, проверялись ли для затронутых high-risk paths качество verifier'а и linkage его evidence.
+
 Как только в runtime появляются approval и stateful capability sessions, gate еще должен явно фиксировать, было ли interruption behavior отдельно проверено, а не просто принято по умолчанию.
 
 ## 5. Чем change review отличается от rollout gate
@@ -119,7 +122,8 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 
 - review указывает, какие evals обязательны;
 - gate смотрит, достаточно ли результатов для конкретной rollout wave;
-- incidents и findings потом возвращаются обратно в список required checks.
+- incidents и findings потом возвращаются обратно в список required checks;
+- verifier regressions и failures в evidence linkage тоже становятся rollout-relevant findings.
 
 То есть eval layer не живет отдельно от release discipline, а становится одной из опор gate.
 
@@ -130,7 +134,8 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - по traces видно, прошли ли high-risk paths;
 - по session summaries видно, есть ли regressions;
 - по structured events можно понять, что именно было проверено перед выпуском;
-- по interruption и expiry signals видно, не деградируют ли approval-bound runs раньше, чем это заметят операторы.
+- по interruption и expiry signals видно, не деградируют ли approval-bound runs раньше, чем это заметят операторы;
+- verifier evidence показывает, действительно ли process/outcome judgments, использованные в rollout review, traceable.
 
 Поэтому у зрелой команды trace и rollout gate почти всегда стоят рядом.
 
@@ -161,6 +166,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
 - expiry и re-init behavior для capability sessions проверяются до rollout;
 - delegated authorization continuity между run traces, approval records и session export проверяется до rollout;
+- качество verifier'а и linkage его evidence проверяются до rollout, если release control зависит от graded outcomes;
 - changes в orchestration pattern проверяются до rollout, особенно если они добавляют routing, parallelization или delegated worker surfaces;
 - rollback plan не живет только в головах команды.
 
@@ -172,6 +178,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - gating criteria не versioned;
 - telemetry readiness проверяется "на глаз";
 - safety findings не считаются blocker'ами;
+- качество verifier'а или linkage его evidence предполагаются, а не проверяются;
 - capability-session expiry или re-init behavior остаются неоформленными;
 - changes в orchestration pattern проходят как «деталь реализации» без явного review;
 - rollout wave описан слишком расплывчато;
@@ -185,6 +192,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - Есть ли отдельный rollout gate, а не только "review approved"?
 - Видно ли, какие checks обязаны пройти перед rollout?
 - Есть ли связка `change_id -> bundle_id -> rollout_wave`?
+- Видно ли, что verifier quality и evidence-linkage checks присутствуют, когда graded outcomes влияют на release?
 - Сохраняются ли blocking findings и decision owners?
 - Можно ли по incident review восстановить, какой gate пропустил изменение?
 

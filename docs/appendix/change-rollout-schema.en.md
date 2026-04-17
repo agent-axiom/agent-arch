@@ -55,6 +55,7 @@ required_evals:
   - offline_regression
   - targeted_safety_eval
   - trace_regression_check
+  - verifier_quality_check
 status: approved
 ```
 
@@ -91,6 +92,8 @@ decided_by:
 
 This layer matters because even a good change review does not automatically imply rollout readiness.
 
+That becomes even more important when rollout depends on richer verifier outputs rather than only binary pass/fail status. In that case, gate records should make explicit whether verifier quality and evidence linkage were reviewed for the affected high-risk paths.
+
 Once approval and stateful capability sessions are part of the runtime, the gate should also say whether interruption behavior was reviewed explicitly, not assumed.
 
 ## 5. How change review differs from the rollout gate
@@ -119,7 +122,8 @@ Change review and rollout gates are tightly connected to the [eval schema](eval-
 
 - the review specifies which evals are mandatory;
 - the gate checks whether the results are sufficient for the specific rollout wave;
-- incidents and findings later flow back into the required checks.
+- incidents and findings later flow back into the required checks;
+- verifier regressions and evidence-linkage failures also become rollout-relevant findings.
 
 That means the eval layer is not separate from release discipline. It becomes one of the pillars of the gate.
 
@@ -130,7 +134,8 @@ The rollout gate becomes much stronger once the trace schema is in place:
 - traces show whether high-risk paths were exercised;
 - session summaries show whether regressions are appearing;
 - structured events show what was actually checked before release;
-- interruption and expiry signals show whether approval-bound runs are degrading before operators notice.
+- interruption and expiry signals show whether approval-bound runs are degrading before operators notice;
+- verifier evidence shows whether process/outcome judgments used in rollout review are actually traceable.
 
 That is why mature teams usually keep trace and rollout gate layers close together.
 
@@ -161,6 +166,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - interruption behavior for approval-bound or stateful capability sessions is checked before rollout;
 - expiry and re-init behavior for capability sessions is checked before rollout;
 - delegated authorization continuity between run traces, approval records, and session export is checked before rollout;
+- verifier quality and evidence linkage are checked before rollout when release control depends on graded outcomes;
 - orchestration-pattern changes are reviewed before rollout, especially when they add routing, parallelization, or delegated worker surfaces;
 - the rollback plan does not live only in people’s heads.
 
@@ -172,6 +178,7 @@ The common failure modes are familiar:
 - gating criteria are not versioned;
 - telemetry readiness is judged informally;
 - safety findings are not treated as blockers;
+- verifier quality or evidence linkage is assumed rather than checked;
 - capability-session expiry or re-init behavior is left unmodeled;
 - orchestration-pattern changes slip through as “implementation detail” without explicit review;
 - the rollout wave is described too vaguely;
@@ -185,6 +192,7 @@ Start with this short list and mark every "no" explicitly:
 - Is there a separate rollout gate, not just “review approved”?
 - Is it clear which checks must pass before rollout?
 - Is there a visible `change_id -> bundle_id -> rollout_wave` link?
+- Are verifier quality and evidence-linkage checks visible when graded outcomes affect release?
 - Are blocking findings and decision owners retained?
 - Can incident review reconstruct which gate allowed the change through?
 
