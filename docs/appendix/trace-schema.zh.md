@@ -23,6 +23,7 @@
 - `trace envelope`
 - `event catalog`
 - `payload contracts`
+- `verifier evidence linkage`
 
 哪怕 runtime 还很小，也值得这样做。
 
@@ -94,6 +95,8 @@
 
 这不是所谓“完美通用目录”。它只是一个紧凑但已经有实际价值的运行词汇表，足以支持：
 
+在更成熟的 production vocabulary 里，也应该预留 verifier-aware evidence 的位置，让 traces 不只解释 runtime 做了什么，还能解释 verifier 依据什么来判断 process quality、outcome quality 或 failure attribution。
+
 - 追踪检查；
 - 回归种子数据；
 - 会话摘要；
@@ -118,6 +121,16 @@
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+而 `memory_persisted` 通常应该包含：
+
+如果系统依赖 verifier-aware evals，也很适合单独定义一个 event 或 linked payload contract 来承载 verifier evidence，例如：
+
+- `verifier_id`
+- `process_score`
+- `outcome_score`
+- `failure_attribution`
+- `evidence_refs`
 
 而 `memory_persisted` 通常应该包含：
 
@@ -154,7 +167,8 @@
 - 独立且稳定的 `run_id`；
 - schema version 字段；
 - `display payload` 与 `machine payload` 的分离；
-- 敏感字段的脱敏规则。
+- 敏感字段的脱敏规则；
+- 把 traces 与 verifier evidence、screenshots 或 grading artifacts 显式关联起来的方式。
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
@@ -167,6 +181,7 @@
 - 每种 event type 的必需字段是否明确？
 - 能不能从追踪里还原出策略决策和工具路径？
 - 能不能从会话导出结果构建评测数据集？
+- 能不能把 trace 关联到用于 grading 或 rollout review 的 verifier evidence？
 - 有没有脱敏与模式版本化的计划？
 
 如果连续几个答案都是“没有”，那你现在更像是拥有日志，而不是拥有真正的追踪模式。

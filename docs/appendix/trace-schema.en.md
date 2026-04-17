@@ -23,6 +23,7 @@ That is why it is useful to separate:
 - `trace envelope`
 - `event catalog`
 - `payload contracts`
+- `verifier evidence linkage`
 
 Even in a small runtime.
 
@@ -94,6 +95,8 @@ Below is the current minimal event catalog.
 
 This is not meant to be a universal perfect catalog. It is a compact operational vocabulary that is already enough to support:
 
+A stronger production vocabulary should also make room for verifier-aware evidence, so traces can later explain not only what the runtime did, but also what evidence a verifier used to judge process quality, outcome quality, or failure attribution.
+
 - trace inspection;
 - regression seeds;
 - session summaries;
@@ -118,6 +121,16 @@ For example, `tool_policy_decision` should usually include at least:
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+And `memory_persisted` should usually include:
+
+If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
+
+- `verifier_id`
+- `process_score`
+- `outcome_score`
+- `failure_attribution`
+- `evidence_refs`
 
 And `memory_persisted` should usually include:
 
@@ -154,7 +167,8 @@ The reference runtime is intentionally small, so a more mature system should qui
 - a separate stable `run_id`;
 - version fields for the schema;
 - a split between `display payload` and `machine payload`;
-- redaction rules for sensitive fields.
+- redaction rules for sensitive fields;
+- an explicit way to link traces to verifier evidence, screenshots, or grading artifacts.
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -167,6 +181,7 @@ Start with this short list and mark every "no" explicitly:
 - Is it clear which fields are required for each event type?
 - Can you reconstruct the policy decision and tool path from a trace?
 - Can you build an eval dataset from a session export?
+- Can you link a trace to verifier evidence used in grading or rollout review?
 - Do you have a plan for redaction and schema versioning?
 
 If several answers are “no,” you probably have logging, but not yet a real trace schema.
