@@ -112,7 +112,8 @@ flowchart LR
 - cost attribution；
 - idempotency keys；
 - tenant 和 principal context；
-- memory writes。
+- memory writes；
+- 关于 run 之后如何被 grading 的 verifier evidence。
 
 也就是说，event 应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器当作证据来分析”。
 
@@ -151,6 +152,8 @@ flowchart LR
 
 对于这个支持事故，这些字段已经足够把 runtime、tool gateway 和具体的外部 side effect 串起来。
 
+在更成熟的 eval program 里，还应该保留足够的 verifier-aware review linkage，不只记录 run 里发生了什么，也记录哪些 trace 与 screenshots 后来支撑了 `process_score`、`outcome_score` 或 `failure_attribution`。
+
 ## 9. tracing 的实用规则
 
 如果要把 tracing 压缩成一组可执行规则，通常这些就够了：
@@ -160,6 +163,7 @@ flowchart LR
 3. 所有 tool calls、approval waits 和 policy decisions 都应该留下 machine-readable events。
 4. 不确定性要明确记录：`side_effect_unknown` 比假装成 `success` 更有价值。
 5. Redaction 和 schema stability 应该一开始就设计进去，而不是等第一次 incident review 之后再补。
+6. 如果 eval 或 rollout 依赖 verifier judgments，traces 就应该保留指向 verifier evidence 的显式 linkage。
 
 ## 10. 一个 tool execution 的 structured event 示例
 
@@ -189,6 +193,10 @@ side_effect: created
 - `tool_principal`
 - `request_id` 或其他业务对象 id
 - `result_class`
+- `verifier_id`
+- `evidence_refs`
+
+这些字段也能帮助团队把 operational telemetry 直接连到后续 grading 或 rollout review，而不是事后再手工重建 verifier evidence。
 
 正是这些字段，往往能帮你区分：
 

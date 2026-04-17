@@ -112,7 +112,8 @@ flowchart LR
 - cost attribution;
 - idempotency keys;
 - tenant и principal context;
-- memory writes.
+- memory writes;
+- verifier evidence о том, как run позже был оценен.
 
 То есть событие должно отвечать не на вопрос "что бы написать в лог", а на вопрос "что потом понадобится анализировать машинно?"
 
@@ -151,6 +152,8 @@ flowchart LR
 
 Для расследования support-инцидента этого уже достаточно, чтобы связать между собой runtime, tool gateway и конкретный внешний side effect.
 
+В более зрелой eval-программе полезно сохранять и достаточно связей для verifier-aware review: не только что произошло в run, но и какие trace и screenshots потом легли в основу `process_score`, `outcome_score` или `failure_attribution`.
+
 ## 9. Практические правила для tracing
 
 Если нужен короткий operational каркас, обычно достаточно таких правил:
@@ -160,6 +163,7 @@ flowchart LR
 3. Все tool calls, approval waits и policy decisions должны оставлять machine-readable события.
 4. Неопределенность нужно логировать явно: `side_effect_unknown` полезнее, чем притворный `success`.
 5. Redaction и schema stability должны проектироваться сразу, а не после первого incident review.
+6. Если eval или rollout зависят от verifier judgments, traces должны сохранять явную linkage к verifier evidence.
 
 ## 10. Пример structured event для tool execution
 
@@ -189,6 +193,10 @@ side_effect: created
 - `tool_principal`
 - `request_id` или другой business object id
 - `result_class`
+- `verifier_id`
+- `evidence_refs`
+
+Они же помогают связывать operational telemetry с последующим grading или rollout review, вместо того чтобы потом заново собирать verifier evidence вручную.
 
 Именно они часто позволяют различить:
 

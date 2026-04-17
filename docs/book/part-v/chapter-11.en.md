@@ -112,7 +112,8 @@ Structured events are especially useful for:
 - cost attribution;
 - idempotency keys;
 - tenant and principal context;
-- memory writes.
+- memory writes;
+- verifier evidence for how the run was later graded.
 
 An event should answer not "what should I write in a log line?" but "what will we need later as machine-readable evidence?"
 
@@ -151,6 +152,8 @@ To make the system genuinely investigation-friendly, it helps to have at least:
 
 For the support incident, that is already enough to tie together the runtime, the tool gateway, and the specific external side effect.
 
+In a more mature eval program, it also becomes useful to preserve enough linkage for verifier-aware review: not only what happened in the run, but which trace and screenshots later supported a `process_score`, `outcome_score`, or `failure_attribution` judgment.
+
 ## 9. Practical Rules for Tracing
 
 If you need a short operational frame, rules like these are usually enough:
@@ -160,6 +163,7 @@ If you need a short operational frame, rules like these are usually enough:
 3. All tool calls, approval waits, and policy decisions should emit machine-readable events.
 4. Uncertainty should be logged explicitly: `side_effect_unknown` is more useful than fake `success`.
 5. Redaction and schema stability should be designed up front, not after the first incident review.
+6. If eval or rollout depends on verifier judgments, traces should preserve explicit linkage to verifier evidence.
 
 ## 10. Example Structured Event for Tool Execution
 
@@ -189,6 +193,12 @@ If the goal is not only dashboards but real incident investigation, it is usuall
 - `tool_principal`
 - `request_id` or another business object id
 - `result_class`
+- `verifier_id`
+- `evidence_refs`
+
+Those fields often make the difference between:
+
+They also make it easier to connect operational telemetry to later grading or rollout review, instead of forcing teams to reconstruct verifier evidence from scratch.
 
 Those fields often make the difference between:
 
