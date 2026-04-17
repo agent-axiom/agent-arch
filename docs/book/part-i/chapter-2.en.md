@@ -35,7 +35,7 @@ But a production system cannot run on a hand-wavy version of that flow. Too many
 - what to do if a tool returns a partial or unstable result;
 - how to reconstruct the full path later during an incident.
 
-This is exactly where platform architecture comes from.
+This is exactly where platform architecture comes from. It does not come from a love of layers. It comes from the need to answer those questions before a risky write path exists.
 
 ## 2. The Minimal Shape of an Agent, and Why It Is Not Enough
 
@@ -62,6 +62,8 @@ But it stops being enough for production. The moment you add:
 - multiple teams and access roles,
 
 the minimal triad stops being an architecture. It remains only the core around which a platform must be built.
+
+This is the proof step after Chapter 1. The earlier claim was that agents need a platform. Here the reason becomes concrete: `model + tools + instructions` is enough to make a prototype behave, but not enough to explain rights, side effects, accountability, and recovery once the system touches reality.
 
 ## 3. How One Request Should Move Through the System
 
@@ -169,7 +171,7 @@ flowchart TB
 
 </div>
 
-The important thing in this diagram is not the elegance of the layers. It is their role:
+The important thing in this diagram is not the elegance of the layers. It is that each layer answers a failure question the prototype cannot answer on its own:
 
 | Layer | What it does | Why it hurts to skip it |
 | --- | --- | --- |
