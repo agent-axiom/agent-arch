@@ -26,6 +26,8 @@
 
 但对 agent systems 来说，这远远不够。
 
+这里要始终保持一个简单区分：assurance 负责决定什么时候需要 containment、由谁来响应；observability 则通过保留可被信任的 evidence，让这些 release、incident 与 governance decision 真正有据可依。
+
 系统可能：
 
 - 没有宕机；
@@ -126,6 +128,8 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 
 从这里开始，observability 就真正和 security detection、operational governance 连在一起了。
 
+但它不应该直接塌缩成这些功能本身。Observability 是 evidence substrate，它让 assurance、rollout 与 registry functions 能基于同一份 traceable record 推理，而不是依赖彼此冲突的 dashboards、screenshots 或事后回忆。
+
 ## 6. 什么叫 detection-ready telemetry
 
 `Detection-ready telemetry` 并不只是“我们有日志”。
@@ -167,6 +171,8 @@ Governance 往往会被写成：
 - 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse、orchestration-pattern drift、verifier-quality drift 与 contract mismatches。
 
 所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
+
+这种 framing 也把本章和 assurance chapter、registry chapter 清楚地区分开来。Assurance 负责 containment 与 response；registry 负责 estate accountability；observability 则是让二者都可审计的 shared substrate。
 
 ## 8. Research frontier 正在把 observability 推向哪里
 
@@ -317,6 +323,8 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - 你能把 observability 当成 release evidence，而不是只当 debug aid 吗？
 
 如果连续几个答案都是“否”，那你的 observability 虽然已经存在，但还没有变成 governance layer。
+
+这通常意味着平台还只能描述 activity，却还不能提供那种足以让 reviewer、incident owner 或 estate governor 有信心依赖的稳定 evidence。
 
 ## 14. 值得配套阅读的参考页
 

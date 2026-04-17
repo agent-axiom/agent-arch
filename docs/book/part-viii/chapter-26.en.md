@@ -26,6 +26,8 @@ In an ordinary service, observability often starts with a simple set:
 
 For agent systems, that is not enough.
 
+The distinction to keep in view is simple: assurance decides when to contain and who responds. Observability makes that decision possible by preserving evidence that can actually be trusted during release, incident, and governance work.
+
 A system can:
 
 - stay up;
@@ -126,6 +128,8 @@ It is much more valuable to detect deviation from normal behavior:
 
 This is where observability starts to intersect with security detection and operational governance.
 
+But it should not collapse into them. Observability is the evidence substrate that lets assurance, rollout, and registry functions reason from the same traceable record instead of from competing dashboards, screenshots, or recollections.
+
 ## 6. What detection-ready telemetry means
 
 `Detection-ready telemetry` does not just mean “we log something.”
@@ -167,6 +171,8 @@ Strong governance requires:
 - spotting stuck approvals, aging background runs, capability-session expiry drift, approval-resume misuse, orchestration-pattern drift, verifier-quality drift, and contract mismatches before they become incidents.
 
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
+
+That framing also keeps this chapter separate from the assurance chapter and the registry chapter. Assurance is about containment and response. Registry is about estate accountability. Observability is the shared substrate that makes both of those functions auditable.
 
 ## 8. Where the frontier is pushing observability next
 
@@ -315,6 +321,8 @@ If most of those conditions are missing, the team may have observability tooling
 - Can you use observability as release evidence rather than only as a debugging aid?
 
 If several answers are “no,” you already have observability, but it has not yet become a governance layer.
+
+That usually means the platform can still describe activity, but it cannot yet provide the kind of stable evidence a reviewer, incident owner, or estate governor can rely on with confidence.
 
 ## 14. Useful reference pages
 
