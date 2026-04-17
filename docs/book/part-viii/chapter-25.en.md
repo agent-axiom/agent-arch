@@ -39,6 +39,8 @@ This is where it is useful to distinguish:
 - `control evals`;
 - `automated red teaming`.
 
+The clean boundary is this: evals judge how the system behaves and whether the control surface proves itself under pressure. They do not replace the assurance response loop, the observability evidence layer, or the estate registry. They generate the judgments those other layers later consume.
+
 ## 2. What behavioral evals are
 
 Behavioral evals do not only test the final output. They test the shape of the system's behavior.
@@ -255,6 +257,8 @@ In a mature system, the flow looks like this:
 
 That is how the eval layer stops being “a metrics table” and becomes part of the operating model.
 
+This is also why the chapter should be read as a testing and judgment layer. Assurance decides how to respond to findings. Observability preserves the evidence. Registry assigns accountability across the estate. Evals decide what was actually tested, what failed, and how much confidence the team should place in the current control posture.
+
 ## 12. The most common mistakes
 
 - all evals collapse into final-answer quality;
@@ -284,6 +288,8 @@ A stronger bar is this:
 - release decisions can point to control evidence, not only quality scores.
 
 If most of those conditions are missing, the team may have evaluation activity, but it still does not have enough behavioral and control coverage.
+
+At that point, the team may be measuring behavior without yet producing the kind of reviewable judgments that rollout, assurance, and governance functions can reliably act on.
 
 ## 14. Practical checklist
 

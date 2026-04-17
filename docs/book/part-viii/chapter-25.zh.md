@@ -39,6 +39,8 @@
 - `control evals`
 - `automated red teaming`
 
+这里的清晰边界是：evals 负责判断系统如何行为，以及 control surface 在受压时是否真的证明了自己。它们不替代 assurance response loop、observability evidence layer 或 estate registry。它们产出的是供这些层后续消费的 judgments。
+
 ## 2. 什么是行为评测
 
 行为评测不只检查最终输出，还检查系统的行为形态。
@@ -255,6 +257,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这样评测层就不再只是“一张指标表”，而会变成运行模型的一部分。
 
+也正因为如此，本章更应该被理解成 testing and judgment layer。Assurance 决定如何响应 findings；observability 保存 evidence；registry 在整个 estate 上分配 accountability；而 evals 决定到底测试了什么、哪里失败了，以及团队当前应当对 control posture 保持多大信心。
+
 ## 12. 最常见的错误
 
 - 所有评测最后都退化成最终答案质量；
@@ -284,6 +288,8 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - release decisions 能拿出 control evidence，而不只是 quality scores。
 
 如果这些条件大多不成立，那团队也许已经有一些 evaluation activity，但还没有足够的 behavioral 和 control coverage。
+
+这时团队也许已经在测量行为，但还没有产出那种足以让 rollout、assurance 与 governance functions 稳定依赖的 reviewable judgments。
 
 ## 14. 实用检查清单
 

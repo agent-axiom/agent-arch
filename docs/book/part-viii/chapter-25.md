@@ -39,6 +39,8 @@ Regression evals отлично отвечают на вопрос:
 - `control evals`;
 - `automated red teaming`.
 
+Чистая граница здесь такая: evals выносят суждение о том, как система ведет себя и доказывает ли control surface свою работоспособность под давлением. Они не заменяют assurance response loop, observability evidence layer или estate registry. Они производят judgments, которыми потом пользуются все эти слои.
+
 ## 2. Что такое behavioral evals
 
 Behavioral evals проверяют не только финальный output, но и форму поведения системы.
@@ -255,6 +257,8 @@ Grading contract становится сильнее, если умеет хра
 
 Так eval layer перестает быть “таблицей метрик” и становится частью operating model.
 
+Именно поэтому эту главу лучше читать как testing and judgment layer. Assurance решает, как отвечать на findings. Observability сохраняет evidence. Registry распределяет accountability по всему estate. Evals решают, что именно было протестировано, что сломалось и насколько вообще можно доверять текущему control posture.
+
 ## 12. Самые частые ошибки
 
 - все evals сводятся к final answer quality;
@@ -284,6 +288,8 @@ Grading contract становится сильнее, если умеет хра
 - release decisions умеют опираться на control evidence, а не только на quality scores.
 
 Если большинство этих условий не выполняется, у команды уже может быть evaluation activity, но достаточного behavioral и control coverage у нее пока нет.
+
+В этот момент команда уже может что-то измерять, но еще не производит тот тип reviewable judgments, на который rollout, assurance и governance functions могут надежно опираться.
 
 ## 14. Практический checklist
 
