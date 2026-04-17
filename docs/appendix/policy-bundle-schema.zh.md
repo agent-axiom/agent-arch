@@ -182,6 +182,10 @@ approval_contract:
 - `delegated_principal_policy`
 - `token_reuse_policy`
 - `on_authorization_revoke`
+- `mcp_discovery_source`
+- `mcp_server_owner`
+- `mcp_auth_mode`
+- `shadow_mcp_handling`
 
 这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
 
@@ -233,6 +237,7 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - 策略包描述这些能力在什么条件下、通过哪些 orchestration patterns 可以被调用；
 - 审批契约描述推理应该在何处停下并把控制权交给人；
 - authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行；
+- MCP governance contract 描述 capability 是否来自 approved registry、MCP server 由谁负责、由哪种 auth mode 保护，以及发现 shadow MCP path 时该如何处理；
 - verifier contract policy 描述哪些 verifier contracts 可以被信任用于 high-risk grading、rollout evidence 或 assurance decisions。
 
 ## 现在就该做什么

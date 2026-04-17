@@ -191,6 +191,7 @@ Its job is different:
 
 - to show which policy bundle and approval mode belong to a given agent;
 - to show whether the agent is entitled to a specific capability set;
+- to show which approved MCP servers, discovery sources, and auth modes belong to that agent's governed capability surface;
 - to show which lifecycle state the agent is currently in.
 
 Without that linkage, it becomes easy to end up in a state where:
@@ -212,7 +213,8 @@ Then the registry should help answer:
 - who owns capability-session expiry drift and emergency freeze actions;
 - which contract version their approval and capability payloads are expected to follow;
 - which verifier or grading contract is trusted for their high-risk eval evidence;
-- whether deprecated verifier contracts are still referenced anywhere in the estate.
+- whether deprecated verifier contracts are still referenced anywhere in the estate;
+- whether shadow MCP endpoints have appeared outside the approved registry.
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
 
@@ -230,6 +232,12 @@ agent:
   allowed_capabilities:
     - ticket_read
     - ticket_write
+  mcp_surface:
+    approved_servers:
+      - support-registry/ticketing-mcp
+    discovery_sources:
+      - platform_registry
+    auth_mode: managed_oauth
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
   runtime_controls:

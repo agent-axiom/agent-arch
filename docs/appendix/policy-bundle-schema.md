@@ -182,6 +182,10 @@ approval_contract:
 - `delegated_principal_policy`
 - `token_reuse_policy`
 - `on_authorization_revoke`
+- `mcp_discovery_source`
+- `mcp_server_owner`
+- `mcp_auth_mode`
+- `shadow_mcp_handling`
 
 Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
 
@@ -233,6 +237,7 @@ approval_contract:
 - набор политик описывает, как, при каких условиях и в каких orchestration patterns это можно использовать;
 - контракт подтверждения описывает, где система обязана остановиться и уступить человеку;
 - authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено;
+- MCP governance contract описывает, из какого approved registry пришла capability, кто owner у MCP server, какой auth mode ее защищает и что делать, если обнаружен shadow MCP path;
 - verifier contract policy описывает, каким verifier contracts вообще можно доверять для high-risk grading, rollout evidence или assurance decisions.
 
 ## Что сделать сразу

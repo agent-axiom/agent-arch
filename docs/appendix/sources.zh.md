@@ -60,6 +60,7 @@
 - Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
 - Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 - Microsoft Learn, [Agent Registry convergence with Microsoft Agent 365](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-registry-convergence)
+- Cloudflare, [面向更简单、更安全、更低成本企业级 MCP 部署的参考架构](https://blog.cloudflare.com/)
 
 ## 可观测性与质量评估
 

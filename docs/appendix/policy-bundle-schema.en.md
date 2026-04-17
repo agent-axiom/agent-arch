@@ -182,6 +182,10 @@ Useful additions now include:
 - `delegated_principal_policy`
 - `token_reuse_policy`
 - `on_authorization_revoke`
+- `mcp_discovery_source`
+- `mcp_server_owner`
+- `mcp_auth_mode`
+- `shadow_mcp_handling`
 
 That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
 
@@ -233,6 +237,7 @@ So the practical rule is simple:
 - the policy bundle describes how, under which conditions, and in which orchestration patterns that capability may be used;
 - the approval contract describes where reasoning must stop and hand control to a human;
 - the authorization contract describes under whose identity and delegated scope the action may execute;
+- the MCP governance contract describes whether the capability came from an approved registry, who owns the MCP server, which auth mode protects it, and what happens when a shadow MCP path is discovered;
 - the verifier contract policy describes which verifier contracts may be trusted for high-risk grading, rollout evidence, or assurance decisions.
 
 ## What to Do Right Away

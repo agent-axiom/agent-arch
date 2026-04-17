@@ -191,6 +191,7 @@ Registry не должен дублировать policy bundle или approval 
 
 - показать, какие policy bundle и approval mode относятся к данному agent;
 - показать, имеет ли agent право на определенный capability set;
+- показать, какие approved MCP servers, discovery sources и auth modes входят в governed capability surface этого agent;
 - показать, в каком lifecycle state агент сейчас живет.
 
 Если у тебя нет этой связки, то легко возникает состояние, в котором:
@@ -212,7 +213,8 @@ Registry не должен дублировать policy bundle или approval 
 - кто owner у capability-session expiry drift и emergency freeze actions;
 - какой contract version должны соблюдать их approval и capability payloads;
 - какой verifier или grading contract считается доверенным для их high-risk eval evidence;
-- не ссылаются ли где-то в estate на deprecated verifier contracts.
+- не ссылаются ли где-то в estate на deprecated verifier contracts;
+- не появились ли shadow MCP endpoints вне approved registry.
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
 
@@ -230,6 +232,12 @@ agent:
   allowed_capabilities:
     - ticket_read
     - ticket_write
+  mcp_surface:
+    approved_servers:
+      - support-registry/ticketing-mcp
+    discovery_sources:
+      - platform_registry
+    auth_mode: managed_oauth
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
   runtime_controls:

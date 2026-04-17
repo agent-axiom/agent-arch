@@ -191,6 +191,7 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 
 - 标明某个 agent 关联的是哪套 policy bundle 和 approval mode；
 - 标明它是否有权使用某一组 capabilities；
+- 标明哪些 approved MCP servers、discovery sources 与 auth modes 属于这个 agent 的 governed capability surface；
 - 标明它当前所处的 lifecycle state。
 
 如果没有这层连接，就很容易出现这种状态：
@@ -212,7 +213,8 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - capability-session expiry drift 与 emergency freeze actions 由谁负责；
 - 它们的 approval 与 capability payload 应该遵循哪个 contract version；
 - 哪个 verifier 或 grading contract 被信任为它们 high-risk eval evidence 的依据；
-- estate 里是否还有地方在引用 deprecated verifier contracts。
+- estate 里是否还有地方在引用 deprecated verifier contracts；
+- approved registry 之外是否已经出现了 shadow MCP endpoints。
 
 否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
 
@@ -230,6 +232,12 @@ agent:
   allowed_capabilities:
     - ticket_read
     - ticket_write
+  mcp_surface:
+    approved_servers:
+      - support-registry/ticketing-mcp
+    discovery_sources:
+      - platform_registry
+    auth_mode: managed_oauth
   policy_bundle: policy-v4
   approval_mode: required_for_high_risk
   runtime_controls:
