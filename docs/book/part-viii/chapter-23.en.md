@@ -21,6 +21,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - capability-session state and interruption lineage;
 - orchestration-pattern lineage and worker-boundary decisions;
 - delegated authorization lineage and revoke state;
+- verifier-contract lineage and evidence-retention obligations;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -88,6 +89,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - close or archive capability-session state and block uncontrolled re-init;
 - disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
 - revoke delegated authorization paths and archive their final lineage;
+- retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions;
 - revoke egress access;
 - close principals, secrets, and connectors;
 - record the final audit state.
@@ -118,7 +120,8 @@ The team usually needs to decide separately:
 - how long traces and approvals should be kept;
 - who remains the owner of archived state;
 - whether old datasets and memory artifacts may be reused by the replacement;
-- whether delegated authorization records must be retained to explain under whose identity old actions ran.
+- whether delegated authorization records must be retained to explain under whose identity old actions ran;
+- whether verifier evidence and verifier-contract history must be retained to explain why earlier releases were judged acceptable.
 
 So retirement affects not only the running system, but also the historical operational footprint.
 
@@ -153,7 +156,8 @@ For example:
 - a deprecated approval schema;
 - a deprecated runtime-control schema;
 - a deprecated orchestration pattern or worker-boundary policy;
-- a deprecated capability-session contract.
+- a deprecated capability-session contract;
+- a deprecated verifier contract.
 
 This matters because retirement almost always starts not with a shutdown, but with a clear signal:
 
@@ -193,6 +197,7 @@ retirement:
     - freeze_reinitialization
     - disable_deprecated_patterns
     - revoke_worker_capability_exposure
+    - retire_verifier_contracts
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -241,6 +246,7 @@ The problems are fairly repetitive:
 - paused approvals were left resumable after retirement;
 - expired capability sessions could still be re-initialized through stale control paths;
 - deprecated orchestration patterns or worker-boundary policies remained usable after retirement;
+- deprecated verifier contracts or verifier evidence obligations remained unclear after retirement;
 - background routes were forgotten;
 - archived state belongs to nobody;
 - deprecated schemas still remain accepted by gateways or runtimes;

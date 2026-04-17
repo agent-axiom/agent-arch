@@ -21,6 +21,7 @@
 - состояние capability sessions и interruption lineage;
 - lineage для orchestration patterns и worker-boundary decisions;
 - delegated authorization lineage и revoke state;
+- verifier-contract lineage и obligations по retention для verifier evidence;
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -88,6 +89,7 @@
 - закрыть или архивировать capability-session state и запретить uncontrolled re-init;
 - выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
 - отозвать delegated authorization paths и архивировать их final lineage;
+- вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
 - зафиксировать final audit state.
@@ -118,7 +120,8 @@ flowchart LR
 - как долго хранить traces и approvals;
 - кто остается owner у archived state;
 - можно ли использовать старые datasets и memory artifacts в replacement;
-- нужно ли сохранять delegated authorization records, чтобы объяснять, под чьей identity исполнялись старые действия.
+- нужно ли сохранять delegated authorization records, чтобы объяснять, под чьей identity исполнялись старые действия;
+- нужно ли сохранять verifier evidence и историю verifier contracts, чтобы объяснять, почему прежние релизы считались приемлемыми.
 
 То есть retirement затрагивает не только running system, но и накопленный рабочий след системы.
 
@@ -153,7 +156,8 @@ flowchart LR
 - deprecated approval schema;
 - deprecated runtime-control schema;
 - deprecated orchestration pattern или worker-boundary policy;
-- deprecated capability-session contract.
+- deprecated capability-session contract;
+- deprecated verifier contract.
 
 Это важно, потому что retirement почти всегда начинается не с выключения, а с ясного сигнала:
 
@@ -193,6 +197,7 @@ retirement:
     - freeze_reinitialization
     - disable_deprecated_patterns
     - revoke_worker_capability_exposure
+    - retire_verifier_contracts
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -241,6 +246,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - paused approvals остались resumable после retirement;
 - expired capability sessions все еще можно re-initialize через stale control paths;
 - deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement;
+- deprecated verifier contracts или obligations по verifier evidence остаются неясными после retirement;
 - background routes забыли выключить;
 - archived state никому не принадлежит;
 - deprecated schemas все еще принимаются gateways или runtime;

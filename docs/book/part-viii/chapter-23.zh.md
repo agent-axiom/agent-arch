@@ -21,6 +21,7 @@
 - capability-session state 与 interruption lineage；
 - orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
+- verifier-contract lineage 与 verifier evidence retention obligations；
 - 外部集成；
 - 用户预期；
 - 依赖它的工作流。
@@ -88,6 +89,7 @@
 - 关闭或归档 capability-session state，并阻断不受控的 re-init；
 - 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
+- retire 已废弃的 verifier contracts，并保留解释既往 rollout 或 assurance decisions 所需的 evidence；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
 - 固化最终审计状态。
@@ -118,7 +120,8 @@ flowchart LR
 - 追踪和审批保留多久；
 - 归档状态的负责人是谁；
 - 替换后的系统是否可以复用旧数据集和记忆工件；
-- 是否需要保留 delegated authorization records，以说明旧动作到底在谁的 identity 下执行。
+- 是否需要保留 delegated authorization records，以说明旧动作到底在谁的 identity 下执行；
+- 是否需要保留 verifier evidence 与 verifier-contract history，以解释为何早先的 releases 会被判定为可接受。
 
 所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 
@@ -153,7 +156,8 @@ flowchart LR
 - 已废弃的 approval schema；
 - 已废弃的 runtime-control schema；
 - 已废弃的 orchestration pattern 或 worker-boundary policy；
-- 已废弃的 capability-session contract。
+- 已废弃的 capability-session contract；
+- 已废弃的 verifier contract。
 
 这很重要，因为退役几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
 
@@ -191,6 +195,7 @@ retirement:
     - freeze_reinitialization
     - disable_deprecated_patterns
     - revoke_worker_capability_exposure
+    - retire_verifier_contracts
     - revoke_egress
     - archive_audit_state
     - set_retired_status
@@ -239,6 +244,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - paused approvals 在 retirement 之后仍然可以 resume；
 - 已过期 capability sessions 仍可通过陈旧控制路径 re-initialize；
 - 已废弃的 orchestration patterns 或 worker-boundary policies 在 retirement 后仍然可用；
+- 已废弃的 verifier contracts 或 verifier evidence obligations 在 retirement 后仍然不清楚；
 - background routes 被遗忘没有关闭；
 - 归档状态没有负责人；
 - deprecated schemas 仍然被 gateways 或 runtimes 接受；
