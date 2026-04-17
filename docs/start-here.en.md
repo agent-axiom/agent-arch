@@ -50,7 +50,7 @@ If you only have a short window, read this as one compressed story:
 1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
 3. [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
-4. [Part V. Reliability and Observability](book/part-v/index.en.md)
+4. [Part V. Reliability and Observability](book/part-v/index.en.md), to learn how to capture run history, define health budgets, and produce reviewable judgments
 5. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 
 After those five stops, you should already understand:
@@ -182,8 +182,8 @@ That is the shortest way to understand where the project is going and how it can
 
 - [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 - [Chapter 20. Change Management for Agent Systems](book/part-viii/chapter-20.en.md)
-- [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](book/part-viii/chapter-22.en.md)
-- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](book/part-viii/chapter-27.en.md)
+- [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](book/part-viii/chapter-22.en.md), for governed lineage and approved artifact identity
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](book/part-viii/chapter-27.en.md), for estate ownership and accountability
 
 ## What Makes This Book Different
 

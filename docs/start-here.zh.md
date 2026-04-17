@@ -50,7 +50,7 @@
 1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
 3. [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
-4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
+4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)，用来理解如何捕获 run history、定义 health budgets，并产出 reviewable judgments
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
 读完这五个停靠点，你应该已经理解：
@@ -182,8 +182,8 @@
 
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的 Change Management](book/part-viii/chapter-20.zh.md)
-- [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](book/part-viii/chapter-22.zh.md)
-- [第 27 章：Agent Inventory、Registry 与 Sprawl 控制](book/part-viii/chapter-27.zh.md)
+- [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](book/part-viii/chapter-22.zh.md)，用于掌握 governed lineage 与 approved artifact identity
+- [第 27 章：Agent Inventory、Registry 与 Sprawl 控制](book/part-viii/chapter-27.zh.md)，用于掌握整个 estate 的 ownership 与 accountability
 
 ## 这本书和别的内容有什么不同
 

@@ -50,7 +50,7 @@
 1. [Глава 1. Почему агенту нужна платформа, а не магия](book/part-i/chapter-1.md)
 2. [Глава 3. Контур безопасности и границы доверия](book/part-ii/chapter-3.md)
 3. [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
-4. [Часть V. Надежность и наблюдаемость](book/part-v/index.md)
+4. [Часть V. Надежность и наблюдаемость](book/part-v/index.md), чтобы понять, как захватывать run history, задавать health budgets и выносить reviewable judgments
 5. [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
 
 После этих пяти остановок ты уже должен понимать:
@@ -182,8 +182,8 @@
 
 - [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
 - [Глава 20. Change management для агентных систем](book/part-viii/chapter-20.md)
-- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](book/part-viii/chapter-22.md)
-- [Глава 27. Agent inventory, registry и борьба с sprawl](book/part-viii/chapter-27.md)
+- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](book/part-viii/chapter-22.md), чтобы держать governed lineage и identity доверенных артефактов
+- [Глава 27. Agent inventory, registry и борьба с sprawl](book/part-viii/chapter-27.md), чтобы держать ownership и accountability всего estate
 
 ## Чем эта книга отличается
 
