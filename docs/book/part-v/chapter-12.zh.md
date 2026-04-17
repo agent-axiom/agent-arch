@@ -26,6 +26,8 @@
 
 SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
+在本书里，SLO 的角色也很具体。Traces 捕获原始历史；evals 产出 judgments；observability 在系统尺度上保存 evidence；assurance 响应 findings；而 SLO 定义的是平台在运行中允许消耗的 health budget 与 risk budget。
+
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)、[Incident Record Schema](../../appendix/incident-record-schema.zh.md) 和 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)。
 
@@ -51,6 +53,8 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 - 用户是否没有被无意义地丢给人工。
 
 因此，智能体系统的 SLO 更适合围绕运行级行为来构建。
+
+这也是本章最清晰的边界：SLO 并不试图解释每一个 failure，也不试图证明每一个 control。它们定义的是，在 change、rollout 或 response 必须收紧之前，平台到底还能容忍多少退化、延迟、不安全行为、成本增长或人工负担。
 
 ## 3. 对这个支持智能体来说，真正重要的是五组 SLO
 
@@ -225,6 +229,8 @@ slo:
 
 重点不在具体阈值，而在于团队提前说清楚：什么才算系统的正常状态。
 
+正是这种约定，才把 metrics 变成 operating constraint。没有这一步，系统也许仍然在被测量，但还没有通过明确的 health budgets 与 risk budgets 被治理。
+
 现在，这种约定也可以把 verifier layer 纳入其中，尤其是在 rollout、assurance 或 post-incident classification 依赖它判断结果的时候。
 
 ## 11. 一个简单的 health classification 示例
@@ -270,6 +276,8 @@ def classify_run_health(run: RunHealth) -> str:
 - SLO 只挂在 dashboard 上，却不影响 rollout。
 
 一旦如此，SLO 就会变成装饰。团队看到了数字，但并没有通过这些数字来控制平台。
+
+这时平台也许已经有 dashboards，但还没有真正的 health-and-budget layer。
 
 ## 13. 给 SLO discipline 做一次快速成熟度测试
 

@@ -26,6 +26,8 @@ For a support agent, that is too weak. Even when every service is formally avail
 
 SLO exist exactly for this reason: to turn “health” from a feeling into measurable targets.
 
+The role of SLO in this book is also specific. Traces capture raw history. Evals produce judgments. Observability preserves evidence at system scale. Assurance responds to findings. SLO define the health budget and risk budget the platform is allowed to consume while it operates.
+
 !!! info "Need the schemas and artifacts?"
     If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md), the [Incident Record Schema](../../appendix/incident-record-schema.en.md), and the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md).
 
@@ -51,6 +53,8 @@ For the support agent, what matters is not the uptime of one library, but the ou
 - the user was not bounced to a human without reason.
 
 That is why SLO for agent systems are better built around run-level behavior.
+
+This is the clean boundary for the chapter: SLO are not trying to explain every failure or prove every control. They state what level of degradation, delay, unsafe behavior, cost growth, or human load the platform can tolerate before change, rollout, or response must tighten.
 
 ## 3. For This Support Agent, Five SLO Groups Actually Matter
 
@@ -225,6 +229,8 @@ slo:
 
 The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
 
+That agreement is what turns metrics into an operating constraint. Without it, the system may still be measured, but it is not yet being governed through explicit health and risk budgets.
+
 That agreement may now include the verifier layer too, especially when rollout, assurance, or post-incident classification relies on its judgments.
 
 ## 11. A Simple Health Classification Example
@@ -270,6 +276,8 @@ The problems here are very repetitive:
 - SLO exist only on dashboards and do not influence rollout.
 
 When that happens, SLO become decoration. The team looks at numbers, but does not control the platform through them.
+
+At that point, the platform may have dashboards, but it still does not have a real health-and-budget layer.
 
 ## 13. A Fast Maturity Test for SLO Discipline
 
