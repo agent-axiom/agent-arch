@@ -124,38 +124,38 @@ flowchart LR
 
 Практически полезный набор полей обычно такой:
 
-- capability name;
+- имя возможности;
 - owner;
 - mode: read / write / high_risk;
 - transport: mcp / gateway / sandboxed_exec;
 - exposure: direct / brokered / restricted;
-- input schema;
-- output shape;
-- approval requirement;
-- idempotency requirement;
-- timeout and retry defaults.
+- входная схема;
+- формат выхода;
+- требования к approval;
+- требования к идемпотентности;
+- значения timeout и retry по умолчанию.
 
-С таким контрактом runtime уже может вести себя предсказуемо, а не подстраиваться под каждую возможность ad hoc.
+С таким контрактом runtime уже может вести себя предсказуемо, а не подстраиваться под каждую возможность на ходу.
 
-## 6. Approval должен выглядеть как interruptible runtime path, а не как разговор в стороне
+## 6. Approval должен выглядеть как прерываемый путь выполнения в рантайме, а не как разговор в стороне
 
-Policy layer становится намного реальнее, когда approval моделируется как часть runtime control flow, а не как ручной процесс вне системы. Модель interrupts в LangGraph полезна именно этим: pause, review и resume становятся явными runtime primitives, а не ad hoc человеческими обходами.[^langgraph-interrupts]
+Policy layer становится намного реальнее, когда approval моделируется как часть управляющего потока рантайма, а не как ручной процесс вне системы. Модель interrupts в LangGraph полезна именно этим: pause, review и resume становятся явными примитивами рантайма, а не ad hoc человеческими обходами.[^langgraph-interrupts]
 
-Именно такая форма нужна и policy-heavy agent systems.
+Именно такая форма нужна и системам агентов с сильным policy-слоем.
 
-Когда high-risk capability доходит до approval boundary, runtime должен уметь:
+Когда high-risk возможность доходит до approval boundary, runtime должен уметь:
 
 - поставить run на паузу;
-- показать pending action и его контекст;
+- показать ожидающее действие и его контекст;
 - дождаться внешнего решения;
-- продолжить выполнение со структурированным outcome.
+- продолжить выполнение со структурированным результатом.
 
 Это намного сильнее, чем просто отправить сообщение оператору и надеяться, что окружающий код все еще помнит, на чем остановился.
 
-Полезно сразу различать два approval pattern:
+Полезно сразу различать два approval-паттерна:
 
 - прямой human approval для редких или действительно high-risk actions;
-- classifier-mediated approval paths для повторяющихся low-context решений, где ручной review создает approval fatigue.
+- classifier-mediated approval paths для повторяющихся low-context решений, где ручной review создает усталость от подтверждений.
 
 Второй путь не надо воспринимать как “approval убрали”. Его лучше мыслить как delegated control с более жесткими требованиями к evidence:
 
