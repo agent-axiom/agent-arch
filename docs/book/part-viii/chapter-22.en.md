@@ -36,6 +36,7 @@ The problem is that production behavior here depends on more than code. It also 
 - eval datasets;
 - approval rules and schemas;
 - runtime-control schemas;
+- verifier contracts, grading rules, and evidence-linkage rules;
 - orchestration-pattern governance rules and worker-safe catalog definitions;
 - capability-session interruption and re-initialization rules;
 - rollout bundles.
@@ -75,6 +76,7 @@ You need to be able to answer:
 - which policy config was active during the incident;
 - which retrieval corpus was used;
 - which eval set validated the release;
+- which verifier contract, grading rubric, and evidence-linkage rules were active;
 - which contract version and approval schema were active;
 - which interruption or expiry policy governed the run;
 - which orchestration pattern and worker-boundary policy governed the run;
@@ -184,6 +186,8 @@ That is why a good ADLC should treat eval datasets as part of the approved artif
 
 The same should increasingly be true for verifier contracts. If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
 
+This matters because a verifier contract does not merely score quality. It also defines what the system will count as acceptable evidence, which failures it can name precisely, and which release claims can be defended later. Once a verifier contract influences release judgment, incident attribution, or assurance status, its lineage becomes part of the evidence backbone rather than an optional eval detail.
+
 ## 8. Capability contracts and egress rules are part of the supply chain too
 
 In an agent system, a tool contract is not just documentation. It is part of the trusted operational surface.
@@ -212,6 +216,8 @@ That means provenance should increasingly preserve not only that a runtime-contr
 - which principal-binding rule and revoke behavior governed in-flight or paused actions.
 
 Those are provenance questions because they determine the governed identity of the behavior, not merely whether the behavior was visible in telemetry.
+
+That is exactly where this chapter's boundary matters. Telemetry may show that a pause, re-init, or delegated action happened. Provenance has to preserve which reviewed contract family made that behavior legitimate in the first place. Without that layer, incident review can see events but still fail to explain why the platform considered them valid.
 
 ## 9. Example approved artifact policy
 
@@ -303,6 +309,7 @@ The usual problems look like this:
 - orchestration-pattern governance changes have no artifact lineage;
 - nobody knows which exact artifact was active during an incident;
 - contract-version linkage is missing from incident evidence;
+- verifier-contract lineage is missing from release or assurance evidence;
 - deprecated patterns remain in production too long;
 - approved inventory exists in a wiki, but not in operational tooling.
 
@@ -314,7 +321,7 @@ A team should not think it has supply-chain discipline only because builds are s
 
 A stronger bar is this:
 
-- prompt, policy, eval, capability, approval, and runtime-control artifacts are treated as production artifacts;
+- prompt, policy, eval, capability, approval, runtime-control, and verifier artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
 - approved inventory and approved artifacts are kept as distinct control layers;
 - deprecated patterns can be blocked before they quietly persist in production;
