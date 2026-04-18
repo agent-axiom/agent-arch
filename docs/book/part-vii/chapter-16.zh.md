@@ -26,6 +26,8 @@
 - 区分必需层和可选增强；
 - 给团队一个没有多余魔法的起点。
 
+因此，本章最好不要只被读成一章关于模块边界的说明，它也应该被读成一章关于在变更压力下仍能成立的 runnable structure。真正的问题是，这个 runtime 现在是否已经有了一种形状，能够承受新 policy、新 tools、更长生命周期的 runs、interrupts 和 rollout pressure，而不会重新塌回一堆 handlers 和 exceptions。
+
 ## 2. 最小成熟 runtime 早就不只是一个模型调用
 
 一开始就应该放弃“agent = 一次模型调用 + tools”这种画面。

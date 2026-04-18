@@ -26,6 +26,8 @@ Its job is not to become the only possible implementation. Its job is to:
 - separate mandatory layers from optional enhancements;
 - give the team a starting point without unnecessary magic.
 
+That is also why this chapter should be read as a chapter about runnable structure under change pressure, not only as a chapter about module boundaries. The real question is whether the runtime now has a shape that can survive new policies, new tools, longer-lived runs, interrupts, and rollout pressure without dissolving back into handlers and exceptions.
+
 ## 2. A Minimally Mature Runtime Is Already More Than One Model
 
 It helps to drop the picture of "an agent = one model call plus tools" right away.
