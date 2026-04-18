@@ -324,6 +324,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - prompt、policy、eval、capability、approval、runtime-control 和 verifier artifacts 都被当成 production artifacts；
 - provenance 能在 incident review 和 rollout decisions 中被快速恢复；
+- release 和 assurance evidence 能回溯到当时生效的 verifier contract 与 contract family；
 - approved inventory 和 approved artifacts 被当成不同的 control layers 来管理；
 - deprecated patterns 能在它们悄悄留在 production 之前被阻断；
 - trust 绑定在显式 artifact properties 上，而不是靠社会性继承。
@@ -335,8 +336,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 如果你想快速检查工件纪律，可以问：
 
 - 所有生产工件都有 owner 吗？
-- model、prompt、policy、approval-schema、runtime-control 和 eval 工件都有版本吗？
-- incident review 时能快速恢复 provenance 与生效中的 contract/schema versions 吗？
+- model、prompt、policy、approval-schema、runtime-control、eval 和 verifier 工件都有版本吗？
+- incident review 时能快速恢复 provenance、verifier lineage 与生效中的 contract/schema versions 吗？
 - 平台是否有 approved inventory？
 - 你们能区分平台批准的模式和发布批准的工件吗？
 - 已废弃工件能被快速阻断吗？
