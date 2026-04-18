@@ -110,7 +110,7 @@ Should not dominate:
 - whole-estate inventory governance
 
 ### Chapter 22
-Job: explain how provenance, artifact approval, and lineage make lifecycle claims reviewable after the fact.
+Job: explain how the evidence backbone, artifact approval, and lineage make lifecycle claims reviewable after the fact.
 
 Should not dominate:
 - retirement/accountability ownership language that belongs in Chapters 23 and 27
