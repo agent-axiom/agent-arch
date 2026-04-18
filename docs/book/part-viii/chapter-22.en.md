@@ -323,6 +323,7 @@ A stronger bar is this:
 
 - prompt, policy, eval, capability, approval, runtime-control, and verifier artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
+- release and assurance evidence can be traced back to the active verifier contract and contract family;
 - approved inventory and approved artifacts are kept as distinct control layers;
 - deprecated patterns can be blocked before they quietly persist in production;
 - trust is attached to explicit artifact properties, not inherited socially.
@@ -334,8 +335,8 @@ If most of those conditions are missing, the team may have some artifact hygiene
 If you want to test your artifact discipline quickly, ask:
 
 - Do all production artifacts have owners?
-- Do model, prompt, policy, approval-schema, runtime-control, and eval artifacts have versions?
-- Can provenance and active contract/schema versions be restored quickly during incident review?
+- Do model, prompt, policy, approval-schema, runtime-control, eval, and verifier artifacts have versions?
+- Can provenance, verifier lineage, and active contract/schema versions be restored quickly during incident review?
 - Does the platform have an approved inventory?
 - Do you distinguish a platform-approved pattern from a release-approved artifact?
 - Can a deprecated artifact be blocked quickly?
