@@ -263,7 +263,7 @@ inventory:
     - unversioned_prompt_override
 ```
 
-Такой реестр полезен не внешним видом, а тем, что дает платформе явную карту доверенных и недоверенных рабочих шаблонов.
+Такой реестр полезен не внешним видом, а тем, что дает платформе явную карту доверенных и недоверенных рабочих схем.
 
 ## 11. Пример проверки готовности артефакта
 
@@ -301,10 +301,10 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы prompt-правил не версионируются;
 - наборы для оценки тихо меняются;
 - контракты возможностей редактируются без следа проверки;
-- approval или runtime-control schemas меняются без version discipline;
-- changes в governance orchestration pattern не имеют artifact lineage;
+- approval или runtime-control schemas меняются без дисциплины версий;
+- изменения в governance orchestration pattern не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
-- в evidence layer отсутствует contract-version linkage;
+- в доказательном слое отсутствует связь с версией контракта;
 - устаревшие шаблоны живут в промышленной среде слишком долго;
 - утвержденный реестр существует в wiki, но не в рабочих инструментах.
 
@@ -312,17 +312,17 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 ## 13. Быстрый тест зрелости для artifact governance
 
-Команде не стоит думать, что у нее уже есть supply-chain discipline, только потому, что сборки подписаны, а несколько конфигураций лежат в version control.
+Команде не стоит думать, что у нее уже есть дисциплина цепочки поставки, только потому, что сборки подписаны, а несколько конфигураций лежат в version control.
 
 Более сильная планка такая:
 
-- prompt, policy, eval, capability, approval и runtime-control artifacts считаются полноценными production artifacts;
-- provenance можно быстро восстановить и для incident review, и для rollout decisions;
-- approved inventory и approved artifacts живут как разные control layers;
+- prompt, policy, eval, capability, approval и runtime-control artifacts считаются полноценными производственными артефактами;
+- происхождение можно быстро восстановить и для incident review, и для rollout decisions;
+- approved inventory и approved artifacts живут как разные уровни контроля;
 - deprecated patterns можно заблокировать до того, как они тихо закрепятся в production;
 - доверие привязано к явным свойствам артефакта, а не передается социально.
 
-Если большинство этих условий не выполняется, у команды уже может быть какая-то artifact hygiene, но реального artifact governance у нее пока нет.
+Если большинство этих условий не выполняется, у команды уже может быть какая-то базовая аккуратность в обращении с артефактами, но реального управления артефактами у нее пока нет.
 
 ## 14. Практический чеклист
 
