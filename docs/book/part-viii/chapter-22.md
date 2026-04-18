@@ -34,7 +34,7 @@
 - корпуса для извлечения;
 - контракты возможностей;
 - наборы для оценки;
-- verifier contracts, rubric definitions и rules для связывания доказательной базы;
+- verifier contracts, rubric definitions и правила связывания доказательной базы;
 - правила и схемы подтверждения;
 - схемы runtime-control;
 - правила governance для orchestration pattern и определения worker-safe catalog;
@@ -76,7 +76,7 @@ Google Research очень точно показывает, что подтве�
 - какая конфигурация политик была во время инцидента;
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
-- какой verifier contract, grading rubric и rules для evidence linkage были активны;
+- какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
 - какая contract version и approval schema были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
@@ -104,7 +104,7 @@ Google Research очень точно показывает, что подтве�
 - цепочкой политик;
 - цепочкой возможностей;
 - цепочкой approval и runtime-control;
-- цепочкой governance для capability sessions;
+- цепочкой правил управления capability sessions;
 - цепочкой delegated authorization;
 - цепочкой данных и извлечения;
 - цепочкой оценки.
@@ -302,7 +302,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы для оценки тихо меняются;
 - контракты возможностей редактируются без следа проверки;
 - approval или runtime-control schemas меняются без дисциплины версий;
-- изменения в governance orchestration pattern не имеют прослеживаемого происхождения артефактов;
+- изменения в orchestration pattern не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в доказательном слое отсутствует связь с версией контракта;
 - устаревшие шаблоны живут в промышленной среде слишком долго;
@@ -316,9 +316,9 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 Более сильная планка такая:
 
-- prompt, policy, eval, capability, approval и runtime-control artifacts считаются полноценными производственными артефактами;
+- prompt-, policy-, eval-, capability-, approval- и runtime-control-артефакты считаются полноценными производственными артефактами;
 - происхождение можно быстро восстановить и для разбора инцидента, и для решений о раскатке;
-- approved inventory и approved artifacts живут как разные уровни контроля;
+- approved inventory и approved artifacts существуют как разные уровни контроля;
 - deprecated patterns можно заблокировать до того, как они тихо закрепятся в промышленной среде;
 - доверие привязано к явным свойствам артефакта, а не передается социально.
 
