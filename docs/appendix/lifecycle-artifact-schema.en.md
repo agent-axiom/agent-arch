@@ -194,7 +194,8 @@ Start with this short list and mark every "no" explicitly:
 
 - Do high-risk changes have explicit change records?
 - Do you have an approved artifact bundle instead of a list of latest YAML files?
-- Can you reconstruct the active bundle from an incident trace?
+- Can you reconstruct the active bundle and its release identity from an incident trace?
+- Can you tell which verifier-bearing contract family a release was approved under?
 - Is there a retirement plan for deprecated capabilities and policy bundles?
 - Does archived state have an owner after replacement?
 - Is the rollback unit clear at the lifecycle-artifact level?
