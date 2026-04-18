@@ -87,6 +87,8 @@ Google Research очень правильно показывает, что пр�
 
 Именно поэтому provenance в этой главе стоит читать узко и предметно. Это не весь evidence layer целиком. Это governed lineage layer для trusted artifacts, release identity и decision-bearing versions.
 
+В этом и состоит главный смысл этой главы. Она должна показать, где evidence перестает быть просто общей телеметрией и превращается в управляемый опорный слой: место, которое сохраняет, на какой именно reviewed artifact set, trusted contract version и approved release identity потом опирается разбор инцидента или управленческое решение.
+
 !!! info "Нужны артефакты цепочки поставки?"
     Для формального описания смотри [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md), [схему набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md) и [схему change review и rollout gate](../../appendix/change-rollout-schema.md).
 

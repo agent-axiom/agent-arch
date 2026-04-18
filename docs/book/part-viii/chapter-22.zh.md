@@ -87,6 +87,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 这也是为什么本章里的 provenance 应该被狭义而具体地理解。它不是整个 evidence layer。它是围绕 approved artifacts、release identity 与 decision-bearing versions 的 governed lineage layer。
 
+这也正是本章的核心承诺。它要帮助读者看见 evidence 是怎样从一般性的 telemetry 变成受治理的 backbone：这一层保存着后续事故复盘或治理决策究竟建立在哪一组 reviewed artifacts、哪一个 trusted contract version，以及哪一个 approved release identity 之上。
+
 !!! info "需要供应链工件？"
     如果你需要契约层视角，可以直接查看 [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
 
