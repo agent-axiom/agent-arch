@@ -32,7 +32,7 @@ Reader promise inside this stage:
 Those ideas have to become a runtime, policy layer, and rollout shape.
 
 ### Stage 5. Lifecycle discipline
-Once the system is alive, the reader should see a clean late-book geometry:
+Once the system is alive, the reader should see a clean lifecycle-role contour across the late book:
 - lifecycle frame
 - release judgment
 - assurance as response
