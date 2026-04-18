@@ -24,14 +24,14 @@
     - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement 与 runtime-control shutdown 把生命周期收束起来；
     - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
 
-    如果把这一部分当成一个连续论证来读，它其实直接延续了 Part VII 里搭起来的同一套系统：先让 runtime 成为真正具有 release-bearing 意义的系统，再让它的 changes 成为可治理对象，最后让它的 evidence、judgment 与 accountability 能够经得起时间。
+    如果把这一部分当成一个连续论证来读，它其实直接延续了 Part VII 里搭起来的同一套系统：第 19 章给出生命周期框架，第 20 章把 release-bearing change 变成 operational judgment，第 21 章把 assurance 变成 response function，第 22 章固定 evidence backbone，第 23 章完成 lifecycle closure，而第 24 到 27 章则把同一套系统继续推进到 adversarial pressure、judgment、evidence substrate 与整个 estate 的 accountability。
 
 ## 这一部分解决什么问题
 
 这一部分向读者给出一串连续的承诺：
 
 - 读完前几章后，你应该能把 agent system 看成 governed lifecycle，而不是一次性的 launch；
-- 读完中段章节后，你应该能把 response、provenance、retirement、judgment、observability 与 accountability 区分成不同的 operational roles；
+- 读完中段章节后，你应该能把 response、evidence backbone、lifecycle closure、adversarial pressure、judgment、observability substrate 与 accountability 区分成不同的 operational roles；
 - 到这一部分结束时，你应该能把 production agent estate 读成一个受管理的 contour，而不是一堆松散 controls 的堆积。
 
 更具体地说，这一部分：

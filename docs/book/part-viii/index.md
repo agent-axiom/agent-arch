@@ -24,14 +24,14 @@
     - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement и shutdown runtime-control surfaces;
     - [Главы 24-27](chapter-24.md): расширить тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
-    Если читать эту часть как единый аргумент, она напрямую продолжает систему, собранную в Part VII: сначала рантайм становится релизно-значимой системой, потом его изменения становятся предметом управления, а затем его evidence, judgment и accountability должны выдерживать время.
+    Если читать эту часть как единый аргумент, она напрямую продолжает систему, собранную в Part VII: Глава 19 задает рамку жизненного цикла, Глава 20 превращает release-bearing change в operational judgment, Глава 21 делает assurance response function, Глава 22 закрепляет evidence backbone, Глава 23 закрывает жизненный цикл, а Главы 24-27 продолжают тот же контур через adversarial pressure, judgment, evidence substrate и accountability всего estate.
 
 ## Что решает эта часть
 
 Эта часть дает читателю последовательность обещаний:
 
 - после первых глав ты должен видеть agent system как governed lifecycle, а не как одноразовый launch;
-- после средних глав ты должен различать response, provenance, retirement, judgment, observability и accountability как разные operational roles;
+- после средних глав ты должен различать response, evidence backbone, lifecycle closure, adversarial pressure, judgment, observability substrate и accountability как разные operational roles;
 - к концу части ты должен уметь читать production agent estate как один управляемый contour, а не как рыхлую кучу controls.
 
 Более конкретно эта часть:

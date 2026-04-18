@@ -24,14 +24,14 @@ This is where classical engineering discipline meets agent-specific behavior. Th
     - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, and runtime-control shutdown;
     - [Chapters 24-27](chapter-24.en.md): extend the same discipline into adversarial pressure, eval judgment, observability evidence, and estate accountability.
 
-    Read as one argument, this part continues the exact system assembled in Part VII: first the runtime becomes release-bearing, then its changes become governable, then its evidence, judgment, and accountability have to survive over time.
+    Read as one argument, this part continues the exact system assembled in Part VII: Chapter 19 provides the lifecycle frame, Chapter 20 turns release-bearing change into operational judgment, Chapter 21 makes assurance the response function, Chapter 22 fixes the evidence backbone, Chapter 23 closes the lifecycle, and Chapters 24-27 extend the same system into adversarial pressure, judgment, evidence substrate, and estate accountability.
 
 ## What This Part Solves
 
 This part makes a sequence of reader promises:
 
 - after the opening chapters, you should be able to see an agent system as a governed lifecycle rather than a one-time launch;
-- after the middle chapters, you should be able to distinguish response, provenance, retirement, judgment, observability, and accountability as separate operational roles;
+- after the middle chapters, you should be able to distinguish response, evidence backbone, lifecycle closure, adversarial pressure, judgment, observability substrate, and accountability as separate operational roles;
 - by the end, you should be able to read a production agent estate as one managed contour rather than a loose pile of controls.
 
 More concretely, this part:
