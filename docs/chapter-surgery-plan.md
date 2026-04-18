@@ -109,7 +109,7 @@ Part V and Part VIII role separation
 Expected effect:
 - less conceptual fatigue
 - clearer reason to read Chapters 11, 12, 13, 19, 20, 21, 22, 23, 24, 25, 26, 27 separately
-- stronger editorial geometry between the reliability block and the lifecycle block
+- stronger editorial geometry between the reliability block and the full lifecycle-role contour
 - clearer outcome promises at the part-index level
 
 ### Slice D
