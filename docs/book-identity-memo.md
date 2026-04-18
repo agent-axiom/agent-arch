@@ -77,8 +77,12 @@ It is getting stronger again when that role progression is visible as promise sh
 - Chapter 13 = reviewable judgment and regression discipline
 
 ### Part VIII
+- Chapter 19 = lifecycle frame
+- Chapter 20 = release judgment
 - Chapter 21 = assurance response
 - Chapter 22 = evidence backbone and lineage
+- Chapter 23 = lifecycle closure
+- Chapter 24 = adversarial pressure
 - Chapter 25 = judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
 - Chapter 27 = estate accountability and reconciliation
@@ -89,4 +93,4 @@ Promise shape is also part of that identity. If a page drifts back into inventor
 
 ## Book promise in one sentence
 
-Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, evidence, judgment, health, and accountability, presented as a reader journey of distinct promises rather than a pile of controls.
+Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, health, release judgment, response, evidence backbone, adversarial pressure, evidence substrate, and accountability, presented as a reader journey of distinct promises rather than a pile of controls.
