@@ -26,6 +26,8 @@
 
 它的目标不是“拖慢系统”，而是让访问、风险和可允许性的决定不再散落在随机的 `if` 分支里。
 
+因此，本章最好不要只被读成一章关于 policy pages 的说明，它也应该被读成一章关于 governed decisions 的说明。问题不在于团队有没有把一些规则写下来，而在于 runtime 是否终于拥有了一个可审查的 contract core，能够解释为什么某次 run 被允许、被暂停、被拒绝、被收窄，或被升级处理。
+
 !!! info "需要契约层的配套页面？"
     如果你想直接看更落地的工程形式，可以打开 [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)、[Approval Request 与 Decision Record Schema](../../appendix/approval-schema.zh.md) 和 [参考运行时包](../../appendix/reference-package.zh.md)。
 

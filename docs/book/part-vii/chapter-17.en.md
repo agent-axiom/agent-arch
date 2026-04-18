@@ -26,6 +26,8 @@ That is why the next mandatory layer in the reference implementation is the poli
 
 Its job is not to "slow the system down". Its job is to make decisions about access, risk, and admissibility explicit instead of scattering them across random `if` branches.
 
+That is also why this chapter should be read as a governed-decision chapter, not only as a policy-page chapter. The real question is not whether the team wrote some rules down. It is whether the runtime now has a reviewable contract core that can explain why a run was allowed, paused, denied, narrowed, or escalated.
+
 !!! info "Need the contract layer?"
     For the more applied view, open the [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md), the [Approval Request and Decision Record Schema](../../appendix/approval-schema.en.md), and the [Reference Package](../../appendix/reference-package.en.md).
 
