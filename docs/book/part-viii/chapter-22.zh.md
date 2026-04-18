@@ -47,9 +47,9 @@
 
 这里最好先给出一个很直白的定义：
 
-已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有负责人、来源证明、审查状态和清晰的运行角色。
+已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有负责人、来源证明、审查状态、清晰的运行角色，以及在发布身份中的明确位置。
 
-这意味着已批准工件不只是镜像或 wheel 文件。
+这意味着已批准工件不只是镜像或 wheel 文件。它们还是后续发布决策、assurance 判断或事故复盘必须能够准确追溯到的治理对象。
 
 在智能体平台里，它们往往包括：
 
@@ -76,7 +76,6 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个策略配置；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
-- 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
 - 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
 - 当时生效的是哪个 contract version 与 approval schema；
 - 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
@@ -145,7 +144,7 @@ flowchart LR
 
 这个区别很重要，因为清单提供平台级框架，而已批准工件提供发布级纪律。
 
-而这里 provenance 的核心，正是这种发布级纪律。问题不只是系统有没有 telemetry，而是系统当时究竟运行在什么 governed version、approved bundle 或 reviewed schema 之下。
+而这里 provenance 的核心，正是这种发布级纪律。问题不只是系统有没有 telemetry，而是系统当时究竟运行在什么 governed version、approved bundle、reviewed schema 或带有 verifier 约束的 contract family 之下。
 
 ## 6. 没有 provenance 的 prompt bundle，本质上就是一个 supply-chain 缺口
 
@@ -297,7 +296,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
     )
 ```
 
-重点很简单：可信工件应该由明确属性定义，而不是靠直觉判断。
+重点很简单：可信工件应该由明确属性定义，而不是靠直觉判断。如果平台无法显式检查工件是否就绪，最后就一定会退回到社会性信任、陈旧默认值和脆弱的发布身份上。
 
 ## 12. Artifact discipline 最容易坏在哪里
 
