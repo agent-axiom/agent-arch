@@ -6,6 +6,12 @@
 
 这个包被有意定位成 implementation anchor，而不是一个平行产品。它的价值在于，让读者能够看到本书论证背后的 runnable structure，而不会把整个项目重新变成 framework manual。
 
+这一页**不**承诺的事情是：
+
+- 它不会取代本书对这些层为何存在的解释；
+- 它不会成为读者学习 architectural trade-offs 的主要地方；
+- 它也不会试图把整个仓库变成一个 general-purpose agent framework。
+
 这里是这个包的主说明页面。README 里只保留简短的上手说明，完整的命令行、配置和结构说明都集中放在这里。
 
 一个实用的阅读路径是：

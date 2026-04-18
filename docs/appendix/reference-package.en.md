@@ -6,6 +6,12 @@ Its job is not to become a production framework. It exists as a minimal code anc
 
 This package is intentionally an implementation anchor, not a parallel product. Its value is that it lets the reader inspect runnable structure behind the book's argument without turning the project into a framework manual.
 
+What this page does **not** promise:
+
+- it does not replace the book's explanation of why the layers exist;
+- it does not become the main place where architectural trade-offs are learned;
+- it does not try to turn the repository into a general-purpose agent framework.
+
 This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
 
 A practical reading path is:
