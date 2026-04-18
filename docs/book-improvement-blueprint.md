@@ -33,7 +33,7 @@ Senior engineer / tech lead / platform-minded builder moving from demo agents to
 
 ## Core Promise
 
-After reading the book, the reader should stop thinking about agents as prompt tricks and start designing them as governed production systems with explicit control surfaces, evidence loops, lifecycle discipline, and accountability.
+After reading the book, the reader should stop thinking about agents as prompt tricks and start designing them as governed production systems with explicit trust boundaries, control surfaces, evidence loops, lifecycle discipline, and accountability.
 
 ## Non-Goals
 
