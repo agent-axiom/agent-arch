@@ -31,6 +31,8 @@ This is useful material, but the jobs-to-be-done need sharper walls.
 
 The newer editorial answer is not only topical separation. It is role clarity plus promise shape: each chapter and part intro should state a distinct reader outcome, so overlap becomes easier to detect and harder to reintroduce by accident.
 
+That same protection now has to apply across genre boundaries too. The book should carry argument and reader transformation, while appendix/reference/package surfaces should anchor, support, and prove. If support pages drift into retelling the same late-book argument, overlap returns in a different costume.
+
 ## Current status
 
 A substantial editorial separation pass has now landed.
