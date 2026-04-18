@@ -33,12 +33,15 @@ Those ideas have to become a runtime, policy layer, and rollout shape.
 
 ### Stage 5. Lifecycle discipline
 Once the system is alive, the reader should see a clean late-book geometry:
+- lifecycle frame
+- release judgment
 - assurance as response
 - provenance and approved artifacts as evidence backbone
+- retirement as lifecycle closure
+- adversarial pressure as a distinct stress contour
 - evals as judgment
 - observability as evidence substrate
 - registry as accountability layer
-- retirement as lifecycle closure
 
 Reader promise inside this stage:
 - first learn how change becomes lifecycle risk;
@@ -104,8 +107,12 @@ The manuscript is getting stronger when each cluster has a non-overlapping role.
 - Chapter 13 = judgment and regression discipline
 
 ### Part VIII geometry
+- Chapter 19 = lifecycle frame
+- Chapter 20 = release judgment
 - Chapter 21 = assurance response
 - Chapter 22 = governed lineage and evidence backbone
+- Chapter 23 = lifecycle closure
+- Chapter 24 = adversarial pressure
 - Chapter 25 = eval judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
 - Chapter 27 = estate accountability and reconciliation

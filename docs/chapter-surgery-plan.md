@@ -129,7 +129,7 @@ Expected effect:
 Already established in manuscript and should now be treated as a constraint, not an experiment:
 
 - Part V = capture, health, judgment
-- Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
+- Part VIII = lifecycle frame, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment under pressure, evidence substrate, accountability
 
 Already established in planning/manuscript shaping and should now also be treated as a constraint:
 

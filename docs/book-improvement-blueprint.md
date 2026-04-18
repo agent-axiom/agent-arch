@@ -76,9 +76,9 @@ Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 26: observability as evidence substrate
 - Chapter 27: registry/inventory as estate accountability
 
-Preserve the mirrored editorial geometry already found in the manuscript:
+Preserve the editorial geometry already found in the manuscript:
 - Part V = capture, health, judgment
-- Part VIII = response, evidence backbone, judgment under pressure, evidence substrate, accountability
+- Part VIII = lifecycle frame, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment, evidence substrate, accountability
 
 And harden promise shape at the same time:
 - part indexes should read as reader outcomes, not topic lists
@@ -146,8 +146,12 @@ This is no longer just a hypothesis. It is now a working manuscript constraint.
 - Chapter 13 = reviewable judgment and regression discipline
 
 ### Part VIII
+- Chapter 19 = lifecycle frame
+- Chapter 20 = release judgment
 - Chapter 21 = assurance response
 - Chapter 22 = evidence backbone and lineage
+- Chapter 23 = lifecycle closure
+- Chapter 24 = adversarial pressure
 - Chapter 25 = judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
 - Chapter 27 = estate accountability and reconciliation
