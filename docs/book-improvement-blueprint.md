@@ -76,7 +76,7 @@ Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 22: provenance/artifacts as evidence backbone
 - Chapter 23: lifecycle closure and operational end-of-life
 - Chapter 24: adversarial pressure inside the operational loop
-- Chapter 25: behavioral/control evals as judgment under adversarial pressure
+- Chapter 25: reviewable judgment under adversarial pressure
 - Chapter 26: observability as evidence substrate
 - Chapter 27: registry/inventory as estate accountability
 
