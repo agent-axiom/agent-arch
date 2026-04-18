@@ -80,23 +80,23 @@ flowchart LR
 
 Есть несколько границ, которые выгодно выделить в коде уже в первой версии:
 
-- `runtime.py` или `orchestrator.py` для run loop;
+- `runtime.py` или `orchestrator.py` для основного цикла;
 - `policy.py` для policy decisions;
 - `memory.py` для retrieval и memory writes;
-- `catalog.py` для capability registry;
-- `execution.py` для tool dispatch;
+- `catalog.py` для реестра возможностей;
+- `execution.py` для вызова инструментов;
 - `telemetry.py` для spans и structured events.
 
 Когда все это слеплено в один большой обработчик, первые демо получаются быстро, но взросление системы становится болезненным почти сразу.
 
-## 5. Не смешивай orchestration и business adapters
+## 5. Не смешивай оркестрацию и business adapters
 
 Одна из самых дорогих ошибок стартовой реализации: рантайм напрямую знает слишком много про конкретные внешние системы.
 
 Тогда код оркестрации начинает содержать:
 
-- условную логику по конкретным tools;
-- знание об external payload shapes;
+- условную логику по конкретным инструментам;
+- знание о внешних payload shapes;
 - локальные ретраи под конкретный API;
 - ad hoc redaction;
 - специальные обходы для отдельных интеграций.
@@ -123,7 +123,7 @@ agent_runtime/
 
 ## 7. Простой кодовый каркас orchestrator
 
-Ниже не production runtime, а именно blueprint-каркас. Он показывает, как разделяются шаги run и где должны проходить ключевые control points.
+Ниже не production runtime, а именно каркас-схема. Он показывает, как разделяются шаги run и где должны проходить ключевые control points.
 
 ```python
 from dataclasses import dataclass
@@ -156,11 +156,11 @@ def run_agent(request: RunRequest) -> RunResult:
     return RunResult(output_text=model_output["text"], status="success")
 ```
 
-Идея здесь очень простая: даже базовый runtime уже должен явно показывать policy, retrieval, tool execution и background updates как отдельные этапы.
+Идея здесь очень простая: даже базовый рантайм уже должен явно показывать policy, retrieval, tool execution и background updates как отдельные этапы.
 
-## 8. Длинные run не optional add-on, а часть baseline
+## 8. Длинные run не необязательная надстройка, а часть baseline
 
-Частая ошибка рантайма в том, что команда молча предполагает: любой полезный run должен завершаться в одном синхронном запросе. Это верно только пока система остается demo-shaped.
+Частая ошибка рантайма в том, что команда молча предполагает: любой полезный run должен завершаться в одном синхронном запросе. Это верно только пока система остается заточенной под демо.
 
 В реальном support-кейсе часть запусков по природе длиннее:
 
@@ -197,7 +197,7 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Если все это слепить в один непрозрачный state object, оператор уже не сможет объяснить, что именно resumed, что expired и что надо retry заново.
 
-### 9.1. Runtime должен относиться к capability session lifecycle как к first-class state
+### 9.1. Рантайм должен относиться к lifecycle capability session как к first-class state
 
 Минимально зрелый runtime обычно уже должен уметь хранить хотя бы:
 
@@ -209,7 +209,7 @@ def run_agent(request: RunRequest) -> RunResult:
 - `resume_token` или другой continuation handle;
 - `approval_state`, если stateful tool flow был поставлен на паузу из-за approval.
 
-Это не означает, что каждому tool нужен тяжелый session model. Это означает, что у рантайма должно быть место, где такой session state можно выразить, когда protocol этого требует.
+Это не означает, что каждому инструменту нужна тяжелая session model. Это означает, что у рантайма должно быть место, где такой session state можно выразить, когда protocol этого требует.
 
 ### 9.2. Progress и elicitation должны входить в ту же модель resume-control
 
