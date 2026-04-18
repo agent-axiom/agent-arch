@@ -109,7 +109,7 @@ Status: Part VIII is now assembled as a lifecycle block reinforced with current 
 
 Note: this is the fastest-moving block in the book. The principles are stable, but tooling, benchmarks, vendor guidance, and threat patterns change more often.
 
-Editorial shape: Part VIII now works as a mirrored late-book contour, response -> evidence backbone -> judgment under pressure -> evidence substrate -> accountability -> retirement.
+Editorial shape: Part VIII now works as a late-book lifecycle contour: lifecycle frame -> release judgment -> response -> evidence backbone -> lifecycle closure -> adversarial pressure -> judgment -> evidence substrate -> accountability.
 
 ## Publishing roadmap
 

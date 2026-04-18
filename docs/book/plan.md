@@ -131,7 +131,7 @@
 
 Примечание: это самый быстро меняющийся блок книги. Принципы здесь устойчивы, но tooling, benchmarks, vendor guidance и threat patterns обновляются заметно чаще.
 
-Редакторская форма: Part VIII теперь работает как зеркальный поздний контур, response -> evidence backbone -> judgment under pressure -> evidence substrate -> accountability -> retirement.
+Редакторская форма: Part VIII теперь работает как поздний контур жизненного цикла: lifecycle frame -> release judgment -> response -> evidence backbone -> lifecycle closure -> adversarial pressure -> judgment -> evidence substrate -> accountability.
 
 ## Роадмап публикации
 

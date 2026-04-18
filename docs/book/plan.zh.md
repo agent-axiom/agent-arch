@@ -109,7 +109,7 @@
 
 说明：这是全书变化最快的部分。原则相对稳定，但 tooling、benchmarks、vendor guidance 和 threat patterns 更新更频繁。
 
-编辑形状：Part VIII 现在作为一个镜像式的后段轮廓来工作，response -> evidence backbone -> judgment under pressure -> evidence substrate -> accountability -> retirement。
+编辑形状：Part VIII 现在作为一个后段生命周期轮廓来工作，lifecycle frame -> release judgment -> response -> evidence backbone -> lifecycle closure -> adversarial pressure -> judgment -> evidence substrate -> accountability。
 
 ## 发布路线图
 
