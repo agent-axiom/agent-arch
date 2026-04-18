@@ -136,9 +136,9 @@ Push to appendix/reference/runtime where appropriate:
 9. harden promise shape across entry surfaces, part indexes, and planning docs
 
 ### Phase C. Authority and finish
-9. expand evidence base
-10. editorial polish pass
-11. final book/reference boundary cleanup
+10. expand evidence base
+11. editorial polish pass
+12. final book/reference boundary cleanup
 
 ## Established editorial geometry
 
