@@ -58,6 +58,8 @@ A good rollout checklist is not there for ceremony. It is there to surface hidde
 
 ## 3. What Must Be Closed Before the First Rollout Wave
 
+This is the real shape of rollout discipline. A team is not deciding whether the feature feels promising. It is deciding whether every release-bearing contour is reviewable enough to survive partial failure, pause, drift, and rollback.
+
 For an agent platform, there are usually at least seven required blocks:
 
 - runtime correctness;
@@ -68,7 +70,7 @@ For an agent platform, there are usually at least seven required blocks:
 - operational readiness;
 - ownership and rollback planning.
 
-If even one of those blocks is not genuinely closed, the system is already exposed to unpleasant surprises.
+If even one of those blocks is not genuinely closed, the system is already exposed to unpleasant surprises. That is why rollout should be treated as a convergence question, not as a single green light owned by one team.
 
 For our support case, that means that before even a 5% canary, the team must be ready to answer not only "does the happy path work?" but also "what happens under partial failure?"
 

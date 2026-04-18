@@ -58,6 +58,8 @@
 
 ## 3. 第一波 rollout 前必须真正闭合什么
 
+这才是 rollout discipline 在实践中的真正形状。团队在决定的不是“这个功能看起来有没有前景”，而是每一个与 release 相关的 contour 是否已经被审查到足以承受 partial failure、pause、drift 与 rollback。
+
 对 agent platform 来说，通常至少有七个必须覆盖的块：
 
 - runtime correctness；
@@ -68,7 +70,7 @@
 - operational readiness；
 - ownership and rollback planning。
 
-只要其中有一块没有真正闭合，系统就已经暴露在意外之下。
+只要其中有一块没有真正闭合，系统就已经暴露在意外之下。这也是为什么 rollout 应该被看成多个 contour 的收敛问题，而不是某一个团队拥有的一盏绿色信号灯。
 
 对于这个支持场景，这意味着：即使只是 5% canary，团队也必须能回答的不只是“happy path 通不通”，而是“在 partial failure 下到底会发生什么”。
 
