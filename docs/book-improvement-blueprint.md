@@ -70,8 +70,12 @@ Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 11: tracing as raw evidence capture
 - Chapter 12: SLO as health and risk budgets
 - Chapter 13: eval loop as judgment and regression discipline
+- Chapter 19: lifecycle frame
+- Chapter 20: release judgment for change-bearing systems
 - Chapter 21: assurance as response to drift and findings
 - Chapter 22: provenance/artifacts as evidence backbone
+- Chapter 23: lifecycle closure and operational end-of-life
+- Chapter 24: adversarial pressure inside the operational loop
 - Chapter 25: behavioral/control evals as judgment under adversarial pressure
 - Chapter 26: observability as evidence substrate
 - Chapter 27: registry/inventory as estate accountability
