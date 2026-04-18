@@ -110,7 +110,7 @@
 
 ## 参考层在哪里
 
-如果你需要的是可复用的工程产物，先看这些页面：
+如果你需要的是可复用的工程产物，先看这些 support pages。它们的作用是锚定本书的论证，而不是取代本书本身的 reader journey：
 
 - [追踪模式与事件目录](appendix/trace-schema.zh.md)
 - [评测数据集模式与评分契约](appendix/eval-schema.zh.md)

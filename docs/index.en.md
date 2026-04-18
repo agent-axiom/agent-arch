@@ -110,7 +110,7 @@ The most common mistake in agent systems is simple: teams chase autonomy first a
 
 ## Where the reference layer lives
 
-If you need reusable artifacts, start with:
+If you need reusable artifacts, start with these support pages. They exist to anchor the book's argument, not to replace its reader journey:
 
 - [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
