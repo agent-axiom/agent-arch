@@ -4,6 +4,12 @@
 
 这页只负责说明全书结构和当前状态。如果你要按角色选择阅读路线，请看[从这里开始](../start-here.zh.md)。如果你关心发布技术栈的取舍，请看单独的[发布技术栈](../appendix/stack.zh.md)页面。
 
+理解这页最干净的方式是：
+
+- 本书承诺 argument、sequence 与 reader transformation；
+- support layers 承诺 schemas、runnable anchors、templates 与 contract pages；
+- 这份计划的作用，是展示书本身的形状，而不是用一个 project dashboard 来替代这本书。
+
 !!! info "按稳定性来阅读这本书"
     这本书可以分成两个层次：
 

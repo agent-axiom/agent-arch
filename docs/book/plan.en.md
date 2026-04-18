@@ -4,6 +4,12 @@ This version of the book is structured as an engineering playbook rather than a 
 
 This page focuses on structure and status. For a role-based reading path, open [Start Here](../start-here.en.md). For the publishing-stack explanation, use the dedicated [Publishing Stack](../appendix/stack.en.md) page.
 
+The cleanest way to read this page is:
+
+- the book promises argument, sequence, and reader transformation;
+- the support layers promise schemas, runnable anchors, templates, and contract pages;
+- this plan exists to show how the book itself is shaped, not to replace the book with a project dashboard.
+
 !!! info "How to read the book by stability level"
     The book has two layers:
 
