@@ -69,7 +69,7 @@ status: approved
 
 ## 4. Approved artifact bundle
 
-`artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации.
+`artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
 
 ```yaml
 kind: artifact_bundle
@@ -94,12 +94,13 @@ provenance:
     - runtime-review
 ```
 
-Этот слой полезен по двум причинам:
+Этот слой полезен по трем причинам:
 
 - он отделяет "есть артефакт" от "артефакт одобрен для релиза";
+- он делает идентичность выпуска проверяемой, а не неявной договоренностью;
 - он делает incident review и rollback гораздо короче.
 
-А когда capability-session governance уже оформлена явно, bundle почти всегда стоит делать достаточно подробным, чтобы было видно не только contract version, но и какие session-control assumptions были одобрены вместе с ним:
+А когда capability-session governance уже оформлена явно, bundle почти всегда стоит делать достаточно подробным, чтобы было видно не только contract version, но и какие session-control assumptions и семейство контрактов с verifier-ограничениями были одобрены вместе с ним:
 
 - expiry policy;
 - re-init policy;
@@ -164,8 +165,9 @@ owner: platform-operations
 
 - каждый high-risk change имеет `change_record`;
 - каждый production rollout указывает на `artifact_bundle`;
+- каждый artifact bundle может служить конкретной записью об идентичности выпуска, а не просто рыхлым списком версий;
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
-- lineage verifier contract можно восстановить, если release или assurance зависят от graded outcomes;
+- lineage verifier contract и идентичность семейства контрактов можно восстановить, если release или assurance зависят от graded outcomes;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
 - delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
