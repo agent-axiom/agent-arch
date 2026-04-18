@@ -24,6 +24,8 @@ This is where classical engineering discipline meets agent-specific behavior. Th
     - [Chapter 23](chapter-23.en.md): close the lifecycle through replacement, retirement, and runtime-control shutdown;
     - [Chapters 24-27](chapter-24.en.md): extend the same discipline into adversarial pressure, eval judgment, observability evidence, and estate accountability.
 
+    Read as one argument, this part continues the exact system assembled in Part VII: first the runtime becomes release-bearing, then its changes become governable, then its evidence, judgment, and accountability have to survive over time.
+
 ## What This Part Solves
 
 This part makes a sequence of reader promises:

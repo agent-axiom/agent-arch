@@ -24,6 +24,8 @@
     - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement 与 runtime-control shutdown 把生命周期收束起来；
     - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
 
+    如果把这一部分当成一个连续论证来读，它其实直接延续了 Part VII 里搭起来的同一套系统：先让 runtime 成为真正具有 release-bearing 意义的系统，再让它的 changes 成为可治理对象，最后让它的 evidence、judgment 与 accountability 能够经得起时间。
+
 ## 这一部分解决什么问题
 
 这一部分向读者给出一串连续的承诺：

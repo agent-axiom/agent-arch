@@ -24,6 +24,8 @@
     - [Глава 23](chapter-23.md): закрыть lifecycle через replacement, retirement и shutdown runtime-control surfaces;
     - [Главы 24-27](chapter-24.md): расширить тот же контур на adversarial pressure, eval judgment, observability evidence и accountability всего agent estate.
 
+    Если читать эту часть как единый аргумент, она напрямую продолжает систему, собранную в Part VII: сначала рантайм становится релизно-значимой системой, потом его изменения становятся предметом управления, а затем его evidence, judgment и accountability должны выдерживать время.
+
 ## Что решает эта часть
 
 Эта часть дает читателю последовательность обещаний:
