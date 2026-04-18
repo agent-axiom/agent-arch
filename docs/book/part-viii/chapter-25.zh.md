@@ -41,6 +41,8 @@
 
 这里的清晰边界是：evals 负责判断系统如何行为，以及 control surface 在受压时是否真的证明了自己。它们不替代 assurance response loop、observability evidence layer 或 estate registry。它们产出的是供这些层后续消费的 judgments。
 
+这也正是本章的核心承诺。它要帮助读者把 evals 看成整个生命周期里的 reviewable judgment layer：在这里，行为、控制质量和 verifier quality 会被转化成 rollout、assurance、provenance 与 governance 真正可以依赖的判断。
+
 ## 2. 什么是行为评测
 
 行为评测不只检查最终输出，还检查系统的行为形态。

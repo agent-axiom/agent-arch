@@ -41,6 +41,8 @@ This is where it is useful to distinguish:
 
 The clean boundary is this: evals judge how the system behaves and whether the control surface proves itself under pressure. They do not replace the assurance response loop, the observability evidence layer, or the estate registry. They generate the judgments those other layers later consume.
 
+That is the core promise of this chapter. It should help the reader see evals as the reviewable judgment layer of the lifecycle: the place where behavior, control quality, and verifier quality are turned into decisions that rollout, assurance, provenance, and governance can actually rely on.
+
 ## 2. What behavioral evals are
 
 Behavioral evals do not only test the final output. They test the shape of the system's behavior.
