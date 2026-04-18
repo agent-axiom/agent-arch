@@ -194,7 +194,8 @@ owner: platform-operations
 
 - Есть ли у high-risk changes явные change records?
 - Есть ли approved artifact bundle, а не просто список последних YAML-файлов?
-- Можно ли по incident trace восстановить активный bundle?
+- Можно ли по incident trace восстановить активный bundle и его идентичность выпуска?
+- Можно ли понять, под каким семейством контрактов с verifier-ограничениями выпуск был одобрен?
 - Есть ли retirement plan для deprecated capabilities и policy bundles?
 - Есть ли owner у archived state после replacement?
 - Понятен ли rollback unit на уровне lifecycle artifacts?
