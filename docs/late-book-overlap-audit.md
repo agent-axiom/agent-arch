@@ -6,8 +6,12 @@ Primary overlap risk was concentrated in:
 - Chapter 11
 - Chapter 12
 - Chapter 13
+- Chapter 19
+- Chapter 20
 - Chapter 21
 - Chapter 22
+- Chapter 23
+- Chapter 24
 - Chapter 25
 - Chapter 26
 - Chapter 27
