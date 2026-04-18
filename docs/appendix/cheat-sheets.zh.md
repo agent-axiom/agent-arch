@@ -5,6 +5,7 @@
 ## Safety checklist
 
 - 用户输入、记忆、工具和外部系统之间是否有明确的 trust boundaries？
+- 是否区分了 prompt injection、jailbreak 和 action hallucination，而不是把它们都归成一类模糊的“LLM 风险”？
 - 每个敏感动作之前是否都有 policy gate，而不只是模型调用前有？
 - low-risk 和 high-risk 工具是否清晰分开？
 - 对于不可逆 side effect，是否有 approval gate？
@@ -20,11 +21,14 @@
 ## Memory checklist
 
 - short-term、long-term 和 profile memory 是否已经分开？
+- retrieval 是否考虑了用户语言和文档语言之间的 semantic gap？
+- 如果使用 query rewriting 或 HyDE，是否明确这只是 retrieval aid，而不是新的“事实来源”？
 - memory read 和 memory write 是否有不同治理规则？
 - persistent records 是否带有 provenance？
 - 是否有明确 policy 来限制哪些内容可以写入 memory？
 - 是否存在 compaction 或 background maintenance path？
 - retrieval 是否被体量和相关性约束？
+- 在跳到 training 之前，是否先尝试把 RAG 和 corpus freshness 做扎实？
 - 是否有清晰的 deletion 或 revision strategy？
 
 继续阅读：
@@ -38,6 +42,7 @@
 - 上线前是否有最低 eval baseline？
 - 是否有包含 safety、observability 和 approval requirements 的 rollout gate？
 - 哪些场景算 blocking failures，是否已经定义清楚？
+- latency budget 是否是从用户耐心窗口定义的，而不只是看模型 p95？
 - 对 failure、denial 和 approval backlog 是否有 runbook？
 - 是否有 incident review 和 postmortem 机制？
 - 是否能快速关闭 high-risk capability，而不需要停掉整个系统？
@@ -56,6 +61,8 @@
 - 是否能看出哪个 tool principal 执行了 side effect？
 - 是否能区分 success、denied、approval_wait 和 failure？
 - 是否能把 runs 聚合成 session-level 或 eval-level summary？
+- 如果用了 LLM-as-a-judge，是否已经对照 human review 和 outcome checks 做过校准？
+- 在需要因果结论的评测里，是否避免同时更改 model 和 prompt？
 
 继续阅读：
 
@@ -66,11 +73,13 @@
 
 - 每个 capability 是否都有 owner、risk tier 和 approved inventory status？
 - 是否清楚它是 read tool 还是 write tool？
+- 是否避免把过大的工具目录直接暴露给模型，而是先筛到一个相关子集？
 - 是否定义了 execution profile：sandbox、network access、allowed egress？
 - gateway 是否会在 execution 前检查 actor identity 和 policy？
 - 是否定义了 idempotency semantics 和 retry policy？
 - 是否明确什么时候需要 approval，什么时候可以自动执行？
 - 每个外部动作是否都有 audit trail？
+- 团队是否真正理解 MCP host、client 和 server 的角色，而不是把它们混成一个笼统的“集成层”？
 
 继续阅读：
 

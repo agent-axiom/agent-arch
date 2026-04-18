@@ -115,6 +115,26 @@ That is why it is useful to track not only end-to-end latency, but stages:
 
 That turns latency SLO from a pretty number into a diagnostic instrument.
 
+## 5.1. The Latency Budget Starts with User Patience, Not Model Speed
+
+There is one more product question worth keeping in view: the latency budget should start not from a model benchmark, but from how long the user is actually willing to wait.
+
+If users start abandoning the flow after 8 to 10 seconds, then an agent with a 25-second average response time is badly designed even if its quality metrics look strong.
+
+That is why it is useful to think not only in terms of “make everything faster,” but in terms of a routed pipeline:
+
+- a fast path for common and simple cases;
+- a slower reasoning path only for ambiguous, high-risk, or unusually complex runs.
+
+In practice, that often means:
+
+- less context and a cheaper model path for routine cases;
+- more expensive model routing only where it genuinely pays off;
+- fewer unnecessary tool hops in simple scenarios;
+- an explicit decision about which classes of task deserve long deliberation at all.
+
+Then latency SLO stop being only a platform metric and starts acting as part of product fit.
+
 ## 6. Safety SLO Must Live Next to Reliability, Not Outside It
 
 In an agent system, safety cannot live as a separate security appendix. In production, it is part of system health.

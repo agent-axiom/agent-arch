@@ -63,6 +63,28 @@ But it stops being enough for production. The moment you add:
 
 the minimal triad stops being an architecture. It remains only the core around which a platform must be built.
 
+## 2.1. What Belongs to the Runtime Architecture, and What Does Not
+
+It is useful to draw one more boundary here, because teams very often mix runtime design, model training, and the product surface.
+
+Things that usually belong to the runtime architecture of an agent include:
+
+- `model`;
+- `instructions`;
+- `tools`;
+- `memory`;
+- planning routines or skills;
+- `runtime`;
+- guardrails and policies.
+
+But a few things usually do not belong to runtime architecture:
+
+- the training dataset and reward model belong to model development and training, not to the runtime;
+- the user interface belongs to the product surface, not to the core agent logic;
+- the context window is a property of the chosen model, not a separate architecture layer.
+
+That distinction may sound theoretical, but it is very useful in practice. If tool routing, approval paths, or retrieval discipline start degrading, the cause usually lives in the runtime contour, not in the UI or the reward model.
+
 ## 3. How One Request Should Move Through the System
 
 Now look at the same support case as an architectural path.

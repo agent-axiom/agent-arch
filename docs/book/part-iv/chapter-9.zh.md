@@ -88,6 +88,23 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 当你有的不是一个 runtime + 一个 integration，而是一组能力时，这一点就尤其重要。
 
+## 4.1. 最好不要把 MCP host、client 和 server 搞混
+
+MCP 周围常常会出现一些没必要的混乱，因为这些词听起来都很熟，但它们在系统里的角色其实很具体。
+
+一个更清晰的理解方式是：
+
+- `host` 是拥有会话、并决定到底要连接哪些 capabilities 的应用或 runtime；
+- `client` 是 host 为了和某一个 MCP server 通信而创建出来的协议侧组件；
+- `server` 是那个暴露 tools、resources 以及其他 capability surfaces，并返回结构化结果的 boundary。
+
+这会带来两个很实用的结论：
+
+- 一个 host 可以同时持有多个 clients；
+- 一个 agent runtime 也可以同时和多个 MCP servers 工作，而不是把它们揉成一个分不清边界的 integration blob。
+
+这看起来像术语细节，但其实很有帮助。MCP client 不是产品界面，也不是"agent 本体"。它是 host 和某个具体 server boundary 之间的 transport 与 contract layer。
+
 <div class="diagram-card">
 <p>MCP 适合作为 runtime 和外部 capabilities 之间的契约层</p>
 

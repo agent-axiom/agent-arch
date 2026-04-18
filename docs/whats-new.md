@@ -2,7 +2,7 @@
 
 Эта страница нужна как короткий журнал крупных улучшений книги и опорного пакета. Она не заменяет git history, а помогает читателю быстро увидеть, насколько проект живой и какие слои уже появились.
 
-_Актуально на 8 апреля 2026 года._
+_Актуально на 18 апреля 2026 года._
 
 ## Book
 
@@ -12,6 +12,19 @@ _Актуально на 8 апреля 2026 года._
 
 Почему это важно:
 - теперь книга закрывает не только архитектуру и запуск, но и жизнь системы после релиза.
+
+### Усилен production contour в частях I-V
+
+В книгу добавлены более точные мосты между архитектурой, retrieval, execution и eval discipline:
+
+- в части I теперь явнее отделены runtime-архитектура, training layer и product surface;
+- в части II добавлена более четкая taxonomy для `prompt injection`, `jailbreak` и `action hallucination`;
+- в части III усилен retrieval contour: `semantic gap`, `HyDE`, `RAG first`, различие между continued pretraining и `SFT`;
+- в части IV добавлены practical rules для больших tool catalogs, `semantic tool filtering` и явные роли `MCP host / client / server`;
+- в части V усилены продуктовый взгляд на `latency budget` и practical framing для `LLM-as-a-judge`.
+
+Почему это важно:
+- книга стала лучше закрывать не только базовые platform layers, но и повседневные вопросы production-команды, которые обычно всплывают между design review, eval loop и rollout.
 
 ## Reference
 
@@ -60,6 +73,27 @@ _Актуально на 8 апреля 2026 года._
 
 Почему это важно:
 - у читателя есть быстрые входы в чеклисты, кейсы, glossary и practical assets без обязательного линейного чтения всей книги.
+
+## Navigation
+
+### Усилены входные страницы
+
+Обновлены:
+
+- [С чего начать](start-here.md);
+- [Справочный слой](reference.md);
+- [Шпаргалки](appendix/cheat-sheets.md).
+
+Теперь они лучше подсвечивают короткие маршруты для тем вроде:
+
+- `semantic tool filtering`;
+- `HyDE` и `RAG vs training`;
+- `latency budget` и routed pipelines;
+- `LLM-as-a-judge` и judge calibration;
+- различие между `prompt injection`, `jailbreak` и `action hallucination`.
+
+Почему это важно:
+- новые темы стали заметны не только внутри отдельных глав, но и на уровне reader entry points.
 
 ## Что это дает читателю
 

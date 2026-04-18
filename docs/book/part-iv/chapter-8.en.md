@@ -118,6 +118,29 @@ A good catalog usually has:
 
 That makes the execution layer inspectable: the team sees not "something the model might call," but a concrete platform contract.
 
+## 4.1. A Catalog That Is Too Large Hurts Selection Instead of Expanding Freedom
+
+Another very practical problem appears as soon as the catalog becomes too large.
+
+The more tools the model sees at once:
+
+- the more prompt tokens go into tool descriptions;
+- the longer the near-duplicate contracts become;
+- the harder it is to distinguish similar capabilities;
+- the more attention gets diluted at selection time.
+
+That is why “let the model see every tool” usually ends badly. Selection quality drops not because the model became "dumber," but because the candidate set became too noisy.
+
+A good practical pattern here is usually called semantic tool filtering:
+
+- the full registry still lives in the platform layer;
+- but a particular run sees only a narrow relevant subset;
+- often 3 to 5 tools, not several dozen.
+
+That matters especially for overlapping capabilities, where the differences are subtle: multiple search tools, multiple write adapters, multiple similar orchestration actions.
+
+One more useful rule follows from that: retries do not fix bad tool selection if the model started from an overly noisy catalog.
+
 ## 5. Read Tools and Write Tools Are Not the Same
 
 This sounds obvious, but in practice many systems describe them almost identically.

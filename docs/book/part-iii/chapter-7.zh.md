@@ -33,6 +33,41 @@ Retrieval 有一个坏习惯：如果你不限制它，它就会变得过于慷�
 - provenance；
 - policy filters。
 
+## 2.1. 用户和 knowledge layer 之间的 semantic gap 是真实存在的
+
+这里还有一个在演示里不太明显的问题：用户通常用口语提问，但文档和 knowledge records 往往是正式的、技术化的，或者带有内部系统术语。
+
+因此，retrieval 失败并不一定是因为数据不存在，也可能只是因为 user query 和 corpus 之间存在 semantic gap。
+
+从工程上看，这意味着 retrieval query 往往值得先做一层 shaping：
+
+- 规范化实体名称和内部状态名；
+- 把查询改写成更像文档的表达；
+- 做受控的 query expansion；
+- 在部分场景中使用 HyDE，也就是先生成一个假想的文档式答案，再据此检索。
+
+但这里有一个很重要的纪律：这种查询辅助手段不能变成新的"事实"。HyDE 或 query rewriting 只是 retrieval 工具，而不是 grounded answer 的替代品。
+
+## 2.2. 大多数情况下，应先从 RAG 开始，而不是 training
+
+如果问题在于 agent 缺少新知识，或者拿不到内部文档，最实用的第一步通常不是 training，而是把 retrieval layer 做扎实。
+
+原因很直接：
+
+- RAG 更新更快；
+- retrieval 更容易审计和加约束；
+- knowledge drift 更容易通过更新 corpus 修复，而不是重新训练模型；
+- 持续变化的文档和 mutable knowledge sources 更适合放在 retrieval，而不是塞进模型权重。
+
+同时，最好把两种不同任务分开看：
+
+- continued pretraining 主要用于适配知识分布；
+- SFT 主要用于适配行为、风格和决策模式。
+
+一个实用规则通常是：先把 retrieval 做到足够像样，再判断系统是否真的撞到了 ceiling，以至于需要 training。
+
+这里还有一个很有用的 operational signal：如果一个支持智能体长期工作正常，后来却在 prompt 和 model routing 都没明显变化的情况下退化，优先怀疑 stale retrieval corpus、indexing drift 或 data freshness 问题，而不是先假设出现了某种神秘的 model decay。
+
 ## 3. 一个好的 prompt 爱的是高密度信号，不是完整性
 
 人很容易以为“上下文越多，agent 越聪明”。实践里，情况往往相反：你塞进 prompt 的噪音越多，模型越难抓住真正的优先级。

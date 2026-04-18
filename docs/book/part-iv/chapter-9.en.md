@@ -88,6 +88,23 @@ In a good design, MCP gives you several benefits:
 
 That becomes especially valuable once you have not one runtime and one integration, but a set of capabilities you want to connect systematically rather than chaotically.
 
+## 4.1. It Helps Not to Confuse the MCP Host, Client, and Server
+
+MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
+
+It helps to keep this picture in mind:
+
+- the `host` is the application or runtime that owns the session and decides which capabilities should be connected at all;
+- the `client` is the protocol-side component the host creates to talk to one specific MCP server;
+- the `server` is the boundary that exposes tools, resources, and other capability surfaces, then returns structured results.
+
+Two practical consequences follow from that:
+
+- one host can hold several clients at the same time;
+- one agent runtime can work with multiple MCP servers without collapsing them into one indistinguishable integration blob.
+
+That may sound like a minor terminology point, but it helps a lot. The MCP client is not the product UI and not “the agent itself.” It is the transport and contract layer between the host and one specific server boundary.
+
 <div class="diagram-card">
 <p>MCP is useful as a contract layer between the runtime and external capabilities</p>
 

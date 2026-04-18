@@ -118,6 +118,29 @@ flowchart LR
 
 这会让 execution layer 变得可检查：团队看到的不是“模型也许会调什么”，而是一个具体的平台契约。
 
+## 4.1. 过大的工具目录会伤害选择质量，而不是扩大自由
+
+另一个非常实际的问题会在目录变得过大时出现。
+
+模型一次看到的 tools 越多：
+
+- 它就要为工具描述消耗越多 prompt tokens；
+- 那些彼此相似的 contracts 就会越长；
+- 区分接近能力的难度也会越高；
+- 选择阶段的注意力也会被稀释。
+
+这也是为什么"干脆把所有工具都展示给模型"通常不是好主意。选择质量下降，不是因为模型"变笨了"，而是因为候选集合本身太嘈杂。
+
+这里一个很实用的模式通常叫作 semantic tool filtering：
+
+- 完整 registry 仍然保留在 platform layer；
+- 但某一次 run 只会看到一个狭窄而相关的子集；
+- 通常是 3 到 5 个 tools，而不是几十个。
+
+这在 overlapping capabilities 上尤其重要，因为它们之间差异很细：多个 search tools、多个 write adapters、多个相似的 orchestration actions。
+
+还有一个很有用的 practical rule：如果模型一开始看到的就是一个过于嘈杂的目录，那么 retries 并不能真正修复 tool selection 问题。
+
 ## 5. 必须区分 read tools 和 write tools
 
 这看上去似乎很明显，但实践里很多系统几乎把它们当成同一类对象来描述。

@@ -2,7 +2,7 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of April 8, 2026._
+_Current as of April 18, 2026._
 
 ## Book
 
@@ -12,6 +12,19 @@ The book now includes a full block on `SDLC -> ADLC`, change management, assuran
 
 Why it matters:
 - the site now covers not only architecture and rollout, but the lifecycle of an agent system after release.
+
+### A stronger production contour across Parts I-V
+
+The book now includes sharper bridges between architecture, retrieval, execution, and eval discipline:
+
+- Part I now separates runtime architecture more explicitly from the training layer and the product surface;
+- Part II now gives a clearer taxonomy for `prompt injection`, `jailbreaking`, and `action hallucination`;
+- Part III now strengthens the retrieval contour with `semantic gap`, `HyDE`, `RAG first`, and a clearer distinction between continued pretraining and `SFT`;
+- Part IV now adds practical guidance for large tool catalogs, `semantic tool filtering`, and explicit `MCP host / client / server` roles;
+- Part V now adds a stronger product framing for `latency budget` and a more practical treatment of `LLM-as-a-judge`.
+
+Why it matters:
+- the book now covers not only the baseline platform layers, but also the everyday production questions that tend to surface between design review, eval loops, and rollout.
 
 ## Reference
 
@@ -60,6 +73,27 @@ The site now includes:
 
 Why it matters:
 - readers have fast access to checklists, case studies, glossary entries, and practical assets without reading the entire book linearly.
+
+## Navigation
+
+### Stronger entry pages
+
+Updated:
+
+- [Start Here](start-here.en.md);
+- [Reference Layer](reference.en.md);
+- [Cheat Sheets](appendix/cheat-sheets.en.md).
+
+Those pages now make it easier to find short paths into topics such as:
+
+- `semantic tool filtering`;
+- `HyDE` and `RAG vs training`;
+- `latency budget` and routed pipelines;
+- `LLM-as-a-judge` and judge calibration;
+- the difference between `prompt injection`, `jailbreaking`, and `action hallucination`.
+
+Why it matters:
+- the new topics are now visible not only inside individual chapters, but also at the reader entry-point level.
 
 ## What this means for readers
 
