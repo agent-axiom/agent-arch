@@ -128,9 +128,15 @@ class AgentRuntime:
             latest_tool = context.tool_results[-1] if context.tool_results else None
             if latest_tool is not None:
                 capability_session_id = latest_tool.payload.get("capability_session_id", "")
-                capability_session_status = latest_tool.payload.get("capability_session_status", latest_tool.status)
-                authorization_mode = latest_tool.payload.get("authorization_mode", authorization_mode)
-                delegated_principal_id = latest_tool.payload.get("delegated_principal_id", delegated_principal_id)
+                capability_session_status = latest_tool.payload.get(
+                    "capability_session_status", latest_tool.status
+                )
+                authorization_mode = latest_tool.payload.get(
+                    "authorization_mode", authorization_mode
+                )
+                delegated_principal_id = latest_tool.payload.get(
+                    "delegated_principal_id", delegated_principal_id
+                )
                 delegated_scope = latest_tool.payload.get("delegated_scope", delegated_scope)
             model_output = self._call_model(request, context, second_pass=True)
 
@@ -328,9 +334,15 @@ class AgentRuntime:
                 lambda: execute_tool(capability, tool_request, decision),
             ),
         )
-        tool_result.payload["authorization_mode"] = tool_result.payload.get("authorization_mode", request.authorization_mode)
-        tool_result.payload["delegated_principal_id"] = tool_result.payload.get("delegated_principal_id", request.delegated_principal_id)
-        tool_result.payload["delegated_scope"] = tool_result.payload.get("delegated_scope", request.delegated_scope)
+        tool_result.payload["authorization_mode"] = tool_result.payload.get(
+            "authorization_mode", request.authorization_mode
+        )
+        tool_result.payload["delegated_principal_id"] = tool_result.payload.get(
+            "delegated_principal_id", request.delegated_principal_id
+        )
+        tool_result.payload["delegated_scope"] = tool_result.payload.get(
+            "delegated_scope", request.delegated_scope
+        )
         context.tool_results.append(tool_result)
         context.context_layers.setdefault("tool", []).append(
             f"{tool_result.capability_name}:{tool_result.status}",
@@ -342,8 +354,12 @@ class AgentRuntime:
             capability=tool_result.capability_name,
             status=tool_result.status,
             tool_principal=tool_result.payload.get("tool_principal", "n/a"),
-            authorization_mode=tool_result.payload.get("authorization_mode", request.authorization_mode),
-            delegated_principal_id=tool_result.payload.get("delegated_principal_id", request.delegated_principal_id),
+            authorization_mode=tool_result.payload.get(
+                "authorization_mode", request.authorization_mode
+            ),
+            delegated_principal_id=tool_result.payload.get(
+                "delegated_principal_id", request.delegated_principal_id
+            ),
             delegated_scope=tool_result.payload.get("delegated_scope", request.delegated_scope),
         )
         return decision

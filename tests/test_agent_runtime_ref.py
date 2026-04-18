@@ -51,7 +51,9 @@ class TestFailurePaths:
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == ["run_start", "policy_precheck", "run_complete"]
 
-    def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(self, cli_json, tmp_path: Path) -> None:
+    def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(
+        self, cli_json, tmp_path: Path
+    ) -> None:
         first = tmp_path / "first.jsonl"
         second = tmp_path / "second.jsonl"
         merged = tmp_path / "merged.jsonl"
@@ -79,7 +81,9 @@ class TestFailurePaths:
             ],
         )
         assert code_a == 0 and code_b == 0
-        merged.write_text(first.read_text(encoding="utf-8") + second.read_text(encoding="utf-8"), encoding="utf-8")
+        merged.write_text(
+            first.read_text(encoding="utf-8") + second.read_text(encoding="utf-8"), encoding="utf-8"
+        )
 
         from agent_runtime_ref.__main__ import main
 
@@ -104,13 +108,15 @@ class TestFailurePaths:
         from agent_runtime_ref.__main__ import main
 
         with pytest.raises(ValueError, match="Trace ID not found"):
-            main([
-                "replay-run",
-                "--input",
-                str(output_path),
-                "--trace-id",
-                "trace-does-not-exist",
-            ])
+            main(
+                [
+                    "replay-run",
+                    "--input",
+                    str(output_path),
+                    "--trace-id",
+                    "trace-does-not-exist",
+                ]
+            )
 
 
 class TestExecutionAndPolicyBranches:
@@ -136,7 +142,9 @@ class TestExecutionAndPolicyBranches:
         assert result.status == "approval_required"
         assert result.payload["reason"] == "write_action"
 
-    def test_execute_tool_returns_validation_failure_without_idempotency_key(self, config_dir: Path) -> None:
+    def test_execute_tool_returns_validation_failure_without_idempotency_key(
+        self, config_dir: Path
+    ) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("create_ticket")
         assert capability is not None
         result = execute_tool(
@@ -197,7 +205,9 @@ class TestExecutionAndPolicyBranches:
     def test_policy_evaluate_tool_covers_configured_allow_and_deny(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
         assert capability is not None
-        context = RunContext(tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-001")
+        context = RunContext(
+            tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-001"
+        )
         allow_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("allow")})
         deny_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("deny")})
         allow_decision = allow_engine.evaluate_tool(
@@ -217,7 +227,9 @@ class TestExecutionAndPolicyBranches:
         from agent_runtime_ref.catalog import CapabilitySpec
 
         engine = PolicyEngine(allowed_network_access={"restricted"})
-        context = RunContext(tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-002")
+        context = RunContext(
+            tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-002"
+        )
         blocked_network = CapabilitySpec(
             name="external_tool",
             owner="platform",
@@ -294,7 +306,9 @@ class TestExecutionAndPolicyBranches:
         assert decision.reason == "critical_risk_tier"
 
     def test_policy_allow_memory_write_denies_unknown_kind(self) -> None:
-        decision = PolicyEngine(allowed_memory_kinds={"profile"}).allow_memory_write("session_summary")
+        decision = PolicyEngine(allowed_memory_kinds={"profile"}).allow_memory_write(
+            "session_summary"
+        )
         assert decision.action == "deny"
         assert decision.reason == "memory_kind_denied"
 
@@ -372,9 +386,7 @@ class TestRuntimeCore:
             ),
         )
         persisted_event = next(
-            event
-            for event in runtime.telemetry.events
-            if event.event_type == "memory_persisted"
+            event for event in runtime.telemetry.events if event.event_type == "memory_persisted"
         )
         assert "provenance" in persisted_event.payload
         assert "revision" in persisted_event.payload
@@ -408,7 +420,9 @@ class TestRuntimeCore:
 
 
 class TestRuntimeControlPaths:
-    def test_runtime_control_config_exposes_session_governance_ownership(self, config_dir: Path) -> None:
+    def test_runtime_control_config_exposes_session_governance_ownership(
+        self, config_dir: Path
+    ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         payload = load_yaml_file(config_dir / "runtime-controls.yaml")
@@ -525,11 +539,13 @@ class TestRuntimeControlPaths:
         assert "stop_background_routes" in payload["missing_steps"]
 
     def test_cli_check_change_accepts_runtime_control_signal_contract(self, cli_json) -> None:
-        exit_code, payload = cli_json([
-            "check-change",
-            "--signal",
-            "offline_eval_passed=true",
-        ])
+        exit_code, payload = cli_json(
+            [
+                "check-change",
+                "--signal",
+                "offline_eval_passed=true",
+            ]
+        )
         assert exit_code == 0
         assert "ready" in payload
         assert "rollout_strategy" in payload
@@ -640,7 +656,9 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             source="trusted_profile",
             confidence=0.9,
         )
-        assert MemoryStore._score(high, {"language", "preference"}) > MemoryStore._score(low, {"language", "preference"})
+        assert MemoryStore._score(high, {"language", "preference"}) > MemoryStore._score(
+            low, {"language", "preference"}
+        )
 
     def test_lifecycle_helpers_reject_bad_shapes(self) -> None:
         from agent_runtime_ref.lifecycle import ArtifactBundle, ChangeRecord, RetirementPlan
@@ -652,7 +670,19 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
             RetirementPlan.from_dict({"retirement": []})
         with pytest.raises(TypeError, match="artifacts must be a list"):
-            ChangeRecord.from_dict({"change": {"change_id": "x", "change_type": "y", "risk_level": "z", "rollout_strategy": "gradual", "artifacts": "bad", "required_signals": [], "approval_roles": []}})
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        "change_id": "x",
+                        "change_type": "y",
+                        "risk_level": "z",
+                        "rollout_strategy": "gradual",
+                        "artifacts": "bad",
+                        "required_signals": [],
+                        "approval_roles": [],
+                    }
+                }
+            )
 
     def test_lifecycle_assessments_report_ready_when_complete(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record, load_retirement_plan
@@ -689,7 +719,9 @@ class TestLowCoverageModuleBranches:
         from agent_runtime_ref.controls import ControlsPolicy, InventoryDrift, assess_controls
 
         assessment = assess_controls(
-            ControlsPolicy(required_controls=("registry_reviewed",), blocked_findings=("manual_override",)),
+            ControlsPolicy(
+                required_controls=("registry_reviewed",), blocked_findings=("manual_override",)
+            ),
             {"registry_reviewed": True, "manual_override": False},
             inventory_drift=InventoryDrift(
                 missing_from_catalog=("ghost_cap",),
@@ -705,7 +737,9 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="payload must be a mapping"):
             StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": []})
         with pytest.raises(TypeError, match="redacted_fields must be a list"):
-            StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"})
+            StructuredEvent.from_dict(
+                {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"}
+            )
 
     def test_telemetry_events_for_trace_and_unredacted_export(self, tmp_path: Path) -> None:
         from agent_runtime_ref.telemetry import TelemetryEmitter
@@ -726,7 +760,9 @@ class TestLowCoverageModuleBranches:
 
         emitter = TelemetryEmitter()
         with pytest.raises(RuntimeError, match="boom"):
-            emitter.traced_call("trace-fail", "failing_span", lambda: (_ for _ in ()).throw(RuntimeError("boom")))
+            emitter.traced_call(
+                "trace-fail", "failing_span", lambda: (_ for _ in ()).throw(RuntimeError("boom"))
+            )
         span = emitter.events[-1]
         assert span.event_type == "span"
         assert span.payload["status"] == "failure"
@@ -741,7 +777,9 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="'block_if' must be a list"):
             RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": "x"}})
         with pytest.raises(TypeError, match="'rollout_mode' must be a mapping"):
-            RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [], "rollout_mode": []}})
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": [], "block_if": [], "rollout_mode": []}}
+            )
 
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:
         assert not ready_for_rollout(
@@ -904,7 +942,9 @@ class TestPolicyAndControls:
 
 
 class TestDelegatedAuthorizationConfig:
-    def test_runtime_controls_capture_delegated_authorization_contract(self, config_dir: Path) -> None:
+    def test_runtime_controls_capture_delegated_authorization_contract(
+        self, config_dir: Path
+    ) -> None:
         runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")
         delegated = runtime_controls["runtime_controls"]["delegated_authorization"]
         assert delegated["authorization_mode"] == "user_delegated_or_platform_owned"
@@ -946,7 +986,9 @@ class TestDelegatedAuthorizationRuntime:
         assert approval_request.delegated_principal_id == "user-1"
         assert approval_request.delegated_scope == "tickets.write"
 
-        approval_event = next(event for event in runtime.telemetry.events if event.event_type == "approval_requested")
+        approval_event = next(
+            event for event in runtime.telemetry.events if event.event_type == "approval_requested"
+        )
         assert approval_event.payload["authorization_mode"] == "user_delegated"
         assert approval_event.payload["delegated_principal_id"] == "user-1"
         assert approval_event.payload["delegated_scope"] == "tickets.write"
@@ -1136,7 +1178,9 @@ class TestCli:
         )
         assert run_complete["redacted_fields"] == []
 
-    def test_cli_export_trace_preserves_runtime_control_event_order(self, cli_json, tmp_path: Path) -> None:
+    def test_cli_export_trace_preserves_runtime_control_event_order(
+        self, cli_json, tmp_path: Path
+    ) -> None:
         output_path = tmp_path / "trace-ordered.jsonl"
         export_code, _ = cli_json(
             [
@@ -1159,9 +1203,15 @@ class TestCli:
         assert "policy_precheck" in event_types
         assert "approval_requested" in event_types
         assert "tool_execution" in event_types
-        assert event_types.index("approval_requested") < event_types.index("tool_execution") < event_types.index("run_complete")
+        assert (
+            event_types.index("approval_requested")
+            < event_types.index("tool_execution")
+            < event_types.index("run_complete")
+        )
 
-    def test_cli_export_trace_keeps_single_trace_and_session_consistent(self, cli_json, tmp_path: Path) -> None:
+    def test_cli_export_trace_keeps_single_trace_and_session_consistent(
+        self, cli_json, tmp_path: Path
+    ) -> None:
         output_path = tmp_path / "trace-consistent.jsonl"
         export_code, export_payload = cli_json(
             [
@@ -1380,10 +1430,6 @@ class TestCli:
         assert exported["sessions"][0]["eval"]["labels"]
         assert "expected_outcomes" in exported["sessions"][0]["eval"]
         assert any(
-            session["summary"]["approval_wait_runs"] >= 1
-            for session in exported["sessions"]
+            session["summary"]["approval_wait_runs"] >= 1 for session in exported["sessions"]
         )
-        assert any(
-            session["summary"]["total_runs"] >= 2
-            for session in exported["sessions"]
-        )
+        assert any(session["summary"]["total_runs"] >= 2 for session in exported["sessions"])
