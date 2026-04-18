@@ -47,9 +47,9 @@ In other words, the agent supply chain is wider because the system itself is wid
 
 It helps to define this very directly:
 
-an approved artifact is any artifact that is allowed in production because it has an owner, provenance, review status, and a clear operational role.
+an approved artifact is any artifact that is allowed in production because it has an owner, provenance, review status, a clear operational role, and an identifiable place in release identity.
 
-That means approved artifacts are not only images or wheel files.
+That means approved artifacts are not only images or wheel files. They are the governed objects a later rollout decision, assurance judgment, or incident review must be able to point back to precisely.
 
 In an agent platform, they often include:
 
@@ -144,7 +144,7 @@ For example:
 
 This distinction is useful because inventory provides the platform-level frame, while approved artifacts provide release-level discipline.
 
-That release-level discipline is the heart of provenance here. The question is not only whether telemetry exists, but which governed version, approved bundle, or reviewed schema the system was actually running under.
+That release-level discipline is the heart of provenance here. The question is not only whether telemetry exists, but which governed version, approved bundle, reviewed schema, or verifier-bearing contract family the system was actually running under.
 
 ## 6. A prompt bundle without provenance is a supply-chain gap
 
@@ -296,7 +296,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
     )
 ```
 
-The point is simple: trusted artifacts should be defined by explicit properties, not intuition.
+The point is simple: trusted artifacts should be defined by explicit properties, not intuition. If the platform cannot test artifact readiness explicitly, it will eventually fall back to social trust, stale defaults, and weak release identity.
 
 ## 12. What usually breaks in artifact discipline
 
