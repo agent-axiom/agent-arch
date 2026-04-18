@@ -181,12 +181,12 @@ flowchart LR
 
 - измеряется ли approval latency;
 - есть ли owner у approval queue;
-- есть ли timeout или expiry rule для paused runs;
-- есть ли видимый backlog threshold;
-- определено ли resume/cancel поведение;
-- есть ли fallback на случай, если human review недоступен;
-- считается ли capability-session expiry видимым rollout signal, а не скрытым transport failure;
-- определено ли re-initialization behavior, если stateful capability session уже нельзя safely resume.
+- есть ли timeout или правило истечения ожидания для приостановленных runs;
+- есть ли видимый порог накопившейся очереди;
+- определено ли поведение resume/cancel;
+- есть ли запасной путь на случай, если human review недоступен;
+- считается ли истечение capability-session видимым сигналом rollout, а не скрытым сбоем транспорта;
+- определено ли поведение re-initialization, если stateful capability session уже нельзя безопасно продолжить.
 
 Для того же support-агента это важно сразу. Если path создания тикета ставится на approval pause, команда должна знать, будет ли run ждать пять секунд, тридцать минут или вечно. Это не UX-деталь, а часть production behavior.
 
@@ -194,7 +194,7 @@ flowchart LR
 
 > Понимаем ли мы, сколько run сейчас стоит на approval pause, как долго они уже ждут, что система сделает, если вовремя никто не ответит, и что runtime сделает, если underlying capability session истечет еще раньше?
 
-Если ответ нет, значит approval все еще работает как неуправляемый side channel.
+Если ответ отрицательный, значит approval все еще работает как неуправляемый боковой канал.
 
 ### 8.1. Interruptions в stateful capability тоже должны входить в rollout readiness
 
@@ -219,7 +219,7 @@ flowchart LR
 - добавляет ли `orchestrator-workers` delegated worker surfaces, worker-safe catalogs или новые review points;
 - вставляет ли `prompt chaining` новые checkpoints, в которых меняются expiry, pause или retry semantics.
 
-Это важно, потому что pattern changes меняют production behavior, даже если user-facing feature на словах остается той же.
+Это важно, потому что смена паттерна меняет поведение системы в production, даже если пользовательская функция на словах остается той же.
 
 То же самое верно и для delegated authorization. Если runtime поддерживает user-delegated access, readiness rollout должна включать еще и такие вопросы:
 
@@ -234,14 +234,14 @@ flowchart LR
 
 Отдельный слой, который часто забывают:
 
-- есть ли owner on-call;
-- есть ли alerting на SLO burn и safety incidents;
-- понятен ли manual fallback;
+- есть ли ответственный on-call;
+- есть ли alerting на выгорание SLO и safety incidents;
+- понятен ли ручной fallback;
 - известна ли процедура rollback;
 - есть ли лимиты на радиус воздействия rollout;
 - есть ли runbook на частые сбои.
 
-Иногда кажется, что это “не про агентов, а про ops”. На деле без этого агентная система остается лабораторной, а не production-grade.
+Иногда кажется, что это “не про агентов, а про ops”. На деле без этого агентная система остается лабораторной, а не готовой к production.
 
 Для support-кейса manual fallback должен быть особенно конкретным:
 
@@ -345,7 +345,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - memory write regressions не блокируют релиз;
 - команда продолжает rollout, хотя уже не доверяет собственным traces.
 
-Если это происходит, rollout process у тебя пока еще не production discipline, а просто слишком самоуверенный выпуск изменений.
+Если это происходит, rollout process у тебя пока еще не стал производственной дисциплиной, а остается просто слишком самоуверенным выпуском изменений.
 
 ## 14. Быстрый тест зрелости для rollout readiness
 
