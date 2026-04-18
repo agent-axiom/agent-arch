@@ -69,7 +69,7 @@ status: approved
 
 ## 4. 已批准工件包
 
-`artifact_bundle` 记录一组在某个发布配置下被认为可信、并且彼此兼容的工件。
+`artifact_bundle` 记录一组在某个发布配置下被认为可信、并且彼此兼容的工件。在实践里，它同时也是赋予一次发布以受治理身份的契约表面。
 
 ```yaml
 kind: artifact_bundle
@@ -94,12 +94,13 @@ provenance:
     - runtime-review
 ```
 
-这一层的价值主要有两个：
+这一层的价值主要有三个：
 
 - 它把“工件存在”与“工件被批准上线”分开；
+- 它让发布身份变得可检查，而不是停留在隐式约定里；
 - 它让事故复盘和回滚都更短、更明确。
 
-而一旦 capability-session governance 已经进入显式管理，artifact bundle 通常也应该把和它一同被批准的 session-control assumptions 说清楚，而不只是写一个 contract version：
+而一旦 capability-session governance 已经进入显式管理，artifact bundle 通常也应该把和它一同被批准的 session-control assumptions 以及带有 verifier 约束的 contract family 说清楚，而不只是写一个 contract version：
 
 - expiry policy；
 - re-init policy；
@@ -164,8 +165,9 @@ owner: platform-operations
 
 - 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
+- 每个 artifact bundle 都能作为具体的发布身份记录，而不只是松散的版本清单；
 - 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
-- 当 release 或 assurance 依赖 graded outcomes 时，verifier contract lineage 也必须可追溯；
+- 当 release 或 assurance 依赖 graded outcomes 时，verifier contract lineage 与 contract-family identity 也必须可追溯；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
 - 当这些控制存在时，delegated authorization ownership 与 revoke behavior 也必须能够对受影响 runs 被还原出来；
