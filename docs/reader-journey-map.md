@@ -45,7 +45,7 @@ Once the system is alive, the reader should see a clean late-book geometry:
 
 Reader promise inside this stage:
 - first learn how change becomes lifecycle risk;
-- then learn how response, lineage, judgment, evidence, and accountability divide cleanly;
+- then learn how release judgment, response, lineage, closure, adversarial pressure, judgment, evidence, and accountability divide cleanly;
 - finally learn how the whole estate stays governable across replacement and retirement.
 
 ### Stage 6. Estate governance
