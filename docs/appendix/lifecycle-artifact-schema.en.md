@@ -69,7 +69,7 @@ And once approval-bound or stateful capability sessions exist, the change record
 
 ## 4. Approved artifact bundle
 
-`artifact_bundle` captures the set of artifacts that are considered trusted and mutually compatible for a specific release configuration.
+`artifact_bundle` captures the set of artifacts that are considered trusted and mutually compatible for a specific release configuration. In practice, it is also the contract surface that gives a release its governed identity.
 
 ```yaml
 kind: artifact_bundle
@@ -97,9 +97,10 @@ provenance:
 This layer is useful because:
 
 - it separates "artifact exists" from "artifact is approved for release";
+- it makes release identity inspectable instead of implicit;
 - it makes incident review and rollback much shorter.
 
-And once capability-session governance is explicit, the bundle should usually make visible not only the contract version, but also the session-control assumptions that were approved together:
+And once capability-session governance is explicit, the bundle should usually make visible not only the contract version, but also the session-control assumptions and verifier-bearing contract family that were approved together:
 
 - expiry policy;
 - re-init policy;
@@ -164,8 +165,9 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 
 - every high-risk change has a `change_record`;
 - every production rollout points to an `artifact_bundle`;
+- every artifact bundle can serve as a concrete release-identity record, not just a loose list of versions;
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
-- verifier contract lineage can be reconstructed when release or assurance depends on graded outcomes;
+- verifier contract lineage and contract-family identity can be reconstructed when release or assurance depends on graded outcomes;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
 - delegated authorization ownership and revoke behavior can be reconstructed for affected runs when those controls exist;
