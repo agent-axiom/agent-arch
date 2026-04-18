@@ -61,4 +61,4 @@ Once the same agent survives its first rollout, the next questions separate clea
 - registry and governance decide who is accountable across the estate;
 - retirement closes the lifecycle when the system should no longer remain active.
 
-That is why the next natural step after the reference implementation is [Part VIII. Agent System Lifecycle](../part-viii/index.en.md).
+That is why the next natural step after the reference implementation is [Part VIII. Agent System Lifecycle](../part-viii/index.en.md), where the same system is re-read through lifecycle frame, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment, evidence substrate, and estate accountability.

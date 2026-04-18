@@ -67,4 +67,4 @@
 - registry и governance решают, кто за что отвечает по всему estate;
 - retirement закрывает lifecycle, когда систему больше нельзя держать активной.
 
-Именно поэтому следующий естественный шаг после reference implementation - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md).
+Именно поэтому следующий естественный шаг после reference implementation - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md), где та же система заново прочитывается через рамку жизненного цикла, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment, evidence substrate и accountability всего estate.

@@ -61,4 +61,4 @@
 - registry 与 governance 决定整个 estate 上的 accountability；
 - retirement 在系统不应继续 active 时关闭整个 lifecycle。
 
-这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)。
+这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)，在那里，同一套系统会被重新放进 lifecycle frame、release judgment、response、evidence backbone、lifecycle closure、adversarial pressure、judgment、evidence substrate 与整个 estate accountability 的视角里来阅读。
