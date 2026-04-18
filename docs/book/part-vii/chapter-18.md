@@ -188,11 +188,11 @@ flowchart LR
 - считается ли истечение capability-session видимым сигналом rollout, а не скрытым сбоем транспорта;
 - определено ли поведение re-initialization, если stateful capability session уже нельзя безопасно продолжить.
 
-Для того же support-агента это важно сразу. Если path создания тикета ставится на approval pause, команда должна знать, будет ли run ждать пять секунд, тридцать минут или вечно. Это не UX-деталь, а часть production behavior.
+Для того же support-агента это важно сразу. Если путь создания тикета ставится на паузу ожидания approval, команда должна знать, будет ли run ждать пять секунд, тридцать минут или вечно. Это не UX-деталь, а часть поведения системы в production.
 
 Очень практичный rollout gate звучит так:
 
-> Понимаем ли мы, сколько run сейчас стоит на approval pause, как долго они уже ждут, что система сделает, если вовремя никто не ответит, и что runtime сделает, если underlying capability session истечет еще раньше?
+> Понимаем ли мы, сколько runs сейчас стоит на паузе approval, как долго они уже ждут, что система сделает, если вовремя никто не ответит, и что рантайм сделает, если underlying capability session истечет еще раньше?
 
 Если ответ отрицательный, значит approval все еще работает как неуправляемый боковой канал.
 
@@ -208,7 +208,7 @@ flowchart LR
 - запускает ли шаг после re-init fresh policy decision;
 - может ли telemetry связать исходное paused state с resumed или reinitialized state.
 
-Без этих ответов rollout может выглядеть здоровым на approval layer, но уже деградировать глубже, на capability-session layer.
+Без этих ответов rollout может выглядеть здоровым на слое approval, но уже деградировать глубже, на слое capability-session.
 
 Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно rollout-измерение.[^anthropic] Pattern-aware runtime должен считать изменения orchestration pattern release-bearing behavior, а не невидимой деталью реализации.
 
@@ -252,7 +252,7 @@ flowchart LR
 
 ## 10. Практические правила для rollout readiness
 
-Если нужен короткий operational каркас, обычно достаточно таких правил:
+Если нужен короткий операционный каркас, обычно достаточно таких правил:
 
 1. Ни один rollout не должен начинаться без trace coverage, rollback plan и понятного owner.
 2. Ни один write capability не должен идти в canary без idempotency, outcome normalization и policy visibility.
@@ -323,7 +323,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
     )
 ```
 
-Очень простой пример, но он помогает удерживать одну важную мысль: production readiness должна быть формализуема.
+Очень простой пример, но он помогает удерживать одну важную мысль: готовность к production должна быть формализуема.
 
 ## 13. Что чаще всего ломается в процессе запуска
 
@@ -349,7 +349,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 14. Быстрый тест зрелости для rollout readiness
 
-Команде не стоит думать, что она готова к production, только потому, что demo работает, checklist в целом зеленый, а первый canary кажется маленьким.
+Команде не стоит думать, что она готова к production, только потому, что демо работает, checklist в целом зеленый, а первый canary кажется маленьким.
 
 Более сильная планка такая:
 
@@ -378,7 +378,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 16. Что читать дальше
 
-На этом эталонная реализация уже закрывает базовый operational skeleton того же support-агента и его платформы. Следующий шаг здесь уже lifecycle discipline: как менять, выпускать, расследовать и выводить из эксплуатации такую систему без потери управляемости.
+На этом эталонная реализация уже закрывает базовый операционный каркас того же support-агента и его платформы. Следующий шаг здесь уже lifecycle discipline: как менять, выпускать, расследовать и выводить из эксплуатации такую систему без потери управляемости.
 
 ## 17. Полезные справочные страницы
 
@@ -386,7 +386,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
-Эта глава превращает governed runtime path из Chapter 17 в rollout discipline. Те же approval, pause/resume и control signals затем прямо продолжаются в Chapter 21 уже как часть assurance loop.
+Эта глава превращает управляемый runtime path из Chapter 17 в дисциплину rollout. Те же approval, pause/resume и control signals затем прямо продолжаются в Chapter 21 уже как часть assurance loop.
 
 - [Глава 17. Слой политик и каталог возможностей](chapter-17.md)
 - [Часть VII. Эталонная реализация](index.md)
