@@ -18,6 +18,8 @@ Now the hardest question arrives:
 
 This is exactly where the difference breaks down between "we built a lot" and "the system can truly be rolled out."
 
+That is the distinct promise of this chapter. It should help the reader cross one more boundary: from a runnable governed system to a system the team can actually defend at go/no-go time.
+
 Even if you already have:
 
 - a clean runtime;
