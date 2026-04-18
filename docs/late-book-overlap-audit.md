@@ -47,7 +47,7 @@ Already tightened in manuscript:
 - Chapter 26 as evidence substrate / detection-ready visibility
 - Chapter 27 as estate accountability layer
 - Part V reframed around capture, health, judgment
-- Part VIII reframed around response, evidence, judgment, accountability
+- Part VIII reframed around lifecycle frame, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment, evidence substrate, accountability
 
 So this audit should now be read as a checkpoint: which overlaps have been reduced, which still need watching, and where promise-shape now helps keep the separation stable.
 
@@ -119,11 +119,13 @@ Should not dominate:
 5. Part V and Part VIII framing previously explained too many neighboring concepts at once. This is now substantially reduced by mirrored editorial geometry in both indexes and by turning those indexes into reader-promise pages instead of topic lists.
 
 ### Still medium risk
-6. Chapter 22, Chapter 27, and appendix lifecycle/reference pages can still repeat provenance / ownership / contract lineage language.
-7. Reference-package and schema pages can still drift from anchoring into retelling.
-8. Chapter 11 and Chapter 26 must keep a clean boundary between raw trace capture and estate-scale observability evidence.
-9. Chapter 12 and Chapter 21 can still blur if health-budget language drifts into response procedure language.
-10. Part indexes and chapter intros can still regress from outcome promises back into dense inventory-style summaries if future edits accumulate too much topical detail.
+6. Chapter 19 and Chapter 20 can still blur if lifecycle-frame language collapses back into generic change-management language.
+7. Chapter 22, Chapter 23, Chapter 27, and appendix lifecycle/reference pages can still repeat lineage / closure / ownership language.
+8. Reference-package and schema pages can still drift from anchoring into retelling.
+9. Chapter 11 and Chapter 26 must keep a clean boundary between raw trace capture and estate-scale observability evidence.
+10. Chapter 12 and Chapter 21 can still blur if health-budget language drifts into response procedure language.
+11. Chapter 24 and Chapter 25 can still blur if adversarial-pressure material drifts back into generic eval pedagogy.
+12. Part indexes and chapter intros can still regress from outcome promises back into dense inventory-style summaries if future edits accumulate too much topical detail.
 
 ## Surgical guidance
 
