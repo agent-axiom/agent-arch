@@ -94,6 +94,8 @@ This is exactly why runtime-control signals cannot remain a hidden implementatio
 
 But that does not make observability the owner of artifact lineage. Observability preserves and correlates cross-run evidence. The provenance layer still answers which governed artifact, approved version, or release identity a later decision depended on.
 
+That is the core promise of this chapter. It should help the reader see observability as the evidence substrate of the lifecycle: the layer that keeps runtime behavior, control signals, approvals, and cross-system activity visible enough that assurance, rollout, judgment, and registry functions can all reason from the same operational record.
+
 ## 4. Inventory coverage is also observability
 
 There is an important point that teams often miss: observability begins not with a beautiful trace viewer, but with knowing which systems exist at all.

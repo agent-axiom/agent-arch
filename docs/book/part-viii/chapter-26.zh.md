@@ -94,6 +94,8 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 
 但这并不意味着 observability 成了 artifact lineage 的拥有者。Observability 负责在跨 runs 的范围内保留和关联 evidence；而 provenance layer 仍然回答，后续决策依赖的是哪一个 governed artifact、approved version 或 release identity。
 
+这也正是本章的核心承诺。它要帮助读者把 observability 看成整个生命周期的 evidence substrate：这一层把 runtime behavior、control signals、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份 operational record 之上。
+
 ## 4. Inventory coverage 其实也是 observability
 
 一个经常被忽略的关键点是：observability 的起点不是漂亮的 trace viewer，而是先知道到底有哪些 systems 存在。
