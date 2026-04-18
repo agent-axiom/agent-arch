@@ -195,11 +195,41 @@ Should not dominate:
 - dataset refresh from failure
 - online/offline relationship
 
+### Keep in Chapter 19
+- lifecycle states and transitions
+- change as a governed sequence
+- readiness for interruption, expiry, re-init, and retirement
+- framing language that makes later lifecycle roles necessary
+
+### Keep in Chapter 20
+- go/no-go judgment
+- release-bearing evidence thresholds
+- approval to ship, not just approval to run
+- explicit decision records around change trust
+
 ### Keep in Chapter 21
 - finding triage
 - drift signals
 - remediation and assurance response
 - operational escalation logic
+
+### Keep in Chapter 22
+- provenance linkage
+- approved artifact chains
+- lineage that makes claims reviewable later
+- evidence continuity across lifecycle checkpoints
+
+### Keep in Chapter 23
+- retirement and replacement discipline
+- closure artifacts
+- decommissioning without governance residue
+- handoff from active system to historical record
+
+### Keep in Chapter 24
+- hostile and evasive conditions
+- adversarial stress on controls and oversight
+- abuse pressure that exposes weak assumptions
+- why ordinary regression confidence is insufficient here
 
 ### Keep in Chapter 25
 - adversarial scenarios
