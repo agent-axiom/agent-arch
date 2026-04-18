@@ -85,6 +85,22 @@ Should not dominate:
 - registry/governance inventory
 - broad lifecycle control
 
+### Chapter 19
+Job: define the lifecycle frame that turns runtime change into an explicitly governed sequence rather than an ad hoc stream of updates.
+
+Should not dominate:
+- detailed go/no-go judgment mechanics
+- assurance response procedures
+- artifact/accountability detail that belongs later in the lifecycle arc
+
+### Chapter 20
+Job: explain how release judgment decides whether a change deserves deployment trust.
+
+Should not dominate:
+- generic lifecycle framing already covered in Chapter 19
+- full assurance response mechanics
+- broad observability or registry architecture
+
 ### Chapter 21
 Job: explain how findings, drift, and signals become operational response and assurance action.
 
@@ -92,6 +108,30 @@ Should not dominate:
 - generic eval pedagogy already covered in Chapter 13
 - full observability substrate design
 - whole-estate inventory governance
+
+### Chapter 22
+Job: explain how provenance, artifact approval, and lineage make lifecycle claims reviewable after the fact.
+
+Should not dominate:
+- retirement/accountability ownership language that belongs in Chapters 23 and 27
+- generic observability substrate design
+- broad response-loop prose
+
+### Chapter 23
+Job: explain how systems are retired, replaced, or closed without leaving uncontrolled residue behind.
+
+Should not dominate:
+- broad provenance theory already covered in Chapter 22
+- estate accountability language that belongs in Chapter 27
+- adversarial testing material
+
+### Chapter 24
+Job: explain the distinct adversarial-pressure contour that tests whether the lifecycle and control model survives hostile conditions.
+
+Should not dominate:
+- generic eval-loop framing already covered in Chapters 13 and 25
+- whole-estate accountability prose
+- full observability architecture
 
 ### Chapter 25
 Job: explain how behavioral and control evals probe dangerous or deceptive behavior beyond ordinary regression testing.
