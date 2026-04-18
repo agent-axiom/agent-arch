@@ -19,6 +19,8 @@ Now it is time to turn that into a more coherent reference implementation. Not a
 
     Together, this shows that the reference implementation is not for demo value. It is for fixing the production system in code.
 
+    Read as one argument, this part moves through three promises: Chapter 16 gives the runtime a runnable structure, Chapter 17 gives that structure a governed contract core, and Chapter 18 asks whether the same system can withstand real go/no-go pressure.
+
 In this part, I gradually assemble a minimally mature platform:
 
 - a baseline runtime;
