@@ -40,6 +40,8 @@ The important distinction is this: the eval loop helps the team learn whether be
 
 That means this chapter begins where budget-setting chapters stop. SLO define tolerated health and risk budgets. Assurance starts when those budgets are threatened, breached, or no longer trusted, and the team must act.
 
+That is the core promise of this chapter. It should help the reader see assurance not as a grab-bag of security activities, but as the response function of the lifecycle: the place where signals turn into containment, ownership, remediation, and forced return to a safer operating state.
+
 ## 2. What an assurance loop is
 
 I would define the assurance loop like this:

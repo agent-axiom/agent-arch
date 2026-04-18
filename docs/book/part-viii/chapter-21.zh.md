@@ -40,6 +40,8 @@
 
 这意味着，本章正是从那些 budget-setting chapters 停下来的地方开始。SLO 定义可容忍的 health budgets 与 risk budgets；assurance 则在这些 budgets 受到威胁、已经失守，或者已经不再值得信任时开始要求团队采取行动。
 
+这也正是本章的核心承诺。它要帮助读者把 assurance 看成整个生命周期里的 response function，而不是一组松散的 security activities：在这里，signals 会被转化成 containment、ownership、remediation，以及把系统强行带回更安全运行状态的动作。
+
 ## 2. 什么是保障闭环
 
 可以这样定义保障闭环：
