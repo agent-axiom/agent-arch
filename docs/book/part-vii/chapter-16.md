@@ -224,7 +224,7 @@ def run_agent(request: RunRequest) -> RunResult:
 - `resumable` работы, которую можно продолжить в той же capability session;
 - `reinitialize_required` работы, где capability session истекла и ее нужно поднять заново перед продолжением.
 
-Без этих различий expiry session обычно выглядит как случайная ошибка, хотя на деле это нормальное lifecycle event.
+Без этих различий истечение session обычно выглядит как случайная ошибка, хотя на деле это нормальное lifecycle event.
 
 ## 10. Что важно встроить в baseline с самого начала
 
@@ -233,13 +233,13 @@ def run_agent(request: RunRequest) -> RunResult:
 - `trace_id` на каждый run;
 - tenant/principal context;
 - policy decision hooks;
-- capability registry вместо direct calls;
+- реестр возможностей вместо direct calls;
 - structured telemetry;
 - basic background task hook;
 - явную модель статусов run вроде `queued / in_progress / completed / failed / canceled`;
 - способ poll / resume / cancel для длинной работы без изобретения второго скрытого рантайма.
 
-Если этого нет в baseline, потом система обычно дорастает до них через болезненный retrofit.
+Если этого нет в baseline, потом система обычно дорастает до этого через болезненный retrofit.
 
 ## 11. Минимальный каркас для background и resumable work
 
@@ -272,9 +272,9 @@ def continue_run(run_id: str):
     return result
 ```
 
-Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а runtime мог ее продолжать или отменять без догадок.
+Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а рантайм мог ее продолжать или отменять без догадок.
 
-## 12. Что можно не усложнять в первой reference версии
+## 12. Что можно не усложнять в первой reference-версии
 
 На старте не обязательно сразу добавлять:
 
@@ -312,7 +312,7 @@ runtime:
     support_reinit_on_expiry: true
 ```
 
-Это полезно, потому что помогает держать contract runtime явным и переносимым между средами.
+Это полезно, потому что помогает держать контракт рантайма явным и переносимым между средами.
 
 ## 13. Частые ошибки
 
@@ -323,7 +323,7 @@ runtime:
 - memory подключена как случайный helper;
 - tool calls идут мимо catalog/gateway;
 - background updates отсутствуют;
-- telemetry добавлена как afterthought;
+- telemetry добавлена по остаточному принципу;
 - длинная работа спрятана за ретраями, а не смоделирована явно;
 - background execution вроде бы есть, но операторы не могут нормально делать poll, resume или cancel.
 
@@ -337,7 +337,7 @@ runtime:
 
 - orchestration, policy, memory, execution и telemetry видимы как отдельные слои;
 - run context с самого начала несет identity и control metadata;
-- capability execution идет через contracts, а не через direct adapter calls;
+- исполнение возможностей идет через contracts, а не через direct adapter calls;
 - tracing и background hooks встроены в base path, а не появляются как retrofit;
 - длинная работа имеет явную модель статусов и продолжения, а не прячется в скрытых ретраях;
 - один run можно объяснить как устойчивый skeleton, а не как рассыпанную local logic.
