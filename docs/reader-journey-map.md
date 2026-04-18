@@ -37,7 +37,7 @@ Once the system is alive, the reader should see a clean lifecycle-role contour a
 - release judgment
 - assurance as response
 - provenance and approved artifacts as evidence backbone
-- retirement as lifecycle closure
+- lifecycle closure
 - adversarial pressure as a distinct stress contour
 - evals as judgment
 - observability as evidence substrate
