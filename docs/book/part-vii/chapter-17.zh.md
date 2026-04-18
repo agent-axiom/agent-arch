@@ -13,6 +13,8 @@
 
 即使你已经有一个干净的 runtime loop，这依然不够。没有显式的策略层，系统仍然过于信任环境：
 
+这正是本章的 distinct promise。它应该帮助读者看清 runtime 的 contract core 真正在哪里，也说明为什么一个 runnable system 在可允许性、风险与 capability control 仍然藏在 orchestration code 里时，依然算不上成熟。
+
 在贯穿全书的 support 场景里，这一点在第 16 章之后立刻就会出现。runtime 已经能接收请求、拼上下文、调用模型，并走到 gateway。可一旦智能体准备开紧急工单、把摘要写进 memory，或者继续请求下一步外部动作，系统需要的就不只是 loop，而是对可允许性与风险的明确判断。
 
 - 无法可靠地区分允许的 run 和不允许的 run；

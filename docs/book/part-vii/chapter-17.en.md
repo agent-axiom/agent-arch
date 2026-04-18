@@ -13,6 +13,8 @@
 
 Even if you already have a clean runtime loop, that is still not enough. Without an explicit policy layer, the system remains too trusting:
 
+That is the distinct promise of this chapter. It should help the reader see where the contract core of the runtime really lives, and why a runnable system still remains immature until admissibility, risk, and capability control stop hiding in orchestration code.
+
 In the running support case, this appears immediately after Chapter 16. The runtime can already accept a request, assemble context, call the model, and reach the gateway. But the moment the agent is about to open an urgent ticket, write a summary into memory, or request another external step, the system needs more than a loop. It needs an explicit decision about admissibility and risk.
 
 - you cannot reliably distinguish allowed runs from forbidden ones;
