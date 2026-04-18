@@ -40,6 +40,8 @@ Registry layer 首先是为了一件事而存在，让整个 estate 具备 answe
 
 这种 answerability 就是本章的重心。Registry 不拥有 evidence backbone，也不拥有 telemetry substrate。它拥有的是 governed entities 到 owners、states 与 accountability paths 之间的映射。
 
+这也正是本章的核心承诺。它要帮助读者把 registry 看成整个 estate 的 accountability layer：在这里，governed entities 不再只是模糊的一群 tools 和 assistants，而会变成拥有 owner、lifecycle state 与明确责任的可追责生产系统。
+
 ## 2. 为什么 sprawl 不只是组织问题
 
 表面上看，这像是一个管理问题：对象太多、秩序太差。

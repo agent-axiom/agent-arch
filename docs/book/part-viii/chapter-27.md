@@ -40,6 +40,8 @@ Registry layer нужен здесь прежде всего для одной �
 
 Именно эта answerability, главный центр тяжести этой главы. Registry не владеет evidence backbone и не владеет telemetry substrate. Он владеет привязкой governed entities к owners, states и accountability paths.
 
+В этом и состоит главный смысл этой главы. Она должна показать registry как слой accountability всего estate: место, где governed entities перестают быть размытым набором tools и assistants и превращаются в подотчетные production systems с owners, lifecycle state и явной ответственностью.
+
 ## 2. Почему sprawl опасен не только организационно
 
 На первый взгляд это кажется чисто управленческой проблемой: много сущностей, сложно поддерживать порядок.

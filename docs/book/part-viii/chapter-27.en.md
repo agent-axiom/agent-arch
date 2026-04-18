@@ -40,6 +40,8 @@ The registry layer exists for one reason above all: to make the estate answerabl
 
 That answerability is the center of gravity here. Registry does not own the evidence backbone or the telemetry substrate. It owns the mapping from governed entities to owners, states, and accountability paths.
 
+That is the core promise of this chapter. It should help the reader see registry as the accountability layer of the estate: the place where governed entities stop being a blurry population of tools and assistants and become answerable production systems with owners, lifecycle state, and explicit responsibility.
+
 ## 2. Why sprawl is not only an organizational problem
 
 At first glance, this looks like a management problem: too many entities, too much entropy.
