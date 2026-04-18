@@ -11,6 +11,12 @@ This page exists for two reasons:
 
 If you want the high-level message of the book, use the [homepage](index.en.md). If you need structure and current status, open the [book plan](book/plan.en.md). If you need reusable artifacts and contract pages, go to the [reference layer](reference.en.md).
 
+The simplest expectation to keep in mind is this:
+
+- the book promises the main argument and the reader journey;
+- the support layers promise reusable artifacts, runnable anchors, and contract pages;
+- this page exists to help you choose the right promise quickly.
+
 ## If you read only one thing
 
 If you want the shortest possible introduction to the book's thesis, read [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md).
@@ -139,6 +145,8 @@ Those pages already give you:
 - a memory path;
 - telemetry;
 - rollout checks.
+
+They do not replace the book's explanation of why those layers exist or how their trade-offs fit together.
 
 ## If You Want Templates and Project Direction
 
