@@ -329,8 +329,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 Если хочешь быстро проверить свою дисциплину артефактов, пройди по вопросам:
 
 - У всех рабочих артефактов есть владелец?
-- У model, prompt, policy, approval-schema, runtime-control и eval-артефактов есть версии?
-- Можно ли быстро восстановить происхождение и активные contract/schema versions для разбора инцидента?
+- У model-, prompt-, policy-, approval-, runtime-control- и eval-артефактов есть версии?
+- Можно ли быстро восстановить происхождение и активные версии контрактов и схем для разбора инцидента?
 - Есть ли утвержденный реестр платформы?
 - Отличаете ли вы шаблон, разрешенный на уровне платформы, от артефакта, разрешенного к выпуску?
 - Можно ли быстро заблокировать устаревший артефакт?
@@ -347,7 +347,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
-- [Глава 21. Контур assurance: red teaming, обнаружение и response](chapter-21.md)
+- [Глава 21. Контур assurance: red teaming, обнаружение и реагирование](chapter-21.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)
 - [Источники](../../appendix/sources.md)
