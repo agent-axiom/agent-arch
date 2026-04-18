@@ -250,8 +250,10 @@ Should not dominate:
 ## Smallest high-impact rewrite sequence
 
 1. keep Part V and Part VIII indexes aligned with the new role grammar and reader-promise shape
-2. protect Chapter 11 vs Chapter 26 from collapsing back into one observability blob
-3. protect Chapter 12 vs Chapter 21 from collapsing back into one health/response blob
-4. trim Chapter 22 / Chapter 27 / appendix repetition where accountability and lineage language starts to duplicate
-5. trim reference-package repetition where it retells, not anchors
-6. keep planning docs synchronized so the manuscript does not drift back to topic accumulation language
+2. protect Chapter 19 vs Chapter 20 from collapsing back into one generic change-management discussion
+3. protect Chapter 11 vs Chapter 26 from collapsing back into one observability blob
+4. protect Chapter 12 vs Chapter 21 from collapsing back into one health/response blob
+5. protect Chapter 24 vs Chapter 25 from collapsing back into one adversarial-evals blob
+6. trim Chapter 22 / Chapter 27 / appendix repetition where accountability and lineage language starts to duplicate
+7. trim reference-package repetition where it retells, not anchors
+8. keep planning docs synchronized so the manuscript does not drift back to topic accumulation language
