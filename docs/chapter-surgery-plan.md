@@ -4,6 +4,8 @@
 
 Move the manuscript from a strong handbook/reference project toward a stronger book by improving argument shape, reader journey, case continuity, role clarity between adjacent chapters, and explicit promise-shape across parts and entry surfaces.
 
+A key constraint now is that the book must own argument and reader transformation, while support layers own schemas, runnable anchors, templates, and contract detail. The surgery plan should protect that boundary, not blur it.
+
 ## Surgery priorities
 
 ### Priority 1. Opening and framing

@@ -69,6 +69,8 @@ To make this arc memorable, the manuscript should repeatedly return to:
 - the reader is not always reminded what misconception is being corrected at this stage
 - Part V and Part VIII need to preserve role clarity so adjacent chapters do not collapse into one broad governance blob
 
+The support shell should not steal this job. Reference pages, schemas, and runnable anchors can support the journey, but they should not replace the book's argument or become the primary carrier of reader transformation.
+
 ## Chapter transition principle
 
 Each part should answer one reader question:
