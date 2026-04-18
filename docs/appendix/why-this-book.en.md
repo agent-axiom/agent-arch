@@ -52,7 +52,7 @@ But they often do not answer the harder questions:
 - How do you roll changes out safely?
 - How do you audit behavior after incidents?
 
-This book is meant to sit above frameworks, not replace them.
+This book is meant to sit above frameworks, not replace them. The runnable package sits below that argument as an implementation anchor, not as a competing reading mode.
 
 ## Compared with vendor docs
 
