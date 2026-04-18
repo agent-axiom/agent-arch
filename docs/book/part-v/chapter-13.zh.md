@@ -240,6 +240,30 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - 更长的推敲会不会带来更多而不是更少的矛盾；
 - 时间漂移能不能通过追踪被定位出来。
 
+## 5.4. LLM-as-a-judge 只有在完成校准之后才真正有用
+
+随着 eval layer 变得更成熟，几乎总会出现另一个诱惑：引入 judge model，然后默认 grading 现在就可以几乎自动扩展了。
+
+这确实是有用工具，但前提是不要把它误当成事实本身。
+
+对 agent systems 来说，judge 往往有一个很重要的限制：只看最终答案文本通常是不够的。如果 grading 真正想反映 outcome，judge 最好还能看到那些真正描述系统行为的东西：
+
+- trace fragments；
+- tool outcomes；
+- approval events；
+- structured grading fields；
+- 在可用时接入 external state checks。
+
+否则系统很容易因为文本写得漂亮而拿到"高分"，即使事实结果其实很差。
+
+这里还有一个很重要的 practical rule：如果 judge 与人工的一致性很低，第一步通常不应该是扩大 dataset，而应该先分析 disagreement cases，再修正 rubric 或 judge prompt。
+
+这里一个有用信号是 `Cohen's kappa`，但往往比具体数值更重要的是分歧长什么样：judge 到底是在 policy violation、tool misuse，还是 ambiguous outcome 上理解错了。
+
+还有一个很常见的自我欺骗来源：一个在强模型上校准好的 judge prompt，换到更弱模型后可能迁移得很差。所以 judge-model 一旦变化，最好重新做 calibration，而不是假设旧 prompt 还能自动沿用。
+
+最后一个规则非常简单：如果你在评估 prompt change，就不要同时改 prompt 和 model。否则后面就无法对"到底是什么改善或恶化了系统"做出诚实的因果判断。
+
 ## 6. 评测数据集里应该放什么
 
 一个很常见的错误是：eval dataset 主要由舒服的 demo 场景组成。这种集合几乎帮不上什么忙。

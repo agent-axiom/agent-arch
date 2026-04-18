@@ -172,12 +172,24 @@
 - [第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 
+如果你想快速回答下面这些问题，这条路径最合适：
+
+- 怎样避免把过大的工具目录直接暴露给模型；
+- 什么时候值得做 semantic tool filtering；
+- MCP host、client 和 server 到底分别是什么角色。
+
 ### 我需要设计记忆与检索纪律
 
 - [第 5 章：为什么智能体需要记忆，以及它为何危险](book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](book/part-iii/chapter-6.zh.md)
 - [第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
+
+如果你想搞清楚下面这些问题，这条路径尤其合适：
+
+- user query 和内部文档之间的 semantic gap 怎么办；
+- HyDE 和 query rewriting 什么时候真的有帮助；
+- 为什么通常应先做 RAG，而不是直接上 training。
 
 ### 我需要可观测性与评测
 
@@ -186,12 +198,20 @@
 - [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
 
+如果你的问题更偏向这些方向，这也是最合适的入口：
+
+- 怎样校准 LLM-as-a-judge；
+- 为什么 judge prompt 要和 human review 对齐；
+- 为什么在需要因果判断时不能同时改 model 和 prompt。
+
 ### 我需要上线治理与发布控制
 
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的 Change Management](book/part-viii/chapter-20.zh.md)
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](book/part-viii/chapter-22.zh.md)，用于掌握 governed lineage 与 approved artifact identity
 - [第 27 章：Agent Inventory、Registry 与 Sprawl 控制](book/part-viii/chapter-27.zh.md)，用于掌握整个 estate 的 ownership 与 accountability
+
+如果你的产品问题本质上是 latency budget、fast path / slow path 和 routed pipeline，也请先读 [第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)。
 
 ## 这本书和别的内容有什么不同
 

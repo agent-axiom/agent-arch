@@ -65,6 +65,28 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 这正是对上一章论点的进一步证明。`model + tools + instructions` 足以让一个原型看起来会工作，但它已经不足以解释 rights、side effects、accountability 和 recovery，一旦系统真正接触现实环境，这些问题就会立刻出现。
 
+## 2.1. 哪些属于 runtime 架构，哪些不属于
+
+这里最好再画一条边界，因为团队很容易把 runtime 设计、模型训练和 product surface 混在一起。
+
+通常属于 agent runtime 架构的，会包括：
+
+- `model`；
+- `instructions`；
+- `tools`；
+- `memory`；
+- planning routines 或 skills；
+- `runtime`；
+- guardrails 和 policies。
+
+但也有几样东西通常不属于 runtime 架构：
+
+- training dataset 和 reward model 属于模型开发与训练，而不属于 runtime；
+- user interface 属于 product surface，而不属于 agent 核心逻辑；
+- context window 是所选模型的属性，而不是一个独立的架构层。
+
+这一区分看起来有点理论化，但实践里非常有用。如果系统开始在 tool routing、approval path 或 retrieval discipline 上退化，原因通常在 runtime contour，而不是在 UI 或 reward model。
+
 ## 3. 一个请求应该怎样穿过系统
 
 现在，把同一个支持案例当作一条架构路径来看。

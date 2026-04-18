@@ -5,6 +5,7 @@ This page is for quick working checks. If you do not want to reread an entire pa
 ## Safety checklist
 
 - Are trust boundaries explicit between user input, memory, tools, and external systems?
+- Do you distinguish prompt injection, jailbreaking, and action hallucination instead of collapsing them into one vague “LLM risk” bucket?
 - Is there a policy gate before every sensitive action, not only before the model call?
 - Are low-risk and high-risk tools clearly separated?
 - Is there an approval gate for actions with irreversible side effects?
@@ -20,11 +21,14 @@ Read next:
 ## Memory checklist
 
 - Are short-term, long-term, and profile memory separated?
+- Does retrieval account for the semantic gap between user language and document language?
+- If you use query rewriting or HyDE, is it clear that this is retrieval aid rather than a new source of “facts”?
 - Are memory read and memory write governed by different rules?
 - Is provenance stored for persistent records?
 - Is there a policy for what may be written into memory?
 - Is there a compaction or background maintenance path?
 - Is retrieval bounded by volume and relevance?
+- Do you first try to improve RAG and corpus freshness before jumping to training?
 - Is there a clear deletion or revision strategy?
 
 Read next:
@@ -38,6 +42,7 @@ Read next:
 - Is there a minimum eval baseline before launch?
 - Is there a rollout gate with safety, observability, and approval requirements?
 - Is it clear which scenarios count as blocking failures?
+- Is the latency budget defined from the user's patience window, not only from model p95?
 - Is there a runbook for failures, denials, and approval backlog?
 - Is there a channel for incident review and postmortems?
 - Can you quickly disable a high-risk capability without shutting down the whole system?
@@ -56,6 +61,8 @@ Read next:
 - Can you see which tool principal executed the side effect?
 - Can you distinguish success, denied, approval_wait, and failure?
 - Is there a way to aggregate runs into session-level or eval-level summaries?
+- If you use LLM-as-a-judge, is the judge calibrated against human review and outcome checks?
+- Are you avoiding model-and-prompt changes in the same experiment when you need a causal eval conclusion?
 
 Read next:
 
@@ -66,11 +73,13 @@ Read next:
 
 - Does every capability have an owner, risk tier, and approved inventory status?
 - Is it clear whether a tool is read-only or write-capable?
+- Are you hiding an overly large tool catalog from the model behind a relevant subset instead of showing everything at once?
 - Is there an execution profile: sandbox, network access, allowed egress?
 - Does the gateway check actor identity and policy before execution?
 - Are idempotency semantics and retry policy defined?
 - Is it clear when approval is required and when a tool may execute automatically?
 - Is there an audit trail for every external action?
+- Does the team understand the MCP host, client, and server roles instead of treating them as one generic “integration”?
 
 Read next:
 

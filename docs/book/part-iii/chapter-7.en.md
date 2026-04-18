@@ -33,6 +33,41 @@ A normal retrieval pipeline almost always takes into account not only similarity
 - provenance;
 - policy filters.
 
+## 2.1. The Semantic Gap Between the User and the Knowledge Layer Is Real
+
+Another problem here often stays invisible in demos: the user asks in conversational language, while documents and knowledge records are usually written in formal, technical, or internal-system language.
+
+Because of that, retrieval may perform badly not because the data is missing, but because there is a semantic gap between the user query and the corpus.
+
+In practice, that means the retrieval query is often worth shaping:
+
+- normalize entity names and internal status labels;
+- rewrite the query into a more document-like form;
+- add controlled query expansion;
+- in some cases use HyDE, where the system first drafts a hypothetical document-style answer and only then searches from it.
+
+But one discipline matters here: that intermediate query aid must not turn into a new "fact". HyDE or query rewriting are useful as retrieval tools, not as substitutes for a grounded answer.
+
+## 2.2. In Most Cases, Start with RAG, Not Training
+
+If the problem is that the agent lacks fresh knowledge or access to internal documents, the most practical first step is usually not training, but a sane retrieval layer.
+
+The reason is simple:
+
+- RAG is faster to update;
+- retrieval is easier to audit and constrain;
+- knowledge drift is easier to fix by updating the corpus than by retraining the model;
+- changing documents and mutable knowledge sources fit retrieval better than model weights.
+
+At the same time, it helps to separate two different jobs:
+
+- continued pretraining mainly helps adapt the knowledge distribution;
+- SFT mainly helps adapt behavior, style, and decision patterns.
+
+The practical rule is usually this: first bring retrieval to a coherent level, and only then decide whether the system has hit a ceiling that really justifies training.
+
+There is also a useful operational signal here: if a support agent worked well for a long time and later degrades without meaningful changes in prompts or model routing, suspect a stale retrieval corpus, indexing drift, or data-freshness issue before assuming some mysterious model decay.
+
 ## 3. A Good Prompt Loves Signal Density, Not Completeness
 
 It is very tempting to think "the more context, the smarter the agent." In practice, the opposite is often true: the more garbage you put into the prompt, the worse the model holds priorities.

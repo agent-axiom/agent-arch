@@ -50,6 +50,16 @@ For a short path in, start with:
 - [Handbook for Agent Registry and Inventory Operations](appendix/registry-operations-handbook.en.md)
 - [Postmortem Template for Agent Systems](appendix/postmortem-template.en.md)
 
+## Fast Topic Routes
+
+If you do not need the whole reference layer, but only a short path into one concrete topic, start here:
+
+- Tool catalog design, semantic tool filtering, and read/write taxonomy: [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
+- MCP host/client/server roles, capability transport, and sandbox boundaries: [Chapter 9. Sandbox Execution and MCP as an Integration Contract](book/part-iv/chapter-9.en.md)
+- Semantic gap, HyDE, and RAG vs training: [Chapter 7. Retrieval, Compaction, and Background Updates](book/part-iii/chapter-7.en.md)
+- Latency budget, fast path / slow path, and routed pipelines: [Chapter 12. SLO for Agent Systems](book/part-v/chapter-12.en.md)
+- LLM-as-a-judge, calibration, and judge-human agreement: [Chapter 13. Offline Evals, Online Evals, and Regression Gates](book/part-v/chapter-13.en.md)
+
 ## Continue
 
 - [Start Here](start-here.en.md)

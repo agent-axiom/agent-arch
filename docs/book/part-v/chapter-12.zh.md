@@ -124,6 +124,26 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
 但它仍然是 budget instrument，而不是 response loop。Latency SLO 告诉团队，在必须采取行动之前，还能容忍多少变慢。后面的 assurance chapter 才负责在这个容忍度被突破之后处理 containment、ownership 与 response。
 
+## 5.1. Latency budget 应该从用户耐心开始算，而不是从模型速度开始算
+
+这里还有一个很值得保留的产品问题：latency budget 不应该从模型 benchmark 出发，而应该从用户究竟愿意等多久出发。
+
+如果用户在 8 到 10 秒左右就开始流失，那么一个平均响应要 25 秒的智能体，即使质量指标看上去不错，也依然是糟糕设计。
+
+这也是为什么，除了想着"把所有东西都加速"，更有用的思路往往是 routed pipeline：
+
+- 给常见、简单场景一条 fast path；
+- 只有 ambiguous、high-risk 或 unusually complex 的 runs 才走更慢的 reasoning path。
+
+落到工程上，这通常意味着：
+
+- routine cases 用更少上下文和更便宜的 model path；
+- 更昂贵的 model routing 只留给真正值得的场景；
+- 简单场景里减少不必要的 tool hops；
+- 明确规定到底哪些任务类别值得长时间 deliberation。
+
+这样 latency SLO 就不再只是平台指标，而会开始成为 product fit 的一部分。
+
 ## 6. Safety SLO 必须和 reliability 放在一起
 
 在智能体系统里，安全不能被放成一个独立的 security appendix。对生产系统来说，它本身就是系统健康的一部分。

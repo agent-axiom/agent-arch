@@ -104,6 +104,24 @@ There are many threats in agent systems, but a production system like the suppor
 | Cross-tenant access | Identity layer, retrieval, tools | tenant scoping, signed context, metadata filters |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
+## 5.1. Prompt Injection, Jailbreaking, and Action Hallucination Are Not the Same
+
+It is useful to distinguish at least three different failure classes:
+
+- prompt injection tries to override instructions, policy, or tool-use logic through untrusted content;
+- jailbreaking tries to break through the model's built-in safety layer;
+- action hallucination happens when the system "decides" it already has grounds for an action that in reality were never established.
+
+For the support agent, this is very concrete. If a customer email tries to rewrite system rules, that is prompt injection. If the model starts bypassing base safety restrictions, that is closer to jailbreaking. If the agent concludes that the user must have granted consent for a sensitive action when no approval exists, that is action hallucination.
+
+This distinction matters not for taxonomy itself, but because the mitigation paths differ:
+
+- prompt injection requires a hard boundary between instructions and data;
+- jailbreaking requires controls at the model gateway, policy, and safety layers;
+- action hallucination requires deterministic approval rules, capability checks, and an audit trail.
+
+The practical rule is simple: high-stakes decisions should not be left to unconstrained probabilistic judgment. The final right to act is better kept in the policy layer and approval path.
+
 ## 6. Guardrails Work Best as Layers, Not as One Filter
 
 The OpenAI practical guide maps well to engineering reality here: guardrails are more effective as layered defense than as one "smart" check at ingress.[^openai-practical]

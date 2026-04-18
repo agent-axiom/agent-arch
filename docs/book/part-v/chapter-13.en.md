@@ -240,6 +240,30 @@ That is why it is useful to keep explicit consistency checks:
 - does longer deliberation create more contradiction rather than less;
 - can temporal drift be localized through traces.
 
+## 5.4. LLM-as-a-Judge Is Useful Only After Calibration
+
+As the eval layer grows, one more temptation almost always appears: use a judge model and assume grading can now scale almost automatically.
+
+That is a useful tool, but only if you do not confuse it with the source of truth.
+
+For agent systems, a judge usually has one important limitation: it is rarely enough for it to see only the final answer text. If grading is supposed to reflect the real outcome, the judge should ideally see what actually describes system behavior:
+
+- trace fragments;
+- tool outcomes;
+- approval events;
+- structured grading fields;
+- external state checks where those are available.
+
+Otherwise the system can easily earn a “good score” for polished text while producing a bad factual outcome.
+
+Another practical rule matters a lot here: if judge-human agreement is low, the first step is usually not to scale the dataset, but to inspect disagreement cases and fix the rubric or the judge prompt.
+
+One useful signal here is `Cohen's kappa`, but the exact number often matters less than the shape of the disagreement: where exactly the judge misunderstands a policy violation, tool misuse, or ambiguous outcome.
+
+There is one more common source of self-deception: a judge prompt calibrated on a strong model may transfer poorly to a weaker one. So when the judge model changes, calibration should be checked again rather than assuming the old prompt still carries over.
+
+The last rule is very simple: if you are evaluating a prompt change, do not change both the prompt and the model at the same time. Otherwise you lose the chance to make an honest causal claim about what actually improved or worsened the system.
+
 ## 6. What to Include in an Eval Dataset
 
 A common mistake is building an eval dataset out of pleasant demo scenarios. Those sets help very little.

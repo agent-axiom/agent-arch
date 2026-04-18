@@ -2,7 +2,7 @@
 
 这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 git history 的替代品，而是让读者快速看到项目是否持续演进。
 
-_更新于 2026 年 4 月 8 日。_
+_更新于 2026 年 4 月 18 日。_
 
 ## 书籍
 
@@ -12,6 +12,19 @@ _更新于 2026 年 4 月 8 日。_
 
 为什么这很重要：
 - 现在这本书覆盖的不只是架构与上线，还覆盖了智能体系统发布后的生命周期管理。
+
+### 第一到第五部分的 production contour 更完整了
+
+书里现在补上了更多连接 architecture、retrieval、execution 和 eval discipline 的桥：
+
+- 第一部分更明确地区分了 runtime architecture、training layer 和 product surface；
+- 第二部分加入了更清晰的 `prompt injection`、`jailbreaking` 与 `action hallucination` taxonomy；
+- 第三部分加强了 retrieval contour：`semantic gap`、`HyDE`、`RAG first`，以及 continued pretraining 与 `SFT` 的区别；
+- 第四部分补上了大工具目录、`semantic tool filtering` 和 `MCP host / client / server` 角色的 practical guidance；
+- 第五部分补强了 `latency budget` 的产品视角，以及更实用的 `LLM-as-a-judge` framing。
+
+为什么这很重要：
+- 这本书现在覆盖的不只是基础 platform layers，也更贴近日常 production 团队在 design review、eval loop 和 rollout 之间反复遇到的问题。
 
 ## 参考层
 
@@ -60,6 +73,27 @@ _更新于 2026 年 4 月 8 日。_
 
 为什么这很重要：
 - 读者现在可以不按线性顺序通读全书，也能直接进入检查清单、案例研究、术语表与实践工件。
+
+## 导航
+
+### 入口页更强了
+
+已更新：
+
+- [从这里开始](start-here.zh.md)；
+- [参考层](reference.zh.md)；
+- [速查清单](appendix/cheat-sheets.zh.md)。
+
+这些页面现在更容易把读者带到下面这些主题：
+
+- `semantic tool filtering`；
+- `HyDE` 与 `RAG vs training`；
+- `latency budget` 与 routed pipelines；
+- `LLM-as-a-judge` 与 judge calibration；
+- `prompt injection`、`jailbreaking` 与 `action hallucination` 的区别。
+
+为什么这很重要：
+- 这些新主题现在不只藏在单个章节里，也已经出现在读者真正会先打开的入口页上。
 
 ## 这对读者意味着什么
 

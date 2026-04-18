@@ -172,12 +172,24 @@ That is the shortest way to understand where the project is going and how it can
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](book/part-iv/chapter-9.en.md)
 - [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](book/part-iv/chapter-10.en.md)
 
+This route is especially useful if you need quick answers to questions like:
+
+- how not to drown the model in an oversized tool catalog;
+- when semantic tool filtering is worth it;
+- how MCP host, client, and server roles differ.
+
 ### I need memory design and retrieval discipline
 
 - [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](book/part-iii/chapter-6.en.md)
 - [Chapter 7. Retrieval, Compaction, and Background Updates](book/part-iii/chapter-7.en.md)
 - [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
+
+This path is especially useful if you need to reason about:
+
+- the semantic gap between user queries and internal documents;
+- when HyDE or query rewriting actually help;
+- why RAG is usually the first move before training.
 
 ### I need observability and evals
 
@@ -186,12 +198,20 @@ That is the shortest way to understand where the project is going and how it can
 - [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
 
+This route is also the right entry if your question is about:
+
+- calibrating LLM-as-a-judge;
+- checking judge prompts against human review;
+- avoiding model-plus-prompt changes in the same experiment when you need a causal conclusion.
+
 ### I need rollout and governance
 
 - [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 - [Chapter 20. Change Management for Agent Systems](book/part-viii/chapter-20.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](book/part-viii/chapter-22.en.md), for governed lineage and approved artifact identity
 - [Chapter 27. Agent Inventory, Registry, and Sprawl Control](book/part-viii/chapter-27.en.md), for estate ownership and accountability
+
+If your product question is really about latency budget, fast path / slow path design, and routed pipelines, also start with [Chapter 12. SLO for Agent Systems](book/part-v/chapter-12.en.md).
 
 ## What Makes This Book Different
 

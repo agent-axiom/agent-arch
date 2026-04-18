@@ -104,6 +104,24 @@ agent systems 的威胁很多，但 production 场景里，先抓住下面这一
 | Cross-tenant access | Identity layer、retrieval、tools | tenant scoping、signed context、metadata filters |
 | Missing audit trail | Runtime、telemetry plane | structured traces、immutable logs、reviewable approvals |
 
+## 5.1. Prompt injection、jailbreak 与 action hallucination 不是一回事
+
+最好至少把三类不同的 failure classes 分开来看：
+
+- prompt injection 试图通过不可信内容改写 instructions、policy 或 tool-use logic；
+- jailbreak 试图突破模型自身的 safety layer；
+- action hallucination 则发生在系统"认定"自己已经具备行动依据，而这个依据实际上并不存在的时候。
+
+放回到支持智能体场景里，这件事很具体。如果客户邮件试图重写 system rules，这是 prompt injection。如果模型开始绕过基础 safety restrictions，这更接近 jailbreak。如果智能体自行判断用户一定已经同意某个敏感动作，但实际上根本没有 approval，这就是 action hallucination。
+
+区分它们，不是为了做一套漂亮 taxonomy，而是因为 mitigation paths 根本不同：
+
+- prompt injection 需要 instructions 和数据之间有硬边界；
+- jailbreak 需要在 model gateway、policy 和 safety controls 上下功夫；
+- action hallucination 需要确定性的 approval rules、capability checks 和 audit trail。
+
+一个很实用的规则是：high-stakes 决策不要交给模型的自由概率判断。最终行动权最好放在 policy layer 和 approval path 里。
+
 ## 6. Guardrails 更适合做成多层，而不是一个过滤器
 
 OpenAI 的 practical guide 在这里非常贴近现实：guardrails 更适合设计成 layered defense，而不是一个“聪明的入口检查”。[^openai-practical]

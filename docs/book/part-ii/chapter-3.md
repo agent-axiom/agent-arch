@@ -104,6 +104,24 @@ flowchart LR
 | Cross-tenant access | Identity layer, retrieval, tools | tenant scoping, signed context, metadata filters |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
+## 5.1. Prompt injection, jailbreak и action hallucination это не одно и то же
+
+Полезно различать как минимум три разных failure classes:
+
+- prompt injection пытается подменить instructions, policy или tool-use logic через недоверенный контент;
+- jailbreak пытается обойти встроенный safety-layer самой модели;
+- action hallucination возникает в тот момент, когда система "решает", будто у нее уже есть основание на действие, которого на самом деле нет.
+
+Для support-агента это выглядит очень приземленно. Если письмо клиента пытается переписать system rules, это prompt injection. Если модель начинает обходить базовые safety restrictions, это ближе к jailbreak. Если агент "понял", что пользователь якобы дал согласие на чувствительное действие, хотя никакого подтверждения не было, это уже action hallucination.
+
+Это различие нужно не ради красивой taxonomy, а потому что mitigation paths здесь разные:
+
+- prompt injection требует жесткой границы между instructions и данными;
+- jailbreak требует работы на уровне model gateway, policy и safety controls;
+- action hallucination требует детерминированных approval rules, capability checks и audit trail.
+
+Практическое правило простое: high-stakes решения не должны оставаться на свободном вероятностном суждении модели. Финальное право на действие лучше держать в policy layer и approval path.
+
 ## 6. Guardrails работают слоями, а не одним фильтром
 
 Практический гайд OpenAI хорошо попадает в реальность: guardrails полезнее проектировать как layered defense, а не как одну "умную" проверку на входе.[^openai-practical]

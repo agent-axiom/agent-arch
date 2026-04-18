@@ -50,6 +50,16 @@
 - [智能体 registry 与 inventory 运维手册](appendix/registry-operations-handbook.zh.md)
 - [智能体系统 Postmortem 模板](appendix/postmortem-template.zh.md)
 
+## 按主题快速进入
+
+如果你不需要整个 reference layer，只想快速进入一个具体问题，可以直接走这些短路线：
+
+- Tool catalog 设计、semantic tool filtering、read/write taxonomy：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
+- MCP host/client/server 角色、capability transport、sandbox boundary：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
+- Semantic gap、HyDE、RAG vs training：[第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
+- Latency budget、fast path / slow path、routed pipeline：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
+- LLM-as-a-judge、calibration 与 judge-human agreement：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
+
 ## 继续阅读
 
 - [从这里开始](start-here.zh.md)
