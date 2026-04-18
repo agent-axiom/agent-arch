@@ -34,7 +34,7 @@
 - 检索语料；
 - 能力契约；
 - 评测数据集；
-- verifier contracts、rubric definitions 与 evidence-linkage rules；
+- verifier contracts、grading rubrics 与 evidence-linkage rules；
 - 审批规则与 schemas；
 - runtime-control schemas；
 - orchestration-pattern governance rules 与 worker-safe catalog definitions；
@@ -76,6 +76,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个策略配置；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
+- 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
 - 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
 - 当时生效的是哪个 contract version 与 approval schema；
 - 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
@@ -186,6 +187,8 @@ flowchart LR
 
 对 verifier contracts 也越来越应该如此。如果 release 或 assurance 依赖 process scores、outcome scores、failure attribution 或 linked evidence，那么 verifier layer 就不再只是非正式的辅助逻辑，而是一个需要治理的 production artifact。
 
+这很重要，因为 verifier contract 不只是给质量打分。它还在定义系统会把什么算作可接受证据、能够精确命名哪些失败，以及哪些发布声明在事后可以被辩护。一旦 verifier contract 会影响发布判断、事故归因或 assurance 状态，它的 lineage 就进入了 evidence backbone，而不再只是一个可有可无的 eval 细节。
+
 ## 8. Capability contracts 和 egress rules 也属于 supply chain
 
 在 agent systems 里，tool contract 不只是文档，它本身就是 trusted operational surface 的一部分。
@@ -214,6 +217,8 @@ approval 与 runtime-control schemas 也是一样。如果团队在没有 govern
 - 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
 
 这些之所以是 provenance 问题，正是因为它们定义的是行为的 governed identity，而不只是说明这些行为有没有在 telemetry 里被看见。
+
+这也正是本章边界重要的地方。telemetry 也许能告诉你 pause、re-init 或 delegated action 确实发生过，但 provenance 必须保留下来，说明究竟是哪一组经过评审的 contract family 让这些行为在当时被平台视为正当。没有这一层，事故复盘即使看见了事件，也依然解释不了平台为什么认为这些行为有效。
 
 ## 9. 一个已批准工件策略示例
 
@@ -305,6 +310,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - orchestration-pattern governance changes 没有 artifact lineage；
 - 没有人知道 incident 发生时到底是哪一个 exact artifact 在运行；
 - incident evidence 中缺少 contract-version linkage；
+- release 或 assurance evidence 中缺少 verifier-contract lineage；
 - deprecated patterns 在 production 里活得太久；
 - approved inventory 只存在于 wiki，而不存在于 operational tooling。
 
@@ -316,7 +322,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 更高的标准应该是：
 
-- prompt、policy、eval、capability、approval 和 runtime-control artifacts 都被当成 production artifacts；
+- prompt、policy、eval、capability、approval、runtime-control 和 verifier artifacts 都被当成 production artifacts；
 - provenance 能在 incident review 和 rollout decisions 中被快速恢复；
 - approved inventory 和 approved artifacts 被当成不同的 control layers 来管理；
 - deprecated patterns 能在它们悄悄留在 production 之前被阻断；
