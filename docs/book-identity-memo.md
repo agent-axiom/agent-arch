@@ -93,4 +93,4 @@ Promise shape is also part of that identity. If a page drifts back into inventor
 
 ## Book promise in one sentence
 
-Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, health, release judgment, response, evidence backbone, adversarial pressure, evidence substrate, and accountability, presented as a reader journey of distinct promises rather than a pile of controls.
+Agents need a platform, not magic, and this book shows how to build that platform as a governed production system with clear layers for trust, runtime control, health, release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, evidence substrate, and accountability, presented as a reader journey of distinct promises rather than a pile of controls.
