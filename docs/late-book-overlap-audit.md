@@ -45,8 +45,12 @@ Already tightened in manuscript:
 - Chapter 11 as raw evidence capture
 - Chapter 12 as health and risk budget layer
 - Chapter 13 as eval judgment layer
+- Chapter 19 as lifecycle frame
+- Chapter 20 as release judgment layer
 - Chapter 21 as assurance response loop
 - Chapter 22 as evidence backbone / lineage layer
+- Chapter 23 as lifecycle closure layer
+- Chapter 24 as adversarial-pressure layer
 - Chapter 25 as judgment under adversarial pressure
 - Chapter 26 as evidence substrate / detection-ready visibility
 - Chapter 27 as estate accountability layer
