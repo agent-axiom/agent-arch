@@ -28,6 +28,8 @@ This book helps the reader stop thinking about agents as prompt tricks and start
 
 That promise should also be felt structurally. The manuscript should read as a sequence of reader outcomes, not just as a dense inventory of topics.
 
+The book should own argument, sequence, and reader transformation. Support layers should own artifacts, schemas, runnable anchors, and contract detail. When those promises blur, the manuscript weakens even if the information remains technically correct.
+
 ## What the book is
 
 - a practical architecture book

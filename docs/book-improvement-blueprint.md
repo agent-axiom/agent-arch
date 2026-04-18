@@ -42,6 +42,7 @@ This book is not primarily:
 - a framework-specific tutorial
 - a security-only manual
 - a documentation mirror of the runnable reference package
+- a project dashboard that replaces the book's reader journey
 
 ## Strategic Workstreams
 
@@ -211,3 +212,4 @@ We should consider this phase successful when we have:
 - a stronger evidence strategy
 - a chapter rewrite queue that improves the book as a book, not just as a website
 - visible promise-shape consistency across homepage, start-here, part indexes, and planning docs
+- a stable separation where the book owns argument and transformation, while support layers own reusable artifacts and implementation anchors
