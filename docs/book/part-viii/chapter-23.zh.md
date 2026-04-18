@@ -28,6 +28,8 @@
 
 也就是说，退役不是“删掉服务然后忘记它”，而是一个被管理的运行过程。
 
+这也正是本章的核心承诺。它要帮助读者把 retirement 看成整个生命周期的 closure function，而不是 delivery 的尾声附录：在这里，系统失去继续行动的权利，而它的 memory、evidence、approvals 与 operational lineage 会被带到一个受控终点。
+
 ## 2. 什么时候应该开始考虑退役
 
 最好不要把退役当成遥远又尴尬的话题。
