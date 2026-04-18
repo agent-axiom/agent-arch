@@ -38,8 +38,12 @@ Files likely involved:
 - chapter-11*
 - chapter-12*
 - chapter-13*
+- chapter-19*
+- chapter-20*
 - chapter-21*
 - chapter-22*
+- chapter-23*
+- chapter-24*
 - chapter-25*
 - chapter-26*
 - chapter-27*
@@ -53,8 +57,12 @@ Actions:
   - tracing = raw evidence capture
   - SLO = health and risk budgets
   - evals = judgment
+  - lifecycle frame = Chapter 19
+  - release judgment = Chapter 20
   - assurance = response
   - provenance/artifacts = evidence backbone
+  - lifecycle closure = Chapter 23
+  - adversarial pressure = Chapter 24
   - observability = evidence substrate
   - registry = estate accountability
 - make transitions explicit instead of allowing adjacent chapters to collapse into one broad governance blob
@@ -100,8 +108,8 @@ Expected effect:
 Part V and Part VIII role separation
 Expected effect:
 - less conceptual fatigue
-- clearer reason to read Chapters 11, 12, 13, 21, 22, 25, 26, 27 separately
-- stronger mirrored editorial geometry between the reliability block and the lifecycle block
+- clearer reason to read Chapters 11, 12, 13, 19, 20, 21, 22, 23, 24, 25, 26, 27 separately
+- stronger editorial geometry between the reliability block and the lifecycle block
 - clearer outcome promises at the part-index level
 
 ### Slice D
