@@ -13,6 +13,8 @@
 
 The architecture chapters are useful because they give you language and a frame. But at some point almost everyone asks the same question: "Fine, but what should this look like as a system you can actually build?"
 
+That is the distinct promise of this chapter. It should help the reader cross one important boundary: from agreeing with the book's argument to seeing how that argument becomes runnable structure.
+
 In the running support case, that is no longer theoretical. The agent can already check status, read memory, open a ticket through the gateway, and emit traces. But without an explicit runtime shape, those steps quickly spread across local handlers, ad hoc retries, and accidental integration bypasses.
 
 That is where the reference runtime matters.
