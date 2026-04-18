@@ -189,10 +189,12 @@ Expected output:
 ### Ticket B. Consistency Auditor: overlap and genre audit
 Goal:
 - inspect Parts V, VII, VIII and appendix/reference surfaces for overlap, role confusion, and repeated concepts
+- document the highest-risk chapter boundaries and the guardrails that keep them from collapsing back together
 
 Expected output:
 - chapter-level jobs-to-be-done
-- overlap findings
+- severity-ranked overlap findings
+- keep-lists / boundary guardrails for the riskiest chapter pairs
 - what to cut, merge, or sharpen
 
 ### Ticket C. Consistency Auditor: opening and reader-journey audit
