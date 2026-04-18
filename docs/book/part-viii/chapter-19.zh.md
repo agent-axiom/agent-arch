@@ -20,6 +20,8 @@ NIST 在面向生成式 AI 的 SSDF 配置文件里采取的也是同样的思�
 
 也就是说，智能体系统并没有取代 SDLC。它只是让默认形态的 SDLC 变得不够用。
 
+这正是本章真正的承诺。它不是为了把软件生命周期换一个新缩写，而是为了说明：在 Part VII 已经搭好的那套受治理系统之上，现在需要一个足够宽的生命周期框架，去容纳模型行为、policy 变化、retrieval drift、tool side effects、evidence，以及随时间推进的 retirement decisions。
+
 ## 2. 哪些东西并没有变
 
 如果把 hype 拿掉，很多基础工作依然完全熟悉：

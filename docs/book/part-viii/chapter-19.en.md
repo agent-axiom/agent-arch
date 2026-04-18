@@ -20,6 +20,8 @@ NIST makes the same move in its SSDF profile for generative AI: secure developme
 
 So an agent system does not replace SDLC. It makes the default form of SDLC incomplete.
 
+That is the real promise of this chapter. It is not to rename the software lifecycle with new letters. It is to show why the governed system assembled in Part VII now needs a lifecycle frame wide enough to hold model behavior, policy movement, retrieval drift, tool-side effects, evidence, and retirement decisions over time.
+
 ## 2. What remains the same
 
 If you remove the hype, a lot remains familiar:
