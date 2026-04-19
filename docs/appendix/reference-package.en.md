@@ -18,6 +18,7 @@ A practical reading path is:
 
 - Chapter 16 for the baseline runtime and capability session state,
 - Chapter 17 for policy layer and capability contracts,
+- the [Evidence Spine](../book/part-v/evidence-spine.en.md) page for the end-to-end governed record from request to rollout judgment,
 - Chapter 18 for rollout gates around approval and runtime behavior,
 - Chapter 21 for assurance response,
 - Chapter 22 and the lifecycle schema for governed artifact linkage, release identity, verifier-contract lineage, and delegated authorization provenance,
