@@ -42,6 +42,8 @@
 
 这也正是本章的核心承诺。它要帮助读者把 assurance 看成整个生命周期里的 response function，而不是一组松散的 security activities：在这里，signals 会被转化成 containment、ownership、remediation，以及把系统强行带回更安全运行状态的动作。
 
+如果你想看一页专门把 request、policy、approvals、traces、evals、incidents 和 rollout judgment 串成同一条可复核链路的桥接页，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
+
 ## 2. 什么是保障闭环
 
 可以这样定义保障闭环：
