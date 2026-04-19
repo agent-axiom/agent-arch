@@ -68,11 +68,16 @@ bundle:
     - approvals.yaml
     - controls.yaml
   contract_version: capability-contract-v3
+  release_identity: release-support-triage-2026-04-07-canary
 ```
 
 这里还不是具体规则本身，而是一个信封结构，用来回答：
 
 “对于这套智能体系统，我们到底把哪些东西视为当前的策略工件？”
+
+而一旦发布级治理开始重要，它也应该继续回答：
+
+“这个 bundle 参与定义的是哪一个发布身份？”
 
 ## 为什么审批契约不能只写在叙述文字里
 
