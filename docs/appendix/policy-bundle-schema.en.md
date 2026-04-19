@@ -107,6 +107,8 @@ Here is a workable skeleton:
 approval_contract:
   capability: create_ticket
   risk_tier: high
+  bundle_version: 2026.04.07
+  release_identity: release-support-triage-2026-04-07-canary
   required_reviewers:
     - manager
   request_fields:
@@ -125,7 +127,7 @@ approval_contract:
   on_reject: stop_run
 ```
 
-The point is simple: approval should be a machine-readable operational contract, not just a checkbox in a UI.
+The point is simple: approval should be a machine-readable operational contract, not just a checkbox in a UI. And when approvals are release-bearing, that contract should also make clear which bundle version and release identity the human decision belonged to.
 
 ## How the policy bundle connects to the lifecycle
 
