@@ -26,6 +26,8 @@ In this chapter, that means something deliberately limited: tracing is the captu
 
 The role of tracing in this book is narrower than the whole observability layer. Tracing captures the raw history of execution. Later chapters will show how observability turns that history into an evidence substrate, how evals turn it into judgments, and how assurance or governance consume those outputs.
 
+If you want to see how tracing connects to policy, approvals, evals, incidents, and rollout judgment as one operating record, use the dedicated [Evidence Spine](evidence-spine.en.md) page as the bridge.
+
 ## 2. Why Ordinary Logs Are Almost Never Enough
 
 When a system is simple, flat logs and a few metrics can be enough. But an agent system is almost always more complicated:
