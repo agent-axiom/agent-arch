@@ -26,6 +26,8 @@
 
 在本书里，tracing 的角色比整个 observability layer 更窄。Tracing 负责捕获执行的原始历史。后面的章节会分别说明 observability 如何把这段历史转成 evidence substrate，evals 如何把它转成 judgments，以及 assurance 或 governance 如何消费这些结果。
 
+如果你想看到 tracing 如何与 policy、approvals、evals、incidents 和 rollout judgment 串成同一条运行记录，可以把单独的 [Evidence Spine](evidence-spine.zh.md) 页面当作这条桥接层。
+
 ## 2. 为什么普通日志几乎总是不够
 
 当系统简单时，扁平日志和少量指标也许够用。但智能体系统几乎总是更复杂：
