@@ -44,6 +44,7 @@
 - [第 11 章：追踪、跨度与结构化事件](chapter-11.zh.md)
 - [第 12 章：智能体系统的 SLO](chapter-12.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
+- [Evidence Spine：从请求到 rollout judgment](evidence-spine.zh.md)
 
 ## 这一部分之后去哪里
 
