@@ -159,6 +159,27 @@ Runtime 会检索上下文，也许会先分类问题，并准备一个拟议中
 
 这也是 evidence spine 如此重要的最后一个原因。Rollout judgment 不应只依赖直觉或 dashboard，而应依赖一条已经把 runtime behavior、controls、approval、evidence 与 release identity 串起来的链。
 
+## 一个工件层级的例子
+
+同一条受治理运行记录，压缩后可以长这样：
+
+```yaml
+run_id: run-support-042
+trace_id: trace-support-042
+session_id: session-support-007
+policy_bundle_version: 2026.04.19
+release_identity: release-support-triage-2026-04-19-canary
+approval_id: approval-118
+artifact_id: artifact-bundle-2026-04-19-a
+change_id: change-2026-04-19-17
+verifier_contract_id: verifier-contract-v3
+evaluation_result_id: eval-result-042
+incident_id: incident-2026-04-19-3
+latest_rollout_decision: pause-canary
+```
+
+这个例子的重点不在于字段必须完全一样，而在于一次可疑 run 应该留下足够多的链接，让团队可以从 runtime behavior 一路走到 approval record、eval judgment、incident review 和 rollout action，而不需要手工重新拼整条链。
+
 ## 操作人员应该能重建什么
 
 面对一次可疑 run，操作人员应该能很快回答下面所有问题：
