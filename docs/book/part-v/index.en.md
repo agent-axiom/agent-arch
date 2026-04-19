@@ -17,6 +17,8 @@ This part continues the same story:
 
     Together, this shows how an agent system moves from “something works” to controlled operation through three distinct layers: capture, health, and judgment.
 
+    It also sets up the next structural addition to the book: an explicit Evidence Spine page that will connect request, policy, approval, traces, evals, incidents, and rollout into one governed operating record.
+
 Without good observability, even a strong architecture quickly collapses into guesswork:
 
 - why a run became more expensive;
@@ -45,6 +47,10 @@ This part makes three distinct promises to the reader:
 
 ## Where It Leads Next
 
-The next natural step after this part is organizational design: who owns the platform, who owns quality targets, and who decides whether rollout can expand.
+The next natural step after this part is twofold.
+
+First, the book now needs one explicit Evidence Spine bridge so the reader can see how traces, policy decisions, approvals, evals, incidents, and rollout judgments stay connected as one operational record.
+
+Second, it needs organizational design: who owns the platform, who owns quality targets, and who decides whether rollout can expand.
 
 That is why Part VI follows naturally from Part V. Once you can capture behavior, define tolerated budgets, and judge changes, the next question is ownership: who is responsible for those promises in the real organization.
