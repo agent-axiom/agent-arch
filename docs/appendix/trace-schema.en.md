@@ -6,6 +6,7 @@ It connects two parts of the book:
 
 - [Chapter 11. Traces, Spans, and Structured Events](../book/part-v/chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../book/part-v/chapter-13.en.md)
+- [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md)
 
 And the runnable package:
 
