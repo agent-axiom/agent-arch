@@ -31,7 +31,25 @@ Reader promise inside this stage:
 ### Stage 4. Runtime embodiment
 Those ideas have to become a runtime, policy layer, and rollout shape.
 
-### Stage 5. Lifecycle discipline
+### Stage 5. Evidence continuity
+Before the late lifecycle sequence fully lands, the reader should see one explicit evidence spine that ties the operating layers together.
+
+That spine should connect:
+- user request
+- policy evaluation
+- tool calls
+- approvals
+- trace events
+- eval and grading results
+- incident review
+- rollout decision
+
+Reader promise inside this stage:
+- first see that these are not adjacent controls, but one operating record;
+- then learn which identifiers and artifacts keep the chain reviewable;
+- then carry that continuity into the lifecycle and governance chapters.
+
+### Stage 6. Lifecycle discipline
 Once the system is alive, the reader should see a clean lifecycle-role contour across the late book:
 - lifecycle frame
 - release judgment
@@ -48,7 +66,7 @@ Reader promise inside this stage:
 - then learn how release judgment, response, evidence backbone, lifecycle closure, adversarial pressure, judgment, evidence substrate, and accountability divide cleanly;
 - finally learn how the whole estate stays governable across replacement and retirement.
 
-### Stage 6. Estate governance
+### Stage 7. Estate governance
 The mature problem is no longer one agent. It is governing many systems, contracts, sessions, and approvals coherently.
 
 ## Recurring canonical scenarios
@@ -69,6 +87,7 @@ To make this arc memorable, the manuscript should repeatedly return to:
 - opening is clear but still not emotionally and causally sharp enough
 - homepage/start-here still present the project partly as a handbook/site rather than a must-read argument
 - later lifecycle chapters are rich, but the progression can feel like dense topic accumulation rather than an inevitable narrative progression
+- the manuscript still needs one explicit evidence-continuity moment where readers can see policy, approval, traces, evals, incidents, and rollout as one spine
 - the reader is not always reminded what misconception is being corrected at this stage
 - Part V and Part VIII need to preserve role clarity so adjacent chapters do not collapse into one broad governance blob
 
@@ -86,6 +105,9 @@ Each part should answer one reader question:
 - Part VI: who owns this system and how teams organize around it
 - Part VII: how those ideas become a runnable governed runtime
 - Part VIII: how the system survives change, risk, drift, accountability, and eventual retirement
+
+And the middle of the book should now also answer one cross-cutting reader question:
+- how one governed run remains legible from request to release decision
 
 And each mature part should make explicit reader promises, not only name topics.
 
