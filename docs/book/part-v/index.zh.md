@@ -17,6 +17,8 @@
 
     这三步合在一起，说明 agent system 要通过三个不同层次从“某些东西能跑”走向受控运营：capture、health 与 judgment。
 
+    它们也为本书接下来的一个关键补强做准备：单独的 Evidence Spine 页面，会把 request、policy、approval、traces、evals、incidents 与 rollout 连成一条统一的运行记录。
+
 如果没有好的可观测性，再强的架构也会很快退化成猜测：
 
 - 为什么某个 run 变贵了；
@@ -45,6 +47,10 @@
 
 ## 这一部分之后去哪里
 
-读完这一部分，接下来的自然问题就是组织模型：谁拥有平台，谁拥有质量目标，以及谁来决定 rollout 能不能继续扩大。
+读完这一部分，接下来其实有两个自然步骤。
+
+第一，本书需要一页单独的 Evidence Spine，让读者看清 traces、policy decisions、approvals、evals、incidents 与 rollout judgments 如何被维持成同一条运行记录。
+
+第二，才是组织模型：谁拥有平台，谁拥有质量目标，以及谁来决定 rollout 能不能继续扩大。
 
 这也是为什么 Part VI 会自然接在 Part V 后面。只要你已经能够捕获行为、定义可容忍的 budgets，并对 changes 做出 judgments，下一个问题就会变成 ownership：在真实组织里，究竟由谁来为这些承诺负责。
