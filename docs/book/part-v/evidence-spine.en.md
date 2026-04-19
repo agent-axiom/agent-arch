@@ -159,6 +159,27 @@ Finally, [Chapter 20](../part-viii/chapter-20.en.md) uses this evidence to answe
 
 This is the last reason the evidence spine matters. Rollout judgment should not rely on intuition or dashboards alone. It should rely on a chain that already links runtime behavior, controls, approval, evidence, and release identity.
 
+## One artifact-level example
+
+A compact governed record for the same run may look like this:
+
+```yaml
+run_id: run-support-042
+trace_id: trace-support-042
+session_id: session-support-007
+policy_bundle_version: 2026.04.19
+release_identity: release-support-triage-2026-04-19-canary
+approval_id: approval-118
+artifact_id: artifact-bundle-2026-04-19-a
+change_id: change-2026-04-19-17
+verifier_contract_id: verifier-contract-v3
+evaluation_result_id: eval-result-042
+incident_id: incident-2026-04-19-3
+latest_rollout_decision: pause-canary
+```
+
+The point of this example is not the exact field set. The point is that one suspicious run should leave behind enough linkage that the team can move from runtime behavior to approval record, eval judgment, incident review, and rollout action without reconstructing the chain by hand.
+
 ## What operators should be able to reconstruct
 
 For one suspicious run, an operator should be able to answer all of the following quickly:
