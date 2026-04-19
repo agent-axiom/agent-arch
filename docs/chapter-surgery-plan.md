@@ -68,7 +68,24 @@ Actions:
 - make transitions explicit instead of allowing adjacent chapters to collapse into one broad governance blob
 - make each part/chapter intro promise a distinct reader outcome, not just a thematic area
 
-### Priority 4. Evidence reinforcement
+### Priority 4. Evidence spine and operating continuity
+Files likely involved:
+- a new dedicated evidence-spine page
+- chapter-11*
+- chapter-13*
+- chapter-17*
+- chapter-20*
+- chapter-21*
+- chapter-22*
+- appendix trace/policy/eval/lifecycle pages
+
+Actions:
+- add one explicit end-to-end evidence spine page
+- show the path from user request through policy, approval, traces, evals, incident review, and rollout decision
+- define the minimal shared entity map across those layers
+- cross-link the surrounding chapters so they read as one operational model rather than adjacent controls
+
+### Priority 5. Evidence reinforcement
 Files likely involved:
 - appendix sources
 - selected chapter footnotes and section support
@@ -78,8 +95,9 @@ Actions:
 - increase evidence diversity
 - reduce overreliance on vendor-doc authority alone
 - add more postmortem/research/governance classes where argument stakes are highest
+- distinguish industrial consensus from best-effort guidance through clearer source typing where the argument depends on evidence quality
 
-### Priority 5. Book/reference separation
+### Priority 6. Book/reference separation
 Files likely involved:
 - appendix reference-package*
 - schema pages
@@ -113,12 +131,19 @@ Expected effect:
 - clearer outcome promises at the part-index level
 
 ### Slice D
+Evidence spine page and cross-links
+Expected effect:
+- tracing, policy, approvals, evals, incidents, and rollout read as one governed operating model
+- readers can follow one artifact-level run without reconstructing the spine themselves
+
+### Slice E
 Evidence and bibliography upgrade
 Expected effect:
 - higher authority ceiling
 - better publisher/reviewer impression
+- clearer distinction between industrial consensus and best-effort guidance
 
-### Slice E
+### Slice F
 Editorial polish pass
 Expected effect:
 - the manuscript feels finished rather than live-assembled
@@ -128,9 +153,10 @@ Expected effect:
 1. finalize identity memo and reader journey
 2. revise homepage/start-here/Part I framing
 3. revise Part V and Part VIII framing around role clarity
-4. harden promise-shape across part indexes and supporting planning docs
-5. expand evidence base for the most important claims
-6. run full editorial consistency pass
+4. build the evidence spine page and surrounding cross-links
+5. harden promise-shape across part indexes and supporting planning docs
+6. expand evidence base for the most important claims
+7. run full editorial consistency pass
 
 ## Current editorial geometry checkpoint
 
