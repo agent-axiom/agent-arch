@@ -5,6 +5,7 @@ This page connects several topics already covered in the book:
 - [Chapter 4. Tool Gateway, Approval, and Audit Trail](../book/part-ii/chapter-4.en.md)
 - [Chapter 17. Policy Layer and Capability Catalog](../book/part-vii/chapter-17.en.md)
 - [Chapter 20. Change Management for Agent Systems](../book/part-viii/chapter-20.en.md)
+- [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md)
 
 And it is grounded in the runnable package:
 
