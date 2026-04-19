@@ -78,7 +78,7 @@ Inspect the agent identity and approved inventory:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage:
+Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage and release identity:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -200,7 +200,7 @@ There are starter files for both runtime and lifecycle in [configs](/Users/if/Py
 - [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, and lifecycle artifacts, so the package is now closer to a real operational skeleton.
+These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, release-identity-bearing lifecycle artifacts, and other lifecycle state, so the package is now closer to a real operational skeleton.
 
 The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, delegated authorization assumptions, and the contract boundary between a user run and a capability-side session.
 
