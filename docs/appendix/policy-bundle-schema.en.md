@@ -168,7 +168,7 @@ In `agent_runtime_ref`, there are already:
 - [controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/change.yaml)
 
-So the package already lives in a model where policy and approvals are not “secondary settings”, but governed artifacts.
+So the package already lives in a model where policy and approvals are not “secondary settings”, but governed artifacts tied to concrete bundle versions and release-bearing control surfaces.
 
 ## What a production schema should add
 
