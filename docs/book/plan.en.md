@@ -71,10 +71,11 @@ What I am strengthening next in this part:
 - Chapter 11: traces, spans, and structured events as raw evidence capture.
 - Chapter 12: SLOs for agent systems as health and risk budgets.
 - Chapter 13: offline evals, online evals, trace grading, and regression gates as judgment discipline.
+- Planned bridge page: Evidence Spine, which will connect request, policy, approval, traces, evals, incidents, and rollout into one artifact-level operating path.
 
 Note: the core ideas in Part V are relatively stable, but Chapter 13 moves faster than Chapters 11 and 12.
 
-Editorial shape: Part V now works as one three-step block, capture -> health -> judgment.
+Editorial shape: Part V now works as one three-step block, capture -> health -> judgment. The next strengthening step is to make the connective evidence spine explicit so readers do not have to reconstruct it for themselves.
 
 ### Part VI. Organizational Model
 
@@ -118,8 +119,9 @@ Editorial shape: Part VIII now works as a late-book lifecycle contour: lifecycle
 3. Add reference diagrams and operational checklists.
 4. Prepare a practical reference implementation.
 5. Add eval examples and policy configs.
-6. Strengthen the book with decision frameworks: when to use an agent, when a workflow is enough, and when not to move into multi-agent too early.
-7. Preserve editorial role clarity so adjacent operational chapters do not collapse back into overlap.
+6. Make the end-to-end evidence spine explicit across runtime, policy, approval, trace, eval, incident, and rollout surfaces.
+7. Strengthen the book with decision frameworks: when to use an agent, when a workflow is enough, and when not to move into multi-agent too early.
+8. Preserve editorial role clarity so adjacent operational chapters do not collapse back into overlap.
 
 ## What is already done
 
