@@ -4,6 +4,7 @@ This page continues two nearby topics:
 
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../book/part-v/chapter-13.en.md)
 - [Trace Schema and Event Catalog](trace-schema.en.md)
+- [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md)
 
 And connects them to the runnable package:
 
