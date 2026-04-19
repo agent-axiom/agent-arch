@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-查看与第八部分对应的生命周期工件，包括 runtime-control linkage：
+查看与第八部分对应的生命周期工件，包括 runtime-control linkage 和 release identity：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -200,7 +200,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略和生命周期工件，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有 release identity 的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。
 
 其中 runtime-control bundle 现在也被用来显式承载 approval 与 session-governance 规则，包括 pause/resume、background handling、expiry、re-init policy、capability-session ownership，以及 user run 与 capability-side session 之间的契约边界。
 
