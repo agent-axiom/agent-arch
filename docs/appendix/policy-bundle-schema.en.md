@@ -154,9 +154,10 @@ The connection is very practical:
 
 - the trace shows which policy decision actually fired;
 - the policy bundle shows where that decision came from;
-- the approval contract shows what the human gate should have looked like.
+- the approval contract shows what the human gate should have looked like;
+- release identity tells the investigator which governed release surface that decision belonged to.
 
-Without that trio, investigation quickly turns into guesswork.
+Without that quartet, investigation quickly turns into guesswork.
 
 ## What the reference runtime already supports
 
