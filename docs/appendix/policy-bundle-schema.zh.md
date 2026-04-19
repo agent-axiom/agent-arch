@@ -5,6 +5,7 @@
 - [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
+- [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
 
 同时它也依赖可运行的参考包：
 
