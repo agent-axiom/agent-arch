@@ -41,6 +41,8 @@ SLO 帮你定义什么叫系统健康。
 
 在本书里，eval loop 的角色是很具体的：它负责产出关于质量、行为与 regression risk 的 reviewable judgments。后面的章节会分别说明 assurance 如何响应 findings，observability 如何保存 evidence，以及 registry/governance 如何分配 accountability。这里的重点只放在团队如何判断到底测试了什么、发生了什么变化，以及这个 change 是否值得被信任。
 
+如果你想看一页专门把 eval judgment 再连接回 request、policy、approvals、traces、incidents 和 rollout 的桥接层，可以直接使用单独的 [Evidence Spine](evidence-spine.zh.md) 页面。
+
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
