@@ -32,6 +32,8 @@
 
 这也正是本章的核心承诺。它要帮助读者看见：release-bearing judgment 是如何变成一套运行纪律的，不是停留在抽象的风险提醒里，而是落实为一套可重复的方法，用来给 change 分类、为不同 change 匹配 evidence，并决定什么值得进入 formal gate。
 
+如果你想看一页专门说明 request、policy、approvals、traces、evals、incidents 和 rollout judgment 如何被维持在同一条链上，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
+
 !!! info "需要 change 工件？"
     如果你需要更落地的工程层，可以打开 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)、[Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
