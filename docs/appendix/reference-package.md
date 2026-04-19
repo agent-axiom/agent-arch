@@ -18,6 +18,7 @@
 
 - Chapter 16 для baseline runtime и capability session state,
 - Chapter 17 для policy layer и capability contracts,
+- [Сквозная цепочка доказательств](../book/part-v/evidence-spine.md) для end-to-end записи от запроса до rollout judgment,
 - Chapter 18 для rollout gates вокруг approval и runtime behavior,
 - Chapter 21 для assurance response,
 - Chapter 22 и lifecycle schema для governed artifact linkage, идентичности выпуска, verifier-contract lineage и delegated authorization provenance,
