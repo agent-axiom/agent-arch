@@ -42,6 +42,8 @@ That means this chapter begins where budget-setting chapters stop. SLO define to
 
 That is the core promise of this chapter. It should help the reader see assurance not as a grab-bag of security activities, but as the response function of the lifecycle: the place where signals turn into containment, ownership, remediation, and forced return to a safer operating state.
 
+If you want the connective layer that keeps request, policy, approvals, traces, evals, incidents, and rollout judgment inside one reviewable chain, use the dedicated [Evidence Spine](../part-v/evidence-spine.en.md) page.
+
 ## 2. What an assurance loop is
 
 I would define the assurance loop like this:
