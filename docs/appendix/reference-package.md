@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Просмотр lifecycle-артефактов из Part VIII, включая runtime-control linkage:
+Просмотр lifecycle-артефактов из Part VIII, включая runtime-control linkage и идентичность выпуска:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -200,7 +200,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [runtime-controls.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/configs/retirement.yaml)
 
-Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки и lifecycle-артефакты, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки, lifecycle-артефакты с идентичностью выпуска и другие элементы жизненного цикла, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
 
 При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry, re-init policy, ownership capability sessions и границу между user run и capability-side session.
 
