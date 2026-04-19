@@ -54,7 +54,30 @@ Define:
 - what transformation in thinking it delivers
 - how Parts I-VIII progress as one reader journey
 
-### 2. Case-driven narrative reinforcement
+### 2. Evidence spine and operating continuity
+Introduce one explicit end-to-end evidence spine that shows how the book's control surfaces operate as one governed model rather than adjacent topics.
+
+It should walk one concrete run through:
+- user request
+- policy evaluation
+- tool calls
+- approvals
+- trace events
+- grading and evals
+- incident review
+- rollout decision
+
+It should also define the minimal shared entity map across those layers:
+- run_id
+- trace_id
+- approval_id
+- policy_bundle_version
+- artifact_id
+- evaluation_result_id
+
+Each connected chapter should make clear where it sits on that spine and what operational question it answers.
+
+### 3. Case-driven narrative reinforcement
 Introduce 2 to 3 recurring canonical scenarios and thread them through major chapters:
 - support triage agent
 - internal enterprise knowledge assistant
@@ -65,7 +88,7 @@ Each major chapter should show:
 - what false fix teams often try
 - what architectural layer actually resolves or contains the problem
 
-### 3. Role-clarity, promise-shape hardening, and late-book de-duplication
+### 4. Role-clarity, promise-shape hardening, and late-book de-duplication
 Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 11: tracing as raw evidence capture
 - Chapter 12: SLO as health and risk budgets
@@ -89,14 +112,14 @@ And harden promise shape at the same time:
 - chapter intros should say what distinct promise this layer makes
 - overlap control should happen through role clarity plus visible reader promises, not only through topical separation
 
-### 4. Evidence expansion
+### 5. Evidence expansion
 Broaden support beyond vendor docs with more:
 - standards and frameworks
 - postmortems and incident writeups
 - academic work on multi-agent reliability, verifier design, HCI/HITL, provenance, safety cases, enterprise governance
 - trade-off and failure-case references
 
-### 5. Editorial hardening
+### 6. Editorial hardening
 Perform a dedicated book-level pass for:
 - terminology consistency
 - multilingual polish
@@ -107,7 +130,7 @@ Perform a dedicated book-level pass for:
 - protection of chapter role grammar so neighboring chapters do not collapse into each other
 - protection of promise shape so entry/index pages do not drift back into inventory-style prose
 
-### 6. Book vs reference separation
+### 7. Book vs reference separation
 Keep in chapters:
 - ideas
 - trade-offs
@@ -130,15 +153,16 @@ Push to appendix/reference/runtime where appropriate:
 
 ### Phase B. Structural revision
 5. sharpen opening and framing chapters
-6. reinforce recurring cases
-7. protect Part V role clarity
-8. protect Part VIII role clarity
-9. harden promise shape across entry surfaces, part indexes, and planning docs
+6. build the end-to-end evidence spine page and cross-links
+7. reinforce recurring cases
+8. protect Part V role clarity
+9. protect Part VIII role clarity
+10. harden promise shape across entry surfaces, part indexes, and planning docs
 
 ### Phase C. Authority and finish
-10. expand evidence base
-11. editorial polish pass
-12. final book/reference boundary cleanup
+11. expand evidence base
+12. editorial polish pass
+13. final book/reference boundary cleanup
 
 ## Established editorial geometry
 
@@ -172,6 +196,8 @@ When an index, intro, or planning page starts sounding like a topic inventory in
 3. `late-book-overlap-audit.md`
 4. `chapter-surgery-plan.md`
 5. later: chapter-by-chapter rewrite tickets
+6. evidence-spine page and insertion map
+7. failure-rich runtime scenario set and operator notes
 
 ## Subagent Ticket Set
 
@@ -220,6 +246,7 @@ We should consider this phase successful when we have:
 - a reader journey that can be explained in one page
 - a concrete overlap-reduction plan
 - a stronger evidence strategy
+- one explicit evidence spine that connects runtime, policy, approval, eval, incident review, and rollout
 - a chapter rewrite queue that improves the book as a book, not just as a website
 - visible promise-shape consistency across homepage, start-here, part indexes, and planning docs
 - a stable separation where the book owns argument and transformation, while support layers own reusable artifacts and implementation anchors
