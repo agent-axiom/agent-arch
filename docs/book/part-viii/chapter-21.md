@@ -42,6 +42,8 @@
 
 В этом и состоит главный смысл этой главы. Она должна показать assurance не как случайный набор security-активностей, а как response function всего жизненного цикла: место, где сигналы превращаются в containment, ownership, remediation и принудительный возврат системы в более безопасное рабочее состояние.
 
+Если тебе нужна связующая страница, которая удерживает request, policy, approvals, traces, evals, incidents и rollout judgment внутри одной проверяемой цепочки, открой [Сквозную цепочку доказательств](../part-v/evidence-spine.md).
+
 ## 2. Что такое assurance loop
 
 Я бы определял assurance loop так:
