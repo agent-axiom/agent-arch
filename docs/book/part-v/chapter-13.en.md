@@ -41,6 +41,8 @@ But the main question remains: how do you improve quality systematically and kee
 
 The role of the eval loop in this book is specific: it is the layer that produces reviewable judgments about quality, behavior, and regression risk. Later chapters will show how assurance responds to findings, how observability preserves evidence, and how registry/governance assign accountability. Here the focus stays on how the team decides what was tested, what changed, and whether the change deserves trust.
 
+If you want the connective layer that ties eval judgment back to request, policy, approvals, traces, incidents, and rollout, use the dedicated [Evidence Spine](evidence-spine.en.md) page.
+
 !!! info "Need the schemas and artifacts?"
     If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
 
