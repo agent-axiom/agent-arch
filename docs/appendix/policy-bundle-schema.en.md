@@ -137,6 +137,10 @@ but also:
 
 "Which exact policy bundle version was active during this rollout or incident?"
 
+And once the runtime treats bundles as governed release surfaces, the next question becomes unavoidable too:
+
+"Which release identity did this policy bundle participate in?"
+
 ## How the policy bundle connects to traces
 
 The connection is very practical:
@@ -213,6 +217,7 @@ As soon as the system grows up, it is useful to add at least:
 - `bundle_version`
 - `artifact_lineage`
 - `change_id`
+- `release_identity`
 - `approval_contracts`
 - `runtime_control_schema`
 - `contract_version`
@@ -249,7 +254,7 @@ Start with this short list and mark every "no" explicitly:
 - Is the approval contract machine-readable, or only described in prose?
 - Is it clear which fields an approval request must contain?
 - Is there a stable link between the policy bundle and the capability catalog?
-- Can you tell which policy version was active for a given trace?
+- Can you tell which policy version and release identity were active for a given trace?
 - Is it explicit which verifier contracts are trusted for high-risk grading or rollout evidence?
 
 If several answers are “no,” your policy layer exists, but is not yet shaped as a full operational artifact.
