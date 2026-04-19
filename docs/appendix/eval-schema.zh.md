@@ -4,6 +4,7 @@
 
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
 - [追踪模式与事件目录](trace-schema.zh.md)
+- [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
 
 并把它们和可运行参考包连接起来：
 
