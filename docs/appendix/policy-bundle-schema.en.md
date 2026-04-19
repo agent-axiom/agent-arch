@@ -68,11 +68,16 @@ bundle:
     - approvals.yaml
     - controls.yaml
   contract_version: capability-contract-v3
+  release_identity: release-support-triage-2026-04-07-canary
 ```
 
 This is not yet the rules themselves. It is the envelope that answers:
 
 "What exactly do we currently treat as the policy artifact for this agent system?"
+
+And once release-bearing governance matters, it should also answer:
+
+"Which release identity is this bundle helping define?"
 
 ## Why the approval contract should not hide inside prose
 
