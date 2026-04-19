@@ -89,6 +89,8 @@ That is why provenance in this chapter should be read narrowly and concretely. I
 
 That is the core promise of this chapter. It should help the reader see where evidence stops being generic telemetry and becomes a governed backbone: the layer that preserves which reviewed artifact set, trusted contract version, and approved release identity a later decision or incident review is actually standing on.
 
+If you want the bridge that shows how this governed backbone stays connected to request, policy, approvals, traces, evals, incidents, and rollout judgment, use the dedicated [Evidence Spine](../part-v/evidence-spine.en.md) page.
+
 !!! info "Need supply-chain artifacts?"
     For the contract-level view, open the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), the [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md), and the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md).
 
