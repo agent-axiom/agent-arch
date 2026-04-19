@@ -159,6 +159,27 @@ Runtime извлекает контекст, возможно классифиц
 
 Это последняя причина, по которой evidence spine так важен. Rollout judgment не должен опираться только на интуицию или dashboards. Он должен опираться на цепочку, которая уже связывает runtime behavior, controls, approval, evidence и release identity.
 
+## Один пример на уровне артефактов
+
+Компактная управляемая запись для такого run может выглядеть так:
+
+```yaml
+run_id: run-support-042
+trace_id: trace-support-042
+session_id: session-support-007
+policy_bundle_version: 2026.04.19
+release_identity: release-support-triage-2026-04-19-canary
+approval_id: approval-118
+artifact_id: artifact-bundle-2026-04-19-a
+change_id: change-2026-04-19-17
+verifier_contract_id: verifier-contract-v3
+evaluation_result_id: eval-result-042
+incident_id: incident-2026-04-19-3
+latest_rollout_decision: pause-canary
+```
+
+Смысл этого примера не в точном наборе полей. Смысл в том, что один подозрительный run должен оставлять после себя достаточно связей, чтобы команда могла перейти от runtime behavior к approval record, eval judgment, incident review и rollout action без ручной реконструкции всей цепочки.
+
 ## Что оператор должен уметь восстановить
 
 Для одного подозрительного run оператор должен быстро ответить на все вопросы ниже:
