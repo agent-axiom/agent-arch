@@ -8,3 +8,4 @@ htmlcov/
 __pycache__/
 site/
 artifacts/
+docs/book-backlog.md
