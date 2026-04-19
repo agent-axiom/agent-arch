@@ -44,6 +44,7 @@ This part makes three distinct promises to the reader:
 - [Chapter 11. Traces, Spans, and Structured Events](chapter-11.en.md)
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
+- [Evidence Spine: From Request to Rollout Judgment](evidence-spine.en.md)
 
 ## Where It Leads Next
 
