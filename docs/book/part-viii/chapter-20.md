@@ -32,6 +32,8 @@
 
 В этом и состоит главный смысл этой главы. Она должна показать, где release-bearing judgment превращается в рабочую дисциплину: не в абстрактных предупреждениях о риске, а в повторяемом способе классифицировать change, подбирать под него evidence и решать, что именно заслуживает formal gate.
 
+Если тебе нужна связующая страница, которая показывает, как request, policy, approvals, traces, evals, incidents и rollout judgment удерживаются в одной цепочке, открой [Сквозную цепочку доказательств](../part-v/evidence-spine.md).
+
 !!! info "Нужны change-артефакты?"
     Для практического слоя открой [схему change review и rollout gate](../../appendix/change-rollout-schema.md), [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md) и [схему eval datasets и grading contract](../../appendix/eval-schema.md).
 
