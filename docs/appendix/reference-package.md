@@ -20,7 +20,7 @@
 - Chapter 17 для policy layer и capability contracts,
 - Chapter 18 для rollout gates вокруг approval и runtime behavior,
 - Chapter 21 для assurance response,
-- Chapter 22 и lifecycle schema для governed artifact linkage, verifier-contract lineage и delegated authorization provenance,
+- Chapter 22 и lifecycle schema для governed artifact linkage, идентичности выпуска, verifier-contract lineage и delegated authorization provenance,
 - Chapters 23-27 для interruption, expiry, re-init, retirement, observability, registry ownership, obligations по verifier evidence и delegated-authorization lifecycle control вокруг capability sessions.
 
 ## Что внутри
@@ -52,7 +52,7 @@
 
 Этот же runtime-control surface естественно расширяется и на delegated authorization assumptions: какой principal делегировал доступ, переживает ли такая авторизация pause/resume и что делает runtime, если delegated access отозвали до завершения действия.
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
-  Lifecycle-артефакты для change record, artifact bundle, runtime-control schemas, verifier-contract lineage и retirement plan, плюс readiness-проверки для этих состояний.
+  Lifecycle-артефакты для change record, artifact bundle, записей об идентичности выпуска, runtime-control schemas, verifier-contract lineage и retirement plan, плюс readiness-проверки для этих состояний.
 
 ## Как запустить
 
@@ -166,7 +166,7 @@
 
 Это еще и полезный якорь для verifier-aware governance: если rollout или assurance зависят от eval output, runtime должен сохранять достаточно связей между trace, session и artifacts, чтобы объяснять не только что произошло, но и почему verifier оценил run именно так.
 
-Это должно тянуться и в lifecycle handling. Governed reference runtime должен уметь объяснять, какой verifier contract был активен для релиза и какие evidence еще нужно хранить после retirement, чтобы обосновывать прежние rollout или assurance decisions.
+Это должно тянуться и в lifecycle handling. Governed reference runtime должен уметь объяснять, какой verifier contract и какая идентичность выпуска были активны для релиза, а также какие evidence еще нужно хранить после retirement, чтобы обосновывать прежние rollout или assurance decisions.
 
 Теперь в нем отражен и четвертый operational concern: delegated authorization context, под которым вообще исполнялось действие. Этот контекст теперь появляется в run telemetry, approval records и session export, чтобы runtime мог объяснять не только что произошло, но и под чьей delegated identity и scope это произошло.
 
@@ -214,7 +214,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - легче показать путь, управляемый конфигурацией, а не только жестко зашитое демо;
 - легче связать эталонный рантайм с главами про память, извлечение контекста, фоновые обновления и runtime-control governance;
 - легче обсуждать, откуда взялся каждый memory record, какая у него ревизия и какая contract/runtime-control version была активна;
-- легче держать на виду verifier-contract lineage и retirement obligations рядом с runtime-control и artifact decisions;
+- легче держать на виду идентичность выпуска, verifier-contract lineage и retirement obligations рядом с runtime-control и artifact decisions;
 - легче держать отдельно, но согласованно, approval state, runtime session state, capability session state и verifier evidence.
 
 Отдельно полезно то, что теперь package можно не только запускать, но и инспектировать снаружи:
