@@ -71,10 +71,11 @@
 - 第 11 章：traces、spans 与 structured events，作为 raw evidence capture。
 - 第 12 章：智能体系统的 SLO，作为 health 与 risk budgets。
 - 第 13 章：offline evals、online evals、trace grading 与回归闸门，作为 judgment discipline。
+- 计划中的连接页：Evidence Spine，它会把 request、policy、approval、traces、evals、incidents 与 rollout 串成一条统一的工件路径。
 
 说明：Part V 的核心思想相对稳定，但第 13 章比第 11、12 章变化更快。
 
-编辑形状：Part V 现在作为一个三步块来工作，capture -> health -> judgment。
+编辑形状：Part V 现在作为一个三步块来工作，capture -> health -> judgment。下一步要补强的，就是把这条 evidence spine 明确写出来，而不是让读者自己去拼接。
 
 ### 第六部分：组织模型
 
@@ -118,8 +119,9 @@
 3. 加入参考图和运维检查清单。
 4. 提供实用的 reference implementation。
 5. 补充 eval 示例和策略配置。
-6. 增强这本书的决策框架：什么时候该用 agent，什么时候 workflow 足够，以及什么时候不该过早走向多智能体。
-7. 保护 editorial role clarity，避免相邻的 operational chapters 再次塌回重复与 overlap。
+6. 明确整理出贯穿 runtime、policy、approval、trace、eval、incident 与 rollout 的端到端 evidence spine。
+7. 增强这本书的决策框架：什么时候该用 agent，什么时候 workflow 足够，以及什么时候不该过早走向多智能体。
+8. 保护 editorial role clarity，避免相邻的 operational chapters 再次塌回重复与 overlap。
 
 ## 已完成内容
 
