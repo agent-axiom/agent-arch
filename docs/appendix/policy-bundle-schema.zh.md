@@ -137,6 +137,10 @@ approval_contract:
 
 “这个发布或事故发生时，到底是哪一个策略包版本在生效？”
 
+而一旦 runtime 把 bundle 当作受治理的发布表面，接下来的问题也就不可避免了：
+
+“这个策略包参与构成的是哪一个发布身份？”
+
 ## policy bundle 和 traces 的关系
 
 它们之间的关系非常直接：
@@ -213,6 +217,7 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - `bundle_version`
 - `artifact_lineage`
 - `change_id`
+- `release_identity`
 - `approval_contracts`
 - `runtime_control_schema`
 - `contract_version`
@@ -249,7 +254,7 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - 审批契约是机器可读的，还是只写在说明文字里？
 - 审批请求必须带哪些字段，是否清楚？
 - 策略包和能力目录之间是否有稳定关联？
-- 能不能知道某条追踪对应的是哪个策略版本？
+- 能不能知道某条追踪对应的是哪个策略版本和哪一个发布身份？
 - 是否明确写出了哪些 verifier contracts 可以被信任用于 high-risk grading 或 rollout evidence？
 
 如果连续几个答案都是“不能”，那说明你的策略层虽然存在，但还没有被塑造成完整的运行工件。
