@@ -2,6 +2,8 @@
 
 This page defines a minimal contract layer for lifecycle artifacts: change records, approved artifact bundles, and retirement plans. If the trace schema answers "what happened" and the eval schema answers "how do we grade it," the lifecycle artifact schema answers "what exactly was approved, changed, replaced, or retired."
 
+It also connects directly to the book's [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md), because lifecycle artifacts are part of the governed record that later judgment and incident review stand on.
+
 ## 1. Why this matters
 
 Production-grade agent systems have several artifact classes that should not live only in team memory or a wiki:
