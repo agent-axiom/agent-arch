@@ -107,6 +107,8 @@ bundle:
 approval_contract:
   capability: create_ticket
   risk_tier: high
+  bundle_version: 2026.04.07
+  release_identity: release-support-triage-2026-04-07-canary
   required_reviewers:
     - manager
   request_fields:
@@ -125,7 +127,7 @@ approval_contract:
   on_reject: stop_run
 ```
 
-重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。
+重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。而当审批本身会影响发布时，这个契约也应该明确写出它所属的 bundle version 和 release identity。
 
 ## policy bundle 和 lifecycle 的关系
 
