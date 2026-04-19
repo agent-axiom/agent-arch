@@ -32,6 +32,8 @@ That is why change management becomes its own operational function, not just “
 
 That is the core promise of this chapter. It should help the reader see where release-bearing judgment becomes operational discipline: not in abstract warnings about risk, but in a repeatable way of classifying change, matching evidence to that change, and deciding what deserves a formal gate.
 
+If you want the connective layer that shows how request, policy, approvals, traces, evals, incidents, and rollout judgment stay tied together, use the dedicated [Evidence Spine](../part-v/evidence-spine.en.md) page.
+
 !!! info "Need change artifacts?"
     For the practical layer, open the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md), the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
 
