@@ -18,6 +18,7 @@
 
 - 第 16 章看 baseline runtime 与 capability session state，
 - 第 17 章看 policy layer 与 capability contracts，
+- [Evidence Spine](../book/part-v/evidence-spine.zh.md) 看从 request 到 rollout judgment 的端到端治理记录，
 - 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
 - 第 21 章看 assurance response，
 - 第 22 章配合 lifecycle schema 看 governed artifact linkage、release identity、verifier-contract lineage 与 delegated authorization provenance，
