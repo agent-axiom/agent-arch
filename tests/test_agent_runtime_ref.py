@@ -183,6 +183,36 @@ class TestExecutionAndPolicyBranches:
         assert result.status == "validation_failure"
         assert result.payload["reason"] == "missing_idempotency_key"
 
+    def test_execute_tool_can_simulate_timeout_failure(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(
+                capability_name="search_docs",
+                arguments={"query": "policy", "simulate_failure": "tool_timeout"},
+            ),
+            PolicyDecision("allow", "low_risk_read", "cap_101"),
+        )
+        assert result.status == "failed"
+        assert result.payload["reason"] == "tool_timeout"
+
+    def test_execute_tool_can_simulate_upstream_unavailable_failure(
+        self, config_dir: Path
+    ) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        result = execute_tool(
+            capability,
+            ToolRequest(
+                capability_name="search_docs",
+                arguments={"query": "policy", "simulate_failure": "upstream_unavailable"},
+            ),
+            PolicyDecision("allow", "low_risk_read", "cap_101"),
+        )
+        assert result.status == "failed"
+        assert result.payload["reason"] == "upstream_unavailable"
+
     def test_execute_tool_success_includes_contract_payload(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
         assert capability is not None

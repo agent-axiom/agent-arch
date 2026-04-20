@@ -28,6 +28,18 @@ def execute_tool(
             status="validation_failure",
             payload={"reason": "missing_idempotency_key"},
         )
+    if tool_request.arguments.get("simulate_failure") == "tool_timeout":
+        return ToolResult(
+            capability_name=tool_request.capability_name,
+            status="failed",
+            payload={"reason": "tool_timeout"},
+        )
+    if tool_request.arguments.get("simulate_failure") == "upstream_unavailable":
+        return ToolResult(
+            capability_name=tool_request.capability_name,
+            status="failed",
+            payload={"reason": "upstream_unavailable"},
+        )
 
     payload = {
         "transport": capability.transport,
