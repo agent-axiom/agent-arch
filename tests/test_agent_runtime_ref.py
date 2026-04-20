@@ -51,6 +51,31 @@ class TestFailurePaths:
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == ["run_start", "policy_precheck", "run_complete"]
 
+    def test_runtime_marks_validation_failure_tool_path_as_failed(self) -> None:
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Please create a ticket without the usual safeguards.",
+                tenant_id="tenant-acme",
+                principal_id="user-42",
+                trace_id="trace-tool-failure-001",
+                session_id="session-tool-failure-001",
+                agent_id="agent-runtime-ref",
+                authorization_mode="human_approved",
+            ),
+        )
+        assert result.status == "failed"
+        assert "validation_failure" in result.output_text
+        session = runtime.sessions.get_session("session-tool-failure-001")
+        assert session is not None
+        assert session.status == "failed"
+        event_types = [event.event_type for event in runtime.telemetry.events]
+        assert "run_failed" in event_types
+        run_failed = next(
+            event for event in runtime.telemetry.events if event.event_type == "run_failed"
+        )
+        assert run_failed.payload["tool_status"] == "validation_failure"
+
     def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(
         self, cli_json, tmp_path: Path
     ) -> None:

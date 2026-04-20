@@ -138,6 +138,49 @@ class AgentRuntime:
                     "delegated_principal_id", delegated_principal_id
                 )
                 delegated_scope = latest_tool.payload.get("delegated_scope", delegated_scope)
+                if latest_tool.status in {"denied", "validation_failure", "failed"}:
+                    result = RunResult(
+                        output_text=(
+                            "Runtime halted before side effects completed: "
+                            f"{latest_tool.capability_name} returned {latest_tool.status}."
+                        ),
+                        status="failed",
+                    )
+                    self.sessions.register_run(
+                        session_id=request.session_id,
+                        tenant_id=request.tenant_id,
+                        principal_id=request.principal_id,
+                        trace_id=request.trace_id,
+                        status=result.status,
+                        user_input=request.user_input,
+                        output_text=result.output_text,
+                        capability_session_id=capability_session_id,
+                        capability_session_status=capability_session_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    self.telemetry.emit(
+                        "run_failed",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        capability=latest_tool.capability_name,
+                        tool_status=latest_tool.status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    self.telemetry.emit(
+                        "run_complete",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        status=result.status,
+                        output_preview=result.output_text[:80],
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    return result
             model_output = self._call_model(request, context, second_pass=True)
 
         self._schedule_background_updates(request, context, model_output)
