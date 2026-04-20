@@ -2,6 +2,8 @@
 
 This page describes the minimal contract layer for incident review in agent systems: which fields an incident record should contain, how it should connect to traces, approvals, rollout, and lifecycle artifacts, and which data should survive the containment phase.
 
+It also connects directly to the book's [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md), because incident review is one of the places where that governed chain must stay intact.
+
 If the [Incident Response Playbook](incident-response-playbook.en.md) answers the question “what should the team do in the first minutes and during review,” this schema answers “how should that be recorded.”
 
 ## 1. Why a separate incident record is useful
