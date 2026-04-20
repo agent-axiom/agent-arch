@@ -108,6 +108,9 @@
 - `process_score_present`
 - `outcome_score_present`
 - `failure_attribution_valid`
+- `failed_run_traceable`
+
+最后这一条会在 release review 开始要求 failed-run drills 时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的 status、trace linkage 与受治理的 release identity。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
