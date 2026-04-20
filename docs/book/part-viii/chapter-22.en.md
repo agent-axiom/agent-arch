@@ -148,6 +148,8 @@ This distinction is useful because inventory provides the platform-level frame, 
 
 That release-level discipline is the heart of provenance here. The question is not only whether telemetry exists, but which governed version, approved bundle, reviewed schema, or verifier-bearing contract family the system was actually running under.
 
+The same rule matters for failed runs. If a capability timed out, an approval path failed validation, or an upstream dependency collapsed, later reviewers still need to know which approved artifact set and release identity governed that failure. Otherwise the organization preserves the happy path as provenance, but treats degraded behavior as unowned residue.
+
 ## 6. A prompt bundle without provenance is a supply-chain gap
 
 Teams often treat prompt changes like living text, not like release artifacts.
