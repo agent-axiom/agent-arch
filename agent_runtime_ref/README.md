@@ -32,8 +32,12 @@ python3 -m agent_runtime_ref inspect-agent
 python3 -m agent_runtime_ref inspect-memory --memory-class profile
 python3 -m agent_runtime_ref inspect-approvals
 python3 -m agent_runtime_ref inspect-lifecycle
+python3 -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
+python3 -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output /tmp/agent-runtime-failed-trace.jsonl
 python3 -m agent_runtime_ref export-eval-dataset --output /tmp/agent-runtime-eval.json
 ```
+
+The failure-injection flags are intentionally small, but useful for the book's failure-rich runtime examples: they let the reference runtime emit explicit failed runs and `run_failed` trace events instead of only happy-path or approval-wait scenarios.
 
 ## Tests
 
