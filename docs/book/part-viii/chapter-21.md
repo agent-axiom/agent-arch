@@ -151,6 +151,8 @@ Response layer полезно строить вокруг очень конкр�
 - переключить rollout wave на более безопасный профиль;
 - при необходимости полностью disable problematic route.
 
+Тот же response layer обязан считать и runtime failure paths самостоятельными управляемыми событиями. Tool timeout, validation failure или сбой внешней зависимости нельзя прятать внутри общего языка вроде "run completed". Система должна зафиксировать failed run, сохранить trace и оставить этот исход видимым на уровне session evidence, чтобы assurance различал заблокированный риск, деградацию инфраструктуры и поломку самого runtime-control behavior.
+
 Это важно, потому что в agent systems response часто должен происходить быстрее, чем полноценный root-cause analysis.
 
 Именно поэтому assurance здесь стоит читать как response function, а не просто как каталог detection-сигналов. Ее задача, сократить время между сигналом и безопасным containment.
