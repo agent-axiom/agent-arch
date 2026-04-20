@@ -151,6 +151,8 @@ A practical response layer is built around concrete actions:
 - move the rollout wave to a safer profile;
 - fully disable the problematic route when necessary.
 
+That same response layer also has to treat runtime failure paths as governed events in their own right. A tool timeout, validation failure, or upstream dependency outage should not be allowed to hide inside generic "the run completed" language. The system should record a failed run, preserve the trace, and keep that outcome visible in session-level evidence so assurance can distinguish blocked risk, degraded infrastructure, and broken runtime-control behavior.
+
 This matters because in agent systems, response often has to happen faster than full root-cause analysis.
 
 That is why assurance should be read as a response function, not merely as a detection catalog. Its job is to shorten the time between signal and safe containment.
