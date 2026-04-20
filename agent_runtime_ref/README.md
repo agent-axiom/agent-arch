@@ -39,6 +39,8 @@ python3 -m agent_runtime_ref export-eval-dataset --output /tmp/agent-runtime-eva
 
 The failure-injection flags are intentionally small, but useful for the book's failure-rich runtime examples: they let the reference runtime emit explicit failed runs and `run_failed` trace events instead of only happy-path or approval-wait scenarios.
 
+That same line now also reaches the rollout/change side of the package: the demo `change.yaml` includes a `failed_run_drill_checked` gate signal so degraded paths are part of release review, not an afterthought.
+
 ## Tests
 
 Project test config lives at the repository root in `pyproject.toml`.
