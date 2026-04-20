@@ -158,6 +158,7 @@ flowchart LR
 - policy decisions 和 tool outcomes 可见；
 - SLO 已定义；
 - 离线评测通过；
+- 受影响的 high-risk paths 已单独演练过 failed-run drills；
 - 当 release evidence 依赖 graded judgments 时，verifier quality 已被审查；
 - 回归门禁已经文档化；
 - 在线监控已经为第一波上线做好准备。
