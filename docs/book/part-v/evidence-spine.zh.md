@@ -59,6 +59,24 @@ Evidence spine 是一种最小但受治理的连续性，它能让操作人员�
 
 这里重点不是命名是否完美，而是链接是否可复核。
 
+<div class="diagram-card">
+<p>把 evidence spine 看成一串相互链接的记录，会比把它看成一堆分散工件更有用</p>
+
+``` mermaid
+flowchart LR
+    A["run_id"] --> B["trace_id"]
+    A --> C["policy_bundle_version"]
+    A --> D["approval_id"]
+    A --> E["evaluation_result_id"]
+    C --> F["release_identity"]
+    C --> G["artifact_id"]
+    E --> H["verifier_contract_id"]
+    E --> I["incident_id"]
+    I --> J["rollout judgment"]
+```
+
+</div>
+
 ## 一个端到端 run walkthrough
 
 设想一个 support-triage agent，它可以分类用户请求、检索内部知识，并且只在 high-risk 情况下经过 approval 后创建 ticket。
