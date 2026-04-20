@@ -136,7 +136,8 @@
 
 - несколькими сценариями сессий;
 - `labels`;
-- `expected_outcomes`.
+- `expected_outcomes`;
+- отдельным failed-run drill scenario, который сохраняет failed status и в session summary, и в eval expectations.
 
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 
