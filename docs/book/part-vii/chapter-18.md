@@ -158,6 +158,7 @@ flowchart LR
 - policy decisions и tool outcomes видны;
 - SLO заведены;
 - offline evals проходят;
+- для затронутых high-risk paths отдельно прогнаны failed-run drills;
 - качество verifier'а reviewed там, где release evidence зависит от graded judgments;
 - regression gate задокументирован;
 - online monitoring готово к первым волнам выкладки.
