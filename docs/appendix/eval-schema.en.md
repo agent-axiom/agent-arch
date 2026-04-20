@@ -136,7 +136,8 @@ already produces a small structured artifact with:
 
 - multiple session scenarios;
 - `labels`;
-- `expected_outcomes`.
+- `expected_outcomes`;
+- a failed-run drill scenario that preserves failed status in session summary and eval expectations.
 
 It is not yet a full industrial eval framework, but it is already a reasonable seed for:
 
