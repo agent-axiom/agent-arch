@@ -59,6 +59,24 @@ Evidence spine, это минимальная управляемая непре�
 
 Смысл не в идеальной терминологии. Смысл в том, чтобы связь оставалась проверяемой.
 
+<div class="diagram-card">
+<p>Полезно мыслить evidence spine как цепочку связанных записей, а не как набор разрозненных артефактов</p>
+
+``` mermaid
+flowchart LR
+    A["run_id"] --> B["trace_id"]
+    A --> C["policy_bundle_version"]
+    A --> D["approval_id"]
+    A --> E["evaluation_result_id"]
+    C --> F["release_identity"]
+    C --> G["artifact_id"]
+    E --> H["verifier_contract_id"]
+    E --> I["incident_id"]
+    I --> J["rollout judgment"]
+```
+
+</div>
+
 ## Один сквозной walkthrough run
 
 Возьмем support-triage agent, который умеет классифицировать входящее обращение, искать внутренние знания и создавать ticket только после approval в high-risk случаях.
