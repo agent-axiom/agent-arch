@@ -71,7 +71,10 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+第二种形式是一个刻意保持很小的 failure-rich 场景。它让这个参考包能够展示，一条本来被允许的 capability 也可能以受治理的 failed run 收尾，并留下明确的 telemetry，而不是被泛化成成功路径。
 
 查看智能体身份与已批准能力清单：
 
@@ -105,6 +108,7 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+.venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
 如果你需要给外部人员查看脱敏后的导出结果，也可以在导出时直接隐藏敏感字段：
