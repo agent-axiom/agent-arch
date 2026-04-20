@@ -59,6 +59,24 @@ In more mature systems, the chain often also includes:
 
 The point is not naming purity. The point is reviewable linkage.
 
+<div class="diagram-card">
+<p>A useful evidence spine is a chain of linked records, not a pile of disconnected artifacts</p>
+
+``` mermaid
+flowchart LR
+    A["run_id"] --> B["trace_id"]
+    A --> C["policy_bundle_version"]
+    A --> D["approval_id"]
+    A --> E["evaluation_result_id"]
+    C --> F["release_identity"]
+    C --> G["artifact_id"]
+    E --> H["verifier_contract_id"]
+    E --> I["incident_id"]
+    I --> J["rollout judgment"]
+```
+
+</div>
+
 ## One end-to-end run walkthrough
 
 Take a support-triage agent that can classify an incoming request, search internal knowledge, and create a ticket only after approval for high-risk cases.
