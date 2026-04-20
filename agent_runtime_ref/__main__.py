@@ -120,6 +120,7 @@ def _run_runtime(
     trace_id: str,
     session_id: str,
     agent_id: str | None = None,
+    simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     runtime = _build_runtime(config_dir)
     return _run_on_runtime(
@@ -130,6 +131,7 @@ def _run_runtime(
         trace_id=trace_id,
         session_id=session_id,
         agent_id=agent_id,
+        simulate_failure=simulate_failure,
     )
 
 
@@ -142,7 +144,10 @@ def _run_on_runtime(
     trace_id: str,
     session_id: str,
     agent_id: str | None = None,
+    simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
+    if simulate_failure and "ticket" in user_input.lower():
+        user_input = f"{user_input} [simulate_failure={simulate_failure}]"
     result = runtime.run(
         RunRequest(
             user_input=user_input,
@@ -203,6 +208,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         trace_id=args.trace_id,
         session_id=args.session_id,
         agent_id=args.agent_id,
+        simulate_failure=args.simulate_failure,
     )
     return {
         "agent_id": runtime.agent.agent_id,
@@ -279,6 +285,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         trace_id=args.trace_id,
         session_id=args.session_id,
         agent_id=args.agent_id,
+        simulate_failure=args.simulate_failure,
     )
     return {
         "status": result.status,
@@ -299,6 +306,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         trace_id=args.trace_id,
         session_id=args.session_id,
         agent_id=args.agent_id,
+        simulate_failure=args.simulate_failure,
     )
     output_path = runtime.telemetry.export_jsonl(
         args.output,
@@ -714,6 +722,11 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--trace-id", default="trace-demo-001")
     simulate.add_argument("--session-id", default="session-demo-001")
     simulate.add_argument("--agent-id", default=None)
+    simulate.add_argument(
+        "--simulate-failure",
+        choices=["tool_timeout", "upstream_unavailable"],
+        default=None,
+    )
 
     inspect_memory = subparsers.add_parser(
         "inspect-memory",
@@ -756,6 +769,11 @@ def build_parser() -> argparse.ArgumentParser:
     dump_events.add_argument("--trace-id", default="trace-demo-001")
     dump_events.add_argument("--session-id", default="session-demo-001")
     dump_events.add_argument("--agent-id", default=None)
+    dump_events.add_argument(
+        "--simulate-failure",
+        choices=["tool_timeout", "upstream_unavailable"],
+        default=None,
+    )
 
     export_events = subparsers.add_parser(
         "export-events",
@@ -775,6 +793,11 @@ def build_parser() -> argparse.ArgumentParser:
     export_events.add_argument("--trace-id", default="trace-demo-001")
     export_events.add_argument("--session-id", default="session-demo-001")
     export_events.add_argument("--agent-id", default=None)
+    export_events.add_argument(
+        "--simulate-failure",
+        choices=["tool_timeout", "upstream_unavailable"],
+        default=None,
+    )
     export_events.add_argument(
         "--output",
         default="artifacts/trace-demo-001.jsonl",

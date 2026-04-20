@@ -264,16 +264,21 @@ class AgentRuntime:
             )
             return ModelOutput(text=f"Retrieved profile hint: {profile_hint}")
         if "ticket" in lowered:
+            arguments = {
+                "title": "Agent follow-up",
+                "queue": "support",
+                "requester_id": request.principal_id,
+                "idempotency_key": request.trace_id,
+            }
+            if "simulate_failure=tool_timeout" in lowered:
+                arguments["simulate_failure"] = "tool_timeout"
+            if "simulate_failure=upstream_unavailable" in lowered:
+                arguments["simulate_failure"] = "upstream_unavailable"
             return ModelOutput(
                 text="I need to create a ticket before I can answer fully.",
                 tool_request=ToolRequest(
                     capability_name="create_ticket",
-                    arguments={
-                        "title": "Agent follow-up",
-                        "queue": "support",
-                        "requester_id": request.principal_id,
-                        "idempotency_key": request.trace_id,
-                    },
+                    arguments=arguments,
                 ),
             )
         return ModelOutput(

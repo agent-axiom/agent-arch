@@ -146,6 +146,39 @@ class TestFailurePaths:
                 ]
             )
 
+    def test_cli_simulate_run_supports_failure_injection(self, cli_json) -> None:
+        code, payload = cli_json(
+            [
+                "simulate-run",
+                "--trace-id",
+                "trace-cli-failure-001",
+                "--simulate-failure",
+                "tool_timeout",
+            ]
+        )
+        assert code == 0
+        assert payload["status"] == "failed"
+        assert "tool_timeout" in payload["result"]
+
+    def test_cli_export_events_supports_failure_injection(self, cli_json, tmp_path: Path) -> None:
+        output_path = tmp_path / "failed-trace.jsonl"
+        code, payload = cli_json(
+            [
+                "export-events",
+                "--trace-id",
+                "trace-cli-export-failure-001",
+                "--simulate-failure",
+                "upstream_unavailable",
+                "--output",
+                str(output_path),
+            ]
+        )
+        assert code == 0
+        assert payload["status"] == "failed"
+        assert output_path.exists()
+        lines = output_path.read_text(encoding="utf-8").strip().splitlines()
+        assert any("run_failed" in line for line in lines)
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:
