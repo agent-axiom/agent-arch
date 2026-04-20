@@ -71,7 +71,10 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
+.venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path.
 
 Просмотр identity агента и approved inventory:
 
@@ -105,6 +108,7 @@
 
 ```bash
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+.venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
 Если нужен redacted export для внешнего разбора, можно сразу скрыть чувствительные поля:
