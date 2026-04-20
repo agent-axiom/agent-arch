@@ -6,6 +6,12 @@
 
 如果你没法沿着这些层一路追踪同一个 run，那你还没有 evidence spine，你只有彼此断开的 controls。
 
+## 读完这页后，你应该能够
+
+- 解释为什么追踪、policy、approvals、evals、incidents 与 rollout judgment 属于同一条受治理记录；
+- 说清楚让一次可疑 run 保持可审查所需的最小标识符集合；
+- 展示 runtime behavior、人工决策、lifecycle artifacts 与 release judgment 如何在不靠猜测的情况下连起来。
+
 ## 为什么需要这页
 
 书里已经有几章分别讲了这条链上的不同部分：
