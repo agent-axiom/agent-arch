@@ -2,6 +2,8 @@
 
 这一页描述智能体系统里人工审批的最小契约层：审批请求长什么样，决策记录长什么样，以及高风险动作之后应该在审计轨迹里留下什么。
 
+它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为 approval 正是让一次受治理 run 从 request 一直保持可读到 rollout 的关键记录之一。
+
 如果 [策略包](policy-bundle-schema.zh.md) 回答的是“当前到底有哪些规则在生效”，那么审批模式回答的就是“运行时如何把最后一道决定权交给人”。
 
 ## 1. 为什么要单独有审批模式
