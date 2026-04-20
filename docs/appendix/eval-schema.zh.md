@@ -136,7 +136,8 @@
 
 - 多个 session scenarios；
 - `labels`；
-- `expected_outcomes`。
+- `expected_outcomes`；
+- 一个单独的 failed-run drill scenario，它会把 failed status 同时保留在 session summary 和 eval expectations 里。
 
 它还不是完整的工业级评测框架，但已经足够作为：
 
