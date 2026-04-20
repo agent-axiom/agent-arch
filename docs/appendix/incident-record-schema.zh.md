@@ -2,6 +2,8 @@
 
 这页描述了智能体系统中 incident review 的最小契约层：incident record 应该包含哪些字段，它如何与 traces、approvals、rollout 和 lifecycle artifacts 相连，以及哪些数据必须在 containment phase 之后仍然保留下来。
 
+它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为 incident review 正是这条受治理链路必须保持完整的关键场景之一。
+
 如果 [智能体系统事故响应手册](incident-response-playbook.zh.md) 回答的是“前几分钟和后续复盘该怎么做”，那么这页回答的是“这些内容应该以什么形式被固定下来”。
 
 ## 1. 为什么需要单独的 incident record
