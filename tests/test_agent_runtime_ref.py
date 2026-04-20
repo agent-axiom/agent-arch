@@ -68,7 +68,10 @@ class TestFailurePaths:
         assert "validation_failure" in result.output_text
         session = runtime.sessions.get_session("session-tool-failure-001")
         assert session is not None
-        assert session.status == "failed"
+        runs = runtime.sessions.runs_for_session("session-tool-failure-001")
+        assert runs[-1].status == "failed"
+        summary = runtime.sessions._session_payload("session-tool-failure-001")["summary"]
+        assert summary["failed_runs"] == 1
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert "run_failed" in event_types
         run_failed = next(

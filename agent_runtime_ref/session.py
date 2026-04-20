@@ -141,6 +141,7 @@ class SessionStore:
                 "success_runs": summary.success_runs,
                 "approval_wait_runs": summary.approval_wait_runs,
                 "denied_runs": summary.denied_runs,
+                "failed_runs": summary.failed_runs,
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
@@ -168,6 +169,7 @@ class SessionEvalSummary:
     success_runs: int
     approval_wait_runs: int
     denied_runs: int
+    failed_runs: int
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -185,6 +187,7 @@ def summarize_session(
             1 for run in runs if "waiting for human approval" in run.output_text.lower()
         ),
         denied_runs=sum(1 for run in runs if run.status == "denied"),
+        failed_runs=sum(1 for run in runs if run.status == "failed"),
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
     )
