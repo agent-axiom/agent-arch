@@ -108,6 +108,9 @@
 - `process_score_present`
 - `outcome_score_present`
 - `failure_attribution_valid`
+- `failed_run_traceable`
+
+Последнее правило становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, trace linkage и управляемую release identity.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
