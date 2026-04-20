@@ -139,6 +139,8 @@ The rollout gate becomes much stronger once the trace schema is in place:
 
 That is why mature teams usually keep trace and rollout gate layers close together.
 
+They should also make failed-run evidence visible before release judgment. If timeout-heavy tool paths, validation failures, or upstream outages only appear as generic unsuccessful demos, the rollout gate cannot distinguish product risk from runtime degradation. A mature gate should be able to see whether those failed runs were exercised, whether their traces stayed reviewable, and whether the same release identity governed both the happy path and the degraded path.
+
 ## 8. How this connects to the reference package
 
 The [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) package already includes parts of this model:
