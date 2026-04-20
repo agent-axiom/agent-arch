@@ -33,21 +33,30 @@ DEFAULT_MULTI_RUN_INPUTS = (
     "Please create a ticket for this onboarding issue.",
     "What language preference do you remember?",
 )
-EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str]] = {
+EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str, str | None]] = {
     "support_ticket": (
         "session-eval-support",
         ("Please create a ticket for this onboarding issue.",),
         "trace-eval-support",
+        None,
     ),
     "profile_memory": (
         "session-eval-memory",
         ("What language preference do you remember?",),
         "trace-eval-memory",
+        None,
     ),
     "mixed_session": (
         "session-eval-mixed",
         DEFAULT_MULTI_RUN_INPUTS,
         "trace-eval-mixed",
+        None,
+    ),
+    "failed_run_timeout": (
+        "session-eval-failed-run",
+        ("Please create a ticket for this onboarding issue.",),
+        "trace-eval-failed-run",
+        "tool_timeout",
     ),
 }
 EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
@@ -80,6 +89,16 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
                 "waiting for human approval",
                 "Retrieved profile hint",
             ],
+        },
+    },
+    "failed_run_timeout": {
+        "scenario": "failed_run_timeout",
+        "labels": ["failed_run", "tool_timeout", "failure_drill"],
+        "expected_outcomes": {
+            "latest_status": "failed",
+            "failed_runs": 1,
+            "required_output_substrings": ["tool_timeout"],
+            "failed_run_traceable": True,
         },
     },
 }
@@ -670,7 +689,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     session_ids: list[str] = []
     eval_specs: dict[str, dict[str, object]] = {}
     for scenario_name in selected_scenarios:
-        session_suffix, user_inputs, trace_prefix = EVAL_DATASET_SCENARIOS[scenario_name]
+        session_suffix, user_inputs, trace_prefix, simulate_failure = EVAL_DATASET_SCENARIOS[
+            scenario_name
+        ]
         session_id = f"{args.session_prefix}-{session_suffix.removeprefix('session-eval-')}"
         for index, user_input in enumerate(user_inputs, start=1):
             _run_on_runtime(
@@ -681,6 +702,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 trace_id=f"{trace_prefix}-{index:03d}",
                 session_id=session_id,
                 agent_id=args.agent_id,
+                simulate_failure=simulate_failure,
             )
         session_ids.append(session_id)
         eval_specs[session_id] = EVAL_DATASET_LABELS[scenario_name]

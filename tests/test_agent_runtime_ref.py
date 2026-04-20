@@ -179,6 +179,26 @@ class TestFailurePaths:
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
         assert any("run_failed" in line for line in lines)
 
+    def test_cli_export_eval_dataset_includes_failed_run_scenario(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "eval-dataset.json"
+        code, payload = cli_json(
+            [
+                "export-eval-dataset",
+                "--output",
+                str(output_path),
+                "--scenario",
+                "failed_run_timeout",
+            ]
+        )
+        assert code == 0
+        assert payload["session_count"] == 1
+        data = json.loads(output_path.read_text(encoding="utf-8"))
+        session = data["sessions"][0]
+        assert session["summary"]["failed_runs"] == 1
+        assert session["eval"]["expected_outcomes"]["failed_run_traceable"] is True
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:
