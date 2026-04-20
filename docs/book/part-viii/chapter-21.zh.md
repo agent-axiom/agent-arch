@@ -151,6 +151,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 把发布波次切回更安全的配置；
 - 必要时直接停用有问题的路由。
 
+同一层 response layer 也必须把 runtime failure paths 当成独立的受治理事件来处理。Tool timeout、validation failure，或者上游依赖不可用，都不该被塞进笼统的 "run completed" 话术里。系统应该记录 failed run、保留 trace，并让这个结果在 session-level evidence 中持续可见，这样 assurance 才能区分被拦下来的风险、基础设施退化，以及 runtime-control behavior 本身的失效。
+
 这很关键，因为在智能体系统里，响应往往必须比完整的根因分析更快发生。
 
 所以这里的 assurance 更应该被理解成 response function，而不只是 detection catalog。它的职责，是尽量缩短 signal 与 safe containment 之间的时间。
