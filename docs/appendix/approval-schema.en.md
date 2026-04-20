@@ -2,6 +2,8 @@
 
 This page defines the minimal contract layer for human approval in agent systems: what an approval request looks like, what a decision record looks like, and what should remain in the audit trail after a high-risk action.
 
+It also connects directly to the book's [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md), because approval is one of the records that keeps a governed run legible from request to rollout.
+
 If the [policy bundle](policy-bundle-schema.en.md) answers “which rules are in force,” the approval schema answers “how the runtime hands final authority to a human.”
 
 ## 1. Why a separate approval schema matters
