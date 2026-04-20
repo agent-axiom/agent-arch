@@ -46,6 +46,7 @@ affected_surfaces:
   - policy_bundle
   - approval_contract
   - delegated_authorization_contract
+  - failed_run_handling
   - rollout_rules
 required_reviews:
   - engineering
@@ -55,6 +56,7 @@ required_evals:
   - offline_regression
   - targeted_safety_eval
   - trace_regression_check
+  - failed_run_drill
   - verifier_quality_check
 status: approved
 ```
