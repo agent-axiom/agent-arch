@@ -150,9 +150,11 @@
 ```
 
 `inspect-session` показывает session-level историю запусков и связанные `trace_id`.
-`session-eval-summary` возвращает короткую operational summary по серии запусков.
+`session-eval-summary` возвращает короткую operational summary по серии запусков, включая и failed runs, а не сводя все обратно только к успехам и отказам.
 `session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`.
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`.
+
+Теперь рантайм также считает tool paths с неуспешным исходом, например validation failure, полноценным итогом запуска. Вместо того чтобы делать вид, будто run завершился успешно, он фиксирует failed run, пишет явное событие `run_failed` и сохраняет этот статус в session export.
 `export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact.
 
 Этот eval path теперь полезно читать вместе с richer verifier contract из appendix: для long-horizon scenarios пакет должен помогать представить, как dataset со временем может нести `process_score`, `outcome_score`, `failure_attribution` и linked verifier evidence, а не только один тонкий verdict.
