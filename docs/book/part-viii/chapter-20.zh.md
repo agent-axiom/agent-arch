@@ -142,6 +142,7 @@ flowchart LR
 - design review；
 - explicit policy review；
 - offline eval pass；
+- failed-run drill coverage for the affected path；
 - limited rollout；
 - first wave monitoring；
 - clear rollback path。
