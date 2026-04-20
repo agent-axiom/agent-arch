@@ -794,6 +794,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert retirement_assessment.ready
         assert retirement_assessment.missing_steps == ()
 
+    def test_change_gate_can_block_on_missing_failed_run_drill(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_change_record
+
+        change = load_change_record(config_dir / "change.yaml")
+        observed = {signal: True for signal in change.required_signals}
+        observed["failed_run_drill_checked"] = False
+        assessment = assess_change_gate(change, observed)
+        assert not assessment.ready
+        assert assessment.missing_signals == ("failed_run_drill_checked",)
+
 
 class TestLowCoverageModuleBranches:
     def test_controls_policy_from_dict_rejects_bad_shapes(self) -> None:
