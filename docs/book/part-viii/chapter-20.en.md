@@ -142,6 +142,7 @@ These changes should usually pass through formal gates:
 - design review;
 - explicit policy review;
 - offline eval pass;
+- failed-run drill coverage for the affected path;
 - limited rollout;
 - monitoring during the first wave;
 - a clear rollback path.
