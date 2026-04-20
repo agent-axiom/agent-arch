@@ -150,9 +150,11 @@ Inspect and resolve demo approval requests:
 ```
 
 `inspect-session` shows session-level run history and the linked `trace_id` values.
-`session-eval-summary` returns a compact operational summary for the run series.
+`session-eval-summary` returns a compact operational summary for the run series, including failed runs rather than collapsing everything into success-versus-denied.
 `session-replay` lets you execute multiple related requests inside one `session_id`.
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`.
+
+The runtime now also treats failure-like tool paths, such as validation failures, as first-class run outcomes. Instead of pretending the run succeeded, it records a failed run, emits an explicit `run_failed` event, and keeps that status visible in the session export.
 `export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact.
 
 That eval path should now be read together with the richer verifier contract in the appendix: for long-horizon scenarios, the package is meant to illustrate how a dataset can eventually carry `process_score`, `outcome_score`, `failure_attribution`, and linked verifier evidence rather than a single thin verdict.
