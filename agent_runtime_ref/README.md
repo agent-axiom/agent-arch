@@ -15,6 +15,8 @@ This package is not a production framework. It is a compact code anchor for:
 
 The full narrative lives in the book and appendix pages. This README is only a local developer quickstart.
 
+For the record-linkage view across traces, approvals, evals, incidents, and rollout judgment, read [Evidence Spine: From Request to Rollout Judgment](../docs/book/part-v/evidence-spine.en.md).
+
 ## Quickstart
 
 From the repository root:
