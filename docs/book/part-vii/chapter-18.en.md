@@ -158,6 +158,7 @@ Before production, you should be confident that:
 - policy decisions and tool outcomes are visible;
 - SLO are defined;
 - offline evals pass;
+- failed-run drills were exercised for the affected high-risk paths;
 - verifier quality is reviewed where release evidence depends on graded judgments;
 - the regression gate is documented;
 - online monitoring is ready for the first rollout waves.
