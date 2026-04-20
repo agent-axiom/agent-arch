@@ -142,6 +142,7 @@ Prompt, routine или instruction change могут:
 - design review;
 - explicit policy review;
 - offline eval pass;
+- failed-run drill coverage для затронутого path;
 - ограниченный rollout;
 - monitoring during the first wave;
 - clear rollback path.
