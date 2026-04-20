@@ -108,6 +108,9 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `process_score_present`
 - `outcome_score_present`
 - `failure_attribution_valid`
+- `failed_run_traceable`
+
+That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, trace linkage, and governed release identity.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
