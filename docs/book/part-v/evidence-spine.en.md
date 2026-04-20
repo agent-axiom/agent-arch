@@ -6,6 +6,12 @@ They are one operating record.
 
 If you cannot follow one run across those layers, you do not yet have an evidence spine. You have disconnected controls.
 
+## After this page, you should be able to
+
+- explain why traces, policy, approvals, evals, incidents, and rollout judgment belong to one governed record;
+- name the minimum identifiers that keep one suspicious run reviewable;
+- show how runtime behavior, human decision, lifecycle artifacts, and release judgment connect without guesswork.
+
 ## Why this page exists
 
 Several chapters in the book already describe parts of this chain:
