@@ -12,6 +12,7 @@ change:
     - capability_contract
     - runtime_control_schema
     - capability_session_contract
+    - failed_run_handling
   required_signals:
     - design_review_passed
     - offline_eval_passed
