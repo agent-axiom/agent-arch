@@ -73,6 +73,8 @@ class TestFailurePaths:
         summary = runtime.sessions._session_payload("session-tool-failure-001")["summary"]
         assert summary["failed_runs"] == 1
         assert summary["traceable_failed_runs"] == 1
+        exported_run = runtime.sessions._session_payload("session-tool-failure-001")["runs"][-1]
+        assert exported_run["failure_reason"] == "missing_idempotency_key"
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert "run_failed" in event_types
         run_failed = next(
@@ -198,6 +200,7 @@ class TestFailurePaths:
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
         assert session["summary"]["failed_runs"] == 1
+        assert session["runs"][-1]["failure_reason"] == "tool_timeout"
         assert session["eval"]["expected_outcomes"]["failed_run_traceable"] is True
 
 
@@ -1526,6 +1529,7 @@ class TestCli:
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["total_runs"] == 2
         assert len(exported["runs"]) == 2
+        assert "failure_reason" in exported["runs"][0]
 
     def test_cli_export_eval_dataset_writes_multi_session_json(
         self,

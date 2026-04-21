@@ -12,6 +12,7 @@ class RunRecord:
     status: str
     user_input: str
     output_text: str
+    failure_reason: str = ""
     capability_session_id: str = ""
     capability_session_status: str = ""
     authorization_mode: str = "platform_owned"
@@ -42,6 +43,7 @@ class SessionStore:
         status: str,
         user_input: str,
         output_text: str,
+        failure_reason: str = "",
         capability_session_id: str = "",
         capability_session_status: str = "",
         authorization_mode: str = "platform_owned",
@@ -63,6 +65,7 @@ class SessionStore:
             status=status,
             user_input=user_input,
             output_text=output_text,
+            failure_reason=failure_reason,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
             authorization_mode=authorization_mode,
@@ -152,6 +155,7 @@ class SessionStore:
                     "status": run.status,
                     "user_input": run.user_input,
                     "output_text": run.output_text,
+                    "failure_reason": run.failure_reason,
                     "capability_session_id": run.capability_session_id,
                     "capability_session_status": run.capability_session_status,
                     "authorization_mode": run.authorization_mode,
@@ -193,7 +197,10 @@ def summarize_session(
         traceable_failed_runs=sum(
             1
             for run in runs
-            if run.status == "failed" and bool(run.trace_id) and bool(run.output_text)
+            if run.status == "failed"
+            and bool(run.trace_id)
+            and bool(run.output_text)
+            and bool(run.failure_reason)
         ),
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
