@@ -142,6 +142,7 @@ class SessionStore:
                 "approval_wait_runs": summary.approval_wait_runs,
                 "denied_runs": summary.denied_runs,
                 "failed_runs": summary.failed_runs,
+                "traceable_failed_runs": summary.traceable_failed_runs,
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
@@ -170,6 +171,7 @@ class SessionEvalSummary:
     approval_wait_runs: int
     denied_runs: int
     failed_runs: int
+    traceable_failed_runs: int
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -188,6 +190,11 @@ def summarize_session(
         ),
         denied_runs=sum(1 for run in runs if run.status == "denied"),
         failed_runs=sum(1 for run in runs if run.status == "failed"),
+        traceable_failed_runs=sum(
+            1
+            for run in runs
+            if run.status == "failed" and bool(run.trace_id) and bool(run.output_text)
+        ),
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
     )
