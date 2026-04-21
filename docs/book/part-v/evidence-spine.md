@@ -40,6 +40,8 @@ Evidence spine, это минимальная управляемая непре�
 - привел ли он к incident review;
 - повлияло ли собранное evidence на rollout judgment.
 
+Это должно оставаться верным и для degraded paths. Failed-run drill полезен только тогда, когда та же цепочка по-прежнему объясняет, какая release identity управляла этим сбоем, какой trace его сохранил, как он был graded и повлиял ли он на rollout judgment.
+
 Без этой непрерывности у команды могут быть и traces, и approval logs, и eval reports, но все равно не будет одной reviewable operational record.
 
 ## Минимальная карта общих сущностей
