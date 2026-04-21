@@ -110,7 +110,7 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 
-最后这一条会在 release review 开始要求 failed-run drills 时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的 status、trace linkage 与受治理的 release identity。
+最后这一条会在 release review 开始要求 failed-run drills 时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的 status、具体失败原因、trace linkage 与受治理的 release identity。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
@@ -195,7 +195,7 @@ verifier_outputs:
     - screenshot:step_7
 ```
 
-重点在于，这个契约评估的不只是最终文本，也包括行为是否呈现出了正确的运行形态。
+重点在于，这个契约评估的不只是最终文本，也包括行为是否呈现出了正确的运行形态，以及具体 failed condition 是否仍然足够可见，便于后续审查。
 
 这对 long-horizon agents 尤其重要，因为二元 pass/fail verdict 往往会掩盖这样一种差异：一种是行为正确但 outcome 被环境阻断，另一种是行为不安全却碰巧拿到了 nominal success。
 
