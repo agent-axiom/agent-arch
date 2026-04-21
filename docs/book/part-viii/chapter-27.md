@@ -141,7 +141,7 @@ Registry отвечает на более строгий вопрос:
 
 ## 7. Sprawl часто начинается с “маленьких исключений”
 
-На практике zoo rarely starts as an official strategy.
+На практике sprawl почти никогда не начинается как официальная стратегия.
 
 Он начинается с маленьких послаблений:
 
@@ -164,7 +164,7 @@ Observability chapter уже показала, что inventory coverage — ч�
 
 Registry делает эту связь еще жестче:
 
-- traces можно enrich'ить registry metadata;
+- traces можно обогащать metadata из registry;
 - detections можно строить по lifecycle state;
 - incidents можно фильтровать по owner, risk tier и approval mode;
 - release evidence можно проверять не только по traces, но и по статусу registry record и verifier-evidence linkage.
@@ -177,7 +177,7 @@ Registry делает эту связь еще жестче:
 
 И это же граница с главой про provenance. Provenance отвечает, под какой governed version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
-## 8.1. Registry без continuous verification быстро становится красивым, но неточным
+## 8.1. Registry без непрерывной сверки быстро становится красивым, но неточным
 
 Здесь важно не переоценить сам реестр. Наличие registry еще не доказывает, что control layer действительно работает.
 
@@ -191,7 +191,7 @@ Registry делает эту связь еще жестче:
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
 
-Поэтому зрелый registry лучше мыслить не как статический каталог, а как continuously verified control surface.
+Поэтому зрелый registry лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
 
 ## 9. Как registry связан с approvals и policies
 
@@ -228,7 +228,7 @@ Registry не должен дублировать policy bundle или approval 
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
 
-Поэтому registry, это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
+Поэтому registry - это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
 
 Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 

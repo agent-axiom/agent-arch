@@ -68,9 +68,7 @@ Google Research очень хорошо формулирует здесь гла
 
 Это слабый подход.
 
-Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а production-relevant failure modes:
-
-Отдельно полезно тестировать и сам verifier layer, особенно когда команда опирается на automated grading или judges для computer-use trajectories. Слабый verifier может превращать unsafe behavior в ложную уверенность или, наоборот, превращать environment-caused failure в шумные false alarms.
+Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а production-relevant failure modes вроде:
 
 - prompt injection;
 - hidden instruction override;
@@ -81,9 +79,11 @@ Google Research очень хорошо формулирует здесь гла
 - memory poisoning;
 - excessive autonomy.
 
+Отдельно полезно тестировать и сам verifier layer, особенно когда команда опирается на automated grading или judges для computer-use trajectories. Слабый verifier может превращать unsafe behavior в ложную уверенность или, наоборот, превращать environment-caused failure в шумные false alarms.
+
 Хороший red teaming проверяет не только ответ модели, а весь execution path.
 
-Именно поэтому сюда же относятся и failed-run drills. Сценарий с timeout, validation failure или сбоем внешней зависимости, это не только rollout artifact. Это еще и assurance scenario, потому что команде нужно понимать, остается ли деградировавшее поведение проверяемым, управляемым и объяснимым под давлением, в том числе через явное поле вроде `failure_reason`.
+Сюда же относятся и failed-run drills. Сценарий с timeout, validation failure или сбоем внешней зависимости - это не только rollout artifact. Это еще и assurance scenario, потому что команде нужно понимать, остается ли деградировавшее поведение проверяемым, управляемым и объяснимым под давлением, в том числе через явное поле вроде `failure_reason`.
 
 ## 4. Уязвимости нужно вести как backlog, а не как впечатления
 
@@ -109,7 +109,6 @@ Google Research очень хорошо формулирует здесь гла
 
 - всплески verifier false positives на unsafe trajectories;
 - всплески verifier false negatives на blocked-but-correct trajectories;
-
 - всплеск denied actions;
 - рост approval backlog;
 - stuck paused approvals или необычный возраст paused runs;
@@ -133,7 +132,7 @@ Google Research очень хорошо формулирует здесь гла
 
 Именно здесь глава должна явно отличаться от observability layer. Observability поставляет evidence substrate. Assurance решает, какие сигналы значимы прямо сейчас, какие из них запускают containment и какой owner обязан действовать.
 
-И ее же важно держать отдельно от SLO. SLO говорят, сколько деградации или unsafe behavior можно терпеть. Assurance, это контур, который escalates, contains и assigns response, когда такой допуск уже перестает быть приемлемым.
+И ее же важно держать отдельно от SLO. SLO говорят, сколько деградации или unsafe behavior можно терпеть. Assurance - это контур, который escalates, contains и assigns response, когда такой допуск уже перестает быть приемлемым.
 
 ## 6. Response должен быть отдельной операционной функцией
 
@@ -155,7 +154,7 @@ Response layer полезно строить вокруг очень конкр�
 
 Это важно, потому что в agent systems response часто должен происходить быстрее, чем полноценный root-cause analysis.
 
-Именно поэтому assurance здесь стоит читать как response function, а не просто как каталог detection-сигналов. Ее задача, сократить время между сигналом и безопасным containment.
+Поэтому assurance здесь стоит читать как response function, а не просто как каталог detection-сигналов. Ее задача - сократить время между сигналом и безопасным containment.
 
 Budget может сказать, что система теперь нездорова. Assurance говорит, кто freeze'ит route, кто tighten'ит control surface и кто владеет путем назад к безопасному состоянию.
 
