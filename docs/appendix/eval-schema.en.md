@@ -110,7 +110,7 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `failure_attribution_valid`
 - `failed_run_traceable`
 
-That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, trace linkage, and governed release identity.
+That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, concrete failure reason, trace linkage, and governed release identity.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
@@ -195,7 +195,7 @@ verifier_outputs:
     - screenshot:step_7
 ```
 
-The point is that the contract evaluates not only the final text, but also the correct operational shape of behavior.
+The point is that the contract evaluates not only the final text, but also the correct operational shape of behavior, including whether the concrete failed condition remains visible enough for later review.
 
 This becomes especially important for long-horizon agents, where a binary pass/fail verdict often hides the difference between correct behavior with a blocked outcome and unsafe behavior that happened to end in nominal success.
 
