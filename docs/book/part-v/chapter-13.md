@@ -61,6 +61,8 @@ SLO помогают определить, что считается здоро�
 - stale memory retrieval;
 - cross-tenant privacy-sensitive case.
 
+Именно здесь failed-run drills превращаются в часть eval layer, а не остаются чисто операционной репетицией. Если команда хочет, чтобы rollout review доверял timeout handling, validation failure handling или поведению при сбое внешней зависимости, такие degraded paths должны попадать в offline set как явные сценарии с traceable failed outcomes.
+
 Сила offline evals в том, что они позволяют сравнивать версии системы **до** production traffic.
 
 Полезное уточнение из свежих работ по verifier design состоит в том, что offline evals не стоит завязывать только на binary success label. Для long-horizon agents часто нужен более богатый grading signal:
