@@ -85,7 +85,7 @@ It is also useful to test the verifier layer itself, especially when the team re
 
 Good red teaming tests not only the model answer, but the full execution path.
 
-That is also why failed-run drills belong here. A timeout, validation failure, or upstream-outage scenario is not only a rollout artifact. It is an assurance scenario, because the team needs to know whether degraded behavior remains reviewable, containable, and attributable under pressure.
+That is also why failed-run drills belong here. A timeout, validation failure, or upstream-outage scenario is not only a rollout artifact. It is an assurance scenario, because the team needs to know whether degraded behavior remains reviewable, containable, and attributable under pressure, including through an explicit field such as `failure_reason`.
 
 ## 4. Vulnerabilities should live as backlog items, not impressions
 
@@ -153,7 +153,7 @@ A practical response layer is built around concrete actions:
 - move the rollout wave to a safer profile;
 - fully disable the problematic route when necessary.
 
-That same response layer also has to treat runtime failure paths as governed events in their own right. A tool timeout, validation failure, or upstream dependency outage should not be allowed to hide inside generic "the run completed" language. The system should record a failed run, preserve the trace, and keep both the failed outcome and its concrete failure reason visible in session-level evidence so assurance can distinguish blocked risk, degraded infrastructure, and broken runtime-control behavior.
+That same response layer also has to treat runtime failure paths as governed events in their own right. A tool timeout, validation failure, or upstream dependency outage should not be allowed to hide inside generic "the run completed" language. The system should record a failed run, preserve the trace, and keep both the failed outcome and its concrete failure reason, for example in `failure_reason`, visible in session-level evidence so assurance can distinguish blocked risk, degraded infrastructure, and broken runtime-control behavior.
 
 This matters because in agent systems, response often has to happen faster than full root-cause analysis.
 
