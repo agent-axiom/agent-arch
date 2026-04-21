@@ -36,11 +36,9 @@
 
 Именно это состояние и стоит называть `agent sprawl`.
 
-Registry layer нужен здесь прежде всего для одной вещи, чтобы весь estate был answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют, какой evidence его описывает и кто обязан действовать, если он начинает drift.
+Registry layer нужен здесь прежде всего для одной вещи: сделать весь estate answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют и кто обязан действовать, если система начинает drift.
 
-Именно эта answerability, главный центр тяжести этой главы. Registry не владеет evidence backbone и не владеет telemetry substrate. Он владеет привязкой governed entities к owners, states и accountability paths.
-
-В этом и состоит главный смысл этой главы. Она должна показать registry как слой accountability всего estate: место, где governed entities перестают быть размытым набором tools и assistants и превращаются в подотчетные production systems с owners, lifecycle state и явной ответственностью.
+Эта глава отвечает на один вопрос: **как inventory и registry превращают набор agent-like сущностей в подотчетный production estate**. Здесь registry важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability.
 
 ## 2. Почему sprawl опасен не только организационно
 
