@@ -85,6 +85,7 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - failed_run_traceability_verified
 blocking_findings: []
 decision: go
 decided_by:
