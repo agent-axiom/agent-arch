@@ -143,6 +143,7 @@ These changes should usually pass through formal gates:
 - explicit policy review;
 - offline eval pass;
 - failed-run drill coverage for the affected path;
+- explicit confirmation that failed runs remain traceable through release identity, trace linkage, and session-level evidence;
 - limited rollout;
 - monitoring during the first wave;
 - a clear rollback path.
