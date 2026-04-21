@@ -143,6 +143,7 @@ flowchart LR
 - explicit policy review；
 - offline eval pass；
 - failed-run drill coverage for the affected path；
+- 明确确认 failed runs 仍然能通过 release identity、trace linkage 与 session-level evidence 保持 traceable；
 - limited rollout；
 - first wave monitoring；
 - clear rollback path。
