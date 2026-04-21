@@ -154,7 +154,7 @@ Inspect and resolve demo approval requests:
 ```
 
 `inspect-session` shows session-level run history and the linked `trace_id` values.
-`session-eval-summary` returns a compact operational summary for the run series, including failed runs rather than collapsing everything into success-versus-denied.
+`session-eval-summary` returns a compact operational summary for the run series, including failed runs and `traceable_failed_runs` rather than collapsing everything into success-versus-denied.
 `session-replay` lets you execute multiple related requests inside one `session_id`.
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`.
 
