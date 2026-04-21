@@ -40,7 +40,7 @@ Evidence spine 是一种最小但受治理的连续性，它能让操作人员�
 - 它有没有触发 incident review；
 - 这些 evidence 最终是否改变了 rollout judgment。
 
-这一点对 degraded paths 也必须成立。只有当同一条链仍然能解释是哪一个 release identity 在治理这次失败、是哪条 trace 把它保留下来、哪一个具体失败原因仍然可见、它是怎样被 graded 的，以及它是否改变了 rollout judgment，failed-run drill 才真正有意义。
+这一点对 degraded paths 也必须成立。只有当同一条链仍然能解释是哪一个 release identity 在治理这次失败、是哪条 trace 把它保留下来、哪一个具体失败原因，例如 `failure_reason` 字段，仍然可见、它是怎样被 graded 的，以及它是否改变了 rollout judgment，failed-run drill 才真正有意义。
 
 如果缺少这种连续性，团队也许仍然拥有 traces、approval logs 和 eval reports，但依然没有一条可复核的统一运行记录。
 
@@ -124,7 +124,7 @@ Runtime 会检索上下文，也许会先分类问题，并准备一个拟议中
 - 是否发生了 retries；
 - session 是否 pause 过；
 - 输出是否被 redacted；
-- degraded paths 的具体失败原因是否被保留下来；
+- degraded paths 的具体失败原因，例如 `failure_reason` 字段，是否被保留下来；
 - 系统究竟停在 side effects 之前的哪个位置。
 
 没有这一层，后面的 judgment 就会变成讲故事，而不是做重建。
