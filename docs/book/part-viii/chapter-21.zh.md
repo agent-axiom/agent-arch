@@ -85,6 +85,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 好的红队测试不只看模型回答，还要看整个执行路径。
 
+这也是 failed-run drills 应该被放进这里的原因。timeout、validation failure，或者上游依赖故障场景，不只是 rollout artifact，也是一种 assurance scenario，因为团队必须知道退化行为在压力下是否仍然可复核、可遏制、可归因。
+
 ## 4. 漏洞应该进入 backlog，而不是停留在感受里
 
 如果 red teaming 只留下“这里感觉有点危险”的印象，团队很难高质量行动。
