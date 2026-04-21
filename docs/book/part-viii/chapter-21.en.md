@@ -85,6 +85,8 @@ It is also useful to test the verifier layer itself, especially when the team re
 
 Good red teaming tests not only the model answer, but the full execution path.
 
+That is also why failed-run drills belong here. A timeout, validation failure, or upstream-outage scenario is not only a rollout artifact. It is an assurance scenario, because the team needs to know whether degraded behavior remains reviewable, containable, and attributable under pressure.
+
 ## 4. Vulnerabilities should live as backlog items, not impressions
 
 If red teaming produces only the feeling that “something seems risky,” the team will not be able to act well.
