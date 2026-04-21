@@ -142,7 +142,7 @@ decided_by:
 
 这也是为什么成熟团队里，追踪与发布门禁往往是并排建设的。
 
-failed-run evidence 也应该一路进入 release judgment。如果 timeout-heavy tool paths、validation failure 或上游依赖故障只被看成普通的失败 demo runs，rollout gate 就无法区分产品风险和 runtime 退化。成熟的 gate 应该能看见这些 failed runs 是否被专门演练过、它们的 traces 是否仍然可供 review，以及 happy path 和 degraded path 是否都受同一个 release identity 治理。
+failed-run evidence 也应该一路进入 release judgment。如果 timeout-heavy tool paths、validation failure 或上游依赖故障只被看成普通的失败 demo runs，rollout gate 就无法区分产品风险和 runtime 退化。成熟的 gate 应该能看见这些 failed runs 是否被专门演练过、它们的 traces 与具体失败原因是否仍然可供 review，以及 happy path 和 degraded path 是否都受同一个 release identity 治理。
 
 ## 8. 它和参考包的关系
 
