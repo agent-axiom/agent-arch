@@ -110,7 +110,7 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 
-Последнее правило становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, trace linkage и управляемую release identity.
+Последнее правило становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -137,7 +137,7 @@
 - несколькими сценариями сессий;
 - `labels`;
 - `expected_outcomes`;
-- отдельным failed-run drill scenario, который сохраняет failed status и в session summary, и в eval expectations.
+- отдельным failed-run drill scenario, который сохраняет failed status и `failure_reason` в session export и eval expectations.
 
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 
