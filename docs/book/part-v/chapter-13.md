@@ -63,7 +63,7 @@ SLO помогают определить, что считается здоро�
 
 Именно здесь failed-run drills превращаются в часть eval layer, а не остаются чисто операционной репетицией. Если команда хочет, чтобы rollout review доверял timeout handling, validation failure handling или поведению при сбое внешней зависимости, такие degraded paths должны попадать в offline set как явные сценарии с traceable failed outcomes.
 
-И здесь важно не размывать смысл слова traceable. Деградированный run нельзя считать reviewable только потому, что где-то зафиксировался timeout. Eval-петля должна проверять, что failed path по-прежнему сохраняет release identity, trace linkage и session-level evidence достаточно полно для последующего rollout review, assurance и provenance-разбора.
+И здесь важно не размывать смысл слова traceable. Деградированный run нельзя считать reviewable только потому, что где-то зафиксировался timeout. Eval-петля должна проверять, что failed path по-прежнему сохраняет release identity, trace linkage и session-level evidence, включая явное поле вроде `failure_reason`, достаточно полно для последующего rollout review, assurance и provenance-разбора.
 
 Сила offline evals в том, что они позволяют сравнивать версии системы **до** production traffic.
 
