@@ -110,7 +110,7 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `failure_attribution_valid`
 - `failed_run_traceable`
 
-That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, concrete failure reason, trace linkage, and governed release identity.
+That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, a concrete failure reason such as `failure_reason`, trace linkage, and governed release identity.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
@@ -137,7 +137,7 @@ already produces a small structured artifact with:
 - multiple session scenarios;
 - `labels`;
 - `expected_outcomes`;
-- a failed-run drill scenario that preserves failed status in session summary and eval expectations.
+- a failed-run drill scenario that preserves failed status and `failure_reason` in session export and eval expectations.
 
 It is not yet a full industrial eval framework, but it is already a reasonable seed for:
 
