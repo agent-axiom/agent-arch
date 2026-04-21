@@ -183,6 +183,9 @@ grading_rules:
   - type: approval_required
     expected: true
     blocking: true
+  - type: failed_run_traceable
+    expected: true
+    blocking: false
 verifier_outputs:
   verifier_id: fara-process-review
   verifier_contract_version: verifier-v2
