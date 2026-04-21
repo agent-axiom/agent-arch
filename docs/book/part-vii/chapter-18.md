@@ -159,6 +159,7 @@ flowchart LR
 - SLO заведены;
 - offline evals проходят;
 - для затронутых high-risk paths отдельно прогнаны failed-run drills;
+- получившиеся failed paths остаются traceable через trace linkage, release identity и session-level evidence;
 - качество verifier'а reviewed там, где release evidence зависит от graded judgments;
 - regression gate задокументирован;
 - online monitoring готово к первым волнам выкладки.
