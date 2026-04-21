@@ -87,7 +87,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 这也是为什么本章里的 provenance 应该被狭义而具体地理解。它不是整个 evidence layer。它是围绕 approved artifacts、release identity 与 decision-bearing versions 的 governed lineage layer。
 
-同样的规则也适用于 failed runs。即使 capability 是因为 timeout 失败、approval path 以 validation failure 结束，或者上游 dependency 直接崩掉，后续复盘仍然需要知道，当时究竟是哪一组已批准工件与哪一个 release identity 在支配这次失败。否则，组织就只会为 happy path 保留 provenance，而把退化行为当成无人负责的残留物。
+同样的规则也适用于 failed runs。即使 capability 是因为 timeout 失败、approval path 以 validation failure 结束，或者上游 dependency 直接崩掉，后续复盘仍然需要知道，当时究竟是哪一组已批准工件与哪一个 release identity 在支配这次失败，以及是哪一个导出字段，例如 `failure_reason`，保留了具体的失败条件。否则，组织就只会为 happy path 保留 provenance，而把退化行为当成无人负责的残留物。
 
 这也正是本章的核心承诺。它要帮助读者看见 evidence 是怎样从一般性的 telemetry 变成受治理的 backbone：这一层保存着后续事故复盘或治理决策究竟建立在哪一组 reviewed artifacts、哪一个 trusted contract version，以及哪一个 approved release identity 之上。
 
