@@ -166,26 +166,24 @@ That is when the eval artifact starts behaving like part of release discipline, 
 
 ## Example grading contract
 
-Here is a workable skeleton:
+Here is a workable skeleton for a failed-run drill scenario:
 
 ```yaml
-scenario_id: support_ticket
+scenario_id: failed_run_timeout
 labels:
-  - write_path
-  - approval_required
+  - failed_run
+  - tool_timeout
+  - failure_drill
 grading_rules:
   - type: status_equals
-    expected: success
+    expected: failed
     blocking: true
   - type: contains_substring
-    expected: waiting for human approval
-    blocking: true
-  - type: approval_required
-    expected: true
+    expected: tool_timeout
     blocking: true
   - type: failed_run_traceable
     expected: true
-    blocking: false
+    blocking: true
 verifier_outputs:
   verifier_id: fara-process-review
   verifier_contract_version: verifier-v2
