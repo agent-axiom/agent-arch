@@ -166,26 +166,24 @@
 
 ## grading contract 示例
 
-下面是一个可工作的 skeleton：
+下面是一个针对 failed-run drill scenario 的可工作 skeleton：
 
 ```yaml
-scenario_id: support_ticket
+scenario_id: failed_run_timeout
 labels:
-  - write_path
-  - approval_required
+  - failed_run
+  - tool_timeout
+  - failure_drill
 grading_rules:
   - type: status_equals
-    expected: success
+    expected: failed
     blocking: true
   - type: contains_substring
-    expected: waiting for human approval
-    blocking: true
-  - type: approval_required
-    expected: true
+    expected: tool_timeout
     blocking: true
   - type: failed_run_traceable
     expected: true
-    blocking: false
+    blocking: true
 verifier_outputs:
   verifier_id: fara-process-review
   verifier_contract_version: verifier-v2
