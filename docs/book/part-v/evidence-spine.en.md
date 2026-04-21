@@ -40,7 +40,7 @@ An evidence spine is the minimum governed continuity that lets an operator answe
 - whether the run triggered incident review;
 - whether the resulting evidence changed rollout judgment.
 
-That should hold for degraded paths too. A failed-run drill is only useful if the same chain still explains which release identity governed the failure, which trace preserved it, how it was graded, and whether it changed rollout judgment.
+That should hold for degraded paths too. A failed-run drill is only useful if the same chain still explains which release identity governed the failure, which trace preserved it, which concrete failure reason remained visible, how it was graded, and whether it changed rollout judgment.
 
 Without that continuity, teams may still have traces, approval logs, and eval reports, but they do not yet have one reviewable operating record.
 
@@ -124,6 +124,7 @@ Now [Chapter 11](chapter-11.en.md) becomes visible as the raw evidence layer. Th
 - whether retries happened;
 - whether a session paused;
 - whether output was redacted;
+- which concrete failure reason was preserved for degraded paths;
 - where the system stopped before side effects.
 
 Without this layer, later judgment becomes storytelling instead of reconstruction.
