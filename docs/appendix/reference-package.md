@@ -151,6 +151,7 @@
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
+.venv/bin/python -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output artifacts/eval-failed-run.json
 ```
 
 `inspect-session` показывает session-level историю запусков и связанные `trace_id`.
@@ -159,7 +160,7 @@
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`.
 
 Теперь рантайм также считает tool paths с неуспешным исходом, например validation failure, полноценным итогом запуска. Вместо того чтобы делать вид, будто run завершился успешно, он фиксирует failed run, пишет явное событие `run_failed` и сохраняет этот статус в session export.
-`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact.
+`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario.
 
 Этот eval path теперь полезно читать вместе с richer verifier contract из appendix: для long-horizon scenarios пакет должен помогать представить, как dataset со временем может нести `process_score`, `outcome_score`, `failure_attribution` и linked verifier evidence, а не только один тонкий verdict.
 
