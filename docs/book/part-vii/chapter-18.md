@@ -54,6 +54,8 @@
 - команда поддержки получит лишний шум;
 - расследование начнется уже после того, как побочные эффекты произошли.
 
+Это не теоретический риск: даже consumer-facing AI path может превратиться во внешний ущерб и обязательство компании, как показал кейс Moffatt v. Air Canada.[^moffatt]
+
 Хороший чеклист запуска нужен не для галочек, а чтобы вытаскивать скрытые дыры до инцидента, а не после.
 
 ## 3. Что обязательно должно быть закрыто перед первой волной rollout
@@ -396,3 +398,6 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Часть VII. Эталонная реализация](index.md)
 - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md)
 - [Источники](../../appendix/sources.md)
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)

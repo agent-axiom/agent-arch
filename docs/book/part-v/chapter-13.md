@@ -253,6 +253,8 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Еще одна practical rule здесь очень важна: если согласованность judge с человеком низкая, первым шагом обычно должно быть не расширение dataset, а разбор disagreement cases и правка rubric или judge prompt.
 
+Это хорошо согласуется и с более широкой HCI-дисциплиной: когда AI system ошибается, человеку нужно понимать пределы автоматизации и иметь возможность корректировать поведение, а не слепо принимать auto-grading.[^amershi][^consensus]
+
 Один из полезных сигналов здесь - `Cohen's kappa`, но важнее самого числа обычно форма расхождения: где именно judge недопонимает policy violation, tool misuse или ambiguous outcome.
 
 Еще один частый источник самообмана: judge prompt, откалиброванный под сильную модель, может заметно хуже переноситься на более слабую. Поэтому при смене judge-model calibration стоит проверять заново, а не считать старый prompt автоматически переносимым.
@@ -472,3 +474,5 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Источники](../../appendix/sources.md)
 
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+[^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)

@@ -52,7 +52,7 @@ Registry layer нужен здесь прежде всего для одной �
 - observability coverage становится фрагментарной;
 - inventory drift делает release gates и incident review менее надежными.
 
-Microsoft прямо связывает это с security posture: неполная inventory и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection. [^ms-inventory][^ms-agentic-risk]
+Microsoft прямо связывает это с security posture: неполная inventory и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection. [^ms-inventory][^ms-agentic-risk] Та же базовая дисциплина хорошо совпадает с NIST SP 800-53: inventory должен быть полным, обновляемым и привязанным к accountability, иначе контроль быстро становится декоративным.[^nist-sp53]
 
 ## 3. Inventory и registry — не одно и то же
 
@@ -360,3 +360,4 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

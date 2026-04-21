@@ -53,7 +53,7 @@
 - verifier rubric, assumptions про evidence linkage и rules для failure attribution;
 - параметры rollout.
 
-Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы.
+Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы. Эта логика узнаваема и вне AI: в NIST change control и component accountability давно заданы как самостоятельные control surfaces, а у agent systems просто расширяется перечень артефактов, которые нужно держать под этим режимом.[^nist-sp53]
 
 ## 3. Не все изменения одинаково рискованны
 
@@ -322,3 +322,4 @@ def classify_change(change: ChangeRequest) -> str:
 [^openai-guide]: [OpenAI, A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
