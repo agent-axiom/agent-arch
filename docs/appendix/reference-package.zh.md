@@ -154,7 +154,7 @@
 ```
 
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。
-`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs，而不是又把结果压回只有 success 和 denied 两类。
+`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs 和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`。
 
