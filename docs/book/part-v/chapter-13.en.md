@@ -63,6 +63,8 @@ For our support agent, a good offline set should include not only pleasant happy
 
 That is also where failed-run drills become eval material rather than only operations theater. If the team expects rollout review to trust timeout handling, validation failure handling, or upstream-outage behavior, the offline set should include those degraded paths as explicit scenarios with traceable failed outcomes.
 
+That judgment should stay strict about what “traceable” means. A failed path is not reviewable just because a timeout was observed somewhere. The eval loop should verify that the degraded run still preserves release identity, trace linkage, and session-level evidence strongly enough for later rollout review, assurance, and provenance work.
+
 The strength of offline evals is that they let you compare system versions **before** production traffic arrives.
 
 A useful refinement from recent verifier work is that offline evals should not depend only on a binary success label. For long-horizon agents, a richer grading signal is often needed:
