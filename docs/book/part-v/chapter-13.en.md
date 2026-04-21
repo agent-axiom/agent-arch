@@ -61,6 +61,8 @@ For our support agent, a good offline set should include not only pleasant happy
 - stale memory retrieval;
 - cross-tenant privacy-sensitive cases.
 
+That is also where failed-run drills become eval material rather than only operations theater. If the team expects rollout review to trust timeout handling, validation failure handling, or upstream-outage behavior, the offline set should include those degraded paths as explicit scenarios with traceable failed outcomes.
+
 The strength of offline evals is that they let you compare system versions **before** production traffic arrives.
 
 A useful refinement from recent verifier work is that offline evals should not depend only on a binary success label. For long-horizon agents, a richer grading signal is often needed:
