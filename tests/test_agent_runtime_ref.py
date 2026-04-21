@@ -1163,6 +1163,7 @@ class TestLifecycleArtifacts:
             "offline_eval_passed",
             "session_expiry_behavior_checked",
             "reinit_policy_reviewed",
+            "failed_run_drill_checked",
         )
 
     def test_retirement_assessment_detects_incomplete_step(self, config_dir: Path) -> None:
@@ -1542,13 +1543,13 @@ class TestCli:
         assert exit_code == 0
         assert output_path.exists()
         assert payload["dataset_name"] == "agent-runtime-ref-eval-seed"
-        assert payload["session_count"] == 3
-        assert payload["run_count"] == 4
+        assert payload["session_count"] == 4
+        assert payload["run_count"] == 5
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
-        assert exported["session_count"] == 3
-        assert exported["run_count"] == 4
-        assert len(exported["sessions"]) == 3
+        assert exported["session_count"] == 4
+        assert exported["run_count"] == 5
+        assert len(exported["sessions"]) == 4
         assert exported["sessions"][0]["eval"]["labels"]
         assert "expected_outcomes" in exported["sessions"][0]["eval"]
         assert any(

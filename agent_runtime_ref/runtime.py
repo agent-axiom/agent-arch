@@ -139,10 +139,12 @@ class AgentRuntime:
                 )
                 delegated_scope = latest_tool.payload.get("delegated_scope", delegated_scope)
                 if latest_tool.status in {"denied", "validation_failure", "failed"}:
+                    failure_reason = latest_tool.payload.get("reason", latest_tool.status)
                     result = RunResult(
                         output_text=(
                             "Runtime halted before side effects completed: "
-                            f"{latest_tool.capability_name} returned {latest_tool.status}."
+                            f"{latest_tool.capability_name} returned {latest_tool.status} "
+                            f"({failure_reason})."
                         ),
                         status="failed",
                     )
@@ -268,8 +270,9 @@ class AgentRuntime:
                 "title": "Agent follow-up",
                 "queue": "support",
                 "requester_id": request.principal_id,
-                "idempotency_key": request.trace_id,
             }
+            if "without the usual safeguards" not in lowered:
+                arguments["idempotency_key"] = request.trace_id
             if "simulate_failure=tool_timeout" in lowered:
                 arguments["simulate_failure"] = "tool_timeout"
             if "simulate_failure=upstream_unavailable" in lowered:
