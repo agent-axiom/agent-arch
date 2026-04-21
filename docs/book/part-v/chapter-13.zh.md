@@ -61,6 +61,8 @@ SLO 帮你定义什么叫系统健康。
 - 过期的记忆读取；
 - 跨租户的隐私敏感场景。
 
+这也正是 failed-run drills 进入 eval layer，而不只是停留在运维演练里的地方。如果团队希望 rollout review 能信任 timeout handling、validation failure handling，或者上游依赖故障时的行为，这些 degraded paths 就应该作为带有 traceable failed outcomes 的显式场景进入 offline set。
+
 离线评测的价值就在于：它们让你可以在生产流量到来之前比较系统版本。
 
 最近 verifier design 的一个有用补充是，离线评测不该只依赖 binary success label。对于 long-horizon agents，往往需要更丰富的 grading signal：
