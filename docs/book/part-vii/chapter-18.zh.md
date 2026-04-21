@@ -159,6 +159,7 @@ flowchart LR
 - SLO 已定义；
 - 离线评测通过；
 - 受影响的 high-risk paths 已单独演练过 failed-run drills；
+- 这些 failed paths 仍然能通过 trace linkage、release identity 与 session-level evidence 保持 traceable；
 - 当 release evidence 依赖 graded judgments 时，verifier quality 已被审查；
 - 回归门禁已经文档化；
 - 在线监控已经为第一波上线做好准备。
