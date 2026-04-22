@@ -159,7 +159,7 @@
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`。
 
-现在，runtime 也会把工具路径中的失败类结果，例如 validation failure，当成一等运行结局来处理。它不再假装这次 run 仍然成功，而是记录 failed run、发出明确的 `run_failed` 事件，并在 session export 中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
+现在，runtime 也会把工具路径中的失败类结果，例如 validation failure，当成一等运行结局来处理。它不再假装这次 run 仍然成功，而是记录 failed run、发出明确的 `run_failed` 事件，并在 session export 与 CLI output 中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的 failed-run drill scenario。
 
 现在这条 eval path 也应该和 appendix 里的 richer verifier contract 一起理解：对于 long-horizon scenarios，这个包要帮助读者看到，dataset 未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与 linked verifier evidence，而不只是一个单薄 verdict。
