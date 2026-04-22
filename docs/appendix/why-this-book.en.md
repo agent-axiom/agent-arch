@@ -1,118 +1,66 @@
 # Why This Book Exists
 
-There is no shortage of material about AI agents.
+There is already a lot of material about AI agents. There is much less material that treats an agent system as something that must be designed, constrained, rolled out, investigated, and supported in production.
 
-What is still scarce is material that treats agent systems as something that must be operated, governed, reviewed, and evolved under real production constraints.
+This book exists to close exactly that gap.
 
-This book exists to fill that gap.
-
-## What this book is not
+## What It Is Not
 
 This is not:
 
-- a framework manual
-- a vendor product guide
-- a prompt collection
-- a benchmark leaderboard tour
-- a generic AI trends essay
+- a manual for one framework;
+- a guide to one vendor product;
+- a prompt collection;
+- a tour of benchmarks and AI news;
+- a security checklist without an architectural model.
 
-Those resources can still be useful. But they usually solve only part of the problem.
+## What It Is Trying To Do
 
-## What this book is trying to do
+The book treats agent systems as governed production systems that should have:
 
-This project treats agent systems as operational systems with:
+- trust boundaries;
+- execution constrained by policy;
+- approvals for risky actions;
+- memory and context discipline;
+- traces, SLO, and evals;
+- rollout control, ownership, and lifecycle governance.
 
-- trust boundaries
-- policy-controlled execution
-- approval paths for risky actions
-- memory discipline
-- evidence capture, health budgets, and eval judgment
-- rollout control, accountability, and lifecycle management
+The main goal is not to help someone build "the most autonomous agent." The goal is to help them build a system that can be trusted in operation.
 
-That is the core difference.
+## Compared with Framework Documentation
 
-The book is also trying to make those layers legible as distinct promises to the reader, not just as a list of concerns. It should help the reader see what each layer gives them, why it exists, and why it cannot be collapsed into a neighboring chapter.
+Framework documentation is useful when you already know what system you want to build. It explains orchestration patterns, state graphs, SDK usage, and integration details well.
 
-## Compared with framework docs
+But it rarely answers questions of this kind:
 
-Framework docs are useful when you already know what system you want to build.
+- what an agent should be allowed to do at all;
+- which actions require approval;
+- how memory should be bounded;
+- how to roll changes out without losing control;
+- how to conduct review after an incident.
 
-They usually help with:
+This book tries to sit above frameworks, not argue with them.
 
-- orchestration patterns
-- state graphs
-- tool wiring
-- implementation details
+## Compared with Vendor Docs
 
-But they often do not answer the harder questions:
+Vendor docs usually give the shortest path to a demo. That is useful, but naturally limited by the surface of one vendor.
 
-- What should be allowed at all?
-- Which actions need approval?
-- How should memory be bounded?
-- How do you roll changes out safely?
-- How do you audit behavior after incidents?
+This book tries to keep the architecture above the product surface and to separate more stable engineering discipline from faster-moving platform tooling.
 
-This book is meant to sit above frameworks, not replace them. The runnable package sits below that argument as an implementation anchor, not as a competing reading mode.
+## Compared with a Security Checklist Approach
 
-## Compared with vendor docs
+A checklist approach is necessary, but it does not give you a working architecture by itself. It tells you where to look, but not how to connect runtime, approvals, telemetry, ownership, and lifecycle into one governed contour.
 
-Vendor docs are often the fastest path to a demo.
+This book is trying to do exactly that.
 
-They are usually strong at:
+## The Intended Outcome
 
-- model-specific capabilities
-- SDK usage
-- platform integrations
-- productized examples
+After the book, the reader should:
 
-But they are naturally shaped by a vendor surface.
+- see where trust and action boundaries really are;
+- understand how to capture run behavior instead of guessing from symptoms;
+- know how to define health and risk budgets;
+- know how to produce reviewable judgments about quality and regression risk;
+- distinguish rollout, response, lineage, and accountability as different operational functions.
 
-This book tries to stay vendor-neutral and architecture-first.
-
-## Compared with security checklists
-
-Security guidance is essential, but checklists alone do not give you a working agent architecture.
-
-They tell you what to watch for. They do not always tell you how to structure runtime, ownership, approvals, telemetry, and lifecycle so those risks stay bounded over time.
-
-This book tries to connect security concerns with concrete runtime design.
-
-It also tries to keep the major operational layers distinct instead of blending them into one vague governance story: traces should capture, SLO should bound health, evals should judge, assurance should respond, observability should preserve evidence at scale, and registry should assign accountability.
-
-## Compared with cloud reference architectures
-
-Cloud blueprints are good at showing deployment shapes.
-
-But many teams also need answers at another layer:
-
-- what the policy layer should own
-- how approval should work
-- what to trace
-- how to evaluate behavioral regressions
-- how to prevent agent sprawl
-
-This book focuses on that operating layer.
-
-## The intended outcome
-
-The goal is not to help build the most autonomous agent.
-
-The goal is to help build an agent system that is:
-
-- useful
-- explainable
-- reviewable
-- governable
-- operable in production
-
-And to help the reader see that these properties do not come from one magical layer. They come from several distinct layers working together under discipline.
-
-More specifically, the book should leave the reader with several distinct promises fulfilled:
-
-- they can see where trust and action boundaries actually live;
-- they can capture run behavior instead of guessing from symptoms;
-- they can define tolerated health and risk budgets;
-- they can produce reviewable judgments about change and regression risk;
-- they can understand how response, lineage, observability, and accountability divide across the lifecycle.
-
-If that sounds more interesting than agent theater, this book is for you.
+If that sounds closer to your problems than another piece of agent theater, this book was written for you.

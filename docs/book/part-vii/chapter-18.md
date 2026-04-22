@@ -216,7 +216,7 @@ flowchart LR
 
 Без этих ответов rollout может выглядеть здоровым на слое approval, но уже деградировать глубже, на слое capability-session.
 
-Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно rollout-измерение.[^anthropic] Pattern-aware runtime должен считать изменения orchestration pattern release-bearing behavior, а не невидимой деталью реализации.
+Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно rollout-измерение.[^anthropic] Рантайм должен учитывать выбранный паттерн workflow и считать изменения orchestration pattern поведением, значимым для релиза, а не невидимой деталью реализации.
 
 Перед rollout команда должна уметь явно сказать:
 

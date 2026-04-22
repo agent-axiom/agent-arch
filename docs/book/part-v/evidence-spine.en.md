@@ -1,20 +1,18 @@
 # Evidence Spine: From Request to Rollout Judgment
 
-This page makes one structural claim explicit: a production agent system should not treat tracing, policy, approvals, evals, incident review, and rollout judgment as adjacent topics.
+In a production agent system, tracing, policy, approvals, evals, incident review, and rollout judgment should not be treated as merely adjacent topics. For an operator, they are one operational record.
 
-They are one operating record.
+If you cannot follow one suspicious run through all of those layers, you do not yet have an evidence spine. You have disconnected controls.
 
-If you cannot follow one run across those layers, you do not yet have an evidence spine. You have disconnected controls.
+## What You Should Be Able to Do After This Page
 
-## After this page, you should be able to
+- explain why traces, policy, approvals, evals, incidents, and rollout judgment form one governed record;
+- name the minimum set of identifiers that keeps one suspicious run reviewable;
+- show how runtime behavior, human decision, lifecycle artifacts, and release judgment stay linked without guesswork.
 
-- explain why traces, policy, approvals, evals, incidents, and rollout judgment belong to one governed record;
-- name the minimum identifiers that keep one suspicious run reviewable;
-- show how runtime behavior, human decision, lifecycle artifacts, and release judgment connect without guesswork.
+## Why This Page Exists
 
-## Why this page exists
-
-Several chapters in the book already describe parts of this chain:
+Several chapters of the book already describe parts of that chain:
 
 - [Chapter 11. Traces, Spans, and Structured Events](chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
@@ -23,39 +21,37 @@ Several chapters in the book already describe parts of this chain:
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](../part-viii/chapter-21.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](../part-viii/chapter-22.en.md)
 
-What those chapters still need, as a shared bridge, is one explicit walkthrough that shows how a single governed run remains legible from user request to rollout judgment.
+This page gathers them into one walkthrough to show how a single governed run stays legible from user request to rollout judgment.
 
-That is the job of this page.
+## The Core Claim
 
-## The core claim
+An evidence spine is the minimum governed continuity that lets an operator answer all of the questions below without guesswork:
 
-An evidence spine is the minimum governed continuity that lets an operator answer all of these questions without guesswork:
-
-- what request started the run;
+- which request started the run;
 - which policy bundle and release identity were active;
 - which tools were called;
-- whether approval was required, granted, denied, or expired;
-- which trace events and structured signals were emitted;
-- how the run was graded or evaluated afterward;
-- whether the run triggered incident review;
+- whether approval was required and whether it was granted, denied, or expired;
+- which trace events and structured signals were recorded;
+- how the run was later graded or evaluated;
+- whether it triggered incident review;
 - whether the resulting evidence changed rollout judgment.
 
-That should hold for degraded paths too. A failed-run drill is only useful if the same chain still explains which release identity governed the failure, which trace preserved it, which concrete failure reason, for example `failure_reason`, remained visible, how it was graded, and whether it changed rollout judgment.
+That also has to remain true for degraded paths. A failed-run drill is useful only if the same chain still explains which release identity governed the failure, which trace preserved it, which concrete failure reason, for example in `failure_reason`, remained visible, how it was graded, and whether it changed rollout judgment.
 
-Without that continuity, teams may still have traces, approval logs, and eval reports, but they do not yet have one reviewable operating record.
+Without that continuity, a team may have traces, approval logs, and eval reports and still lack one reviewable operational record.
 
-## Minimal shared entity map
+## Minimal Shared Entity Map
 
-A strong evidence spine does not require one giant schema. It does require a stable set of identifiers and links across layers.
+A strong evidence spine does not require one giant schema file. It does require a stable set of identifiers and links across layers.
 
 At minimum, one governed run should stay legible through entities such as:
 
-- `run_id`, the runtime identity of the execution;
+- `run_id`, the runtime execution identity;
 - `trace_id`, the trace or event lineage for that run;
 - `approval_id`, the human gate record when approval is involved;
 - `policy_bundle_version`, the governed policy surface active for the run;
 - `artifact_id`, the approved artifact or artifact bundle linked to the release surface;
-- `evaluation_result_id`, the grading or judgment record attached afterward.
+- `evaluation_result_id`, the grading or judgment record attached later.
 
 In more mature systems, the chain often also includes:
 
@@ -63,12 +59,12 @@ In more mature systems, the chain often also includes:
 - `change_id`;
 - `session_id`;
 - `incident_id`;
-- `verifier_contract_id` or verifier bundle lineage.
+- `verifier_contract_id` or the lineage of verifier contract bundles.
 
-The point is not naming purity. The point is reviewable linkage.
+The point is not perfect terminology. The point is reviewable linkage.
 
 <div class="diagram-card">
-<p>A useful evidence spine is a chain of linked records, not a pile of disconnected artifacts</p>
+<p>It helps to think about an evidence spine as a chain of linked records, not as a pile of disconnected artifacts</p>
 
 ``` mermaid
 flowchart LR
@@ -85,55 +81,55 @@ flowchart LR
 
 </div>
 
-## One end-to-end run walkthrough
+## One End-to-End Run Walkthrough
 
-Take a support-triage agent that can classify an incoming request, search internal knowledge, and create a ticket only after approval for high-risk cases.
+Take a support-triage agent that can classify an incoming request, search internal knowledge, and create a ticket only after approval in high-risk cases.
 
-### Step 1. User request enters the system
+### Step 1. A User Request Enters the System
 
-A user sends a message asking for a ticket to be opened against a production customer issue.
+A user sends a message asking to open a ticket for a production customer issue.
 
-At this moment, the system should already create at least:
+Already at that point, the system should create at least:
 
 - a `run_id` for the execution;
 - a `trace_id` for the event lineage;
-- a link to the currently active `policy_bundle_version` and `release_identity`.
+- a link to the active `policy_bundle_version` and `release_identity`.
 
 If the team cannot later prove which governed release surface handled the request, the chain is already weak before the first tool call.
 
-### Step 2. Policy evaluation shapes what may happen
+### Step 2. Policy Evaluation Defines What May Happen
 
 The policy layer determines:
 
-- whether this capability is allowed for this tenant and actor;
-- whether internal knowledge retrieval is permitted;
+- whether this capability is allowed for the current tenant and actor;
+- whether internal knowledge retrieval is allowed;
 - whether ticket creation requires approval;
 - whether delegated authorization is allowed;
 - whether a verifier contract is required for high-risk handling.
 
-This is why [Chapter 17](../part-vii/chapter-17.en.md) matters inside the spine. Policy is not just a static configuration layer. It is part of the evidence that explains why the run was or was not allowed to proceed.
+That is why [Chapter 17](../part-vii/chapter-17.en.md) belongs inside this chain. Policy is not just a static configuration layer. It is part of the evidence that explains why the run was allowed or forbidden to continue.
 
-### Step 3. Tool calls and runtime events create raw history
+### Step 3. Tool Calls and Runtime Events Create Raw History
 
-The runtime retrieves context, maybe classifies the issue, and prepares a proposed ticket payload.
+The runtime retrieves context, may classify the issue, and prepares a proposed ticket payload.
 
-Now [Chapter 11](chapter-11.en.md) becomes visible as the raw evidence layer. The run should emit structured events that let an operator later see:
+That is where [Chapter 11](chapter-11.en.md) becomes visible as the raw evidence layer. The run should emit structured events that later let an operator see:
 
-- what inputs were accepted or rejected;
-- which tool calls were attempted;
+- which inputs were accepted or rejected;
+- which tool calls were made;
 - whether retries happened;
-- whether a session paused;
+- whether the session paused;
 - whether output was redacted;
-- which concrete failure reason, for example `failure_reason`, was preserved for degraded paths;
-- where the system stopped before side effects.
+- which concrete failure reason, for example in `failure_reason`, remained visible for degraded paths;
+- where exactly the system stopped before side effects.
 
-Without this layer, later judgment becomes storytelling instead of reconstruction.
+Without that layer, later judgment becomes storytelling instead of reconstruction.
 
-### Step 4. Approval creates a human decision record
+### Step 4. Approval Creates a Human Decision Record
 
 The policy layer requires approval before the ticket can be created.
 
-The approval step should create or attach an `approval_id` that is linked back to:
+At this step, the system should create or attach an `approval_id` linked to:
 
 - `run_id`;
 - `trace_id`;
@@ -141,15 +137,15 @@ The approval step should create or attach an `approval_id` that is linked back t
 - `release_identity`;
 - the requested capability and risk tier.
 
-If approval is denied, that denial is not only an interaction outcome. It is part of the governed run history.
+If approval is denied, that is not only an interaction outcome. It is part of the governed run history.
 
-If approval expires, that expiry is also evidence. It should not disappear into UI state.
+If approval expires, that is also evidence. It should not disappear into UI state.
 
-### Step 5. Eval and grading turn history into judgment
+### Step 5. Evals and Grading Turn History into Judgment
 
-Afterward, the run may enter offline review, online grading, or regression comparison.
+After that, the run may enter offline review, online grading, or regression comparison.
 
-This is where [Chapter 13](chapter-13.en.md) enters the spine. The eval layer should not float free as a disconnected score sheet. It should attach judgment to the exact run, trace, and governed release surface that produced the behavior.
+This is where [Chapter 13](chapter-13.en.md) enters the chain. The eval layer should not float free as a disconnected score sheet. It should attach judgment to the exact run, trace, and governed release surface that produced the behavior.
 
 That is what lets a team distinguish between:
 
@@ -157,38 +153,38 @@ That is what lets a team distinguish between:
 - a policy regression;
 - a release-specific degradation;
 - a verifier-trust problem;
-- an approval-path breakdown.
+- an approval-path failure.
 
-### Step 6. Incident review turns evidence into operational response
+### Step 6. Incident Review Turns Evidence into Operational Response
 
-If the run exposed a serious problem, [Chapter 21](../part-viii/chapter-21.en.md) becomes active.
+If the run exposed a serious problem, [Chapter 21](../part-viii/chapter-21.en.md) comes into play.
 
 Now the team needs one connected record that shows:
 
 - what happened;
-- what controls fired;
+- which controls fired;
 - which controls were missing;
 - whether approval intervened correctly;
 - whether the issue belongs to the runtime, policy bundle, release artifact, verifier contract, or operator workflow.
 
-If those links do not exist, incident review turns into cross-system archaeology.
+If those links do not exist, incident review becomes archaeology across several systems.
 
-### Step 7. Rollout judgment uses the same chain
+### Step 7. Rollout Judgment Uses the Same Chain
 
 Finally, [Chapter 20](../part-viii/chapter-20.en.md) uses this evidence to answer a release question:
 
 - can rollout continue;
-- should it pause;
-- should it roll back;
+- should rollout pause;
+- is rollback required;
 - does the policy bundle need revision;
 - does the artifact set need replacement;
 - does the approval contract need tightening.
 
-This is the last reason the evidence spine matters. Rollout judgment should not rely on intuition or dashboards alone. It should rely on a chain that already links runtime behavior, controls, approval, evidence, and release identity.
+That is the final reason the evidence spine matters so much. Rollout judgment should not rely only on intuition or dashboards. It should rely on a chain that already links runtime behavior, controls, approval, evidence, and release identity.
 
-## One artifact-level example
+## One Artifact-Level Example
 
-A compact governed record for the same run may look like this:
+A compact governed record for the same run might look like this:
 
 ```yaml
 run_id: run-support-042
@@ -205,9 +201,9 @@ incident_id: incident-2026-04-19-3
 latest_rollout_decision: pause-canary
 ```
 
-The point of this example is not the exact field set. The point is that one suspicious run should leave behind enough linkage that the team can move from runtime behavior to approval record, eval judgment, incident review, and rollout action without reconstructing the chain by hand.
+The point of this example is not the exact field set. The point is that one suspicious run should leave enough linkage behind for the team to move from runtime behavior to the approval record, eval judgment, incident review, and rollout action without reconstructing the full chain by hand.
 
-## What operators should be able to reconstruct
+## What an Operator Should Be Able to Reconstruct
 
 For one suspicious run, an operator should be able to answer all of the following quickly:
 
@@ -215,26 +211,26 @@ For one suspicious run, an operator should be able to answer all of the followin
 - which release identity handled it;
 - which policy bundle version governed it;
 - whether approval was requested and how it resolved;
-- what trace events describe the path;
-- what eval or grading record judged the outcome;
+- which trace events describe the run path;
+- which eval or grading record produced the judgment;
 - whether the run contributed to an incident or rollout decision.
 
 If any of those answers require guesswork, the evidence spine is incomplete.
 
-## What this page does not replace
+## What This Page Does Not Replace
 
 This page does not replace the surrounding chapters:
 
 - Chapter 11 still owns raw evidence capture;
 - Chapter 13 still owns reviewable judgment;
-- Chapter 17 still owns governed runtime policy;
+- Chapter 17 still owns policy in the governed runtime;
 - Chapter 20 still owns release judgment;
 - Chapter 21 still owns assurance response;
 - Chapter 22 still owns provenance, artifact lineage, and evidence backbone.
 
-This page only makes the connective tissue explicit.
+This page only makes the connective tissue between them explicit.
 
-## Read next
+## Read Next
 
 - [Chapter 11. Traces, Spans, and Structured Events](chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)

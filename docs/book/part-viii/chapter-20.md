@@ -6,7 +6,7 @@
     Быстрее всего здесь меняются:
 
     - готовые средства для управления релизами агентных систем, approvals и staged rollout;
-    - наборы surfaces, которые разные платформы считают release-bearing;
+    - наборы поверхностей, которые разные платформы считают значимыми для релиза;
     - вендорские интерфейсы для policy bundles, routing changes и managed agent updates.
 
     Медленнее меняются:
@@ -26,11 +26,11 @@
 - изменили схему данных;
 - выпустили релиз.
 
-У агентной системы так уже не работает. Здесь release-bearing changes шире, а риск может прийти не только из кода.
+У агентной системы так уже не работает. Здесь релиз-значимые изменения шире, а риск может прийти не только из кода.
 
 Именно поэтому change management становится отдельной operational функцией, а не просто “что-то запушили в main”.
 
-Эта глава отвечает на один вопрос: **как превратить release-bearing judgment в повторяемую дисциплину**. Не в абстрактные предупреждения о риске, а в способ классифицировать change, подбирать под него evidence и решать, что именно заслуживает formal gate.
+Эта глава отвечает на один вопрос: **как превратить суждение о релиз-значимости в повторяемую дисциплину**. Не в абстрактные предупреждения о риске, а в способ классифицировать change, подбирать под него evidence и решать, что именно заслуживает formal gate.
 
 !!! info "Нужны change-артефакты?"
     Для практического слоя открой [схему change review и rollout gate](../../appendix/change-rollout-schema.md), [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md) и [схему eval datasets и grading contract](../../appendix/eval-schema.md).
@@ -53,7 +53,7 @@
 - verifier rubric, assumptions про evidence linkage и rules для failure attribution;
 - параметры rollout.
 
-Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы. Эта логика узнаваема и вне AI: в NIST change control и component accountability давно заданы как самостоятельные control surfaces, а у agent systems просто расширяется перечень артефактов, которые нужно держать под этим режимом.[^nist-sp53]
+Если такие изменения выпускаются как “мелкие настройки”, команда почти неизбежно теряет контроль над поведением системы. Эта логика узнаваема и вне AI: в NIST change control и component accountability давно заданы как самостоятельные контуры управления, а у agent systems просто расширяется перечень артефактов, которые нужно держать под этим режимом.[^nist-sp53]
 
 ## 3. Не все изменения одинаково рискованны
 
@@ -152,9 +152,9 @@ Prompt, routine или instruction change могут:
 
 Именно этот класс изменений особенно легко недооценить: продуктовая поверхность может выглядеть прежней, а operational risk profile уже заметно сдвинулся.
 
-Та же осторожность нужна и там, где release evidence зависит от verifier outputs. Если меняются verifier rubric, process/outcome grading или evidence linkage, это тоже нужно считать release-bearing control change, а не невидимой частью eval plumbing.
+Та же осторожность нужна и там, где release evidence зависит от verifier outputs. Если меняются verifier rubric, process/outcome grading или evidence linkage, это тоже нужно считать изменением управляющего контура, значимым для релиза, а не невидимой частью eval plumbing.
 
-То же самое верно и для ситуации, когда runtime меняет orchestration pattern без изменения user-visible feature description. Перевод path с fixed workflow на `routing`, добавление `parallelization` или внедрение `orchestrator-workers` могут существенно поменять checkpoint behavior, approval ordering, delegated worker exposure и failure recovery. Такие изменения тоже нужно считать release-bearing runtime-control changes.
+То же самое верно и для ситуации, когда runtime меняет orchestration pattern без изменения user-visible feature description. Перевод path с fixed workflow на `routing`, добавление `parallelization` или внедрение `orchestrator-workers` могут существенно поменять checkpoint behavior, approval ordering, delegated worker exposure и failure recovery. Такие изменения тоже нужно считать релиз-значимыми изменениями runtime-контроля.
 
 OpenAI и Microsoft в разных формулировках приходят к одной и той же operational мысли: agent systems нужно усиливать через measurable readiness, staged adoption и managed operations, а не через hope-driven shipping.[^openai-guide][^microsoft-maturity]
 

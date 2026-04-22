@@ -1,118 +1,66 @@
-# 为什么会有这本书
+# 为什么需要这本书
 
-关于 AI 智能体的材料已经很多了。
+关于 AI agents 的材料已经很多了。真正更少的是那些把 agent system 当成必须在 production 里被设计、约束、发布、调查和维护的系统来讨论的材料。
 
-真正稀缺的是那些把智能体系统当作必须在真实生产约束下被运营、治理、审查和持续演进的系统来讨论的材料。
+这本书就是为了补上这个缺口。
 
-这本书正是为了填补这个空白。
-
-## 这本书不是什么
+## 它不是什么
 
 它不是：
 
-- 某个框架的使用手册
-- 某家厂商产品的说明书
-- prompt 集合
-- benchmark 排行榜导览
-- 泛泛而谈的 AI 趋势文章
+- 某个框架的手册；
+- 某个 vendor 产品的指南；
+- prompt 集合；
+- benchmark 和 AI 新闻巡礼；
+- 没有架构模型的 security checklist。
 
-这些内容依然可能有价值，但它们通常只解决问题的一部分。
+## 它想做什么
 
-## 这本书试图做什么
+这本书把 agent systems 看成受治理的 production systems，它们应该具备：
 
-本项目把智能体系统视为一种运行系统，它必须具备：
+- trust boundaries；
+- 受 policy 约束的 execution；
+- 面向 risky actions 的 approvals；
+- memory 与 context discipline；
+- traces、SLO 与 evals；
+- rollout control、ownership 与 lifecycle governance。
 
-- 信任边界
-- 受策略控制的执行
-- 面向高风险动作的审批路径
-- 记忆治理
-- evidence capture、health budgets 与 eval judgment
-- 发布控制、accountability 与生命周期管理
+它的主要目标不是帮助人们做出“最自主的 agent”，而是帮助他们做出一个在运行中值得信任的系统。
 
-这就是它最核心的差异。
+## 和框架文档相比
 
-这本书也试图把这些层清楚地呈现成读者可以感受到的 distinct promises，而不只是一个主题清单。读者应该能看见每一层究竟给了他们什么、为什么需要它，以及为什么它不能被随意压扁到相邻章节里。
+框架文档在你已经知道自己想构建什么系统时非常有用。它们通常很擅长解释 orchestration patterns、state graphs、SDK usage 和 integration details。
 
-## 与框架文档相比
+但它们很少回答这类问题：
 
-框架文档适合在你已经知道自己要构建什么系统时使用。
+- agent 到底该被允许做什么；
+- 哪些 actions 必须经过 approval；
+- memory 应该怎样被约束；
+- 怎样在不失去控制的前提下发布 changes；
+- incident 之后应该怎样做 review。
 
-它们通常擅长解决：
+这本书试图站在框架之上，而不是和框架争论。
 
-- orchestration 模式
-- 状态图
-- 工具接线
-- 实现细节
+## 和 vendor docs 相比
 
-但它们往往不会回答更难的问题：
+Vendor docs 往往给出通往 demo 的最短路径。这当然有用，但它天然受限于单一 vendor 的 surface。
 
-- 到底什么应该被允许？
-- 哪些动作必须审批？
-- 记忆应该怎样被约束？
-- 变更应该如何安全发布？
-- 事故发生后如何审计系统行为？
+这本书试图让架构站在 product surface 之上，并把更稳定的工程纪律和变化更快的 platform tooling 分开。
 
-这本书希望站在框架之上，而不是替代框架。runnable package 则应位于这一论证之下，作为 implementation anchor，而不是一种彼此竞争的阅读模式。
+## 和 security checklist 方法相比
 
-## 与厂商文档相比
+Checklist approach 是必要的，但它本身并不会自动变成一套可工作的架构。它会告诉你该看哪里，却不会告诉你怎样把 runtime、approvals、telemetry、ownership 和 lifecycle 连接成一个受治理的 contour。
 
-厂商文档通常是通向 demo 的最快路径。
+这正是这本书试图完成的事情。
 
-它们通常强在：
+## 希望达到什么结果
 
-- 模型特定能力
-- SDK 使用方式
-- 平台集成
-- 产品化示例
+读完这本书后，读者应该：
 
-但它们天然会受限于厂商提供的表面。
+- 看清 trust 与 action boundaries 真正在哪里；
+- 理解如何捕获 run behavior，而不是只从症状去猜；
+- 知道怎样定义 health 与 risk budgets；
+- 知道怎样产出关于 quality 与 regression risk 的 reviewable judgments；
+- 能把 rollout、response、lineage 与 accountability 区分成不同的 operational functions。
 
-这本书试图保持 vendor-neutral，并坚持 architecture-first。
-
-## 与安全检查清单相比
-
-安全指南非常重要，但仅靠检查清单并不能构成一套可工作的智能体架构。
-
-清单会告诉你风险点在哪里，却不一定会告诉你如何组织运行时、归属关系、审批、遥测和生命周期，让这些风险在长期内保持可控。
-
-这本书试图把安全问题和具体运行时设计连接起来。
-
-它也试图避免把主要 operational layers 混成一个模糊的 governance story：traces 应该负责捕获，SLO 应该负责约束健康，evals 应该负责判断，assurance 应该负责响应，observability 应该负责在系统尺度上保存 evidence，而 registry 应该负责分配 accountability。
-
-## 与云参考架构相比
-
-云厂商蓝图很擅长展示部署形态。
-
-但很多团队还需要另一层答案：
-
-- policy layer 应该负责什么
-- approval 应该怎样工作
-- 什么需要被追踪
-- 如何评估行为回归
-- 如何防止 agent sprawl
-
-这本书关注的正是这一层运行机制。
-
-## 希望达到的结果
-
-目标不是帮助你造出“最自主”的智能体。
-
-目标是帮助你构建一个：
-
-- 有用
-- 可解释
-- 可审查
-- 可治理
-- 可在生产环境中运营
-
-同时也帮助读者看到，这些性质并不是由某一个魔法层单独带来的。它们来自多个不同层次在纪律之下共同工作。
-
-更具体地说，这本书应该让读者带着几项被兑现的 promises 离开：
-
-- 他们能看清 trust 与 action boundaries 真正在哪里；
-- 他们能捕获 run behavior，而不是只靠症状猜测；
-- 他们能定义可容忍的 health budgets 与 risk budgets；
-- 他们能对 change 与 regression risk 产出 reviewable judgments；
-- 他们能理解 response、lineage、observability 与 accountability 如何在生命周期里被分开承担。
-
-如果这比智能体表演更吸引你，那这本书就是写给你的。
+如果这些问题比另一篇 agent theater 更接近你的现实，那么这本书就是为你写的。

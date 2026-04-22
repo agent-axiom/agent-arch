@@ -1,80 +1,91 @@
 # 参考来源
 
-下面是本书当前版本所依赖的核心一手来源。访问日期：**2026 年 4 月 11 日**。
+下面收录的是本书当前版本依赖的主要一手来源。访问日期：**2026 年 4 月 22 日**。
 
-!!! info "如何阅读这份来源表"
-    最好把这些来源分成两个层次来看：
+!!! info "如何阅读这份列表"
+    最好不仅按主题来读这些来源，也按它们提供的支撑强度来区分：
 
-    - `稳定内核`：NIST、OWASP、基础架构文档、官方 SDK 和平台文档；
-    - `快速变化层`：近期关于评测、失配、可观测性、供应链和智能体治理的材料。
+    - `规范性框架`：NIST、OWASP、CISA 等文档，它们定义了相对稳定的治理轮廓；
+    - `平台实践`：OpenAI、Anthropic、LangGraph、Google Cloud、Microsoft 等资料，它们展示这些轮廓在 production 里是如何被组装出来的；
+    - `HCI、HITL 与人工监督`：这些来源说明 automation 会在哪里出错，以及怎样把人稳稳留在回路里；
+    - `研究前沿`：关于 memory、observability、verifier design 与 multi-agent reliability 的较新论文。
 
-    如果你需要可靠的总体框架，先看稳定内核。如果你要补 Part V 和 Part VIII 的最新运维实践，就看快速变化层，并始终注意发布日期。
+    如果你要给第一、第五和第八部分建立最稳的基础，先从规范性框架和 HCI/HITL 层开始。如果你要看当前工程实践，就读平台文档和近期研究，但始终要留意发布日期。
 
-## 智能体架构与模式
+## 规范性框架与治理轮廓
 
-- Dmitry Vikulin, [“Architecture of Reliable AI Agents”](https://vikulin.ai/library/tpost/ai_agent_architecture)
+- OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
+- NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
+- NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+- NIST, [SP 800-218A: Secure Software Development Practices for Generative AI and Dual-Use Foundation Models](https://csrc.nist.gov/pubs/sp/800/218/a/final)
+- NIST, [Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations](https://www.nist.gov/publications/adversarial-machine-learning-taxonomy-and-terminology-attacks-and-mitigations-0)
+- CISA, [Artificial Intelligence](https://www.cisa.gov/ai)
+
+## 智能体架构与平台模式
+
+- Dmitry Vikulin, [Architecture of Reliable AI Agents](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
-- LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
-- LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
+- LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
+- LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
+- LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
+- LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - Google Cloud, [Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
 - Google Cloud, [More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 - Google Cloud, [Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 - Google Cloud Architecture Center, [Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
 - Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
+- Cloudflare, [Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
 
-## 可靠性、记忆与人工介入
-
-- LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
-- LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
-- LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
-- LangGraph, [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
-
-## 安全与治理
-
-- OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
-- NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
-- NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
-- NIST, [SP 800-218A: Secure Software Development Practices for Generative AI and Dual-Use Foundation Models](https://csrc.nist.gov/pubs/sp/800/218/a/final)
-- NIST, [Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations](https://www.nist.gov/publications/adversarial-machine-learning-taxonomy-and-terminology-attacks-and-mitigations-0)
-- Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
-- Google Cloud, [Google Agentspace](https://cloud.google.com/products/agentspace)
-- Google Cloud, [Vertex AI Agent Builder](https://cloud.google.com/products/agent-builder)
-- Google Cloud, [How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
-- Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
-- Google Cloud, [Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
-- Google Research, [Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
-- Google Research, [Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
-- Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
-- Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
-- Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
-- Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
-- Anthropic, [Findings from a Pilot Anthropic—OpenAI Alignment Evaluation Exercise](https://alignment.anthropic.com/2025/openai-findings/)
-- CISA, [Artificial Intelligence](https://www.cisa.gov/ai)
-- MLCommons, [AILuminate v1.0 Release](https://mlcommons.org/2024/12/mlcommons-ailuminate-v1-0-release/)
-- Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
-- Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
-- Microsoft Learn, [Secure autonomous agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/secure-agentic-systems)
-- Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
-- Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
-- Microsoft Learn, [Agent Registry convergence with Microsoft Agent 365](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-registry-convergence)
-- Cloudflare, [面向更简单、更安全、更低成本企业级 MCP 部署的参考架构](https://blog.cloudflare.com/)
-
-## 可观测性与质量评估
+## 可观测性、评测与 verifier design
 
 - OpenAI, [Agent evals](https://platform.openai.com/docs/guides/agent-evals)
 - OpenAI, [Trace grading](https://platform.openai.com/docs/guides/trace-grading)
 - OpenAI, [Background mode](https://developers.openai.com/api/docs/guides/background)
 - OpenAI, [Using tools](https://developers.openai.com/api/docs/guides/tools)
 - OpenAI, [Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+- Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 - Google Cloud, [Observability and monitoring](https://docs.cloud.google.com/docs/observability)
 - AWS, [Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
 - arXiv, [The Art of Building Verifiers for Computer Use Agents](https://arxiv.org/abs/2604.06240v1)
 - GitHub, [microsoft/fara](https://github.com/microsoft/fara)
 
-## 研究前沿：记忆、可观测性与多智能体可靠性
+## HCI、HITL 与人工监督
+
+- Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+- LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
+- LangGraph, [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
+- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
+- Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
+
+## 治理、安全与 operational assurance
+
+- Google Cloud, [How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
+- Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+- Google Cloud, [Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
+- Google Research, [Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
+- Google Research, [Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+- Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
+- Google Research, [Identifying and Mitigating the Security Risks of Generative AI](https://research.google/pubs/identifying-and-mitigating-the-security-risks-of-generative-ai/)
+- Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+- Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
+- Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
+- Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
+- Anthropic, [Findings from a Pilot Anthropic-OpenAI Alignment Evaluation Exercise](https://alignment.anthropic.com/2025/openai-findings/)
+- MLCommons, [AILuminate v1.0 Release](https://mlcommons.org/2024/12/mlcommons-ailuminate-v1-0-release/)
+- Microsoft Learn, [Secure autonomous agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/secure-agentic-systems)
+- Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
+- Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
+- Microsoft Learn, [Agent Registry convergence with Microsoft Agent 365](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-registry-convergence)
+
+## 事故与案例
+
+- American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
+
+## 研究前沿：memory、observability 与 multi-agent reliability
 
 - OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
@@ -84,10 +95,9 @@
 - OpenReview, [AMA-Bench: Evaluating Long-Horizon Memory for Agentic Applications](https://openreview.net/forum?id=GoSVL7mLcM)
 - OpenReview, [Aegis: Automated Error Generation and Attribution for Multi-Agent Systems](https://openreview.net/forum?id=zqcYoxXiN3)
 - OpenReview, [PALADIN: Self-Correcting Language Model Agents to Cure Tool-Failure Cases](https://openreview.net/forum?id=NVTtoO297p)
-- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
 - OpenReview, [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
 
-## 发布与工具链
+## 发布、构建与本书的平台层
 
 - MkDocs, [Official documentation](https://www.mkdocs.org/)
 - Material for MkDocs, [Official documentation](https://squidfunk.github.io/mkdocs-material/)
@@ -95,7 +105,7 @@
 - ty, [Official documentation](https://docs.astral.sh/ty/)
 - Starlight, [Official documentation](https://starlight.astro.build/)
 
-## Rust 与智能体平台层
+## Rust 与 agent runtimes 的基础设施层
 
 - AWS, [AWS SDK for Rust is generally available](https://aws.amazon.com/about-aws/whats-new/2023/11/aws-sdk-rust/)
 - AWS Docs, [Code examples for Amazon Bedrock Runtime using AWS SDK for Rust](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/rust_bedrock-runtime_code_examples.html)
@@ -107,14 +117,15 @@
 
 ## 如何使用这份列表
 
-如果你继续扩展本书，建议阅读顺序如下：
+如果你要继续扩展这本书，比较顺手的顺序是：
 
-1. 安全与风险框架：NIST、OWASP。
-2. 架构模式：Anthropic、LangGraph、OpenAI。
-3. 治理与平台控制：Google Cloud、OpenAI、Anthropic。
-4. 工具链与发布：MkDocs、uv、ty、Starlight。
+1. 风险与控制框架：NIST、OWASP、CISA。
+2. 架构模式与 runtime discipline：Anthropic、OpenAI、LangGraph、Google Cloud、Microsoft。
+3. 可观测性、评测与 verifier 层：OpenAI、Microsoft、arXiv、GitHub。
+4. HCI、HITL 与案例：Microsoft Research、OpenReview、ABA。
+5. 研究前沿：memory、一致性、observability 与 multi-agent failure modes。
 
-如果是配合本书阅读，再记住一个简单区分：
+如果你是配合本书阅读，再记住一个区分就够了：
 
-- `稳定内核`：架构、安全边界、记忆、执行与基础可观测性；
-- `快速变化层`：评测工具、生命周期治理、可观测性模式、智能体 inventory、verifier design，以及 research frontier。
+- `稳定内核`：规范性框架、架构、policy、execution 与 observability；
+- `快速变化层`：评测工具、verifier design、inventory governance、frontier research 和较新的 cases。

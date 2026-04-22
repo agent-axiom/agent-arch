@@ -139,7 +139,7 @@ flowchart LR
 
 Это особенно важно для overlapping capabilities, где различия тонкие: несколько search tools, несколько write adapters, несколько похожих orchestration actions.
 
-И еще один полезный practical rule: retries не лечат плохой tool selection, если сама модель изначально видела слишком шумный каталог.
+И еще одно полезное практическое правило: retries не лечат плохой tool selection, если сама модель изначально видела слишком шумный каталог.
 
 ## 5. Важно различать read tools и write tools
 

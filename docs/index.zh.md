@@ -1,18 +1,14 @@
 # 安全 AI 智能体架构
 
-这本书面向那些想构建真实生产级智能体系统的人，而不是只做一个看起来聪明的演示。
+这本书写给那些需要的不是炫目的 demo，而是能够承受生产现实的 agent system 的团队。
 
-它的中心论点很简单：**智能体需要平台，而不是魔法**。如果团队把智能体当成“带工具的 prompt”，它也许会在 demo 中显得聪明，但一旦出现高风险动作、记忆、审批、发布和长期运维压力，系统就会暴露出真正的问题。
-
-这是一本关于安全、可治理、可用于生产环境的 AI 智能体架构的实践型书籍。它面向那些已经意识到，提示词和工具调用远远不够，还需要围绕智能体建立完整运行体系的团队，包括信任边界、策略执行、审批、evidence capture、health budgets、eval judgment 与生命周期管理。
-
-> 它以 Dmitry Vikulin 关于可靠 AI 智能体的文章为起点，进一步扩展为平台级视角：策略执行、人工审批、可观测性、评测体系、运维纪律与生命周期管理。
+它的中心论点很简单：**智能体需要平台，而不是魔法**。一旦系统拥有 risky actions、memory、approvals、rollout 和长期运维尾部，单靠模型加几个 tools 就不够了。你需要明确的 trust boundaries、policy layer、受控 execution、observability、quality judgment 与 lifecycle discipline。
 
 <div class="hero-actions" markdown="1">
 
 [从这里开始](start-here.zh.md){ .md-button .md-button--primary }
-[查看全书计划](book/plan.zh.md){ .md-button }
-[查看参考运行时](appendix/reference-package.zh.md){ .md-button }
+[阅读第 1 章](book/part-i/chapter-1.zh.md){ .md-button }
+[打开全书计划](book/plan.zh.md){ .md-button }
 
 </div>
 
@@ -22,104 +18,53 @@
 
 </div>
 
-## 为什么会有这本书
-
-大多数智能体内容都在优化“更快做出演示”。但真实系统通常不是在 demo 里失败，而是在 reasoning 与 action 的边界、记忆层、审批路径、rollout、drift 和长期运营责任上失败。这本书的目标，就是把这整套运行模型讲清楚。
-
-它的目标不是帮助读者做出“最自主的智能体”，而是帮助读者做出能承受生产现实的系统。
-
 ## 这本书适合谁
 
-- 正在把智能体能力接入真实产品的工程师。
-- 正在搭建共享运行时、策略、注册表、审批与可观测性层的平台团队。
-- 需要看到信任边界与高风险执行路径的安全工程师。
-- 更关心工程纪律而不是“智能体表演”的技术负责人和架构师。
+- 想构建 agent features、又不想把系统做成 prompts 和 exceptions 堆的产品工程师。
+- 需要共享 runtime、policy layer、approvals、observability 和受控 rollout 的平台团队。
+- 关心 trust boundaries、risky execution paths 和 abuse surfaces 的安全工程师。
+- 需要可复用工程纪律、而不是 agent theater 的技术负责人和架构师。
 
-## 你今天就能带走什么
+## 它应该改变读者什么思维
 
-- 一条从“先工作流后智能体”走向受控自治的实践路径。
-- 关于策略层、审批、记忆、评测、可观测性与生命周期的章节。
-- 一个可运行的参考运行时，包含会话导出、评测数据集导出、审批、控制项和生命周期工件。
-- 一组参考页，覆盖追踪模式、评测模式、策略包、审批、发布门禁、记忆检索和生命周期工件。
-- 可以直接复用的案例研究、检查清单和策略模板。
+读完这本书，读者应该停止把 agent 想成“LLM 加一点 orchestration”，而开始把它想成一个受治理的 production system：
 
-## 这到底是一本什么书
+- 有明确的 trust 与 action boundaries；
+- execution 受 policy 约束；
+- risky paths 有 approvals；
+- 具备 run-level observability 与 evidence；
+- 拥有 rollout discipline、ownership 与 lifecycle governance。
 
-这首先是一本文向生产级智能体系统的实践架构书和 operating model。
+## 这本书怎么读
 
-它不是某个框架的手册，不是 prompt engineering 指南，也不是 AI 生态热点巡礼。参考页和可运行运行时存在，是为了支撑本书的论证，而不是取代本书本身。
+如果你只想要最短入口，就从 [第 1 章](book/part-i/chapter-1.zh.md) 开始。如果你需要按角色或任务选择路线，就打开[从这里开始](start-here.zh.md)。如果你更关心结构与状态，就看[全书计划](book/plan.zh.md)。如果你需要可复用工件、schema 和 contract，就进入[参考层](reference.zh.md)。
 
-它也是一部刻意塑形的书，而不只是把许多好主题堆在一起。Operational chapters 被按角色拆开，让读者能感觉到 production discipline 是如何被搭起来的：
-
-- traces 捕获 raw run history；
-- SLO 定义 health budgets 与 risk budgets；
-- evals 产出 reviewable judgments；
-- assurance 负责 response；
-- provenance 与 artifacts 保存 evidence backbone；
-- observability 提供 evidence substrate；
-- registry 负责整个 estate 的 accountability。
-
-而这种形状也应该被读者感受到为一串 outcomes，而不只是 chapter taxonomy：
-- Part V 教会读者如何捕获 run history、定义可容忍的 budgets，并产出 reviewable judgments；
-- Part VIII 教会读者如何把 lifecycle response、governed lineage、evidence visibility 与整个 estate 的 accountability 读成一个 production contour。
-
-## 项目当前状态
-
-- `Published core`：全书八个部分已经完整发布。
-- `Expanding now`：入口页、参考层与站点导航仍在继续打磨。
-- `Reference assets available`：模式、检查清单、案例研究与可运行参考运行时已经可用。
-
-## 三条实用阅读路径
-
-### 如果你在做产品型智能体
+穿过全书的最短实用途径大致是：
 
 1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
 3. [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
-4. [第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
+4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
+5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-### 如果你在做平台或基础设施
+## 这里已经有什么
 
-1. [第 2 章：安全智能体的参考架构](book/part-i/chapter-2.zh.md)
-2. [第 4 章：工具网关、审批与审计轨迹](book/part-ii/chapter-4.zh.md)
-3. [第 17 章：策略层与能力目录](book/part-vii/chapter-17.zh.md)
-4. [第 20 章：智能体系统的变更管理](book/part-viii/chapter-20.zh.md)
+- 完整的俄文原稿，以及 `en` 和 `zh` 翻译页。
+- 从架构基础到 lifecycle governance 的八个部分。
+- 可运行的参考包 `agent_runtime_ref`。
+- 覆盖 traces、evals、policy bundles、approvals、memory 与 lifecycle artifacts 的参考页面。
+- 实战案例、检查清单、policy templates 与 glossary。
 
-### 如果你更关注安全、控制与运维
+## 这本书不打算成为什么
 
-1. [第 21 章：保障闭环：红队演练、检测与响应](book/part-viii/chapter-21.zh.md)
-2. [第 22 章：供应链、来源链与已批准工件](book/part-viii/chapter-22.zh.md)
-3. [第 26 章：面向 AI 的可观测性、清单覆盖率与可检测遥测](book/part-viii/chapter-26.zh.md)
-4. [第 27 章：智能体清单、注册表与蔓延控制](book/part-viii/chapter-27.zh.md)
+它不是某个框架的手册，不是 prompt tricks 合集，也不是 AI 市场巡礼。本书站在具体 SDK 和 platform docs 之上，去回答更棘手的问题：agent 到底该被允许做什么，write path 应该怎样受限，应该观察什么，变更应该怎样发布，系统上线后到底谁负责。
 
-## 这个项目已经具备什么
+## 接下来去哪里
 
-- 完整的 `ru / en / zh` 三语内容。
-- 带有 `pytest` 覆盖的可运行 `agent_runtime_ref` 包。
-- 一套完整的参考层，涵盖模式与契约页面。
-- 包含案例、速查清单、术语表与路线图的实践型附录。
-
-## 核心工程观点
-
-智能体系统最常见的错误很简单：先追求自治，再补可控性。更稳妥的路径通常是：
-
-1. 先构建**可预测的工作流**。
-2. 再按局部、可度量的方式加入自治。
-3. 所有高风险动作都经过**策略、审批与追踪**。
-4. 用**health budgets、eval judgment、遥测与生命周期纪律**维持质量。
-
-## 参考层在哪里
-
-如果你需要的是可复用的工程产物，先看这些 support pages。它们的作用是锚定本书的论证，而不是取代本书本身的 reader journey：
-
-- [追踪模式与事件目录](appendix/trace-schema.zh.md)
-- [评测数据集模式与评分契约](appendix/eval-schema.zh.md)
-- [策略包模式与审批契约](appendix/policy-bundle-schema.zh.md)
-- [生命周期工件模式](appendix/lifecycle-artifact-schema.zh.md)
-- [记忆记录与检索契约模式](appendix/memory-retrieval-schema.zh.md)
-
-## 继续阅读
+<div class="button-stack" markdown="1">
 
 [从这里开始](start-here.zh.md){ .md-button .md-button--primary }
-[打开参考页面](appendix/trace-schema.zh.md){ .md-button }
-[查看来源](appendix/sources.zh.md){ .md-button }
+[进入第一部分](book/part-i/index.zh.md){ .md-button }
+[打开参考包](appendix/reference-package.zh.md){ .md-button }
+
+</div>
