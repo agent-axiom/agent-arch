@@ -309,9 +309,12 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
+    session_payload = runtime.sessions._session_payload(args.session_id)
+    latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     return {
         "status": result.status,
         "result": result.output_text,
+        "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": args.trace_id,
         "event_count": len(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),

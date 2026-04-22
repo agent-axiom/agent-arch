@@ -184,6 +184,21 @@ class TestFailurePaths:
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
         assert any("run_failed" in line for line in lines)
 
+    def test_cli_dump_events_surfaces_failure_reason(self, cli_json) -> None:
+        code, payload = cli_json(
+            [
+                "dump-events",
+                "--trace-id",
+                "trace-cli-dump-failure-001",
+                "--simulate-failure",
+                "tool_timeout",
+            ]
+        )
+        assert code == 0
+        assert payload["status"] == "failed"
+        assert payload["failure_reason"] == "tool_timeout"
+        assert any(event["event_type"] == "run_failed" for event in payload["events"])
+
     def test_cli_export_eval_dataset_includes_failed_run_scenario(
         self, cli_json, tmp_path: Path
     ) -> None:
