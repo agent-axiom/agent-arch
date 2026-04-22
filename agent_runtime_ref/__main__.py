@@ -668,25 +668,32 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
 
 def _export_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
-    runtime, _ = _run_session_sequence(
-        config_dir,
-        user_inputs=args.user_input,
-        tenant_id=args.tenant_id,
-        principal_id=args.principal_id,
-        session_id=args.session_id,
-        agent_id=args.agent_id,
-        trace_prefix=args.trace_prefix,
-    )
+    runtime = _build_runtime(config_dir)
+    for index, user_input in enumerate(args.user_input, start=1):
+        _run_on_runtime(
+            runtime,
+            user_input=user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=f"{args.trace_prefix}-{index:03d}",
+            session_id=args.session_id,
+            agent_id=args.agent_id,
+            simulate_failure=args.simulate_failure,
+        )
     output_path = runtime.sessions.export_session_json(
         args.session_id,
         output_path=args.output,
     )
     runs = runtime.sessions.runs_for_session(args.session_id)
     summary = summarize_session(args.session_id, runs)
+    latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
         "session_id": args.session_id,
         "output_path": str(output_path),
         "total_runs": summary.total_runs,
+        "failed_runs": summary.failed_runs,
+        "traceable_failed_runs": summary.traceable_failed_runs,
+        "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
 
@@ -1080,6 +1087,12 @@ def build_parser() -> argparse.ArgumentParser:
     export_session.add_argument("--session-id", default="session-demo-001")
     export_session.add_argument("--trace-prefix", default="trace-session")
     export_session.add_argument("--agent-id", default=None)
+    export_session.add_argument(
+        "--simulate-failure",
+        choices=("tool_timeout", "upstream_unavailable"),
+        default=None,
+        help="Inject a failure scenario into each exported run",
+    )
     export_session.add_argument(
         "--output",
         default="artifacts/session-demo-001.json",
