@@ -127,7 +127,7 @@ Prompt, routine или instruction change могут:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior и continuity между traces и approval records;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
-- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, consistency между process/outcome grading и review для failure attribution;
+- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, consistency между process/outcome grading и review для failure attribution, а также видимость экспортируемых failed-run полей вроде `failure_reason`;
 - changes в orchestration pattern -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks и pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, cost deltas.
 
@@ -143,7 +143,7 @@ Prompt, routine или instruction change могут:
 - explicit policy review;
 - offline eval pass;
 - failed-run drill coverage для затронутого path;
-- явная проверка того, что failed runs остаются traceable через release identity, trace linkage и session-level evidence;
+- явная проверка того, что failed runs остаются traceable через release identity, trace linkage, session-level evidence и экспортируемые поля вроде `failure_reason`;
 - ограниченный rollout;
 - monitoring during the first wave;
 - clear rollback path.
