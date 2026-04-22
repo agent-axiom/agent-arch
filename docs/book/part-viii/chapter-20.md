@@ -141,7 +141,7 @@ Prompt, routine или instruction change могут:
 - explicit policy review;
 - offline eval pass;
 - failed-run drill coverage для затронутого path;
-- явная проверка того, что failed runs остаются traceable через release identity, trace linkage, session-level evidence, экспортируемые поля вроде `failure_reason` и operator-facing summary вроде `latest_failure_reason`;
+- явная проверка того, что failed runs остаются traceable через release identity, trace linkage, session-level evidence, экспортируемые поля вроде `failure_reason`, operator-facing summary вроде `latest_failure_reason` и `traceable_failed_runs` на уровне session review;
 - ограниченный rollout;
 - monitoring during the first wave;
 - clear rollback path.
