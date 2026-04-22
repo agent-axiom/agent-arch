@@ -150,7 +150,7 @@ Response layer полезно строить вокруг очень конкр�
 - переключить rollout wave на более безопасный профиль;
 - при необходимости полностью disable problematic route.
 
-Тот же response layer обязан считать и runtime failure paths самостоятельными управляемыми событиями. Tool timeout, validation failure или сбой внешней зависимости нельзя прятать внутри общего языка вроде "run completed". Система должна зафиксировать failed run, сохранить trace и оставить видимыми и на уровне session evidence, и в operator-facing summary вроде `latest_failure_reason` и сам исход, и конкретную причину сбоя, например в `failure_reason`, чтобы assurance различал заблокированный риск, деградацию инфраструктуры и поломку самого runtime-control behavior.
+Тот же response layer обязан считать и runtime failure paths самостоятельными управляемыми событиями. Tool timeout, validation failure или сбой внешней зависимости нельзя прятать внутри общего языка вроде "run completed". Система должна зафиксировать failed run, сохранить trace и оставить видимыми и на уровне session evidence, и в operator-facing summary вроде `latest_failure_reason` и сам исход, и конкретную причину сбоя, например в `failure_reason`, так, чтобы этот run по-прежнему учитывался как `traceable_failed_runs`, и assurance мог различать заблокированный риск, деградацию инфраструктуры и поломку самого runtime-control behavior.
 
 Это важно, потому что в agent systems response часто должен происходить быстрее, чем полноценный root-cause analysis.
 
