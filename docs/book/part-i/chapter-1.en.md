@@ -141,19 +141,19 @@ This is where an "agent" stops being just an LLM with tools and becomes a full e
 
 ## 9. Four Principles Worth Building On
 
-### 8.1. Control Matters More Than Autonomy
+### 9.1. Control Matters More Than Autonomy
 
 First build a predictable execution path. Only then expand freedom gradually.
 
-### 8.2. Safety Cannot Be Bolted On
+### 9.2. Safety Cannot Be Bolted On
 
 If policy, identity, and approvals are not embedded into the runtime, later you will not be evolving the system. You will be repairing the architecture under pressure.
 
-### 8.3. State Must Be Explicit
+### 9.3. State Must Be Explicit
 
 Long-running tasks should not lose steps, approvals, or side effects just because a process restarted or a request was replayed.
 
-### 8.4. Observability Matters More Than Impression
+### 9.4. Observability Matters More Than Impression
 
 If the agent "looks smart" but you have no traces, evals, or step metadata, then you do not control the system.[^openai-sdk][^openai-evals]
 

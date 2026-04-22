@@ -40,7 +40,7 @@
 
 Это значит, что эта глава начинается там, где заканчиваются budget-setting chapters. SLO задают допустимые health и risk budgets. Assurance начинается тогда, когда эти budgets оказываются под угрозой, уже нарушены или им больше нельзя доверять, и команда должна действовать.
 
-Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в response**. Не в новый judgment layer и не в общую observability-педагогику, а в containment, remediation и назначенное ownership.
+Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в ответные действия**. Не в новый оценочный слой и не в общую observability-педагогику, а в containment, remediation и назначенное ownership.
 
 ## 2. Что такое assurance loop
 
@@ -68,7 +68,7 @@ Google Research очень хорошо формулирует здесь гла
 
 Это слабый подход.
 
-Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а production-relevant failure modes вроде:
+Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а сбои, реально значимые для production, вроде:
 
 - prompt injection;
 - hidden instruction override;
@@ -156,7 +156,7 @@ Response layer полезно строить вокруг очень конкр�
 
 Поэтому assurance здесь стоит читать как response function, а не просто как каталог detection-сигналов. Ее задача - сократить время между сигналом и безопасным containment.
 
-Budget может сказать, что система теперь нездорова. Assurance говорит, кто freeze'ит route, кто tighten'ит control surface и кто владеет путем назад к безопасному состоянию.
+Budget может сказать, что система теперь нездорова. Assurance говорит, кто freeze'ит route, кто ужесточает контур управления и кто владеет путем назад к безопасному состоянию.
 
 <div class="diagram-card">
 <p>Assurance loop работает как постоянный цикл: искать, замечать, сдерживать, исправлять, учиться</p>

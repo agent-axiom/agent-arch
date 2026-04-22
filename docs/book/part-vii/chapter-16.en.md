@@ -316,7 +316,7 @@ runtime:
 
 This is useful because it keeps the runtime contract explicit and portable between environments.
 
-## 13. Common Mistakes
+## 14. Common Mistakes
 
 Very typical problems:
 
@@ -331,7 +331,7 @@ Very typical problems:
 
 So the system may "work", but the runtime shape is already blocking growth.
 
-## 14. A Fast Maturity Test for the Baseline Runtime
+## 15. A Fast Maturity Test for the Baseline Runtime
 
 A team should not think it has a reference runtime only because it has a working agent, a few modules, and successful demos.
 
@@ -346,7 +346,7 @@ A stronger bar is this:
 
 If most of those conditions are missing, the team may have an implementation, but it still does not have a real baseline runtime blueprint.
 
-## 15. What to Do Right Away
+## 16. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -360,7 +360,7 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, you do not have a reference runtime yet. You just have an early model integration in a product.
 
-## 16. What to Do Next
+## 17. What to Do Next
 
 First make the runtime shape explicit, then add the policy layer and capability contracts on top of it.
 

@@ -1,53 +1,33 @@
 # 第八部分：智能体系统生命周期
 
-到这里为止，这本书已经解释了如何搭建架构、加固安全、建立可观测性以及安全地上线。但生产级纪律并不会在上线检查清单结束。
+到这里为止，这本书已经解释了如何搭建架构、加固安全、建立可观测性以及安全地发布变更。但 production discipline 不会在 go-live 结束。
 
-在贯穿全书的 support 场景里，到这里已经有了可运行的 runtime、policy layer、capability catalog 和一次受控 rollout。现在问题变了：怎样让这套系统稳定运行几个月，怎样在不失控的前提下持续修改它，以及什么时候应该停止、替换或退役。
+只要 agent system 活得比一场 demo 更久，你很快就会遇到另一类问题：
 
-只要系统活得比一场 demo 更久，你很快就会遇到另一类问题：
+- 哪些变更应该被视为对发布有实质影响；
+- 怎样响应 drift 与 findings；
+- 怎样保住受信任工件的 lineage；
+- 怎样让系统退出运行；
+- 怎样把控制范围扩展到整个 estate，而不只是一个 agent。
 
-- 智能体项目如何正式进入交付流程；
-- design review 应该如何进行；
-- 哪些变更应该被视为高风险变更；
-- model、prompt、policy 和 tool changes 应该如何发布；
-- 事故发生后如何调查，以及系统何时应该退役。
-
-这正是经典工程纪律与智能体特性相遇的地方。所以这一部分最好的开场，不是“发明一个全新流程”，而是先说明如何从经典 SDLC 过渡到 ADLC。
+这一部分回答的正是这些问题。它不再把 agent system 读成一张架构图，而是读成一个 governed lifecycle。
 
 !!! info "这一部分的快速路线"
     如果你想快速读完关键部分，可以这样走：
 
-    - [第 19 章](chapter-19.zh.md)：先用从 SDLC 到 ADLC 的过渡建立共同框架；
-    - [第 20 章](chapter-20.zh.md)：再定义哪些 agent changes 真正属于 release-bearing；
-    - [第 21 章](chapter-21.zh.md)：把 assurance 理解成围绕 drift、findings 与 containment 的 operational response loop；
-    - [第 22 章](chapter-22.zh.md)：把 provenance、approved artifacts 与 contract lineage 锁定为 evidence backbone，用来保留当时究竟批准了什么、哪一个版本处于激活状态，以及后续决策依赖的是哪一组 governed artifacts；
-    - [第 23 章](chapter-23.zh.md)：再用 replacement、retirement 与 runtime-control shutdown 把生命周期收束起来；
-    - [第 24 到 27 章](chapter-24.zh.md)：沿着同一条线继续扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
-
-    如果把这一部分当成一个连续论证来读，它其实直接延续了 Part VII 里搭起来的同一套系统：第 19 章给出生命周期框架，第 20 章把 release-bearing change 变成 operational judgment，第 21 章把 assurance 变成 response function，第 22 章固定 evidence backbone，第 23 章完成 lifecycle closure，而第 24 到 27 章则把同一套系统继续推进到 adversarial pressure、judgment、evidence substrate 与整个 estate 的 accountability。
+    - [第 19 章](chapter-19.zh.md)：先把从 SDLC 到 ADLC 当作工作框架建立起来；
+    - [第 20 章](chapter-20.zh.md)：判断哪些变更真正对发布有实质影响；
+    - [第 21 章](chapter-21.zh.md)：看清 findings 怎样变成 response；
+    - [第 22 章](chapter-22.zh.md)：固定受信任工件的 lineage；
+    - [第 23 章](chapter-23.zh.md)：通过 replacement 与 retirement 把生命周期闭合起来；
+    - [第 24 到 27 章](chapter-24.zh.md)：把同一条轮廓继续扩展到 adversarial pressure、judgment、observability 与整个 estate 的 accountability。
 
 ## 这一部分解决什么问题
 
-这一部分向读者给出一串连续的承诺：
-
-- 读完前几章后，你应该能把 agent system 看成 governed lifecycle，而不是一次性的 launch；
-- 读完中段章节后，你应该能把 response、evidence backbone、lifecycle closure、adversarial pressure、judgment、observability substrate 与 accountability 区分成不同的 operational roles；
-- 到这一部分结束时，你应该能把 production agent estate 读成一个受管理的 contour，而不是一堆松散 controls 的堆积。
-
-更具体地说，这一部分：
-
-- 把 reference implementation 推进成可管理的 lifecycle；
-- 把 change management、assurance response、evidence lineage、eval judgment、observability evidence、runtime-control governance、interruption/expiry/re-init discipline、delegated authorization lineage 与整个 agent estate 的 accountability 接成一个 operational contour；
-- 把稳定的工程纪律和快速变化的 vendor / research 细节区分开来。
-
-如果把这一部分当成一个完整模块来读，它的顺序很清晰：
-
-- 先通过从 SDLC 到 ADLC 的过渡建立共同框架；
-- 再定义哪些智能体系统变更真正属于 release-bearing changes；
-- 接着把 assurance 看成围绕 drift、findings 与 control failure 的 operational response loop；
-- 然后把工件纪律、来源追踪与 contract/schema governance 固定为 evidence backbone，用来保留 release identity 与 decision lineage，而不是去承担 detection telemetry 或 estate ownership 的职责；
-- 再用替换、退役与 runtime-control shutdown 把生命周期收束起来；
-- 最后把同一套纪律扩展到 adversarial pressure、eval judgment、observability evidence，以及整个 agent estate 的 accountability。
+- 它把 agent system 展示成 governed lifecycle，而不是一次性 launch；
+- 它把 release judgment 与 response、lineage、closure 和 estate accountability 区分开来；
+- 它给出一套可以讨论 change review、incident、retirement 和 sprawl 的语言；
+- 它帮助读者把 production agent estate 读成一个有 ownership 的系统，而不是一堆 controls。
 
 ## 本部分内容
 
@@ -63,11 +43,6 @@
 
 ## 读完这一部分后，你应该得到什么
 
-- 一套面向生产级 agent systems 的完整生命周期框架；
-- 一种更成熟的变更评审与发布门禁视角；
-- 更清楚地区分 assurance response、provenance/evidence backbone、eval judgment、observability evidence 与整个 estate 的 accountability；
-- 一套可以真正讨论 replacement、retirement、end-of-life discipline 与 runtime-control shutdown 的实践语言；
-- 一套可以讨论 sabotage-like behavior、control failures、contract drift 与 adversarial assurance 的更成熟框架；
-- 一套把 observability 当作 evidence layer，而不是 generic telemetry bucket 的实践视角；
-- 一套治理整个 agent estate 而不是单个 agent system 的工作框架；
-- 更清晰地理解 Part VIII 不是几章松散的安全内容，而是一套连续的 operating model。
+- 一套更成熟的 release gates 与 change review 框架；
+- 更清楚地区分 judgment、response、lineage、observability 与 accountability；
+- 一套关于 agent system 如何在时间中被修改、约束、调查与关闭的实用模型。

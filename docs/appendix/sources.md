@@ -5,14 +5,14 @@
 !!! info "Как читать этот список"
     Полезно разделять источники не только по теме, но и по силе опоры:
 
-    - `Нормативный каркас`: NIST, OWASP, CISA и другие документы, которые задают устойчивые control surfaces;
+    - `Нормативный каркас`: NIST, OWASP, CISA и другие документы, которые задают устойчивые контуры управления;
     - `Платформенная практика`: OpenAI, Anthropic, LangGraph, Google Cloud, Microsoft и другие материалы о том, как эти контуры реально собирают в production;
-    - `HCI, oversight и case studies`: источники, которые показывают, где automation ошибается и как удерживать человека в петле;
+    - `HCI, HITL и человеческий надзор`: источники, которые показывают, где automation ошибается и как удерживать человека в петле;
     - `Исследовательский фронтир`: свежие статьи про память, observability, verifier design и multi-agent reliability.
 
-    Если нужна самая надежная база для Parts I, V и VIII, начинай с нормативного каркаса и HCI/HITL-слоя. Если нужна текущая инженерная практика, смотри платформенные документы и свежие исследования, но всегда учитывай дату публикации.
+    Если нужна самая надежная база для Parts I, V и VIII, начинай с нормативного каркаса и слоя HCI/HITL. Если нужна текущая инженерная практика, смотри платформенные документы и свежие исследования, но всегда учитывай дату публикации.
 
-## Нормативные рамки и control surfaces
+## Нормативные рамки и контуры управления
 
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 - NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
@@ -53,7 +53,7 @@
 - arXiv, [The Art of Building Verifiers for Computer Use Agents](https://arxiv.org/abs/2604.06240v1)
 - GitHub, [microsoft/fara](https://github.com/microsoft/fara)
 
-## HCI, HITL и human oversight
+## HCI, HITL и человеческий надзор
 
 - Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 - LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
@@ -81,7 +81,7 @@
 - Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 - Microsoft Learn, [Agent Registry convergence with Microsoft Agent 365](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-registry-convergence)
 
-## Инциденты и case studies
+## Инциденты и кейсы
 
 - American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 
@@ -122,10 +122,10 @@
 1. Нормативный каркас риска и контроля: NIST, OWASP, CISA.
 2. Архитектурные паттерны и runtime-дисциплина: Anthropic, OpenAI, LangGraph, Google Cloud, Microsoft.
 3. Наблюдаемость, evals и verifier layer: OpenAI, Microsoft, arXiv, GitHub.
-4. HCI, HITL и case studies: Microsoft Research, OpenReview, ABA.
+4. HCI, HITL и кейсы: Microsoft Research, OpenReview, ABA.
 5. Исследовательский фронтир: memory, consistency, observability, multi-agent failure modes.
 
 Для чтения самой книги полезно держать еще одну развилку:
 
 - `Устойчивое ядро`: нормативные рамки, архитектура, policy, execution, наблюдаемость.
-- `Быстро меняющийся слой`: eval tooling, verifier design, inventory governance, frontier research и свежие case studies.
+- `Быстро меняющийся слой`: инструменты evals, дизайн verifier'ов, inventory governance, frontier research и свежие кейсы.

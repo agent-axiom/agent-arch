@@ -75,7 +75,7 @@ Registry отвечает на более строгий вопрос:
 - registry нужен для governance.
 
 Без inventory ты не знаешь полный estate.
-Без registry ты не можешь уверенно сказать, какие агенты считаются approved, governed и операционно answerable.
+Без registry ты не можешь уверенно сказать, какие агенты считаются approved, управляемыми и операционно подотчетными.
 
 ## 4. Что должно быть в минимальной записи агента
 
@@ -160,7 +160,7 @@ Registry отвечает на более строгий вопрос:
 
 ## 8. Как registry связан с observability
 
-Observability chapter уже показала, что inventory coverage — часть evidence layer.
+Глава про observability уже показала, что inventory coverage — часть доказательного слоя.
 
 Registry делает эту связь еще жестче:
 
@@ -175,7 +175,7 @@ Registry делает эту связь еще жестче:
 
 Именно здесь и проходит чистая граница между двумя главами. Observability сохраняет evidence. Registry привязывает этот evidence к named entities, owners, lifecycle states и accountability paths по всему estate.
 
-И это же граница с главой про provenance. Provenance отвечает, под какой governed version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
+И это же граница с главой про provenance. Provenance отвечает, под какой утвержденной version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
 ## 8.1. Registry без непрерывной сверки быстро становится красивым, но неточным
 
@@ -201,7 +201,7 @@ Registry не должен дублировать policy bundle или approval 
 
 - показать, какие policy bundle и approval mode относятся к данному agent;
 - показать, имеет ли agent право на определенный capability set;
-- показать, какие approved MCP servers, discovery sources и auth modes входят в governed capability surface этого agent;
+- показать, какие approved MCP servers, discovery sources и auth modes входят в управляемый capability surface этого agent;
 - показать, в каком lifecycle state агент сейчас живет.
 
 Если у тебя нет этой связки, то легко возникает состояние, в котором:
@@ -226,9 +226,9 @@ Registry не должен дублировать policy bundle или approval 
 - не ссылаются ли где-то в estate на deprecated verifier contracts;
 - не появились ли shadow MCP endpoints вне approved registry.
 
-Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
+Иначе estate может выглядеть управляемым, но при этом скрывать операционную неоднозначность.
 
-Поэтому registry - это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
+Поэтому registry - это не столько слой про release lineage, сколько слой операционной подотчетности. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
 
 Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 
@@ -324,10 +324,10 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 Более сильная планка такая:
 
-- inventory и registry живут как разные control surfaces;
+- inventory и registry живут как разные контуры управления;
 - у каждого production agent есть owner, lifecycle state и policy linkage;
 - telemetry coverage можно непрерывно сверять с registry;
-- paused approvals, ownership фоновых запусков и contract versions входят в registry control surface;
+- paused approvals, ownership фоновых запусков и contract versions входят в контур управления registry;
 - deprecated и orphaned agents можно найти до того, как они станут blind spots;
 - governance умеет различать discovered entities и approved production agents.
 

@@ -316,7 +316,7 @@ runtime:
 
 它的价值在于让 runtime contract 保持显式，也更容易在不同环境之间迁移。
 
-## 13. 常见错误
+## 14. 常见错误
 
 非常典型的问题有：
 
@@ -331,7 +331,7 @@ runtime:
 
 也就是说，系统可能“能跑”，但 runtime 的形态已经开始阻碍成长。
 
-## 14. 给 baseline runtime 做一次快速成熟度测试
+## 15. 给 baseline runtime 做一次快速成熟度测试
 
 团队不应该只因为已经有一个 working agent、几个模块和一些成功 demo，就觉得自己已经有了 reference runtime。
 
@@ -346,7 +346,7 @@ runtime:
 
 如果这些条件大多不成立，那团队也许已经有一个 implementation，但还没有真正的 baseline runtime blueprint。
 
-## 15. 现在就该做什么
+## 16. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
@@ -360,7 +360,7 @@ runtime:
 
 如果连续多个问题的答案都是“没有”，那你现在还没有 reference runtime，你只是把模型早期接进了产品里。
 
-## 16. 下一步做什么
+## 17. 下一步做什么
 
 先把 runtime shape 固定下来，再在这个骨架上加 policy layer 和 capability contracts。
 

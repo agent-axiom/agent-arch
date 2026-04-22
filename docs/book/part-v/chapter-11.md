@@ -96,7 +96,7 @@ flowchart LR
 
 Не нужно делать отдельный span на каждую мелочь. Но и один giant span на весь run почти бесполезен.
 
-Хорошее practical rule такое:
+Хорошее практическое правило такое:
 
 - отдельный span на orchestration step;
 - отдельный span на retrieval;

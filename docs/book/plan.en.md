@@ -1,137 +1,118 @@
 # Book Plan
 
-This version of the book is structured as an engineering playbook rather than a framework survey. Each part answers one practical question: what must exist in a production system for an agent to be useful, safe, and manageable?
-
-This page focuses on structure and status. For a role-based reading path, open [Start Here](../start-here.en.md). For the publishing-stack explanation, use the dedicated [Publishing Stack](../appendix/stack.en.md) page.
-
-The cleanest way to read this page is:
-
-- the book promises argument, sequence, and reader transformation;
-- the support layers promise schemas, runnable anchors, templates, and contract pages;
-- this plan exists to show how the book itself is shaped, not to replace the book with a project dashboard.
+This page is about the structure and status of the book. If you need a reading route, start with [Start Here](../start-here.en.md). If you need the publishing stack and site tooling, that lives on a [separate page](../appendix/stack.en.md).
 
 !!! info "How to read the book by stability level"
     The book has two layers:
 
-    - `Stable core`: Parts I-VII, especially Chapters 1-12 and 18. These change more slowly because they describe baseline engineering discipline.
-    - `Fast-moving layer`: Chapter 13, Part VIII, and the research-heavy appendix pages. These change faster because vendor tooling and research move faster.
+    - `Stable core`: Parts I-VII, especially Chapters 1-12 and 18. This is the baseline engineering discipline, and it changes comparatively slowly.
+    - `Fast-moving layer`: Chapter 13, Part VIII, and the research-heavy appendix pages. These pages change more often because vendor tooling, eval practice, and threat patterns move faster.
 
-    If you are reading the book for the first time, start with the stable core. If you need the newest production contour, move to the fast-moving layer afterward.
+    If you are reading the book for the first time, stay with the stable core first. If you need the newest operational contour, move to the faster layer afterward.
 
 ## Structure
 
-The manuscript now has a more explicit internal geometry. It is not only a sequence of topics, but a sequence of roles the reader learns to distinguish.
-
 ### Part I. Foundations
 
-- What a modern agent is and how it differs from a workflow.
-- Why secure architecture starts with a control plane, not with a smart prompt.
-- A reference platform for safe agents.
+Status: `Published`
 
-Status: the first chapter is published.
+Question of the part: when an agent is actually justified, and what a minimally mature architecture should look like if you build it not as a prompt trick, but as a system.
 
-What I am strengthening next in this part:
-
-- how to decide whether you need an agent at all or a conventional workflow is enough;
-- why `single-agent first` is usually healthier than starting with a multi-agent zoo;
-- how to turn instructions, SOPs, and playbooks into routines rather than chaotic prompt paragraphs.
-
-Practical layer already added:
-
-- [Practice. Instructions, routines, and prompt templates](part-i/practical-routines.md)
-- [Practice. Manager pattern vs handoffs](part-i/practical-manager-handoffs.md)
+- Chapter 1. Why an agent needs a platform, not magic.
+- Chapter 2. Reference architecture for a safe agent.
+- [Practice. Instructions, routines, and prompt templates](part-i/practical-routines.en.md)
+- [Practice. Manager pattern vs handoffs](part-i/practical-manager-handoffs.en.md)
 
 ### Part II. Security Perimeter
 
-- Agent identity and machine IAM.
-- Policy-as-code for models, memory, and tools.
-- Prompt injection, data exfiltration, secret leakage, tool abuse.
-- Human approval for risky operations.
+Status: `Published`
+
+Question of the part: where the real trust boundaries of an agent system live, and what should govern the right to act.
+
+- Chapter 3. Security perimeter and trust boundaries.
+- Chapter 4. Tool gateway, approval, and audit trail.
 
 ### Part III. Memory and Knowledge
 
-- Short-term vs long-term memory.
-- Retrieval, compaction, summaries, profile memory.
-- When memory belongs in the hot path and when it should be background work.
+Status: `Published`
+
+Question of the part: how to make memory useful without turning it into an uncontrolled source of errors and leakage.
+
+- Chapter 5. Why agents need memory and why it is dangerous.
+- Chapter 6. Short-term, long-term, and profile memory.
+- Chapter 7. Retrieval, compaction, and background updates.
 
 ### Part IV. Tools and Execution
 
-- Tool gateway and sandbox execution.
-- MCP and contract-based integration with external systems.
-- Idempotency, retries, rate limits, rollback boundaries.
+Status: `Published`
 
-What I am strengthening next in this part:
+Question of the part: how to turn tool use and execution into a governed contract rather than a chaotic collection of calls.
 
-- a practical taxonomy of tools: `data`, `action`, `orchestration`;
-- explicit run loop exit conditions;
-- criteria for when a single-agent loop should become manager pattern or handoffs.
+- Chapter 8. Execution model and tool catalog.
+- Chapter 9. Sandbox execution and MCP as an integration contract.
+- Chapter 10. Idempotency, retries, rate limits, and rollback boundaries.
+- [Practice. MCP and A2A as an integration layer](part-iv/practical-mcp-a2a.en.md)
 
 ### Part V. Reliability and Observability
 
-- Chapter 11: traces, spans, and structured events as raw evidence capture.
-- Chapter 12: SLOs for agent systems as health and risk budgets.
-- Chapter 13: offline evals, online evals, trace grading, and regression gates as judgment discipline.
-- Planned bridge page: Evidence Spine, which will connect request, policy, approval, traces, evals, incidents, and rollout into one artifact-level operating path.
+Status: `Published`
 
-Note: the core ideas in Part V are relatively stable, but Chapter 13 moves faster than Chapters 11 and 12.
+Question of the part: how not to guess about system behavior after the first incident, but instead capture run history, define budgets, and produce reviewable judgments.
 
-Editorial shape: Part V now works as one three-step block, capture -> health -> judgment. The next strengthening step is to make the connective evidence spine explicit so readers do not have to reconstruct it for themselves.
+- Chapter 11. Traces, spans, and structured events.
+- Chapter 12. SLO for agent systems.
+- Chapter 13. Offline evals, online evals, and regression gates.
+- [Evidence Spine: From request to rollout judgment](part-v/evidence-spine.en.md)
 
 ### Part VI. Organizational Model
 
-- Platform team vs product teams.
-- Templates, golden paths, shared gateways.
-- How not to turn an agent platform into a zoo.
+Status: `Published`
 
-Editorial shape: Part VI is the ownership bridge. It decides who owns the layers that Part V defined technically and that Part VII will embody in code.
+Question of the part: who owns the agent platform, who holds the quality bar, and how to avoid turning the organization into an agent zoo.
+
+- Chapter 14. Platform team and product teams.
+- Chapter 15. Golden paths, shared gateways, and anti-zoo patterns.
 
 ### Part VII. Reference Implementation
 
-- Base runtime.
-- Security policies.
-- Tool catalog.
-- Production rollout checklist.
+Status: `Published`
 
-Editorial shape: Part VII is the embodiment bridge, where architecture, policy, ownership, and rollout become runnable structure.
+Question of the part: how to assemble runnable structure so the architectural model becomes an executable system.
+
+- Chapter 16. Baseline runtime blueprint.
+- Chapter 17. Policy layer and capability catalog.
+- Chapter 18. Production rollout checklist.
 
 ### Part VIII. Agent System Lifecycle
 
+Status: `Published`
+
+Question of the part: how to live with an agent system for months, release changes, respond to failures, close old contours, and keep the whole estate under control.
+
 - Chapter 19. From SDLC to ADLC.
-- Chapter 20. Change Management for Agent Systems.
-- Chapter 21. Assurance Loop: Red Teaming, Detection, and Response.
-- Chapter 22. Supply Chain, Provenance, and Approved Artifacts.
-- Chapter 23. Retirement, Replacement, and End-of-Life Discipline.
-- Chapter 24. Agentic Misalignment and Insider Risk.
-- Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming.
-- Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry.
-- Chapter 27. Agent Inventory, Registry, and Sprawl Control.
+- Chapter 20. Change management for agent systems.
+- Chapter 21. Assurance loop: red teaming, detection, and response.
+- Chapter 22. Supply chain, provenance, and approved artifacts.
+- Chapter 23. Retirement, replacement, and end-of-life discipline.
+- Chapter 24. Agentic misalignment and insider risk.
+- Chapter 25. Behavioral evals, control evals, and automated red teaming.
+- Chapter 26. AI-native observability, inventory coverage, and detection-ready telemetry.
+- Chapter 27. Agent inventory, registry, and sprawl control.
 
-Status: Part VIII is now assembled as a lifecycle block reinforced with current topics around sabotage-like behavior, control-heavy evals, AI-native observability, and agent-estate governance.
+## Publishing Roadmap
 
-Note: this is the fastest-moving block in the book. The principles are stable, but tooling, benchmarks, vendor guidance, and threat patterns change more often.
+1. Tighten the entry surfaces and the opening act of the book.
+2. Keep compressing late-book overlap and maintain chapter-role separation.
+3. Strengthen the evidence base where the book makes its strongest claims.
+4. Finish the editorial pass on the Russian source manuscript.
+5. After the Russian layer stabilizes, sync the `.en` and `.zh` pages.
 
-Editorial shape: Part VIII now works as a late-book lifecycle contour: lifecycle frame -> release judgment -> response -> evidence backbone -> lifecycle closure -> adversarial pressure -> judgment -> evidence substrate -> accountability.
+## What Is Already Done
 
-## Publishing roadmap
+- The site skeleton on MkDocs and Material.
+- The full book structure and published core.
+- The runnable `agent_runtime_ref` reference runtime.
+- The reference layer with traces, evals, memory, approvals, and lifecycle schemas.
+- Practical case studies, policy templates, checklists, and the glossary.
 
-1. Freeze the architectural frame and vocabulary.
-2. Expand security into a dedicated layer, not a subsection.
-3. Add reference diagrams and operational checklists.
-4. Prepare a practical reference implementation.
-5. Add eval examples and policy configs.
-6. Make the end-to-end evidence spine explicit across runtime, policy, approval, trace, eval, incident, and rollout surfaces.
-7. Strengthen the book with decision frameworks: when to use an agent, when a workflow is enough, and when not to move into multi-agent too early.
-8. Preserve editorial role clarity so adjacent operational chapters do not collapse back into overlap.
-
-## What is already done
-
-- GitHub Pages site scaffold.
-- Book navigation and structure.
-- First part with the reference architecture.
-- The first set of practical case studies for production-like scenarios.
-- The first set of reusable policy templates and checklists by use case.
-- A new lifecycle part that links classical SDLC to ADLC.
-- Separate page on the publishing stack.
-- Source base for the next chapters.
-
-[Go to Part I](part-i/index.md){ .md-button .md-button--primary }
+[Go to Part I](part-i/index.en.md){ .md-button .md-button--primary }
