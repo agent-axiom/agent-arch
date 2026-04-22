@@ -91,7 +91,7 @@
 - 关闭或归档 capability-session state，并阻断不受控的 re-init；
 - 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
-- retire 已废弃的 verifier contracts，并保留解释既往 rollout 或 assurance decisions 所需的 evidence；
+- retire 已废弃的 verifier contracts，并保留解释既往 rollout 或 assurance decisions 所需的 evidence，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
 - 固化最终审计状态。
