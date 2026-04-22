@@ -85,7 +85,7 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 好的红队测试不只看模型回答，还要看整个执行路径。
 
-这也是 failed-run drills 应该被放进这里的原因。timeout、validation failure，或者上游依赖故障场景，不只是 rollout artifact，也是一种 assurance scenario，因为团队必须知道退化行为在压力下是否仍然可复核、可遏制、可归因。
+这也是 failed-run drills 应该被放进这里的原因。timeout、validation failure，或者上游依赖故障场景，不只是 rollout artifact，也是一种 assurance scenario，因为团队必须知道退化行为在压力下是否仍然可复核、可遏制、可归因，包括通过像 `failure_reason` 这样的明确字段。
 
 ## 4. 漏洞应该进入 backlog，而不是停留在感受里
 
@@ -153,7 +153,7 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 - 把发布波次切回更安全的配置；
 - 必要时直接停用有问题的路由。
 
-同一层 response layer 也必须把 runtime failure paths 当成独立的受治理事件来处理。Tool timeout、validation failure，或者上游依赖不可用，都不该被塞进笼统的 "run completed" 话术里。系统应该记录 failed run、保留 trace，并让 session-level evidence 中同时持续保留这个结果以及具体失败原因，这样 assurance 才能区分被拦下来的风险、基础设施退化，以及 runtime-control behavior 本身的失效。
+同一层 response layer 也必须把 runtime failure paths 当成独立的受治理事件来处理。Tool timeout、validation failure，或者上游依赖不可用，都不该被塞进笼统的 "run completed" 话术里。系统应该记录 failed run、保留 trace，并让 session-level evidence 中同时持续保留这个结果以及具体失败原因，例如放在 `failure_reason` 中，这样 assurance 才能区分被拦下来的风险、基础设施退化，以及 runtime-control behavior 本身的失效。
 
 这很关键，因为在智能体系统里，响应往往必须比完整的根因分析更快发生。
 
