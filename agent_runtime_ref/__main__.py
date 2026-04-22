@@ -732,6 +732,12 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         dataset_name=args.dataset_name,
         eval_specs=eval_specs,
     )
+    latest_failed_run = None
+    for session_id in reversed(session_ids):
+        runs = runtime.sessions.runs_for_session(session_id)
+        latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
+        if latest_failed_run is not None:
+            break
     return {
         "dataset_name": args.dataset_name,
         "output_path": str(output_path),
@@ -741,6 +747,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "traceable_failed_runs": sum(
             summary.traceable_failed_runs for summary in session_summaries
         ),
+        "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "sessions": session_ids,
     }
 

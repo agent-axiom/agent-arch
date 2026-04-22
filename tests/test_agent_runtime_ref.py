@@ -216,6 +216,7 @@ class TestFailurePaths:
         assert payload["session_count"] == 1
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["latest_failure_reason"] == "tool_timeout"
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
         assert session["summary"]["failed_runs"] == 1
@@ -1595,6 +1596,7 @@ class TestCli:
         assert payload["run_count"] == 5
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["latest_failure_reason"] == "tool_timeout"
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
