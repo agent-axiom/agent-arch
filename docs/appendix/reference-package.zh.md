@@ -97,11 +97,13 @@
 ```
 
 现在 `inspect-memory` 不只显示内容，也会显示 `provenance` 和 `revision`。
+`dump-events` 现在也会在 degraded-path drills 的 JSON 输出里返回 `failure_reason`。
 
 导出一次运行的结构化事件：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
+.venv/bin/python -m agent_runtime_ref dump-events --simulate-failure tool_timeout
 ```
 
 把事件导出为 JSONL，方便后续排查和回放：
