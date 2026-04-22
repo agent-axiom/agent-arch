@@ -94,7 +94,7 @@ Incident record почти всегда опирается на [trace schema](t
 - policy events показывают, что было разрешено;
 - approval events показывают, был ли human gate;
 - tool events показывают реальный side effect;
-- session summaries помогают понять, это единичный run или pattern.
+- session summaries помогают понять, это единичный run или pattern, и сохранились ли экспортированные свидетельства failed run, например `failure_reason`.
 
 ## 6. Как это связано с approvals и policy bundle
 
