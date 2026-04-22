@@ -127,7 +127,7 @@ A practical model usually looks like this:
 - tool changes -> contract tests, idempotency checks, approval path validation;
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior, trace and approval-record continuity;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
-- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, process/outcome grading consistency, and failure-attribution review;
+- verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, process/outcome grading consistency, failure-attribution review, and visibility of exported failed-run fields such as `failure_reason`;
 - orchestration-pattern changes -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks, and pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, and cost deltas.
 
@@ -143,7 +143,7 @@ These changes should usually pass through formal gates:
 - explicit policy review;
 - offline eval pass;
 - failed-run drill coverage for the affected path;
-- explicit confirmation that failed runs remain traceable through release identity, trace linkage, and session-level evidence;
+- explicit confirmation that failed runs remain traceable through release identity, trace linkage, session-level evidence, and exported fields such as `failure_reason`;
 - limited rollout;
 - monitoring during the first wave;
 - a clear rollback path.
