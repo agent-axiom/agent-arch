@@ -132,7 +132,7 @@ For an agent system, that matters because otherwise you cannot answer:
 - which retrieval corpus was active;
 - which prompt or routine changed between rollout waves.
 
-In other words, provenance in ADLC is not decorative. It is required for normal change management and incident investigation.
+In other words, provenance in ADLC is not decorative. It is required for normal change management and incident investigation, including recovery of exported failed-run evidence such as `failure_reason` when a release path degrades.
 
 ## 9. A good ADLC starts with intake and design review, not release
 
