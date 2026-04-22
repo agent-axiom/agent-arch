@@ -127,7 +127,7 @@ flowchart LR
 - 工具变更 -> 契约测试、幂等性检查、审批路径验证；
 - delegated authorization changes -> principal-binding checks、scope-visibility checks、revoke-during-pause behavior，以及 traces 与 approval records 的 continuity；
 - interruption-governance 变更 -> paused-run expiry checks、re-init behavior checks、telemetry linkage checks、approval-resume invariants；
-- verifier changes -> false-positive checks、false-negative checks、evidence-linkage checks、process/outcome grading consistency，以及 failure-attribution review；
+- verifier changes -> false-positive checks、false-negative checks、evidence-linkage checks、process/outcome grading consistency、failure-attribution review，以及导出的 failed-run 字段可见性，例如 `failure_reason`；
 - orchestration-pattern changes -> routing-class coverage、join-state checks、worker-boundary checks、review-point checks，以及 pattern-specific trace continuity；
 - 模型路由变更 -> 质量、延迟、安全、成本差值。
 
@@ -143,7 +143,7 @@ flowchart LR
 - explicit policy review；
 - offline eval pass；
 - failed-run drill coverage for the affected path；
-- 明确确认 failed runs 仍然能通过 release identity、trace linkage 与 session-level evidence 保持 traceable；
+- 明确确认 failed runs 仍然能通过 release identity、trace linkage、session-level evidence 与导出字段（例如 `failure_reason`）保持 traceable；
 - limited rollout；
 - first wave monitoring；
 - clear rollback path。
