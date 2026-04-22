@@ -124,7 +124,7 @@ The approval schema should live next to the trace schema through events such as:
 - `tool_succeeded`
 - `tool_failed`
 
-That is why a good approval flow should be reconstructible both from a dedicated audit record and from the trace.
+That is why a good approval flow should be reconstructible both from a dedicated audit record and from the trace. Where approval is part of a failed-run drill or degraded path, that reconstruction should still meet session-export evidence such as `failure_reason`, not stop at the approval record alone.
 
 ## 7. How this connects to the policy bundle
 
