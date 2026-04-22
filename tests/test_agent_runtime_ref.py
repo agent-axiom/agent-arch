@@ -1255,6 +1255,25 @@ class TestCli:
         assert exit_code == 0
         assert expected_key in payload
 
+    def test_cli_session_eval_summary_surfaces_failed_run_fields(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "session-eval-summary",
+                "--user-input",
+                "Please create a ticket for this issue.",
+                "--trace-prefix",
+                "trace-session-failure",
+                "--session-id",
+                "session-failure-summary-001",
+                "--simulate-failure",
+                "tool_timeout",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["failed_runs"] == 1
+        assert payload["traceable_failed_runs"] == 1
+        assert payload["latest_failure_reason"] == "tool_timeout"
+
     def test_cli_export_and_inspect_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
         export_code, export_payload = cli_json(
