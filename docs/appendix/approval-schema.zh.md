@@ -124,7 +124,7 @@ Approval schema 不应该独立存在，而应该和 trace schema 通过这些�
 - `tool_succeeded`
 - `tool_failed`
 
-这也是为什么好的 approval flow 应该既能从 audit record 还原，也能从 trace 还原。
+这也是为什么好的 approval flow 应该既能从 audit record 还原，也能从 trace 还原。如果 approval 出现在 failed-run drill 或其他 degraded path 里，这种还原还应该和 session export 对得上，包括 `failure_reason` 这样的字段，而不是只停留在 approval record 本身。
 
 ## 7. 它和 policy bundle 的关系
 
