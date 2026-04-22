@@ -120,7 +120,7 @@ Runtime извлекает контекст, возможно классифиц
 - были ли retries;
 - была ли pause в session;
 - редактировался ли output;
-- какая конкретная причина сбоя, например в поле `failure_reason`, сохранилась для degraded paths, и показывалась ли она в operator-facing summary вроде `latest_failure_reason` в момент review;
+- какая конкретная причина сбоя, например в поле `failure_reason`, сохранилась для degraded paths, показывалась ли она в operator-facing summary вроде `latest_failure_reason` в момент review и продолжал ли этот run учитываться как `traceable_failed_runs` на уровне session review;
 - где именно система остановилась до side effects.
 
 Без этого слоя дальнейшее judgment превращается не в реконструкцию, а в пересказ.
