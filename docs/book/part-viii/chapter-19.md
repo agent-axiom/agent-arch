@@ -132,7 +132,7 @@ Google Research хорошо показывает, что security assurance з�
 - какой retrieval corpus использовался;
 - какой prompt/routine изменился между двумя волнами rollout.
 
-То есть provenance в ADLC нужен не “для красоты”, а для нормального change management и incident investigation.
+То есть provenance в ADLC нужен не “для красоты”, а для нормального change management и incident investigation, включая восстановление экспортированных свидетельств failed run, например `failure_reason`, когда release path уходит в degraded state.
 
 ## 9. Хороший ADLC начинается не с релиза, а с intake и design review
 
