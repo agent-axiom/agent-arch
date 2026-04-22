@@ -142,7 +142,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 
 Поэтому у зрелой команды trace и rollout gate почти всегда стоят рядом.
 
-Видимость failed runs тоже должна доходить до release judgment. Если timeout-heavy tool paths, validation failure или сбои внешних зависимостей видны только как очередные неудачные demo runs, rollout gate не сможет отделить product risk от деградации рантайма. Зрелый gate должен видеть, что такие failed runs были специально проверены, что их traces и конкретные причины сбоев остались пригодны для review и что и happy path, и degraded path управлялись одной и той же release identity.
+Видимость failed runs тоже должна доходить до release judgment. Если timeout-heavy tool paths, validation failure или сбои внешних зависимостей видны только как очередные неудачные demo runs, rollout gate не сможет отделить product risk от деградации рантайма. Зрелый gate должен видеть, что такие failed runs были специально проверены, что их traces и конкретные причины сбоев, например в `failure_reason`, остались пригодны для review и что и happy path, и degraded path управлялись одной и той же release identity.
 
 ## 8. Как это связано со справочным пакетом
 
