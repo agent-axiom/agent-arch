@@ -94,7 +94,7 @@ Incident records almost always depend on the [trace schema](trace-schema.en.md):
 - policy events show what was allowed;
 - approval events show whether a human gate existed;
 - tool events show the real side effect;
-- session summaries help determine whether this was a single run or a broader pattern.
+- session summaries help determine whether this was a single run or a broader pattern, including whether exported failed-run evidence such as `failure_reason` stayed intact.
 
 ## 6. How this relates to approvals and the policy bundle
 
