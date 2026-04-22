@@ -34,6 +34,7 @@ python3 -m agent_runtime_ref inspect-approvals
 python3 -m agent_runtime_ref inspect-lifecycle
 python3 -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 python3 -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output /tmp/agent-runtime-failed-trace.jsonl
+python3 -m agent_runtime_ref export-session --simulate-failure tool_timeout --output /tmp/agent-runtime-failed-session.json
 python3 -m agent_runtime_ref export-eval-dataset --output /tmp/agent-runtime-eval.json
 python3 -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output /tmp/agent-runtime-failed-eval.json
 ```
@@ -43,6 +44,8 @@ The failure-injection flags are intentionally small, but useful for the book's f
 That same line now also reaches the rollout/change side of the package: the demo `change.yaml` includes a `failed_run_drill_checked` gate signal so degraded paths are part of release review, not an afterthought.
 
 The eval export now also includes a dedicated failed-run scenario, so the same reference package can demonstrate not only failed traces, but failed-run judgment artifacts and session summaries with `traceable_failed_runs`. That path is now covered by the local pytest suite too, so the package's degraded-path examples are executable rather than only described, and the same failed condition is surfaced consistently through `failure_reason` in session export and CLI output.
+
+The same is now true for `export-session`: a failed drill can be replayed directly into the exported session JSON, and the command summary surfaces `failed_runs`, `traceable_failed_runs`, and the latest failure reason instead of leaving the operator to inspect the file first.
 
 ## Tests
 
