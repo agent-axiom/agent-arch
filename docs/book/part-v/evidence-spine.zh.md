@@ -120,7 +120,7 @@ Runtime 会检索上下文，也许会先分类问题，并准备一个拟议中
 - 是否发生了 retries；
 - session 是否 pause 过；
 - 输出是否被 redacted；
-- degraded paths 的具体失败原因，例如 `failure_reason`，是否被保留下来；
+- degraded paths 的具体失败原因，例如 `failure_reason`，是否被保留下来，以及它在 review 当时是否仍出现在像 `latest_failure_reason` 这样的 operator-facing summary 里；
 - 系统究竟停在 side effects 之前的哪个位置。
 
 没有这一层，后面的 judgment 就会变成讲故事，而不是做重建。

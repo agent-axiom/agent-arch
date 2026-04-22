@@ -120,7 +120,7 @@ That is where [Chapter 11](chapter-11.en.md) becomes visible as the raw evidence
 - whether retries happened;
 - whether the session paused;
 - whether output was redacted;
-- which concrete failure reason, for example in `failure_reason`, remained visible for degraded paths;
+- which concrete failure reason, for example in `failure_reason`, remained visible for degraded paths, and whether operator-facing summaries such as `latest_failure_reason` still exposed it at review time;
 - where exactly the system stopped before side effects.
 
 Without that layer, later judgment becomes storytelling instead of reconstruction.

@@ -91,7 +91,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - close or archive capability-session state and block uncontrolled re-init;
 - disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
 - revoke delegated authorization paths and archive their final lineage;
-- retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions;
+- retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions, including exported failed-run fields such as `failure_reason` when they justified earlier judgment;
 - revoke egress access;
 - close principals, secrets, and connectors;
 - record the final audit state.
