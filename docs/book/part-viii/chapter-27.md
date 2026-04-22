@@ -36,11 +36,9 @@
 
 Именно это состояние и стоит называть `agent sprawl`.
 
-Registry layer нужен здесь прежде всего для одной вещи, чтобы весь estate был answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют, какой evidence его описывает и кто обязан действовать, если он начинает drift.
+Registry layer нужен здесь прежде всего для одной вещи: сделать весь estate answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют и кто обязан действовать, если система начинает drift.
 
-Именно эта answerability, главный центр тяжести этой главы. Registry не владеет evidence backbone и не владеет telemetry substrate. Он владеет привязкой governed entities к owners, states и accountability paths.
-
-В этом и состоит главный смысл этой главы. Она должна показать registry как слой accountability всего estate: место, где governed entities перестают быть размытым набором tools и assistants и превращаются в подотчетные production systems с owners, lifecycle state и явной ответственностью.
+Эта глава отвечает на один вопрос: **как inventory и registry превращают набор agent-like сущностей в подотчетный production estate**. Здесь registry важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability.
 
 ## 2. Почему sprawl опасен не только организационно
 
@@ -54,7 +52,7 @@ Registry layer нужен здесь прежде всего для одной �
 - observability coverage становится фрагментарной;
 - inventory drift делает release gates и incident review менее надежными.
 
-Microsoft прямо связывает это с security posture: неполная inventory и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection. [^ms-inventory][^ms-agentic-risk]
+Microsoft прямо связывает это с security posture: неполная inventory и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection. [^ms-inventory][^ms-agentic-risk] Та же базовая дисциплина хорошо совпадает с NIST SP 800-53: inventory должен быть полным, обновляемым и привязанным к accountability, иначе контроль быстро становится декоративным.[^nist-sp53]
 
 ## 3. Inventory и registry — не одно и то же
 
@@ -143,7 +141,7 @@ Registry отвечает на более строгий вопрос:
 
 ## 7. Sprawl часто начинается с “маленьких исключений”
 
-На практике zoo rarely starts as an official strategy.
+На практике sprawl почти никогда не начинается как официальная стратегия.
 
 Он начинается с маленьких послаблений:
 
@@ -166,7 +164,7 @@ Observability chapter уже показала, что inventory coverage — ч�
 
 Registry делает эту связь еще жестче:
 
-- traces можно enrich'ить registry metadata;
+- traces можно обогащать metadata из registry;
 - detections можно строить по lifecycle state;
 - incidents можно фильтровать по owner, risk tier и approval mode;
 - release evidence можно проверять не только по traces, но и по статусу registry record и verifier-evidence linkage.
@@ -179,7 +177,7 @@ Registry делает эту связь еще жестче:
 
 И это же граница с главой про provenance. Provenance отвечает, под какой governed version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
-## 8.1. Registry без continuous verification быстро становится красивым, но неточным
+## 8.1. Registry без непрерывной сверки быстро становится красивым, но неточным
 
 Здесь важно не переоценить сам реестр. Наличие registry еще не доказывает, что control layer действительно работает.
 
@@ -193,7 +191,7 @@ Registry делает эту связь еще жестче:
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
 
-Поэтому зрелый registry лучше мыслить не как статический каталог, а как continuously verified control surface.
+Поэтому зрелый registry лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
 
 ## 9. Как registry связан с approvals и policies
 
@@ -230,7 +228,7 @@ Registry не должен дублировать policy bundle или approval 
 
 Иначе estate может выглядеть governed, но при этом скрывать операционную неоднозначность.
 
-Поэтому registry, это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
+Поэтому registry - это не столько слой про release lineage, сколько слой operational answerability. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
 
 Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 
@@ -362,3 +360,4 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

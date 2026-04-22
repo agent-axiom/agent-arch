@@ -30,18 +30,9 @@
 
 > Как сделать так, чтобы похожее ухудшение не вернулось через две недели после очередного изменения prompt, policy или tool adapter?
 
-Вот здесь и начинается eval loop.
+Вот здесь и начинается eval loop. В этой книге его нужно читать узко и предметно: как **judgment layer**, которая решает, заслуживает ли change доверия до расширения rollout.
 
-И в этой главе eval loop стоит читать именно как judgment layer, а не как response layer. Его задача, производить reviewable decisions о качестве и regression risk до того, как rollout будет расширен или change получит доверие.
-
-Traces помогают понять, что произошло.
-SLO помогают определить, что считается здоровьем системы.
-
-Но остается главный вопрос: как системно улучшать качество и не выпускать regressions обратно в rollout?
-
-Роль eval loop в этой книге вполне конкретна: это слой, который производит reviewable judgments о качестве, поведении системы и regression risk. Дальше в книге отдельные главы покажут, как assurance отвечает на findings, как observability сохраняет evidence и как registry/governance распределяют accountability. Здесь же фокус остается на том, как команда решает, что именно было протестировано, что изменилось и заслуживает ли change доверия.
-
-Если тебе нужна связующая страница, которая привязывает eval judgment обратно к request, policy, approvals, traces, incidents и rollout, смотри [Сквозную цепочку доказательств](evidence-spine.md).
+Traces помогают понять, что произошло. SLO помогают определить, что считать здоровьем системы. Evals отвечают на следующий вопрос: можно ли снова доверять этому поведению после изменений.
 
 !!! info "Нужны схемы и артефакты?"
     Если тебе нужны не только объяснения, но и рабочие схемы, открой [схему трасс и каталог событий](../../appendix/trace-schema.md) и [схему eval-наборов и контракта на проверку](../../appendix/eval-schema.md).
@@ -262,6 +253,8 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Еще одна practical rule здесь очень важна: если согласованность judge с человеком низкая, первым шагом обычно должно быть не расширение dataset, а разбор disagreement cases и правка rubric или judge prompt.
 
+Это хорошо согласуется и с более широкой HCI-дисциплиной: когда AI system ошибается, человеку нужно понимать пределы автоматизации и иметь возможность корректировать поведение, а не слепо принимать auto-grading.[^amershi][^consensus]
+
 Один из полезных сигналов здесь - `Cohen's kappa`, но важнее самого числа обычно форма расхождения: где именно judge недопонимает policy violation, tool misuse или ambiguous outcome.
 
 Еще один частый источник самообмана: judge prompt, откалиброванный под сильную модель, может заметно хуже переноситься на более слабую. Поэтому при смене judge-model calibration стоит проверять заново, а не считать старый prompt автоматически переносимым.
@@ -481,3 +474,5 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Источники](../../appendix/sources.md)
 
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+[^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)

@@ -31,7 +31,7 @@
 
 Готовность к production отличается от “демо работает” одной вещью: ты должен понимать не только как система ведет себя в штатном сценарии, но и как она будет работать под давлением, при сбоях и в неприятных сценариях.
 
-Именно поэтому нужен чеклист раскатки.
+Для этого и нужен чеклист раскатки.
 
 !!! info "Нужны rollout-артефакты?"
     Если тебе нужен проверяемый слой поверх текста главы, смотри [схему change review и rollout gate](../../appendix/change-rollout-schema.md) и [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md).
@@ -54,6 +54,8 @@
 - команда поддержки получит лишний шум;
 - расследование начнется уже после того, как побочные эффекты произошли.
 
+Это не теоретический риск: даже пользовательский AI-сценарий может превратиться во внешний ущерб и обязательство компании, как показал кейс Moffatt v. Air Canada.[^moffatt]
+
 Хороший чеклист запуска нужен не для галочек, а чтобы вытаскивать скрытые дыры до инцидента, а не после.
 
 ## 3. Что обязательно должно быть закрыто перед первой волной rollout
@@ -70,7 +72,7 @@
 - operational readiness;
 - ownership and rollback plan.
 
-Если хоть один из этих блоков по-настоящему не закрыт, система уже потенциально уязвима к неприятным сюрпризам. Именно поэтому rollout нужно воспринимать как вопрос сходимости нескольких контуров, а не как один зеленый сигнал, принадлежащий одной команде.
+Если хоть один из этих блоков по-настоящему не закрыт, система уже потенциально уязвима к неприятным сюрпризам. Rollout здесь стоит воспринимать как вопрос сходимости нескольких контуров, а не как один зеленый сигнал, принадлежащий одной команде.
 
 Для нашего support-кейса это означает: прежде чем выпускать даже canary на 5%, команда должна быть готова ответить не только “работает ли happy path”, но и “что именно произойдет при частичном сбое”.
 
@@ -396,3 +398,6 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Часть VII. Эталонная реализация](index.md)
 - [Часть VIII. Жизненный цикл агентной системы](../part-viii/index.md)
 - [Источники](../../appendix/sources.md)
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)

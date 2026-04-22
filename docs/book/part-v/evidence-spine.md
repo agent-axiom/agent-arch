@@ -1,10 +1,8 @@
 # Сквозная цепочка доказательств: от запроса к решению о rollout
 
-Эта страница делает явным один структурный тезис: в production agent system нельзя воспринимать tracing, policy, approvals, evals, incident review и rollout judgment как просто соседние темы.
+В production agent system tracing, policy, approvals, evals, incident review и rollout judgment нельзя воспринимать как просто соседние темы. Для оператора это одна эксплуатационная запись.
 
-Это одна эксплуатационная запись.
-
-Если ты не можешь проследить один run через все эти слои, значит у тебя пока нет evidence spine. У тебя есть разрозненные controls.
+Если ты не можешь проследить один подозрительный run через все эти слои, значит у тебя пока нет evidence spine. У тебя есть разрозненные controls.
 
 ## Что ты должен уметь после этой страницы
 
@@ -23,9 +21,7 @@
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](../part-viii/chapter-22.md)
 
-Но между ними все еще нужна отдельная связующая страница, которая на одном явном walkthrough покажет, как один управляемый run остается читаемым от user request до rollout judgment.
-
-В этом и состоит задача этой страницы.
+Эта страница собирает их в один walkthrough, чтобы показать, как один управляемый run остается читаемым от user request до rollout judgment.
 
 ## Главный тезис
 
