@@ -91,7 +91,7 @@
 - закрыть или архивировать capability-session state и запретить uncontrolled re-init;
 - выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
 - отозвать delegated authorization paths и архивировать их final lineage;
-- вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions;
+- вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions, включая экспортируемые поля failed run вроде `failure_reason`, если на них опиралось прежнее суждение;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
 - зафиксировать final audit state.
