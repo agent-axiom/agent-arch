@@ -124,7 +124,7 @@ Approval schema живет не отдельно, а рядом с trace schema:
 - `tool_succeeded`
 - `tool_failed`
 
-Именно поэтому хороший approval flow должен легко восстанавливаться как из отдельного audit record, так и из trace.
+Именно поэтому хороший approval flow должен легко восстанавливаться как из отдельного audit record, так и из trace. Если approval участвует в failed-run drill или другом degraded path, такое восстановление должно сходиться и с session export, включая поле `failure_reason`, а не останавливаться только на approval record.
 
 ## 7. Как это связано с policy bundle
 
