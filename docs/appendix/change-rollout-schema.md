@@ -88,6 +88,8 @@ required_checks:
   - failed_run_traceability_verified
 blocking_findings: []
 decision: go
+# failed_run_traceability_verified означает, что для degraded paths
+# проверены traces, release identity и экспортируемые поля вроде failure_reason.
 decided_by:
   - runtime_owner
   - safety_owner
