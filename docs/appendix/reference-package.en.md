@@ -97,11 +97,13 @@ Inspect memory records:
 ```
 
 `inspect-memory` now shows not only content, but also `provenance` and `revision`.
+`dump-events` now also surfaces `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events --user-input "Please open a ticket for this issue."
+.venv/bin/python -m agent_runtime_ref dump-events --simulate-failure tool_timeout
 ```
 
 Export events to JSONL for later inspection and replay:
