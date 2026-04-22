@@ -143,7 +143,7 @@ These changes should usually pass through formal gates:
 - explicit policy review;
 - offline eval pass;
 - failed-run drill coverage for the affected path;
-- explicit confirmation that failed runs remain traceable through release identity, trace linkage, session-level evidence, exported fields such as `failure_reason`, and operator-facing summaries such as `latest_failure_reason`;
+- explicit confirmation that failed runs remain traceable through release identity, trace linkage, session-level evidence, exported fields such as `failure_reason`, operator-facing summaries such as `latest_failure_reason`, and `traceable_failed_runs` in session review;
 - limited rollout;
 - monitoring during the first wave;
 - a clear rollback path.
