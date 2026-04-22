@@ -124,7 +124,7 @@ Now [Chapter 11](chapter-11.en.md) becomes visible as the raw evidence layer. Th
 - whether retries happened;
 - whether a session paused;
 - whether output was redacted;
-- which concrete failure reason, for example `failure_reason`, was preserved for degraded paths;
+- which concrete failure reason, for example `failure_reason`, was preserved for degraded paths, and whether operator-facing summaries such as `latest_failure_reason` still exposed it at review time;
 - where the system stopped before side effects.
 
 Without this layer, later judgment becomes storytelling instead of reconstruction.
