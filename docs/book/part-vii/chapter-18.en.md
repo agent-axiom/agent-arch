@@ -159,7 +159,7 @@ Before production, you should be confident that:
 - SLO are defined;
 - offline evals pass;
 - failed-run drills were exercised for the affected high-risk paths;
-- the resulting failed paths stayed traceable through trace linkage, release identity, and session-level evidence;
+- the resulting failed paths stayed traceable through trace linkage, release identity, session-level evidence, and exported fields such as `failure_reason`;
 - verifier quality is reviewed where release evidence depends on graded judgments;
 - the regression gate is documented;
 - online monitoring is ready for the first rollout waves.
