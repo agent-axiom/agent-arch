@@ -668,25 +668,32 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
 
 def _export_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
-    runtime, _ = _run_session_sequence(
-        config_dir,
-        user_inputs=args.user_input,
-        tenant_id=args.tenant_id,
-        principal_id=args.principal_id,
-        session_id=args.session_id,
-        agent_id=args.agent_id,
-        trace_prefix=args.trace_prefix,
-    )
+    runtime = _build_runtime(config_dir)
+    for index, user_input in enumerate(args.user_input, start=1):
+        _run_on_runtime(
+            runtime,
+            user_input=user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=f"{args.trace_prefix}-{index:03d}",
+            session_id=args.session_id,
+            agent_id=args.agent_id,
+            simulate_failure=args.simulate_failure,
+        )
     output_path = runtime.sessions.export_session_json(
         args.session_id,
         output_path=args.output,
     )
     runs = runtime.sessions.runs_for_session(args.session_id)
     summary = summarize_session(args.session_id, runs)
+    latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
         "session_id": args.session_id,
         "output_path": str(output_path),
         "total_runs": summary.total_runs,
+        "failed_runs": summary.failed_runs,
+        "traceable_failed_runs": summary.traceable_failed_runs,
+        "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
 
@@ -697,6 +704,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
     session_ids: list[str] = []
     eval_specs: dict[str, dict[str, object]] = {}
+    session_summaries = []
     for scenario_name in selected_scenarios:
         session_suffix, user_inputs, trace_prefix, simulate_failure = EVAL_DATASET_SCENARIOS[
             scenario_name
@@ -715,6 +723,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
             )
         session_ids.append(session_id)
         eval_specs[session_id] = EVAL_DATASET_LABELS[scenario_name]
+        session_summaries.append(
+            summarize_session(session_id, runtime.sessions.runs_for_session(session_id))
+        )
     output_path = runtime.sessions.export_eval_dataset_json(
         tuple(session_ids),
         output_path=args.output,
@@ -725,9 +736,10 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "dataset_name": args.dataset_name,
         "output_path": str(output_path),
         "session_count": len(session_ids),
-        "run_count": sum(
-            summarize_session(session_id, runtime.sessions.runs_for_session(session_id)).total_runs
-            for session_id in session_ids
+        "run_count": sum(summary.total_runs for summary in session_summaries),
+        "failed_runs": sum(summary.failed_runs for summary in session_summaries),
+        "traceable_failed_runs": sum(
+            summary.traceable_failed_runs for summary in session_summaries
         ),
         "sessions": session_ids,
     }
@@ -1080,6 +1092,12 @@ def build_parser() -> argparse.ArgumentParser:
     export_session.add_argument("--session-id", default="session-demo-001")
     export_session.add_argument("--trace-prefix", default="trace-session")
     export_session.add_argument("--agent-id", default=None)
+    export_session.add_argument(
+        "--simulate-failure",
+        choices=("tool_timeout", "upstream_unavailable"),
+        default=None,
+        help="Inject a failure scenario into each exported run",
+    )
     export_session.add_argument(
         "--output",
         default="artifacts/session-demo-001.json",

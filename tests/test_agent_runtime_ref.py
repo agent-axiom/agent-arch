@@ -214,6 +214,8 @@ class TestFailurePaths:
         )
         assert code == 0
         assert payload["session_count"] == 1
+        assert payload["failed_runs"] == 1
+        assert payload["traceable_failed_runs"] == 1
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
         assert session["summary"]["failed_runs"] == 1
@@ -1548,6 +1550,31 @@ class TestCli:
         assert len(exported["runs"]) == 2
         assert "failure_reason" in exported["runs"][0]
 
+    def test_cli_export_session_surfaces_latest_failure_reason(
+        self,
+        cli_json,
+        tmp_path: Path,
+    ) -> None:
+        output_path = tmp_path / "failed-session.json"
+        exit_code, payload = cli_json(
+            [
+                "export-session",
+                "--user-input",
+                "Please create a ticket for this issue.",
+                "--simulate-failure",
+                "tool_timeout",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert exit_code == 0
+        assert payload["failed_runs"] == 1
+        assert payload["traceable_failed_runs"] == 1
+        assert payload["latest_failure_reason"] == "tool_timeout"
+        exported = json.loads(output_path.read_text(encoding="utf-8"))
+        assert exported["summary"]["failed_runs"] == 1
+        assert exported["runs"][0]["failure_reason"] == "tool_timeout"
+
     def test_cli_export_eval_dataset_writes_multi_session_json(
         self,
         cli_json,
@@ -1566,6 +1593,8 @@ class TestCli:
         assert payload["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert payload["session_count"] == 4
         assert payload["run_count"] == 5
+        assert payload["failed_runs"] == 1
+        assert payload["traceable_failed_runs"] == 1
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4

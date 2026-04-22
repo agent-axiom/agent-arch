@@ -152,6 +152,7 @@
 .venv/bin/python -m agent_runtime_ref session-eval-summary
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
+.venv/bin/python -m agent_runtime_ref export-session --simulate-failure tool_timeout --output artifacts/session-demo-failed.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output artifacts/eval-failed-run.json
 ```
@@ -159,10 +160,10 @@
 `inspect-session` показывает session-level историю запусков и связанные `trace_id`.
 `session-eval-summary` возвращает короткую operational summary по серии запусков, включая и failed runs, и `traceable_failed_runs`, а не сводя все обратно только к успехам и отказам.
 `session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`.
-`export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`.
+`export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, а в summary самой CLI-команды показывает `failed_runs`, `traceable_failed_runs` и `latest_failure_reason` для failed drills.
 
 Теперь рантайм также считает tool paths с неуспешным исходом, например validation failure, полноценным итогом запуска. Вместо того чтобы делать вид, будто run завершился успешно, он фиксирует failed run, пишет явное событие `run_failed` и сохраняет и в session export, и в CLI output этот статус вместе с конкретной причиной сбоя в поле `failure_reason`.
-`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario.
+`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario, а summary самой команды теперь тоже показывает агрегированные `failed_runs` и `traceable_failed_runs`.
 
 Этот eval path теперь полезно читать вместе с richer verifier contract из appendix: для long-horizon scenarios пакет должен помогать представить, как dataset со временем может нести `process_score`, `outcome_score`, `failure_attribution` и linked verifier evidence, а не только один тонкий verdict.
 

@@ -94,7 +94,7 @@ Incident record 几乎总是依赖 [Trace Schema 与 Event Catalog](trace-schema
 - policy events 说明什么被允许了；
 - approval events 说明是否存在 human gate；
 - tool events 说明真实的 side effect；
-- session summaries 帮助判断这是一次性 run 还是更大的模式。
+- session summaries 帮助判断这是一次性 run 还是更大的模式，也能看出像 `failure_reason` 这样的 failed-run 导出证据是否仍然完整。
 
 ## 6. 它与 approvals 和 policy bundle 的关系
 
