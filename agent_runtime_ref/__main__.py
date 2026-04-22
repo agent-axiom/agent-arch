@@ -704,6 +704,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
     session_ids: list[str] = []
     eval_specs: dict[str, dict[str, object]] = {}
+    session_summaries = []
     for scenario_name in selected_scenarios:
         session_suffix, user_inputs, trace_prefix, simulate_failure = EVAL_DATASET_SCENARIOS[
             scenario_name
@@ -722,6 +723,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
             )
         session_ids.append(session_id)
         eval_specs[session_id] = EVAL_DATASET_LABELS[scenario_name]
+        session_summaries.append(
+            summarize_session(session_id, runtime.sessions.runs_for_session(session_id))
+        )
     output_path = runtime.sessions.export_eval_dataset_json(
         tuple(session_ids),
         output_path=args.output,
@@ -732,9 +736,10 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "dataset_name": args.dataset_name,
         "output_path": str(output_path),
         "session_count": len(session_ids),
-        "run_count": sum(
-            summarize_session(session_id, runtime.sessions.runs_for_session(session_id)).total_runs
-            for session_id in session_ids
+        "run_count": sum(summary.total_runs for summary in session_summaries),
+        "failed_runs": sum(summary.failed_runs for summary in session_summaries),
+        "traceable_failed_runs": sum(
+            summary.traceable_failed_runs for summary in session_summaries
         ),
         "sessions": session_ids,
     }
