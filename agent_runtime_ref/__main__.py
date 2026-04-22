@@ -229,11 +229,14 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
+    session_payload = runtime.sessions._session_payload(args.session_id)
+    latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     return {
         "agent_id": runtime.agent.agent_id,
         "session_id": args.session_id,
         "result": result.output_text,
         "status": result.status,
+        "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": args.trace_id,
         "events": len(runtime.telemetry.events),
         "memory_records": len(runtime.memory.all()),
@@ -327,6 +330,8 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
+    session_payload = runtime.sessions._session_payload(args.session_id)
+    latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     output_path = runtime.telemetry.export_jsonl(
         args.output,
         redact_fields=tuple(args.redact_field),
@@ -334,6 +339,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
     return {
         "status": result.status,
         "result": result.output_text,
+        "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": args.trace_id,
         "event_count": len(runtime.telemetry.events),
         "output_path": str(output_path),

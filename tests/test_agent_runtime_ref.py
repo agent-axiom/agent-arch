@@ -161,6 +161,7 @@ class TestFailurePaths:
         )
         assert code == 0
         assert payload["status"] == "failed"
+        assert payload["failure_reason"] == "tool_timeout"
         assert "tool_timeout" in payload["result"]
 
     def test_cli_export_events_supports_failure_injection(self, cli_json, tmp_path: Path) -> None:
@@ -178,6 +179,7 @@ class TestFailurePaths:
         )
         assert code == 0
         assert payload["status"] == "failed"
+        assert payload["failure_reason"] == "upstream_unavailable"
         assert output_path.exists()
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
         assert any("run_failed" in line for line in lines)
