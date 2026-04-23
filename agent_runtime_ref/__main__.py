@@ -506,6 +506,11 @@ def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
         "system_id": plan.system_id,
         "ready": assessment.ready,
         "missing_steps": list(assessment.missing_steps),
+        "failed_run_archive_targets": [
+            target
+            for target in plan.archive_targets
+            if target in {"telemetry_jsonl", "session_exports", "approval_history"}
+        ],
         "replacement_mode": plan.replacement_mode,
     }
 
