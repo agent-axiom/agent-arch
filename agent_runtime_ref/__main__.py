@@ -527,6 +527,9 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
                 "requested_by": item.requested_by,
                 "reviewer": item.reviewer,
                 "reason": item.reason,
+                "authorization_mode": item.authorization_mode,
+                "delegated_principal_id": item.delegated_principal_id,
+                "delegated_scope": item.delegated_scope,
                 "status": item.status,
             }
             for item in approvals
