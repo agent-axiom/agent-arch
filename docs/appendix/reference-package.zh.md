@@ -160,7 +160,7 @@
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output artifacts/eval-failed-run.json
 ```
 
-`inspect-approvals` 现在也会显示 delegated authorization context，包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope`，因此 approval path review 可以直接和 session evidence 对照。
+`inspect-approvals` 现在也会显示 delegated authorization context，包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope`，因此 approval path review 可以直接和 session evidence 对照。`resolve-approval` 在做出决定后也会返回同样的上下文，这样 acting-identity lineage 不会在 closure 阶段丢失。
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入 failed drill，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `failure_reason`。
 `session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs 和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。现在也可以直接在这里注入 failed drill，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入 failed drill，而 replay summary 会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
