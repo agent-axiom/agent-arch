@@ -453,6 +453,9 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "artifacts": list(change.artifacts),
             "required_signals": list(change.required_signals),
             "approval_roles": list(change.approval_roles),
+            "failed_run_signals": [
+                signal for signal in change.required_signals if "failed_run" in signal
+            ],
         },
         "artifact_bundle": {
             "bundle_name": bundle.bundle_name,

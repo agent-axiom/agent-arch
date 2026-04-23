@@ -1469,6 +1469,7 @@ class TestCli:
         assert payload["retirement"]["system_id"] == "support-triage-ref"
         assert "expire_paused_runs" in payload["retirement"]["required_steps"]
         assert "stop_background_routes" in payload["retirement"]["required_steps"]
+        assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
