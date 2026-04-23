@@ -92,6 +92,7 @@ Inspect lifecycle artifacts that mirror Part VIII, including runtime-control lin
 ```
 
 `check-change` now also breaks out `missing_failed_run_signals`, so degraded-path rollout gaps stay visible as their own review category rather than hiding inside a generic missing-signal list.
+`check-retirement` now also surfaces `failed_run_archive_targets`, so operators can confirm which telemetry/session/approval records must survive retirement for later degraded-path review.
 
 Inspect memory records:
 
