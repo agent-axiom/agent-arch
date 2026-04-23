@@ -32,6 +32,7 @@ python3 -m agent_runtime_ref inspect-agent
 python3 -m agent_runtime_ref inspect-memory --memory-class profile
 python3 -m agent_runtime_ref inspect-approvals
 python3 -m agent_runtime_ref inspect-lifecycle
+python3 -m agent_runtime_ref inspect-session --simulate-failure tool_timeout
 python3 -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 python3 -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output /tmp/agent-runtime-failed-trace.jsonl
 python3 -m agent_runtime_ref session-eval-summary --simulate-failure tool_timeout
@@ -47,7 +48,7 @@ That same line now also reaches the rollout/change side of the package: the demo
 
 The eval export now also includes a dedicated failed-run scenario, so the same reference package can demonstrate not only failed traces, but failed-run judgment artifacts and session summaries with `traceable_failed_runs`. That path is now covered by the local pytest suite too, so the package's degraded-path examples are executable rather than only described, and the same failed condition is surfaced consistently through `failure_reason` in session export and CLI output. The `export-eval-dataset` command summary now also returns aggregate `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason`, so operators can confirm degraded-path coverage without opening the JSON artifact first.
 
-The same is now true for `session-eval-summary`, `session-replay`, and `export-session`: failed drills can be replayed directly into session-level inspection surfaces, and the command summaries surface `failed_runs`, `traceable_failed_runs`, and the latest failure reason instead of leaving the operator to inspect raw JSON first.
+The same is now true for `inspect-session`, `session-eval-summary`, `session-replay`, and `export-session`: failed drills can be replayed directly into session-level inspection surfaces, and the command summaries surface `failed_runs`, `traceable_failed_runs`, and the latest failure reason instead of leaving the operator to inspect raw JSON first.
 
 ## Tests
 
