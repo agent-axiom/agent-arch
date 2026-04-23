@@ -1470,6 +1470,7 @@ class TestCli:
         assert "expire_paused_runs" in payload["retirement"]["required_steps"]
         assert "stop_background_routes" in payload["retirement"]["required_steps"]
         assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]
+        assert "telemetry_jsonl" in payload["retirement"]["failed_run_archive_targets"]
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),

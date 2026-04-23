@@ -470,6 +470,11 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "triggers": list(retirement.triggers),
             "required_steps": list(retirement.required_steps),
             "archive_targets": list(retirement.archive_targets),
+            "failed_run_archive_targets": [
+                target
+                for target in retirement.archive_targets
+                if target in {"telemetry_jsonl", "session_exports", "approval_history"}
+            ],
         },
     }
 
