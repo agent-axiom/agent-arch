@@ -160,6 +160,7 @@
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output artifacts/eval-failed-run.json
 ```
 
+`inspect-approvals` теперь тоже показывает delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, так что review approval path можно напрямую сопоставить с session evidence.
 `inspect-session` показывает session-level историю запусков и связанные `trace_id`. Теперь туда тоже можно инъецировать failed drill, а summary сохраняет `failed_runs`, `traceable_failed_runs`, `latest_failure_reason` и per-run поле `failure_reason`.
 `session-eval-summary` возвращает короткую operational summary по серии запусков, включая и failed runs, и `traceable_failed_runs`, а не сводя все обратно только к успехам и отказам. Теперь туда можно напрямую инъецировать failed drill, а summary сразу показывает и `latest_failure_reason` для быстрого разбора.
 `session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`. Теперь туда тоже можно инъецировать failed drill, а replay summary сохраняет `failed_runs`, `traceable_failed_runs` и `latest_failure_reason` вместе с per-run полем `failure_reason`.
