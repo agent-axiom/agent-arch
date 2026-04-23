@@ -1538,6 +1538,22 @@ class TestCli:
         assert exit_code == 0
         assert payload["status"] == "approved"
         assert payload["resolution_note"] == "manager approved demo request"
+        assert payload["authorization_mode"] == "platform_owned"
+
+    def test_cli_resolve_approval_surfaces_delegated_auth_context(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "resolve-approval",
+                "--decision",
+                "approved",
+                "--note",
+                "manager approved delegated request",
+            ],
+        )
+        assert exit_code == 0
+        assert "authorization_mode" in payload
+        assert "delegated_principal_id" in payload
+        assert "delegated_scope" in payload
 
     def test_cli_session_replay_runs_multiple_inputs(self, cli_json) -> None:
         exit_code, payload = cli_json(
