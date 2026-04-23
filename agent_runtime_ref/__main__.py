@@ -486,6 +486,9 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         "change_id": change.change_id,
         "ready": assessment.ready,
         "missing_signals": list(assessment.missing_signals),
+        "missing_failed_run_signals": [
+            signal for signal in assessment.missing_signals if "failed_run" in signal
+        ],
         "rollout_strategy": change.rollout_strategy,
         "risk_level": change.risk_level,
     }
