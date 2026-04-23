@@ -1500,6 +1500,30 @@ class TestCli:
         assert exit_code == 0
         assert payload["count"] >= 1
         assert payload["approvals"][0]["status"] == "pending"
+        assert payload["approvals"][0]["authorization_mode"] == "platform_owned"
+
+    def test_cli_inspect_approvals_surfaces_delegated_auth_context(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "inspect-approvals",
+                "--tenant-id",
+                "tenant-acme",
+                "--principal-id",
+                "manager-1",
+                "--session-id",
+                "session-approval-authz-001",
+                "--trace-id",
+                "trace-approval-authz-001",
+                "--agent-id",
+                "support-triage-ref",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["count"] >= 1
+        approval = payload["approvals"][0]
+        assert "authorization_mode" in approval
+        assert "delegated_principal_id" in approval
+        assert "delegated_scope" in approval
 
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
