@@ -1532,6 +1532,26 @@ class TestCli:
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
         assert payload["runs"][1]["trace_id"] == "trace-session-002"
 
+    def test_cli_session_replay_surfaces_failed_run_fields(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "session-replay",
+                "--user-input",
+                "Please create a ticket for this issue.",
+                "--simulate-failure",
+                "tool_timeout",
+                "--session-id",
+                "session-replay-failure-001",
+                "--trace-prefix",
+                "trace-replay-failure",
+            ],
+        )
+        assert exit_code == 0
+        assert payload["summary"]["failed_runs"] == 1
+        assert payload["summary"]["traceable_failed_runs"] == 1
+        assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
+        assert payload["runs"][0]["failure_reason"] == "tool_timeout"
+
     def test_cli_inspect_session_with_multiple_inputs_returns_both_runs(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
