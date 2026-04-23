@@ -82,7 +82,7 @@ Inspect the agent identity and approved inventory:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage, release identity, and failed-run gate signals:
+Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage, release identity, failed-run gate signals, and explicit failed-run gap reporting:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -90,6 +90,8 @@ Inspect lifecycle artifacts that mirror Part VIII, including runtime-control lin
 .venv/bin/python -m agent_runtime_ref check-change --signal failed_run_drill_checked=false
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
+
+`check-change` now also breaks out `missing_failed_run_signals`, so degraded-path rollout gaps stay visible as their own review category rather than hiding inside a generic missing-signal list.
 
 Inspect memory records:
 
