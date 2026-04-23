@@ -1509,6 +1509,16 @@ class TestCli:
         assert "failed_run_drill_checked" in payload["missing_signals"]
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
 
+    def test_cli_check_controls_surfaces_failed_run_related_controls(
+        self,
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(["check-controls", "--signal", "policy_traces_present=false"])
+        assert exit_code == 0
+        assert not payload["healthy"]
+        assert "policy_traces_present" in payload["missing_controls"]
+        assert payload["failed_run_controls"] == ["policy_traces_present"]
+
     def test_cli_check_retirement_surfaces_failed_run_archive_targets(
         self,
         cli_json,
