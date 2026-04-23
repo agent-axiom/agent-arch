@@ -92,6 +92,7 @@
 ```
 
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样 degraded-path rollout review 的缺口就不会被埋在普通 missing signals 列表里。
+`check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些 telemetry/session/approval records 必须在 retirement 之后继续保留下来，供后续 degraded-path review 使用。
 
 查看记忆记录：
 
