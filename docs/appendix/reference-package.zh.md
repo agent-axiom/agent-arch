@@ -150,6 +150,7 @@
 .venv/bin/python -m agent_runtime_ref resolve-approval --decision approved --note "manager approved demo request"
 .venv/bin/python -m agent_runtime_ref inspect-session
 .venv/bin/python -m agent_runtime_ref session-eval-summary
+.venv/bin/python -m agent_runtime_ref session-eval-summary --simulate-failure tool_timeout
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-session --simulate-failure tool_timeout --output artifacts/session-demo-failed.json
@@ -158,7 +159,7 @@
 ```
 
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。
-`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs 和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。
+`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs 和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。现在也可以直接在这里注入 failed drill，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示 failed drills 的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
