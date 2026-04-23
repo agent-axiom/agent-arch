@@ -82,11 +82,12 @@ Inspect the agent identity and approved inventory:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage and release identity:
+Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage, release identity, and failed-run gate signals:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
 .venv/bin/python -m agent_runtime_ref check-change --signal offline_eval_passed=false
+.venv/bin/python -m agent_runtime_ref check-change --signal failed_run_drill_checked=false
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
