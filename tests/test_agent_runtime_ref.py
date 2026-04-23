@@ -1568,6 +1568,26 @@ class TestCli:
         assert "waiting for human approval" in payload["runs"][0]["output_text"]
         assert "Retrieved profile hint" in payload["runs"][1]["output_text"]
 
+    def test_cli_inspect_session_surfaces_failed_run_fields(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "inspect-session",
+                "--user-input",
+                "Please create a ticket for this issue.",
+                "--simulate-failure",
+                "tool_timeout",
+                "--session-id",
+                "session-inspect-failure-001",
+                "--trace-prefix",
+                "trace-inspect-failure",
+            ],
+        )
+        assert exit_code == 0
+        assert payload["summary"]["failed_runs"] == 1
+        assert payload["summary"]["traceable_failed_runs"] == 1
+        assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
+        assert payload["runs"][0]["failure_reason"] == "tool_timeout"
+
     def test_cli_export_session_writes_structured_json(
         self,
         cli_json,
