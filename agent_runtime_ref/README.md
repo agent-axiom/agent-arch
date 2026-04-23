@@ -33,6 +33,7 @@ python3 -m agent_runtime_ref inspect-memory --memory-class profile
 python3 -m agent_runtime_ref inspect-approvals
 python3 -m agent_runtime_ref inspect-lifecycle
 python3 -m agent_runtime_ref inspect-session --simulate-failure tool_timeout
+python3 -m agent_runtime_ref check-change --signal failed_run_drill_checked=false
 python3 -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 python3 -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output /tmp/agent-runtime-failed-trace.jsonl
 python3 -m agent_runtime_ref session-eval-summary --simulate-failure tool_timeout
@@ -44,7 +45,7 @@ python3 -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout -
 
 The failure-injection flags are intentionally small, but useful for the book's failure-rich runtime examples: they let the reference runtime execute explicit failed runs, emit `run_failed` trace events, and keep the concrete failure reason visible in runtime output and CLI JSON as `failure_reason` instead of collapsing everything into happy-path or approval-wait scenarios.
 
-That same line now also reaches the rollout/change side of the package: the demo `change.yaml` includes a `failed_run_drill_checked` gate signal so degraded paths are part of release review, not an afterthought.
+That same line now also reaches the rollout/change side of the package: the demo `change.yaml` includes a `failed_run_drill_checked` gate signal so degraded paths are part of release review, not an afterthought. `inspect-lifecycle` now surfaces those failed-run gate signals directly, so operators can see the lifecycle contract without opening the YAML first.
 
 The eval export now also includes a dedicated failed-run scenario, so the same reference package can demonstrate not only failed traces, but failed-run judgment artifacts and session summaries with `traceable_failed_runs`. That path is now covered by the local pytest suite too, so the package's degraded-path examples are executable rather than only described, and the same failed condition is surfaced consistently through `failure_reason` in session export and CLI output. The `export-eval-dataset` command summary now also returns aggregate `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason`, so operators can confirm degraded-path coverage without opening the JSON artifact first.
 
