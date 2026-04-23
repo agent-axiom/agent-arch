@@ -152,6 +152,7 @@ Inspect and resolve demo approval requests:
 .venv/bin/python -m agent_runtime_ref session-eval-summary
 .venv/bin/python -m agent_runtime_ref session-eval-summary --simulate-failure tool_timeout
 .venv/bin/python -m agent_runtime_ref session-replay --user-input "Please create a ticket for this onboarding issue." --user-input "What language preference do you remember?"
+.venv/bin/python -m agent_runtime_ref session-replay --simulate-failure tool_timeout --user-input "Please create a ticket for this issue."
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-session --simulate-failure tool_timeout --output artifacts/session-demo-failed.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
@@ -160,7 +161,7 @@ Inspect and resolve demo approval requests:
 
 `inspect-session` shows session-level run history and the linked `trace_id` values.
 `session-eval-summary` returns a compact operational summary for the run series, including failed runs and `traceable_failed_runs` rather than collapsing everything into success-versus-denied. Failed drills can now be injected there directly too, and the summary surfaces `latest_failure_reason` for quick review.
-`session-replay` lets you execute multiple related requests inside one `session_id`.
+`session-replay` lets you execute multiple related requests inside one `session_id`. Failed drills can now be injected there too, and the replay summary preserves `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` alongside per-run `failure_reason`.
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, and the command summary now surfaces `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` for failed drills.
 
 The runtime now also treats failure-like tool paths, such as validation failures, as first-class run outcomes. Instead of pretending the run succeeded, it records a failed run, emits an explicit `run_failed` event, and keeps both that status and the concrete failure reason visible as `failure_reason` in session export and CLI output.
