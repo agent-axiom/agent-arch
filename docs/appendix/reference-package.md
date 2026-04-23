@@ -91,6 +91,7 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
+`inspect-lifecycle` теперь тоже показывает `failed_run_archive_targets`, так что оператор видит retention-сторону degraded-path governance прямо в lifecycle summary.
 `check-change` теперь также отдельно показывает `missing_failed_run_signals`, чтобы пробелы degraded-path rollout review не прятались внутри общего списка missing signals.
 `check-retirement` теперь тоже показывает `failed_run_archive_targets`, чтобы оператор видел, какие telemetry/session/approval records должны пережить retirement ради последующего degraded-path review.
 
