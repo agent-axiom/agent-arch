@@ -1496,6 +1496,18 @@ class TestCli:
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
         assert expected_missing in missing
 
+    def test_cli_check_change_surfaces_failed_run_specific_missing_signals(
+        self,
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(
+            ["check-change", "--signal", "failed_run_drill_checked=false"]
+        )
+        assert exit_code == 0
+        assert not payload["ready"]
+        assert "failed_run_drill_checked" in payload["missing_signals"]
+        assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
+
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])
         assert exit_code == 0
