@@ -94,6 +94,7 @@
 `inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`，这样操作员在 lifecycle summary 里就能直接看到 degraded-path governance 的 retention 侧面。
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样 degraded-path rollout review 的缺口就不会被埋在普通 missing signals 列表里。
 `check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些 telemetry/session/approval records 必须在 retirement 之后继续保留下来，供后续 degraded-path review 使用。
+`check-controls` 现在也会单独给出 `failed_run_controls`，这样 trace/provenance 相关缺口就能和普通 control hygiene 分开审阅。
 
 查看记忆记录：
 
