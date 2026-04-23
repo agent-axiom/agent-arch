@@ -91,6 +91,8 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
+`check-change` 现在也会单独给出 `missing_failed_run_signals`，这样 degraded-path rollout review 的缺口就不会被埋在普通 missing signals 列表里。
+
 查看记忆记录：
 
 ```bash
