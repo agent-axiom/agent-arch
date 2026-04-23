@@ -566,20 +566,26 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
 
 def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
-    runtime, results = _run_session_sequence(
-        config_dir,
-        user_inputs=args.user_input,
-        tenant_id=args.tenant_id,
-        principal_id=args.principal_id,
-        session_id=args.session_id,
-        agent_id=args.agent_id,
-        trace_prefix=args.trace_prefix,
-    )
+    runtime = _build_runtime(config_dir)
+    results = []
+    for index, user_input in enumerate(args.user_input, start=1):
+        _, result = _run_on_runtime(
+            runtime,
+            user_input=user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=f"{args.trace_prefix}-{index:03d}",
+            session_id=args.session_id,
+            agent_id=args.agent_id,
+            simulate_failure=args.simulate_failure,
+        )
+        results.append(result)
     session = runtime.sessions.get_session(args.session_id)
     runs = runtime.sessions.runs_for_session(args.session_id)
     if session is None:
         raise ValueError(f"Session not found: {args.session_id}")
     summary = summarize_session(args.session_id, runs)
+    latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
         "session_id": session.session_id,
         "tenant_id": session.tenant_id,
@@ -591,6 +597,9 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             "success_runs": summary.success_runs,
             "approval_wait_runs": summary.approval_wait_runs,
             "denied_runs": summary.denied_runs,
+            "failed_runs": summary.failed_runs,
+            "traceable_failed_runs": summary.traceable_failed_runs,
+            "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
         },
@@ -600,6 +609,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "status": run.status,
                 "user_input": run.user_input,
                 "output_text": run.output_text,
+                "failure_reason": run.failure_reason,
             }
             for run in runs
         ],
@@ -1054,6 +1064,12 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_session.add_argument("--session-id", default="session-demo-001")
     inspect_session.add_argument("--trace-prefix", default="trace-session")
     inspect_session.add_argument("--agent-id", default=None)
+    inspect_session.add_argument(
+        "--simulate-failure",
+        choices=("tool_timeout", "upstream_unavailable"),
+        default=None,
+        help="Inject a failure scenario into each inspected run",
+    )
 
     session_eval = subparsers.add_parser(
         "session-eval-summary",
