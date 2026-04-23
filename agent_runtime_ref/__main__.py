@@ -427,11 +427,17 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
         observed,
         inventory_drift=inventory_drift,
     )
+    failed_run_control_names = ("policy_traces_present", "memory_provenance_enforced")
     return {
         "healthy": assessment.healthy,
         "missing_controls": list(assessment.missing_controls),
         "failed_run_controls": [
-            control for control in assessment.missing_controls if "trace" in control or "provenance" in control
+            control for control in assessment.missing_controls if control in failed_run_control_names
+        ],
+        "preserved_failed_run_controls": [
+            control
+            for control in failed_run_control_names
+            if control not in assessment.missing_controls
         ],
         "blocking_findings": list(assessment.blocking_findings),
         "inventory_drift": {
