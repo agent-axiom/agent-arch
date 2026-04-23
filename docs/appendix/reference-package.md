@@ -91,6 +91,8 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
+`check-change` теперь также отдельно показывает `missing_failed_run_signals`, чтобы пробелы degraded-path rollout review не прятались внутри общего списка missing signals.
+
 Просмотр записей памяти:
 
 ```bash
