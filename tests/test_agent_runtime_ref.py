@@ -1489,6 +1489,7 @@ class TestCli:
         assert payload["controls"]["failed_run_control_source"] == "runtime-controls.yaml"
         assert payload["controls"]["failed_run_control_last_review"] == "release-readiness"
         assert payload["controls"]["failed_run_control_next_review"] == "rollout-gate"
+        assert payload["controls"]["failed_run_control_release_binding"] == "required"
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),

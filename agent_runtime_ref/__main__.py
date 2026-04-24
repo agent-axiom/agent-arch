@@ -503,6 +503,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "failed_run_control_source": "runtime-controls.yaml",
             "failed_run_control_last_review": "release-readiness",
             "failed_run_control_next_review": "rollout-gate",
+            "failed_run_control_release_binding": "required",
         },
     }
 
