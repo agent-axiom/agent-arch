@@ -497,6 +497,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             ],
             "failed_run_control_count": 2,
             "failed_run_control_summary": "2 failed-run control expectations across traceability and memory provenance",
+            "failed_run_control_status": "covered",
         },
     }
 
