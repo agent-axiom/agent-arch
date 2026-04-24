@@ -486,6 +486,12 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
                 if target in {"telemetry_jsonl", "session_exports", "approval_history"}
             ],
         },
+        "controls": {
+            "failed_run_control_expectations": [
+                "policy_traces_present",
+                "memory_provenance_enforced",
+            ]
+        },
     }
 
 
