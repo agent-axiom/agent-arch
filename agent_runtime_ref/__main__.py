@@ -490,7 +490,11 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "failed_run_control_expectations": [
                 "policy_traces_present",
                 "memory_provenance_enforced",
-            ]
+            ],
+            "failed_run_control_domains": [
+                "traceability",
+                "memory_provenance",
+            ],
         },
     }
 
