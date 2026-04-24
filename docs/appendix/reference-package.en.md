@@ -86,6 +86,7 @@ Inspect lifecycle artifacts that mirror Part VIII, including runtime-control lin
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
+.venv/bin/python -m agent_runtime_ref check-controls --signal policy_traces_present=false
 .venv/bin/python -m agent_runtime_ref check-change --signal offline_eval_passed=false
 .venv/bin/python -m agent_runtime_ref check-change --signal failed_run_drill_checked=false
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
