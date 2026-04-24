@@ -1485,6 +1485,7 @@ class TestCli:
         )
         assert payload["controls"]["failed_run_control_status"] == "covered"
         assert payload["controls"]["failed_run_control_review_required"] is True
+        assert payload["controls"]["failed_run_control_owner"] == "runtime-governance"
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
