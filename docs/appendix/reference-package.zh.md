@@ -92,7 +92,7 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status` 和 `controls.failed_run_control_review_required`，这样操作员在同一个 lifecycle summary 里就能同时看到 degraded-path governance 的 retention 侧面与 trace/provenance control 侧面。
+`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required` 和 `controls.failed_run_control_owner`，这样操作员在同一个 lifecycle summary 里就能同时看到 degraded-path governance 的 retention 侧面与 trace/provenance control 侧面。
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样 degraded-path rollout review 的缺口就不会被埋在普通 missing signals 列表里。
 `check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些 telemetry/session/approval records 必须在 retirement 之后继续保留下来，供后续 degraded-path review 使用。
 `check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样 trace/provenance 相关缺口就能和普通 control hygiene 分开审阅。
