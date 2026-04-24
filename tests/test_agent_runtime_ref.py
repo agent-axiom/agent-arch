@@ -1479,6 +1479,7 @@ class TestCli:
             "traceability",
             "memory_provenance",
         ]
+        assert payload["controls"]["failed_run_control_count"] == 2
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
