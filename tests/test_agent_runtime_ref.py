@@ -1519,6 +1519,7 @@ class TestCli:
         assert "policy_traces_present" in payload["missing_controls"]
         assert payload["failed_run_controls"] == ["policy_traces_present"]
         assert "memory_provenance_enforced" in payload["preserved_failed_run_controls"]
+        assert payload["failed_run_controls_healthy"] is False
 
     def test_cli_check_retirement_surfaces_failed_run_archive_targets(
         self,
