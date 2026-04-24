@@ -1483,6 +1483,7 @@ class TestCli:
         assert payload["controls"]["failed_run_control_summary"] == (
             "2 failed-run control expectations across traceability and memory provenance"
         )
+        assert payload["controls"]["failed_run_control_status"] == "covered"
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
