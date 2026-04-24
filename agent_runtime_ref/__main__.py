@@ -495,6 +495,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
                 "traceability",
                 "memory_provenance",
             ],
+            "failed_run_control_count": 2,
         },
     }
 
