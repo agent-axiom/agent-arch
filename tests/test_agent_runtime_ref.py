@@ -1475,6 +1475,10 @@ class TestCli:
             "policy_traces_present",
             "memory_provenance_enforced",
         ]
+        assert payload["controls"]["failed_run_control_domains"] == [
+            "traceability",
+            "memory_provenance",
+        ]
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
