@@ -26,6 +26,7 @@
 
 - Дмитрий Викулин, [«Архитектура надежных AI-агентов»](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
