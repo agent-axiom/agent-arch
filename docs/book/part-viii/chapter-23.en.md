@@ -22,6 +22,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - orchestration-pattern lineage and worker-boundary decisions;
 - delegated authorization lineage and revoke state;
 - verifier-contract lineage and evidence-retention obligations;
+- handoff-artifact lineage across context resets and role handoffs;[^anthropic-harness]
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -92,6 +93,7 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
 - revoke delegated authorization paths and archive their final lineage;
 - retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions, including exported failed-run fields such as `failure_reason` when they justified earlier judgment;
+- archive handoff artifacts that carried sprint scope, evaluator critique, or reset-boundary decisions for long-running work, when those artifacts affected what the retired system was allowed to do;
 - revoke egress access;
 - close principals, secrets, and connectors;
 - record the final audit state.
@@ -309,3 +311,5 @@ That means this part can now serve not only as architecture explanation, but als
 - [Chapter 27. Agent Inventory, Registry, and Sprawl Control](chapter-27.en.md)
 - [Part VIII. Agent System Lifecycle](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
