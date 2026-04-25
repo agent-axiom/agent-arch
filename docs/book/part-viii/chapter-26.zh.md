@@ -1,4 +1,4 @@
-# 第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry
+# 第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测
 
 !!! info "时效说明"
     本章内容截至 2026 年 4 月 11 日。
