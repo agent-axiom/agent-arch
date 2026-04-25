@@ -16,7 +16,8 @@ Production-grade agent systems have several artifact classes that should not liv
 - operational approvals and lifecycle decisions;
 - capability-session interruption, expiry, and re-initialization rules when those are part of the runtime contract;
 - delegated authorization rules, principal-binding assumptions, and revoke behavior when those are part of the runtime contract;
-- verifier contracts, grading rubrics, and evidence-linkage rules when release or assurance depends on verifier output.
+- verifier contracts, grading rubrics, and evidence-linkage rules when release or assurance depends on verifier output;
+- structured handoff artifacts when long-running work crosses context-reset or role-handoff boundaries.
 
 Without them, change management turns into oral tradition. Incident review then becomes an exercise in reconstructing who "probably changed the policy or routing."
 
