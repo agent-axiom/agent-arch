@@ -190,7 +190,7 @@
 
 Это еще и полезный якорь для verifier-aware governance: если rollout или assurance зависят от eval output, runtime должен сохранять достаточно связей между trace, session и artifacts, чтобы объяснять не только что произошло, но и почему verifier оценил run именно так.
 
-Это должно тянуться и в lifecycle handling. Governed reference runtime должен уметь объяснять, какой verifier contract и какая идентичность выпуска были активны для релиза, а также какие evidence еще нужно хранить после retirement, чтобы обосновывать прежние rollout или assurance decisions.
+Это должно тянуться и в lifecycle handling. Governed reference runtime должен уметь объяснять, какой verifier contract и какая идентичность выпуска были активны для релиза, какие evidence еще нужно хранить после retirement, чтобы обосновывать прежние rollout или assurance decisions, и какие структурированные handoff artifacts должны пережить context reset или role handoff, если именно они определяли, что retiring system было разрешено делать.
 
 Теперь в нем отражен и четвертый operational concern: delegated authorization context, под которым вообще исполнялось действие. Этот контекст теперь появляется в run telemetry, approval records и session export, чтобы runtime мог объяснять не только что произошло, но и под чьей delegated identity и scope это произошло.
 
