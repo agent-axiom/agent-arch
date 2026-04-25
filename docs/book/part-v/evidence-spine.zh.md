@@ -59,7 +59,8 @@ Evidence spine 是一种最小但受治理的连续性，它能让 operator 不�
 - `change_id`；
 - `session_id`；
 - `incident_id`；
-- `verifier_contract_id` 或 verifier contract bundles 的 lineage。
+- `verifier_contract_id` 或 verifier contract bundles 的 lineage；
+- `handoff_artifact_id`，当长时间运行的工作跨越 context reset 或角色交接边界时尤其如此。[^anthropic-harness]
 
 重点不在术语是否完美，而在这些链接是否可复核。
 
@@ -238,3 +239,5 @@ latest_rollout_decision: pause-canary
 - [第 20 章：智能体系统的 Change Management](../part-viii/chapter-20.zh.md)
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](../part-viii/chapter-21.zh.md)
 - [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](../part-viii/chapter-22.zh.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
