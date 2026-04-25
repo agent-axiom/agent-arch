@@ -95,12 +95,12 @@ The signs in favor of an ordinary workflow look different:
 
 This is the most useful short frame to start with.
 
-
-| If the task looks like this | Start with this | Why |
-| --- | --- | --- |
-| The path is mostly known in advance | `workflow` | Cheaper to operate, easier to test, easier to explain |
-| The system needs a constrained choice of next step or tool | `single-agent loop` | Adds flexibility without early complexity explosion |
-| There are independent subtasks, different contexts, and different owners | `multi-agent` | Separates responsibility and context |
+!!! info "Fast decision frame"
+    | If the task looks like this | Start with this | Why |
+    | --- | --- | --- |
+    | The path is mostly known in advance | `workflow` | Cheaper to operate, easier to test, easier to explain |
+    | The system needs a constrained choice of next step or tool | `single-agent loop` | Adds flexibility without early complexity explosion |
+    | There are independent subtasks, different contexts, and different owners | `multi-agent` | Separates responsibility and context |
 
 There is one more practical rule:
 
