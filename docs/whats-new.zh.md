@@ -10,8 +10,7 @@ _更新于 2026 年 4 月 18 日。_
 
 现在全书已经包含 `SDLC -> ADLC`、change management、assurance loop、supply chain、retirement、misalignment、behavioral evals、AI-native observability 与 inventory control 的完整内容。
 
-为什么这很重要：
-- 现在这本书覆盖的不只是架构与上线，还覆盖了智能体系统发布后的生命周期管理。
+为什么这很重要：现在这本书覆盖的不只是架构与上线，还覆盖了智能体系统发布后的生命周期管理。
 
 ### 第一到第五部分的 production contour 更完整了
 
@@ -23,8 +22,7 @@ _更新于 2026 年 4 月 18 日。_
 - 第四部分补上了大工具目录、`semantic tool filtering` 和 `MCP host / client / server` 角色的 practical guidance；
 - 第五部分补强了 `latency budget` 的产品视角，以及更实用的 `LLM-as-a-judge` framing。
 
-为什么这很重要：
-- 这本书现在覆盖的不只是基础 platform layers，也更贴近日常 production 团队在 design review、eval loop 和 rollout 之间反复遇到的问题。
+为什么这很重要：这本书现在覆盖的不只是基础 platform layers，也更贴近日常 production 团队在 design review、eval loop 和 rollout 之间反复遇到的问题。
 
 ## 参考层
 
@@ -39,8 +37,7 @@ _更新于 2026 年 4 月 18 日。_
 - 生命周期工件；
 - 记忆检索契约。
 
-为什么这很重要：
-- 读者现在可以从解释性章节直接跳到可审阅的模式与契约工件。
+为什么这很重要：读者现在可以从解释性章节直接跳到可审阅的模式与契约工件。
 
 ## 运行时
 
@@ -55,8 +52,7 @@ _更新于 2026 年 4 月 18 日。_
 - 评测数据集导出；
 - 带脱敏与模式版本控制的追踪导出。
 
-为什么这很重要：
-- 这本书现在不只依赖叙述性章节，也有可运行的参考实现作为支撑。
+为什么这很重要：这本书现在不只依赖叙述性章节，也有可运行的参考实现作为支撑。
 
 ## 实践附录
 
@@ -71,8 +67,7 @@ _更新于 2026 年 4 月 18 日。_
 - 研究前沿页面；
 - 社区路线图。
 
-为什么这很重要：
-- 读者现在可以不按线性顺序通读全书，也能直接进入检查清单、案例研究、术语表与实践工件。
+为什么这很重要：读者现在可以不按线性顺序通读全书，也能直接进入检查清单、案例研究、术语表与实践工件。
 
 ## 导航
 
@@ -92,8 +87,7 @@ _更新于 2026 年 4 月 18 日。_
 - `LLM-as-a-judge` 与 judge calibration；
 - `prompt injection`、`jailbreaking` 与 `action hallucination` 的区别。
 
-为什么这很重要：
-- 这些新主题现在不只藏在单个章节里，也已经出现在读者真正会先打开的入口页上。
+为什么这很重要：这些新主题现在不只藏在单个章节里，也已经出现在读者真正会先打开的入口页上。
 
 ## 这对读者意味着什么
 
