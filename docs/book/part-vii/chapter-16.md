@@ -181,7 +181,9 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Таксономия workflow-паттернов у Anthropic делает это еще острее, потому что разные orchestration patterns создают разные checkpoint-needs.[^anthropic] У `prompt chaining` checkpoint обычно нужен между фиксированными стадиями, у `routing` он часто нужен только на границе классификации и handoff, `parallelization` требует видимости join-state, а `orchestrator-workers` требует parent/worker coordination state, который переживает частичное завершение.
 
-То есть bounded autonomy это не только вопрос policy. Это еще и вопрос дизайна runtime state: каждый разрешенный execution pattern приносит с собой собственную семантику pause, resume и completion.
+Их более поздняя работа про harness design добавляет сюда еще один практический урок для рантайма: в длинных application-run часто нужно явно различать **compaction** и **context reset**.[^anthropic-harness] Compaction оставляет того же агента на укороченной истории, поэтому continuity сохраняется, но context anxiety и накопленный drift могут остаться. Reset запускает нового агента с чистого листа и требует структурированный handoff artifact, который переносит состояние, следующие шаги и evaluation context. Это не просто prompt-трюк, а часть архитектуры рантайма, потому что как только resets входят в harness, платформа должна решить, какое состояние достаточно устойчиво, чтобы пережить reset, и какой review artifact получает следующий агент.
+
+То есть bounded autonomy это не только вопрос policy. Это еще и вопрос дизайна runtime state: каждый разрешенный execution pattern приносит с собой собственную семантику pause, resume, reset и completion.
 
 Если у рантайма нет явной формы для этих случаев, длинная работа почти всегда утекает в ad hoc retries, дублирующиеся запросы и скрытые переходы состояния.
 
@@ -372,3 +374,5 @@ runtime:
 - [Источники](../../appendix/sources.md)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
