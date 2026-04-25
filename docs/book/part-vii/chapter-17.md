@@ -117,6 +117,8 @@ flowchart LR
 
 Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно недостающее измерение governance.[^anthropic] Policy layer должен решать не только то, разрешена ли возможность сама по себе. Он еще должен решать, в каких orchestration patterns ее вообще допустимо вызывать.
 
+Их более поздняя работа про harness design добавляет сюда тесно связанный урок: как только система начинает работать через роли planner, generator и evaluator на длинном горизонте, policy должен управлять уже не только вызовом инструмента, но и **ролевым контрактом** вокруг этого вызова.[^anthropic-harness] Если generator предлагает sprint, evaluator оценивает результат, а planner перестраивает scope, платформе нужны явные правила о том, кто имеет право определять done-ness, кто оценивает качество, кто вправе инициировать reset и какой handoff artifact считается авторитетным после context reset.
+
 Например, policy contract может требовать явного ответа на то, что возможность:
 
 - безопасна внутри `prompt chaining`, но не внутри unconstrained loop;
@@ -435,3 +437,5 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Глава 18. Чеклист промышленного запуска](chapter-18.md)
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
