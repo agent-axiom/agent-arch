@@ -190,7 +190,7 @@
 
 它现在也适合作为 verifier-aware governance 的锚点：如果 rollout 或 assurance 依赖 eval output，runtime 就应该保留足够的 trace、session 与 artifact linkage，来解释不只是发生了什么，还包括 verifier 为什么会这样判定这次 run。
 
-这种能力也应延伸到 lifecycle handling。一个受治理的 reference runtime 应该能说明某次 release 当时启用了哪一版 verifier contract 和哪一个 release identity，以及在 retirement 之后还必须保留哪些 evidence，才能为早先的 rollout 或 assurance decisions 提供解释。
+这种能力也应延伸到 lifecycle handling。一个受治理的 reference runtime 应该能说明某次 release 当时启用了哪一版 verifier contract 和哪一个 release identity，在 retirement 之后还必须保留哪些 evidence，才能为早先的 rollout 或 assurance decisions 提供解释，以及当某些结构化 handoff artifacts 决定了即将退役系统被允许做什么时，这些工件必须如何跨过 context reset 或角色交接继续保留下来。
 
 现在它也体现了第四个 operational concern：动作究竟是在什么 delegated authorization context 下执行的。这个上下文现在会出现在 run telemetry、approval records 和 session export 里，让 runtime 不仅能解释发生了什么，还能解释它是在谁的 delegated identity 与 scope 下发生的。
 
