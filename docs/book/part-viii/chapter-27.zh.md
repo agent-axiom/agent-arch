@@ -1,4 +1,4 @@
-# 第 27 章：Agent Inventory、Registry 与 Sprawl 治理
+# 第 27 章：智能体清单、注册表与蔓延治理
 
 !!! info "时效说明"
     本章内容截至 2026 年 4 月 11 日。
