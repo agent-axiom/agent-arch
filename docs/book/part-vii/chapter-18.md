@@ -218,6 +218,8 @@ flowchart LR
 
 Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно rollout-измерение.[^anthropic] Рантайм должен учитывать выбранный паттерн workflow и считать изменения orchestration pattern поведением, значимым для релиза, а не невидимой деталью реализации.
 
+Их более поздняя работа про harness design делает rollout-вывод еще жестче.[^anthropic-harness] Как только система опирается на разделение planner/generator/evaluator, sprint contracts и структурированные handoff artifacts между длинными сессиями, rollout уже нельзя оценивать только по финальному пользовательскому результату. Команда должна отдельно проверять, сохраняют ли resets, evaluator feedback и handoff artifacts тот же release contract на протяжении многочасового выполнения.
+
 Перед rollout команда должна уметь явно сказать:
 
 - использует ли path теперь `routing`, хотя раньше там был fixed workflow;
@@ -401,3 +403,5 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
