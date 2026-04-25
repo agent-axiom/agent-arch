@@ -10,8 +10,7 @@ _Актуально на 18 апреля 2026 года._
 
 Теперь в книге есть цельный блок про `SDLC -> ADLC`, change management, assurance loop, supply chain, retirement, misalignment, behavioral evals, AI-native observability и inventory control.
 
-Почему это важно:
-- теперь книга закрывает не только архитектуру и запуск, но и жизнь системы после релиза.
+Почему это важно: теперь книга закрывает не только архитектуру и запуск, но и жизнь системы после релиза.
 
 ### Усилен production contour в частях I-V
 
@@ -23,8 +22,7 @@ _Актуально на 18 апреля 2026 года._
 - в части IV добавлены practical rules для больших tool catalogs, `semantic tool filtering` и явные роли `MCP host / client / server`;
 - в части V усилены продуктовый взгляд на `latency budget` и practical framing для `LLM-as-a-judge`.
 
-Почему это важно:
-- книга стала лучше закрывать не только базовые platform layers, но и повседневные вопросы production-команды, которые обычно всплывают между design review, eval loop и rollout.
+Почему это важно: книга стала лучше закрывать не только базовые platform layers, но и повседневные вопросы production-команды, которые обычно всплывают между design review, eval loop и rollout.
 
 ## Reference
 
@@ -39,8 +37,7 @@ _Актуально на 18 апреля 2026 года._
 - lifecycle artifacts;
 - memory retrieval contracts.
 
-Почему это важно:
-- теперь из объясняющих глав можно быстро переходить к reviewable схемам и артефактам.
+Почему это важно: теперь из объясняющих глав можно быстро переходить к reviewable схемам и артефактам.
 
 ## Runtime
 
@@ -55,8 +52,7 @@ _Актуально на 18 апреля 2026 года._
 - eval dataset export;
 - trace export с redaction и schema versioning.
 
-Почему это важно:
-- книга теперь опирается не только на narrative chapters, но и на runnable reference implementation.
+Почему это важно: книга теперь опирается не только на narrative chapters, но и на runnable reference implementation.
 
 ## Practical Appendix
 
@@ -71,8 +67,7 @@ _Актуально на 18 апреля 2026 года._
 - research frontier;
 - community roadmap.
 
-Почему это важно:
-- у читателя есть быстрые входы в чеклисты, кейсы, glossary и practical assets без обязательного линейного чтения всей книги.
+Почему это важно: у читателя есть быстрые входы в чеклисты, кейсы, glossary и practical assets без обязательного линейного чтения всей книги.
 
 ## Navigation
 
@@ -92,8 +87,7 @@ _Актуально на 18 апреля 2026 года._
 - `LLM-as-a-judge` и judge calibration;
 - различие между `prompt injection`, `jailbreak` и `action hallucination`.
 
-Почему это важно:
-- новые темы стали заметны не только внутри отдельных глав, но и на уровне reader entry points.
+Почему это важно: новые темы стали заметны не только внутри отдельных глав, но и на уровне reader entry points.
 
 ## Что это дает читателю
 
