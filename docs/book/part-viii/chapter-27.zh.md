@@ -15,34 +15,34 @@
     - 每个生产级智能体都需要负责人、生命周期状态、能力记录与 runtime-control ownership；
     - 定期审查仍然是避免蔓延变成治理盲区的关键。
 
-## 1. 为什么几乎每个成功的 agent 计划都会出现 sprawl
+## 1. 为什么几乎每个成功的智能体计划都会出现蔓延
 
-一旦第一批 agent systems 证明了价值，组织里通常很快就会出现同一种局面：
+一旦第一批智能体系统证明了价值，组织里通常很快就会出现同一种局面：
 
-- 一个团队做了 support agent；
-- 另一个团队做了 internal knowledge agent；
-- 第三个团队加了 workflow assistant；
-- 第四个团队为了本地任务快速拼了一个窄场景 agent。
+- 一个团队做了支持智能体；
+- 另一个团队做了内部知识智能体；
+- 第三个团队加了工作流助手；
+- 第四个团队为了本地任务快速拼了一个窄场景智能体。
 
 这些决定单看都可能很合理。问题会在后面出现，因为很快就没人能快速回答：
 
-- 到底一共有多少 agents；
-- 哪些真的是 production，哪些只是“临时的”；
-- 它们的 owner 是谁；
-- 它们有哪些 capabilities；
-- 用了哪些 identities、connectors 和 tool principals；
+- 到底一共有多少个智能体；
+- 哪些真的在生产环境里运行，哪些只是“临时的”；
+- 它们的负责人是谁；
+- 它们到底拥有哪些能力；
+- 它们用了哪些身份、连接器和工具主体；
 - 哪些其实还活着；
-- 哪些仍然挂着 paused approvals、background routes、deprecated contract paths 或 stale verifier contracts。
+- 哪些仍然挂着暂停中的审批、后台路由、已废弃的契约路径或陈旧的 verifier contracts。
 
 这正是值得被称作 `agent sprawl` 的状态。
 
-Registry layer 首先是为了一件事而存在，让整个 estate 具备 answerability。对于任何 production agent，团队都应该能快速回答：谁拥有它、哪些 controls 约束它、哪些 evidence 描述它，以及一旦它发生 drift 该由谁采取行动。
+注册表这一层首先是为了做成一件事，让整个智能体群体具备可追责性。对于任何生产级智能体，团队都应该能快速回答：谁拥有它、哪些 controls 约束它、哪些 evidence 描述它，以及一旦它发生 drift 该由谁采取行动。
 
-这种 answerability 就是本章的重心。Registry 不拥有 evidence backbone，也不拥有 telemetry substrate。它拥有的是 governed entities 到 owners、states 与 accountability paths 之间的映射。
+这种可追责性就是本章的重心。注册表并不拥有 evidence backbone，也不拥有 telemetry substrate。它真正拥有的是，从受治理实体到负责人、状态和问责路径之间的映射。
 
-这也正是本章的核心承诺。它要帮助读者把 registry 看成整个 estate 的 accountability layer：在这里，governed entities 不再只是模糊的一群 tools 和 assistants，而会变成拥有 owner、lifecycle state 与明确责任的可追责生产系统。
+这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的 accountability layer：在这里，受治理实体不再只是模糊的一群 tools 和 assistants，而会变成拥有 owner、lifecycle state 与明确责任的可追责生产系统。
 
-## 2. 为什么 sprawl 不只是组织问题
+## 2. 为什么蔓延不只是组织问题
 
 表面上看，这像是一个管理问题：对象太多、秩序太差。
 
