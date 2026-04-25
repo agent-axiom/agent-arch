@@ -190,7 +190,7 @@ That same package is also a good place to connect the newer Anthropic harness le
 
 It is also a useful anchor for verifier-aware governance: if rollout or assurance depends on eval output, the runtime should preserve enough trace, session, and artifact linkage to explain not only what happened, but why a verifier judged the run the way it did.
 
-That should extend through lifecycle handling too. A governed reference runtime should be able to explain which verifier contract and release identity were active for a release, and what evidence must still be retained after retirement to justify earlier rollout or assurance decisions.
+That should extend through lifecycle handling too. A governed reference runtime should be able to explain which verifier contract and release identity were active for a release, what evidence must still be retained after retirement to justify earlier rollout or assurance decisions, and which structured handoff artifacts must survive context resets or role handoffs when those artifacts shaped what the retired system was allowed to do.
 
 It also reflects a fourth operational concern: the delegated authorization context under which the action ran. That context now appears in run telemetry, approval records, and session export so the runtime can explain not only what happened, but under whose delegated identity and scope it happened.
 
