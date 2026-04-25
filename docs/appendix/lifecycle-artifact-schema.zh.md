@@ -16,7 +16,8 @@
 - 运行期审批和生命周期决策；
 - 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules；
 - 当这些能力已进入 runtime contract 时，delegated authorization rules、principal-binding assumptions 与 revoke behavior；
-- 当 release 或 assurance 依赖 verifier output 时，verifier contracts、grading rubrics 与 evidence-linkage rules。
+- 当 release 或 assurance 依赖 verifier output 时，verifier contracts、grading rubrics 与 evidence-linkage rules；
+- 当长时间运行的工作跨越 context reset 或角色交接边界时，结构化 handoff artifacts。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
