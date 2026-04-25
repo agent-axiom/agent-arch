@@ -225,14 +225,14 @@ Registry 不应该去复制 policy bundle 或 approval contract。
 - capability-session expiry drift 与 emergency freeze actions 由谁负责；
 - 它们的 approval 与 capability payload 应该遵循哪个 contract version；
 - 哪个 verifier 或 grading contract 被信任为它们 high-risk eval evidence 的依据；
-- estate 里是否还有地方在引用 deprecated verifier contracts；
+- 智能体群体里是否还有地方在引用已废弃的 verifier contracts；
 - approved registry 之外是否已经出现了 shadow MCP endpoints。
 
-否则，整个 estate 表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
+否则，整个智能体群体表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
 
-所以 registry 与其说是 release lineage 层，不如说是 operational answerability 层。它是一张 estate 级 ownership map，确保 decisions、incidents 与 drift 始终挂在正确的实体上。
+所以 registry 与其说是 release lineage 层，不如说是 operational answerability 层。它是一张智能体群体级的 ownership map，确保 decisions、incidents 与 drift 始终挂在正确的实体上。
 
-而这种模糊通常最先在 incident response 里造成伤害。团队可能已经有 telemetry、policies 和 approvals，却仍然会卡在一个最基本的 estate 问题上：此刻到底是哪一个 production entity 应该为这条 path 负责？
+而这种模糊通常最先在 incident response 里造成伤害。团队可能已经有 telemetry、policies 和 approvals，却仍然会卡在一个最基本的智能体群体问题上：此刻到底是哪一个 production entity 应该为这条 path 负责？
 
 ## 10. 一个最小 agent registry record 示例
 
