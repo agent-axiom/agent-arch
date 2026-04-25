@@ -181,7 +181,9 @@ OpenAI 最近关于 background mode 的材料很有帮助，因为它把 backgro
 
 Anthropic 的 workflow taxonomy 又把这个问题压得更具体了，因为不同 orchestration patterns 会带来不同的 checkpoint needs。[^anthropic] `prompt chaining` 往往需要在固定阶段之间 checkpoint，`routing` 往往只需要在分类和 handoff 边界 checkpoint，`parallelization` 需要 join-state 可见性，而 `orchestrator-workers` 需要能跨部分完成而存活的 parent/worker coordination state。
 
-所以 bounded autonomy 不只是 policy 问题，也是一种 runtime-state 设计问题：每一种被允许的 execution pattern，都会带来自己的一套 pause、resume 和 completion semantics。
+他们后续关于 harness design 的工作又补上了一个更实际的 runtime 经验：在长时间运行的 application work 里，往往必须明确区分 **compaction** 和 **context reset**。[^anthropic-harness] Compaction 会让同一个 agent 在缩短后的历史上继续工作，因此 continuity 还在，但 context anxiety 和累计 drift 也可能继续存在。Reset 则是启动一个全新的 agent，并依赖结构化的 handoff artifact 来携带状态、下一步动作和 evaluation context。这不只是 prompt 技巧，而是 runtime architecture 的一部分，因为一旦 resets 成为 harness 的组成部分，平台就必须决定哪些状态足够耐久、能跨 reset 保留下来，以及下一个 agent 会继承什么 review artifact。
+
+所以 bounded autonomy 不只是 policy 问题，也是一种 runtime-state 设计问题：每一种被允许的 execution pattern，都会带来自己的一套 pause、resume、reset 和 completion semantics。
 
 如果 runtime 对这些情况没有显式形态，长时间工作最终通常都会泄漏成 ad hoc retries、重复请求和隐藏状态迁移。
 
@@ -372,3 +374,5 @@ Part VII 的下一个自然步骤，是在这个 blueprint 上加上显式的 po
 - [参考来源](../../appendix/sources.zh.md)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
