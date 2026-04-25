@@ -5,28 +5,28 @@
 
     变化最快的部分：
 
-    - 面向智能体系统的遥测产品与厂商 tracing 能力；
-    - drift、abuse 和异常工具行为的检测启发式；
-    - diagnosis-ready traces 与跨系统关联的 emerging conventions。
+    - 面向智能体系统的遥测产品与厂商追踪能力；
+    - 面向漂移、滥用和异常工具行为的检测启发式；
+    - 面向诊断的追踪以及跨系统关联的新兴约定。
 
     变化相对较慢的部分：
 
-    - 必须建设 evidence-ready telemetry，而不只是调试日志；
-    - observability 必须和 approvals、runtime-control states、policy decisions、tool principals、contract versions 与 artifact bundles 关联；
-    - 完整的 inventory coverage 仍然是 detection 和 incident review 的前提。
+    - 必须建设可直接用于证据链的遥测，而不只是调试日志；
+    - 可观测性必须和 approvals、runtime-control states、policy decisions、tool principals、contract versions 与 artifact bundles 关联；
+    - 完整的清单覆盖率仍然是 detection 和 incident review 的前提。
 
-## 1. 为什么智能体的 observability 不能只看 latency 和 errors
+## 1. 为什么智能体的可观测性不能只看延迟和错误率
 
-在普通服务里，observability 往往先看一组很熟悉的东西：
+在普通服务里，可观测性往往先看一组很熟悉的东西：
 
-- latency；
-- error rate；
-- throughput；
-- resource utilization。
+- 延迟；
+- 错误率；
+- 吞吐量；
+- 资源利用率。
 
-但对 agent systems 来说，这远远不够。
+但对智能体系统来说，这远远不够。
 
-这里要始终保持一个简单区分：assurance 负责决定什么时候需要 containment、由谁来响应；observability 则通过保留可被信任的 evidence，让这些 release、incident 与 governance decision 真正有据可依。
+这里要始终保持一个简单区分：assurance 负责决定什么时候需要 containment、由谁来响应；可观测性则通过保留可被信任的 evidence，让这些 release、incident 与 governance decision 真正有据可依。
 
 系统可能：
 
@@ -37,7 +37,7 @@
 
 Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我们需要把传统的 logs、metrics 和 traces 演进成 `AI-native signals`，让系统不仅能说明“发生了请求”，还能说明“系统究竟是怎么行为的”。 [^ms-observability]
 
-## 2. Observability 不只是为了调试
+## 2. 可观测性不只是为了调试
 
 在 agent platform 里，observability 至少承担五种角色：
 
