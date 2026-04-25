@@ -113,7 +113,7 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 - 在 workflow 还没描述清楚之前，就先决定“这里要上 agent”；
 - 只要系统不止一个步骤，就把它叫作 `multi-agent`；
-- 团队还说不清 underlying prompts、tool contracts 和 failure paths 时，就先把 framework 引进来；
+- 团队还说不清底层 prompts、工具契约和失败路径时，就先把框架引进来；
 - 在 trust boundaries、approvals 和 observability 还没定义前，就先争论 prompt 和模型；
 - 用 demo 的表现衡量成败，而不是看第一次 retry、第一次 timeout 和第一次 incident 之后会发生什么。
 
