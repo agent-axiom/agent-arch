@@ -43,7 +43,7 @@ Why it matters: readers can now move directly from explanatory chapters to revie
 
 ### Runnable reference runtime
 
-The repository includes [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref), a small runnable package that now supports:
+The repository includes [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref), a small runnable package that now supports:
 
 - approvals;
 - controls;
