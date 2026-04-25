@@ -334,6 +334,7 @@ nav:
   - Reference: reference.md
   - "What's New": whats-new.md
   - Книга:
+      - Книга: book/index.md
       - План книги: book/plan.md
       - Часть I. Основания: book/part-i/index.md
       - Глава 1. Почему агенту нужна платформа, а не магия: book/part-i/chapter-1.md
