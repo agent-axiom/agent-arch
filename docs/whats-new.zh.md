@@ -43,7 +43,7 @@ _更新于 2026 年 4 月 18 日。_
 
 ### 可运行的参考运行时
 
-仓库中的 [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 现在支持：
+仓库中的 [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 现在支持：
 
 - 审批；
 - 控制项；

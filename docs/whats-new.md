@@ -43,7 +43,7 @@ _Актуально на 18 апреля 2026 года._
 
 ### Runnable reference runtime
 
-В репозитории есть [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) — небольшой исполняемый пакет, который поддерживает:
+В репозитории есть [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) — небольшой исполняемый пакет, который поддерживает:
 
 - approvals;
 - controls;
