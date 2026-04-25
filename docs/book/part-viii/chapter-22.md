@@ -215,6 +215,8 @@ flowchart LR
 - delegated access была platform-owned или user-delegated;
 - какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
 
+Более поздняя работа Anthropic про harness design показывает еще одно следствие для цепочки происхождения.[^anthropic-harness] Если длинная работа зависит от context resets, разделения ролей planner/generator/evaluator, sprint contracts и структурированных handoff artifacts, то такие handoff artifacts уже нельзя считать одноразовыми координационными заметками. Они тоже становятся артефактами с управляемым происхождением. Поздний incident review или спор о rollout может потребовать выяснить, какой handoff artifact перенес scope, какой evaluator critique изменил следующий sprint и на какой reset boundary активный контекст сменился без смены user-visible run.
+
 Это вопросы происхождения именно потому, что они определяют управляемую идентичность поведения, а не просто факт того, что поведение было видно в telemetry.
 
 ## 9. Пример политики доверенных артефактов
@@ -356,3 +358,5 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Источники](../../appendix/sources.md)
 
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
