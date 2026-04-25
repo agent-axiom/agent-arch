@@ -22,6 +22,7 @@
 - orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
 - verifier-contract lineage 与 verifier evidence retention obligations；
+- 跨越 context reset 与角色交接边界的 handoff-artifact lineage；[^anthropic-harness]
 - 外部集成；
 - 用户预期；
 - 依赖它的工作流。
@@ -92,6 +93,7 @@
 - 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
 - retire 已废弃的 verifier contracts，并保留解释既往 rollout 或 assurance decisions 所需的 evidence，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
+- 归档那些承载 sprint scope、evaluator critique 或 reset-boundary decisions 的 handoff artifacts，只要这些工件曾影响过即将退役的系统被允许执行什么；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
 - 固化最终审计状态。
@@ -307,3 +309,5 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [第 27 章：Agent Inventory、Registry 与 Sprawl 治理](chapter-27.zh.md)
 - [第八部分：智能体系统生命周期](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
