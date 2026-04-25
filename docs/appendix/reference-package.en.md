@@ -186,6 +186,8 @@ Together, those commands now help illustrate an important runtime distinction fr
 
 The package is still deliberately small, but it now reflects that a governed runtime may need to explain all three without collapsing them into one opaque object.
 
+That same package is also a good place to connect the newer Anthropic harness lesson to runnable structure: long-running application work may need explicit context resets, structured handoff artifacts, and separated planner/generator/evaluator roles rather than one uninterrupted agent loop. The reference package does not implement that full harness, but it now makes the required runtime seams visible enough that a team can see where reset-safe handoff, sprint contracts, evaluator review, and resumed control state would have to live.
+
 It is also a useful anchor for verifier-aware governance: if rollout or assurance depends on eval output, the runtime should preserve enough trace, session, and artifact linkage to explain not only what happened, but why a verifier judged the run the way it did.
 
 That should extend through lifecycle handling too. A governed reference runtime should be able to explain which verifier contract and release identity were active for a release, and what evidence must still be retained after retirement to justify earlier rollout or assurance decisions.
