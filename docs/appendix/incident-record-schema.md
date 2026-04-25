@@ -125,7 +125,7 @@ Incident review редко заканчивается только containment p
 
 ## 8. Связь со справочным пакетом
 
-В [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) уже есть несколько примитивов, которые делают эту схему полезной на практике:
+В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть несколько примитивов, которые делают эту схему полезной на практике:
 
 - traces и session summaries;
 - approval queue;

@@ -125,7 +125,7 @@ Incident review 很少止步于 containment。
 
 ## 8. 与参考运行时包的关系
 
-[agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) 已经具备几类能让这套模型落地的 primitives：
+[agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经具备几类能让这套模型落地的 primitives：
 
 - traces 与 session summaries；
 - approval queue；
