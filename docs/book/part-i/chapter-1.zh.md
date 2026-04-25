@@ -69,7 +69,7 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 这个建议很保守。也正因为保守，它非常有效。
 
-Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先上 framework。[^anthropic] 如果直接调用 API 再加上一层很薄的 orchestration 就已经足够解决问题，那么过早引入额外抽象，通常只会让调试、prompt 检查和 operational ownership 变得更糟，而不是更好。
+Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先上框架。[^anthropic] 如果直接调用 API，再加上一层很薄的编排就已经足够解决问题，那么过早引入额外抽象，通常只会让调试、prompt 检查和运行责任变得更糟，而不是更好。
 
 ## 5. 什么时候 agent 才是真的合理
 
