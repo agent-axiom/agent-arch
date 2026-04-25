@@ -125,21 +125,21 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 - 看出哪些智能体还不该拥有完整的出口访问权或完整的审批路径；
 - 在 replacement 和 retirement 中避免灰色地带。
 
-## 6. Registry 不只是给 security team 用的
+## 6. 注册表不只是给安全团队用的
 
-一个好的 `agent registry` 不只服务于 security 或 governance。
+一个好的 `agent registry` 不只服务于安全或治理。
 
 它同样服务于：
 
-- platform team；
-- product teams；
-- SRE / operations；
-- audit / compliance；
-- incident responders。
+- 平台团队；
+- 产品团队；
+- SRE / 运营团队；
+- 审计 / 合规团队；
+- 事件响应人员。
 
-对 platform team 来说，它展示哪些模式正在真实扩张。
-对 operations 来说，它告诉你半夜该叫谁。
-对 incident response 来说，它告诉你到底哪些智能体可能参与了某个事件。
+对平台团队来说，它展示哪些模式正在真实扩张。
+对运营团队来说，它告诉你半夜该叫谁。
+对事件响应来说，它告诉你到底哪些智能体可能参与了某个事件。
 
 ## 7. 蔓延往往是从“小例外”开始的
 
@@ -158,28 +158,28 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 所以更稳妥的默认规则应该很简单：
 
 - 如果一个实体可以代表组织行动、读取敏感上下文或调用工具，它至少应该进入 inventory；
-- 如果它进入 production contour，就必须进入 registry。
+- 如果它进入生产轮廓，就必须进入 registry。
 
-## 8. Registry 如何连接 observability
+## 8. 注册表如何连接可观测性
 
-前一章已经说明，inventory coverage 本身就是 evidence layer 的一部分。
+前一章已经说明，inventory coverage 本身就是证据层的一部分。
 
-Registry 会把这层关系再拉紧一步：
+注册表会把这层关系再拉紧一步：
 
 - traces 可以挂上 registry metadata；
 - detections 可以按 lifecycle state 来做；
 - incidents 可以按 owner、risk tier 和 approval mode 过滤；
 - release evidence 不只看 traces，也可以看 registry record 的状态与 verifier-evidence linkage。
 
-也就是说，registry 会把 observability 从“原始事件流”提升成受治理的运行地图。
+也就是说，注册表会把可观测性从“原始事件流”提升成受治理的运行地图。
 
 但它不应该和 provenance 混在一起。Provenance 保留的是哪一组 approved artifacts 与哪一个 version 支撑了行为；registry 保留的是，这条 path 属于哪一个命名的生产实体、负责人和生命周期状态。
 
-这也是本章和上一章之间最清晰的边界。Observability 保存 evidence；registry 则把这些 evidence 绑定到整个智能体群体里的命名实体、负责人、生命周期状态与问责路径。
+这也是本章和上一章之间最清晰的边界。可观测性保存 evidence；registry 则把这些 evidence 绑定到整个智能体群体里的命名实体、负责人、生命周期状态与问责路径。
 
 这同样也是它和 provenance chapter 的边界。Provenance 回答系统运行在什么 governed version 或 approved bundle 之下；registry 回答的是，哪一个生产实体拥有这条 path，以及现在该由谁负责。
 
-## 8.1. 没有持续校验的 registry 会变得整洁，但不再准确
+## 8.1. 没有持续校验的注册表会变得整洁，但不再准确
 
 这里不应该高估 registry 本身。Registry 的存在，并不能自动证明 control layer 真的在工作。
 
@@ -195,9 +195,9 @@ Registry 会把这层关系再拉紧一步：
 
 所以，更成熟的理解方式是：registry 不应只是静态目录，而应该是持续校验的 control surface。
 
-## 9. Registry 如何连接 approvals 和 policies
+## 9. 注册表如何连接 approvals 和 policies
 
-Registry 不应该去复制 policy bundle 或 approval contract。
+注册表不应该去复制 policy bundle 或 approval contract。
 
 它的职责是：
 
