@@ -59,7 +59,8 @@ Evidence spine, это минимальная управляемая непре�
 - `change_id`;
 - `session_id`;
 - `incident_id`;
-- `verifier_contract_id` или lineage набора verifier contracts.
+- `verifier_contract_id` или lineage набора verifier contracts;
+- `handoff_artifact_id`, если длинная работа пересекает границу context reset или role handoff.[^anthropic-harness]
 
 Смысл не в идеальной терминологии. Смысл в том, чтобы связь оставалась проверяемой.
 
@@ -238,3 +239,5 @@ latest_rollout_decision: pause-canary
 - [Глава 20. Change Management для агентных систем](../part-viii/chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](../part-viii/chapter-22.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
