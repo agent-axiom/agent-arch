@@ -121,8 +121,8 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 这样会更容易：
 
 - 在 `production` 前限制 autonomy；
-- 追踪 deprecated agents；
-- 看出哪些 agents 还不该拥有 full egress 或 full approval paths；
+- 追踪已废弃的智能体；
+- 看出哪些智能体还不该拥有 full egress 或 full approval paths；
 - 在 replacement 和 retirement 中避免灰色地带。
 
 ## 6. Registry 不只是给 security team 用的
@@ -139,7 +139,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 对 platform team 来说，它展示哪些 patterns 真正在扩展。
 对 operations 来说，它告诉你半夜该叫谁。
-对 incident response 来说，它告诉你到底哪些 agents 可能参与了某个事件。
+对 incident response 来说，它告诉你到底哪些智能体可能参与了某个事件。
 
 ## 7. Sprawl 往往是从“小例外”开始的
 
@@ -153,7 +153,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 - “这里做 approval 太重了”；
 - “telemetry 以后再接”。
 
-几个月后，正是这些例外，构成了整个 estate 里最不透明的部分。
+几个月后，正是这些例外，构成了整个智能体群体里最不透明的部分。
 
 所以更稳妥的默认规则应该很简单：
 
@@ -173,11 +173,11 @@ Registry 会把这层关系再拉紧一步：
 
 也就是说，registry 会把 observability 从“原始事件流”提升成受治理的 operational map。
 
-但它不应该和 provenance 混在一起。Provenance 保留的是哪一组 approved artifacts 与哪一个 version 支撑了行为；registry 保留的是，这条 path 属于哪一个 named production entity、owner 与 lifecycle state。
+但它不应该和 provenance 混在一起。Provenance 保留的是哪一组 approved artifacts 与哪一个 version 支撑了行为；registry 保留的是，这条 path 属于哪一个命名的生产实体、负责人和生命周期状态。
 
-这也是本章和上一章之间最清晰的边界。Observability 保存 evidence；registry 则把这些 evidence 绑定到整个 estate 里的 named entities、owners、lifecycle states 与 accountability paths。
+这也是本章和上一章之间最清晰的边界。Observability 保存 evidence；registry 则把这些 evidence 绑定到整个智能体群体里的命名实体、负责人、生命周期状态与问责路径。
 
-这同样也是它和 provenance chapter 的边界。Provenance 回答系统运行在什么 governed version 或 approved bundle 之下；registry 回答的是，哪一个 production entity 拥有这条 path，以及现在该由谁负责。
+这同样也是它和 provenance chapter 的边界。Provenance 回答系统运行在什么 governed version 或 approved bundle 之下；registry 回答的是，哪一个生产实体拥有这条 path，以及现在该由谁负责。
 
 ## 8.1. 没有 continuous verification 的 registry 会变得整洁，但不再准确
 
