@@ -60,8 +60,8 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 最好把下面两层分开看：
 
-- `agent inventory`
-- `agent registry`
+- `agent inventory`（智能体清单）
+- `agent registry`（智能体注册表）
 
 清单回答的问题是：
 
@@ -88,7 +88,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 - 业务用途
 - 生命周期状态
 - 允许使用的能力
-- runtime identity
+- 运行时身份
 - 工具主体
 - 审批要求
 - paused runs、background runs 与 capability sessions 的责任归属
@@ -120,14 +120,14 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 这样会更容易：
 
-- 在 production 前限制 autonomy；
+- 在 `production` 前限制 autonomy；
 - 追踪 deprecated agents；
 - 看出哪些 agents 还不该拥有 full egress 或 full approval paths；
 - 在 replacement 和 retirement 中避免灰色地带。
 
 ## 6. Registry 不只是给 security team 用的
 
-一个好的 agent registry 不只服务于 security 或 governance。
+一个好的 `agent registry` 不只服务于 security 或 governance。
 
 它同样服务于：
 
