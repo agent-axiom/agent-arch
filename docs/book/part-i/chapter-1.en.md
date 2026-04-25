@@ -95,6 +95,7 @@ The signs in favor of an ordinary workflow look different:
 
 This is the most useful short frame to start with.
 
+
 | If the task looks like this | Start with this | Why |
 | --- | --- | --- |
 | The path is mostly known in advance | `workflow` | Cheaper to operate, easier to test, easier to explain |
