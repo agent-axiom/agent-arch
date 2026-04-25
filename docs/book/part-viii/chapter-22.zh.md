@@ -219,6 +219,8 @@ approval 与 runtime-control schemas 也是一样。如果团队在没有 govern
 - delegated access 是 platform-owned 还是 user-delegated；
 - 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
 
+Anthropic 后续关于 harness design 的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖 context resets、planner/generator/evaluator 的角色分离、sprint contracts 与结构化 handoff artifacts，那么这些 handoff artifacts 就不能再被视为一次性的协调便条。它们本身也变成了承载 provenance 的工件。之后的 incident review 或 rollout 争议，可能都需要知道是哪一份 handoff artifact 传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么 reset boundary 上，active context 发生了变化，而 user-visible run 却没有改变。
+
 这些之所以是 provenance 问题，正是因为它们定义的是行为的 governed identity，而不只是说明这些行为有没有在 telemetry 里被看见。
 
 这也正是本章边界重要的地方。telemetry 也许能告诉你 pause、re-init 或 delegated action 确实发生过，但 provenance 必须保留下来，说明究竟是哪一组经过评审的 contract family 让这些行为在当时被平台视为正当。没有这一层，事故复盘即使看见了事件，也依然解释不了平台为什么认为这些行为有效。
@@ -363,3 +365,5 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
