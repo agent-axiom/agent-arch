@@ -117,6 +117,8 @@ Without those fields, the policy layer can approve a capability in principle but
 
 Anthropic's workflow taxonomy adds one more missing governance dimension here.[^anthropic] The policy layer should not only decide whether a capability is allowed in isolation. It should also decide which orchestration patterns are allowed to invoke it.
 
+Their later harness work adds a closely related lesson: once a system uses planner, generator, and evaluator roles over long-running work, policy has to govern not just a tool call, but the **role contract** around that tool call.[^anthropic-harness] If a generator proposes the sprint, an evaluator grades it, and a planner reshapes scope, the platform needs explicit rules about who may define done-ness, who may grade quality, who may trigger a reset, and which handoff artifact is authoritative after a context reset.
+
 For example, a policy contract may need to express whether a capability is:
 
 - safe inside `prompt chaining` but not inside unconstrained loops;
@@ -435,3 +437,5 @@ This chapter is the contract hinge for the rest of the runtime-control cluster. 
 - [Chapter 18. Production Rollout Checklist](chapter-18.en.md)
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
