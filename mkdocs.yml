@@ -173,6 +173,10 @@ plugins:
             "Глава 21. Assurance loop: red teaming, detection и response": "Chapter 21. Assurance Loop: Red Teaming, Detection, and Response"
             "Глава 22. Supply chain, provenance и approved artifacts": "Chapter 22. Supply Chain, Provenance, and Approved Artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Chapter 23. Retirement, Replacement, and End-of-Life Discipline"
+            "Глава 24. Agentic misalignment и insider-risk": "Chapter 24. Agentic Misalignment and Insider Risk"
+            "Глава 25. Behavioral evals, control evals и automated red teaming": "Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming"
+            "Глава 26. AI-native observability, inventory coverage и detection-ready telemetry": "Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry"
+            "Глава 27. Agent inventory, registry и борьба с sprawl": "Chapter 27. Agent Inventory, Registry, and Sprawl Control"
             Приложения: Appendix
             Concepts: Concepts
             Schemas: Schemas
@@ -187,6 +191,7 @@ plugins:
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
             Плейбук реагирования на инциденты в агентных системах: Incident Response Playbook for Agent Systems
             Handbook по agent registry и inventory operations: Handbook for Agent Registry and Inventory Operations
+            План интеграции идей Google: Google Ideas Integration Plan
             Шаблон postmortem для агентных систем: Postmortem Template for Agent Systems
             Causal debugging и root-cause analysis для agent systems: Causal Debugging and Root-Cause Analysis for Agent Systems
             Memory eval patterns для agent systems: Memory Eval Patterns for Agent Systems
@@ -251,6 +256,10 @@ plugins:
             "Глава 21. Assurance loop: red teaming, detection и response": "第 21 章：Assurance Loop：Red Teaming、Detection 与 Response"
             "Глава 22. Supply chain, provenance и approved artifacts": "第 22 章：Supply Chain、Provenance 与 Approved Artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "第 23 章：Retirement、Replacement 与 End-of-Life Discipline"
+            "Глава 24. Agentic misalignment и insider-risk": "第 24 章：Agentic Misalignment 与 Insider Risk"
+            "Глава 25. Behavioral evals, control evals и automated red teaming": "第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming"
+            "Глава 26. AI-native observability, inventory coverage и detection-ready telemetry": "第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry"
+            "Глава 27. Agent inventory, registry и борьба с sprawl": "第 27 章：Agent Inventory、Registry 与 Sprawl Control"
             Приложения: 附录
             Concepts: 概念页
             Schemas: 模式与契约
@@ -265,6 +274,7 @@ plugins:
             Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
             Handbook по agent registry и inventory operations: 智能体 registry 与 inventory 运维手册
+            План интеграции идей Google: Google 思路整合计划
             Шаблон postmortem для агентных систем: 智能体系统 Postmortem 模板
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的 Causal Debugging 与 Root-Cause Analysis
             Memory eval patterns для agent systems: 智能体系统的 Memory Eval Patterns
