@@ -186,6 +186,8 @@
 
 Пакет по-прежнему намеренно маленький, но теперь он уже отражает, что governed runtime иногда обязан объяснять все три контура отдельно, не сливая их в один непрозрачный state object.
 
+Это же место теперь полезно и как привязка для нового урока Anthropic про harness design: длинная application-работа может требовать явных context resets, структурированных handoff artifacts и разделения ролей planner/generator/evaluator, а не одного непрерывного agent loop. Справочный пакет не реализует такой harness целиком, но уже показывает те швы рантайма, в которых должны жить reset-safe handoff, sprint contracts, evaluator review и resumed control state.
+
 Это еще и полезный якорь для verifier-aware governance: если rollout или assurance зависят от eval output, runtime должен сохранять достаточно связей между trace, session и artifacts, чтобы объяснять не только что произошло, но и почему verifier оценил run именно так.
 
 Это должно тянуться и в lifecycle handling. Governed reference runtime должен уметь объяснять, какой verifier contract и какая идентичность выпуска были активны для релиза, а также какие evidence еще нужно хранить после retirement, чтобы обосновывать прежние rollout или assurance decisions.
