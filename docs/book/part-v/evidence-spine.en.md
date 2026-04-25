@@ -59,7 +59,8 @@ In more mature systems, the chain often also includes:
 - `change_id`;
 - `session_id`;
 - `incident_id`;
-- `verifier_contract_id` or the lineage of verifier contract bundles.
+- `verifier_contract_id` or the lineage of verifier contract bundles;
+- `handoff_artifact_id` when long-running work crosses a context reset or role handoff boundary.[^anthropic-harness]
 
 The point is not perfect terminology. The point is reviewable linkage.
 
@@ -238,3 +239,5 @@ This page only makes the connective tissue between them explicit.
 - [Chapter 20. Change Management for Agent Systems](../part-viii/chapter-20.en.md)
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](../part-viii/chapter-21.en.md)
 - [Chapter 22. Supply Chain, Provenance, and Approved Artifacts](../part-viii/chapter-22.en.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
