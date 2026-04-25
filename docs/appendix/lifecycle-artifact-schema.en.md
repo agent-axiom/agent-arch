@@ -149,6 +149,7 @@ Its strength is that it forces the team to think not only about replacement, but
 - principals;
 - memory;
 - archived bundles;
+- structured handoff artifacts that carried sprint scope, evaluator critique, or reset-boundary decisions;
 - expired capability-session state that may still matter for audit or delayed operator response.
 
 ## 6. How this connects to Part VIII
@@ -172,7 +173,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
 - verifier contract lineage and contract-family identity can be reconstructed when release or assurance depends on graded outcomes;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
-- retirement or replacement paths explain what happens to paused runs and expired capability-session state when those paths exist;
+- retirement or replacement paths explain what happens to paused runs, handoff artifacts, and expired capability-session state when those paths exist;
 - delegated authorization ownership and revoke behavior can be reconstructed for affected runs when those controls exist;
 - lifecycle artifacts have an owner and version;
 - incident review can reconstruct `change -> bundle -> run -> retirement`;
