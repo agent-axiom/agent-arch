@@ -216,6 +216,8 @@ Without those answers, a rollout may look healthy at the approval layer while al
 
 Anthropic's workflow taxonomy adds another rollout dimension here.[^anthropic] Pattern-aware runtimes should treat orchestration-pattern changes as release-bearing behavior, not as an invisible implementation detail.
 
+Their later harness work makes the rollout implication even sharper.[^anthropic-harness] Once the system depends on planner/generator/evaluator separation, sprint contracts, and structured handoff artifacts across long-running sessions, rollout can no longer review only the final user-visible output. It also has to review whether resets, evaluator feedback, and handoff artifacts preserve the same release contract across hours of execution.
+
 Before rollout, the team should be able to say:
 
 - whether a path now uses `routing` where it previously used a fixed workflow;
@@ -396,3 +398,5 @@ This chapter turns the governed runtime path from Chapter 17 into rollout discip
 - [Part VII. Reference Implementation](index.en.md)
 - [Part VIII. Agent System Lifecycle](../part-viii/index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
