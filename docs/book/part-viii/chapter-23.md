@@ -22,6 +22,7 @@
 - lineage для orchestration patterns и worker-boundary decisions;
 - delegated authorization lineage и revoke state;
 - verifier-contract lineage и obligations по retention для verifier evidence;
+- lineage handoff artifacts на границах context reset и role handoff;[^anthropic-harness]
 - external integrations;
 - user expectations;
 - dependent workflows.
@@ -92,6 +93,7 @@
 - выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
 - отозвать delegated authorization paths и архивировать их final lineage;
 - вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions, включая экспортируемые поля failed run вроде `failure_reason`, если на них опиралось прежнее суждение;
+- архивировать handoff artifacts, которые несли scope спринта, evaluator critique или решения на границе reset для длинных работ, если именно эти артефакты влияли на то, что retiring system было разрешено делать;
 - отозвать egress access;
 - закрыть principals, secrets и connectors;
 - зафиксировать final audit state.
@@ -309,3 +311,5 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [Глава 27. Agent inventory, registry и борьба с sprawl](chapter-27.md)
 - [Часть VIII. Жизненный цикл агентной системы](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
