@@ -16,7 +16,8 @@
 - operational approvals и lifecycle decisions;
 - capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract;
 - delegated authorization rules, assumptions про principal binding и revoke behavior, если они уже входят в runtime contract;
-- verifier contracts, grading rubrics и rules для evidence linkage, если release или assurance зависят от verifier output.
+- verifier contracts, grading rubrics и rules для evidence linkage, если release или assurance зависят от verifier output;
+- структурированные handoff artifacts, если длинная работа пересекает границу context reset или role handoff.
 
 Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
 
