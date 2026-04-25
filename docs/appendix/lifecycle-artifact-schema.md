@@ -149,6 +149,7 @@ owner: platform-operations
 - principals;
 - memory;
 - archived bundles;
+- структурированные handoff artifacts, в которых фиксировались scope спринта, evaluator critique или решения на границе reset;
 - expired capability-session state, если он все еще важен для audit или delayed operator response.
 
 ## 6. Как это связано с Part VIII
@@ -172,7 +173,7 @@ owner: platform-operations
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - lineage verifier contract и идентичность семейства контрактов можно восстановить, если release или assurance зависят от graded outcomes;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
-- retirement или replacement path объясняет, что происходит с paused runs и expired capability-session state, если такие контуры вообще есть;
+- retirement или replacement path объясняет, что происходит с paused runs, handoff artifacts и expired capability-session state, если такие контуры вообще есть;
 - delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
 - lifecycle artifacts имеют owner и version;
 - incident review может восстановить связку `change -> bundle -> run -> retirement`;
