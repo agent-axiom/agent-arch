@@ -186,6 +186,8 @@
 
 这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的 runtime 有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
 
+它现在也适合作为承接 Anthropic 新 harness 经验的锚点：长时间运行的 application work 可能需要显式的 context resets、结构化 handoff artifacts，以及 planner/generator/evaluator 的角色分离，而不是一条不间断的 agent loop。这个参考包并没有把整套 harness 都实现出来，但它已经把那些关键 runtime seams 暴露出来了，让团队能看见 reset-safe handoff、sprint contracts、evaluator review 与 resumed control state 应该落在什么地方。
+
 它现在也适合作为 verifier-aware governance 的锚点：如果 rollout 或 assurance 依赖 eval output，runtime 就应该保留足够的 trace、session 与 artifact linkage，来解释不只是发生了什么，还包括 verifier 为什么会这样判定这次 run。
 
 这种能力也应延伸到 lifecycle handling。一个受治理的 reference runtime 应该能说明某次 release 当时启用了哪一版 verifier contract 和哪一个 release identity，以及在 retirement 之后还必须保留哪些 evidence，才能为早先的 rollout 或 assurance decisions 提供解释。
