@@ -216,6 +216,8 @@ flowchart LR
 
 Anthropic 的 workflow taxonomy 在这里又增加了一个 rollout 维度。[^anthropic] 对于 pattern-aware runtime，orchestration pattern 的变化应该被视为 release-bearing behavior，而不是不可见的实现细节。
 
+他们后续关于 harness design 的工作又把 rollout 含义推进了一步。[^anthropic-harness] 一旦系统依赖 planner/generator/evaluator 分工、sprint contracts，以及跨长时间会话传递的结构化 handoff artifacts，rollout 就不能只审查最终给用户看到的输出。团队还必须确认 resets、evaluator feedback 与 handoff artifacts 在数小时执行过程中，是否持续维护着同一个 release contract。
+
 在 rollout 前，团队应该能够明确说出：
 
 - 某条路径现在是否改成了 `routing`，而过去还是 fixed workflow；
@@ -396,3 +398,5 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [第七部分：参考实现](index.zh.md)
 - [第八部分：智能体系统的生命周期](../part-viii/index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
