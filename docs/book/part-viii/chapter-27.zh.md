@@ -46,63 +46,63 @@
 
 表面上看，这像是一个管理问题：对象太多、秩序太差。
 
-但在实践里，sprawl 很快就会变成 risk multiplier：
+但在实践里，蔓延很快就会变成风险放大器：
 
-- orphaned agents 在没有 owner 的情况下继续运行；
-- deprecated agents 还保留着 systems 和 data 的访问权；
-- 不同团队对 approvals 和 policy boundaries 的理解不一样；
-- observability coverage 会碎片化；
-- inventory drift 会让 release gates 和 incident review 变得不可靠。
+- 失去负责人的智能体还在继续运行；
+- 已废弃的智能体仍保留着系统和数据访问权；
+- 不同团队对 approvals 和 policy boundaries 的理解并不一致；
+- 可观测性覆盖会碎片化；
+- 清单漂移会让发布门禁和事故复盘变得不可靠。
 
-Microsoft 直接把不完整 inventory 和 agent sprawl 与 blind spots、inconsistent enforcement、delayed detection 联系在一起。 [^ms-inventory][^ms-agentic-risk]
+Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsistent enforcement、delayed detection 联系在一起。 [^ms-inventory][^ms-agentic-risk]
 
-## 3. Inventory 和 registry 不是同一层
+## 3. 清单和注册表不是同一层
 
 最好把下面两层分开看：
 
 - `agent inventory`
 - `agent registry`
 
-Inventory 回答的问题是：
+清单回答的问题是：
 
-- 环境里到底有哪些 agent-like entities 存在。
+- 环境里到底有哪些类智能体实体存在。
 
-Registry 回答的是更严格的问题：
+注册表回答的是更严格的问题：
 
-- 其中哪些已经被识别、分类、治理，并允许进入 production contours。
+- 其中哪些已经被识别、分类、治理，并允许进入生产轮廓。
 
 也就是说：
 
-- inventory 解决的是可见性完整性；
-- registry 解决的是治理。
+- 清单解决的是可见性完整性；
+- 注册表解决的是治理。
 
-没有 inventory，你不知道完整 estate。
-没有 registry，你就无法有把握地说哪些 agents 是 approved、governed 且在运行上可被追责的。
+没有清单，你就不知道完整的智能体群体是什么样。
+没有注册表，你就无法有把握地说哪些智能体已经获批、受治理，而且在运行上可被追责。
 
-## 4. 一个最小 agent record 应该包含什么
+## 4. 一个最小智能体记录应该包含什么
 
-对 production-grade agent systems 来说，一个最小的 registry record 通常至少应该包含：
+对生产级智能体系统来说，一个最小的注册表记录通常至少应该包含：
 
 - `agent_id`
-- owner team
-- business purpose
-- lifecycle state
-- allowed capabilities
+- 负责团队
+- 业务用途
+- 生命周期状态
+- 允许使用的能力
 - runtime identity
-- tool principals
-- approval requirements
-- paused runs、background runs 与 capability sessions 的 ownership
-- observability status
-- verifier 或 eval evidence status
-- active 与 deprecated verifier-contract linkage
+- 工具主体
+- 审批要求
+- paused runs、background runs 与 capability sessions 的责任归属
+- 可观测性状态
+- verifier 或 eval evidence 状态
+- 生效中与已废弃的 verifier-contract linkage
 - artifact bundle linkage
 - retirement plan linkage
 
-它存在的意义不是“多一张表”，而是把 agent 这个实体明确地接到：
+它存在的意义不是“多一张表”，而是把智能体这个实体明确地接到：
 
 - security controls；
-- operational ownership；
-- lifecycle decisions。
+- 运行责任；
+- 生命周期决策。
 
 ## 5. Lifecycle states 比大多数团队想象的重要
 
