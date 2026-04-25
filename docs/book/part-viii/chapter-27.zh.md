@@ -5,15 +5,15 @@
 
     变化最快的部分：
 
-    - inventory discovery、registry sync 和 governance automation 的平台能力；
-    - 各家平台对 agents、assistants 和 agent-like entities 的分类方法；
-    - 面向大规模 estate 的 drift detection 与 policy enforcement 实践。
+    - 面向智能体清单发现、注册表同步与治理自动化的平台能力；
+    - 各家平台对智能体、助手与类智能体实体的分类方法；
+    - 面向大规模智能体群体的漂移检测与策略执行实践。
 
     变化相对较慢的部分：
 
-    - 必须区分 inventory 和 registry；
-    - 每个生产级 agent 都需要 owner、lifecycle state、capability record 和 runtime-control ownership；
-    - 定期 review 仍然是避免 sprawl 变成 blind spot 的关键。
+    - 必须区分清单与注册表；
+    - 每个生产级智能体都需要负责人、生命周期状态、能力记录与 runtime-control ownership；
+    - 定期审查仍然是避免蔓延变成治理盲区的关键。
 
 ## 1. 为什么几乎每个成功的 agent 计划都会出现 sprawl
 
