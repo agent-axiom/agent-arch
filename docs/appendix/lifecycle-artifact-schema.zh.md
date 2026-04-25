@@ -149,6 +149,7 @@ owner: platform-operations
 - 主体；
 - 记忆；
 - 已归档的工件包；
+- 记录 sprint scope、evaluator critique 或 reset-boundary decisions 的结构化 handoff artifacts；
 - 对审计或延迟 operator response 仍然有意义的 expired capability-session state。
 
 ## 6. 它和 Part VIII 的关系
@@ -172,7 +173,7 @@ owner: platform-operations
 - 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
 - 当 release 或 assurance 依赖 graded outcomes 时，verifier contract lineage 与 contract-family identity 也必须可追溯；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
-- 当存在这些路径时，retirement 或 replacement 必须说明 paused runs 和 expired capability-session state 会如何处理；
+- 当存在这些路径时，retirement 或 replacement 必须说明 paused runs、handoff artifacts 和 expired capability-session state 会如何处理；
 - 当这些控制存在时，delegated authorization ownership 与 revoke behavior 也必须能够对受影响 runs 被还原出来；
 - 生命周期工件有负责人和版本；
 - 事故复盘能还原 `change -> bundle -> run -> retirement`；
