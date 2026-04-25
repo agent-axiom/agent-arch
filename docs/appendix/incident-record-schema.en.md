@@ -125,7 +125,7 @@ That is why incident records should connect to the [change-rollout schema](chang
 
 ## 8. Relation to the reference package
 
-The [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) package already contains several primitives that make this model practical:
+The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) package already contains several primitives that make this model practical:
 
 - traces and session summaries;
 - approval queue;

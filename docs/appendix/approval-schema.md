@@ -144,9 +144,9 @@ Approval schema отвечает на другой слой:
 
 ## 8. Связь с опорным пакетом
 
-В [agent_runtime_ref](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref) уже есть operational primitives, которые поддерживают эту модель:
+В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть operational primitives, которые поддерживают эту модель:
 
-- [approvals.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/approvals.py)
+- [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
 - [configs/approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - CLI:
   - `inspect-approvals`
