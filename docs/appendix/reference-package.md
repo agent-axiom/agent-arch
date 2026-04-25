@@ -52,6 +52,7 @@
   Approval gates, pause/resume semantics, простая human review queue для high-risk действий и тот control surface, где approval state должен оставаться синхронизирован с capability session state.
 
 Этот же runtime-control surface естественно расширяется и на delegated authorization assumptions: какой principal делегировал доступ, переживает ли такая авторизация pause/resume и что делает runtime, если delegated access отозвали до завершения действия.
+
 - [lifecycle.py](/Users/if/PycharmProjects/agent-axiom/agent-arch/agent_runtime_ref/lifecycle.py)
   Lifecycle-артефакты для change record, artifact bundle, записей об идентичности выпуска, runtime-control schemas, verifier-contract lineage и retirement plan, плюс readiness-проверки для этих состояний.
 
