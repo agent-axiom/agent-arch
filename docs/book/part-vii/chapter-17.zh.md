@@ -117,6 +117,8 @@ OpenAI 最近关于 tooling 的材料有一个很有用的区分，而很多团�
 
 Anthropic 的 workflow taxonomy 又补上了一个缺失的 governance 维度。[^anthropic] policy layer 不应该只决定某个 capability 单独看来能不能用，它还应该决定这个 capability 可以出现在什么 orchestration patterns 里。
 
+他们后续关于 harness design 的工作又补上一层密切相关的经验：一旦系统通过 planner、generator、evaluator 这些角色在长时间任务上协作，policy 要治理的就不再只是某一次 tool call，而是这个 tool call 周围的 **角色契约**。[^anthropic-harness] 如果 generator 提出 sprint，evaluator 负责打分，而 planner 重新塑造 scope，那么平台就需要明确规则，规定谁可以定义 done-ness，谁可以评估质量，谁有权触发 reset，以及在 context reset 之后哪份 handoff artifact 才算 authoritative。
+
 例如，policy contract 可能需要明确说明一个 capability：
 
 - 可以安全地用于 `prompt chaining`，但不能用于 unconstrained loop；
@@ -435,3 +437,5 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [第 18 章：生产上线检查清单](chapter-18.zh.md)
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
