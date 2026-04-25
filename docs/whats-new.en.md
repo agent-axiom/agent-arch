@@ -10,8 +10,7 @@ _Current as of April 18, 2026._
 
 The book now includes a full block on `SDLC -> ADLC`, change management, assurance loops, supply chain, retirement, misalignment, behavioral evals, AI-native observability, and inventory control.
 
-Why it matters:
-- the site now covers not only architecture and rollout, but the lifecycle of an agent system after release.
+Why it matters: the site now covers not only architecture and rollout, but the lifecycle of an agent system after release.
 
 ### A stronger production contour across Parts I-V
 
@@ -23,8 +22,7 @@ The book now includes sharper bridges between architecture, retrieval, execution
 - Part IV now adds practical guidance for large tool catalogs, `semantic tool filtering`, and explicit `MCP host / client / server` roles;
 - Part V now adds a stronger product framing for `latency budget` and a more practical treatment of `LLM-as-a-judge`.
 
-Why it matters:
-- the book now covers not only the baseline platform layers, but also the everyday production questions that tend to surface between design review, eval loops, and rollout.
+Why it matters: the book now covers not only the baseline platform layers, but also the everyday production questions that tend to surface between design review, eval loops, and rollout.
 
 ## Reference
 
@@ -39,8 +37,7 @@ The site now includes reference pages for:
 - lifecycle artifacts;
 - memory retrieval contracts.
 
-Why it matters:
-- readers can now move directly from explanatory chapters to reviewable schemas and contract artifacts.
+Why it matters: readers can now move directly from explanatory chapters to reviewable schemas and contract artifacts.
 
 ## Runtime
 
@@ -55,8 +52,7 @@ The repository includes [agent_runtime_ref](/Users/if/PycharmProjects/agent-axio
 - eval dataset export;
 - trace export with redaction and schema versioning.
 
-Why it matters:
-- the book is now backed by runnable code, not only narrative documentation.
+Why it matters: the book is now backed by runnable code, not only narrative documentation.
 
 ## Practical Appendix
 
@@ -71,8 +67,7 @@ The site now includes:
 - a research frontier page;
 - a community roadmap.
 
-Why it matters:
-- readers have fast access to checklists, case studies, glossary entries, and practical assets without reading the entire book linearly.
+Why it matters: readers have fast access to checklists, case studies, glossary entries, and practical assets without reading the entire book linearly.
 
 ## Navigation
 
@@ -92,8 +87,7 @@ Those pages now make it easier to find short paths into topics such as:
 - `LLM-as-a-judge` and judge calibration;
 - the difference between `prompt injection`, `jailbreaking`, and `action hallucination`.
 
-Why it matters:
-- the new topics are now visible not only inside individual chapters, but also at the reader entry-point level.
+Why it matters: the new topics are now visible not only inside individual chapters, but also at the reader entry-point level.
 
 ## What this means for readers
 
