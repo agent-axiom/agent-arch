@@ -219,6 +219,8 @@ That means provenance should increasingly preserve not only that a runtime-contr
 - whether delegated access was platform-owned or user-delegated;
 - which principal-binding rule and revoke behavior governed in-flight or paused actions.
 
+Anthropic's later harness work makes another supply-chain consequence explicit.[^anthropic-harness] If long-running work depends on context resets, planner/generator/evaluator separation, sprint contracts, and structured handoff artifacts, then those handoff artifacts are not disposable coordination notes. They become provenance-bearing artifacts too. A later incident review or rollout challenge may need to know which handoff artifact carried scope, which evaluator critique shaped the next sprint, and which reset boundary changed the active context without changing the user-visible run.
+
 Those are provenance questions because they determine the governed identity of the behavior, not merely whether the behavior was visible in telemetry.
 
 That is exactly where this chapter's boundary matters. Telemetry may show that a pause, re-init, or delegated action happened. Provenance has to preserve which reviewed contract family made that behavior legitimate in the first place. Without that layer, incident review can see events but still fail to explain why the platform considered them valid.
@@ -363,3 +365,5 @@ After supply chain and artifact discipline, the natural final operational topic 
 - [Sources](../../appendix/sources.en.md)
 
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+
+[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
