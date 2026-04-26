@@ -276,9 +276,9 @@ agent:
   retirement_plan: retire-support-v1
 ```
 
-这个 record 已经足以把 agent 和 ownership、controls、lifecycle 以及 verifier-aware evidence expectations 连接起来。
+这条记录已经足以把智能体与 ownership、controls、lifecycle 以及 verifier-aware evidence expectations 连接起来。
 
-放到 estate scale 上看，它还能帮助回答一个团队很容易漏掉的问题：哪些 verifier contracts 仍在 active 使用，哪些已经 deprecated，以及哪些 agents 还依赖旧版本。
+放到整个智能体群体的尺度上看，它还能帮助回答一个团队很容易漏掉的问题：哪些 verifier contracts 仍在使用，哪些已经废弃，以及哪些 agents 还依赖旧版本。
 
 ## 11. 一个简单的 registry health check
 
@@ -307,14 +307,14 @@ def registry_ready(state: AgentRegistryState) -> bool:
     )
 ```
 
-这里的逻辑很直接：一个没有 owner、没有 lifecycle state、没有 observability linkage 的 agent，不应该被视为 production-ready entity。
+这里的逻辑很直接：一个没有 owner、没有 lifecycle state、没有 observability linkage 的 agent，不应该被视为可进入生产的实体。
 
 ## 12. 最常见的 failure modes
 
-- agents 已经在生产环境里，但不在 inventory 中；
-- inventory 存在，但 lifecycle states 没有维护；
-- registry 不知道 principals 和 approvals；
-- deprecated agents 还保留着 tool paths 的访问权；
+- 一些 agents 已经在生产环境里运行，却不在 inventory 中；
+- inventory 虽然存在，但 lifecycle states 没有持续维护；
+- registry 并不知道 principals 和 approvals 的实际情况；
+- 已废弃的 agents 仍保留着 tool paths 的访问权；
 - registry record 无法说明谁负责 paused approvals 或 aging background runs；
 - contract versions 已经漂移，但 registry 仍指向过时的 control assumptions；
 - 多个 registry 之间发生漂移；
@@ -333,7 +333,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - deprecated 和 orphaned agents 能在变成 blind spots 之前被找到；
 - governance 能区分 discovered entities 和 approved production agents。
 
-如果这些条件大多不成立，那团队也许已经有一些 visibility fragments，但还没有真正的 agent governance。
+如果这些条件大多不成立，那团队也许已经有一些零散的可见性碎片，但还没有真正建立起 agent governance。
 
 这时的 registry 仍然更像 loose catalog。成熟的 registry 更像一个 accountability layer，会持续对账 production entities、control ownership 与 lifecycle truth。
 
