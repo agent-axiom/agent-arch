@@ -322,7 +322,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 ## 13. 给 agent governance 做一次快速成熟度测试
 
-团队不应该只因为已经有一张 registry spreadsheet 和一个大概的 deployed agents 数量，就觉得自己已经控制住了整个 agent estate。
+团队不应该只因为已经有一张 registry spreadsheet 和一个大概的 deployed agents 数量，就觉得自己已经控制住了整个智能体群体。
 
 更高的标准应该是：
 
@@ -346,7 +346,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - 你能不能快速找出 orphaned 或 deprecated、但 principals 还活着的 agents？
 - 你有没有明确区分“被发现”与“被批准进入 production”？
 
-如果连续几个答案都是“否”，那说明你已经有 agent estate，但还没有真正把智能体治理建立起来。
+如果连续几个答案都是“否”，那说明你已经有一整套智能体群体，但还没有真正把智能体治理建立起来。
 
 ## 15. 值得配套阅读的参考页
 
