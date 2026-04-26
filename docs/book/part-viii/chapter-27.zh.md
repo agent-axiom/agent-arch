@@ -36,7 +36,7 @@
 
 这正是值得被称作 `agent sprawl` 的状态。
 
-注册表这一层首先是为了做成一件事，让整个智能体群体具备可追责性。对于任何生产级智能体，团队都应该能快速回答：谁拥有它、哪些 controls 约束它、哪些 evidence 描述它，以及一旦它发生 drift 该由谁采取行动。
+注册表这一层首先是为了做成一件事，让整个智能体群体具备可追责性。对于任何生产级智能体，团队都应该能快速回答：谁拥有它、哪些控制约束它、哪些证据描述它，以及一旦它发生漂移该由谁采取行动。
 
 这种可追责性就是本章的重心。注册表并不拥有证据主干，也不拥有遥测基底。它真正拥有的是，从受治理实体到负责人、状态和问责路径之间的映射。
 
@@ -50,7 +50,7 @@
 
 - 失去负责人的智能体还在继续运行；
 - 已废弃的智能体仍保留着系统和数据访问权；
-- 不同团队对 approvals 和 policy boundaries 的理解并不一致；
+- 不同团队对审批要求和策略边界的理解并不一致；
 - 可观测性覆盖会碎片化；
 - 清单漂移会让发布门禁和事故复盘变得不可靠。
 
@@ -100,7 +100,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 它存在的意义不是“多一张表”，而是把智能体这个实体明确地接到：
 
-- security controls；
+- 安全控制；
 - 运行责任；
 - 生命周期决策。
 
@@ -181,7 +181,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 ## 8.1. 没有持续校验的注册表会变得整洁，但不再准确
 
-这里不应该高估 registry 本身。Registry 的存在，并不能自动证明 control layer 真的在工作。
+这里不应该高估 registry 本身。Registry 的存在，并不能自动证明控制层真的在工作。
 
 如果 registry：
 
@@ -193,7 +193,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 那它很快就会变成一幅整洁、但部分失真的智能体群体图景。
 
-所以，更成熟的理解方式是：registry 不应只是静态目录，而应该是持续校验的 control surface。
+所以，更成熟的理解方式是：registry 不应只是静态目录，而应该是持续校验的控制面。
 
 ## 9. 注册表如何连接 approvals 和 policies
 
@@ -230,7 +230,7 @@ Microsoft 直接把不完整的清单和智能体蔓延与 blind spots、inconsi
 
 否则，整个智能体群体表面上看起来像是 governed 的，实际却仍然隐藏着运行层面的模糊地带。
 
-所以 registry 与其说是 release lineage 层，不如说是 operational answerability 层。它是一张智能体群体级的 ownership map，确保 decisions、incidents 与 drift 始终挂在正确的实体上。
+所以 registry 与其说是 release lineage 层，不如说是 operational answerability 层。它是一张智能体群体级的 ownership map，确保决策、事件与漂移始终挂在正确的实体上。
 
 而这种模糊通常最先在 incident response 里造成伤害。团队可能已经有 telemetry、policies 和 approvals，却仍然会卡在一个最基本的智能体群体问题上：此刻到底是哪一个 production entity 应该为这条 path 负责？
 
@@ -276,7 +276,7 @@ agent:
   retirement_plan: retire-support-v1
 ```
 
-这条记录已经足以把智能体与 ownership、controls、lifecycle 以及 verifier-aware evidence expectations 连接起来。
+这条记录已经足以把这个智能体与负责人、控制约束、生命周期，以及 verifier-aware evidence expectations 连接起来。
 
 放到整个智能体群体的尺度上看，它还能帮助回答一个团队很容易漏掉的问题：哪些 verifier contracts 仍在使用，哪些已经废弃，以及哪些 agents 还依赖旧版本。
 
@@ -333,7 +333,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - deprecated 和 orphaned agents 能在变成 blind spots 之前被找到；
 - governance 能区分 discovered entities 和 approved production agents。
 
-如果这些条件大多不成立，那团队也许已经有一些零散的可见性碎片，但还没有真正建立起 agent governance。
+如果这些条件大多不成立，那团队也许已经有一些零散的可见性碎片，但还没有真正建立起智能体治理。
 
 这时的 registry 仍然更像 loose catalog。成熟的 registry 更像一个 accountability layer，会持续对账 production entities、control ownership 与 lifecycle truth。
 
