@@ -346,7 +346,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - 你能不能快速找出 orphaned 或 deprecated、但 principals 还活着的 agents？
 - 你有没有明确区分“被发现”与“被批准进入 production”？
 
-如果连续几个答案都是“否”，那说明你已经有 agent estate，但还没有真正的 agent governance。
+如果连续几个答案都是“否”，那说明你已经有 agent estate，但还没有真正建立起智能体治理。
 
 ## 15. 值得配套阅读的参考页
 
