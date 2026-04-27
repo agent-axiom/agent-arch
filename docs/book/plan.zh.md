@@ -90,9 +90,9 @@
 这一部分的问题是：怎样与智能体系统共处数月，发布变更、响应故障、关闭旧轮廓，并让整个 estate 保持在控制之下。
 
 - 第 19 章：从 SDLC 到 ADLC。
-- 第 20 章：智能体系统的 Change Management。
-- 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response。
-- 第 22 章：Supply Chain、Provenance 与 Approved Artifacts。
+- 第 20 章：智能体系统的变更管理。
+- 第 21 章：保障闭环：红队测试、检测与响应。
+- 第 22 章：供应链、来源追踪与已批准工件。
 - 第 23 章：退役、替换与终止使用纪律。
 - 第 24 章：智能体失配与内部人风险。
 - 第 25 章：行为评测、控制评测与自动化红队测试。

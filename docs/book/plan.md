@@ -92,7 +92,7 @@
 - Глава 19. От SDLC к ADLC.
 - Глава 20. Change management для агентных систем.
 - Глава 21. Assurance loop: red teaming, detection и response.
-- Глава 22. Supply chain, provenance и approved artifacts.
+- Глава 22. Цепочка поставки, происхождение и доверенные артефакты.
 - Глава 23. Retirement, replacement и end-of-life discipline.
 - Глава 24. Agentic misalignment и insider-risk.
 - Глава 25. Behavioral evals, control evals и automated red teaming.

@@ -213,5 +213,5 @@ owner: platform-operations
 - [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)
-- [Глава 22. Supply chain, provenance и approved artifacts](../book/part-viii/chapter-22.md)
+- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../book/part-viii/chapter-22.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](../book/part-viii/chapter-23.md)

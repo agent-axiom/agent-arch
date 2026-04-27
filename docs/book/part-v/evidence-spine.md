@@ -19,7 +19,7 @@
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 20. Change Management для агентных систем](../part-viii/chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
-- [Глава 22. Supply chain, provenance и approved artifacts](../part-viii/chapter-22.md)
+- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../part-viii/chapter-22.md)
 
 Эта страница собирает их в один walkthrough, чтобы показать, как один управляемый run остается читаемым от user request до rollout judgment.
 
@@ -238,6 +238,6 @@ latest_rollout_decision: pause-canary
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 20. Change Management для агентных систем](../part-viii/chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
-- [Глава 22. Supply chain, provenance и approved artifacts](../part-viii/chapter-22.md)
+- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../part-viii/chapter-22.md)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).

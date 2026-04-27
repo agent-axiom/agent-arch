@@ -34,7 +34,7 @@
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
-- [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
+- [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](chapter-22.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
