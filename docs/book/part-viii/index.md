@@ -39,7 +39,7 @@
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
 - [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
-- [Глава 27. Agent inventory, registry и борьба с sprawl](chapter-27.md)
+- [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 
 ## Что ты должен вынести
 

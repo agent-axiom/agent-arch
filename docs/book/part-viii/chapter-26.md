@@ -344,7 +344,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
-- [Глава 27. Agent inventory, registry и борьба с sprawl](chapter-27.md)
+- [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)

@@ -151,4 +151,4 @@ Start with this short list and mark every "no" explicitly:
 - [Change Review and Rollout Gate Schema](change-rollout-schema.en.md)
 - [Reference Package](reference-package.en.md)
 - [Chapter 26. AI-Native Observability, Inventory Coverage, and Detection-Ready Telemetry](../book/part-viii/chapter-26.en.md)
-- [Chapter 27. Agent Inventory, Registry, and Anti-Sprawl Discipline](../book/part-viii/chapter-27.en.md)
+- [Chapter 27. Agent Inventory, Registry, and Sprawl Control](../book/part-viii/chapter-27.en.md)

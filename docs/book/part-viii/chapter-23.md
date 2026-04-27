@@ -308,7 +308,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 22. Supply chain, provenance и approved artifacts](chapter-22.md)
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
-- [Глава 27. Agent inventory, registry и борьба с sprawl](chapter-27.md)
+- [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 - [Часть VIII. Жизненный цикл агентной системы](index.md)
 - [Источники](../../appendix/sources.md)
 
