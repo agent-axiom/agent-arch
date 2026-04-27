@@ -182,6 +182,6 @@ If the answer is “no” several times in a row, you already have memory, but n
 - [Eval Dataset Schema and Grading Contract](eval-schema.en.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.en.md)
 - [Reference Package](reference-package.en.md)
-- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](../book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](../book/part-iii/chapter-6.en.md)
 - [Chapter 7. Retrieval, Compaction, and Background Updates](../book/part-iii/chapter-7.en.md)

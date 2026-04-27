@@ -97,7 +97,7 @@ Most of the time, it is enough to have:
 
 ### Where to read in the book
 
-- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](../book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../book/part-iii/chapter-5.en.md)
 - [Chapter 7. Retrieval, Compaction, and Background Updates](../book/part-iii/chapter-7.en.md)
 - [Chapter 11. Traces, Spans, and Structured Events](../book/part-v/chapter-11.en.md)
 

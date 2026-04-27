@@ -19,7 +19,7 @@ Status: `Published`
 Question of the part: when an agent is actually justified, and what a minimally mature architecture should look like if you build it not as a prompt trick, but as a system.
 
 - Chapter 1. Why an agent needs a platform, not magic.
-- Chapter 2. Reference architecture for a safe agent.
+- Chapter 2. Reference Architecture for a Safe Agent.
 - [Practice. Instructions, routines, and prompt templates](part-i/practical-routines.en.md)
 - [Practice. Manager pattern vs handoffs](part-i/practical-manager-handoffs.en.md)
 
@@ -40,7 +40,7 @@ Question of the part: how to make memory useful without turning it into an uncon
 
 - Chapter 5. Why agents need memory and why it is dangerous.
 - Chapter 6. Short-term, long-term, and profile memory.
-- Chapter 7. Retrieval, compaction, and background updates.
+- Chapter 7. Retrieval, Compaction, and Background Updates.
 
 ### Part IV. Tools and Execution
 
@@ -61,7 +61,7 @@ Question of the part: how not to guess about system behavior after the first inc
 
 - Chapter 11. Traces, spans, and structured events.
 - Chapter 12. SLO for agent systems.
-- Chapter 13. Offline evals, online evals, and regression gates.
+- Chapter 13. Offline Evals, Online Evals, and Regression Gates.
 - [Evidence Spine: From request to rollout judgment](part-v/evidence-spine.en.md)
 
 ### Part VI. Organizational Model

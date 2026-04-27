@@ -94,7 +94,7 @@ Persistent memory that survives beyond a single session. It requires stronger di
 
 Read next:
 
-- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](../book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](../book/part-iii/chapter-6.en.md)
 
 ## Profile memory
@@ -127,7 +127,7 @@ The origin of a piece of data: where it came from, how it entered memory, which 
 
 Read next:
 
-- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](../book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](../book/part-iii/chapter-6.en.md)
 
 ## Approval gate

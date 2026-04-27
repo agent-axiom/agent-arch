@@ -32,7 +32,7 @@ What to add:
 Where it goes:
 
 - [Chapter 3. Security Perimeter and Trust Boundaries](../book/part-ii/chapter-3.en.md)
-- [Chapter 4. Tool Gateway, Approvals, and Audit Trail](../book/part-ii/chapter-4.en.md)
+- [Chapter 4. Tool Gateway, Approval, and Audit Trail](../book/part-ii/chapter-4.en.md)
 
 What to add:
 
@@ -44,7 +44,7 @@ What to add:
 
 Where it goes:
 
-- [Chapter 5. Why an Agent Needs Memory and Why Memory Is Dangerous](../book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](../book/part-iii/chapter-6.en.md)
 
 What to add:
@@ -108,7 +108,7 @@ What to add:
 
 Where it goes:
 
-- [Chapter 16. Base Runtime Blueprint](../book/part-vii/chapter-16.en.md)
+- [Chapter 16. Baseline Runtime Blueprint](../book/part-vii/chapter-16.en.md)
 - [Chapter 17. Policy Layer and Capability Catalog](../book/part-vii/chapter-17.en.md)
 - `agent_runtime_ref`
 
