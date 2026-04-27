@@ -104,9 +104,9 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 - 运行责任；
 - 生命周期决策。
 
-## 5. Lifecycle states 比大多数团队想象的重要
+## 5. 生命周期状态比大多数团队想象的重要
 
-太简单的 “active / inactive” 模型很快就会失效。
+太简单的“活跃 / 不活跃”模型很快就会失效。
 
 至少更实用的最小集合应该是：
 
@@ -350,15 +350,15 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 ## 15. 值得配套阅读的参考页
 
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Approval Request 与 Decision Schema](../../appendix/approval-schema.zh.md)
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
+- [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [审批请求与决策模式](../../appendix/approval-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 23 章：退役、替换与生命周期终止纪律](chapter-23.zh.md)
 - [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
-- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
+- [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](chapter-26.zh.md)
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
