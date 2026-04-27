@@ -183,5 +183,5 @@ excluded_records: 12
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Глава 5. Зачем агенту память и почему она опасна](../book/part-iii/chapter-5.md)
-- [Глава 6. Short-term, long-term и profile memory](../book/part-iii/chapter-6.md)
-- [Глава 7. Retrieval, compaction и background updates](../book/part-iii/chapter-7.md)
+- [Глава 6. Краткосрочная, долгосрочная и профильная память](../book/part-iii/chapter-6.md)
+- [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](../book/part-iii/chapter-7.md)
