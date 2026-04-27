@@ -36,11 +36,17 @@ Each decision may be reasonable on its own. The problem starts later, when nobod
 
 That is the state worth calling `agent sprawl`.
 
-The registry layer exists for one reason above all: to make the estate answerable. It should be possible to ask of any production agent who owns it, which controls govern it, which evidence describes it, and who must act when it drifts.
+The registry layer exists for one reason above all: to make the estate answerable.
 
-That answerability is the center of gravity here. Registry does not own the evidence backbone or the telemetry substrate. It owns the mapping from governed entities to owners, states, and accountability paths.
+It should be possible to ask of any production agent who owns it, which controls govern it, which evidence describes it, and who must act when it drifts.
 
-That is the core promise of this chapter. It should help the reader see registry as the accountability layer of the estate: the place where governed entities stop being a blurry population of tools and assistants and become answerable production systems with owners, lifecycle state, and explicit responsibility.
+That answerability is the center of gravity here. Registry does not own the evidence backbone or the telemetry substrate.
+
+It owns the mapping from governed entities to owners, states, and accountability paths.
+
+That is the core promise of this chapter.
+
+It should help the reader see registry as the accountability layer of the estate: the place where governed entities stop being a blurry population of tools and assistants and become answerable production systems with owners, lifecycle state, and explicit responsibility.
 
 ## 2. Why sprawl is not only an organizational problem
 
@@ -54,7 +60,7 @@ In practice, sprawl quickly becomes a risk multiplier:
 - observability coverage becomes fragmented;
 - inventory drift makes release gates and incident review less reliable.
 
-Microsoft explicitly links incomplete inventory and agent sprawl to blind spots, inconsistent enforcement, and delayed detection. [^ms-inventory][^ms-agentic-risk]
+Microsoft explicitly links incomplete inventory and agent sprawl to blind spots, inconsistent enforcement, and delayed detection.[^ms-inventory][^ms-agentic-risk]
 
 ## 3. Inventory and registry are not the same layer
 
@@ -173,11 +179,17 @@ Registry makes this connection even tighter:
 
 So registry turns observability from “raw events” into a governed operational map.
 
-But it should not be confused with provenance. Provenance preserves which approved artifact set and version justified behavior. Registry preserves which named production entity, owner, and lifecycle state that behavior belonged to.
+But it should not be confused with provenance. Provenance preserves which approved artifact set and version justified behavior.
 
-That is also the clean boundary between the two chapters. Observability preserves evidence. Registry assigns that evidence to named entities, owners, lifecycle states, and accountability paths across the estate.
+Registry preserves which named production entity, owner, and lifecycle state that behavior belonged to.
 
-And that is the boundary from the provenance chapter too. Provenance answers what governed version or approved bundle the system ran under. Registry answers which production entity owned that path and who is accountable for it now.
+That is also the clean boundary between the two chapters. Observability preserves evidence.
+
+Registry assigns that evidence to named entities, owners, lifecycle states, and accountability paths across the estate.
+
+And that is the boundary from the provenance chapter too. Provenance answers what governed version or approved bundle the system ran under.
+
+Registry answers which production entity owned that path and who is accountable for it now.
 
 ## 8.1. A registry without continuous verification becomes neat but inaccurate
 
@@ -230,9 +242,13 @@ Then the registry should help answer:
 
 Otherwise, the estate may look governed while still hiding operational ambiguity.
 
-Registry is therefore less about preserving release lineage than about preserving operational answerability. It is the estate-level ownership map that keeps decisions, incidents, and drift attached to the right entity.
+Registry is therefore less about preserving release lineage than about preserving operational answerability.
 
-That ambiguity is usually what hurts first in incidents. Teams may have telemetry, policies, and approvals, but still lose time on the most basic estate question: which exact production entity is accountable for this path right now?
+It is the estate-level ownership map that keeps decisions, incidents, and drift attached to the right entity.
+
+That ambiguity is usually what hurts first in incidents.
+
+Teams may have telemetry, policies, and approvals, but still lose time on the most basic estate question: which exact production entity is accountable for this path right now?
 
 ## 10. Example of a minimal agent registry record
 
@@ -335,7 +351,9 @@ A stronger bar is this:
 
 If most of those conditions are missing, the team may have visibility fragments, but it still does not have real agent governance.
 
-At that point, the registry is still acting like a loose catalog. A mature registry acts more like an accountability layer that continuously reconciles production entities, control ownership, and lifecycle truth.
+At that point, the registry is still acting like a loose catalog.
+
+A mature registry acts more like an accountability layer that continuously reconciles production entities, control ownership, and lifecycle truth.
 
 ## 14. Practical checklist
 
