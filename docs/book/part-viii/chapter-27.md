@@ -123,9 +123,9 @@ Microsoft прямо связывает это с security posture: неполн
 - видеть, какие агенты еще не должны иметь full egress или полный путь approvals;
 - управлять replacement и retirement без серой зоны.
 
-## 6. Реестр полезен не только security-команде
+## 6. Реестр полезен не только команде безопасности
 
-Хороший реестр агентов нужен не только security или governance.
+Хороший реестр агентов нужен не только безопасности или governance.
 
 Он полезен и:
 
@@ -158,9 +158,9 @@ Microsoft прямо связывает это с security posture: неполн
 - если сущность может действовать от имени организации, читать важный контекст или вызывать tools, она должна попадать хотя бы в инвентарь;
 - если она идет в production contour, она должна попасть и в реестр.
 
-## 8. Как реестр связан с observability
+## 8. Как реестр связан с наблюдаемостью
 
-Глава про observability уже показала, что покрытие инвентаря — часть доказательного слоя.
+Глава про наблюдаемость уже показала, что покрытие инвентаря — часть доказательного слоя.
 
 Реестр делает эту связь еще жестче:
 
@@ -169,7 +169,7 @@ Microsoft прямо связывает это с security posture: неполн
 - incidents можно фильтровать по owner, risk tier и approval mode;
 - release evidence можно проверять не только по traces, но и по статусу записи в реестре и verifier-evidence linkage.
 
-То есть реестр превращает observability из “сырых событий” в управляемую operational map.
+То есть реестр превращает наблюдаемость из “сырых событий” в управляемую operational map.
 
 Но его не нужно путать с provenance. Provenance хранит, какой approved artifact set и какая version обосновывали поведение. Реестр хранит, какой named production entity, owner и lifecycle state принадлежали этому path.
 
@@ -193,7 +193,7 @@ Microsoft прямо связывает это с security posture: неполн
 
 Поэтому зрелый реестр лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
 
-## 9. Как реестр связан с approvals и policies
+## 9. Как реестр связан с подтверждениями и политиками
 
 Реестр не должен дублировать policy bundle или approval contract.
 
@@ -356,7 +356,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](chapter-26.md)
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
