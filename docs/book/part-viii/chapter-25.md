@@ -316,7 +316,7 @@ Grading contract становится сильнее, если умеет хра
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](chapter-26.md)
 - [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)

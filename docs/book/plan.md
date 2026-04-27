@@ -96,7 +96,7 @@
 - Глава 23. Retirement, replacement и end-of-life discipline.
 - Глава 24. Agentic misalignment и insider-risk.
 - Глава 25. Behavioral evals, control evals и automated red teaming.
-- Глава 26. AI-native observability, inventory coverage и detection-ready telemetry.
+- Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем.
 - Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием.
 
 ## Роадмап публикации

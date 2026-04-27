@@ -150,5 +150,5 @@ Registry становится неточным не из-за плохой ид�
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Схема проверки изменений и шлюза раскатки](change-rollout-schema.md)
 - [Справочный пакет](reference-package.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](../book/part-viii/chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)
 - [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](../book/part-viii/chapter-27.md)

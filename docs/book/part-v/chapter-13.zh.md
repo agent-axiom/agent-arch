@@ -475,7 +475,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 12 章：智能体系统的 SLO](chapter-12.zh.md)
-- [第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming](../part-viii/chapter-25.zh.md)
+- [第 25 章：行为评测、控制评测与自动化红队测试](../part-viii/chapter-25.zh.md)
 - [第 14 章：平台团队与产品团队](../part-vi/chapter-14.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

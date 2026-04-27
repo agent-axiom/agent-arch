@@ -130,5 +130,5 @@
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [参考运行时包](reference-package.zh.md)
 - [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](../book/part-viii/chapter-21.zh.md)
-- [第 23 章：Retirement、Replacement 与 End-of-Life Discipline](../book/part-viii/chapter-23.zh.md)
-- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](../book/part-viii/chapter-26.zh.md)
+- [第 23 章：退役、替换与终止使用纪律](../book/part-viii/chapter-23.zh.md)
+- [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)

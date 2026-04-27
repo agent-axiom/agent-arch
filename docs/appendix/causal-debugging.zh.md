@@ -161,4 +161,4 @@ Causal debugging 不替代 [Trace Schema 与 Event Catalog](trace-schema.zh.md)�
 - [智能体系统 Postmortem 模板](postmortem-template.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
-- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](../book/part-viii/chapter-26.zh.md)
+- [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)

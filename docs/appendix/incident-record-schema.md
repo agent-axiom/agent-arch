@@ -177,4 +177,4 @@ Incident review редко заканчивается только containment p
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Handbook по agent registry и inventory operations](registry-operations-handbook.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../book/part-viii/chapter-21.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](../book/part-viii/chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)
