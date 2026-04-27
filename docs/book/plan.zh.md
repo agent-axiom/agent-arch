@@ -93,10 +93,10 @@
 - 第 20 章：智能体系统的 Change Management。
 - 第 21 章：Assurance Loop：Red Teaming、Detection 与 Response。
 - 第 22 章：Supply Chain、Provenance 与 Approved Artifacts。
-- 第 23 章：Retirement、Replacement 与 End-of-Life Discipline。
-- 第 24 章：Agentic Misalignment 与 Insider Risk。
-- 第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming。
-- 第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry。
+- 第 23 章：退役、替换与终止使用纪律。
+- 第 24 章：智能体失配与内部人风险。
+- 第 25 章：行为评测、控制评测与自动化红队测试。
+- 第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测。
 - 第 27 章：智能体清单、注册表与蔓延治理。
 
 ## 发布路线图

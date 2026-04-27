@@ -131,4 +131,4 @@
 - [Справочный пакет](reference-package.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../book/part-viii/chapter-21.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](../book/part-viii/chapter-23.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](../book/part-viii/chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)

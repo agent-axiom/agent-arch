@@ -150,5 +150,5 @@ registry 之所以失真，通常不是因为设计不好，而是因为 operati
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](change-rollout-schema.zh.md)
 - [参考运行时包](reference-package.zh.md)
-- [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](../book/part-viii/chapter-26.zh.md)
+- [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
 - [第 27 章：智能体清单、注册表与蔓延治理](../book/part-viii/chapter-27.zh.md)

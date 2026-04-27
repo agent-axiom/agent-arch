@@ -161,4 +161,4 @@ Causal debugging не заменяет [схему трасс и каталог 
 - [Шаблон postmortem для агентных систем](postmortem-template.md)
 - [Плейбук реагирования на инциденты в агентных системах](incident-response-playbook.md)
 - [Глава 11. Трассы, спаны и структурированные события](../book/part-v/chapter-11.md)
-- [Глава 26. AI-native observability, inventory coverage и detection-ready telemetry](../book/part-viii/chapter-26.md)
+- [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)
