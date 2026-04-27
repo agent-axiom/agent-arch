@@ -139,7 +139,7 @@ plugins:
             Книга: Book
             План книги: Book Plan
             Часть I. Основания: Part I. Foundations
-            Глава 1. Почему агенту нужна платформа, а не магия: Chapter 1. Why Agents Need a Platform, Not Magic
+            Глава 1. Почему агенту нужна платформа, а не магия: Chapter 1. Why an Agent Needs a Platform, Not Magic
             Глава 2. Референсная архитектура безопасного агента: Chapter 2. Reference Architecture for a Safe Agent
             Практика. Instructions, routines и prompt templates: Practice. Instructions, Routines, and Prompt Templates
             Практика. Manager pattern vs handoffs: Practice. Manager Pattern vs Handoffs
@@ -147,7 +147,7 @@ plugins:
             Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Chapter 4. Tool Gateway, Approval, and Audit Trail
             Часть III. Память и знания: Part III. Memory and Knowledge
-            Глава 5. Зачем агенту память и почему она опасна: Chapter 5. Why Agents Need Memory and Why It Is Dangerous
+            Глава 5. Зачем агенту память и почему она опасна: Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky
             Глава 6. Краткосрочная, долгосрочная и профильная память: Chapter 6. Short-Term, Long-Term, and Profile Memory
             Глава 7. Извлечение контекста, уплотнение и фоновые обновления: Chapter 7. Retrieval, Compaction, and Background Updates
             Часть IV. Инструменты и выполнение: Part IV. Tools and Execution
@@ -222,7 +222,7 @@ plugins:
             Книга: 书籍
             План книги: 全书计划
             Часть I. Основания: 第一部分：基础
-            Глава 1. Почему агенту нужна платформа, а не магия: 第 1 章：为什么智能体需要平台，而不是魔法
+            Глава 1. Почему агенту нужна платформа, а не магия: 第 1 章：为什么智能体需要的是平台，而不是魔法
             Глава 2. Референсная архитектура безопасного агента: 第 2 章：安全智能体的参考架构
             Практика. Instructions, routines и prompt templates: 实践篇：Instructions、Routines 与 Prompt Templates
             Практика. Manager pattern vs handoffs: 实践篇：Manager Pattern vs Handoffs
@@ -230,7 +230,7 @@ plugins:
             Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: 第 4 章：工具网关、审批与审计轨迹
             Часть III. Память и знания: 第三部分：记忆与知识
-            Глава 5. Зачем агенту память и почему она опасна: 第 5 章：为什么智能体需要记忆，以及它为何危险
+            Глава 5. Зачем агенту память и почему она опасна: 第 5 章：为什么智能体需要记忆，以及为什么记忆很危险
             Глава 6. Краткосрочная, долгосрочная и профильная память: 第 6 章：短期记忆、长期记忆与用户画像记忆
             Глава 7. Извлечение контекста, уплотнение и фоновые обновления: 第 7 章：检索、压缩与后台更新
             Часть IV. Инструменты и выполнение: 第四部分：工具与执行
@@ -245,7 +245,7 @@ plugins:
             "Сквозная цепочка доказательств: от запроса к решению о rollout": "Evidence Spine：从请求到 rollout judgment"
             Часть VI. Организационная модель: 第六部分：组织模型
             Глава 14. Платформенная команда и продуктовые команды: 第 14 章：平台团队与产品团队
-            Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: 第 15 章：黄金路径、共享网关与反“动物园”模式
+            Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: 第 15 章：黄金路径、共享网关与反动物园模式
             Часть VII. Эталонная реализация: 第七部分：参考实现
             Глава 16. Базовая схема рантайма: 第 16 章：基础运行时蓝图
             Глава 17. Слой политик и каталог возможностей: 第 17 章：策略层与能力目录
