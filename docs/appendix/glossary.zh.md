@@ -53,7 +53,7 @@
 继续阅读：
 
 - [第 14 章：平台团队与产品团队](../book/part-vi/chapter-14.zh.md)
-- [第 15 章：黄金路径、共享网关与反“动物园”模式](../book/part-vi/chapter-15.zh.md)
+- [第 15 章：黄金路径、共享网关与反动物园模式](../book/part-vi/chapter-15.zh.md)
 
 ## Tool gateway
 
@@ -94,7 +94,7 @@
 
 继续阅读：
 
-- [第 5 章：为什么智能体需要记忆，以及它为何危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](../book/part-iii/chapter-6.zh.md)
 
 ## Profile memory
@@ -127,7 +127,7 @@
 
 继续阅读：
 
-- [第 5 章：为什么智能体需要记忆，以及它为何危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](../book/part-iii/chapter-6.zh.md)
 
 ## Approval gate

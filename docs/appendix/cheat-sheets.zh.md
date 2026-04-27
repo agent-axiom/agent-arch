@@ -33,7 +33,7 @@
 
 继续阅读：
 
-- [第 5 章：为什么智能体需要记忆，以及它为何危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 
 ## Rollout checklist

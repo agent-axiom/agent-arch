@@ -44,7 +44,7 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 放到哪里：
 
-- [第 5 章：为什么智能体需要记忆，以及记忆为何危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：short-term、long-term 与 profile memory](../book/part-iii/chapter-6.zh.md)
 
 要补充什么：
@@ -83,7 +83,7 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 放到哪里：
 
-- [第 13 章：Offline evals、online evals 与 regression gates](../book/part-v/chapter-13.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
 
 要补充什么：
 
@@ -96,7 +96,7 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 放到哪里：
 
 - [第 14 章：平台团队与产品团队](../book/part-vi/chapter-14.zh.md)
-- [第 15 章：golden paths、shared gateways 与 anti-zoo patterns](../book/part-vi/chapter-15.zh.md)
+- [第 15 章：黄金路径、共享网关与反动物园模式](../book/part-vi/chapter-15.zh.md)
 
 要补充什么：
 
@@ -108,8 +108,8 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 放到哪里：
 
-- [第 16 章：基础 runtime 蓝图](../book/part-vii/chapter-16.zh.md)
-- [第 17 章：策略层与 capability catalog](../book/part-vii/chapter-17.zh.md)
+- [第 16 章：基础运行时蓝图](../book/part-vii/chapter-16.zh.md)
+- [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 - `agent_runtime_ref`
 
 要补充什么：
