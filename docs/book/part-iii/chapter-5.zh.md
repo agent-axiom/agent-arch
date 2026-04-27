@@ -288,8 +288,8 @@ Google 最近材料里一个很实用的提醒是：memory 应该被当成可治
 目前最重要的 takeaway 很简单：只有当 memory 被设计成一个受控的系统层，而不是无节制堆文本的地方时，它才真正有用。
 
 - [第三部分：记忆与知识](index.zh.md)
-- [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
-- [第 4 章：Tool Gateway、Approval 与 Audit Trail](../part-ii/chapter-4.zh.md)
+- [第 6 章：短期记忆、长期记忆与用户画像记忆](chapter-6.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../part-ii/chapter-4.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

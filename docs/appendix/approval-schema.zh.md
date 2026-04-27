@@ -195,5 +195,5 @@ Approval schema 回答的是另一层：
 - [Trace Schema 与 Event Catalog](trace-schema.zh.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [Reference Package](reference-package.zh.md)
-- [第 4 章：Tool Gateway、Approval 与 Audit Trail](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)

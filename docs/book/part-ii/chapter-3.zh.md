@@ -267,7 +267,7 @@ Perimeter 设计通常会在同样的几个早期错误上翻车：
 接下来最自然的一层，就是同一个支持智能体已经走到真实动作面前之后，该如何安全地穿过 tool gateway、approval 路径和 audit trail。
 
 - [第二部分：安全边界](index.zh.md)
-- [第 4 章：Tool Gateway、Approval 与 Audit Trail](chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](chapter-4.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
