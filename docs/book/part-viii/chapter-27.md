@@ -1,81 +1,81 @@
-# Глава 27. Agent inventory, registry и борьба с sprawl
+# Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием
 
 !!! info "Актуальность главы"
     Эта глава актуальна на 11 апреля 2026 года.
 
     Быстрее всего здесь меняются:
 
-    - платформенные функции для inventory discovery, registry sync и governance automation;
-    - вендорские подходы к классификации agents, assistants и agent-like entities;
-    - рабочие практики для drift detection и policy enforcement across estates.
+    - платформенные функции для обнаружения инвентаря агентов, синхронизации реестра и автоматизации governance;
+    - вендорские подходы к классификации агентов, ассистентов и agent-like сущностей;
+    - рабочие практики обнаружения drift и исполнения policy на уровне всего estate.
 
     Медленнее меняются:
 
-    - необходимость различать inventory и registry;
-    - требование иметь owner, lifecycle state, capability record и runtime-control ownership у production-grade agents;
-    - важность регулярного review, чтобы sprawl не превращался в blind spot.
+    - необходимость различать инвентарь и реестр;
+    - требование иметь owner, lifecycle state, capability record и runtime-control ownership у production-grade агентов;
+    - важность регулярного review, чтобы разрастание не превращалось в blind spot.
 
-## 1. Почему почти у каждой успешной agent-программы появляется sprawl
+## 1. Почему почти у каждой успешной агентской программы появляется разрастание
 
-Как только первые agent systems доказывают полезность, в организации обычно начинается одна и та же история:
+Как только первые агентские системы доказывают полезность, в организации обычно начинается одна и та же история:
 
-- одна команда делает support agent;
-- другая делает internal knowledge agent;
-- третья добавляет workflow assistant;
+- одна команда делает агента поддержки;
+- другая делает внутреннего knowledge-агента;
+- третья добавляет workflow-ассистента;
 - четвертая быстро собирает узкоспециализированного агента под локальную задачу.
 
 Сами по себе эти решения могут быть разумными. Проблема начинается позже, когда никто уже не может быстро ответить:
 
 - сколько агентов вообще существует;
-- какие из них production, а какие “временные”;
+- какие из них работают в production, а какие “временные”;
 - кто их owner;
 - какие capabilities у них есть;
 - какие identities, connectors и tool principals они используют;
 - какие из них вообще еще живы;
-- какие из них все еще владеют paused approvals, background routes, deprecated contract paths или stale verifier contracts.
+- какие из них все еще держат paused approvals, background routes, deprecated contract paths или stale verifier contracts.
 
-Именно это состояние и стоит называть `agent sprawl`.
+Именно это состояние и стоит называть разрастанием агентов (`agent sprawl`).
 
-Registry layer нужен здесь прежде всего для одной вещи: сделать весь estate answerable. Для любого production agent должно быть можно быстро ответить, кто его owner, какие controls им управляют и кто обязан действовать, если система начинает drift.
+Слой реестра нужен здесь прежде всего для одной вещи: сделать весь estate подотчетным. Для любого production-агента должно быть можно быстро ответить, кто его owner, какие controls им управляют и кто обязан действовать, если система начинает дрейфовать.
 
-Эта глава отвечает на один вопрос: **как inventory и registry превращают набор agent-like сущностей в подотчетный production estate**. Здесь registry важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability.
+Эта глава отвечает на один вопрос: **как инвентарь и реестр превращают набор agent-like сущностей в подотчетный production estate**. Здесь реестр важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability.
 
-## 2. Почему sprawl опасен не только организационно
+## 2. Почему разрастание опасно не только организационно
 
 На первый взгляд это кажется чисто управленческой проблемой: много сущностей, сложно поддерживать порядок.
 
-Но на практике sprawl быстро превращается в risk multiplier:
+Но на практике разрастание быстро превращается в усилитель риска:
 
 - orphaned agents продолжают жить без owner;
 - deprecated agents сохраняют доступ к systems и data;
 - разные команды по-разному трактуют approvals и policy boundaries;
 - observability coverage становится фрагментарной;
-- inventory drift делает release gates и incident review менее надежными.
+- drift инвентаря делает release gates и incident review менее надежными.
 
-Microsoft прямо связывает это с security posture: неполная inventory и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection. [^ms-inventory][^ms-agentic-risk] Та же базовая дисциплина хорошо совпадает с NIST SP 800-53: inventory должен быть полным, обновляемым и привязанным к accountability, иначе контроль быстро становится декоративным.[^nist-sp53]
+Microsoft прямо связывает это с security posture: неполный инвентарь и непрозрачные agent estates приводят к blind spots, inconsistent enforcement и delayed detection.[^ms-inventory][^ms-agentic-risk] Та же базовая дисциплина хорошо совпадает с NIST SP 800-53: инвентарь должен быть полным, обновляемым и привязанным к accountability, иначе контроль быстро становится декоративным.[^nist-sp53]
 
-## 3. Inventory и registry — не одно и то же
+## 3. Инвентарь и реестр — не одно и то же
 
 Полезно различать два слоя:
 
-- `agent inventory`
-- `agent registry`
+- `agent inventory` — инвентарь агентов
+- `agent registry` — реестр агентов
 
-Inventory отвечает на вопрос:
+Инвентарь отвечает на вопрос:
 
 - какие agent-like сущности вообще существуют в нашей среде.
 
-Registry отвечает на более строгий вопрос:
+Реестр отвечает на более строгий вопрос:
 
 - какие из них признаны, классифицированы, управляются и допускаются в production contours.
 
 То есть:
 
-- inventory нужен для полноты видимости;
-- registry нужен для governance.
+- инвентарь нужен для полноты видимости;
+- реестр нужен для governance.
 
-Без inventory ты не знаешь полный estate.
-Без registry ты не можешь уверенно сказать, какие агенты считаются approved, управляемыми и операционно подотчетными.
+Без инвентаря ты не знаешь полный estate.
+Без реестра ты не можешь уверенно сказать, какие агенты считаются approved, управляемыми и операционно подотчетными.
 
 ## 4. Что должно быть в минимальной записи агента
 
