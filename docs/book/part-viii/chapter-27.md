@@ -193,15 +193,15 @@ Microsoft прямо связывает это с security posture: неполн
 
 Поэтому зрелый реестр лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
 
-## 9. Как registry связан с approvals и policies
+## 9. Как реестр связан с approvals и policies
 
-Registry не должен дублировать policy bundle или approval contract.
+Реестр не должен дублировать policy bundle или approval contract.
 
 Его задача другая:
 
-- показать, какие policy bundle и approval mode относятся к данному agent;
-- показать, имеет ли agent право на определенный capability set;
-- показать, какие approved MCP servers, discovery sources и auth modes входят в управляемый capability surface этого agent;
+- показать, какие policy bundle и approval mode относятся к данному агенту;
+- показать, имеет ли агент право на определенный capability set;
+- показать, какие approved MCP servers, discovery sources и auth modes входят в управляемую capability surface этого агента;
 - показать, в каком lifecycle state агент сейчас живет.
 
 Если у тебя нет этой связки, то легко возникает состояние, в котором:
@@ -209,15 +209,15 @@ Registry не должен дублировать policy bundle или approval 
 - policy обновили;
 - approval flow поменяли;
 - traces стали богаче;
-- но никто не знает, какие именно agents вообще должны этим пользоваться.
+- но никто не знает, какие именно агенты вообще должны этим пользоваться.
 
-Это становится еще важнее, когда approval и long-running work превращаются в явные runtime paths.
+Это становится еще важнее, когда approvals и long-running work превращаются в явные runtime paths.
 
-Тогда registry должен помогать отвечать на вопросы:
+Тогда реестр должен помогать отвечать на вопросы:
 
-- какие agents вообще имеют право ставить run на approval pause;
-- какие agents могут продолжать работу в background mode;
-- какие agents могут re-initialize stateful capability sessions и в каком approval mode;
+- какие агенты вообще имеют право ставить run на approval pause;
+- какие агенты могут продолжать работу в background mode;
+- какие агенты могут re-initialize stateful capability sessions и в каком approval mode;
 - кто owner у stuck paused runs;
 - кто owner у aging background runs;
 - кто owner у capability-session expiry drift и emergency freeze actions;
@@ -228,11 +228,11 @@ Registry не должен дублировать policy bundle или approval 
 
 Иначе estate может выглядеть управляемым, но при этом скрывать операционную неоднозначность.
 
-Поэтому registry - это не столько слой про release lineage, сколько слой операционной подотчетности. Это ownership map масштаба estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
+Поэтому реестр — это не столько слой про release lineage, сколько слой операционной подотчетности. Это карта ownership на уровне estate, которая удерживает decisions, incidents и drift привязанными к правильной сущности.
 
 Обычно именно эта неоднозначность первой и бьет по incident response. У команды уже могут быть telemetry, policies и approvals, но она все равно теряет время на самом базовом вопросе estate: какая именно production entity отвечает за этот path прямо сейчас?
 
-## 10. Пример минимального agent registry record
+## 10. Пример минимальной записи в реестре агентов
 
 ```yaml
 agent:
@@ -274,11 +274,11 @@ agent:
   retirement_plan: retire-support-v1
 ```
 
-Такой record уже достаточно полезен, чтобы связывать agent с ownership, controls, lifecycle и verifier-aware evidence expectations.
+Такая запись уже достаточно полезна, чтобы связывать агента с ownership, controls, lifecycle и verifier-aware evidence expectations.
 
-На масштабе estate это еще и помогает отвечать на вопрос, который команды часто упускают: какие verifier contracts сейчас активны, какие уже deprecated и какие agents все еще зависят от старых версий.
+На уровне estate это еще и помогает отвечать на вопрос, который команды часто упускают: какие verifier contracts сейчас активны, какие уже deprecated и какие агенты все еще зависят от старых версий.
 
-## 11. Пример registry health check
+## 11. Пример проверки здоровья реестра
 
 ```python
 from dataclasses import dataclass
@@ -305,46 +305,46 @@ def registry_ready(state: AgentRegistryState) -> bool:
     )
 ```
 
-Здесь логика простая: agent без owner, lifecycle state и observability linkage вообще не должен считаться production-ready entity.
+Здесь логика простая: агент без owner, lifecycle state и observability linkage вообще не должен считаться production-ready entity.
 
-## 12. Самые частые failure modes
+## 12. Самые частые режимы отказа
 
-- agents есть в проде, но отсутствуют в inventory;
-- inventory существует, но lifecycle states не поддерживаются;
-- registry не знает про principals и approvals;
-- deprecated agents остаются с доступом к tool paths;
-- registry record не показывает, кто отвечает за paused approvals или aging background runs;
-- contract versions дрейфуют, пока registry все еще указывает на устаревшие control assumptions;
+- агенты есть в проде, но отсутствуют в инвентаре;
+- инвентарь существует, но lifecycle states не поддерживаются;
+- реестр не знает про principals и approvals;
+- deprecated-агенты остаются с доступом к tool paths;
+- запись в реестре не показывает, кто отвечает за paused approvals или aging background runs;
+- contract versions дрейфуют, пока реестр все еще указывает на устаревшие control assumptions;
 - разные реестры расходятся между собой;
 - platform team знает одних агентов, а security team — других.
 
-## 13. Быстрый тест зрелости для agent governance
+## 13. Быстрый тест зрелости для управления агентами
 
-Команде не стоит думать, что она контролирует свой agent estate, только потому, что у нее есть registry spreadsheet и примерное число развернутых agents.
+Команде не стоит думать, что она контролирует свой agent estate, только потому, что у нее есть spreadsheet с реестром и примерное число развернутых агентов.
 
 Более сильная планка такая:
 
-- inventory и registry живут как разные контуры управления;
-- у каждого production agent есть owner, lifecycle state и policy linkage;
-- telemetry coverage можно непрерывно сверять с registry;
-- paused approvals, ownership фоновых запусков и contract versions входят в контур управления registry;
+- инвентарь и реестр живут как разные контуры управления;
+- у каждого production-агента есть owner, lifecycle state и policy linkage;
+- telemetry coverage можно непрерывно сверять с реестром;
+- paused approvals, ownership фоновых запусков и contract versions входят в контур управления реестром;
 - deprecated и orphaned agents можно найти до того, как они станут blind spots;
 - governance умеет различать discovered entities и approved production agents.
 
-Если большинство этих условий не выполняется, у команды уже могут быть visibility fragments, но реального agent governance у нее пока нет.
+Если большинство этих условий не выполняется, у команды уже могут быть фрагменты видимости, но реального управления агентами у нее пока нет.
 
-В этот момент registry все еще ведет себя как loose catalog. Зрелый registry ведет себя скорее как accountability layer, которая непрерывно сверяет production entities, control ownership и lifecycle truth.
+В этот момент реестр все еще ведет себя как loose catalog. Зрелый реестр ведет себя скорее как accountability layer, который непрерывно сверяет production entities, control ownership и lifecycle truth.
 
-## 14. Практический checklist
+## 14. Практический чеклист
 
 - Можешь ли ты быстро назвать число active, deprecated и retired agents?
-- У каждого production agent есть owner?
-- Связан ли registry record с policy bundle, approval mode, runtime-control ownership и bundle_id?
-- Видно ли из inventory, какие agents не шлют telemetry?
-- Можно ли быстро найти orphaned или deprecated agents с живыми principals?
-- Есть ли у тебя distinction между “обнаружен” и “одобрен для production”?
+- У каждого production-агента есть owner?
+- Связана ли запись в реестре с policy bundle, approval mode, runtime-control ownership и `bundle_id`?
+- Видно ли из инвентаря, какие агенты не шлют telemetry?
+- Можно ли быстро найти orphaned или deprecated-агентов с живыми principals?
+- Есть ли у тебя различие между “обнаружен” и “одобрен для production”?
 
-Если несколько ответов подряд “нет”, то agent estate у тебя уже есть, а agent governance еще нет.
+Если несколько ответов подряд “нет”, то agent estate у тебя уже есть, а управления агентами еще нет.
 
 ## 15. Полезные справочные страницы
 
