@@ -25,9 +25,9 @@
 ## 本部分内容
 
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](chapter-5.zh.md)
-- [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
+- [第 6 章：短期记忆、长期记忆与用户画像记忆](chapter-6.zh.md)
   这一章继续同一个 support 场景，讲的是团队应该把 run 结束后的哪些东西留下来，哪些东西绝不能固化进 memory。
-- [第 7 章：Retrieval、Compaction 与 Background Updates](chapter-7.zh.md)
+- [第 7 章：检索、压缩与后台更新](chapter-7.zh.md)
 
 ## 这一部分之后去哪里
 

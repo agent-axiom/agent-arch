@@ -1,4 +1,4 @@
-# 第 6 章：Short-Term、Long-Term 与 Profile Memory
+# 第 6 章：短期记忆、长期记忆与用户画像记忆
 
 !!! info "怎样读这一章"
     不用一开始就把所有定义背下来。先抓住一个简单问题：
@@ -299,7 +299,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 这一部分接下来的自然步骤，就是讨论 agent 如何把正确片段拉回 prompt，以及为什么 compaction 有时候比“更多 retrieval”更重要。
 
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](chapter-5.zh.md)
-- [第 7 章：Retrieval、Compaction 与 Background Updates](chapter-7.zh.md)
+- [第 7 章：检索、压缩与后台更新](chapter-7.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 

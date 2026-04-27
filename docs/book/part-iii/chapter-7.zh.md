@@ -1,4 +1,4 @@
-# 第 7 章：Retrieval、Compaction 与 Background Updates
+# 第 7 章：检索、压缩与后台更新
 
 ## 1. 如果你不会把正确内容重新取出来，memory 就没用
 
@@ -285,7 +285,7 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 到这里，关于 memory 的基础部分已经开始成形。接下来你可以继续深入 retention 和 deletion，也可以转去看 tools 和 execution。
 
-- [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
+- [第 6 章：短期记忆、长期记忆与用户画像记忆](chapter-6.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 - [第 8 章：执行模型与工具目录](../part-iv/chapter-8.zh.md)
 - [第三部分：记忆与知识](index.zh.md)

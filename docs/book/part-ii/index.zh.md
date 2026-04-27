@@ -28,7 +28,7 @@
 ## 本部分内容
 
 - [第 3 章：安全边界与信任边界](chapter-3.zh.md)
-- [第 4 章：Tool Gateway、Approval 与 Audit Trail](chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](chapter-4.zh.md)
   这一章继续同一个 support 场景，讲的是系统准备把“判断”变成外部动作的那一刻。
 - [第一部分：基础](../part-i/index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
