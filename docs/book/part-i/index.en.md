@@ -42,8 +42,8 @@ By the end of Part I, the reader should have:
 
 ## In This Part
 
-- [Chapter 1. Why agents need a platform, not magic](chapter-1.en.md)
-- [Chapter 2. Reference architecture for a safe agent](chapter-2.en.md)
+- [Chapter 1. Why an Agent Needs a Platform, Not Magic](chapter-1.en.md)
+- [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)
   This chapter continues the same support case from Chapter 1 and shows how one request moves through the platform layers.
 - [Practice. Instructions, routines, and prompt templates](practical-routines.en.md)
 - [Practice. Manager pattern vs handoffs](practical-manager-handoffs.en.md)

@@ -478,7 +478,7 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 
 - [Chapter 12. SLO for Agent Systems](chapter-12.en.md)
 - [Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming](../part-viii/chapter-25.en.md)
-- [Chapter 14. Platform Team and Product Teams](../part-vi/chapter-14.en.md)
+- [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 

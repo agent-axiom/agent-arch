@@ -41,7 +41,7 @@ If you need the shortest entry, start with [Chapter 1](book/part-i/chapter-1.en.
 
 The shortest useful path through the book looks like this:
 
-1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
+1. [Chapter 1. Why an Agent Needs a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
 3. [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
 4. [Part V. Reliability and Observability](book/part-v/index.en.md)
