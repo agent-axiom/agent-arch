@@ -195,5 +195,5 @@ Approval schema отвечает на другой слой:
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
-- [Глава 4. Tool gateway, approval и audit trail](../book/part-ii/chapter-4.md)
+- [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](../book/part-ii/chapter-4.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)
