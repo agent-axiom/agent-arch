@@ -137,7 +137,7 @@ The manuscript is getting stronger when each cluster has a non-overlapping role.
 - Chapter 24 = adversarial pressure
 - Chapter 25 = eval judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
-- Chapter 27 = estate accountability and reconciliation
+- Chapter 27 = estate accountability through inventory, registry, and sprawl control
 
 ### Book-level rule
 When a chapter starts to sound like its neighbor, rewrite toward role clarity, not just more detail.
