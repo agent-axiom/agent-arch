@@ -79,34 +79,34 @@ Microsoft прямо связывает это с security posture: неполн
 
 ## 4. Что должно быть в минимальной записи агента
 
-Минимальный registry record для production-grade agent systems обычно должен включать:
+Минимальная запись в реестре для production-grade агентской системы обычно должна включать:
 
 - `agent_id`;
-- owner team;
-- business purpose;
-- lifecycle state;
-- allowed capabilities;
+- команду-владельца;
+- бизнес-назначение;
+- состояние жизненного цикла;
+- разрешенные capabilities;
 - runtime identity;
 - tool principals;
-- approval requirements;
+- требования к approvals;
 - ownership для paused runs, background runs и capability sessions;
-- observability status;
+- статус наблюдаемости;
 - статус verifier или eval evidence;
-- linkage на active и deprecated verifier contracts;
-- artifact bundle linkage;
-- retirement plan linkage.
+- ссылки на active и deprecated verifier contracts;
+- связь с artifact bundle;
+- связь с retirement plan.
 
-Эта запись важна не ради “таблички”, а потому что она связывает agent как сущность с:
+Эта запись важна не ради “таблички”, а потому что она связывает агента как сущность с:
 
 - security controls;
-- operational ownership;
-- lifecycle decisions.
+- операционным ownership;
+- решениями жизненного цикла.
 
-## 5. Какие lifecycle states нужны почти всегда
+## 5. Какие состояния жизненного цикла нужны почти всегда
 
 Слишком простая модель “active / inactive” быстро перестает работать.
 
-Минимально полезнее иметь хотя бы такие states:
+Минимально полезнее иметь хотя бы такие состояния:
 
 - `proposed`
 - `development`
@@ -119,69 +119,69 @@ Microsoft прямо связывает это с security posture: неполн
 Тогда становится легче:
 
 - ограничивать autonomy до production;
-- отслеживать deprecated agents;
-- видеть, какие agents еще не должны иметь full egress или full approvals path;
+- отслеживать deprecated-агентов;
+- видеть, какие агенты еще не должны иметь full egress или полный путь approvals;
 - управлять replacement и retirement без серой зоны.
 
-## 6. Registry полезен не только security-команде
+## 6. Реестр полезен не только security-команде
 
-Хороший agent registry нужен не только security или governance.
+Хороший реестр агентов нужен не только security или governance.
 
 Он полезен и:
 
 - platform team;
-- product teams;
+- продуктовым командам;
 - SRE / operations;
 - audit / compliance;
 - incident responders.
 
 Для platform team он показывает, какие patterns реально масштабируются.
 Для operations — кто должен реагировать ночью.
-Для incident response — какие agents вообще могли участвовать в конкретном событии.
+Для incident response — какие агенты вообще могли участвовать в конкретном событии.
 
-## 7. Sprawl часто начинается с “маленьких исключений”
+## 7. Разрастание часто начинается с “маленьких исключений”
 
-На практике sprawl почти никогда не начинается как официальная стратегия.
+На практике разрастание почти никогда не начинается как официальная стратегия.
 
 Он начинается с маленьких послаблений:
 
 - “это всего лишь внутренний помощник”;
-- “этот agent временный”;
-- “пока без registry, потом добавим”;
+- “этот агент временный”;
+- “пока без реестра, потом добавим”;
 - “approval path здесь избыточен”;
 - “telemetry потом подключим”.
 
 Через несколько месяцев оказывается, что именно эти исключения и образуют самую непрозрачную часть estate.
 
-Поэтому strong default здесь простой:
+Поэтому надежный default здесь простой:
 
-- если сущность может действовать от имени организации, читать важный контекст или вызывать tools, она должна попадать хотя бы в inventory;
-- если она идет в production contour, она должна попасть и в registry.
+- если сущность может действовать от имени организации, читать важный контекст или вызывать tools, она должна попадать хотя бы в инвентарь;
+- если она идет в production contour, она должна попасть и в реестр.
 
-## 8. Как registry связан с observability
+## 8. Как реестр связан с observability
 
-Глава про observability уже показала, что inventory coverage — часть доказательного слоя.
+Глава про observability уже показала, что покрытие инвентаря — часть доказательного слоя.
 
-Registry делает эту связь еще жестче:
+Реестр делает эту связь еще жестче:
 
-- traces можно обогащать metadata из registry;
+- traces можно обогащать metadata из реестра;
 - detections можно строить по lifecycle state;
 - incidents можно фильтровать по owner, risk tier и approval mode;
-- release evidence можно проверять не только по traces, но и по статусу registry record и verifier-evidence linkage.
+- release evidence можно проверять не только по traces, но и по статусу записи в реестре и verifier-evidence linkage.
 
-То есть registry превращает observability из “сырых событий” в управляемую operational map.
+То есть реестр превращает observability из “сырых событий” в управляемую operational map.
 
-Но его не нужно путать с provenance. Provenance хранит, какой approved artifact set и какая version обосновывали поведение. Registry хранит, какой named production entity, owner и lifecycle state принадлежали этому path.
+Но его не нужно путать с provenance. Provenance хранит, какой approved artifact set и какая version обосновывали поведение. Реестр хранит, какой named production entity, owner и lifecycle state принадлежали этому path.
 
-Именно здесь и проходит чистая граница между двумя главами. Observability сохраняет evidence. Registry привязывает этот evidence к named entities, owners, lifecycle states и accountability paths по всему estate.
+Именно здесь и проходит чистая граница между двумя главами. Observability сохраняет evidence. Реестр привязывает evidence к named entities, owners, lifecycle states и accountability paths по всему estate.
 
-И это же граница с главой про provenance. Provenance отвечает, под какой утвержденной version или approved bundle система работала. Registry отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
+И это же граница с главой про provenance. Provenance отвечает, под какой утвержденной version или approved bundle система работала. Реестр отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
-## 8.1. Registry без непрерывной сверки быстро становится красивым, но неточным
+## 8.1. Реестр без непрерывной сверки быстро становится красивым, но неточным
 
-Здесь важно не переоценить сам реестр. Наличие registry еще не доказывает, что control layer действительно работает.
+Здесь важно не переоценить сам реестр. Наличие реестра еще не доказывает, что control layer действительно работает.
 
-Если registry:
+Если реестр:
 
 - не сверяется с реальным telemetry coverage;
 - не проверяется против живых principals;
@@ -191,7 +191,7 @@ Registry делает эту связь еще жестче:
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину estate.
 
-Поэтому зрелый registry лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
+Поэтому зрелый реестр лучше мыслить не как статический каталог, а как контрольную поверхность, которую непрерывно сверяют с живым estate.
 
 ## 9. Как registry связан с approvals и policies
 
