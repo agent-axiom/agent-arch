@@ -18,7 +18,7 @@
 
 这一部分的问题是：什么时候 agent 真的有必要，以及如果不把它做成 prompt trick，而是做成系统，一个最小成熟架构应该长什么样。
 
-- 第 1 章：为什么智能体需要平台，而不是魔法。
+- 第 1 章：为什么智能体需要的是平台，而不是魔法。
 - 第 2 章：安全智能体的参考架构。
 - [实践：Instructions、Routines 与 Prompt Templates](part-i/practical-routines.zh.md)
 - [实践：Manager Pattern vs Handoffs](part-i/practical-manager-handoffs.zh.md)
@@ -38,7 +38,7 @@
 
 这一部分的问题是：怎样让 memory 真正有用，同时不把它变成一个不受控的错误与泄漏来源。
 
-- 第 5 章：为什么智能体需要记忆，以及它为何危险。
+- 第 5 章：为什么智能体需要记忆，以及为什么记忆很危险。
 - 第 6 章：短期记忆、长期记忆与用户画像记忆。
 - 第 7 章：检索、压缩与后台更新。
 

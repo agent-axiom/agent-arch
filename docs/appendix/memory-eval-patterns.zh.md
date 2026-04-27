@@ -119,6 +119,6 @@ Memory evals 不会替代 [主 eval 章节](../book/part-v/chapter-13.zh.md)，�
 
 - [Eval Dataset Schema 与 Grading Contract](eval-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](memory-retrieval-schema.zh.md)
-- [第 5 章：为什么智能体需要记忆，以及它为何危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)

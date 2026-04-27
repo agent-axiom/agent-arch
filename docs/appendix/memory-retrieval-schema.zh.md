@@ -182,6 +182,6 @@ excluded_records: 12
 - [评测数据集模式与分级契约](eval-schema.zh.md)
 - [生命周期工件规范](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
-- [第 5 章：为什么智能体需要记忆，以及它为什么危险](../book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与画像记忆](../book/part-iii/chapter-6.zh.md)
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
