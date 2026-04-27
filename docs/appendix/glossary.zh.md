@@ -34,7 +34,7 @@
 
 继续阅读：
 
-- [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 
 ## Capability catalog
@@ -61,7 +61,7 @@
 
 继续阅读：
 
-- [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)
 
 ## Sandbox execution
@@ -136,7 +136,7 @@
 
 继续阅读：
 
-- [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 
 ## Trace

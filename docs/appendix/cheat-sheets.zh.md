@@ -16,7 +16,7 @@
 继续阅读：
 
 - [第 3 章：安全边界与信任边界](../book/part-ii/chapter-3.zh.md)
-- [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 
 ## Memory checklist
 
