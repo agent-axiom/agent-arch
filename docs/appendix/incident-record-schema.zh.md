@@ -176,5 +176,5 @@ Incident review 很少止步于 containment。
 - [Change Review 与 Rollout Gate Schema](change-rollout-schema.zh.md)
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
 - [智能体 registry 与 inventory 运维手册](registry-operations-handbook.zh.md)
-- [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](../book/part-viii/chapter-21.zh.md)
+- [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)

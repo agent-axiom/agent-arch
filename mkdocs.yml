@@ -94,7 +94,7 @@ plugins:
             Глава 19. От SDLC к ADLC: Глава 19. От SDLC к ADLC
             Глава 20. Change management для агентных систем: Глава 20. Change management для агентных систем
             "Глава 21. Assurance loop: red teaming, detection и response": "Глава 21. Assurance loop: red teaming, detection и response"
-            "Глава 22. Supply chain, provenance и approved artifacts": "Глава 22. Supply chain, provenance и approved artifacts"
+            "Глава 22. Цепочка поставки, происхождение и доверенные артефакты": "Глава 22. Цепочка поставки, происхождение и доверенные артефакты"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Глава 23. Retirement, replacement и end-of-life discipline"
             Приложения: Приложения
             Concepts: Обзорные страницы
@@ -171,7 +171,7 @@ plugins:
             Глава 19. От SDLC к ADLC: Chapter 19. From SDLC to ADLC
             Глава 20. Change management для агентных систем: Chapter 20. Change Management for Agent Systems
             "Глава 21. Assurance loop: red teaming, detection и response": "Chapter 21. Assurance Loop: Red Teaming, Detection, and Response"
-            "Глава 22. Supply chain, provenance и approved artifacts": "Chapter 22. Supply Chain, Provenance, and Approved Artifacts"
+            "Глава 22. Цепочка поставки, происхождение и доверенные артефакты": "Chapter 22. Supply Chain, Provenance, and Approved Artifacts"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Chapter 23. Retirement, Replacement, and End-of-Life Discipline"
             "Глава 24. Agentic misalignment и insider-risk": "Chapter 24. Agentic Misalignment and Insider Risk"
             "Глава 25. Behavioral evals, control evals и automated red teaming": "Chapter 25. Behavioral Evals, Control Evals, and Automated Red Teaming"
@@ -252,9 +252,9 @@ plugins:
             Глава 18. Чеклист промышленного запуска: 第 18 章：生产上线检查清单
             Часть VIII. Жизненный цикл агентной системы: 第八部分：智能体系统生命周期
             Глава 19. От SDLC к ADLC: 第 19 章：从 SDLC 到 ADLC
-            Глава 20. Change management для агентных систем: 第 20 章：智能体系统的 Change Management
-            "Глава 21. Assurance loop: red teaming, detection и response": "第 21 章：Assurance Loop：Red Teaming、Detection 与 Response"
-            "Глава 22. Supply chain, provenance и approved artifacts": "第 22 章：Supply Chain、Provenance 与 Approved Artifacts"
+            Глава 20. Change management для агентных систем: 第 20 章：智能体系统的变更管理
+            "Глава 21. Assurance loop: red teaming, detection и response": "第 21 章：保障闭环：红队测试、检测与响应"
+            "Глава 22. Цепочка поставки, происхождение и доверенные артефакты": "第 22 章：供应链、来源追踪与已批准工件"
             "Глава 23. Retirement, replacement и end-of-life discipline": "第 23 章：退役、替换与终止使用纪律"
             "Глава 24. Agentic misalignment и insider-risk": "第 24 章：智能体失配与内部人风险"
             "Глава 25. Behavioral evals, control evals и automated red teaming": "第 25 章：行为评测、控制评测与自动化红队测试"
@@ -379,7 +379,7 @@ nav:
       - Глава 19. От SDLC к ADLC: book/part-viii/chapter-19.md
       - Глава 20. Change management для агентных систем: book/part-viii/chapter-20.md
       - "Глава 21. Assurance loop: red teaming, detection и response": book/part-viii/chapter-21.md
-      - "Глава 22. Supply chain, provenance и approved artifacts": book/part-viii/chapter-22.md
+      - "Глава 22. Цепочка поставки, происхождение и доверенные артефакты": book/part-viii/chapter-22.md
       - "Глава 23. Retirement, replacement и end-of-life discipline": book/part-viii/chapter-23.md
       - "Глава 24. Agentic misalignment и insider-risk": book/part-viii/chapter-24.md
       - "Глава 25. Behavioral evals, control evals и automated red teaming": book/part-viii/chapter-25.md

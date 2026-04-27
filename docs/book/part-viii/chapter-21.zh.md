@@ -378,7 +378,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 这一章把第 17 章和第 18 章打开的回路真正闭合起来。那两章里 policy、approval 与 runtime-control paths 先被做成显式结构，而在这里，这些同样的路径会变成 detection、containment 和 response surfaces。
 
-- [第 20 章：智能体系统的 Change Management](chapter-20.zh.md)
+- [第 20 章：智能体系统的变更管理](chapter-20.zh.md)
 - [第 14 章：平台团队与产品团队](../part-vi/chapter-14.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

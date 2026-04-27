@@ -359,7 +359,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 - [Reference Package](../../appendix/reference-package.zh.md)
 
-- [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](chapter-21.zh.md)
+- [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
 - [第 17 章：策略层与能力目录](../part-vii/chapter-17.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

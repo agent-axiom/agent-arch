@@ -17,9 +17,9 @@
 - [第 11 章：追踪、跨度与结构化事件](chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
 - [第 17 章：策略层与能力目录](../part-vii/chapter-17.zh.md)
-- [第 20 章：智能体系统的 Change Management](../part-viii/chapter-20.zh.md)
-- [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](../part-viii/chapter-21.zh.md)
-- [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](../part-viii/chapter-22.zh.md)
+- [第 20 章：智能体系统的变更管理](../part-viii/chapter-20.zh.md)
+- [第 21 章：保障闭环：红队测试、检测与响应](../part-viii/chapter-21.zh.md)
+- [第 22 章：供应链、来源追踪与已批准工件](../part-viii/chapter-22.zh.md)
 
 这页把它们收拢成一个 walkthrough，用来展示同一个受治理的 run 如何从 user request 一直保持可追溯，直到 rollout judgment。
 
@@ -236,8 +236,8 @@ latest_rollout_decision: pause-canary
 - [第 11 章：追踪、跨度与结构化事件](chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
 - [第 17 章：策略层与能力目录](../part-vii/chapter-17.zh.md)
-- [第 20 章：智能体系统的 Change Management](../part-viii/chapter-20.zh.md)
-- [第 21 章：Assurance Loop：Red Teaming、Detection 与 Response](../part-viii/chapter-21.zh.md)
-- [第 22 章：Supply Chain、Provenance 与 Approved Artifacts](../part-viii/chapter-22.zh.md)
+- [第 20 章：智能体系统的变更管理](../part-viii/chapter-20.zh.md)
+- [第 21 章：保障闭环：红队测试、检测与响应](../part-viii/chapter-21.zh.md)
+- [第 22 章：供应链、来源追踪与已批准工件](../part-viii/chapter-22.zh.md)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
