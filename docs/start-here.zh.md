@@ -8,7 +8,7 @@
 
 ## 如果你只读一章
 
-如果你想用最短时间进入本书的核心论点，请先读[第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)。
+如果你想用最短时间进入本书的核心论点，请先读[第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)。
 
 那一章把主张说得很直接：production agent system 不能被建成“模型加几个 tools”，它必须被设计成一个受治理的运行系统。
 
@@ -20,7 +20,7 @@
 
 如果时间很少，就先读这条路径：
 
-1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
+1. [第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
 3. [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
@@ -57,7 +57,7 @@
 ### 如果你是安全工程师
 
 1. [第二部分：安全边界](book/part-ii/index.zh.md)
-2. [第 5 章：为什么智能体需要记忆，以及它为何危险](book/part-iii/chapter-5.zh.md)
+2. [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](book/part-iii/chapter-5.zh.md)
 3. [第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 4. [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
@@ -66,7 +66,7 @@
 
 ### 如果你是负责人或架构师
 
-1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
+1. [第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 3. [第六部分：组织模型](book/part-vi/index.zh.md)
 4. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
@@ -95,7 +95,7 @@
 
 ### 记忆与检索
 
-- [第 5 章：为什么智能体需要记忆，以及它为何危险](book/part-iii/chapter-5.zh.md)
+- [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](book/part-iii/chapter-6.zh.md)
 - [第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - [记忆记录与检索契约模式](appendix/memory-retrieval-schema.zh.md)

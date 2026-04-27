@@ -287,6 +287,6 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 
 - [第 6 章：Short-Term、Long-Term 与 Profile Memory](chapter-6.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
-- [第 8 章：Execution Model 与 Tool Catalog](../part-iv/chapter-8.zh.md)
+- [第 8 章：执行模型与工具目录](../part-iv/chapter-8.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)

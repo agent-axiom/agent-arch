@@ -42,7 +42,7 @@
 
 ## 本部分内容
 
-- [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.zh.md)
+- [第 1 章：为什么智能体需要的是平台，而不是魔法](chapter-1.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
   这一章沿用第 1 章的 support 场景，展示同一个请求如何穿过平台各层。
 - [实践篇：Instructions、Routines 与 Prompt Templates](practical-routines.zh.md)
