@@ -358,7 +358,7 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
-- [第 23 章：退役、替换与生命周期终止纪律](chapter-23.zh.md)
+- [第 23 章：退役、替换与终止使用纪律](chapter-23.zh.md)
 - [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](chapter-26.zh.md)
 
