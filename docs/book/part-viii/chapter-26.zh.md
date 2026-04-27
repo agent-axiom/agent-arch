@@ -342,8 +342,8 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
-- [第 11 章：Traces、Spans 与 Structured Events](../part-v/chapter-11.zh.md)
-- [第 13 章：Offline Evals、Online Evals 与 Regression Gates](../part-v/chapter-13.zh.md)
+- [第 11 章：追踪、跨度与结构化事件](../part-v/chapter-11.zh.md)
+- [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
 - [第 25 章：行为评测、控制评测与自动化红队测试](chapter-25.zh.md)
 - [第 27 章：智能体清单、注册表与蔓延治理](chapter-27.zh.md)

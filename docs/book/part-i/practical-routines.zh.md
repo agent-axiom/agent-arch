@@ -210,7 +210,7 @@ def render_prompt(*, instructions: str, routine: str, user_input: str, retrieved
 
 ## 11. 下一步做什么
 
-- [第 1 章：为什么智能体需要平台，而不是魔法](chapter-1.zh.md)
+- [第 1 章：为什么智能体需要的是平台，而不是魔法](chapter-1.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
 - [第四部分：工具与执行](../part-iv/index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)

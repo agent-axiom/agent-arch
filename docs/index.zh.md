@@ -41,7 +41,7 @@
 
 穿过全书的最短实用途径大致是：
 
-1. [第 1 章：为什么智能体需要平台，而不是魔法](book/part-i/chapter-1.zh.md)
+1. [第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
 3. [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
