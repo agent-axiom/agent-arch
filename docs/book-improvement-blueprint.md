@@ -101,7 +101,7 @@ Sharpen chapter jobs-to-be-done, especially across:
 - Chapter 24: adversarial pressure inside the operational loop
 - Chapter 25: reviewable judgment under adversarial pressure
 - Chapter 26: observability as evidence substrate
-- Chapter 27: registry/inventory as estate accountability
+- Chapter 27: inventory, registry, and sprawl control as estate accountability
 
 Preserve the editorial geometry already found in the manuscript:
 - Part V = capture, health, judgment
@@ -182,7 +182,7 @@ This is no longer just a hypothesis. It is now a working manuscript constraint.
 - Chapter 24 = adversarial pressure
 - Chapter 25 = judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
-- Chapter 27 = estate accountability and reconciliation
+- Chapter 27 = estate accountability through inventory, registry, and sprawl control
 
 ### Rewrite rule
 When a rewrite makes one chapter sound like its neighbor, prefer restoring role clarity over adding more content.

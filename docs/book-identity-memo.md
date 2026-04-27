@@ -85,7 +85,7 @@ It is getting stronger again when that role progression is visible as promise sh
 - Chapter 24 = adversarial pressure
 - Chapter 25 = judgment under adversarial pressure
 - Chapter 26 = evidence substrate and detection-ready visibility
-- Chapter 27 = estate accountability and reconciliation
+- Chapter 27 = estate accountability through inventory, registry, and sprawl control
 
 This geometry is part of the book's identity, not just an editing convenience.
 

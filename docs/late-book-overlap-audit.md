@@ -150,7 +150,7 @@ Should not dominate:
 - generic eval theory
 
 ### Chapter 27
-Job: explain how inventory, registry, and sprawl control govern an estate of agents, capabilities, principals, and contracts.
+Job: explain how inventory, registry, and sprawl control make an estate of agents, capabilities, principals, and contracts accountable.
 
 Should not dominate:
 - observability implementation details except where registry depends on them
