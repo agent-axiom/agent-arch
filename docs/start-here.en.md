@@ -8,7 +8,7 @@ This page exists for one reason: to help you choose a reading route quickly.
 
 ## If You Read Only One Thing
 
-If you want the shortest entry into the book's thesis, read [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md).
+If you want the shortest entry into the book's thesis, read [Chapter 1. Why an Agent Needs a Platform, Not Magic](book/part-i/chapter-1.en.md).
 
 That chapter states the main claim plainly: a production agent system cannot be built as "a model plus some tools." It has to be designed as a governed operational system.
 
@@ -20,7 +20,7 @@ This is not a guide to one framework and not a catalog of AI features. It is a p
 
 If you have little time, read this path:
 
-1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
+1. [Chapter 1. Why an Agent Needs a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Chapter 3. Security Perimeter and Trust Boundaries](book/part-ii/chapter-3.en.md)
 3. [Chapter 8. Execution Model and Tool Catalog](book/part-iv/chapter-8.en.md)
 4. [Part V. Reliability and Observability](book/part-v/index.en.md)
@@ -57,7 +57,7 @@ This route is for teams assembling a platform skeleton, not just a thin wrapper 
 ### If You Are a Security Engineer
 
 1. [Part II. Security Perimeter](book/part-ii/index.en.md)
-2. [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](book/part-iii/chapter-5.en.md)
+2. [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](book/part-iii/chapter-5.en.md)
 3. [Chapter 9. Sandbox Execution and MCP as an Integration Contract](book/part-iv/chapter-9.en.md)
 4. [Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries](book/part-iv/chapter-10.en.md)
 5. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
@@ -66,7 +66,7 @@ This route is useful if you need to see not only model risk, but real execution 
 
 ### If You Are a Lead or Architect
 
-1. [Chapter 1. Why Agents Need a Platform, Not Magic](book/part-i/chapter-1.en.md)
+1. [Chapter 1. Why an Agent Needs a Platform, Not Magic](book/part-i/chapter-1.en.md)
 2. [Part V. Reliability and Observability](book/part-v/index.en.md)
 3. [Part VI. Organizational Model](book/part-vi/index.en.md)
 4. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
@@ -95,7 +95,7 @@ This is useful if you want a runtime skeleton, policy contracts, memory paths, t
 
 ### Memory and Retrieval
 
-- [Chapter 5. Why Agents Need Memory and Why It Is Dangerous](book/part-iii/chapter-5.en.md)
+- [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](book/part-iii/chapter-5.en.md)
 - [Chapter 6. Short-Term, Long-Term, and Profile Memory](book/part-iii/chapter-6.en.md)
 - [Chapter 7. Retrieval, Compaction, and Background Updates](book/part-iii/chapter-7.en.md)
 - [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)

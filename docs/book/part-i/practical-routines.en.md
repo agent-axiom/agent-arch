@@ -210,7 +210,7 @@ If the answer is "no" several times in a row, your agent behavior is still store
 
 ## 11. What to Do Next
 
-- [Chapter 1. Why Agents Need a Platform, Not Magic](chapter-1.en.md)
+- [Chapter 1. Why an Agent Needs a Platform, Not Magic](chapter-1.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)
 - [Part IV. Tools and Execution](../part-iv/index.en.md)
 - [Sources](../../appendix/sources.en.md)

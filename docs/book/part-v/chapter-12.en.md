@@ -344,6 +344,6 @@ After SLO, the next step in the same story is the eval loop: offline evals, onli
 
 - [Chapter 11. Traces, Spans, and Structured Events](chapter-11.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
-- [Chapter 14. Platform Team and Product Teams](../part-vi/chapter-14.en.md)
+- [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
