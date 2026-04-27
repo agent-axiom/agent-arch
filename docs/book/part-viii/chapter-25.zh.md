@@ -317,7 +317,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
 - [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
 - [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
-- [第 27 章：Agent Inventory、Registry 与 Sprawl 治理](chapter-27.zh.md)
+- [第 27 章：智能体清单、注册表与蔓延治理](chapter-27.zh.md)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)

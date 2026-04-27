@@ -39,7 +39,7 @@
 - [第 24 章：Agentic Misalignment 与 Insider Risk](chapter-24.zh.md)
 - [第 25 章：Behavioral Evals、Control Evals 与 Automated Red Teaming](chapter-25.zh.md)
 - [第 26 章：AI-Native Observability、Inventory Coverage 与 Detection-Ready Telemetry](chapter-26.zh.md)
-- [第 27 章：Agent Inventory、Registry 与 Sprawl 治理](chapter-27.zh.md)
+- [第 27 章：智能体清单、注册表与蔓延治理](chapter-27.zh.md)
 
 ## 读完这一部分后，你应该得到什么
 

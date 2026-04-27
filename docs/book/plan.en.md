@@ -97,7 +97,7 @@ Question of the part: how to live with an agent system for months, release chang
 - Chapter 24. Agentic misalignment and insider risk.
 - Chapter 25. Behavioral evals, control evals, and automated red teaming.
 - Chapter 26. AI-native observability, inventory coverage, and detection-ready telemetry.
-- Chapter 27. Agent inventory, registry, and sprawl control.
+- Chapter 27. Agent Inventory, Registry, and Sprawl Control.
 
 ## Publishing Roadmap
 
