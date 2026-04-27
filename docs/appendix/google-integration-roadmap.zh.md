@@ -45,7 +45,7 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 放到哪里：
 
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
-- [第 6 章：short-term、long-term 与 profile memory](../book/part-iii/chapter-6.zh.md)
+- [第 6 章：短期记忆、长期记忆与用户画像记忆](../book/part-iii/chapter-6.zh.md)
 
 要补充什么：
 

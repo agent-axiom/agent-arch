@@ -2,7 +2,7 @@
 
 这一页把书里已经写过的几个主题连起来：
 
-- [第 4 章：工具网关、审批与审计链路](../book/part-ii/chapter-4.zh.md)
+- [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
 - [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
