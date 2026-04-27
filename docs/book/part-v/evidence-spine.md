@@ -17,7 +17,7 @@
 - [Глава 11. Трассы, спаны и структурированные события](chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](chapter-13.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
-- [Глава 20. Change Management для агентных систем](../part-viii/chapter-20.md)
+- [Глава 20. Change management для агентных систем](../part-viii/chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
 - [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../part-viii/chapter-22.md)
 
@@ -236,7 +236,7 @@ latest_rollout_decision: pause-canary
 - [Глава 11. Трассы, спаны и структурированные события](chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](chapter-13.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
-- [Глава 20. Change Management для агентных систем](../part-viii/chapter-20.md)
+- [Глава 20. Change management для агентных систем](../part-viii/chapter-20.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../part-viii/chapter-21.md)
 - [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../part-viii/chapter-22.md)
 

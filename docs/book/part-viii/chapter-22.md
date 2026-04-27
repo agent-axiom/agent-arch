@@ -352,7 +352,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Справочный пакет](../../appendix/reference-package.md)
 
-- [Глава 21. Контур assurance: red teaming, обнаружение и реагирование](chapter-21.md)
+- [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)
 - [Источники](../../appendix/sources.md)
