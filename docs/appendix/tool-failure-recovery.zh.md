@@ -61,7 +61,7 @@
 
 关键点很简单：部分成功不是成功，但也不意味着可以安全地从头再来。
 
-## 5. 什么时候 recovery 应该交给人
+## 5. 什么时候恢复应该交给人
 
 人工门禁特别适合这些情形：
 
@@ -130,4 +130,4 @@
 - [追踪 Schema 与事件目录](trace-schema.zh.md)
 - [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [智能体系统 Postmortem 模板](postmortem-template.zh.md)
+- [智能体系统事后复盘模板](postmortem-template.zh.md)
