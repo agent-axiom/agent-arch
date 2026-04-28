@@ -168,24 +168,24 @@
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --scenario failed_run_timeout --output artifacts/eval-failed-run.json
 ```
 
-`inspect-approvals` 现在也会显示 delegated authorization context，包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope`，因此 approval path review 可以直接和 session evidence 对照。`resolve-approval` 在做出决定后也会返回同样的上下文，这样 acting-identity lineage 不会在 closure 阶段丢失。
-`inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入 failed drill，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `failure_reason`。
-`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计 failed runs 和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。现在也可以直接在这里注入 failed drill，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
-`session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入 failed drill，而 replay summary 会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
-`export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留 delegated authorization context，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示 failed drills 的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+`inspect-approvals` 现在也会显示委派授权上下文，包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope`，因此审批路径评审可以直接和会话证据对照。`resolve-approval` 在做出决定后也会返回同样的上下文，这样行动身份谱系不会在闭合阶段丢失。
+`inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入失败演练，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `failure_reason`。
+`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计失败运行和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。现在也可以直接在这里注入失败演练，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
+`session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入失败演练，而回放摘要会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+`export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
-现在，runtime 也会把工具路径中的失败类结果，例如 validation failure，当成一等运行结局来处理。它不再假装这次 run 仍然成功，而是记录 failed run、发出明确的 `run_failed` 事件，并在 session export 与 CLI output 中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
-`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的 failed-run drill scenario，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+现在，运行时也会把工具路径中的失败类结果，例如校验失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
+`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
-现在这条 eval path 也应该和 appendix 里的 richer verifier contract 一起理解：对于 long-horizon scenarios，这个包要帮助读者看到，dataset 未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与 linked verifier evidence，而不只是一个单薄 verdict。
+现在这条评测路径也应该和附录里的更丰富验证器契约一起理解：对于长周期场景，这个包要帮助读者看到，数据集未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与已链接的验证器证据，而不只是一个单薄结论。
 
 这些命令现在也更清楚地体现了第 16、17 章里的一个关键区分：
 
-- 用来串起多次 runs 的用户可见 `session_id`；
+- 用来串起多次运行的用户可见 `session_id`；
 - 用于排查和审计的单次运行 `trace_id`；
-- 以及 capability 一侧可能 pause、expire、resume 或需要 re-initialization 的 session state。
+- 以及能力侧可能暂停、过期、恢复或需要重新初始化的会话状态。
 
-这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的 runtime 有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
+这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的运行时有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
 
 它现在也适合作为承接 Anthropic 新 harness 经验的锚点：长时间运行的 application work 可能需要显式的 context resets、结构化 handoff artifacts，以及 planner/generator/evaluator 的角色分离，而不是一条不间断的 agent loop。这个参考包并没有把整套 harness 都实现出来，但它已经把那些关键 runtime seams 暴露出来了，让团队能看见 reset-safe handoff、sprint contracts、evaluator review 与 resumed control state 应该落在什么地方。
 
