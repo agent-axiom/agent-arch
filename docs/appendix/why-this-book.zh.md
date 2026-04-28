@@ -1,6 +1,6 @@
 # 为什么需要这本书
 
-关于 AI agents 的材料已经很多了。真正更少的是那些把 agent system 当成必须在 production 里被设计、约束、发布、调查和维护的系统来讨论的材料。
+关于 AI 智能体的材料已经很多了。真正更少的是那些把智能体系统当成必须在生产环境里被设计、约束、发布、调查和维护的系统来讨论的材料。
 
 这本书就是为了补上这个缺口。
 
@@ -9,47 +9,47 @@
 它不是：
 
 - 某个框架的手册；
-- 某个 vendor 产品的指南；
-- prompt 集合；
-- benchmark 和 AI 新闻巡礼；
-- 没有架构模型的 security checklist。
+- 某个供应商产品的指南；
+- 提示集合；
+- 基准测试和 AI 新闻巡礼；
+- 没有架构模型的安全检查清单。
 
 ## 它想做什么
 
-这本书把 agent systems 看成受治理的 production systems，它们应该具备：
+这本书把智能体系统看成受治理的生产系统，它们应该具备：
 
-- trust boundaries；
-- 受 policy 约束的 execution；
-- 面向 risky actions 的 approvals；
-- memory 与 context discipline；
-- traces、SLO 与 evals；
-- rollout control、ownership 与 lifecycle governance。
+- 信任边界；
+- 受策略约束的执行；
+- 面向高风险动作的审批；
+- 记忆与上下文纪律；
+- 追踪、SLO 与评测；
+- 发布控制、负责人边界与生命周期治理。
 
-它的主要目标不是帮助人们做出“最自主的 agent”，而是帮助他们做出一个在运行中值得信任的系统。
+它的主要目标不是帮助人们做出“最自主的智能体”，而是帮助他们做出一个在运行中值得信任的系统。
 
 ## 和框架文档相比
 
-框架文档在你已经知道自己想构建什么系统时非常有用。它们通常很擅长解释 orchestration patterns、state graphs、SDK usage 和 integration details。
+框架文档在你已经知道自己想构建什么系统时非常有用。它们通常很擅长解释编排模式、状态图、SDK 用法和集成细节。
 
 但它们很少回答这类问题：
 
-- agent 到底该被允许做什么；
-- 哪些 actions 必须经过 approval；
-- memory 应该怎样被约束；
-- 怎样在不失去控制的前提下发布 changes；
-- incident 之后应该怎样做 review。
+- 智能体到底该被允许做什么；
+- 哪些动作必须经过审批；
+- 记忆应该怎样被约束；
+- 怎样在不失去控制的前提下发布变更；
+- 事故之后应该怎样做评审。
 
 这本书试图站在框架之上，而不是和框架争论。
 
-## 和 vendor docs 相比
+## 和供应商文档相比
 
-Vendor docs 往往给出通往 demo 的最短路径。这当然有用，但它天然受限于单一 vendor 的 surface。
+供应商文档往往给出通往演示的最短路径。这当然有用，但它天然受限于单一供应商的表面。
 
-这本书试图让架构站在 product surface 之上，并把更稳定的工程纪律和变化更快的 platform tooling 分开。
+这本书试图让架构站在产品表面之上，并把更稳定的工程纪律和变化更快的平台工具分开。
 
-## 和 security checklist 方法相比
+## 和安全检查清单方法相比
 
-Checklist approach 是必要的，但它本身并不会自动变成一套可工作的架构。它会告诉你该看哪里，却不会告诉你怎样把 runtime、approvals、telemetry、ownership 和 lifecycle 连接成一个受治理的 contour。
+检查清单方法是必要的，但它本身并不会自动变成一套可工作的架构。它会告诉你该看哪里，却不会告诉你怎样把运行时、审批、遥测、负责人边界和生命周期连接成一个受治理的轮廓。
 
 这正是这本书试图完成的事情。
 
@@ -57,10 +57,10 @@ Checklist approach 是必要的，但它本身并不会自动变成一套可工�
 
 读完这本书后，读者应该：
 
-- 看清 trust 与 action boundaries 真正在哪里；
-- 理解如何捕获 run behavior，而不是只从症状去猜；
-- 知道怎样定义 health 与 risk budgets；
-- 知道怎样产出关于 quality 与 regression risk 的 reviewable judgments；
-- 能把 rollout、response、lineage 与 accountability 区分成不同的 operational functions。
+- 看清信任边界与动作边界真正在哪里；
+- 理解如何捕获运行行为，而不是只从症状去猜；
+- 知道怎样定义健康预算与风险预算；
+- 知道怎样产出关于质量与回归风险的可评审判断；
+- 能把发布、响应、谱系与问责区分成不同的运行职能。
 
-如果这些问题比另一篇 agent theater 更接近你的现实，那么这本书就是为你写的。
+如果这些问题比另一篇智能体剧场更接近你的现实，那么这本书就是为你写的。
