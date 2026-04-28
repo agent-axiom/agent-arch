@@ -1,6 +1,6 @@
-# 智能体 registry 与 inventory 运维手册
+# 智能体注册表与清单运维手册
 
-当一个组织里已经有多个智能体系统时，只靠一章 inventory 已经不够了。团队还需要一套简明的 operating model：谁维护 registry，如何识别 drift，什么时候一个 agent 算 orphaned，deprecated entries 又该如何处理。
+当一个组织里已经有多个智能体系统时，只靠一章清单已经不够了。团队还需要一套简明的运行模型：谁维护注册表，如何识别漂移，什么时候一个智能体算无人负责，已弃用条目又该如何处理。
 
 这份手册把这套最小工作面放在一页里。
 
@@ -8,147 +8,147 @@
 
 即使是规模不大的智能体计划，也最好始终保留两层：
 
-- `inventory`，用于记录全部 agent-like entities；
-- `registry`，用于记录那些已经被识别、分类并允许进入 production contour 的实体。
+- `inventory`，用于记录全部类似智能体的实体；
+- `registry`，用于记录那些已经被识别、分类并允许进入生产轮廓的实体。
 
-如果只有 registry，团队通常会低估 shadow agents 与 local experiments。
-如果只有 inventory，没有 registry，就没人能明确说明哪些东西真正算 approved。
+如果只有注册表，团队通常会低估影子智能体与本地实验。
+如果只有清单，没有注册表，就没人能明确说明哪些东西真正算已批准。
 
 ## 2. 谁应该拥有这一层
 
-当 ownership 模糊时，registry 往往很快失效。
+当负责人边界模糊时，注册表往往很快失效。
 
 最小可用的分工通常是：
 
-- platform team 负责 registry 结构与 verification rules；
-- product owner 负责 business purpose 与 lifecycle state；
-- safety 或 governance owner 负责 policy 与 approval linkage；
-- operations 负责 incident contact 与 retirement hygiene。
+- 平台团队负责注册表结构与验证规则；
+- 产品负责人负责业务目的与生命周期状态；
+- 安全或治理负责人负责策略与审批链接；
+- 运维负责人负责事故联系人与退役卫生。
 
 这些角色可以由同一支团队兼任，但角色本身必须明确。
 
-## 3. 一条 agent record 应该包含什么
+## 3. 一条智能体记录应该包含什么
 
-最小 record 最适合按一个固定模板检查：
+最小记录最适合按一个固定模板检查：
 
 - `agent_id`
-- owner team；
-- business purpose；
-- lifecycle state；
-- risk tier；
-- runtime identity；
-- allowed capabilities；
-- policy bundle；
-- approval mode；
-- observability coverage；
-- bundle linkage；
-- retirement linkage。
+- 负责团队；
+- 业务目的；
+- 生命周期状态；
+- 风险等级；
+- 运行时身份；
+- 允许的能力；
+- 策略包；
+- 审批模式；
+- 可观测性覆盖；
+- 工件包链接；
+- 退役链接。
 
-没有这些内容，registry 很快就会退化成一个只有名字的列表，缺少 operational 意义。
+没有这些内容，注册表很快就会退化成一个只有名字的列表，缺少运行意义。
 
-## 4. 什么时候 agent 必须进入 inventory
+## 4. 什么时候智能体必须进入清单
 
 一个比较强的默认规则通常是：
 
-- 只要这个实体可以调用 tools；
+- 只要这个实体可以调用工具；
 - 只要它会读取组织上下文；
 - 只要它会代表员工或服务行动；
-- 只要它参与 production workflow；
+- 只要它参与生产工作流；
 
-它至少应该进入 inventory。
+它至少应该进入清单。
 
 例外情况最好被明确记录，而不是作为默许存在。
 
-## 5. 什么时候 agent 必须进入 registry
+## 5. 什么时候智能体必须进入注册表
 
-通常需要进入 registry 的实体包括：
+通常需要进入注册表的实体包括：
 
-- 运行在 production contour 中；
-- 访问 sensitive tools 或 external systems；
-- 能产生 side effects；
-- 参与 staged rollout；
-- 需要 audit-ready ownership。
+- 运行在生产轮廓中；
+- 访问敏感工具或外部系统；
+- 能产生副作用；
+- 参与分阶段发布；
+- 需要随时可审计的负责人。
 
-这也是 registry 对 governance、approvals 与可靠 incident response 很重要的原因。
+这也是注册表对治理、审批与可靠事故响应很重要的原因。
 
-## 6. registry 应该多久检查一次
+## 6. 注册表应该多久检查一次
 
-registry 之所以失真，通常不是因为设计不好，而是因为 operating rhythm 太弱。
+注册表之所以失真，通常不是因为设计不好，而是因为运行节奏太弱。
 
-最小 cadence 通常包括：
+最小节奏通常包括：
 
-- 每次 rollout update；
-- 每次 high-risk change review；
-- 定期 inventory review；
-- 每次 retirement 或 replacement event；
-- 每次 incident review 之后，如果发现了 hidden agents 或 stale records。
+- 每次发布更新；
+- 每次高风险变更评审；
+- 定期清单评审；
+- 每次退役或替换事件；
+- 每次事故评审之后，如果发现了隐藏智能体或陈旧记录。
 
-如果这些时点都不更新 registry，drift 几乎不可避免。
+如果这些时点都不更新注册表，漂移几乎不可避免。
 
-## 7. 最值得优先捕捉的 drift 信号
+## 7. 最值得优先捕捉的漂移信号
 
-并不是所有 drift 都同样危险。最好先盯住：
+并不是所有漂移都同样危险。最好先盯住：
 
-- active agent 没有 owner；
-- `production` agent 在 traces 或 registry-linked telemetry 里根本看不到；
-- deprecated agent 仍然保留 live principal；
-- runtime 里出现了不在 allowed inventory 中的 capability；
-- registry 中的 approval mode 与 policy bundle 不一致；
-- 已 retired 的 bundle 仍然出现在 live runs 中。
+- 活跃智能体没有负责人；
+- `production` 智能体在追踪或注册表关联遥测里根本看不到；
+- 已弃用智能体仍然保留活跃主体；
+- 运行时里出现了不在允许清单中的能力；
+- 注册表中的审批模式与策略包不一致；
+- 已退役的工件包仍然出现在活跃运行中。
 
-这已经足够构成一个最小 continuous verification loop。
+这已经足够构成一个最小连续验证闭环。
 
 ## 8. 什么时候该把记录改成 restricted、deprecated 或 retired
 
-最好尽早调整 lifecycle state：
+最好尽早调整生命周期状态：
 
-- `restricted`：当 capability set 或 approval mode 被临时收窄时；
-- `deprecated`：当 replacement 已经确定，新 rollout waves 不应再走旧路径时；
-- `retired`：当 principal 已被撤销、rollout 已停止、historical state 已进入 retention mode 时。
+- `restricted`：当能力集合或审批模式被临时收窄时；
+- `deprecated`：当替换方案已经确定，新发布波次不应再走旧路径时；
+- `retired`：当主体已被撤销、发布已停止、历史状态已进入保留模式时。
 
-这里最常见的错误很简单：agent 实际上已经退出使用，但 registry 里仍然显示它是 production-ready。
+这里最常见的错误很简单：智能体实际上已经退出使用，但注册表里仍然显示它已准备好用于生产。
 
-## 9. incident response 时应该看什么
+## 9. 事故响应时应该看什么
 
-在 incident review 中，registry 的价值不在于“有目录”，而在于它应该能快速回答几件事：
+在事故评审中，注册表的价值不在于“有目录”，而在于它应该能快速回答几件事：
 
-- 哪个 agent 参与了这个事件；
-- 它的 owner 是谁；
-- 当时它处于什么 lifecycle state；
-- 哪个 policy bundle 与 approval mode 本应生效；
-- 这条记录关联了哪个 bundle linkage 与 retirement status。
+- 哪个智能体参与了这个事件；
+- 它的负责人是谁；
+- 当时它处于什么生命周期状态；
+- 哪个策略包与审批模式本应生效；
+- 这条记录关联了哪个工件包链接与退役状态。
 
-如果 registry 不能快速回答这些问题，它对 operations 的帮助就很有限。
+如果注册表不能快速回答这些问题，它对运维的帮助就很有限。
 
-## 10. 最小 weekly review
+## 10. 最小每周评审
 
-一轮简短 review 可以围绕这些问题展开：
+一轮简短评审可以围绕这些问题展开：
 
-- inventory 外是否出现了新的 agent-like entities？
-- 是否存在 orphaned records？
-- 是否存在没有 telemetry coverage 的 `production` agents？
-- 是否有保留 live principals 的 deprecated entries？
-- registry、policy bundle 与 rollout state 之间是否一致？
+- 清单外是否出现了新的类似智能体实体？
+- 是否存在无人负责的记录？
+- 是否存在没有遥测覆盖的 `production` 智能体？
+- 是否有保留活跃主体的已弃用条目？
+- 注册表、策略包与发布状态之间是否一致？
 
-这种 review 最好保持简短，但持续进行。
+这种评审最好保持简短，但持续进行。
 
 ## 11. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- 每个 active agent 都有 owner 吗？
-- inventory 和 registry 分开了吗？
-- rollout 与 retirement 时 lifecycle state 会更新吗？
-- registry 是否与 policy bundle 和 approval mode 相连？
-- registry 是否会对照 live telemetry 进行验证？
-- deprecated agents 会失去 principals 与 tool access 吗？
-- incidents 会推动 registry hygiene 改进吗？
+- 每个活跃智能体都有负责人吗？
+- 清单和注册表分开了吗？
+- 发布与退役时生命周期状态会更新吗？
+- 注册表是否与策略包和审批模式相连？
+- 注册表是否会对照活跃遥测进行验证？
+- 已弃用智能体会失去主体与工具访问权吗？
+- 事故会推动注册表卫生改进吗？
 
 ## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](change-rollout-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
 - [参考运行时包](reference-package.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
 - [第 27 章：智能体清单、注册表与蔓延治理](../book/part-viii/chapter-27.zh.md)
