@@ -283,7 +283,7 @@ plugins:
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
             Схема запроса на подтверждение и записи о решении: Approval Request 与 Decision Schema
-            Схема incident record и postmortem linkage: Incident Record 与 Postmortem Linkage Schema
+            Схема incident record и postmortem linkage: 事故记录与事后复盘链接 Schema
             Схема проверки изменений и шлюза раскатки: Change Review 与 Rollout Gate Schema
             Схема артефактов жизненного цикла: Lifecycle Artifact Schema
             Схема записей памяти и контракта извлечения: 记忆记录与检索契约 Schema
