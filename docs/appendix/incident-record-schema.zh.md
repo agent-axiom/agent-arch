@@ -2,7 +2,7 @@
 
 这页描述了智能体系统中事故评审的最小契约层：事故记录应该包含哪些字段，它如何与追踪、审批、发布和生命周期工件相连，以及哪些数据必须在遏制阶段之后仍然保留下来。
 
-它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为事故评审正是这条受治理链路必须保持完整的关键场景之一。
+它也直接连接到书里的 [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)，因为事故评审正是这条受治理链路必须保持完整的关键场景之一。
 
 如果 [智能体系统事故响应手册](incident-response-playbook.zh.md) 回答的是“前几分钟和后续复盘该怎么做”，那么这页回答的是“这些内容应该以什么形式被固定下来”。
 
@@ -20,7 +20,7 @@
 
 ## 2. 核心实体
 
-这套最小 schema 通常围绕两个实体展开：
+这套最小 Schema 通常围绕两个实体展开：
 
 - `incident_record`
 - `incident_postmortem_link`
@@ -108,7 +108,7 @@ status: open
 因此事故 Schema 应该紧挨着：
 
 - [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [审批请求与决策 Schema](approval-schema.zh.md)
+- [审批请求与决策记录 Schema](approval-schema.zh.md)
 
 ## 7. 它与变更管理和发布的关系
 
@@ -172,9 +172,9 @@ status: open
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [审批请求与决策 Schema](approval-schema.zh.md)
+- [审批请求与决策记录 Schema](approval-schema.zh.md)
 - [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
 - [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
-- [智能体 registry 与 inventory 运维手册](registry-operations-handbook.zh.md)
+- [智能体注册表与清单运维手册](registry-operations-handbook.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
