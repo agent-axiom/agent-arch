@@ -7,8 +7,8 @@
 从外面看，它通常显得很无害：
 
 - 请求卡住了；
-- runtime 决定重试；
-- integration 不稳定；
+- 运行时决定重试；
+- 集成不稳定；
 - 智能体试图“帮忙”，于是把动作又发了一次。
 
 但在现实里，这意味着：
@@ -19,122 +19,122 @@
 - CRM 被重复写入；
 - 同一个对象被改了好几次。
 
-所以问题不在于模型的推理本身，而在于 execution layer 还不会安全地生活在部分失败的世界里。
+所以问题不在于模型的推理本身，而在于执行层还不会安全地生活在部分失败的世界里。
 
-## 2. Idempotency 不是 nice-to-have，而是基本保险
+## 2. 幂等性不是可有可无的加分项，而是基本保险
 
-Idempotency 回答的是一个极其简单的问题：“如果系统误把这次调用重复执行了一遍，会发生什么？”
+幂等性回答的是一个极其简单的问题：“如果系统误把这次调用重复执行了一遍，会发生什么？”
 
-对于 write operations，一个好的答案应该是二选一：
+对于写操作，一个好的答案应该是二选一：
 
 - 重复调用不会改变最终结果；
-- 系统可以可靠识别重复请求，并避免再次产生 side effect。
+- 系统可以可靠识别重复请求，并避免再次产生副作用。
 
-如果没有这个性质，任何网络不稳定、timeout 或 run 之间的 race 都会变得非常昂贵。
+如果没有这个性质，任何网络不稳定、超时或运行之间的竞态都会变得非常昂贵。
 
-## 3. 没有错误分类的 retry 只会放大混乱
+## 3. 没有错误分类的重试只会放大混乱
 
 一种非常糟糕的策略是：“请求失败了，那就再重试三次”。
 
-在 production 中，这很危险，因为不同错误完全不是一回事：
+在生产中，这很危险，因为不同错误完全不是一回事：
 
 - `validation_failure` 几乎从不该重试；
 - `permission_denied` 不会因为多试几次就变好；
-- `retryable_failure` 才可能需要 backoff；
+- `retryable_failure` 才可能需要退避；
 - `side_effect_unknown` 需要谨慎，而不是盲目重复。
 
-所以 retry policy 应该依赖 outcome class，而不是“再试试也许行”的情绪。
+所以重试策略应该依赖结果类别，而不是“再试试也许行”的情绪。
 
 ## 4. 最糟糕的状态是 `side_effect_unknown`
 
-有一类失败尤其让人头痛：你已经不知道 side effect 到底有没有发生。
+有一类失败尤其让人头痛：你已经不知道副作用到底有没有发生。
 
 例如：
 
 - 请求发给外部服务后超时；
 - commit 之后连接断开；
-- adapter 崩溃，确认没有落库；
+- 适配器崩溃，确认没有落库；
 - 外部 API 的响应让最终状态不清楚。
 
-这正是 naive retry 最危险的场景。有时正确动作不是“重试”，而是：
+这正是天真重试最危险的场景。有时正确动作不是“重试”，而是：
 
 - 到外部系统检查当前状态；
-- 执行 reconciliation；
+- 执行对账；
 - 交给人处理；
-- 停止 workflow 并明确记录这种不确定性。
+- 停止工作流并明确记录这种不确定性。
 
-## 4.1. Recovery branch 也应该被显式设计
+## 4.1. 恢复分支也应该被显式设计
 
-最近关于 tool-failure cases 的研究还强化了另一点：recovery path 不应该只是 execution layer 的临场 improvisation。
+最近关于工具失败案例的研究还强化了另一点：恢复路径不应该只是执行层的临场即兴发挥。
 
 最好预先定义：
 
-- 哪些 outcome classes 应该进入 reconcile，而不是 retry；
-- 哪些 partial success 应该生成 follow-up task；
-- recovery 本身在什么情况下也需要 approval；
-- 哪些 branches 必须进入 eval dataset；
-- 哪些 dangerous recovery path 应该直接停下，而不是“再试一次”。
+- 哪些结果类别应该进入对账，而不是重试；
+- 哪些部分成功应该生成后续任务；
+- 恢复本身在什么情况下也需要审批；
+- 哪些分支必须进入评估数据集；
+- 哪些危险恢复路径应该直接停下，而不是“再试一次”。
 
-很多严重 incidents 不是发生在 happy path，而是发生在 poorly designed recovery branch。
+很多严重事故不是发生在顺畅路径，而是发生在设计糟糕的恢复分支。
 
-## 5. Rate limits 也是 safety design 的一部分
+## 5. 速率限制也是安全设计的一部分
 
-如果团队只把 rate limits 当成性能问题，execution layer 就会低估它的架构意义。
+如果团队只把速率限制当成性能问题，执行层就会低估它的架构意义。
 
-实际上，rate limits 还用来避免：
+实际上，速率限制还用来避免：
 
-- 一个 runaway agent 把外部系统打挂；
-- 循环 planning 变成 tool call 雪崩；
-- 高成本 capability 吃掉所有预算；
-- retry storm 把 integration 打死。
+- 一个失控智能体把外部系统打挂；
+- 循环规划变成工具调用雪崩；
+- 高成本能力吃掉所有预算；
+- 重试风暴把集成打死。
 
-所以 limit 不应该只存在于 whole service 层面，还应该出现在：
+所以限制不应该只存在于整个服务层面，还应该出现在：
 
-- per tool；
-- per tenant；
-- per workflow；
-- per risk class。
+- 每个工具；
+- 每个租户；
+- 每个工作流；
+- 每个风险等级。
 
-## 6. Rollback boundary 必须提前定义
+## 6. 回滚边界必须提前定义
 
 最危险的事情之一，就是在事故里才发现某个操作“其实根本无法回滚”。
 
-对于每个 write capability，最好提前搞清楚：
+对于每个写能力，最好提前搞清楚：
 
 - 这个动作能不能撤销；
 - 这个动作能不能安全重复；
 - point of no return 在哪里；
-- 什么 compensating action 是允许的；
-- 什么时候必须人工 reconciliation。
+- 什么补偿动作是允许的；
+- 什么时候必须人工对账。
 
-也就是说，rollback boundary 不是“以后再说”，它本身就是工具和 workflow contract 的一部分。
+也就是说，回滚边界不是“以后再说”，它本身就是工具和工作流契约的一部分。
 
 <div class="diagram-card">
-<p>发生 side effect 之后，execution layer 必须区分 safe retry、reconcile 和 stop 路径</p>
+<p>发生副作用之后，执行层必须区分安全重试、对账和停止路径</p>
 
 ``` mermaid
 flowchart TD
-    A["Tool request"] --> B["Execute write action"]
-    B --> C{"Outcome known?"}
-    C -->|Yes, success| D["Store result and continue"]
-    C -->|Retryable failure| E["Retry with policy and backoff"]
-    C -->|Unknown side effect| F["Reconcile or request human review"]
-    C -->|Validation or permission failure| G["Stop and surface error"]
+    A["工具请求"] --> B["执行写动作"]
+    B --> C{"结果已知？"}
+    C -->|是，成功| D["保存结果并继续"]
+    C -->|可重试失败| E["按策略与退避重试"]
+    C -->|未知副作用| F["对账或请求人工审查"]
+    C -->|校验或权限失败| G["停止并暴露错误"]
 ```
 
 </div>
 
-## 7. 好的 execution contract 会显式保存 operational semantics
+## 7. 好的执行契约会显式保存运营语义
 
-仅仅知道输入 schema 和返回 shape 还不够。对危险操作来说，contract 还必须记录：
+仅仅知道输入 schema 和返回形状还不够。对危险操作来说，契约还必须记录：
 
-- 这个动作是否 idempotent；
-- 是否必须有 idempotency key；
-- 哪些错误是 retryable；
-- retries 上限是多少；
+- 这个动作是否幂等；
+- 是否必须有幂等键；
+- 哪些错误可重试；
+- 重试上限是多少；
 - 频率限制是什么；
-- unknown outcome 怎么处理；
-- 是否存在 rollback 或 compensating action。
+- 未知结果怎么处理；
+- 是否存在回滚或补偿动作。
 
 ```yaml
 tools:
@@ -168,9 +168,9 @@ tools:
 
 这个 YAML 的价值在于，它逼着团队正视一个不舒服的事实：不是所有动作都同样适合自动化。
 
-## 8. 一个简单的 retry decision 示例
+## 8. 一个简单的重试决策示例
 
-下面不是 production policy engine，而是一个小 skeleton。它的目的就是说明：retry 应该依赖 outcome class，而不是普遍 reflex。
+下面不是生产策略引擎，而是一个小骨架。它的目的就是说明：重试应该依赖结果类别，而不是普遍条件反射。
 
 ```python
 from dataclasses import dataclass
@@ -195,56 +195,56 @@ def next_step(outcome: ExecutionOutcome) -> str:
     return "escalate"
 ```
 
-重要的不是代码本身，而是系统因此拥有了一张明确的 operational decision table。
+重要的不是代码本身，而是系统因此拥有了一张明确的运营决策表。
 
-## 9. Idempotency key 必须成为协议的一部分
+## 9. 幂等键必须成为协议的一部分
 
-如果某个 write tool “支持 idempotency” 只停留在口头上，而 key：
+如果某个写工具“支持幂等性”只停留在口头上，而 key：
 
 - 不是必填；
 - 在不同层生成方式不一致；
-- 在 retry path 中丢失；
+- 在重试路径中丢失；
 - 没有被记录到日志，
 
-那它几乎就不算真正的 idempotency。
+那它几乎就不算真正的幂等性。
 
 好的实践是：
 
-- 在 workflow 或 action boundary 上生成 key；
-- 贯穿整个 execution path 传递它；
-- 在 audit trail 里记录它；
-- 用它做 reconciliation 和调查。
+- 在工作流或动作边界上生成 key；
+- 贯穿整个执行路径传递它；
+- 在审计轨迹里记录它；
+- 用它做对账和调查。
 
 ## 10. 常见错误
 
 这些问题非常典型：
 
-- retries 被打在不该重试的错误上；
-- unknown outcome 被当成普通 failure；
-- rate limits 只放在入口，不放在 tools 上；
-- rollback 被承诺了，但实际上不存在；
-- idempotency key 在 planner 和 adapter 之间丢失；
+- 重试被打在不该重试的错误上；
+- 未知结果被当成普通失败；
+- 速率限制只放在入口，不放在工具上；
+- 回滚被承诺了，但实际上不存在；
+- 幂等键在规划器和适配器之间丢失；
 - 智能体在重复尝试上被给了太多自由度。
 
-这都说明 execution layer 还没有长成 production-grade 的 failure model。
+这都说明执行层还没有长成生产级失败模型。
 
 ## 11. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
-- write tools 是否有明确的 idempotency strategy？
+- 写工具是否有明确的幂等策略？
 - 系统是否区分 `retryable_failure` 和 `side_effect_unknown`？
-- retries 是否绑定在 policy 上，而不是通用 helper？
-- 是否有 per-tool 或 per-tenant 的 rate limits？
-- 你是否清楚每个危险动作的 rollback boundary？
-- runtime 能否做 reconciliation，而不是盲重试？
-- traces 和 audit logs 中能否看到 idempotency key？
+- 重试是否绑定在策略上，而不是通用助手？
+- 是否有每个工具或每个租户的速率限制？
+- 你是否清楚每个危险动作的回滚边界？
+- 运行时能否做对账，而不是盲重试？
+- 追踪和审计日志中能否看到幂等键？
 
-如果连续几个答案都是否，那下一次 integration 不稳定时，几乎一定会变成重复写入、噪音或手工事故排查。
+如果连续几个答案都是否，那下一次集成不稳定时，几乎一定会变成重复写入、噪音或手工事故排查。
 
 ## 12. 下一步做什么
 
-Part IV 到这里已经把基础 execution layer 收束起来了：contracts、sandbox、capability transport，以及 side effects discipline。接下来就很自然地进入整个 agent system 层面的 reliability 和 observability。
+第四部分到这里已经把基础执行层收束起来了：契约、沙箱、能力传输，以及副作用纪律。接下来就很自然地进入整个智能体系统层面的可靠性和可观测性。
 
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)
 - [第四部分：工具与执行](index.zh.md)
