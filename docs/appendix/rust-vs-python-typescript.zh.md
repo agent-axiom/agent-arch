@@ -17,13 +17,13 @@
 | 维度 | Rust | Python | TypeScript |
 | --- | --- | --- | --- |
 | 快速应用层迭代 | 较弱 | 很强 | 很强 |
-| 厂商 agent SDK 成熟度 | 不均衡 | 强 | 强 |
+| 厂商智能体 SDK 成熟度 | 不均衡 | 强 | 强 |
 | 严格契约型服务 | 很强 | 中等 | 中等 |
-| gateway/runtime 性能 | 很强 | 较弱 | 中等 |
+| 网关 / 运行时性能 | 很强 | 较弱 | 中等 |
 | 基础设施网络服务 | 很强 | 中等 | 中等 |
-| eval 与 experiment loop | 中等 | 很强 | 强 |
+| 评测与实验循环 | 中等 | 很强 | 强 |
 | MCP server 与集成层 | 强 | 强 | 强 |
-| control plane 与策略执行 | 很强 | 中等 | 中等 |
+| 控制平面与策略执行 | 很强 | 中等 | 中等 |
 
 ## 什么时候选 Rust
 
@@ -32,8 +32,8 @@ Rust 特别适合这些服务：
 - 共享工具网关；
 - 策略引擎；
 - 审批服务；
-- trace ingestion pipeline；
-- 面向审计的 control plane；
+- 追踪摄取流水线；
+- 面向审计的控制平面；
 - 对可靠性要求较高的 MCP server；
 - 负载更重的记忆或索引服务。
 
@@ -44,10 +44,10 @@ Rust 特别适合这些服务：
 Python 通常更适合：
 
 - 快速调整智能体行为；
-- 迭代 prompt、routines 与 evals；
-- 紧贴 data-heavy stack 工作；
+- 迭代提示、例程与评测；
+- 紧贴数据密集型栈工作；
 - 使用模型厂商最新的示例和特性；
-- 做研究型或实验型 workflow。
+- 做研究型或实验型工作流。
 
 当真正的瓶颈是团队学习和试错速度，而不是网关性能时，Python 往往更占优。
 
@@ -56,9 +56,9 @@ Python 通常更适合：
 TypeScript 特别实用的情况包括：
 
 - 产品主体已经在 JS/TS 生态里；
-- 智能体靠近 web/backend 应用；
-- 希望 frontend、backend 和工具契约共享一套类型模型；
-- 团队想快速交付 product-facing integration，而不切换技术栈。
+- 智能体靠近 Web / 后端应用；
+- 希望前端、后端和工具契约共享一套类型模型；
+- 团队想快速交付面向产品的集成，而不切换技术栈。
 
 对产品侧智能体层来说，TypeScript 常常是最自然的选择。
 
@@ -75,27 +75,27 @@ TypeScript 特别实用的情况包括：
 ## 常见错误
 
 - 为了语言纯度过早选择 Rust；
-- 当高吞吐 gateway 已经被基础设施约束卡住时，仍然把它留在 Python；
-- 只是因为产品里已经有 TypeScript，就把它硬塞进低层 control plane；
+- 当高吞吐网关已经被基础设施约束卡住时，仍然把它留在 Python；
+- 只是因为产品里已经有 TypeScript，就把它硬塞进低层控制平面；
 - 在还不知道长期运维负担会落在哪一层之前，就先决定语言。
 
 ## 一个实用规则
 
 如果某一层主要负责：
 
-- **behavior iteration** —— 往往更适合 Python/TypeScript；
-- **platform control** —— 往往更适合 Rust；
-- **product integration** —— 往往更适合 TypeScript；
-- **eval 和 experimentation** —— 往往更适合 Python。
+- **行为迭代** —— 往往更适合 Python/TypeScript；
+- **平台控制** —— 往往更适合 Rust；
+- **产品集成** —— 往往更适合 TypeScript；
+- **评测和实验** —— 往往更适合 Python。
 
 ## 现在就该做什么
 
 在选语言之前，更重要的是先搞清楚：
 
-- trust boundary 在哪里；
+- 信任边界在哪里；
 - 哪些服务会长期运行；
-- 哪一层最需要 strongest contract layer；
-- 真实需要哪些 vendor SDK；
+- 哪一层最需要最强契约层；
+- 真实需要哪些厂商 SDK；
 - 哪些地方更在乎交付速度，哪些地方更在乎运行可靠性。
 
 这些问题定下来之后，语言选择会自然得多，也更少意识形态色彩。
@@ -109,7 +109,7 @@ TypeScript 特别实用的情况包括：
 - **Python/TypeScript** 加快智能体行为开发；
 - **Rust** 强化围绕这些行为的平台层。
 
-也正因为如此，Rust 在这本书里更适合作为 **agent platform services** 的语言出现，而不是成为“如何构建智能体”的唯一主线。
+也正因为如此，Rust 在这本书里更适合作为**智能体平台服务**语言出现，而不是成为“如何构建智能体”的唯一主线。
 
 ## 下一步做什么
 
