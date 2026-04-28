@@ -1,6 +1,6 @@
 # 最新进展
 
-这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 git history 的替代品，而是让读者快速看到项目是否持续演进。
+这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 Git 历史的替代品，而是让读者快速看到项目是否持续演进。
 
 _更新于 2026 年 4 月 18 日。_
 
@@ -8,21 +8,21 @@ _更新于 2026 年 4 月 18 日。_
 
 ### 第八部分：智能体系统生命周期
 
-现在全书已经包含 `SDLC -> ADLC`、change management、assurance loop、supply chain、retirement、misalignment、behavioral evals、AI-native observability 与 inventory control 的完整内容。
+现在全书已经包含 `SDLC -> ADLC`、变更管理、保障回路、供应链、退役、错位、行为评测、AI 原生可观测性与清单控制的完整内容。
 
 为什么这很重要：现在这本书覆盖的不只是架构与上线，还覆盖了智能体系统发布后的生命周期管理。
 
-### 第一到第五部分的 production contour 更完整了
+### 第一到第五部分的生产轮廓更完整了
 
-书里现在补上了更多连接 architecture、retrieval、execution 和 eval discipline 的桥：
+书里现在补上了更多连接架构、检索、执行和评测纪律的桥：
 
-- 第一部分更明确地区分了 runtime architecture、training layer 和 product surface；
-- 第二部分加入了更清晰的 `prompt injection`、`jailbreaking` 与 `action hallucination` taxonomy；
-- 第三部分加强了 retrieval contour：`semantic gap`、`HyDE`、`RAG first`，以及 continued pretraining 与 `SFT` 的区别；
-- 第四部分补上了大工具目录、`semantic tool filtering` 和 `MCP host / client / server` 角色的 practical guidance；
-- 第五部分补强了 `latency budget` 的产品视角，以及更实用的 `LLM-as-a-judge` framing。
+- 第一部分更明确地区分了运行时架构、训练层和产品表面；
+- 第二部分加入了更清晰的 `prompt injection`、`jailbreaking` 与 `action hallucination` 分类法；
+- 第三部分加强了检索轮廓：`semantic gap`、`HyDE`、`RAG first`，以及持续预训练与 `SFT` 的区别；
+- 第四部分补上了大工具目录、`semantic tool filtering` 和 `MCP host / client / server` 角色的实践指导；
+- 第五部分补强了 `latency budget` 的产品视角，以及更实用的 `LLM-as-a-judge` 表述。
 
-为什么这很重要：这本书现在覆盖的不只是基础 platform layers，也更贴近日常 production 团队在 design review、eval loop 和 rollout 之间反复遇到的问题。
+为什么这很重要：这本书现在覆盖的不只是基础平台层，也更贴近日常生产团队在设计评审、评测回路和发布之间反复遇到的问题。
 
 ## 参考层
 
@@ -83,8 +83,8 @@ _更新于 2026 年 4 月 18 日。_
 
 - `semantic tool filtering`；
 - `HyDE` 与 `RAG vs training`；
-- `latency budget` 与 routed pipelines；
-- `LLM-as-a-judge` 与 judge calibration；
+- `latency budget` 与路由管线；
+- `LLM-as-a-judge` 与评审器校准；
 - `prompt injection`、`jailbreaking` 与 `action hallucination` 的区别。
 
 为什么这很重要：这些新主题现在不只藏在单个章节里，也已经出现在读者真正会先打开的入口页上。
