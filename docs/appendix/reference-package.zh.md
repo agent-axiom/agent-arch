@@ -187,13 +187,13 @@
 
 这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的运行时有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
 
-它现在也适合作为承接 Anthropic 新 harness 经验的锚点：长时间运行的 application work 可能需要显式的 context resets、结构化 handoff artifacts，以及 planner/generator/evaluator 的角色分离，而不是一条不间断的 agent loop。这个参考包并没有把整套 harness 都实现出来，但它已经把那些关键 runtime seams 暴露出来了，让团队能看见 reset-safe handoff、sprint contracts、evaluator review 与 resumed control state 应该落在什么地方。
+它现在也适合作为承接 Anthropic 新型运行框架经验的锚点：长时间运行的应用工作可能需要显式的上下文重置、结构化交接工件，以及规划器 / 生成器 / 评估器的角色分离，而不是一条不间断的智能体循环。这个参考包并没有把整套运行框架都实现出来，但它已经把那些关键运行时接缝暴露出来了，让团队能看见重置安全的交接、迭代契约、评估器评审与恢复后的控制状态应该落在什么地方。
 
-它现在也适合作为 verifier-aware governance 的锚点：如果 rollout 或 assurance 依赖 eval output，runtime 就应该保留足够的 trace、session 与 artifact linkage，来解释不只是发生了什么，还包括 verifier 为什么会这样判定这次 run。
+它现在也适合作为验证器感知治理的锚点：如果发布或保障依赖评测输出，运行时就应该保留足够的追踪、会话与工件链接，来解释不只是发生了什么，还包括验证器为什么会这样判定这次运行。
 
-这种能力也应延伸到 lifecycle handling。一个受治理的 reference runtime 应该能说明某次 release 当时启用了哪一版 verifier contract 和哪一个 release identity，在 retirement 之后还必须保留哪些 evidence，才能为早先的 rollout 或 assurance decisions 提供解释，以及当某些结构化 handoff artifacts 决定了即将退役系统被允许做什么时，这些工件必须如何跨过 context reset 或角色交接继续保留下来。
+这种能力也应延伸到生命周期处理。一个受治理的参考运行时应该能说明某次发布当时启用了哪一版验证器契约和哪一个发布身份，在退役之后还必须保留哪些证据，才能为早先的发布或保障决策提供解释，以及当某些结构化交接工件决定了即将退役系统被允许做什么时，这些工件必须如何跨过上下文重置或角色交接继续保留下来。
 
-现在它也体现了第四个 operational concern：动作究竟是在什么 delegated authorization context 下执行的。这个上下文现在会出现在 run telemetry、approval records 和 session export 里，让 runtime 不仅能解释发生了什么，还能解释它是在谁的 delegated identity 与 scope 下发生的。
+现在它也体现了第四个运营关注点：动作究竟是在什么委派授权上下文下执行的。这个上下文现在会出现在运行遥测、审批记录和会话导出里，让运行时不仅能解释发生了什么，还能解释它是在谁的委派身份与范围下发生的。
 
 一个会真正读取用户画像记忆的请求：
 
@@ -221,14 +221,14 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
-  现在 change gate 里还有一个显式的 `failed_run_drill_checked` 信号，避免 high-risk rollout review 把退化路径当成检查范围之外的东西。
+  现在变更门禁里还有一个显式的 `failed_run_drill_checked` 信号，避免高风险发布评审把退化路径当成检查范围之外的东西。
 - [artifacts.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/artifacts.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有 release identity 的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。
 
-其中 runtime-control bundle 现在也被用来显式承载 approval 与 session-governance 规则，包括 pause/resume、background handling、expiry、re-init policy、capability-session ownership，以及 user run 与 capability-side session 之间的契约边界。
+其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停 / 恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 
 ## 为什么它有用
 
@@ -238,10 +238,10 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易继续往这个包里补充示例；
 - 更容易从章节直接走到可运行的原型；
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
-- 更容易把参考运行时和记忆、检索、后台更新以及 runtime-control governance 这些章节连起来；
-- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个 revision，以及当时生效的是哪一个 contract/runtime-control version；
-- 更容易把 release identity、verifier-contract lineage 与 retirement obligations 和 runtime-control、artifact decisions 放在一起看清楚；
-- 更容易把 approval state、runtime session state、capability session state 与 verifier evidence 区分开来，同时仍保持它们之间的治理关联。
+- 更容易把参考运行时和记忆、检索、后台更新以及运行时控制治理这些章节连起来；
+- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个修订版，以及当时生效的是哪一个契约 / 运行时控制版本；
+- 更容易把发布身份、验证器契约谱系与退役义务和运行时控制、工件决策放在一起看清楚；
+- 更容易把审批状态、运行时会话状态、能力会话状态与验证器证据区分开来，同时仍保持它们之间的治理关联。
 
 现在还有几项很实用的能力：
 
@@ -254,9 +254,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 阅读这个包最简单的方式是：
 
-- 用本书理解 architecture、sequence 与 operating-model argument；
-- 用这个包查看 runnable structure、config surfaces 与 inspection examples；
-- 用 appendix schemas 理解 runtime 想要明确表达的 contract boundaries。
+- 用本书理解架构、顺序与运营模型论证；
+- 用这个包查看可运行结构、配置表面与检查示例；
+- 用附录 Schema 理解运行时想要明确表达的契约边界。
 
 ## 下一步做什么
 
