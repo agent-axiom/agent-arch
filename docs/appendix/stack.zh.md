@@ -26,7 +26,7 @@
 
 - 快速写作；
 - 稳定发布；
-- 保持整个 authoring stack 在 Python 内；
+- 保持整个写作栈在 Python 内；
 - 没有明确需求前，不额外增加 CI 和本地构建复杂度。
 
 因此，第一版采用 MkDocs，而不是 Astro。
@@ -35,15 +35,15 @@
 
 ### 核心栈
 
-- `uv` 用于 Python、虚拟环境与 dependency groups；
+- `uv` 用于 Python、虚拟环境与依赖组；
 - `MkDocs` 与 `Material for MkDocs` 用于站点生成；
-- `ruff` 用于 linting；
-- `ty` 作为未来仓库出现 Python 工具代码时的快速 type checker。
+- `ruff` 用于 lint；
+- `ty` 作为未来仓库出现 Python 工具代码时的快速类型检查器。
 
-### 可选 research 栈
+### 可选研究栈
 
-- `marimo` 用于交互式研究型 notebooks；
-- `polars` 用于分析 traces 和 eval datasets。
+- `marimo` 用于交互式研究型 notebook；
+- `polars` 用于分析追踪和评测数据集。
 
 在当前项目骨架里，`marimo` 和 `polars` 已经作为 `research` 依赖组存在，即使书籍还没有直接使用它们。
 
@@ -63,7 +63,7 @@ uvx ty check
 
 - 章节中嵌入 React、Vue 或 Svelte 组件；
 - 拥有大量自定义交互；
-- 从 docs-as-book 转变为 docs-as-app。
+- 从“文档即书籍”转变为“文档即应用”。
 
 目前还没有这些需求。
 
