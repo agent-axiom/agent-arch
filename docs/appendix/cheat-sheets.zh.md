@@ -1,84 +1,84 @@
-# Cheat Sheets
+# 速查表
 
 这页是给实际工作快速使用的。如果你不想在设计评审、上线前检查或团队讨论前重读整整一部分内容，就先看这里。
 
-## Safety checklist
+## 安全检查清单
 
-- 用户输入、记忆、工具和外部系统之间是否有明确的 trust boundaries？
-- 是否区分了 prompt injection、jailbreak 和 action hallucination，而不是把它们都归成一类模糊的“LLM 风险”？
-- 每个敏感动作之前是否都有 policy gate，而不只是模型调用前有？
-- low-risk 和 high-risk 工具是否清晰分开？
-- 对于不可逆 side effect，是否有 approval gate？
-- 是否定义了 allowed egress destinations 和 network access profile？
-- policy decisions、approvals 和 tool execution 是否都写入了 audit trail？
-- run loop 是否有清晰的 stop condition？
+- 用户输入、记忆、工具和外部系统之间是否有明确的信任边界？
+- 是否区分了提示注入、越狱和动作幻觉，而不是把它们都归成一类模糊的“LLM 风险”？
+- 每个敏感动作之前是否都有策略门禁，而不只是模型调用前有？
+- 低风险和高风险工具是否清晰分开？
+- 对于不可逆副作用，是否有审批门禁？
+- 是否定义了允许的出口目标和网络访问画像？
+- 策略决策、审批和工具执行是否都写入了审计轨迹？
+- 运行循环是否有清晰的停止条件？
 
 继续阅读：
 
 - [第 3 章：安全边界与信任边界](../book/part-ii/chapter-3.zh.md)
 - [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 
-## Memory checklist
+## 记忆检查清单
 
-- short-term、long-term 和 profile memory 是否已经分开？
-- retrieval 是否考虑了用户语言和文档语言之间的 semantic gap？
-- 如果使用 query rewriting 或 HyDE，是否明确这只是 retrieval aid，而不是新的“事实来源”？
-- memory read 和 memory write 是否有不同治理规则？
-- persistent records 是否带有 provenance？
-- 是否有明确 policy 来限制哪些内容可以写入 memory？
-- 是否存在 compaction 或 background maintenance path？
-- retrieval 是否被体量和相关性约束？
-- 在跳到 training 之前，是否先尝试把 RAG 和 corpus freshness 做扎实？
-- 是否有清晰的 deletion 或 revision strategy？
+- 短期记忆、长期记忆和用户画像记忆是否已经分开？
+- 检索是否考虑了用户语言和文档语言之间的语义鸿沟？
+- 如果使用查询改写或 HyDE，是否明确这只是检索辅助，而不是新的“事实来源”？
+- 记忆读取和记忆写入是否有不同治理规则？
+- 持久记录是否带有来源证明？
+- 是否有明确策略来限制哪些内容可以写入记忆？
+- 是否存在压缩或后台维护路径？
+- 检索是否被体量和相关性约束？
+- 在跳到训练之前，是否先尝试把 RAG 和语料新鲜度做扎实？
+- 是否有清晰的删除或修订策略？
 
 继续阅读：
 
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 
-## Rollout checklist
+## 发布检查清单
 
-- 这个 agent 是否有明确 owner，而不只是“某个团队”？
-- 上线前是否有最低 eval baseline？
-- 是否有包含 safety、observability 和 approval requirements 的 rollout gate？
-- 哪些场景算 blocking failures，是否已经定义清楚？
-- latency budget 是否是从用户耐心窗口定义的，而不只是看模型 p95？
-- 对 failure、denial 和 approval backlog 是否有 runbook？
-- 是否有 incident review 和 postmortem 机制？
-- 是否能快速关闭 high-risk capability，而不需要停掉整个系统？
+- 这个智能体是否有明确负责人，而不只是“某个团队”？
+- 上线前是否有最低评测基线？
+- 是否有包含安全、可观测性和审批要求的发布门禁？
+- 哪些场景算阻断性失败，是否已经定义清楚？
+- 延迟预算是否是从用户耐心窗口定义的，而不只是看模型 p95？
+- 对失败、拒绝和审批积压是否有运行手册？
+- 是否有事故评审和事后复盘机制？
+- 是否能快速关闭高风险能力，而不需要停掉整个系统？
 
 继续阅读：
 
 - [第 12 章：智能体系统的 SLO](../book/part-v/chapter-12.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 
-## Observability checklist
+## 可观测性检查清单
 
-- 每个 run 是否都有 trace_id？
-- retrieval、model step、tool execution、approval 和 memory write 是否都有 baseline spans？
-- 是否有 structured events，而不只是原始日志？
-- 是否能看出 gateway 做了什么 policy decision？
-- 是否能看出哪个 tool principal 执行了 side effect？
-- 是否能区分 success、denied、approval_wait 和 failure？
-- 是否能把 runs 聚合成 session-level 或 eval-level summary？
-- 如果用了 LLM-as-a-judge，是否已经对照 human review 和 outcome checks 做过校准？
-- 在需要因果结论的评测里，是否避免同时更改 model 和 prompt？
+- 每次运行是否都有 `trace_id`？
+- 检索、模型步骤、工具执行、审批和记忆写入是否都有基线跨度？
+- 是否有结构化事件，而不只是原始日志？
+- 是否能看出网关做了什么策略决策？
+- 是否能看出哪个工具主体执行了副作用？
+- 是否能区分 `success`、`denied`、`approval_wait` 和 `failure`？
+- 是否能把运行聚合成会话级或评测级摘要？
+- 如果用了 LLM-as-a-judge，是否已经对照人工评审和结果检查做过校准？
+- 在需要因果结论的评测里，是否避免同时更改模型和提示？
 
 继续阅读：
 
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
 
-## Tool gateway checklist
+## 工具网关检查清单
 
-- 每个 capability 是否都有 owner、risk tier 和 approved inventory status？
-- 是否清楚它是 read tool 还是 write tool？
+- 每个能力是否都有负责人、风险等级和已批准清单状态？
+- 是否清楚它是读取工具还是写入工具？
 - 是否避免把过大的工具目录直接暴露给模型，而是先筛到一个相关子集？
-- 是否定义了 execution profile：sandbox、network access、allowed egress？
-- gateway 是否会在 execution 前检查 actor identity 和 policy？
-- 是否定义了 idempotency semantics 和 retry policy？
-- 是否明确什么时候需要 approval，什么时候可以自动执行？
-- 每个外部动作是否都有 audit trail？
+- 是否定义了执行画像：沙箱、网络访问、允许出口？
+- 网关是否会在执行前检查行动者身份和策略？
+- 是否定义了幂等语义和重试策略？
+- 是否明确什么时候需要审批，什么时候可以自动执行？
+- 每个外部动作是否都有审计轨迹？
 - 团队是否真正理解 MCP host、client 和 server 的角色，而不是把它们混成一个笼统的“集成层”？
 
 继续阅读：
@@ -89,10 +89,10 @@
 
 ## 下一步做什么
 
-- 在 design review 前：快速过一遍 safety、memory 和 tool gateway。
-- 在上线前：重点过一遍 rollout 和 observability。
-- 在 incident review 中：把 observability 和 safety 当成复盘框架。
+- 在设计评审前：快速过一遍安全、记忆和工具网关。
+- 在上线前：重点过一遍发布和可观测性。
+- 在事故评审中：把可观测性和安全当成复盘框架。
 
 - [从这里开始](../start-here.zh.md)
 - [术语表](glossary.zh.md)
-- [按场景组织的 Policy Templates 与 Checklists](policy-templates.zh.md)
+- [按场景组织的策略模板与检查清单](policy-templates.zh.md)

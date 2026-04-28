@@ -24,7 +24,7 @@
 如果只想快速进入，建议按这个顺序看：
 
 1. [术语表](appendix/glossary.zh.md)
-2. [速查清单](appendix/cheat-sheets.zh.md)
+2. [速查表](appendix/cheat-sheets.zh.md)
 3. [参考运行时包](appendix/reference-package.zh.md)
 
 ## 模式页与契约页
