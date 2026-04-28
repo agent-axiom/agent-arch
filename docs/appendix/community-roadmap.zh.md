@@ -1,14 +1,14 @@
 # 社区路线图
 
-这本书已经有了很强的基础：架构、安全、记忆、执行、可观测性、组织模型，以及一个可运行的参考包。因此，下面不是通用愿望清单，而是**下一层价值**的 backlog。
+这本书已经有了很强的基础：架构、安全、记忆、执行、可观测性、组织模型，以及一个可运行的参考包。因此，下面不是通用愿望清单，而是**下一层价值**的待办。
 
 ## 已经完成的部分
 
 - [从这里开始](../start-here.zh.md) 页面；
 - [多语言术语表](glossary.zh.md)；
-- [一组 cheat sheets](cheat-sheets.zh.md)；
+- [一组速查表](cheat-sheets.zh.md)；
 - 第一组[实战案例](case-studies.zh.md)；
-- 第一组[Policy Templates](policy-templates.zh.md)；
+- 第一组[策略模板](policy-templates.zh.md)；
 - 可运行的参考包及其[包文档](reference-package.zh.md)；
 - 单独的[发布技术栈](stack.zh.md)页面。
 
@@ -22,37 +22,37 @@
 
 ## 接下来的 10 个改进
 
-### 1. 扩展 case studies 集合
+### 1. 扩展案例研究集合
 
 现有案例已经有用了，但还应该再补 2-3 个：
 
-- enterprise workflow agent；
-- CRM/task agent；
-- security-sensitive assistant。
+- 企业工作流智能体；
+- CRM / 任务智能体；
+- 安全敏感助手。
 
 为什么重要：可识别场景越多，读者越容易把书里的架构映射到自己的系统上。
 
-### 2. 扩展 policy templates 集合
+### 2. 扩展策略模板集合
 
 书里已经有第一批例子，但社区还需要更明确的模板：
 
-- tool approval policy；
-- memory write policy；
-- egress policy；
-- rollout gate policy；
-- retrieval policy。
+- 工具审批策略；
+- 记忆写入策略；
+- 出口策略；
+- 发布门禁策略；
+- 检索策略。
 
 为什么重要：可复制、可改造的模板，往往比长篇解释更有价值。
 
-### 3. Trace schema 与 event catalog
+### 3. 追踪 Schema 与事件目录
 
-需要一张单独的 telemetry reference 页面：
+需要一张单独的遥测参考页面：
 
-- 有哪些 event types；
+- 有哪些事件类型；
 - 哪些字段是必须的；
 - `trace_id` 应该长什么样；
-- 哪些 spans 算基线；
-- 哪些内容绝不能写进 events。
+- 哪些跨度算基线；
+- 哪些内容绝不能写进事件。
 
 为什么重要：当社区拥有统一事件模型时，可观测性才会真正形成共享实践，而不只是共享概念。
 
@@ -60,53 +60,53 @@
 
 参考包已经有用了，但下一步还应该补上：
 
-- 一个 knowledge scenario；
-- 一个带 approval 的 high-risk scenario；
-- 一个 denied-by-policy scenario；
-- 在文档里放几份 JSONL traces 示例。
+- 一个知识场景；
+- 一个带审批的高风险场景；
+- 一个被策略拒绝的场景；
+- 在文档里放几份 JSONL 追踪示例。
 
-为什么重要：可运行的参考包不该只展示 happy path，它应该教会读者生产环境里的真实行为。
+为什么重要：可运行的参考包不该只展示顺利路径，它应该教会读者生产环境里的真实行为。
 
-### 5. 面向社区的 contribution kit
+### 5. 面向社区的贡献套件
 
 要让外部贡献更容易：
 
-- 一页 `How to contribute patterns`；
-- 一个 case study 模板；
-- 一个 glossary entry 模板；
-- 一个 policy template 模板。
+- 一页“如何贡献模式”；
+- 一个案例研究模板；
+- 一个术语表条目模板；
+- 一个策略模板模板。
 
 为什么重要：好的开放手册会成长得更快，前提是贡献者知道该怎么帮忙。
 
-### 6. 更强的内链与 chapter journeys
+### 6. 更强的内链与章节旅程
 
 需要让章节之间的移动更顺：
 
 - 更明确的 “下一步读什么”；
 - 架构、案例和模板之间更强的互链；
-- 每个部分内部更短的 decision paths。
+- 每个部分内部更短的决策路径。
 
 为什么重要：这本书越不容易让人迷路，它的实际价值就越高。
 
-### 7. discoverability 层
+### 7. 可发现性层
 
-需要更系统的 discoverability 改进：
+需要更系统的可发现性改进：
 
-- glossary；
-- cheatsheets；
+- 术语表；
+- 速查表；
 - 更强的章节内链；
-- social preview assets；
+- 社交预览素材；
 - `ru/en/zh` 三语更结构化的落地页文案。
 
 为什么重要：即使书本身很强，如果别人难以发现、难以快速理解、难以转发，它对社区的帮助也会打折扣。
 
-### 8. Social and sharing assets
+### 8. 社交与分享素材
 
 需要一些轻量的传播素材：
 
-- social preview assets；
-- 几张适合转发的 cheat sheets；
-- `ru/en/zh` 的简短 landing summaries。
+- 社交预览素材；
+- 几张适合转发的速查表；
+- `ru/en/zh` 的简短落地页摘要。
 
 为什么重要：国际传播不只取决于内容本身，也取决于它是否方便分享。
 
@@ -114,15 +114,15 @@
 
 如果接下来只能做三件事，我会这样排：
 
-1. Trace schema 与 event catalog
-2. Contribution kit
-3. 扩展 case studies 集合
+1. 追踪 Schema 与事件目录
+2. 贡献套件
+3. 扩展案例研究集合
 
 这是在不重写架构章节的前提下，最快提升实际价值的组合。
 
 ## 一个月后会带来什么变化
 
-如果把这份 backlog 落下来，项目会获得：
+如果把这份待办落下来，项目会获得：
 
 - 对新读者更清晰的入口；
 - 更多可被引用和分享的页面；
@@ -132,7 +132,7 @@
 
 ## 下一步最实用的动作
 
-如果按这条路线走，下一步最值得做的是 trace schema 与 event catalog，接着是 contribution kit。
+如果按这条路线走，下一步最值得做的是追踪 Schema 与事件目录，接着是贡献套件。
 
 - [首页](../index.zh.md)
 - [全书计划](../book/plan.zh.md)
