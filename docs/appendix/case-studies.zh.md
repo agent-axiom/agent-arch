@@ -2,98 +2,98 @@
 
 这一页回答一个很直接的问题：这本书落到真实系统里，到底会长成什么样？
 
-下面有三个场景。在这些场景里，架构层、guardrails 和 orchestration choices 已经可以被讨论成工程决策，而不只是漂亮的表述。
+下面有三个场景。在这些场景里，架构层、防护栏和编排选择已经可以被讨论成工程决策，而不只是漂亮的表述。
 
-如果你需要的不是场景，而是可以直接复用的 policy artifacts，请去看[Policy Templates](policy-templates.zh.md)。如果你想看这本书接下来还要补什么，则看[社区路线图](community-roadmap.zh.md)。
+如果你需要的不是场景，而是可以直接复用的策略工件，请去看[策略模板](policy-templates.zh.md)。如果你想看这本书接下来还要补什么，则看[社区路线图](community-roadmap.zh.md)。
 
-## 案例 1：Support Triage Agent
+## 案例 1：支持分诊智能体
 
 ### 系统做什么
 
-这个 agent 接收客户请求，收集上下文，检查历史工单，然后选择下一个安全动作：
+这个智能体接收客户请求，收集上下文，检查历史工单，然后选择下一个安全动作：
 
 - 直接回复；
 - 请求补充信息；
 - 创建工单；
 - 转交人工。
 
-### 为什么这里值得用 agent
+### 为什么这里值得用智能体
 
-这里适合 agent，因为：
+这里适合智能体，因为：
 
 - 输入消息是非结构化的；
-- 决策依赖文本、客户历史和 policy 的组合；
+- 决策依赖文本、客户历史和策略的组合；
 - 路径不是完全固定的，但也不需要完全自治。
 
-这是一个很典型的 `workflow + guarded agent loop` 场景。
+这是一个很典型的“工作流 + 受保护智能体循环”场景。
 
 ### 推荐形态
 
-- 一个主 triage agent；
-- 读取 customer profile 和 ticket history 的 read-heavy tools；
-- 只保留一个 `create_ticket` write tool；
-- 敏感动作前设置 approval boundary；
-- 每次 run 都输出结构化 decision。
+- 一个主分诊智能体；
+- 读取客户画像和工单历史的读密集工具；
+- 只保留一个 `create_ticket` 写工具；
+- 敏感动作前设置审批边界；
+- 每次运行都输出结构化决策。
 
 ### 主要风险
 
-- 客户文本里的 prompt injection；
-- 相邻 tenant context 泄漏；
-- 在不稳定集成中触发多余 write action；
-- triage agent 自由度过大。
+- 客户文本里的提示注入；
+- 相邻租户上下文泄漏；
+- 在不稳定集成中触发多余写动作；
+- 分诊智能体自由度过大。
 
 ### 架构里最重要的点
 
-- 严格把 instructions 和客户文本分开；
-- 不让 agent 直接访问 helpdesk API；
-- 把 stop conditions 放进 triage routine；
-- 记录所有 write intents 和 approvals。
+- 严格把指令和客户文本分开；
+- 不让智能体直接访问客服 API；
+- 把停止条件放进分诊例程；
+- 记录所有写入意图和审批。
 
 ### 书里对应阅读
 
 - [第 3 章：安全边界与信任边界](../book/part-ii/chapter-3.zh.md)
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)
-- [实践篇：Instructions、Routines 与 Prompt Templates](../book/part-i/practical-routines.zh.md)
+- [实践篇：指令、例程与提示模板](../book/part-i/practical-routines.zh.md)
 
-## 案例 2：Internal Knowledge Agent
+## 案例 2：内部知识智能体
 
 ### 系统做什么
 
-这个 agent 帮员工在文档、runbooks、工单和内部 wiki 里找到知识。
+这个智能体帮员工在文档、运行手册、工单和内部 wiki 里找到知识。
 
 它会：
 
 - 理解问题；
-- 做 retrieval；
-- 生成 grounded answer；
+- 做检索；
+- 生成有依据的答案；
 - 给出来源；
 - 如果置信度低，就收敛回答，而不是瞎编。
 
-### 为什么这里往往一个 agent 就够了
+### 为什么这里往往一个智能体就够了
 
-这个场景里，很多团队会过早走向 multi-agent。大多数时候其实没必要。
+这个场景里，很多团队会过早走向多智能体。大多数时候其实没必要。
 
 通常只需要：
 
-- 一个 agent loop；
-- 一个好的 retrieval pipeline；
-- 独立 policy layer；
-- 明确标记 untrusted content；
-- answer generation 的质量闸门。
+- 一个智能体循环；
+- 一条好的检索流水线；
+- 独立策略层；
+- 明确标记不可信内容；
+- 答案生成的质量闸门。
 
 ### 主要风险
 
-- retrieval noise；
+- 检索噪声；
 - 越权访问文档；
 - 私有知识区泄漏；
-- grounding 不足时的幻觉。
+- 依据不足时的幻觉。
 
 ### 架构里最重要的点
 
-- tenant 和 role 维度的 retrieval scope；
-- short-term state 和 long-term memory 分开；
-- 输出里有 source references；
-- retrieval 和 answer assembly 都有 traces。
+- 租户和角色维度的检索范围；
+- 短期状态和长期记忆分开；
+- 输出里有来源引用；
+- 检索和答案组装都有追踪。
 
 ### 书里对应阅读
 
@@ -101,50 +101,50 @@
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
 
-## 案例 3：Incident Coordination Agent
+## 案例 3：事故协调智能体
 
 ### 系统做什么
 
-这个 agent 在事故处理中帮助团队：
+这个智能体在事故处理中帮助团队：
 
 - 收集监控信号；
 - 用上下文补全它们；
-- 创建 incident thread；
-- 提议下一个 runbook step；
+- 创建事故线程；
+- 提议下一个运行手册步骤；
 - 把任务交给正确角色。
 
-这已经不只是一个 chat assistant，而是一个 operational system component。
+这已经不只是一个聊天助手，而是一个运行系统组件。
 
-### 为什么这里尤其需要 orchestration discipline
+### 为什么这里尤其需要编排纪律
 
 这个场景特别容易犯两种错误：
 
-- 做出一个过载的 manager agent；
-- 或者太早引入 handoffs，结果责任被弄丢。
+- 做出一个过载的管理者智能体；
+- 或者太早引入交接，结果责任被弄丢。
 
 通常比较好的起点是：
 
-- intake 和 coordination 用 manager pattern；
-- 只有真正进入另一条 role boundary 时才做 handoff；
-- 所有 write actions 都走 capability contracts。
+- 接收和协调使用管理者模式；
+- 只有真正进入另一条角色边界时才做交接；
+- 所有写动作都走能力契约。
 
 ### 主要风险
 
-- noisy alerts 下的虚假确定性；
-- 重复 side effects；
-- handoff 过程里 audit trail 丢失；
-- runtime permissions 过宽。
+- 噪声告警下的虚假确定性；
+- 重复副作用；
+- 交接过程里审计轨迹丢失；
+- 运行时权限过宽。
 
 ### 架构里最重要的点
 
-- 整个 incident run 共享一条 trace；
-- 每次 handoff 都有明确 ownership；
-- ticketing 和 notifications 有 idempotency；
-- risky remediation actions 需要 human approval。
+- 整个事故运行共享一条追踪；
+- 每次交接都有明确负责人；
+- 工单和通知具备幂等性；
+- 高风险修复动作需要人工审批。
 
 ### 书里对应阅读
 
-- [实践篇：Manager Pattern vs Handoffs](../book/part-i/practical-manager-handoffs.zh.md)
+- [实践篇：管理者模式与交接](../book/part-i/practical-manager-handoffs.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](../book/part-iv/chapter-10.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 
