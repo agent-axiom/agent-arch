@@ -38,7 +38,7 @@
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
 - [智能体系统中的 Causal Debugging 与 Root-Cause Analysis](appendix/causal-debugging.zh.md)
-- [智能体系统的 Memory Eval Patterns](appendix/memory-eval-patterns.zh.md)
+- [智能体系统的记忆评测模式](appendix/memory-eval-patterns.zh.md)
 - [智能体系统的 Tool Failure Recovery Patterns](appendix/tool-failure-recovery.zh.md)
 
 ## 实践页面
