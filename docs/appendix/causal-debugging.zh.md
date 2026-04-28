@@ -18,7 +18,7 @@
 如果团队把这些事件只当作一条平铺的时间线来读，就能看到顺序，但往往看不清：
 
 - 哪个步骤真正起了决定作用；
-- 哪个错误是 primary，哪个只是 secondary；
+- 哪个错误是主要原因，哪个只是次要后果；
 - 故障从哪里开始级联；
 - 哪些现象是根因，哪些只是后果。
 
@@ -158,7 +158,7 @@
 
 - [追踪 Schema 与事件目录](trace-schema.zh.md)
 - [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
-- [智能体系统 Postmortem 模板](postmortem-template.zh.md)
+- [智能体系统事后复盘模板](postmortem-template.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
