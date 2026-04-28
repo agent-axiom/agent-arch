@@ -1,4 +1,4 @@
-# 策略包模式与审批契约
+# 策略包 Schema 与审批契约
 
 这一页把书里已经写过的几个主题连起来：
 
@@ -40,22 +40,22 @@
 - 运行时策略；
 - 工具策略；
 - 审批策略；
-- 用于 pause/resume 与 background paths 的 runtime-control rules；
+- 用于暂停 / 恢复与后台路径的运行时控制规则；
 - 记忆写入规则；
 - 升级规则；
 - 出口规则；
-- 面向 high-risk eval 与 rollout evidence 的 trusted verifier-contract expectations。
+- 面向高风险评测与发布证据的可信验证器契约期望。
 
-重点不在于所有内容必须塞进一个 YAML 文件，而在于这个 bundle 应该是：
+重点不在于所有内容必须塞进一个 YAML 文件，而在于这个包应该是：
 
 - 可版本化；
 - 可评审；
 - 可追溯；
 - 可发布。
 
-## 最小 policy bundle 结构
+## 最小策略包结构
 
-一个最小可用的 bundle 可以长这样：
+一个最小可用的包可以长这样：
 
 ```yaml
 bundle:
@@ -78,7 +78,7 @@ bundle:
 
 而一旦发布级治理开始重要，它也应该继续回答：
 
-“这个 bundle 参与定义的是哪一个发布身份？”
+“这个包参与定义的是哪一个发布身份？”
 
 ## 为什么审批契约不能只写在叙述文字里
 
@@ -97,7 +97,7 @@ bundle:
 - 审批请求必须带哪些字段；
 - 允许哪些决策；
 - 拒绝之后会发生什么；
-- 一次 run 是否可以 pause、resume、expire 或 cancel；
+- 一次运行是否可以暂停、恢复、过期或取消；
 - 审计轨迹里必须留下什么。
 
 ## 审批契约示例
@@ -128,9 +128,9 @@ approval_contract:
   on_reject: stop_run
 ```
 
-重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。而当审批本身会影响发布时，这个契约也应该明确写出它所属的 bundle version 和 release identity。
+重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。而当审批本身会影响发布时，这个契约也应该明确写出它所属的包版本和发布身份。
 
-## policy bundle 和 lifecycle 的关系
+## 策略包和生命周期的关系
 
 从 Part VIII 里，这里最重要的是两点：
 
@@ -139,17 +139,17 @@ approval_contract:
 
 也就是说，团队不应该只回答：
 
-“我们原则上有什么 policy？”
+“我们原则上有什么策略？”
 
 还应该回答：
 
 “这个发布或事故发生时，到底是哪一个策略包版本在生效？”
 
-而一旦 runtime 把 bundle 当作受治理的发布表面，接下来的问题也就不可避免了：
+而一旦运行时把包当作受治理的发布表面，接下来的问题也就不可避免了：
 
 “这个策略包参与构成的是哪一个发布身份？”
 
-## policy bundle 和 traces 的关系
+## 策略包和追踪的关系
 
 它们之间的关系非常直接：
 
@@ -160,7 +160,7 @@ approval_contract:
 
 少了这四者的联动，调查很快就会变成猜测。
 
-## reference runtime 现在已经支持什么
+## 参考运行时现在已经支持什么
 
 在 `agent_runtime_ref` 里，现在已经有：
 
@@ -173,7 +173,7 @@ approval_contract:
 
 ## 生产级模式还应该补什么
 
-一旦 runtime 开始包含 stateful MCP 与 resumable capability sessions，policy bundle 就不能只描述 capability 原则上能不能用，还必须描述这些 live session 是如何被治理的。
+一旦运行时开始包含有状态 MCP 与可恢复能力会话，策略包就不能只描述能力原则上能不能用，还必须描述这些在线会话是如何被治理的。
 
 这时几乎立刻就会需要补上这些字段：
 
@@ -200,9 +200,9 @@ approval_contract:
 - `mcp_auth_mode`
 - `shadow_mcp_handling`
 
-这些字段可以避免一种危险情况：policy bundle 在静态层面批准了 capability，但把真实 session lifecycle 留在控制模型之外。
+这些字段可以避免一种危险情况：策略包在静态层面批准了能力，但把真实会话生命周期留在控制模型之外。
 
-Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度。[^anthropic] 成熟的 policy bundle 不应只说明 capability 原则上能不能用，还应说明它可以出现在哪些 orchestration patterns 里。
+Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthropic] 成熟的策略包不应只说明能力原则上能不能用，还应说明它可以出现在哪些编排模式里。
 
 这时很快就会需要补上这些字段：
 
@@ -212,14 +212,14 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - `worker_capability_subset`
 - `review_required_before_worker_write`
 
-这些字段能让 governed contract 回答这样的问题：
+这些字段能让受治理契约回答这样的问题：
 
-- 某个 capability 能不能进入 `prompt chaining`、`routing` 或 `parallelization`；
-- `orchestrator-workers` 里的 delegated workers 是否继承 approval 或 delegated authorization context；
-- worker 是否可以再请求额外 capabilities，还是只能使用受限 subset；
-- 在任何 write-capability 被执行前，worker output 是否必须先经过 review。
+- 某个能力能不能进入 `prompt chaining`、`routing` 或 `parallelization`；
+- `orchestrator-workers` 里的委派工作器是否继承审批或委派授权上下文；
+- 工作器是否可以再请求额外能力，还是只能使用受限子集；
+- 在任何写入能力被执行前，工作器输出是否必须先经过评审。
 
-它们也能防止第二类漂移：delegated approval path 已经存在于产品行为里，但还没有被表示成受治理的 contract。
+它们也能防止第二类漂移：委派审批路径已经存在于产品行为里，但还没有被表示成受治理的契约。
 
 一旦系统变得更成熟，策略包很快就应该继续补充：
 
@@ -235,24 +235,24 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 
 这会把策略层从“一堆配置文件”提升成真正的发布面。
 
-## 为什么 policy bundle 和 capability catalog 不能彼此漂移
+## 为什么策略包和能力目录不能彼此漂移
 
-有一种很糟糕的状态是：policy bundle、capability catalog 和 approval rules 各自分开存在，而且它们之间的链接很弱。
+有一种很糟糕的状态是：策略包、能力目录和审批规则各自分开存在，而且它们之间的链接很弱。
 
 然后很快就会出现问题：
 
-- catalog 里有 capability，但没有对应的 approval contract；
-- policy 还在引用已经不存在的 capability name；
-- audit 看到了 decision，却没法把它和具体 bundle version 关联起来。
+- 目录里有能力，但没有对应的审批契约；
+- 策略还在引用已经不存在的能力名称；
+- 审计看到了决策，却没法把它和具体包版本关联起来。
 
-所以 practical rule 很简单：
+所以实用规则很简单：
 
 - 能力目录描述系统能做什么；
-- 策略包描述这些能力在什么条件下、通过哪些 orchestration patterns 可以被调用；
+- 策略包描述这些能力在什么条件下、通过哪些编排模式可以被调用；
 - 审批契约描述推理应该在何处停下并把控制权交给人；
-- authorization contract 描述动作究竟是在谁的 identity 与 delegated scope 下执行；
-- MCP governance contract 描述 capability 是否来自 approved registry、MCP server 由谁负责、由哪种 auth mode 保护，以及发现 shadow MCP path 时该如何处理；
-- verifier contract policy 描述哪些 verifier contracts 可以被信任用于 high-risk grading、rollout evidence 或 assurance decisions。
+- 授权契约描述动作究竟是在谁的身份与委派范围下执行；
+- MCP 治理契约描述能力是否来自已批准注册表、MCP 服务器由谁负责、由哪种认证模式保护，以及发现影子 MCP 路径时该如何处理；
+- 验证器契约策略描述哪些验证器契约可以被信任用于高风险打分、发布证据或保障决策。
 
 ## 现在就该做什么
 
@@ -264,14 +264,14 @@ Anthropic 的 workflow taxonomy 又补上了一个很有用的 contract 维度�
 - 审批请求必须带哪些字段，是否清楚？
 - 策略包和能力目录之间是否有稳定关联？
 - 能不能知道某条追踪对应的是哪个策略版本和哪一个发布身份？
-- 是否明确写出了哪些 verifier contracts 可以被信任用于 high-risk grading 或 rollout evidence？
+- 是否明确写出了哪些验证器契约可以被信任用于高风险打分或发布证据？
 
 如果连续几个答案都是“不能”，那说明你的策略层虽然存在，但还没有被塑造成完整的运行工件。
 
 ## 下一步做什么
 
-- [追踪模式与事件目录](trace-schema.zh.md)
-- [评测数据集模式与分级契约](eval-schema.zh.md)
-- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
-- [按场景组织的 Policy Templates 与 Checklists](policy-templates.zh.md)
+- [按场景组织的策略模板与检查清单](policy-templates.zh.md)
