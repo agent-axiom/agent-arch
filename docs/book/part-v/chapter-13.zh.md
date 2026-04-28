@@ -12,7 +12,7 @@
     变化相对较慢的部分：
 
     - 必须把离线评测、在线评测和回归门禁视为同一个闭环；
-    - 评测需要与 traces、SLO 和 rollout 决策绑定；
+    - 评测需要与追踪、SLO 和 rollout 决策绑定；
     - 关键场景必须在发布前被验证，而不是等到事故后才补救。
 
 ## 1. 从一个问题开始：怎样避免同一个故障再次被发出去
@@ -28,20 +28,20 @@
 
 但修完之后，真正的工程问题才出现：
 
-> 怎样保证两周之后，另一次 prompt、policy 或 tool adapter 改动，不会把类似的退化再次带回发布流量？
+> 怎样保证两周之后，另一次提示、策略或工具适配器改动，不会把类似的退化再次带回发布流量？
 
 这就是评测闭环开始的地方。
 
-而在本章里，eval loop 应该被理解成 judgment layer，而不是 response layer。它的任务是在 rollout 扩大或 change 获得信任之前，产出关于质量与 regression risk 的 reviewable decisions。
+而在本章里，评测回路应该被理解成判断层，而不是响应层。它的任务是在 rollout 扩大或变更获得信任之前，产出关于质量与回归风险的可审查决策。
 
 追踪帮你理解发生了什么。
 SLO 帮你定义什么叫系统健康。
 
 但最重要的问题还在：怎样系统性地提升质量，并把回退挡在发布之前？
 
-在本书里，eval loop 的角色是很具体的：它负责产出关于质量、行为与 regression risk 的 reviewable judgments。后面的章节会分别说明 assurance 如何响应 findings，observability 如何保存 evidence，以及 registry/governance 如何分配 accountability。这里的重点只放在团队如何判断到底测试了什么、发生了什么变化，以及这个 change 是否值得被信任。
+在本书里，评测回路的角色是很具体的：它负责产出关于质量、行为与回归风险的可审查判断。后面的章节会分别说明保证如何响应发现，可观测性如何保存证据，以及注册表/治理如何分配问责。这里的重点只放在团队如何判断到底测试了什么、发生了什么变化，以及这个变更是否值得被信任。
 
-如果你想看一页专门把 eval judgment 再连接回 request、policy、approvals、traces、incidents 和 rollout 的桥接层，可以直接使用单独的 [Evidence Spine](evidence-spine.zh.md) 页面。
+如果你想看一页专门把评测判断再连接回请求、策略、审批、追踪、事故和 rollout 的桥接层，可以直接使用单独的 [Evidence Spine](evidence-spine.zh.md) 页面。
 
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
@@ -50,9 +50,9 @@ SLO 帮你定义什么叫系统健康。
 
 离线评测回答的是一个非常实际的问题：
 
-> 如果我们修改 prompt、policy、retrieval、model routing 或 tool behavior，系统在已知关键场景上会变好还是变坏？
+> 如果我们修改提示、策略、检索、模型路由或工具行为，系统在已知关键场景上会变好还是变坏？
 
-对于这个支持智能体，一个好的离线评测集不应该只有舒服的 happy path 场景，还应该包含那些已经真正伤过系统的场景：
+对于这个支持智能体，一个好的离线评测集不应该只有舒服的顺畅路径场景，还应该包含那些已经真正伤过系统的场景：
 
 - 重复工单场景；
 - 已经产生副作用后才超时；
@@ -61,19 +61,19 @@ SLO 帮你定义什么叫系统健康。
 - 过期的记忆读取；
 - 跨租户的隐私敏感场景。
 
-这也正是 failed-run drills 进入 eval layer，而不只是停留在运维演练里的地方。如果团队希望 rollout review 能信任 timeout handling、validation failure handling，或者上游依赖故障时的行为，这些 degraded paths 就应该作为带有 traceable failed outcomes 的显式场景进入 offline set。
+这也正是失败运行演练进入评测层，而不只是停留在运维演练里的地方。如果团队希望 rollout 审查能信任超时处理、校验失败处理，或者上游依赖故障时的行为，这些降级路径就应该作为带有可追踪失败结果的显式场景进入离线集合。
 
-这里还需要对 traceable 保持严格定义。一个 degraded run 不能因为某处记录了 timeout 就被视为 reviewable。评测回路应验证，这条 failed path 仍然保留了足够清晰的 release identity、trace linkage 与 session-level evidence，包括像 `failure_reason` 这样的明确字段，能够支撑后续的 rollout review、assurance 和 provenance 分析。
+这里还需要对可追踪保持严格定义。一个降级运行不能因为某处记录了超时就被视为 reviewable。评测回路应验证，这条失败路径仍然保留了足够清晰的发布身份、追踪链接与会话级证据，包括像 `failure_reason` 这样的明确字段，能够支撑后续的 rollout 审查、保证和来源分析。
 
 离线评测的价值就在于：它们让你可以在生产流量到来之前比较系统版本。
 
-最近 verifier design 的一个有用补充是，离线评测不该只依赖 binary success label。对于 long-horizon agents，往往需要更丰富的 grading signal：
+最近验证器设计的一个有用补充是，离线评测不该只依赖 二元成功标签。对于长周期智能体，往往需要更丰富的评分信号：
 
 - `process quality`；
 - `outcome quality`；
-- 针对 `controllable` 与 `uncontrollable` causes 的 failure attribution。
+- 针对 `controllable` 与 `uncontrollable` causes 的失败归因。
 
-否则，团队就分不清一次 run 是“行为正确但被环境阻断”，还是“通过薄弱或 unsafe path 达成了 nominal result”。
+否则，团队就分不清一次运行是“行为正确但被环境阻断”，还是“通过薄弱或不安全路径达成了名义结果”。
 
 ## 3. 在线评测之所以必要，是因为真实世界永远比测试集更大
 
@@ -114,11 +114,11 @@ SLO 帮你定义什么叫系统健康。
 
 ``` mermaid
 flowchart LR
-    A["Code / prompt / policy change"] --> B["Offline evals"]
-    B --> C["Regression gates"]
-    C --> D["Production rollout"]
-    D --> E["Online evals + traces"]
-    E --> F["Failure analysis and grading"]
+    A["Code / prompt / policy change"] --> B["离线评测"]
+    B --> C["回归门禁"]
+    C --> D["生产 rollout"]
+    D --> E["在线评测 + 追踪"]
+    E --> F["失败分析与评分"]
     F --> A
 ```
 
@@ -160,13 +160,13 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 也就是说，评测闭环最好不要被看成“独立的分析活动”，而应该被视为变更管理的一部分。
 
-这个边界很重要，因为 evals 不应该被塞进生命周期里的所有职责。它们的任务是产出 rollout 可以消费的 judgments，而不是替代 incident response、telemetry design 或 estate ownership。
+这个边界很重要，因为评测不应该被塞进生命周期里的所有职责。它们的任务是产出 rollout 可以消费的判断，而不是替代事故响应、遥测设计或全域负责人归属。
 
-这也意味着 evals 不拥有 containment。它们不会 freeze route、disable capability，也不会分配 emergency response。它们告诉团队，这个 change 是否值得被信任、regression risk 在哪里，以及 rollout 是否应该继续。
+这也意味着评测不拥有遏制。它们不会冻结路由、禁用能力，也不会分配紧急响应。它们告诉团队，这个变更是否值得被信任、regression risk 在哪里，以及 rollout 是否应该继续。
 
-这还意味着，release discipline 必须谨慎决定自己在奖励什么。单一的 end-state score 往往太弱，因为它会掩盖 partial success、blocked-but-correct behavior，或者通过 bad control path 获得的 lucky success。成熟的 eval loop 会使用 richer verifier outputs，让 rollout decisions 反映的不只是最后一个 screen 看起来是否正常，而是系统到底如何行动的。
+这还意味着，发布纪律必须谨慎决定自己在奖励什么。单一的最终状态分数往往太弱，因为它会掩盖部分成功、被阻断但正确的行为，或者通过糟糕控制路径获得的侥幸成功。成熟的评测回路会使用更丰富的验证器输出，让 rollout 决策反映的不只是最后一个屏幕看起来是否正常，而是系统到底如何行动的。
 
-同样的纪律也应该适用于 verifier contract changes。如果 grading standards 因 verifier contract version changes 而改变，eval loop 就应该把它显式暴露为 release-bearing regression signal，而不是悄悄把新的 verdicts 当作与旧结果可直接比较。
+同样的纪律也应该适用于验证器契约变更。如果评分标准因验证器契约版本变更而改变，eval loop 就应该把它显式暴露为 承载发布意义的回归信号，而不是悄悄把新的裁决当作与旧结果可直接比较。
 
 ## 5. 追踪分级对智能体系统特别有价值
 
@@ -174,12 +174,12 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 追踪分级的价值在于，你可以评估：
 
-- retrieval 是否合适；
+- 检索是否合适；
 - 工具调用是否必要；
-- prompt 是否被过度塞满；
+- 提示是否被过度塞满；
 - 是否发生了不必要的升级；
 - 是否遵守了策略约束；
-- workflow 是否高效。
+- 工作流是否高效。
 
 对这个支持智能体来说，这一点尤其重要，因为用户看到的最终答复也许还“能接受”，但 run 内部可能已经开始：
 
@@ -200,7 +200,7 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 开始变得重要。
 
-它们特别适合那些普通 regression set 过于扁平的场景：
+它们特别适合那些普通回归集合过于扁平的场景：
 
 - 智能体试图避开监督；
 - 它变得过度积极地保留状态；
@@ -210,9 +210,9 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 也就是说，评测层不应该只评估最终答案质量，还要评估行为层面的失效模式。
 
-这也是 verifier design 为什么重要。如果 grading layer 无法区分 process failure 与 outcome failure，它就无法为 training 和 release control 提供足够强的 evidence。
+这也是验证器设计为什么重要。如果 grading layer 无法区分过程失败与结果失败，它就无法为训练和发布控制 提供足够强的证据。
 
-一个好的 eval judgment 可以说“不要继续扩大 rollout”或者“这个场景已经不再可信”；但对这种 judgment 的 operational response 属于后面的层次，尤其是 rollout control 与 assurance ownership。
+一个好的评测判断可以说“不要继续扩大 rollout”或者“这个场景已经不再可信”；但对这种判断的运营响应属于后面的层次，尤其是 rollout 控制与保证负责人归属。
 
 ## 5.2. 协作失效也应该成为评测设计的一部分
 
@@ -248,59 +248,59 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 ## 5.4. LLM-as-a-judge 只有在完成校准之后才真正有用
 
-随着 eval layer 变得更成熟，几乎总会出现另一个诱惑：引入 judge model，然后默认 grading 现在就可以几乎自动扩展了。
+随着评测层变得更成熟，几乎总会出现另一个诱惑：引入评判模型，然后默认评分现在就可以几乎自动扩展了。
 
 这确实是有用工具，但前提是不要把它误当成事实本身。
 
-对 agent systems 来说，judge 往往有一个很重要的限制：只看最终答案文本通常是不够的。如果 grading 真正想反映 outcome，judge 最好还能看到那些真正描述系统行为的东西：
+对智能体系统来说，评判器往往有一个很重要的限制：只看最终答案文本通常是不够的。如果评分真正想反映结果，评判器最好还能看到那些真正描述系统行为的东西：
 
-- trace fragments；
-- tool outcomes；
-- approval events；
-- structured grading fields；
-- 在可用时接入 external state checks。
+- 追踪片段；
+- 工具结果；
+- 审批事件；
+- 结构化评分字段；
+- 在可用时接入外部状态检查。
 
 否则系统很容易因为文本写得漂亮而拿到"高分"，即使事实结果其实很差。
 
-这里还有一个很重要的 practical rule：如果 judge 与人工的一致性很低，第一步通常不应该是扩大 dataset，而应该先分析 disagreement cases，再修正 rubric 或 judge prompt。
+这里还有一个很重要的实用规则：如果评判器与人工的一致性很低，第一步通常不应该是扩大数据集，而应该先分析分歧案例，再修正评分规程或评判提示。
 
-这里一个有用信号是 `Cohen's kappa`，但往往比具体数值更重要的是分歧长什么样：judge 到底是在 policy violation、tool misuse，还是 ambiguous outcome 上理解错了。
+这里一个有用信号是 `Cohen's kappa`，但往往比具体数值更重要的是分歧长什么样：评判器到底是在策略违规、工具误用，还是模糊结果上理解错了。
 
-还有一个很常见的自我欺骗来源：一个在强模型上校准好的 judge prompt，换到更弱模型后可能迁移得很差。所以 judge-model 一旦变化，最好重新做 calibration，而不是假设旧 prompt 还能自动沿用。
+还有一个很常见的自我欺骗来源：一个在强模型上校准好的评判提示，换到更弱模型后可能迁移得很差。所以评判模型一旦变化，最好重新做校准，而不是假设旧提示还能自动沿用。
 
-最后一个规则非常简单：如果你在评估 prompt change，就不要同时改 prompt 和 model。否则后面就无法对"到底是什么改善或恶化了系统"做出诚实的因果判断。
+最后一个规则非常简单：如果你在评估提示变更，就不要同时改提示和模型。否则后面就无法对"到底是什么改善或恶化了系统"做出诚实的因果判断。
 
 ## 6. 评测数据集里应该放什么
 
-一个很常见的错误是：eval dataset 主要由舒服的 demo 场景组成。这种集合几乎帮不上什么忙。
+一个很常见的错误是：评测数据集主要由舒服的演示场景组成。这种集合几乎帮不上什么忙。
 
-好的 dataset 通常会包含：
+好的数据集通常会包含：
 
-- happy-path 任务；
+- 顺畅路径任务；
 - 含糊的用户请求；
-- prompt injection attempts；
-- retrieval edge cases；
-- missing-data scenarios；
+- 提示注入尝试；
+- 检索边界案例；
+- 缺失数据场景；
 - 工具超时和部分失败场景；
 - 需要审批的流程；
 - 跨租户和隐私敏感场景。
 
-对于这个支持智能体，这意味着 dataset 里不该只有“检查状态并回复”，还应该有：
+对于这个支持智能体，这意味着数据集里不该只有“检查状态并回复”，还应该有：
 
-- “创建工单，但工具返回 ambiguous result”；
-- “用户发来一句紧急话术，但不能被盲目写成 preference”；
-- “retrieval 返回冲突状态”；
-- “approval path 必须阻止 write action”。
+- “创建工单，但工具返回模糊结果”；
+- “用户发来一句紧急话术，但不能被盲目写成偏好”；
+- “检索返回冲突状态”；
+- “审批路径必须阻止写动作”。
 
 真正的工程价值，通常正是在这些困难又不舒服的场景里。
 
-还应该加入这样一类 cases：行为是正确的，但因为环境侧限制，最终 outcome 仍然不完整。没有这类样本，团队很容易过度优化 binary completion，而忽略系统在压力下是否仍然行为正确。
+还应该加入这样一类案例：行为是正确的，但因为环境侧限制，最终结果仍然不完整。没有这类样本，团队很容易过度优化二元完成，而忽略系统在压力下是否仍然行为正确。
 
 ## 6.1. 记忆层也应该显式进入评测数据集
 
 除了回答质量，还应该单独检查状态在多次运行之间的质量。
 
-这意味着要包含这些 cases：
+这意味着要包含这些案例：
 
 - 写入 / 不写入决策；
 - 过期的档案读取；
@@ -313,7 +313,7 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 ## 7. 回归门禁应该是形式化的，而不是“大家看了一眼”
 
-团队常会说：“我们测过了，感觉没有更差。” 对 production-grade 的智能体系统来说，这远远不够。
+团队常会说：“我们测过了，感觉没有更差。” 对生产级的智能体系统来说，这远远不够。
 
 回归门禁更有价值的做法，是把它定义为一组明确规则，例如：
 
@@ -323,7 +323,7 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - 升级率不能升高；
 - 提示预算或每次运行的工具数量不能超过上限。
 
-对这个支持智能体来说，所谓 regression 不只是“更不准确了”，还包括：
+对这个支持智能体来说，所谓回归不只是“更不准确了”，还包括：
 
 - 写入工具的重复尝试更多了；
 - 不必要的升级更多了；
@@ -332,15 +332,15 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这样发布决策就不会只依赖改动作者的直觉。
 
-## 8. eval loop 的实用规则
+## 8. 评测回路的实用规则
 
-如果要把 engineering 规则压缩成一小组，通常这些就够了：
+如果要把工程规则压缩成一小组，通常这些就够了：
 
-1. 每个重要 incident 都应该变成一个 eval case 和一条 rollout rule。
-2. Offline 和 online evals 应该一起存在：一个在发布前拦回归，一个在发布后抓漂移。
-3. Trace grading 应该优先覆盖关键 write paths 和 policy-sensitive flows，而不只是 happy path。
-4. Dataset 应该按真实 failures 刷新，而不只是沿用旧 demo cases。
-5. Regression gate 应该是 machine-readable 的，并且不仅阻止质量回归，还要阻止 safety、cost、escalation 和 verifier-contract 回归。
+1. 每个重要事故都应该变成一个评测案例和一条 rollout 规则。
+2. 离线和在线评测应该一起存在：一个在发布前拦回归，一个在发布后抓漂移。
+3. 追踪评分应该优先覆盖关键写路径和策略敏感流程，而不只是顺畅路径。
+4. 数据集应该按真实失败刷新，而不只是沿用旧演示案例。
+5. 回归门禁应该是机器可读的，并且不仅阻止质量回归，还要阻止安全、成本、升级和验证器契约回归。
 
 ## 9. 一个评测门禁策略示例
 
@@ -392,15 +392,15 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 一个非常有用的做法是不要把大变更一次性打给所有人，而是使用：
 
-- shadow mode；
-- canary rollout；
-- limited tenant exposure；
+- 影子模式；
+- 金丝雀 rollout；
+- 有限租户暴露；
 - model routing experiments；
-- staged policy rollout。
+- 分阶段策略 rollout。
 
 这样在线评测就不只是“上线后看看会不会出事”，而是发布流程中的受控阶段。
 
-对这个支持智能体来说，这意味着：如果新的 adapter 或新的 prompt 改变了复杂状态案例上的行为，团队应该在 canary 或 shadow 阶段就看到，而不是等到大范围发布之后。
+对这个支持智能体来说，这意味着：如果新的适配器或新的提示改变了复杂状态案例上的行为，团队应该在金丝雀或影子阶段就看到，而不是等到大范围发布之后。
 
 ### 11.1. 好的模拟器不会替代真实数据，只会补充真实数据
 
@@ -413,7 +413,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - 真实的成本与延迟分布；
 - 真实事故复盘。
 
-但它很适合作为 offline dataset 和 live rollout 之间的中间层，因为它能更快帮助你检查：
+但它很适合作为离线数据集和在线 rollout 之间的中间层，因为它能更快帮助你检查：
 
 - 对话稳健性；
 - 交接行为；
@@ -434,19 +434,19 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 一旦如此，评测闭环就会退化成仪式，而不是改进机制。
 
-## 13. 给 eval loop 做一次快速成熟度测试
+## 13. 给评测回路做一次快速成熟度测试
 
-团队不应该只因为会跑 benchmark set、偶尔看几项 online metrics，就觉得自己已经有 evaluation discipline。
+团队不应该只因为会跑基准集合、偶尔看几项在线指标，就觉得自己已经有评估纪律。
 
 更高的标准应该是：
 
-- incidents 会被转化成 eval cases 和 rollout rules；
-- offline 和 online evals 作为同一个闭环运行，而不是两个分开的 ritual；
-- regression gates 不只拦 task failure，也会拦 safety、cost、escalation 和 verifier-contract regressions；
-- traces 被当成 evidence 来 grading，而不是被动堆成 telemetry；
-- dataset 会持续从真实 failures 中学习。
+- 事故会被转化成评测案例和 rollout 规则；
+- 离线和在线评测作为同一个闭环运行，而不是两个分开的仪式；
+- 回归门禁不只拦任务失败，也会拦安全、成本、升级和验证器契约回归；
+- 追踪被当成证据来评分，而不是被动堆成遥测；
+- 数据集会持续从真实失败中学习。
 
-如果这些条件大多不成立，那团队也许已经有一些 evaluation activity，但还没有真正的 learning loop。
+如果这些条件大多不成立，那团队也许已经有一些评估活动，但还没有真正的学习回路。
 
 ## 14. 读完这一章后先做什么
 
@@ -459,9 +459,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 5. 是否把安全和成本也放进了门禁，而不只是任务成功率？
 6. 评测数据集是否会依据真实事故持续更新？
 
-如果连续几个答案都是否，那说明你可能已经有 eval layer，但还没有真正强健的 judgment layer。
+如果连续几个答案都是否，那说明你可能已经有评测层，但还没有真正强健的判断层。
 
-这时团队也许已经有 scoring activity，但还没有形成那种足以让后续 operational functions 稳定依赖的 reviewable eval discipline。
+这时团队也许已经有评分活动，但还没有形成那种足以让后续运营功能稳定依赖的可审查评测纪律。
 
 ## 15. 接下来读什么
 
