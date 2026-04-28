@@ -54,11 +54,11 @@
 
 如果你不需要整个 reference layer，只想快速进入一个具体问题，可以直接走这些短路线：
 
-- Tool catalog 设计、semantic tool filtering、read/write taxonomy：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
-- MCP host/client/server 角色、capability transport、sandbox boundary：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
-- Semantic gap、HyDE、RAG vs training：[第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
-- Latency budget、fast path / slow path、routed pipeline：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
-- LLM-as-a-judge、calibration 与 judge-human agreement：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
+- 工具目录设计、语义化工具过滤、读 / 写分类法：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
+- MCP 主机 / 客户端 / 服务器角色、能力传输、沙箱边界：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
+- 语义鸿沟、HyDE、RAG 与训练的取舍：[第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
+- 延迟预算、快路径 / 慢路径、路由管线：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
+- LLM-as-a-judge、校准与评审器 / 人类一致性：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 
 ## 继续阅读
 
@@ -68,5 +68,5 @@
 - [参考来源](appendix/sources.zh.md)
 
 最简单的规则是：
-- 用本书理解 argument 与 sequencing；
-- 用参考层查看 support artifacts 与 implementation-facing detail。
+- 用本书理解论证与章节顺序；
+- 用参考层查看支撑工件与面向实现的细节。
