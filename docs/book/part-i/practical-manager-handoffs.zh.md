@@ -2,9 +2,9 @@
 
 ## 1. 为什么这个选择很重要
 
-团队一旦开始讨论 multi-agent，几乎总会出现同样的诱惑：
+团队一旦开始讨论多智能体，几乎总会出现同样的诱惑：
 
-- 一个 agent 负责规划；
+- 一个智能体负责规划；
 - 一个负责搜索；
 - 第三个负责写；
 - 第四个负责审查；
@@ -20,10 +20,10 @@
 
 - 谁持有全局上下文；
 - 下一步责任到底住在哪里；
-- blast radius 怎么控制；
+- 爆炸半径怎么控制；
 - 以后故障怎么调查。
 
-OpenAI 的实用指南在这里特别有价值，因为它提醒你不要默认把 multi-agent 浪漫化，而是先看清楚：协调到底住在哪里，责任又应该住在哪里。[^openai-practical]
+OpenAI 的实用指南在这里特别有价值，因为它提醒你不要默认把多智能体浪漫化，而是先看清楚：协调到底住在哪里，责任又应该住在哪里。[^openai-practical]
 
 ## 2. 什么是 Manager Pattern
 
@@ -34,40 +34,40 @@ OpenAI 的实用指南在这里特别有价值，因为它提醒你不要默认�
 - 接收结果；
 - 组装最终答案或下一步计划。
 
-它很像“manager 把 specialists 当工具来调用”。
+它很像“管理器把专家当工具来调用”。
 
 manager pattern 的优点：
 
 - 控制点单一；
-- 更容易统一管理 global policy；
-- 更方便保留 audit trail；
-- 更容易控制 budget 和 max steps。
+- 更容易统一管理全局策略；
+- 更方便保留审计轨迹；
+- 更容易控制预算和最大步骤数。
 
 缺点：
 
-- manager 很容易长成 bottleneck；
+- 管理器很容易长成瓶颈；
 - 太多上下文会堆到一个地方；
-- 如果 routing logic 出错，整个系统都会变脆。
+- 如果路由逻辑出错，整个系统都会变脆。
 
 ## 3. 什么是 Handoff Pattern
 
-`handoff pattern` 的意思是，当前 agent 可以把控制权交给另一个 agent，而后者在一段时间内成为该任务阶段的主要负责人。
+`handoff pattern` 的意思是，当前智能体可以把控制权交给另一个智能体，而后者在一段时间内成为该任务阶段的主要负责人。
 
 它更像“责任被交给下一个角色”。
 
 handoffs 的优点：
 
-- 角色和 ownership 分得更清楚；
+- 角色和负责人机制分得更清楚；
 - 更容易做上下文隔离；
-- 更容易做 domain-specialized behavior；
-- 不容易把一个中央 orchestrator 压垮。
+- 更容易做领域专门化行为；
+- 不容易把一个中央编排器压垮。
 
 缺点：
 
-- 更难看清全局 run；
-- 更难形成统一 audit narrative；
-- handoff boundary 必须设计得很仔细；
-- state、intent 和 constraints 在转交时更容易丢。
+- 更难看清全局运行；
+- 更难形成统一审计叙事；
+- 交接边界必须设计得很仔细；
+- 状态、意图和约束在转交时更容易丢。
 
 ## 4. 最有用的实用原则
 
@@ -83,17 +83,17 @@ handoffs 的优点：
 manager pattern 通常在这些情况下很好用：
 
 - 任务长度短到中等；
-- 需要统一 budget control；
-- 各个子任务用到的 tools 和 policy 基本相同；
-- 团队想要更强的 explainability；
-- 有一个主要 runtime owner。
+- 需要统一预算控制；
+- 各个子任务用到的工具和策略基本相同；
+- 团队想要更强的可解释性；
+- 有一个主要运行时负责人。
 
 典型例子：
 
-- support triage；
-- 最终只需要一个统一答案的 research assistant；
-- 调用多个 read-heavy capabilities 的 internal copilot；
-- specialist agents 本质上更像 typed tools 的场景。
+- 支持分流；
+- 最终只需要一个统一答案的研究助手；
+- 调用多个重读取能力的内部副驾驶；
+- 专家智能体本质上更像类型化工具的场景。
 
 在这些地方，manager pattern 往往是最无聊、也最正确的答案。
 
@@ -101,19 +101,19 @@ manager pattern 通常在这些情况下很好用：
 
 handoffs 通常在这些情况下更有优势：
 
-- 任务真的跨越了不同 domain boundaries；
-- 每个角色都需要自己的上下文和 guardrails；
-- ownership 已经分散到不同团队；
-- 有必要显著缩小当前 agent 的认知范围；
-- 下一阶段更像责任转移，而不是 helper 调用。
+- 任务真的跨越了不同领域边界；
+- 每个角色都需要自己的上下文和防护栏；
+- 负责人机制已经分散到不同团队；
+- 有必要显著缩小当前智能体的认知范围；
+- 下一阶段更像责任转移，而不是辅助器调用。
 
 典型例子：
 
-- sales qualification -> solution agent -> legal review agent；
-- incident intake -> security investigation -> remediation coordinator；
-- 由不同 business units 拥有的 onboarding 流程。
+- 销售资格确认 -> 解决方案智能体 -> 法务评审智能体；
+- 事故接收 -> 安全调查 -> 修复协调；
+- 由不同业务单元拥有的入职流程。
 
-这里 handoff 往往比一个假装什么都懂的 central manager 更自然。
+这里交接往往比一个假装什么都懂的中央管理器更自然。
 
 ## 7. 常见错误
 
@@ -121,17 +121,17 @@ handoffs 通常在这些情况下更有优势：
 
 manager pattern 常见问题：
 
-- manager 扛了太多上下文；
-- specialist agents 薄到几乎没有意义；
-- routing 藏在 prompt 里，而不是显式 policy；
-- central orchestrator 变成 single point of confusion。
+- 管理器扛了太多上下文；
+- 专家智能体薄到几乎没有意义；
+- 路由藏在提示里，而不是显式策略；
+- 中央编排器变成单点混乱源。
 
 handoffs 常见问题：
 
-- constraints 和 intent 在转交时丢失；
-- 下一个 agent 拿到的 state 过少或过多；
+- 约束和意图在转交时丢失；
+- 下一个智能体拿到的状态过少或过多；
 - 最终结果到底谁负责变得不清楚；
-- trace 变得断裂而难读。
+- 追踪变得断裂而难读。
 
 所以关键不是“哪个模式更强”，而是“哪个模式你能平稳运维”。
 
@@ -141,12 +141,12 @@ handoffs 常见问题：
 
 | 场景 | 通常更合适的选择 |
 | --- | --- |
-| 需要统一控制 steps、cost 和 policy | `manager pattern` |
+| 需要统一控制步骤、成本和策略 | `manager pattern` |
 | 角色和领域天然分离 | `handoffs` |
-| specialist 更像 capability tool | `manager pattern` |
-| 下一个参与者需要自己的 context boundary | `handoffs` |
-| 更看重统一 audit story | `manager pattern` |
-| 更看重 role-specific agent 的局部自治 | `handoffs` |
+| 专家更像能力工具 | `manager pattern` |
+| 下一个参与者需要自己的上下文边界 | `handoffs` |
+| 更看重统一审计叙事 | `manager pattern` |
+| 更看重特定角色智能体的局部自治 | `handoffs` |
 
 这张表不能替代设计，但能很好地去掉不少多余浪漫主义。
 
@@ -154,9 +154,9 @@ handoffs 常见问题：
 
 通常最健康的路线是：
 
-1. 先 single-agent loop；
-2. 如果需要协调多个 specialist path，再进入 manager pattern；
-3. 只有当真实 domain boundaries 已经出现时，再走向 handoffs。
+1. 先做单智能体循环；
+2. 如果需要协调多个专家路径，再进入管理器模式；
+3. 只有当真实领域边界已经出现时，再走向交接。
 
 这不是教条，而是防止过早复杂化的好方法。
 
@@ -174,7 +174,7 @@ def run_manager(task: str, specialists: dict[str, callable]) -> dict:
     return {"status": "success", "results": results}
 ```
 
-这里的重点不是 manager 要“无限思考”，而是它持有计划、调用 specialists，并把结果重新收拢起来。
+这里的重点不是管理器要“无限思考”，而是它持有计划、调用专家，并把结果重新收拢起来。
 
 ## 11. 代码草图：Handoff Pattern
 
@@ -188,36 +188,36 @@ def handoff(state: dict, next_agent: callable) -> dict:
     return next_agent(transfer_packet)
 ```
 
-关键不在调用本身，而在于 handoff 传递的应该是精心整理过的 transfer packet，而不是一整团混乱 state。
+关键不在调用本身，而在于交接传递的应该是精心整理过的转交包，而不是一整团混乱状态。
 
 ## 12. 对安全最重要的是什么
 
 如果你用 manager pattern，重点检查：
 
-- manager 会不会拿到过宽的权限；
-- 它会不会“替所有人”绕过 approval boundary；
-- 它会不会变成所有 tenant context 泄漏的中心点。
+- 管理器会不会拿到过宽的权限；
+- 它会不会“替所有人”绕过审批边界；
+- 它会不会变成所有租户上下文泄漏的中心点。
 
 如果你用 handoffs，重点检查：
 
-- policy constraints 在转交后是否还保留；
-- risk classification 会不会丢；
-- untrusted context 会不会不经标记就传给下一个 agent；
-- trace 里能不能看清是谁接管了控制权。
+- 策略约束在转交后是否还保留；
+- 风险分类会不会丢；
+- 不受信任上下文会不会不经标记就传给下一个智能体；
+- 追踪里能不能看清是谁接管了控制权。
 
-也就是说，这里的安全不是“叠加在 orchestration 上面”的东西，而是 orchestration semantics 本身的一部分。
+也就是说，这里的安全不是“叠加在编排上面”的东西，而是编排语义本身的一部分。
 
 ## 13. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- 谁拥有全局 run goal？
-- 谁对 final outcome 负责？
-- budget control 住在哪里？
-- stop conditions 住在哪里？
-- traces 能不能解释任务为什么从一个 agent 交给另一个？
-- 你是不是太早走向了 handoffs，而其实 manager pattern 更简单？
-- manager 有没有变成一个什么都做的中央怪物？
+- 谁拥有全局运行目标？
+- 谁对最终结果负责？
+- 预算控制住在哪里？
+- 停止条件住在哪里？
+- 追踪能不能解释任务为什么从一个智能体交给另一个？
+- 你是不是太早走向了交接，而其实管理器模式更简单？
+- 管理器有没有变成一个什么都做的中央怪物？
 
 如果这些答案都很模糊，说明模式还没真正架构化成熟。
 
