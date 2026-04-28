@@ -1,33 +1,33 @@
-# 按场景组织的 Policy Templates 与 Checklists
+# 按场景组织的策略模板与检查清单
 
 这一页的目的，是让书里的案例不仅能读，还能拿来做起点。
 
-这里的意思不是“给你一份通用的生产策略 YAML”。相反，重点是展示：不同场景下，policy layer 会如何开始真正分化。
+这里的意思不是“给你一份通用的生产策略 YAML”。相反，重点是展示：不同场景下，策略层会如何开始真正分化。
 
-如果你先需要场景上下文，请先读[实战案例](case-studies.zh.md)。如果你想看项目接下来的 backlog，请看[社区路线图](community-roadmap.zh.md)。
+如果你先需要场景上下文，请先读[实战案例](case-studies.zh.md)。如果你想看项目接下来的待办，请看[社区路线图](community-roadmap.zh.md)。
 
 ## 如何阅读这些模板
 
 最好把它们看成骨架，而不是成品：
 
-- 系统把什么视为 risky；
-- approval boundary 放在哪里；
-- read 和 write actions 如何分开；
-- 哪些 stop conditions 和 escalation rules 是必要的；
-- 哪些 traces 和 audit signals 应该被视为强制项。
+- 系统把什么视为高风险；
+- 审批边界放在哪里；
+- 读取和写入动作如何分开；
+- 哪些停止条件和升级规则是必要的；
+- 哪些追踪和审计信号应该被视为强制项。
 
-## 模板 1：Support Triage Agent
+## 模板 1：支持分诊智能体
 
 ### 这类策略需要保证什么
 
-在 support triage 场景里，你通常需要：
+在支持分诊场景里，你通常需要：
 
 - 安全地读取客户上下文；
-- 在信心不足时避免 write actions；
+- 在信心不足时避免写动作；
 - 当需要人工介入时，不要让模型假装问题已经解决；
-- 明确限制 ticket creation 和敏感更新。
+- 明确限制工单创建和敏感更新。
 
-### Policy skeleton 示例
+### 策略骨架示例
 
 ```yaml
 agent:
@@ -61,28 +61,28 @@ output:
   require_escalation_reason: true
 ```
 
-### Checklist
+### 检查清单
 
-- read tools 是否带 tenant scope？
-- agent 是否能诚实升级，而不是总想直接回答？
-- `create_ticket` 是否被显式 approval policy 保护？
-- trace 里能不能看见为什么走到了 write path？
-- 对低置信度有没有 stop condition？
+- 读取工具是否带租户范围？
+- 智能体是否能诚实升级，而不是总想直接回答？
+- `create_ticket` 是否被显式审批策略保护？
+- 追踪里能不能看见为什么走到了写入路径？
+- 对低置信度有没有停止条件？
 
-## 模板 2：Internal Knowledge Agent
+## 模板 2：内部知识智能体
 
 ### 这类策略需要保证什么
 
-在 knowledge 场景里，主要风险不是 side effects，而是访问控制和 grounding 质量。
+在知识场景里，主要风险不是副作用，而是访问控制和依据质量。
 
 你通常需要：
 
 - 按角色隔离访问；
-- 把 retrieval 限定在允许的来源内；
-- 防止 agent 混淆 untrusted content 和 instructions；
-- 强制答案里带 source references。
+- 把检索限定在允许的来源内；
+- 防止智能体混淆不可信内容和指令；
+- 强制答案里带来源引用。
 
-### Policy skeleton 示例
+### 策略骨架示例
 
 ```yaml
 agent:
@@ -106,28 +106,28 @@ output:
   deny_sensitive_snippets_without_access: true
 ```
 
-### Checklist
+### 检查清单
 
-- retrieval path 上的 role-based filtering 是否真的有效？
-- agent 返回的是来源支撑的答案，而不只是漂亮文本吗？
-- 对 weak grounding 有没有单独 policy？
-- retrieval 能不能泄漏私有 knowledge zone？
-- traces 能不能说明到底用了哪些文档？
+- 检索路径上的基于角色过滤是否真的有效？
+- 智能体返回的是来源支撑的答案，而不只是漂亮文本吗？
+- 对依据较弱的情况有没有单独策略？
+- 检索会不会泄漏私有知识区？
+- 追踪能不能说明到底用了哪些文档？
 
-## 模板 3：Incident Coordination Agent
+## 模板 3：事故协调智能体
 
 ### 这类策略需要保证什么
 
-在 incident 场景里，policy 不只是管理访问，还要管理 orchestration discipline。
+在事故场景里，策略不只是管理访问，还要管理编排纪律。
 
 你通常需要：
 
-- 让整条 run 共享一条 trace；
-- 在 handoff 时记录 ownership；
-- 限制 risky remediation；
-- 防止 noisy input 演化成多余的 side effects。
+- 让整条运行共享一条追踪；
+- 在交接时记录负责人；
+- 限制高风险修复；
+- 防止噪声输入演化成多余副作用。
 
-### Policy skeleton 示例
+### 策略骨架示例
 
 ```yaml
 agent:
@@ -165,25 +165,25 @@ audit:
   require_write_intent_log: true
 ```
 
-### Checklist
+### 检查清单
 
-- 每个 handoff 都有 owner 和 reason 吗？
-- risky remediation 默认是关闭的吗？
-- ticketing 和 notifications 受 idempotency 保护吗？
-- incident trace 能不能展示完整决策路径？
-- noisy alert 会不会单独触发 dangerous write path？
+- 每个交接都有负责人和原因吗？
+- 高风险修复默认是关闭的吗？
+- 工单和通知受幂等性保护吗？
+- 事故追踪能不能展示完整决策路径？
+- 噪声告警会不会单独触发危险写入路径？
 
-## Policy Layer 的通用 Checklist
+## 策略层的通用检查清单
 
 不管是什么场景，都值得问这些问题：
 
 - 你是否清楚系统里的 `read`、`write` 和 `advisory` 动作分别在哪里？
-- risky actions 是否有独立 approval boundary？
-- policy 里能不能明确看出 agent 应该停下，而不是继续 reasoning 的地方？
-- 关键规则是不是只活在 prompts 里？
-- security 团队能不能在不了解全部 prompt engineering 细节的情况下看懂 policy artifacts？
+- 高风险动作是否有独立审批边界？
+- 策略里能不能明确看出智能体应该停下，而不是继续推理的地方？
+- 关键规则是不是只活在提示里？
+- 安全团队能不能在不了解全部提示工程细节的情况下看懂策略工件？
 
-如果连续几个问题的答案都是“不能”，说明你的 policy layer 仍然过于隐式。
+如果连续几个问题的答案都是“不能”，说明你的策略层仍然过于隐式。
 
 ## 下一步做什么
 
