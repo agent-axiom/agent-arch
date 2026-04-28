@@ -4,8 +4,8 @@ Rust 现在已经值得被认真看作智能体系统基础设施层的一门语
 
 到 2026 年，更有用的区分是两件事：
 
-- Rust 作为 **agent infrastructure** 的语言；
-- Rust 作为 **vendor-native agent building** 的语言。
+- Rust 作为**智能体基础设施**语言；
+- Rust 作为**厂商原生智能体构建**语言。
 
 前者已经相当有说服力，后者仍然明显不够均衡。
 
@@ -32,13 +32,13 @@ Rust 特别适合这些要求明显的组件：
 
 ## Rust 暂时不那么有优势的地方
 
-如果你的首要目标是围绕模型行为、prompt 行为和厂商新特性进行最快速的实验，Rust 还不总是最优起点。
+如果你的首要目标是围绕模型行为、提示行为和厂商新特性进行最快速的实验，Rust 还不总是最优起点。
 
 通常原因包括：
 
 - 官方 SDK 支持往往在 Python 和 TypeScript 上更强；
-- 新 agent feature 的示例更多出现在这些语言里；
-- managed agent services 和 eval tooling 往往先支持这些语言；
+- 新智能体特性的示例更多出现在这些语言里；
+- 托管智能体服务和评测工具往往先支持这些语言；
 - 动态语言在快速实验方面的生态更丰富。
 
 所以 Rust 已经很适合平台基础设施，但并不总是最快的应用层迭代语言。
@@ -47,7 +47,7 @@ Rust 特别适合这些要求明显的组件：
 
 ### OpenAI 与 Anthropic
 
-在 OpenAI 和 Anthropic 的官方 agent-oriented 层里，重心仍然更偏向 Python、TypeScript 以及其他支持更完整的 SDK 路径。这并不意味着 Rust 不可用，但说明它还不是这些生态里的默认一等路径。
+在 OpenAI 和 Anthropic 的官方智能体相关层里，重心仍然更偏向 Python、TypeScript 以及其他支持更完整 SDK 路径的语言。这并不意味着 Rust 不可用，但说明它还不是这些生态里的默认一等路径。
 
 ### AWS
 
@@ -59,7 +59,7 @@ Microsoft 的 Rust 路线在发展，但现有总览文档里 Azure SDK for Rust
 
 ### Rig
 
-在 Rust-native 的开源生态里，**Rig** 是目前较明显的 agent-oriented 项目。它适合做实验，也适合用来理解 Rust-first framework 的形态。但整体生态还没有稳定到足以成为本书里的跨厂商标准路径。
+在 Rust 原生的开源生态里，**Rig** 是目前较明显的智能体相关项目。它适合做实验，也适合用来理解 Rust 优先框架的形态。但整体生态还没有稳定到足以成为本书里的跨厂商标准路径。
 
 ## Rust 特别适合哪些智能体平台工作
 
@@ -80,8 +80,8 @@ Rust 最值得优先考虑的场景包括：
 
 - 以最快速度迭代智能体行为；
 - 第一时间使用厂商新 API；
-- 把评测与实验紧贴 data tooling；
-- 快速做出 demo 和 workflow-heavy integration；
+- 把评测与实验紧贴数据工具；
+- 快速做出演示和工作流密集型集成；
 
 那么 Python 或 TypeScript 往往仍然更实用。
 
@@ -93,30 +93,30 @@ Rust 最值得优先考虑的场景包括：
 
 1. 智能体行为与快速应用层迭代继续放在 Python 或 TypeScript。
 2. 基础设施关注点逐步抽到更严格的服务中。
-3. 当平台开始形成长期运行的 runtime、gateway 或 control plane 组件时，再引入 Rust。
+3. 当平台开始形成长期运行的运行时、网关或控制平面组件时，再引入 Rust。
 
-这通常比为了语言纯度而强行把整个 agent stack 都迁到 Rust 更稳妥。
+这通常比为了语言纯度而强行把整个智能体栈都迁到 Rust 更稳妥。
 
 ## 如果你仍然想走 Rust-first 路线
 
 那就最好保持现实感：
 
 - 先从一个基础设施服务开始，而不是整个平台；
-- 不要过早绑死在一个还年轻的 framework 上；
-- 把 contracts 设计得尽量明确；
-- 在架构承诺之前先验证 vendor SDK maturity；
+- 不要过早绑死在一个还年轻的框架上；
+- 把契约设计得尽量明确；
+- 在架构承诺之前先验证厂商 SDK 成熟度；
 - 不要在真正的平台约束还不清楚时先决定语言。
 
 ## 结论
 
 Rust 已经值得进入这本书，但位置应该是 **智能体平台层**：
 
-- gateways；
-- policy 与 approval services；
+- 网关；
+- 策略与审批服务；
 - MCP 与集成服务；
-- observability 与 control-plane 组件。
+- 可观测性与控制平面组件。
 
-它还不应该成为本书里“如何构建智能体”的主线。更诚实的表述是：**Rust 已经很适合 agent infrastructure，但未必适合最快的 agent iteration loop**。
+它还不应该成为本书里“如何构建智能体”的主线。更诚实的表述是：**Rust 已经很适合智能体基础设施，但未必适合最快的智能体迭代循环**。
 
 ## 下一步做什么
 
