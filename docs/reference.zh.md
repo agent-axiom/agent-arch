@@ -29,7 +29,7 @@
 
 ## 模式页与契约页
 
-- [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
+- [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
 - [策略包 Schema 与审批契约](appendix/policy-bundle-schema.zh.md)
 - [审批请求与决策记录 Schema](appendix/approval-schema.zh.md)
