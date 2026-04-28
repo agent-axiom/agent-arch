@@ -1,8 +1,8 @@
-# 记忆记录与检索契约模式
+# 记忆记录与检索契约 Schema
 
 这一页把智能体系统里记忆与检索所需的最小契约层放在一起：记忆记录长什么样、检索请求应该带哪些字段，以及记忆层至少要满足哪些约束，才能避免它变成泄漏、噪声和错误自信的来源。
 
-如果 [追踪模式与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件规范](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索模式回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
+如果 [追踪 Schema 与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索 Schema 回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
 
 ## 1. 为什么需要单独的模式层
 
@@ -26,9 +26,9 @@
 - `retrieval_query`
 - `retrieval_result`
 
-这已经足够把 Chapters 5-7、policy layer、trace schema 和 reference runtime 串起来。
+这已经足够把第 5-7 章、策略层、追踪 Schema 和参考运行时串起来。
 
-## 3. Memory record
+## 3. 记忆记录
 
 `memory_record` 描述记忆层里的单条具体记录。
 
@@ -51,11 +51,11 @@ retention: long_term
 
 - `tenant_id` 防止检索跨越租户边界；
 - `memory_class` 区分 `short_term`、`long_term` 和 `profile`；
-- `source` 与 `provenance` 能帮助区分 observation 和 validated fact；
+- `source` 与 `provenance` 能帮助区分观察结果和已验证事实；
 - `revision` 让历史不会被静默覆盖；
 - `trust_level` 防止所有记录被一视同仁。
 
-## 4. Retrieval query
+## 4. 检索查询
 
 `retrieval_query` 描述的不是一个简单文本搜索，而是完整的记忆读取上下文。
 
@@ -78,7 +78,7 @@ limit: 5
 
 这很重要，因为检索不应该是“神秘搜索”，而应该是正常的受控读取路径。
 
-## 5. Retrieval result
+## 5. 检索结果
 
 `retrieval_result` 记录运行时最终决定放回上下文里的内容。
 
@@ -108,7 +108,7 @@ excluded_records: 12
 - 到底哪些限制起了作用；
 - 有多少记录被过滤掉了。
 
-## 6. 它和 policy layer 的关系
+## 6. 它和策略层的关系
 
 记忆读取路径和记忆写入路径几乎不应该共用同一套规则：
 
@@ -117,9 +117,9 @@ excluded_records: 12
 
 所以，一个好的记忆模式几乎总是和策略即代码并排存在。
 
-## 7. 它和 trace schema 的关系
+## 7. 它和追踪 Schema 的关系
 
-[追踪模式](trace-schema.zh.md) 里已经有一些字段和事件直接支撑记忆纪律：
+[追踪 Schema](trace-schema.zh.md) 里已经有一些字段和事件直接支撑记忆纪律：
 
 - `context_layers_built`
 - `memory_persisted`
@@ -129,9 +129,9 @@ excluded_records: 12
 
 这说明记忆与检索契约不只是一个独立文档，它还是清晰遥测的基础。
 
-## 8. 它和 reference package 的关系
+## 8. 它和参考包的关系
 
-[agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经有支撑这套模型的 operational primitives：
+[agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经有支撑这套模型的运行原语：
 
 - [memory.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/memory.py)
 - [background.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/background.py)
@@ -146,11 +146,11 @@ excluded_records: 12
 一个健康的记忆与检索层，至少应该保证：
 
 - 每条记录都有 `tenant_id` 和 `memory_class`；
-- persistent records 带有 `provenance` 和 `revision`；
+- 持久记录带有 `provenance` 和 `revision`；
 - 检索总是受类别和数量限制；
 - 检索请求明确知道“谁在读、为什么读”；
 - 检索结果能从追踪里还原；
-- summaries 不是默认真相。
+- 摘要不是默认真相。
 
 ## 10. 最常见的断裂点
 
@@ -158,7 +158,7 @@ excluded_records: 12
 
 - 检索返回的是“相似”，却不是“有用”；
 - 记忆记录没有按信任等级区分；
-- summaries 静默覆盖了更可靠的事实；
+- 摘要静默覆盖了更可靠的事实；
 - 检索忽略租户边界；
 - 提示吞进了太多未经筛选的上下文；
 - 来源证明只存在于文档里，不存在于运行时里。
@@ -178,9 +178,9 @@ excluded_records: 12
 
 ## 下一步做什么
 
-- [追踪模式与事件目录](trace-schema.zh.md)
-- [评测数据集模式与分级契约](eval-schema.zh.md)
-- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](../book/part-iii/chapter-6.zh.md)
