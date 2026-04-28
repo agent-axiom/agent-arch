@@ -37,15 +37,15 @@
 
 - `uv` 用于 Python、虚拟环境与依赖组；
 - `MkDocs` 与 `Material for MkDocs` 用于站点生成；
-- `ruff` 用于 lint；
+- `ruff` 用于代码检查；
 - `ty` 作为未来仓库出现 Python 工具代码时的快速类型检查器。
 
 ### 可选研究栈
 
-- `marimo` 用于交互式研究型 notebook；
+- `marimo` 用于交互式研究型笔记本；
 - `polars` 用于分析追踪和评测数据集。
 
-在当前项目骨架里，`marimo` 和 `polars` 已经作为 `research` 依赖组存在，即使书籍还没有直接使用它们。
+在当前项目骨架里，`marimo` 和 `polars` 已经作为 `research` 研究依赖组存在，即使书籍还没有直接使用它们。
 
 ## 项目命令
 
