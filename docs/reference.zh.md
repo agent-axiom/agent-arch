@@ -31,7 +31,7 @@
 
 - [Trace Schema 与 Event Catalog](appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](appendix/eval-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](appendix/policy-bundle-schema.zh.md)
+- [策略包 Schema 与审批契约](appendix/policy-bundle-schema.zh.md)
 - [审批请求与决策记录 Schema](appendix/approval-schema.zh.md)
 - [事故记录与事后复盘链接 Schema](appendix/incident-record-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](appendix/change-rollout-schema.zh.md)
