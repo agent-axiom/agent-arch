@@ -279,7 +279,7 @@ plugins:
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的因果调试与根因分析
             Memory eval patterns для agent systems: 智能体系统的记忆评测模式
             Tool failure recovery patterns для agent systems: 智能体系统的工具失败恢复模式
-            Схема трасс и каталог событий: Trace Schema 与 Event Catalog
+            Схема трасс и каталог событий: 追踪 Schema 与事件目录
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: 策略包 Schema 与审批契约
             Схема запроса на подтверждение и записи о решении: 审批请求与决策 Schema
