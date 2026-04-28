@@ -1,61 +1,61 @@
 # 智能体系统事故响应手册
 
-当团队已经具备 traces、policy gates、approval paths 与 rollout rules，但还没有一条简明的事故处置路径时，这份手册就有用了。
+当团队已经具备追踪、策略门禁、审批路径与发布规则，但还没有一条简明的事故处置路径时，这份手册就有用了。
 
-它不替代关于 assurance、observability 或 change management 的章节。它把这些内容收束成一条可以执行的响应路径。
+它不替代关于保障、可观测性或变更管理的章节。它把这些内容收束成一条可以执行的响应路径。
 
 ## 1. 什么算事故
 
 对智能体系统来说，事故通常不只是宕机或质量下降，还包括：
 
-- 在缺少必要审批路径时产生不可逆的 side effect；
-- policy bypass 或错误的 gateway decision；
-- 向未批准外部系统发起危险 egress；
-- memory contamination 或错误的 persistent write；
-- 绕过 evals 或 rollout gates 的 rollout escape；
+- 在缺少必要审批路径时产生不可逆的副作用；
+- 策略绕过或错误的网关决策；
+- 向未批准外部系统发起危险出口访问；
+- 记忆污染或错误的持久写入；
+- 绕过评测或发布门禁的发布逃逸；
 - 可疑自治行为、类似破坏的行为，或试图隐藏动作的情况。
 
 ## 2. 前 15 分钟
 
-前几分钟的目标不是完成全部 root-cause analysis，而是先控制影响并保留 evidence。
+前几分钟的目标不是完成全部根因分析，而是先控制影响并保留证据。
 
 最小动作顺序通常是：
 
-1. 停止或收窄 risky path。
-2. 固定 trace 与 session 上下文。
-3. 判断是否已经发生外部 side effect。
-4. 判断是否需要禁用 capability、principal 或 connector。
-5. 记录事故发生时生效的 bundle 与 rollout wave。
+1. 停止或收窄高风险路径。
+2. 固定追踪与会话上下文。
+3. 判断是否已经发生外部副作用。
+4. 判断是否需要禁用能力、主体或连接器。
+5. 记录事故发生时生效的包与发布波次。
 
 ## 3. 必须立刻保留的内容
 
-如果这些工件没有在最初几分钟保留下来，incident review 很快就会退化成靠记忆回溯：
+如果这些工件没有在最初几分钟保留下来，事故评审很快就会退化成靠记忆回溯：
 
 - `trace_id`
 - `session_id`
 - `agent_id`
 - `tool_principal`
-- `approval_id`，如果涉及 approval path；
+- `approval_id`，如果涉及审批路径；
 - `bundle_id`
 - `change_id`
 - `rollout_wave`
-- policy decision events；
-- approval decision events；
-- 被读取或修改的 memory records；
-- `allowed_egress` 信息以及实际的 network path。
+- 策略决策事件；
+- 审批决策事件；
+- 被读取或修改的记忆记录；
+- `allowed_egress` 信息以及实际的网络路径。
 
 ## 4. 快速遏制动作
 
-好的事故响应依赖预先设计好的 containment actions：
+好的事故响应依赖预先设计好的遏制动作：
 
-- 禁用单个 capability，而不是停掉整个 runtime；
-- 把高风险动作切换成 mandatory approval mode；
-- 临时暂停 memory writes；
-- 撤销 connector credential 或 tool principal；
-- 停止当前 rollout wave；
-- 启用更严格的 policy bundle。
+- 禁用单个能力，而不是停掉整个运行时；
+- 把高风险动作切换成强制审批模式；
+- 临时暂停记忆写入；
+- 撤销连接器凭据或工具主体；
+- 停止当前发布波次；
+- 启用更严格的策略包。
 
-如果这些动作不存在，incident response 很快就会变成“谁有权临时关掉什么”的争论。
+如果这些动作不存在，事故响应很快就会变成“谁有权临时关掉什么”的争论。
 
 ## 5. 最小分诊分类
 
@@ -69,65 +69,65 @@
 - `eval_escape`
 - `agentic_misalignment`
 
-这些分类不仅适合写进工单，也适合回流到 eval datasets、rollout gates 与 postmortem discipline。
+这些分类不仅适合写进工单，也适合回流到评测数据集、发布门禁与事后复盘纪律。
 
-## 6. 在 traces 与 events 里先查什么
+## 6. 在追踪与事件里先查什么
 
 在第一轮调查里，团队最好尽快回答这些问题：
 
-- 哪个 input 或 retrieved context 触发了 risky path；
-- 哪个 policy decision 放行了它；
-- 到底是哪一个 principal 执行了动作；
-- 是否存在 approval request、denial 或 bypass；
-- 哪些 memory records 被读写；
-- 这次 run 使用的是哪个 artifact bundle；
-- 这是单次 run，还是 session / rollout wave 中更大的模式。
+- 哪个输入或检索到的上下文触发了高风险路径；
+- 哪个策略决策放行了它；
+- 到底是哪一个主体执行了动作；
+- 是否存在审批请求、拒绝或绕过；
+- 哪些记忆记录被读写；
+- 这次运行使用的是哪个工件包；
+- 这是单次运行，还是会话 / 发布波次中更大的模式。
 
-如果 traces 无法回答这些问题，那问题就不只在事故本身，也在 observability layer。
+如果追踪无法回答这些问题，那问题就不只在事故本身，也在可观测性层。
 
 ## 7. 什么时候该回滚，什么时候局部修复
 
-并不是每次事故都需要 full rollback。只有在下面这些前提成立时，局部处置才可靠：
+并不是每次事故都需要完整回滚。只有在下面这些前提成立时，局部处置才可靠：
 
-- blast radius 已经清楚；
-- risky path 可以被单独隔离；
-- active bundle 可以准确定位；
-- rollout wave 可以在没有隐藏依赖的情况下停止。
+- 影响半径已经清楚；
+- 高风险路径可以被单独隔离；
+- 当前生效的包可以准确定位；
+- 发布波次可以在没有隐藏依赖的情况下停止。
 
-如果团队无法把受影响的 surface 与系统其他部分可靠分开，full rollback 更常见。
+如果团队无法把受影响的表面与系统其他部分可靠分开，完整回滚更常见。
 
-## 8. Postmortem 应该写进什么
+## 8. 事后复盘应该写进什么
 
-一份有用的智能体系统 postmortem 通常包括：
+一份有用的智能体系统事后复盘通常包括：
 
-- 当时生效的是哪个 artifact bundle；
-- 哪个 change review 与 rollout gate 放行了这条 path；
-- 缺了哪些 checks 或 evals；
-- 哪些 detection rules 没有生效；
-- 采取了哪种 containment action；
-- 接下来 policy、evals、rollout rules 或 inventory 要改什么。
+- 当时生效的是哪个工件包；
+- 哪个变更评审与发布门禁放行了这条路径；
+- 缺了哪些检查或评测；
+- 哪些检测规则没有生效；
+- 采取了哪种遏制动作；
+- 接下来策略、评测、发布规则或清单要改什么。
 
-好的 postmortem 不只是留下文档，还会更新 lifecycle artifacts。
+好的事后复盘不只是留下文档，还会更新生命周期工件。
 
 ## 9. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- 能否快速禁用单个 capability？
+- 能否快速禁用单个能力？
 - 能否恢复 `trace -> session -> bundle -> rollout wave`？
-- 能否明确哪个 principal 执行了外部调用？
-- approval path 及其 decision 是否可见？
-- 能否临时暂停 memory writes？
-- containment actions 的 owner 是否明确？
-- incidents 是否会回流到 evals 与 rollout gates？
+- 能否明确哪个主体执行了外部调用？
+- 审批路径及其决策是否可见？
+- 能否临时暂停记忆写入？
+- 遏制动作的负责人是否明确？
+- 事故是否会回流到评测与发布门禁？
 
 ## 下一步做什么
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
-- [Approval Request 与 Decision Schema](approval-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](change-rollout-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [审批请求与决策 Schema](approval-schema.zh.md)
+- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考运行时包](reference-package.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 23 章：退役、替换与终止使用纪律](../book/part-viii/chapter-23.zh.md)
