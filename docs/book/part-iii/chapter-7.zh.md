@@ -1,180 +1,180 @@
 # 第 7 章：检索、压缩与后台更新
 
-## 1. 如果你不会把正确内容重新取出来，memory 就没用
+## 1. 如果你不会把正确内容重新取出来，记忆就没用
 
-当你已经把 short-term、long-term 和 profile memory 分开之后，下一个现实问题就是：agent 到底应该怎样把需要的记录重新带回 prompt？
+当你已经把短期、长期和画像记忆分开之后，下一个现实问题就是：智能体到底应该怎样把需要的记录重新带回提示？
 
 很多系统就是从这里开始退化的：
 
-- prompt 里塞进太多不相关上下文；
-- retrieval 返回的是“相似”，却不是“有用”；
-- summaries 越来越长，却没有更清晰；
+- 提示里塞进太多不相关上下文；
+- 检索返回的是“相似”，却不是“有用”；
+- 摘要越来越长，却没有更清晰；
 - 每一次新迭代都只让上下文变得更重。
 
-也就是说，问题已经不再是“有没有 memory”，而是 memory 已经变得太吵、太贵、太难读了。
+也就是说，问题已经不再是“有没有记忆”，而是记忆已经变得太吵、太贵、太难读了。
 
-## 2. Retrieval 不是“找回所有相似内容”，而是“挑出对当前任务有帮助的内容”
+## 2. 检索不是“找回所有相似内容”，而是“挑出对当前任务有帮助的内容”
 
-Retrieval 有一个坏习惯：如果你不限制它，它就会变得过于慷慨。结果进入 prompt 的，不是最有帮助的内容，而是 embedding 或 keyword overlap 上最相似的内容。
+检索有一个坏习惯：如果你不限制它，它就会变得过于慷慨。结果进入提示的，不是最有帮助的内容，而是嵌入或关键词重叠上最相似的内容。
 
-对 production 系统来说，更有用的思路是：
+对生产系统来说，更有用的思路是：
 
-- retrieval 不需要返回很多；
-- retrieval 必须是可解释的；
-- retrieval 必须尊重 tenant、source 和 trust boundaries；
-- retrieval 必须服从上下文预算。
+- 检索不需要返回很多；
+- 检索必须是可解释的；
+- 检索必须尊重租户、来源和信任边界；
+- 检索必须服从上下文预算。
 
-一个正常的 retrieval pipeline，几乎总会同时考虑：
+一个正常的检索流水线，几乎总会同时考虑：
 
-- tenant isolation；
-- memory class；
-- recency；
-- confidence；
-- provenance；
-- policy filters。
+- 租户隔离；
+- 记忆类别；
+- 近因性；
+- 置信度；
+- 来源；
+- 策略过滤器。
 
-## 2.1. 用户和 knowledge layer 之间的 semantic gap 是真实存在的
+## 2.1. 用户和知识层之间的语义鸿沟是真实存在的
 
-这里还有一个在演示里不太明显的问题：用户通常用口语提问，但文档和 knowledge records 往往是正式的、技术化的，或者带有内部系统术语。
+这里还有一个在演示里不太明显的问题：用户通常用口语提问，但文档和知识记录往往是正式的、技术化的，或者带有内部系统术语。
 
-因此，retrieval 失败并不一定是因为数据不存在，也可能只是因为 user query 和 corpus 之间存在 semantic gap。
+因此，检索失败并不一定是因为数据不存在，也可能只是因为用户查询和语料库之间存在语义鸿沟。
 
-从工程上看，这意味着 retrieval query 往往值得先做一层 shaping：
+从工程上看，这意味着检索查询往往值得先做一层塑形：
 
 - 规范化实体名称和内部状态名；
 - 把查询改写成更像文档的表达；
-- 做受控的 query expansion；
+- 做受控的查询扩展；
 - 在部分场景中使用 HyDE，也就是先生成一个假想的文档式答案，再据此检索。
 
-但这里有一个很重要的纪律：这种查询辅助手段不能变成新的"事实"。HyDE 或 query rewriting 只是 retrieval 工具，而不是 grounded answer 的替代品。
+但这里有一个很重要的纪律：这种查询辅助手段不能变成新的“事实”。HyDE 或查询改写只是检索工具，而不是有依据答案的替代品。
 
-## 2.2. 大多数情况下，应先从 RAG 开始，而不是 training
+## 2.2. 大多数情况下，应先从 RAG 开始，而不是训练
 
-如果问题在于 agent 缺少新知识，或者拿不到内部文档，最实用的第一步通常不是 training，而是把 retrieval layer 做扎实。
+如果问题在于智能体缺少新知识，或者拿不到内部文档，最实用的第一步通常不是训练，而是把检索层做扎实。
 
 原因很直接：
 
 - RAG 更新更快；
-- retrieval 更容易审计和加约束；
-- knowledge drift 更容易通过更新 corpus 修复，而不是重新训练模型；
-- 持续变化的文档和 mutable knowledge sources 更适合放在 retrieval，而不是塞进模型权重。
+- 检索更容易审计和加约束；
+- 知识漂移更容易通过更新语料库修复，而不是重新训练模型；
+- 持续变化的文档和可变知识源更适合放在检索，而不是塞进模型权重。
 
 同时，最好把两种不同任务分开看：
 
-- continued pretraining 主要用于适配知识分布；
+- 持续预训练主要用于适配知识分布；
 - SFT 主要用于适配行为、风格和决策模式。
 
-一个实用规则通常是：先把 retrieval 做到足够像样，再判断系统是否真的撞到了 ceiling，以至于需要 training。
+一个实用规则通常是：先把检索做到足够像样，再判断系统是否真的撞到了上限，以至于需要训练。
 
-这里还有一个很有用的 operational signal：如果一个支持智能体长期工作正常，后来却在 prompt 和 model routing 都没明显变化的情况下退化，优先怀疑 stale retrieval corpus、indexing drift 或 data freshness 问题，而不是先假设出现了某种神秘的 model decay。
+这里还有一个很有用的运营信号：如果一个支持智能体长期工作正常，后来却在提示和模型路由都没明显变化的情况下退化，优先怀疑陈旧检索语料库、索引漂移或数据新鲜度问题，而不是先假设出现了某种神秘的模型退化。
 
-## 3. 一个好的 prompt 爱的是高密度信号，不是完整性
+## 3. 一个好的提示爱的是高密度信号，不是完整性
 
-人很容易以为“上下文越多，agent 越聪明”。实践里，情况往往相反：你塞进 prompt 的噪音越多，模型越难抓住真正的优先级。
+人很容易以为“上下文越多，智能体越聪明”。实践里，情况往往相反：你塞进提示的噪音越多，模型越难抓住真正的优先级。
 
-所以 retrieval 回答的应该不是“我们能取出什么”，而是“什么能在此刻提高正确决策的概率”。
+所以检索回答的应该不是“我们能取出什么”，而是“什么能在此刻提高正确决策的概率”。
 
-一个很有用的 practical rule：
+一个很有用的实用规则：
 
 - 3 条高度相关记录，通常比 20 条勉强相似记录更好；
-- 一个带来源的小 summary，通常比长原始文档更好；
-- 一个 profile hint，通常比整段偏好历史更好；
-- 空 retrieval，通常比不可信且不可解释的 retrieval 更好。
+- 一个带来源的小摘要，通常比长原始文档更好；
+- 一个画像提示，通常比整段偏好历史更好；
+- 空检索，通常比不可信且不可解释的检索更好。
 
-## 4. Compaction 不是美容，而是保持系统可工作的手段
+## 4. 压缩不是美容，而是保持系统可工作的手段
 
-如果 memory layer 只会增长，那么 prompt assembly 迟早会变成一个没有规则的垃圾收集器。这就是为什么 compaction 必须是架构的一部分，而不是某次专项清理工程。
+如果记忆层只会增长，那么提示组装迟早会变成一个没有规则的垃圾收集器。这就是为什么压缩必须是架构的一部分，而不是某次专项清理工程。
 
-Compaction 可以意味着很多事：
+压缩可以意味着很多事：
 
-- 把几条记录压成一个 summary；
-- 删除过期的 working notes；
+- 把几条记录压成一个摘要；
+- 删除过期的工作笔记；
 - 合并重复项；
-- 把大 blob 替换成规范化 record 加 source link；
+- 把大块数据替换成规范化记录加来源链接；
 - 让旧记录降权，而不是永远留在前景里。
 
 <div class="diagram-card">
-<p>更适合把 retrieval 和 compaction 看成一整个 memory maintenance 循环</p>
+<p>更适合把检索和压缩看成一整个记忆维护循环</p>
 
 ``` mermaid
 flowchart TD
-    A["New run"] --> B["Query memory"]
-    B --> C["Apply filters and ranking"]
-    C --> D["Assemble prompt context"]
-    D --> E["Model + tools"]
-    E --> F["Create new memory candidates"]
-    F --> G["Background compaction and review"]
-    G --> H["Normalized memory store"]
+    A["新运行"] --> B["查询记忆"]
+    B --> C["应用过滤器和排序"]
+    C --> D["组装提示上下文"]
+    D --> E["模型 + 工具"]
+    E --> F["创建新记忆候选"]
+    F --> G["后台压缩与审查"]
+    G --> H["规范化记忆存储"]
     H --> B
 ```
 
 </div>
 
-## 5. 不是所有 memory 更新都应该发生在 hot path
+## 5. 不是所有记忆更新都应该发生在热路径
 
-这是 agent systems 里最有价值的架构转变之一。起初，几乎所有人都想把 memory 做成“立刻就好”：agent 看见了什么，就立刻重写 summary、更新 profile、保存 knowledge。
+这是智能体系统里最有价值的架构转变之一。起初，几乎所有人都想把记忆做成“立刻就好”：智能体看见了什么，就立刻重写摘要、更新画像、保存知识。
 
 但这通常既昂贵又危险。
 
-通常适合留在 hot path 里的：
+通常适合留在热路径里的：
 
-- 最小 session state；
-- 简短 working notes；
-- 带清晰 TTL 的安全 transient records；
-- 如果不更新，当前 workflow 就真的会断掉的内容。
+- 最小会话状态；
+- 简短工作笔记；
+- 带清晰 TTL 的安全瞬时记录；
+- 如果不更新，当前工作流就真的会断掉的内容。
 
-通常更适合放到 background 的：
+通常更适合放到后台的：
 
-- 长会话的 compaction；
-- summaries 重建；
-- facts 规范化；
-- deduplication；
-- persistent write 前对 memory candidates 的复查。
+- 长会话的压缩；
+- 摘要重建；
+- 事实规范化；
+- 去重；
+- 持久写入前对记忆候选的复查。
 
-Background updates 让 memory 变得整洁，而不只是“反应很快”。
+后台更新让记忆变得整洁，而不只是“反应很快”。
 
-## 6. 好系统会把 retrieval query 和 maintenance jobs 分开
+## 6. 好系统会把检索查询和维护任务分开
 
 在成熟架构里，几乎总会有两条不同路径：
 
-- read path：为当前 run 快速而安全地取回上下文；
-- maintenance path：不受 latency 压力地慢慢改进 memory store。
+- 读取路径：为当前运行快速而安全地取回上下文；
+- 维护路径：不受延迟压力地慢慢改进记忆存储。
 
 这不仅是性能问题，也是决策质量问题。当同一条链同时：
 
 - 执行任务；
-- 重建 summaries；
-- 写 profile memory；
+- 重建摘要；
+- 写画像记忆；
 - 清理重复项；
-- 更新 ranking metadata，
+- 更新排序元数据，
 
 它很快就会变得脆弱且难以解释。
 
-## 6.1. Frontier memory 正在走向 adaptive shaping，但 production 仍然需要纪律
+## 6.1. 前沿记忆正在走向自适应塑形，但生产仍然需要纪律
 
-最新的 memory research 正在把架构继续往前推：不只是存 records、偶尔做 compaction，而是试图根据真实使用模式逐步重塑整个 memory layer。
+最新的记忆研究正在把架构继续往前推：不只是存记录、偶尔做压缩，而是试图根据真实使用模式逐步重塑整个记忆层。
 
 这很有吸引力，因为它暗示着一种更聪明的系统：
 
-- summaries 可以持续演化；
-- memory classes 可以变得更丰富；
-- store 可以更贴近真实 recurring tasks。
+- 摘要可以持续演化；
+- 记忆类别可以变得更丰富；
+- 存储可以更贴近真实重复任务。
 
-但也正是在这里，最容易跳过 operational discipline。
+但也正是在这里，最容易跳过运营纪律。
 
 在团队还没有稳定建立这些能力之前：
 
-- provenance rules；
-- revision semantics；
-- reviewable memory writes；
-- traceable maintenance jobs；
-- 针对 derived artifacts 的 rollback path，
+- 来源规则；
+- 修订语义；
+- 可审查记忆写入；
+- 可追踪维护任务；
+- 针对派生产物的回滚路径，
 
-adaptive memory shaping 更适合被当作 research direction，而不是默认的 production pattern。
+自适应记忆塑形更适合被当作研究方向，而不是默认的生产模式。
 
-从工程上讲，这意味着一件很朴素的事：evolving memory 值得研究，但当前 live system contour 仍然应该建立在 explainable retrieval、controlled compaction 和可验证 provenance 之上。
+从工程上讲，这意味着一件很朴素的事：演化记忆值得研究，但当前在线系统轮廓仍然应该建立在可解释检索、受控压缩和可验证来源之上。
 
-## 7. 一个 retrieval 与 background updates 的 policy 示例
+## 7. 一个检索与后台更新的策略示例
 
 下面是一个很实用的模板。它不追求万能，但很清楚地展示了哪些决定应该被写明。
 
@@ -200,11 +200,11 @@ compaction:
   drop_expired_short_term: true
 ```
 
-当这些规则是显式的，团队讨论 memory 时就不再停留在感觉，而会讨论真实限制和 trade-offs。
+当这些规则是显式的，团队讨论记忆时就不再停留在感觉，而会讨论真实限制和取舍。
 
-## 8. 一个 prompt assembly 前 ranking 的简单代码示例
+## 8. 一个提示组装前排序的简单代码示例
 
-下面不是一个“聪明”的 retrieval engine，而是一个故意写得可读的例子。它展示了 ranking 不应该只看 similarity，还应该看 trust、freshness 和重要性。
+下面不是一个“聪明”的检索引擎，而是一个故意写得可读的例子。它展示了排序不应该只看相似度，还应该看信任度、新鲜度和重要性。
 
 ```python
 from dataclasses import dataclass
@@ -234,56 +234,56 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
     return ranked[:limit]
 ```
 
-这套逻辑很粗，但有一个重要优点：它是可以讨论、可以测试、也可以逐步替换成更精细方案的，同时不会丢掉 explainability。
+这套逻辑很粗，但有一个重要优点：它是可以讨论、可以测试、也可以逐步替换成更精细方案的，同时不会丢掉可解释性。
 
-## 9. Summaries 应该帮助理解，而不是隐藏数据来源
+## 9. 摘要应该帮助理解，而不是隐藏数据来源
 
-团队常常把 summaries 当作“把更多 memory 挤进更少 token”的手段。这没问题，但有一个陷阱：summary 不能变成新的匿名真相。
+团队常常把摘要当作“把更多记忆挤进更少 token”的手段。这没问题，但有一个陷阱：摘要不能变成新的匿名真相。
 
-一个好的 summary：
+一个好的摘要：
 
 - 比原始记录更短；
-- 保留 provenance；
-- 不混 tenants；
+- 保留来源；
+- 不混租户；
 - 不丢掉关键限制；
-- 被标记为 derived artifact，而不是 raw fact。
+- 被标记为派生产物，而不是原始事实。
 
-一个糟糕的 summary：
+一个糟糕的摘要：
 
 - 听起来很自信，但没人知道它来自哪里；
 - 把冲突事实混在一起；
-- 丢失日期和数据 owner；
-- 被当作 trusted instruction 喂给模型。
+- 丢失日期和数据负责人；
+- 被当作可信指令喂给模型。
 
 ## 10. 常见错误
 
 这些问题通常会一遍遍重复：
 
-- duplicates 被塞进 prompt；
-- retrieval 不知道 class boundaries；
-- ranking 不考虑 trust；
-- summaries 变得过于泛化；
-- 没有 background jobs，memory 只会膨胀；
-- nobody knows why this exact chunk was retrieved.
+- 重复内容被塞进提示；
+- 检索不知道类别边界；
+- 排序不考虑信任度；
+- 摘要变得过于泛化；
+- 没有后台任务，记忆只会膨胀；
+- 没人知道为什么正是这个片段被取回。
 
-最后这一点尤其重要。如果你已经无法解释为什么某段上下文进入了 prompt，那系统基本已经失去良好控制了。
+最后这一点尤其重要。如果你已经无法解释为什么某段上下文进入了提示，那系统基本已经失去良好控制了。
 
 ## 11. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
-- 有没有 records 数量上限和 token budget？
-- ranking 是否不仅考虑 similarity，也考虑 confidence、recency 和 trust？
-- read path 和 maintenance path 是否分开了？
-- compaction 是不是一个持续的维护过程，而不是偶尔手工清理？
-- summary 能不能看到 provenance？
-- 有没有防止跨 tenant 或错误 class 的 retrieval？
+- 有没有记录数量上限和 token 预算？
+- 排序是否不仅考虑相似度，也考虑置信度、近因性和信任度？
+- 读取路径和维护路径是否分开了？
+- 压缩是不是一个持续的维护过程，而不是偶尔手工清理？
+- 摘要能不能看到来源？
+- 有没有防止跨租户或错误类别的检索？
 
-如果连续几个问题答案都是 “no”，那说明你已经有了 memory，但还没有形成 memory discipline。
+如果连续几个问题答案都是“否”，那说明你已经有了记忆，但还没有形成记忆纪律。
 
 ## 12. 下一步做什么
 
-到这里，关于 memory 的基础部分已经开始成形。接下来你可以继续深入 retention 和 deletion，也可以转去看 tools 和 execution。
+到这里，关于记忆的基础部分已经开始成形。接下来你可以继续深入保留和删除，也可以转去看工具和执行。
 
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](chapter-6.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
