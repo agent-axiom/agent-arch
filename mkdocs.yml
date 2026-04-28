@@ -278,7 +278,7 @@ plugins:
             Шаблон postmortem для агентных систем: 智能体系统 Postmortem 模板
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的 Causal Debugging 与 Root-Cause Analysis
             Memory eval patterns для agent systems: 智能体系统的记忆评测模式
-            Tool failure recovery patterns для agent systems: 智能体系统的 Tool Failure Recovery Patterns
+            Tool failure recovery patterns для agent systems: 智能体系统的工具失败恢复模式
             Схема трасс и каталог событий: Trace Schema 与 Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema 与 Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema 与 Approval Contract
