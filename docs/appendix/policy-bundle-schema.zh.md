@@ -5,13 +5,13 @@
 - [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
-- [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
+- [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)
 
 同时它也依赖可运行的参考包：
 
 - [参考包](reference-package.zh.md)
 
-如果追踪模式和评测模式那两页回答的是：
+如果追踪 Schema 和评测 Schema 那两页回答的是：
 
 - 如何描述实际行为；
 - 如何描述期望行为；
@@ -31,11 +31,11 @@
 
 系统还小时也许能勉强运转，但一旦进入变更管理、审计和分阶段上线，这种策略层就会变得太模糊。
 
-所以最好把 `policy bundle` 视作一个一等工件。
+所以最好把策略包视作一个一等工件。
 
 ## 什么是策略包
 
-这里可以把 `policy bundle` 理解为一组作为整体发布的相关规则：
+这里可以把策略包理解为一组作为整体发布的相关规则：
 
 - 运行时策略；
 - 工具策略；
@@ -102,7 +102,7 @@ bundle:
 
 ## 审批契约示例
 
-下面是一个可工作的 skeleton：
+下面是一个可工作的骨架：
 
 ```yaml
 approval_contract:
@@ -132,7 +132,7 @@ approval_contract:
 
 ## 策略包和生命周期的关系
 
-从 Part VIII 里，这里最重要的是两点：
+从第八部分看，这里最重要的是两点：
 
 - 策略变更属于影响发布的变更；
 - 策略包应该作为完整工件进入变更管理。
@@ -169,9 +169,9 @@ approval_contract:
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
 
-也就是说，这个参考包已经活在一种模型里：策略和审批不再只是“附带设置”，而是绑定到具体 bundle 版本与发布控制面的受治理工件。
+也就是说，这个参考包已经活在一种模型里：策略和审批不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。
 
-## 生产级模式还应该补什么
+## 生产级 Schema 还应该补什么
 
 一旦运行时开始包含有状态 MCP 与可恢复能力会话，策略包就不能只描述能力原则上能不能用，还必须描述这些在线会话是如何被治理的。
 
