@@ -45,7 +45,7 @@
 
 - [参考运行时包](appendix/reference-package.zh.md)
 - [案例研究](appendix/case-studies.zh.md)
-- [按场景组织的 Policy Templates 与 Checklists](appendix/policy-templates.zh.md)
+- [按场景组织的策略模板与检查清单](appendix/policy-templates.zh.md)
 - [智能体系统事故响应手册](appendix/incident-response-playbook.zh.md)
 - [智能体注册表与清单运维手册](appendix/registry-operations-handbook.zh.md)
 - [智能体系统事后复盘模板](appendix/postmortem-template.zh.md)
