@@ -4,25 +4,25 @@
 
 它的目标不是变成生产级框架，而是作为本书 **第七和第八部分** 的最小代码锚点。
 
-这个包被有意定位成 implementation anchor，而不是一个平行产品。它的价值在于，让读者能够看到本书论证背后的 runnable structure，而不会把整个项目重新变成 framework manual。
+这个包被有意定位成实现锚点，而不是一个平行产品。它的价值在于，让读者能够看到本书论证背后的可运行结构，而不会把整个项目重新变成框架手册。
 
 这一页**不**承诺的事情是：
 
 - 它不会取代本书对这些层为何存在的解释；
-- 它不会成为读者学习 architectural trade-offs 的主要地方；
-- 它也不会试图把整个仓库变成一个 general-purpose agent framework。
+- 它不会成为读者学习架构权衡的主要地方；
+- 它也不会试图把整个仓库变成一个通用智能体框架。
 
 这里是这个包的主说明页面。README 里只保留简短的上手说明，完整的命令行、配置和结构说明都集中放在这里。
 
 一个实用的阅读路径是：
 
-- 第 16 章看 baseline runtime 与 capability session state，
-- 第 17 章看 policy layer 与 capability contracts，
-- [Evidence Spine](../book/part-v/evidence-spine.zh.md) 看从 request 到 rollout judgment 的端到端治理记录，
-- 第 18 章看围绕 approval 和 runtime behavior 的 rollout gates，
-- 第 21 章看 assurance response，
-- 第 22 章配合 lifecycle schema 看 governed artifact linkage、release identity、verifier-contract lineage 与 delegated authorization provenance，
-- 第 23 到 27 章看 capability sessions 周围的 interruption、expiry、re-init、retirement、observability、registry ownership、verifier-evidence obligations 与 delegated-authorization lifecycle control。
+- 第 16 章看基线运行时与能力会话状态，
+- 第 17 章看策略层与能力契约，
+- [Evidence Spine](../book/part-v/evidence-spine.zh.md) 看从请求到发布判断的端到端治理记录，
+- 第 18 章看围绕审批和运行时行为的发布门禁，
+- 第 21 章看保障响应，
+- 第 22 章配合生命周期 Schema 看受治理工件链接、发布身份、验证器契约谱系与委派授权来源证明，
+- 第 23 到 27 章看能力会话周围的中断、过期、重新初始化、退役、可观测性、注册表负责人、验证器证据义务与委派授权生命周期控制。
 
 ## 里面有什么
 
@@ -49,12 +49,12 @@
 - [controls.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/controls.py)
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
-  用于高风险动作的审批门禁、pause/resume semantics、简单人工评审队列，以及 approval state 必须与 capability session state 保持一致的那层 control surface。
+  用于高风险动作的审批门禁、暂停 / 恢复语义、简单人工评审队列，以及审批状态必须与能力会话状态保持一致的那层控制表面。
 
-同一层 runtime-control surface 也天然适合承载 delegated authorization assumptions：是谁委托了访问，这份授权能否跨过 pause/resume 继续有效，以及如果 delegated access 在动作完成前被撤销，runtime 应该如何处理。
+同一层运行时控制表面也天然适合承载委派授权假设：是谁委托了访问，这份授权能否跨过暂停 / 恢复继续有效，以及如果委派访问在动作完成前被撤销，运行时应该如何处理。
 
 - [lifecycle.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/lifecycle.py)
-  用于 change record、artifact bundle、release-identity records、runtime-control schemas、verifier-contract lineage 和 retirement plan 的生命周期工件，以及这些状态的就绪检查。
+  用于变更记录、工件包、发布身份记录、运行时控制 Schema、验证器契约谱系和退役计划的生命周期工件，以及这些状态的就绪检查。
 
 ## 如何运行
 
@@ -75,7 +75,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-第二种形式是一个刻意保持很小的 failure-rich 场景。它让这个参考包能够展示，一条本来被允许的 capability 也可能以受治理的 failed run 收尾，并留下明确的 telemetry，而不是被泛化成成功路径。
+第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。
 
 查看智能体身份与已批准能力清单：
 
@@ -83,7 +83,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-查看与第八部分对应的生命周期工件，包括 runtime-control linkage 和 release identity：
+查看与第八部分对应的生命周期工件，包括运行时控制链接和发布身份：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-lifecycle
@@ -93,10 +93,10 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个 lifecycle summary 里就能同时看到 degraded-path governance 的 retention 侧面与 trace/provenance control 侧面。
-`check-change` 现在也会单独给出 `missing_failed_run_signals`，这样 degraded-path rollout review 的缺口就不会被埋在普通 missing signals 列表里。
-`check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些 telemetry/session/approval records 必须在 retirement 之后继续保留下来，供后续 degraded-path review 使用。
-`check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样 trace/provenance 相关缺口就能和普通 control hygiene 分开审阅。
+`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到退化路径治理的保留侧面与追踪 / 来源证明控制侧面。
+`check-change` 现在也会单独给出 `missing_failed_run_signals`，这样退化路径发布评审的缺口就不会被埋在普通缺失信号列表里。
+`check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些遥测 / 会话 / 审批记录必须在退役之后继续保留下来，供后续退化路径评审使用。
+`check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样追踪 / 来源证明相关缺口就能和普通控制卫生分开审阅。
 
 查看记忆记录：
 
@@ -260,8 +260,8 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ## 下一步做什么
 
-- [追踪模式与事件目录](trace-schema.zh.md)
-- [评测数据集模式与分级契约](eval-schema.zh.md)
-- [策略包模式与审批契约](policy-bundle-schema.zh.md)
-- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
