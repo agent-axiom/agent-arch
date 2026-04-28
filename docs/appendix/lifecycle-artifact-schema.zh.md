@@ -1,8 +1,8 @@
-# 生命周期工件规范
+# 生命周期工件 Schema
 
-这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪模式回答的是“发生了什么”，评测模式回答的是“如何评估”，那生命周期工件规范回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
+这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪 Schema 回答的是“发生了什么”，评测 Schema 回答的是“如何评估”，那生命周期工件 Schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
 
-它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为生命周期工件本身就是后续 judgment 和 incident review 所依赖的那条受治理记录的一部分。
+它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为生命周期工件本身就是后续判断和事故评审所依赖的那条受治理记录的一部分。
 
 ## 1. 为什么需要它
 
@@ -12,12 +12,12 @@
 - 已批准工件包；
 - 退役计划；
 - 替换映射；
-- runtime-control schemas 与 contract-version linkages；
+- 运行时控制 Schema 与契约版本链接；
 - 运行期审批和生命周期决策；
-- 当这些能力已进入 runtime contract 时，capability-session interruption、expiry 与 re-initialization rules；
-- 当这些能力已进入 runtime contract 时，delegated authorization rules、principal-binding assumptions 与 revoke behavior；
-- 当 release 或 assurance 依赖 verifier output 时，verifier contracts、grading rubrics 与 evidence-linkage rules；
-- 当长时间运行的工作跨越 context reset 或角色交接边界时，结构化 handoff artifacts。
+- 当这些能力已进入运行时契约时，能力会话中断、过期与重新初始化规则；
+- 当这些能力已进入运行时契约时，委派授权规则、主体绑定假设与撤销行为；
+- 当发布或保障依赖验证器输出时，验证器契约、打分准则与证据链接规则；
+- 当长时间运行的工作跨越上下文重置或角色交接边界时，结构化交接工件。
 
 没有这一层，变更管理很快就会退化成口头协商。事故复盘也会变成“到底是谁大概改了策略或路由”的追溯游戏。
 
@@ -31,7 +31,7 @@
 
 这已经足够把设计评审、发布门禁、保障闭环和终止使用纪律串起来。
 
-## 3. Change record
+## 3. 变更记录
 
 `change_record` 用来描述一个具体变更，以及它的运行语义。
 
@@ -68,7 +68,7 @@ status: approved
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
 - `status` 是运行事实，而不是流程摆设。
 
-而一旦系统里已经存在 approval-bound 或 stateful capability sessions，change record 通常也应该能看出 interruption behavior、expiry handling、re-init semantics 与 delegated authorization rules 是否属于被审查的 surface。
+而一旦系统里已经存在审批绑定或有状态能力会话，变更记录通常也应该能看出中断行为、过期处理、重新初始化语义与委派授权规则是否属于被审查的表面。
 
 ## 4. 已批准工件包
 
@@ -103,18 +103,18 @@ provenance:
 - 它让发布身份变得可检查，而不是停留在隐式约定里；
 - 它让事故复盘和回滚都更短、更明确。
 
-而一旦 capability-session governance 已经进入显式管理，artifact bundle 通常也应该把和它一同被批准的 session-control assumptions 以及带有 verifier 约束的 contract family 说清楚，而不只是写一个 contract version：
+而一旦能力会话治理已经进入显式管理，工件包通常也应该把和它一同被批准的会话控制假设以及带有验证器约束的契约族说清楚，而不只是写一个契约版本：
 
-- expiry policy；
-- re-init policy；
-- stuck 或 expired capability-session state 的 ownership；
-- approval events 与 session events 之间应有怎样的 linkage；
-- delegated authorization mode；
-- principal-binding requirements；
-- paused 或 in-flight actions 的 revoke behavior；
-- 当 rollout 或 assurance 依赖 verifier judgments 时，verifier contract version、grading rubric 与 evidence-linkage expectations。
+- 过期策略；
+- 重新初始化策略；
+- 卡住或过期的能力会话状态由谁负责；
+- 审批事件与会话事件之间应有怎样的链接；
+- 委派授权模式；
+- 主体绑定要求；
+- 已暂停或进行中动作的撤销行为；
+- 当发布或保障依赖验证器判断时，验证器契约版本、打分准则与证据链接期望。
 
-## 5. Retirement plan
+## 5. 退役计划
 
 `retirement_plan` 不只是给整个智能体下线用的。它同样适用于能力、策略包或工件族的受控替换。
 
@@ -144,17 +144,17 @@ owner: platform-operations
 
 - 追踪；
 - 审批；
-- paused-run state；
-- background-route ownership；
+- 已暂停运行状态；
+- 后台路径负责人；
 - 主体；
 - 记忆；
 - 已归档的工件包；
-- 记录 sprint scope、evaluator critique 或 reset-boundary decisions 的结构化 handoff artifacts；
-- 对审计或延迟 operator response 仍然有意义的 expired capability-session state。
+- 记录 sprint 范围、评测者批评或重置边界决策的结构化交接工件；
+- 对审计或延迟操作员响应仍然有意义的过期能力会话状态。
 
 ## 6. 它和 Part VIII 的关系
 
-这个 schema 直接支撑了几章核心内容：
+这个 Schema 直接支撑了几章核心内容：
 
 - 第 20 章：变更管理；
 - 第 21 章：保障发现结果作为生命周期输入；
@@ -169,15 +169,15 @@ owner: platform-operations
 
 - 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
-- 每个 artifact bundle 都能作为具体的发布身份记录，而不只是松散的版本清单；
-- 只要存在这些控制，每个 artifact bundle 都应关联 runtime-control schema 与 contract version；
-- 当 release 或 assurance 依赖 graded outcomes 时，verifier contract lineage 与 contract-family identity 也必须可追溯；
+- 每个工件包都能作为具体的发布身份记录，而不只是松散的版本清单；
+- 只要存在这些控制，每个工件包都应关联运行时控制 Schema 与契约版本；
+- 当发布或保障依赖打分结果时，验证器契约谱系与契约族身份也必须可追溯；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
-- 当存在这些路径时，retirement 或 replacement 必须说明 paused runs、handoff artifacts 和 expired capability-session state 会如何处理；
-- 当这些控制存在时，delegated authorization ownership 与 revoke behavior 也必须能够对受影响 runs 被还原出来；
+- 当存在这些路径时，退役或替换必须说明已暂停运行、交接工件和过期能力会话状态会如何处理；
+- 当这些控制存在时，委派授权负责人和撤销行为也必须能够对受影响运行被还原出来；
 - 生命周期工件有负责人和版本；
 - 事故复盘能还原 `change -> bundle -> run -> retirement`；
-- 对 expired、paused 或 re-initialized capability paths 的 session-control ownership 也能被还原出来。
+- 对过期、已暂停或重新初始化能力路径的会话控制负责人也能被还原出来。
 
 ## 8. 最常见的断裂点
 
@@ -189,8 +189,8 @@ owner: platform-operations
 - 替换没有双运行语义；
 - 历史状态没有保留负责人；
 - 来源证明只到 git commit，进不了运行时工件包；
-- replacement 发生时，paused-run 与 expired-session state 被遗忘，但 operator 其实还需要它们；
-- verifier contract lineage 丢失了，尽管 rollout 或 assurance decisions 曾依赖它。
+- 替换发生时，已暂停运行与过期会话状态被遗忘，但操作员其实还需要它们；
+- 验证器契约谱系丢失了，尽管发布或保障决策曾依赖它。
 
 ## 9. 现在就该做什么
 
@@ -199,7 +199,7 @@ owner: platform-operations
 - 高风险变更是否有显式的变更记录？
 - 你是否真的有已批准工件包，而不是“最新几个 YAML 文件”？
 - 出现事故追踪时，你能反推出当时激活的工件包及其发布身份吗？
-- 你能说清一次发布当时是在哪个带有 verifier 约束的 contract family 下被批准的吗？
+- 你能说清一次发布当时是在哪个带有验证器约束的契约族下被批准的吗？
 - 已废弃能力和策略包是否有退役计划？
 - 替换之后归档状态是否还有负责人？
 - 生命周期工件层面的回滚单元是否清晰？
@@ -208,9 +208,9 @@ owner: platform-operations
 
 ## 下一步做什么
 
-- [追踪模式与事件目录](trace-schema.zh.md)
-- [评测数据集模式与分级契约](eval-schema.zh.md)
-- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
 - [第 22 章：供应链、来源追踪与已批准工件](../book/part-viii/chapter-22.zh.md)
