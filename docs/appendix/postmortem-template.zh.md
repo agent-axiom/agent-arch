@@ -1,28 +1,28 @@
-# 智能体系统 Postmortem 模板
+# 智能体系统事后复盘模板
 
-这个模板不是为了生成一份“好看”的文档，而是为了确保 incident review 最终会落到具体的 corrective actions、lifecycle updates 与 eval discipline 变化上。
+这个模板不是为了生成一份“好看”的文档，而是为了确保事故评审最终会落到具体的纠正动作、生命周期更新与评测纪律变化上。
 
-最好在 containment phase 之后使用它，也就是 traces、approvals、rollout data 与 active bundle 都已经恢复出来之后。
+最好在遏制阶段之后使用它，也就是追踪、审批、发布数据与当前生效的包都已经恢复出来之后。
 
 ## 1. 简要摘要
 
 - `incident_id`：
 - 日期与时间：
-- Severity：
-- Status：
-- Owner：
+- 严重性：
+- 状态：
+- 负责人：
 - 事故摘要：
 
 ## 2. 发生了什么
 
-- 参与的是哪个 agent 或 workflow：
-- 哪个 user input、retrieved context 或 external trigger 启动了这条路径：
-- 发生了什么 risky action 或 failure：
-- 是否产生了真实 side effect：
+- 参与的是哪个智能体或工作流：
+- 哪个用户输入、检索到的上下文或外部触发启动了这条路径：
+- 发生了什么高风险动作或失败：
+- 是否产生了真实副作用：
 
 这一节的目的，是简短且不带解释地固定事件链本身。
 
-## 3. 当时哪些 artifacts 在生效
+## 3. 当时哪些工件在生效
 
 - `trace_id`：
 - `session_id`：
@@ -33,83 +33,83 @@
 - `approval_mode`：
 - `tool_principal`：
 
-如果这个部分很难快速补齐，问题就不只是 incident 本身，也在 observability 或 lifecycle layer。
+如果这个部分很难快速补齐，问题就不只是事故本身，也在可观测性或生命周期层。
 
-## 4. Containment actions
+## 4. 遏制动作
 
 - 最初几分钟采取了哪些动作：
-- 哪些能力、路径或模式被禁用、收窄或转入 restricted mode：
-- 是否需要 rollback：
-- 是否撤销了 principals、connectors 或 capabilities：
+- 哪些能力、路径或模式被禁用、收窄或转入受限模式：
+- 是否需要回滚：
+- 是否撤销了主体、连接器或能力：
 
 这里最好区分：
 
 - 临时遏制；
 - 永久修正。
 
-## 5. Root cause
+## 5. 根因
 
 - 事故的直接原因是什么：
-- 哪些 contributing factors 放大了问题：
-- 哪个 gate、review 或 assumption 失效了：
-- 问题主要落在 policy、approvals、rollout、memory、observability 还是 inventory：
+- 哪些促成因素放大了问题：
+- 哪个门禁、评审或假设失效了：
+- 问题主要落在策略、审批、发布、记忆、可观测性还是清单：
 
 这一节应当通向系统性解释，而不是简单写成“模型出错了”。
 
-## 6. Control layer 哪些地方失效了
+## 6. 控制层哪些地方失效了
 
-- 哪个 policy decision 放过了 risky path：
-- 是否存在 approval bypass、missing approval 或错误的 approval scope：
-- 哪些 checks 或 evals 没有拦住问题：
-- 哪些 detection rules 没有触发，或者触发得太晚：
+- 哪个策略决策放过了高风险路径：
+- 是否存在审批绕过、缺失审批或错误的审批范围：
+- 哪些检查或评测没有拦住问题：
+- 哪些检测规则没有触发，或者触发得太晚：
 
-这一节不仅要描述错误，还要描述缺失的 guardrail。
+这一节不仅要描述错误，还要描述缺失的护栏。
 
-## 7. Blast radius
+## 7. 影响半径
 
-- 哪些 users、systems 或 data 受到了影响：
-- 是否触达 external systems：
-- 是否影响了 memory records：
-- 这是单次 run，还是 rollout wave / session family 中更大的模式：
+- 哪些用户、系统或数据受到了影响：
+- 是否触达外部系统：
+- 是否影响了记忆记录：
+- 这是单次运行，还是发布波次 / 会话族中的更大模式：
 
-## 8. Corrective actions
+## 8. 纠正动作
 
 对每个动作，最好固定：
 
 - 动作本身；
-- owner；
+- 负责人；
 - 截止时间；
-- 会更新哪个 artifact。
+- 会更新哪个工件。
 
-常见 corrective actions 包括：
+常见纠正动作包括：
 
-- update policy bundle；
-- tighten approval mode；
-- update eval dataset；
-- add targeted regression；
-- update rollout gate；
-- retire capability or principal；
-- update registry record；
-- add detection rule。
+- 更新策略包；
+- 收紧审批模式；
+- 更新评测数据集；
+- 增加定向回归测试；
+- 更新发布门禁；
+- 退役能力或主体；
+- 更新注册表记录；
+- 增加检测规则。
 
-## 9. Lifecycle artifacts 要更新什么
+## 9. 生命周期工件要更新什么
 
-- 如果需要 correction release，新的 `change_id` 是什么：
-- 如果 release configuration 变了，新的 `bundle_id` 是什么：
+- 如果需要修正发布，新的 `change_id` 是什么：
+- 如果发布配置变了，新的 `bundle_id` 是什么：
 - 是否需要新的 `retirement_plan`：
-- 是否需要更新 registry 或 inventory：
-- 是否需要调整 incident taxonomy 或 postmortem rubric：
+- 是否需要更新注册表或清单：
+- 是否需要调整事故分类或事后复盘准则：
 
-这一节的价值在于把 postmortem 连接到可治理的 artifacts，而不仅仅是任务系统里的待办项。
+这一节的价值在于把事后复盘连接到可治理的工件，而不仅仅是任务系统里的待办项。
 
-## 10. Evals 与 rollout 要更新什么
+## 10. 评测与发布要更新什么
 
-- 哪些案例应进入 eval dataset：
-- 要补哪些 behavioral 或 control evals：
-- rollout gate criteria 是否需要调整：
-- canary scope 或 approval threshold 是否需要修改：
+- 哪些案例应进入评测数据集：
+- 要补哪些行为评测或控制评测：
+- 发布门禁标准是否需要调整：
+- 金丝雀范围或审批阈值是否需要修改：
 
-如果 incidents 不回流到 evals 和 rollout rules，团队往往会重复同一类故障。
+如果事故不回流到评测和发布规则，团队往往会重复同一类故障。
 
 ## 11. YAML 简版模板
 
@@ -145,19 +145,19 @@ postmortem:
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- Postmortem 里是否有精确的 `incident_id`？
+- 事后复盘里是否有精确的 `incident_id`？
 - 是否恢复了 `trace_id`、`session_id`、`bundle_id` 与 `change_id`？
-- 是否写明了 contributing factors，而不只是 root cause？
-- 是否记录了 control gaps？
-- 是否给出了带 owner 和截止时间的 corrective actions？
-- 是否明确了要更新哪些 lifecycle artifacts？
-- Incident 是否回流到了 evals 与 rollout criteria？
+- 是否写明了促成因素，而不只是根因？
+- 是否记录了控制缺口？
+- 是否给出了带负责人和截止时间的纠正动作？
+- 是否明确了要更新哪些生命周期工件？
+- 事故是否回流到了评测与发布标准？
 
 ## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [Incident Record 与 Postmortem Linkage Schema](incident-record-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](change-rollout-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
+- [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
+- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [智能体 registry 与 inventory 运维手册](registry-operations-handbook.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)

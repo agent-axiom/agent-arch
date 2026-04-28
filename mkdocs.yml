@@ -275,7 +275,7 @@ plugins:
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
             Handbook по agent registry и inventory operations: 智能体 registry 与 inventory 运维手册
             План интеграции идей Google: Google 思路整合计划
-            Шаблон postmortem для агентных систем: 智能体系统 Postmortem 模板
+            Шаблон postmortem для агентных систем: 智能体系统事后复盘模板
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的因果调试与根因分析
             Memory eval patterns для agent systems: 智能体系统的记忆评测模式
             Tool failure recovery patterns для agent systems: 智能体系统的工具失败恢复模式
