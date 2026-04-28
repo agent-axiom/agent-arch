@@ -13,141 +13,141 @@
 这时团队面对的是一个非常具体的问题：
 
 - 是模型自己重复发起了调用；
-- 是 timeout 之后触发了 retry；
+- 是超时之后触发了重试；
 - 是工具返回了含糊不清的结果；
-- 是 side effect 发生在 runtime 看到错误之前；
+- 是副作用发生在运行时看到错误之前；
 - 还是两个不同的 runs 各自创建了一张工单。
 
-如果你手里只有 application logs 和几条指标，这个答案通常既慢又难找。
+如果你手里只有应用日志和几条指标，这个答案通常既慢又难找。
 
-这就是为什么智能体系统的可观测性不该围绕“日志总量”来设计，而要围绕“能否还原一次 run 的历史”来设计。
+这就是为什么智能体系统的可观测性不该围绕“日志总量”来设计，而要围绕“能否还原一次运行的历史”来设计。
 
-而在本章里，这个说法有一个刻意收窄的含义：tracing 是单次 run 的 capture layer，还不是那个跨越许多 runs 的 estate-wide substrate，用来做 detection、correlation 与运营可见性。
+而在本章里，这个说法有一个刻意收窄的含义：追踪是单次运行的捕获层，还不是那个跨越许多运行的全域级基底，用来做检测、关联与运营可见性。
 
-在本书里，tracing 的角色比整个 observability layer 更窄。Tracing 负责捕获执行的原始历史。后面的章节会分别说明 observability 如何把这段历史转成 evidence substrate，evals 如何把它转成 judgments，以及 assurance 或 governance 如何消费这些结果。
+在本书里，追踪的角色比整个可观测性层更窄。追踪负责捕获执行的原始历史。后面的章节会分别说明可观测性如何把这段历史转成证据基底，评估如何把它转成判断，以及保证或治理如何消费这些结果。
 
-如果你想看到 tracing 如何与 policy、approvals、evals、incidents 和 rollout judgment 串成同一条运行记录，可以把单独的 [Evidence Spine](evidence-spine.zh.md) 页面当作这条桥接层。
+如果你想看到追踪如何与策略、审批、评估、事故和 rollout 判断串成同一条运行记录，可以把单独的 [Evidence Spine](evidence-spine.zh.md) 页面当作这条桥接层。
 
 ## 2. 为什么普通日志几乎总是不够
 
 当系统简单时，扁平日志和少量指标也许够用。但智能体系统几乎总是更复杂：
 
-- 一个用户请求会变成多步骤 run；
-- run 内部有 planning、retrieval、prompt assembly、tool calls 和 policy gates；
+- 一个用户请求会变成多步骤运行；
+- 运行内部有规划、检索、提示组装、工具调用和策略门；
 - 某些步骤会被放到后台；
 - 错误出现的位置可能并不是它真正开始的地方。
 
 如果你只用扁平日志看这些东西，很快就会失去因果关系。你能看到噪音，却看不到执行历史。
 
-对于这个支持事故，这意味着一件很简单的事：没有好的 tracing，团队就无法知道是谁创建了重复工单，以及为什么会发生。
+对于这个支持事故，这意味着一件很简单的事：没有好的追踪，团队就无法知道是谁创建了重复工单，以及为什么会发生。
 
-## 3. Trace 是一次 run 的故事，span 是一个有意义的步骤
+## 3. 追踪是一次运行的故事，span 是一个有意义的步骤
 
 这里最好先固定一个简单模型：
 
-- `trace` 描述请求或 run 的完整路径；
+- `trace` 描述请求或运行的完整路径；
 - `span` 描述这条路径中的一个重要步骤；
-- `structured events` 补充那些不该埋在自由文本里的精确信息。
+- 结构化事件补充那些不该埋在自由文本里的精确信息。
 
-对于同一个支持场景，一次 run 可能包含：
+对于同一个支持场景，一次运行可能包含：
 
-- policy evaluation；
-- retrieval；
-- model inference；
-- tool execution；
-- approval wait；
-- background memory update。
+- 策略评估；
+- 检索；
+- 模型推理；
+- 工具执行；
+- 审批等待；
+- 后台记忆更新。
 
 当这种结构存在后，团队就不再把系统看成杂乱调用流，而是看成一串可观察的决策。
 
-这个区分很重要，因为本章并不在讨论如何在整个 estate 上聚合、关联或告警。它讨论的是，哪些原始执行历史必须被保留下来，后面的那些功能才有可能成立。
+这个区分很重要，因为本章并不在讨论如何在整个全域上聚合、关联或告警。它讨论的是，哪些原始执行历史必须被保留下来，后面的那些功能才有可能成立。
 
-## 4. 在这个支持场景里，trace 应该长什么样
+## 4. 在这个支持场景里，追踪应该长什么样
 
 下面这张图的重要性不在“好看”，而在于它能告诉你故障到底可能发生在哪一层。
 
 <div class="diagram-card">
-<p>成熟的 trace 不该只展示模型，还应展示关键 control points</p>
+<p>成熟追踪不该只展示模型，还应展示关键控制点</p>
 
 ``` mermaid
 flowchart LR
-    A["User request"] --> B["Run trace"]
-    B --> C["Policy span"]
-    B --> D["Retrieval span"]
-    B --> E["Model span"]
-    B --> F["Tool span: check status"]
-    B --> G["Tool span: create ticket"]
-    B --> H["Approval span"]
-    B --> I["Memory update span"]
+    A["用户请求"] --> B["运行追踪"]
+    B --> C["策略 span"]
+    B --> D["检索 span"]
+    B --> E["模型 span"]
+    B --> F["工具 span：检查状态"]
+    B --> G["工具 span：创建工单"]
+    B --> H["审批 span"]
+    B --> I["记忆更新 span"]
 ```
 
 </div>
 
-如果这个 trace 被正确采集，团队应该能很快看清：
+如果这条追踪被正确采集，团队应该能很快看清：
 
-- 第二次 tool call 是否发生在同一个 run 里；
-- 是否出现了 retry；
+- 第二次工具调用是否发生在同一次运行里；
+- 是否出现了重试；
 - `idempotency_key` 是什么；
 - `side_effect_unknown` 出现在哪一步；
-- 是否存在 approval；
-- 哪个 policy gate 放行了这个动作。
+- 是否存在审批；
+- 哪个策略门放行了这个动作。
 
 ## 5. 哪些东西适合做成独立 span
 
-没必要给每个小细节都建 span，但整个 run 只有一个 giant span 也几乎没用。
+没必要给每个小细节都建 span，但整个运行只有一个巨大 span 也几乎没用。
 
 一个实用规则是：
 
-- orchestration step 单独一个 span；
-- retrieval 单独一个 span；
-- model call 单独一个 span；
-- 每次 tool call 单独一个 span；
-- 如果 policy decision 会改变行为，就给它单独一个 span；
-- 如果存在 human approval wait，也单独建一个 span。
+- 编排步骤单独一个 span；
+- 检索单独一个 span；
+- 模型调用单独一个 span；
+- 每次工具调用单独一个 span；
+- 如果策略决策会改变行为，就给它单独一个 span；
+- 如果存在 人工审批等待，也单独建一个 span。
 
-这样 trace 既保持可读，又能真正告诉你时间、成本和可靠性到底花在了哪里。
+这样追踪既保持可读，又能真正告诉你时间、成本和可靠性到底花在了哪里。
 
-## 6. 结构化事件在 plain text 只会碍事的地方最有价值
+## 6. 结构化事件在纯文本 只会碍事的地方最有价值
 
-一个常见错误是：有价值的 operational facts 被写进了给人看的日志里，结果以后既无法分析，也无法调查。
+一个常见错误是：有价值的运营事实 被写进了给人看的日志里，结果以后既无法分析，也无法调查。
 
 结构化事件尤其适合这些地方：
 
-- policy decisions；
-- tool outcomes；
-- prompt assembly metadata；
-- token usage；
-- cost attribution；
-- idempotency keys；
-- tenant 和 principal context；
-- memory writes；
-- 关于 run 之后如何被 grading 的 verifier evidence。
+- 策略决策；
+- 工具结果；
+- 提示组装元数据；
+- token 用量；
+- 成本归因；
+- 幂等键；
+- 租户和主体上下文；
+- 记忆写入；
+- 关于运行之后如何被评分的验证器证据。
 
-也就是说，event 应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器当作证据来分析”。
+也就是说，事件应该回答的不是“这条日志怎么写”，而是“以后哪些信息需要被机器当作证据来分析”。
 
-这个区分很重要。Trace 还不是 verdict，不是 policy decision，也不是 incident response action。它是最底层的 raw capture layer，没有它，后续这些功能都无法可靠成立。
+这个区分很重要。追踪还不是裁决，不是策略决策，也不是事故响应动作。它是最底层的原始捕获层，没有它，后续这些功能都无法可靠成立。
 
-## 7. 好的 trace model 展示的是 control plane，而不只是 LLM latency
+## 7. 好的追踪模型展示的是控制平面，而不只是 LLM 延迟
 
-如果可观测性最终只剩模型响应时间，团队看到的 picture 会非常扭曲。
+如果可观测性最终只剩模型响应时间，团队看到的图景 会非常扭曲。
 
-现实里，同一个支持 run 往往坏在别处：
+现实里，同一个支持运行往往坏在别处：
 
-- retrieval 开始返回噪音；
-- policy engine 过度阻断；
-- approval wait 被拉长；
-- tool adapter 退化；
-- background updates 堵住队列；
-- prompt assembly 膨胀了上下文；
-- write tool 返回了模糊结果。
+- 检索开始返回噪音；
+- 策略引擎过度阻断；
+- 审批等待被拉长；
+- 工具适配器退化；
+- 后台更新堵住队列；
+- 提示组装膨胀了上下文；
+- 写工具返回了模糊结果。
 
-所以 trace model 应覆盖整个 control flow，而不只是 inference step。
+所以追踪模型应覆盖整个控制流，而不只是推理步骤。
 
-但它仍然应该保持为 trace model。它负责为后续调查保留执行历史。更靠后的 observability layer 才负责把许多 traces 连接成 estate 级的 evidence、detection logic 与 operational visibility。
+但它仍然应该保持为追踪模型。它负责为后续调查保留执行历史。更靠后的 可观测性层才负责把许多追踪连接成全域级证据、检测逻辑与运营可见性。
 
-因此，本章会停留在 capture boundary 上：哪些东西必须被记录、应该如何结构化，以及哪些内容必须在后续 review 中幸存下来。后面的 observability chapter 讨论的是 estate 级 evidence 与 detection，而不是重新定义什么叫 trace。
+因此，本章会停留在捕获边界上：哪些东西必须被记录、应该如何结构化，以及哪些内容必须在后续审查中幸存下来。后面的可观测性章节讨论的是全域级证据与检测，而不是重新定义什么叫 trace。
 
-## 8. Trace 和 span 的最小字段集合
+## 8. 追踪和 span 的最小字段集合
 
 如果你希望系统真正便于调查，至少要有：
 
@@ -160,26 +160,26 @@ flowchart LR
 - `agent_id` 或 workflow id
 - `status`
 - `duration_ms`
-- 如果发生 model call，则有 `model_name`
-- 如果发生 tool call，则有 `tool_name`
+- 如果发生模型调用，则有 `model_name`
+- 如果发生工具调用，则有 `tool_name`
 - 如果有 gate，则有 `policy_decision_id`
 
-对于这个支持事故，这些字段已经足够把 runtime、tool gateway 和具体的外部 side effect 串起来。
+对于这个支持事故，这些字段已经足够把运行时、工具网关和具体外部副作用串起来。
 
-在更成熟的 eval program 里，还应该保留足够的 verifier-aware review linkage，不只记录 run 里发生了什么，也记录哪些 trace 与 screenshots 后来支撑了 `process_score`、`outcome_score` 或 `failure_attribution`。
+在更成熟的评估程序里，还应该保留足够的验证器感知的审查链接，不只记录运行里发生了什么，也记录哪些追踪与截图后来支撑了 `process_score`、`outcome_score` 或 `failure_attribution`。
 
-## 9. tracing 的实用规则
+## 9. 追踪的实用规则
 
-如果要把 tracing 压缩成一组可执行规则，通常这些就够了：
+如果要把追踪压缩成一组可执行规则，通常这些就够了：
 
-1. 每个 run 都应该有一个不会在 policy、model 和 tool spans 之间丢失的 `trace_id`。
-2. Trace 应该覆盖 control plane，而不只是 model latency。
-3. 所有 tool calls、approval waits 和 policy decisions 都应该留下 machine-readable events。
+1. 每次运行都应该有一个不会在策略、模型和工具 span 之间丢失的 `trace_id`。
+2. 追踪应该覆盖控制平面，而不只是模型延迟。
+3. 所有工具调用、审批等待和策略决策都应该留下机器可读事件。
 4. 不确定性要明确记录：`side_effect_unknown` 比假装成 `success` 更有价值。
-5. Redaction 和 schema stability 应该一开始就设计进去，而不是等第一次 incident review 之后再补。
-6. 如果 eval 或 rollout 依赖 verifier judgments，traces 就应该保留指向 verifier evidence 的显式 linkage。
+5. 脱敏和 schema 稳定性应该一开始就设计进去，而不是等第一次事故审查之后再补。
+6. 如果评估或 rollout 依赖验证器判断，追踪就应该保留指向验证器证据的显式链接。
 
-## 10. 一个 tool execution 的 structured event 示例
+## 10. 一个工具执行的结构化事件示例
 
 下面这个模板能很好地展示正确的思路：
 
@@ -210,16 +210,16 @@ side_effect: created
 - `verifier_id`
 - `evidence_refs`
 
-这些字段也能帮助团队把 operational telemetry 直接连到后续 grading 或 rollout review，而不是事后再手工重建 verifier evidence。
+这些字段也能帮助团队把运营遥测直接连到后续评分或 rollout 审查，而不是事后再手工重建验证器证据。
 
 正是这些字段，往往能帮你区分：
 
-- duplicate tool call；
-- late retry；
-- 错误的 tenant scope；
-- 模糊的 external response。
+- 重复工具调用；
+- 迟到重试；
+- 错误的租户作用域；
+- 模糊的外部响应。
 
-## 11. 一个简单的 span emission 示例
+## 11. 一个简单的 span 发出示例
 
 下面这个骨架不是为了替代 tracing SDK，而是为了说明一个原则：span 不只是开始和结束，它还必须把步骤类型和结果记录成可分析的结构。
 
@@ -258,60 +258,60 @@ def emit_span(result: SpanResult) -> None:
 
 Observability 不应该变成数据泄漏渠道。
 
-所以 traces 和 events 里必须特别谨慎对待：
+所以追踪和事件 里必须特别谨慎对待：
 
-- 完整 prompt bodies；
-- 原始 retrieved documents；
-- secrets 和 tokens；
+- 完整提示正文；
+- 原始检索文档；
+- 密钥和 token；
 - PII；
-- 敏感 tool payloads。
+- 敏感工具载荷。
 
 最实用的规则是：
 
-- 记录 metadata 和 derived facts；
-- 在有帮助时记录 identifiers 和 hashes；
-- 没有充分理由时，不要把完整敏感 payload 丢进通用 telemetry pipeline。
+- 记录元数据和派生事实；
+- 在有帮助时记录标识符和哈希；
+- 没有充分理由时，不要把完整敏感载荷丢进通用遥测流水线。
 
 ## 13. 智能体可观测性最常见的崩坏点
 
 这些问题非常典型：
 
-- trace 只覆盖 model call；
-- tool calls 无法和原始 run 关联；
-- policy decisions 在代码里可见，但在 telemetry 里不可见；
-- events 有了，但没有 tenant/principal context；
-- spans 太粗或太噪；
-- event schema 经常变化，导致分析系统失效。
+- 追踪只覆盖模型调用；
+- 工具调用无法和原始运行关联；
+- 策略决策 在代码里可见，但在遥测里不可见；
+- 事件有了，但没有租户/主体上下文；
+- span 太粗或太噪；
+- 事件 schema 经常变化，导致分析系统失效。
 
 一旦这样，团队又会回到猜测和人工读日志的状态。
 
-这时系统也许已经产生了很多 telemetry exhaust，但仍然没有可靠的 raw run history。
+这时系统也许已经产生了很多遥测尾气，但仍然没有可靠的原始运行历史。
 
 ## 14. 给智能体可观测性做一次快速成熟度测试
 
-团队不应该只因为已经有 dashboards、logs 和 model latency 图表，就把 observability 叫做成熟。
+团队不应该只因为已经有 dashboard、日志和模型延迟图表，就把可观测性叫做成熟。
 
 更高的标准应该是：
 
-- 一次 run 可以被 end to end 重建出来；
-- policy、model、tool 和 approval layers 都真正可见；
-- 不确定性不会被压扁成伪装的 success；
-- telemetry 既能支持 incident review，也能支持 release decisions；
-- 敏感数据处理是被设计好的，而不是临时 improvisation。
+- 一次运行可以被端到端重建出来；
+- 策略、模型、工具和审批层都真正可见；
+- 不确定性不会被压扁成伪装的成功；
+- 遥测既能支持事故审查，也能支持发布决策；
+- 敏感数据处理是被设计好的，而不是临时即兴发挥。
 
-如果这些条件不满足，系统也许已经会发 telemetry，但它还没有 operational observability。
+如果这些条件不满足，系统也许已经会发遥测，但它还没有运营可观测性。
 
 ## 15. 读完这一章后先做什么
 
 如果你想快速检查可观测性模型，可以先过一遍这个短清单：
 
-1. 能否通过一个 `trace_id` 重建完整 run 路径？
-2. retrieval、model calls、tool calls 和 policy gates 是否都有独立 spans？
-3. idempotency keys 和 policy decision ids 是否被记录？
-4. telemetry 中是否带 tenant/principal context？
-5. 能否看见 run 时间花在哪里、成本在哪里上涨？
-6. 敏感 payloads 是否没有泄露到 traces 中？
-7. structured event schema 是否稳定？
+1. 能否通过一个 `trace_id` 重建完整运行路径？
+2. 检索、模型调用、工具调用和策略门是否都有独立 span？
+3. 幂等键和策略决策 ID 是否被记录？
+4. 遥测中是否带租户/主体上下文？
+5. 能否看见运行时间花在哪里、成本在哪里上涨？
+6. 敏感载荷是否没有泄露到追踪中？
+7. 结构化事件 schema 是否稳定？
 
 如果连续几个答案都是否，那可观测性还只是装饰性的，而不是运行层面的。
 
