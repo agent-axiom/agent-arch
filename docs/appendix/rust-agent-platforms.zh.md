@@ -23,7 +23,7 @@ Rust 特别适合这些要求明显的组件：
 
 - 工具网关；
 - 策略引擎与审批网关；
-- MCP server 与适配器；
+- MCP 服务器与适配器；
 - 记忆与索引层；
 - 遥测采集器与追踪处理器；
 - 网络代理与出口控制服务。
@@ -51,11 +51,11 @@ Rust 特别适合这些要求明显的组件：
 
 ### AWS
 
-AWS 在这方面更强一些。它有成熟的 **AWS SDK for Rust**、官方 **Bedrock Runtime** Rust 示例，以及 **Agents for Amazon Bedrock Runtime** 的 crate。对于 Bedrock 周边的生产集成和较低层的平台服务，这已经是比较现实的选择。
+AWS 在这方面更强一些。它有成熟的 **AWS SDK for Rust**、官方 **Bedrock Runtime** Rust 示例，以及 **Agents for Amazon Bedrock Runtime** 的 crate 包。对于 Bedrock 周边的生产集成和较低层的平台服务，这已经是比较现实的选择。
 
 ### Microsoft
 
-Microsoft 的 Rust 路线在发展，但现有总览文档里 Azure SDK for Rust 仍然标为 beta。对某些基础设施工作来说这未必是问题，但它还不是一种和主要语言路径同等成熟的信号。
+Microsoft 的 Rust 路线在发展，但现有总览文档里 Azure SDK for Rust 仍然标为 beta 版。对某些基础设施工作来说这未必是问题，但它还不是一种和主要语言路径同等成熟的信号。
 
 ### Rig
 
@@ -97,7 +97,7 @@ Rust 最值得优先考虑的场景包括：
 
 这通常比为了语言纯度而强行把整个智能体栈都迁到 Rust 更稳妥。
 
-## 如果你仍然想走 Rust-first 路线
+## 如果你仍然想走 Rust 优先路线
 
 那就最好保持现实感：
 
