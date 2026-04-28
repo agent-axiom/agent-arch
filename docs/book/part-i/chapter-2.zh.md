@@ -5,9 +5,9 @@
 
     更有用的是先完成三件事：
 
-    - 顺着一个 support 请求走完整条路径；
+    - 顺着一个支持请求走完整条路径；
     - 看清系统的行动权到底从哪里开始；
-    - 记下几个必需层，因为没有它们，请求就不能安全地走到外部 side effect。
+    - 记下几个必需层，因为没有它们，请求就不能安全地走到外部副作用。
 
 ## 1. 不要先看层，要先看一个活生生的案例
 
@@ -25,7 +25,7 @@
 - 创建工单；
 - 返回答复。
 
-但 production 系统不能建立在这种“大致如此”的想象上。因为太多关键问题还没有被回答：
+但生产系统不能建立在这种“大致如此”的想象上。因为太多关键问题还没有被回答：
 
 - 到底是谁在请求这个动作；
 - 这个请求具有什么权限；
@@ -35,16 +35,16 @@
 - 如果工具返回的是部分结果或不稳定结果，该怎么办；
 - 发生事故以后，怎样把整条链路重新还原出来。
 
-平台架构，正是从这些问题里长出来的。它不是出于对“分层”的偏爱，而是因为这些问题必须在高风险 write path 出现之前就得到回答。
+平台架构，正是从这些问题里长出来的。它不是出于对“分层”的偏爱，而是因为这些问题必须在高风险写路径出现之前就得到回答。
 
 ## 2. 智能体的最小形状，以及为什么它还不够
 
 一开始不用把整张图都装进脑子里。先分清两件事就够了：
 
 - 智能体系统的最小核心；
-- 让这个核心不再只是原型的 production 外层。
+- 让这个核心不再只是原型的生产外层。
 
-OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常只有三样东西。[^openai-practical]
+OpenAI 的实用指南有一个很好的起点：最小的智能体系统通常只有三样东西。[^openai-practical]
 
 - `model`
 - `tools`
@@ -52,7 +52,7 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 这是一个很好的起步框架，因为它能防止你过早过度设计。
 
-但对 production 来说，这还不够。只要系统开始拥有：
+但对生产来说，这还不够。只要系统开始拥有：
 
 - 对内部系统的访问；
 - 私有数据；
@@ -63,29 +63,29 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 这个最小三元组就不再是架构了。它只是核心，而不是平台。
 
-这正是对上一章论点的进一步证明。`model + tools + instructions` 足以让一个原型看起来会工作，但它已经不足以解释 rights、side effects、accountability 和 recovery，一旦系统真正接触现实环境，这些问题就会立刻出现。
+这正是对上一章论点的进一步证明。`model + tools + instructions` 足以让一个原型看起来会工作，但它已经不足以解释权限、副作用、问责和恢复，一旦系统真正接触现实环境，这些问题就会立刻出现。
 
-## 2.1. 哪些属于 runtime 架构，哪些不属于
+## 2.1. 哪些属于运行时架构，哪些不属于
 
-这里最好再画一条边界，因为团队很容易把 runtime 设计、模型训练和 product surface 混在一起。
+这里最好再画一条边界，因为团队很容易把运行时设计、模型训练和产品表面混在一起。
 
-通常属于 agent runtime 架构的，会包括：
+通常属于智能体运行时架构的，会包括：
 
 - `model`；
 - `instructions`；
 - `tools`；
 - `memory`；
-- planning routines 或 skills；
+- 规划例程或技能；
 - `runtime`；
-- guardrails 和 policies。
+- 防护栏和策略。
 
-但也有几样东西通常不属于 runtime 架构：
+但也有几样东西通常不属于运行时架构：
 
-- training dataset 和 reward model 属于模型开发与训练，而不属于 runtime；
-- user interface 属于 product surface，而不属于 agent 核心逻辑；
-- context window 是所选模型的属性，而不是一个独立的架构层。
+- 训练数据集和奖励模型属于模型开发与训练，而不属于运行时；
+- 用户界面属于产品表面，而不属于智能体核心逻辑；
+- 上下文窗口是所选模型的属性，而不是一个独立的架构层。
 
-这一区分看起来有点理论化，但实践里非常有用。如果系统开始在 tool routing、approval path 或 retrieval discipline 上退化，原因通常在 runtime contour，而不是在 UI 或 reward model。
+这一区分看起来有点理论化，但实践里非常有用。如果系统开始在工具路由、审批路径或检索纪律上退化，原因通常在运行时轮廓，而不是在 UI 或奖励模型。
 
 ## 3. 一个请求应该怎样穿过系统
 
@@ -102,7 +102,7 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 - 属于哪个 session 和哪个 `trace_id`；
 - 会被哪组策略约束。
 
-换句话说，进入系统的不是“文本”，而是一个可管理的 execution context。
+换句话说，进入系统的不是“文本”，而是一个可管理的执行上下文。
 
 ### 3.2. 控制层
 
@@ -114,18 +114,18 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 - 有哪些额度或限制；
 - 当前环境里有哪些禁区。
 
-这就是 control plane。它负责的不是“聪明”，而是系统有没有权利行动。
+这就是控制平面。它负责的不是“聪明”，而是系统有没有权利行动。
 
-### 3.3. Runtime
+### 3.3. 运行时
 
-然后请求才进入 runtime，在这里确定执行模式：
+然后请求才进入运行时，在这里确定执行模式：
 
-- 这里普通 workflow 就够；
+- 这里普通工作流就够；
 - 这里需要 `single-agent loop`；
 - 这里必须插入审批中断；
-- 这里需要先 checkpoint，之后再继续。
+- 这里需要先写入检查点，之后再继续。
 
-一个好的 runtime 往往很“无聊”。它不是靠魔法取胜，而是靠可预测性取胜。
+一个好的运行时往往很“无聊”。它不是靠魔法取胜，而是靠可预测性取胜。
 
 ### 3.4. 模型层
 
@@ -134,19 +134,19 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 - 接收整理过的上下文；
 - 决定下一步；
 - 提议调用工具或者生成文本答复；
-- 把结构化结果返回给 runtime。
+- 把结构化结果返回给运行时。
 
 这里最重要的区分是：模型可以提出动作建议，但它不应该是唯一决定“能不能执行”的地方。
 
 ### 3.5. 工具层
 
-如果智能体想检查申请状态，或者创建工单，它不应该直接进入外部世界。那是 tool gateway 的工作：
+如果智能体想检查申请状态，或者创建工单，它不应该直接进入外部世界。那是工具网关的工作：
 
-- 检查 policy decision；
-- 在需要时要求 approval；
-- 隔离 side effects；
-- 把结果返回给 runtime；
-- 把事件写入 trace。
+- 检查策略决策；
+- 在需要时要求审批；
+- 隔离副作用；
+- 把结果返回给运行时；
+- 把事件写入追踪。
 
 ### 3.6. 追踪与评估
 
@@ -154,7 +154,7 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 - 模型做了什么判断；
 - 调用了哪个工具；
-- 哪个 policy gate 生效了；
+- 哪个策略门禁生效了；
 - 是否触发审批；
 - 延迟在哪一步上升；
 - 故障发生在什么位置。
@@ -165,10 +165,10 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 
 如果你在这里仍然觉得这张图有点密，不用急着记住所有模块名称。先回答三个问题就够了：
 
-- execution context 是从哪里形成的；
+- 执行上下文是从哪里形成的；
 - 行动权到底放在哪里；
 - 系统在哪里留下了足够支撑排障和发布决策的证据；
-- runtime 针对这一类任务到底选择了哪一种 orchestration pattern。
+- 运行时针对这一类任务到底选择了哪一种编排模式。
 
 现在再回头看平台全图，就更容易理解它为什么存在。
 
@@ -179,36 +179,36 @@ OpenAI 的实用指南有一个很好的起点：最小的 agent system 通常�
 flowchart TB
     user["User / API / Event"] --> interface["Interface layer"]
     interface --> identity["Identity & session layer"]
-    identity --> control["Agent control plane"]
-    control --> runtime["Orchestration runtime"]
-    runtime --> cognition["Cognition plane"]
-    runtime --> memory["Memory & knowledge plane"]
-    runtime --> tools["Tool execution plane"]
-    runtime --> telemetry["Telemetry & eval plane"]
-    tools --> external["External systems / MCP / SaaS"]
-    memory --> stores["Vector DB / KB / profile memory"]
-    control --> approval["Approval / policy / quotas"]
-    telemetry --> audit["Traces / metrics / audit"]
+    identity --> control["智能体控制平面"]
+    control --> runtime["编排运行时"]
+    runtime --> cognition["认知平面"]
+    runtime --> memory["记忆与知识平面"]
+    runtime --> tools["工具执行平面"]
+    runtime --> telemetry["遥测与评测平面"]
+    tools --> external["外部系统 / MCP / SaaS"]
+    memory --> stores["Vector DB / KB / 画像记忆"]
+    control --> approval["审批 / 策略 / 配额"]
+    telemetry --> audit["追踪 / 指标 / 审计"]
 ```
 
 </div>
 
-这张图里真正重要的不是层的“好看”，而是每一层都在回答一个原型自己答不出的 failure question：
+这张图里真正重要的不是层的“好看”，而是每一层都在回答一个原型自己答不出的失败问题：
 
 | 层 | 负责什么 | 缺了会怎样 |
 | --- | --- | --- |
-| Interface layer | Chat、API、webhooks、events | 否则入口渠道和执行逻辑会混在一起 |
-| Identity and session layer | 用户、服务账号、tenant、request scope | 否则 IAM、审计和隔离都会失效 |
-| Agent control plane | 策略、审批、限额、目录 | 否则系统会在缺乏控制的情况下行动 |
-| Orchestration runtime | Workflow graph、planner、checkpoints | 否则一旦流程变复杂，执行就会散掉 |
-| Cognition plane | Model router、prompt assembly、validators | 否则模型会重新变成“世界中心” |
-| Memory and knowledge plane | 状态、记忆、retrieval | 否则上下文会无纪律地膨胀 |
-| Tool execution plane | Gateway、sandbox、side-effect isolation | 否则 blast radius 太大 |
-| Telemetry and eval plane | Traces、metrics、datasets、regression gates | 否则质量无法被测量和调查 |
+| 接口层 | Chat、API、webhooks、events | 否则入口渠道和执行逻辑会混在一起 |
+| 身份与会话层 | 用户、服务账号、tenant、request scope | 否则 IAM、审计和隔离都会失效 |
+| 智能体控制平面 | 策略、审批、限额、目录 | 否则系统会在缺乏控制的情况下行动 |
+| 编排运行时 | 工作流图、规划器、检查点 | 否则一旦流程变复杂，执行就会散掉 |
+| 认知平面 | 模型路由器、提示组装、校验器 | 否则模型会重新变成“世界中心” |
+| 记忆与知识平面 | 状态、记忆、检索 | 否则上下文会无纪律地膨胀 |
+| 工具执行平面 | 网关、沙箱、副作用隔离 | 否则爆炸半径太大 |
+| 遥测与评测平面 | 追踪、指标、数据集、回归门禁 | 否则质量无法被测量和调查 |
 
-## 5. Production 平台的五个支柱
+## 5. 生产平台的五个支柱
 
-Google Cloud 最近的材料还给出了一条很实用的补充框架：不要围绕“一个聪明智能体”思考，而要围绕 production 平台的五个支柱思考。[^google-five-pillars]
+Google Cloud 最近的材料还给出了一条很实用的补充框架：不要围绕“一个聪明智能体”思考，而要围绕生产平台的五个支柱思考。[^google-five-pillars]
 
 - `framework`
 - `model`
@@ -221,7 +221,7 @@ Google Cloud 最近的材料还给出了一条很实用的补充框架：不要�
 如果你只有：
 
 - 一个强模型；
-- 一个不错的 prompt；
+- 一个不错的提示；
 - 几个工具，
 
 但没有 `runtime` 和 `trust`，那你依然没有平台。你只有原型。
@@ -230,72 +230,72 @@ Google Cloud 最近的材料还给出了一条很实用的补充框架：不要�
 
 有些决策，最好在一开始就明确，而不是“先做着看”。
 
-### 6.1. 你的 context layers 到底有哪些
+### 6.1. 你的上下文层到底有哪些
 
-Google 通过 context layers 来约束 prompt assembly，这一点非常实用。[^google-agent-overview][^google-govern]
+Google 通过上下文层来约束提示组装，这一点非常实用。[^google-agent-overview][^google-govern]
 
 在实践里，通常至少要分出：
 
-- `static context`：角色、策略、allowed capabilities、固定 instructions；
+- `static context`：角色、策略、允许的能力、固定指令；
 - `session context`：跨会话持续存在的上下文；
 - `turn context`：只属于当前请求的上下文；
 - `cached context`：按需注入的上下文。
 
-实用规则很简单：进入 prompt 的不应该是“所有能拿到的数据”，而应该是“用途和生命周期都清楚的数据”。
+实用规则很简单：进入提示的不应该是“所有能拿到的数据”，而应该是“用途和生命周期都清楚的数据”。
 
 ### 6.2. 行动权到底放在哪里
 
-模型不应该直接拥有执行外部 side effect 的权力。
+模型不应该直接拥有执行外部副作用的权力。
 
 真正的行动权应该存在于下面这个组合里：
 
-- policy engine；
-- approval logic；
-- tool gateway。
+- 策略引擎；
+- 审批逻辑；
+- 工具网关。
 
-这就是 control plane 如此重要的原因：它把“模型建议这样做”和“系统被允许这样做”清楚地分开。
+这就是控制平面如此重要的原因：它把“模型建议这样做”和“系统被允许这样做”清楚地分开。
 
 ### 6.3. 什么时候才值得拆成多个智能体
 
-OpenAI 的 practical guide 有一点很对：不要把 `multi-agent` 当成默认答案。[^openai-practical] Microsoft 最新的架构指南在这里也很有价值，因为它把复杂度升级路径说得更明确了：团队应该先问，这个问题是否仍然只是 direct model call，然后再问一个带工具的单智能体是否已经足够，只有在这之后才进入 multi-agent orchestration。[^microsoft-orchestration]
+OpenAI 的实用指南有一点很对：不要把 `multi-agent` 当成默认答案。[^openai-practical] Microsoft 最新的架构指南在这里也很有价值，因为它把复杂度升级路径说得更明确了：团队应该先问，这个问题是否仍然只是直接模型调用，然后再问一个带工具的单智能体是否已经足够，只有在这之后才进入多智能体编排。[^microsoft-orchestration]
 
 这条纪律很重要，因为每多一个智能体，通常就会多出：
 
-- 一条新的 context boundary；
-- 一条新的 coordination path；
-- 一次新的 latency hop；
-- 一个新的 failure surface；
-- 一条新的 ownership 与 policy boundary。
+- 一条新的上下文边界；
+- 一条新的协调路径；
+- 一次新的延迟跳点；
+- 一个新的失败表面；
+- 一条新的负责人机制与策略边界。
 
 通常只有在这些信号出现时，拆分才是合理的：
 
-- 一个 run 的上下文已经太拥挤；
-- 子任务需要不同的工具和不同的 guardrails；
-- ownership 已经分到不同团队；
-- 并行执行确实能降低 latency 或 cognitive load；
-- security boundaries 差异已经大到不该由一个智能体持有全部权限。
+- 一次运行的上下文已经太拥挤；
+- 子任务需要不同的工具和不同的防护栏；
+- 负责人机制已经分到不同团队；
+- 并行执行确实能降低延迟或认知负载；
+- 安全边界差异已经大到不该由一个智能体持有全部权限。
 
-如果这些信号不存在，一个带良好 workflow graph 的单智能体通常更简单，也更可靠。
+如果这些信号不存在，一个带良好工作流图的单智能体通常更简单，也更可靠。
 
 一条实用的复杂度升级阶梯可以写成：
 
 1. `direct model call` 处理单步任务；
 2. `single agent with tools` 处理单一领域中的动态动作；
-3. `multi-agent orchestration` 只在 specialization、安全分离或并行分解确实值得额外 runtime complexity 时才采用。
+3. `multi-agent orchestration` 只在专门化、安全分离或并行分解确实值得额外运行时复杂度时才采用。
 
-Anthropic 的模式目录让这条阶梯变得不那么抽象，因为它把团队在走向完整 agent autonomy 之前，通常真正需要的中间 workflow 形态点了出来。[^anthropic] 在实践里，真正容易漏掉的问题往往不是“我们需不需要 agent？”，而是“哪一种更小的 orchestration pattern 已经足够安全地解决这个问题？”
+Anthropic 的模式目录让这条阶梯变得不那么抽象，因为它把团队在走向完整智能体自治之前，通常真正需要的中间工作流形态点了出来。[^anthropic] 在实践里，真正容易漏掉的问题往往不是“我们需不需要智能体？”，而是“哪一种更小的编排模式已经足够安全地解决这个问题？”
 
 这通常意味着应该先检查这些选项：
 
-- `prompt chaining`，适用于可以拆成固定串行步骤、并在中间插入 gates 的任务；
-- `routing`，适用于输入可以分成少数几类，而这些类别值得走不同 prompts、tools 或 downstream paths 的任务；
+- `prompt chaining`，适用于可以拆成固定串行步骤、并在中间插入门禁的任务；
+- `routing`，适用于输入可以分成少数几类，而这些类别值得走不同提示、工具或下游路径的任务；
 - `parallelization`，适用于把独立检查拆开后能提高置信度或降低延迟的任务；
 - `orchestrator-workers`，只在子任务事先无法知道、必须动态委派时才采用；
 - `evaluator-optimizer`，适用于迭代式批评能实质改善产物的任务。
 
-这在架构上很重要，因为这些不只是 prompting tricks。每一种模式都会改变 runtime 里 checkpoints、approvals、retries、trace boundaries 和 ownership 应该放在哪里。
+这在架构上很重要，因为这些不只是提示技巧。每一种模式都会改变运行时里检查点、审批、重试、追踪边界和负责人机制应该放在哪里。
 
-这条阶梯的价值在于，它把架构变成一种显式的 anti-overengineering discipline。真正该问的问题不是“我们能不能把它拆成多个智能体？”，而是“什么样的最低复杂度形态，仍然能在 production 中可靠运行？”
+这条阶梯的价值在于，它把架构变成一种显式的反过度工程纪律。真正该问的问题不是“我们能不能把它拆成多个智能体？”，而是“什么样的最低复杂度形态，仍然能在生产中可靠运行？”
 
 ## 7. 给架构复杂度做一次快速成熟度测试
 
@@ -303,11 +303,11 @@ Anthropic 的模式目录让这条阶梯变得不那么抽象，因为它把团�
 
 更高的标准应该是：
 
-- 团队能够解释，当前问题为什么仍然是 direct model call、single agent with tools，还是 multi-agent system；
-- 沿着这条阶梯的每一次升级，都来自真实的 operational pressure，而不是新奇感；
-- 新增智能体带来的是清晰的 specialization 或 control gain，而不是模糊的“更高级”；
-- 架构明确消除了 action rights、side effects 和 approvals 究竟放在哪里的歧义；
-- 生成出来的 runtime 在事故发生时仍然能被 operator 解释清楚。
+- 团队能够解释，当前问题为什么仍然是直接模型调用、带工具的单智能体，还是多智能体系统；
+- 沿着这条阶梯的每一次升级，都来自真实的运营压力，而不是新奇感；
+- 新增智能体带来的是清晰的专门化或控制收益，而不是模糊的“更高级”；
+- 架构明确消除了动作权限、副作用和审批究竟放在哪里的歧义；
+- 生成出来的运行时在事故发生时仍然能被操作员解释清楚。
 
 如果这些条件不成立，系统在幻灯片上也许看起来很“有架构”，但在实践里已经开始过度复杂化。
 
@@ -315,12 +315,12 @@ Anthropic 的模式目录让这条阶梯变得不那么抽象，因为它把团�
 
 至少有四样东西，从一开始就值得分开：
 
-- **short-term state**：当前执行状态；
-- **long-term memory**：事实、画像、episodes；
-- **retrieval**：对外部知识的访问；[^langgraph-memory]
-- **tool execution**：在外部世界里真正发生的动作。
+- **短期状态**：当前执行状态；
+- **长期记忆**：事实、画像、片段；
+- **检索**：对外部知识的访问；[^langgraph-memory]
+- **工具执行**：在外部世界里真正发生的动作。
 
-系统还小的时候，这种分离看起来可能像官僚主义。等第一起 serious incident 真的发生，它就会看起来像工程卫生。
+系统还小的时候，这种分离看起来可能像官僚主义。等第一起严重事故真的发生，它就会看起来像工程卫生。
 
 ## 9. 一个最小代码原则
 
@@ -349,33 +349,33 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
     return gateway.call(request.tool_name, request.payload)
 ```
 
-这里的核心只有一句话：模型可以提议动作，但真正的执行权在 gateway 和 policy layer，不在模型里。
+这里的核心只有一句话：模型可以提议动作，但真正的执行权在网关和策略层，不在模型里。
 
 ## 10. 给你自己系统做一次快速架构审查
 
-如果你已经有一个 agent 或 agent-like workflow 在 production 里运行，可以把这一章当作一份简短的审查清单。
+如果你已经有一个智能体或类智能体工作流在生产里运行，可以把这一章当作一份简短的审查清单。
 
 你应该能清楚回答这些问题：
 
-- 请求是在什么地方被标准化为可管理的 execution context？
+- 请求是在什么地方被标准化为可管理的执行上下文？
 - 系统是在什么地方决定“什么被允许”？
-- 哪些动作必须审批，这个约束是在哪里 enforced 的？
-- 哪些 side effects 只能经过 gateway 或 sandbox？
-- 哪些字段一定会进入 traces？
-- 在 retry、partial failure 或 restart 之后，系统会怎样表现？
+- 哪些动作必须审批，这个约束是在哪里执行的？
+- 哪些副作用只能经过网关或沙箱？
+- 哪些字段一定会进入追踪？
+- 在重试、部分失败或重启之后，系统会怎样表现？
 
-如果这些答案只存在于 prompt、口头约定或团队记忆里，那说明这套架构仍然过于隐式。
+如果这些答案只存在于提示、口头约定或团队记忆里，那说明这套架构仍然过于隐式。
 
 ## 11. 这一章真正要带走什么
 
 简短地说，一个好的智能体平台建立在几件很“无聊”、但极其值钱的东西上：
 
 - 显式的入口上下文；
-- control plane；
-- 独立的 runtime；
-- 独立的 tool gateway；
-- 独立的 traces 和 evals；
-- 只在确实需要的地方加 approvals。
+- 控制平面；
+- 独立的运行时；
+- 独立的工具网关；
+- 独立的追踪和评测；
+- 只在确实需要的地方加审批。
 
 架构之所以重要，不是因为图更好看，而是因为它能阻止系统在第一次真正复杂起来的时候散架。
 
@@ -383,11 +383,11 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 如果你现在就在设计一个智能体系统，先写下至少这五件事：
 
-1. 你的 execution context 从哪里开始？
+1. 你的执行上下文从哪里开始？
 2. 行动权放在哪里？
-3. 第一版 runtime pattern 是什么？
-4. 哪些 side effects 只能通过 gateway？
-5. 团队第一天就必须在 trace 里看见哪些字段？
+3. 第一版运行时模式是什么？
+4. 哪些副作用只能通过网关？
+5. 团队第一天就必须在追踪里看见哪些字段？
 
 如果这些东西已经写清楚了，架构就开始存在了。如果没有，那你现在还只有一个“智能体想法”。
 
