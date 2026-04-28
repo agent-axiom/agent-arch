@@ -13,52 +13,52 @@
 !!! info "这一部分的快速路线"
     如果你想快速读完关键部分，可以这样走：
 
-    - [第 16 章](chapter-16.zh.md)：先看同一个 support agent 怎样收拢成一个统一的 runtime，而不是一堆分散的本地处理器；
-    - [第 17 章](chapter-17.zh.md)：再看这个 runtime 怎样接入明确的策略层和能力目录；
+    - [第 16 章](chapter-16.zh.md)：先看同一个支持智能体怎样收拢成一个统一的运行时，而不是一堆分散的本地处理器；
+    - [第 17 章](chapter-17.zh.md)：再看这个运行时怎样接入明确的策略层和能力目录；
     - [第 18 章](chapter-18.zh.md)：最后检查这套骨架是否已经能支撑有限发布和继续扩展。
 
-    这三步合在一起，说明参考实现不是为了演示效果，而是为了把整套 production system 固定进代码里。
+    这三步合在一起，说明参考实现不是为了演示效果，而是为了把整套生产系统固定进代码里。
 
-    如果把这一部分当成一个连续论证来读，它其实由三个承诺串起来：第 16 章给 runtime 一种可运行的结构，第 17 章给这套结构一个受治理的 contract core，而第 18 章则追问同一套系统能不能承受真正的 go/no-go 压力。
+    如果把这一部分当成一个连续论证来读，它其实由三个承诺串起来：第 16 章给运行时一种可运行的结构，第 17 章给这套结构一个受治理的契约核心，而第 18 章则追问同一套系统能不能承受真正的上线 / 不上线压力。
 
 在这一部分里，我会逐步组装一个最小但成熟的平台：
 
-- 基础 runtime；
-- 安全与策略 hooks；
-- capability 目录；
-- telemetry 接线；
+- 基础运行时；
+- 安全与策略钩子；
+- 能力目录；
+- 遥测接线；
 - 上线检查清单。
 
 ## 这一部分解决什么问题
 
-- 把架构、记忆、执行与可观测性收拢成一个 runtime skeleton；
-- 通过 policy layer 和 capability catalog 固定 contract core；
-- 把 approval 与 governed capability access 变成 runtime 内显式行为，而不是旁路人工流程；
-- 把这套骨架推进到 first rollout readiness；
-- 把 Part VI 的 operating model 继续落实成可执行的 runtime 与 rollout shape。
+- 把架构、记忆、执行与可观测性收拢成一个运行时骨架；
+- 通过策略层和能力目录固定契约核心；
+- 把审批与受治理的能力访问变成运行时内显式行为，而不是旁路人工流程；
+- 把这套骨架推进到首次发布就绪度；
+- 把第六部分的运营模型继续落实成可执行的运行时与发布形态。
 
-也正是在这里，本书把前面那些抽象层真正落成 runnable system。它是前半本架构论证与后半本 lifecycle 论证之间的桥。
+也正是在这里，本书把前面那些抽象层真正落成可运行系统。它是前半本架构论证与后半本生命周期论证之间的桥。
 
 ## 本部分内容
 
 - [第 16 章：基础运行时蓝图](chapter-16.zh.md)
-  这一章把同一个 support 场景推进到代码层：run loop 应该放在哪里，policy、memory 和 execution 怎样拆开，以及怎样避免逻辑散落在本地处理器里。
+  这一章把同一个支持场景推进到代码层：运行循环应该放在哪里，策略、记忆和执行怎样拆开，以及怎样避免逻辑散落在本地处理器里。
 - [第 17 章：策略层与能力目录](chapter-17.zh.md)
-  这一章把同一套骨架抬到契约层：哪些 capability 根本允许存在，哪里必须经过 approval，approval 的 pause/resume path 应该怎样工作，以及怎样避免把风险逻辑直接写死在 orchestration 里。
+  这一章把同一套骨架抬到契约层：哪些能力根本允许存在，哪里必须经过审批，审批的暂停 / 恢复路径应该怎样工作，以及怎样避免把风险逻辑直接写死在编排里。
 - [第 18 章：生产上线检查清单](chapter-18.zh.md)
-  这一章用第一次受控 rollout 收束同一条故事线：support agent 是否已经能真正上线，approval/policy signals 是否可观测，以及在扩大范围前必须先看到什么。
+  这一章用第一次受控发布收束同一条故事线：支持智能体是否已经能真正上线，审批 / 策略信号是否可观测，以及在扩大范围前必须先看到什么。
 
 ## 这一部分之后去哪里
 
-到这一部分，架构、安全、记忆、执行、可观测性和 approval control 已经能收拢成一个完整的运行骨架。但 production discipline 并不会在这里结束。
+到这一部分，架构、安全、记忆、执行、可观测性和审批控制已经能收拢成一个完整的运行骨架。但生产纪律并不会在这里结束。
 
-一旦同一个 agent 撑过第一次 rollout，接下来的问题就会自然分化成新的角色：
+一旦同一个智能体撑过第一次发布，接下来的问题就会自然分化成新的角色：
 
-- change management 决定哪些 changes 属于 release-bearing；
-- assurance 决定 drift 与 findings 出现后该如何 response；
-- provenance 与 approved artifacts 保存实际部署内容的 evidence backbone；
-- observability 从 runtime wiring 扩展成 estate 级的 evidence substrate；
-- registry 与 governance 决定整个 estate 上的 accountability；
-- retirement 在系统不应继续 active 时关闭整个 lifecycle。
+- 变更管理决定哪些变更会实质影响发布；
+- 保障流程决定漂移与发现项出现后该如何响应；
+- 来源谱系与已批准工件保存实际部署内容的证据主干；
+- 可观测性从运行时接线扩展成系统资产级的证据底层；
+- 注册表与治理决定整个系统资产范围内的问责；
+- 退役在系统不应继续活跃时关闭整个生命周期。
 
-这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)，在那里，同一套系统会被重新放进 lifecycle frame、release judgment、response、evidence backbone、lifecycle closure、adversarial pressure、judgment、evidence substrate 与整个 estate accountability 的视角里来阅读。
+这也是为什么参考实现之后，最自然的下一步就是 [第八部分：智能体系统生命周期](../part-viii/index.zh.md)，在那里，同一套系统会被重新放进生命周期框架、发布判断、响应、证据主干、生命周期闭合、对抗压力、判断、证据底层与整个系统资产的问责视角里来阅读。

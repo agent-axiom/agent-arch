@@ -10,7 +10,7 @@
 
 但接下来，瓶颈通常不再是技术，而是组织本身。
 
-Part V 已经说明了系统应该如何被观察、如何被判断。接下来的问题不同了：这些层到底该由谁拥有，谁来维护 shared defaults，以及谁有权把产品团队约束在 production discipline 之内。
+第五部分已经说明了系统应该如何被观察、如何被判断。接下来的问题不同了：这些层到底该由谁拥有，谁来维护共享默认路径，以及谁有权把产品团队约束在生产纪律之内。
 
 即使是一个不错的智能体平台，也很快会遇到这些问题：
 
@@ -24,33 +24,33 @@ Part V 已经说明了系统应该如何被观察、如何被判断。接下来�
 !!! info "这一部分的快速路线"
     如果你想快速读完关键部分，可以这样走：
 
-    - [第 14 章](chapter-14.zh.md)：先看 platform ownership 和 product ownership 的边界在哪里；
-    - [第 15 章](chapter-15.zh.md)：再看这条边界怎样落成 golden paths 和 shared gateways；
+    - [第 14 章](chapter-14.zh.md)：先看平台负责人机制和产品负责人机制的边界在哪里；
+    - [第 15 章](chapter-15.zh.md)：再看这条边界怎样落成黄金路径和共享网关；
     - [第七部分](../part-vii/index.zh.md)：最后看组织模型怎样在参考实现里被固定下来。
 
-    这三步合在一起，说明 operating model 不是给组织结构图看的，而是用来稳住整套 production system 的。
+    这三步合在一起，说明运营模型不是给组织结构图看的，而是用来稳住整套生产系统的。
 
 ## 这一部分解决什么问题
 
-- 在平台先从组织层面漂移之前，把 ownership boundaries 先说清楚；
-- 说明 platform ownership 如何进一步落成 golden paths、shared gateways 和 controlled deviations；
+- 在平台先从组织层面漂移之前，把负责人边界先说清楚；
+- 说明平台负责人机制如何进一步落成黄金路径、共享网关和受控偏离；
 - 解释前面那些已经被技术性定义出来的层，到底应该由谁拥有；
-- 为从 operating model 走向 reference implementation 做准备。
+- 为从运营模型走向参考实现做准备。
 
 ## 本部分内容
 
 - [第 14 章：平台团队与产品团队](chapter-14.zh.md)
-  这一章继续同一个 support 场景，但切到 ownership 层：runtime、policies、gateways 和 platform incidents 到底该由谁负责。
+  这一章继续同一个支持场景，但切到负责人层：运行时、策略、网关和平台事故到底该由谁负责。
 - [第 15 章：黄金路径、共享网关与反动物园模式](chapter-15.zh.md)
-  这一章把 ownership boundaries 继续落成工程 defaults：哪些共享路径应该比本地重造更容易，哪些敏感层应该由 gateway 统一承接，以及怎样防止平台退化成动物园。
+  这一章把负责人边界继续落成工程默认路径：哪些共享路径应该比本地重造更容易，哪些敏感层应该由网关统一承接，以及怎样防止平台退化成动物园。
 
 ## 这一部分之后去哪里
 
-这一部分之后，下一步就是进入 [第七部分](../part-vii/index.zh.md)：把 ownership 边界、golden paths 和 shared gateways 继续固定进 reference implementation、policy layer 和 rollout skeleton。
+这一部分之后，下一步就是进入 [第七部分](../part-vii/index.zh.md)：把负责人边界、黄金路径和共享网关继续固定进参考实现、策略层和发布骨架。
 
 所以这里的桥接是刻意设计的：
 
-- Part V 定义 capture、health 与 judgment；
-- Part VI 为这些 concerns 分配 ownership；
-- Part VII 把这种组织模型落成 runnable structure；
-- Part VIII 则在 rollout 之后通过 response、evidence 与 accountability 来治理系统。
+- 第五部分定义捕获、健康状态与判断；
+- 第六部分为这些关注点分配负责人机制；
+- 第七部分把这种组织模型落成可运行结构；
+- 第八部分则在发布之后通过响应、证据与问责来治理系统。
