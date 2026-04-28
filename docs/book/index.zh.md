@@ -8,10 +8,10 @@
 
 读完后，你应该能够：
 
-- 判断什么时候真的需要智能体，什么时候普通 workflow 就够了；
+- 判断什么时候真的需要智能体，什么时候普通工作流就够了；
 - 看清在允许高风险动作之前，系统最少需要哪些平台层；
-- 追踪一次受治理的 run 如何穿过 policy、execution、evidence、approval、rollout 与 lifecycle control；
-- 把 memory、evals、provenance、retirement 与 operator accountability 看成同一个运行模型的一部分。
+- 追踪一次受治理的运行如何穿过策略、执行、证据、审批、发布与生命周期控制；
+- 把记忆、评测、来源谱系、退役与操作员问责看成同一个运行模型的一部分。
 
 ## 推荐阅读路径
 
