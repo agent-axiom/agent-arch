@@ -1,9 +1,9 @@
-# 评测数据集模式与分级契约
+# 评测数据集 Schema 与打分契约
 
 这一页继续扩展两个相邻主题：
 
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
-- [追踪模式与事件目录](trace-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
 - [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
 
 并把它们和可运行参考包连接起来：
@@ -78,7 +78,7 @@
 - `labels` 作为场景类别；
 - `expected_outcomes` 作为期望结果；
 - `grading_rules` 作为检查逻辑；
-- `verifier_outputs` 作为结构化的分级结果，并包含 verifier identity 与 contract version。
+- `verifier_outputs` 作为结构化的打分结果，并包含验证器身份与契约版本。
 
 ## 什么是分级契约
 
@@ -89,7 +89,7 @@
 - 到底评哪些字段；
 - 使用哪种检查类型；
 - 什么算 pass/fail；
-- 什么只是 warning，什么是 blocking failure。
+- 什么只是警告，什么是阻断性失败。
 
 好的分级契约应该能回答：
 
@@ -110,11 +110,11 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 
-最后这一条会在 release review 开始要求 failed-run drills 时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的 status、具体失败原因，例如 `failure_reason` 字段、trace linkage 与受治理的 release identity。
+最后这一条会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
-## 它和 traces 的关系
+## 它和追踪的关系
 
 一个很实用的模型是：
 
@@ -124,7 +124,7 @@
 
 也正是在这里，可观测性才不只是“事后回看”，而开始参与发布决策。
 
-## reference runtime 现在已经支持什么
+## 参考运行时现在已经支持什么
 
 在 `agent_runtime_ref` 里，这条命令：
 
@@ -132,18 +132,18 @@
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-已经会产出一个小型结构化 artifact，其中包含：
+已经会产出一个小型结构化工件，其中包含：
 
-- 多个 session scenarios；
+- 多个会话场景；
 - `labels`；
 - `expected_outcomes`；
-- 一个单独的 failed-run drill scenario，它会在 session export 和 eval expectations 里保留 failed status 与 `failure_reason`。
+- 一个单独的失败运行演练场景，它会在会话导出和评测期望里保留失败状态与 `failure_reason`。
 
 它还不是完整的工业级评测框架，但已经足够作为：
 
 - 回归分级的种子；
-- scenario comparison 的基础；
-- rollout review 的输入；
+- 场景对比的基础；
+- 发布评审的输入；
 - 手工扩展评测集的起点。
 
 ## 生产级数据集模式还应该补什么
@@ -164,9 +164,9 @@
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
 
-## grading contract 示例
+## 打分契约示例
 
-下面是一个针对 failed-run drill scenario 的可工作 skeleton：
+下面是一个针对失败运行演练场景的可工作骨架：
 
 ```yaml
 scenario_id: failed_run_timeout
@@ -195,11 +195,11 @@ verifier_outputs:
     - screenshot:step_7
 ```
 
-重点在于，这个契约评估的不只是最终文本，也包括行为是否呈现出了正确的运行形态，以及具体 failed condition 是否仍然足够可见，便于后续审查。
+重点在于，这个契约评估的不只是最终文本，也包括行为是否呈现出了正确的运行形态，以及具体失败条件是否仍然足够可见，便于后续审查。
 
-这对 long-horizon agents 尤其重要，因为二元 pass/fail verdict 往往会掩盖这样一种差异：一种是行为正确但 outcome 被环境阻断，另一种是行为不安全却碰巧拿到了 nominal success。
+这对长周期智能体尤其重要，因为二元 pass/fail 判断往往会掩盖这样一种差异：一种是行为正确但结果被环境阻断，另一种是行为不安全却碰巧拿到了名义上的成功。
 
-## 为什么 multi-run sessions 很重要
+## 为什么多运行会话很重要
 
 对智能体系统来说，一个评测条目往往不该只描述单次请求，而应该能描述一个短的相关步骤序列。
 
@@ -223,9 +223,9 @@ verifier_outputs:
 - 只评最终答案，不看策略或工具行为；
 - 不给数据集做版本管理；
 - 不把数据集条目和追踪证据或事故历史关联起来；
-- 把 verifier output 压成一个薄弱的单一 verdict，没有 process/outcome split 和 failure attribution。
+- 把验证器输出压成一个薄弱的单一判断，没有过程 / 结果拆分和失败归因。
 
-这样会让 eval culture 变得很脆弱。
+这样会让评测文化变得很脆弱。
 
 ## 现在就该做什么
 
@@ -235,8 +235,8 @@ verifier_outputs:
 - 标签和期望结果是否分开？
 - 有没有分级规则，而不只是人工描述？
 - 能不能评估行为，而不只是文本？
-- verifier 能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
-- 能不能看出是哪一个 verifier identity 与 contract version 产出了这份 grading output？
+- 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
+- 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 
@@ -244,8 +244,8 @@ verifier_outputs:
 
 ## 下一步做什么
 
-- [追踪模式与事件目录](trace-schema.zh.md)
-- [策略包模式与审批契约](policy-bundle-schema.zh.md)
-- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
