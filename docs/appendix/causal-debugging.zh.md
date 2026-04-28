@@ -1,19 +1,19 @@
-# 智能体系统中的 Causal Debugging 与 Root-Cause Analysis
+# 智能体系统中的因果调试与根因分析
 
-当团队已经具备 traces、session summaries 和 incident records 后，下一个问题就不只是“哪里坏了”，而是“到底是什么导致了这个结果”。
+当团队已经具备追踪、会话摘要和事故记录后，下一个问题就不只是“哪里坏了”，而是“到底是什么导致了这个结果”。
 
-普通日志回答的是“发生了什么”。Causal debugging 回答的是“哪个步骤、哪条边、哪种隐藏依赖真正把系统带到了坏结果”。
+普通日志回答的是“发生了什么”。因果调试回答的是“哪个步骤、哪条边、哪种隐藏依赖真正把系统带到了坏结果”。
 
-## 1. 为什么普通 tracing 还不够
+## 1. 为什么普通追踪还不够
 
-在智能体系统中，一次长链路 run 可能同时包含：
+在智能体系统中，一次长链路运行可能同时包含：
 
-- retrieval；
-- model step；
-- tool call；
-- approval path；
-- memory write；
-- handoff 或 orchestration step。
+- 检索；
+- 模型步骤；
+- 工具调用；
+- 审批路径；
+- 记忆写入；
+- 交接或编排步骤。
 
 如果团队把这些事件只当作一条平铺的时间线来读，就能看到顺序，但往往看不清：
 
@@ -22,142 +22,142 @@
 - 故障从哪里开始级联；
 - 哪些现象是根因，哪些只是后果。
 
-这就是普通 trace review 的上限。
+这就是普通追踪评审的上限。
 
-## 2. 这里的 causal debugging 指什么
+## 2. 这里的因果调试指什么
 
-在实际工程里，causal debugging 通常意味着：
+在实际工程里，因果调试通常意味着：
 
-- 圈定 suspect path；
+- 圈定可疑路径；
 - 恢复事件之间的依赖关系；
-- 把 trigger 与 downstream noise 分开；
-- 找出真正能改变 outcome 的 corrective action。
+- 把触发因素与下游噪声分开；
+- 找出真正能改变结果的纠正动作。
 
-这在 agent systems 中尤其重要，因为一次 risky run 可能带来：
+这在智能体系统中尤其重要，因为一次高风险运行可能带来：
 
-- 多余的 tool call；
-- 错误的 approval request；
-- memory contamination；
-- rollback；
-- incident escalation；
-- 有误导性的 postmortem conclusion。
+- 多余的工具调用；
+- 错误的审批请求；
+- 记忆污染；
+- 回滚；
+- 事故升级；
+- 有误导性的事后复盘结论。
 
 ## 3. 哪些节点几乎总是重要
 
-即使是最小的 causal graph，通常也应该能表达：
+即使是最小的因果图，通常也应该能表达：
 
-- user input 或 external trigger；
-- retrieved context；
-- model decision；
-- policy decision；
-- approval event；
-- tool execution；
-- memory write；
-- final outcome。
+- 用户输入或外部触发；
+- 检索到的上下文；
+- 模型决策；
+- 策略决策；
+- 审批事件；
+- 工具执行；
+- 记忆写入；
+- 最终结果。
 
-并不是每次 incident 都会涉及所有节点。但如果一张图连这些关系都表达不了，diagnosis 很快就会太粗。
+并不是每次事故都会涉及所有节点。但如果一张图连这些关系都表达不了，诊断很快就会太粗。
 
 ## 4. 团队应该能问哪些问题
 
-有用的 causal debugging 不是先画图，而是先问对问题：
+有用的因果调试不是先画图，而是先问对问题：
 
-- 哪个最初的步骤把 run 带进了 risky path；
-- 哪个 decision 改变了 trajectory；
-- policy gate 是根因，还是只是没能拦住问题；
-- 哪个 tool call 是 trigger，哪个只是 cascade effect；
-- 哪个 corrective action 能改变 root cause，而不是只压住 symptom。
+- 哪个最初的步骤把运行带进了高风险路径；
+- 哪个决策改变了轨迹；
+- 策略门禁是根因，还是只是没能拦住问题；
+- 哪个工具调用是触发因素，哪个只是级联效应；
+- 哪个纠正动作能改变根因，而不是只压住症状。
 
-如果问不出这些问题，root-cause analysis 很快就会滑向“模型表现异常”。
+如果问不出这些问题，根因分析很快就会滑向“模型表现异常”。
 
-## 5. 它和 traces、structured events 的关系
+## 5. 它和追踪、结构化事件的关系
 
-Causal debugging 不替代 [Trace Schema 与 Event Catalog](trace-schema.zh.md)，它建立在其上。
+因果调试不替代 [追踪 Schema 与事件目录](trace-schema.zh.md)，它建立在其上。
 
-好的 trace layer 已经提供：
+好的追踪层已经提供：
 
 - `trace_id`
 - `session_id`
-- event types；
-- policy decisions；
-- approval outcomes；
-- tool execution；
-- memory events。
+- 事件类型；
+- 策略决策；
+- 审批结果；
+- 工具执行；
+- 记忆事件。
 
-但 causal debugging 还需要再往前走一步：把这些事件看成依赖网络，而不是简单的列表。
+但因果调试还需要再往前走一步：把这些事件看成依赖网络，而不是简单的列表。
 
 ## 6. 哪些地方最容易出现“假原因”
 
 常见陷阱包括：
 
-- 团队把最后一个 failed tool call 当成根因，但真正 trigger 在 retrieved context；
-- blame 落在 model step 上，但实际问题是 stale policy bundle；
-- approval denial 被当成 failure，但它其实是正确的 containment behavior；
-- noisy retries 掩盖了第一个 bad decision；
-- memory write 看起来像 root cause，但它只是后期 side effect。
+- 团队把最后一个失败工具调用当成根因，但真正触发点在检索到的上下文；
+- 责任落在模型步骤上，但实际问题是过期策略包；
+- 审批拒绝被当成失败，但它其实是正确的遏制行为；
+- 嘈杂的重试掩盖了第一个错误决策；
+- 记忆写入看起来像根因，但它只是后期副作用。
 
 所以“最后一个奇怪事件”和“真正根因”通常不是一回事。
 
-## 7. 做 root-cause analysis 时要保留什么
+## 7. 做根因分析时要保留什么
 
-最小的 artifact 集通常包括：
+最小的工件集通常包括：
 
 - `trace_id`
 - `session_id`
 - `bundle_id`
 - `change_id`
 - `rollout_wave`
-- active policy bundle；
-- active approval mode；
+- 当前生效的策略包；
+- 当前生效的审批模式；
 - `tool_principal`；
-- touched memory records；
-- linked incident 或 postmortem id。
+- 触碰过的记忆记录；
+- 关联事故或事后复盘 id。
 
 如果这些连接不存在，团队往往会花比修系统更长的时间去争论原因。
 
-## 8. 它和 multi-agent reliability 的关系
+## 8. 它和多智能体可靠性的关系
 
-在 multi-agent 场景里，causal debugging 更重要，因为系统里还会多出：
+在多智能体场景里，因果调试更重要，因为系统里还会多出：
 
-- handoff edges；
-- delegated tasks；
-- conflicting agent states；
+- 交接边；
+- 委派任务；
+- 彼此冲突的智能体状态；
 - 节点之间模糊的责任边界。
 
-这并不意味着每支团队都要做完整的 causal graph engine。但 orchestration 越复杂，就越需要能定位：
+这并不意味着每支团队都要做完整的因果图引擎。但编排越复杂，就越需要能定位：
 
-- coordination path 是在哪里断的；
-- 哪次 handoff 丢了关键 context；
-- 哪个 agent 才是真正的 source of failure。
+- 协调路径是在哪里断的；
+- 哪次交接丢了关键上下文；
+- 哪个智能体才是真正的失败来源。
 
-## 9. Root-cause analysis 之后应该改什么
+## 9. 根因分析之后应该改什么
 
-好的 root-cause analysis 通常应该落到这些变化之一：
+好的根因分析通常应该落到这些变化之一：
 
-- update policy bundle；
-- add or tighten eval case；
-- narrow capability exposure；
-- refine approval scope；
-- update rollout gate；
-- fix retrieval filtering；
-- pause 或 revise memory write path。
+- 更新策略包；
+- 新增或收紧评测用例；
+- 缩小能力暴露范围；
+- 细化审批范围；
+- 更新发布门禁；
+- 修复检索过滤；
+- 暂停或修订记忆写入路径。
 
-如果 diagnosis 最终没有落到 artifact updates，它也许有洞见，但 operational 价值不强。
+如果诊断最终没有落到工件更新，它也许有洞见，但运营价值不强。
 
 ## 10. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- 团队能区分 trigger 和 cascade effects 吗？
-- 团队能区分 bad decision 与正确的 containment 吗？
-- traces 里能看见 policy、approval 与 tool edges 吗？
-- active bundle 和 rollout wave 能恢复出来吗？
-- 能明确哪种 corrective action 会改变 root cause 吗？
-- 团队会不会把 root cause 简化成“模型失败了”而没有继续定位？
+- 团队能区分触发因素和级联效应吗？
+- 团队能区分错误决策与正确遏制吗？
+- 追踪里能看见策略、审批与工具边吗？
+- 当前生效的策略包和发布波次能恢复出来吗？
+- 能明确哪种纠正动作会改变根因吗？
+- 团队会不会把根因简化成“模型失败了”而没有继续定位？
 
 ## 下一步做什么
 
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Incident Record 与 Postmortem Linkage Schema](incident-record-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
 - [智能体系统 Postmortem 模板](postmortem-template.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
