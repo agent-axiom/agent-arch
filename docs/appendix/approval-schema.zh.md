@@ -2,7 +2,7 @@
 
 这一页描述智能体系统里人工审批的最小契约层：审批请求长什么样，决策记录长什么样，以及高风险动作之后应该在审计轨迹里留下什么。
 
-它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为 approval 正是让一次受治理 run 从 request 一直保持可读到 rollout 的关键记录之一。
+它也直接连接到书里的 [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)，因为审批正是让一次受治理运行从请求一直保持可读到发布判断的关键记录之一。
 
 如果 [策略包](policy-bundle-schema.zh.md) 回答的是“当前到底有哪些规则在生效”，那么审批模式回答的就是“运行时如何把最后一道决定权交给人”。
 
@@ -18,7 +18,7 @@
 
 - 稳定的请求格式；
 - 可审查的决策记录；
-- 可重复的 audit trail；
+- 可重复的审计轨迹；
 - 审批与具体运行或追踪之间的连接。
 
 所以审批边界最好被建模成机器可读的契约，而不是界面上的一颗按钮。
@@ -87,9 +87,9 @@ expires_at: 2026-04-07T12:00:00Z
 - `scope` 必须明确；
 - `expires_at` 对于不能长期复用的 approval 很重要。
 
-## 5. Approval audit record
+## 5. 审批审计记录
 
-`approval_audit_record` 把 decision 和真实的 side effect 或拒绝执行联系起来。
+`approval_audit_record` 把决策和真实的副作用或拒绝执行联系起来。
 
 ```yaml
 kind: approval_audit_record
@@ -107,16 +107,16 @@ linked_events:
   - tool_succeeded
 ```
 
-这样它就不再只是“有人点了同意”，而是一个完整的 operational record：
+这样它就不再只是“有人点了同意”，而是一条完整的运营记录：
 
 - 请求被提出；
 - 它被批准或拒绝；
-- action 被执行或没有执行；
-- 具体由哪个 principal 产生了 side effect 也可追踪。
+- 动作被执行或没有执行；
+- 具体由哪个主体产生了副作用也可追踪。
 
-## 6. 它和 trace schema 的关系
+## 6. 它和追踪 Schema 的关系
 
-Approval schema 不应该独立存在，而应该和 trace schema 通过这些事件接起来：
+审批 Schema 不应该独立存在，而应该和追踪 Schema 通过这些事件接起来：
 
 - `approval_requested`
 - `approval_resolved`
@@ -124,27 +124,27 @@ Approval schema 不应该独立存在，而应该和 trace schema 通过这些�
 - `tool_succeeded`
 - `tool_failed`
 
-这也是为什么好的 approval flow 应该既能从 audit record 还原，也能从 trace 还原。如果 approval 出现在 failed-run drill 或其他 degraded path 里，这种还原还应该和 session export 对得上，包括 `failure_reason` 这样的字段，而不是只停留在 approval record 本身。
+这也是为什么好的审批流程应该既能从审计记录还原，也能从追踪还原。如果审批出现在失败运行演练或其他退化路径里，这种还原还应该和会话导出对得上，包括 `failure_reason` 这样的字段，而不是只停留在审批记录本身。
 
-## 7. 它和 policy bundle 的关系
+## 7. 它和策略包的关系
 
-Policy bundle 回答的是：
+策略包回答的是：
 
-- 哪个 capability 需要 approval；
-- 谁可以 approve；
-- 有哪些 risk tiers；
-- 哪些 action 没有人类门禁就绝对不能执行。
+- 哪个能力需要审批；
+- 谁可以批准；
+- 有哪些风险等级；
+- 哪些动作没有人类门禁就绝对不能执行。
 
-Approval schema 回答的是另一层：
+审批 Schema 回答的是另一层：
 
 - 请求本身长什么样；
 - 人到底批准了什么；
-- decision 怎么被保存；
-- 这个 decision 怎么和执行关联。
+- 决策怎么被保存；
+- 这个决策怎么和执行关联。
 
-## 8. 它和 reference package 的关系
+## 8. 它和参考包的关系
 
-[agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经包含了支撑这套模型的 operational primitives：
+[agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经包含了支撑这套模型的运营基础构件：
 
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
 - [configs/approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
@@ -152,48 +152,48 @@ Approval schema 回答的是另一层：
   - `inspect-approvals`
   - `resolve-approval`
 
-这让 approval 不只是概念说明，而是真的可以在 demo runtime 里跑起来。
+这让审批不只是概念说明，而是真的可以在演示运行时里跑起来。
 
 ## 9. 最小不变量
 
-一个成熟的 approval layer，至少应该保证：
+一个成熟的审批层，至少应该保证：
 
-- 每个 request 都有稳定的 `approval_id`；
-- approval 绑定到 `trace_id` 和 `session_id`；
-- 被批准的 payload 是明确的；
-- approver 和 role 会进入 audit trail；
-- side effect 能追溯到具体 approval decision；
-- 过期 approval 不会被静默复用。
+- 每个请求都有稳定的 `approval_id`；
+- 审批绑定到 `trace_id` 和 `session_id`；
+- 被批准的载荷是明确的；
+- 审批人和角色会进入审计轨迹；
+- 副作用能追溯到具体审批决策；
+- 过期审批不会被静默复用。
 
 ## 10. 最常见的断裂点
 
 这里的典型问题通常很容易识别：
 
-- approval request 不包含真实 action payload；
-- approver 看到的上下文太少；
-- decision 只存在于 UI，没有进入 trace；
-- runtime 不区分“只批准这一次”和“永远都批准”；
-- side effect 执行时用的 payload 和批准时不是同一个；
-- 事后没人能还原到底是谁批准了这个 risky action。
+- 审批请求不包含真实动作载荷；
+- 审批人看到的上下文太少；
+- 决策只存在于 UI，没有进入追踪；
+- 运行时不区分“只批准这一次”和“永远都批准”；
+- 副作用执行时用的载荷和批准时不是同一个；
+- 事后没人能还原到底是谁批准了这个高风险动作。
 
 ## 11. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
 
-- approval request 是否有明确的 `approval_id`？
-- approval 是否绑定到 `trace_id` 和 `session_id`？
-- approver 看到的是不是之后真正会执行的 payload？
-- `decided_by`、`role` 和 `decision scope` 是否被保存？
-- approval 能不能与真实的 tool execution 对上？
-- approved 和 rejected 两种路径是否都有 audit-friendly record？
+- 审批请求是否有明确的 `approval_id`？
+- 审批是否绑定到 `trace_id` 和 `session_id`？
+- 审批人看到的是不是之后真正会执行的载荷？
+- `decided_by`、`role` 和决策范围是否被保存？
+- 审批能不能与真实的工具执行对上？
+- approved 和 rejected 两种路径是否都有便于审计的记录？
 
-如果连续几个答案都是“否”，那说明你虽然已经有人工门禁，但还没有真正完整的 approval contract。
+如果连续几个答案都是“否”，那说明你虽然已经有人工门禁，但还没有真正完整的审批契约。
 
 ## 下一步做什么
 
-- [Policy Bundle Schema 与 Approval Contract](policy-bundle-schema.zh.md)
-- [Trace Schema 与 Event Catalog](trace-schema.zh.md)
-- [Lifecycle Artifact Schema](lifecycle-artifact-schema.zh.md)
-- [Reference Package](reference-package.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [参考包](reference-package.zh.md)
 - [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
