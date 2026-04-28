@@ -6,32 +6,32 @@
 
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
-- [Evidence Spine：从请求到 rollout judgment](../book/part-v/evidence-spine.zh.md)
+- [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)
 
 以及可运行的参考包：
 
 - [参考包](reference-package.zh.md)
 
-## 为什么需要显式的追踪模式
+## 为什么需要显式的追踪 Schema
 
-如果团队没有显式的追踪模式，通常会落入两种情况之一：
+如果团队没有显式的追踪 Schema，通常会落入两种情况之一：
 
 - 事件虽然存在，但只是一些临时拼出来的 JSON；
 - 事件对调试有帮助，但很难用于分级、审计或事故复盘。
 
 所以最好把下面三层明确分开：
 
-- `trace envelope`
-- `event catalog`
-- `payload contracts`
-- `verifier contract identity`
-- `verifier evidence linkage`
+- 追踪信封
+- 事件目录
+- 载荷契约
+- 验证器契约身份
+- 验证器证据链接
 
 哪怕运行时还很小，也值得这样做。
 
 ## 最小追踪信封
 
-`agent_runtime_ref` 目前使用的是一个有意保持精简的 envelope：
+`agent_runtime_ref` 目前使用的是一个有意保持精简的信封：
 
 ```json
 {
@@ -89,7 +89,7 @@
 | --- | --- | --- |
 | `run_start` | 运行开始时 | 记录输入与行动者身份 |
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行 |
-| `tool_policy_decision` | 工具执行前 | 记录策略门禁以及 allow/deny/approval 的原因 |
+| `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
@@ -161,7 +161,7 @@
 - 书里；
 - 评测工件里。
 
-## 生产级模式还应该补什么
+## 生产级 Schema 还应该补什么
 
 参考运行时有意保持精简，所以更成熟的系统应该很快补上：
 
@@ -169,7 +169,7 @@
 - 明确的 `span_id` 与 `parent_span_id`；
 - 独立且稳定的 `run_id`；
 - Schema 版本字段；
-- `display payload` 与 `machine payload` 的分离；
+- 展示载荷与机器载荷的分离；
 - 敏感字段的脱敏规则；
 - 把追踪与验证器证据、截图或打分工件显式关联起来的方式；
 - 稳定记录是哪个验证器契约版本产出该打分输出的方式。
@@ -187,9 +187,9 @@
 - 能不能从会话导出结果构建评测数据集？
 - 能不能把追踪关联到用于打分或发布评审的验证器证据？
 - 能不能看出是哪一个验证器契约版本产出了这份打分输出？
-- 有没有脱敏与模式版本化的计划？
+- 有没有脱敏与 Schema 版本化的计划？
 
-如果连续几个答案都是“没有”，那你现在更像是拥有日志，而不是拥有真正的追踪模式。
+如果连续几个答案都是“没有”，那你现在更像是拥有日志，而不是拥有真正的追踪 Schema。
 
 ## 下一步做什么
 
