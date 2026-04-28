@@ -1,8 +1,8 @@
-# 变更评审与发布门禁模式
+# 变更评审与发布门禁 Schema
 
 这一页把智能体系统里的变更评审和发布门禁所需的最小契约层放在一起。它适合用在这样一个阶段：团队已经知道策略、提示、模型路由、检索和工具暴露这些变化不能“凭感觉发布”，但还没有把这些检查沉淀成明确工件。
 
-如果 [生命周期工件规范](lifecycle-artifact-schema.zh.md) 回答的是“生命周期里应该有哪些实体”，那么变更与发布门禁模式回答的就是“真正做发布决策时，到底需要哪些字段”。
+如果 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 回答的是“生命周期里应该有哪些实体”，那么变更与发布门禁 Schema 回答的就是“真正做发布决策时，到底需要哪些字段”。
 
 ## 1. 为什么需要单独的模式层
 
@@ -31,7 +31,7 @@
 
 这已经足够把 Part V、Part VII 和 Part VIII 串成一条完整的运行纪律。
 
-## 3. Change review record
+## 3. 变更评审记录
 
 `change_review_record` 用来描述：改了什么、谁审过、上线前必须满足哪些条件。
 
@@ -68,7 +68,7 @@ status: approved
 - `required_evals` 避免每次都重新争论到底该跑什么；
 - `status` 是运行事实，而不是漂亮的说明文字。
 
-## 4. Rollout gate record
+## 4. 发布门禁记录
 
 `rollout_gate_record` 关注的不是变化本身“好不好”，而是系统是否准备好把它投放到某一波发布中。
 
@@ -97,11 +97,11 @@ decided_by:
 
 这一层重要的原因在于：一个好的变更评审，并不自动等于“现在就可以发布”。
 
-当 rollout 依赖 richer verifier outputs，而不是只看 binary pass/fail status 时，这一点会更重要。此时 gate record 应该显式写出：受影响的 high-risk paths 是否已经审过 verifier quality 与 evidence linkage。
+当发布依赖更丰富的验证器输出，而不是只看二元 pass/fail 状态时，这一点会更重要。此时门禁记录应该显式写出：受影响的高风险路径是否已经审过验证器质量与证据链接。
 
-一旦 runtime 里已经有 approval 和 stateful capability sessions，门禁还应该明确说明：interruption behavior 是否被单独审过，而不是默认“应该没问题”。
+一旦运行时里已经有审批和有状态能力会话，门禁还应该明确说明：中断行为是否被单独审过，而不是默认“应该没问题”。
 
-## 5. Change review 和 rollout gate 的区别
+## 5. 变更评审和发布门禁的区别
 
 这两层经常被混在一起，但它们其实回答的是不同问题：
 
@@ -111,24 +111,24 @@ decided_by:
 所以字段也应该不同：
 
 - 评审更关注变更类型、风险和必需评测；
-- 发布门禁更关注遥测、值班、回滚、流量范围、上线准备度，以及 approval-bound 或 stateful capability paths 的 interruption handling。
+- 发布门禁更关注遥测、值班、回滚、流量范围、上线准备度，以及审批绑定或有状态能力路径的中断处理。
 
 在实践里，这通常还意味着门禁需要显式说明：
 
-- rollout 前是否验证过 capability-session expiry behavior；
-- 对受影响路径而言，re-init 是 denied、allowed 还是 approval-bound；
-- run traces、approval records 与 session export 之间的 delegated authorization continuity 是否已验证；
-- orchestration-pattern changes 是否在 rollout 前被当成 runtime-control changes 单独评审；
-- 如果 interruption semantics 在发布后开始漂移，emergency freeze 由谁负责。
+- 发布前是否验证过能力会话过期行为；
+- 对受影响路径而言，重新初始化是 denied、allowed 还是 approval-bound；
+- 运行追踪、审批记录与会话导出之间的委派授权连续性是否已验证；
+- 编排模式变更是否在发布前被当成运行时控制变更单独评审；
+- 如果中断语义在发布后开始漂移，紧急冻结由谁负责。
 
 ## 6. 它和评测模式的关系
 
-变更评审与发布门禁和 [评测模式](eval-schema.zh.md) 是紧密耦合的：
+变更评审与发布门禁和 [评测 Schema](eval-schema.zh.md) 是紧密耦合的：
 
 - 评审会声明哪些评测是必须的；
 - 门禁会判断这些结果是否足够支撑当前发布波次；
 - 事故与发现结果后续还会回流进必需检查；
-- verifier regressions 与 evidence-linkage failures 也会成为 rollout-relevant findings。
+- 验证器回归与证据链接失败也会成为和发布相关的发现结果。
 
 也就是说，评测层不是独立存在的，而是门禁的一根支柱。
 
@@ -139,12 +139,12 @@ decided_by:
 - 追踪能看出高风险路径是否真的被覆盖；
 - 会话摘要能看出是否已经出现回归；
 - 结构化事件能说明上线前到底检查了什么；
-- interruption 与 expiry signals 能看出 approval-bound runs 是否在 operator 注意到之前就已经开始退化；
-- verifier evidence 能说明 rollout review 所依赖的 process/outcome judgments 是否真的可追溯。
+- 中断与过期信号能看出审批绑定运行是否在操作员注意到之前就已经开始退化；
+- 验证器证据能说明发布评审所依赖的过程 / 结果判断是否真的可追溯。
 
 这也是为什么成熟团队里，追踪与发布门禁往往是并排建设的。
 
-failed-run evidence 也应该一路进入 release judgment。如果 timeout-heavy tool paths、validation failure 或上游依赖故障只被看成普通的失败 demo runs，rollout gate 就无法区分产品风险和 runtime 退化。成熟的 gate 应该能看见这些 failed runs 是否被专门演练过、它们的 traces 与具体失败原因，例如 `failure_reason`，是否仍然可供 review，以及 happy path 和 degraded path 是否都受同一个 release identity 治理。
+失败运行证据也应该一路进入发布判断。如果超时密集的工具路径、校验失败或上游依赖故障只被看成普通的失败演示运行，发布门禁就无法区分产品风险和运行时退化。成熟的门禁应该能看见这些失败运行是否被专门演练过、它们的追踪与具体失败原因，例如 `failure_reason`，是否仍然可供评审，以及顺利路径和退化路径是否都受同一个发布身份治理。
 
 ## 8. 它和参考包的关系
 
@@ -163,18 +163,18 @@ failed-run evidence 也应该一路进入 release judgment。如果 timeout-heav
 
 ## 9. 最小不变量
 
-一个健康的 change-rollout layer，至少应该保证：
+一个健康的变更发布层，至少应该保证：
 
 - 高风险变更没有评审记录就不能进入发布；
-- rollout gate 必须指向明确的 `bundle_id` 和 `rollout_wave`；
-- required checks 和 blocking findings 必须显式可见；
+- 发布门禁必须指向明确的 `bundle_id` 和 `rollout_wave`；
+- 必需检查和阻断性发现结果必须显式可见；
 - 每个决定都有负责人；
 - 事故追踪可以还原出评审和门禁；
-- approval-bound 或 stateful capability sessions 的 interruption behavior 会在 rollout 前被检查；
-- capability sessions 的 expiry 与 re-init behavior 会在 rollout 前被检查；
-- run traces、approval records 与 session export 之间的 delegated authorization continuity 会在 rollout 前被检查；
-- 如果 release control 依赖 graded outcomes，verifier quality 与 evidence linkage 也会在 rollout 前被检查；
-- orchestration-pattern changes 会在 rollout 前被检查，尤其是它们引入 routing、parallelization 或 delegated worker surfaces 时；
+- 审批绑定或有状态能力会话的中断行为会在发布前被检查；
+- 能力会话的过期与重新初始化行为会在发布前被检查；
+- 运行追踪、审批记录与会话导出之间的委派授权连续性会在发布前被检查；
+- 如果发布控制依赖打分结果，验证器质量与证据链接也会在发布前被检查；
+- 编排模式变更会在发布前被检查，尤其是它们引入路由、并行化或委派工作器表面时；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
@@ -185,9 +185,9 @@ failed-run evidence 也应该一路进入 release judgment。如果 timeout-heav
 - 门禁标准没有版本；
 - 遥测准备度靠肉眼判断；
 - 安全发现结果没有被当作阻断项；
-- verifier quality 或 evidence linkage 被默认假定，而不是被检查；
-- capability-session expiry 或 re-init behavior 没有被建模；
-- orchestration-pattern changes 被当成“实现细节”溜过去，没有显式评审；
+- 验证器质量或证据链接被默认假定，而不是被检查；
+- 能力会话过期或重新初始化行为没有被建模；
+- 编排模式变更被当成“实现细节”溜过去，没有显式评审；
 - 发布波次的定义太模糊；
 - 没人能解释为什么这个变更居然能进 canary。
 
@@ -199,7 +199,7 @@ failed-run evidence 也应该一路进入 release judgment。如果 timeout-heav
 - 是否真的有独立的发布门禁，而不是只有一句“review approved”？
 - 是否能清楚看到发布前必须通过哪些检查？
 - 是否能看到 `change_id -> bundle_id -> rollout_wave` 这条链？
-- 当 graded outcomes 会影响 release 时，verifier quality 与 evidence-linkage checks 是否可见？
+- 当打分结果会影响发布时，验证器质量与证据链接检查是否可见？
 - 阻断性发现结果和决策负责人是否被保留？
 - 事故复盘时能不能还原出到底是哪个门禁放行了这个变化？
 
@@ -207,9 +207,9 @@ failed-run evidence 也应该一路进入 release judgment。如果 timeout-heav
 
 ## 下一步做什么
 
-- [评测数据集模式与分级契约](eval-schema.zh.md)
-- [生命周期工件规范](lifecycle-artifact-schema.zh.md)
-- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)

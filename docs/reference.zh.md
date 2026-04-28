@@ -34,7 +34,7 @@
 - [策略包 Schema 与审批契约](appendix/policy-bundle-schema.zh.md)
 - [审批请求与决策记录 Schema](appendix/approval-schema.zh.md)
 - [事故记录与事后复盘链接 Schema](appendix/incident-record-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](appendix/change-rollout-schema.zh.md)
+- [变更评审与发布门禁 Schema](appendix/change-rollout-schema.zh.md)
 - [Lifecycle Artifact Schema](appendix/lifecycle-artifact-schema.zh.md)
 - [Memory Record 与 Retrieval Contract Schema](appendix/memory-retrieval-schema.zh.md)
 - [智能体系统中的因果调试与根因分析](appendix/causal-debugging.zh.md)
