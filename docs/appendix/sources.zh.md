@@ -6,9 +6,9 @@
     最好不仅按主题来读这些来源，也按它们提供的支撑强度来区分：
 
     - `规范性框架`：NIST、OWASP、CISA 等文档，它们定义了相对稳定的治理轮廓；
-    - `平台实践`：OpenAI、Anthropic、LangGraph、Google Cloud、Microsoft 等资料，它们展示这些轮廓在 production 里是如何被组装出来的；
-    - `HCI、HITL 与人工监督`：这些来源说明 automation 会在哪里出错，以及怎样把人稳稳留在回路里；
-    - `研究前沿`：关于 memory、observability、verifier design 与 multi-agent reliability 的较新论文。
+    - `平台实践`：OpenAI、Anthropic、LangGraph、Google Cloud、Microsoft 等资料，它们展示这些轮廓在生产环境里是如何被组装出来的；
+    - `HCI、HITL 与人工监督`：这些来源说明自动化会在哪里出错，以及怎样把人稳稳留在回路里；
+    - `研究前沿`：关于记忆、可观测性、验证器设计与多智能体可靠性的较新论文。
 
     如果你要给第一、第五和第八部分建立最稳的基础，先从规范性框架和 HCI/HITL 层开始。如果你要看当前工程实践，就读平台文档和近期研究，但始终要留意发布日期。
 
@@ -41,7 +41,7 @@
 - Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
 - Cloudflare, [Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
 
-## 可观测性、评测与 verifier design
+## 可观测性、评测与验证器设计
 
 - OpenAI, [Agent evals](https://platform.openai.com/docs/guides/agent-evals)
 - OpenAI, [Trace grading](https://platform.openai.com/docs/guides/trace-grading)
@@ -62,7 +62,7 @@
 - OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
 - Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 
-## 治理、安全与 operational assurance
+## 治理、安全与运行保障
 
 - Google Cloud, [How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 - Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
@@ -86,7 +86,7 @@
 
 - American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 
-## 研究前沿：memory、observability 与 multi-agent reliability
+## 研究前沿：记忆、可观测性与多智能体可靠性
 
 - OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
@@ -106,7 +106,7 @@
 - ty, [Official documentation](https://docs.astral.sh/ty/)
 - Starlight, [Official documentation](https://starlight.astro.build/)
 
-## Rust 与 agent runtimes 的基础设施层
+## Rust 与智能体运行时的基础设施层
 
 - AWS, [AWS SDK for Rust is generally available](https://aws.amazon.com/about-aws/whats-new/2023/11/aws-sdk-rust/)
 - AWS Docs, [Code examples for Amazon Bedrock Runtime using AWS SDK for Rust](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/rust_bedrock-runtime_code_examples.html)
@@ -121,12 +121,12 @@
 如果你要继续扩展这本书，比较顺手的顺序是：
 
 1. 风险与控制框架：NIST、OWASP、CISA。
-2. 架构模式与 runtime discipline：Anthropic、OpenAI、LangGraph、Google Cloud、Microsoft。
-3. 可观测性、评测与 verifier 层：OpenAI、Microsoft、arXiv、GitHub。
+2. 架构模式与运行时纪律：Anthropic、OpenAI、LangGraph、Google Cloud、Microsoft。
+3. 可观测性、评测与验证器层：OpenAI、Microsoft、arXiv、GitHub。
 4. HCI、HITL 与案例：Microsoft Research、OpenReview、ABA。
-5. 研究前沿：memory、一致性、observability 与 multi-agent failure modes。
+5. 研究前沿：记忆、一致性、可观测性与多智能体失败模式。
 
 如果你是配合本书阅读，再记住一个区分就够了：
 
-- `稳定内核`：规范性框架、架构、policy、execution 与 observability；
-- `快速变化层`：评测工具、verifier design、inventory governance、frontier research 和较新的 cases。
+- `稳定内核`：规范性框架、架构、策略、执行与可观测性；
+- `快速变化层`：评测工具、验证器设计、清单治理、前沿研究和较新的案例。
