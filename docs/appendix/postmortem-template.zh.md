@@ -143,7 +143,7 @@ postmortem:
 
 ## 12. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
 - 事后复盘里是否有精确的 `incident_id`？
 - 是否恢复了 `trace_id`、`session_id`、`bundle_id` 与 `change_id`？
