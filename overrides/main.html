@@ -3,4 +3,12 @@
 {% block extrahead %}
   {{ super() }}
   <meta name="google-site-verification" content="RBNGmQi1EDhswKAfS_CtGf8o7FRuCmeI_mbYgB_xrwE" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ page.title | default(config.site_name, true) | e }}" />
+  <meta property="og:description" content="{{ config.site_description | e }}" />
+  <meta property="og:url" content="{{ page.canonical_url | e }}" />
+  <meta property="og:site_name" content="{{ config.site_name | e }}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ page.title | default(config.site_name, true) | e }}" />
+  <meta name="twitter:description" content="{{ config.site_description | e }}" />
 {% endblock %}
