@@ -188,7 +188,7 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 这里有两点对本书尤其有价值。
 
-第一，单有 trace viewer 并不够。即使 event stream 的界面再漂亮，也不等于真正具备 answerability。如果：
+第一，单有 trace viewer 并不够。即使 event stream 的界面再漂亮，也不等于真正具备可回答性。如果：
 
 - trace vocabulary 太弱；
 - 一个 run 无法关联到 session、approval 和 artifact bundle；
