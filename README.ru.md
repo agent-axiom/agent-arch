@@ -113,6 +113,28 @@ uv sync --group research
 - строгая проверка `mkdocs build --strict`
 - деплой в Pages из ветки `docs-prod`
 
+Перед публикацией прогоните локальные проверки и убедитесь, что `main` может fast-forward обновить обе remote-ветки:
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/ty check
+.venv/bin/pytest --cov=agent_runtime_ref --cov-report=term-missing
+.venv/bin/mkdocs build --strict
+git diff --check
+git status --short --branch
+git rev-list --left-right --count origin/main...HEAD
+git rev-list --left-right --count origin/docs-prod...HEAD
+```
+
+Когда write credentials настроены, публикуйте только fast-forward push-командами:
+
+```bash
+git push origin main
+git push origin HEAD:docs-prod
+```
+
+Не делайте force-push в `docs-prod`; это намеренно только ветка-триггер для GitHub Pages.
+
 ## Первый запуск GitHub Pages
 
 У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать Pages site.

@@ -113,6 +113,29 @@ The repository includes a GitHub Actions workflow for GitHub Pages:
 - strict `mkdocs build --strict`
 - Pages deployment from the `docs-prod` branch
 
+Before publishing, run the local gates and make sure `main` can fast-forward both remote
+branches:
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/ty check
+.venv/bin/pytest --cov=agent_runtime_ref --cov-report=term-missing
+.venv/bin/mkdocs build --strict
+git diff --check
+git status --short --branch
+git rev-list --left-right --count origin/main...HEAD
+git rev-list --left-right --count origin/docs-prod...HEAD
+```
+
+Once write credentials are configured, publish with fast-forward pushes only:
+
+```bash
+git push origin main
+git push origin HEAD:docs-prod
+```
+
+Do not force-push `docs-prod`; it is intentionally just the GitHub Pages trigger branch.
+
 ## First GitHub Pages setup
 
 `actions/configure-pages@v5` has an important limitation: if Pages have never been enabled in the repository before, the default `GITHUB_TOKEN` may not be able to bootstrap the Pages site automatically.
