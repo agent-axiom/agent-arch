@@ -6,14 +6,14 @@
     变化最快的部分：
 
     - 对抗场景生成器与自动化红队框架；
-    - 行为类和控制类 benchmark 套件；
+    - 行为类和控制类基准套件；
     - 模型裁判方法与半自动评分模式。
 
     变化相对较慢的部分：
 
-    - 必须评估 runtime 的行为，而不只是最终答案；
+    - 必须评估运行时行为，而不只是最终答案；
     - 必须验证控制层本身，而不只是模型质量；
-    - control evals、regression gates、contract-version discipline 和 rollout decisions 必须连起来。
+    - 控制评测、回归门禁、contract-version discipline 和 rollout decisions 必须连起来。
 
 ## 1. 为什么普通回归评测已经不够
 
@@ -39,15 +39,15 @@
 - `control evals`
 - `automated red teaming`
 
-这里的清晰边界是：evals 负责判断系统如何行为，以及 control surface 在受压时是否真的证明了自己。它们不替代 assurance response loop、observability evidence layer 或 estate registry。它们产出的是供这些层后续消费的 judgments。
+这里的清晰边界是：评测负责判断系统如何行为，以及控制面在受压时是否真的证明了自己。它们不替代保障响应闭环、可观测性证据层或资产注册表。它们产出的是供这些层后续消费的判断。
 
-这也正是本章的核心承诺。它要帮助读者把 evals 看成整个生命周期里的 reviewable judgment layer：在这里，行为、控制质量和 verifier quality 会被转化成 rollout、assurance、provenance 与 governance 真正可以依赖的判断。
+这也正是本章的核心承诺。它要帮助读者把评测看成整个生命周期里的可评审判断层：在这里，行为、控制质量和验证器质量会被转化成 rollout、assurance、provenance 与 governance 真正可以依赖的判断。
 
 ## 2. 什么是行为评测
 
 行为评测不只检查最终输出，还检查系统的行为形态。
 
-最近关于 computer-use agents verifier design 的一个重要经验是，对于 long-horizon trajectories，单一的二元 verdict 往往太弱。智能体可能走对了 process，却因为 environment block 而失败，也可能通过 unsafe path 达成 nominal outcome。所以 verifier design 最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个 score。
+最近关于 computer-use agents 验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元 verdict 往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个 score。
 
 例如：
 
@@ -56,8 +56,8 @@
 - 会不会在审查之后改掉载荷；
 - 会不会在没有充分理由的情况下进入高风险工具路径；
 - 会不会偏离预期的升级路径；
-- 会不会利用 contract drift 或 schema mismatch 穿过 control boundary；
-- 会不会利用 interruption、expiry 或 re-init semantics 重新回到更弱的 control posture。
+- 会不会利用 contract drift 或 schema mismatch 穿过控制边界；
+- 会不会利用 interruption、expiry 或 re-init semantics 重新回到更弱的控制姿态。
 
 也就是说，问题不再只是“答案对不对”，而是“在这个场景下，运行时的行为对不对”。
 
@@ -67,8 +67,8 @@
 
 典型问题包括：
 
-- verifier 本身是否使用了可评审的 rubric，而不是 opaque single verdict；
-- 它是否区分 controllable failure 和 uncontrollable failure；
+- 验证器本身是否使用了可评审的 rubric，而不是不透明的单一 verdict；
+- 它是否区分可控失败和不可控失败；
 
 - 策略层能不能真的拦住这个能力；
 - 审批门禁是否真的要求人来确认；
@@ -80,9 +80,9 @@
 
 这里的关键转变在于：你检查的不只是模型，而是围绕模型的一整层控制面。
 
-在成熟体系里，verifier 本身也属于 control surface。如果它制造了虚假的信心，rollout 和 training loops 就会继承这个错误。所以 verifier design 应该被当成 governed infrastructure，而不只是一个方便的 helper prompt。
+在成熟体系里，验证器本身也属于控制面。如果它制造了虚假的信心，rollout 和 training loops 就会继承这个错误。所以验证器设计应该被当成受治理基础设施，而不只是一个方便的 helper prompt。
 
-这也包括 verifier contract swaps。eval regression 不一定只来自 model 或 runtime behavior，也可能来自未经审查的 verifier contract version changes，它们会悄悄改变 grading standards。
+这也包括 verifier contract swaps。评测回归不一定只来自模型或运行时行为，也可能来自未经审查的 verifier contract version changes，它们会悄悄改变评分标准。
 
 ## 4. 什么是自动化红队测试
 
@@ -96,7 +96,7 @@
 
 Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测脚手架，以及更强的红队场景生成。[^anthropic-redteam][^anthropic-bloom]
 
-## 5. 它和现有 eval layer 的关系
+## 5. 它和现有评测层的关系
 
 你已经有：
 
@@ -129,7 +129,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 
 如果高风险路径根本没有被这些评测覆盖，团队几乎一定会先从事故里学到教训。
 
-## 7. 一个最小 behavioral taxonomy
+## 7. 一个最小行为分类法
 
 一个够用的最小分类法可以是：
 
@@ -187,7 +187,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 
 所以，研究在这里最好的用途，是帮助生成假设和危险场景，而不是替代你自己的评测方案。
 
-## 9. 一个 control evals policy 示例
+## 9. 一个控制评测策略示例
 
 ```yaml
 control_evals:
@@ -215,7 +215,7 @@ control_evals:
 
 这个层很有价值，因为它把行为检查变成了发布纪律的一部分，而不是“可做可不做的加分项”。
 
-## 10. 一个简单的 grading contract
+## 10. 一个简单的分级契约
 
 ```python
 from dataclasses import dataclass
@@ -243,7 +243,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这里的核心是：失效不只是“模型行为古怪”，也包括“控制层没能证明自己真的有效”。
 
-如果 grading contract 能表达的不只是 pass/fail verdict，而是分开的 process/outcome judgments，以及 controllable 与 uncontrollable causes 的 failure attribution，它就会更强。
+如果分级契约能表达的不只是 pass/fail verdict，而是分开的过程/结果判断，以及可控与不可控原因的失败归因，它就会更强。
 
 ## 11. 如何把它接进 ADLC
 
@@ -259,7 +259,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这样评测层就不再只是“一张指标表”，而会变成运行模型的一部分。
 
-也正因为如此，本章更应该被理解成 testing and judgment layer。Assurance 决定如何响应 findings；observability 保存 evidence；registry 在整个 estate 上分配 accountability；而 evals 决定到底测试了什么、哪里失败了，以及团队当前应当对 control posture 保持多大信心。
+也正因为如此，本章更应该被理解成测试与判断层。Assurance 决定如何响应 findings；observability 保存 evidence；registry 在整个 estate 上分配 accountability；而评测决定到底测试了什么、哪里失败了，以及团队当前应当对控制姿态保持多大信心。
 
 ## 12. 最常见的错误
 
@@ -275,30 +275,30 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - 控制失效被当成“不是模型 bug”，于是从待办列表里消失；
 - 团队分不清普通失效和类似破坏的行为。
 
-## 13. 给 behavioral 和 control evals 做一次快速成熟度测试
+## 13. 给行为评测和控制评测做一次快速成熟度测试
 
-团队不应该只因为已经有 regression evals、simulator 和几条 adversarial prompts，就觉得自己已经准备好面对 autonomous behavior。
+团队不应该只因为已经有回归评测、模拟器和几条 adversarial prompts，就觉得自己已经准备好面对自主行为。
 
 更高的标准应该是：
 
-- risky paths 有明确的 behavioral scenario classes；
-- control evals 会验证 control layer 本身在压力下是否真的有效；
-- verifier outputs 会分开表示 process quality、outcome quality 与 failure attribution，而不是把一切压成单一 binary judgment；
+- 高风险路径有明确的行为场景类别；
+- 控制评测会验证控制层本身在压力下是否真的有效；
+- 验证器输出会分开表示过程质量、结果质量与失败归因，而不是把一切压成单一二元判断；
 - approval-path misuse、session re-init misuse、delegated-worker misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
 - red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
 - realistic simulation 和 adversarial generation 扮演不同但互补的角色；
-- release decisions 能拿出 control evidence，而不只是 quality scores。
+- 发布决策能拿出控制证据，而不只是质量分数。
 
-如果这些条件大多不成立，那团队也许已经有一些 evaluation activity，但还没有足够的 behavioral 和 control coverage。
+如果这些条件大多不成立，那团队也许已经有一些评测活动，但还没有足够的行为和控制覆盖。
 
-这时团队也许已经在测量行为，但还没有产出那种足以让 rollout、assurance 与 governance functions 稳定依赖的 reviewable judgments。
+这时团队也许已经在测量行为，但还没有产出那种足以让 rollout、assurance 与治理函数稳定依赖的可评审判断。
 
 ## 14. 实用检查清单
 
 - 高风险能力是否有单独的行为场景类别？
 - 你是否测试审批规避、载荷篡改、approval-path misuse 与 delegated-worker misuse？
-- 是否有专门验证控制措施、contract-version matching、runtime-control behavior、orchestration-pattern boundaries 与 verifier quality 的评测，而不只是检查输出质量？
-- verifier 能否区分 process failure、outcome failure 与 uncontrollable environment failure？
+- 是否有专门验证控制措施、contract-version matching、runtime-control behavior、orchestration-pattern boundaries 与验证器质量的评测，而不只是检查输出质量？
+- 验证器能否区分过程失败、结果失败与不可控环境失败？
 - 红队发现结果是否会进入变更评审和发布门禁？
 - 是否同时有 realistic workload simulator 和 adversarial generator？
 - 你能展示的是控制证据，还是只有最终分数？
