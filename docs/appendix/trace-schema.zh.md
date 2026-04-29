@@ -124,8 +124,6 @@
 - `risk_tier`
 - `tool_principal`
 
-而 `memory_persisted` 通常应该包含：
-
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器证据，例如：
 
 - `verifier_id`
