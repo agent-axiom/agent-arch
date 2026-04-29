@@ -20,11 +20,11 @@ NIST 在面向生成式 AI 的 SSDF 配置文件里采取的也是同样的思�
 
 也就是说，智能体系统并没有取代 SDLC。它只是让默认形态的 SDLC 变得不够用。
 
-这正是本章真正的承诺。它不是为了把软件生命周期换一个新缩写，而是为了说明：在 Part VII 已经搭好的那套受治理系统之上，现在需要一个足够宽的生命周期框架，去容纳模型行为、policy 变化、retrieval drift、tool side effects、evidence，以及随时间推进的 retirement decisions。
+这正是本章真正的承诺。它不是为了把软件生命周期换一个新缩写，而是为了说明：在 第七部分 已经搭好的那套受治理系统之上，现在需要一个足够宽的生命周期框架，去容纳模型行为、策略变化、检索漂移、工具副作用、证据，以及随时间推进的退役决策。
 
 ## 2. 哪些东西并没有变
 
-如果把 hype 拿掉，很多基础工作依然完全熟悉：
+如果把 炒作拿掉，很多基础工作依然完全熟悉：
 
 - 需求仍然要写清楚；
 - 架构仍然需要设计评审；
@@ -53,7 +53,7 @@ NIST 在面向生成式 AI 的 SSDF 配置文件里采取的也是同样的思�
 
 最实用的工程表达其实很简单：
 
-`ADLC = SDLC + model behavior + prompts/routines + policies + retrieval/memory + tools + evals + governed autonomy`
+`ADLC = SDLC + 模型行为 + 提示/例程 + 策略 + 检索/记忆 + 工具 + 评测 + 受治理自主性`
 
 也就是说，新的生命周期不是因为“智能体很神秘”，而是因为现在有更多可变部件需要被发布、评估和治理。
 
@@ -62,21 +62,21 @@ NIST 在面向生成式 AI 的 SSDF 配置文件里采取的也是同样的思�
 
 ``` mermaid
 flowchart LR
-    A["Classical SDLC"] --> B["Requirements"]
-    A --> C["Design"]
-    A --> D["Implementation"]
-    A --> E["Testing"]
-    A --> F["Release"]
-    A --> G["Operations"]
-    A --> H["Retirement"]
+    A["经典 SDLC"] --> B["需求"]
+    A --> C["设计"]
+    A --> D["实现"]
+    A --> E["测试"]
+    A --> F["发布"]
+    A --> G["运营"]
+    A --> H["退役"]
 
-    H --> I["ADLC adds"]
-    I --> J["Model behavior"]
-    I --> K["Prompts and routines"]
-    I --> L["Policies and approvals"]
-    I --> M["Retrieval and memory"]
-    I --> N["Tool side effects"]
-    I --> O["Evals and controlled autonomy"]
+    H --> I["ADLC 增加"]
+    I --> J["模型行为"]
+    I --> K["提示与例程"]
+    I --> L["策略与审批"]
+    I --> M["检索与记忆"]
+    I --> N["工具副作用"]
+    I --> O["评测与受控自主性"]
 ```
 
 </div>
@@ -97,11 +97,11 @@ flowchart LR
 
 这是最关键的运行转变之一。如果团队只把代码改动当成发布，它几乎一定会漏掉真正高风险的智能体变更。
 
-## 6. 为什么 tests 已经不够了
+## 6. 为什么 测试已经不够了
 
 测试依然重要，但已经不够。
 
-智能体系统需要更宽的 assurance contour：
+智能体系统需要更宽的 保证轮廓：
 
 - 针对代码和契约的确定性测试；
 - 面向已知场景的离线评测；
@@ -132,11 +132,11 @@ Google 还有一个很有价值的修正：AI 软件供应链不只包含库和�
 - 当时用的是哪一版检索语料；
 - 两次发布波次之间到底变了哪个提示或例程。
 
-换句话说，ADLC 里的来源证明不是“锦上添花”，而是变更管理和事故调查的基础设施，其中也包括在发布路径退化时恢复像 `failure_reason` 这样的 failed-run 导出证据。
+换句话说，ADLC 里的来源证明不是“锦上添花”，而是变更管理和事故调查的基础设施，其中也包括在发布路径退化时恢复像 `failure_reason` 这样的失败运行导出证据。
 
-## 9. 好的 ADLC 应该从 intake 和 design review 开始
+## 9. 好的 ADLC 应该从立项和设计评审开始
 
-如果一个智能体项目只有在“已经做出点东西”之后才进入工程流程，那么 architecture 和 governance 问题往往会暴露得太晚。
+如果一个智能体项目只有在“已经做出点东西”之后才进入工程流程，那么 架构和治理 问题往往会暴露得太晚。
 
 有价值的早期问题包括：
 
@@ -152,29 +152,29 @@ Google 还有一个很有价值的修正：AI 软件供应链不只包含库和�
 
 ## 10. 一个实用的 ADLC 框架
 
-对于 production-grade 智能体系统，我建议至少有这些阶段：
+对于生产级智能体系统，我建议至少有这些阶段：
 
-1. Intake and suitability review
-2. Architecture and safety design review
-3. Build and integration
-4. Eval baseline
-5. Staged rollout
-6. Steady-state operations
-7. Incident response and corrective action
-8. Retirement or replacement
+1. 立项与适用性评审
+2. 架构与安全设计评审
+3. 构建与集成
+4. 评测基线
+5. 分阶段 rollout
+6. 稳态运营
+7. 事故响应与纠正行动
+8. 退役 or replacement
 
 <div class="diagram-card">
 <p>把 ADLC 看成持续循环，而不是“第一次上线之前的流程”，会更接近真实世界</p>
 
 ``` mermaid
 flowchart LR
-    A["Intake"] --> B["Design review"]
-    B --> C["Build and integration"]
-    C --> D["Eval baseline"]
-    D --> E["Staged rollout"]
-    E --> F["Operations"]
-    F --> G["Incidents and corrective actions"]
-    G --> H["Retirement or replacement"]
+    A["立项"] --> B["设计评审"]
+    B --> C["构建与集成"]
+    C --> D["评测基线"]
+    D --> E["分阶段 rollout"]
+    E --> F["运营"]
+    F --> G["事故与纠正行动"]
+    G --> H["退役或替换"]
     H --> A
 ```
 
@@ -184,45 +184,45 @@ flowchart LR
 
 如果这些内容只被叫做“最佳实践”，团队往往会把它当成可选建议。
 
-但一旦它被组织成 lifecycle model，问题就会变得更成熟：
+但一旦它被组织成 生命周期模型，问题就会变得更成熟：
 
 - 我们现在在哪个阶段；
 - 下一阶段还缺什么；
-- 过下一道 gate 前必须产出什么 artifact；
+- 过下一道 门禁前必须产出什么工件；
 - 下一步由谁负责；
 - 如果跳过某个阶段，我们究竟在承担什么风险。
 
-这正是 ADLC 的实际价值所在：它把关于智能体的讨论，从 hype discussion 变成可管理的工程计划。
+这正是 ADLC 的实际价值所在：它把关于智能体的讨论，从炒作讨论变成可管理的工程计划。
 
 ## 12. 不该怎么做
 
 这里有几种非常常见的错误：
 
 - 直接宣布“普通工程方法对智能体无效”；
-- 把 ADLC 误解成 prompt iteration 的新名字；
-- 以为 rollout checklist 就等于整个 lifecycle；
-- 不把 prompt、policy 和 retrieval 视为 release-bearing changes；
-- 不把 evals 和 change management 连起来；
-- 在最后时刻才想起 retirement discipline。
+- 把 ADLC 误解成提示迭代的新名字；
+- 以为 rollout 检查清单就等于整个生命周期；
+- 不把 提示、策略和检索 视为 承载发布意义的变更；
+- 不把评测和变更管理连起来；
+- 在最后时刻才想起 退役纪律。
 
-如果这样做，ADLC 最终就只会变成一个好听但没 operational 价值的词。
+如果这样做，ADLC 最终就只会变成一个好听但没运营价值的词。
 
 ## 13. 实用检查清单
 
 如果你想快速判断自己是否已经需要完整的 ADLC，可以问：
 
-- 你们除了代码，还会持续发布 prompt、policy 或 model changes 吗？
-- 系统会产生高风险 side effects 吗？
-- 系统使用 retrieval、memory 或其他 mutable knowledge surfaces 吗？
-- release decisions 是否依赖 evals？
-- 是否已经需要 staged rollout、approval gates 和 incident review？
-- 在发生事故时，你们是否需要解释“当时生产环境里到底是哪一个 exact artifact”？
+- 你们除了代码，还会持续发布 提示、策略或模型变更 吗？
+- 系统会产生高风险副作用吗？
+- 系统使用 检索、记忆或其他可变知识表面 吗？
+- 发布决策是否依赖评测？
+- 是否已经需要分阶段 rollout、审批门禁和事故审查？
+- 在发生事故时，你们是否需要解释“当时生产环境里到底是哪一个 精确工件”？
 
 如果连续几个问题的答案都是“是”，那你们其实已经活在 ADLC 里了，只是还没有把它明确说出来。
 
 ## 14. 接下来读什么
 
-这章之后最自然的延伸，是 change management、assurance loop 和 supply chain discipline。但它现在已经可以和书里已有的内容连起来：
+这章之后最自然的延伸，是 变更管理、保证回路和供应链纪律。但它现在已经可以和书里已有的内容连起来：
 
 - [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)
