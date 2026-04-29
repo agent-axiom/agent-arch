@@ -1465,8 +1465,14 @@ class TestCli:
         assert exit_code == 0
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
+        assert "capability_session_contract" in payload["change"]["affected_surfaces"]
+        assert payload["change"]["session_control_owner"] == "support-ops"
+        assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
+        assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
         assert payload["retirement"]["system_id"] == "support-triage-ref"
+        assert payload["retirement"]["session_control_owner"] == "support-ops"
+        assert payload["retirement"]["emergency_freeze_owner"] == "platform-runtime"
         assert "expire_paused_runs" in payload["retirement"]["required_steps"]
         assert "stop_background_routes" in payload["retirement"]["required_steps"]
         assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]

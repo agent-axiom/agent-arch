@@ -24,8 +24,11 @@ class ChangeRecord:
     risk_level: str
     rollout_strategy: str
     artifacts: tuple[str, ...]
+    affected_surfaces: tuple[str, ...]
     required_signals: tuple[str, ...]
     approval_roles: tuple[str, ...]
+    session_control_owner: str
+    emergency_freeze_owner: str
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ChangeRecord:
@@ -36,8 +39,11 @@ class ChangeRecord:
             risk_level=str(data["risk_level"]),
             rollout_strategy=str(data["rollout_strategy"]),
             artifacts=_read_string_list(data, "artifacts"),
+            affected_surfaces=_read_string_list(data, "affected_surfaces"),
             required_signals=_read_string_list(data, "required_signals"),
             approval_roles=_read_string_list(data, "approval_roles"),
+            session_control_owner=str(data.get("session_control_owner", "")),
+            emergency_freeze_owner=str(data.get("emergency_freeze_owner", "")),
         )
 
 
@@ -47,6 +53,7 @@ class ArtifactBundle:
     version: str
     provenance_required: bool
     signed: bool
+    session_control_owner: str
     artifacts: tuple[str, ...]
 
     @classmethod
@@ -57,6 +64,7 @@ class ArtifactBundle:
             version=str(data["version"]),
             provenance_required=bool(data.get("provenance_required", True)),
             signed=bool(data.get("signed", False)),
+            session_control_owner=str(data.get("session_control_owner", "")),
             artifacts=_read_string_list(data, "artifacts"),
         )
 
@@ -67,6 +75,8 @@ class RetirementPlan:
     replacement_mode: str
     triggers: tuple[str, ...]
     required_steps: tuple[str, ...]
+    session_control_owner: str
+    emergency_freeze_owner: str
     archive_targets: tuple[str, ...]
 
     @classmethod
@@ -77,6 +87,8 @@ class RetirementPlan:
             replacement_mode=str(data["replacement_mode"]),
             triggers=_read_string_list(data, "triggers"),
             required_steps=_read_string_list(data, "required_steps"),
+            session_control_owner=str(data.get("session_control_owner", "")),
+            emergency_freeze_owner=str(data.get("emergency_freeze_owner", "")),
             archive_targets=_read_string_list(data, "archive_targets"),
         )
 
