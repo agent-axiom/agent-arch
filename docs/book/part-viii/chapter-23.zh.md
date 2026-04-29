@@ -289,7 +289,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 这章把 Part VIII 真正闭合成一个完整的运行闭环：
 
-- SDLC -> ADLC；
+- SDLC→ADLC；
 - 变更管理；
 - 保障闭环；
 - 工件治理；

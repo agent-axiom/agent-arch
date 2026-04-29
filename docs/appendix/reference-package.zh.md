@@ -49,9 +49,9 @@
 - [controls.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/controls.py)
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
-  用于高风险动作的审批门禁、暂停 / 恢复语义、简单人工评审队列，以及审批状态必须与能力会话状态保持一致的那层控制表面。
+  用于高风险动作的审批门禁、暂停/恢复语义、简单人工评审队列，以及审批状态必须与能力会话状态保持一致的那层控制表面。
 
-同一层运行时控制表面也天然适合承载委派授权假设：是谁委托了访问，这份授权能否跨过暂停 / 恢复继续有效，以及如果委派访问在动作完成前被撤销，运行时应该如何处理。
+同一层运行时控制表面也天然适合承载委派授权假设：是谁委托了访问，这份授权能否跨过暂停/恢复继续有效，以及如果委派访问在动作完成前被撤销，运行时应该如何处理。
 
 - [lifecycle.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/lifecycle.py)
   用于变更记录、工件包、发布身份记录、运行时控制 Schema、验证器契约谱系和退役计划的生命周期工件，以及这些状态的就绪检查。
@@ -93,10 +93,10 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到退化路径治理的保留侧面与追踪 / 来源证明控制侧面。
+`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到退化路径治理的保留侧面与追踪/来源证明控制侧面。
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样退化路径发布评审的缺口就不会被埋在普通缺失信号列表里。
-`check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些遥测 / 会话 / 审批记录必须在退役之后继续保留下来，供后续退化路径评审使用。
-`check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样追踪 / 来源证明相关缺口就能和普通控制卫生分开审阅。
+`check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些遥测/会话/审批记录必须在退役之后继续保留下来，供后续退化路径评审使用。
+`check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样追踪/来源证明相关缺口就能和普通控制卫生分开审阅。
 
 查看记忆记录：
 
@@ -187,7 +187,7 @@
 
 这个参考包依然刻意保持很小，但它现在已经反映出：一个受治理的运行时有时必须把这三层状态分别讲清楚，而不是把它们压进同一个不透明对象里。
 
-它现在也适合作为承接 Anthropic 新型运行框架经验的锚点：长时间运行的应用工作可能需要显式的上下文重置、结构化交接工件，以及规划器 / 生成器 / 评估器的角色分离，而不是一条不间断的智能体循环。这个参考包并没有把整套运行框架都实现出来，但它已经把那些关键运行时接缝暴露出来了，让团队能看见重置安全的交接、迭代契约、评估器评审与恢复后的控制状态应该落在什么地方。
+它现在也适合作为承接 Anthropic 新型运行框架经验的锚点：长时间运行的应用工作可能需要显式的上下文重置、结构化交接工件，以及规划器/生成器/评估器的角色分离，而不是一条不间断的智能体循环。这个参考包并没有把整套运行框架都实现出来，但它已经把那些关键运行时接缝暴露出来了，让团队能看见重置安全的交接、迭代契约、评估器评审与恢复后的控制状态应该落在什么地方。
 
 它现在也适合作为验证器感知治理的锚点：如果发布或保障依赖评测输出，运行时就应该保留足够的追踪、会话与工件链接，来解释不只是发生了什么，还包括验证器为什么会这样判定这次运行。
 
@@ -228,7 +228,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。
 
-其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停 / 恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
+其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停/恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 
 ## 为什么它有用
 
@@ -239,7 +239,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - 更容易从章节直接走到可运行的原型；
 - 更容易展示配置驱动的路径，而不只是硬编码的演示；
 - 更容易把参考运行时和记忆、检索、后台更新以及运行时控制治理这些章节连起来；
-- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个修订版，以及当时生效的是哪一个契约 / 运行时控制版本；
+- 更容易讨论每条记忆是从哪里来的、它当前属于哪一个修订版，以及当时生效的是哪一个契约/运行时控制版本；
 - 更容易把发布身份、验证器契约谱系与退役义务和运行时控制、工件决策放在一起看清楚；
 - 更容易把审批状态、运行时会话状态、能力会话状态与验证器证据区分开来，同时仍保持它们之间的治理关联。
 

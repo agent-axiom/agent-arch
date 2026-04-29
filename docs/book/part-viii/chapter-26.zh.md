@@ -92,7 +92,7 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 
 这也正是为什么 runtime-control signals 不能继续被当成隐藏的实现细节。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于证据层。
 
-但这并不意味着可观测性成了 artifact lineage 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 provenance layer 仍然回答，后续决策依赖的是哪一个 governed artifact、approved version 或 release identity。
+但这并不意味着可观测性成了 工件谱系 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 来源证明层 仍然回答，后续决策依赖的是哪一个 受治理工件、已批准版本或发布身份。
 
 这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份运行记录之上。
 
