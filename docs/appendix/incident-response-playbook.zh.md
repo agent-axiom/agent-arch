@@ -114,7 +114,7 @@
 先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
 - 能否快速禁用单个能力？
-- 能否恢复 `trace -> session -> bundle -> rollout wave`？
+- 能否恢复 `trace_id -> session_id -> bundle_id -> rollout_wave`？
 - 能否明确哪个主体执行了外部调用？
 - 审批路径及其决策是否可见？
 - 能否临时暂停记忆写入？
@@ -125,7 +125,7 @@
 
 - [追踪 Schema 与事件目录](trace-schema.zh.md)
 - [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [审批请求与决策 Schema](approval-schema.zh.md)
+- [审批请求与决策记录 Schema](approval-schema.zh.md)
 - [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
 - [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考运行时包](reference-package.zh.md)
