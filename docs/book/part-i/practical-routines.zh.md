@@ -197,7 +197,7 @@ def render_prompt(*, instructions: str, routine: str, user_input: str, retrieved
 
 ## 10. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
 - 你有没有明确区分指令、例程和模板？
 - 不看原始提示，光看例程能不能理解这个场景的逻辑？
