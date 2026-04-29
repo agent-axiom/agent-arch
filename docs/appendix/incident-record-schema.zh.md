@@ -159,7 +159,7 @@ status: open
 
 ## 11. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为 “no” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
 - 事故有稳定的 `incident_id` 吗？
 - 团队能否快速恢复 `trace_id`、`session_id`、`bundle_id` 和 `change_id`？
