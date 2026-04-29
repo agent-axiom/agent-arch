@@ -260,10 +260,10 @@ capabilities:
 
 因此，策略工件最好逐步把这些字段也结构化下来：
 
-- `capability_会话_id`
-- `capability_会话_mode`
+- `capability_session_id`
+- `capability_session_mode`
 - `resume_policy`
-- `on_会话_expiry`
+- `on_session_expiry`
 - `progress_event_policy`
 - `elicitation_policy`
 
@@ -275,9 +275,9 @@ capabilities:
 - `approval_delegate`
 - `classifier_verdict`
 - `escalate_to_human_if`
-- `子智能体_handoff_policy`
+- `subagent_handoff_policy`
 
-这些字段能让委派审批 path 变成显式的运行时契约，而不是藏在产品逻辑或 UI 行为里。
+这些字段能让委派审批路径变成显式的运行时契约，而不是藏在产品逻辑或 UI 行为里。
 
 同样的纪律也应该延伸到委派 worker。如果 runtime 支持 `orchestrator-workers` 路径，策略层应该能够明确说明：
 
@@ -310,7 +310,7 @@ OpenAI 最近关于结构化输出的材料，对策略层也很有帮助。[^op
 
 目的不是为了形式优雅，而是为了减少运行时逻辑、审计记录和周边控制面之间的静默漂移。
 
-## 11. 一个简单的策略决策 skeleton
+## 11. 一个简单的策略决策骨架
 
 重点在于：运行时拿到的不只是“准不准”，而是结构化决策。
 
@@ -389,7 +389,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 - 策略决策是显式对象，而不是散落的布尔值；
 - 能力契约携带负责人归属、传输、暴露方式、风险和审批语义；
-- 运行时代码依赖目录，而不是 direct calls 和 ad hoc exceptions；
+- 运行时代码依赖目录，而不是直接调用和临时例外；
 - 审批被建模成显式可中断路径，而不是流程外的人工绕路；
 - 记忆策略、执行策略和审批策略属于同一个可见的控制面；
 - 遥测不只展示发生了什么，还能展示是哪条策略和哪个能力契约在起作用。
@@ -398,13 +398,13 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 ## 15. 现在就该做什么
 
-先过一遍这份短清单，把所有回答为“否” 的地方单独记下来：
+先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
 - 你有没有独立的策略层，而不是一堆散落的 `if`？
 - 策略返回的是不是结构化决策？
 - 你有没有统一的能力目录？
 - 能力是否拥有负责人、传输、暴露方式和风险语义？
-- 运行时是否使用目录，而不是 direct calls？
+- 运行时是否使用目录，而不是直接调用？
 - 审批能否显式暂停并恢复一次运行？
 - 策略决策是否能在遥测里看到？
 
