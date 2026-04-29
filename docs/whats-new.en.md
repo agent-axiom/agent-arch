@@ -2,7 +2,7 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of April 18, 2026._
+_Current as of April 29, 2026._
 
 ## Book
 
@@ -88,6 +88,19 @@ Those pages now make it easier to find short paths into topics such as:
 - the difference between `prompt injection`, `jailbreaking`, and `action hallucination`.
 
 Why it matters: the new topics are now visible not only inside individual chapters, but also at the reader entry-point level.
+
+## Publish Readiness
+
+### A cleaner site before publication
+
+Before the next deploy, the publisher-facing quality layer was tightened:
+
+- draft and planning pages are excluded from the published site and sitemap;
+- OpenGraph/Twitter metadata and a social preview image were added;
+- the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
+- the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
+
+Why it matters: the published site should feel like a polished reader-facing product, not a raw build of Markdown files.
 
 ## What this means for readers
 
