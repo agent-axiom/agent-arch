@@ -13,7 +13,7 @@
 
     - 必须建设可直接用于证据链的遥测，而不只是调试日志；
     - 可观测性必须和 approvals、runtime-control states、policy decisions、tool principals、contract versions 与 artifact bundles 关联；
-    - 完整的清单覆盖率仍然是 detection 和 incident review 的前提。
+    - 完整的清单覆盖率仍然是检测和事故评审的前提。
 
 ## 1. 为什么智能体的可观测性不能只看延迟和错误率
 
@@ -26,7 +26,7 @@
 
 但对智能体系统来说，这远远不够。
 
-这里要始终保持一个简单区分：assurance 负责决定什么时候需要 containment、由谁来响应；可观测性则通过保留可被信任的 evidence，让这些 release、incident 与 governance decision 真正有据可依。
+这里要始终保持一个简单区分：保障负责决定什么时候需要遏制、由谁来响应；可观测性则通过保留可被信任的证据，让这些 release、incident 与 governance decision 真正有据可依。
 
 系统可能：
 
@@ -35,32 +35,32 @@
 - 一直返回 HTTP 200；
 - 但行为依然危险、低质或者失控。
 
-Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我们需要把传统的 logs、metrics 和 traces 演进成 `AI-native signals`，让系统不仅能说明“发生了请求”，还能说明“系统究竟是怎么行为的”。 [^ms-observability]
+Microsoft 对这个转变的表述很准确：对智能体系统来说，我们需要把传统的日志、指标和追踪演进成 `AI-native signals`，让系统不仅能说明“发生了请求”，还能说明“系统究竟是怎么行为的”。[^ms-observability]
 
 ## 2. 可观测性不只是为了调试
 
-在 agent platform 里，observability 至少承担五种角色：
+在智能体平台里，可观测性至少承担五种角色：
 
-- runtime debugging；
-- incident reconstruction；
-- abuse detection；
-- release evidence；
-- governance coverage。
+- 运行时调试；
+- 事故重建；
+- 滥用检测；
+- 发布证据；
+- 治理覆盖率。
 
 如果 traces 只是给开发者排查本地 bug 用的，这已经不够了。
 
-在 production 里，你还需要回答：
+在生产环境里，你还需要回答：
 
 - 一共存在多少 agents；
 - 其中多少是真正可观测的；
 - 它们实际调用了哪些 capabilities；
-- high-risk actions 出现在哪里；
+- 高风险动作出现在哪里；
 - 哪些 approvals 被请求、批准或绕过；
-- rollout 之后出现了哪些 behavior shifts。
+- rollout 之后出现了哪些行为变化。
 
 ## 3. 什么是 AI-native signals
 
-对 agent systems 来说，一个有用的 telemetry contract 通常包括：
+对智能体系统来说，一个有用的遥测契约通常包括：
 
 - request identity；
 - `run_id`、`trace_id`、`session_id`；
@@ -84,25 +84,25 @@ Microsoft 对这个转变的表述很准确：对 agentic systems 来说，我�
 也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
 
 - 是谁在行动；
-- 穿过了哪一层 control layer；
+- 穿过了哪一层控制层；
 - 拥有哪些权限；
 - 依据哪套规则；
 - 属于哪个 artifact bundle；
-- 最终造成了什么 side effect。
+- 最终造成了什么副作用。
 
-这也正是为什么 runtime-control signals 不能继续被当成隐藏的 implementation detail。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于 evidence layer。
+这也正是为什么 runtime-control signals 不能继续被当成隐藏的实现细节。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于证据层。
 
-但这并不意味着 observability 成了 artifact lineage 的拥有者。Observability 负责在跨 runs 的范围内保留和关联 evidence；而 provenance layer 仍然回答，后续决策依赖的是哪一个 governed artifact、approved version 或 release identity。
+但这并不意味着可观测性成了 artifact lineage 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 provenance layer 仍然回答，后续决策依赖的是哪一个 governed artifact、approved version 或 release identity。
 
-这也正是本章的核心承诺。它要帮助读者把 observability 看成整个生命周期的 evidence substrate：这一层把 runtime behavior、control signals、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份 operational record 之上。
+这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份运行记录之上。
 
-## 4. Inventory coverage 其实也是 observability
+## 4. 清单覆盖率其实也是可观测性
 
-一个经常被忽略的关键点是：observability 的起点不是漂亮的 trace viewer，而是先知道到底有哪些 systems 存在。
+一个经常被忽略的关键点是：可观测性的起点不是漂亮的 trace viewer，而是先知道到底有哪些系统存在。
 
-Microsoft 直接把 complete production inventory 视为 trusted telemetry 的前提。 [^ms-inventory]
+Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventory]
 
-对 agent estate 来说，这意味着你应该知道：
+对智能体资产来说，这意味着你应该知道：
 
 - 哪些 agents 正在 active；
 - 哪些已经 deprecated；
@@ -113,9 +113,9 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 
 如果没有 inventory coverage，你就没有完整的 observability。你只有一块被局部照亮的舞台。
 
-## 5. Behavioral baselines 比 raw volume 更重要
+## 5. 行为基线比原始流量更重要
 
-在 agent systems 里，“请求量比平时更高”这个信号本身并不说明太多。
+在智能体系统里，“请求量比平时更高”这个信号本身并不说明太多。
 
 更重要的是看偏离正常行为的模式：
 
@@ -130,22 +130,22 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 - orchestration-pattern selection 或 worker-boundary crossings 的异常变化；
 - session length 或 tool hop count 拉长。
 
-从这里开始，observability 就真正和 security detection、operational governance 连在一起了。
+从这里开始，可观测性就真正和安全检测、运行治理连在一起了。
 
-但它不应该直接塌缩成这些功能本身。Observability 是 evidence substrate，它让 assurance、rollout 与 registry functions 能基于同一份 traceable record 推理，而不是依赖彼此冲突的 dashboards、screenshots 或事后回忆。
+但它不应该直接塌缩成这些功能本身。可观测性是证据基底，它让 assurance、rollout 与 registry functions 能基于同一份可追踪记录推理，而不是依赖彼此冲突的 dashboards、screenshots 或事后回忆。
 
-这个 substrate 讨论的是跨 runs 与 systems 可用的 telemetry。它并不等同于 provenance backbone，后者负责长期保留 approved artifact identity 与 decision lineage。
+这个基底讨论的是跨 runs 与 systems 可用的 telemetry。它并不等同于 provenance backbone，后者负责长期保留 approved artifact identity 与 decision lineage。
 
-## 6. 什么叫 detection-ready telemetry
+## 6. 什么叫可用于检测的遥测
 
 `Detection-ready telemetry` 并不只是“我们有日志”。
 
-它意味着这些 telemetry 已经足够支撑：
+它意味着这些遥测已经足够支撑：
 
 - 调查；
-- correlation；
-- abuse detection；
-- control verification。
+- 关联；
+- 滥用检测；
+- 控制验证。
 
 从工程上说，这通常要求：
 
@@ -157,16 +157,16 @@ Microsoft 直接把 complete production inventory 视为 trusted telemetry 的�
 
 如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 verifier evidence，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
-## 7. 为什么没有 observability 的 governance 往往很脆
+## 7. 为什么没有可观测性的治理往往很脆
 
-Governance 往往会被写成：
+治理往往会被写成：
 
 - policy bundles；
 - review processes；
 - release gates；
 - approval contracts。
 
-但如果没有 observability，这一切很容易退化成纸面控制。
+但如果没有可观测性，这一切很容易退化成纸面控制。
 
 强治理真正需要的是：
 
@@ -176,15 +176,15 @@ Governance 往往会被写成：
 - 区分 governed path 和 bypass path；
 - 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse、orchestration-pattern drift、verifier-quality drift 与 contract mismatches。
 
-所以对 agent systems 来说，最好把 observability 理解成 `governance 的证据层`。
+所以对智能体系统来说，最好把可观测性理解成`治理的证据层`。
 
-这种 framing 也把本章和 assurance chapter、registry chapter 清楚地区分开来。Assurance 负责 containment 与 response；registry 负责 estate accountability；observability 则是让二者都可审计的 shared substrate。
+这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
 
-它也应该和 provenance chapter 保持分离。Observability 关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和 detection；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
+它也应该和 provenance chapter 保持分离。可观测性关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和检测；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
 
-## 8. Research frontier 正在把 observability 推向哪里
+## 8. 研究前沿正在把可观测性推向哪里
 
-最新的 agent observability 研究还在继续往前走：它们试图把 traces 从“方便阅读的事件日志”推进成“因果诊断层”。
+最新的智能体可观测性研究还在继续往前走：它们试图把 traces 从“方便阅读的事件日志”推进成“因果诊断层”。
 
 这里有两点对本书尤其有价值。
 
@@ -196,7 +196,7 @@ Governance 往往会被写成：
 
 那么可观测性依然不够成熟。
 
-第二，causal diagnosis 很有前景，但现在还不适合被讲成 solved problem。Research 已经给出了值得跟进的方向，但 production discipline 目前仍然要建立在更稳的基础上：
+第二，因果诊断很有前景，但现在还不适合被讲成已经解决的问题。研究已经给出了值得跟进的方向，但生产纪律目前仍然要建立在更稳的基础上：
 
 - stable event catalog；
 - schema versioning；
@@ -204,7 +204,7 @@ Governance 往往会被写成：
 - session-aware traces；
 - telemetry、approvals 和 lifecycle artifacts 之间的明确 linkage。
 
-也就是说，frontier 的价值不在于让我们承诺“完全 explainability”，而在于提醒我们：observability 的长期方向应该是从 logging 走向 diagnosability。
+也就是说，前沿研究的价值不在于让我们承诺“完全可解释性”，而在于提醒我们：可观测性的长期方向应该是从日志记录走向可诊断性。
 
 <div class="diagram-card">
 <p>AI-native observability 最好被理解成 telemetry、inventory 与 governance evidence 的组合</p>
@@ -222,7 +222,7 @@ flowchart LR
 
 </div>
 
-## 9. 一个最小 observability coverage policy
+## 9. 一个最小可观测性覆盖策略
 
 ```yaml
 observability:
@@ -259,9 +259,9 @@ observability:
     - bundle_version_missing
 ```
 
-这样的 policy 能帮助团队把 observability 当成必需的 production layer，而不是平台团队的可选加分项。
+这样的策略能帮助团队把可观测性当成必需的生产层，而不是平台团队的可选加分项。
 
-## 10. 一个简单的 coverage check
+## 10. 一个简单的覆盖率检查
 
 ```python
 from dataclasses import dataclass
@@ -290,9 +290,9 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
     )
 ```
 
-这里的重点不是具体数字，而是 observability readiness 也应该变成明确的 gate。
+这里的重点不是具体数字，而是可观测性就绪度也应该变成明确的门禁。
 
-## 11. 最常见的 failure modes
+## 11. 最常见的失效模式
 
 - traces 只覆盖“主 runtime”，却没覆盖真正的 adapters；
 - agents 存在于 inventory 之外；
@@ -300,39 +300,39 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - paused runs 与 background runs 明明存在，但它们的年龄和 ownership 在 telemetry 中不可见；
 - telemetry 覆盖了 happy path，却没覆盖 bypass path；
 - contract-version drift 只有在 payload 不再匹配预期时才被发现；
-- orchestration-pattern drift 或 worker-boundary crossings 没有成为 first-class telemetry；
+- orchestration-pattern drift 或 worker-boundary crossings 没有成为一等遥测；
 - verifier evidence 与 traces 或 screenshots 脱节；
 - drift 只能靠用户抱怨才发现；
-- retention 和 redaction rules 与 forensic needs 不一致。
+- retention 和 redaction rules 与取证需求不一致。
 
 ## 12. 给 AI-native observability 做一次快速成熟度测试
 
-团队不应该只因为已经有 traces、dashboards 和 log pipeline，就觉得自己已经具备 production observability。
+团队不应该只因为已经有 traces、dashboards 和 log pipeline，就觉得自己已经具备生产级可观测性。
 
 更高的标准应该是：
 
-- inventory coverage 和 telemetry coverage 被当成同一个 control problem；
+- inventory coverage 和 telemetry coverage 被当成同一个控制问题；
 - high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 verifier evidence；
 - 除了 raw telemetry 之外，还有 behavioral baselines；
-- paused-run age、approval backlog 与 background-run aging 都是 first-class signals；
-- unobserved agents 被当成 governance risk，而不只是记账缺口；
+- paused-run age、approval backlog 与 background-run aging 都是一等信号；
+- unobserved agents 被当成治理风险，而不只是记账缺口；
 - telemetry 能作为 release 和 incident decisions 的 evidence。
 
-如果这些条件大多不成立，那团队也许已经有 observability tooling，但还没有真正作为 governance layer 的 AI-native observability。
+如果这些条件大多不成立，那团队也许已经有可观测性工具，但还没有真正作为治理层的 AI-native observability。
 
 ## 13. 实用检查清单
 
-- 你知道 production estate 里到底有多少 agents 吗？
+- 你知道生产资产里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
 - 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 verifier evidence 吗？
 - 你有没有 behavioral baselines，而不只是 raw dashboards？
 - 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
-- 你会不会把 unobserved agents 当成一个单独的 risk class？
-- 你能把 observability 当成 release evidence，而不是只当 debug aid 吗？
+- 你会不会把 unobserved agents 当成一个单独的风险类别？
+- 你能把可观测性当成 release evidence，而不是只当 debug aid 吗？
 
-如果连续几个答案都是“否”，那你的 observability 虽然已经存在，但还没有变成 governance layer。
+如果连续几个答案都是“否”，那你的可观测性虽然已经存在，但还没有变成治理层。
 
-这通常意味着平台还只能描述 activity，却还不能提供那种足以让 reviewer、incident owner 或 estate governor 有信心依赖的稳定 evidence。
+这通常意味着平台还只能描述活动，却还不能提供那种足以让 reviewer、incident owner 或 estate governor 有信心依赖的稳定证据。
 
 ## 14. 值得配套阅读的参考页
 
