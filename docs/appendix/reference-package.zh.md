@@ -105,7 +105,7 @@
 ```
 
 现在 `inspect-memory` 不只显示内容，也会显示 `provenance` 和 `revision`。
-`dump-events` 现在也会在 degraded-path drills 的 JSON 输出里返回 `failure_reason`。
+`dump-events` 现在也会在退化路径演练的 JSON 输出里返回 `failure_reason`。
 
 导出一次运行的结构化事件：
 
@@ -170,11 +170,11 @@
 
 `inspect-approvals` 现在也会显示委派授权上下文，包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope`，因此审批路径评审可以直接和会话证据对照。`resolve-approval` 在做出决定后也会返回同样的上下文，这样行动身份谱系不会在闭合阶段丢失。
 `inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入失败演练，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `failure_reason`。
-`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计失败运行和 `traceable_failed_runs`，而不是又把结果压回只有 success 和 denied 两类。现在也可以直接在这里注入失败演练，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
+`session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计失败运行和 `traceable_failed_runs`，而不是又把结果压回只有 `success` 和 `denied` 两类。现在也可以直接在这里注入失败演练，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入失败演练，而回放摘要会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
-现在，运行时也会把工具路径中的失败类结果，例如校验失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
+现在，运行时也会把工具路径中的失败类结果，例如验证失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
 现在这条评测路径也应该和附录里的更丰富验证器契约一起理解：对于长周期场景，这个包要帮助读者看到，数据集未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与已链接的验证器证据，而不只是一个单薄结论。
