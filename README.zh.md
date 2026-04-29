@@ -113,6 +113,28 @@ uv sync --group research
 - 严格执行 `mkdocs build --strict`
 - 从 `docs-prod` 分支部署到 Pages
 
+发布前，先运行本地检查，并确认 `main` 可以以 fast-forward 方式更新两个远端分支：
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/ty check
+.venv/bin/pytest --cov=agent_runtime_ref --cov-report=term-missing
+.venv/bin/mkdocs build --strict
+git diff --check
+git status --short --branch
+git rev-list --left-right --count origin/main...HEAD
+git rev-list --left-right --count origin/docs-prod...HEAD
+```
+
+配置好写入凭据后，只用 fast-forward push 发布：
+
+```bash
+git push origin main
+git push origin HEAD:docs-prod
+```
+
+不要 force-push 到 `docs-prod`；它刻意只是 GitHub Pages 的触发分支。
+
 ## GitHub Pages 首次设置
 
 `actions/configure-pages@v5` 有一个重要限制：如果仓库此前从未启用过 Pages，默认的 `GITHUB_TOKEN` 可能无法自动完成站点初始化。
