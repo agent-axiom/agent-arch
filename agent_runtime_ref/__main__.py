@@ -429,13 +429,17 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
     )
     failed_run_control_names = ("policy_traces_present", "memory_provenance_enforced")
     preserved_failed_run_controls = [
-        control for control in failed_run_control_names if control not in assessment.missing_controls
+        control
+        for control in failed_run_control_names
+        if control not in assessment.missing_controls
     ]
     return {
         "healthy": assessment.healthy,
         "missing_controls": list(assessment.missing_controls),
         "failed_run_controls": [
-            control for control in assessment.missing_controls if control in failed_run_control_names
+            control
+            for control in assessment.missing_controls
+            if control in failed_run_control_names
         ],
         "preserved_failed_run_controls": preserved_failed_run_controls,
         "failed_run_controls_healthy": len(preserved_failed_run_controls)
@@ -496,7 +500,9 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
                 "memory_provenance",
             ],
             "failed_run_control_count": 2,
-            "failed_run_control_summary": "2 failed-run control expectations across traceability and memory provenance",
+            "failed_run_control_summary": (
+                "2 failed-run control expectations across traceability and memory provenance"
+            ),
             "failed_run_control_status": "covered",
             "failed_run_control_review_required": True,
             "failed_run_control_owner": "runtime-governance",

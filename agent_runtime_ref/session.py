@@ -3,6 +3,45 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import TypedDict
+
+
+class RunPayload(TypedDict):
+    trace_id: str
+    status: str
+    user_input: str
+    output_text: str
+    failure_reason: str
+    capability_session_id: str
+    capability_session_status: str
+    authorization_mode: str
+    delegated_principal_id: str
+    delegated_scope: str
+
+
+class SessionMetadataPayload(TypedDict):
+    session_id: str
+    tenant_id: str
+    principal_id: str
+    traces: list[str]
+
+
+class SessionSummaryPayload(TypedDict):
+    total_runs: int
+    success_runs: int
+    approval_wait_runs: int
+    denied_runs: int
+    failed_runs: int
+    traceable_failed_runs: int
+    latest_trace_id: str | None
+    latest_status: str | None
+
+
+class SessionPayload(TypedDict, total=False):
+    session: SessionMetadataPayload
+    summary: SessionSummaryPayload
+    runs: list[RunPayload]
+    eval: dict[str, object]
 
 
 @dataclass(slots=True)
@@ -126,7 +165,7 @@ class SessionStore:
             handle.write("\n")
         return destination
 
-    def _session_payload(self, session_id: str) -> dict[str, object]:
+    def _session_payload(self, session_id: str) -> SessionPayload:
         session = self.get_session(session_id)
         if session is None:
             raise ValueError(f"Session not found: {session_id}")
