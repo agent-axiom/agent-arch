@@ -6,6 +6,13 @@ repo_url: https://github.com/agent-axiom/agent-arch
 edit_uri: edit/main/docs/
 docs_dir: docs
 site_dir: site
+exclude_docs: |
+  book-backlog.md
+  book-identity-memo.md
+  book-improvement-blueprint.md
+  chapter-surgery-plan.md
+  late-book-overlap-audit.md
+  reader-journey-map.md
 
 theme:
   name: material
