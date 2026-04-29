@@ -237,11 +237,11 @@ stateful MCP guidance 的另一个重要含义是：进度事件和 elicitation 
 - 每个运行都有 `trace_id`；
 - 租户/principal 上下文；
 - 策略决策钩子；
-- 能力注册表，而不是 direct calls；
+- 能力注册表，而不是直接调用；
 - 结构化遥测；
 - 一个基本的后台任务钩子；
-- 一套显式的运行状态模型，比如 `queued / in_progress / completed / failed / canceled`；
-- 一种对长时间工作做 poll / resume / cancel 的方式，而不是偷偷长出第二套隐藏运行时。
+- 一套显式的运行状态模型，比如 `queued/in_progress/completed/failed/canceled`；
+- 一种对长时间工作做 poll/resume/cancel 的方式，而不是偷偷长出第二套隐藏运行时。
 
 如果基线里没有这些，系统往往会在以后通过一次很痛苦的改造才补回来。
 
@@ -354,7 +354,7 @@ runtime:
 
 - orchestration、策略、记忆、执行和遥测是否已经是独立层？
 - 是否存在统一的 run context，并带有租户/principal 元数据？
-- 是否有能力注册表，而不是 direct calls？
+- 是否有能力注册表，而不是直接调用？
 - 追踪钩子是否已经接进基础路径？
 - 是否有安全的后台更新接入点？
 - 长时间工作能否被显式排队、观察、恢复和取消？

@@ -23,7 +23,7 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 要补充什么：
 
-- `framework -> model -> tools -> runtime -> trust` 这条主线；
+- `framework→model→tools→runtime→trust` 这条主线；
 - 上下文层：静态、会话、轮次、缓存上下文；
 - 关于提示预算和上下文纪律的实战段落。
 

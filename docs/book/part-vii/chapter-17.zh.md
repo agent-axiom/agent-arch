@@ -106,7 +106,7 @@ OpenAI 最近关于工具使用的材料有一个很有用的区分，而很多�
 
 因此，更成熟的目录往往还需要补充这类字段：
 
-- 能力会话模式：`stateless / stateful`；
+- 能力会话模式：`stateless/stateful`；
 - 是否允许 elicitation；
 - 是否会发出进度事件；
 - 会话过期的处理方式；
@@ -132,9 +132,9 @@ Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropi
 
 - 能力名称；
 - owner；
-- mode: read / write / high_risk；
-- transport: mcp / gateway / sandboxed_exec；
-- exposure: direct / brokered / restricted；
+- mode: read/write/high_risk；
+- transport: mcp/gateway/sandboxed_exec；
+- exposure: direct/brokered/restricted；
 - 输入 schema；
 - output shape；
 - 审批要求；
@@ -277,7 +277,7 @@ capabilities:
 - `escalate_to_human_if`
 - `subagent_handoff_policy`
 
-这些字段能让委派审批路径变成显式的运行时契约，而不是藏在产品逻辑或 UI 行为里。
+这些字段能让委派审批路径变成显式的运行时契约，而不是藏在产品逻辑或界面行为里。
 
 同样的纪律也应该延伸到委派 worker。如果 runtime 支持 `orchestrator-workers` 路径，策略层应该能够明确说明：
 
@@ -336,7 +336,7 @@ def evaluate_capability(name: str) -> PolicyDecision:
     return PolicyDecision(action="deny", reason="unsupported_capability", policy_id="cap_999")
 ```
 
-即使这么简单的代码，也已经给遥测、审批 UI 流和事后调查提供了正确的形状。
+即使这么简单的代码，也已经给遥测、审批界面流和事后调查提供了正确的形状。
 
 ## 12. 一个简单的能力查找骨架
 
