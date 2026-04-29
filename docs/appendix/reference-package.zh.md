@@ -93,7 +93,7 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` 现在也会显示 `failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到退化路径治理的保留侧面与追踪/来源证明控制侧面。
+`inspect-lifecycle` 现在也会显示 `change.affected_surfaces`、`change.session_control_owner`、`change.emergency_freeze_owner`、`artifact_bundle.session_control_owner`、`retirement.session_control_owner`、`retirement.emergency_freeze_owner`、`failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到所有权、冻结责任、保留要求，以及追踪/来源证明控制。
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样退化路径发布评审的缺口就不会被埋在普通缺失信号列表里。
 `check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些遥测/会话/审批记录必须在退役之后继续保留下来，供后续退化路径评审使用。
 `check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样追踪/来源证明相关缺口就能和普通控制卫生分开审阅。
