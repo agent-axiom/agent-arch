@@ -29,7 +29,7 @@
 
 也就是说，退役不是“删掉服务然后忘记它”，而是一个被管理的运行过程。
 
-这也正是本章的核心承诺。它要帮助读者把 retirement 看成整个生命周期的 closure function，而不是 delivery 的尾声附录：在这里，系统失去继续行动的权利，而它的 memory、evidence、approvals 与 operational lineage 会被带到一个受控终点。
+这也正是本章的核心承诺。它要帮助读者把退役看成整个生命周期的闭合函数，而不是交付的尾声附录：在这里，系统失去继续行动的权利，而它的记忆、证据、审批与运行血缘会被带到一个受控终点。
 
 ## 2. 什么时候应该开始考虑退役
 
@@ -92,7 +92,7 @@
 - 关闭或归档 capability-session state，并阻断不受控的 re-init；
 - 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
-- retire 已废弃的 verifier contracts，并保留解释既往 rollout 或 assurance decisions 所需的 evidence，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
+- 退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
 - 归档那些承载 sprint scope、evaluator critique 或 reset-boundary decisions 的 handoff artifacts，只要这些工件曾影响过即将退役的系统被允许执行什么；
 - 撤销出口访问；
 - 关闭主体、密钥和连接器；
@@ -179,7 +179,7 @@ flowchart LR
 
 这对内部智能体系统尤其重要，因为它们很快就会长进团队的真实工作习惯里。
 
-## 10. 一个 retirement policy 示例
+## 10. 一个退役策略示例
 
 下面这个骨架很实用：
 
@@ -207,7 +207,7 @@ retirement:
 
 它的价值不在于 YAML 本身，而在于把退役变成了明确的运行契约。
 
-## 11. 一个 replacement readiness check 示例
+## 11. 一个替换就绪检查示例
 
 下面这个代码片段展示的是正确的门禁形态：
 
@@ -245,32 +245,32 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 系统被认为已经退役，但主体还活着；
 - 后台任务没关；
 - 记忆写入路径仍然在工作；
-- paused approvals 在 retirement 之后仍然可以 resume；
+- paused approvals 在退役之后仍然可以恢复；
 - 已过期 capability sessions 仍可通过陈旧控制路径 re-initialize；
-- 已废弃的 orchestration patterns 或 worker-boundary policies 在 retirement 后仍然可用；
-- 已废弃的 verifier contracts 或 verifier evidence obligations 在 retirement 后仍然不清楚；
+- 已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用；
+- 已废弃的 verifier contracts 或 verifier evidence obligations 在退役后仍然不清楚；
 - background routes 被遗忘没有关闭；
 - 归档状态没有负责人；
-- deprecated schemas 仍然被 gateways 或 runtimes 接受；
+- 已废弃的 schemas 仍然被 gateways 或 runtimes 接受；
 - 已废弃模式存活太久；
 - 替换没有双运行或分阶段迁移。
 
-正是这些小细节，会把一个“几乎完整”的 lifecycle 重新变成事故来源。
+正是这些小细节，会把一个“几乎完整”的生命周期重新变成事故来源。
 
-## 13. 给 end-of-life discipline 做一次快速成熟度测试
+## 13. 给终止使用纪律做一次快速成熟度测试
 
-团队不应该只因为会把流量切走、再把系统标成 deprecated，就觉得自己已经会做 retirement。
+团队不应该只因为会把流量切走、再把系统标成 `deprecated`，就觉得自己已经会做退役。
 
 更高的标准应该是：
 
-- 系统会在被宣布 retired 之前先失去行动能力；
+- 系统会在被宣布 `retired` 之前先失去行动能力；
 - principals、connectors、memory writes、paused runs、capability sessions、orchestration patterns 与 background jobs 会被有意识地逐层收缩；
-- replacement 是 staged 的，而不是二元 cutover；
-- deprecated approval 与 runtime-control schemas 会被真正关闭，而不是作为隐藏兼容路径长期残留；
-- archived state 有 owner，也有 retention decision；
-- deprecated patterns 会变成真正被阻断的 paths，而不只是 warnings。
+- 替换是分阶段的，而不是二元 cutover；
+- 已废弃的 approval 与 runtime-control schemas 会被真正关闭，而不是作为隐藏兼容路径长期残留；
+- 归档状态有负责人，也有保留决策；
+- 已废弃模式会变成真正被阻断的路径，而不只是 warnings。
 
-如果这些条件大多不成立，那团队也许已经有一些 shutdown mechanics，但还没有真正的 end-of-life discipline。
+如果这些条件大多不成立，那团队也许已经有一些关闭机制，但还没有真正的终止使用纪律。
 
 ## 14. 实用检查清单
 
@@ -295,7 +295,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 工件治理；
 - 退役与替换。
 
-现在这一部分已经不仅能解释架构，还能作为生产级 agent systems 的生命周期手册使用。
+现在这一部分已经不仅能解释架构，还能作为生产级智能体系统的生命周期手册使用。
 
 ## 16. 值得配套阅读的参考页
 
