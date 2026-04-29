@@ -465,8 +465,11 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "risk_level": change.risk_level,
             "rollout_strategy": change.rollout_strategy,
             "artifacts": list(change.artifacts),
+            "affected_surfaces": list(change.affected_surfaces),
             "required_signals": list(change.required_signals),
             "approval_roles": list(change.approval_roles),
+            "session_control_owner": change.session_control_owner,
+            "emergency_freeze_owner": change.emergency_freeze_owner,
             "failed_run_signals": [
                 signal for signal in change.required_signals if "failed_run" in signal
             ],
@@ -476,6 +479,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "version": bundle.version,
             "provenance_required": bundle.provenance_required,
             "signed": bundle.signed,
+            "session_control_owner": bundle.session_control_owner,
             "artifacts": list(bundle.artifacts),
         },
         "retirement": {
@@ -483,6 +487,8 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "replacement_mode": retirement.replacement_mode,
             "triggers": list(retirement.triggers),
             "required_steps": list(retirement.required_steps),
+            "session_control_owner": retirement.session_control_owner,
+            "emergency_freeze_owner": retirement.emergency_freeze_owner,
             "archive_targets": list(retirement.archive_targets),
             "failed_run_archive_targets": [
                 target
