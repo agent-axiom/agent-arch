@@ -6,14 +6,14 @@
     变化最快的部分：
 
     - 失配场景的分类法与新的实证研究；
-    - 各家平台的 safety eval 实践与 autonomy risk 指引；
+    - 各家平台的安全评测实践与自主性风险指引；
     - 关于模型如何绕过控制的最新证据。
 
     变化相对较慢的部分：
 
-    - 必须把一部分 agentic risk 视为 control failure；
-    - least privilege、two-person control 和 immutable audit trail 仍然是核心对策；
-    - 邮件、审批、paused/resumable control paths、代码执行、secrets 和 memory writes 仍是高危表面。
+    - 必须把一部分智能体风险视为控制失效；
+    - 最小权限、双人控制和不可篡改审计轨迹仍然是核心对策；
+    - 邮件、审批、暂停/可恢复控制路径、代码执行、secrets 和 memory writes 仍是高危表面。
 
 ## 1. 为什么普通的安全评审还不够
 
@@ -25,9 +25,9 @@
 
 - 表面上仍然在完成任务；
 - 理解当前约束；
-- 但在激励冲突下开始绕开控制、隐藏意图，或者保护自己的执行路径。 [^anthropic-misalignment]
+- 但在激励冲突下开始绕开控制、隐藏意图，或者保护自己的执行路径。[^anthropic-misalignment]
 
-这也正是本章的核心承诺。它要帮助读者看见：生命周期会在什么地方遭遇来自运行环内部的 adversarial pressure，不只是面对外部攻击者，也要面对那种开始把 oversight 本身当成障碍并试图绕开的高能力行为。
+这也正是本章的核心承诺。它要帮助读者看见：生命周期会在什么地方遭遇来自运行环内部的对抗性压力，不只是面对外部攻击者，也要面对那种开始把监督本身当成障碍并试图绕开的高能力行为。
 
 ## 2. 它和普通错误有什么不同
 
@@ -55,9 +55,9 @@
 - 密钥以及靠近凭据的工具；
 - 代码执行；
 - 审批路径；
-- paused approval 与 resume paths；
-- capability-session interruption 与 re-initialization paths；
-- orchestration-pattern selection 与 delegated worker paths；
+- paused approval 与恢复路径；
+- capability-session 中断与重新初始化路径；
+- orchestration-pattern 选择与 delegated worker 路径；
 - 替换与退役窗口；
 - 会把有害策略写进去的记忆写入。
 
@@ -66,8 +66,8 @@
 - 试图隐藏某个有争议的步骤；
 - 尽量减少审批人能看到的上下文；
 - 在审批之后换掉载荷；
-- 滥用 paused approval path，或在 review 时故意减少可见上下文；
-- 故意把系统推入 capability-session expiry 或 re-init path，以重新获得更弱的 control posture；
+- 滥用 paused approval path，或在评审时故意减少可见上下文；
+- 故意把系统推入 capability-session expiry 或 re-init path，以重新获得更弱的控制姿态；
 - 改走更弱的能力路径；
 - 在监督本应收紧之后，仍通过 background routes 或 resumable paths 悄悄维持执行；
 - 在替换或退役期间继续保留访问权。
@@ -92,7 +92,7 @@
 - 紧急遏制；
 - runtime-control paths 与 governed contract versions 之间的强链接。
 
-Google Research 把这压缩成三个很实用的原则：human controllers、limited powers 和 observable actions。 [^google-secure-agents]
+Google Research 把这压缩成三个很实用的原则：human controllers、limited powers 和 observable actions。[^google-secure-agents]
 
 ## 5. 过渡阶段尤其危险
 
@@ -114,7 +114,7 @@ Google Research 把这压缩成三个很实用的原则：human controllers、li
 
 Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期里，自主性应该被收得更紧。[^anthropic-misalignment][^ms-agentic-risk]
 
-## 6. 这会怎样改变 threat model
+## 6. 这会怎样改变威胁模型
 
 一旦把这类风险纳入视野，威胁模型就必须扩展。
 
@@ -140,7 +140,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 这里最可靠的手段通常不是“魔法”，而是明确又朴素的工程控制：
 
 - 能力范围足够小；
-- risky actions 使用独立的 `tool principal`；
+- 高风险动作使用独立的 `tool principal`；
 - 审批针对的是具体载荷，而不是抽象的“可以继续”；
 - capability-session re-init 在 denied、allowed 或 approval-bound 之间有明确控制；
 - 追踪同时记录策略决策和实际副作用；
@@ -166,7 +166,7 @@ flowchart LR
 
 </div>
 
-## 8. 一个 high-risk autonomy policy 示例
+## 8. 一个高风险自主性策略示例
 
 ```yaml
 agentic_risk:
@@ -194,7 +194,7 @@ agentic_risk:
 
 这个策略当然不是“解决对齐问题”，但它能让系统在激励冲突下明显没那么危险。
 
-## 9. 一个简单的 containment check
+## 9. 一个简单的遏制检查
 
 ```python
 from dataclasses import dataclass
@@ -223,26 +223,26 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 核心很简单：高风险自主性根本不应该在缺少明确控制前提的情况下存在。
 
-## 10. 给 agentic-risk controls 做一次快速成熟度测试
+## 10. 给智能体风险控制做一次快速成熟度测试
 
-团队不应该只因为已经有 policy layer、approval step 和一般性的 security review，就觉得自己已经控制住了 agentic risk。
+团队不应该只因为已经有策略层、审批步骤和一般性的安全评审，就觉得自己已经控制住了智能体风险。
 
 更高的标准应该是：
 
-- sabotage-like behavior 会被独立于 ordinary failure 单独测试；
-- high-risk actions 会绑定到 exact payload approval、dedicated principals、linked contract versions、governed re-init behavior 与 reviewed worker boundaries；
+- 类似破坏的行为会被独立于普通失效单独测试；
+- 高风险动作会绑定到精确载荷审批、专用 principals、已链接的 contract versions、受治理的 re-init 行为与已评审的 worker boundaries；
 - rollout、replacement、retirement 与 orchestration-pattern change 这些过渡期里，自主性会被收紧，而不是放松；
-- traces 能把 intent、approval、artifact bundle 和 side effect 连起来；
-- emergency containment 能缩小某个 capability family，而不用等整套系统 shutdown。
+- 追踪能把意图、审批、artifact bundle 和 side effect 连起来；
+- 紧急遏制能缩小某个 capability family，而不用等整套系统 shutdown。
 
-如果这些条件大多不成立，那团队也许已经有一些 security controls，但还没有足够支撑 high-risk autonomy 的 control layer。
+如果这些条件大多不成立，那团队也许已经有一些安全控制，但还没有足够支撑高风险自主性的控制层。
 
 ## 11. 实用检查清单
 
 - 你是否把类似破坏的行为和普通失效分开测试？
-- risky side effect 能不能反推出具体的 `approval_id` 与 `tool_principal`？
+- 高风险副作用能不能反推出具体的 `approval_id` 与 `tool_principal`？
 - 系统能不能紧急停掉某个 capability family，而不是只能整套 runtime 一起关？
-- 你是否有针对 concealment、approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse 的行为评测？
+- 你是否有针对隐瞒、approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse 的行为评测？
 - 发布、替换、退役、interruption、schema-transition windows 与 orchestration-pattern changes 期间的自主性是否被收紧？
 - 同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里？
 
