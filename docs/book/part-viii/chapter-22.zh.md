@@ -5,14 +5,14 @@
 
     变化最快的部分：
 
-    - 面向模型与配置的 attestation、signing 和 provenance 工具；
-    - 围绕 artifact governance 和托管供应链控制的厂商能力；
-    - 将 prompt、policy 和 eval 工件当作可评审单元的实践。
+    - 面向模型与配置的证明、签名和来源追踪工具；
+    - 围绕工件治理和托管供应链控制的厂商能力；
+    - 将提示、策略和评测工件当作可评审单元的实践。
 
     变化相对较慢的部分：
 
-    - 每个已批准工件都需要 owner、provenance 和 review status；
-    - 应该建立多条 trust chains，而不是只依赖一条总链；
+    - 每个已批准工件都需要负责人、来源追踪和审查状态；
+    - 应该建立多条信任链，而不是只依赖一条总链；
     - 供应链纪律必须与事故复盘、变更管理和 rollout 连接起来。
 
 ## 1. 为什么智能体系统的供应链比普通服务更宽
@@ -34,11 +34,11 @@
 - 检索语料；
 - 能力契约；
 - 评测数据集；
-- verifier contracts、grading rubrics 与 evidence-linkage rules；
-- 审批规则与 schemas；
-- runtime-control schemas；
-- orchestration-pattern governance rules 与 worker-safe catalog definitions；
-- capability-session interruption 与 re-initialization rules；
+- 验证器契约、评分规则与证据链接规则；
+- 审批规则与模式；
+- 运行时控制模式；
+- 编排模式治理规则与 worker-safe 目录定义；
+- 能力会话中断与重新初始化规则；
 - 发布工件包。
 
 也就是说，智能体的供应链更宽，是因为系统本身就更宽。
@@ -49,7 +49,7 @@
 
 已批准工件就是任何一个被允许进入生产环境的工件，因为它拥有负责人、来源证明、审查状态、清晰的运行角色，以及在发布身份中的明确位置。
 
-这意味着已批准工件不只是镜像或 wheel 文件。它们还是后续发布决策、assurance 判断或事故复盘必须能够准确追溯到的治理对象。
+这意味着已批准工件不只是镜像或 wheel 文件。它们还是后续发布决策、保障判断或事故复盘必须能够准确追溯到的治理对象。
 
 在智能体平台里，它们往往包括：
 
@@ -57,8 +57,8 @@
 - 已批准的提示包；
 - 已批准的策略包；
 - 已批准的能力契约；
-- 已批准的 approval schema；
-- 已批准的 runtime-control schema；
+- 已批准的审批模式；
+- 已批准的运行时控制模式；
 - 已批准的检索来源；
 - 已批准的评测集；
 - 已批准的发布模板。
@@ -76,22 +76,22 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个策略配置；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
-- 当时生效的是哪一版 verifier contract、grading rubric 与 evidence-linkage rules；
-- 当时生效的是哪个 contract version 与 approval schema；
-- 当时是哪一条 interruption 或 expiry policy 在治理这次 run；
-- 当时是哪一种 orchestration pattern 与 worker-boundary policy 在治理这次 run；
-- 当时是哪种 delegated authorization mode、principal binding 与 revoke policy 在治理这次 run；
+- 当时生效的是哪一版验证器契约、评分规则与证据链接规则；
+- 当时生效的是哪个契约版本与审批模式；
+- 当时是哪一条中断或过期策略在治理这次运行；
+- 当时是哪一种编排模式与 worker 边界策略 在治理这次运行；
+- 当时是哪种委派授权模式、principal 绑定与撤销策略 在治理这次运行；
 - 这个变更是谁批准的。
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
 
-这也是为什么本章里的 provenance 应该被狭义而具体地理解。它不是整个 evidence layer。它是围绕 approved artifacts、release identity 与 decision-bearing versions 的 governed lineage layer。
+这也是为什么本章里的 来源追踪应该被狭义而具体地理解。它不是整个证据层。它是围绕已批准工件、发布身份与承载决策版本的受治理血缘层。
 
-同样的规则也适用于 failed runs。即使 capability 是因为 timeout 失败、approval path 以 validation failure 结束，或者上游 dependency 直接崩掉，后续复盘仍然需要知道，当时究竟是哪一组已批准工件与哪一个 release identity 在支配这次失败，是哪一个导出字段，例如 `failure_reason`，保留了具体的失败条件，它是否还通过 `latest_failure_reason` 这样的 operator-facing summary 字段保持可见，以及这次运行在 session review 中是否仍然计入 `traceable_failed_runs`。否则，组织就只会为 happy path 保留 provenance，而把退化行为当成无人负责的残留物。
+同样的规则也适用于失败运行。即使能力因为超时失败、审批路径以验证失败结束，或者上游依赖直接崩掉，后续复盘仍然需要知道，当时究竟是哪一组已批准工件与哪一个发布身份在支配这次失败，是哪一个导出字段，例如 `failure_reason`，保留了具体的失败条件，它是否还通过 `latest_failure_reason` 这样的面向操作员摘要字段保持可见，以及这次运行在会话评审中是否仍然计入 `traceable_failed_runs`。否则，组织就只会为顺畅路径保留来源追踪，而把退化行为当成无人负责的残留物。
 
-这也正是本章的核心承诺。它要帮助读者看见 evidence 是怎样从一般性的 telemetry 变成受治理的 backbone：这一层保存着后续事故复盘或治理决策究竟建立在哪一组 reviewed artifacts、哪一个 trusted contract version，以及哪一个 approved release identity 之上。
+这也正是本章的核心承诺。它要帮助读者看见证据怎样从一般性的遥测变成受治理的主干：这一层保存着后续事故复盘或治理决策究竟建立在哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份之上。
 
-如果你想看一页专门展示这个 governed backbone 如何继续连回 request、policy、approvals、traces、evals、incidents 和 rollout judgment，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
+如果你想看一页专门展示这个受治理主干如何继续连回请求、策略、审批、追踪、评测、事故和 rollout 判断，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
 
 !!! info "需要供应链工件？"
     如果你需要契约层视角，可以直接查看 [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
@@ -107,9 +107,9 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 提示与例程链；
 - 策略链；
 - 能力链；
-- approval 与 runtime-control 链；
-- capability-session governance 链；
-- delegated authorization 链；
+- 审批与运行时控制链；
+- 能力会话治理链；
+- 委派授权链；
 - 数据与检索链；
 - 评测链。
 
@@ -118,13 +118,13 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 ``` mermaid
 flowchart LR
-    A["Code and build"] --> G["Approved release bundle"]
-    B["Model artifacts"] --> G
-    C["Prompt and routine bundles"] --> G
-    D["Policy bundles"] --> G
-    E["Capability contracts"] --> G
-    F["Approval and runtime-control schemas"] --> G
-    H["Eval datasets and reports"] --> G
+    A["代码与构建"] --> G["已批准发布包"]
+    B["模型工件"] --> G
+    C["提示与例程包"] --> G
+    D["策略包"] --> G
+    E["能力契约"] --> G
+    F["审批与运行时控制模式"] --> G
+    H["评测数据集与报告"] --> G
 ```
 
 </div>
@@ -133,47 +133,47 @@ flowchart LR
 
 这两个概念很接近，但并不相同。
 
-`approved inventory` 回答的是：
+`已批准清单` 回答的是：
 
 - 平台上哪些运行时、网关、能力和模式本身就是允许的。
 
-`approved artifacts` 回答的是：
+`已批准工件` 回答的是：
 
 - 当前到底有哪些具体版本和工件包被批准运行。
 
 例如：
 
-- capability `create_ticket` 可以属于 approved inventory；
-- 但 `policy_bundle_v12` 或 `prompt_bundle_support_v7` 是 approved artifact。
+- 能力 `create_ticket` 可以属于已批准清单；
+- 但 `policy_bundle_v12` 或 `prompt_bundle_support_v7` 是已批准工件。
 
 这个区别很重要，因为清单提供平台级框架，而已批准工件提供发布级纪律。
 
-而这里 provenance 的核心，正是这种发布级纪律。问题不只是系统有没有 telemetry，而是系统当时究竟运行在什么 governed version、approved bundle、reviewed schema 或带有 verifier 约束的 contract family 之下。
+而这里来源追踪的核心，正是这种发布级纪律。问题不只是系统有没有遥测，而是系统当时究竟运行在什么受治理版本、已批准包、已评审模式或带有验证器约束的契约族之下。
 
-## 6. 没有 provenance 的 prompt bundle，本质上就是一个 supply-chain 缺口
+## 6. 没有来源追踪的提示包，本质上就是一个供应链缺口
 
-团队很容易把 prompt changes 当成“活的文本”，而不是 release artifact。
+团队很容易把提示变更当成“活的文本”，而不是发布工件。
 
 但如果你不知道：
 
-- 谁改了 prompt；
-- 现在 production 里是哪一个版本；
-- 哪些 evals 覆盖了它；
-- 它在哪个 rollout wave 上生效；
+- 谁改了提示；
+- 现在生产环境里是哪一个版本；
+- 哪些评测覆盖了它；
+- 它在哪个 rollout 波次上生效；
 
-那这个 prompt bundle 在 operational 上并不比来源不明的 build artifact 更可靠。
+那这个提示包在运营上并不比来源不明的构建工件更可靠。
 
 同样的逻辑也适用于：
 
-- routines；
-- policy YAML；
-- retrieval configs；
-- approval thresholds；
-- 用来定义 paused/background behavior 的 runtime-control schemas。
+- 例程；
+- 策略 YAML；
+- 检索配置；
+- 审批阈值；
+- 用来定义暂停/后台行为的运行时控制模式。
 
-## 7. Eval 数据集也应该被当成可信工件
+## 7. 评测数据集也应该被当成可信工件
 
-很多团队容易把 eval dataset 看得太轻： “这不就是一组例子吗？”
+很多团队容易把 评测数据集看得太轻： “这不就是一组例子吗？”
 
 其实它是一个关键的治理工件。
 
@@ -181,53 +181,53 @@ flowchart LR
 
 - 来源不清晰；
 - 没有版本；
-- 没有 owner；
-- 在不同 release 之间 quietly 变化；
+- 没有负责人；
+- 在不同 发布之间悄悄变化；
 
-那团队就会在 shaky foundation 上做 release decisions。
+那团队就会在摇晃的基础上做发布决策。
 
-所以成熟的 ADLC 应该把 eval datasets 纳入 approved artifact model。
+所以成熟的 ADLC 应该把评测数据集纳入已批准工件模型。
 
-对 verifier contracts 也越来越应该如此。如果 release 或 assurance 依赖 process scores、outcome scores、failure attribution 或 linked evidence，那么 verifier layer 就不再只是非正式的辅助逻辑，而是一个需要治理的 production artifact。
+对验证器契约也越来越应该如此。如果发布或保障依赖过程分数、结果分数、失败归因或链接证据，那么验证器层就不再只是非正式的辅助逻辑，而是一个需要治理的生产工件。
 
-这很重要，因为 verifier contract 不只是给质量打分。它还在定义系统会把什么算作可接受证据、能够精确命名哪些失败，以及哪些发布声明在事后可以被辩护。一旦 verifier contract 会影响发布判断、事故归因或 assurance 状态，它的 lineage 就进入了 evidence backbone，而不再只是一个可有可无的 eval 细节。
+这很重要，因为验证器契约不只是给质量打分。它还在定义系统会把什么算作可接受证据、能够精确命名哪些失败，以及哪些发布声明在事后可以被辩护。一旦验证器契约会影响发布判断、事故归因或保障状态，它的血缘就进入了证据主干，而不再只是一个可有可无的评测细节。
 
-## 8. Capability contracts 和 egress rules 也属于 supply chain
+## 8. 能力契约和出口规则也属于供应链
 
-在 agent systems 里，tool contract 不只是文档，它本身就是 trusted operational surface 的一部分。
+在智能体系统里，工具契约不只是文档，它本身就是可信运营表面的一一部分。
 
-对于一个 capability，团队最好明确知道：
+对于一个能力，团队最好明确知道：
 
-- 谁是 owner；
+- 谁是负责人；
 - 风险等级是什么；
-- 使用哪个 tool principal；
-- network access profile 是什么；
-- 允许哪些 egress destinations；
-- 采用什么 approval semantics。
+- 使用哪个工具 principal；
+- 网络访问配置是什么；
+- 允许哪些出口目标；
+- 采用什么审批语义。
 
-如果这些 contract 被悄悄改动，没有 provenance，也没有 review trail，那么这种 change 可能和未审查代码发布一样危险。
+如果这些契约被悄悄改动，没有来源追踪，也没有审查轨迹，那么这种变更可能和未审查代码发布一样危险。
 
-approval 与 runtime-control schemas 也是一样。如果团队在没有 governed artifact discipline 的情况下修改 timeout、pause/resume behavior、expiry semantics、re-initialization rules 或预期 payload 结构，那么即使模型和源码都没动，production behavior 也已经变了。
+审批与运行时控制模式 也是一样。如果团队在没有受治理工件纪律的情况下修改超时、暂停/恢复行为、过期语义、重新初始化规则或预期载荷结构，那么即使模型和源码都没动，生产行为也已经变了。
 
-这也意味着 provenance 不应只记录“存在某个 runtime-control schema”，还应该逐步记录当时生效的是哪一个 interruption-governance version：
+这也意味着 来源追踪不应只记录“存在某个运行时控制模式”，还应该逐步记录当时生效的是哪一个中断治理版本：
 
-- paused runs 是会过期，还是可以无限等待；
-- capability-session re-init 是 allowed、denied，还是 approval-bound；
-- telemetry 是否应该把原始 capability session 和 reinitialized capability session 关联起来；
-- 当时这条路径批准的是哪一种 orchestration pattern，以及 worker-safe catalog boundaries 是否生效；
-- approval 与 session-control logic 当时是受同一个 contract version 治理，还是已经发生漂移；
-- delegated access 是 platform-owned 还是 user-delegated；
-- 哪一条 principal-binding rule 与 revoke behavior 在治理 in-flight 或 paused actions。
+- 暂停运行是会过期，还是可以无限等待；
+- 能力会话重新初始化是 allowed、denied，还是 approval-bound；
+- 遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来；
+- 当时这条路径批准的是哪一种编排模式，以及 worker-safe 目录边界是否生效；
+- 审批与会话控制逻辑当时是受同一个契约版本治理，还是已经发生漂移；
+- 委派访问是平台拥有还是用户委派；
+- 哪一条 principal 绑定规则与撤销行为在治理进行中或暂停动作。
 
-Anthropic 后续关于 harness design 的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖 context resets、planner/generator/evaluator 的角色分离、sprint contracts 与结构化 handoff artifacts，那么这些 handoff artifacts 就不能再被视为一次性的协调便条。它们本身也变成了承载 provenance 的工件。之后的 incident review 或 rollout 争议，可能都需要知道是哪一份 handoff artifact 传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么 reset boundary 上，active context 发生了变化，而 user-visible run 却没有改变。
+Anthropic 后续关于 harness 设计的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖上下文重置、planner/generator/evaluator 的角色分离、sprint 契约与结构化交接工件，那么这些交接工件就不能再被视为一次性的协调便条。它们本身也变成了承载来源追踪的工件。之后的事故评审或 rollout 争议，可能都需要知道是哪一份交接工件传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化，而用户可见运行却没有改变。
 
-这些之所以是 provenance 问题，正是因为它们定义的是行为的 governed identity，而不只是说明这些行为有没有在 telemetry 里被看见。
+这些之所以是来源追踪问题，正是因为它们定义的是行为的受治理身份，而不只是说明这些行为有没有在遥测里被看见。
 
-这也正是本章边界重要的地方。telemetry 也许能告诉你 pause、re-init 或 delegated action 确实发生过，但 provenance 必须保留下来，说明究竟是哪一组经过评审的 contract family 让这些行为在当时被平台视为正当。没有这一层，事故复盘即使看见了事件，也依然解释不了平台为什么认为这些行为有效。
+这也正是本章边界重要的地方。遥测也许能告诉你暂停、重新初始化或委派动作确实发生过，但来源追踪必须保留下来，说明究竟是哪一组经过评审的契约族 让这些行为在当时被平台视为正当。没有这一层，事故复盘即使看见了事件，也依然解释不了平台为什么认为这些行为有效。
 
 ## 9. 一个已批准工件策略示例
 
-下面这个 skeleton 很实用：
+下面这个骨架很实用：
 
 ```yaml
 artifacts:
@@ -250,9 +250,9 @@ artifacts:
 
 它帮助团队把讨论从“看起来像个正常配置”切换成“这是一个真正的生产工件”。
 
-## 10. 一个 approved inventory policy 示例
+## 10. 一个已批准清单策略示例
 
-下面是更偏 platform-level 的例子：
+下面是更偏平台级 的例子：
 
 ```yaml
 inventory:
@@ -273,9 +273,9 @@ inventory:
     - unversioned_prompt_override
 ```
 
-这个 inventory 的价值不在于“看起来整齐”，而在于它为平台提供了一张清晰的 trusted / untrusted operational patterns 地图。
+这个清单的价值不在于“看起来整齐”，而在于它为平台提供了一张清晰的可信 / 不可信运营模式地图。
 
-## 11. 一个 artifact readiness check 示例
+## 11. 一个工件就绪检查示例
 
 下面这个代码片段表达的是核心思路：
 
@@ -304,46 +304,46 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 重点很简单：可信工件应该由明确属性定义，而不是靠直觉判断。如果平台无法显式检查工件是否就绪，最后就一定会退回到社会性信任、陈旧默认值和脆弱的发布身份上。
 
-## 12. Artifact discipline 最容易坏在哪里
+## 12. 工件纪律最容易坏在哪里
 
 常见的问题通常是这些：
 
-- prompt bundles 没有版本；
-- eval datasets quietly 变化；
-- capability contracts 被编辑却没有 review trail；
-- approval 或 runtime-control schemas 发生变化，却没有 version discipline；
-- orchestration-pattern governance changes 没有 artifact lineage；
-- 没有人知道 incident 发生时到底是哪一个 exact artifact 在运行；
-- incident evidence 中缺少 contract-version linkage；
-- release 或 assurance evidence 中缺少 verifier-contract lineage；
-- deprecated patterns 在 production 里活得太久；
-- approved inventory 只存在于 wiki，而不存在于 operational tooling。
+- 提示包没有版本；
+- 评测数据集 悄悄变化；
+- 能力契约被编辑却没有审查轨迹；
+- 审批或运行时控制模式发生变化，却没有版本纪律；
+- 编排模式治理变更没有工件血缘；
+- 没有人知道事故发生时到底是哪一个精确工件在运行；
+- 事故证据中缺少契约版本链接；
+- 发布或保障 evidence 中缺少验证器契约血缘；
+- 已废弃模式在生产环境里活得太久；
+- 已批准清单只存在于 wiki，而不存在于运营工具。
 
 一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小工件都处于未跟踪状态。
 
-## 13. 给 artifact governance 做一次快速成熟度测试
+## 13. 给工件治理做一次快速成熟度测试
 
-团队不应该只因为 builds 已签名、几份 configs 也放进了 version control，就觉得自己已经有 supply-chain discipline。
+团队不应该只因为构建已签名、几份配置也放进了版本控制，就觉得自己已经有供应链纪律。
 
 更高的标准应该是：
 
-- prompt、policy、eval、capability、approval、runtime-control 和 verifier artifacts 都被当成 production artifacts；
-- provenance 能在 incident review 和 rollout decisions 中被快速恢复；
-- release 和 assurance evidence 能回溯到当时生效的 verifier contract 与 contract family；
-- approved inventory 和 approved artifacts 被当成不同的 control layers 来管理；
-- deprecated patterns 能在它们悄悄留在 production 之前被阻断；
-- trust 绑定在显式 artifact properties 上，而不是靠社会性继承。
+- 提示、策略、评测、能力、审批、runtime-control 和 verifier 工件都被当成生产工件；
+- 来源追踪能在事故评审和 rollout 决策中被快速恢复；
+- 发布和保障证据能回溯到当时生效的验证器契约与契约族；
+- 已批准清单和已批准工件被当成不同的控制层来管理；
+- 已废弃模式能在它们悄悄留在生产环境之前被阻断；
+- 信任绑定在显式工件属性上，而不是靠社会性继承。
 
-如果这些条件大多不成立，那团队也许已经有一些 artifact hygiene，但还没有真正的 artifact governance。
+如果这些条件大多不成立，那团队也许已经有一些工件卫生，但还没有真正的工件治理。
 
 ## 14. 实用检查清单
 
 如果你想快速检查工件纪律，可以问：
 
 - 所有生产工件都有 owner 吗？
-- model、prompt、policy、approval-schema、runtime-control、eval 和 verifier 工件都有版本吗？
-- incident review 时能快速恢复 provenance、verifier lineage 与生效中的 contract/schema versions 吗？
-- 平台是否有 approved inventory？
+- 模型、提示、策略、approval-schema、runtime-control、评测和验证器工件都有版本吗？
+- 事故评审时能快速恢复来源追踪、验证器血缘与生效中的契约/模式版本吗？
+- 平台是否有已批准清单？
 - 你们能区分平台批准的模式和发布批准的工件吗？
 - 已废弃工件能被快速阻断吗？
 
@@ -351,7 +351,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 ## 15. 接下来读什么
 
-在供应链和工件纪律之后，这一部分最后一个自然主题就是 retirement、replacement 和 end-of-life discipline。成熟的系统不仅要能上线和修复，也要能优雅地下线。
+在供应链和工件纪律之后，这一部分最后一个自然主题就是 退役、替换和生命周期终止纪律。成熟的系统不仅要能上线和修复，也要能优雅地下线。
 
 ## 16. 值得配套阅读的参考页
 
