@@ -93,7 +93,7 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` 现在也会显示来自 `runtime-controls.yaml` 的 `sandbox_profile` 契约、`change.affected_surfaces`、`change.session_control_owner`、`change.emergency_freeze_owner`、`artifact_bundle.session_control_owner`、`retirement.session_control_owner`、`retirement.emergency_freeze_owner`、`failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到所有权、冻结责任、保留要求，以及追踪/来源证明控制。
+`inspect-lifecycle` 现在也会显示来自 `runtime-controls.yaml` 的 `sandbox_profile` 契约、`artifact_bundle.review_evidence`、`artifact_bundle.sandbox_profile_review_evidence`、`change.affected_surfaces`、`change.session_control_owner`、`change.emergency_freeze_owner`、`artifact_bundle.session_control_owner`、`retirement.session_control_owner`、`retirement.emergency_freeze_owner`、`failed_run_archive_targets`、`controls.failed_run_control_expectations`、`controls.failed_run_control_domains`、`controls.failed_run_control_count`、`controls.failed_run_control_summary`、`controls.failed_run_control_status`、`controls.failed_run_control_review_required`、`controls.failed_run_control_owner`、`controls.failed_run_control_source`、`controls.failed_run_control_last_review` 和 `controls.failed_run_control_next_review`，这样操作员在同一个生命周期摘要里就能同时看到所有权、冻结责任、保留要求，以及追踪/来源证明控制。
 `check-change` 现在也会单独给出 `missing_failed_run_signals`，这样退化路径发布评审的缺口就不会被埋在普通缺失信号列表里。
 `check-retirement` 现在也会显示 `failed_run_archive_targets`，这样操作员就能看到哪些遥测/会话/审批记录必须在退役之后继续保留下来，供后续退化路径评审使用。
 `check-controls` 现在也会单独给出 `failed_run_controls`，同时列出 `preserved_failed_run_controls` 并输出 `failed_run_controls_healthy`，这样追踪/来源证明相关缺口就能和普通控制卫生分开审阅。
@@ -175,7 +175,7 @@
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
 现在，运行时也会把工具路径中的失败类结果，例如验证失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
-`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，以及带有阻断型 `sandbox_profile_review` 评分规则的 approval-backed support-ticket scenario，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
 现在这条评测路径也应该和附录里的更丰富验证器契约一起理解：对于长周期场景，这个包要帮助读者看到，数据集未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与已链接的验证器证据，而不只是一个单薄结论。
 
@@ -281,6 +281,7 @@ sandbox_profile:
 - `dump-events` 可以在不读源代码的情况下直接看到一次运行的结构化追踪；
 - `export-events` 可以把这条追踪保存成 JSONL，便于脱离进程分析；
 - `export-events` 现在会带上 `schema_version`，也支持按字段在导出时脱敏；
+- approval-backed `export-events` path 会发出 `sandbox_profile_reviewed`，让 trace evidence 与 lifecycle bundle 和 eval grading rule 对齐；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
 

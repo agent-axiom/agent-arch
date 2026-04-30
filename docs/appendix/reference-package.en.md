@@ -93,7 +93,7 @@ Inspect lifecycle artifacts that mirror Part VIII, including runtime-control lin
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` now also surfaces the `sandbox_profile` contract from `runtime-controls.yaml`, `change.affected_surfaces`, `change.session_control_owner`, `change.emergency_freeze_owner`, `artifact_bundle.session_control_owner`, `retirement.session_control_owner`, `retirement.emergency_freeze_owner`, `failed_run_archive_targets`, `controls.failed_run_control_expectations`, `controls.failed_run_control_domains`, `controls.failed_run_control_count`, `controls.failed_run_control_summary`, `controls.failed_run_control_status`, `controls.failed_run_control_review_required`, `controls.failed_run_control_owner`, `controls.failed_run_control_source`, `controls.failed_run_control_last_review`, and `controls.failed_run_control_next_review`, so operators can see ownership, freeze responsibility, retention, and trace/provenance control in the same lifecycle summary.
+`inspect-lifecycle` now also surfaces the `sandbox_profile` contract from `runtime-controls.yaml`, `artifact_bundle.review_evidence`, `artifact_bundle.sandbox_profile_review_evidence`, `change.affected_surfaces`, `change.session_control_owner`, `change.emergency_freeze_owner`, `artifact_bundle.session_control_owner`, `retirement.session_control_owner`, `retirement.emergency_freeze_owner`, `failed_run_archive_targets`, `controls.failed_run_control_expectations`, `controls.failed_run_control_domains`, `controls.failed_run_control_count`, `controls.failed_run_control_summary`, `controls.failed_run_control_status`, `controls.failed_run_control_review_required`, `controls.failed_run_control_owner`, `controls.failed_run_control_source`, `controls.failed_run_control_last_review`, and `controls.failed_run_control_next_review`, so operators can see ownership, freeze responsibility, retention, and trace/provenance control in the same lifecycle summary.
 `check-change` now also breaks out `missing_failed_run_signals`, so degraded-path rollout gaps stay visible as their own review category rather than hiding inside a generic missing-signal list.
 `check-retirement` now also surfaces `failed_run_archive_targets`, so operators can confirm which telemetry/session/approval records must survive retirement for later degraded-path review.
 `check-controls` now also breaks out `failed_run_controls`, names `preserved_failed_run_controls`, and reports `failed_run_controls_healthy`, so trace/provenance-related control gaps can be reviewed separately from generic control hygiene.
@@ -175,7 +175,7 @@ Inspect and resolve demo approval requests:
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, and the command summary now surfaces `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` for failed drills.
 
 The runtime now also treats failure-like tool paths, such as validation failures, as first-class run outcomes. Instead of pretending the run succeeded, it records a failed run, emits an explicit `run_failed` event, and keeps both that status and the concrete failure reason visible as `failure_reason` in session export and CLI output.
-`export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact, including a dedicated failed-run drill scenario, and its command summary now surfaces aggregate `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` too.
+`export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact, including a dedicated failed-run drill scenario and an approval-backed support-ticket scenario with a blocking `sandbox_profile_review` grading rule, and its command summary now surfaces aggregate `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` too.
 
 That eval path should now be read together with the richer verifier contract in the appendix: for long-horizon scenarios, the package is meant to illustrate how a dataset can eventually carry `process_score`, `outcome_score`, `failure_attribution`, and linked verifier evidence rather than a single thin verdict.
 
@@ -281,6 +281,7 @@ There is also a practical usability win now:
 - `dump-events` shows the structured trace of one run without reading the source code;
 - `export-events` persists that trace as JSONL for external inspection;
 - `export-events` now includes `schema_version` and supports export-time redaction for selected fields;
+- the approval-backed `export-events` path emits `sandbox_profile_reviewed`, so trace evidence matches the lifecycle bundle and eval grading rule;
 - `inspect-trace` reads and filters saved traces;
 - `replay-run` reconstructs a run from the saved `run_start` event.
 
