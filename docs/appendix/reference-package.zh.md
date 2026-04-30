@@ -232,7 +232,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 ### 最小 sandbox profile
 
-如果这个包以后扩展到 sandbox-backed execution，正确起点不是一套庞大的新子系统，而是一个把 workspace 和权限显式化的小 profile：
+如果这个包以后扩展到由 sandbox 支撑的执行，正确起点不是一套庞大的新子系统，而是一个把 workspace 和权限显式化的小 profile：
 
 ```yaml
 sandbox_profile:
@@ -260,7 +260,7 @@ sandbox_profile:
     persist_session_state: true
 ```
 
-这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实 sandbox-backed runtime 暴露出来的契约表面：manifest、permissions、workspace materialization、session state，以及 snapshot/resume policy 都应该可以被 review。
+这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由 sandbox 支撑的 runtime 暴露出来的契约表面：manifest、permissions、workspace materialization、session state，以及 snapshot/resume policy 都应该可以被 review。
 
 ## 为什么它有用
 

@@ -91,7 +91,7 @@
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行 |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
-| `sandbox_profile_reviewed` | sandbox-backed path 被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
+| `sandbox_profile_reviewed` | 由 sandbox 支撑的路径被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
 | `span` | 单个调用周围 | 提供基础延迟与状态遥测 |
@@ -125,7 +125,7 @@
 - `risk_tier`
 - `tool_principal`
 
-对于 sandbox-backed run，也应该预留把追踪和执行边界关联起来的字段：
+对于由 sandbox 支撑的运行，也应该预留把追踪和执行边界关联起来的字段：
 
 - `sandbox_session_id`
 - `sandbox_manifest_version`
