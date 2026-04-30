@@ -94,7 +94,7 @@ artifacts:
 review_evidence:
   sandbox_profile_reviewed:
     trace_event: sandbox_profile_reviewed
-    workspace_manifest_ref: workspace-manifest-v1
+    workspace_manifest_ref: runtime-controls.yaml#runtime_controls.sandbox_profile.workspace
     permissions_profile: restricted-shell-network-denied
     network_secrets_posture: network:denied,secrets:none
     snapshot_policy: required_on_completion
