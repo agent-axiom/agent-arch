@@ -605,6 +605,7 @@ class TestRuntimeControlPaths:
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
 
+        assert "runtime-controls.yaml" in change["artifacts"]
         assert "capability_session_contract" in change["affected_surfaces"]
         assert "sandbox_profile_contract" in change["affected_surfaces"]
         assert "session_expiry_behavior_checked" in change["required_signals"]
@@ -1496,6 +1497,7 @@ class TestCli:
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
         assert "capability_session_contract" in payload["change"]["affected_surfaces"]
         assert "sandbox_profile_contract" in payload["change"]["affected_surfaces"]
+        assert "runtime-controls.yaml" in payload["change"]["artifacts"]
         assert payload["change"]["session_control_owner"] == "support-ops"
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
