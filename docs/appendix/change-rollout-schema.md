@@ -60,6 +60,7 @@ required_evals:
   - targeted_safety_eval
   - trace_regression_check
   - failed_run_drill
+  - sandbox_profile_review
   - verifier_quality_check
 status: approved
 ```
@@ -88,9 +89,12 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - sandbox_profile_reviewed
   - failed_run_traceability_verified
 blocking_findings: []
 decision: go
+# sandbox_profile_reviewed означает, что workspace materialization, permissions
+# и snapshot/resume policy были явно проверены для sandbox-backed paths.
 # failed_run_traceability_verified означает, что для degraded paths
 # проверены traces, release identity и экспортируемые поля вроде failure_reason.
 decided_by:

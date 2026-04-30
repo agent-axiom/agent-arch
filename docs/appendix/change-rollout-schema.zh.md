@@ -60,6 +60,7 @@ required_evals:
   - targeted_safety_eval
   - trace_regression_check
   - failed_run_drill
+  - sandbox_profile_review
   - verifier_quality_check
 status: approved
 ```
@@ -88,9 +89,12 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - sandbox_profile_reviewed
   - failed_run_traceability_verified
 blocking_findings: []
 decision: go
+# sandbox_profile_reviewed 意味着已经显式检查 sandbox-backed paths 的
+# workspace materialization、permissions 与 snapshot/resume policy。
 # failed_run_traceability_verified 意味着已经检查退化路径、
 # 追踪、发布身份，以及像 failure_reason 这样的导出字段。
 decided_by:
