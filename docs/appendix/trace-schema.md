@@ -91,6 +91,7 @@
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
+| `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
 | `memory_persisted` | после фоновой записи | фиксирует происхождение и ревизию записи памяти |
 | `run_complete` | в конце запуска | фиксирует итог запуска |
 | `span` | вокруг отдельных вызовов | дает простую телеметрию задержки и статуса |
@@ -131,6 +132,16 @@
 - `sandbox_permissions_profile`
 - `snapshot_id`
 - `workspace_manifest_ref`
+
+Если rollout или eval требует `sandbox_profile_review`, трасса должна также уметь ссылаться на review evidence, а не только на state fields:
+
+- `sandbox_profile_contract`
+- `workspace_entries_reviewed`
+- `permissions_profile`
+- `network_secrets_posture`
+- `snapshot_policy`
+- `reviewed_by`
+- `review_evidence_refs`
 
 Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract и для verifier evidence, например:
 
@@ -179,7 +190,8 @@
 - правила маскирования чувствительных полей;
 - явный способ связывать трассы с verifier evidence, screenshots или grading artifacts;
 - стабильный способ фиксировать, какая версия verifier contract породила grading output;
-- sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot.
+- sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot;
+- event или linked payload для `sandbox_profile_reviewed`, чтобы rollout/eval evidence по workspace, permissions и snapshot/resume policy была traceable.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 
@@ -193,6 +205,7 @@
 - Можно ли по трассе восстановить решение политики и путь инструмента?
 - Можно ли по экспорту сессии собирать набор для оценки?
 - Можно ли связать трассу с verifier evidence, которое использовалось для grading или rollout review?
+- Если rollout требует `sandbox_profile_review`, есть ли trace evidence для workspace entries, permissions и snapshot/resume policy?
 - Можно ли понять, какая версия verifier contract породила этот grading output?
 - Есть ли план по маскированию данных и версионированию схемы?
 

@@ -91,6 +91,7 @@
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行 |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
+| `sandbox_profile_reviewed` | sandbox-backed path 被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
 | `span` | 单个调用周围 | 提供基础延迟与状态遥测 |
@@ -131,6 +132,16 @@
 - `sandbox_permissions_profile`
 - `snapshot_id`
 - `workspace_manifest_ref`
+
+如果 rollout 或 eval 要求 `sandbox_profile_review`，追踪还应该能指向 review evidence，而不只是 state fields：
+
+- `sandbox_profile_contract`
+- `workspace_entries_reviewed`
+- `permissions_profile`
+- `network_secrets_posture`
+- `snapshot_policy`
+- `reviewed_by`
+- `review_evidence_refs`
 
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器证据，例如：
 
@@ -179,7 +190,8 @@
 - 敏感字段的脱敏规则；
 - 把追踪与验证器证据、截图或打分工件显式关联起来的方式；
 - 稳定记录是哪个验证器契约版本产出该打分输出的方式；
-- sandbox state fields，用于那些会物化 workspace、使用 shell/filesystem capabilities，或从 snapshot 继续的 runs。
+- sandbox state fields，用于那些会物化 workspace、使用 shell/filesystem capabilities，或从 snapshot 继续的 runs；
+- 用于 `sandbox_profile_reviewed` 的 event 或 linked payload，确保 workspace、permissions 与 snapshot/resume policy 的 rollout/eval evidence 可以被追踪。
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
@@ -193,6 +205,7 @@
 - 能不能从追踪里还原出策略决策和工具路径？
 - 能不能从会话导出结果构建评测数据集？
 - 能不能把追踪关联到用于打分或发布评审的验证器证据？
+- 如果 rollout 要求 `sandbox_profile_review`，是否有关于 workspace entries、permissions 与 snapshot/resume policy 的 trace evidence？
 - 能不能看出是哪一个验证器契约版本产出了这份打分输出？
 - 有没有脱敏与 Schema 版本化的计划？
 
