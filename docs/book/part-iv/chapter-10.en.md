@@ -197,7 +197,21 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 The important thing is not the code itself, but the fact that the system now has an explicit operational decision table.
 
-## 9. The Idempotency Key Must Be Part of the Protocol
+## 9. The Agent Loop Needs Explicit Stop Conditions
+
+Another practical point from the OpenAI guide is worth making formal: a run loop needs clear stop conditions.[^openai-practical]
+
+A good runtime ends a run not “when the model seems calm,” but for explicit reasons:
+
+- a final structured result is produced;
+- no more tool calls are needed;
+- an unrecoverable error arrives;
+- a step or budget limit is reached;
+- an approval boundary fires and a human is needed.
+
+This sounds boring, but these rules are exactly what prevent an agent from drifting into endless planning, pointless retries, or decorative tool hops.
+
+## 10. The Idempotency Key Must Be Part of the Protocol
 
 If a write tool "supports idempotency" only on paper, but the key:
 
@@ -215,7 +229,7 @@ Good practice:
 - log it in audit trails;
 - use it for reconciliation and investigations.
 
-## 10. Common Mistakes
+## 11. Common Mistakes
 
 Typical failures repeat:
 
@@ -228,7 +242,7 @@ Typical failures repeat:
 
 All of this means the execution layer has not yet grown into a production-grade failure model.
 
-## 11. What to Do Right Away
+## 12. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -242,10 +256,13 @@ Start with this short list and mark every "no" explicitly:
 
 If the answer is "no" several times in a row, the next unstable integration will almost certainly turn into duplication, noise, or a manual incident review.
 
-## 12. What to Do Next
+## 13. What to Do Next
 
 Part IV now closes the basic execution layer: contracts, sandboxing, capability transport, and side-effect discipline. The next logical move is reliability and observability at the whole agent-system level.
 
+- [Chapter 11. Traces, Spans, and Structured Events](../part-v/chapter-11.en.md)
 - [Chapter 9. Sandbox Execution and MCP as an Integration Contract](chapter-9.en.md)
 - [Part IV. Tools and Execution](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

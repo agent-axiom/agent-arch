@@ -92,6 +92,8 @@ Google Research очень точно показывает, что подтве�
 !!! info "Нужны артефакты цепочки поставки?"
     Для формального описания смотри [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md), [схему набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md) и [схему change review и rollout gate](../../appendix/change-rollout-schema.md).
 
+Если тебе нужен мост, который показывает, как этот governed backbone остается связан с request, policy, approvals, traces, evals, incidents и rollout judgment, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
+
 ## 4. У агента должно быть несколько цепочек доверия, а не одна
 
 В обычной системе команда часто мыслит одной цепочкой доверия: «Код собран в CI, контейнер подписан, значит все хорошо».
