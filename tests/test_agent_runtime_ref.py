@@ -570,6 +570,34 @@ class TestRuntimeControlPaths:
         assert capability_sessions["expiry_policy"] == "reinitialize_or_cancel"
         assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
 
+    def test_runtime_control_config_exposes_sandbox_profile_contract(
+        self, config_dir: Path
+    ) -> None:
+        payload = load_yaml_file(config_dir / "runtime-controls.yaml")
+        sandbox_profile = payload["runtime_controls"]["sandbox_profile"]
+
+        assert sandbox_profile["manifest_version"] == 1
+        assert sandbox_profile["workspace"]["entries"] == [
+            {"path": "repo", "source": "local_dir", "read_only": False},
+            {"path": "task.md", "source": "inline_file", "read_only": True},
+        ]
+        assert sandbox_profile["capabilities"] == {
+            "filesystem": True,
+            "shell": "restricted",
+            "memory": "read_write",
+            "skills": "read_only",
+        }
+        assert sandbox_profile["permissions"] == {
+            "network": "denied",
+            "secrets": "none",
+            "run_as": "sandbox_user",
+        }
+        assert sandbox_profile["state"] == {
+            "resume": "allowed",
+            "snapshot": "required_on_completion",
+            "persist_session_state": True,
+        }
+
     def test_lifecycle_configs_expose_session_governance_ownership(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 

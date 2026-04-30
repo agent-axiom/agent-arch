@@ -24,3 +24,26 @@ runtime_controls:
     token_reuse_policy: reuse_within_valid_paused_run_only
     on_authorization_revoke: cancel_or_reapprove
     subagent_inheritance: denied_by_default
+  sandbox_profile:
+    manifest_version: 1
+    workspace:
+      entries:
+        - path: repo
+          source: local_dir
+          read_only: false
+        - path: task.md
+          source: inline_file
+          read_only: true
+    capabilities:
+      filesystem: true
+      shell: restricted
+      memory: read_write
+      skills: read_only
+    permissions:
+      network: denied
+      secrets: none
+      run_as: sandbox_user
+    state:
+      resume: allowed
+      snapshot: required_on_completion
+      persist_session_state: true
