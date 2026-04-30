@@ -606,6 +606,7 @@ class TestRuntimeControlPaths:
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
 
         assert "capability_session_contract" in change["affected_surfaces"]
+        assert "sandbox_profile_contract" in change["affected_surfaces"]
         assert "session_expiry_behavior_checked" in change["required_signals"]
         assert change["session_control_owner"] == "support-ops"
         assert change["emergency_freeze_owner"] == "platform-runtime"
@@ -1494,6 +1495,7 @@ class TestCli:
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
         assert "capability_session_contract" in payload["change"]["affected_surfaces"]
+        assert "sandbox_profile_contract" in payload["change"]["affected_surfaces"]
         assert payload["change"]["session_control_owner"] == "support-ops"
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
