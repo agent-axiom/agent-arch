@@ -194,7 +194,8 @@ grading_rules:
     expected:
       sandbox_profile_contract: sandbox-profile-v1
       workspace_entries_reviewed: true
-      permissions_profile: restricted-shell-no-network
+      permissions_profile: restricted-shell-network-denied
+      network_secrets_posture: network:denied,secrets:none
       snapshot_policy: required_on_completion
     blocking: true
 verifier_outputs:

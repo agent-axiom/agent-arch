@@ -82,6 +82,7 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
                     "sandbox_profile_contract": "sandbox-profile-v1",
                     "workspace_entries_reviewed": True,
                     "permissions_profile": "restricted-shell-network-denied",
+                    "network_secrets_posture": "network:denied,secrets:none",
                     "snapshot_policy": "required_on_completion",
                 },
                 "blocking": True,
