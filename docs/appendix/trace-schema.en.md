@@ -91,6 +91,7 @@ Below is the current minimal event catalog.
 | `context_layers_built` | after context assembly | shows which context layers actually entered the run |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
+| `sandbox_profile_reviewed` | when a sandbox-backed path is reviewed | records workspace, permissions, and snapshot/resume evidence review |
 | `memory_persisted` | after a background write | records provenance and revision of a memory record |
 | `run_complete` | at the end of a run | closes the run-level outcome |
 | `span` | around individual calls | provides simple latency and status telemetry |
@@ -131,6 +132,16 @@ For a sandbox-backed run, reserve fields that link the trace to the execution bo
 - `sandbox_permissions_profile`
 - `snapshot_id`
 - `workspace_manifest_ref`
+
+If rollout or eval requires `sandbox_profile_review`, the trace should also be able to point to review evidence, not only state fields:
+
+- `sandbox_profile_contract`
+- `workspace_entries_reviewed`
+- `permissions_profile`
+- `network_secrets_posture`
+- `snapshot_policy`
+- `reviewed_by`
+- `review_evidence_refs`
 
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
 
@@ -179,7 +190,8 @@ The reference runtime is intentionally small, so a more mature system should qui
 - redaction rules for sensitive fields;
 - an explicit way to link traces to verifier evidence, screenshots, or grading artifacts;
 - a stable way to record which verifier contract version produced the grading output;
-- sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot.
+- sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot;
+- an event or linked payload for `sandbox_profile_reviewed`, so rollout/eval evidence for workspace, permissions, and snapshot/resume policy is traceable.
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -193,6 +205,7 @@ Start with this short list and mark every "no" explicitly:
 - Can you reconstruct the policy decision and tool path from a trace?
 - Can you build an eval dataset from a session export?
 - Can you link a trace to verifier evidence used in grading or rollout review?
+- If rollout requires `sandbox_profile_review`, is there trace evidence for workspace entries, permissions, and snapshot/resume policy?
 - Can you tell which verifier contract version produced that grading output?
 - Do you have a plan for redaction and schema versioning?
 
