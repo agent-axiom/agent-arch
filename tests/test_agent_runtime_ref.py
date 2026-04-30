@@ -1250,6 +1250,7 @@ class TestLifecycleArtifacts:
             "offline_eval_passed",
             "session_expiry_behavior_checked",
             "reinit_policy_reviewed",
+            "sandbox_profile_reviewed",
             "failed_run_drill_checked",
         )
 
