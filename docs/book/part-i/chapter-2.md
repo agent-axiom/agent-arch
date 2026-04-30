@@ -399,6 +399,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 - [Часть II. Контур безопасности](../part-ii/index.md)
 - [Глава 3. Контур безопасности и границы доверия](../part-ii/chapter-3.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-memory]: [LangGraph, Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)

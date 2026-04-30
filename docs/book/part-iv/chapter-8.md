@@ -395,4 +395,5 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

@@ -397,6 +397,7 @@ If those things are already written down, an architecture is beginning to exist.
 - [Part II. Security Perimeter](../part-ii/index.en.md)
 - [Chapter 3. Security Perimeter and Trust Boundaries](../part-ii/chapter-3.en.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-memory]: [LangGraph, Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)

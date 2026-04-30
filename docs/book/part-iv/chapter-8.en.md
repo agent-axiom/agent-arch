@@ -395,4 +395,5 @@ The next natural topics in this part are sandbox execution, MCP as an integratio
 - [Part IV. Tools and Execution](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

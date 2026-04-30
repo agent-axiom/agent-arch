@@ -421,6 +421,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
