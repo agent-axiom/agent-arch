@@ -1553,6 +1553,9 @@ class TestCli:
             sandbox_review["workspace_manifest_ref"]
             == "runtime-controls.yaml#runtime_controls.sandbox_profile.workspace"
         )
+        assert sandbox_review["permissions_profile"] == "restricted-shell-network-denied"
+        assert sandbox_review["network_secrets_posture"] == "network:denied,secrets:none"
+        assert sandbox_review["snapshot_policy"] == "required_on_completion"
         assert "eval:sandbox_profile_review" in sandbox_review["review_evidence_refs"]
         assert payload["retirement"]["system_id"] == "support-triage-ref"
         assert payload["retirement"]["session_control_owner"] == "support-ops"
