@@ -375,6 +375,19 @@ capabilities:
 - 外部 API 适配器：`allowlisted_external`；
 - 代码执行和类 shell 工具：默认 `denied`。
 
+### 8.2. 把沙箱 manifest 当作执行契约
+
+OpenAI 最近的 Sandbox Agents 文档给这个问题补了一种很实用的形态：沙箱不应只被描述成“容器”或“隔离环境”，而应通过显式的 `Manifest`、capabilities、permissions、workspace entries、snapshot 和 session state 来描述。[^openai-sandbox-agents]
+
+这和本章的执行契约可以直接对齐。平台至少要回答四个问题：
+
+- 哪些文件、仓库、mounts 和 environment 会被物化进启动 workspace；
+- 哪些沙箱原生能力可用：filesystem、shell、memory、skills、compaction；
+- 命令、文件修改和文件读取使用哪些 permissions 与 `run_as` 身份；
+- 继续执行时到底使用 live `sandbox_session`、序列化的 `session_state`，还是从 `snapshot` 启动的新会话。
+
+这样的 manifest 不能替代策略层。它让执行边界变得可审查：reviewer 可以看到什么进入了 workspace、智能体拿到了哪些权限，以及这项工作是否能安全地 resume 或 snapshot。
+
 ## 9. 一个简单的能力分发示例
 
 这个小骨架展示的核心思想是：传输和执行画像来自能力契约，而不是由模型临时决定。
@@ -444,3 +457,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
+
+[^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) 与 [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)

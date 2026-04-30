@@ -187,6 +187,21 @@ Anthropic 的工作流分类又把这个问题压得更具体了，因为不同�
 
 如果运行时对这些情况没有显式形态，长时间工作最终通常都会泄漏成临时重试、重复请求和隐藏状态迁移。
 
+### 8.1. 沙箱会话状态也是运行时状态
+
+OpenAI Agents SDK 的 Sandbox Agents 做了一个很有用的区分，应该进入基线运行时设计：`Manifest` 描述 fresh workspace contract，而一次具体运行可以拿到 live sandbox session、序列化的 `session_state`，也可以从 `snapshot` 启动。[^openai-sandbox-agents]
+
+对参考运行时来说，这意味着沙箱状态不应该消失在 tool adapter 里面。一个最小有用模型，至少应该在 `run_id` 和 `trace_id` 旁边追踪：
+
+- `sandbox_session_id`；
+- `sandbox_manifest_version`；
+- `sandbox_permissions_profile`；
+- 当运行从保存的 workspace 启动时的 `snapshot_id`；
+- 已物化的 workspace entries，或指向已审查 manifest 的链接；
+- 这个沙箱是否可以 resume、snapshot，还是必须重新创建。
+
+这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、trace evidence 放在一起管理。
+
 ## 9. 有状态工具会话也应该属于基线
 
 一旦执行层开始接入类似有状态 MCP 能力，基线运行时就会多出一条必须明确的边界：**用户可见运行的状态，不等于能力会话的状态**。[^aws-stateful-mcp]
@@ -376,3 +391,5 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) 与 [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)

@@ -377,6 +377,19 @@ capabilities:
 - external API adapters: `allowlisted_external`;
 - code execution и shell-like tools: `denied` по умолчанию.
 
+### 8.2. Sandbox manifest как контракт исполнения
+
+Свежие документы OpenAI по Sandbox Agents добавляют к этой картине полезную практическую форму: sandbox стоит описывать не только словами “контейнер” или “изолированная среда”, а через явный `Manifest`, capabilities, permissions, workspace entries, snapshot и session state.[^openai-sandbox-agents]
+
+Это хорошо ложится на execution contracts из этой главы. Для платформы важны как минимум четыре вопроса:
+
+- какие файлы, репозитории, mounts и environment попадают в стартовый workspace;
+- какие sandbox-native capabilities доступны: filesystem, shell, memory, skills, compaction;
+- какие permissions и `run_as` действуют для команд, правок и чтения файлов;
+- что происходит при продолжении: используется live `sandbox_session`, serialized `session_state` или fresh session из `snapshot`.
+
+Такой manifest не заменяет policy layer. Он делает границу исполнения проверяемой: review может увидеть, что именно материализуется в workspace, какие права получает агент и можно ли безопасно resume/snapshot эту работу.
+
 ## 9. Простой кодовый пример capability dispatch
 
 Ниже каркас, который показывает саму идею: transport и execution profile выбираются по capability contract, а не определяются логикой модели на лету.
@@ -446,3 +459,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - [Источники](../../appendix/sources.md)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
+
+[^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) и [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)
