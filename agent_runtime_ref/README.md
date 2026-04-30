@@ -33,12 +33,13 @@ python3 -m agent_runtime_ref inspect-memory --memory-class profile
 python3 -m agent_runtime_ref inspect-approvals
 python3 -m agent_runtime_ref inspect-lifecycle
 python3 -m agent_runtime_ref inspect-session --simulate-failure tool_timeout
-python3 -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 python3 -m agent_runtime_ref check-controls --signal policy_traces_present=false
 python3 -m agent_runtime_ref check-change --signal failed_run_drill_checked=false
 python3 -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 python3 -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 python3 -m agent_runtime_ref dump-events --simulate-failure upstream_unavailable
+python3 -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
+python3 -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 python3 -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output /tmp/agent-runtime-failed-trace.jsonl
 python3 -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 python3 -m agent_runtime_ref session-eval-summary --simulate-failure tool_timeout
