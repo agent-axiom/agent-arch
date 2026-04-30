@@ -399,4 +399,5 @@ This chapter turns the governed runtime path from Chapter 17 into rollout discip
 - [Part VIII. Agent System Lifecycle](../part-viii/index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).

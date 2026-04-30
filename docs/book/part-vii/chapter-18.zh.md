@@ -399,4 +399,5 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [第八部分：智能体系统的生命周期](../part-viii/index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
