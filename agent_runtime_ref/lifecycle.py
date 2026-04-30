@@ -55,6 +55,7 @@ class ArtifactBundle:
     signed: bool
     session_control_owner: str
     artifacts: tuple[str, ...]
+    review_evidence: dict[str, object]
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ArtifactBundle:
@@ -66,6 +67,10 @@ class ArtifactBundle:
             signed=bool(data.get("signed", False)),
             session_control_owner=str(data.get("session_control_owner", "")),
             artifacts=_read_string_list(data, "artifacts"),
+            review_evidence=_require_mapping(
+                data.get("review_evidence", {}),
+                label="artifact bundle review_evidence",
+            ),
         )
 
 

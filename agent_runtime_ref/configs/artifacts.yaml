@@ -16,3 +16,10 @@ bundle:
     - retirement.yaml
     - eval-dataset.json
     - runtime-control-bundle-metadata
+  review_evidence:
+    sandbox_profile_reviewed:
+      trace_event: sandbox_profile_reviewed
+      workspace_manifest_ref: runtime-controls.yaml#runtime_controls.sandbox_profile.workspace
+      review_evidence_refs:
+        - trace:sandbox_profile_reviewed
+        - eval:sandbox_profile_review

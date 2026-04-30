@@ -1546,6 +1546,13 @@ class TestCli:
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
+        sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
+        assert sandbox_review["trace_event"] == "sandbox_profile_reviewed"
+        assert (
+            sandbox_review["workspace_manifest_ref"]
+            == "runtime-controls.yaml#runtime_controls.sandbox_profile.workspace"
+        )
+        assert "eval:sandbox_profile_review" in sandbox_review["review_evidence_refs"]
         assert payload["retirement"]["system_id"] == "support-triage-ref"
         assert payload["retirement"]["session_control_owner"] == "support-ops"
         assert payload["retirement"]["emergency_freeze_owner"] == "platform-runtime"
