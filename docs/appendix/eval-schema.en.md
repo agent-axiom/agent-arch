@@ -109,8 +109,11 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `outcome_score_present`
 - `failure_attribution_valid`
 - `failed_run_traceable`
+- `sandbox_profile_review`
 
-That last rule becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, a concrete failure reason such as `failure_reason`, trace linkage, and governed release identity.
+`failed_run_traceable` becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, a concrete failure reason such as `failure_reason`, trace linkage, and governed release identity.
+
+`sandbox_profile_review` matters for sandbox-backed paths: it checks that workspace materialization, shell/filesystem permissions, network/secrets posture, and snapshot/resume policy were explicitly represented as reviewable evidence instead of remaining implicit runtime settings.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
@@ -161,6 +164,9 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `verifier_id`
 - `verifier_contract_version`
 - `verifier_evidence_refs`
+- `sandbox_profile_contract`
+- `workspace_manifest_ref`
+- `snapshot_policy`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
 
@@ -183,6 +189,13 @@ grading_rules:
     blocking: true
   - type: failed_run_traceable
     expected: true
+    blocking: true
+  - type: sandbox_profile_review
+    expected:
+      sandbox_profile_contract: sandbox-profile-v1
+      workspace_entries_reviewed: true
+      permissions_profile: restricted-shell-no-network
+      snapshot_policy: required_on_completion
     blocking: true
 verifier_outputs:
   verifier_id: fara-process-review
@@ -223,7 +236,8 @@ Several mistakes are very common:
 - grading only the final answer and ignoring policy or tool behavior;
 - not versioning the dataset;
 - not linking dataset items to trace evidence or incident history;
-- collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution.
+- collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution;
+- requiring `sandbox_profile_review` in rollout, but having no grading rule that checks workspace, permissions, and snapshot/resume evidence.
 
 That makes eval culture fragile.
 
@@ -237,6 +251,7 @@ Start with this short list and mark every "no" explicitly:
 - Can you evaluate behavior, not only text?
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Can you tell which verifier identity and contract version produced that grading output?
+- Is there a dedicated rule for sandbox-backed paths that checks sandbox profile contract, workspace entries, permissions, and snapshot/resume evidence?
 - Do you support multi-run sessions?
 - Do you have dataset versioning and ownership?
 

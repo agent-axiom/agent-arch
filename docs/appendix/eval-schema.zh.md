@@ -109,8 +109,11 @@
 - `outcome_score_present`
 - `failure_attribution_valid`
 - `failed_run_traceable`
+- `sandbox_profile_review`
 
-最后这一条会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
+`failed_run_traceable` 会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
+
+`sandbox_profile_review` 对 sandbox-backed paths 很重要：它检查 workspace materialization、shell/filesystem permissions、network/secrets posture 与 snapshot/resume policy 是否被显式表示成可评审证据，而不是停留为隐含的 runtime settings。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
@@ -161,6 +164,9 @@
 - `verifier_id`
 - `verifier_contract_version`
 - `verifier_evidence_refs`
+- `sandbox_profile_contract`
+- `workspace_manifest_ref`
+- `snapshot_policy`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
 
@@ -183,6 +189,13 @@ grading_rules:
     blocking: true
   - type: failed_run_traceable
     expected: true
+    blocking: true
+  - type: sandbox_profile_review
+    expected:
+      sandbox_profile_contract: sandbox-profile-v1
+      workspace_entries_reviewed: true
+      permissions_profile: restricted-shell-no-network
+      snapshot_policy: required_on_completion
     blocking: true
 verifier_outputs:
   verifier_id: fara-process-review
@@ -223,7 +236,8 @@ verifier_outputs:
 - 只评最终答案，不看策略或工具行为；
 - 不给数据集做版本管理；
 - 不把数据集条目和追踪证据或事故历史关联起来；
-- 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因。
+- 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因；
+- 在 rollout 中要求 `sandbox_profile_review`，却没有 grading rule 去检查 workspace、permissions 与 snapshot/resume evidence。
 
 这样会让评测文化变得很脆弱。
 
@@ -237,6 +251,7 @@ verifier_outputs:
 - 能不能评估行为，而不只是文本？
 - 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
+- 是否有专门面向 sandbox-backed paths 的规则，用来检查 sandbox profile contract、workspace entries、permissions 与 snapshot/resume evidence？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 
