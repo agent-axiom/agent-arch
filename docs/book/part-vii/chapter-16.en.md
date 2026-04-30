@@ -187,6 +187,21 @@ So bounded autonomy is not only a policy issue. It is also a runtime-state desig
 
 If the runtime has no explicit shape for those cases, long-running work usually leaks into ad hoc retries, duplicated requests, and hidden state transitions.
 
+### 8.1. Sandbox Session State Is Runtime State Too
+
+OpenAI Agents SDK Sandbox Agents make a useful distinction that belongs in baseline runtime design: `Manifest` describes the fresh workspace contract, while a concrete run may receive a live sandbox session, serialized `session_state`, or start from a `snapshot`.[^openai-sandbox-agents]
+
+For a reference runtime, that means sandbox state should not disappear inside a tool adapter. A minimally useful model should track, next to `run_id` and `trace_id`, at least:
+
+- `sandbox_session_id`;
+- `sandbox_manifest_version`;
+- `sandbox_permissions_profile`;
+- `snapshot_id` when the run starts from a saved workspace;
+- materialized workspace entries, or a link to a reviewed manifest;
+- whether this sandbox can be resumed, snapshotted, or must be recreated.
+
+Then long-running work over files, shell, and memory does not become an opaque directory on disk. It becomes part of the same runtime-control layer that already holds approvals, background runs, capability sessions, and trace evidence.
+
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
 
 Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
@@ -376,3 +391,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) and [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)

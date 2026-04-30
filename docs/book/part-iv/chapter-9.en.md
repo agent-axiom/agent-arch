@@ -375,6 +375,19 @@ For a production-grade platform, a good default is often:
 - external API adapters: `allowlisted_external`;
 - code execution and shell-like tools: `denied` by default.
 
+### 8.2. The Sandbox Manifest as an Execution Contract
+
+Recent OpenAI Sandbox Agents documentation adds a useful practical shape to this discussion: describe a sandbox not only as a "container" or "isolated environment", but through an explicit `Manifest`, capabilities, permissions, workspace entries, snapshot, and session state.[^openai-sandbox-agents]
+
+That maps cleanly onto the execution contracts in this chapter. A platform needs to answer at least four questions:
+
+- which files, repositories, mounts, and environment values are materialized into the starting workspace;
+- which sandbox-native capabilities are available: filesystem, shell, memory, skills, compaction;
+- which permissions and `run_as` identity apply to commands, edits, and file reads;
+- what happens on continuation: a live `sandbox_session`, serialized `session_state`, or a fresh session from a `snapshot`.
+
+Such a manifest does not replace the policy layer. It makes the execution boundary reviewable: reviewers can see what enters the workspace, what rights the agent receives, and whether the work can be safely resumed or snapshotted.
+
 ## 9. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.
@@ -444,3 +457,5 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 - [Sources](../../appendix/sources.en.md)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
+
+[^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) and [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)

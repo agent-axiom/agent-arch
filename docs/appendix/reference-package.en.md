@@ -230,6 +230,38 @@ These are no longer just static examples. `config.py` can load those YAML files 
 
 The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, delegated authorization assumptions, and the contract boundary between a user run and a capability-side session.
 
+### A Minimal Sandbox Profile
+
+If the package grows toward sandbox-backed execution, the right starting point is not a large new subsystem. It is a small profile that makes workspace and permissions explicit:
+
+```yaml
+sandbox_profile:
+  manifest_version: 1
+  workspace:
+    entries:
+      - path: repo
+        source: local_dir
+        read_only: false
+      - path: task.md
+        source: inline_file
+        read_only: true
+  capabilities:
+    filesystem: true
+    shell: restricted
+    memory: read_write
+    skills: read_only
+  permissions:
+    network: denied
+    secrets: none
+    run_as: sandbox_user
+  state:
+    resume: allowed
+    snapshot: required_on_completion
+    persist_session_state: true
+```
+
+This example does not turn the reference runtime into a full sandbox orchestrator. It fixes the contract surface that Chapters 9 and 16 require from a real sandbox-backed runtime: manifest, permissions, workspace materialization, session state, and snapshot/resume policy should be visible to review.
+
 ## Why This Is Useful
 
 The book now relies not only on Markdown explanations, but also on a real code skeleton:

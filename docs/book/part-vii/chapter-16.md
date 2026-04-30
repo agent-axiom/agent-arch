@@ -187,6 +187,21 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Если у рантайма нет явной формы для этих случаев, длинная работа почти всегда утекает в ad hoc retries, дублирующиеся запросы и скрытые переходы состояния.
 
+### 8.1. Sandbox session state тоже является runtime state
+
+У Sandbox Agents в OpenAI Agents SDK есть полезное разделение, которое стоит перенести в baseline runtime design: `Manifest` описывает fresh workspace contract, а конкретный run может получить live sandbox session, serialized `session_state` или стартовать из `snapshot`.[^openai-sandbox-agents]
+
+Для эталонного рантайма это означает, что sandbox state нельзя прятать внутри tool adapter. Минимально полезная модель должна уметь хранить рядом с `run_id` и `trace_id` хотя бы:
+
+- `sandbox_session_id`;
+- `sandbox_manifest_version`;
+- `sandbox_permissions_profile`;
+- `snapshot_id`, если run стартовал из сохраненного workspace;
+- список materialized workspace entries или ссылку на проверенный manifest;
+- признак, можно ли этот sandbox resume, snapshot или нужно пересоздать.
+
+Тогда длительная работа с файлами, shell и memory не превращается в непрозрачную папку на диске. Она становится частью того же runtime-control слоя, где уже живут approvals, background runs, capability sessions и trace evidence.
+
 ## 9. Stateful tool sessions тоже должны входить в baseline
 
 Как только execution layer начинает работать с stateful MCP-подобными capability, у baseline runtime появляется еще одна обязательная граница: **состояние user-visible run не равно состоянию capability session**.[^aws-stateful-mcp]
@@ -376,3 +391,5 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/) и [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)

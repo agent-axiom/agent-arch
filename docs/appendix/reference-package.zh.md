@@ -230,6 +230,38 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停/恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 
+### 最小 sandbox profile
+
+如果这个包以后扩展到 sandbox-backed execution，正确起点不是一套庞大的新子系统，而是一个把 workspace 和权限显式化的小 profile：
+
+```yaml
+sandbox_profile:
+  manifest_version: 1
+  workspace:
+    entries:
+      - path: repo
+        source: local_dir
+        read_only: false
+      - path: task.md
+        source: inline_file
+        read_only: true
+  capabilities:
+    filesystem: true
+    shell: restricted
+    memory: read_write
+    skills: read_only
+  permissions:
+    network: denied
+    secrets: none
+    run_as: sandbox_user
+  state:
+    resume: allowed
+    snapshot: required_on_completion
+    persist_session_state: true
+```
+
+这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实 sandbox-backed runtime 暴露出来的契约表面：manifest、permissions、workspace materialization、session state，以及 snapshot/resume policy 都应该可以被 review。
+
 ## 为什么它有用
 
 这本书现在不只依赖文档里的文字说明，也依赖真实的代码骨架：

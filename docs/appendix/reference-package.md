@@ -230,6 +230,38 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry, re-init policy, ownership capability sessions и границу между user run и capability-side session.
 
+### Минимальный sandbox profile
+
+Если расширять пакет в сторону sandbox-backed execution, полезно начинать не с новой большой подсистемы, а с небольшого profile, который делает workspace и права явными:
+
+```yaml
+sandbox_profile:
+  manifest_version: 1
+  workspace:
+    entries:
+      - path: repo
+        source: local_dir
+        read_only: false
+      - path: task.md
+        source: inline_file
+        read_only: true
+  capabilities:
+    filesystem: true
+    shell: restricted
+    memory: read_write
+    skills: read_only
+  permissions:
+    network: denied
+    secrets: none
+    run_as: sandbox_user
+  state:
+    resume: allowed
+    snapshot: required_on_completion
+    persist_session_state: true
+```
+
+Такой пример не делает reference runtime полноценным sandbox orchestrator. Он фиксирует contract surface, который Chapters 9 и 16 требуют от настоящего sandbox-backed runtime: manifest, permissions, workspace materialization, session state и snapshot/resume policy должны быть видимыми для review.
+
 ## Почему это полезно
 
 Книга теперь опирается не только на текстовые объяснения, но и на реальный кодовый каркас:
