@@ -48,6 +48,8 @@ affected_surfaces:
   - policy_bundle
   - capability_contract
   - runtime_control_schema
+  - capability_session_contract
+  - sandbox_profile_contract
   - rollout_rules
 eval_requirements:
   - offline_regression
@@ -68,7 +70,7 @@ status: approved
 - `rollback_unit` заставляет заранее понимать, что именно откатывается;
 - `status` нужен не как бюрократия, а как operational fact.
 
-А если в системе уже есть approval-bound или stateful capability sessions, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling, re-init semantics и delegated authorization rules в reviewed surface.
+А если в системе уже есть approval-bound, stateful capability sessions или sandbox-backed execution, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling, re-init semantics, delegated authorization rules и sandbox profile contract в reviewed surface.
 
 ## 4. Approved artifact bundle
 
@@ -84,6 +86,7 @@ artifacts:
   approvals_bundle: approvals-v3
   controls_bundle: controls-v2
   runtime_control_schema: runtime-controls-v2
+  sandbox_profile: sandbox-profile-v1
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
   verifier_contract: verifier-v2

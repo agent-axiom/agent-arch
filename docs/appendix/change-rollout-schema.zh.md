@@ -46,6 +46,9 @@ affected_surfaces:
   - policy_bundle
   - approval_contract
   - delegated_authorization_contract
+  - runtime_control_schema
+  - capability_session_contract
+  - sandbox_profile_contract
   - failed_run_handling
   - rollout_rules
 required_reviews:
@@ -119,6 +122,7 @@ decided_by:
 - 对受影响路径而言，重新初始化是拒绝、允许还是需要审批绑定；
 - 运行追踪、审批记录与会话导出之间的委派授权连续性是否已验证；
 - 编排模式变更是否在发布前被当成运行时控制变更单独评审；
+- 如果变更触及 sandbox-backed execution，sandbox profile contract 是否也进入评审，包括 workspace materialization、permissions 与 snapshot/resume policy；
 - 如果中断语义在发布后开始漂移，紧急冻结由谁负责。
 
 ## 6. 它和评测 Schema 的关系
@@ -175,6 +179,7 @@ decided_by:
 - 运行追踪、审批记录与会话导出之间的委派授权连续性会在发布前被检查；
 - 如果发布控制依赖打分结果，验证器质量与证据链接也会在发布前被检查；
 - 编排模式变更会在发布前被检查，尤其是它们引入路由、并行化或委派工作器表面时；
+- sandbox profile changes 会在发布前被检查，尤其是它们改变 workspace entries、shell/filesystem permissions 或 snapshot/resume behavior 时；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
