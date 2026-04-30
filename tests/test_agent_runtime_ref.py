@@ -1398,12 +1398,23 @@ class TestCli:
         assert event_types[-1] == "run_complete"
         assert "policy_precheck" in event_types
         assert "approval_requested" in event_types
+        assert "sandbox_profile_reviewed" in event_types
         assert "tool_execution" in event_types
         assert (
             event_types.index("approval_requested")
+            < event_types.index("sandbox_profile_reviewed")
             < event_types.index("tool_execution")
             < event_types.index("run_complete")
         )
+        sandbox_review = next(
+            item
+            for item in inspect_payload["events"]
+            if item["event_type"] == "sandbox_profile_reviewed"
+        )
+        assert sandbox_review["payload"]["sandbox_profile_contract"] == "sandbox-profile-v1"
+        assert sandbox_review["payload"]["workspace_entries_reviewed"] == "true"
+        assert sandbox_review["payload"]["snapshot_policy"] == "required_on_completion"
+        assert "eval:sandbox_profile_review" in sandbox_review["payload"]["review_evidence_refs"]
 
     def test_cli_export_trace_keeps_single_trace_and_session_consistent(
         self, cli_json, tmp_path: Path

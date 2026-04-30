@@ -119,6 +119,10 @@ def _parse_signal(raw_signal: str) -> tuple[str, bool]:
 
 def _build_runtime(config_dir: Path) -> AgentRuntime:
     agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+    runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml").get(
+        "runtime_controls", {}
+    )
+    sandbox_profile = runtime_controls.get("sandbox_profile", {})
     return AgentRuntime(
         agent=agent,
         approvals=ApprovalQueue(load_approval_policy(config_dir / "approvals.yaml")),
@@ -128,6 +132,7 @@ def _build_runtime(config_dir: Path) -> AgentRuntime:
             config_dir / "policy.yaml",
             approved_inventory=approved_inventory,
         ),
+        sandbox_profile=sandbox_profile if isinstance(sandbox_profile, dict) else {},
     )
 
 
