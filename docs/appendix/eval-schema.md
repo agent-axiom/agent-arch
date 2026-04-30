@@ -109,8 +109,11 @@
 - `outcome_score_present`
 - `failure_attribution_valid`
 - `failed_run_traceable`
+- `sandbox_profile_review`
 
-Последнее правило становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
+`failed_run_traceable` становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
+
+`sandbox_profile_review` нужен для sandbox-backed paths: он проверяет, что workspace materialization, shell/filesystem permissions, network/secrets posture и snapshot/resume policy были явно представлены как reviewable evidence, а не остались неявными runtime settings.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -161,6 +164,9 @@
 - `verifier_id`
 - `verifier_contract_version`
 - `verifier_evidence_refs`
+- `sandbox_profile_contract`
+- `workspace_manifest_ref`
+- `snapshot_policy`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
 
@@ -183,6 +189,13 @@ grading_rules:
     blocking: true
   - type: failed_run_traceable
     expected: true
+    blocking: true
+  - type: sandbox_profile_review
+    expected:
+      sandbox_profile_contract: sandbox-profile-v1
+      workspace_entries_reviewed: true
+      permissions_profile: restricted-shell-no-network
+      snapshot_policy: required_on_completion
     blocking: true
 verifier_outputs:
   verifier_id: fara-process-review
@@ -223,7 +236,8 @@ verifier_outputs:
 - оценивать только финальный ответ и игнорировать поведение политики и инструментов;
 - не версионировать набор;
 - не связывать элементы набора с данными трасс или историей инцидентов;
-- схлопывать verifier output в один слабый verdict без process/outcome split и failure attribution.
+- схлопывать verifier output в один слабый verdict без process/outcome split и failure attribution;
+- требовать `sandbox_profile_review` в rollout, но не иметь grading rule, который проверяет workspace, permissions и snapshot/resume evidence.
 
 Все это делает культуру оценки хрупкой.
 
@@ -237,6 +251,7 @@ verifier_outputs:
 - Можно ли оценивать не только текст, но и поведение?
 - Умеет ли verifier выдавать отдельно `process_score`, `outcome_score` и `failure_attribution`?
 - Можно ли понять, какой verifier identity и contract version породили этот grading output?
+- Есть ли отдельное правило для sandbox-backed paths, которое проверяет sandbox profile contract, workspace entries, permissions и snapshot/resume evidence?
 - Поддерживаются ли многошаговые сессии?
 - Есть ли версионирование набора и владелец?
 
