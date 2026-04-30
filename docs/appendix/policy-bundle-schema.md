@@ -168,8 +168,9 @@ approval_contract:
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
+- [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-То есть пакет уже живет в модели, где политики и подтверждения не просто побочные настройки, а отдельные управляемые артефакты.
+То есть пакет уже живет в модели, где политики, подтверждения и runtime-control contracts не просто побочные настройки, а отдельные управляемые артефакты.
 
 ## Что должна добавить промышленная схема
 
@@ -229,9 +230,13 @@ approval_contract:
 - `release_identity`
 - `approval_contracts`
 - `runtime_control_schema`
+- `sandbox_profile_contract`
+- `sandbox_profile_review_required`
 - `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
+
+Если capability может выполняться в sandbox-backed path, policy bundle также должен ссылаться на sandbox profile contract или явно требовать его review, иначе workspace, shell/filesystem permissions и snapshot/resume behavior останутся вне release identity.
 
 Это превращает слой политик из набора файлов в полноценную поверхность выпуска.
 
