@@ -95,6 +95,9 @@ review_evidence:
   sandbox_profile_reviewed:
     trace_event: sandbox_profile_reviewed
     workspace_manifest_ref: workspace-manifest-v1
+    permissions_profile: restricted-shell-network-denied
+    network_secrets_posture: network:denied,secrets:none
+    snapshot_policy: required_on_completion
     review_evidence_refs:
       - trace:trace-sandbox-review-001
       - eval:sandbox_profile_review
