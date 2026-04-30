@@ -197,7 +197,21 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 重要的不是代码本身，而是系统因此拥有了一张明确的运营决策表。
 
-## 9. 幂等键必须成为协议的一部分
+## 9. 智能体循环必须有明确的停止条件
+
+OpenAI 指南里的另一个实践建议也很值得形式化：run loop 必须有清楚的 stop conditions。[^openai-practical]
+
+好的 runtime 结束 run，不是因为“模型看起来安静下来了”，而是因为明确原因：
+
+- 已经得到最终的结构化结果；
+- 不再需要 tool calls；
+- 出现不可恢复的错误；
+- 达到步骤数或预算上限；
+- 触发 approval boundary，需要人接手。
+
+这听起来很乏味，但正是这些规则防止智能体滑进无穷 planning、无意义 retries，或者装饰性的 tool hops。
+
+## 10. 幂等键必须成为协议的一部分
 
 如果某个写工具“支持幂等性”只停留在口头上，而 key：
 
@@ -215,7 +229,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 - 在审计轨迹里记录它；
 - 用它做对账和调查。
 
-## 10. 常见错误
+## 11. 常见错误
 
 这些问题非常典型：
 
@@ -228,7 +242,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 这都说明执行层还没有长成生产级失败模型。
 
-## 11. 现在就该做什么
+## 12. 现在就该做什么
 
 先过一遍这份短清单，把所有回答为“否”的地方单独记下来：
 
@@ -242,10 +256,13 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 如果连续几个答案都是否，那下一次集成不稳定时，几乎一定会变成重复写入、噪音或手工事故排查。
 
-## 12. 下一步做什么
+## 13. 下一步做什么
 
 第四部分到这里已经把基础执行层收束起来了：契约、沙箱、能力传输，以及副作用纪律。接下来就很自然地进入整个智能体系统层面的可靠性和可观测性。
 
+- [第 11 章：追踪、Span 与结构化事件](../part-v/chapter-11.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](chapter-9.zh.md)
 - [第四部分：工具与执行](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)

@@ -35,6 +35,8 @@
 !!! info "Нужны change-артефакты?"
     Для практического слоя открой [схему change review и rollout gate](../../appendix/change-rollout-schema.md), [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md) и [схему eval datasets и grading contract](../../appendix/eval-schema.md).
 
+Если тебе нужен связующий слой, который показывает, как request, policy, approvals, traces, evals, incidents и rollout judgment остаются связаны вместе, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
+
 ## 2. Что в агентной системе вообще считается изменением
 
 Полезно заранее считать изменениями не только код, но и все поверхности, которые реально меняют поведение системы:

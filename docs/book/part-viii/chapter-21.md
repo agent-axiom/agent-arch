@@ -42,6 +42,8 @@
 
 Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в ответные действия**. Не в новый оценочный слой и не в общую observability-педагогику, а в containment, remediation и назначенное ownership.
 
+Если тебе нужен связующий слой, который удерживает request, policy, approvals, traces, evals, incidents и rollout judgment внутри одной reviewable chain, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
+
 ## 2. Что такое assurance loop
 
 Я бы определял assurance loop так:

@@ -11,6 +11,14 @@
     - [Глава 2](chapter-2.md): увидеть, как тезис про платформу превращается в архитектуру;
     - [Часть II](../part-ii/index.md): перейти к вопросу, где эта архитектура становится опасной.
 
+## Что решает эта часть
+
+- Она объясняет, почему агент не равен LLM и почему LLM принимает только часть решений.
+- Она показывает, почему безопасность нельзя прикрутить после MVP: она должна жить внутри runtime.
+- Она утверждает, что большинству production-сценариев полезнее не максимальная автономия, а правильная связка `workflow + guarded autonomy`.
+- Она задает multi-agent design как решение про контроль и ownership, а не как вопрос эстетики.[^anthropic][^langgraph-multi]
+- Она тихо подготавливает весь дальнейший маршрут: trust boundaries, memory discipline, execution contracts, evidence capture, health budgets, judgment loops, ownership, runtime embodiment и lifecycle governance.
+
 ## Что ты должен вынести из этой части
 
 - критерии, когда агент вообще нужен, а когда лучше остановиться на workflow;
@@ -41,3 +49,6 @@
 ## Куда она ведет дальше
 
 После первой части вопрос меняется. Если базовая архитектура уже видна, где именно она становится опасной? Следующий шаг естественный: перейти в [Часть II](../part-ii/index.md) и разобрать security perimeter, tool gateway и approval boundary.
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^langgraph-multi]: [LangChain, Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
