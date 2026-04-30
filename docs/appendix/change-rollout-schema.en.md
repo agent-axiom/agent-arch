@@ -46,6 +46,9 @@ affected_surfaces:
   - policy_bundle
   - approval_contract
   - delegated_authorization_contract
+  - runtime_control_schema
+  - capability_session_contract
+  - sandbox_profile_contract
   - failed_run_handling
   - rollout_rules
 required_reviews:
@@ -119,6 +122,7 @@ In practice, that usually means the gate should also make explicit:
 - whether re-init is denied, allowed, or approval-bound for the affected path;
 - whether delegated authorization continuity was checked across run traces, approval records, and session export;
 - whether orchestration-pattern changes were reviewed as runtime-control changes before rollout;
+- whether the sandbox profile contract, including workspace materialization, permissions, and snapshot/resume policy, was included in review when the change touches sandbox-backed execution;
 - who owns emergency freeze if interruption semantics start drifting after release.
 
 ## 6. How this connects to the eval schema
@@ -175,6 +179,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - delegated authorization continuity between run traces, approval records, and session export is checked before rollout;
 - verifier quality and evidence linkage are checked before rollout when release control depends on graded outcomes;
 - orchestration-pattern changes are reviewed before rollout, especially when they add routing, parallelization, or delegated worker surfaces;
+- sandbox profile changes are reviewed before rollout, especially when they change workspace entries, shell/filesystem permissions, or snapshot/resume behavior;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks

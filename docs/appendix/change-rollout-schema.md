@@ -46,6 +46,9 @@ affected_surfaces:
   - policy_bundle
   - approval_contract
   - delegated_authorization_contract
+  - runtime_control_schema
+  - capability_session_contract
+  - sandbox_profile_contract
   - failed_run_handling
   - rollout_rules
 required_reviews:
@@ -119,6 +122,7 @@ decided_by:
 - является ли re-init для затронутого path denied, allowed или approval-bound;
 - проверялась ли delegated authorization continuity между run traces, approval records и session export;
 - были ли changes в orchestration pattern отдельно reviewed как runtime-control changes до rollout;
+- был ли sandbox profile contract, включая workspace materialization, permissions и snapshot/resume policy, включен в review, если изменение затрагивает sandbox-backed execution;
 - кто owner у emergency freeze, если interruption semantics начнут дрейфовать после релиза.
 
 ## 6. Как это связано с eval schema
@@ -175,6 +179,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
 - delegated authorization continuity между run traces, approval records и session export проверяется до rollout;
 - качество verifier'а и linkage его evidence проверяются до rollout, если release control зависит от graded outcomes;
 - changes в orchestration pattern проверяются до rollout, особенно если они добавляют routing, parallelization или delegated worker surfaces;
+- sandbox profile changes проверяются до rollout, особенно если они меняют workspace entries, shell/filesystem permissions или snapshot/resume behavior;
 - rollback plan не живет только в головах команды.
 
 ## 10. Что чаще всего ломается

@@ -48,6 +48,8 @@ affected_surfaces:
   - policy_bundle
   - capability_contract
   - runtime_control_schema
+  - capability_session_contract
+  - sandbox_profile_contract
   - rollout_rules
 eval_requirements:
   - offline_regression
@@ -68,7 +70,7 @@ The important parts are:
 - `rollback_unit` forces teams to know what can be reverted;
 - `status` acts as an operational fact, not just paperwork.
 
-And once approval-bound or stateful capability sessions exist, the change record should usually make it visible whether interruption behavior, expiry handling, re-init semantics, and delegated authorization rules were part of the reviewed surface.
+And once approval-bound runs, stateful capability sessions, or sandbox-backed execution exist, the change record should usually make it visible whether interruption behavior, expiry handling, re-init semantics, delegated authorization rules, and the sandbox profile contract were part of the reviewed surface.
 
 ## 4. Approved artifact bundle
 
@@ -84,6 +86,7 @@ artifacts:
   approvals_bundle: approvals-v3
   controls_bundle: controls-v2
   runtime_control_schema: runtime-controls-v2
+  sandbox_profile: sandbox-profile-v1
   capability_catalog: catalog-v5
   eval_dataset: eval-set-2026-04-07
   verifier_contract: verifier-v2
