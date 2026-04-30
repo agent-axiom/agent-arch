@@ -175,7 +175,7 @@
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
 现在，运行时也会把工具路径中的失败类结果，例如验证失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
-`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，以及带有阻断型 `sandbox_profile_review` 评分规则的 approval-backed support-ticket scenario，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+`export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，以及带有阻断型 `sandbox_profile_review` 评分规则的带审批路径 support_ticket 场景，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 
 现在这条评测路径也应该和附录里的更丰富验证器契约一起理解：对于长周期场景，这个包要帮助读者看到，数据集未来可以承载 `process_score`、`outcome_score`、`failure_attribution` 与已链接的验证器证据，而不只是一个单薄结论。
 
@@ -221,7 +221,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
-  现在变更门禁里还有显式的 `failed_run_drill_checked` 和 `sandbox_profile_reviewed` 信号，避免高风险发布评审把退化路径或 sandbox profile changes 当成检查范围之外的东西。
+  现在变更门禁里还有显式的 `failed_run_drill_checked` 和 `sandbox_profile_reviewed` 信号，避免高风险发布评审把退化路径或 sandbox profile 变更当成检查范围之外的东西。
 - [artifacts.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/artifacts.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
@@ -281,7 +281,7 @@ sandbox_profile:
 - `dump-events` 可以在不读源代码的情况下直接看到一次运行的结构化追踪；
 - `export-events` 可以把这条追踪保存成 JSONL，便于脱离进程分析；
 - `export-events` 现在会带上 `schema_version`，也支持按字段在导出时脱敏；
-- approval-backed `export-events` path 会发出 `sandbox_profile_reviewed`，让 trace evidence 与 lifecycle bundle 和 eval grading rule 对齐；
+- 带有审批路径的 `export-events` 路径会发出 `sandbox_profile_reviewed`，让 trace evidence 与 lifecycle bundle 和 eval grading rule 对齐；
 - `inspect-trace` 可以读取并筛选保存下来的追踪；
 - `replay-run` 可以根据保存的 `run_start` 事件重新回放一次运行。
 

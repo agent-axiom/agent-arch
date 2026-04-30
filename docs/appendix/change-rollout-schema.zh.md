@@ -93,7 +93,7 @@ required_checks:
   - failed_run_traceability_verified
 blocking_findings: []
 decision: go
-# sandbox_profile_reviewed 意味着已经显式检查 sandbox-backed paths 的
+# sandbox_profile_reviewed 意味着已经显式检查由 sandbox 支撑的路径的
 # workspace materialization、permissions 与 snapshot/resume policy。
 # failed_run_traceability_verified 意味着已经检查退化路径、
 # 追踪、发布身份，以及像 failure_reason 这样的导出字段。
@@ -183,7 +183,7 @@ decided_by:
 - 运行追踪、审批记录与会话导出之间的委派授权连续性会在发布前被检查；
 - 如果发布控制依赖打分结果，验证器质量与证据链接也会在发布前被检查；
 - 编排模式变更会在发布前被检查，尤其是它们引入路由、并行化或委派工作器表面时；
-- sandbox profile changes 会在发布前被检查，尤其是它们改变 workspace entries、shell/filesystem permissions 或 snapshot/resume behavior 时；
+- sandbox profile 变更会在发布前被检查，尤其是它们改变 workspace entries、shell/filesystem permissions 或 snapshot/resume behavior 时；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
