@@ -191,7 +191,7 @@ linked_events:
 - 审批请求是否有明确的 `approval_id`？
 - 审批是否绑定到 `trace_id` 和 `session_id`？
 - 审批人看到的是不是之后真正会执行的载荷？
-- 如果动作是 sandbox-backed，审批人是否能看到 sandbox profile contract、workspace entries、permissions 与 snapshot/resume policy？
+- 如果动作由 sandbox 支撑，审批人是否能看到 sandbox profile contract、workspace entries、permissions 与 snapshot/resume policy？
 - `decided_by`、`role` 和决策范围是否被保存？
 - 审批能不能与真实的工具执行对上？
 - 批准和拒绝两种路径是否都有便于审计的记录？
