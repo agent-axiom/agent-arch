@@ -124,7 +124,13 @@
 - `risk_tier`
 - `tool_principal`
 
-А для `memory_persisted`:
+А для sandbox-backed run полезно заранее зарезервировать поля, которые связывают трассу с execution boundary:
+
+- `sandbox_session_id`
+- `sandbox_manifest_version`
+- `sandbox_permissions_profile`
+- `snapshot_id`
+- `workspace_manifest_ref`
 
 Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract и для verifier evidence, например:
 
@@ -172,7 +178,8 @@
 - разделение `display payload` и `machine payload`;
 - правила маскирования чувствительных полей;
 - явный способ связывать трассы с verifier evidence, screenshots или grading artifacts;
-- стабильный способ фиксировать, какая версия verifier contract породила grading output.
+- стабильный способ фиксировать, какая версия verifier contract породила grading output;
+- sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 

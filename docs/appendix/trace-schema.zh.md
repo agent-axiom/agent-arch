@@ -124,6 +124,14 @@
 - `risk_tier`
 - `tool_principal`
 
+对于 sandbox-backed run，也应该预留把追踪和执行边界关联起来的字段：
+
+- `sandbox_session_id`
+- `sandbox_manifest_version`
+- `sandbox_permissions_profile`
+- `snapshot_id`
+- `workspace_manifest_ref`
+
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器证据，例如：
 
 - `verifier_id`
@@ -170,7 +178,8 @@
 - 展示载荷与机器载荷的分离；
 - 敏感字段的脱敏规则；
 - 把追踪与验证器证据、截图或打分工件显式关联起来的方式；
-- 稳定记录是哪个验证器契约版本产出该打分输出的方式。
+- 稳定记录是哪个验证器契约版本产出该打分输出的方式；
+- sandbox state fields，用于那些会物化 workspace、使用 shell/filesystem capabilities，或从 snapshot 继续的 runs。
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 

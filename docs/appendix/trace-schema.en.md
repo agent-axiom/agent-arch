@@ -124,7 +124,13 @@ For example, `tool_policy_decision` should usually include at least:
 - `risk_tier`
 - `tool_principal`
 
-And `memory_persisted` should usually include:
+For a sandbox-backed run, reserve fields that link the trace to the execution boundary:
+
+- `sandbox_session_id`
+- `sandbox_manifest_version`
+- `sandbox_permissions_profile`
+- `snapshot_id`
+- `workspace_manifest_ref`
 
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
 
@@ -172,7 +178,8 @@ The reference runtime is intentionally small, so a more mature system should qui
 - a split between `display payload` and `machine payload`;
 - redaction rules for sensitive fields;
 - an explicit way to link traces to verifier evidence, screenshots, or grading artifacts;
-- a stable way to record which verifier contract version produced the grading output.
+- a stable way to record which verifier contract version produced the grading output;
+- sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot.
 
 That is what turns an event stream from debug output into a real platform artifact.
 
