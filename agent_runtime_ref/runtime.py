@@ -34,6 +34,7 @@ class AgentRuntime:
         agent: AgentIdentity | None = None,
         approvals: ApprovalQueue | None = None,
         sessions: SessionStore | None = None,
+        sandbox_profile: dict[str, object] | None = None,
     ) -> None:
         self.catalog = catalog or CapabilityCatalog()
         self.policy = policy or PolicyEngine()
@@ -41,6 +42,7 @@ class AgentRuntime:
         self.memory = memory or MemoryStore()
         self.approvals = approvals or ApprovalQueue()
         self.sessions = sessions or SessionStore()
+        self.sandbox_profile = sandbox_profile or {}
         self.agent = agent or AgentIdentity(
             agent_id="agent-runtime-ref",
             display_name="Reference Runtime",
@@ -351,6 +353,10 @@ class AgentRuntime:
                 delegated_principal_id=approval_request.delegated_principal_id,
                 delegated_scope=approval_request.delegated_scope,
             )
+            self._emit_sandbox_profile_reviewed(
+                request=request,
+                reviewer=approval_request.reviewer,
+            )
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
                 status="approval_required",
@@ -416,6 +422,44 @@ class AgentRuntime:
             delegated_scope=tool_result.payload.get("delegated_scope", request.delegated_scope),
         )
         return decision
+
+    def _emit_sandbox_profile_reviewed(
+        self,
+        *,
+        request: RunRequest,
+        reviewer: str,
+    ) -> None:
+        if not self.sandbox_profile:
+            return
+        manifest_version = self.sandbox_profile.get("manifest_version", "unknown")
+        workspace = self._sandbox_profile_mapping("workspace")
+        workspace_entries = workspace.get("entries", [])
+        shell_mode = self._sandbox_profile_nested_value("capabilities", "shell")
+        network = self._sandbox_profile_nested_value("permissions", "network")
+        secrets = self._sandbox_profile_nested_value("permissions", "secrets")
+        snapshot_policy = self._sandbox_profile_nested_value("state", "snapshot")
+        self.telemetry.emit(
+            "sandbox_profile_reviewed",
+            request.trace_id,
+            session_id=request.session_id,
+            sandbox_profile_contract=f"sandbox-profile-v{manifest_version}",
+            workspace_entries_reviewed=str(bool(workspace_entries)).lower(),
+            workspace_manifest_ref="runtime-controls.yaml#runtime_controls.sandbox_profile.workspace",
+            permissions_profile=f"{shell_mode}-shell-network-{network}",
+            network_secrets_posture=f"network:{network},secrets:{secrets}",
+            snapshot_policy=str(snapshot_policy),
+            reviewed_by=reviewer or "runtime-review",
+            review_evidence_refs=f"trace:{request.trace_id};eval:sandbox_profile_review",
+        )
+
+    def _sandbox_profile_mapping(self, key: str) -> dict[str, object]:
+        value = self.sandbox_profile.get(key, {})
+        if not isinstance(value, dict):
+            return {}
+        return cast(dict[str, object], value)
+
+    def _sandbox_profile_nested_value(self, section: str, key: str) -> str:
+        return str(self._sandbox_profile_mapping(section).get(key, "unknown"))
 
     def _schedule_background_updates(
         self,
