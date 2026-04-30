@@ -22,6 +22,7 @@ change:
     - rollback_plan_ready
     - session_expiry_behavior_checked
     - reinit_policy_reviewed
+    - sandbox_profile_reviewed
     - failed_run_drill_checked
   approval_roles:
     - platform-owner

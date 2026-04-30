@@ -221,7 +221,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
-  В change gate теперь есть явный сигнал `failed_run_drill_checked`, чтобы review high-risk rollout не относился к деградировавшим путям как к чему-то вне проверки.
+  В change gate теперь есть явные сигналы `failed_run_drill_checked` и `sandbox_profile_reviewed`, чтобы review high-risk rollout не относился к деградировавшим путям или sandbox profile changes как к чему-то вне проверки.
 - [artifacts.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/artifacts.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)

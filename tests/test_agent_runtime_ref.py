@@ -609,6 +609,7 @@ class TestRuntimeControlPaths:
         assert "capability_session_contract" in change["affected_surfaces"]
         assert "sandbox_profile_contract" in change["affected_surfaces"]
         assert "session_expiry_behavior_checked" in change["required_signals"]
+        assert "sandbox_profile_reviewed" in change["required_signals"]
         assert change["session_control_owner"] == "support-ops"
         assert change["emergency_freeze_owner"] == "platform-runtime"
 
@@ -1508,6 +1509,7 @@ class TestCli:
         assert "expire_paused_runs" in payload["retirement"]["required_steps"]
         assert "stop_background_routes" in payload["retirement"]["required_steps"]
         assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]
+        assert "sandbox_profile_reviewed" in payload["change"]["required_signals"]
         assert "telemetry_jsonl" in payload["retirement"]["failed_run_archive_targets"]
         assert payload["controls"]["failed_run_control_expectations"] == [
             "policy_traces_present",

@@ -221,7 +221,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
-  现在变更门禁里还有一个显式的 `failed_run_drill_checked` 信号，避免高风险发布评审把退化路径当成检查范围之外的东西。
+  现在变更门禁里还有显式的 `failed_run_drill_checked` 和 `sandbox_profile_reviewed` 信号，避免高风险发布评审把退化路径或 sandbox profile changes 当成检查范围之外的东西。
 - [artifacts.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/artifacts.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
