@@ -168,8 +168,9 @@ approval_contract:
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
+- [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-也就是说，这个参考包已经活在一种模型里：策略和审批不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。
+也就是说，这个参考包已经活在一种模型里：策略、审批与 runtime-control contracts 不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。
 
 ## 生产级 Schema 还应该补什么
 
@@ -229,9 +230,13 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 - `release_identity`
 - `approval_contracts`
 - `runtime_control_schema`
+- `sandbox_profile_contract`
+- `sandbox_profile_review_required`
 - `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
+
+如果某项能力可以在 sandbox-backed path 中执行，策略包也应该指向 sandbox profile contract，或显式要求它经过 review；否则 workspace、shell/filesystem permissions 与 snapshot/resume behavior 会留在发布身份之外。
 
 这会把策略层从“一堆配置文件”提升成真正的发布面。
 

@@ -168,8 +168,9 @@ In `agent_runtime_ref`, there are already:
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
+- [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-So the package already lives in a model where policy and approvals are not “secondary settings”, but governed artifacts tied to concrete bundle versions and release-bearing control surfaces.
+So the package already lives in a model where policy, approvals, and runtime-control contracts are not “secondary settings”, but governed artifacts tied to concrete bundle versions and release-bearing control surfaces.
 
 ## What a production schema should add
 
@@ -229,9 +230,13 @@ As soon as the system grows up, it is useful to add at least:
 - `release_identity`
 - `approval_contracts`
 - `runtime_control_schema`
+- `sandbox_profile_contract`
+- `sandbox_profile_review_required`
 - `contract_version`
 - `deprecated_rules`
 - `redaction_policy`
+
+If a capability can run on a sandbox-backed path, the policy bundle should also point to the sandbox profile contract or explicitly require its review; otherwise workspace, shell/filesystem permissions, and snapshot/resume behavior stay outside release identity.
 
 That turns the policy layer from a set of files into a real release surface.
 
