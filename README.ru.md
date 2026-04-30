@@ -78,6 +78,7 @@ uv run mkdocs build --strict
 - каталог возможностей и approved inventory
 - память, телеметрия, approvals и rollout checks
 - lifecycle-артефакты для change records, artifact bundles и retirement plans
+- видимый sandbox profile contract в lifecycle inspection
 - YAML-конфиги для operational skeleton
 
 Быстрые примеры:
