@@ -388,6 +388,10 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
+[^anthropic]: Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents).
+
+[^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
