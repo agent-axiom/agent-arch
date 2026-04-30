@@ -53,6 +53,11 @@ requested_fields:
   summary: "Open a Sev-2 onboarding incident"
   target_system: jira
   destination: project://OPS
+sandbox_context:
+  sandbox_profile_contract: sandbox-profile-v1
+  workspace_entries_reviewed: true
+  permissions_profile: restricted-shell-no-network
+  snapshot_policy: required_on_completion
 required_role: oncall_manager
 status: pending
 ```
@@ -62,7 +67,8 @@ status: pending
 - `trace_id` 和 `session_id` 把审批绑到运行历史上；
 - `capability` 和 `requested_action` 防止审批退化成抽象的是/否；
 - `required_role` 让“谁都能看一眼”与“真正有权限批准的人”区分开；
-- `requested_fields` 固定了人类真正批准的载荷。
+- `requested_fields` 固定了人类真正批准的载荷；
+- `sandbox_context` 对 sandbox-backed actions 很重要，审批人需要看到 workspace materialization、permissions 与 snapshot/resume policy，而不只是业务载荷。
 
 ## 4. 审批决策
 
@@ -173,6 +179,7 @@ linked_events:
 - 审批人看到的上下文太少；
 - 决策只存在于界面，没有进入追踪；
 - 运行时不区分“只批准这一次”和“永远都批准”；
+- sandbox-backed approval 隐藏了 sandbox profile、workspace entries 或 permissions；
 - 副作用执行时用的载荷和批准时不是同一个；
 - 事后没人能还原到底是谁批准了这个高风险动作。
 
@@ -183,6 +190,7 @@ linked_events:
 - 审批请求是否有明确的 `approval_id`？
 - 审批是否绑定到 `trace_id` 和 `session_id`？
 - 审批人看到的是不是之后真正会执行的载荷？
+- 如果动作是 sandbox-backed，审批人是否能看到 sandbox profile contract、workspace entries、permissions 与 snapshot/resume policy？
 - `decided_by`、`role` 和决策范围是否被保存？
 - 审批能不能与真实的工具执行对上？
 - 批准和拒绝两种路径是否都有便于审计的记录？

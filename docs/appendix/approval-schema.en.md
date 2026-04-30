@@ -53,6 +53,11 @@ requested_fields:
   summary: "Open a Sev-2 onboarding incident"
   target_system: jira
   destination: project://OPS
+sandbox_context:
+  sandbox_profile_contract: sandbox-profile-v1
+  workspace_entries_reviewed: true
+  permissions_profile: restricted-shell-no-network
+  snapshot_policy: required_on_completion
 required_role: oncall_manager
 status: pending
 ```
@@ -62,7 +67,8 @@ The critical parts are:
 - `trace_id` and `session_id` tie the approval to run history;
 - `capability` and `requested_action` keep approval from becoming an abstract yes/no;
 - `required_role` separates any reviewer from the correct approver;
-- `requested_fields` preserve the exact payload a human is approving.
+- `requested_fields` preserve the exact payload a human is approving;
+- `sandbox_context` matters for sandbox-backed actions, so the approver can see workspace materialization, permissions, and snapshot/resume policy instead of only the business payload.
 
 ## 4. Approval decision
 
@@ -173,6 +179,7 @@ The common failure modes are easy to recognize:
 - the approver sees too little context;
 - the decision lives only in the UI and never reaches the trace;
 - the runtime does not distinguish “approved once” from “approved forever”;
+- sandbox-backed approval hides the sandbox profile, workspace entries, or permissions;
 - the side effect runs with a payload different from the approved one;
 - nobody can later reconstruct who approved the risky action.
 
@@ -183,6 +190,7 @@ Start with this short list and mark every "no" explicitly:
 - Does the approval request have an explicit `approval_id`?
 - Is approval tied to `trace_id` and `session_id`?
 - Does the approver see the exact payload that will later be executed?
+- If the action is sandbox-backed, does the approver see the sandbox profile contract, workspace entries, permissions, and snapshot/resume policy?
 - Are `decided_by`, `role`, and `decision scope` retained?
 - Can approval be linked to the real tool execution?
 - Is there an audit-friendly record for both approved and rejected paths?

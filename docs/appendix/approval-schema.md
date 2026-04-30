@@ -53,6 +53,11 @@ requested_fields:
   summary: "Open a Sev-2 onboarding incident"
   target_system: jira
   destination: project://OPS
+sandbox_context:
+  sandbox_profile_contract: sandbox-profile-v1
+  workspace_entries_reviewed: true
+  permissions_profile: restricted-shell-no-network
+  snapshot_policy: required_on_completion
 required_role: oncall_manager
 status: pending
 ```
@@ -62,7 +67,8 @@ status: pending
 - `trace_id` и `session_id` связывают approval с run history;
 - `capability` и `requested_action` не дают approval превратиться в абстрактное "да/нет";
 - `required_role` помогает не смешивать любого reviewer с нужным approver;
-- `requested_fields` фиксируют именно тот payload, который человек реально подтверждает.
+- `requested_fields` фиксируют именно тот payload, который человек реально подтверждает;
+- `sandbox_context` нужен для sandbox-backed действий, чтобы approver видел workspace materialization, permissions и snapshot/resume policy, а не только бизнес-payload.
 
 ## 4. Approval decision
 
@@ -173,6 +179,7 @@ Approval schema отвечает на другой слой:
 - approver видит слишком мало контекста;
 - решение хранится только в UI и не доходит до trace;
 - runtime не различает `approved once` и `approved forever`;
+- sandbox-backed approval не показывает sandbox profile, workspace entries или permissions;
 - side effect исполняется другим payload, чем тот, который был одобрен;
 - никто не может восстановить, кто подтвердил рискованное действие.
 
@@ -183,6 +190,7 @@ Approval schema отвечает на другой слой:
 - Есть ли у approval request явный `approval_id`?
 - Привязан ли approval к `trace_id` и `session_id`?
 - Видит ли approver ровно тот payload, который потом идет в действие?
+- Если действие sandbox-backed, видит ли approver sandbox profile contract, workspace entries, permissions и snapshot/resume policy?
 - Сохраняются ли `decided_by`, `role` и `decision scope`?
 - Можно ли связать approval с реальным tool execution?
 - Есть ли audit-friendly record для approved и rejected путей?
