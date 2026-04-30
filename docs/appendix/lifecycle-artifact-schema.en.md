@@ -91,6 +91,13 @@ artifacts:
   eval_dataset: eval-set-2026-04-07
   verifier_contract: verifier-v2
   contract_version: capability-contract-v5
+review_evidence:
+  sandbox_profile_reviewed:
+    trace_event: sandbox_profile_reviewed
+    workspace_manifest_ref: workspace-manifest-v1
+    review_evidence_refs:
+      - trace:trace-sandbox-review-001
+      - eval:sandbox_profile_review
 status: approved
 release_scope: canary
 provenance:
@@ -115,7 +122,8 @@ And once capability-session governance is explicit, the bundle should usually ma
 - delegated authorization mode;
 - principal-binding requirements;
 - revoke behavior for paused or in-flight actions;
-- verifier contract version, grading rubric, and evidence-linkage expectations when rollout or assurance depends on verifier judgments.
+- verifier contract version, grading rubric, and evidence-linkage expectations when rollout or assurance depends on verifier judgments;
+- sandbox profile review evidence, including the `sandbox_profile_reviewed` trace event, `workspace_manifest_ref`, and links to eval/rollout evidence when release identity includes sandbox-backed execution.
 
 ## 5. Retirement plan
 
@@ -175,6 +183,7 @@ At minimum, a healthy lifecycle artifact layer should enforce:
 - every artifact bundle can serve as a concrete release-identity record, not just a loose list of versions;
 - every artifact bundle links runtime-control schema and contract version when those controls exist;
 - verifier contract lineage and contract-family identity can be reconstructed when release or assurance depends on graded outcomes;
+- sandbox profile review evidence can be reconstructed from the bundle, trace, or eval artifact when rollout required `sandbox_profile_reviewed`;
 - every deprecated artifact has a `retirement_plan` or an explicit exception;
 - retirement or replacement paths explain what happens to paused runs, handoff artifacts, and expired capability-session state when those paths exist;
 - delegated authorization ownership and revoke behavior can be reconstructed for affected runs when those controls exist;
@@ -193,7 +202,8 @@ The failure modes are usually familiar:
 - historical state has no retention owner;
 - provenance stops at the git commit and never reaches the runtime bundle;
 - paused-run and expired-session state are forgotten during replacement even though operators may still need them;
-- verifier contract lineage is lost even though rollout or assurance decisions depended on it.
+- verifier contract lineage is lost even though rollout or assurance decisions depended on it;
+- the bundle names `sandbox_profile`, but does not retain a review-evidence link for workspace, permissions, and snapshot/resume policy.
 
 ## 9. What to Do Right Away
 
@@ -203,6 +213,7 @@ Start with this short list and mark every "no" explicitly:
 - Do you have an approved artifact bundle instead of a list of latest YAML files?
 - Can you reconstruct the active bundle and its release identity from an incident trace?
 - Can you tell which verifier-bearing contract family a release was approved under?
+- If the bundle includes `sandbox_profile`, can you find review evidence for workspace, permissions, and snapshot/resume policy?
 - Is there a retirement plan for deprecated capabilities and policy bundles?
 - Does archived state have an owner after replacement?
 - Is the rollback unit clear at the lifecycle-artifact level?

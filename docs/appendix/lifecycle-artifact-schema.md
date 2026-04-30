@@ -91,6 +91,13 @@ artifacts:
   eval_dataset: eval-set-2026-04-07
   verifier_contract: verifier-v2
   contract_version: capability-contract-v5
+review_evidence:
+  sandbox_profile_reviewed:
+    trace_event: sandbox_profile_reviewed
+    workspace_manifest_ref: workspace-manifest-v1
+    review_evidence_refs:
+      - trace:trace-sandbox-review-001
+      - eval:sandbox_profile_review
 status: approved
 release_scope: canary
 provenance:
@@ -115,7 +122,8 @@ provenance:
 - delegated authorization mode;
 - требования к principal binding;
 - revoke behavior для paused или in-flight actions;
-- версия verifier contract, grading rubric и ожидания по evidence linkage, если rollout или assurance зависят от verifier judgments.
+- версия verifier contract, grading rubric и ожидания по evidence linkage, если rollout или assurance зависят от verifier judgments;
+- sandbox profile review evidence, включая `sandbox_profile_reviewed` trace event, `workspace_manifest_ref` и ссылки на eval/rollout evidence, если release identity включает sandbox-backed execution.
 
 ## 5. Retirement plan
 
@@ -175,6 +183,7 @@ owner: platform-operations
 - каждый artifact bundle может служить конкретной записью об идентичности выпуска, а не просто рыхлым списком версий;
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - lineage verifier contract и идентичность семейства контрактов можно восстановить, если release или assurance зависят от graded outcomes;
+- sandbox profile review evidence можно восстановить из bundle, trace или eval artifact, если rollout требовал `sandbox_profile_reviewed`;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
 - retirement или replacement path объясняет, что происходит с paused runs, handoff artifacts и expired capability-session state, если такие контуры вообще есть;
 - delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
@@ -193,7 +202,8 @@ owner: platform-operations
 - historical state не имеет retention owner;
 - provenance заканчивается на уровне git commit и не доходит до runtime bundle;
 - paused-run и expired-session state теряются при replacement, хотя они еще могут быть нужны операторам;
-- lineage verifier contract теряется, хотя от него зависели rollout или assurance decisions.
+- lineage verifier contract теряется, хотя от него зависели rollout или assurance decisions;
+- bundle указывает `sandbox_profile`, но не хранит ссылку на review evidence по workspace, permissions и snapshot/resume policy.
 
 ## 9. Что сделать сразу
 
@@ -203,6 +213,7 @@ owner: platform-operations
 - Есть ли approved artifact bundle, а не просто список последних YAML-файлов?
 - Можно ли по incident trace восстановить активный bundle и его идентичность выпуска?
 - Можно ли понять, под каким семейством контрактов с verifier-ограничениями выпуск был одобрен?
+- Если bundle включает `sandbox_profile`, можно ли найти review evidence для workspace, permissions и snapshot/resume policy?
 - Есть ли retirement plan для deprecated capabilities и policy bundles?
 - Есть ли owner у archived state после replacement?
 - Понятен ли rollback unit на уровне lifecycle artifacts?
