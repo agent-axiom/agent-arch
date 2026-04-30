@@ -280,3 +280,5 @@ approval_contract:
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Справочный пакет](reference-package.md)
 - [Шаблоны политик и проверочные списки по кейсам](policy-templates.md)
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
