@@ -19,6 +19,7 @@ from agent_runtime_ref.config import (
     load_policy_engine,
     load_retirement_plan,
     load_rollout_policy,
+    load_yaml_file,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
@@ -458,6 +459,8 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
     change = load_change_record(config_dir / "change.yaml")
     bundle = load_artifact_bundle(config_dir / "artifacts.yaml")
     retirement = load_retirement_plan(config_dir / "retirement.yaml")
+    runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
+    sandbox_profile = runtime_controls.get("sandbox_profile", {})
     return {
         "change": {
             "change_id": change.change_id,
@@ -495,6 +498,13 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
                 for target in retirement.archive_targets
                 if target in {"telemetry_jsonl", "session_exports", "approval_history"}
             ],
+        },
+        "sandbox_profile": {
+            "manifest_version": sandbox_profile.get("manifest_version"),
+            "workspace_entries": sandbox_profile.get("workspace", {}).get("entries", []),
+            "capabilities": sandbox_profile.get("capabilities", {}),
+            "permissions": sandbox_profile.get("permissions", {}),
+            "state": sandbox_profile.get("state", {}),
         },
         "controls": {
             "failed_run_control_expectations": [
