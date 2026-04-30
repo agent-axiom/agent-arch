@@ -236,7 +236,7 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 - `deprecated_rules`
 - `redaction_policy`
 
-如果某项能力可以在 sandbox-backed path 中执行，策略包也应该指向 sandbox profile contract，或显式要求它经过 review；否则 workspace、shell/filesystem permissions 与 snapshot/resume behavior 会留在发布身份之外。
+如果某项能力可以在由 sandbox 支撑的路径中执行，策略包也应该指向 sandbox profile contract，或显式要求它经过 review；否则 workspace、shell/filesystem permissions 与 snapshot/resume behavior 会留在发布身份之外。
 
 这会把策略层从“一堆配置文件”提升成真正的发布面。
 

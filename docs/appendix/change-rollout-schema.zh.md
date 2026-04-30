@@ -126,7 +126,7 @@ decided_by:
 - 对受影响路径而言，重新初始化是拒绝、允许还是需要审批绑定；
 - 运行追踪、审批记录与会话导出之间的委派授权连续性是否已验证；
 - 编排模式变更是否在发布前被当成运行时控制变更单独评审；
-- 如果变更触及 sandbox-backed execution，sandbox profile contract 是否也进入评审，包括 workspace materialization、permissions 与 snapshot/resume policy；
+- 如果变更触及由 sandbox 支撑的执行，sandbox profile contract 是否也进入评审，包括 workspace materialization、permissions 与 snapshot/resume policy；
 - 如果中断语义在发布后开始漂移，紧急冻结由谁负责。
 
 ## 6. 它和评测 Schema 的关系
