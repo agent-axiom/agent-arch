@@ -1524,6 +1524,17 @@ class TestCli:
         assert payload["controls"]["failed_run_control_last_review"] == "release-readiness"
         assert payload["controls"]["failed_run_control_next_review"] == "rollout-gate"
         assert payload["controls"]["failed_run_control_release_binding"] == "required"
+        assert payload["sandbox_profile"]["manifest_version"] == 1
+        assert payload["sandbox_profile"]["workspace_entries"] == [
+            {"path": "repo", "source": "local_dir", "read_only": False},
+            {"path": "task.md", "source": "inline_file", "read_only": True},
+        ]
+        assert payload["sandbox_profile"]["permissions"] == {
+            "network": "denied",
+            "secrets": "none",
+            "run_as": "sandbox_user",
+        }
+        assert payload["sandbox_profile"]["state"]["snapshot"] == "required_on_completion"
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
