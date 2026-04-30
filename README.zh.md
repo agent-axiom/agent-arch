@@ -78,7 +78,7 @@ uv run mkdocs build --strict
 - 能力目录与批准清单
 - 记忆路径、遥测、审批与发布检查
 - 面向生命周期的变更记录、工件包与退役计划
-- lifecycle inspection 中可见的 sandbox profile contract
+- lifecycle inspection 中可见的 sandbox profile contract 与 sandbox review evidence
 - 用于 operational skeleton 的 YAML 配置
 
 快速示例：

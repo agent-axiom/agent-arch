@@ -93,7 +93,7 @@
 .venv/bin/python -m agent_runtime_ref check-retirement --step revoke_egress=false
 ```
 
-`inspect-lifecycle` теперь тоже показывает `sandbox_profile` из `runtime-controls.yaml`, `change.affected_surfaces`, `change.session_control_owner`, `change.emergency_freeze_owner`, `artifact_bundle.session_control_owner`, `retirement.session_control_owner`, `retirement.emergency_freeze_owner`, `failed_run_archive_targets`, `controls.failed_run_control_expectations`, `controls.failed_run_control_domains`, `controls.failed_run_control_count`, `controls.failed_run_control_summary`, `controls.failed_run_control_status`, `controls.failed_run_control_review_required`, `controls.failed_run_control_owner`, `controls.failed_run_control_source`, `controls.failed_run_control_last_review` и `controls.failed_run_control_next_review`, так что оператор видит в одном lifecycle summary ownership, freeze responsibility, retention и trace/provenance-контроль.
+`inspect-lifecycle` теперь тоже показывает `sandbox_profile` из `runtime-controls.yaml`, `artifact_bundle.review_evidence`, `artifact_bundle.sandbox_profile_review_evidence`, `change.affected_surfaces`, `change.session_control_owner`, `change.emergency_freeze_owner`, `artifact_bundle.session_control_owner`, `retirement.session_control_owner`, `retirement.emergency_freeze_owner`, `failed_run_archive_targets`, `controls.failed_run_control_expectations`, `controls.failed_run_control_domains`, `controls.failed_run_control_count`, `controls.failed_run_control_summary`, `controls.failed_run_control_status`, `controls.failed_run_control_review_required`, `controls.failed_run_control_owner`, `controls.failed_run_control_source`, `controls.failed_run_control_last_review` и `controls.failed_run_control_next_review`, так что оператор видит в одном lifecycle summary ownership, freeze responsibility, retention и trace/provenance-контроль.
 `check-change` теперь также отдельно показывает `missing_failed_run_signals`, чтобы пробелы degraded-path rollout review не прятались внутри общего списка missing signals.
 `check-retirement` теперь тоже показывает `failed_run_archive_targets`, чтобы оператор видел, какие telemetry/session/approval records должны пережить retirement ради последующего degraded-path review.
 `check-controls` теперь также отдельно показывает `failed_run_controls`, называет `preserved_failed_run_controls` и выводит `failed_run_controls_healthy`, чтобы trace/provenance-пробелы можно было разбирать отдельно от общей control hygiene.
@@ -175,7 +175,7 @@
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, а в summary самой CLI-команды показывает `failed_runs`, `traceable_failed_runs` и `latest_failure_reason` для failed drills.
 
 Теперь рантайм также считает tool paths с неуспешным исходом, например validation failure, полноценным итогом запуска. Вместо того чтобы делать вид, будто run завершился успешно, он фиксирует failed run, пишет явное событие `run_failed` и сохраняет и в session export, и в CLI output этот статус вместе с конкретной причиной сбоя в поле `failure_reason`.
-`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario, а summary самой команды теперь тоже показывает агрегированные `failed_runs`, `traceable_failed_runs` и `latest_failure_reason`.
+`export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario и approval-backed support-ticket scenario с blocking `sandbox_profile_review` grading rule, а summary самой команды теперь тоже показывает агрегированные `failed_runs`, `traceable_failed_runs` и `latest_failure_reason`.
 
 Этот eval path теперь полезно читать вместе с richer verifier contract из appendix: для long-horizon scenarios пакет должен помогать представить, как dataset со временем может нести `process_score`, `outcome_score`, `failure_attribution` и linked verifier evidence, а не только один тонкий verdict.
 
@@ -281,6 +281,7 @@ sandbox_profile:
 - `dump-events` показывает структурированную трассу одного запуска без чтения исходников;
 - `export-events` сохраняет трассу в JSONL для разбора вне процесса;
 - `export-events` умеет добавлять `schema_version` и делать export-time redaction по выбранным полям;
+- approval-backed `export-events` path пишет `sandbox_profile_reviewed`, чтобы trace evidence совпадал с lifecycle bundle и eval grading rule;
 - `inspect-trace` позволяет читать и фильтровать сохраненные трассы;
 - `replay-run` поднимает повторный прогон по `run_start` из сохраненной трассы.
 

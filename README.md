@@ -78,7 +78,7 @@ It gives you a compact reference runtime for the book:
 - capability catalog and approved inventory
 - memory path, telemetry, approvals, and rollout checks
 - lifecycle-oriented artifacts for change records, artifact bundles, and retirement plans
-- a visible sandbox profile contract in lifecycle inspection
+- a visible sandbox profile contract and sandbox review evidence in lifecycle inspection
 - YAML-driven configs for the operational skeleton
 
 Quick examples:
