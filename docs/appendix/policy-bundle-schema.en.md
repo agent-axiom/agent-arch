@@ -280,3 +280,5 @@ If several answers are “no,” your policy layer exists, but is not yet shaped
 - [Lifecycle Artifact Schema](lifecycle-artifact-schema.en.md)
 - [Reference Package](reference-package.en.md)
 - [Policy Templates and Checklists by Use Case](policy-templates.en.md)
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)

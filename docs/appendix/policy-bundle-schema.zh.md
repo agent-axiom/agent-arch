@@ -280,3 +280,5 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 - [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [按场景组织的策略模板与检查清单](policy-templates.zh.md)
+
+[^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
