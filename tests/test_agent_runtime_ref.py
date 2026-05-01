@@ -176,6 +176,13 @@ def _runtime_documented_json_keys(
     return runtime_keys
 
 
+def _runtime_config_root_keys(configs: list[dict[str, object]]) -> set[str]:
+    root_keys: set[str] = set()
+    for config in configs:
+        root_keys.update(str(key) for key in config)
+    return root_keys
+
+
 def _nested_config_keys(value: object) -> set[str]:
     config_keys: set[str] = set()
     if isinstance(value, dict):
@@ -304,9 +311,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_config_documents: list[dict[str, object]]
     ) -> None:
         """Keep bundled runtime config root keys aligned with public docs."""
-        root_keys: set[str] = set()
-        for config in runtime_config_documents:
-            root_keys.update(str(key) for key in config)
+        root_keys = _runtime_config_root_keys(runtime_config_documents)
 
         _assert_all_documented(root_keys, runtime_public_docs_text)
 
