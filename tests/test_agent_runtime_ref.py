@@ -183,6 +183,10 @@ def _runtime_config_root_keys(configs: list[dict[str, object]]) -> set[str]:
     return root_keys
 
 
+def _runtime_config_file_names(config_paths: list[Path]) -> list[str]:
+    return sorted(path.name for path in config_paths)
+
+
 def _nested_config_keys(value: object) -> set[str]:
     config_keys: set[str] = set()
     if isinstance(value, dict):
@@ -303,7 +307,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_config_paths: list[Path]
     ) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
-        config_files = sorted(path.name for path in runtime_config_paths)
+        config_files = _runtime_config_file_names(runtime_config_paths)
 
         _assert_all_documented(config_files, runtime_public_docs_text)
 
