@@ -76,6 +76,8 @@ And once approval-bound runs, stateful capability sessions, or sandbox-backed ex
 
 `artifact_bundle` captures the set of artifacts that are considered trusted and mutually compatible for a specific release configuration. In practice, it is also the contract surface that gives a release its governed identity.
 
+The reference runtime stores that contract in `artifacts.yaml`: `bundle_name`, `version`, `provenance_required`, `signed`, and `session_control_owner` describe the bundle identity and accountability, while `artifacts` explicitly lists release-bearing files such as `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json`, and `runtime-control-bundle-metadata`.
+
 ```yaml
 kind: artifact_bundle
 bundle_id: bundle-2026-04-07-a
