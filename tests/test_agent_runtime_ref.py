@@ -39,10 +39,14 @@ def _runtime_public_docs_text() -> str:
     )
 
 
+def _runtime_source_paths() -> list[Path]:
+    return sorted(Path("agent_runtime_ref").glob("*.py"))
+
+
 def _runtime_source_trees() -> list[ast.Module]:
     return [
         ast.parse(source_path.read_text(encoding="utf-8"))
-        for source_path in Path("agent_runtime_ref").glob("*.py")
+        for source_path in _runtime_source_paths()
     ]
 
 
