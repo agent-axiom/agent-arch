@@ -167,7 +167,7 @@ decided_by:
   - `check-rollout`
   - `check-change`
 
-`check-rollout` 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让可执行门禁与 schema 中“缺失的必需证据”和“明确阻断项”的区分保持一致。
+`check-rollout` 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`；internally rollout policy 会把 `block_if` normalize 成 `blocked_checks`，让可执行门禁与 schema 中“缺失的必需证据”和“明确阻断项”的区分保持一致。
 
 内置的 `rollout.yaml` 会把 gate inputs 具体化：required evidence 包括 `trace_coverage`、`policy_prechecks`、`capability_owners`、`offline_eval_pass`、`slo_defined`、`rollback_plan` 和 `oncall_owner`；`rollout_mode` 设置 `initial`、`max_tenant_exposure_pct` 和 `require_shadow_period`；`block_if` 则列出 `unknown_side_effect_path_missing`、`direct_tool_access_present`、`policy_decisions_not_traced` 等硬阻断项。
 
