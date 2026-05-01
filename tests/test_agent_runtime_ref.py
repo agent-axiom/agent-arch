@@ -89,6 +89,25 @@ def _module_dict_string_keys(tree: ast.Module) -> dict[str, set[str]]:
     return module_dict_keys
 
 
+def _render_raise_message(message: ast.expr) -> str | None:
+    if isinstance(message, ast.Constant) and isinstance(message.value, str):
+        return message.value
+    if not isinstance(message, ast.JoinedStr):
+        return None
+
+    parts: list[str] = []
+    for value in message.values:
+        if isinstance(value, ast.Constant) and isinstance(value.value, str):
+            parts.append(value.value)
+        elif isinstance(value, ast.FormattedValue):
+            expression = ast.unparse(value.value)
+            conversion = {-1: "", 97: "!a", 114: "!r", 115: "!s"}[
+                value.conversion
+            ]
+            parts.append("{" + expression + conversion + "}")
+    return "".join(parts)
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -134,21 +153,9 @@ class TestRuntimeDocsParity:
                     continue
                 if not node.exc.args:
                     continue
-                message = node.exc.args[0]
-                if isinstance(message, ast.Constant) and isinstance(message.value, str):
-                    runtime_errors.add(message.value)
-                elif isinstance(message, ast.JoinedStr):
-                    parts: list[str] = []
-                    for value in message.values:
-                        if isinstance(value, ast.Constant) and isinstance(value.value, str):
-                            parts.append(value.value)
-                        elif isinstance(value, ast.FormattedValue):
-                            expression = ast.unparse(value.value)
-                            conversion = {-1: "", 97: "!a", 114: "!r", 115: "!s"}[
-                                value.conversion
-                            ]
-                            parts.append("{" + expression + conversion + "}")
-                    runtime_errors.add("".join(parts))
+                message = _render_raise_message(node.exc.args[0])
+                if message is not None:
+                    runtime_errors.add(message)
 
         _assert_all_documented(runtime_errors, runtime_public_docs_text)
 
