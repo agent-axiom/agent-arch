@@ -45,6 +45,14 @@ def _runtime_source_trees() -> list[ast.Module]:
     ]
 
 
+def _runtime_cli_source_text() -> str:
+    return Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+
+
+def _runtime_cli_tree() -> ast.Module:
+    return ast.parse(_runtime_cli_source_text())
+
+
 class TestFailurePaths:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
@@ -81,7 +89,7 @@ class TestFailurePaths:
     def test_runtime_literal_markers_remain_documented(self) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
         docs_text = _runtime_public_docs_text()
-        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        cli_source = _runtime_cli_source_text()
         literal_markers = sorted(
             set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
         )
@@ -140,8 +148,7 @@ class TestFailurePaths:
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
         docs_text = _runtime_public_docs_text()
-        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
-        tree = ast.parse(cli_source)
+        tree = _runtime_cli_tree()
         runtime_subcommands = sorted(
             node.args[0].value
             for node in ast.walk(tree)
@@ -159,7 +166,7 @@ class TestFailurePaths:
     def test_runtime_cli_flags_remain_documented(self) -> None:
         """Keep argparse option flags aligned with public docs."""
         docs_text = _runtime_public_docs_text()
-        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        cli_source = _runtime_cli_source_text()
         runtime_flags = sorted(
             set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
         )
@@ -170,8 +177,7 @@ class TestFailurePaths:
     def test_runtime_cli_choices_remain_documented(self) -> None:
         """Keep argparse choice values aligned with public docs."""
         docs_text = _runtime_public_docs_text()
-        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
-        tree = ast.parse(cli_source)
+        tree = _runtime_cli_tree()
         module_dict_keys: dict[str, set[str]] = {}
         for node in tree.body:
             if isinstance(node, ast.Assign):
