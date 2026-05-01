@@ -53,6 +53,10 @@ def _runtime_cli_tree() -> ast.Module:
     return ast.parse(_runtime_cli_source_text())
 
 
+def _runtime_config_paths() -> list[Path]:
+    return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
+
+
 class TestFailurePaths:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
@@ -105,9 +109,7 @@ class TestFailurePaths:
     def test_runtime_config_files_remain_documented(self) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
         docs_text = _runtime_public_docs_text()
-        config_files = sorted(
-            path.name for path in Path("agent_runtime_ref/configs").glob("*.yaml")
-        )
+        config_files = sorted(path.name for path in _runtime_config_paths())
 
         missing = sorted(
             config_file for config_file in config_files if config_file not in docs_text
@@ -118,7 +120,7 @@ class TestFailurePaths:
         """Keep bundled runtime config root keys aligned with public docs."""
         docs_text = _runtime_public_docs_text()
         root_keys: set[str] = set()
-        for config_path in Path("agent_runtime_ref/configs").glob("*.yaml"):
+        for config_path in _runtime_config_paths():
             root_keys.update(str(key) for key in load_yaml_file(config_path))
 
         missing = sorted(root_key for root_key in root_keys if root_key not in docs_text)
@@ -139,7 +141,7 @@ class TestFailurePaths:
                 for nested_value in value:
                     collect_keys(nested_value)
 
-        for config_path in Path("agent_runtime_ref/configs").glob("*.yaml"):
+        for config_path in _runtime_config_paths():
             collect_keys(load_yaml_file(config_path))
 
         missing = sorted(config_key for config_key in config_keys if config_key not in docs_text)
