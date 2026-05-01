@@ -167,6 +167,8 @@ Rollout gate особенно полезен, когда trace schema уже с�
   - `check-rollout`
   - `check-change`
 
+`check-rollout` возвращает `ready`, `missing_required`, `blocking_signals` и `rollout_mode`, поэтому executable gate сохраняет то же различие между отсутствующей required evidence и явными blockers, что и schema.
+
 Книга теперь показывает не только идею gate, но и runnable skeleton этого gate.
 
 ## 9. Минимальные инварианты

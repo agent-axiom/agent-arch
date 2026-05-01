@@ -145,6 +145,8 @@ Rollout policy check with signal overrides:
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+The rollout check returns `ready`, `missing_required`, `blocking_signals`, and `rollout_mode`, so automation can tell absent required evidence apart from explicitly blocked signals.
+
 Continuous controls and registry drift check:
 
 ```bash
