@@ -38,13 +38,19 @@ def _runtime_public_docs_text() -> str:
     )
 
 
+def _runtime_source_trees() -> list[ast.Module]:
+    return [
+        ast.parse(source_path.read_text(encoding="utf-8"))
+        for source_path in Path("agent_runtime_ref").glob("*.py")
+    ]
+
+
 class TestFailurePaths:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
         docs_text = _runtime_public_docs_text()
         runtime_errors: set[str] = set()
-        for source_path in Path("agent_runtime_ref").glob("*.py"):
-            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+        for tree in _runtime_source_trees():
             for node in ast.walk(tree):
                 if not isinstance(node, ast.Raise) or not isinstance(node.exc, ast.Call):
                     continue
@@ -217,8 +223,7 @@ class TestFailurePaths:
         """Keep public dataclass field names aligned with docs."""
         docs_text = _runtime_public_docs_text()
         runtime_fields: set[str] = set()
-        for source_path in Path("agent_runtime_ref").glob("*.py"):
-            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+        for tree in _runtime_source_trees():
             for node in ast.walk(tree):
                 if not isinstance(node, ast.ClassDef):
                     continue
@@ -256,8 +261,7 @@ class TestFailurePaths:
             "status",
         }
         runtime_keys: set[str] = set()
-        for source_path in Path("agent_runtime_ref").glob("*.py"):
-            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+        for tree in _runtime_source_trees():
             for node in ast.walk(tree):
                 if not isinstance(node, ast.Dict):
                     continue
