@@ -88,11 +88,18 @@ Below is the current minimal event catalog.
 | Event type | When it appears | Why it matters |
 | --- | --- | --- |
 | `run_start` | at the beginning of a run | captures input and actor identity |
+| `policy_precheck` | immediately after run admission | records the policy precheck action, reason, and policy ID |
+| `retrieval` | when memory context is fetched | records the source and number of retrieved records |
 | `context_layers_built` | after context assembly | shows which context layers actually entered the run |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
+| `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
 | `sandbox_profile_reviewed` | when a sandbox-backed path is reviewed | records workspace, permissions, and snapshot/resume evidence review |
+| `memory_write_decision` | before background memory persistence | records whether a candidate memory write was allowed or denied |
 | `memory_persisted` | after a background write | records provenance and revision of a memory record |
+| `background_compaction` | after background memory maintenance | records tenant-level compaction results |
+| `background_update_scheduled` | after background work is queued or completed | records background update status for the run |
+| `run_failed` | when a tool failure becomes the run outcome | preserves explicit failed-run traceability |
 | `run_complete` | at the end of a run | closes the run-level outcome |
 | `span` | around individual calls | provides simple latency and status telemetry |
 

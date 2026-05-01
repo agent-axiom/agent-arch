@@ -88,11 +88,18 @@
 | Event type | Когда появляется | Зачем нужен |
 | --- | --- | --- |
 | `run_start` | в начале запуска | фиксирует входные параметры и идентичность актора |
+| `policy_precheck` | сразу после допуска запуска | фиксирует policy precheck action, reason и policy ID |
+| `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
+| `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
 | `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
+| `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена candidate memory write |
 | `memory_persisted` | после фоновой записи | фиксирует происхождение и ревизию записи памяти |
+| `background_compaction` | после background memory maintenance | фиксирует tenant-level compaction results |
+| `background_update_scheduled` | после постановки или завершения background work | фиксирует background update status для запуска |
+| `run_failed` | когда tool failure становится итогом запуска | сохраняет явную failed-run traceability |
 | `run_complete` | в конце запуска | фиксирует итог запуска |
 | `span` | вокруг отдельных вызовов | дает простую телеметрию задержки и статуса |
 

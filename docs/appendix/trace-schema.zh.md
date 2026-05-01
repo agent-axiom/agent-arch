@@ -88,11 +88,18 @@
 | 事件类型 | 何时出现 | 为什么重要 |
 | --- | --- | --- |
 | `run_start` | 运行开始时 | 记录输入与行动者身份 |
+| `policy_precheck` | 运行准入后立刻出现 | 记录 policy precheck 的 action、reason 和 policy ID |
+| `retrieval` | 获取 memory context 时 | 记录 source 与 retrieved records 数量 |
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行 |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
+| `tool_execution` | capability call 或 approval handoff 后 | 记录 capability status 与 tool-principal context |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
 | `sandbox_profile_reviewed` | 由 sandbox 支撑的路径被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
+| `memory_write_decision` | 后台写入记忆前 | 记录 candidate memory write 被允许还是拒绝 |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
+| `background_compaction` | background memory maintenance 后 | 记录 tenant-level compaction results |
+| `background_update_scheduled` | background work 排队或完成后 | 记录该运行的 background update status |
+| `run_failed` | 工具失败成为运行结果时 | 保留明确的 failed-run traceability |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
 | `span` | 单个调用周围 | 提供基础延迟与状态遥测 |
 
