@@ -92,6 +92,26 @@ class TestFailurePaths:
         missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
+    def test_runtime_config_files_remain_documented(self) -> None:
+        """Keep bundled runtime config filenames aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        config_files = sorted(
+            path.name for path in Path("agent_runtime_ref/configs").glob("*.yaml")
+        )
+
+        missing = sorted(
+            config_file for config_file in config_files if config_file not in docs_text
+        )
+        assert missing == []
+
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
         docs_text = "\n".join(
