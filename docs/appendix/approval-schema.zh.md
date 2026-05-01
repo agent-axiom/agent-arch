@@ -159,6 +159,8 @@ linked_events:
   - `inspect-approvals`
   - `resolve-approval`
 
+`inspect-approvals` 会返回 `trace_id`、`session_id`、`count` 和 `approvals`；`resolve-approval` 会返回 `approval_id`、`status`、`reviewer`、`resolution_note`、`authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，因此可运行 demo 在决策前后都会保留可见的 approval lineage 与 delegated authority。
+
 这让审批不只是概念说明，而是真的可以在演示运行时里跑起来。
 
 ## 9. 最小不变量

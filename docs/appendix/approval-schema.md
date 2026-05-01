@@ -159,6 +159,8 @@ Approval schema отвечает на другой слой:
   - `inspect-approvals`
   - `resolve-approval`
 
+`inspect-approvals` возвращает `trace_id`, `session_id`, `count` и `approvals`; `resolve-approval` возвращает `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id` и `delegated_scope`, поэтому runnable demo сохраняет approval lineage и delegated authority видимыми до и после решения.
+
 Так approval можно не только описывать, но и реально прогонять как часть демонстрационного runtime.
 
 ## 9. Минимальные инварианты

@@ -159,6 +159,8 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
   - `inspect-approvals`
   - `resolve-approval`
 
+`inspect-approvals` returns `trace_id`, `session_id`, `count`, and `approvals`; `resolve-approval` returns `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, so the runnable demo keeps approval lineage and delegated authority visible before and after decision.
+
 That makes approval not only explainable, but actually executable in the demo runtime.
 
 ## 9. Minimal invariants
