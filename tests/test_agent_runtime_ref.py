@@ -92,6 +92,25 @@ class TestFailurePaths:
         missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
+    def test_runtime_cli_flags_remain_documented(self) -> None:
+        """Keep argparse option flags aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        runtime_flags = sorted(
+            set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
+        )
+
+        missing = sorted(flag for flag in runtime_flags if flag not in docs_text)
+        assert missing == []
+
     def test_runtime_dataclass_fields_remain_documented(self) -> None:
         """Keep public dataclass field names aligned with docs."""
         docs_text = "\n".join(
