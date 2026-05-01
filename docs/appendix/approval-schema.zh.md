@@ -161,6 +161,8 @@ linked_events:
 
 `inspect-approvals` 会返回 `trace_id`、`session_id`、`count` 和 `approvals`；`resolve-approval` 会返回 `approval_id`、`status`、`reviewer`、`resolution_note`、`authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，因此可运行 demo 在决策前后都会保留可见的 approval lineage 与 delegated authority。
 
+内置的 `approvals.yaml` 也会明确 approval operating policy：`default_reviewer`、`escalation_sla_minutes`，以及 `delegated_authorization` 下的 `reviewer_required_for_user_delegation`、`require_principal_binding`、`require_scope_visibility`、`on_scope_revoked` 和 `subagent_inheritance`，共同说明谁来评审 delegated actions、哪些 evidence 必须保持可见，以及 delegation 是否可以传递给 subagents。
+
 这让审批不只是概念说明，而是真的可以在演示运行时里跑起来。
 
 ## 9. 最小不变量
