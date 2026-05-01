@@ -169,7 +169,7 @@ decided_by:
 
 `check-rollout` 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`；internally rollout policy 会把 `block_if` normalize 成 `blocked_checks`，让可执行门禁与 schema 中“缺失的必需证据”和“明确阻断项”的区分保持一致。
 
-内置的 `rollout.yaml` 会把 gate inputs 具体化：required evidence 包括 `trace_coverage`、`policy_prechecks`、`capability_owners`、`offline_eval_pass`、`slo_defined`、`rollback_plan` 和 `oncall_owner`；`rollout_mode` 设置 `initial`、`max_tenant_exposure_pct` 和 `require_shadow_period`；`block_if` 则列出 `unknown_side_effect_path_missing`、`direct_tool_access_present`、`policy_decisions_not_traced` 等硬阻断项。
+内置的 `rollout.yaml` 会把 gate inputs 具体化，并用 `'rollout' must be a mapping`、`'require' must be a list`、`'block_if' must be a list` 和 `'rollout_mode' must be a mapping` 校验：required evidence 包括 `trace_coverage`、`policy_prechecks`、`capability_owners`、`offline_eval_pass`、`slo_defined`、`rollback_plan` 和 `oncall_owner`；`rollout_mode` 设置 `initial`、`max_tenant_exposure_pct` 和 `require_shadow_period`；`block_if` 则列出 `unknown_side_effect_path_missing`、`direct_tool_access_present`、`policy_decisions_not_traced` 等硬阻断项。
 
 相邻的 `change.yaml` 也定义 reviewed change surface：`change_id` 是 `chg-2026-04-07-support-runtime`，`change_type` 是 `capability_contract_update`，`risk_level` 是 `high`，`rollout_strategy` 是 `staged_canary`。其中 `required_signals` 列出 `design_review_passed`、`offline_eval_passed`、`policy_diff_reviewed`、`rollback_plan_ready`、`session_expiry_behavior_checked`、`reinit_policy_reviewed`、`sandbox_profile_reviewed` 和 `failed_run_drill_checked` 等 release evidence，而 `approval_roles` 将 `platform-owner` 与 `security-reviewer` 标记为 required reviewers。
 
