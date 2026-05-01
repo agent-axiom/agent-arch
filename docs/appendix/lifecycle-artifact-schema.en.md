@@ -177,6 +177,8 @@ This schema directly supports several chapters:
 
 That is why lifecycle artifacts work best not as prose-only documentation, but as reviewable YAML or JSON contracts.
 
+The reference runtime mirrors that shape in `retirement.yaml`: `system_id` and `replacement_mode` identify the retiring surface, `triggers` list why retirement starts, `required_steps` includes controls such as `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state`, and `set_retired_status`, while `session_control_owner`, `emergency_freeze_owner`, and `archive_targets` keep the ownership and retained evidence explicit.
+
 ## 7. Minimal invariants
 
 At minimum, a healthy lifecycle artifact layer should enforce:

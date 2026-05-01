@@ -177,6 +177,8 @@ owner: platform-operations
 
 所以生命周期工件最好不要只写成纯文字文档，而应该作为可评审的 YAML 或 JSON 契约来管理。
 
+Reference runtime 在 `retirement.yaml` 中映射了这个结构：`system_id` 和 `replacement_mode` 标识 retiring surface，`triggers` 说明为什么启动 retirement，`required_steps` 包含 `freeze_rollout`、`disable_risky_capabilities`、`stop_memory_write`、`expire_paused_runs`、`stop_background_routes`、`freeze_reinitialization`、`revoke_egress`、`archive_audit_state` 和 `set_retired_status` 等 controls，而 `session_control_owner`、`emergency_freeze_owner` 与 `archive_targets` 明确保留 ownership 和 retained evidence。
+
 ## 7. 最小不变量
 
 一个健康的生命周期工件层，至少应该保证：
