@@ -75,13 +75,15 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。
+第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`session_id`、`status`、`result`、`events`、`memory_records`、`pending_approvals` 和可选的 `failure_reason`。
 
 查看智能体身份与已批准能力清单：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
+
+`inspect-agent` 会返回 `agent_id`、`display_name`、`owner_team`、`runtime_principal`、`approved_capabilities` 和 `catalog_capabilities`，让 inventory review 可以把 configured identity 与 capability catalog 对照起来。
 
 查看与第八部分对应的生命周期工件，包括运行时控制链接和发布身份：
 
@@ -121,6 +123,8 @@
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
+`export-events` 会返回 `output_path`、`trace_id`、`status`、`result`、`event_count`、`redact_fields` 和可选的 `failure_reason`，因此脱敏和退化路径证据会直接出现在命令摘要里。
+
 如果你需要给外部人员查看脱敏后的导出结果，也可以在导出时直接隐藏敏感字段：
 
 ```bash
@@ -138,6 +142,8 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
+
+`inspect-trace` 会返回 `trace_id`、`event_count` 和 `events`；`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result` 和 `event_count`，让调查与重放都保留来源/运行谱系。
 
 带信号覆盖的上线策略检查：
 
