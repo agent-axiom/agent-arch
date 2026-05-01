@@ -90,7 +90,7 @@ Below is the current minimal event catalog.
 | `run_start` | at the beginning of a run | captures input and actor identity |
 | `policy_precheck` | immediately after run admission | records the policy precheck action, reason, and policy ID |
 | `retrieval` | when memory context is fetched | records the source and number of retrieved records |
-| `context_layers_built` | after context assembly | shows which context layers actually entered the run |
+| `context_layers_built` | after context assembly | shows which context layers actually entered the run; internally `RunContext` keeps `retrieved_context` and `retrieved_records` before any `tool_request` is handled |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
 | `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
