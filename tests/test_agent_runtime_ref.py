@@ -108,6 +108,29 @@ def _render_raise_message(message: ast.expr) -> str | None:
     return "".join(parts)
 
 
+def _dataclass_field_names(tree: ast.Module) -> set[str]:
+    field_names: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.ClassDef):
+            continue
+        is_dataclass = any(
+            (isinstance(decorator, ast.Name) and decorator.id == "dataclass")
+            or (
+                isinstance(decorator, ast.Call)
+                and getattr(decorator.func, "id", "") == "dataclass"
+            )
+            for decorator in node.decorator_list
+        )
+        if not is_dataclass:
+            continue
+        for statement in node.body:
+            if isinstance(statement, ast.AnnAssign) and isinstance(
+                statement.target, ast.Name
+            ):
+                field_names.add(statement.target.id)
+    return field_names
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -281,24 +304,7 @@ class TestRuntimeDocsParity:
         """Keep public dataclass field names aligned with docs."""
         runtime_fields: set[str] = set()
         for tree in runtime_source_trees:
-            for node in ast.walk(tree):
-                if not isinstance(node, ast.ClassDef):
-                    continue
-                is_dataclass = any(
-                    (isinstance(decorator, ast.Name) and decorator.id == "dataclass")
-                    or (
-                        isinstance(decorator, ast.Call)
-                        and getattr(decorator.func, "id", "") == "dataclass"
-                    )
-                    for decorator in node.decorator_list
-                )
-                if not is_dataclass:
-                    continue
-                for statement in node.body:
-                    if isinstance(statement, ast.AnnAssign) and isinstance(
-                        statement.target, ast.Name
-                    ):
-                        runtime_fields.add(statement.target.id)
+            runtime_fields.update(_dataclass_field_names(tree))
 
         _assert_all_documented(
             [field for field in runtime_fields if "_" in field], runtime_public_docs_text
