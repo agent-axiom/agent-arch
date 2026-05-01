@@ -167,6 +167,15 @@ def _runtime_json_keys(tree: ast.Module, documented_key_names: set[str]) -> set[
     return runtime_keys
 
 
+def _runtime_documented_json_keys(
+    trees: list[ast.Module], documented_key_names: set[str]
+) -> set[str]:
+    runtime_keys: set[str] = set()
+    for tree in trees:
+        runtime_keys.update(_runtime_json_keys(tree, documented_key_names))
+    return runtime_keys
+
+
 def _nested_config_keys(value: object) -> set[str]:
     config_keys: set[str] = set()
     if isinstance(value, dict):
@@ -358,9 +367,9 @@ class TestRuntimeDocsParity:
             "sessions",
             "status",
         }
-        runtime_keys: set[str] = set()
-        for tree in runtime_source_trees:
-            runtime_keys.update(_runtime_json_keys(tree, documented_key_names))
+        runtime_keys = _runtime_documented_json_keys(
+            runtime_source_trees, documented_key_names
+        )
 
         _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
