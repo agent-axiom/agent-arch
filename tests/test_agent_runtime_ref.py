@@ -86,6 +86,16 @@ def runtime_cli_tree() -> ast.Module:
     return _runtime_cli_tree()
 
 
+@pytest.fixture(scope="class")
+def runtime_config_paths() -> list[Path]:
+    return _runtime_config_paths()
+
+
+@pytest.fixture(scope="class")
+def runtime_config_documents() -> list[dict[str, object]]:
+    return _runtime_config_documents()
+
+
 class TestRuntimeDocsParity:
     def test_runtime_error_messages_remain_documented(
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
@@ -136,25 +146,25 @@ class TestRuntimeDocsParity:
         _assert_all_documented(documented_markers, runtime_public_docs_text)
 
     def test_runtime_config_files_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_config_paths: list[Path]
     ) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
-        config_files = sorted(path.name for path in _runtime_config_paths())
+        config_files = sorted(path.name for path in runtime_config_paths)
 
         _assert_all_documented(config_files, runtime_public_docs_text)
 
     def test_runtime_config_root_keys_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_config_documents: list[dict[str, object]]
     ) -> None:
         """Keep bundled runtime config root keys aligned with public docs."""
         root_keys: set[str] = set()
-        for config in _runtime_config_documents():
+        for config in runtime_config_documents:
             root_keys.update(str(key) for key in config)
 
         _assert_all_documented(root_keys, runtime_public_docs_text)
 
     def test_runtime_config_nested_keys_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_config_documents: list[dict[str, object]]
     ) -> None:
         """Keep bundled runtime config nested keys aligned with public docs."""
         config_keys: set[str] = set()
@@ -169,7 +179,7 @@ class TestRuntimeDocsParity:
                 for nested_value in value:
                     collect_keys(nested_value)
 
-        for config in _runtime_config_documents():
+        for config in runtime_config_documents:
             collect_keys(config)
 
         _assert_all_documented(config_keys, runtime_public_docs_text)
