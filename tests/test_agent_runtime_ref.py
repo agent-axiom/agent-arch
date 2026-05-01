@@ -111,6 +111,66 @@ class TestFailurePaths:
         missing = sorted(flag for flag in runtime_flags if flag not in docs_text)
         assert missing == []
 
+    def test_runtime_cli_choices_remain_documented(self) -> None:
+        """Keep argparse choice values aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        tree = ast.parse(cli_source)
+        module_dict_keys: dict[str, set[str]] = {}
+        for node in tree.body:
+            if isinstance(node, ast.Assign):
+                targets = node.targets
+                value = node.value
+            elif isinstance(node, ast.AnnAssign):
+                targets = [node.target]
+                value = node.value
+            else:
+                continue
+            if not isinstance(value, ast.Dict):
+                continue
+            for target in targets:
+                if isinstance(target, ast.Name):
+                    module_dict_keys[target.id] = {
+                        key.value
+                        for key in value.keys
+                        if isinstance(key, ast.Constant) and isinstance(key.value, str)
+                    }
+
+        runtime_choices: set[str] = set()
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
+                continue
+            if node.func.attr != "add_argument":
+                continue
+            for keyword in node.keywords:
+                if keyword.arg != "choices":
+                    continue
+                if isinstance(keyword.value, (ast.List, ast.Tuple, ast.Set)):
+                    runtime_choices.update(
+                        item.value
+                        for item in keyword.value.elts
+                        if isinstance(item, ast.Constant) and isinstance(item.value, str)
+                    )
+                elif (
+                    isinstance(keyword.value, ast.Call)
+                    and isinstance(keyword.value.func, ast.Name)
+                    and keyword.value.func.id == "tuple"
+                    and len(keyword.value.args) == 1
+                    and isinstance(keyword.value.args[0], ast.Name)
+                ):
+                    runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
+
+        missing = sorted(choice for choice in runtime_choices if choice not in docs_text)
+        assert missing == []
+
     def test_runtime_dataclass_fields_remain_documented(self) -> None:
         """Keep public dataclass field names aligned with docs."""
         docs_text = "\n".join(
