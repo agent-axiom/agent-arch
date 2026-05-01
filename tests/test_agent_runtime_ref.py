@@ -156,6 +156,19 @@ def _nested_config_keys(value: object) -> set[str]:
     return config_keys
 
 
+def _cli_subcommand_names(tree: ast.Module) -> list[str]:
+    return sorted(
+        node.args[0].value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "add_parser"
+        and node.args
+        and isinstance(node.args[0], ast.Constant)
+        and isinstance(node.args[0].value, str)
+    )
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -255,17 +268,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep argparse subcommands aligned with public docs."""
-        tree = runtime_cli_tree
-        runtime_subcommands = sorted(
-            node.args[0].value
-            for node in ast.walk(tree)
-            if isinstance(node, ast.Call)
-            and isinstance(node.func, ast.Attribute)
-            and node.func.attr == "add_parser"
-            and node.args
-            and isinstance(node.args[0], ast.Constant)
-            and isinstance(node.args[0].value, str)
-        )
+        runtime_subcommands = _cli_subcommand_names(runtime_cli_tree)
 
         _assert_all_documented(runtime_subcommands, runtime_public_docs_text)
 
