@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import json
 from pathlib import Path
 
@@ -25,6 +26,47 @@ from agent_runtime_ref.runtime import AgentRuntime
 
 
 class TestFailurePaths:
+    def test_runtime_error_messages_remain_documented(self) -> None:
+        """Keep operator-facing runtime failures aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        runtime_errors: set[str] = set()
+        for source_path in Path("agent_runtime_ref").glob("*.py"):
+            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Raise) or not isinstance(node.exc, ast.Call):
+                    continue
+                error_name = getattr(node.exc.func, "id", "")
+                if error_name not in {"TypeError", "ValueError", "RuntimeError"}:
+                    continue
+                if not node.exc.args:
+                    continue
+                message = node.exc.args[0]
+                if isinstance(message, ast.Constant) and isinstance(message.value, str):
+                    runtime_errors.add(message.value)
+                elif isinstance(message, ast.JoinedStr):
+                    parts: list[str] = []
+                    for value in message.values:
+                        if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                            parts.append(value.value)
+                        elif isinstance(value, ast.FormattedValue):
+                            expression = ast.unparse(value.value)
+                            conversion = {-1: "", 97: "!a", 114: "!r", 115: "!s"}[
+                                value.conversion
+                            ]
+                            parts.append("{" + expression + conversion + "}")
+                    runtime_errors.add("".join(parts))
+
+        missing = sorted(message for message in runtime_errors if message not in docs_text)
+        assert missing == []
+
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
