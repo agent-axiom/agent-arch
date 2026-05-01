@@ -76,6 +76,8 @@ status: approved
 
 `artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
 
+Reference runtime хранит этот contract в `artifacts.yaml`: `bundle_name`, `version`, `provenance_required`, `signed` и `session_control_owner` описывают bundle identity и accountability, а `artifacts` явно перечисляет release-bearing files: `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json` и `runtime-control-bundle-metadata`.
+
 ```yaml
 kind: artifact_bundle
 bundle_id: bundle-2026-04-07-a
