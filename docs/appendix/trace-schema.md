@@ -90,7 +90,7 @@
 | `run_start` | в начале запуска | фиксирует входные параметры и идентичность актора |
 | `policy_precheck` | сразу после допуска запуска | фиксирует policy precheck action, reason и policy ID |
 | `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
-| `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск |
+| `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
 | `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
