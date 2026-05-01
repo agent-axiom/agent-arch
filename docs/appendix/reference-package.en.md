@@ -83,7 +83,7 @@ Inspect the agent identity and approved inventory:
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-`inspect-agent` returns `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities`, and `catalog_capabilities`, so inventory review can compare configured identity with the capability catalog. In the bundled `agent.yaml`, that identity is owned by `agent_platform`, runs as `svc-support-triage-ref`, and is approved only for `search_docs` and `create_ticket`; the capability catalog then binds `search_docs` to `svc-knowledge-reader` and `create_ticket` to `svc-ticket-writer`.
+`inspect-agent` returns `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities`, and `catalog_capabilities`, so inventory review can compare configured identity with the capability catalog. In the bundled `agent.yaml`, that identity is owned by `agent_platform`, runs as `svc-support-triage-ref`, and is approved only for `search_docs` and `create_ticket`; the capability catalog then binds `search_docs` to `svc-knowledge-reader` and `create_ticket` to `svc-ticket-writer`. Each `catalog_capabilities` entry also carries `name`, `risk_tier`, `network_access`, and `allowed_egress`, so reviewers can see both capability identity and egress posture in the same response.
 
 Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage, release identity, failed-run gate signals, and explicit failed-run gap reporting:
 
