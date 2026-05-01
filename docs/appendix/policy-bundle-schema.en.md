@@ -259,7 +259,7 @@ So the practical rule is simple:
 - the MCP governance contract describes whether the capability came from an approved registry, who owns the MCP server, which auth mode protects it, and what happens when a shadow MCP path is discovered;
 - the verifier contract policy describes which verifier contracts may be trusted for high-risk grading, rollout evidence, or assurance decisions.
 
-The reference runtime makes that join concrete in `capabilities.yaml` and `policy.yaml`: capability entries carry `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds`, and `idempotency_key_required`, while policy entries carry `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions for `search_docs`, `create_ticket`, and `run_shell`, memory-write `allow_kinds` (`validated_fact` and `session_summary`), and execution-level `allow_network_access`.
+The reference runtime makes that join concrete in `capabilities.yaml` and `policy.yaml`: capability entries carry `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds`, and `idempotency_key_required`, while policy entries carry `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions for `search_docs`, `create_ticket`, and `run_shell`, memory-write `allow_kinds` (`validated_fact` and `session_summary`), and execution-level `allow_network_access`. The policy loader validates this structure explicitly: `'policy' must be a mapping`, `'run_precheck' must be a mapping`, `'memory_write' must be a mapping`, `'allow_kinds' must be a list`, `'execution' must be a mapping`, `'allow_network_access' must be a list`, and `Policy for capability {name!r} must be a mapping`.
 
 ## What to Do Right Away
 
