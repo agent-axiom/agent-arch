@@ -92,6 +92,33 @@ class TestFailurePaths:
         missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
+    def test_runtime_cli_subcommands_remain_documented(self) -> None:
+        """Keep argparse subcommands aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        tree = ast.parse(cli_source)
+        runtime_subcommands = sorted(
+            node.args[0].value
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "add_parser"
+            and node.args
+            and isinstance(node.args[0], ast.Constant)
+            and isinstance(node.args[0].value, str)
+        )
+
+        missing = sorted(command for command in runtime_subcommands if command not in docs_text)
+        assert missing == []
+
     def test_runtime_cli_flags_remain_documented(self) -> None:
         """Keep argparse option flags aligned with public docs."""
         docs_text = "\n".join(
