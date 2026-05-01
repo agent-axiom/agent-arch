@@ -76,6 +76,16 @@ def runtime_source_trees() -> list[ast.Module]:
     return _runtime_source_trees()
 
 
+@pytest.fixture(scope="class")
+def runtime_cli_source_text() -> str:
+    return _runtime_cli_source_text()
+
+
+@pytest.fixture(scope="class")
+def runtime_cli_tree() -> ast.Module:
+    return _runtime_cli_tree()
+
+
 class TestRuntimeDocsParity:
     def test_runtime_error_messages_remain_documented(
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
@@ -110,10 +120,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_errors, runtime_public_docs_text)
 
     def test_runtime_literal_markers_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_cli_source_text: str
     ) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
-        cli_source = _runtime_cli_source_text()
+        cli_source = runtime_cli_source_text
         literal_markers = sorted(
             set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
         )
@@ -165,10 +175,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(config_keys, runtime_public_docs_text)
 
     def test_runtime_cli_subcommands_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep argparse subcommands aligned with public docs."""
-        tree = _runtime_cli_tree()
+        tree = runtime_cli_tree
         runtime_subcommands = sorted(
             node.args[0].value
             for node in ast.walk(tree)
@@ -183,10 +193,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_subcommands, runtime_public_docs_text)
 
     def test_runtime_cli_flags_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_cli_source_text: str
     ) -> None:
         """Keep argparse option flags aligned with public docs."""
-        cli_source = _runtime_cli_source_text()
+        cli_source = runtime_cli_source_text
         runtime_flags = sorted(
             set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
         )
@@ -194,10 +204,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_flags, runtime_public_docs_text)
 
     def test_runtime_cli_choices_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep argparse choice values aligned with public docs."""
-        tree = _runtime_cli_tree()
+        tree = runtime_cli_tree
         module_dict_keys: dict[str, set[str]] = {}
         for node in tree.body:
             if isinstance(node, ast.Assign):
