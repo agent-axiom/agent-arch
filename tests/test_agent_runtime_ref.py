@@ -57,6 +57,11 @@ def _runtime_config_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
+def _assert_all_documented(items: set[str] | list[str], docs_text: str) -> None:
+    missing = sorted(item for item in items if item not in docs_text)
+    assert missing == []
+
+
 class TestRuntimeDocsParity:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
@@ -87,8 +92,7 @@ class TestRuntimeDocsParity:
                             parts.append("{" + expression + conversion + "}")
                     runtime_errors.add("".join(parts))
 
-        missing = sorted(message for message in runtime_errors if message not in docs_text)
-        assert missing == []
+        _assert_all_documented(runtime_errors, docs_text)
 
     def test_runtime_literal_markers_remain_documented(self) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
@@ -103,18 +107,14 @@ class TestRuntimeDocsParity:
             if "_" in marker or marker.startswith("trace:")
         ]
 
-        missing = sorted(marker for marker in documented_markers if marker not in docs_text)
-        assert missing == []
+        _assert_all_documented(documented_markers, docs_text)
 
     def test_runtime_config_files_remain_documented(self) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
         docs_text = _runtime_public_docs_text()
         config_files = sorted(path.name for path in _runtime_config_paths())
 
-        missing = sorted(
-            config_file for config_file in config_files if config_file not in docs_text
-        )
-        assert missing == []
+        _assert_all_documented(config_files, docs_text)
 
     def test_runtime_config_root_keys_remain_documented(self) -> None:
         """Keep bundled runtime config root keys aligned with public docs."""
@@ -123,8 +123,7 @@ class TestRuntimeDocsParity:
         for config_path in _runtime_config_paths():
             root_keys.update(str(key) for key in load_yaml_file(config_path))
 
-        missing = sorted(root_key for root_key in root_keys if root_key not in docs_text)
-        assert missing == []
+        _assert_all_documented(root_keys, docs_text)
 
     def test_runtime_config_nested_keys_remain_documented(self) -> None:
         """Keep bundled runtime config nested keys aligned with public docs."""
@@ -144,8 +143,7 @@ class TestRuntimeDocsParity:
         for config_path in _runtime_config_paths():
             collect_keys(load_yaml_file(config_path))
 
-        missing = sorted(config_key for config_key in config_keys if config_key not in docs_text)
-        assert missing == []
+        _assert_all_documented(config_keys, docs_text)
 
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
@@ -162,8 +160,7 @@ class TestRuntimeDocsParity:
             and isinstance(node.args[0].value, str)
         )
 
-        missing = sorted(command for command in runtime_subcommands if command not in docs_text)
-        assert missing == []
+        _assert_all_documented(runtime_subcommands, docs_text)
 
     def test_runtime_cli_flags_remain_documented(self) -> None:
         """Keep argparse option flags aligned with public docs."""
@@ -173,8 +170,7 @@ class TestRuntimeDocsParity:
             set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
         )
 
-        missing = sorted(flag for flag in runtime_flags if flag not in docs_text)
-        assert missing == []
+        _assert_all_documented(runtime_flags, docs_text)
 
     def test_runtime_cli_choices_remain_documented(self) -> None:
         """Keep argparse choice values aligned with public docs."""
@@ -224,8 +220,7 @@ class TestRuntimeDocsParity:
                 ):
                     runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
 
-        missing = sorted(choice for choice in runtime_choices if choice not in docs_text)
-        assert missing == []
+        _assert_all_documented(runtime_choices, docs_text)
 
     def test_runtime_dataclass_fields_remain_documented(self) -> None:
         """Keep public dataclass field names aligned with docs."""
@@ -251,10 +246,9 @@ class TestRuntimeDocsParity:
                     ):
                         runtime_fields.add(statement.target.id)
 
-        missing = sorted(
-            field for field in runtime_fields if "_" in field and field not in docs_text
+        _assert_all_documented(
+            [field for field in runtime_fields if "_" in field], docs_text
         )
-        assert missing == []
 
     def test_runtime_json_keys_remain_documented(self) -> None:
         """Keep public JSON output/config keys aligned with docs."""
@@ -278,8 +272,7 @@ class TestRuntimeDocsParity:
                         if "_" in key.value or key.value in documented_key_names:
                             runtime_keys.add(key.value)
 
-        missing = sorted(key for key in runtime_keys if key not in docs_text)
-        assert missing == []
+        _assert_all_documented(runtime_keys, docs_text)
 
 
 
