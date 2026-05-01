@@ -131,6 +131,18 @@ def _dataclass_field_names(tree: ast.Module) -> set[str]:
     return field_names
 
 
+def _runtime_json_keys(tree: ast.Module, documented_key_names: set[str]) -> set[str]:
+    runtime_keys: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Dict):
+            continue
+        for key in node.keys:
+            if isinstance(key, ast.Constant) and isinstance(key.value, str):
+                if "_" in key.value or key.value in documented_key_names:
+                    runtime_keys.add(key.value)
+    return runtime_keys
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -325,13 +337,7 @@ class TestRuntimeDocsParity:
         }
         runtime_keys: set[str] = set()
         for tree in runtime_source_trees:
-            for node in ast.walk(tree):
-                if not isinstance(node, ast.Dict):
-                    continue
-                for key in node.keys:
-                    if isinstance(key, ast.Constant) and isinstance(key.value, str):
-                        if "_" in key.value or key.value in documented_key_names:
-                            runtime_keys.add(key.value)
+            runtime_keys.update(_runtime_json_keys(tree, documented_key_names))
 
         _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
