@@ -166,6 +166,8 @@
 - `provenance`
 - `revision`
 
+Текущие reference payloads также используют operational metadata fields: `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`.
+
 ## Что уже умеет пакет
 
 Практически это можно посмотреть так:
