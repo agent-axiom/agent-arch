@@ -92,6 +92,44 @@ class TestFailurePaths:
         missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
+    def test_runtime_dataclass_fields_remain_documented(self) -> None:
+        """Keep public dataclass field names aligned with docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        runtime_fields: set[str] = set()
+        for source_path in Path("agent_runtime_ref").glob("*.py"):
+            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.ClassDef):
+                    continue
+                is_dataclass = any(
+                    (isinstance(decorator, ast.Name) and decorator.id == "dataclass")
+                    or (
+                        isinstance(decorator, ast.Call)
+                        and getattr(decorator.func, "id", "") == "dataclass"
+                    )
+                    for decorator in node.decorator_list
+                )
+                if not is_dataclass:
+                    continue
+                for statement in node.body:
+                    if isinstance(statement, ast.AnnAssign) and isinstance(
+                        statement.target, ast.Name
+                    ):
+                        runtime_fields.add(statement.target.id)
+
+        missing = sorted(
+            field for field in runtime_fields if "_" in field and field not in docs_text
+        )
+        assert missing == []
+
     def test_runtime_json_keys_remain_documented(self) -> None:
         """Keep public JSON output/config keys aligned with docs."""
         docs_text = "\n".join(
