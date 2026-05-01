@@ -71,13 +71,18 @@ def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
 
 
+@pytest.fixture(scope="class")
+def runtime_source_trees() -> list[ast.Module]:
+    return _runtime_source_trees()
+
+
 class TestRuntimeDocsParity:
     def test_runtime_error_messages_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
         runtime_errors: set[str] = set()
-        for tree in _runtime_source_trees():
+        for tree in runtime_source_trees:
             for node in ast.walk(tree):
                 if not isinstance(node, ast.Raise) or not isinstance(node.exc, ast.Call):
                     continue
@@ -240,11 +245,11 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_choices, runtime_public_docs_text)
 
     def test_runtime_dataclass_fields_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep public dataclass field names aligned with docs."""
         runtime_fields: set[str] = set()
-        for tree in _runtime_source_trees():
+        for tree in runtime_source_trees:
             for node in ast.walk(tree):
                 if not isinstance(node, ast.ClassDef):
                     continue
@@ -269,7 +274,7 @@ class TestRuntimeDocsParity:
         )
 
     def test_runtime_json_keys_remain_documented(
-        self, runtime_public_docs_text: str
+        self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep public JSON output/config keys aligned with docs."""
         documented_key_names = {
@@ -282,7 +287,7 @@ class TestRuntimeDocsParity:
             "status",
         }
         runtime_keys: set[str] = set()
-        for tree in _runtime_source_trees():
+        for tree in runtime_source_trees:
             for node in ast.walk(tree):
                 if not isinstance(node, ast.Dict):
                     continue
