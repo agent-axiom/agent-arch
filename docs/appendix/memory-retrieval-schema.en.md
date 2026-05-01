@@ -139,6 +139,8 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
 - CLI:
   - `inspect-memory`
 
+The bundled `memory.yaml` keeps this concrete through `seed_records`; each seed record carries a stable `memory_id` plus `tenant_id`, `memory_class`, `kind`, `content`, `source`, `confidence`, `provenance`, and `revision`, so the demo can show both retrieval filtering and record lineage.
+
 That is useful because the book not only explains the memory contract, but also shows a runnable skeleton.
 
 ## 9. Minimal invariants

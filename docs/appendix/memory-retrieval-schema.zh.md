@@ -139,6 +139,8 @@ excluded_records: 12
 - CLI：
   - `inspect-memory`
 
+内置的 `memory.yaml` 通过 `seed_records` 把这件事具体化：每条 seed record 都带有稳定的 `memory_id`，以及 `tenant_id`、`memory_class`、`kind`、`content`、`source`、`confidence`、`provenance` 和 `revision`，因此 demo 可以同时展示 retrieval filtering 与记录 lineage。
+
 这很有价值，因为书里不只是解释记忆契约，也给出了可运行的骨架。
 
 ## 9. 最小不变量
