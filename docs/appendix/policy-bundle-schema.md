@@ -259,7 +259,7 @@ approval_contract:
 - MCP governance contract описывает, из какого approved registry пришла capability, кто owner у MCP server, какой auth mode ее защищает и что делать, если обнаружен shadow MCP path;
 - verifier contract policy описывает, каким verifier contracts вообще можно доверять для high-risk grading, rollout evidence или assurance decisions.
 
-Reference runtime делает этот стык конкретным в `capabilities.yaml` и `policy.yaml`: capability entries содержат `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds` и `idempotency_key_required`, а policy entries содержат `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions для `search_docs`, `create_ticket` и `run_shell`, memory-write `allow_kinds` и execution-level `allow_network_access`.
+Reference runtime делает этот стык конкретным в `capabilities.yaml` и `policy.yaml`: capability entries содержат `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds` и `idempotency_key_required`, а policy entries содержат `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions для `search_docs`, `create_ticket` и `run_shell`, memory-write `allow_kinds` (`validated_fact` и `session_summary`) и execution-level `allow_network_access`.
 
 ## Что сделать сразу
 
