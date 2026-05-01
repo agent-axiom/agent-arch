@@ -175,6 +175,15 @@ def _cli_option_flags(cli_source: str) -> list[str]:
     )
 
 
+def _documented_literal_markers(cli_source: str) -> list[str]:
+    literal_markers = sorted(set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source)))
+    return [
+        marker
+        for marker in literal_markers
+        if "_" in marker or marker.startswith("trace:")
+    ]
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -230,15 +239,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_cli_source_text: str
     ) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
-        cli_source = runtime_cli_source_text
-        literal_markers = sorted(
-            set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
-        )
-        documented_markers = [
-            marker
-            for marker in literal_markers
-            if "_" in marker or marker.startswith("trace:")
-        ]
+        documented_markers = _documented_literal_markers(runtime_cli_source_text)
 
         _assert_all_documented(documented_markers, runtime_public_docs_text)
 
