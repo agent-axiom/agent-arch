@@ -94,9 +94,9 @@ Inspect lifecycle artifacts that mirror Part VIII, including runtime-control lin
 ```
 
 `inspect-lifecycle` now also surfaces the `sandbox_profile` contract from `runtime-controls.yaml`, `artifact_bundle.review_evidence`, `artifact_bundle.sandbox_profile_review_evidence`, `change.affected_surfaces`, `change.session_control_owner`, `change.emergency_freeze_owner`, `artifact_bundle.session_control_owner`, `retirement.session_control_owner`, `retirement.emergency_freeze_owner`, `failed_run_archive_targets`, `controls.failed_run_control_expectations`, `controls.failed_run_control_domains`, `controls.failed_run_control_count`, `controls.failed_run_control_summary`, `controls.failed_run_control_status`, `controls.failed_run_control_review_required`, `controls.failed_run_control_owner`, `controls.failed_run_control_source`, `controls.failed_run_control_last_review`, `controls.failed_run_control_next_review`, and `controls.failed_run_control_release_binding`, so operators can see ownership, freeze responsibility, retention, and trace/provenance control in the same lifecycle summary.
-`check-change` now also breaks out `missing_failed_run_signals`, so degraded-path rollout gaps stay visible as their own review category rather than hiding inside a generic missing-signal list.
-`check-retirement` now also surfaces `failed_run_archive_targets`, so operators can confirm which telemetry/session/approval records must survive retirement for later degraded-path review.
-`check-controls` now also breaks out `failed_run_controls`, names `preserved_failed_run_controls`, and reports `failed_run_controls_healthy`, so trace/provenance-related control gaps can be reviewed separately from generic control hygiene.
+`check-change` returns `change_id`, `ready`, `missing_signals`, `missing_failed_run_signals`, `rollout_strategy`, and `risk_level`, so degraded-path rollout gaps stay visible as their own review category rather than hiding inside a generic missing-signal list.
+`check-retirement` returns `system_id`, `ready`, `missing_steps`, `failed_run_archive_targets`, and `replacement_mode`, so operators can confirm which telemetry/session/approval records must survive retirement for later degraded-path review.
+`check-controls` returns `healthy`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `blocking_findings`, and `inventory_drift`, so trace/provenance-related control gaps can be reviewed separately from generic control hygiene.
 
 Inspect memory records:
 
