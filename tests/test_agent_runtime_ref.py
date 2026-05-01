@@ -110,6 +110,27 @@ class TestFailurePaths:
         missing = sorted(root_key for root_key in root_keys if root_key not in docs_text)
         assert missing == []
 
+    def test_runtime_config_nested_keys_remain_documented(self) -> None:
+        """Keep bundled runtime config nested keys aligned with public docs."""
+        docs_text = _runtime_public_docs_text()
+        config_keys: set[str] = set()
+
+        def collect_keys(value: object) -> None:
+            if isinstance(value, dict):
+                for key, nested_value in value.items():
+                    if isinstance(key, str) and "_" in key:
+                        config_keys.add(key)
+                    collect_keys(nested_value)
+            elif isinstance(value, list):
+                for nested_value in value:
+                    collect_keys(nested_value)
+
+        for config_path in Path("agent_runtime_ref/configs").glob("*.yaml"):
+            collect_keys(load_yaml_file(config_path))
+
+        missing = sorted(config_key for config_key in config_keys if config_key not in docs_text)
+        assert missing == []
+
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
         docs_text = _runtime_public_docs_text()
