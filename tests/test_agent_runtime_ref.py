@@ -50,8 +50,12 @@ def _runtime_source_trees() -> list[ast.Module]:
     ]
 
 
+def _runtime_cli_path() -> Path:
+    return Path("agent_runtime_ref/__main__.py")
+
+
 def _runtime_cli_source_text() -> str:
-    return Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+    return _runtime_cli_path().read_text(encoding="utf-8")
 
 
 def _runtime_cli_tree() -> ast.Module:
