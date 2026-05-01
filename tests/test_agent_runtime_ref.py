@@ -108,6 +108,23 @@ def _render_raise_message(message: ast.expr) -> str | None:
     return "".join(parts)
 
 
+def _runtime_error_messages(trees: list[ast.Module]) -> set[str]:
+    runtime_errors: set[str] = set()
+    for tree in trees:
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Raise) or not isinstance(node.exc, ast.Call):
+                continue
+            error_name = getattr(node.exc.func, "id", "")
+            if error_name not in {"TypeError", "ValueError", "RuntimeError"}:
+                continue
+            if not node.exc.args:
+                continue
+            message = _render_raise_message(node.exc.args[0])
+            if message is not None:
+                runtime_errors.add(message)
+    return runtime_errors
+
+
 def _dataclass_field_names(tree: ast.Module) -> set[str]:
     field_names: set[str] = set()
     for node in ast.walk(tree):
@@ -247,19 +264,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
-        runtime_errors: set[str] = set()
-        for tree in runtime_source_trees:
-            for node in ast.walk(tree):
-                if not isinstance(node, ast.Raise) or not isinstance(node.exc, ast.Call):
-                    continue
-                error_name = getattr(node.exc.func, "id", "")
-                if error_name not in {"TypeError", "ValueError", "RuntimeError"}:
-                    continue
-                if not node.exc.args:
-                    continue
-                message = _render_raise_message(node.exc.args[0])
-                if message is not None:
-                    runtime_errors.add(message)
+        runtime_errors = _runtime_error_messages(runtime_source_trees)
 
         _assert_all_documented(runtime_errors, runtime_public_docs_text)
 
