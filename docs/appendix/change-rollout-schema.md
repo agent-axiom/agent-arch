@@ -167,7 +167,7 @@ Rollout gate особенно полезен, когда trace schema уже с�
   - `check-rollout`
   - `check-change`
 
-`check-rollout` возвращает `ready`, `missing_required`, `blocking_signals` и `rollout_mode`, поэтому executable gate сохраняет то же различие между отсутствующей required evidence и явными blockers, что и schema.
+`check-rollout` возвращает `ready`, `missing_required`, `blocking_signals` и `rollout_mode`; internally rollout policy normalizes `block_if` into `blocked_checks`, поэтому executable gate сохраняет то же различие между отсутствующей required evidence и явными blockers, что и schema.
 
 Встроенный `rollout.yaml` делает inputs gate конкретными: required evidence включает `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `slo_defined`, `rollback_plan` и `oncall_owner`; `rollout_mode` задаёт `initial`, `max_tenant_exposure_pct` и `require_shadow_period`; а `block_if` называет жёсткие blockers вроде `unknown_side_effect_path_missing`, `direct_tool_access_present` и `policy_decisions_not_traced`.
 
