@@ -167,6 +167,8 @@ decided_by:
   - `check-rollout`
   - `check-change`
 
+`check-rollout` 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让可执行门禁与 schema 中“缺失的必需证据”和“明确阻断项”的区分保持一致。
+
 这让书里不只是能解释门禁的概念，还能直接给出一个可运行的骨架。
 
 ## 9. 最小不变量

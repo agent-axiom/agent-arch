@@ -167,6 +167,8 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
   - `check-rollout`
   - `check-change`
 
+`check-rollout` returns `ready`, `missing_required`, `blocking_signals`, and `rollout_mode`, which keeps the executable gate aligned with the schema's distinction between absent required evidence and explicit blockers.
+
 That makes it possible to show not only the idea of a gate, but also a runnable skeleton of it.
 
 ## 9. Minimal invariants

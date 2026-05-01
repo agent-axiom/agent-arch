@@ -145,6 +145,8 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
+Rollout check 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让自动化能够区分缺失的必需证据与明确阻断的信号。
+
 检查持续控制和注册表漂移：
 
 ```bash
