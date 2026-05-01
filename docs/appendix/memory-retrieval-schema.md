@@ -139,7 +139,7 @@ excluded_records: 12
 - CLI:
   - `inspect-memory`
 
-Встроенный `memory.yaml` делает это конкретным через `seed_records`: каждая seed record несёт стабильный `memory_id`, а также `tenant_id`, `memory_class`, `kind`, `content`, `source`, `confidence`, `provenance` и `revision`; bundled kinds — `language_preference`, `validated_fact` и `working_note`, чтобы demo показывало и retrieval filtering, и lineage записи. Reference seeds (`mem-001`, `mem-002` и `mem-003`) намеренно покрывают sources `trusted_profile`, `trusted_service` и `session_state`, включая provenance вроде `ephemeral_session_note`, чтобы retrieval examples показывали разные trust и persistence levels.
+Встроенный `memory.yaml` делает это конкретным через `seed_records`: каждая seed record несёт стабильный `memory_id`, а также `tenant_id`, `memory_class`, `kind`, `content`, `source`, `confidence`, `provenance` и `revision`; bundled kinds — `language_preference`, `validated_fact` и `working_note`, чтобы demo показывало и retrieval filtering, и lineage записи. Reference seeds (`mem-001`, `mem-002` и `mem-003`) намеренно покрывают sources `trusted_profile`, `trusted_service` и `session_state`, включая provenance вроде `ephemeral_session_note`, чтобы retrieval examples показывали разные trust и persistence levels. Non-profile seed content также включает policy-like fact `Support tickets must use the support queue and include requester_id.` и working note `Recent runtime demo used create_ticket as the main write capability.`
 
 Книга не только описывает этот контракт, но и показывает исполняемый каркас.
 
