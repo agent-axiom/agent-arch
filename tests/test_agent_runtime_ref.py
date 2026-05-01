@@ -57,6 +57,10 @@ def _runtime_config_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
+def _runtime_config_documents() -> list[dict[str, object]]:
+    return [load_yaml_file(config_path) for config_path in _runtime_config_paths()]
+
+
 def _assert_all_documented(items: set[str] | list[str], docs_text: str) -> None:
     missing = sorted(item for item in items if item not in docs_text)
     assert missing == []
@@ -120,8 +124,8 @@ class TestRuntimeDocsParity:
         """Keep bundled runtime config root keys aligned with public docs."""
         docs_text = _runtime_public_docs_text()
         root_keys: set[str] = set()
-        for config_path in _runtime_config_paths():
-            root_keys.update(str(key) for key in load_yaml_file(config_path))
+        for config in _runtime_config_documents():
+            root_keys.update(str(key) for key in config)
 
         _assert_all_documented(root_keys, docs_text)
 
@@ -140,8 +144,8 @@ class TestRuntimeDocsParity:
                 for nested_value in value:
                     collect_keys(nested_value)
 
-        for config_path in _runtime_config_paths():
-            collect_keys(load_yaml_file(config_path))
+        for config in _runtime_config_documents():
+            collect_keys(config)
 
         _assert_all_documented(config_keys, docs_text)
 
@@ -273,7 +277,6 @@ class TestRuntimeDocsParity:
                             runtime_keys.add(key.value)
 
         _assert_all_documented(runtime_keys, docs_text)
-
 
 
 class TestFailurePaths:
