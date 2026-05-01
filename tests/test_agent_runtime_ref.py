@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -65,6 +66,30 @@ class TestFailurePaths:
                     runtime_errors.add("".join(parts))
 
         missing = sorted(message for message in runtime_errors if message not in docs_text)
+        assert missing == []
+
+    def test_runtime_literal_markers_remain_documented(self) -> None:
+        """Keep public docs aligned with scenario labels and runtime markers."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
+        literal_markers = sorted(
+            set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
+        )
+        documented_markers = [
+            marker
+            for marker in literal_markers
+            if "_" in marker or marker.startswith("trace:")
+        ]
+
+        missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
