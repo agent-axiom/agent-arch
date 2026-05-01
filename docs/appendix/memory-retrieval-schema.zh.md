@@ -139,7 +139,7 @@ excluded_records: 12
 - CLI：
   - `inspect-memory`
 
-内置的 `memory.yaml` 通过 `seed_records` 把这件事具体化：每条 seed record 都带有稳定的 `memory_id`，以及 `tenant_id`、`memory_class`、`kind`、`content`、`source`、`confidence`、`provenance` 和 `revision`，因此 demo 可以同时展示 retrieval filtering 与记录 lineage。
+内置的 `memory.yaml` 通过 `seed_records` 把这件事具体化：每条 seed record 都带有稳定的 `memory_id`，以及 `tenant_id`、`memory_class`、`kind`、`content`、`source`、`confidence`、`provenance` 和 `revision`，因此 demo 可以同时展示 retrieval filtering 与记录 lineage。Reference seeds（`mem-001`、`mem-002` 和 `mem-003`）有意覆盖 `trusted_profile`、`trusted_service` 与 `session_state` sources，并包含 `ephemeral_session_note` 这样的 provenance，让 retrieval examples 能呈现不同的 trust 与 persistence levels。
 
 这很有价值，因为书里不只是解释记忆契约，也给出了可运行的骨架。
 
