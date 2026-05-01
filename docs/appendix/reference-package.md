@@ -75,13 +75,15 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path.
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals` и опциональный `failure_reason`.
 
 Просмотр identity агента и approved inventory:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
+
+`inspect-agent` возвращает `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities` и `catalog_capabilities`, чтобы inventory review мог сопоставить configured identity с capability catalog.
 
 Просмотр lifecycle-артефактов из Part VIII, включая runtime-control linkage и идентичность выпуска:
 
@@ -121,6 +123,8 @@
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
+`export-events` возвращает `output_path`, `trace_id`, `status`, `result`, `event_count`, `redact_fields` и опциональный `failure_reason`, чтобы redaction и degraded-path evidence были видны уже в command summary.
+
 Если нужен redacted export для внешнего разбора, можно сразу скрыть чувствительные поля:
 
 ```bash
@@ -138,6 +142,8 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
+
+`inspect-trace` возвращает `trace_id`, `event_count` и `events`; `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result` и `event_count`, чтобы investigation и replay сохраняли source/run lineage.
 
 Проверка политики выкладки с переопределением сигналов:
 

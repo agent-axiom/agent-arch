@@ -75,13 +75,15 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path.
+The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `config_dir`, `trace_id`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals`, and optional `failure_reason`.
 
 Inspect the agent identity and approved inventory:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
+
+`inspect-agent` returns `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities`, and `catalog_capabilities`, so inventory review can compare configured identity with the capability catalog.
 
 Inspect lifecycle artifacts that mirror Part VIII, including runtime-control linkage, release identity, failed-run gate signals, and explicit failed-run gap reporting:
 
@@ -121,6 +123,8 @@ Export events to JSONL for later inspection and replay:
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
+`export-events` returns `output_path`, `trace_id`, `status`, `result`, `event_count`, `redact_fields`, and optional `failure_reason`, so redaction and degraded-path evidence are visible in the command summary.
+
 If you need a redacted export for external review, you can hide sensitive fields at export time:
 
 ```bash
@@ -138,6 +142,8 @@ Replay a run from a saved trace:
 ```bash
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
+
+`inspect-trace` returns `trace_id`, `event_count`, and `events`; `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, and `event_count`, so investigation and replay preserve source/run lineage.
 
 Rollout policy check with signal overrides:
 
