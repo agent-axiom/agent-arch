@@ -184,6 +184,34 @@ def _documented_literal_markers(cli_source: str) -> list[str]:
     ]
 
 
+def _cli_choice_values(tree: ast.Module) -> set[str]:
+    module_dict_keys = _module_dict_string_keys(tree)
+    runtime_choices: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
+            continue
+        if node.func.attr != "add_argument":
+            continue
+        for keyword in node.keywords:
+            if keyword.arg != "choices":
+                continue
+            if isinstance(keyword.value, (ast.List, ast.Tuple, ast.Set)):
+                runtime_choices.update(
+                    item.value
+                    for item in keyword.value.elts
+                    if isinstance(item, ast.Constant) and isinstance(item.value, str)
+                )
+            elif (
+                isinstance(keyword.value, ast.Call)
+                and isinstance(keyword.value.func, ast.Name)
+                and keyword.value.func.id == "tuple"
+                and len(keyword.value.args) == 1
+                and isinstance(keyword.value.args[0], ast.Name)
+            ):
+                runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
+    return runtime_choices
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -291,31 +319,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep argparse choice values aligned with public docs."""
-        tree = runtime_cli_tree
-        module_dict_keys = _module_dict_string_keys(tree)
-        runtime_choices: set[str] = set()
-        for node in ast.walk(tree):
-            if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
-                continue
-            if node.func.attr != "add_argument":
-                continue
-            for keyword in node.keywords:
-                if keyword.arg != "choices":
-                    continue
-                if isinstance(keyword.value, (ast.List, ast.Tuple, ast.Set)):
-                    runtime_choices.update(
-                        item.value
-                        for item in keyword.value.elts
-                        if isinstance(item, ast.Constant) and isinstance(item.value, str)
-                    )
-                elif (
-                    isinstance(keyword.value, ast.Call)
-                    and isinstance(keyword.value.func, ast.Name)
-                    and keyword.value.func.id == "tuple"
-                    and len(keyword.value.args) == 1
-                    and isinstance(keyword.value.args[0], ast.Name)
-                ):
-                    runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
+        runtime_choices = _cli_choice_values(runtime_cli_tree)
 
         _assert_all_documented(runtime_choices, runtime_public_docs_text)
 
