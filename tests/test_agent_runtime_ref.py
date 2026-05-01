@@ -143,6 +143,19 @@ def _runtime_json_keys(tree: ast.Module, documented_key_names: set[str]) -> set[
     return runtime_keys
 
 
+def _nested_config_keys(value: object) -> set[str]:
+    config_keys: set[str] = set()
+    if isinstance(value, dict):
+        for key, nested_value in value.items():
+            if isinstance(key, str) and "_" in key:
+                config_keys.add(key)
+            config_keys.update(_nested_config_keys(nested_value))
+    elif isinstance(value, list):
+        for nested_value in value:
+            config_keys.update(_nested_config_keys(nested_value))
+    return config_keys
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -233,19 +246,8 @@ class TestRuntimeDocsParity:
     ) -> None:
         """Keep bundled runtime config nested keys aligned with public docs."""
         config_keys: set[str] = set()
-
-        def collect_keys(value: object) -> None:
-            if isinstance(value, dict):
-                for key, nested_value in value.items():
-                    if isinstance(key, str) and "_" in key:
-                        config_keys.add(key)
-                    collect_keys(nested_value)
-            elif isinstance(value, list):
-                for nested_value in value:
-                    collect_keys(nested_value)
-
         for config in runtime_config_documents:
-            collect_keys(config)
+            config_keys.update(_nested_config_keys(config))
 
         _assert_all_documented(config_keys, runtime_public_docs_text)
 
