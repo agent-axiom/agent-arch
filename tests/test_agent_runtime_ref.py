@@ -26,15 +26,16 @@ from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_fo
 from agent_runtime_ref.runtime import AgentRuntime
 
 
+def _runtime_public_doc_paths() -> list[Path]:
+    return [
+        Path("agent_runtime_ref/README.md"),
+        *sorted(Path("docs/appendix").glob("*.md")),
+    ]
+
+
 def _runtime_public_docs_text() -> str:
     return "\n".join(
-        [
-            Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-            *[
-                path.read_text(encoding="utf-8")
-                for path in Path("docs/appendix").glob("*.md")
-            ],
-        ]
+        path.read_text(encoding="utf-8") for path in _runtime_public_doc_paths()
     )
 
 
