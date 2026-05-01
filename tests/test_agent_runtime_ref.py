@@ -180,6 +180,19 @@ def _runtime_documented_json_keys(
     return runtime_keys
 
 
+def _runtime_public_json_keys(trees: list[ast.Module]) -> set[str]:
+    documented_key_names = {
+        "approvals",
+        "events",
+        "labels",
+        "result",
+        "runs",
+        "sessions",
+        "status",
+    }
+    return _runtime_documented_json_keys(trees, documented_key_names)
+
+
 def _runtime_config_root_keys(configs: list[dict[str, object]]) -> set[str]:
     root_keys: set[str] = set()
     for config in configs:
@@ -374,18 +387,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep public JSON output/config keys aligned with docs."""
-        documented_key_names = {
-            "approvals",
-            "events",
-            "labels",
-            "result",
-            "runs",
-            "sessions",
-            "status",
-        }
-        runtime_keys = _runtime_documented_json_keys(
-            runtime_source_trees, documented_key_names
-        )
+        runtime_keys = _runtime_public_json_keys(runtime_source_trees)
 
         _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
