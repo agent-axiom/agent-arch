@@ -104,8 +104,8 @@ Inspect memory records:
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-`inspect-memory` now shows not only content, but also `provenance` and `revision`.
-`dump-events` now also surfaces `failure_reason` in its JSON output for degraded-path drills.
+`inspect-memory` now returns `config_dir`, `count`, and `records`; each record shows not only content, but also `provenance` and `revision`.
+`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:
 
@@ -175,6 +175,8 @@ Inspect and resolve demo approval requests:
 `session-eval-summary` returns a compact operational summary for the run series, including failed runs and `traceable_failed_runs` rather than collapsing everything into success-versus-denied. Failed drills can now be injected there directly too, and the summary surfaces `latest_failure_reason` for quick review.
 `session-replay` lets you execute multiple related requests inside one `session_id`. Failed drills can now be injected there too, and the replay summary preserves `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` alongside per-run `failure_reason`.
 `export-session` writes the session as structured JSON that can already serve as a seed for offline eval workflows. It now also preserves delegated authorization context such as `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, and the command summary now surfaces `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` for failed drills.
+
+The session and eval commands expose their summary fields explicitly: `inspect-session` returns `session_id`, `tenant_id`, `principal_id`, `trace_count`, `latest_status`, `summary`, and `runs`; `session-eval-summary` returns `session_id`, `total_runs`, `success_runs`, `approval_wait_runs`, `denied_runs`, `failed_runs`, `traceable_failed_runs`, `latest_status`, `latest_trace_id`, and `latest_failure_reason`; `session-replay` returns `session_id`, `run_count`, `summary`, and `runs`; `export-session` returns `output_path`, `session_id`, `total_runs`, `failed_runs`, `traceable_failed_runs`, `latest_trace_id`, and `latest_failure_reason`; and `export-eval-dataset` returns `dataset_name`, `output_path`, `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs`, `latest_failure_reason`, and `sessions`.
 
 The runtime now also treats failure-like tool paths, such as validation failures, as first-class run outcomes. Instead of pretending the run succeeded, it records a failed run, emits an explicit `run_failed` event, and keeps both that status and the concrete failure reason visible as `failure_reason` in session export and CLI output.
 `export-eval-dataset` bundles several built-in session scenarios into one eval-ready JSON artifact, including a dedicated failed-run drill scenario and an approval-backed `support_ticket` scenario with a blocking `sandbox_profile_review` grading rule, and its command summary now surfaces aggregate `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason` too.

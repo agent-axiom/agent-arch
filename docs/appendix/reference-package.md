@@ -104,8 +104,8 @@
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-`inspect-memory` показывает не только содержимое, но и `provenance` с `revision`.
-`dump-events` теперь тоже возвращает `failure_reason` в JSON-ответе для degraded-path drills.
+`inspect-memory` теперь возвращает `config_dir`, `count` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
+`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
 
 Вывод структурированных событий для одного запуска:
 
@@ -175,6 +175,8 @@ Rollout check возвращает `ready`, `missing_required`, `blocking_signal
 `session-eval-summary` возвращает короткую operational summary по серии запусков, включая и failed runs, и `traceable_failed_runs`, а не сводя все обратно только к успехам и отказам. Теперь туда можно напрямую инъецировать failed drill, а summary сразу показывает и `latest_failure_reason` для быстрого разбора.
 `session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`. Теперь туда тоже можно инъецировать failed drill, а replay summary сохраняет `failed_runs`, `traceable_failed_runs` и `latest_failure_reason` вместе с per-run полем `failure_reason`.
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, а в summary самой CLI-команды показывает `failed_runs`, `traceable_failed_runs` и `latest_failure_reason` для failed drills.
+
+Session и eval команды явно показывают summary fields: `inspect-session` возвращает `session_id`, `tenant_id`, `principal_id`, `trace_count`, `latest_status`, `summary` и `runs`; `session-eval-summary` возвращает `session_id`, `total_runs`, `success_runs`, `approval_wait_runs`, `denied_runs`, `failed_runs`, `traceable_failed_runs`, `latest_status`, `latest_trace_id` и `latest_failure_reason`; `session-replay` возвращает `session_id`, `run_count`, `summary` и `runs`; `export-session` возвращает `output_path`, `session_id`, `total_runs`, `failed_runs`, `traceable_failed_runs`, `latest_trace_id` и `latest_failure_reason`; `export-eval-dataset` возвращает `dataset_name`, `output_path`, `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs`, `latest_failure_reason` и `sessions`.
 
 Теперь рантайм также считает tool paths с неуспешным исходом, например validation failure, полноценным итогом запуска. Вместо того чтобы делать вид, будто run завершился успешно, он фиксирует failed run, пишет явное событие `run_failed` и сохраняет и в session export, и в CLI output этот статус вместе с конкретной причиной сбоя в поле `failure_reason`.
 `export-eval-dataset` собирает несколько встроенных session-сценариев в один eval-ready JSON artifact, включая отдельный failed-run drill scenario и approval-backed сценарий `support_ticket` с blocking `sandbox_profile_review` grading rule, а summary самой команды теперь тоже показывает агрегированные `failed_runs`, `traceable_failed_runs` и `latest_failure_reason`.
