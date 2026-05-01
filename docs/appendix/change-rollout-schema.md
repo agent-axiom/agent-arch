@@ -171,6 +171,8 @@ Rollout gate особенно полезен, когда trace schema уже с�
 
 Встроенный `rollout.yaml` делает inputs gate конкретными: required evidence включает `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `slo_defined`, `rollback_plan` и `oncall_owner`; `rollout_mode` задаёт `initial`, `max_tenant_exposure_pct` и `require_shadow_period`; а `block_if` называет жёсткие blockers вроде `unknown_side_effect_path_missing`, `direct_tool_access_present` и `policy_decisions_not_traced`.
 
+Соседний `change.yaml` также задаёт reviewed change surface: `required_signals` перечисляет release evidence — `design_review_passed`, `offline_eval_passed`, `policy_diff_reviewed`, `rollback_plan_ready`, `session_expiry_behavior_checked`, `reinit_policy_reviewed`, `sandbox_profile_reviewed` и `failed_run_drill_checked`, а `approval_roles` фиксирует `platform-owner` и `security-reviewer` как required reviewers.
+
 Книга теперь показывает не только идею gate, но и runnable skeleton этого gate.
 
 ## 9. Минимальные инварианты

@@ -171,6 +171,8 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
 
 The bundled `rollout.yaml` makes the gate inputs concrete: required evidence includes `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `slo_defined`, `rollback_plan`, and `oncall_owner`; `rollout_mode` sets `initial`, `max_tenant_exposure_pct`, and `require_shadow_period`; and `block_if` names hard blockers such as `unknown_side_effect_path_missing`, `direct_tool_access_present`, and `policy_decisions_not_traced`.
 
+The adjacent `change.yaml` defines the reviewed change surface too: `required_signals` names release evidence such as `design_review_passed`, `offline_eval_passed`, `policy_diff_reviewed`, `rollback_plan_ready`, `session_expiry_behavior_checked`, `reinit_policy_reviewed`, `sandbox_profile_reviewed`, and `failed_run_drill_checked`, while `approval_roles` identifies `platform-owner` and `security-reviewer` as required reviewers.
+
 That makes it possible to show not only the idea of a gate, but also a runnable skeleton of it.
 
 ## 9. Minimal invariants
