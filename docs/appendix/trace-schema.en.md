@@ -166,6 +166,8 @@ And `memory_persisted` should usually include:
 - `provenance`
 - `revision`
 
+The current reference payloads also use operational metadata fields such as `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`.
+
 ## What the package already supports
 
 You can inspect this directly:
