@@ -139,7 +139,7 @@ excluded_records: 12
 - CLI：
   - `inspect-memory`
 
-内置的 `memory.yaml` 通过 `seed_records` 把这件事具体化：每条 seed record 都带有稳定的 `memory_id`，以及 `tenant_id`、`memory_class`、`kind`、`content`、`source`、`confidence`、`provenance` 和 `revision`；bundled kinds 是 `language_preference`、`validated_fact` 和 `working_note`，因此 demo 可以同时展示 retrieval filtering 与记录 lineage。Reference seeds（`mem-001`、`mem-002` 和 `mem-003`）有意覆盖 `trusted_profile`、`trusted_service` 与 `session_state` sources，并包含 `ephemeral_session_note` 这样的 provenance，让 retrieval examples 能呈现不同的 trust 与 persistence levels。Non-profile seed content 还包括 policy-like fact `Support tickets must use the support queue and include requester_id.` 以及 working note `Recent runtime demo used create_ticket as the main write capability.`
+内置的 `memory.yaml` 通过 `seed_records` 把这件事具体化：每条 seed record 都带有稳定的 `memory_id`，以及 `tenant_id`、`memory_class`、`kind`、`content`、`source`、`confidence`、`provenance` 和 `revision`；bundled kinds 是 `language_preference`、`validated_fact` 和 `working_note`，因此 demo 可以同时展示 retrieval filtering 与记录 lineage。Reference seeds（`mem-001`、`mem-002` 和 `mem-003`）有意覆盖 `trusted_profile`、`trusted_service` 与 `session_state` sources，并包含 `ephemeral_session_note` 这样的 provenance，让 retrieval examples 能呈现不同的 trust 与 persistence levels。Non-profile seed content 还包括 policy-like fact `Support tickets must use the support queue and include requester_id.` 以及 working note `Recent runtime demo used create_ticket as the main write capability.` Loader 也会校验这个 shape：`'memory' must be a mapping`、`'seed_records' must be a list` 和 `Memory record #{idx} must be a mapping`。
 
 这很有价值，因为书里不只是解释记忆契约，也给出了可运行的骨架。
 
