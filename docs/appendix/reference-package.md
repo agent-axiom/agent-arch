@@ -75,7 +75,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals` и опциональный `failure_reason`.
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs.
 
 Просмотр identity агента и approved inventory:
 
