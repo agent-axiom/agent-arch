@@ -76,7 +76,7 @@ status: approved
 
 `artifact_bundle` 记录一组在某个发布配置下被认为可信、并且彼此兼容的工件。在实践里，它同时也是赋予一次发布以受治理身份的契约表面。
 
-Reference runtime 会把这个 contract 保存在 `artifacts.yaml` 中：`bundle_name`、`version`、`provenance_required`、`signed` 和 `session_control_owner` 描述 bundle identity 与 accountability，而 `artifacts` 会明确列出 release-bearing files：`agent.yaml`、`capabilities.yaml`、`policy.yaml`、`memory.yaml`、`controls.yaml`、`approvals.yaml`、`runtime-controls.yaml`、`change.yaml`、`retirement.yaml`、`eval-dataset.json` 和 `runtime-control-bundle-metadata`。
+Reference runtime 会把这个 contract 保存在 `artifacts.yaml` 中：`bundle_name`（例如 `support-triage-runtime-bundle`）、`version`、`provenance_required`、`signed` 和 `session_control_owner` 描述 bundle identity 与 accountability；`review_evidence` 也可以指向 `trace:sandbox_profile_reviewed` 这样的 evidence refs；而 `artifacts` 会明确列出 release-bearing files：`agent.yaml`、`capabilities.yaml`、`policy.yaml`、`memory.yaml`、`controls.yaml`、`approvals.yaml`、`runtime-controls.yaml`、`change.yaml`、`retirement.yaml`、`eval-dataset.json` 和 `runtime-control-bundle-metadata`。
 
 ```yaml
 kind: artifact_bundle
