@@ -66,10 +66,16 @@ def _assert_all_documented(items: set[str] | list[str], docs_text: str) -> None:
     assert missing == []
 
 
+@pytest.fixture(scope="class")
+def runtime_public_docs_text() -> str:
+    return _runtime_public_docs_text()
+
+
 class TestRuntimeDocsParity:
-    def test_runtime_error_messages_remain_documented(self) -> None:
+    def test_runtime_error_messages_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         runtime_errors: set[str] = set()
         for tree in _runtime_source_trees():
             for node in ast.walk(tree):
@@ -96,11 +102,12 @@ class TestRuntimeDocsParity:
                             parts.append("{" + expression + conversion + "}")
                     runtime_errors.add("".join(parts))
 
-        _assert_all_documented(runtime_errors, docs_text)
+        _assert_all_documented(runtime_errors, runtime_public_docs_text)
 
-    def test_runtime_literal_markers_remain_documented(self) -> None:
+    def test_runtime_literal_markers_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
-        docs_text = _runtime_public_docs_text()
         cli_source = _runtime_cli_source_text()
         literal_markers = sorted(
             set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
@@ -111,27 +118,30 @@ class TestRuntimeDocsParity:
             if "_" in marker or marker.startswith("trace:")
         ]
 
-        _assert_all_documented(documented_markers, docs_text)
+        _assert_all_documented(documented_markers, runtime_public_docs_text)
 
-    def test_runtime_config_files_remain_documented(self) -> None:
+    def test_runtime_config_files_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         config_files = sorted(path.name for path in _runtime_config_paths())
 
-        _assert_all_documented(config_files, docs_text)
+        _assert_all_documented(config_files, runtime_public_docs_text)
 
-    def test_runtime_config_root_keys_remain_documented(self) -> None:
+    def test_runtime_config_root_keys_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep bundled runtime config root keys aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         root_keys: set[str] = set()
         for config in _runtime_config_documents():
             root_keys.update(str(key) for key in config)
 
-        _assert_all_documented(root_keys, docs_text)
+        _assert_all_documented(root_keys, runtime_public_docs_text)
 
-    def test_runtime_config_nested_keys_remain_documented(self) -> None:
+    def test_runtime_config_nested_keys_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep bundled runtime config nested keys aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         config_keys: set[str] = set()
 
         def collect_keys(value: object) -> None:
@@ -147,11 +157,12 @@ class TestRuntimeDocsParity:
         for config in _runtime_config_documents():
             collect_keys(config)
 
-        _assert_all_documented(config_keys, docs_text)
+        _assert_all_documented(config_keys, runtime_public_docs_text)
 
-    def test_runtime_cli_subcommands_remain_documented(self) -> None:
+    def test_runtime_cli_subcommands_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep argparse subcommands aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         tree = _runtime_cli_tree()
         runtime_subcommands = sorted(
             node.args[0].value
@@ -164,21 +175,23 @@ class TestRuntimeDocsParity:
             and isinstance(node.args[0].value, str)
         )
 
-        _assert_all_documented(runtime_subcommands, docs_text)
+        _assert_all_documented(runtime_subcommands, runtime_public_docs_text)
 
-    def test_runtime_cli_flags_remain_documented(self) -> None:
+    def test_runtime_cli_flags_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep argparse option flags aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         cli_source = _runtime_cli_source_text()
         runtime_flags = sorted(
             set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
         )
 
-        _assert_all_documented(runtime_flags, docs_text)
+        _assert_all_documented(runtime_flags, runtime_public_docs_text)
 
-    def test_runtime_cli_choices_remain_documented(self) -> None:
+    def test_runtime_cli_choices_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep argparse choice values aligned with public docs."""
-        docs_text = _runtime_public_docs_text()
         tree = _runtime_cli_tree()
         module_dict_keys: dict[str, set[str]] = {}
         for node in tree.body:
@@ -224,11 +237,12 @@ class TestRuntimeDocsParity:
                 ):
                     runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
 
-        _assert_all_documented(runtime_choices, docs_text)
+        _assert_all_documented(runtime_choices, runtime_public_docs_text)
 
-    def test_runtime_dataclass_fields_remain_documented(self) -> None:
+    def test_runtime_dataclass_fields_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep public dataclass field names aligned with docs."""
-        docs_text = _runtime_public_docs_text()
         runtime_fields: set[str] = set()
         for tree in _runtime_source_trees():
             for node in ast.walk(tree):
@@ -251,12 +265,13 @@ class TestRuntimeDocsParity:
                         runtime_fields.add(statement.target.id)
 
         _assert_all_documented(
-            [field for field in runtime_fields if "_" in field], docs_text
+            [field for field in runtime_fields if "_" in field], runtime_public_docs_text
         )
 
-    def test_runtime_json_keys_remain_documented(self) -> None:
+    def test_runtime_json_keys_remain_documented(
+        self, runtime_public_docs_text: str
+    ) -> None:
         """Keep public JSON output/config keys aligned with docs."""
-        docs_text = _runtime_public_docs_text()
         documented_key_names = {
             "approvals",
             "events",
@@ -276,7 +291,7 @@ class TestRuntimeDocsParity:
                         if "_" in key.value or key.value in documented_key_names:
                             runtime_keys.add(key.value)
 
-        _assert_all_documented(runtime_keys, docs_text)
+        _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
 
 class TestFailurePaths:
