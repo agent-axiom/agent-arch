@@ -63,7 +63,7 @@
 - `span_id`
 - `parent_span_id`
 
-在参考运行时里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。同时，序列化后的事件现在会带上 `schema_version` 和 `redacted_fields`，导出路径也支持按字段做脱敏。Event loader 会显式校验这个 shape：`payload` must be a mapping，`redacted_fields` must be a list。
+在参考运行时里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。同时，序列化后的事件现在会带上 `schema_version` 和 `redacted_fields`，导出路径也支持按字段做脱敏。Event loader 会显式校验这个 shape：`payload must be a mapping` 和 `redacted_fields must be a list`。
 
 ## 追踪和会话的关系
 
