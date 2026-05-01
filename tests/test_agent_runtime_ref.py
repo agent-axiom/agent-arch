@@ -57,7 +57,7 @@ def _runtime_config_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
-class TestFailurePaths:
+class TestRuntimeDocsParity:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
         docs_text = _runtime_public_docs_text()
@@ -281,6 +281,9 @@ class TestFailurePaths:
         missing = sorted(key for key in runtime_keys if key not in docs_text)
         assert missing == []
 
+
+
+class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
