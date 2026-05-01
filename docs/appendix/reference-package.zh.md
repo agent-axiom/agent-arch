@@ -75,7 +75,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`session_id`、`status`、`result`、`events`、`memory_records`、`pending_approvals` 和可选的 `failure_reason`。
+第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`session_id`、`status`、`result`、`events`、`memory_records`、`pending_approvals` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。
 
 查看智能体身份与已批准能力清单：
 
