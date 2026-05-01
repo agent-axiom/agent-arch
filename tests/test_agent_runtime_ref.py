@@ -26,18 +26,22 @@ from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_fo
 from agent_runtime_ref.runtime import AgentRuntime
 
 
+def _runtime_public_docs_text() -> str:
+    return "\n".join(
+        [
+            Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+            *[
+                path.read_text(encoding="utf-8")
+                for path in Path("docs/appendix").glob("*.md")
+            ],
+        ]
+    )
+
+
 class TestFailurePaths:
     def test_runtime_error_messages_remain_documented(self) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         runtime_errors: set[str] = set()
         for source_path in Path("agent_runtime_ref").glob("*.py"):
             tree = ast.parse(source_path.read_text(encoding="utf-8"))
@@ -70,15 +74,7 @@ class TestFailurePaths:
 
     def test_runtime_literal_markers_remain_documented(self) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
         literal_markers = sorted(
             set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source))
@@ -94,15 +90,7 @@ class TestFailurePaths:
 
     def test_runtime_config_files_remain_documented(self) -> None:
         """Keep bundled runtime config filenames aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         config_files = sorted(
             path.name for path in Path("agent_runtime_ref/configs").glob("*.yaml")
         )
@@ -114,15 +102,7 @@ class TestFailurePaths:
 
     def test_runtime_config_root_keys_remain_documented(self) -> None:
         """Keep bundled runtime config root keys aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         root_keys: set[str] = set()
         for config_path in Path("agent_runtime_ref/configs").glob("*.yaml"):
             root_keys.update(str(key) for key in load_yaml_file(config_path))
@@ -132,15 +112,7 @@ class TestFailurePaths:
 
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
         tree = ast.parse(cli_source)
         runtime_subcommands = sorted(
@@ -159,15 +131,7 @@ class TestFailurePaths:
 
     def test_runtime_cli_flags_remain_documented(self) -> None:
         """Keep argparse option flags aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
         runtime_flags = sorted(
             set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
@@ -178,15 +142,7 @@ class TestFailurePaths:
 
     def test_runtime_cli_choices_remain_documented(self) -> None:
         """Keep argparse choice values aligned with public docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         cli_source = Path("agent_runtime_ref/__main__.py").read_text(encoding="utf-8")
         tree = ast.parse(cli_source)
         module_dict_keys: dict[str, set[str]] = {}
@@ -238,15 +194,7 @@ class TestFailurePaths:
 
     def test_runtime_dataclass_fields_remain_documented(self) -> None:
         """Keep public dataclass field names aligned with docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         runtime_fields: set[str] = set()
         for source_path in Path("agent_runtime_ref").glob("*.py"):
             tree = ast.parse(source_path.read_text(encoding="utf-8"))
@@ -276,15 +224,7 @@ class TestFailurePaths:
 
     def test_runtime_json_keys_remain_documented(self) -> None:
         """Keep public JSON output/config keys aligned with docs."""
-        docs_text = "\n".join(
-            [
-                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
-                *[
-                    path.read_text(encoding="utf-8")
-                    for path in Path("docs/appendix").glob("*.md")
-                ],
-            ]
-        )
+        docs_text = _runtime_public_docs_text()
         documented_key_names = {
             "approvals",
             "events",
