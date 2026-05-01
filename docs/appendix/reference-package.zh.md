@@ -178,7 +178,7 @@ Rollout check 会返回 `ready`、`missing_required`、`blocking_signals` 和 `r
 ```
 
 `inspect-approvals` 现在会返回 `trace_id`、`session_id`、`count` 和 `approvals`，其中包括 `authorization_mode`、`delegated_principal_id` 与 `delegated_scope` 等委派授权上下文，因此审批路径评审可以直接和会话证据对照。`resolve-approval` 在做出决定后会返回 `approval_id`、`status`、`reviewer`、`resolution_note` 和同样的委派上下文，这样行动身份谱系不会在闭合阶段丢失。
-`inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入失败演练，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `failure_reason`。
+`inspect-session` 会显示会话级别的运行历史，以及关联的 `trace_id`。现在这里也能直接注入失败演练，而摘要会保留 `failed_runs`、`traceable_failed_runs`、`latest_failure_reason`，以及每次运行里的 `output_text` 和 `failure_reason`。
 `session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计失败运行和 `traceable_failed_runs`，而不是又把结果压回只有 `success` 和 `denied` 两类。现在也可以直接在这里注入失败演练，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入失败演练，而回放摘要会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
