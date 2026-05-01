@@ -200,6 +200,13 @@ def _nested_config_keys(value: object) -> set[str]:
     return config_keys
 
 
+def _runtime_config_nested_keys(configs: list[dict[str, object]]) -> set[str]:
+    config_keys: set[str] = set()
+    for config in configs:
+        config_keys.update(_nested_config_keys(config))
+    return config_keys
+
+
 def _cli_subcommand_names(tree: ast.Module) -> list[str]:
     return sorted(
         node.args[0].value
@@ -323,9 +330,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_config_documents: list[dict[str, object]]
     ) -> None:
         """Keep bundled runtime config nested keys aligned with public docs."""
-        config_keys: set[str] = set()
-        for config in runtime_config_documents:
-            config_keys.update(_nested_config_keys(config))
+        config_keys = _runtime_config_nested_keys(runtime_config_documents)
 
         _assert_all_documented(config_keys, runtime_public_docs_text)
 
