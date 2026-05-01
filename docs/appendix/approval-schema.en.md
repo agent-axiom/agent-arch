@@ -159,7 +159,7 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
   - `inspect-approvals`
   - `resolve-approval`
 
-`inspect-approvals` returns `trace_id`, `session_id`, `count`, and `approvals`; `resolve-approval` returns `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, so the runnable demo keeps approval lineage and delegated authority visible before and after decision.
+`inspect-approvals` returns `trace_id`, `session_id`, `count`, and `approvals`; each approval entry keeps `approval_id`, `capability_name`, `requested_by`, `reviewer`, `reason`, `status`, `authorization_mode`, `delegated_principal_id`, and `delegated_scope`. `resolve-approval` returns `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id`, and `delegated_scope`, so the runnable demo keeps approval lineage and delegated authority visible before and after decision.
 
 The bundled `approvals.yaml` also makes the approval operating policy explicit: `default_reviewer`, `escalation_sla_minutes`, and `delegated_authorization` settings such as `reviewer_required_for_user_delegation`, `require_principal_binding`, `require_scope_visibility`, `on_scope_revoked`, and `subagent_inheritance` describe who reviews delegated actions, what evidence must stay visible, and whether delegation can pass into subagents. The reference policy sets subagent inheritance to `explicit_only`, so delegated authority never flows into a child agent unless the approval path names it explicitly.
 
