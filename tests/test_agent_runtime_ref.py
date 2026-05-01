@@ -155,6 +155,10 @@ def _runtime_dataclass_fields(trees: list[ast.Module]) -> set[str]:
     return runtime_fields
 
 
+def _runtime_public_dataclass_fields(trees: list[ast.Module]) -> list[str]:
+    return [field for field in _runtime_dataclass_fields(trees) if "_" in field]
+
+
 def _runtime_json_keys(tree: ast.Module, documented_key_names: set[str]) -> set[str]:
     runtime_keys: set[str] = set()
     for node in ast.walk(tree):
@@ -362,11 +366,9 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
     ) -> None:
         """Keep public dataclass field names aligned with docs."""
-        runtime_fields = _runtime_dataclass_fields(runtime_source_trees)
+        runtime_fields = _runtime_public_dataclass_fields(runtime_source_trees)
 
-        _assert_all_documented(
-            [field for field in runtime_fields if "_" in field], runtime_public_docs_text
-        )
+        _assert_all_documented(runtime_fields, runtime_public_docs_text)
 
     def test_runtime_json_keys_remain_documented(
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
