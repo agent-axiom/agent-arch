@@ -66,6 +66,29 @@ def _assert_all_documented(items: set[str] | list[str], docs_text: str) -> None:
     assert missing == []
 
 
+def _module_dict_string_keys(tree: ast.Module) -> dict[str, set[str]]:
+    module_dict_keys: dict[str, set[str]] = {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            targets = node.targets
+            value = node.value
+        elif isinstance(node, ast.AnnAssign):
+            targets = [node.target]
+            value = node.value
+        else:
+            continue
+        if not isinstance(value, ast.Dict):
+            continue
+        for target in targets:
+            if isinstance(target, ast.Name):
+                module_dict_keys[target.id] = {
+                    key.value
+                    for key in value.keys
+                    if isinstance(key, ast.Constant) and isinstance(key.value, str)
+                }
+    return module_dict_keys
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -218,26 +241,7 @@ class TestRuntimeDocsParity:
     ) -> None:
         """Keep argparse choice values aligned with public docs."""
         tree = runtime_cli_tree
-        module_dict_keys: dict[str, set[str]] = {}
-        for node in tree.body:
-            if isinstance(node, ast.Assign):
-                targets = node.targets
-                value = node.value
-            elif isinstance(node, ast.AnnAssign):
-                targets = [node.target]
-                value = node.value
-            else:
-                continue
-            if not isinstance(value, ast.Dict):
-                continue
-            for target in targets:
-                if isinstance(target, ast.Name):
-                    module_dict_keys[target.id] = {
-                        key.value
-                        for key in value.keys
-                        if isinstance(key, ast.Constant) and isinstance(key.value, str)
-                    }
-
+        module_dict_keys = _module_dict_string_keys(tree)
         runtime_choices: set[str] = set()
         for node in ast.walk(tree):
             if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
