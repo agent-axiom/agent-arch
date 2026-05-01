@@ -92,6 +92,40 @@ class TestFailurePaths:
         missing = sorted(marker for marker in documented_markers if marker not in docs_text)
         assert missing == []
 
+    def test_runtime_json_keys_remain_documented(self) -> None:
+        """Keep public JSON output/config keys aligned with docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        documented_key_names = {
+            "approvals",
+            "events",
+            "labels",
+            "result",
+            "runs",
+            "sessions",
+            "status",
+        }
+        runtime_keys: set[str] = set()
+        for source_path in Path("agent_runtime_ref").glob("*.py"):
+            tree = ast.parse(source_path.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Dict):
+                    continue
+                for key in node.keys:
+                    if isinstance(key, ast.Constant) and isinstance(key.value, str):
+                        if "_" in key.value or key.value in documented_key_names:
+                            runtime_keys.add(key.value)
+
+        missing = sorted(key for key in runtime_keys if key not in docs_text)
+        assert missing == []
+
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
