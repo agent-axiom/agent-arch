@@ -104,8 +104,8 @@
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-现在 `inspect-memory` 不只显示内容，也会显示 `provenance` 和 `revision`。
-`dump-events` 现在也会在退化路径演练的 JSON 输出里返回 `failure_reason`。
+现在 `inspect-memory` 会返回 `config_dir`、`count` 和 `records`；每条记录不只显示内容，也会显示 `provenance` 和 `revision`。
+`dump-events` 现在会在退化路径演练的 JSON 输出里返回 `trace_id`、`status`、`result`、`event_count`、`events` 和 `failure_reason`。
 
 导出一次运行的结构化事件：
 
@@ -175,6 +175,8 @@ Rollout check 会返回 `ready`、`missing_required`、`blocking_signals` 和 `r
 `session-eval-summary` 会返回这一组运行的紧凑摘要，其中也明确统计失败运行和 `traceable_failed_runs`，而不是又把结果压回只有 `success` 和 `denied` 两类。现在也可以直接在这里注入失败演练，摘要会立刻显示 `latest_failure_reason` 便于快速复盘。
 `session-replay` 可以在同一个 `session_id` 里执行多个相关请求。现在这里也能直接注入失败演练，而回放摘要会连同每次运行里的 `failure_reason` 一起保留 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
 `export-session` 会把整段会话保存成结构化 JSON，已经可以作为离线评测流程的种子数据。现在它也会保留委派授权上下文，例如 `authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，同时在 CLI 命令摘要里直接显示失败演练的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
+
+Session 与 eval 命令也会明确暴露摘要字段：`inspect-session` 返回 `session_id`、`tenant_id`、`principal_id`、`trace_count`、`latest_status`、`summary` 和 `runs`；`session-eval-summary` 返回 `session_id`、`total_runs`、`success_runs`、`approval_wait_runs`、`denied_runs`、`failed_runs`、`traceable_failed_runs`、`latest_status`、`latest_trace_id` 和 `latest_failure_reason`；`session-replay` 返回 `session_id`、`run_count`、`summary` 和 `runs`；`export-session` 返回 `output_path`、`session_id`、`total_runs`、`failed_runs`、`traceable_failed_runs`、`latest_trace_id` 和 `latest_failure_reason`；`export-eval-dataset` 返回 `dataset_name`、`output_path`、`session_count`、`run_count`、`failed_runs`、`traceable_failed_runs`、`latest_failure_reason` 和 `sessions`。
 
 现在，运行时也会把工具路径中的失败类结果，例如验证失败，当成一等运行结局来处理。它不再假装这次运行仍然成功，而是记录失败运行、发出明确的 `run_failed` 事件，并在会话导出与 CLI 输出中通过 `failure_reason` 字段同时保留这个状态以及具体失败原因。
 `export-eval-dataset` 会把几个内置会话场景打包成一个可直接用于评测的 JSON 工件，其中也包括一个单独的失败运行演练场景，以及带有阻断型 `sandbox_profile_review` 评分规则的带审批路径 support_ticket 场景，而命令摘要现在也会直接显示聚合后的 `failed_runs`、`traceable_failed_runs` 与 `latest_failure_reason`。
