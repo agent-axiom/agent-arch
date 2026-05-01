@@ -159,7 +159,7 @@ Approval schema отвечает на другой слой:
   - `inspect-approvals`
   - `resolve-approval`
 
-`inspect-approvals` возвращает `trace_id`, `session_id`, `count` и `approvals`; `resolve-approval` возвращает `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id` и `delegated_scope`, поэтому runnable demo сохраняет approval lineage и delegated authority видимыми до и после решения.
+`inspect-approvals` возвращает `trace_id`, `session_id`, `count` и `approvals`; каждая approval entry сохраняет `approval_id`, `capability_name`, `requested_by`, `reviewer`, `reason`, `status`, `authorization_mode`, `delegated_principal_id` и `delegated_scope`. `resolve-approval` возвращает `approval_id`, `status`, `reviewer`, `resolution_note`, `authorization_mode`, `delegated_principal_id` и `delegated_scope`, поэтому runnable demo сохраняет approval lineage и delegated authority видимыми до и после решения.
 
 Встроенный `approvals.yaml` также явно задаёт approval operating policy: `default_reviewer`, `escalation_sla_minutes` и настройки `delegated_authorization`, такие как `reviewer_required_for_user_delegation`, `require_principal_binding`, `require_scope_visibility`, `on_scope_revoked` и `subagent_inheritance`, описывают, кто проверяет delegated actions, какие evidence должны оставаться видимыми и может ли delegation переходить к subagents. Reference policy задаёт subagent inheritance как `explicit_only`, поэтому delegated authority не переходит в child agent без явного указания в approval path.
 

@@ -159,7 +159,7 @@ linked_events:
   - `inspect-approvals`
   - `resolve-approval`
 
-`inspect-approvals` 会返回 `trace_id`、`session_id`、`count` 和 `approvals`；`resolve-approval` 会返回 `approval_id`、`status`、`reviewer`、`resolution_note`、`authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，因此可运行 demo 在决策前后都会保留可见的 approval lineage 与 delegated authority。
+`inspect-approvals` 会返回 `trace_id`、`session_id`、`count` 和 `approvals`；每条 approval entry 都保留 `approval_id`、`capability_name`、`requested_by`、`reviewer`、`reason`、`status`、`authorization_mode`、`delegated_principal_id` 和 `delegated_scope`。`resolve-approval` 会返回 `approval_id`、`status`、`reviewer`、`resolution_note`、`authorization_mode`、`delegated_principal_id` 和 `delegated_scope`，因此可运行 demo 在决策前后都会保留可见的 approval lineage 与 delegated authority。
 
 内置的 `approvals.yaml` 也会明确 approval operating policy：`default_reviewer`、`escalation_sla_minutes`，以及 `delegated_authorization` 下的 `reviewer_required_for_user_delegation`、`require_principal_binding`、`require_scope_visibility`、`on_scope_revoked` 和 `subagent_inheritance`，共同说明谁来评审 delegated actions、哪些 evidence 必须保持可见，以及 delegation 是否可以传递给 subagents。Reference policy 将 subagent inheritance 设为 `explicit_only`，因此 delegated authority 不会流入 child agent，除非 approval path 明确点名。
 
