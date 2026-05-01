@@ -112,6 +112,24 @@ class TestFailurePaths:
         )
         assert missing == []
 
+    def test_runtime_config_root_keys_remain_documented(self) -> None:
+        """Keep bundled runtime config root keys aligned with public docs."""
+        docs_text = "\n".join(
+            [
+                Path("agent_runtime_ref/README.md").read_text(encoding="utf-8"),
+                *[
+                    path.read_text(encoding="utf-8")
+                    for path in Path("docs/appendix").glob("*.md")
+                ],
+            ]
+        )
+        root_keys: set[str] = set()
+        for config_path in Path("agent_runtime_ref/configs").glob("*.yaml"):
+            root_keys.update(str(key) for key in load_yaml_file(config_path))
+
+        missing = sorted(root_key for root_key in root_keys if root_key not in docs_text)
+        assert missing == []
+
     def test_runtime_cli_subcommands_remain_documented(self) -> None:
         """Keep argparse subcommands aligned with public docs."""
         docs_text = "\n".join(
