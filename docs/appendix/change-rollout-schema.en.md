@@ -169,6 +169,8 @@ The [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agen
 
 `check-rollout` returns `ready`, `missing_required`, `blocking_signals`, and `rollout_mode`, which keeps the executable gate aligned with the schema's distinction between absent required evidence and explicit blockers.
 
+The bundled `rollout.yaml` makes the gate inputs concrete: required evidence includes `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `slo_defined`, `rollback_plan`, and `oncall_owner`; `rollout_mode` sets `initial`, `max_tenant_exposure_pct`, and `require_shadow_period`; and `block_if` names hard blockers such as `unknown_side_effect_path_missing`, `direct_tool_access_present`, and `policy_decisions_not_traced`.
+
 That makes it possible to show not only the idea of a gate, but also a runnable skeleton of it.
 
 ## 9. Minimal invariants

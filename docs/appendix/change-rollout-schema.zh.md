@@ -169,6 +169,8 @@ decided_by:
 
 `check-rollout` 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让可执行门禁与 schema 中“缺失的必需证据”和“明确阻断项”的区分保持一致。
 
+内置的 `rollout.yaml` 会把 gate inputs 具体化：required evidence 包括 `trace_coverage`、`policy_prechecks`、`capability_owners`、`offline_eval_pass`、`slo_defined`、`rollback_plan` 和 `oncall_owner`；`rollout_mode` 设置 `initial`、`max_tenant_exposure_pct` 和 `require_shadow_period`；`block_if` 则列出 `unknown_side_effect_path_missing`、`direct_tool_access_present`、`policy_decisions_not_traced` 等硬阻断项。
+
 这让书里不只是能解释门禁的概念，还能直接给出一个可运行的骨架。
 
 ## 9. 最小不变量
