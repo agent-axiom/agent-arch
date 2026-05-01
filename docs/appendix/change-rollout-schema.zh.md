@@ -171,7 +171,7 @@ decided_by:
 
 内置的 `rollout.yaml` 会把 gate inputs 具体化：required evidence 包括 `trace_coverage`、`policy_prechecks`、`capability_owners`、`offline_eval_pass`、`slo_defined`、`rollback_plan` 和 `oncall_owner`；`rollout_mode` 设置 `initial`、`max_tenant_exposure_pct` 和 `require_shadow_period`；`block_if` 则列出 `unknown_side_effect_path_missing`、`direct_tool_access_present`、`policy_decisions_not_traced` 等硬阻断项。
 
-相邻的 `change.yaml` 也定义 reviewed change surface：`required_signals` 列出 `design_review_passed`、`offline_eval_passed`、`policy_diff_reviewed`、`rollback_plan_ready`、`session_expiry_behavior_checked`、`reinit_policy_reviewed`、`sandbox_profile_reviewed` 和 `failed_run_drill_checked` 等 release evidence，而 `approval_roles` 将 `platform-owner` 与 `security-reviewer` 标记为 required reviewers。
+相邻的 `change.yaml` 也定义 reviewed change surface：`change_id` 是 `chg-2026-04-07-support-runtime`，`change_type` 是 `capability_contract_update`，`risk_level` 是 `high`，`rollout_strategy` 是 `staged_canary`。其中 `required_signals` 列出 `design_review_passed`、`offline_eval_passed`、`policy_diff_reviewed`、`rollback_plan_ready`、`session_expiry_behavior_checked`、`reinit_policy_reviewed`、`sandbox_profile_reviewed` 和 `failed_run_drill_checked` 等 release evidence，而 `approval_roles` 将 `platform-owner` 与 `security-reviewer` 标记为 required reviewers。
 
 这让书里不只是能解释门禁的概念，还能直接给出一个可运行的骨架。
 
