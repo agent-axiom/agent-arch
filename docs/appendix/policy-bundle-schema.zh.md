@@ -259,7 +259,7 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 - MCP 治理契约描述能力是否来自已批准注册表、MCP 服务器由谁负责、由哪种认证模式保护，以及发现影子 MCP 路径时该如何处理；
 - 验证器契约策略描述哪些验证器契约可以被信任用于高风险打分、发布证据或保障决策。
 
-Reference runtime 在 `capabilities.yaml` 和 `policy.yaml` 中把这个连接具体化：capability entries 携带 `tool_principal`、`risk_tier`、`network_access`、`allowed_egress`、`timeout_seconds` 和 `idempotency_key_required`，policy entries 携带 `run_precheck`、`require_tenant`、`deny_if_principal_missing`，针对 `search_docs`、`create_ticket` 与 `run_shell` 的 capability decisions，memory-write `allow_kinds`，以及 execution-level `allow_network_access`。
+Reference runtime 在 `capabilities.yaml` 和 `policy.yaml` 中把这个连接具体化：capability entries 携带 `tool_principal`、`risk_tier`、`network_access`、`allowed_egress`、`timeout_seconds` 和 `idempotency_key_required`，policy entries 携带 `run_precheck`、`require_tenant`、`deny_if_principal_missing`，针对 `search_docs`、`create_ticket` 与 `run_shell` 的 capability decisions，memory-write `allow_kinds`（`validated_fact` 和 `session_summary`），以及 execution-level `allow_network_access`。
 
 ## 现在就该做什么
 
