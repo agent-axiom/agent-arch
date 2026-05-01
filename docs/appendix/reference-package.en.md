@@ -152,7 +152,7 @@ Rollout policy check with signal overrides:
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
-The rollout check returns `ready`, `missing_required`, `blocking_signals`, and `rollout_mode`, so automation can tell absent required evidence apart from explicitly blocked signals.
+The rollout check returns `ready`, `missing_required`, `blocking_signals`, and `rollout_mode`, so automation can tell absent required evidence apart from explicitly blocked signals; signal overrides accept boolean `key=value` pairs and reject unknown boolean text with `Unsupported boolean value in signal: {raw_signal!r}`.
 
 Continuous controls and registry drift check:
 
@@ -237,7 +237,7 @@ There are starter files for both runtime and lifecycle in [configs](https://gith
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
 
-These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, release-identity-bearing lifecycle artifacts, and other lifecycle state, so the package is now closer to a real operational skeleton.
+These are no longer just static examples. `config.py` can load those YAML files into agent identity, approved inventory, the runtime, context layers, the memory store, rollout policy, release-identity-bearing lifecycle artifacts, and other lifecycle state, so the package is now closer to a real operational skeleton. The generic loaders keep malformed YAML shapes explicit too: `Config at {path!s} must be a mapping at the top level`, `{label} config must be a mapping`, and `{key} must be a list`.
 
 The runtime-control bundle is also now meant to represent approval and session-governance rules explicitly, including pause/resume, background handling, expiry, re-init policy, capability-session ownership, delegated authorization assumptions, and the contract boundary between a user run and a capability-side session.
 

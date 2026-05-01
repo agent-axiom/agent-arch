@@ -63,7 +63,7 @@ In production, this usually needs to grow to include:
 - `span_id`
 - `parent_span_id`
 
-In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version` and `redacted_fields`, and the export path supports redaction for selected fields. The event loader validates this shape explicitly: `payload` must be a mapping and `redacted_fields` must be a list.
+In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version` and `redacted_fields`, and the export path supports redaction for selected fields. The event loader validates this shape explicitly: `payload must be a mapping` and `redacted_fields must be a list`.
 
 ## How trace and session relate
 

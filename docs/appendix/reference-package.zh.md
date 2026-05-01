@@ -152,7 +152,7 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
-Rollout check 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让自动化能够区分缺失的必需证据与明确阻断的信号。
+Rollout check 会返回 `ready`、`missing_required`、`blocking_signals` 和 `rollout_mode`，让自动化能够区分缺失的必需证据与明确阻断的信号；signal overrides 接受 boolean `key=value` pairs，并会用 `Unsupported boolean value in signal: {raw_signal!r}` 拒绝未知 boolean text。
 
 检查持续控制和注册表漂移：
 
@@ -237,7 +237,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。
+它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。Generic loaders 也会明确暴露 malformed YAML shapes：`Config at {path!s} must be a mapping at the top level`、`{label} config must be a mapping` 和 `{key} must be a list`。
 
 其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停/恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 

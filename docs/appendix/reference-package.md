@@ -152,7 +152,7 @@
 .venv/bin/python -m agent_runtime_ref check-rollout --signal offline_eval_pass=false
 ```
 
-Rollout check возвращает `ready`, `missing_required`, `blocking_signals` и `rollout_mode`, чтобы automation отличала отсутствующие required evidence от явно блокирующих сигналов.
+Rollout check возвращает `ready`, `missing_required`, `blocking_signals` и `rollout_mode`, чтобы automation отличала отсутствующие required evidence от явно блокирующих сигналов; signal overrides принимают boolean `key=value` pairs и отвергают неизвестный boolean text через `Unsupported boolean value in signal: {raw_signal!r}`.
 
 Проверка continuous controls и drift по реестру:
 
@@ -237,7 +237,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
 
-Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки, lifecycle-артефакты с идентичностью выпуска и другие элементы жизненного цикла, поэтому пакет стал ближе к реальному эксплуатационному каркасу.
+Это уже не просто статические примеры. `config.py` умеет загружать эти YAML-файлы в identity агента, approved inventory, рантайм, context layers, хранилище памяти, политику выкладки, lifecycle-артефакты с идентичностью выпуска и другие элементы жизненного цикла, поэтому пакет стал ближе к реальному эксплуатационному каркасу. Generic loaders также явно показывают malformed YAML shapes: `Config at {path!s} must be a mapping at the top level`, `{label} config must be a mapping` и `{key} must be a list`.
 
 При этом runtime-control bundle теперь задуман еще и как явное место для approval и session-governance правил, включая pause/resume, background handling, expiry, re-init policy, ownership capability sessions и границу между user run и capability-side session.
 
