@@ -179,7 +179,7 @@ owner: platform-operations
 
 Именно поэтому lifecycle artifacts полезно держать не как prose-only documentation, а как reviewable YAML или JSON contract.
 
-Reference runtime отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют retiring surface, `triggers` объясняют, почему начинается retirement, `required_steps` включает controls вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют ownership и retained evidence.
+Reference runtime отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют retiring surface, `triggers` объясняют, почему начинается retirement, `required_steps` включает controls вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют ownership и retained evidence. Archive list называет `telemetry_jsonl`, `session_exports`, `approval_history`, `paused_run_state`, `capability_session_state` и `runtime_control_bundle` — именно records, которые должны оставаться reviewable после retirement.
 
 ## 7. Минимальные инварианты
 
