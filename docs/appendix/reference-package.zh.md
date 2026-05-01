@@ -83,7 +83,7 @@
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-`inspect-agent` 会返回 `agent_id`、`display_name`、`owner_team`、`runtime_principal`、`approved_capabilities` 和 `catalog_capabilities`，让 inventory review 可以把 configured identity 与 capability catalog 对照起来。
+`inspect-agent` 会返回 `agent_id`、`display_name`、`owner_team`、`runtime_principal`、`approved_capabilities` 和 `catalog_capabilities`，让 inventory review 可以把 configured identity 与 capability catalog 对照起来。在内置的 `agent.yaml` 中，该 identity 归 `agent_platform` 所有，以 `svc-support-triage-ref` 运行，并且只 approved `search_docs` 与 `create_ticket`；随后 capability catalog 将 `search_docs` 绑定到 `svc-knowledge-reader`，将 `create_ticket` 绑定到 `svc-ticket-writer`。
 
 查看与第八部分对应的生命周期工件，包括运行时控制链接和发布身份：
 
