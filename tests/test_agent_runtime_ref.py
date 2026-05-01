@@ -169,6 +169,12 @@ def _cli_subcommand_names(tree: ast.Module) -> list[str]:
     )
 
 
+def _cli_option_flags(cli_source: str) -> list[str]:
+    return sorted(
+        set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
+    )
+
+
 @pytest.fixture(scope="class")
 def runtime_public_docs_text() -> str:
     return _runtime_public_docs_text()
@@ -276,10 +282,7 @@ class TestRuntimeDocsParity:
         self, runtime_public_docs_text: str, runtime_cli_source_text: str
     ) -> None:
         """Keep argparse option flags aligned with public docs."""
-        cli_source = runtime_cli_source_text
-        runtime_flags = sorted(
-            set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
-        )
+        runtime_flags = _cli_option_flags(runtime_cli_source_text)
 
         _assert_all_documented(runtime_flags, runtime_public_docs_text)
 
