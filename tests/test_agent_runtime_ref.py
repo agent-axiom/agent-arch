@@ -554,6 +554,29 @@ class TestFailurePaths:
         ):
             main(["inspect-trace", "--input", str(output_path)])
 
+    @pytest.mark.parametrize("empty_field", ["event_type", "trace_id"])
+    def test_cli_inspect_trace_rejects_events_with_empty_required_fields(
+        self, empty_field: str, tmp_path: Path
+    ) -> None:
+        event = {
+            "schema_version": "1.0",
+            "event_type": "run_start",
+            "trace_id": "trace-empty-field",
+            "payload": {},
+            "redacted_fields": [],
+        }
+        event[empty_field] = " "
+        output_path = tmp_path / "empty-field.jsonl"
+        output_path.write_text(json.dumps(event) + "\n", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match=f"Telemetry event field must not be empty: {empty_field}",
+        ):
+            main(["inspect-trace", "--input", str(output_path)])
+
     @pytest.mark.parametrize(
         ("event_patch", "expected_message"),
         [
