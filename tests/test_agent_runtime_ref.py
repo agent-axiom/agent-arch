@@ -318,11 +318,6 @@ def runtime_source_trees() -> list[ast.Module]:
 
 
 @pytest.fixture(scope="class")
-def runtime_cli_source_text() -> str:
-    return _runtime_cli_source_text()
-
-
-@pytest.fixture(scope="class")
 def runtime_cli_tree() -> ast.Module:
     return _runtime_cli_tree()
 
