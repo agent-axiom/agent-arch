@@ -1539,6 +1539,18 @@ class TestLowCoverageModuleBranches:
             ),
         )
 
+    def test_approval_policy_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.approvals import ApprovalPolicy
+
+        with pytest.raises(TypeError, match="'approvals' must be a mapping"):
+            ApprovalPolicy.from_dict({"approvals": []})
+        with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
+            ApprovalPolicy.from_dict({"approvals": {"default_reviewer": " "}})
+        with pytest.raises(
+            ValueError, match="approvals.escalation_sla_minutes must be positive"
+        ):
+            ApprovalPolicy.from_dict({"approvals": {"escalation_sla_minutes": 0}})
+
     def test_catalog_loader_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.catalog import CapabilityCatalog
 
