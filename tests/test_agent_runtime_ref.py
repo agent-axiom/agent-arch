@@ -2014,6 +2014,21 @@ class TestCli:
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
         assert expected_missing in missing
 
+    @pytest.mark.parametrize(
+        "command",
+        [
+            ["check-change", "--signal", "offline_eval_passed=maybe"],
+            ["check-retirement", "--step", "revoke_egress=maybe"],
+        ],
+    )
+    def test_cli_lifecycle_checks_reject_invalid_boolean_values(
+        self, command: list[str]
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Unsupported boolean value in signal"):
+            main(command)
+
     def test_cli_check_change_surfaces_failed_run_specific_missing_signals(
         self,
         cli_json,
