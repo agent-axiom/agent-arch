@@ -8,6 +8,13 @@ from agent_runtime_ref.identity import ApprovedInventory
 from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
 
 
+def _read_string_list_items(items: list[object], *, label: str) -> set[str]:
+    values = {str(item).strip() for item in items}
+    if "" in values:
+        raise ValueError(f"{label} entries must not be empty")
+    return values
+
+
 @dataclass(frozen=True, slots=True)
 class PolicyDecision:
     action: str
@@ -86,8 +93,12 @@ class PolicyEngine:
                 raw_precheck.get("deny_if_principal_missing", True),
             ),
             capability_policies=capability_policies,
-            allowed_memory_kinds={str(item) for item in allow_kinds},
-            allowed_network_access={str(item) for item in allowed_network_access},
+            allowed_memory_kinds=_read_string_list_items(
+                allow_kinds, label="memory_write.allow_kinds"
+            ),
+            allowed_network_access=_read_string_list_items(
+                allowed_network_access, label="execution.allow_network_access"
+            ),
         )
 
     def precheck(self, request: RunRequest) -> PolicyDecision:
