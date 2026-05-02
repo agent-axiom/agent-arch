@@ -14,9 +14,15 @@ class ApprovalPolicy:
         raw_approvals = data.get("approvals", {})
         if not isinstance(raw_approvals, Mapping):
             raise TypeError("'approvals' must be a mapping")
+        default_reviewer = str(raw_approvals.get("default_reviewer", "manager")).strip()
+        if not default_reviewer:
+            raise ValueError("approvals.default_reviewer is required")
+        escalation_sla_minutes = int(raw_approvals.get("escalation_sla_minutes", 30))
+        if escalation_sla_minutes <= 0:
+            raise ValueError("approvals.escalation_sla_minutes must be positive")
         return cls(
-            default_reviewer=str(raw_approvals.get("default_reviewer", "manager")),
-            escalation_sla_minutes=int(raw_approvals.get("escalation_sla_minutes", 30)),
+            default_reviewer=default_reviewer,
+            escalation_sla_minutes=escalation_sla_minutes,
         )
 
 
