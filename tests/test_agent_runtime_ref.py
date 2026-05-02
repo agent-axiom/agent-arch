@@ -193,7 +193,7 @@ def _runtime_documented_json_keys(
     return runtime_keys
 
 
-def _runtime_public_json_keys(trees: list[ast.Module]) -> set[str]:
+def _runtime_public_json_keys(trees: list[ast.Module]) -> list[str]:
     documented_key_names = {
         "approvals",
         "events",
@@ -203,7 +203,7 @@ def _runtime_public_json_keys(trees: list[ast.Module]) -> set[str]:
         "sessions",
         "status",
     }
-    return _runtime_documented_json_keys(trees, documented_key_names)
+    return sorted(_runtime_documented_json_keys(trees, documented_key_names))
 
 
 def _runtime_config_root_keys(configs: list[dict[str, object]]) -> set[str]:
