@@ -50,12 +50,8 @@ def _runtime_source_trees() -> list[ast.Module]:
     return [_parse_python_source(source_path) for source_path in _runtime_source_paths()]
 
 
-def _runtime_cli_path() -> Path:
-    return Path("agent_runtime_ref/__main__.py")
-
-
 def _runtime_cli_tree() -> ast.Module:
-    return _parse_python_source(_runtime_cli_path())
+    return _parse_python_source(Path("agent_runtime_ref/__main__.py"))
 
 
 def _runtime_config_dir() -> Path:
