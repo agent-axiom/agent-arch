@@ -58,8 +58,8 @@ def _runtime_config_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
-def _runtime_config_documents() -> list[dict[str, object]]:
-    return [load_yaml_file(config_path) for config_path in _runtime_config_paths()]
+def _runtime_config_documents(config_paths: list[Path]) -> list[dict[str, object]]:
+    return [load_yaml_file(config_path) for config_path in config_paths]
 
 
 def _assert_all_documented(items: list[str], docs_text: str) -> None:
@@ -317,8 +317,10 @@ def runtime_config_paths() -> list[Path]:
 
 
 @pytest.fixture(scope="class")
-def runtime_config_documents() -> list[dict[str, object]]:
-    return _runtime_config_documents()
+def runtime_config_documents(
+    runtime_config_paths: list[Path],
+) -> list[dict[str, object]]:
+    return _runtime_config_documents(runtime_config_paths)
 
 
 class TestRuntimeDocsParity:
