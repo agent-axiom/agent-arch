@@ -121,7 +121,7 @@ def _render_raise_message(message: ast.expr) -> str | None:
     return "".join(parts)
 
 
-def _runtime_error_messages(trees: list[ast.Module]) -> set[str]:
+def _runtime_error_messages(trees: list[ast.Module]) -> list[str]:
     runtime_errors: set[str] = set()
     for tree in trees:
         for node in ast.walk(tree):
@@ -135,7 +135,7 @@ def _runtime_error_messages(trees: list[ast.Module]) -> set[str]:
             message = _render_raise_message(node.exc.args[0])
             if message is not None:
                 runtime_errors.add(message)
-    return runtime_errors
+    return sorted(runtime_errors)
 
 
 def _dataclass_field_names(tree: ast.Module) -> set[str]:
