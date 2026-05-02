@@ -530,6 +530,32 @@ class TestFailurePaths:
         ):
             main(["inspect-trace", "--input", str(output_path)])
 
+    @pytest.mark.parametrize(
+        ("event_patch", "expected_message"),
+        [
+            ({"payload": []}, "payload must be a mapping"),
+            ({"redacted_fields": "trace_id"}, "redacted_fields must be a list"),
+        ],
+    )
+    def test_cli_inspect_trace_rejects_malformed_event_shapes(
+        self, event_patch: dict[str, object], expected_message: str, tmp_path: Path
+    ) -> None:
+        event: dict[str, object] = {
+            "schema_version": "1.0",
+            "event_type": "run_start",
+            "trace_id": "trace-bad-shape",
+            "payload": {},
+            "redacted_fields": [],
+        }
+        event.update(event_patch)
+        output_path = tmp_path / "bad-shape.jsonl"
+        output_path.write_text(json.dumps(event) + "\n", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(TypeError, match=expected_message):
+            main(["inspect-trace", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_empty_event_file(self, tmp_path: Path) -> None:
         output_path = tmp_path / "empty.jsonl"
         output_path.write_text("", encoding="utf-8")
