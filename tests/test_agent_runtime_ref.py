@@ -2077,6 +2077,12 @@ class TestCli:
         assert payload["resolution_note"] == "manager approved demo request"
         assert payload["authorization_mode"] == "platform_owned"
 
+    def test_cli_resolve_approval_rejects_unknown_approval_id(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Approval request not found: apr-missing"):
+            main(["resolve-approval", "--approval-id", "apr-missing"])
+
     def test_cli_resolve_approval_surfaces_delegated_auth_context(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [

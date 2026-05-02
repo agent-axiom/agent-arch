@@ -646,9 +646,16 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     pending = runtime.approvals.pending()
     if not pending:
         raise ValueError("No pending approval requests were generated for this run")
-    target = pending[0] if args.approval_id is None else next(
-        item for item in pending if item.approval_id == args.approval_id
-    )
+    if args.approval_id is None:
+        target = pending[0]
+    else:
+        approval_id = args.approval_id
+        target = next(
+            (item for item in pending if item.approval_id == approval_id),
+            None,
+        )
+        if target is None:
+            raise ValueError(f"Approval request not found: {approval_id}")
     resolved = runtime.approvals.resolve(
         target.approval_id,
         decision=args.decision,
