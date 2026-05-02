@@ -1454,6 +1454,10 @@ class TestLowCoverageModuleBranches:
             ControlsPolicy.from_dict({"controls": {"require": "x"}})
         with pytest.raises(TypeError, match="'controls.block_if' must be a list"):
             ControlsPolicy.from_dict({"controls": {"require": [], "block_if": "x"}})
+        with pytest.raises(ValueError, match="controls.require entries must not be empty"):
+            ControlsPolicy.from_dict({"controls": {"require": [" "]}})
+        with pytest.raises(ValueError, match="controls.block_if entries must not be empty"):
+            ControlsPolicy.from_dict({"controls": {"require": [], "block_if": [""]}})
 
     def test_assess_controls_marks_inventory_drift_as_blocking(self) -> None:
         from agent_runtime_ref.controls import ControlsPolicy, InventoryDrift, assess_controls
@@ -1520,6 +1524,10 @@ class TestLowCoverageModuleBranches:
             RolloutPolicy.from_dict(
                 {"rollout": {"require": [], "block_if": [], "rollout_mode": []}}
             )
+        with pytest.raises(ValueError, match="rollout.require entries must not be empty"):
+            RolloutPolicy.from_dict({"rollout": {"require": [" "]}})
+        with pytest.raises(ValueError, match="rollout.block_if entries must not be empty"):
+            RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [""]}})
 
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:
         assert not ready_for_rollout(
