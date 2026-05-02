@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import ast
 import json
-import re
 from pathlib import Path
 
 import pytest
@@ -264,13 +263,20 @@ def _cli_option_flags(tree: ast.Module) -> list[str]:
     )
 
 
-def _documented_literal_markers(cli_source: str) -> list[str]:
-    literal_markers = sorted(set(re.findall(r'"([a-z][a-z0-9_:-]+)"', cli_source)))
-    return [
+def _documented_literal_markers(tree: ast.Module) -> list[str]:
+    literal_markers = {
+        node.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Constant)
+        and isinstance(node.value, str)
+        and node.value[:1].islower()
+        and all(char.islower() or char.isdigit() or char in "_:" for char in node.value)
+    }
+    return sorted(
         marker
         for marker in literal_markers
         if "_" in marker or marker.startswith("trace:")
-    ]
+    )
 
 
 def _cli_choice_values(tree: ast.Module) -> list[str]:
@@ -341,10 +347,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_errors, runtime_public_docs_text)
 
     def test_runtime_literal_markers_remain_documented(
-        self, runtime_public_docs_text: str, runtime_cli_source_text: str
+        self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep public docs aligned with scenario labels and runtime markers."""
-        documented_markers = _documented_literal_markers(runtime_cli_source_text)
+        documented_markers = _documented_literal_markers(runtime_cli_tree)
 
         _assert_all_documented(documented_markers, runtime_public_docs_text)
 
