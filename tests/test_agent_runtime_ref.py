@@ -53,12 +53,9 @@ def _runtime_cli_path() -> Path:
     return Path("agent_runtime_ref/__main__.py")
 
 
-def _runtime_cli_source_text() -> str:
-    return _runtime_cli_path().read_text(encoding="utf-8")
-
-
 def _runtime_cli_tree() -> ast.Module:
-    return ast.parse(_runtime_cli_source_text(), filename=str(_runtime_cli_path()))
+    cli_path = _runtime_cli_path()
+    return ast.parse(cli_path.read_text(encoding="utf-8"), filename=str(cli_path))
 
 
 def _runtime_config_dir() -> Path:
