@@ -240,6 +240,8 @@ def _resolve_trace_id(events: list[StructuredEvent], requested_trace_id: str | N
         if requested_trace_id not in trace_ids:
             raise ValueError(f"Trace ID not found in event file: {requested_trace_id}")
         return requested_trace_id
+    if not trace_ids:
+        raise ValueError("Trace file does not contain any trace IDs")
     if len(trace_ids) != 1:
         raise ValueError("Trace file contains multiple trace IDs; pass --trace-id explicitly")
     return trace_ids[0]
