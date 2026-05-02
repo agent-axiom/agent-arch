@@ -1900,6 +1900,21 @@ class TestCli:
         assert not payload["ready"]
         assert "offline_eval_pass" in payload["missing_required"]
 
+    @pytest.mark.parametrize(
+        ("raw_signal", "expected_message"),
+        [
+            ("trace_coverage", "Signal must use key=value format"),
+            ("trace_coverage=maybe", "Unsupported boolean value in signal"),
+        ],
+    )
+    def test_cli_check_rollout_rejects_invalid_signal_values(
+        self, raw_signal: str, expected_message: str
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match=expected_message):
+            main(["check-rollout", "--signal", raw_signal])
+
     def test_cli_check_controls_reports_control_failure(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
