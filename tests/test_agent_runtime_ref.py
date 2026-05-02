@@ -507,6 +507,29 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["inspect-trace", "--input", str(output_path)])
 
+    @pytest.mark.parametrize("missing_field", ["event_type", "trace_id"])
+    def test_cli_inspect_trace_rejects_events_missing_required_fields(
+        self, missing_field: str, tmp_path: Path
+    ) -> None:
+        event = {
+            "schema_version": "1.0",
+            "event_type": "run_start",
+            "trace_id": "trace-missing-field",
+            "payload": {},
+            "redacted_fields": [],
+        }
+        event.pop(missing_field)
+        output_path = tmp_path / "missing-field.jsonl"
+        output_path.write_text(json.dumps(event) + "\n", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match=f"Telemetry event is missing required field: {missing_field}",
+        ):
+            main(["inspect-trace", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_empty_event_file(self, tmp_path: Path) -> None:
         output_path = tmp_path / "empty.jsonl"
         output_path.write_text("", encoding="utf-8")
