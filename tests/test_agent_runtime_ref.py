@@ -250,9 +250,17 @@ def _cli_subcommand_names(tree: ast.Module) -> list[str]:
     )
 
 
-def _cli_option_flags(cli_source: str) -> list[str]:
+def _cli_option_flags(tree: ast.Module) -> list[str]:
     return sorted(
-        set(re.findall(r"add_argument\(\s*['\"](--[a-z0-9-]+)['\"]", cli_source))
+        arg.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "add_argument"
+        for arg in node.args
+        if isinstance(arg, ast.Constant)
+        and isinstance(arg.value, str)
+        and arg.value.startswith("--")
     )
 
 
@@ -373,10 +381,10 @@ class TestRuntimeDocsParity:
         _assert_all_documented(runtime_subcommands, runtime_public_docs_text)
 
     def test_runtime_cli_flags_remain_documented(
-        self, runtime_public_docs_text: str, runtime_cli_source_text: str
+        self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
     ) -> None:
         """Keep argparse option flags aligned with public docs."""
-        runtime_flags = _cli_option_flags(runtime_cli_source_text)
+        runtime_flags = _cli_option_flags(runtime_cli_tree)
 
         _assert_all_documented(runtime_flags, runtime_public_docs_text)
 
