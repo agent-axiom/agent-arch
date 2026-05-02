@@ -507,6 +507,19 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["inspect-trace", "--input", str(output_path)])
 
+    def test_cli_inspect_trace_rejects_invalid_json_event_lines(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "invalid-json-event.jsonl"
+        output_path.write_text("\n{not-json}\n", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError, match="Telemetry event line is not valid JSON: 2"
+        ):
+            main(["inspect-trace", "--input", str(output_path)])
+
     def test_cli_inspect_trace_rejects_non_mapping_event_records(
         self, tmp_path: Path
     ) -> None:

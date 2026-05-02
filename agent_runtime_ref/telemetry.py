@@ -82,11 +82,16 @@ class TelemetryEmitter:
         input_path = Path(path)
         events: list[StructuredEvent] = []
         with input_path.open("r", encoding="utf-8") as handle:
-            for raw_line in handle:
+            for line_number, raw_line in enumerate(handle, start=1):
                 line = raw_line.strip()
                 if not line:
                     continue
-                raw_event = json.loads(line)
+                try:
+                    raw_event = json.loads(line)
+                except json.JSONDecodeError as exc:
+                    raise ValueError(
+                        f"Telemetry event line is not valid JSON: {line_number}"
+                    ) from exc
                 if not isinstance(raw_event, dict):
                     raise TypeError("Telemetry event must be a mapping")
                 events.append(StructuredEvent.from_dict(raw_event))
