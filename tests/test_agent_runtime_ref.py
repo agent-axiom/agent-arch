@@ -236,14 +236,21 @@ def _runtime_config_nested_keys(configs: list[dict[str, object]]) -> list[str]:
     return sorted(config_keys)
 
 
-def _cli_subcommand_names(tree: ast.Module) -> list[str]:
-    return sorted(
-        node.args[0].value
+def _cli_method_calls(tree: ast.Module, method_name: str) -> list[ast.Call]:
+    return [
+        node
         for node in ast.walk(tree)
         if isinstance(node, ast.Call)
         and isinstance(node.func, ast.Attribute)
-        and node.func.attr == "add_parser"
-        and node.args
+        and node.func.attr == method_name
+    ]
+
+
+def _cli_subcommand_names(tree: ast.Module) -> list[str]:
+    return sorted(
+        node.args[0].value
+        for node in _cli_method_calls(tree, "add_parser")
+        if node.args
         and isinstance(node.args[0], ast.Constant)
         and isinstance(node.args[0].value, str)
     )
@@ -252,10 +259,7 @@ def _cli_subcommand_names(tree: ast.Module) -> list[str]:
 def _cli_option_flags(tree: ast.Module) -> list[str]:
     return sorted(
         arg.value
-        for node in ast.walk(tree)
-        if isinstance(node, ast.Call)
-        and isinstance(node.func, ast.Attribute)
-        and node.func.attr == "add_argument"
+        for node in _cli_method_calls(tree, "add_argument")
         for arg in node.args
         if isinstance(arg, ast.Constant)
         and isinstance(arg.value, str)
@@ -282,11 +286,7 @@ def _documented_literal_markers(tree: ast.Module) -> list[str]:
 def _cli_choice_values(tree: ast.Module) -> list[str]:
     module_dict_keys = _module_dict_string_keys(tree)
     runtime_choices: set[str] = set()
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Attribute):
-            continue
-        if node.func.attr != "add_argument":
-            continue
+    for node in _cli_method_calls(tree, "add_argument"):
         for keyword in node.keywords:
             if keyword.arg != "choices":
                 continue
