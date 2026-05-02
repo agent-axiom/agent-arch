@@ -28,11 +28,18 @@ class StructuredEvent:
 
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> StructuredEvent:
+        required_values: dict[str, str] = {}
         for required_field in ("event_type", "trace_id"):
             if required_field not in data:
                 raise ValueError(
                     f"Telemetry event is missing required field: {required_field}"
                 )
+            value = str(data[required_field]).strip()
+            if not value:
+                raise ValueError(
+                    f"Telemetry event field must not be empty: {required_field}"
+                )
+            required_values[required_field] = value
         payload = data.get("payload", {})
         if not isinstance(payload, dict):
             raise TypeError("payload must be a mapping")
@@ -41,8 +48,8 @@ class StructuredEvent:
             raise TypeError("redacted_fields must be a list")
         return cls(
             schema_version=str(data.get("schema_version", SCHEMA_VERSION)),
-            event_type=str(data["event_type"]),
-            trace_id=str(data["trace_id"]),
+            event_type=required_values["event_type"],
+            trace_id=required_values["trace_id"],
             payload={str(key): str(value) for key, value in payload.items()},
             redacted_fields=tuple(str(item) for item in redacted_fields),
         )
