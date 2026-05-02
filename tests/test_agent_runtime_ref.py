@@ -265,7 +265,7 @@ def _documented_literal_markers(cli_source: str) -> list[str]:
     ]
 
 
-def _cli_choice_values(tree: ast.Module) -> set[str]:
+def _cli_choice_values(tree: ast.Module) -> list[str]:
     module_dict_keys = _module_dict_string_keys(tree)
     runtime_choices: set[str] = set()
     for node in ast.walk(tree):
@@ -290,7 +290,7 @@ def _cli_choice_values(tree: ast.Module) -> set[str]:
                 and isinstance(keyword.value.args[0], ast.Name)
             ):
                 runtime_choices.update(module_dict_keys[keyword.value.args[0].id])
-    return runtime_choices
+    return sorted(runtime_choices)
 
 
 @pytest.fixture(scope="class")
