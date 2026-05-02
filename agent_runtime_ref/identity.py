@@ -27,7 +27,10 @@ class ApprovedInventory:
         raw_inventory = raw_agent.get("approved_capabilities", [])
         if not isinstance(raw_inventory, list):
             raise TypeError("'approved_capabilities' must be a list")
-        return cls(capabilities=frozenset(str(item) for item in raw_inventory))
+        capabilities = frozenset(str(item).strip() for item in raw_inventory)
+        if "" in capabilities:
+            raise ValueError("approved_capabilities entries must not be empty")
+        return cls(capabilities=capabilities)
 
 
 def load_agent_identity(data: Mapping[str, Any]) -> AgentIdentity:

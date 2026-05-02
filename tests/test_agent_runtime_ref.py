@@ -1564,6 +1564,10 @@ class TestLowCoverageModuleBranches:
             ApprovedInventory.from_agent_config({"agent": []})
         with pytest.raises(TypeError, match="'approved_capabilities' must be a list"):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": "x"}})
+        with pytest.raises(
+            ValueError, match="approved_capabilities entries must not be empty"
+        ):
+            ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [" "]}})
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             load_agent_identity({"agent": []})
 
