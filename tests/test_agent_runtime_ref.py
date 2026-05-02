@@ -45,7 +45,7 @@ def _runtime_source_paths() -> list[Path]:
 
 def _runtime_source_trees() -> list[ast.Module]:
     return [
-        ast.parse(source_path.read_text(encoding="utf-8"))
+        ast.parse(source_path.read_text(encoding="utf-8"), filename=str(source_path))
         for source_path in _runtime_source_paths()
     ]
 
@@ -59,7 +59,7 @@ def _runtime_cli_source_text() -> str:
 
 
 def _runtime_cli_tree() -> ast.Module:
-    return ast.parse(_runtime_cli_source_text())
+    return ast.parse(_runtime_cli_source_text(), filename=str(_runtime_cli_path()))
 
 
 def _runtime_config_dir() -> Path:
