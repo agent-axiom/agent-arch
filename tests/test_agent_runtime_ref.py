@@ -58,10 +58,6 @@ def _runtime_config_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
-def _runtime_config_documents(config_paths: list[Path]) -> list[dict[str, object]]:
-    return [load_yaml_file(config_path) for config_path in config_paths]
-
-
 def _assert_all_documented(items: list[str], docs_text: str) -> None:
     missing = [item for item in items if item not in docs_text]
     assert missing == []
@@ -320,7 +316,7 @@ def runtime_config_paths() -> list[Path]:
 def runtime_config_documents(
     runtime_config_paths: list[Path],
 ) -> list[dict[str, object]]:
-    return _runtime_config_documents(runtime_config_paths)
+    return [load_yaml_file(config_path) for config_path in runtime_config_paths]
 
 
 class TestRuntimeDocsParity:
