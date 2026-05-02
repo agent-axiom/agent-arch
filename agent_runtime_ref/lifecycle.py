@@ -10,6 +10,13 @@ def _require_mapping(payload: object, *, label: str) -> dict[str, Any]:
     return {str(key): value for key, value in payload.items()}
 
 
+def _read_required_string(data: dict[str, Any], key: str, *, label: str) -> str:
+    value = str(data.get(key, "")).strip()
+    if not value:
+        raise ValueError(f"{label}.{key} is required")
+    return value
+
+
 def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     value = data.get(key, [])
     if not isinstance(value, list):
@@ -34,10 +41,12 @@ class ChangeRecord:
     def from_dict(cls, payload: dict[str, object]) -> ChangeRecord:
         data = _require_mapping(payload.get("change", payload), label="change")
         return cls(
-            change_id=str(data["change_id"]),
-            change_type=str(data["change_type"]),
-            risk_level=str(data["risk_level"]),
-            rollout_strategy=str(data["rollout_strategy"]),
+            change_id=_read_required_string(data, "change_id", label="change"),
+            change_type=_read_required_string(data, "change_type", label="change"),
+            risk_level=_read_required_string(data, "risk_level", label="change"),
+            rollout_strategy=_read_required_string(
+                data, "rollout_strategy", label="change"
+            ),
             artifacts=_read_string_list(data, "artifacts"),
             affected_surfaces=_read_string_list(data, "affected_surfaces"),
             required_signals=_read_string_list(data, "required_signals"),
@@ -61,8 +70,8 @@ class ArtifactBundle:
     def from_dict(cls, payload: dict[str, object]) -> ArtifactBundle:
         data = _require_mapping(payload.get("bundle", payload), label="artifact bundle")
         return cls(
-            bundle_name=str(data["bundle_name"]),
-            version=str(data["version"]),
+            bundle_name=_read_required_string(data, "bundle_name", label="bundle"),
+            version=_read_required_string(data, "version", label="bundle"),
             provenance_required=bool(data.get("provenance_required", True)),
             signed=bool(data.get("signed", False)),
             session_control_owner=str(data.get("session_control_owner", "")),
@@ -88,8 +97,10 @@ class RetirementPlan:
     def from_dict(cls, payload: dict[str, object]) -> RetirementPlan:
         data = _require_mapping(payload.get("retirement", payload), label="retirement")
         return cls(
-            system_id=str(data["system_id"]),
-            replacement_mode=str(data["replacement_mode"]),
+            system_id=_read_required_string(data, "system_id", label="retirement"),
+            replacement_mode=_read_required_string(
+                data, "replacement_mode", label="retirement"
+            ),
             triggers=_read_string_list(data, "triggers"),
             required_steps=_read_string_list(data, "required_steps"),
             session_control_owner=str(data.get("session_control_owner", "")),
