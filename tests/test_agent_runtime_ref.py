@@ -54,12 +54,8 @@ def _runtime_cli_tree() -> ast.Module:
     return _parse_python_source(Path("agent_runtime_ref/__main__.py"))
 
 
-def _runtime_config_dir() -> Path:
-    return Path("agent_runtime_ref/configs")
-
-
 def _runtime_config_paths() -> list[Path]:
-    return sorted(_runtime_config_dir().glob("*.yaml"))
+    return sorted(Path("agent_runtime_ref/configs").glob("*.yaml"))
 
 
 def _runtime_config_documents() -> list[dict[str, object]]:
