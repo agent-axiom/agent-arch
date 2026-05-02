@@ -4,6 +4,15 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
+    if not isinstance(items, list):
+        raise TypeError(f"'{label}' must be a list")
+    values = tuple(str(item).strip() for item in items)
+    if any(not value for value in values):
+        raise ValueError(f"{label} entries must not be empty")
+    return values
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -62,11 +71,14 @@ class CapabilityCatalog:
 
         registry: dict[str, CapabilitySpec] = {}
         for name, raw_spec in raw_capabilities.items():
+            capability_name = str(name).strip()
+            if not capability_name:
+                raise ValueError("Capability name must not be empty")
             if not isinstance(raw_spec, Mapping):
                 raise TypeError(f"Capability spec for {name!r} must be a mapping")
             approval = str(raw_spec.get("approval", "none"))
-            registry[str(name)] = CapabilitySpec(
-                name=str(name),
+            registry[capability_name] = CapabilitySpec(
+                name=capability_name,
                 owner=str(raw_spec.get("owner", "unknown_owner")),
                 mode=str(raw_spec.get("mode", "read")),
                 transport=str(raw_spec.get("transport", "gateway")),
@@ -74,8 +86,8 @@ class CapabilityCatalog:
                 tool_principal=str(raw_spec.get("tool_principal", "svc-unknown")),
                 risk_tier=str(raw_spec.get("risk_tier", "medium")),
                 network_access=str(raw_spec.get("network_access", "restricted")),
-                allowed_egress=tuple(
-                    str(item) for item in raw_spec.get("allowed_egress", [])
+                allowed_egress=_read_string_list_items(
+                    raw_spec.get("allowed_egress", []), label="allowed_egress"
                 ),
                 approval_required=approval != "none",
                 idempotency_key_required=bool(raw_spec.get("idempotency_key_required", False)),
