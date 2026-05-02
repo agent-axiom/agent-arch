@@ -4,6 +4,13 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ...]:
+    values = tuple(str(item).strip() for item in items)
+    if any(not value for value in values):
+        raise ValueError(f"{label} entries must not be empty")
+    return values
+
+
 @dataclass(slots=True)
 class RolloutReadiness:
     trace_coverage: bool
@@ -42,8 +49,8 @@ class RolloutPolicy:
         if not isinstance(rollout_mode, Mapping):
             raise TypeError("'rollout_mode' must be a mapping")
         return cls(
-            required_checks=tuple(str(item) for item in require),
-            blocked_checks=tuple(str(item) for item in block_if),
+            required_checks=_read_string_list_items(require, label="rollout.require"),
+            blocked_checks=_read_string_list_items(block_if, label="rollout.block_if"),
             rollout_mode={str(key): str(value) for key, value in rollout_mode.items()},
         )
 

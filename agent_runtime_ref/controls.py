@@ -7,6 +7,13 @@ from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.identity import ApprovedInventory
 
 
+def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ...]:
+    values = tuple(str(item).strip() for item in items)
+    if any(not value for value in values):
+        raise ValueError(f"{label} entries must not be empty")
+    return values
+
+
 @dataclass(frozen=True, slots=True)
 class ControlsPolicy:
     required_controls: tuple[str, ...]
@@ -24,8 +31,8 @@ class ControlsPolicy:
         if not isinstance(block_if, list):
             raise TypeError("'controls.block_if' must be a list")
         return cls(
-            required_controls=tuple(str(item) for item in require),
-            blocked_findings=tuple(str(item) for item in block_if),
+            required_controls=_read_string_list_items(require, label="controls.require"),
+            blocked_findings=_read_string_list_items(block_if, label="controls.block_if"),
         )
 
 
