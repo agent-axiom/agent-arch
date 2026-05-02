@@ -28,6 +28,11 @@ class StructuredEvent:
 
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> StructuredEvent:
+        for required_field in ("event_type", "trace_id"):
+            if required_field not in data:
+                raise ValueError(
+                    f"Telemetry event is missing required field: {required_field}"
+                )
         payload = data.get("payload", {})
         if not isinstance(payload, dict):
             raise TypeError("payload must be a mapping")
