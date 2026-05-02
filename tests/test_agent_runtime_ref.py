@@ -1904,6 +1904,7 @@ class TestCli:
         ("raw_signal", "expected_message"),
         [
             ("trace_coverage", "Signal must use key=value format"),
+            ("=true", "Signal key must not be empty"),
             ("trace_coverage=maybe", "Unsupported boolean value in signal"),
         ],
     )

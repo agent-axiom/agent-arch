@@ -128,11 +128,14 @@ def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
     key, raw_value = raw_signal.split("=", 1)
+    key = key.strip()
+    if not key:
+        raise ValueError(f"Signal key must not be empty: {raw_signal!r}")
     normalized = raw_value.strip().lower()
     if normalized in {"1", "true", "yes", "on"}:
-        return key.strip(), True
+        return key, True
     if normalized in {"0", "false", "no", "off"}:
-        return key.strip(), False
+        return key, False
     raise ValueError(f"Unsupported boolean value in signal: {raw_signal!r}")
 
 
