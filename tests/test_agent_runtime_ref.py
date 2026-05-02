@@ -863,6 +863,16 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict({"policy": {"memory_write": []}})
         with pytest.raises(TypeError, match="'execution' must be a mapping"):
             PolicyEngine.from_dict({"policy": {"execution": []}})
+        with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
+            PolicyEngine.from_dict(
+                {"policy": {"memory_write": {"allow_kinds": [" "]}}}
+            )
+        with pytest.raises(
+            ValueError, match="execution.allow_network_access entries must not be empty"
+        ):
+            PolicyEngine.from_dict(
+                {"policy": {"execution": {"allow_network_access": [""]}}}
+            )
 
     def test_policy_precheck_denies_missing_tenant_and_agent(self) -> None:
         engine = PolicyEngine()
