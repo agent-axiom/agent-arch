@@ -42,11 +42,12 @@ def _runtime_source_paths() -> list[Path]:
     return sorted(Path("agent_runtime_ref").glob("*.py"))
 
 
+def _parse_python_source(source_path: Path) -> ast.Module:
+    return ast.parse(source_path.read_text(encoding="utf-8"), filename=str(source_path))
+
+
 def _runtime_source_trees() -> list[ast.Module]:
-    return [
-        ast.parse(source_path.read_text(encoding="utf-8"), filename=str(source_path))
-        for source_path in _runtime_source_paths()
-    ]
+    return [_parse_python_source(source_path) for source_path in _runtime_source_paths()]
 
 
 def _runtime_cli_path() -> Path:
@@ -54,8 +55,7 @@ def _runtime_cli_path() -> Path:
 
 
 def _runtime_cli_tree() -> ast.Module:
-    cli_path = _runtime_cli_path()
-    return ast.parse(cli_path.read_text(encoding="utf-8"), filename=str(cli_path))
+    return _parse_python_source(_runtime_cli_path())
 
 
 def _runtime_config_dir() -> Path:
