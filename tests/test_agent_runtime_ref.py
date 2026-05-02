@@ -1539,6 +1539,24 @@ class TestLowCoverageModuleBranches:
             ),
         )
 
+    def test_catalog_loader_rejects_bad_shapes(self) -> None:
+        from agent_runtime_ref.catalog import CapabilityCatalog
+
+        with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
+            CapabilityCatalog.from_dict({"capabilities": []})
+        with pytest.raises(ValueError, match="Capability name must not be empty"):
+            CapabilityCatalog.from_dict({"capabilities": {" ": {}}})
+        with pytest.raises(TypeError, match="Capability spec for 'search_docs' must be a mapping"):
+            CapabilityCatalog.from_dict({"capabilities": {"search_docs": []}})
+        with pytest.raises(TypeError, match="'allowed_egress' must be a list"):
+            CapabilityCatalog.from_dict(
+                {"capabilities": {"search_docs": {"allowed_egress": "docs.internal"}}}
+            )
+        with pytest.raises(ValueError, match="allowed_egress entries must not be empty"):
+            CapabilityCatalog.from_dict(
+                {"capabilities": {"search_docs": {"allowed_egress": [""]}}}
+            )
+
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
         from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity
 
