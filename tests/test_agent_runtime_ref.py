@@ -74,8 +74,8 @@ def _runtime_config_documents() -> list[dict[str, object]]:
     return [load_yaml_file(config_path) for config_path in _runtime_config_paths()]
 
 
-def _assert_all_documented(items: set[str] | list[str], docs_text: str) -> None:
-    missing = sorted(item for item in items if item not in docs_text)
+def _assert_all_documented(items: list[str], docs_text: str) -> None:
+    missing = [item for item in items if item not in docs_text]
     assert missing == []
 
 
