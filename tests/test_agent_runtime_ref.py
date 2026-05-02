@@ -507,6 +507,17 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["inspect-trace", "--input", str(output_path)])
 
+    def test_cli_inspect_trace_rejects_non_mapping_event_records(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "non-mapping-event.jsonl"
+        output_path.write_text(json.dumps(["not", "an", "event"]) + "\n", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(TypeError, match="Telemetry event must be a mapping"):
+            main(["inspect-trace", "--input", str(output_path)])
+
     @pytest.mark.parametrize("missing_field", ["event_type", "trace_id"])
     def test_cli_inspect_trace_rejects_events_missing_required_fields(
         self, missing_field: str, tmp_path: Path

@@ -86,7 +86,10 @@ class TelemetryEmitter:
                 line = raw_line.strip()
                 if not line:
                     continue
-                events.append(StructuredEvent.from_dict(json.loads(line)))
+                raw_event = json.loads(line)
+                if not isinstance(raw_event, dict):
+                    raise TypeError("Telemetry event must be a mapping")
+                events.append(StructuredEvent.from_dict(raw_event))
         return events
 
     def emit(self, event_type: str, trace_id: str, **payload: str) -> None:
