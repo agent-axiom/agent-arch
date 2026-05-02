@@ -169,7 +169,7 @@ def _runtime_dataclass_fields(trees: list[ast.Module]) -> set[str]:
 
 
 def _runtime_public_dataclass_fields(trees: list[ast.Module]) -> list[str]:
-    return [field for field in _runtime_dataclass_fields(trees) if "_" in field]
+    return sorted(field for field in _runtime_dataclass_fields(trees) if "_" in field)
 
 
 def _runtime_json_keys(tree: ast.Module, documented_key_names: set[str]) -> set[str]:
