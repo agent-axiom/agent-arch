@@ -507,6 +507,15 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["inspect-trace", "--input", str(output_path)])
 
+    def test_cli_replay_run_rejects_empty_event_file(self, tmp_path: Path) -> None:
+        output_path = tmp_path / "empty.jsonl"
+        output_path.write_text("", encoding="utf-8")
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
+            main(["replay-run", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_missing_trace_id(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
         code, _ = cli_json(
