@@ -1928,6 +1928,12 @@ class TestCli:
         assert "registry_reviewed" in payload["missing_controls"]
         assert not payload["inventory_drift"]["has_drift"]
 
+    def test_cli_check_controls_rejects_invalid_signal_value(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Unsupported boolean value in signal"):
+            main(["check-controls", "--signal", "registry_reviewed=maybe"])
+
     def test_cli_inspect_lifecycle_returns_all_artifacts(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-lifecycle"])
         assert exit_code == 0
