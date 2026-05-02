@@ -206,11 +206,11 @@ def _runtime_public_json_keys(trees: list[ast.Module]) -> list[str]:
     return sorted(_runtime_documented_json_keys(trees, documented_key_names))
 
 
-def _runtime_config_root_keys(configs: list[dict[str, object]]) -> set[str]:
+def _runtime_config_root_keys(configs: list[dict[str, object]]) -> list[str]:
     root_keys: set[str] = set()
     for config in configs:
         root_keys.update(str(key) for key in config)
-    return root_keys
+    return sorted(root_keys)
 
 
 def _runtime_config_file_names(config_paths: list[Path]) -> list[str]:
@@ -230,11 +230,11 @@ def _nested_config_keys(value: object) -> set[str]:
     return config_keys
 
 
-def _runtime_config_nested_keys(configs: list[dict[str, object]]) -> set[str]:
+def _runtime_config_nested_keys(configs: list[dict[str, object]]) -> list[str]:
     config_keys: set[str] = set()
     for config in configs:
         config_keys.update(_nested_config_keys(config))
-    return config_keys
+    return sorted(config_keys)
 
 
 def _cli_subcommand_names(tree: ast.Module) -> list[str]:
