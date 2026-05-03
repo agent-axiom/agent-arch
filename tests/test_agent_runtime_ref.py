@@ -1925,6 +1925,25 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             )
         with pytest.raises(ValueError, match="bundle.bundle_name is required"):
             ArtifactBundle.from_dict({"bundle": {"version": "1"}})
+        with pytest.raises(TypeError, match="'bundle.provenance_required' must be a boolean"):
+            ArtifactBundle.from_dict(
+                {
+                    "bundle": {
+                        "bundle_name": "bundle",
+                        "version": "1",
+                        "provenance_required": "false",
+                    }
+                }
+            )
+        with pytest.raises(TypeError, match="'bundle.signed' must be a boolean"):
+            ArtifactBundle.from_dict(
+                {"bundle": {"bundle_name": "bundle", "version": "1", "signed": "false"}}
+            )
+        bundle = ArtifactBundle.from_dict(
+            {"bundle": {"bundle_name": "bundle", "version": "1", "signed": True}}
+        )
+        assert bundle.provenance_required is True
+        assert bundle.signed is True
         with pytest.raises(ValueError, match="artifacts entries must not be empty"):
             ArtifactBundle.from_dict(
                 {"bundle": {"bundle_name": "bundle", "version": "1", "artifacts": [""]}}

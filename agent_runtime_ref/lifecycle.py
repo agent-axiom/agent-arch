@@ -29,6 +29,13 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     return values
 
 
+def _read_bool(data: dict[str, Any], key: str, *, label: str, default: bool) -> bool:
+    value = data.get(key, default)
+    if not isinstance(value, bool):
+        raise TypeError(f"'{label}.{key}' must be a boolean")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class ChangeRecord:
     change_id: str
@@ -77,8 +84,10 @@ class ArtifactBundle:
         return cls(
             bundle_name=_read_required_string(data, "bundle_name", label="bundle"),
             version=_read_required_string(data, "version", label="bundle"),
-            provenance_required=bool(data.get("provenance_required", True)),
-            signed=bool(data.get("signed", False)),
+            provenance_required=_read_bool(
+                data, "provenance_required", label="bundle", default=True
+            ),
+            signed=_read_bool(data, "signed", label="bundle", default=False),
             session_control_owner=str(data.get("session_control_owner", "")),
             artifacts=_read_string_list(data, "artifacts"),
             review_evidence=_require_mapping(
