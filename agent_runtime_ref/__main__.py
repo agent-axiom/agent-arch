@@ -124,6 +124,13 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
 }
 
 
+def _read_required_cli_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"CLI field is required: {field}")
+    return normalized
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -848,6 +855,8 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     runtime = _build_runtime(config_dir)
     selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
+    dataset_name = _read_required_cli_string(args.dataset_name, field="dataset_name")
+    session_prefix = _read_required_cli_string(args.session_prefix, field="session_prefix")
     session_ids: list[str] = []
     eval_specs: dict[str, dict[str, object]] = {}
     session_summaries = []
@@ -855,7 +864,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         session_suffix, user_inputs, trace_prefix, simulate_failure = EVAL_DATASET_SCENARIOS[
             scenario_name
         ]
-        session_id = f"{args.session_prefix}-{session_suffix.removeprefix('session-eval-')}"
+        session_id = f"{session_prefix}-{session_suffix.removeprefix('session-eval-')}"
         for index, user_input in enumerate(user_inputs, start=1):
             _run_on_runtime(
                 runtime,
@@ -875,7 +884,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     output_path = runtime.sessions.export_eval_dataset_json(
         tuple(session_ids),
         output_path=args.output,
-        dataset_name=args.dataset_name,
+        dataset_name=dataset_name,
         eval_specs=eval_specs,
     )
     latest_failed_run = None
@@ -885,7 +894,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         if latest_failed_run is not None:
             break
     return {
-        "dataset_name": args.dataset_name,
+        "dataset_name": dataset_name,
         "output_path": str(output_path),
         "session_count": len(session_ids),
         "run_count": sum(summary.total_runs for summary in session_summaries),

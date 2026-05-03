@@ -773,6 +773,14 @@ class TestFailurePaths:
         assert session["runs"][-1]["failure_reason"] == "tool_timeout"
         assert session["eval"]["expected_outcomes"]["failed_run_traceable"] is True
 
+    def test_cli_export_eval_dataset_rejects_blank_export_fields(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="CLI field is required: dataset_name"):
+            main(["export-eval-dataset", "--dataset-name", " "])
+        with pytest.raises(ValueError, match="CLI field is required: session_prefix"):
+            main(["export-eval-dataset", "--session-prefix", " "])
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:
