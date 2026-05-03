@@ -28,6 +28,17 @@ def _read_required_request_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_optional_request_string(value: str) -> str:
+    return str(value).strip()
+
+
+def _read_required_delegated_string(value: str, *, field: str) -> str:
+    normalized = _read_optional_request_string(value)
+    if not normalized:
+        raise ValueError(f"Delegated authorization field is required: {field}")
+    return normalized
+
+
 class AgentRuntime:
     """Minimal runnable skeleton for the book's reference implementation."""
 
@@ -79,6 +90,19 @@ class AgentRuntime:
             request.authorization_mode,
             field="authorization_mode",
         )
+        request.delegated_principal_id = _read_optional_request_string(
+            request.delegated_principal_id
+        )
+        request.delegated_scope = _read_optional_request_string(request.delegated_scope)
+        if request.authorization_mode == "user_delegated":
+            request.delegated_principal_id = _read_required_delegated_string(
+                request.delegated_principal_id,
+                field="delegated_principal_id",
+            )
+            request.delegated_scope = _read_required_delegated_string(
+                request.delegated_scope,
+                field="delegated_scope",
+            )
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
