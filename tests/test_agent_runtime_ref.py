@@ -2260,6 +2260,33 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
+        with pytest.raises(
+            TypeError,
+            match="'capabilities.search_docs.idempotency_key_required' must be a boolean",
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "idempotency_key_required": "false",
+                        }
+                    }
+                }
+            )
+        catalog = CapabilityCatalog.from_dict(
+            {
+                "capabilities": {
+                    "search_docs": {
+                        **required_capability_fields,
+                        "idempotency_key_required": True,
+                    }
+                }
+            }
+        )
+        capability = catalog.get("search_docs")
+        assert capability is not None
+        assert capability.idempotency_key_required is True
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
         from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity
