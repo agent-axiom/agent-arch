@@ -1728,6 +1728,26 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                         }
                     }
                 )
+        for revision in ("2", True):
+            with pytest.raises(
+                TypeError, match="Memory record #1 revision must be an integer"
+            ):
+                MemoryStore.from_dict(
+                    {
+                        "memory": {
+                            "seed_records": [
+                                {
+                                    "tenant_id": "tenant-acme",
+                                    "memory_class": "profile",
+                                    "kind": "language_preference",
+                                    "content": "concise replies",
+                                    "source": "trusted_profile",
+                                    "revision": revision,
+                                }
+                            ]
+                        }
+                    }
+                )
         with pytest.raises(
             ValueError, match="Memory record #1 revision must be positive"
         ):

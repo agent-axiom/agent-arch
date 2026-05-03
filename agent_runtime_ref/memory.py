@@ -20,7 +20,9 @@ def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
 
 
 def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
-    value = int(record.get("revision", 1))
+    value = record.get("revision", 1)
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError(f"Memory record #{idx} revision must be an integer")
     if value < 1:
         raise ValueError(f"Memory record #{idx} revision must be positive")
     return value
