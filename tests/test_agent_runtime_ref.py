@@ -1592,7 +1592,24 @@ class TestRuntimeControlPaths:
         )
         assert record.session_id == "session-normalized-001"
         assert record.trace_id == "trace-normalized-001"
+        assert record.status == "success"
         assert store.get_session("session-normalized-001") is not None
+
+    def test_session_store_rejects_unsupported_run_statuses(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        with pytest.raises(ValueError, match="Session status is not supported: sucess"):
+            store.register_run(
+                session_id="session-bad-status-001",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-bad-status-001",
+                status="sucess",
+                user_input="hello",
+                output_text="done",
+            )
+        assert store.get_session("session-bad-status-001") is None
 
     def test_cli_check_retirement_detects_runtime_control_shutdown_gaps(self, cli_json) -> None:
         exit_code, payload = cli_json(
