@@ -1719,10 +1719,35 @@ class TestRuntimeControlPaths:
                 "trace_id": "trace-session-required-001",
                 "status": " ",
             },
+            "user_input": {
+                "session_id": "session-required-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-required-001",
+                "status": "success",
+                "user_input": " ",
+            },
+            "output_text": {
+                "session_id": "session-required-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-required-001",
+                "status": "success",
+                "output_text": " ",
+            },
+            "failure_reason": {
+                "session_id": "session-required-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-required-001",
+                "status": "failed",
+                "failure_reason": " ",
+            },
         }
         for field, payload in required_fields.items():
+            request = {"user_input": "hello", "output_text": "done", **payload}
             with pytest.raises(ValueError, match=f"Session field is required: {field}"):
-                store.register_run(user_input="hello", output_text="done", **payload)
+                store.register_run(**request)
 
         record = store.register_run(
             session_id=" session-normalized-001 ",
@@ -1730,12 +1755,14 @@ class TestRuntimeControlPaths:
             principal_id=" user-1 ",
             trace_id=" trace-normalized-001 ",
             status=" success ",
-            user_input="hello",
-            output_text="done",
+            user_input=" hello ",
+            output_text=" done ",
         )
         assert record.session_id == "session-normalized-001"
         assert record.trace_id == "trace-normalized-001"
         assert record.status == "success"
+        assert record.user_input == "hello"
+        assert record.output_text == "done"
         assert store.get_session("session-normalized-001") is not None
 
     def test_session_store_rejects_unsupported_run_statuses(self) -> None:
