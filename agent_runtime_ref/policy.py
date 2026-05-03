@@ -15,6 +15,12 @@ def _read_string_list_items(items: list[object], *, label: str) -> set[str]:
     return values
 
 
+def _read_bool(value: object, *, label: str) -> bool:
+    if not isinstance(value, bool):
+        raise TypeError(f"'{label}' must be a boolean")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class PolicyDecision:
     action: str
@@ -99,9 +105,13 @@ class PolicyEngine:
             raise TypeError("'allow_network_access' must be a list")
 
         return cls(
-            require_tenant=bool(raw_precheck.get("require_tenant", True)),
-            deny_if_principal_missing=bool(
+            require_tenant=_read_bool(
+                raw_precheck.get("require_tenant", True),
+                label="run_precheck.require_tenant",
+            ),
+            deny_if_principal_missing=_read_bool(
                 raw_precheck.get("deny_if_principal_missing", True),
+                label="run_precheck.deny_if_principal_missing",
             ),
             capability_policies=capability_policies,
             allowed_memory_kinds=_read_string_list_items(
