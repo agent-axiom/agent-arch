@@ -1800,6 +1800,27 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 ),
             )
 
+    def test_memory_store_rejects_bad_candidate_confidence(self) -> None:
+        from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
+
+        for confidence in (-0.1, 1.1, float("nan"), float("inf")):
+            store = MemoryStore()
+            with pytest.raises(
+                ValueError,
+                match="Memory candidate confidence must be between 0 and 1",
+            ):
+                store.persist(
+                    MemoryCandidate(
+                        tenant_id="tenant-acme",
+                        memory_class="long_term",
+                        kind="validated_fact",
+                        content="Candidate version",
+                        source="trusted_service",
+                        confidence=confidence,
+                        provenance="policy_review",
+                    ),
+                )
+
     def test_memory_store_compaction_is_tenant_scoped(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
 
