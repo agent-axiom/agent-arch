@@ -24,6 +24,8 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     values = tuple(str(item).strip() for item in value)
     if any(not item for item in values):
         raise ValueError(f"{key} entries must not be empty")
+    if len(set(values)) != len(values):
+        raise ValueError(f"{key} entries must be unique")
     return values
 
 
