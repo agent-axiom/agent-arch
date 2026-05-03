@@ -1674,6 +1674,14 @@ class TestLowCoverageModuleBranches:
             RolloutPolicy.from_dict({"rollout": {"require": [" "]}})
         with pytest.raises(ValueError, match="rollout.block_if entries must not be empty"):
             RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [""]}})
+        with pytest.raises(ValueError, match="rollout.require entries must be unique"):
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": ["trace_coverage", " trace_coverage "]}}
+            )
+        with pytest.raises(ValueError, match="rollout.block_if entries must be unique"):
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": [], "block_if": ["finding", " finding "]}}
+            )
         with pytest.raises(ValueError, match="rollout.rollout_mode entries must not be empty"):
             RolloutPolicy.from_dict(
                 {"rollout": {"require": [], "block_if": [], "rollout_mode": {" ": "canary"}}}

@@ -8,6 +8,8 @@ def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ..
     values = tuple(str(item).strip() for item in items)
     if any(not value for value in values):
         raise ValueError(f"{label} entries must not be empty")
+    if len(set(values)) != len(values):
+        raise ValueError(f"{label} entries must be unique")
     return values
 
 
