@@ -1143,6 +1143,20 @@ class TestRuntimeCore:
         assert result.status == "success"
         assert expected_fragment in result.output_text
 
+    def test_runtime_rejects_blank_user_input(self) -> None:
+        runtime = AgentRuntime()
+        with pytest.raises(ValueError, match="Run request field is required: user_input"):
+            runtime.run(
+                RunRequest(
+                    user_input=" ",
+                    tenant_id="tenant-acme",
+                    principal_id="user-1",
+                    trace_id="trace-blank-input-001",
+                    agent_id="agent-runtime-ref",
+                ),
+            )
+        assert runtime.telemetry.events == []
+
     def test_runtime_uses_tool_path_for_ticket_request(self) -> None:
         runtime = AgentRuntime()
         result = runtime.run(

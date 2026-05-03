@@ -21,6 +21,13 @@ from agent_runtime_ref.session import SessionStore
 from agent_runtime_ref.telemetry import TelemetryEmitter
 
 
+def _read_required_request_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Run request field is required: {field}")
+    return normalized
+
+
 class AgentRuntime:
     """Minimal runnable skeleton for the book's reference implementation."""
 
@@ -56,6 +63,10 @@ class AgentRuntime:
         )
 
     def run(self, request: RunRequest) -> RunResult:
+        request.user_input = _read_required_request_string(
+            request.user_input,
+            field="user_input",
+        )
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
