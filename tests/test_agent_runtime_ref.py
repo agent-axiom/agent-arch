@@ -580,6 +580,11 @@ class TestFailurePaths:
     @pytest.mark.parametrize(
         ("event_patch", "expected_message"),
         [
+            ({"schema_version": " "}, "Telemetry event field must not be empty: schema_version"),
+            (
+                {"schema_version": "2.0"},
+                "Telemetry schema version is not supported: 2.0",
+            ),
             ({"payload": []}, "payload must be a mapping"),
             ({"redacted_fields": "trace_id"}, "redacted_fields must be a list"),
         ],
@@ -600,7 +605,7 @@ class TestFailurePaths:
 
         from agent_runtime_ref.__main__ import main
 
-        with pytest.raises(TypeError, match=expected_message):
+        with pytest.raises((TypeError, ValueError), match=expected_message):
             main(["inspect-trace", "--input", str(output_path)])
 
     def test_cli_replay_run_rejects_empty_event_file(self, tmp_path: Path) -> None:

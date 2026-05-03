@@ -40,6 +40,11 @@ class StructuredEvent:
                     f"Telemetry event field must not be empty: {required_field}"
                 )
             required_values[required_field] = value
+        schema_version = str(data.get("schema_version", SCHEMA_VERSION)).strip()
+        if not schema_version:
+            raise ValueError("Telemetry event field must not be empty: schema_version")
+        if schema_version != SCHEMA_VERSION:
+            raise ValueError(f"Telemetry schema version is not supported: {schema_version}")
         payload = data.get("payload", {})
         if not isinstance(payload, dict):
             raise TypeError("payload must be a mapping")
@@ -47,7 +52,7 @@ class StructuredEvent:
         if not isinstance(redacted_fields, list):
             raise TypeError("redacted_fields must be a list")
         return cls(
-            schema_version=str(data.get("schema_version", SCHEMA_VERSION)),
+            schema_version=schema_version,
             event_type=required_values["event_type"],
             trace_id=required_values["trace_id"],
             payload={str(key): str(value) for key, value in payload.items()},
