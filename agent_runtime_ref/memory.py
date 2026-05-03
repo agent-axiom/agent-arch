@@ -4,6 +4,13 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+def _read_required_string(record: Mapping[str, Any], key: str, *, idx: int) -> str:
+    value = str(record.get(key, "")).strip()
+    if not value:
+        raise ValueError(f"Memory record #{idx} field is required: {key}")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -87,11 +94,11 @@ class MemoryStore:
             records.append(
                 MemoryRecord(
                     memory_id=str(record.get("memory_id", f"mem-{idx:03d}")),
-                    tenant_id=str(record.get("tenant_id", "")),
-                    memory_class=str(record.get("memory_class", "long_term")),
-                    kind=str(record.get("kind", "note")),
-                    content=str(record.get("content", "")),
-                    source=str(record.get("source", "unknown")),
+                    tenant_id=_read_required_string(record, "tenant_id", idx=idx),
+                    memory_class=_read_required_string(record, "memory_class", idx=idx),
+                    kind=_read_required_string(record, "kind", idx=idx),
+                    content=_read_required_string(record, "content", idx=idx),
+                    source=_read_required_string(record, "source", idx=idx),
                     confidence=float(record.get("confidence", 0.5)),
                     provenance=str(record.get("provenance", "unknown")),
                     revision=int(record.get("revision", 1)),

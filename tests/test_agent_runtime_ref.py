@@ -1287,6 +1287,41 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             MemoryStore.from_dict({"memory": {"seed_records": "x"}})
         with pytest.raises(TypeError, match="Memory record #1 must be a mapping"):
             MemoryStore.from_dict({"memory": {"seed_records": ["x"]}})
+        with pytest.raises(
+            ValueError, match="Memory record #1 field is required: tenant_id"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                            }
+                        ]
+                    }
+                }
+            )
+        with pytest.raises(
+            ValueError, match="Memory record #1 field is required: content"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": " ",
+                                "source": "trusted_profile",
+                            }
+                        ]
+                    }
+                }
+            )
 
     def test_memory_store_replace_revision_increments_prior_version(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
