@@ -10,13 +10,16 @@ def execute_tool(
     tool_request: ToolRequest,
     decision: PolicyDecision,
 ) -> ToolResult:
-    if decision.action == "deny":
+    action = decision.action.strip()
+    if action not in {"allow", "approval_required", "deny"}:
+        raise ValueError(f"Policy action is not supported: {action}")
+    if action == "deny":
         return ToolResult(
             capability_name=tool_request.capability_name,
             status="denied",
             payload={"reason": decision.reason},
         )
-    if decision.action == "approval_required":
+    if action == "approval_required":
         return ToolResult(
             capability_name=tool_request.capability_name,
             status="approval_required",
