@@ -1197,6 +1197,38 @@ class TestRuntimeCore:
         assert runtime.telemetry.events[0].trace_id == "trace-runtime-normalized-001"
         assert runtime.sessions.get_session("session-runtime-normalized-001") is not None
 
+    def test_runtime_rejects_blank_authorization_mode_before_telemetry(self) -> None:
+        runtime = AgentRuntime()
+        with pytest.raises(ValueError, match="Run request field is required: authorization_mode"):
+            runtime.run(
+                RunRequest(
+                    user_input="Summarize the current architecture.",
+                    tenant_id="tenant-acme",
+                    principal_id="user-1",
+                    trace_id="trace-blank-authz-001",
+                    session_id="session-blank-authz-001",
+                    agent_id="agent-runtime-ref",
+                    authorization_mode=" ",
+                ),
+            )
+        assert runtime.telemetry.events == []
+
+        normalized = AgentRuntime()
+        result = normalized.run(
+            RunRequest(
+                user_input="Summarize the current architecture.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-authz-normalized-001",
+                session_id="session-authz-normalized-001",
+                agent_id="agent-runtime-ref",
+                authorization_mode=" platform_owned ",
+            ),
+        )
+        assert result.status == "success"
+        run = normalized.sessions.runs_for_session("session-authz-normalized-001")[0]
+        assert run.authorization_mode == "platform_owned"
+
     def test_runtime_uses_tool_path_for_ticket_request(self) -> None:
         runtime = AgentRuntime()
         result = runtime.run(

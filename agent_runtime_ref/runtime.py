@@ -75,6 +75,10 @@ class AgentRuntime:
             request.session_id,
             field="session_id",
         )
+        request.authorization_mode = _read_required_request_string(
+            request.authorization_mode,
+            field="authorization_mode",
+        )
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
