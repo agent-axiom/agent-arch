@@ -101,6 +101,8 @@ class SessionStore:
         principal_id = _read_required_string(principal_id, field="principal_id")
         trace_id = _read_required_string(trace_id, field="trace_id")
         status = _read_required_string(status, field="status")
+        if status not in {"success", "denied", "failed", "approval_required"}:
+            raise ValueError(f"Session status is not supported: {status}")
         session = self._sessions.setdefault(
             session_id,
             SessionRecord(
