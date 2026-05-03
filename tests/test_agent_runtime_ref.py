@@ -781,6 +781,18 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="CLI field is required: session_prefix"):
             main(["export-eval-dataset", "--session-prefix", " "])
 
+    def test_cli_session_commands_reject_blank_trace_prefix(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for command in (
+            "inspect-session",
+            "session-eval-summary",
+            "session-replay",
+            "export-session",
+        ):
+            with pytest.raises(ValueError, match="CLI field is required: trace_prefix"):
+                main([command, "--trace-prefix", " "])
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:

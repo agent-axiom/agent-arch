@@ -131,6 +131,11 @@ def _read_required_cli_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _format_trace_id(trace_prefix: str, index: int) -> str:
+    prefix = _read_required_cli_string(trace_prefix, field="trace_prefix")
+    return f"{prefix}-{index:03d}"
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -233,7 +238,7 @@ def _run_session_sequence(
             user_input=user_input,
             tenant_id=tenant_id,
             principal_id=principal_id,
-            trace_id=f"{trace_prefix}-{index:03d}",
+            trace_id=_format_trace_id(trace_prefix, index),
             session_id=session_id,
             agent_id=agent_id,
         )
@@ -699,7 +704,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             user_input=user_input,
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
-            trace_id=f"{args.trace_prefix}-{index:03d}",
+            trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=args.session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
@@ -750,7 +755,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
             user_input=user_input,
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
-            trace_id=f"{args.trace_prefix}-{index:03d}",
+            trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=args.session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
@@ -783,7 +788,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 user_input=user_input,
                 tenant_id=args.tenant_id,
                 principal_id=args.principal_id,
-                trace_id=f"{args.trace_prefix}-{index:03d}",
+                trace_id=_format_trace_id(args.trace_prefix, index),
                 session_id=args.session_id,
                 agent_id=args.agent_id,
                 simulate_failure=args.simulate_failure,
@@ -828,7 +833,7 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
             user_input=user_input,
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
-            trace_id=f"{args.trace_prefix}-{index:03d}",
+            trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=args.session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
@@ -871,7 +876,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 user_input=user_input,
                 tenant_id=args.tenant_id,
                 principal_id=args.principal_id,
-                trace_id=f"{trace_prefix}-{index:03d}",
+                trace_id=_format_trace_id(trace_prefix, index),
                 session_id=session_id,
                 agent_id=args.agent_id,
                 simulate_failure=simulate_failure,
