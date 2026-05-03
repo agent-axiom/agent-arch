@@ -1322,6 +1322,44 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(
+            ValueError, match="Memory record #1 confidence must be between 0 and 1"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                                "confidence": 2,
+                            }
+                        ]
+                    }
+                }
+            )
+        with pytest.raises(
+            ValueError, match="Memory record #1 revision must be positive"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                                "revision": 0,
+                            }
+                        ]
+                    }
+                }
+            )
 
     def test_memory_store_replace_revision_increments_prior_version(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
