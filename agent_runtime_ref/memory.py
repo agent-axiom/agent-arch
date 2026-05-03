@@ -12,6 +12,13 @@ def _read_required_string(record: Mapping[str, Any], key: str, *, idx: int) -> s
     return value
 
 
+def _read_memory_id(record: Mapping[str, Any], *, idx: int) -> str:
+    value = str(record.get("memory_id", f"mem-{idx:03d}")).strip()
+    if not value:
+        raise ValueError(f"Memory record #{idx} field is required: memory_id")
+    return value
+
+
 def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
     value = float(record.get("confidence", 0.5))
     if not isfinite(value) or value < 0 or value > 1:
@@ -124,7 +131,7 @@ class MemoryStore:
             record = dict(raw_record)
             records.append(
                 MemoryRecord(
-                    memory_id=str(record.get("memory_id", f"mem-{idx:03d}")),
+                    memory_id=_read_memory_id(record, idx=idx),
                     tenant_id=_read_required_string(record, "tenant_id", idx=idx),
                     memory_class=_read_required_string(record, "memory_class", idx=idx),
                     kind=_read_required_string(record, "kind", idx=idx),
