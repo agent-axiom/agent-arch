@@ -18,6 +18,12 @@ class StructuredEvent:
     redacted_fields: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
+        if not isinstance(self.payload, dict):
+            raise TypeError("Telemetry event payload must be a mapping")
+        if not isinstance(self.redacted_fields, tuple):
+            raise TypeError("Telemetry event redacted_fields must be a tuple")
+        self.payload = {str(key): str(value) for key, value in self.payload.items()}
+        self.redacted_fields = tuple(str(field) for field in self.redacted_fields)
         self.event_type = self.event_type.strip()
         if not self.event_type:
             raise ValueError("Telemetry event field must not be empty: event_type")
