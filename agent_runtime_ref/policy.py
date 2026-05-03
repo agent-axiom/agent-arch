@@ -69,8 +69,11 @@ class PolicyEngine:
                 raise ValueError("Policy capability name must not be empty")
             if not isinstance(raw_entry, Mapping):
                 raise TypeError(f"Policy for capability {name!r} must be a mapping")
+            decision = str(raw_entry.get("decision", "deny")).strip()
+            if decision not in {"allow", "approval_required", "deny"}:
+                raise ValueError(f"Policy decision is not supported: {decision}")
             capability_policies[capability_name] = CapabilityPolicy(
-                decision=str(raw_entry.get("decision", "deny")),
+                decision=decision,
                 approver=(
                     str(raw_entry["approver"]) if raw_entry.get("approver") is not None else None
                 ),
