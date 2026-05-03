@@ -63,8 +63,12 @@ class ChangeRecord:
             affected_surfaces=_read_string_list(data, "affected_surfaces"),
             required_signals=_read_string_list(data, "required_signals"),
             approval_roles=_read_string_list(data, "approval_roles"),
-            session_control_owner=str(data.get("session_control_owner", "")),
-            emergency_freeze_owner=str(data.get("emergency_freeze_owner", "")),
+            session_control_owner=_read_required_string(
+                data, "session_control_owner", label="change"
+            ),
+            emergency_freeze_owner=_read_required_string(
+                data, "emergency_freeze_owner", label="change"
+            ),
         )
 
 
@@ -88,7 +92,9 @@ class ArtifactBundle:
                 data, "provenance_required", label="bundle", default=True
             ),
             signed=_read_bool(data, "signed", label="bundle", default=False),
-            session_control_owner=str(data.get("session_control_owner", "")),
+            session_control_owner=_read_required_string(
+                data, "session_control_owner", label="bundle"
+            ),
             artifacts=_read_string_list(data, "artifacts"),
             review_evidence=_require_mapping(
                 data.get("review_evidence", {}),
@@ -117,8 +123,12 @@ class RetirementPlan:
             ),
             triggers=_read_string_list(data, "triggers"),
             required_steps=_read_string_list(data, "required_steps"),
-            session_control_owner=str(data.get("session_control_owner", "")),
-            emergency_freeze_owner=str(data.get("emergency_freeze_owner", "")),
+            session_control_owner=_read_required_string(
+                data, "session_control_owner", label="retirement"
+            ),
+            emergency_freeze_owner=_read_required_string(
+                data, "emergency_freeze_owner", label="retirement"
+            ),
             archive_targets=_read_string_list(data, "archive_targets"),
         )
 
