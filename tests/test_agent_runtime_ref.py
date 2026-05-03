@@ -21,7 +21,7 @@ from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.execution import execute_tool
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
 from agent_runtime_ref.memory import MemoryStore
-from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
+from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest
 from agent_runtime_ref.policy import CapabilityPolicy, PolicyDecision, PolicyEngine
 from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_for_rollout
 from agent_runtime_ref.runtime import AgentRuntime
@@ -1367,6 +1367,43 @@ class TestRuntimeCore:
         assert result.status == "success"
         assert "waiting for human approval" in result.output_text
         assert len(runtime.approvals.pending()) == 1
+
+    def test_runtime_rejects_bad_second_pass_model_output(self) -> None:
+        class BadSecondPassRuntime(AgentRuntime):
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                if second_pass:
+                    return cast(ModelOutput, {"text": "not a model output"})
+                return ModelOutput(
+                    text="needs a tool",
+                    tool_request=ToolRequest(
+                        capability_name="search_docs",
+                        arguments={"query": "architecture"},
+                    ),
+                )
+
+        runtime = BadSecondPassRuntime()
+        with pytest.raises(TypeError, match="Model step must return ModelOutput"):
+            runtime.run(
+                RunRequest(
+                    user_input="Summarize the current architecture.",
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-bad-second-pass-model-001",
+                    agent_id="agent-runtime-ref",
+                ),
+            )
+        assert runtime.sessions.runs_for_session("session-demo-001") == ()
+        assert {event.event_type for event in runtime.telemetry.events} >= {
+            "tool_execution",
+            "span",
+        }
+        assert "run_complete" not in {event.event_type for event in runtime.telemetry.events}
 
     def test_background_persisted_records_include_revision_and_provenance(self) -> None:
         runtime = AgentRuntime()
