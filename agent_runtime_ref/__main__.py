@@ -5,6 +5,7 @@ import json
 import sys
 from collections.abc import Sequence
 from pathlib import Path
+from typing import cast
 
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.config import (
@@ -158,12 +159,35 @@ def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     raise ValueError(f"Unsupported boolean value in signal: {raw_signal!r}")
 
 
-def _build_runtime(config_dir: Path) -> AgentRuntime:
-    agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+def _read_runtime_controls(config_dir: Path) -> dict[str, object]:
     runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml").get(
         "runtime_controls", {}
     )
+    if not isinstance(runtime_controls, dict):
+        raise TypeError("runtime_controls config must be a mapping")
+    return runtime_controls
+
+
+def _read_sandbox_profile(runtime_controls: dict[str, object]) -> dict[str, object]:
     sandbox_profile = runtime_controls.get("sandbox_profile", {})
+    if not isinstance(sandbox_profile, dict):
+        raise TypeError("runtime_controls.sandbox_profile config must be a mapping")
+    return cast(dict[str, object], sandbox_profile)
+
+
+def _read_sandbox_profile_section(
+    sandbox_profile: dict[str, object], key: str
+) -> dict[str, object]:
+    value = sandbox_profile.get(key, {})
+    if not isinstance(value, dict):
+        raise TypeError(f"runtime_controls.sandbox_profile.{key} config must be a mapping")
+    return cast(dict[str, object], value)
+
+
+def _build_runtime(config_dir: Path) -> AgentRuntime:
+    agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+    runtime_controls = _read_runtime_controls(config_dir)
+    sandbox_profile = _read_sandbox_profile(runtime_controls)
     return AgentRuntime(
         agent=agent,
         approvals=ApprovalQueue(load_approval_policy(config_dir / "approvals.yaml")),
@@ -173,7 +197,7 @@ def _build_runtime(config_dir: Path) -> AgentRuntime:
             config_dir / "policy.yaml",
             approved_inventory=approved_inventory,
         ),
-        sandbox_profile=sandbox_profile if isinstance(sandbox_profile, dict) else {},
+        sandbox_profile=sandbox_profile,
     )
 
 
@@ -512,8 +536,12 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
     change = load_change_record(config_dir / "change.yaml")
     bundle = load_artifact_bundle(config_dir / "artifacts.yaml")
     retirement = load_retirement_plan(config_dir / "retirement.yaml")
-    runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
-    sandbox_profile = runtime_controls.get("sandbox_profile", {})
+    runtime_controls = _read_runtime_controls(config_dir)
+    sandbox_profile = _read_sandbox_profile(runtime_controls)
+    workspace = _read_sandbox_profile_section(sandbox_profile, "workspace")
+    capabilities = _read_sandbox_profile_section(sandbox_profile, "capabilities")
+    permissions = _read_sandbox_profile_section(sandbox_profile, "permissions")
+    state = _read_sandbox_profile_section(sandbox_profile, "state")
     return {
         "change": {
             "change_id": change.change_id,
@@ -558,10 +586,10 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
         },
         "sandbox_profile": {
             "manifest_version": sandbox_profile.get("manifest_version"),
-            "workspace_entries": sandbox_profile.get("workspace", {}).get("entries", []),
-            "capabilities": sandbox_profile.get("capabilities", {}),
-            "permissions": sandbox_profile.get("permissions", {}),
-            "state": sandbox_profile.get("state", {}),
+            "workspace_entries": workspace.get("entries", []),
+            "capabilities": capabilities,
+            "permissions": permissions,
+            "state": state,
         },
         "controls": {
             "failed_run_control_expectations": [

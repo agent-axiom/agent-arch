@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -616,6 +617,38 @@ class TestFailurePaths:
 
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["replay-run", "--input", str(output_path)])
+
+    def test_cli_rejects_malformed_sandbox_profile_config(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n  sandbox_profile:\n    - not-a-mapping\n",
+            encoding="utf-8",
+        )
+
+        expected = "runtime_controls.sandbox_profile config must be a mapping"
+        with pytest.raises(TypeError, match=expected):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match=expected):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+
+        (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n"
+            "  sandbox_profile:\n"
+            "    manifest_version: 1\n"
+            "    workspace:\n"
+            "      - not-a-mapping\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(
+            TypeError,
+            match="runtime_controls.sandbox_profile.workspace config must be a mapping",
+        ):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
 
     def test_cli_replay_run_rejects_incomplete_run_start_payload(
         self, tmp_path: Path
