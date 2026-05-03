@@ -863,6 +863,8 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict({"policy": {"memory_write": []}})
         with pytest.raises(TypeError, match="'execution' must be a mapping"):
             PolicyEngine.from_dict({"policy": {"execution": []}})
+        with pytest.raises(ValueError, match="Policy capability name must not be empty"):
+            PolicyEngine.from_dict({"policy": {"capabilities": {" ": {"decision": "allow"}}}})
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
             PolicyEngine.from_dict(
                 {"policy": {"memory_write": {"allow_kinds": [" "]}}}

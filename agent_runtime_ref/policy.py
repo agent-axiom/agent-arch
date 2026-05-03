@@ -64,9 +64,12 @@ class PolicyEngine:
 
         capability_policies: dict[str, CapabilityPolicy] = {}
         for name, raw_entry in raw_capabilities.items():
+            capability_name = str(name).strip()
+            if not capability_name:
+                raise ValueError("Policy capability name must not be empty")
             if not isinstance(raw_entry, Mapping):
                 raise TypeError(f"Policy for capability {name!r} must be a mapping")
-            capability_policies[str(name)] = CapabilityPolicy(
+            capability_policies[capability_name] = CapabilityPolicy(
                 decision=str(raw_entry.get("decision", "deny")),
                 approver=(
                     str(raw_entry["approver"]) if raw_entry.get("approver") is not None else None
