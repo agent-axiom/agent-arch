@@ -21,7 +21,10 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     value = data.get(key, [])
     if not isinstance(value, list):
         raise TypeError(f"{key} must be a list")
-    return tuple(str(item) for item in value)
+    values = tuple(str(item).strip() for item in value)
+    if any(not item for item in values):
+        raise ValueError(f"{key} entries must not be empty")
+    return values
 
 
 @dataclass(frozen=True, slots=True)

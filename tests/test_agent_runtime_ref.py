@@ -1547,10 +1547,36 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(ValueError, match="required_signals entries must not be empty"):
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        "change_id": "x",
+                        "change_type": "y",
+                        "risk_level": "z",
+                        "rollout_strategy": "gradual",
+                        "required_signals": [" "],
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="bundle.bundle_name is required"):
             ArtifactBundle.from_dict({"bundle": {"version": "1"}})
+        with pytest.raises(ValueError, match="artifacts entries must not be empty"):
+            ArtifactBundle.from_dict(
+                {"bundle": {"bundle_name": "bundle", "version": "1", "artifacts": [""]}}
+            )
         with pytest.raises(ValueError, match="retirement.system_id is required"):
             RetirementPlan.from_dict({"retirement": {"replacement_mode": "none"}})
+        with pytest.raises(ValueError, match="archive_targets entries must not be empty"):
+            RetirementPlan.from_dict(
+                {
+                    "retirement": {
+                        "system_id": "legacy",
+                        "replacement_mode": "none",
+                        "archive_targets": [" "],
+                    }
+                }
+            )
 
     def test_lifecycle_assessments_report_ready_when_complete(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record, load_retirement_plan
