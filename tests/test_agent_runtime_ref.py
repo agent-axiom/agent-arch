@@ -1666,6 +1666,23 @@ class TestLowCoverageModuleBranches:
             RolloutPolicy.from_dict({"rollout": {"require": [" "]}})
         with pytest.raises(ValueError, match="rollout.block_if entries must not be empty"):
             RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [""]}})
+        with pytest.raises(ValueError, match="rollout.rollout_mode entries must not be empty"):
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": [], "block_if": [], "rollout_mode": {" ": "canary"}}}
+            )
+        with pytest.raises(ValueError, match="rollout.rollout_mode entries must not be empty"):
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": [], "block_if": [], "rollout_mode": {"initial": " "}}}
+            )
+        assert RolloutPolicy.from_dict(
+            {
+                "rollout": {
+                    "require": [],
+                    "block_if": [],
+                    "rollout_mode": {" initial ": " canary "},
+                }
+            }
+        ).rollout_mode == {"initial": "canary"}
 
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:
         assert not ready_for_rollout(

@@ -11,6 +11,13 @@ def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ..
     return values
 
 
+def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> dict[str, str]:
+    values = {str(key).strip(): str(value).strip() for key, value in items.items()}
+    if any(not key or not value for key, value in values.items()):
+        raise ValueError(f"{label} entries must not be empty")
+    return values
+
+
 @dataclass(slots=True)
 class RolloutReadiness:
     trace_coverage: bool
@@ -51,7 +58,7 @@ class RolloutPolicy:
         return cls(
             required_checks=_read_string_list_items(require, label="rollout.require"),
             blocked_checks=_read_string_list_items(block_if, label="rollout.block_if"),
-            rollout_mode={str(key): str(value) for key, value in rollout_mode.items()},
+            rollout_mode=_read_string_mapping_items(rollout_mode, label="rollout.rollout_mode"),
         )
 
 
