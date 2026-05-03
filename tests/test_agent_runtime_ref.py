@@ -865,6 +865,22 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict({"policy": {"execution": []}})
         with pytest.raises(ValueError, match="Policy capability name must not be empty"):
             PolicyEngine.from_dict({"policy": {"capabilities": {" ": {"decision": "allow"}}}})
+        with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
+            PolicyEngine.from_dict(
+                {"policy": {"capabilities": {"search_docs": {"decision": "escalate"}}}}
+            )
+        with pytest.raises(ValueError, match="Policy decision is not supported: "):
+            PolicyEngine.from_dict(
+                {"policy": {"capabilities": {"search_docs": {"decision": " "}}}}
+            )
+        assert (
+            PolicyEngine.from_dict(
+                {"policy": {"capabilities": {"search_docs": {"decision": " allow "}}}}
+            )
+            .capability_policies["search_docs"]
+            .decision
+            == "allow"
+        )
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
             PolicyEngine.from_dict(
                 {"policy": {"memory_write": {"allow_kinds": [" "]}}}
