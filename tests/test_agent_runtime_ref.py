@@ -2338,6 +2338,21 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
+        for timeout_seconds in ("5", True):
+            with pytest.raises(
+                TypeError,
+                match="'capabilities.search_docs.timeout_seconds' must be an integer",
+            ):
+                CapabilityCatalog.from_dict(
+                    {
+                        "capabilities": {
+                            "search_docs": {
+                                **required_capability_fields,
+                                "timeout_seconds": timeout_seconds,
+                            }
+                        }
+                    }
+                )
         with pytest.raises(
             ValueError, match="capabilities.search_docs.timeout_seconds must be positive"
         ):

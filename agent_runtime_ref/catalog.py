@@ -21,7 +21,9 @@ def _read_required_string(spec: Mapping[str, Any], key: str, *, label: str) -> s
 
 
 def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
-    value = int(spec.get(key, 10))
+    value = spec.get(key, 10)
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError(f"'{label}.{key}' must be an integer")
     if value < 1:
         raise ValueError(f"{label}.{key} must be positive")
     return value
