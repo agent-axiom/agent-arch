@@ -27,6 +27,13 @@ def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
     return value
 
 
+def _read_bool(spec: Mapping[str, Any], key: str, *, label: str) -> bool:
+    value = spec.get(key, False)
+    if not isinstance(value, bool):
+        raise TypeError(f"'{label}.{key}' must be a boolean")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -111,7 +118,9 @@ class CapabilityCatalog:
                     raw_spec.get("allowed_egress", []), label="allowed_egress"
                 ),
                 approval_required=approval != "none",
-                idempotency_key_required=bool(raw_spec.get("idempotency_key_required", False)),
+                idempotency_key_required=_read_bool(
+                    raw_spec, "idempotency_key_required", label=label
+                ),
             )
         return cls(registry=registry)
 
