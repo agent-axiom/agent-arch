@@ -33,6 +33,13 @@ def _read_candidate_confidence(value: float) -> float:
     return confidence
 
 
+def _read_candidate_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Memory candidate field is required: {field}")
+    return normalized
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -142,6 +149,12 @@ class MemoryStore:
         return ranked[:limit]
 
     def persist(self, candidate: MemoryCandidate) -> MemoryRecord:
+        tenant_id = _read_candidate_string(candidate.tenant_id, field="tenant_id")
+        memory_class = _read_candidate_string(candidate.memory_class, field="memory_class")
+        kind = _read_candidate_string(candidate.kind, field="kind")
+        content = _read_candidate_string(candidate.content, field="content")
+        source = _read_candidate_string(candidate.source, field="source")
+        provenance = _read_candidate_string(candidate.provenance, field="provenance")
         revision_mode = candidate.revision_mode.strip()
         if revision_mode not in {"append", "replace"}:
             raise ValueError(
@@ -153,21 +166,21 @@ class MemoryStore:
             prior_revisions = [
                 record.revision
                 for record in self._records
-                if record.tenant_id == candidate.tenant_id
-                and record.memory_class == candidate.memory_class
-                and record.kind == candidate.kind
+                if record.tenant_id == tenant_id
+                and record.memory_class == memory_class
+                and record.kind == kind
             ]
             revision = (max(prior_revisions) if prior_revisions else 0) + 1
         self._counter += 1
         record = MemoryRecord(
             memory_id=f"mem-{self._counter:03d}",
-            tenant_id=candidate.tenant_id,
-            memory_class=candidate.memory_class,
-            kind=candidate.kind,
-            content=candidate.content,
-            source=candidate.source,
+            tenant_id=tenant_id,
+            memory_class=memory_class,
+            kind=kind,
+            content=content,
+            source=source,
             confidence=confidence,
-            provenance=candidate.provenance,
+            provenance=provenance,
             revision=revision,
         )
         self._records.append(record)

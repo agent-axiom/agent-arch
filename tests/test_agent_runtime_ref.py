@@ -1821,6 +1821,56 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     ),
                 )
 
+    def test_memory_store_requires_candidate_lineage_fields(self) -> None:
+        from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
+
+        def candidate_with(**overrides: str) -> MemoryCandidate:
+            values = {
+                "tenant_id": "tenant-acme",
+                "memory_class": "long_term",
+                "kind": "validated_fact",
+                "content": "Candidate version",
+                "source": "trusted_service",
+                "provenance": "policy_review",
+            } | overrides
+            return MemoryCandidate(
+                tenant_id=values["tenant_id"],
+                memory_class=values["memory_class"],
+                kind=values["kind"],
+                content=values["content"],
+                source=values["source"],
+                confidence=0.9,
+                provenance=values["provenance"],
+            )
+
+        for field in ("tenant_id", "memory_class", "kind", "content", "source", "provenance"):
+            store = MemoryStore()
+            with pytest.raises(
+                ValueError,
+                match=f"Memory candidate field is required: {field}",
+            ):
+                store.persist(candidate_with(**{field: " "}))
+
+        store = MemoryStore()
+        record = store.persist(
+            MemoryCandidate(
+                tenant_id=" tenant-acme ",
+                memory_class=" long_term ",
+                kind=" validated_fact ",
+                content=" Candidate version ",
+                source=" trusted_service ",
+                confidence=0.9,
+                provenance=" policy_review ",
+                revision_mode=" replace ",
+            ),
+        )
+        assert record.tenant_id == "tenant-acme"
+        assert record.memory_class == "long_term"
+        assert record.kind == "validated_fact"
+        assert record.content == "Candidate version"
+        assert record.source == "trusted_service"
+        assert record.provenance == "policy_review"
+
     def test_memory_store_compaction_is_tenant_scoped(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
 
