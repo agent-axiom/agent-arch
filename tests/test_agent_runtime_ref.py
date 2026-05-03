@@ -793,6 +793,20 @@ class TestFailurePaths:
             with pytest.raises(ValueError, match="CLI field is required: trace_prefix"):
                 main([command, "--trace-prefix", " "])
 
+    def test_cli_export_eval_dataset_rejects_duplicate_scenarios(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="CLI field entries must be unique: scenario"):
+            main(
+                [
+                    "export-eval-dataset",
+                    "--scenario",
+                    "support_ticket",
+                    "--scenario",
+                    "support_ticket",
+                ]
+            )
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:
