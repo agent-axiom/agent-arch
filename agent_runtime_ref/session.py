@@ -161,6 +161,7 @@ class SessionStore:
         dataset_name: str,
         eval_specs: dict[str, dict[str, object]] | None = None,
     ) -> Path:
+        dataset_name = _read_required_string(dataset_name, field="dataset_name")
         destination = Path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
         sessions = []
