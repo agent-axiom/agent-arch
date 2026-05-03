@@ -2055,6 +2055,27 @@ class TestLowCoverageModuleBranches:
         assert len(loaded) == 2
         assert loaded[0].payload["user_input"] == "hello"
 
+    def test_telemetry_export_normalizes_redact_fields(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.telemetry import REDACTED_VALUE, TelemetryEmitter
+
+        emitter = TelemetryEmitter()
+        emitter.emit("run_start", "trace-a", user_input="hello", tenant_id="tenant-acme")
+        output_path = tmp_path / "redacted-events.jsonl"
+        emitter.export_jsonl(output_path, redact_fields=(" user_input ", "user_input"))
+
+        loaded = TelemetryEmitter.load_jsonl(output_path)
+        assert loaded[0].payload["user_input"] == REDACTED_VALUE
+        assert loaded[0].payload["tenant_id"] == "tenant-acme"
+        assert loaded[0].redacted_fields == ("user_input",)
+
+    def test_telemetry_export_rejects_empty_redact_fields(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        emitter = TelemetryEmitter()
+        emitter.emit("run_start", "trace-a", user_input="hello")
+        with pytest.raises(ValueError, match="Telemetry redact field must not be empty"):
+            emitter.export_jsonl(tmp_path / "events.jsonl", redact_fields=(" ",))
+
     def test_traced_call_emits_failure_span(self) -> None:
         from agent_runtime_ref.telemetry import TelemetryEmitter
 
