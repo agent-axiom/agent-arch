@@ -39,6 +39,12 @@ def _read_required_delegated_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_model_output(value: object) -> ModelOutput:
+    if not isinstance(value, ModelOutput):
+        raise TypeError("Model step must return ModelOutput")
+    return value
+
+
 def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
     entries = workspace.get("entries", [])
     if not isinstance(entries, list):
@@ -171,13 +177,13 @@ class AgentRuntime:
             tool_items=str(len(context.context_layers.get("tool", []))),
         )
 
-        model_output = self.telemetry.traced_call(
-            request.trace_id,
-            "model_step",
-            lambda: self._call_model(request, context),
+        model_output = _read_model_output(
+            self.telemetry.traced_call(
+                request.trace_id,
+                "model_step",
+                lambda: self._call_model(request, context),
+            )
         )
-        if not isinstance(model_output, ModelOutput):
-            raise TypeError("Model step must return ModelOutput")
 
         if model_output.tool_request is not None:
             self._handle_tool_request(context, request, model_output.tool_request)
@@ -240,7 +246,9 @@ class AgentRuntime:
                         delegated_scope=delegated_scope,
                     )
                     return result
-            model_output = self._call_model(request, context, second_pass=True)
+            model_output = _read_model_output(
+                self._call_model(request, context, second_pass=True)
+            )
 
         self._schedule_background_updates(request, context, model_output)
         result = RunResult(output_text=model_output.text, status="success")
