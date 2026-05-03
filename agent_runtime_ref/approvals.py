@@ -85,6 +85,21 @@ class ApprovalQueue:
             if reviewer is None
             else _read_required_approval_string(reviewer, field="reviewer")
         )
+        authorization_mode = _read_required_approval_string(
+            authorization_mode,
+            field="authorization_mode",
+        )
+        delegated_principal_id = str(delegated_principal_id).strip()
+        delegated_scope = str(delegated_scope).strip()
+        if authorization_mode == "user_delegated":
+            delegated_principal_id = _read_required_approval_string(
+                delegated_principal_id,
+                field="delegated_principal_id",
+            )
+            delegated_scope = _read_required_approval_string(
+                delegated_scope,
+                field="delegated_scope",
+            )
         self._counter += 1
         request = ApprovalRequest(
             approval_id=f"apr-{self._counter:03d}",

@@ -1452,6 +1452,48 @@ class TestRuntimeControlPaths:
                 )
             assert queue.all() == ()
 
+    def test_approval_queue_requires_delegated_submit_identity_fields(self) -> None:
+        required_fields = {
+            "delegated_principal_id": {
+                "delegated_principal_id": " ",
+                "delegated_scope": "tickets.write",
+            },
+            "delegated_scope": {
+                "delegated_principal_id": "user-1",
+                "delegated_scope": " ",
+            },
+        }
+        for field, delegated_fields in required_fields.items():
+            queue = AgentRuntime().approvals
+            with pytest.raises(ValueError, match=f"Approval field is required: {field}"):
+                queue.submit(
+                    trace_id="trace-approval-delegated-required-001",
+                    capability_name="create_ticket",
+                    requested_by="user-1",
+                    reviewer=None,
+                    reason="write_action",
+                    session_id="session-approval-delegated-required-001",
+                    authorization_mode=" user_delegated ",
+                    **delegated_fields,
+                )
+            assert queue.all() == ()
+
+        queue = AgentRuntime().approvals
+        request = queue.submit(
+            trace_id="trace-approval-delegated-normalized-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-delegated-normalized-001",
+            authorization_mode=" user_delegated ",
+            delegated_principal_id=" user-1 ",
+            delegated_scope=" tickets.write ",
+        )
+        assert request.authorization_mode == "user_delegated"
+        assert request.delegated_principal_id == "user-1"
+        assert request.delegated_scope == "tickets.write"
+
     def test_approval_queue_rejects_unsupported_resolution_decisions(self) -> None:
         queue = AgentRuntime().approvals
         request = queue.submit(
