@@ -1736,7 +1736,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 source="trusted_service",
                 confidence=0.9,
                 provenance="policy_review",
-                revision_mode="replace",
+                revision_mode=" replace ",
             ),
         )
         second = store.persist(
@@ -1753,6 +1753,27 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         )
         assert first.revision >= 2
         assert second.revision == first.revision + 1
+
+    def test_memory_store_rejects_unsupported_candidate_revision_modes(self) -> None:
+        from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
+
+        store = MemoryStore()
+        with pytest.raises(
+            ValueError,
+            match="Memory candidate revision mode is not supported: repalce",
+        ):
+            store.persist(
+                MemoryCandidate(
+                    tenant_id="tenant-acme",
+                    memory_class="long_term",
+                    kind="validated_fact",
+                    content="Second version",
+                    source="trusted_service",
+                    confidence=0.95,
+                    provenance="policy_review",
+                    revision_mode="repalce",
+                ),
+            )
 
     def test_memory_store_compaction_is_tenant_scoped(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore

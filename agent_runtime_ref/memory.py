@@ -134,8 +134,13 @@ class MemoryStore:
         return ranked[:limit]
 
     def persist(self, candidate: MemoryCandidate) -> MemoryRecord:
+        revision_mode = candidate.revision_mode.strip()
+        if revision_mode not in {"append", "replace"}:
+            raise ValueError(
+                f"Memory candidate revision mode is not supported: {revision_mode}"
+            )
         revision = 1
-        if candidate.revision_mode == "replace":
+        if revision_mode == "replace":
             prior_revisions = [
                 record.revision
                 for record in self._records
