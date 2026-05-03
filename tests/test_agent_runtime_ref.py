@@ -863,6 +863,21 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict({"policy": {"memory_write": []}})
         with pytest.raises(TypeError, match="'execution' must be a mapping"):
             PolicyEngine.from_dict({"policy": {"execution": []}})
+        with pytest.raises(TypeError, match="'run_precheck.require_tenant' must be a boolean"):
+            PolicyEngine.from_dict(
+                {"policy": {"run_precheck": {"require_tenant": "false"}}}
+            )
+        with pytest.raises(
+            TypeError,
+            match="'run_precheck.deny_if_principal_missing' must be a boolean",
+        ):
+            PolicyEngine.from_dict(
+                {
+                    "policy": {
+                        "run_precheck": {"deny_if_principal_missing": "true"}
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="Policy capability name must not be empty"):
             PolicyEngine.from_dict({"policy": {"capabilities": {" ": {"decision": "allow"}}}})
         with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
