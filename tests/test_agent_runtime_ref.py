@@ -1401,9 +1401,28 @@ class TestRuntimeControlPaths:
             reason="write_action",
             session_id="session-approval-resolve-001",
         )
-        resolved = queue.resolve(request.approval_id, decision="approved", note="ok")
+        resolved = queue.resolve(request.approval_id, decision=" approved ", note="ok")
         assert resolved.status == "approved"
         assert resolved.capability_session_status == "approved"
+
+    def test_approval_queue_rejects_unsupported_resolution_decisions(self) -> None:
+        queue = AgentRuntime().approvals
+        request = queue.submit(
+            trace_id="trace-approval-bad-decision-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-bad-decision-001",
+        )
+        for decision in (" ", "maybe"):
+            with pytest.raises(
+                ValueError,
+                match=f"Approval decision is not supported: {decision.strip()}",
+            ):
+                queue.resolve(request.approval_id, decision=decision)
+        assert request.status == "pending"
+        assert request.capability_session_status == "pending"
 
     def test_session_export_includes_capability_session_fields(self, tmp_path: Path) -> None:
         runtime = AgentRuntime()

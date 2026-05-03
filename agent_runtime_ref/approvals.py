@@ -90,6 +90,9 @@ class ApprovalQueue:
         return tuple(item for item in self._items if item.status == "pending")
 
     def resolve(self, approval_id: str, *, decision: str, note: str = "") -> ApprovalRequest:
+        decision = str(decision).strip()
+        if decision not in {"approved", "rejected"}:
+            raise ValueError(f"Approval decision is not supported: {decision}")
         for item in self._items:
             if item.approval_id == approval_id:
                 item.status = decision
