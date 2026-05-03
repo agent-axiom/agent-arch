@@ -2263,6 +2263,14 @@ class TestLowCoverageModuleBranches:
             ApprovalPolicy.from_dict({"approvals": []})
         with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
             ApprovalPolicy.from_dict({"approvals": {"default_reviewer": " "}})
+        for escalation_sla_minutes in ("30", True):
+            with pytest.raises(
+                TypeError,
+                match="approvals.escalation_sla_minutes must be an integer",
+            ):
+                ApprovalPolicy.from_dict(
+                    {"approvals": {"escalation_sla_minutes": escalation_sla_minutes}}
+                )
         with pytest.raises(
             ValueError, match="approvals.escalation_sla_minutes must be positive"
         ):
