@@ -884,12 +884,36 @@ class TestExecutionAndPolicyBranches:
         assert capability is not None
         result = execute_tool(
             capability,
-            ToolRequest(capability_name="search_docs", arguments={"query": "architecture"}),
+            ToolRequest(capability_name=" search_docs ", arguments={"query": "architecture"}),
             PolicyDecision(" allow ", "low_risk_read", "cap_101"),
         )
+        assert result.capability_name == "search_docs"
         assert result.status == "success"
         assert result.payload["transport"] == capability.transport
         assert result.payload["tool_principal"] == capability.tool_principal
+
+    @pytest.mark.parametrize(
+        ("capability_name", "expected_message"),
+        [
+            (" ", "Tool request capability name must not be empty"),
+            (
+                "create_ticket",
+                "Tool request capability does not match catalog entry: "
+                "create_ticket != search_docs",
+            ),
+        ],
+    )
+    def test_execute_tool_rejects_bad_request_capability_names(
+        self, capability_name: str, expected_message: str, config_dir: Path
+    ) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        with pytest.raises(ValueError, match=expected_message):
+            execute_tool(
+                capability,
+                ToolRequest(capability_name=capability_name, arguments={"query": "policy"}),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
 
     @pytest.mark.parametrize("action", ["", "escalate"])
     def test_execute_tool_rejects_unsupported_policy_actions(
