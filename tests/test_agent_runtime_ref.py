@@ -1394,16 +1394,63 @@ class TestRuntimeControlPaths:
     def test_approval_queue_resolution_updates_capability_session_status(self) -> None:
         queue = AgentRuntime().approvals
         request = queue.submit(
-            trace_id="trace-approval-resolve-001",
-            capability_name="create_ticket",
-            requested_by="user-1",
-            reviewer=None,
-            reason="write_action",
+            trace_id=" trace-approval-resolve-001 ",
+            capability_name=" create_ticket ",
+            requested_by=" user-1 ",
+            reviewer=" manager ",
+            reason=" write_action ",
             session_id="session-approval-resolve-001",
         )
         resolved = queue.resolve(request.approval_id, decision=" approved ", note="ok")
+        assert request.trace_id == "trace-approval-resolve-001"
+        assert request.capability_name == "create_ticket"
+        assert request.requested_by == "user-1"
+        assert request.reviewer == "manager"
+        assert request.reason == "write_action"
         assert resolved.status == "approved"
         assert resolved.capability_session_status == "approved"
+
+    def test_approval_queue_rejects_blank_submit_evidence_fields(self) -> None:
+        required_fields = (
+            ("trace_id", " ", "create_ticket", "user-1", None, "write_action"),
+            (
+                "capability_name",
+                "trace-approval-required-001",
+                " ",
+                "user-1",
+                None,
+                "write_action",
+            ),
+            (
+                "requested_by",
+                "trace-approval-required-001",
+                "create_ticket",
+                " ",
+                None,
+                "write_action",
+            ),
+            (
+                "reviewer",
+                "trace-approval-required-001",
+                "create_ticket",
+                "user-1",
+                " ",
+                "write_action",
+            ),
+            ("reason", "trace-approval-required-001", "create_ticket", "user-1", None, " "),
+        )
+        for field, trace_id, capability_name, requested_by, reviewer, reason in required_fields:
+            queue = AgentRuntime().approvals
+            with pytest.raises(ValueError, match=f"Approval field is required: {field}"):
+                queue.submit(
+                    trace_id=trace_id,
+                    capability_name=capability_name,
+                    requested_by=requested_by,
+                    reviewer=reviewer,
+                    reason=reason,
+                    session_id="session-approval-required-001",
+                )
+            assert queue.all() == ()
 
     def test_approval_queue_rejects_unsupported_resolution_decisions(self) -> None:
         queue = AgentRuntime().approvals

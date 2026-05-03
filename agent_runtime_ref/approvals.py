@@ -26,6 +26,13 @@ class ApprovalPolicy:
         )
 
 
+def _read_required_approval_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Approval field is required: {field}")
+    return normalized
+
+
 @dataclass(slots=True)
 class ApprovalRequest:
     approval_id: str
@@ -66,13 +73,25 @@ class ApprovalQueue:
         delegated_principal_id: str = "",
         delegated_scope: str = "",
     ) -> ApprovalRequest:
+        trace_id = _read_required_approval_string(trace_id, field="trace_id")
+        capability_name = _read_required_approval_string(
+            capability_name,
+            field="capability_name",
+        )
+        requested_by = _read_required_approval_string(requested_by, field="requested_by")
+        reason = _read_required_approval_string(reason, field="reason")
+        reviewer = (
+            self.policy.default_reviewer
+            if reviewer is None
+            else _read_required_approval_string(reviewer, field="reviewer")
+        )
         self._counter += 1
         request = ApprovalRequest(
             approval_id=f"apr-{self._counter:03d}",
             trace_id=trace_id,
             capability_name=capability_name,
             requested_by=requested_by,
-            reviewer=reviewer or self.policy.default_reviewer,
+            reviewer=reviewer,
             reason=reason,
             session_id=session_id,
             capability_session_id=f"cap-session-{self._counter:03d}",
