@@ -1708,25 +1708,26 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="Memory record #1 confidence must be between 0 and 1"
-        ):
-            MemoryStore.from_dict(
-                {
-                    "memory": {
-                        "seed_records": [
-                            {
-                                "tenant_id": "tenant-acme",
-                                "memory_class": "profile",
-                                "kind": "language_preference",
-                                "content": "concise replies",
-                                "source": "trusted_profile",
-                                "confidence": 2,
-                            }
-                        ]
+        for confidence in (2, "nan", "inf"):
+            with pytest.raises(
+                ValueError, match="Memory record #1 confidence must be between 0 and 1"
+            ):
+                MemoryStore.from_dict(
+                    {
+                        "memory": {
+                            "seed_records": [
+                                {
+                                    "tenant_id": "tenant-acme",
+                                    "memory_class": "profile",
+                                    "kind": "language_preference",
+                                    "content": "concise replies",
+                                    "source": "trusted_profile",
+                                    "confidence": confidence,
+                                }
+                            ]
+                        }
                     }
-                }
-            )
+                )
         with pytest.raises(
             ValueError, match="Memory record #1 revision must be positive"
         ):

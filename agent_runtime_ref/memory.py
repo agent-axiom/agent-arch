@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 from typing import Any, Mapping
 
 
@@ -13,7 +14,7 @@ def _read_required_string(record: Mapping[str, Any], key: str, *, idx: int) -> s
 
 def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
     value = float(record.get("confidence", 0.5))
-    if value < 0 or value > 1:
+    if not isfinite(value) or value < 0 or value > 1:
         raise ValueError(f"Memory record #{idx} confidence must be between 0 and 1")
     return value
 
