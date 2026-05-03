@@ -1708,6 +1708,42 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(
+            ValueError, match="Memory record #1 field is required: memory_id"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "memory_id": " ",
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                            }
+                        ]
+                    }
+                }
+            )
+        record = MemoryStore.from_dict(
+            {
+                "memory": {
+                    "seed_records": [
+                        {
+                            "memory_id": " mem-custom ",
+                            "tenant_id": "tenant-acme",
+                            "memory_class": "profile",
+                            "kind": "language_preference",
+                            "content": "concise replies",
+                            "source": "trusted_profile",
+                        }
+                    ]
+                }
+            }
+        ).all()[0]
+        assert record.memory_id == "mem-custom"
         for confidence in (2, "nan", "inf"):
             with pytest.raises(
                 ValueError, match="Memory record #1 confidence must be between 0 and 1"
