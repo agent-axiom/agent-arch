@@ -1157,6 +1157,46 @@ class TestRuntimeCore:
             )
         assert runtime.telemetry.events == []
 
+    def test_runtime_rejects_blank_trace_and_session_ids_before_telemetry(self) -> None:
+        required_fields = {
+            "trace_id": {
+                "trace_id": " ",
+                "session_id": "session-runtime-required-001",
+            },
+            "session_id": {
+                "trace_id": "trace-runtime-required-001",
+                "session_id": " ",
+            },
+        }
+        for field, payload in required_fields.items():
+            runtime = AgentRuntime()
+            with pytest.raises(ValueError, match=f"Run request field is required: {field}"):
+                runtime.run(
+                    RunRequest(
+                        user_input="Summarize the current architecture.",
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        agent_id="agent-runtime-ref",
+                        **payload,
+                    ),
+                )
+            assert runtime.telemetry.events == []
+
+        runtime = AgentRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Summarize the current architecture.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id=" trace-runtime-normalized-001 ",
+                session_id=" session-runtime-normalized-001 ",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        assert result.status == "success"
+        assert runtime.telemetry.events[0].trace_id == "trace-runtime-normalized-001"
+        assert runtime.sessions.get_session("session-runtime-normalized-001") is not None
+
     def test_runtime_uses_tool_path_for_ticket_request(self) -> None:
         runtime = AgentRuntime()
         result = runtime.run(

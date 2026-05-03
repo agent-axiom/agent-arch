@@ -67,6 +67,14 @@ class AgentRuntime:
             request.user_input,
             field="user_input",
         )
+        request.trace_id = _read_required_request_string(
+            request.trace_id,
+            field="trace_id",
+        )
+        request.session_id = _read_required_request_string(
+            request.session_id,
+            field="session_id",
+        )
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
