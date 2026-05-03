@@ -2003,14 +2003,19 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             ArtifactBundle.from_dict({"bundle": []})
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
             RetirementPlan.from_dict({"retirement": []})
+        valid_change = {
+            "change_id": "x",
+            "change_type": "y",
+            "risk_level": "z",
+            "rollout_strategy": "gradual",
+            "session_control_owner": "support-ops",
+            "emergency_freeze_owner": "platform-runtime",
+        }
         with pytest.raises(TypeError, match="artifacts must be a list"):
             ChangeRecord.from_dict(
                 {
                     "change": {
-                        "change_id": "x",
-                        "change_type": "y",
-                        "risk_level": "z",
-                        "rollout_strategy": "gradual",
+                        **valid_change,
                         "artifacts": "bad",
                         "required_signals": [],
                         "approval_roles": [],
@@ -2031,10 +2036,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             ChangeRecord.from_dict(
                 {
                     "change": {
-                        "change_id": "x",
-                        "change_type": "y",
-                        "risk_level": "z",
-                        "rollout_strategy": "gradual",
+                        **valid_change,
                         "required_signals": [" "],
                     }
                 }
@@ -2043,47 +2045,81 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             ChangeRecord.from_dict(
                 {
                     "change": {
-                        "change_id": "x",
-                        "change_type": "y",
-                        "risk_level": "z",
-                        "rollout_strategy": "gradual",
+                        **valid_change,
                         "required_signals": ["offline_eval", " offline_eval "],
                     }
                 }
             )
+        with pytest.raises(ValueError, match="change.session_control_owner is required"):
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        **valid_change,
+                        "session_control_owner": " ",
+                    }
+                }
+            )
+        with pytest.raises(ValueError, match="change.emergency_freeze_owner is required"):
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        **valid_change,
+                        "emergency_freeze_owner": " ",
+                    }
+                }
+            )
+        valid_bundle = {
+            "bundle_name": "bundle",
+            "version": "1",
+            "session_control_owner": "support-ops",
+        }
         with pytest.raises(ValueError, match="bundle.bundle_name is required"):
             ArtifactBundle.from_dict({"bundle": {"version": "1"}})
         with pytest.raises(TypeError, match="'bundle.provenance_required' must be a boolean"):
             ArtifactBundle.from_dict(
                 {
                     "bundle": {
-                        "bundle_name": "bundle",
-                        "version": "1",
+                        **valid_bundle,
                         "provenance_required": "false",
                     }
                 }
             )
         with pytest.raises(TypeError, match="'bundle.signed' must be a boolean"):
             ArtifactBundle.from_dict(
-                {"bundle": {"bundle_name": "bundle", "version": "1", "signed": "false"}}
+                {"bundle": {**valid_bundle, "signed": "false"}}
             )
-        bundle = ArtifactBundle.from_dict(
-            {"bundle": {"bundle_name": "bundle", "version": "1", "signed": True}}
-        )
+        with pytest.raises(ValueError, match="bundle.session_control_owner is required"):
+            ArtifactBundle.from_dict(
+                {"bundle": {**valid_bundle, "session_control_owner": " "}}
+            )
+        bundle = ArtifactBundle.from_dict({"bundle": {**valid_bundle, "signed": True}})
         assert bundle.provenance_required is True
         assert bundle.signed is True
         with pytest.raises(ValueError, match="artifacts entries must not be empty"):
             ArtifactBundle.from_dict(
-                {"bundle": {"bundle_name": "bundle", "version": "1", "artifacts": [""]}}
+                {"bundle": {**valid_bundle, "artifacts": [""]}}
             )
+        valid_retirement = {
+            "system_id": "legacy",
+            "replacement_mode": "none",
+            "session_control_owner": "support-ops",
+            "emergency_freeze_owner": "platform-runtime",
+        }
         with pytest.raises(ValueError, match="retirement.system_id is required"):
             RetirementPlan.from_dict({"retirement": {"replacement_mode": "none"}})
+        with pytest.raises(ValueError, match="retirement.session_control_owner is required"):
+            RetirementPlan.from_dict(
+                {"retirement": {**valid_retirement, "session_control_owner": " "}}
+            )
+        with pytest.raises(ValueError, match="retirement.emergency_freeze_owner is required"):
+            RetirementPlan.from_dict(
+                {"retirement": {**valid_retirement, "emergency_freeze_owner": " "}}
+            )
         with pytest.raises(ValueError, match="archive_targets entries must not be empty"):
             RetirementPlan.from_dict(
                 {
                     "retirement": {
-                        "system_id": "legacy",
-                        "replacement_mode": "none",
+                        **valid_retirement,
                         "archive_targets": [" "],
                     }
                 }
@@ -2092,8 +2128,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             RetirementPlan.from_dict(
                 {
                     "retirement": {
-                        "system_id": "legacy",
-                        "replacement_mode": "none",
+                        **valid_retirement,
                         "archive_targets": ["telemetry_jsonl", " telemetry_jsonl "],
                     }
                 }
