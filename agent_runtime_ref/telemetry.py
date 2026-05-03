@@ -17,6 +17,22 @@ class StructuredEvent:
     schema_version: str = SCHEMA_VERSION
     redacted_fields: tuple[str, ...] = ()
 
+    def __post_init__(self) -> None:
+        self.event_type = self.event_type.strip()
+        if not self.event_type:
+            raise ValueError("Telemetry event field must not be empty: event_type")
+        self.trace_id = self.trace_id.strip()
+        if not self.trace_id:
+            raise ValueError("Telemetry event field must not be empty: trace_id")
+        schema_version = self.schema_version.strip()
+        if not schema_version:
+            raise ValueError("Telemetry event field must not be empty: schema_version")
+        if schema_version != SCHEMA_VERSION:
+            raise ValueError(
+                f"Telemetry schema version is not supported: {schema_version}"
+            )
+        self.schema_version = schema_version
+
     def as_dict(self) -> dict[str, object]:
         return {
             "schema_version": self.schema_version,

@@ -1997,6 +1997,40 @@ class TestLowCoverageModuleBranches:
         assert not assessment.healthy
         assert "inventory_drift_present" in assessment.blocking_findings
 
+    def test_structured_event_rejects_direct_bad_identity_fields(self) -> None:
+        from agent_runtime_ref.telemetry import StructuredEvent
+
+        with pytest.raises(
+            ValueError,
+            match="Telemetry event field must not be empty: event_type",
+        ):
+            StructuredEvent(event_type=" ", trace_id="trace-direct", payload={})
+        with pytest.raises(
+            ValueError,
+            match="Telemetry event field must not be empty: trace_id",
+        ):
+            StructuredEvent(event_type="run_start", trace_id=" ", payload={})
+        with pytest.raises(
+            ValueError,
+            match="Telemetry schema version is not supported: 2.0",
+        ):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload={},
+                schema_version="2.0",
+            )
+
+        event = StructuredEvent(
+            event_type=" run_start ",
+            trace_id=" trace-direct ",
+            payload={},
+            schema_version=" 1.0 ",
+        )
+        assert event.event_type == "run_start"
+        assert event.trace_id == "trace-direct"
+        assert event.schema_version == "1.0"
+
     def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
 
