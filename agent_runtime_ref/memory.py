@@ -26,6 +26,13 @@ def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
     return value
 
 
+def _read_candidate_confidence(value: float) -> float:
+    confidence = float(value)
+    if not isfinite(confidence) or confidence < 0 or confidence > 1:
+        raise ValueError("Memory candidate confidence must be between 0 and 1")
+    return confidence
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -140,6 +147,7 @@ class MemoryStore:
             raise ValueError(
                 f"Memory candidate revision mode is not supported: {revision_mode}"
             )
+        confidence = _read_candidate_confidence(candidate.confidence)
         revision = 1
         if revision_mode == "replace":
             prior_revisions = [
@@ -158,7 +166,7 @@ class MemoryStore:
             kind=candidate.kind,
             content=candidate.content,
             source=candidate.source,
-            confidence=candidate.confidence,
+            confidence=confidence,
             provenance=candidate.provenance,
             revision=revision,
         )
