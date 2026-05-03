@@ -873,14 +873,36 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict(
                 {"policy": {"capabilities": {"search_docs": {"decision": " "}}}}
             )
-        assert (
+        with pytest.raises(
+            ValueError, match="Policy approver must not be empty: create_ticket"
+        ):
             PolicyEngine.from_dict(
-                {"policy": {"capabilities": {"search_docs": {"decision": " allow "}}}}
+                {
+                    "policy": {
+                        "capabilities": {
+                            "create_ticket": {
+                                "decision": "approval_required",
+                                "approver": " ",
+                            }
+                        }
+                    }
+                }
             )
-            .capability_policies["search_docs"]
-            .decision
-            == "allow"
+        normalized_policy = PolicyEngine.from_dict(
+            {
+                "policy": {
+                    "capabilities": {
+                        "search_docs": {"decision": " allow "},
+                        "create_ticket": {
+                            "decision": "approval_required",
+                            "approver": " runtime-review ",
+                        },
+                    }
+                }
+            }
         )
+        assert normalized_policy.capability_policies["search_docs"].decision == "allow"
+        assert normalized_policy.capability_policies["create_ticket"].approver == "runtime-review"
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
             PolicyEngine.from_dict(
                 {"policy": {"memory_write": {"allow_kinds": [" "]}}}
