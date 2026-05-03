@@ -1286,6 +1286,22 @@ class TestRuntimeCore:
         assert runtime.telemetry.events[0].trace_id == "trace-runtime-normalized-001"
         assert runtime.sessions.get_session("session-runtime-normalized-001") is not None
 
+    def test_runtime_rejects_bad_direct_sandbox_workspace_entries(self) -> None:
+        runtime = AgentRuntime(sandbox_profile={"workspace": {"entries": "src"}})
+        with pytest.raises(TypeError, match="Sandbox profile workspace entries must be a list"):
+            runtime.run(
+                RunRequest(
+                    user_input="Please open a ticket for this issue.",
+                    tenant_id="tenant-acme",
+                    principal_id="user-1",
+                    trace_id="trace-bad-sandbox-001",
+                    session_id="session-bad-sandbox-001",
+                    agent_id="agent-runtime-ref",
+                ),
+            )
+        event_types = [event.event_type for event in runtime.telemetry.events]
+        assert "sandbox_profile_reviewed" not in event_types
+
     def test_runtime_rejects_blank_authorization_mode_before_telemetry(self) -> None:
         runtime = AgentRuntime()
         with pytest.raises(ValueError, match="Run request field is required: authorization_mode"):

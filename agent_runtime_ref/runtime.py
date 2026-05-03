@@ -39,6 +39,13 @@ def _read_required_delegated_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
+    entries = workspace.get("entries", [])
+    if not isinstance(entries, list):
+        raise TypeError("Sandbox profile workspace entries must be a list")
+    return cast(list[object], entries)
+
+
 class AgentRuntime:
     """Minimal runnable skeleton for the book's reference implementation."""
 
@@ -480,7 +487,7 @@ class AgentRuntime:
             return
         manifest_version = self.sandbox_profile.get("manifest_version", "unknown")
         workspace = self._sandbox_profile_mapping("workspace")
-        workspace_entries = workspace.get("entries", [])
+        workspace_entries = _read_workspace_entries(workspace)
         shell_mode = self._sandbox_profile_nested_value("capabilities", "shell")
         network = self._sandbox_profile_nested_value("permissions", "network")
         secrets = self._sandbox_profile_nested_value("permissions", "secrets")
