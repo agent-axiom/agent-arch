@@ -940,6 +940,24 @@ class TestExecutionAndPolicyBranches:
         assert result.payload["transport"] == capability.transport
         assert result.payload["tool_principal"] == capability.tool_principal
 
+    def test_execute_tool_rejects_bad_request_arguments(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        bad_arguments = cast(dict[str, str], [])
+        with pytest.raises(TypeError, match="Tool request arguments must be a mapping"):
+            execute_tool(
+                capability,
+                ToolRequest(capability_name="search_docs", arguments=bad_arguments),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
+
+        result = execute_tool(
+            capability,
+            ToolRequest(capability_name="search_docs", arguments=cast(dict[str, str], {1: 2})),
+            PolicyDecision("allow", "low_risk_read", "cap_101"),
+        )
+        assert result.status == "success"
+
     @pytest.mark.parametrize(
         ("capability_name", "expected_message"),
         [

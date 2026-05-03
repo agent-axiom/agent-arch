@@ -12,12 +12,19 @@ def _read_tool_capability_name(value: str) -> str:
     return capability_name
 
 
+def _read_tool_arguments(value: dict[str, str]) -> dict[str, str]:
+    if not isinstance(value, dict):
+        raise TypeError("Tool request arguments must be a mapping")
+    return {str(key): str(argument) for key, argument in value.items()}
+
+
 def execute_tool(
     capability: CapabilitySpec,
     tool_request: ToolRequest,
     decision: PolicyDecision,
 ) -> ToolResult:
     capability_name = _read_tool_capability_name(tool_request.capability_name)
+    arguments = _read_tool_arguments(tool_request.arguments)
     if capability_name != capability.name:
         raise ValueError(
             "Tool request capability does not match catalog entry: "
@@ -38,19 +45,19 @@ def execute_tool(
             status="approval_required",
             payload={"reason": decision.reason},
         )
-    if capability.idempotency_key_required and "idempotency_key" not in tool_request.arguments:
+    if capability.idempotency_key_required and "idempotency_key" not in arguments:
         return ToolResult(
             capability_name=capability_name,
             status="validation_failure",
             payload={"reason": "missing_idempotency_key"},
         )
-    if tool_request.arguments.get("simulate_failure") == "tool_timeout":
+    if arguments.get("simulate_failure") == "tool_timeout":
         return ToolResult(
             capability_name=capability_name,
             status="failed",
             payload={"reason": "tool_timeout"},
         )
-    if tool_request.arguments.get("simulate_failure") == "upstream_unavailable":
+    if arguments.get("simulate_failure") == "upstream_unavailable":
         return ToolResult(
             capability_name=capability_name,
             status="failed",
