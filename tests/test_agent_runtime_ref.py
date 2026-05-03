@@ -1665,6 +1665,27 @@ class TestLowCoverageModuleBranches:
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [" "]}})
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             load_agent_identity({"agent": []})
+        with pytest.raises(ValueError, match="agent.id is required"):
+            load_agent_identity(
+                {
+                    "agent": {
+                        "display_name": "Reference Runtime",
+                        "owner_team": "agent_platform",
+                        "runtime_principal": "svc-agent-runtime-ref",
+                    }
+                }
+            )
+        with pytest.raises(ValueError, match="agent.runtime_principal is required"):
+            load_agent_identity(
+                {
+                    "agent": {
+                        "id": "agent-runtime-ref",
+                        "display_name": "Reference Runtime",
+                        "owner_team": "agent_platform",
+                        "runtime_principal": " ",
+                    }
+                }
+            )
 
         inventory = ApprovedInventory(capabilities=frozenset({"search_docs"}))
         assert inventory.allows("search_docs")
