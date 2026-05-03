@@ -1559,6 +1559,18 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(ValueError, match="required_signals entries must be unique"):
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        "change_id": "x",
+                        "change_type": "y",
+                        "risk_level": "z",
+                        "rollout_strategy": "gradual",
+                        "required_signals": ["offline_eval", " offline_eval "],
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="bundle.bundle_name is required"):
             ArtifactBundle.from_dict({"bundle": {"version": "1"}})
         with pytest.raises(ValueError, match="artifacts entries must not be empty"):
@@ -1574,6 +1586,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                         "system_id": "legacy",
                         "replacement_mode": "none",
                         "archive_targets": [" "],
+                    }
+                }
+            )
+        with pytest.raises(ValueError, match="archive_targets entries must be unique"):
+            RetirementPlan.from_dict(
+                {
+                    "retirement": {
+                        "system_id": "legacy",
+                        "replacement_mode": "none",
+                        "archive_targets": ["telemetry_jsonl", " telemetry_jsonl "],
                     }
                 }
             )
