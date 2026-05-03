@@ -2216,6 +2216,37 @@ class TestDelegatedAuthorizationConfig:
 
 
 class TestDelegatedAuthorizationRuntime:
+    def test_runtime_requires_delegated_identity_fields_for_user_delegation(self) -> None:
+        required_fields = {
+            "delegated_principal_id": {
+                "delegated_principal_id": " ",
+                "delegated_scope": "tickets.write",
+            },
+            "delegated_scope": {
+                "delegated_principal_id": "user-1",
+                "delegated_scope": " ",
+            },
+        }
+        for field, payload in required_fields.items():
+            runtime = AgentRuntime()
+            with pytest.raises(
+                ValueError,
+                match=f"Delegated authorization field is required: {field}",
+            ):
+                runtime.run(
+                    RunRequest(
+                        user_input="Please create a ticket for this onboarding issue.",
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        trace_id=f"trace-authz-required-{field}",
+                        session_id=f"session-authz-required-{field}",
+                        agent_id="agent-runtime-ref",
+                        authorization_mode="user_delegated",
+                        **payload,
+                    ),
+                )
+            assert runtime.telemetry.events == []
+
     def test_runtime_emits_and_exports_delegated_authorization_fields(self) -> None:
         runtime = AgentRuntime()
         result = runtime.run(
@@ -2226,9 +2257,9 @@ class TestDelegatedAuthorizationRuntime:
                 trace_id="trace-authz-001",
                 session_id="session-authz-001",
                 agent_id="agent-runtime-ref",
-                authorization_mode="user_delegated",
-                delegated_principal_id="user-1",
-                delegated_scope="tickets.write",
+                authorization_mode=" user_delegated ",
+                delegated_principal_id=" user-1 ",
+                delegated_scope=" tickets.write ",
             ),
         )
         assert result.status == "success"
