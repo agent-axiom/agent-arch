@@ -1596,6 +1596,14 @@ class TestLowCoverageModuleBranches:
             ControlsPolicy.from_dict({"controls": {"require": [" "]}})
         with pytest.raises(ValueError, match="controls.block_if entries must not be empty"):
             ControlsPolicy.from_dict({"controls": {"require": [], "block_if": [""]}})
+        with pytest.raises(ValueError, match="controls.require entries must be unique"):
+            ControlsPolicy.from_dict(
+                {"controls": {"require": ["registry_reviewed", " registry_reviewed "]}}
+            )
+        with pytest.raises(ValueError, match="controls.block_if entries must be unique"):
+            ControlsPolicy.from_dict(
+                {"controls": {"require": [], "block_if": ["finding", " finding "]}}
+            )
 
     def test_assess_controls_marks_inventory_drift_as_blocking(self) -> None:
         from agent_runtime_ref.controls import ControlsPolicy, InventoryDrift, assess_controls
