@@ -1704,6 +1704,19 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
+        with pytest.raises(
+            ValueError, match="capabilities.search_docs.timeout_seconds must be positive"
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "timeout_seconds": 0,
+                        }
+                    }
+                }
+            )
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
         from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity

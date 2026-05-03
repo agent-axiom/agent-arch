@@ -20,6 +20,13 @@ def _read_required_string(spec: Mapping[str, Any], key: str, *, label: str) -> s
     return value
 
 
+def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
+    value = int(spec.get(key, 10))
+    if value < 1:
+        raise ValueError(f"{label}.{key} must be positive")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -90,7 +97,9 @@ class CapabilityCatalog:
                 owner=_read_required_string(raw_spec, "owner", label=label),
                 mode=_read_required_string(raw_spec, "mode", label=label),
                 transport=_read_required_string(raw_spec, "transport", label=label),
-                timeout_seconds=int(raw_spec.get("timeout_seconds", 10)),
+                timeout_seconds=_read_positive_int(
+                    raw_spec, "timeout_seconds", label=label
+                ),
                 tool_principal=_read_required_string(
                     raw_spec, "tool_principal", label=label
                 ),
