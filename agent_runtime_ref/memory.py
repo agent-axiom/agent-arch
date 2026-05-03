@@ -11,6 +11,20 @@ def _read_required_string(record: Mapping[str, Any], key: str, *, idx: int) -> s
     return value
 
 
+def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
+    value = float(record.get("confidence", 0.5))
+    if value < 0 or value > 1:
+        raise ValueError(f"Memory record #{idx} confidence must be between 0 and 1")
+    return value
+
+
+def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
+    value = int(record.get("revision", 1))
+    if value < 1:
+        raise ValueError(f"Memory record #{idx} revision must be positive")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -99,9 +113,9 @@ class MemoryStore:
                     kind=_read_required_string(record, "kind", idx=idx),
                     content=_read_required_string(record, "content", idx=idx),
                     source=_read_required_string(record, "source", idx=idx),
-                    confidence=float(record.get("confidence", 0.5)),
+                    confidence=_read_confidence(record, idx=idx),
                     provenance=str(record.get("provenance", "unknown")),
-                    revision=int(record.get("revision", 1)),
+                    revision=_read_revision(record, idx=idx),
                 ),
             )
         return cls(records=records)
