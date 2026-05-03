@@ -4,6 +4,13 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
+def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> str:
+    value = str(data.get(key, "")).strip()
+    if not value:
+        raise ValueError(f"{label}.{key} is required")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class AgentIdentity:
     agent_id: str
@@ -38,8 +45,10 @@ def load_agent_identity(data: Mapping[str, Any]) -> AgentIdentity:
     if not isinstance(raw_agent, Mapping):
         raise TypeError("'agent' must be a mapping")
     return AgentIdentity(
-        agent_id=str(raw_agent.get("id", "agent-runtime-ref")),
-        display_name=str(raw_agent.get("display_name", "Reference Runtime")),
-        owner_team=str(raw_agent.get("owner_team", "agent_platform")),
-        runtime_principal=str(raw_agent.get("runtime_principal", "svc-agent-runtime-ref")),
+        agent_id=_read_required_string(raw_agent, "id", label="agent"),
+        display_name=_read_required_string(raw_agent, "display_name", label="agent"),
+        owner_team=_read_required_string(raw_agent, "owner_team", label="agent"),
+        runtime_principal=_read_required_string(
+            raw_agent, "runtime_principal", label="agent"
+        ),
     )
