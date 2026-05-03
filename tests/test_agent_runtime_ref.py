@@ -1304,6 +1304,50 @@ class TestRuntimeControlPaths:
         assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
         assert payload["runs"][0]["capability_session_status"] == "pending"
 
+    def test_session_store_rejects_blank_identity_fields(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        required_fields = {
+            "session_id": {
+                "session_id": " ",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-required-001",
+                "status": "success",
+            },
+            "trace_id": {
+                "session_id": "session-required-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": " ",
+                "status": "success",
+            },
+            "status": {
+                "session_id": "session-required-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-required-001",
+                "status": " ",
+            },
+        }
+        for field, payload in required_fields.items():
+            with pytest.raises(ValueError, match=f"Session field is required: {field}"):
+                store.register_run(user_input="hello", output_text="done", **payload)
+
+        record = store.register_run(
+            session_id=" session-normalized-001 ",
+            tenant_id=" tenant-acme ",
+            principal_id=" user-1 ",
+            trace_id=" trace-normalized-001 ",
+            status=" success ",
+            user_input="hello",
+            output_text="done",
+        )
+        assert record.session_id == "session-normalized-001"
+        assert record.trace_id == "trace-normalized-001"
+        assert store.get_session("session-normalized-001") is not None
+
     def test_cli_check_retirement_detects_runtime_control_shutdown_gaps(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
