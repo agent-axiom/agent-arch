@@ -136,6 +136,13 @@ def _format_trace_id(trace_prefix: str, index: int) -> str:
     return f"{prefix}-{index:03d}"
 
 
+def _read_unique_cli_values(values: Sequence[str], *, field: str) -> list[str]:
+    normalized = [_read_required_cli_string(value, field=field) for value in values]
+    if len(set(normalized)) != len(normalized):
+        raise ValueError(f"CLI field entries must be unique: {field}")
+    return normalized
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -859,7 +866,10 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
 def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     runtime = _build_runtime(config_dir)
-    selected_scenarios = args.scenario or list(EVAL_DATASET_SCENARIOS)
+    selected_scenarios = _read_unique_cli_values(
+        args.scenario or list(EVAL_DATASET_SCENARIOS),
+        field="scenario",
+    )
     dataset_name = _read_required_cli_string(args.dataset_name, field="dataset_name")
     session_prefix = _read_required_cli_string(args.session_prefix, field="session_prefix")
     session_ids: list[str] = []
