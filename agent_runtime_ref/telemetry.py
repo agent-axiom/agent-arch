@@ -94,13 +94,14 @@ class TelemetryEmitter:
         *,
         redact_fields: tuple[str, ...] = (),
     ) -> Path:
+        normalized_redact_fields = self._normalize_redact_fields(redact_fields)
         output_path = Path(path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         with output_path.open("w", encoding="utf-8") as handle:
             for event in self.events:
                 serialized = event
-                if redact_fields:
-                    serialized = self._redact_event(event, redact_fields)
+                if normalized_redact_fields:
+                    serialized = self._redact_event(event, normalized_redact_fields)
                 handle.write(json.dumps(serialized.as_dict(), ensure_ascii=True))
                 handle.write("\n")
         return output_path
@@ -129,6 +130,13 @@ class TelemetryEmitter:
         self.events.append(
             StructuredEvent(event_type=event_type, trace_id=trace_id, payload=payload),
         )
+
+    @staticmethod
+    def _normalize_redact_fields(redact_fields: tuple[str, ...]) -> tuple[str, ...]:
+        normalized = tuple(str(field).strip() for field in redact_fields)
+        if "" in normalized:
+            raise ValueError("Telemetry redact field must not be empty")
+        return tuple(dict.fromkeys(normalized))
 
     @staticmethod
     def _redact_event(
