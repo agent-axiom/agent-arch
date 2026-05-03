@@ -13,6 +13,13 @@ def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
     return values
 
 
+def _read_required_string(spec: Mapping[str, Any], key: str, *, label: str) -> str:
+    value = str(spec.get(key, "")).strip()
+    if not value:
+        raise ValueError(f"{label}.{key} is required")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -76,16 +83,21 @@ class CapabilityCatalog:
                 raise ValueError("Capability name must not be empty")
             if not isinstance(raw_spec, Mapping):
                 raise TypeError(f"Capability spec for {name!r} must be a mapping")
+            label = f"capabilities.{capability_name}"
             approval = str(raw_spec.get("approval", "none"))
             registry[capability_name] = CapabilitySpec(
                 name=capability_name,
-                owner=str(raw_spec.get("owner", "unknown_owner")),
-                mode=str(raw_spec.get("mode", "read")),
-                transport=str(raw_spec.get("transport", "gateway")),
+                owner=_read_required_string(raw_spec, "owner", label=label),
+                mode=_read_required_string(raw_spec, "mode", label=label),
+                transport=_read_required_string(raw_spec, "transport", label=label),
                 timeout_seconds=int(raw_spec.get("timeout_seconds", 10)),
-                tool_principal=str(raw_spec.get("tool_principal", "svc-unknown")),
-                risk_tier=str(raw_spec.get("risk_tier", "medium")),
-                network_access=str(raw_spec.get("network_access", "restricted")),
+                tool_principal=_read_required_string(
+                    raw_spec, "tool_principal", label=label
+                ),
+                risk_tier=_read_required_string(raw_spec, "risk_tier", label=label),
+                network_access=_read_required_string(
+                    raw_spec, "network_access", label=label
+                ),
                 allowed_egress=_read_string_list_items(
                     raw_spec.get("allowed_egress", []), label="allowed_egress"
                 ),
