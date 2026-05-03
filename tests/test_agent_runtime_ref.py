@@ -4,6 +4,7 @@ import ast
 import json
 import shutil
 from pathlib import Path
+from typing import cast
 
 import pytest
 
@@ -2299,6 +2300,33 @@ class TestLowCoverageModuleBranches:
         assert event.event_type == "run_start"
         assert event.trace_id == "trace-direct"
         assert event.schema_version == "1.0"
+
+    def test_structured_event_rejects_direct_bad_payload_shapes(self) -> None:
+        from agent_runtime_ref.telemetry import StructuredEvent
+
+        bad_payload = cast(dict[str, str], [])
+        bad_redacted_fields = cast(tuple[str, ...], "user_input")
+        payload = cast(dict[str, str], {"count": 1})
+        with pytest.raises(TypeError, match="Telemetry event payload must be a mapping"):
+            StructuredEvent(
+                event_type="run_start", trace_id="trace-direct", payload=bad_payload
+            )
+        with pytest.raises(TypeError, match="Telemetry event redacted_fields must be a tuple"):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload={},
+                redacted_fields=bad_redacted_fields,
+            )
+
+        event = StructuredEvent(
+            event_type="run_start",
+            trace_id="trace-direct",
+            payload=payload,
+            redacted_fields=("count",),
+        )
+        assert event.payload == {"count": "1"}
+        assert event.redacted_fields == ("count",)
 
     def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
