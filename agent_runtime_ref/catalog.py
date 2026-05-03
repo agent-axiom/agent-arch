@@ -34,6 +34,15 @@ def _read_bool(spec: Mapping[str, Any], key: str, *, label: str) -> bool:
     return value
 
 
+def _read_approval(spec: Mapping[str, Any], *, label: str) -> str:
+    approval = str(spec.get("approval", "none")).strip()
+    if not approval:
+        raise ValueError(f"{label}.approval must not be empty")
+    if approval not in {"none", "manager"}:
+        raise ValueError(f"{label}.approval is not supported: {approval}")
+    return approval
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -98,7 +107,7 @@ class CapabilityCatalog:
             if not isinstance(raw_spec, Mapping):
                 raise TypeError(f"Capability spec for {name!r} must be a mapping")
             label = f"capabilities.{capability_name}"
-            approval = str(raw_spec.get("approval", "none"))
+            approval = _read_approval(raw_spec, label=label)
             registry[capability_name] = CapabilitySpec(
                 name=capability_name,
                 owner=_read_required_string(raw_spec, "owner", label=label),

@@ -2261,6 +2261,34 @@ class TestLowCoverageModuleBranches:
                 }
             )
         with pytest.raises(
+            ValueError,
+            match="capabilities.search_docs.approval must not be empty",
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "approval": " ",
+                        }
+                    }
+                }
+            )
+        with pytest.raises(
+            ValueError,
+            match="capabilities.search_docs.approval is not supported: mgr",
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "approval": "mgr",
+                        }
+                    }
+                }
+            )
+        with pytest.raises(
             TypeError,
             match="'capabilities.search_docs.idempotency_key_required' must be a boolean",
         ):
@@ -2279,6 +2307,7 @@ class TestLowCoverageModuleBranches:
                 "capabilities": {
                     "search_docs": {
                         **required_capability_fields,
+                        "approval": " manager ",
                         "idempotency_key_required": True,
                     }
                 }
@@ -2286,6 +2315,7 @@ class TestLowCoverageModuleBranches:
         )
         capability = catalog.get("search_docs")
         assert capability is not None
+        assert capability.approval_required is True
         assert capability.idempotency_key_required is True
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
