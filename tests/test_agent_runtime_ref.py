@@ -1643,13 +1643,66 @@ class TestLowCoverageModuleBranches:
             CapabilityCatalog.from_dict({"capabilities": {" ": {}}})
         with pytest.raises(TypeError, match="Capability spec for 'search_docs' must be a mapping"):
             CapabilityCatalog.from_dict({"capabilities": {"search_docs": []}})
+        required_capability_fields = {
+            "owner": "knowledge_platform",
+            "mode": "read",
+            "transport": "mcp",
+            "tool_principal": "svc-knowledge-reader",
+            "risk_tier": "low",
+            "network_access": "restricted",
+        }
         with pytest.raises(TypeError, match="'allowed_egress' must be a list"):
             CapabilityCatalog.from_dict(
-                {"capabilities": {"search_docs": {"allowed_egress": "docs.internal"}}}
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "allowed_egress": "docs.internal",
+                        }
+                    }
+                }
             )
         with pytest.raises(ValueError, match="allowed_egress entries must not be empty"):
             CapabilityCatalog.from_dict(
-                {"capabilities": {"search_docs": {"allowed_egress": [""]}}}
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "allowed_egress": [""],
+                        }
+                    }
+                }
+            )
+        with pytest.raises(ValueError, match="capabilities.search_docs.owner is required"):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            "mode": "read",
+                            "transport": "mcp",
+                            "tool_principal": "svc-knowledge-reader",
+                            "risk_tier": "low",
+                            "network_access": "restricted",
+                        }
+                    }
+                }
+            )
+        with pytest.raises(
+            ValueError, match="capabilities.search_docs.tool_principal is required"
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            "owner": "knowledge_platform",
+                            "mode": "read",
+                            "transport": "mcp",
+                            "tool_principal": " ",
+                            "risk_tier": "low",
+                            "network_access": "restricted",
+                        }
+                    }
+                }
             )
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
