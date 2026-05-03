@@ -67,6 +67,13 @@ class SessionRecord:
     traces: list[str] = field(default_factory=list)
 
 
+def _read_required_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Session field is required: {field}")
+    return normalized
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -89,6 +96,11 @@ class SessionStore:
         delegated_principal_id: str = "",
         delegated_scope: str = "",
     ) -> RunRecord:
+        session_id = _read_required_string(session_id, field="session_id")
+        tenant_id = _read_required_string(tenant_id, field="tenant_id")
+        principal_id = _read_required_string(principal_id, field="principal_id")
+        trace_id = _read_required_string(trace_id, field="trace_id")
+        status = _read_required_string(status, field="status")
         session = self._sessions.setdefault(
             session_id,
             SessionRecord(
