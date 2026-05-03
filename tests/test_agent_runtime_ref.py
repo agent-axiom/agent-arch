@@ -885,11 +885,24 @@ class TestExecutionAndPolicyBranches:
         result = execute_tool(
             capability,
             ToolRequest(capability_name="search_docs", arguments={"query": "architecture"}),
-            PolicyDecision("allow", "low_risk_read", "cap_101"),
+            PolicyDecision(" allow ", "low_risk_read", "cap_101"),
         )
         assert result.status == "success"
         assert result.payload["transport"] == capability.transport
         assert result.payload["tool_principal"] == capability.tool_principal
+
+    @pytest.mark.parametrize("action", ["", "escalate"])
+    def test_execute_tool_rejects_unsupported_policy_actions(
+        self, action: str, config_dir: Path
+    ) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        with pytest.raises(ValueError, match=f"Policy action is not supported: {action}"):
+            execute_tool(
+                capability,
+                ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
+                PolicyDecision(action, "malformed_policy_action", "cap_bad"),
+            )
 
     def test_policy_from_dict_rejects_bad_shapes(self) -> None:
         with pytest.raises(TypeError, match="'policy' must be a mapping"):
