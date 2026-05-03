@@ -72,11 +72,16 @@ class PolicyEngine:
             decision = str(raw_entry.get("decision", "deny")).strip()
             if decision not in {"allow", "approval_required", "deny"}:
                 raise ValueError(f"Policy decision is not supported: {decision}")
+            approver = (
+                str(raw_entry["approver"]).strip()
+                if raw_entry.get("approver") is not None
+                else None
+            )
+            if decision == "approval_required" and approver == "":
+                raise ValueError(f"Policy approver must not be empty: {capability_name}")
             capability_policies[capability_name] = CapabilityPolicy(
                 decision=decision,
-                approver=(
-                    str(raw_entry["approver"]) if raw_entry.get("approver") is not None else None
-                ),
+                approver=approver,
             )
 
         raw_memory = raw_policy.get("memory_write", {})
