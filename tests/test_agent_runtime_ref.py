@@ -650,6 +650,20 @@ class TestFailurePaths:
         ):
             main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
 
+        (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n"
+            "  sandbox_profile:\n"
+            "    manifest_version: 1\n"
+            "    workspace:\n"
+            "      entries: src\n",
+            encoding="utf-8",
+        )
+        expected_entries = "runtime_controls.sandbox_profile.workspace.entries must be a list"
+        with pytest.raises(TypeError, match=expected_entries):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match=expected_entries):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+
     def test_cli_replay_run_rejects_incomplete_run_start_payload(
         self, tmp_path: Path
     ) -> None:

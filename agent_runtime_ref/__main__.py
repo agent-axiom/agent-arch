@@ -184,10 +184,18 @@ def _read_sandbox_profile_section(
     return cast(dict[str, object], value)
 
 
+def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
+    entries = workspace.get("entries", [])
+    if not isinstance(entries, list):
+        raise TypeError("runtime_controls.sandbox_profile.workspace.entries must be a list")
+    return cast(list[object], entries)
+
+
 def _build_runtime(config_dir: Path) -> AgentRuntime:
     agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     runtime_controls = _read_runtime_controls(config_dir)
     sandbox_profile = _read_sandbox_profile(runtime_controls)
+    _read_workspace_entries(_read_sandbox_profile_section(sandbox_profile, "workspace"))
     return AgentRuntime(
         agent=agent,
         approvals=ApprovalQueue(load_approval_policy(config_dir / "approvals.yaml")),
@@ -539,6 +547,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
     runtime_controls = _read_runtime_controls(config_dir)
     sandbox_profile = _read_sandbox_profile(runtime_controls)
     workspace = _read_sandbox_profile_section(sandbox_profile, "workspace")
+    workspace_entries = _read_workspace_entries(workspace)
     capabilities = _read_sandbox_profile_section(sandbox_profile, "capabilities")
     permissions = _read_sandbox_profile_section(sandbox_profile, "permissions")
     state = _read_sandbox_profile_section(sandbox_profile, "state")
@@ -586,7 +595,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
         },
         "sandbox_profile": {
             "manifest_version": sandbox_profile.get("manifest_version"),
-            "workspace_entries": workspace.get("entries", []),
+            "workspace_entries": workspace_entries,
             "capabilities": capabilities,
             "permissions": permissions,
             "state": state,
