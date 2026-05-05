@@ -3744,6 +3744,32 @@ class TestCli:
         )
         assert run_complete["redacted_fields"] == []
 
+    def test_cli_export_trace_rejects_unknown_redact_fields(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "trace-unknown-redaction.jsonl"
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Telemetry redact field is not present in events: does_not_exist",
+        ):
+            main(
+                [
+                    "export-events",
+                    "--user-input",
+                    "Please open a ticket for this issue.",
+                    "--trace-id",
+                    "trace-unknown-redaction",
+                    "--output",
+                    str(output_path),
+                    "--redact-field",
+                    "does_not_exist",
+                ]
+            )
+        assert not output_path.exists()
+
     def test_cli_export_trace_preserves_runtime_control_event_order(
         self, cli_json, tmp_path: Path
     ) -> None:
