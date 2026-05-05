@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from agent_runtime_ref.catalog import CapabilitySpec
-from agent_runtime_ref.models import ToolRequest, ToolResult
+from agent_runtime_ref.models import ToolRequest, ToolResult, normalize_tool_arguments
 from agent_runtime_ref.policy import PolicyDecision
 
 
@@ -12,19 +12,13 @@ def normalize_tool_capability_name(value: str) -> str:
     return capability_name
 
 
-def _read_tool_arguments(value: dict[str, str]) -> dict[str, str]:
-    if not isinstance(value, dict):
-        raise TypeError("Tool request arguments must be a mapping")
-    return {str(key): str(argument) for key, argument in value.items()}
-
-
 def execute_tool(
     capability: CapabilitySpec,
     tool_request: ToolRequest,
     decision: PolicyDecision,
 ) -> ToolResult:
     capability_name = normalize_tool_capability_name(tool_request.capability_name)
-    arguments = _read_tool_arguments(tool_request.arguments)
+    arguments = normalize_tool_arguments(tool_request.arguments)
     if capability_name != capability.name:
         raise ValueError(
             "Tool request capability does not match catalog entry: "

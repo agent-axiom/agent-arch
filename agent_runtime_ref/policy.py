@@ -5,7 +5,12 @@ from typing import Any, Mapping
 
 from agent_runtime_ref.catalog import CapabilitySpec
 from agent_runtime_ref.identity import ApprovedInventory
-from agent_runtime_ref.models import RunContext, RunRequest, ToolRequest
+from agent_runtime_ref.models import (
+    RunContext,
+    RunRequest,
+    ToolRequest,
+    normalize_tool_arguments,
+)
 
 
 def _read_string_list_items(items: list[object], *, label: str) -> set[str]:
@@ -154,6 +159,7 @@ class PolicyEngine:
         capability_name = str(tool_request.capability_name).strip()
         if not capability_name:
             raise ValueError("Tool request capability name must not be empty")
+        tool_arguments = normalize_tool_arguments(tool_request.arguments)
         if self.approved_inventory is not None and not self.approved_inventory.allows(
             capability_name,
         ):
@@ -163,11 +169,11 @@ class PolicyEngine:
                 return PolicyDecision("deny", "network_access_not_allowed", "cap_405")
             if capability.network_access != "none" and not capability.allowed_egress:
                 return PolicyDecision("deny", "egress_policy_missing", "cap_406")
-        simulate_failure = tool_request.arguments.get("simulate_failure")
+        simulate_failure = tool_arguments.get("simulate_failure")
         if capability_name == "create_ticket":
             if simulate_failure in {"tool_timeout", "upstream_unavailable"}:
                 return PolicyDecision("allow", "failure_drill_execution", "cap_120")
-            if tool_request.arguments.get("idempotency_key") in {None, ""}:
+            if tool_arguments.get("idempotency_key") in {None, ""}:
                 return PolicyDecision("allow", "validation_drill_execution", "cap_121")
 
         configured = self.capability_policies.get(capability_name)
