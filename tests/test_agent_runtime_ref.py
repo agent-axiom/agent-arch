@@ -3629,6 +3629,10 @@ class TestLowCoverageModuleBranches:
             ControlsPolicy.from_dict({"controls": {"require": "x"}})
         with pytest.raises(TypeError, match="'controls.block_if' must be a list"):
             ControlsPolicy.from_dict({"controls": {"require": [], "block_if": "x"}})
+        with pytest.raises(TypeError, match="controls.require entries must be strings"):
+            ControlsPolicy.from_dict({"controls": {"require": [7]}})
+        with pytest.raises(TypeError, match="controls.block_if entries must be strings"):
+            ControlsPolicy.from_dict({"controls": {"require": [], "block_if": [7]}})
         with pytest.raises(ValueError, match="controls.require entries must not be empty"):
             ControlsPolicy.from_dict({"controls": {"require": [" "]}})
         with pytest.raises(ValueError, match="controls.block_if entries must not be empty"):
@@ -3648,6 +3652,11 @@ class TestLowCoverageModuleBranches:
         )
         assert policy.required_controls == ("registry_reviewed",)
         assert policy.blocked_findings == ("manual_override",)
+        with pytest.raises(TypeError, match="controls.require entries must be strings"):
+            ControlsPolicy(
+                required_controls=cast(tuple[str, ...], (7,)),
+                blocked_findings=(),
+            )
         with pytest.raises(ValueError, match="controls.require entries must be unique"):
             ControlsPolicy(
                 required_controls=("registry_reviewed", " registry_reviewed "),
