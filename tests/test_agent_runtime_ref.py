@@ -619,6 +619,28 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_change_rollout_schema_documents_signal_validation_errors(self) -> None:
+        """Keep rollout docs aligned with signal override validation."""
+        required_errors = (
+            "Signal key must not be empty: {raw_signal!r}",
+            "Unsupported boolean value in signal: {raw_signal!r}",
+            "Assessment signal key must be a string",
+            "Assessment signal key must not be empty",
+            "Assessment signal keys must be unique",
+            "Assessment signal value must be a boolean: {field}",
+            "Rollout readiness flag must be a boolean: {field}",
+        )
+        for path in (
+            Path("docs/appendix/change-rollout-schema.en.md"),
+            Path("docs/appendix/change-rollout-schema.md"),
+            Path("docs/appendix/change-rollout-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "check-rollout" in text
+            assert "check-change" in text
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
