@@ -177,6 +177,7 @@ class SessionStore:
         *,
         output_path: str | Path,
     ) -> Path:
+        session_id = _read_required_string(session_id, field="session_id")
         destination = Path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
         payload = self._session_payload(session_id)
