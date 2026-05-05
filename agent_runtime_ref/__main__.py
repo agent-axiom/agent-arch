@@ -496,9 +496,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     )
     source_trace_id = _resolve_trace_id(events, requested_trace_id)
     source_events = [event for event in events if event.trace_id == source_trace_id]
-    run_start = next((event for event in source_events if event.event_type == "run_start"), None)
-    if run_start is None:
+    run_start_events = [event for event in source_events if event.event_type == "run_start"]
+    if not run_start_events:
         raise ValueError("Trace file does not contain a run_start event")
+    if len(run_start_events) > 1:
+        raise ValueError("Trace file contains multiple run_start events")
+    run_start = run_start_events[0]
     required_payload_keys = ("user_input", "tenant_id", "principal_id")
     missing_payload_keys = [key for key in required_payload_keys if key not in run_start.payload]
     if missing_payload_keys:

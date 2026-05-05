@@ -699,6 +699,41 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
+    def test_cli_replay_run_rejects_multiple_run_start_events(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "multiple-run-start.jsonl"
+        run_start_payload = {
+            "user_input": "What language preference do you remember?",
+            "tenant_id": "tenant-acme",
+            "principal_id": "user-42",
+        }
+        events = [
+            {
+                "schema_version": "1.0",
+                "event_type": "run_start",
+                "trace_id": "trace-ambiguous-replay",
+                "payload": run_start_payload,
+                "redacted_fields": [],
+            },
+            {
+                "schema_version": "1.0",
+                "event_type": "run_start",
+                "trace_id": "trace-ambiguous-replay",
+                "payload": {**run_start_payload, "user_input": "Please create a ticket."},
+                "redacted_fields": [],
+            },
+        ]
+        output_path.write_text(
+            "".join(json.dumps(event) + "\n" for event in events),
+            encoding="utf-8",
+        )
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="Trace file contains multiple run_start events"):
+            main(["replay-run", "--input", str(output_path)])
+
     @pytest.mark.parametrize(
         ("field", "value"),
         [
