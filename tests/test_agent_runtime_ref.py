@@ -3718,6 +3718,8 @@ class TestCli:
                 "--output",
                 str(output_path),
                 "--redact-field",
+                " user_input ",
+                "--redact-field",
                 "user_input",
             ],
         )

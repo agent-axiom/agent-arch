@@ -185,6 +185,10 @@ def _read_optional_cli_string(value: str | None, *, field: str) -> str | None:
     return _read_required_cli_string(value, field=field)
 
 
+def _read_cli_redact_fields(values: Sequence[str]) -> tuple[str, ...]:
+    return StructuredEvent._normalize_redacted_fields(tuple(values))
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -478,9 +482,10 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
     )
     session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
+    redact_fields = _read_cli_redact_fields(args.redact_field)
     output_path = runtime.telemetry.export_jsonl(
         args.output,
-        redact_fields=tuple(args.redact_field),
+        redact_fields=redact_fields,
     )
     return {
         "status": result.status,
@@ -489,7 +494,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
         "output_path": str(output_path),
-        "redact_fields": list(args.redact_field),
+        "redact_fields": list(redact_fields),
     }
 
 
