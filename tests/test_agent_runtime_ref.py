@@ -1298,6 +1298,9 @@ class TestExecutionAndPolicyBranches:
                 PolicyDecision("allow", "low_risk_read", "cap_101"),
             )
 
+        with pytest.raises(ValueError, match="Tool request capability name must not be empty"):
+            load_capability_catalog(config_dir / "capabilities.yaml").get(" ")
+
     @pytest.mark.parametrize("action", ["", "escalate"])
     def test_execute_tool_rejects_unsupported_policy_actions(
         self, action: str, config_dir: Path
@@ -1723,6 +1726,51 @@ class TestRuntimeCore:
         assert result.status == "success"
         assert "waiting for human approval" in result.output_text
         assert len(runtime.approvals.pending()) == 1
+
+    def test_runtime_normalizes_model_tool_capability_before_policy(self) -> None:
+        class PaddedToolRuntime(AgentRuntime):
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                if second_pass:
+                    return ModelOutput(text="Padded tool request was handled safely.")
+                return ModelOutput(
+                    text="needs create ticket",
+                    tool_request=ToolRequest(
+                        capability_name=" create_ticket ",
+                        arguments={"idempotency_key": "ticket-123"},
+                    ),
+                )
+
+        runtime = PaddedToolRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-padded-tool-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        approval = runtime.approvals.pending()[0]
+        policy_event = next(
+            event
+            for event in runtime.telemetry.events
+            if event.event_type == "tool_policy_decision"
+        )
+        execution_event = next(
+            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
+        )
+
+        assert result.status == "success"
+        assert approval.capability_name == "create_ticket"
+        assert policy_event.payload["capability"] == "create_ticket"
+        assert policy_event.payload["reason"] == "write_action"
+        assert execution_event.payload["capability"] == "create_ticket"
 
     def test_runtime_handles_unknown_tool_capability_as_policy_denial(self) -> None:
         class UnknownToolRuntime(AgentRuntime):

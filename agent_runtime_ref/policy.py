@@ -151,8 +151,11 @@ class PolicyEngine:
         capability: CapabilitySpec | None,
     ) -> PolicyDecision:
         del context
+        capability_name = str(tool_request.capability_name).strip()
+        if not capability_name:
+            raise ValueError("Tool request capability name must not be empty")
         if self.approved_inventory is not None and not self.approved_inventory.allows(
-            tool_request.capability_name,
+            capability_name,
         ):
             return PolicyDecision("deny", "capability_not_in_inventory", "cap_403")
         if capability is not None:
@@ -161,13 +164,13 @@ class PolicyEngine:
             if capability.network_access != "none" and not capability.allowed_egress:
                 return PolicyDecision("deny", "egress_policy_missing", "cap_406")
         simulate_failure = tool_request.arguments.get("simulate_failure")
-        if tool_request.capability_name == "create_ticket":
+        if capability_name == "create_ticket":
             if simulate_failure in {"tool_timeout", "upstream_unavailable"}:
                 return PolicyDecision("allow", "failure_drill_execution", "cap_120")
             if tool_request.arguments.get("idempotency_key") in {None, ""}:
                 return PolicyDecision("allow", "validation_drill_execution", "cap_121")
 
-        configured = self.capability_policies.get(tool_request.capability_name)
+        configured = self.capability_policies.get(capability_name)
         if configured is not None:
             if configured.decision == "allow":
                 return PolicyDecision("allow", "configured_allow", "cap_110")

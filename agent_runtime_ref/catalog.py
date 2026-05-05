@@ -136,7 +136,10 @@ class CapabilityCatalog:
         return cls(registry=registry)
 
     def get(self, name: str) -> CapabilitySpec | None:
-        return self._registry.get(name)
+        capability_name = str(name).strip()
+        if not capability_name:
+            raise ValueError("Tool request capability name must not be empty")
+        return self._registry.get(capability_name)
 
     def all(self) -> tuple[CapabilitySpec, ...]:
         return tuple(self._registry.values())
