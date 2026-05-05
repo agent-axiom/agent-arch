@@ -2831,6 +2831,22 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     revision_mode="repalce",
                 ),
             )
+        with pytest.raises(
+            TypeError,
+            match="Memory candidate revision mode must be a string",
+        ):
+            store.persist(
+                MemoryCandidate(
+                    tenant_id="tenant-acme",
+                    memory_class="long_term",
+                    kind="validated_fact",
+                    content="Second version",
+                    source="trusted_service",
+                    confidence=0.95,
+                    provenance="policy_review",
+                    revision_mode=cast(str, ["replace"]),
+                ),
+            )
 
     def test_memory_store_rejects_bad_candidate_confidence(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
@@ -2849,6 +2865,23 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                         content="Candidate version",
                         source="trusted_service",
                         confidence=confidence,
+                        provenance="policy_review",
+                    ),
+                )
+        for confidence in (True, "0.9"):
+            store = MemoryStore()
+            with pytest.raises(
+                TypeError,
+                match="Memory candidate confidence must be a number",
+            ):
+                store.persist(
+                    MemoryCandidate(
+                        tenant_id="tenant-acme",
+                        memory_class="long_term",
+                        kind="validated_fact",
+                        content="Candidate version",
+                        source="trusted_service",
+                        confidence=cast(float, confidence),
                         provenance="policy_review",
                     ),
                 )

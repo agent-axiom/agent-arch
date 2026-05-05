@@ -36,6 +36,8 @@ def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
 
 
 def _read_candidate_confidence(value: float) -> float:
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        raise TypeError("Memory candidate confidence must be a number")
     confidence = float(value)
     if not isfinite(confidence) or confidence < 0 or confidence > 1:
         raise ValueError("Memory candidate confidence must be between 0 and 1")
@@ -181,6 +183,8 @@ class MemoryStore:
         content = _read_candidate_string(candidate.content, field="content")
         source = _read_candidate_string(candidate.source, field="source")
         provenance = _read_candidate_string(candidate.provenance, field="provenance")
+        if not isinstance(candidate.revision_mode, str):
+            raise TypeError("Memory candidate revision mode must be a string")
         revision_mode = candidate.revision_mode.strip()
         if revision_mode not in {"append", "replace"}:
             raise ValueError(
