@@ -2324,7 +2324,7 @@ class TestRuntimeControlPaths:
         assert not output_path.exists()
 
     def test_session_store_rejects_blank_identity_fields(self) -> None:
-        from agent_runtime_ref.session import SessionStore
+        from agent_runtime_ref.session import RunRecord, SessionStore, summarize_session
 
         store = SessionStore()
         required_fields = {
@@ -2399,6 +2399,47 @@ class TestRuntimeControlPaths:
         runs = store.runs_for_session(" session-normalized-001 ")
         assert len(runs) == 1
         assert runs[0].trace_id == "trace-normalized-001"
+
+        direct_record = RunRecord(
+            trace_id=" trace-direct-normalized-001 ",
+            session_id=" session-direct-normalized-001 ",
+            status=" failed ",
+            user_input=" hello ",
+            output_text=" failed cleanly ",
+            failure_reason=" tool_timeout ",
+            capability_session_id=" cap-session-001 ",
+            capability_session_status=" failed ",
+            authorization_mode=" user_delegated ",
+            delegated_principal_id=" user-1 ",
+            delegated_scope=" tickets.write ",
+        )
+        assert direct_record.status == "failed"
+        assert direct_record.failure_reason == "tool_timeout"
+        assert direct_record.authorization_mode == "user_delegated"
+        assert direct_record.delegated_scope == "tickets.write"
+        summary = summarize_session(
+            " session-direct-normalized-001 ",
+            (direct_record,),
+        )
+        assert summary.failed_runs == 1
+        assert summary.traceable_failed_runs == 1
+        with pytest.raises(ValueError, match="Session field is required: failure_reason"):
+            RunRecord(
+                trace_id="trace-direct-failed-required-001",
+                session_id="session-direct-failed-required-001",
+                status="failed",
+                user_input="hello",
+                output_text="failed cleanly",
+                failure_reason=" ",
+            )
+        with pytest.raises(ValueError, match="Session status is not supported: maybe"):
+            RunRecord(
+                trace_id="trace-direct-bad-status-001",
+                session_id="session-direct-bad-status-001",
+                status=" maybe ",
+                user_input="hello",
+                output_text="done",
+            )
 
     def test_session_lookup_rejects_blank_session_id(self) -> None:
         from agent_runtime_ref.session import SessionStore
