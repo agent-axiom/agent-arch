@@ -826,6 +826,52 @@ class TestFailurePaths:
         assert payload["failure_reason"] == "tool_timeout"
         assert any(event["event_type"] == "run_failed" for event in payload["events"])
 
+    def test_cli_run_event_commands_normalize_session_id_for_lookup(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        padded_session_id = " session-cli-normalized-001 "
+        simulate_code, simulate_payload = cli_json(
+            ["simulate-run", "--session-id", padded_session_id]
+        )
+        assert simulate_code == 0
+        assert simulate_payload["session_id"] == "session-cli-normalized-001"
+
+        dump_code, dump_payload = cli_json(["dump-events", "--session-id", padded_session_id])
+        assert dump_code == 0
+        run_start = next(
+            event for event in dump_payload["events"] if event["event_type"] == "run_start"
+        )
+        assert run_start["payload"]["session_id"] == "session-cli-normalized-001"
+
+        output_path = tmp_path / "normalized-session-trace.jsonl"
+        export_code, export_payload = cli_json(
+            ["export-events", "--session-id", padded_session_id, "--output", str(output_path)]
+        )
+        assert export_code == 0
+        assert export_payload["status"] == "success"
+        assert output_path.exists()
+
+    def test_cli_session_commands_normalize_session_id_for_lookup(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        padded_session_id = " session-cli-normalized-002 "
+        commands = [
+            ["inspect-session", "--session-id", padded_session_id],
+            ["session-eval-summary", "--session-id", padded_session_id],
+            ["session-replay", "--session-id", padded_session_id],
+            [
+                "export-session",
+                "--session-id",
+                padded_session_id,
+                "--output",
+                str(tmp_path / "normalized-session.json"),
+            ],
+        ]
+        for command in commands:
+            code, payload = cli_json(command)
+            assert code == 0
+            assert payload["session_id"] == "session-cli-normalized-002"
+
     def test_cli_export_eval_dataset_includes_sandbox_profile_review_rule(
         self, cli_json, tmp_path: Path
     ) -> None:
