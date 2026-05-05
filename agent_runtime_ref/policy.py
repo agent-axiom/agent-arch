@@ -43,6 +43,23 @@ def _read_memory_kind(value: str) -> str:
     return kind
 
 
+def _read_policy_decision(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Policy decision must be a string")
+    decision = value.strip()
+    if decision not in {"allow", "approval_required", "deny"}:
+        raise ValueError(f"Policy decision is not supported: {decision}")
+    return decision
+
+
+def _read_policy_approver(value: object) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise TypeError("Policy approver must be a string")
+    return value.strip()
+
+
 @dataclass(frozen=True, slots=True)
 class PolicyDecision:
     action: str
@@ -56,12 +73,8 @@ class CapabilityPolicy:
     approver: str | None = None
 
     def __post_init__(self) -> None:
-        decision = str(self.decision).strip()
-        if decision not in {"allow", "approval_required", "deny"}:
-            raise ValueError(f"Policy decision is not supported: {decision}")
-        approver = str(self.approver).strip() if self.approver is not None else None
-        object.__setattr__(self, "decision", decision)
-        object.__setattr__(self, "approver", approver)
+        object.__setattr__(self, "decision", _read_policy_decision(self.decision))
+        object.__setattr__(self, "approver", _read_policy_approver(self.approver))
 
 
 class PolicyEngine:
@@ -124,14 +137,8 @@ class PolicyEngine:
                 raise ValueError("Policy capability name must not be empty")
             if not isinstance(raw_entry, Mapping):
                 raise TypeError(f"Policy for capability {name!r} must be a mapping")
-            decision = str(raw_entry.get("decision", "deny")).strip()
-            if decision not in {"allow", "approval_required", "deny"}:
-                raise ValueError(f"Policy decision is not supported: {decision}")
-            approver = (
-                str(raw_entry["approver"]).strip()
-                if raw_entry.get("approver") is not None
-                else None
-            )
+            decision = _read_policy_decision(raw_entry.get("decision", "deny"))
+            approver = _read_policy_approver(raw_entry.get("approver"))
             if decision == "approval_required" and approver == "":
                 raise ValueError(f"Policy approver must not be empty: {capability_name}")
             if capability_name in capability_policies:
