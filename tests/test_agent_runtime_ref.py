@@ -413,7 +413,7 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="must be a mapping"):
             load_yaml_file(bad_config)
 
-    def test_runtime_denied_precheck_returns_denied_and_no_session_record(self) -> None:
+    def test_runtime_denied_precheck_records_session_evidence(self) -> None:
         runtime = AgentRuntime()
         result = runtime.run(
             RunRequest(
@@ -426,9 +426,17 @@ class TestFailurePaths:
             ),
         )
         assert result.status == "denied"
-        assert runtime.sessions.get_session("session-denied-001") is None
+        session = runtime.sessions.get_session("session-denied-001")
+        assert session is not None
+        assert session.traces == ["trace-denied-001"]
+        runs = runtime.sessions.runs_for_session("session-denied-001")
+        assert len(runs) == 1
+        assert runs[0].status == "denied"
+        assert runs[0].failure_reason == "principal_missing"
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == ["run_start", "policy_precheck", "run_complete"]
+        run_complete = runtime.telemetry.events[-1]
+        assert run_complete.payload["session_id"] == "session-denied-001"
 
     def test_runtime_marks_validation_failure_tool_path_as_failed(self) -> None:
         runtime = AgentRuntime()
@@ -3516,6 +3524,21 @@ class TestCli:
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["latest_failure_reason"] == "tool_timeout"
+
+    def test_cli_session_eval_summary_counts_precheck_denials(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "session-eval-summary",
+                "--tenant-id",
+                " ",
+                "--session-id",
+                "session-denied-summary-001",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["total_runs"] == 1
+        assert payload["denied_runs"] == 1
+        assert payload["latest_status"] == "denied"
 
     def test_cli_export_and_inspect_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
