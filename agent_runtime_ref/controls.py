@@ -74,11 +74,12 @@ def assess_controls(
     *,
     inventory_drift: InventoryDrift,
 ) -> ControlsAssessment:
+    observed = {str(key).strip(): value for key, value in observed_controls.items()}
     missing_controls = tuple(
-        control for control in policy.required_controls if not observed_controls.get(control, False)
+        control for control in policy.required_controls if not observed.get(control, False)
     )
     blocking_findings = list(
-        finding for finding in policy.blocked_findings if observed_controls.get(finding, False)
+        finding for finding in policy.blocked_findings if observed.get(finding, False)
     )
     if inventory_drift.has_drift:
         blocking_findings.append("inventory_drift_present")

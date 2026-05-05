@@ -72,11 +72,12 @@ class RolloutAssessment:
 
 
 def assess_rollout(policy: RolloutPolicy, observed_checks: Mapping[str, bool]) -> RolloutAssessment:
+    observed = {str(key).strip(): value for key, value in observed_checks.items()}
     missing_required = tuple(
-        check for check in policy.required_checks if not observed_checks.get(check, False)
+        check for check in policy.required_checks if not observed.get(check, False)
     )
     blocking_signals = tuple(
-        check for check in policy.blocked_checks if observed_checks.get(check, False)
+        check for check in policy.blocked_checks if observed.get(check, False)
     )
     return RolloutAssessment(
         ready=not missing_required and not blocking_signals,
