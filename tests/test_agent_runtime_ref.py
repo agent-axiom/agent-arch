@@ -1834,8 +1834,12 @@ class TestRuntimeCore:
         with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
             store.compact(" ")
 
-    def test_memory_store_rejects_negative_retrieve_limit(self) -> None:
+    def test_memory_store_rejects_malformed_retrieve_limits(self) -> None:
         store = MemoryStore()
+        with pytest.raises(TypeError, match="Memory lookup limit must be an integer"):
+            store.retrieve("language preference", "tenant-acme", limit=True)
+        with pytest.raises(TypeError, match="Memory lookup limit must be an integer"):
+            store.retrieve("language preference", "tenant-acme", limit=cast(int, "2"))
         with pytest.raises(ValueError, match="Memory lookup limit must be non-negative"):
             store.retrieve("language preference", "tenant-acme", limit=-1)
 
