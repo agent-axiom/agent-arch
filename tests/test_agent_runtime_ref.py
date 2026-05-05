@@ -402,6 +402,19 @@ class TestRuntimeDocsParity:
 
         _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
+    def test_reference_package_documents_approval_session_lineage(self) -> None:
+        """Keep multilingual approval docs aligned with closure/session lineage."""
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "inspect-approvals" in text
+            assert "resolve-approval" in text
+            assert "capability_session_id" in text
+            assert "capability_session_status" in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
