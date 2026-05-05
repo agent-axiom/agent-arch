@@ -345,7 +345,10 @@ def _read_replay_payload_string(payload: Mapping[str, object], field: str) -> st
     value = payload[field]
     if not isinstance(value, str):
         raise TypeError(f"Trace run_start replay field must be a string: {field}")
-    return value
+    normalized = value.strip()
+    if not normalized:
+        raise ValueError(f"Trace run_start replay field must not be empty: {field}")
+    return normalized
 
 
 def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
