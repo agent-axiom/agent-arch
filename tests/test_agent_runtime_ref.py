@@ -778,6 +778,44 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
+    @pytest.mark.parametrize(
+        "field",
+        ["user_input", "tenant_id", "principal_id", "session_id", "agent_id"],
+    )
+    def test_cli_replay_run_rejects_blank_run_start_payload_fields(
+        self, field: str, tmp_path: Path
+    ) -> None:
+        payload = {
+            "user_input": "What language preference do you remember?",
+            "tenant_id": "tenant-acme",
+            "principal_id": "user-42",
+            "session_id": "session-blank-replay-source",
+            "agent_id": "support-triage-ref",
+        }
+        payload[field] = "   "
+        output_path = tmp_path / "blank-run-start.jsonl"
+        output_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "event_type": "run_start",
+                    "trace_id": "trace-blank-replay",
+                    "payload": payload,
+                    "redacted_fields": [],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match=f"Trace run_start replay field must not be empty: {field}",
+        ):
+            main(["replay-run", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_non_string_redacted_fields(
         self, tmp_path: Path
     ) -> None:
