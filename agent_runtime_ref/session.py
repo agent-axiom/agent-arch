@@ -58,6 +58,38 @@ class RunRecord:
     delegated_principal_id: str = ""
     delegated_scope: str = ""
 
+    def __post_init__(self) -> None:
+        self.trace_id = _read_required_string(self.trace_id, field="trace_id")
+        self.session_id = _read_required_string(self.session_id, field="session_id")
+        self.status = _read_required_string(self.status, field="status")
+        self.user_input = _read_required_string(self.user_input, field="user_input")
+        self.output_text = _read_required_string(self.output_text, field="output_text")
+        self.failure_reason = _read_optional_string(self.failure_reason)
+        self.capability_session_id = _read_optional_string(self.capability_session_id)
+        self.capability_session_status = _read_optional_string(
+            self.capability_session_status
+        )
+        self.authorization_mode = _read_authorization_mode(self.authorization_mode)
+        self.delegated_principal_id = _read_optional_string(self.delegated_principal_id)
+        self.delegated_scope = _read_optional_string(self.delegated_scope)
+        status = self.status
+        if status not in {"success", "denied", "failed", "approval_required"}:
+            raise ValueError(f"Session status is not supported: {status}")
+        if self.status == "failed":
+            self.failure_reason = _read_required_string(
+                self.failure_reason,
+                field="failure_reason",
+            )
+        if self.authorization_mode == "user_delegated":
+            self.delegated_principal_id = _read_required_string(
+                self.delegated_principal_id,
+                field="delegated_principal_id",
+            )
+            self.delegated_scope = _read_required_string(
+                self.delegated_scope,
+                field="delegated_scope",
+            )
+
 
 @dataclass(slots=True)
 class SessionRecord:
