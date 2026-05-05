@@ -81,6 +81,8 @@
 - `export-session`
 - `export-eval-dataset`
 
+Trace replay 会先校验这些 evidence，然后才允许它们作为新 run 的 seed：`Trace ID not found in event file: {requested_trace_id}`、`Trace file does not contain any trace IDs`、`Trace file contains multiple trace IDs; pass --trace-id explicitly`、`Trace file does not contain a run_start event`、`Trace file contains multiple run_start events`、`Trace run_start event is missing replay fields: {missing_keys}`、`Trace run_start event has redacted replay fields: {redacted_keys}`、`Trace run_start replay field must be a string: {field}` 和 `Trace run_start replay field must not be empty: {field}`。
+
 ## 参考运行时的事件目录
 
 下面是当前最小事件目录。
