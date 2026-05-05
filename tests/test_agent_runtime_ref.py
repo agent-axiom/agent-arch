@@ -691,6 +691,50 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("user_input", ["not", "text"]),
+            ("tenant_id", {"tenant": "acme"}),
+            ("principal_id", 42),
+            ("session_id", ["session-replay-001"]),
+            ("agent_id", {"agent": "support-triage-ref"}),
+        ],
+    )
+    def test_cli_replay_run_rejects_non_string_run_start_payload_fields(
+        self, field: str, value: object, tmp_path: Path
+    ) -> None:
+        payload: dict[str, object] = {
+            "user_input": "What language preference do you remember?",
+            "tenant_id": "tenant-acme",
+            "principal_id": "user-42",
+            "session_id": "session-replay-001",
+            "agent_id": "support-triage-ref",
+        }
+        payload[field] = value
+        output_path = tmp_path / "non-string-run-start.jsonl"
+        output_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "event_type": "run_start",
+                    "trace_id": "trace-non-string-replay",
+                    "payload": payload,
+                    "redacted_fields": [],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            TypeError,
+            match=f"Telemetry event payload value must be a string: {field}",
+        ):
+            main(["replay-run", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_redacted_run_start_payload(
         self, cli_json, tmp_path: Path
     ) -> None:
