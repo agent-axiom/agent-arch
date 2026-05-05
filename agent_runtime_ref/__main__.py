@@ -161,6 +161,10 @@ def _read_known_cli_values(
     return normalized
 
 
+def _read_cli_session_id(value: str) -> str:
+    return _read_required_cli_string(value, field="session_id")
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -317,21 +321,22 @@ def _resolve_trace_id(events: list[StructuredEvent], requested_trace_id: str | N
 
 def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
-        session_id=args.session_id,
+        session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
-    session_payload = runtime.sessions._session_payload(args.session_id)
+    session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     return {
         "agent_id": runtime.agent.agent_id,
-        "session_id": args.session_id,
+        "session_id": session_id,
         "result": result.output_text,
         "status": result.status,
         "failure_reason": latest_run.get("failure_reason", ""),
@@ -397,17 +402,18 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
 
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
-        session_id=args.session_id,
+        session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
-    session_payload = runtime.sessions._session_payload(args.session_id)
+    session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     return {
         "status": result.status,
@@ -421,17 +427,18 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
 
 def _export_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
         trace_id=args.trace_id,
-        session_id=args.session_id,
+        session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
     )
-    session_payload = runtime.sessions._session_payload(args.session_id)
+    session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     output_path = runtime.telemetry.export_jsonl(
         args.output,
@@ -767,6 +774,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
 
 def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime = _build_runtime(config_dir)
     results = []
     for index, user_input in enumerate(args.user_input, start=1):
@@ -776,16 +784,16 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
             trace_id=_format_trace_id(args.trace_prefix, index),
-            session_id=args.session_id,
+            session_id=session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
         )
         results.append(result)
-    session = runtime.sessions.get_session(args.session_id)
-    runs = runtime.sessions.runs_for_session(args.session_id)
+    session = runtime.sessions.get_session(session_id)
+    runs = runtime.sessions.runs_for_session(session_id)
     if session is None:
-        raise ValueError(f"Session not found: {args.session_id}")
-    summary = summarize_session(args.session_id, runs)
+        raise ValueError(f"Session not found: {session_id}")
+    summary = summarize_session(session_id, runs)
     latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
         "session_id": session.session_id,
@@ -819,6 +827,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
 
 def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime = _build_runtime(config_dir)
     for index, user_input in enumerate(args.user_input, start=1):
         _run_on_runtime(
@@ -827,12 +836,12 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
             trace_id=_format_trace_id(args.trace_prefix, index),
-            session_id=args.session_id,
+            session_id=session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
         )
-    runs = runtime.sessions.runs_for_session(args.session_id)
-    summary = summarize_session(args.session_id, runs)
+    runs = runtime.sessions.runs_for_session(session_id)
+    summary = summarize_session(session_id, runs)
     latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
         "session_id": summary.session_id,
@@ -850,6 +859,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
 
 def _session_replay(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime = _build_runtime(config_dir)
     results = []
     for index, user_input in enumerate(args.user_input, start=1):
@@ -860,16 +870,16 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 tenant_id=args.tenant_id,
                 principal_id=args.principal_id,
                 trace_id=_format_trace_id(args.trace_prefix, index),
-                session_id=args.session_id,
+                session_id=session_id,
                 agent_id=args.agent_id,
                 simulate_failure=args.simulate_failure,
             )
         )
-    runs = runtime.sessions.runs_for_session(args.session_id)
-    summary = summarize_session(args.session_id, runs)
+    runs = runtime.sessions.runs_for_session(session_id)
+    summary = summarize_session(session_id, runs)
     latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
-        "session_id": args.session_id,
+        "session_id": session_id,
         "run_count": len(results),
         "summary": {
             "total_runs": summary.total_runs,
@@ -897,6 +907,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
 
 def _export_session(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    session_id = _read_cli_session_id(args.session_id)
     runtime = _build_runtime(config_dir)
     for index, user_input in enumerate(args.user_input, start=1):
         _run_on_runtime(
@@ -905,19 +916,19 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
             tenant_id=args.tenant_id,
             principal_id=args.principal_id,
             trace_id=_format_trace_id(args.trace_prefix, index),
-            session_id=args.session_id,
+            session_id=session_id,
             agent_id=args.agent_id,
             simulate_failure=args.simulate_failure,
         )
     output_path = runtime.sessions.export_session_json(
-        args.session_id,
+        session_id,
         output_path=args.output,
     )
-    runs = runtime.sessions.runs_for_session(args.session_id)
-    summary = summarize_session(args.session_id, runs)
+    runs = runtime.sessions.runs_for_session(session_id)
+    summary = summarize_session(session_id, runs)
     latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
     return {
-        "session_id": args.session_id,
+        "session_id": session_id,
         "output_path": str(output_path),
         "total_runs": summary.total_runs,
         "failed_runs": summary.failed_runs,
