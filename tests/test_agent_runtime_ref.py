@@ -743,6 +743,33 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
+    def test_cli_replay_run_rejects_non_string_redacted_fields(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "non-string-redacted-fields.jsonl"
+        output_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "event_type": "run_start",
+                    "trace_id": "trace-non-string-redacted-fields",
+                    "payload": {
+                        "user_input": "[REDACTED]",
+                        "tenant_id": "tenant-acme",
+                        "principal_id": "user-1",
+                    },
+                    "redacted_fields": [["user_input"]],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+            main(["replay-run", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_redacted_run_start_payload(
         self, cli_json, tmp_path: Path
     ) -> None:
@@ -2845,6 +2872,10 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="redacted_fields must be a list"):
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"}
+            )
+        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+            StructuredEvent.from_dict(
+                {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": [1]}
             )
 
     def test_telemetry_events_for_trace_and_unredacted_export(self, tmp_path: Path) -> None:

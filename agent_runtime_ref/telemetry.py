@@ -81,12 +81,17 @@ class StructuredEvent:
         redacted_fields = data.get("redacted_fields", [])
         if not isinstance(redacted_fields, list):
             raise TypeError("redacted_fields must be a list")
+        normalized_redacted_fields: list[str] = []
+        for item in redacted_fields:
+            if not isinstance(item, str):
+                raise TypeError("redacted_fields entries must be strings")
+            normalized_redacted_fields.append(item)
         return cls(
             schema_version=schema_version,
             event_type=required_values["event_type"],
             trace_id=required_values["trace_id"],
             payload=normalized_payload,
-            redacted_fields=tuple(str(item) for item in redacted_fields),
+            redacted_fields=tuple(normalized_redacted_fields),
         )
 
     @staticmethod
