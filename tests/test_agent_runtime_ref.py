@@ -4157,9 +4157,19 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="'approved_capabilities' must be a list"):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": "x"}})
         with pytest.raises(
+            TypeError, match="approved_capabilities entries must be strings"
+        ):
+            ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [7]}})
+        with pytest.raises(
             ValueError, match="approved_capabilities entries must not be empty"
         ):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [" "]}})
+        with pytest.raises(
+            ValueError, match="approved_capabilities entries must be unique"
+        ):
+            ApprovedInventory.from_agent_config(
+                {"agent": {"approved_capabilities": ["search_docs", " search_docs "]}}
+            )
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             load_agent_identity({"agent": []})
         with pytest.raises(ValueError, match="agent.id is required"):
@@ -4205,10 +4215,20 @@ class TestLowCoverageModuleBranches:
         assert inventory.allows(" search_docs ")
         assert not inventory.allows("create_ticket")
         with pytest.raises(
+            TypeError,
+            match="approved_capabilities entries must be strings",
+        ):
+            ApprovedInventory(capabilities=cast(frozenset[str], frozenset({7})))
+        with pytest.raises(
             ValueError,
             match="approved_capabilities entries must not be empty",
         ):
             ApprovedInventory(capabilities=frozenset({" "}))
+        with pytest.raises(
+            ValueError,
+            match="approved_capabilities entries must be unique",
+        ):
+            ApprovedInventory(capabilities=frozenset({"search_docs", " search_docs "}))
 
 
 class TestPolicyAndControls:
