@@ -3580,9 +3580,15 @@ class TestLowCoverageModuleBranches:
                 }
             )
 
-        inventory = ApprovedInventory(capabilities=frozenset({"search_docs"}))
-        assert inventory.allows("search_docs")
+        inventory = ApprovedInventory(capabilities=frozenset({" search_docs "}))
+        assert inventory.capabilities == frozenset({"search_docs"})
+        assert inventory.allows(" search_docs ")
         assert not inventory.allows("create_ticket")
+        with pytest.raises(
+            ValueError,
+            match="approved_capabilities entries must not be empty",
+        ):
+            ApprovedInventory(capabilities=frozenset({" "}))
 
 
 class TestPolicyAndControls:

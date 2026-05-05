@@ -23,8 +23,14 @@ class AgentIdentity:
 class ApprovedInventory:
     capabilities: frozenset[str]
 
+    def __post_init__(self) -> None:
+        capabilities = frozenset(str(capability).strip() for capability in self.capabilities)
+        if "" in capabilities:
+            raise ValueError("approved_capabilities entries must not be empty")
+        object.__setattr__(self, "capabilities", capabilities)
+
     def allows(self, capability_name: str) -> bool:
-        return capability_name in self.capabilities
+        return str(capability_name).strip() in self.capabilities
 
     @classmethod
     def from_agent_config(cls, data: Mapping[str, Any]) -> "ApprovedInventory":
