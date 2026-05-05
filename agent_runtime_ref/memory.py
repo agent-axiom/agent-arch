@@ -20,10 +20,13 @@ def _read_memory_id(record: Mapping[str, Any], *, idx: int) -> str:
 
 
 def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
-    value = float(record.get("confidence", 0.5))
-    if not isfinite(value) or value < 0 or value > 1:
+    value = record.get("confidence", 0.5)
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        raise TypeError(f"Memory record #{idx} confidence must be a number")
+    confidence = float(value)
+    if not isfinite(confidence) or confidence < 0 or confidence > 1:
         raise ValueError(f"Memory record #{idx} confidence must be between 0 and 1")
-    return value
+    return confidence
 
 
 def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
@@ -43,6 +46,8 @@ def _read_record_string(value: str, *, field: str) -> str:
 
 
 def _read_record_confidence(value: float) -> float:
+    if not isinstance(value, int | float) or isinstance(value, bool):
+        raise TypeError("Memory record confidence must be a number")
     confidence = float(value)
     if not isfinite(confidence) or confidence < 0 or confidence > 1:
         raise ValueError("Memory record confidence must be between 0 and 1")
