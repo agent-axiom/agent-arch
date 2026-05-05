@@ -21,7 +21,11 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     value = data.get(key, [])
     if not isinstance(value, list):
         raise TypeError(f"{key} must be a list")
-    values = tuple(str(item).strip() for item in value)
+    return _normalize_string_items(value, key=key)
+
+
+def _normalize_string_items(items: tuple[str, ...] | list[object], *, key: str) -> tuple[str, ...]:
+    values = tuple(str(item).strip() for item in items)
     if any(not item for item in values):
         raise ValueError(f"{key} entries must not be empty")
     if len(set(values)) != len(values):
@@ -59,6 +63,28 @@ class ChangeRecord:
     session_control_owner: str
     emergency_freeze_owner: str
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "artifacts",
+            _normalize_string_items(self.artifacts, key="artifacts"),
+        )
+        object.__setattr__(
+            self,
+            "affected_surfaces",
+            _normalize_string_items(self.affected_surfaces, key="affected_surfaces"),
+        )
+        object.__setattr__(
+            self,
+            "required_signals",
+            _normalize_string_items(self.required_signals, key="required_signals"),
+        )
+        object.__setattr__(
+            self,
+            "approval_roles",
+            _normalize_string_items(self.approval_roles, key="approval_roles"),
+        )
+
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ChangeRecord:
         data = _require_mapping(payload.get("change", payload), label="change")
@@ -92,6 +118,13 @@ class ArtifactBundle:
     artifacts: tuple[str, ...]
     review_evidence: dict[str, object]
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "artifacts",
+            _normalize_string_items(self.artifacts, key="artifacts"),
+        )
+
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ArtifactBundle:
         data = _require_mapping(payload.get("bundle", payload), label="artifact bundle")
@@ -122,6 +155,23 @@ class RetirementPlan:
     session_control_owner: str
     emergency_freeze_owner: str
     archive_targets: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "triggers",
+            _normalize_string_items(self.triggers, key="triggers"),
+        )
+        object.__setattr__(
+            self,
+            "required_steps",
+            _normalize_string_items(self.required_steps, key="required_steps"),
+        )
+        object.__setattr__(
+            self,
+            "archive_targets",
+            _normalize_string_items(self.archive_targets, key="archive_targets"),
+        )
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> RetirementPlan:
