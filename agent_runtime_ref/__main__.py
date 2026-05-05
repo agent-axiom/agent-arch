@@ -518,12 +518,13 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         raise ValueError("Trace file contains multiple run_start events")
     run_start = run_start_events[0]
     required_payload_keys = ("user_input", "tenant_id", "principal_id")
+    replay_payload_keys = (*required_payload_keys, "session_id", "agent_id")
     missing_payload_keys = [key for key in required_payload_keys if key not in run_start.payload]
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
         raise ValueError(f"Trace run_start event is missing replay fields: {missing_keys}")
     redacted_payload_keys = [
-        key for key in required_payload_keys if key in run_start.redacted_fields
+        key for key in replay_payload_keys if key in run_start.redacted_fields
     ]
     if redacted_payload_keys:
         redacted_keys = ", ".join(redacted_payload_keys)
