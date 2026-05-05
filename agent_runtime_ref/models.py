@@ -9,7 +9,11 @@ def normalize_tool_arguments(value: object) -> dict[str, str]:
         raise TypeError("Tool request arguments must be a mapping")
     normalized: dict[str, str] = {}
     for key, argument in value.items():
-        argument_key = str(key)
+        if not isinstance(key, str):
+            raise TypeError("Tool request argument key must be a string")
+        argument_key = key.strip()
+        if not argument_key:
+            raise ValueError("Tool request argument key must not be empty")
         if not isinstance(argument, str):
             raise TypeError(
                 f"Tool request argument value must be a string: {argument_key}"
