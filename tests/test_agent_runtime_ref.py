@@ -1340,6 +1340,15 @@ class TestExecutionAndPolicyBranches:
                 PolicyDecision("allow", "low_risk_read", "cap_101"),
             )
 
+        with pytest.raises(TypeError, match="Tool request capability name must be a string"):
+            execute_tool(
+                capability,
+                ToolRequest(
+                    capability_name=cast(str, 7),
+                    arguments={"query": "policy"},
+                ),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
         with pytest.raises(ValueError, match="Tool request capability name must not be empty"):
             load_capability_catalog(config_dir / "capabilities.yaml").get(" ")
 
@@ -4516,6 +4525,22 @@ class TestPolicyAndControls:
 
     def test_policy_rejects_malformed_tool_argument_values(self) -> None:
         policy = PolicyEngine()
+        with pytest.raises(
+            TypeError,
+            match="Tool request capability name must be a string",
+        ):
+            policy.evaluate_tool(
+                RunContext(
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-bad-tool-capability-001",
+                ),
+                ToolRequest(
+                    capability_name=cast(str, 7),
+                    arguments={"idempotency_key": "ticket-123"},
+                ),
+                None,
+            )
         with pytest.raises(
             TypeError,
             match="Tool request argument key must be a string",

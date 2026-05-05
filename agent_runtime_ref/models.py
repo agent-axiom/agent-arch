@@ -4,6 +4,15 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 
+def normalize_tool_capability_name(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Tool request capability name must be a string")
+    capability_name = value.strip()
+    if not capability_name:
+        raise ValueError("Tool request capability name must not be empty")
+    return capability_name
+
+
 def normalize_tool_arguments(value: object) -> dict[str, str]:
     if not isinstance(value, dict):
         raise TypeError("Tool request arguments must be a mapping")
