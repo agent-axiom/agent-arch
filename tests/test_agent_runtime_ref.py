@@ -1393,6 +1393,10 @@ class TestExecutionAndPolicyBranches:
             )
         with pytest.raises(ValueError, match="Policy capability name must not be empty"):
             PolicyEngine.from_dict({"policy": {"capabilities": {" ": {"decision": "allow"}}}})
+        with pytest.raises(TypeError, match="Policy decision must be a string"):
+            PolicyEngine.from_dict(
+                {"policy": {"capabilities": {"search_docs": {"decision": 7}}}}
+            )
         with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
             PolicyEngine.from_dict(
                 {"policy": {"capabilities": {"search_docs": {"decision": "escalate"}}}}
@@ -1404,6 +1408,19 @@ class TestExecutionAndPolicyBranches:
         with pytest.raises(TypeError, match="Policy capability names must be strings"):
             PolicyEngine.from_dict(
                 {"policy": {"capabilities": {7: {"decision": "allow"}}}}
+            )
+        with pytest.raises(TypeError, match="Policy approver must be a string"):
+            PolicyEngine.from_dict(
+                {
+                    "policy": {
+                        "capabilities": {
+                            "create_ticket": {
+                                "decision": "approval_required",
+                                "approver": 7,
+                            }
+                        }
+                    }
+                }
             )
         with pytest.raises(
             ValueError, match="Policy approver must not be empty: create_ticket"
@@ -1473,6 +1490,10 @@ class TestExecutionAndPolicyBranches:
                     " search_docs ": CapabilityPolicy("deny"),
                 }
             )
+        with pytest.raises(TypeError, match="Policy decision must be a string"):
+            CapabilityPolicy(cast(str, 7))
+        with pytest.raises(TypeError, match="Policy approver must be a string"):
+            CapabilityPolicy("approval_required", cast(str, 7))
         with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
             CapabilityPolicy(" escalate ")
         with pytest.raises(
