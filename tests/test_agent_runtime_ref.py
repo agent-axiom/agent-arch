@@ -3377,28 +3377,79 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             )
 
         direct_change = ChangeRecord(
-            **valid_change,
+            change_id=" change-001 ",
+            change_type=" rollout ",
+            risk_level=" medium ",
+            rollout_strategy=" gradual ",
             artifacts=(" runtime.py ",),
             affected_surfaces=(" cli ",),
             required_signals=(" offline_eval_passed ",),
             approval_roles=(" approver ",),
+            session_control_owner=" support-ops ",
+            emergency_freeze_owner=" platform-runtime ",
         )
+        assert direct_change.change_id == "change-001"
+        assert direct_change.session_control_owner == "support-ops"
         assert direct_change.required_signals == ("offline_eval_passed",)
         direct_bundle = ArtifactBundle(
-            **valid_bundle,
+            bundle_name=" bundle ",
+            version=" 1 ",
             provenance_required=True,
             signed=False,
+            session_control_owner=" support-ops ",
             artifacts=(" runtime.py ",),
-            review_evidence={},
+            review_evidence={" sandbox_profile_reviewed ": True},
         )
+        assert direct_bundle.bundle_name == "bundle"
+        assert direct_bundle.session_control_owner == "support-ops"
         assert direct_bundle.artifacts == ("runtime.py",)
+        assert " sandbox_profile_reviewed " in direct_bundle.review_evidence
         direct_plan = RetirementPlan(
-            **valid_retirement,
+            system_id=" legacy-system ",
+            replacement_mode=" none ",
             triggers=(" inactivity_window ",),
             required_steps=(" revoke_egress ",),
+            session_control_owner=" support-ops ",
+            emergency_freeze_owner=" platform-runtime ",
             archive_targets=(" telemetry_jsonl ",),
         )
+        assert direct_plan.system_id == "legacy-system"
+        assert direct_plan.session_control_owner == "support-ops"
         assert direct_plan.required_steps == ("revoke_egress",)
+        with pytest.raises(ValueError, match="change.change_id is required"):
+            ChangeRecord(
+                **{**valid_change, "change_id": " "},
+                artifacts=(),
+                affected_surfaces=(),
+                required_signals=(),
+                approval_roles=(),
+            )
+        with pytest.raises(TypeError, match="'bundle.signed' must be a boolean"):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=cast(bool, "false"),
+                artifacts=(),
+                review_evidence={},
+            )
+        with pytest.raises(
+            TypeError,
+            match="artifact bundle review_evidence config must be a mapping",
+        ):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=False,
+                artifacts=(),
+                review_evidence=cast(dict[str, object], []),
+            )
+        with pytest.raises(ValueError, match="retirement.system_id is required"):
+            RetirementPlan(
+                **{**valid_retirement, "system_id": " "},
+                triggers=(),
+                required_steps=(),
+                archive_targets=(),
+            )
         with pytest.raises(ValueError, match="required_signals entries must be unique"):
             ChangeRecord(
                 **valid_change,
