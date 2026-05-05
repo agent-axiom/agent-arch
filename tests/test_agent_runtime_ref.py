@@ -3836,6 +3836,36 @@ class TestCli:
         assert "delegated_principal_id" in approval
         assert "delegated_scope" in approval
 
+    def test_cli_approval_commands_normalize_lineage_ids(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "inspect-approvals",
+                "--session-id",
+                " session-approval-normalized-001 ",
+                "--trace-id",
+                " trace-approval-normalized-001 ",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["session_id"] == "session-approval-normalized-001"
+        assert payload["trace_id"] == "trace-approval-normalized-001"
+        assert payload["approvals"][0]["capability_session_id"].startswith("cap-session-")
+
+        resolve_code, resolve_payload = cli_json(
+            [
+                "resolve-approval",
+                "--decision",
+                "approved",
+                "--session-id",
+                " session-approval-normalized-002 ",
+                "--trace-id",
+                " trace-approval-normalized-002 ",
+            ]
+        )
+        assert resolve_code == 0
+        assert resolve_payload["status"] == "approved"
+        assert resolve_payload["capability_session_id"].startswith("cap-session-")
+
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
