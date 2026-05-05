@@ -3581,6 +3581,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
 
         with pytest.raises(TypeError, match="change config must be a mapping"):
             ChangeRecord.from_dict({"change": []})
+        with pytest.raises(TypeError, match="change config keys must be strings"):
+            ChangeRecord.from_dict({"change": {7: "malformed"}})
         with pytest.raises(TypeError, match="artifact bundle config must be a mapping"):
             ArtifactBundle.from_dict({"bundle": []})
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
@@ -3604,6 +3606,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(TypeError, match="change.change_id must be a string"):
+            ChangeRecord.from_dict({"change": {**valid_change, "change_id": 7}})
         with pytest.raises(ValueError, match="change.change_id is required"):
             ChangeRecord.from_dict(
                 {
@@ -3664,6 +3668,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             "version": "1",
             "session_control_owner": "support-ops",
         }
+        with pytest.raises(TypeError, match="bundle.bundle_name must be a string"):
+            ArtifactBundle.from_dict({"bundle": {**valid_bundle, "bundle_name": 7}})
         with pytest.raises(ValueError, match="bundle.bundle_name is required"):
             ArtifactBundle.from_dict({"bundle": {"version": "1"}})
         with pytest.raises(TypeError, match="'bundle.provenance_required' must be a boolean"):
@@ -3700,6 +3706,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             "session_control_owner": "support-ops",
             "emergency_freeze_owner": "platform-runtime",
         }
+        with pytest.raises(TypeError, match="retirement.system_id must be a string"):
+            RetirementPlan.from_dict({"retirement": {**valid_retirement, "system_id": 7}})
         with pytest.raises(ValueError, match="retirement.system_id is required"):
             RetirementPlan.from_dict({"retirement": {"replacement_mode": "none"}})
         with pytest.raises(ValueError, match="retirement.session_control_owner is required"):
@@ -3778,6 +3786,14 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert direct_plan.system_id == "legacy-system"
         assert direct_plan.session_control_owner == "support-ops"
         assert direct_plan.required_steps == ("revoke_egress",)
+        with pytest.raises(TypeError, match="change.change_id must be a string"):
+            ChangeRecord(
+                **{**valid_change, "change_id": cast(str, 7)},
+                artifacts=(),
+                affected_surfaces=(),
+                required_signals=(),
+                approval_roles=(),
+            )
         with pytest.raises(ValueError, match="change.change_id is required"):
             ChangeRecord(
                 **{**valid_change, "change_id": " "},
@@ -3804,6 +3820,17 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 signed=False,
                 artifacts=(),
                 review_evidence=cast(dict[str, object], []),
+            )
+        with pytest.raises(
+            TypeError,
+            match="artifact bundle review_evidence config keys must be strings",
+        ):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=False,
+                artifacts=(),
+                review_evidence=cast(dict[str, object], {7: True}),
             )
         with pytest.raises(ValueError, match="retirement.system_id is required"):
             RetirementPlan(

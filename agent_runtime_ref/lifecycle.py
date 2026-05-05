@@ -7,11 +7,18 @@ from typing import Any
 def _require_mapping(payload: object, *, label: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise TypeError(f"{label} config must be a mapping")
-    return {str(key): value for key, value in payload.items()}
+    normalized: dict[str, Any] = {}
+    for key, value in payload.items():
+        if not isinstance(key, str):
+            raise TypeError(f"{label} config keys must be strings")
+        normalized[key] = value
+    return normalized
 
 
 def _read_required_value(value: object, key: str, *, label: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"{label}.{key} must be a string")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"{label}.{key} is required")
     return normalized
