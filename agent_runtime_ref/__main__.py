@@ -189,6 +189,17 @@ def _read_cli_redact_fields(values: Sequence[str]) -> tuple[str, ...]:
     return StructuredEvent._normalize_redacted_fields(tuple(values))
 
 
+def _ensure_redact_fields_exist(
+    events: Sequence[StructuredEvent],
+    redact_fields: Sequence[str],
+) -> None:
+    payload_keys = {key for event in events for key in event.payload}
+    missing_fields = [field for field in redact_fields if field not in payload_keys]
+    if missing_fields:
+        missing = ", ".join(missing_fields)
+        raise ValueError(f"Telemetry redact field is not present in events: {missing}")
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -483,6 +494,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
     session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     redact_fields = _read_cli_redact_fields(args.redact_field)
+    _ensure_redact_fields_exist(runtime.telemetry.events, redact_fields)
     output_path = runtime.telemetry.export_jsonl(
         args.output,
         redact_fields=redact_fields,
