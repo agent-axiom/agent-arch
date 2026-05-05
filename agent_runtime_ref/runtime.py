@@ -376,12 +376,30 @@ class AgentRuntime:
             policy_id=decision.policy_id,
         )
         if capability is None:
-            context.tool_results.append(
-                execute_tool(
-                    capability=self.catalog.get("search_docs") or self.catalog.all()[0],
-                    tool_request=tool_request,
-                    decision=PolicyDecision("deny", "capability_unknown", "cap_404"),
-                ),
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="denied",
+                payload={
+                    "reason": decision.reason,
+                    "authorization_mode": request.authorization_mode,
+                    "delegated_principal_id": request.delegated_principal_id,
+                    "delegated_scope": request.delegated_scope,
+                },
+            )
+            context.tool_results.append(tool_result)
+            context.context_layers.setdefault("tool", []).append(
+                f"{tool_result.capability_name}:{tool_result.status}",
+            )
+            self.telemetry.emit(
+                "tool_execution",
+                request.trace_id,
+                session_id=request.session_id,
+                capability=tool_result.capability_name,
+                status=tool_result.status,
+                tool_principal="n/a",
+                authorization_mode=tool_result.payload["authorization_mode"],
+                delegated_principal_id=tool_result.payload["delegated_principal_id"],
+                delegated_scope=tool_result.payload["delegated_scope"],
             )
             return decision
         if decision.action == "approval_required":
