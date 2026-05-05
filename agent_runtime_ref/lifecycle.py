@@ -36,6 +36,16 @@ def _read_bool(data: dict[str, Any], key: str, *, label: str, default: bool) -> 
     return value
 
 
+def _read_observed_flags(items: dict[str, bool]) -> dict[str, bool]:
+    observed: dict[str, bool] = {}
+    for key, value in items.items():
+        field = str(key).strip()
+        if not isinstance(value, bool):
+            raise TypeError(f"Assessment signal value must be a boolean: {field}")
+        observed[field] = value
+    return observed
+
+
 @dataclass(frozen=True, slots=True)
 class ChangeRecord:
     change_id: str
@@ -149,7 +159,7 @@ def assess_change_gate(
     change: ChangeRecord,
     observed_signals: dict[str, bool],
 ) -> ChangeGateAssessment:
-    observed = {str(key).strip(): value for key, value in observed_signals.items()}
+    observed = _read_observed_flags(observed_signals)
     missing = tuple(
         signal for signal in change.required_signals if not observed.get(signal, False)
     )
@@ -160,7 +170,7 @@ def assess_retirement(
     plan: RetirementPlan,
     observed_steps: dict[str, bool],
 ) -> RetirementAssessment:
-    observed = {str(key).strip(): value for key, value in observed_steps.items()}
+    observed = _read_observed_flags(observed_steps)
     missing = tuple(
         step for step in plan.required_steps if not observed.get(step, False)
     )

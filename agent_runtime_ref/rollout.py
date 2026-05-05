@@ -20,6 +20,16 @@ def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> di
     return values
 
 
+def _read_observed_flags(items: Mapping[str, bool]) -> dict[str, bool]:
+    observed: dict[str, bool] = {}
+    for key, value in items.items():
+        field = str(key).strip()
+        if not isinstance(value, bool):
+            raise TypeError(f"Assessment signal value must be a boolean: {field}")
+        observed[field] = value
+    return observed
+
+
 @dataclass(slots=True)
 class RolloutReadiness:
     trace_coverage: bool
@@ -72,7 +82,7 @@ class RolloutAssessment:
 
 
 def assess_rollout(policy: RolloutPolicy, observed_checks: Mapping[str, bool]) -> RolloutAssessment:
-    observed = {str(key).strip(): value for key, value in observed_checks.items()}
+    observed = _read_observed_flags(observed_checks)
     missing_required = tuple(
         check for check in policy.required_checks if not observed.get(check, False)
     )

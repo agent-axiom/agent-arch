@@ -3011,6 +3011,20 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert retirement_assessment.ready
         assert retirement_assessment.missing_steps == ()
 
+        with pytest.raises(
+            TypeError,
+            match="Assessment signal value must be a boolean: offline_eval_passed",
+        ):
+            assess_change_gate(
+                change,
+                cast(dict[str, bool], {"offline_eval_passed": "false"}),
+            )
+        with pytest.raises(
+            TypeError,
+            match="Assessment signal value must be a boolean: revoke_egress",
+        ):
+            assess_retirement(plan, cast(dict[str, bool], {"revoke_egress": "false"}))
+
     def test_change_gate_can_block_on_missing_failed_run_drill(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record
 
@@ -3573,6 +3587,12 @@ class TestPolicyAndControls:
         assert not assessment.ready
         assert "direct_tool_access_present" in assessment.blocking_signals
 
+        with pytest.raises(
+            TypeError,
+            match="Assessment signal value must be a boolean: trace_coverage",
+        ):
+            assess_rollout(policy, cast(dict[str, bool], {"trace_coverage": "false"}))
+
     def test_controls_policy_detects_inventory_drift(self, config_dir: Path) -> None:
         policy = load_controls_policy(config_dir / "controls.yaml")
         catalog = load_capability_catalog(config_dir / "capabilities.yaml")
@@ -3592,6 +3612,16 @@ class TestPolicyAndControls:
         )
         assert assessment.healthy
         assert not assessment.inventory_drift.has_drift
+
+        with pytest.raises(
+            TypeError,
+            match="Assessment signal value must be a boolean: registry_reviewed",
+        ):
+            assess_controls(
+                policy,
+                cast(dict[str, bool], {"registry_reviewed": "false"}),
+                inventory_drift=drift,
+            )
 
 
 class TestDelegatedAuthorizationConfig:
