@@ -3973,6 +3973,17 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
+        with pytest.raises(TypeError, match="allowed_egress entries must be strings"):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "allowed_egress": [7],
+                        }
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="allowed_egress entries must not be empty"):
             CapabilityCatalog.from_dict(
                 {
@@ -3980,6 +3991,17 @@ class TestLowCoverageModuleBranches:
                         "search_docs": {
                             **required_capability_fields,
                             "allowed_egress": [""],
+                        }
+                    }
+                }
+            )
+        with pytest.raises(ValueError, match="allowed_egress entries must be unique"):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "allowed_egress": ["docs.internal", " docs.internal "],
                         }
                     }
                 }
@@ -4134,6 +4156,30 @@ class TestLowCoverageModuleBranches:
                 risk_tier="low",
                 network_access="restricted",
                 allowed_egress=("docs.internal",),
+            )
+        with pytest.raises(TypeError, match="allowed_egress entries must be strings"):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=cast(tuple[str, ...], (7,)),
+            )
+        with pytest.raises(ValueError, match="allowed_egress entries must be unique"):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal", " docs.internal "),
             )
         with pytest.raises(
             TypeError,
