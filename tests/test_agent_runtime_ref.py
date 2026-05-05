@@ -1609,7 +1609,7 @@ class TestRuntimeControlPaths:
             requested_by=" user-1 ",
             reviewer=" manager ",
             reason=" write_action ",
-            session_id="session-approval-resolve-001",
+            session_id=" session-approval-resolve-001 ",
         )
         resolved = queue.resolve(request.approval_id, decision=" approved ", note="ok")
         assert request.trace_id == "trace-approval-resolve-001"
@@ -1617,6 +1617,7 @@ class TestRuntimeControlPaths:
         assert request.requested_by == "user-1"
         assert request.reviewer == "manager"
         assert request.reason == "write_action"
+        assert request.session_id == "session-approval-resolve-001"
         assert resolved.status == "approved"
         assert resolved.capability_session_status == "approved"
 
@@ -1648,6 +1649,14 @@ class TestRuntimeControlPaths:
                 "write_action",
             ),
             ("reason", "trace-approval-required-001", "create_ticket", "user-1", None, " "),
+            (
+                "session_id",
+                "trace-approval-required-001",
+                "create_ticket",
+                "user-1",
+                None,
+                "write_action",
+            ),
         )
         for field, trace_id, capability_name, requested_by, reviewer, reason in required_fields:
             queue = AgentRuntime().approvals
@@ -1658,7 +1667,9 @@ class TestRuntimeControlPaths:
                     requested_by=requested_by,
                     reviewer=reviewer,
                     reason=reason,
-                    session_id="session-approval-required-001",
+                    session_id=(
+                        " " if field == "session_id" else "session-approval-required-001"
+                    ),
                 )
             assert queue.all() == ()
 
@@ -1829,6 +1840,77 @@ class TestRuntimeControlPaths:
                 output_text="done",
             )
         assert store.get_session("session-bad-status-001") is None
+
+    def test_session_store_rejects_session_tenant_mismatch(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        store.register_run(
+            session_id="session-identity-stable-001",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-session-identity-001",
+            status="success",
+            user_input="hello",
+            output_text="done",
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="Session tenant_id does not match existing session: session-identity-stable-001",
+        ):
+            store.register_run(
+                session_id="session-identity-stable-001",
+                tenant_id="tenant-other",
+                principal_id="user-1",
+                trace_id="trace-session-identity-002",
+                status="success",
+                user_input="hello again",
+                output_text="done again",
+            )
+
+        session = store.get_session("session-identity-stable-001")
+        assert session is not None
+        assert session.tenant_id == "tenant-acme"
+        assert session.traces == ["trace-session-identity-001"]
+        assert len(store.runs_for_session("session-identity-stable-001")) == 1
+
+    def test_session_store_rejects_session_principal_mismatch(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        store.register_run(
+            session_id="session-principal-stable-001",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-session-principal-001",
+            status="success",
+            user_input="hello",
+            output_text="done",
+        )
+
+        with pytest.raises(
+            ValueError,
+            match=(
+                "Session principal_id does not match existing session: "
+                "session-principal-stable-001"
+            ),
+        ):
+            store.register_run(
+                session_id="session-principal-stable-001",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-session-principal-002",
+                status="success",
+                user_input="hello again",
+                output_text="done again",
+            )
+
+        session = store.get_session("session-principal-stable-001")
+        assert session is not None
+        assert session.principal_id == "user-1"
+        assert session.traces == ["trace-session-principal-001"]
+        assert len(store.runs_for_session("session-principal-stable-001")) == 1
 
     def test_session_store_requires_delegated_authorization_identity(self) -> None:
         from agent_runtime_ref.session import SessionStore

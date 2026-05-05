@@ -126,14 +126,18 @@ class SessionStore:
                 field="delegated_principal_id",
             )
             delegated_scope = _read_required_string(delegated_scope, field="delegated_scope")
-        session = self._sessions.setdefault(
-            session_id,
-            SessionRecord(
+        session = self._sessions.get(session_id)
+        if session is None:
+            session = SessionRecord(
                 session_id=session_id,
                 tenant_id=tenant_id,
                 principal_id=principal_id,
-            ),
-        )
+            )
+            self._sessions[session_id] = session
+        elif session.tenant_id != tenant_id:
+            raise ValueError(f"Session tenant_id does not match existing session: {session_id}")
+        elif session.principal_id != principal_id:
+            raise ValueError(f"Session principal_id does not match existing session: {session_id}")
         session.traces.append(trace_id)
         record = RunRecord(
             trace_id=trace_id,
