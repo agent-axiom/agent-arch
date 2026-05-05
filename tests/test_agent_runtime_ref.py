@@ -1664,7 +1664,23 @@ class TestRuntimeCore:
                     authorization_mode=" ",
                 ),
             )
+        with pytest.raises(
+            ValueError,
+            match="Authorization mode is not supported: magic_token",
+        ):
+            runtime.run(
+                RunRequest(
+                    user_input="Summarize the current architecture.",
+                    tenant_id="tenant-acme",
+                    principal_id="user-1",
+                    trace_id="trace-unknown-authz-001",
+                    session_id="session-unknown-authz-001",
+                    agent_id="agent-runtime-ref",
+                    authorization_mode=" magic_token ",
+                ),
+            )
         assert runtime.telemetry.events == []
+        assert runtime.sessions.get_session("session-unknown-authz-001") is None
 
         normalized = AgentRuntime()
         result = normalized.run(
@@ -2022,6 +2038,23 @@ class TestRuntimeControlPaths:
                     ),
                 )
             assert queue.all() == ()
+
+    def test_approval_queue_rejects_unknown_authorization_mode(self) -> None:
+        queue = AgentRuntime().approvals
+        with pytest.raises(
+            ValueError,
+            match="Authorization mode is not supported: magic_token",
+        ):
+            queue.submit(
+                trace_id="trace-approval-unknown-authz-001",
+                capability_name="create_ticket",
+                requested_by="user-1",
+                reviewer=None,
+                reason="write_action",
+                session_id="session-approval-unknown-authz-001",
+                authorization_mode=" magic_token ",
+            )
+        assert queue.all() == ()
 
     def test_approval_queue_requires_delegated_submit_identity_fields(self) -> None:
         required_fields = {
@@ -2420,6 +2453,22 @@ class TestRuntimeControlPaths:
             assert store.get_session("session-delegated-required-001") is None
 
         store = SessionStore()
+        with pytest.raises(
+            ValueError,
+            match="Authorization mode is not supported: magic_token",
+        ):
+            store.register_run(
+                session_id="session-delegated-unknown-authz-001",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-delegated-unknown-authz-001",
+                status="success",
+                user_input="hello",
+                output_text="done",
+                authorization_mode=" magic_token ",
+            )
+        assert store.get_session("session-delegated-unknown-authz-001") is None
+
         record = store.register_run(
             session_id="session-delegated-normalized-001",
             tenant_id="tenant-acme",

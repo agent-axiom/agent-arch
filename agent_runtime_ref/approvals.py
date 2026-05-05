@@ -37,6 +37,16 @@ def _read_required_approval_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_authorization_mode(value: str) -> str:
+    authorization_mode = _read_required_approval_string(
+        value,
+        field="authorization_mode",
+    )
+    if authorization_mode not in {"platform_owned", "user_delegated", "human_approved"}:
+        raise ValueError(f"Authorization mode is not supported: {authorization_mode}")
+    return authorization_mode
+
+
 @dataclass(slots=True)
 class ApprovalRequest:
     approval_id: str
@@ -90,10 +100,7 @@ class ApprovalQueue:
             if reviewer is None
             else _read_required_approval_string(reviewer, field="reviewer")
         )
-        authorization_mode = _read_required_approval_string(
-            authorization_mode,
-            field="authorization_mode",
-        )
+        authorization_mode = _read_authorization_mode(authorization_mode)
         delegated_principal_id = str(delegated_principal_id).strip()
         delegated_scope = str(delegated_scope).strip()
         if authorization_mode == "user_delegated":

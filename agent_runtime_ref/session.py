@@ -78,6 +78,13 @@ def _read_optional_string(value: str) -> str:
     return str(value).strip()
 
 
+def _read_authorization_mode(value: str) -> str:
+    authorization_mode = _read_required_string(value, field="authorization_mode")
+    if authorization_mode not in {"platform_owned", "user_delegated", "human_approved"}:
+        raise ValueError(f"Authorization mode is not supported: {authorization_mode}")
+    return authorization_mode
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -118,10 +125,7 @@ class SessionStore:
         failure_reason = _read_optional_string(failure_reason)
         capability_session_id = _read_optional_string(capability_session_id)
         capability_session_status = _read_optional_string(capability_session_status)
-        authorization_mode = _read_required_string(
-            authorization_mode,
-            field="authorization_mode",
-        )
+        authorization_mode = _read_authorization_mode(authorization_mode)
         delegated_principal_id = _read_optional_string(delegated_principal_id)
         delegated_scope = _read_optional_string(delegated_scope)
         if status not in {"success", "denied", "failed", "approval_required"}:
