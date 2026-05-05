@@ -18,6 +18,20 @@ class AgentIdentity:
     owner_team: str
     runtime_principal: str
 
+    def __post_init__(self) -> None:
+        fields = {
+            "agent_id": "id",
+            "display_name": "display_name",
+            "owner_team": "owner_team",
+            "runtime_principal": "runtime_principal",
+        }
+        for attr, key in fields.items():
+            object.__setattr__(
+                self,
+                attr,
+                _read_required_string({key: getattr(self, attr)}, key, label="agent"),
+            )
+
 
 @dataclass(frozen=True, slots=True)
 class ApprovedInventory:
