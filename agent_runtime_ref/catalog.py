@@ -31,7 +31,9 @@ def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
 
 
 def _normalize_required_string(value: object, *, label: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"{label} must be a string")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"{label} is required")
     return normalized
@@ -64,7 +66,10 @@ def _read_bool(spec: Mapping[str, Any], key: str, *, label: str) -> bool:
 
 
 def _read_approval(spec: Mapping[str, Any], *, label: str) -> str:
-    approval = str(spec.get("approval", "none")).strip()
+    approval_value = spec.get("approval", "none")
+    if not isinstance(approval_value, str):
+        raise TypeError(f"{label}.approval must be a string")
+    approval = approval_value.strip()
     if not approval:
         raise ValueError(f"{label}.approval must not be empty")
     if approval not in {"none", "manager"}:

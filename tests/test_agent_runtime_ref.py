@@ -4301,6 +4301,20 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
+        with pytest.raises(
+            TypeError,
+            match="capabilities.search_docs.owner must be a string",
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "owner": 7,
+                        }
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="capabilities.search_docs.owner is required"):
             CapabilityCatalog.from_dict(
                 {
@@ -4356,6 +4370,20 @@ class TestLowCoverageModuleBranches:
                         "search_docs": {
                             **required_capability_fields,
                             "timeout_seconds": 0,
+                        }
+                    }
+                }
+            )
+        with pytest.raises(
+            TypeError,
+            match="capabilities.search_docs.approval must be a string",
+        ):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {
+                            **required_capability_fields,
+                            "approval": 7,
                         }
                     }
                 }
@@ -4439,6 +4467,18 @@ class TestLowCoverageModuleBranches:
                     "search_docs": direct_capability,
                     " search_docs ": direct_capability,
                 }
+            )
+        with pytest.raises(TypeError, match="capability.name must be a string"):
+            CapabilitySpec(
+                name=cast(str, 7),
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
             )
         with pytest.raises(ValueError, match="capability.name is required"):
             CapabilitySpec(
