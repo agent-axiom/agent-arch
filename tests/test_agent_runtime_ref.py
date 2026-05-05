@@ -2143,6 +2143,10 @@ class TestRuntimeCore:
 
     def test_memory_store_rejects_blank_lookup_tenant(self) -> None:
         store = MemoryStore()
+        with pytest.raises(TypeError, match="Memory lookup field must be a string: tenant_id"):
+            store.retrieve("language preference", cast(str, 7))
+        with pytest.raises(TypeError, match="Memory lookup field must be a string: tenant_id"):
+            store.compact(cast(str, 7))
         with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
             store.retrieve("language preference", " ")
         with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
@@ -3158,6 +3162,26 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(
+            TypeError, match="Memory record #1 field must be a string: provenance"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "memory_id": "mem-custom",
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                                "provenance": 7,
+                            }
+                        ]
+                    }
+                }
+            )
         record = MemoryStore.from_dict(
             {
                 "memory": {
@@ -3454,6 +3478,11 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
 
         for field in ("tenant_id", "memory_class", "kind", "content", "source", "provenance"):
             store = MemoryStore()
+            with pytest.raises(
+                TypeError,
+                match=f"Memory candidate field must be a string: {field}",
+            ):
+                store.persist(candidate_with(**{field: cast(str, 7)}))
             with pytest.raises(
                 ValueError,
                 match=f"Memory candidate field is required: {field}",

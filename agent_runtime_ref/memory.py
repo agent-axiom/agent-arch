@@ -79,15 +79,25 @@ def _read_candidate_confidence(value: float) -> float:
     return confidence
 
 
+def _read_optional_seed_string(value: object, *, field: str, idx: int) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Memory record #{idx} field must be a string: {field}")
+    return value.strip()
+
+
 def _read_candidate_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"Memory candidate field must be a string: {field}")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"Memory candidate field is required: {field}")
     return normalized
 
 
 def _read_lookup_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"Memory lookup field must be a string: {field}")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"Memory lookup field is required: {field}")
     return normalized
@@ -208,7 +218,11 @@ class MemoryStore:
                     content=_read_required_string(record, "content", idx=idx),
                     source=_read_required_string(record, "source", idx=idx),
                     confidence=_read_confidence(record, idx=idx),
-                    provenance=str(record.get("provenance", "unknown")),
+                    provenance=_read_optional_seed_string(
+                        record.get("provenance", "unknown"),
+                        field="provenance",
+                        idx=idx,
+                    ),
                     revision=_read_revision(record, idx=idx),
                 ),
             )
