@@ -3733,6 +3733,8 @@ class TestCli:
         assert exit_code == 0
         assert payload["count"] >= 1
         assert payload["approvals"][0]["status"] == "pending"
+        assert payload["approvals"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["approvals"][0]["capability_session_status"] == "pending"
         assert payload["approvals"][0]["authorization_mode"] == "platform_owned"
 
     def test_cli_inspect_approvals_surfaces_delegated_auth_context(self, cli_json) -> None:
