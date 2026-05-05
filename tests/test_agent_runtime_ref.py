@@ -4236,6 +4236,8 @@ class TestLowCoverageModuleBranches:
 
         with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
             CapabilityCatalog.from_dict({"capabilities": []})
+        with pytest.raises(TypeError, match="Capability names must be strings"):
+            CapabilityCatalog.from_dict({"capabilities": {7: {}}})
         with pytest.raises(ValueError, match="Capability name must not be empty"):
             CapabilityCatalog.from_dict({"capabilities": {" ": {}}})
         with pytest.raises(TypeError, match="Capability spec for 'search_docs' must be a mapping"):
@@ -4461,6 +4463,15 @@ class TestLowCoverageModuleBranches:
         assert direct_capability.allowed_egress == ("docs.internal",)
         direct_catalog = CapabilityCatalog(registry={" search_docs ": direct_capability})
         assert direct_catalog.get("search_docs") is direct_capability
+        with pytest.raises(TypeError, match="Tool request capability name must be a string"):
+            direct_catalog.get(cast(str, 7))
+        with pytest.raises(TypeError, match="Capability names must be strings"):
+            CapabilityCatalog(
+                registry=cast(
+                    dict[str, CapabilitySpec],
+                    {7: direct_capability},
+                )
+            )
         with pytest.raises(ValueError, match="Capability names must be unique"):
             CapabilityCatalog(
                 registry={

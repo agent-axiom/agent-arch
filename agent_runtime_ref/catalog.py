@@ -77,6 +77,24 @@ def _read_approval(spec: Mapping[str, Any], *, label: str) -> str:
     return approval
 
 
+def _normalize_capability_key(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Capability names must be strings")
+    capability_name = value.strip()
+    if not capability_name:
+        raise ValueError("Capability name must not be empty")
+    return capability_name
+
+
+def _normalize_tool_lookup_name(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Tool request capability name must be a string")
+    capability_name = value.strip()
+    if not capability_name:
+        raise ValueError("Tool request capability name must not be empty")
+    return capability_name
+
+
 @dataclass(frozen=True, slots=True)
 class CapabilitySpec:
     name: str
@@ -149,9 +167,7 @@ class CapabilityCatalog:
     def __init__(self, registry: Mapping[str, CapabilitySpec] | None = None) -> None:
         self._registry: dict[str, CapabilitySpec] = {}
         for name, capability in (registry or self._default_registry()).items():
-            capability_name = str(name).strip()
-            if not capability_name:
-                raise ValueError("Capability name must not be empty")
+            capability_name = _normalize_capability_key(name)
             if capability_name in self._registry:
                 raise ValueError("Capability names must be unique")
             self._registry[capability_name] = capability
@@ -194,9 +210,7 @@ class CapabilityCatalog:
         normalized_names: dict[object, str] = {}
         seen_names: set[str] = set()
         for name in raw_capabilities:
-            capability_name = str(name).strip()
-            if not capability_name:
-                raise ValueError("Capability name must not be empty")
+            capability_name = _normalize_capability_key(name)
             if capability_name in seen_names:
                 raise ValueError("Capability names must be unique")
             seen_names.add(capability_name)
@@ -235,10 +249,7 @@ class CapabilityCatalog:
         return cls(registry=registry)
 
     def get(self, name: str) -> CapabilitySpec | None:
-        capability_name = str(name).strip()
-        if not capability_name:
-            raise ValueError("Tool request capability name must not be empty")
-        return self._registry.get(capability_name)
+        return self._registry.get(_normalize_tool_lookup_name(name))
 
     def all(self) -> tuple[CapabilitySpec, ...]:
         return tuple(self._registry.values())
