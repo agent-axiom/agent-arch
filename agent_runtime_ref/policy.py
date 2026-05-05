@@ -78,7 +78,9 @@ class PolicyEngine:
         self.deny_if_principal_missing = deny_if_principal_missing
         self.capability_policies: dict[str, CapabilityPolicy] = {}
         for name, policy in (capability_policies or {}).items():
-            capability_name = str(name).strip()
+            if not isinstance(name, str):
+                raise TypeError("Policy capability names must be strings")
+            capability_name = name.strip()
             if not capability_name:
                 raise ValueError("Policy capability name must not be empty")
             if capability_name in self.capability_policies:
@@ -112,7 +114,9 @@ class PolicyEngine:
 
         capability_policies: dict[str, CapabilityPolicy] = {}
         for name, raw_entry in raw_capabilities.items():
-            capability_name = str(name).strip()
+            if not isinstance(name, str):
+                raise TypeError("Policy capability names must be strings")
+            capability_name = name.strip()
             if not capability_name:
                 raise ValueError("Policy capability name must not be empty")
             if not isinstance(raw_entry, Mapping):
