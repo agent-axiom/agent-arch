@@ -209,11 +209,21 @@ class SessionStore:
         )
         if len(set(normalized_session_ids)) != len(normalized_session_ids):
             raise ValueError("Session field entries must be unique: session_id")
+        normalized_eval_specs: dict[str, dict[str, object]] = {}
+        if eval_specs is not None:
+            for session_id, eval_spec in eval_specs.items():
+                normalized_session_id = _read_required_string(
+                    session_id,
+                    field="session_id",
+                )
+                if normalized_session_id in normalized_eval_specs:
+                    raise ValueError("Session field entries must be unique: session_id")
+                normalized_eval_specs[normalized_session_id] = eval_spec
         sessions = []
         for session_id in normalized_session_ids:
             payload = self._session_payload(session_id)
-            if eval_specs is not None and session_id in eval_specs:
-                payload["eval"] = eval_specs[session_id]
+            if session_id in normalized_eval_specs:
+                payload["eval"] = normalized_eval_specs[session_id]
             sessions.append(payload)
         run_count = sum(
             summarize_session(session_id, self.runs_for_session(session_id)).total_runs
