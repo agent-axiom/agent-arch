@@ -2679,7 +2679,7 @@ class TestRuntimeControlPaths:
 
 class TestMeaningfulMemoryAndLifecycleCoverage:
     def test_memory_store_from_dict_rejects_bad_shapes(self) -> None:
-        from agent_runtime_ref.memory import MemoryStore
+        from agent_runtime_ref.memory import MemoryRecord, MemoryStore
 
         with pytest.raises(TypeError, match="'memory' must be a mapping"):
             MemoryStore.from_dict({"memory": []})
@@ -2816,6 +2816,55 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                         ]
                     }
                 }
+            )
+
+        direct_record = MemoryRecord(
+            memory_id=" mem-direct ",
+            tenant_id=" tenant-acme ",
+            memory_class=" profile ",
+            kind=" language_preference ",
+            content=" concise replies ",
+            source=" trusted_profile ",
+            confidence=0.9,
+            provenance=" user_confirmed ",
+            revision=2,
+        )
+        assert direct_record.memory_id == "mem-direct"
+        assert direct_record.tenant_id == "tenant-acme"
+        assert direct_record.provenance == "user_confirmed"
+        assert MemoryStore(records=[direct_record]).retrieve(
+            "concise", " tenant-acme "
+        ) == [direct_record]
+        with pytest.raises(ValueError, match="Memory record field is required: tenant_id"):
+            MemoryRecord(
+                memory_id="mem-direct",
+                tenant_id=" ",
+                memory_class="profile",
+                kind="language_preference",
+                content="concise replies",
+                source="trusted_profile",
+                confidence=0.9,
+            )
+        with pytest.raises(ValueError, match="Memory record confidence must be between 0 and 1"):
+            MemoryRecord(
+                memory_id="mem-direct",
+                tenant_id="tenant-acme",
+                memory_class="profile",
+                kind="language_preference",
+                content="concise replies",
+                source="trusted_profile",
+                confidence=2,
+            )
+        with pytest.raises(TypeError, match="Memory record revision must be an integer"):
+            MemoryRecord(
+                memory_id="mem-direct",
+                tenant_id="tenant-acme",
+                memory_class="profile",
+                kind="language_preference",
+                content="concise replies",
+                source="trusted_profile",
+                confidence=0.9,
+                revision=True,
             )
 
     def test_memory_store_replace_revision_increments_prior_version(self) -> None:

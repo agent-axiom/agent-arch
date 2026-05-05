@@ -35,6 +35,28 @@ def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
     return value
 
 
+def _read_record_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Memory record field is required: {field}")
+    return normalized
+
+
+def _read_record_confidence(value: float) -> float:
+    confidence = float(value)
+    if not isfinite(confidence) or confidence < 0 or confidence > 1:
+        raise ValueError("Memory record confidence must be between 0 and 1")
+    return confidence
+
+
+def _read_record_revision(value: int) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError("Memory record revision must be an integer")
+    if value < 1:
+        raise ValueError("Memory record revision must be positive")
+    return value
+
+
 def _read_candidate_confidence(value: float) -> float:
     if not isinstance(value, int | float) or isinstance(value, bool):
         raise TypeError("Memory candidate confidence must be a number")
@@ -77,6 +99,24 @@ class MemoryRecord:
     confidence: float
     provenance: str = "unknown"
     revision: int = 1
+
+    def __post_init__(self) -> None:
+        for field in (
+            "memory_id",
+            "tenant_id",
+            "memory_class",
+            "kind",
+            "content",
+            "source",
+            "provenance",
+        ):
+            object.__setattr__(
+                self,
+                field,
+                _read_record_string(getattr(self, field), field=field),
+            )
+        object.__setattr__(self, "confidence", _read_record_confidence(self.confidence))
+        object.__setattr__(self, "revision", _read_record_revision(self.revision))
 
 
 @dataclass(frozen=True, slots=True)
