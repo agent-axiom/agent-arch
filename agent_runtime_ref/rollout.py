@@ -5,12 +5,19 @@ from typing import Any, Mapping
 
 
 def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ...]:
-    values = tuple(str(item).strip() for item in items)
-    if any(not value for value in values):
-        raise ValueError(f"{label} entries must not be empty")
-    if len(set(values)) != len(values):
-        raise ValueError(f"{label} entries must be unique")
-    return values
+    values: list[str] = []
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, str):
+            raise TypeError(f"{label} entries must be strings")
+        value = item.strip()
+        if not value:
+            raise ValueError(f"{label} entries must not be empty")
+        if value in seen:
+            raise ValueError(f"{label} entries must be unique")
+        seen.add(value)
+        values.append(value)
+    return tuple(values)
 
 
 def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> dict[str, str]:

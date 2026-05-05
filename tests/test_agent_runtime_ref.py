@@ -3877,6 +3877,10 @@ class TestLowCoverageModuleBranches:
             RolloutPolicy.from_dict(
                 {"rollout": {"require": [], "block_if": [], "rollout_mode": []}}
             )
+        with pytest.raises(TypeError, match="rollout.require entries must be strings"):
+            RolloutPolicy.from_dict({"rollout": {"require": [7]}})
+        with pytest.raises(TypeError, match="rollout.block_if entries must be strings"):
+            RolloutPolicy.from_dict({"rollout": {"require": [], "block_if": [7]}})
         with pytest.raises(ValueError, match="rollout.require entries must not be empty"):
             RolloutPolicy.from_dict({"rollout": {"require": [" "]}})
         with pytest.raises(ValueError, match="rollout.block_if entries must not be empty"):
@@ -3929,6 +3933,12 @@ class TestLowCoverageModuleBranches:
         assert policy.required_checks == ("trace_coverage",)
         assert policy.blocked_checks == ("direct_tool_access_present",)
         assert policy.rollout_mode == {"initial": "canary"}
+        with pytest.raises(TypeError, match="rollout.require entries must be strings"):
+            RolloutPolicy(
+                required_checks=cast(tuple[str, ...], (7,)),
+                blocked_checks=(),
+                rollout_mode={},
+            )
         with pytest.raises(ValueError, match="rollout.require entries must be unique"):
             RolloutPolicy(
                 required_checks=("trace_coverage", " trace_coverage "),
