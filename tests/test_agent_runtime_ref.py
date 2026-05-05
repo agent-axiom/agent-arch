@@ -3166,10 +3166,54 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 }
             )
 
+        direct_change = ChangeRecord(
+            **valid_change,
+            artifacts=(" runtime.py ",),
+            affected_surfaces=(" cli ",),
+            required_signals=(" offline_eval_passed ",),
+            approval_roles=(" approver ",),
+        )
+        assert direct_change.required_signals == ("offline_eval_passed",)
+        direct_bundle = ArtifactBundle(
+            **valid_bundle,
+            provenance_required=True,
+            signed=False,
+            artifacts=(" runtime.py ",),
+            review_evidence={},
+        )
+        assert direct_bundle.artifacts == ("runtime.py",)
+        direct_plan = RetirementPlan(
+            **valid_retirement,
+            triggers=(" inactivity_window ",),
+            required_steps=(" revoke_egress ",),
+            archive_targets=(" telemetry_jsonl ",),
+        )
+        assert direct_plan.required_steps == ("revoke_egress",)
+        with pytest.raises(ValueError, match="required_signals entries must be unique"):
+            ChangeRecord(
+                **valid_change,
+                artifacts=(),
+                affected_surfaces=(),
+                required_signals=("offline_eval", " offline_eval "),
+                approval_roles=(),
+            )
+
     def test_lifecycle_assessments_report_ready_when_complete(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record, load_retirement_plan
 
         change = load_change_record(config_dir / "change.yaml")
+        change = type(change)(
+            change_id=change.change_id,
+            change_type=change.change_type,
+            risk_level=change.risk_level,
+            rollout_strategy=change.rollout_strategy,
+            artifacts=change.artifacts,
+            affected_surfaces=change.affected_surfaces,
+            required_signals=tuple(f" {signal} " for signal in change.required_signals),
+            approval_roles=change.approval_roles,
+            session_control_owner=change.session_control_owner,
+            emergency_freeze_owner=change.emergency_freeze_owner,
+        )
         change_assessment = assess_change_gate(
             change,
             {f" {signal} ": True for signal in change.required_signals},
@@ -3178,6 +3222,15 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert change_assessment.missing_signals == ()
 
         plan = load_retirement_plan(config_dir / "retirement.yaml")
+        plan = type(plan)(
+            system_id=plan.system_id,
+            replacement_mode=plan.replacement_mode,
+            triggers=plan.triggers,
+            required_steps=tuple(f" {step} " for step in plan.required_steps),
+            session_control_owner=plan.session_control_owner,
+            emergency_freeze_owner=plan.emergency_freeze_owner,
+            archive_targets=plan.archive_targets,
+        )
         retirement_assessment = assess_retirement(
             plan,
             {f" {step} ": True for step in plan.required_steps},
