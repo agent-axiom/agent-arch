@@ -1572,6 +1572,31 @@ class TestRuntimeCore:
         assert runtime_from_config.policy.allow_memory_write("session_summary").action == "allow"
         assert len(runtime_from_config.memory.all()) >= 4
 
+        from agent_runtime_ref.identity import AgentIdentity
+
+        direct_agent = AgentIdentity(
+            agent_id=" support-triage-ref ",
+            display_name=" Support Triage ",
+            owner_team=" support-ops ",
+            runtime_principal=" svc-agent-runtime-ref ",
+        )
+        direct_runtime = AgentRuntime(agent=direct_agent)
+        direct_result = direct_runtime.run(
+            RunRequest(
+                user_input="Summarize the current architecture.",
+                tenant_id="tenant-acme",
+                principal_id="user-7",
+                trace_id="trace-direct-agent-identity-001",
+                agent_id=" support-triage-ref ",
+            ),
+        )
+        assert direct_result.status == "success"
+        assert direct_runtime.agent.agent_id == "support-triage-ref"
+        assert direct_runtime.agent.runtime_principal == "svc-agent-runtime-ref"
+        run_start = direct_runtime.telemetry.events[0]
+        assert run_start.payload["agent_id"] == "support-triage-ref"
+        assert run_start.payload["runtime_principal"] == "svc-agent-runtime-ref"
+
     @pytest.mark.parametrize(
         ("user_input", "expected_fragment"),
         [
@@ -3819,7 +3844,7 @@ class TestLowCoverageModuleBranches:
             )
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
-        from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity
+        from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
 
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             ApprovedInventory.from_agent_config({"agent": []})
@@ -3851,6 +3876,22 @@ class TestLowCoverageModuleBranches:
                         "runtime_principal": " ",
                     }
                 }
+            )
+
+        direct_agent = AgentIdentity(
+            agent_id=" agent-runtime-ref ",
+            display_name=" Reference Runtime ",
+            owner_team=" agent_platform ",
+            runtime_principal=" svc-agent-runtime-ref ",
+        )
+        assert direct_agent.agent_id == "agent-runtime-ref"
+        assert direct_agent.runtime_principal == "svc-agent-runtime-ref"
+        with pytest.raises(ValueError, match="agent.id is required"):
+            AgentIdentity(
+                agent_id=" ",
+                display_name="Reference Runtime",
+                owner_team="agent_platform",
+                runtime_principal="svc-agent-runtime-ref",
             )
 
         inventory = ApprovedInventory(capabilities=frozenset({" search_docs "}))
