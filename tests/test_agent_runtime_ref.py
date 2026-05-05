@@ -1853,6 +1853,35 @@ class TestRuntimeCore:
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert "sandbox_profile_reviewed" not in event_types
 
+    def test_runtime_rejects_malformed_request_fields_before_telemetry(self) -> None:
+        malformed_fields = (
+            ("user_input", {"user_input": cast(str, 7)}),
+            ("tenant_id", {"tenant_id": cast(str, 7)}),
+            ("principal_id", {"principal_id": cast(str, 7)}),
+            ("trace_id", {"trace_id": cast(str, 7)}),
+            ("session_id", {"session_id": cast(str, 7)}),
+            ("agent_id", {"agent_id": cast(str, 7)}),
+            ("authorization_mode", {"authorization_mode": cast(str, 7)}),
+            ("delegated_principal_id", {"delegated_principal_id": cast(str, 7)}),
+            ("delegated_scope", {"delegated_scope": cast(str, 7)}),
+        )
+        for field, override in malformed_fields:
+            runtime = AgentRuntime()
+            request = RunRequest(
+                user_input="Summarize the current architecture.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-runtime-type-001",
+                session_id="session-runtime-type-001",
+                agent_id="agent-runtime-ref",
+            )
+            for key, value in override.items():
+                setattr(request, key, value)
+            with pytest.raises(TypeError, match=f"Run request field must be a string: {field}"):
+                runtime.run(request)
+            assert runtime.telemetry.events == []
+            assert runtime.sessions.get_session("session-runtime-type-001") is None
+
     def test_runtime_rejects_blank_authorization_mode_before_telemetry(self) -> None:
         runtime = AgentRuntime()
         with pytest.raises(ValueError, match="Run request field is required: authorization_mode"):

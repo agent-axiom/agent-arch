@@ -22,19 +22,21 @@ from agent_runtime_ref.session import SessionStore
 from agent_runtime_ref.telemetry import TelemetryEmitter
 
 
+def _read_optional_request_string(value: str, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Run request field must be a string: {field}")
+    return value.strip()
+
+
 def _read_required_request_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    normalized = _read_optional_request_string(value, field=field)
     if not normalized:
         raise ValueError(f"Run request field is required: {field}")
     return normalized
 
 
-def _read_optional_request_string(value: str) -> str:
-    return str(value).strip()
-
-
 def _read_required_delegated_string(value: str, *, field: str) -> str:
-    normalized = _read_optional_request_string(value)
+    normalized = _read_optional_request_string(value, field=field)
     if not normalized:
         raise ValueError(f"Delegated authorization field is required: {field}")
     return normalized
@@ -99,8 +101,14 @@ class AgentRuntime:
             request.user_input,
             field="user_input",
         )
-        request.tenant_id = _read_optional_request_string(request.tenant_id)
-        request.principal_id = _read_optional_request_string(request.principal_id)
+        request.tenant_id = _read_optional_request_string(
+            request.tenant_id,
+            field="tenant_id",
+        )
+        request.principal_id = _read_optional_request_string(
+            request.principal_id,
+            field="principal_id",
+        )
         request.trace_id = _read_required_request_string(
             request.trace_id,
             field="trace_id",
@@ -109,12 +117,16 @@ class AgentRuntime:
             request.session_id,
             field="session_id",
         )
-        request.agent_id = _read_optional_request_string(request.agent_id)
+        request.agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
         request.authorization_mode = _read_authorization_mode(request.authorization_mode)
         request.delegated_principal_id = _read_optional_request_string(
-            request.delegated_principal_id
+            request.delegated_principal_id,
+            field="delegated_principal_id",
         )
-        request.delegated_scope = _read_optional_request_string(request.delegated_scope)
+        request.delegated_scope = _read_optional_request_string(
+            request.delegated_scope,
+            field="delegated_scope",
+        )
         if request.authorization_mode == "user_delegated":
             request.delegated_principal_id = _read_required_delegated_string(
                 request.delegated_principal_id,
