@@ -129,13 +129,15 @@ class ApprovalQueue:
         return tuple(item for item in self._items if item.status == "pending")
 
     def resolve(self, approval_id: str, *, decision: str, note: str = "") -> ApprovalRequest:
+        approval_id = _read_required_approval_string(approval_id, field="approval_id")
         decision = str(decision).strip()
         if decision not in {"approved", "rejected"}:
             raise ValueError(f"Approval decision is not supported: {decision}")
+        resolution_note = str(note).strip()
         for item in self._items:
             if item.approval_id == approval_id:
                 item.status = decision
                 item.capability_session_status = decision
-                item.resolution_note = note
+                item.resolution_note = resolution_note
                 return item
         raise ValueError(f"Approval request not found: {approval_id}")

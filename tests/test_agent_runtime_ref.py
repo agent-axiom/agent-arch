@@ -1931,7 +1931,11 @@ class TestRuntimeControlPaths:
             reason=" write_action ",
             session_id=" session-approval-resolve-001 ",
         )
-        resolved = queue.resolve(request.approval_id, decision=" approved ", note="ok")
+        resolved = queue.resolve(
+            " apr-001 ",
+            decision=" approved ",
+            note=" ok ",
+        )
         assert request.trace_id == "trace-approval-resolve-001"
         assert request.capability_name == "create_ticket"
         assert request.requested_by == "user-1"
@@ -1940,6 +1944,7 @@ class TestRuntimeControlPaths:
         assert request.session_id == "session-approval-resolve-001"
         assert resolved.status == "approved"
         assert resolved.capability_session_status == "approved"
+        assert resolved.resolution_note == "ok"
 
     def test_approval_queue_rejects_blank_submit_evidence_fields(self) -> None:
         required_fields = (
@@ -2051,6 +2056,21 @@ class TestRuntimeControlPaths:
                 match=f"Approval decision is not supported: {decision.strip()}",
             ):
                 queue.resolve(request.approval_id, decision=decision)
+        assert request.status == "pending"
+        assert request.capability_session_status == "pending"
+
+    def test_approval_queue_rejects_blank_resolution_id(self) -> None:
+        queue = AgentRuntime().approvals
+        request = queue.submit(
+            trace_id="trace-approval-blank-resolve-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-blank-resolve-001",
+        )
+        with pytest.raises(ValueError, match="Approval field is required: approval_id"):
+            queue.resolve(" ", decision="approved")
         assert request.status == "pending"
         assert request.capability_session_status == "pending"
 
