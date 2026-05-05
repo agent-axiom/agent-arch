@@ -3565,6 +3565,7 @@ class TestLowCoverageModuleBranches:
         bad_payload = cast(dict[str, str], [])
         bad_redacted_fields = cast(tuple[str, ...], "user_input")
         payload = cast(dict[str, str], {"count": 1})
+        bad_payload_key = cast(dict[str, str], {1: "count"})
         with pytest.raises(TypeError, match="Telemetry event payload must be a mapping"):
             StructuredEvent(
                 event_type="run_start", trace_id="trace-direct", payload=bad_payload
@@ -3577,6 +3578,33 @@ class TestLowCoverageModuleBranches:
                 redacted_fields=bad_redacted_fields,
             )
 
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event payload key must be a string",
+        ):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload=bad_payload_key,
+            )
+        with pytest.raises(
+            ValueError,
+            match="Telemetry event payload key must not be empty",
+        ):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload={" ": "count"},
+            )
+        with pytest.raises(
+            ValueError,
+            match="Telemetry event payload keys must be unique",
+        ):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload={" count ": "1", "count": "2"},
+            )
         with pytest.raises(
             TypeError,
             match="Telemetry event payload value must be a string: count",
@@ -3596,6 +3624,14 @@ class TestLowCoverageModuleBranches:
         )
         assert event.payload == {"count": "1"}
         assert event.redacted_fields == ("count",)
+        normalized_event = StructuredEvent(
+            event_type="run_start",
+            trace_id="trace-direct",
+            payload={" count ": "1"},
+            redacted_fields=(" count ",),
+        )
+        assert normalized_event.payload == {"count": "1"}
+        assert normalized_event.redacted_fields == ("count",)
 
     def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
@@ -3610,6 +3646,14 @@ class TestLowCoverageModuleBranches:
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": [1]}
             )
+        with pytest.raises(ValueError, match="Telemetry event payload key must not be empty"):
+            StructuredEvent.from_dict(
+                {"event_type": "x", "trace_id": "t", "payload": {" ": "1"}}
+            )
+        normalized = StructuredEvent.from_dict(
+            {"event_type": "x", "trace_id": "t", "payload": {" count ": "1"}}
+        )
+        assert normalized.payload == {"count": "1"}
 
     def test_telemetry_events_for_trace_and_unredacted_export(self, tmp_path: Path) -> None:
         from agent_runtime_ref.telemetry import TelemetryEmitter

@@ -63,7 +63,7 @@
 - `span_id`
 - `parent_span_id`
 
-В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Event loader явно проверяет эту форму: `payload must be a mapping` и `redacted_fields must be a list`.
+В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Event loader явно проверяет эту форму: `payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}` и `redacted_fields must be a list`.
 
 ## Как связаны трасса и сессия
 
