@@ -6,17 +6,23 @@ from typing import Any, Mapping
 
 
 def _read_required_string(record: Mapping[str, Any], key: str, *, idx: int) -> str:
-    value = str(record.get(key, "")).strip()
-    if not value:
+    value = record.get(key, "")
+    if not isinstance(value, str):
+        raise TypeError(f"Memory record #{idx} field must be a string: {key}")
+    normalized = value.strip()
+    if not normalized:
         raise ValueError(f"Memory record #{idx} field is required: {key}")
-    return value
+    return normalized
 
 
 def _read_memory_id(record: Mapping[str, Any], *, idx: int) -> str:
-    value = str(record.get("memory_id", f"mem-{idx:03d}")).strip()
-    if not value:
+    value = record.get("memory_id", f"mem-{idx:03d}")
+    if not isinstance(value, str):
+        raise TypeError(f"Memory record #{idx} field must be a string: memory_id")
+    normalized = value.strip()
+    if not normalized:
         raise ValueError(f"Memory record #{idx} field is required: memory_id")
-    return value
+    return normalized
 
 
 def _read_confidence(record: Mapping[str, Any], *, idx: int) -> float:
@@ -39,7 +45,9 @@ def _read_revision(record: Mapping[str, Any], *, idx: int) -> int:
 
 
 def _read_record_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"Memory record field must be a string: {field}")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"Memory record field is required: {field}")
     return normalized

@@ -3068,6 +3068,24 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         with pytest.raises(TypeError, match="Memory record #1 must be a mapping"):
             MemoryStore.from_dict({"memory": {"seed_records": ["x"]}})
         with pytest.raises(
+            TypeError, match="Memory record #1 field must be a string: tenant_id"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "tenant_id": 7,
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
+                                "source": "trusted_profile",
+                            }
+                        ]
+                    }
+                }
+            )
+        with pytest.raises(
             ValueError, match="Memory record #1 field is required: tenant_id"
         ):
             MemoryStore.from_dict(
@@ -3096,6 +3114,25 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                                 "memory_class": "profile",
                                 "kind": "language_preference",
                                 "content": " ",
+                                "source": "trusted_profile",
+                            }
+                        ]
+                    }
+                }
+            )
+        with pytest.raises(
+            TypeError, match="Memory record #1 field must be a string: memory_id"
+        ):
+            MemoryStore.from_dict(
+                {
+                    "memory": {
+                        "seed_records": [
+                            {
+                                "memory_id": 7,
+                                "tenant_id": "tenant-acme",
+                                "memory_class": "profile",
+                                "kind": "language_preference",
+                                "content": "concise replies",
                                 "source": "trusted_profile",
                             }
                         ]
@@ -3235,6 +3272,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert MemoryStore(records=[direct_record]).retrieve(
             "concise", " tenant-acme "
         ) == [direct_record]
+        with pytest.raises(TypeError, match="Memory record field must be a string: tenant_id"):
+            MemoryRecord(
+                memory_id="mem-direct",
+                tenant_id=cast(str, 7),
+                memory_class="profile",
+                kind="language_preference",
+                content="concise replies",
+                source="trusted_profile",
+                confidence=0.9,
+            )
         with pytest.raises(ValueError, match="Memory record field is required: tenant_id"):
             MemoryRecord(
                 memory_id="mem-direct",
