@@ -22,7 +22,15 @@ class StructuredEvent:
             raise TypeError("Telemetry event payload must be a mapping")
         if not isinstance(self.redacted_fields, tuple):
             raise TypeError("Telemetry event redacted_fields must be a tuple")
-        self.payload = {str(key): str(value) for key, value in self.payload.items()}
+        normalized_payload: dict[str, str] = {}
+        for key, value in self.payload.items():
+            payload_key = str(key)
+            if not isinstance(value, str):
+                raise TypeError(
+                    f"Telemetry event payload value must be a string: {payload_key}"
+                )
+            normalized_payload[payload_key] = value
+        self.payload = normalized_payload
         self.redacted_fields = self._normalize_redacted_fields(self.redacted_fields)
         self.event_type = self.event_type.strip()
         if not self.event_type:
