@@ -142,6 +142,8 @@
 - `expected_outcomes`；
 - 一个单独的失败运行演练场景，它会在会话导出和评测期望里保留失败状态与 `failure_reason`。
 
+Bundled export contract 是有意保持具体的：默认 `dataset_name` 是 `agent-runtime-ref-eval-seed`；top-level summary 包含 `session_count`、`run_count`、`failed_runs`、`traceable_failed_runs` 和 `latest_failure_reason`；built-in scenarios 包括 `failed_run_timeout`、带有 `memory_read`、`profile_lookup` 与 `grounded_answer` labels 的 `profile_memory`、带有 `multi_run`、`approval_then_memory`、`session_evals` 与 `required_run_count` labels 的 `mixed_session`，以及带有 blocking `sandbox_profile_review` grading rule 的 `support_ticket`。
+
 它还不是完整的工业级评测框架，但已经足够作为：
 
 - 回归分级的种子；

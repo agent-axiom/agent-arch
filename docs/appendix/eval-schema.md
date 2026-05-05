@@ -142,6 +142,8 @@
 - `expected_outcomes`;
 - отдельным failed-run drill scenario, который сохраняет failed status и `failure_reason` в session export и eval expectations.
 
+Bundled export contract намеренно конкретный: default `dataset_name` — `agent-runtime-ref-eval-seed`; top-level summary включает `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs` и `latest_failure_reason`; built-in scenarios включают `failed_run_timeout`, `profile_memory` с labels `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с labels `multi_run`, `approval_then_memory`, `session_evals` и `required_run_count`, а также `support_ticket` с blocking `sandbox_profile_review` grading rule.
+
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 
 - регрессионной проверки;
