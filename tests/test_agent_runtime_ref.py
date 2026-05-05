@@ -2109,10 +2109,20 @@ class TestRuntimeControlPaths:
             ),
         )
         output_path = tmp_path / "session.json"
-        runtime.sessions.export_session_json(session_id, output_path=output_path)
+        runtime.sessions.export_session_json(f" {session_id} ", output_path=output_path)
         payload = json.loads(output_path.read_text(encoding="utf-8"))
+        assert payload["session"]["session_id"] == session_id
         assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
         assert payload["runs"][0]["capability_session_status"] == "pending"
+
+    def test_session_export_rejects_blank_session_id(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        output_path = tmp_path / "blank-session.json"
+        with pytest.raises(ValueError, match="Session field is required: session_id"):
+            store.export_session_json(" ", output_path=output_path)
+        assert not output_path.exists()
 
     def test_session_store_rejects_blank_identity_fields(self) -> None:
         from agent_runtime_ref.session import SessionStore
