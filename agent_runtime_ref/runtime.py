@@ -5,7 +5,7 @@ from typing import cast
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
-from agent_runtime_ref.execution import execute_tool
+from agent_runtime_ref.execution import execute_tool, normalize_tool_capability_name
 from agent_runtime_ref.identity import AgentIdentity
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import (
@@ -387,6 +387,9 @@ class AgentRuntime:
         request: RunRequest,
         tool_request: ToolRequest,
     ) -> PolicyDecision:
+        tool_request.capability_name = normalize_tool_capability_name(
+            tool_request.capability_name
+        )
         capability = self.catalog.get(tool_request.capability_name)
         decision = self.policy.evaluate_tool(context, tool_request, capability)
         self.telemetry.emit(

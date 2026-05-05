@@ -5,7 +5,7 @@ from agent_runtime_ref.models import ToolRequest, ToolResult
 from agent_runtime_ref.policy import PolicyDecision
 
 
-def _read_tool_capability_name(value: str) -> str:
+def normalize_tool_capability_name(value: str) -> str:
     capability_name = str(value).strip()
     if not capability_name:
         raise ValueError("Tool request capability name must not be empty")
@@ -23,7 +23,7 @@ def execute_tool(
     tool_request: ToolRequest,
     decision: PolicyDecision,
 ) -> ToolResult:
-    capability_name = _read_tool_capability_name(tool_request.capability_name)
+    capability_name = normalize_tool_capability_name(tool_request.capability_name)
     arguments = _read_tool_arguments(tool_request.arguments)
     if capability_name != capability.name:
         raise ValueError(
