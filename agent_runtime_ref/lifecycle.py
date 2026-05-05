@@ -43,7 +43,13 @@ def _read_bool(data: dict[str, Any], key: str, *, label: str, default: bool) -> 
 def _read_observed_flags(items: dict[str, bool]) -> dict[str, bool]:
     observed: dict[str, bool] = {}
     for key, value in items.items():
-        field = str(key).strip()
+        if not isinstance(key, str):
+            raise TypeError("Assessment signal key must be a string")
+        field = key.strip()
+        if not field:
+            raise ValueError("Assessment signal key must not be empty")
+        if field in observed:
+            raise ValueError("Assessment signal keys must be unique")
         if not isinstance(value, bool):
             raise TypeError(f"Assessment signal value must be a boolean: {field}")
         observed[field] = value

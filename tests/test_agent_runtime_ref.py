@@ -3448,6 +3448,15 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert retirement_assessment.ready
         assert retirement_assessment.missing_steps == ()
 
+        with pytest.raises(TypeError, match="Assessment signal key must be a string"):
+            assess_change_gate(change, cast(dict[str, bool], {1: True}))
+        with pytest.raises(ValueError, match="Assessment signal key must not be empty"):
+            assess_change_gate(change, {" ": True})
+        with pytest.raises(ValueError, match="Assessment signal keys must be unique"):
+            assess_change_gate(
+                change,
+                {" offline_eval_passed ": True, "offline_eval_passed": True},
+            )
         with pytest.raises(
             TypeError,
             match="Assessment signal value must be a boolean: offline_eval_passed",
@@ -4242,6 +4251,12 @@ class TestPolicyAndControls:
         assert not assessment.ready
         assert "direct_tool_access_present" in assessment.blocking_signals
 
+        with pytest.raises(TypeError, match="Assessment signal key must be a string"):
+            assess_rollout(policy, cast(dict[str, bool], {1: True}))
+        with pytest.raises(ValueError, match="Assessment signal key must not be empty"):
+            assess_rollout(policy, {" ": True})
+        with pytest.raises(ValueError, match="Assessment signal keys must be unique"):
+            assess_rollout(policy, {" trace_coverage ": True, "trace_coverage": True})
         with pytest.raises(
             TypeError,
             match="Assessment signal value must be a boolean: trace_coverage",
@@ -4268,6 +4283,20 @@ class TestPolicyAndControls:
         assert assessment.healthy
         assert not assessment.inventory_drift.has_drift
 
+        with pytest.raises(TypeError, match="Assessment signal key must be a string"):
+            assess_controls(
+                policy,
+                cast(dict[str, bool], {1: True}),
+                inventory_drift=drift,
+            )
+        with pytest.raises(ValueError, match="Assessment signal key must not be empty"):
+            assess_controls(policy, {" ": True}, inventory_drift=drift)
+        with pytest.raises(ValueError, match="Assessment signal keys must be unique"):
+            assess_controls(
+                policy,
+                {" registry_reviewed ": True, "registry_reviewed": True},
+                inventory_drift=drift,
+            )
         with pytest.raises(
             TypeError,
             match="Assessment signal value must be a boolean: registry_reviewed",
