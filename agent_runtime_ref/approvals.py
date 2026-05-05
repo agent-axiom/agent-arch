@@ -84,6 +84,7 @@ class ApprovalQueue:
         )
         requested_by = _read_required_approval_string(requested_by, field="requested_by")
         reason = _read_required_approval_string(reason, field="reason")
+        session_id = _read_required_approval_string(session_id, field="session_id")
         reviewer = (
             self.policy.default_reviewer
             if reviewer is None
