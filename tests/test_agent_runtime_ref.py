@@ -3915,6 +3915,15 @@ class TestLowCoverageModuleBranches:
             CapabilityCatalog.from_dict({"capabilities": {" ": {}}})
         with pytest.raises(TypeError, match="Capability spec for 'search_docs' must be a mapping"):
             CapabilityCatalog.from_dict({"capabilities": {"search_docs": []}})
+        with pytest.raises(ValueError, match="Capability names must be unique"):
+            CapabilityCatalog.from_dict(
+                {
+                    "capabilities": {
+                        "search_docs": {},
+                        " search_docs ": {},
+                    }
+                }
+            )
         required_capability_fields = {
             "owner": "knowledge_platform",
             "mode": "read",
@@ -4075,6 +4084,15 @@ class TestLowCoverageModuleBranches:
         )
         assert direct_capability.name == "search_docs"
         assert direct_capability.allowed_egress == ("docs.internal",)
+        direct_catalog = CapabilityCatalog(registry={" search_docs ": direct_capability})
+        assert direct_catalog.get("search_docs") is direct_capability
+        with pytest.raises(ValueError, match="Capability names must be unique"):
+            CapabilityCatalog(
+                registry={
+                    "search_docs": direct_capability,
+                    " search_docs ": direct_capability,
+                }
+            )
         with pytest.raises(ValueError, match="capability.name is required"):
             CapabilitySpec(
                 name=" ",
@@ -4086,6 +4104,49 @@ class TestLowCoverageModuleBranches:
                 risk_tier="low",
                 network_access="restricted",
                 allowed_egress=("docs.internal",),
+            )
+        with pytest.raises(
+            TypeError,
+            match="'capability.timeout_seconds' must be an integer",
+        ):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=cast(int, "5"),
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
+            )
+        with pytest.raises(ValueError, match="capability.timeout_seconds must be positive"):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=0,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
+            )
+        with pytest.raises(
+            TypeError,
+            match="'capability.approval_required' must be a boolean",
+        ):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
+                approval_required=cast(bool, "false"),
             )
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
