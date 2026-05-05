@@ -2194,7 +2194,21 @@ class TestRuntimeControlPaths:
         assert record.status == "success"
         assert record.user_input == "hello"
         assert record.output_text == "done"
-        assert store.get_session("session-normalized-001") is not None
+        session = store.get_session(" session-normalized-001 ")
+        assert session is not None
+        assert session.session_id == "session-normalized-001"
+        runs = store.runs_for_session(" session-normalized-001 ")
+        assert len(runs) == 1
+        assert runs[0].trace_id == "trace-normalized-001"
+
+    def test_session_lookup_rejects_blank_session_id(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        with pytest.raises(ValueError, match="Session field is required: session_id"):
+            store.get_session(" ")
+        with pytest.raises(ValueError, match="Session field is required: session_id"):
+            store.runs_for_session(" ")
 
     def test_session_store_rejects_unsupported_run_statuses(self) -> None:
         from agent_runtime_ref.session import SessionStore

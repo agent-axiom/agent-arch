@@ -166,9 +166,11 @@ class SessionStore:
         return record
 
     def get_session(self, session_id: str) -> SessionRecord | None:
+        session_id = _read_required_string(session_id, field="session_id")
         return self._sessions.get(session_id)
 
     def runs_for_session(self, session_id: str) -> tuple[RunRecord, ...]:
+        session_id = _read_required_string(session_id, field="session_id")
         return tuple(run for run in self._runs if run.session_id == session_id)
 
     def export_session_json(
