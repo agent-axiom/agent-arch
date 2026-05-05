@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 from agent_runtime_ref.catalog import CapabilitySpec
-from agent_runtime_ref.models import ToolRequest, ToolResult, normalize_tool_arguments
+from agent_runtime_ref.models import (
+    ToolRequest,
+    ToolResult,
+    normalize_tool_arguments,
+    normalize_tool_capability_name,
+)
 from agent_runtime_ref.policy import PolicyDecision
-
-
-def normalize_tool_capability_name(value: str) -> str:
-    capability_name = str(value).strip()
-    if not capability_name:
-        raise ValueError("Tool request capability name must not be empty")
-    return capability_name
 
 
 def execute_tool(

@@ -10,6 +10,7 @@ from agent_runtime_ref.models import (
     RunRequest,
     ToolRequest,
     normalize_tool_arguments,
+    normalize_tool_capability_name,
 )
 
 
@@ -186,9 +187,7 @@ class PolicyEngine:
         capability: CapabilitySpec | None,
     ) -> PolicyDecision:
         del context
-        capability_name = str(tool_request.capability_name).strip()
-        if not capability_name:
-            raise ValueError("Tool request capability name must not be empty")
+        capability_name = normalize_tool_capability_name(tool_request.capability_name)
         tool_arguments = normalize_tool_arguments(tool_request.arguments)
         if self.approved_inventory is not None and not self.approved_inventory.allows(
             capability_name,
