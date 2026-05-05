@@ -4670,6 +4670,17 @@ class TestLowCoverageModuleBranches:
             )
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             load_agent_identity({"agent": []})
+        with pytest.raises(TypeError, match="agent.id must be a string"):
+            load_agent_identity(
+                {
+                    "agent": {
+                        "id": 7,
+                        "display_name": "Reference Runtime",
+                        "owner_team": "agent_platform",
+                        "runtime_principal": "svc-agent-runtime-ref",
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="agent.id is required"):
             load_agent_identity(
                 {
@@ -4700,6 +4711,13 @@ class TestLowCoverageModuleBranches:
         )
         assert direct_agent.agent_id == "agent-runtime-ref"
         assert direct_agent.runtime_principal == "svc-agent-runtime-ref"
+        with pytest.raises(TypeError, match="agent.id must be a string"):
+            AgentIdentity(
+                agent_id=cast(str, 7),
+                display_name="Reference Runtime",
+                owner_team="agent_platform",
+                runtime_principal="svc-agent-runtime-ref",
+            )
         with pytest.raises(ValueError, match="agent.id is required"):
             AgentIdentity(
                 agent_id=" ",
@@ -4711,6 +4729,8 @@ class TestLowCoverageModuleBranches:
         inventory = ApprovedInventory(capabilities=frozenset({" search_docs "}))
         assert inventory.capabilities == frozenset({"search_docs"})
         assert inventory.allows(" search_docs ")
+        with pytest.raises(TypeError, match="approved_capabilities lookup must be a string"):
+            inventory.allows(cast(str, 7))
         assert not inventory.allows("create_ticket")
         with pytest.raises(
             TypeError,

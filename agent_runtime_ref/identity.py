@@ -5,10 +5,13 @@ from typing import Any, Iterable, Mapping
 
 
 def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> str:
-    value = str(data.get(key, "")).strip()
-    if not value:
+    value = data.get(key, "")
+    if not isinstance(value, str):
+        raise TypeError(f"{label}.{key} must be a string")
+    normalized = value.strip()
+    if not normalized:
         raise ValueError(f"{label}.{key} is required")
-    return value
+    return normalized
 
 
 def _normalize_approved_capabilities(items: Iterable[object]) -> frozenset[str]:
@@ -59,7 +62,9 @@ class ApprovedInventory:
         )
 
     def allows(self, capability_name: str) -> bool:
-        return str(capability_name).strip() in self.capabilities
+        if not isinstance(capability_name, str):
+            raise TypeError("approved_capabilities lookup must be a string")
+        return capability_name.strip() in self.capabilities
 
     @classmethod
     def from_agent_config(cls, data: Mapping[str, Any]) -> "ApprovedInventory":
