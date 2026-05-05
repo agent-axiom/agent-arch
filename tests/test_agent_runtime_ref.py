@@ -530,6 +530,26 @@ class TestRuntimeDocsParity:
             for term in required_terms:
                 assert term in text
 
+    def test_reference_package_documents_sandbox_profile_loader_errors(self) -> None:
+        """Keep lifecycle docs aligned with sandbox-profile config validation."""
+        required_errors = (
+            "runtime_controls config must be a mapping",
+            "runtime_controls.sandbox_profile config must be a mapping",
+            "runtime_controls.sandbox_profile.{key} config must be a mapping",
+            "runtime_controls.sandbox_profile.workspace.entries must be a list",
+            "Sandbox profile workspace entries must be a list",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "inspect-lifecycle" in text
+            assert "sandbox_profile" in text
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
