@@ -2028,6 +2028,21 @@ class TestRuntimeControlPaths:
         assert run_record.capability_session_status == "pending"
 
     def test_approval_queue_resolution_updates_capability_session_status(self) -> None:
+        from agent_runtime_ref.approvals import ApprovalPolicy, ApprovalQueue
+
+        policy = ApprovalPolicy(default_reviewer=" manager ", escalation_sla_minutes=30)
+        queue_with_direct_policy = ApprovalQueue(policy)
+        default_review_request = queue_with_direct_policy.submit(
+            trace_id="trace-approval-default-reviewer-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-default-reviewer-001",
+        )
+        assert policy.default_reviewer == "manager"
+        assert default_review_request.reviewer == "manager"
+
         queue = AgentRuntime().approvals
         request = queue.submit(
             trace_id=" trace-approval-resolve-001 ",
@@ -3554,6 +3569,23 @@ class TestLowCoverageModuleBranches:
             ValueError, match="approvals.escalation_sla_minutes must be positive"
         ):
             ApprovalPolicy.from_dict({"approvals": {"escalation_sla_minutes": 0}})
+
+        assert ApprovalPolicy(
+            default_reviewer=" manager ",
+            escalation_sla_minutes=30,
+        ).default_reviewer == "manager"
+        with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
+            ApprovalPolicy(default_reviewer=" ", escalation_sla_minutes=30)
+        with pytest.raises(
+            TypeError,
+            match="approvals.escalation_sla_minutes must be an integer",
+        ):
+            ApprovalPolicy(default_reviewer="manager", escalation_sla_minutes=True)
+        with pytest.raises(
+            ValueError,
+            match="approvals.escalation_sla_minutes must be positive",
+        ):
+            ApprovalPolicy(default_reviewer="manager", escalation_sla_minutes=0)
 
     def test_catalog_loader_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
