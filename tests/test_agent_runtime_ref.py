@@ -3239,10 +3239,21 @@ class TestLowCoverageModuleBranches:
                 redacted_fields=bad_redacted_fields,
             )
 
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event payload value must be a string: count",
+        ):
+            StructuredEvent(
+                event_type="run_start",
+                trace_id="trace-direct",
+                payload=payload,
+                redacted_fields=("count",),
+            )
+
         event = StructuredEvent(
             event_type="run_start",
             trace_id="trace-direct",
-            payload=payload,
+            payload={"count": "1"},
             redacted_fields=("count",),
         )
         assert event.payload == {"count": "1"}
