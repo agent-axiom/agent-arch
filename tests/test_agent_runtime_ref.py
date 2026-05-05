@@ -415,6 +415,19 @@ class TestRuntimeDocsParity:
             assert "capability_session_id" in text
             assert "capability_session_status" in text
 
+    def test_reference_package_documents_session_capability_lineage(self) -> None:
+        """Keep session docs aligned with per-run capability-session fields."""
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "inspect-session" in text
+            assert "export-session" in text
+            assert "capability_session_id" in text
+            assert "capability_session_status" in text
+
     def test_approval_schema_documents_policy_loader_errors(self) -> None:
         """Keep approval schema docs aligned with policy validation errors."""
         required_errors = (
