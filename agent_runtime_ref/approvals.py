@@ -10,7 +10,9 @@ class ApprovalPolicy:
     escalation_sla_minutes: int
 
     def __post_init__(self) -> None:
-        default_reviewer = str(self.default_reviewer).strip()
+        if not isinstance(self.default_reviewer, str):
+            raise TypeError("approvals.default_reviewer must be a string")
+        default_reviewer = self.default_reviewer.strip()
         if not default_reviewer:
             raise ValueError("approvals.default_reviewer is required")
         if not isinstance(self.escalation_sla_minutes, int) or isinstance(
@@ -27,7 +29,7 @@ class ApprovalPolicy:
         if not isinstance(raw_approvals, Mapping):
             raise TypeError("'approvals' must be a mapping")
         return cls(
-            default_reviewer=str(raw_approvals.get("default_reviewer", "manager")),
+            default_reviewer=raw_approvals.get("default_reviewer", "manager"),
             escalation_sla_minutes=raw_approvals.get("escalation_sla_minutes", 30),
         )
 

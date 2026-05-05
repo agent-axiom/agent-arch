@@ -4325,6 +4325,8 @@ class TestLowCoverageModuleBranches:
 
         with pytest.raises(TypeError, match="'approvals' must be a mapping"):
             ApprovalPolicy.from_dict({"approvals": []})
+        with pytest.raises(TypeError, match="approvals.default_reviewer must be a string"):
+            ApprovalPolicy.from_dict({"approvals": {"default_reviewer": 7}})
         with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
             ApprovalPolicy.from_dict({"approvals": {"default_reviewer": " "}})
         for escalation_sla_minutes in ("30", True):
@@ -4344,6 +4346,8 @@ class TestLowCoverageModuleBranches:
             default_reviewer=" manager ",
             escalation_sla_minutes=30,
         ).default_reviewer == "manager"
+        with pytest.raises(TypeError, match="approvals.default_reviewer must be a string"):
+            ApprovalPolicy(default_reviewer=cast(str, 7), escalation_sla_minutes=30)
         with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
             ApprovalPolicy(default_reviewer=" ", escalation_sla_minutes=30)
         with pytest.raises(
