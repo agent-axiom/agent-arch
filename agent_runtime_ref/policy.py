@@ -35,7 +35,9 @@ def _read_bool(value: object, *, label: str) -> bool:
 
 
 def _read_memory_kind(value: str) -> str:
-    kind = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError("Policy memory kind must be a string")
+    kind = value.strip()
     if not kind:
         raise ValueError("Policy memory kind must not be empty")
     return kind
