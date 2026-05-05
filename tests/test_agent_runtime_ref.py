@@ -2306,6 +2306,37 @@ class TestRuntimeControlPaths:
         assert session.traces == ["trace-session-duplicate-001"]
         assert len(store.runs_for_session("session-duplicate-trace-001")) == 1
 
+    def test_session_store_rejects_duplicate_trace_id_across_sessions(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        store.register_run(
+            session_id="session-duplicate-trace-a-001",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-session-global-duplicate-001",
+            status="success",
+            user_input="hello",
+            output_text="done",
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="Session trace_id already exists: trace-session-global-duplicate-001",
+        ):
+            store.register_run(
+                session_id="session-duplicate-trace-b-001",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-session-global-duplicate-001",
+                status="success",
+                user_input="hello in another session",
+                output_text="done in another session",
+            )
+
+        assert store.get_session("session-duplicate-trace-b-001") is None
+        assert len(store.runs_for_session("session-duplicate-trace-a-001")) == 1
+
     def test_session_store_requires_delegated_authorization_identity(self) -> None:
         from agent_runtime_ref.session import SessionStore
 

@@ -134,6 +134,8 @@ class SessionStore:
                 field="delegated_principal_id",
             )
             delegated_scope = _read_required_string(delegated_scope, field="delegated_scope")
+        if any(run.trace_id == trace_id for run in self._runs):
+            raise ValueError(f"Session trace_id already exists: {trace_id}")
         session = self._sessions.get(session_id)
         if session is None:
             session = SessionRecord(
@@ -146,8 +148,6 @@ class SessionStore:
             raise ValueError(f"Session tenant_id does not match existing session: {session_id}")
         elif session.principal_id != principal_id:
             raise ValueError(f"Session principal_id does not match existing session: {session_id}")
-        if trace_id in session.traces:
-            raise ValueError(f"Session trace_id already exists: {trace_id}")
         session.traces.append(trace_id)
         record = RunRecord(
             trace_id=trace_id,
