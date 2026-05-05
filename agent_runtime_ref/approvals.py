@@ -32,8 +32,14 @@ class ApprovalPolicy:
         )
 
 
+def _read_optional_approval_string(value: str, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Approval field must be a string: {field}")
+    return value.strip()
+
+
 def _read_required_approval_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    normalized = _read_optional_approval_string(value, field=field)
     if not normalized:
         raise ValueError(f"Approval field is required: {field}")
     return normalized
@@ -103,8 +109,14 @@ class ApprovalQueue:
             else _read_required_approval_string(reviewer, field="reviewer")
         )
         authorization_mode = _read_authorization_mode(authorization_mode)
-        delegated_principal_id = str(delegated_principal_id).strip()
-        delegated_scope = str(delegated_scope).strip()
+        delegated_principal_id = _read_optional_approval_string(
+            delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        delegated_scope = _read_optional_approval_string(
+            delegated_scope,
+            field="delegated_scope",
+        )
         if authorization_mode == "user_delegated":
             delegated_principal_id = _read_required_approval_string(
                 delegated_principal_id,
@@ -139,10 +151,10 @@ class ApprovalQueue:
 
     def resolve(self, approval_id: str, *, decision: str, note: str = "") -> ApprovalRequest:
         approval_id = _read_required_approval_string(approval_id, field="approval_id")
-        decision = str(decision).strip()
+        decision = _read_required_approval_string(decision, field="decision")
         if decision not in {"approved", "rejected"}:
             raise ValueError(f"Approval decision is not supported: {decision}")
-        resolution_note = str(note).strip()
+        resolution_note = _read_optional_approval_string(note, field="note")
         for item in self._items:
             if item.approval_id == approval_id:
                 if item.status != "pending":

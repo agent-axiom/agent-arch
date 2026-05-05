@@ -4,7 +4,7 @@ import ast
 import json
 import shutil
 from pathlib import Path
-from typing import cast
+from typing import Any, cast
 
 import pytest
 
@@ -2302,6 +2302,31 @@ class TestRuntimeControlPaths:
                 )
             assert queue.all() == ()
 
+    def test_approval_queue_rejects_malformed_submit_evidence_fields(self) -> None:
+        malformed_fields = (
+            ("trace_id", {"trace_id": cast(str, 7)}),
+            ("capability_name", {"capability_name": cast(str, 7)}),
+            ("requested_by", {"requested_by": cast(str, 7)}),
+            ("reviewer", {"reviewer": cast(str | None, 7)}),
+            ("reason", {"reason": cast(str, 7)}),
+            ("session_id", {"session_id": cast(str, 7)}),
+            ("authorization_mode", {"authorization_mode": cast(str, 7)}),
+        )
+        for field, override in malformed_fields:
+            queue = AgentRuntime().approvals
+            kwargs = {
+                "trace_id": "trace-approval-type-001",
+                "capability_name": "create_ticket",
+                "requested_by": "user-1",
+                "reviewer": None,
+                "reason": "write_action",
+                "session_id": "session-approval-type-001",
+            }
+            kwargs.update(override)
+            with pytest.raises(TypeError, match=f"Approval field must be a string: {field}"):
+                queue.submit(**cast(Any, kwargs))
+            assert queue.all() == ()
+
     def test_approval_queue_rejects_unknown_authorization_mode(self) -> None:
         queue = AgentRuntime().approvals
         with pytest.raises(
@@ -2345,6 +2370,31 @@ class TestRuntimeControlPaths:
                 )
             assert queue.all() == ()
 
+        malformed_fields = {
+            "delegated_principal_id": {
+                "delegated_principal_id": cast(str, 7),
+                "delegated_scope": "tickets.write",
+            },
+            "delegated_scope": {
+                "delegated_principal_id": "user-1",
+                "delegated_scope": cast(str, 7),
+            },
+        }
+        for field, delegated_fields in malformed_fields.items():
+            queue = AgentRuntime().approvals
+            with pytest.raises(TypeError, match=f"Approval field must be a string: {field}"):
+                queue.submit(
+                    trace_id="trace-approval-delegated-type-001",
+                    capability_name="create_ticket",
+                    requested_by="user-1",
+                    reviewer=None,
+                    reason="write_action",
+                    session_id="session-approval-delegated-type-001",
+                    authorization_mode=" user_delegated ",
+                    **delegated_fields,
+                )
+            assert queue.all() == ()
+
         queue = AgentRuntime().approvals
         request = queue.submit(
             trace_id="trace-approval-delegated-normalized-001",
@@ -2371,12 +2421,14 @@ class TestRuntimeControlPaths:
             reason="write_action",
             session_id="session-approval-bad-decision-001",
         )
-        for decision in (" ", "maybe"):
-            with pytest.raises(
-                ValueError,
-                match=f"Approval decision is not supported: {decision.strip()}",
-            ):
-                queue.resolve(request.approval_id, decision=decision)
+        with pytest.raises(TypeError, match="Approval field must be a string: decision"):
+            queue.resolve(request.approval_id, decision=cast(str, 7))
+        with pytest.raises(TypeError, match="Approval field must be a string: note"):
+            queue.resolve(request.approval_id, decision="approved", note=cast(str, 7))
+        with pytest.raises(ValueError, match="Approval field is required: decision"):
+            queue.resolve(request.approval_id, decision=" ")
+        with pytest.raises(ValueError, match="Approval decision is not supported: maybe"):
+            queue.resolve(request.approval_id, decision="maybe")
         assert request.status == "pending"
         assert request.capability_session_status == "pending"
 
