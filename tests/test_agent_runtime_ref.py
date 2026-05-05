@@ -461,6 +461,7 @@ class TestRuntimeDocsParity:
     def test_trace_schema_documents_loader_validation_errors(self) -> None:
         """Keep trace schema docs aligned with telemetry loader validation."""
         required_errors = (
+            "Telemetry event line is not valid JSON: {line_number}",
             "Telemetry event must be a mapping",
             "Telemetry event is missing required field: {required_field}",
             "Telemetry event field must be a string: {field}",
@@ -469,6 +470,7 @@ class TestRuntimeDocsParity:
             "Telemetry event payload value must be a string: {payload_key}",
             "redacted_fields entries must be strings",
             "Telemetry redact field must not be empty",
+            "Telemetry redact field is not present in events: {missing}",
         )
         for path in (
             Path("docs/appendix/trace-schema.en.md"),
