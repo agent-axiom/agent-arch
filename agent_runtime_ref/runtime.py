@@ -39,6 +39,13 @@ def _read_required_delegated_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_authorization_mode(value: str) -> str:
+    authorization_mode = _read_required_request_string(value, field="authorization_mode")
+    if authorization_mode not in {"platform_owned", "user_delegated", "human_approved"}:
+        raise ValueError(f"Authorization mode is not supported: {authorization_mode}")
+    return authorization_mode
+
+
 def _read_model_output(value: object) -> ModelOutput:
     if not isinstance(value, ModelOutput):
         raise TypeError("Model step must return ModelOutput")
@@ -102,10 +109,7 @@ class AgentRuntime:
             field="session_id",
         )
         request.agent_id = _read_optional_request_string(request.agent_id)
-        request.authorization_mode = _read_required_request_string(
-            request.authorization_mode,
-            field="authorization_mode",
-        )
+        request.authorization_mode = _read_authorization_mode(request.authorization_mode)
         request.delegated_principal_id = _read_optional_request_string(
             request.delegated_principal_id
         )
