@@ -56,6 +56,12 @@ def _read_lookup_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_lookup_limit(value: int) -> int:
+    if value < 0:
+        raise ValueError("Memory lookup limit must be non-negative")
+    return value
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -156,6 +162,7 @@ class MemoryStore:
 
     def retrieve(self, query: str, tenant_id: str, *, limit: int = 3) -> list[MemoryRecord]:
         tenant_id = _read_lookup_string(tenant_id, field="tenant_id")
+        limit = _read_lookup_limit(limit)
         query_tokens = {token for token in query.lower().split() if token}
         scoped = [record for record in self._records if record.tenant_id == tenant_id]
         ranked = sorted(

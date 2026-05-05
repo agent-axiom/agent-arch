@@ -1825,6 +1825,11 @@ class TestRuntimeCore:
         with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
             store.compact(" ")
 
+    def test_memory_store_rejects_negative_retrieve_limit(self) -> None:
+        store = MemoryStore()
+        with pytest.raises(ValueError, match="Memory lookup limit must be non-negative"):
+            store.retrieve("language preference", "tenant-acme", limit=-1)
+
 
 class TestRuntimeControlPaths:
     def test_runtime_control_config_exposes_session_governance_ownership(
