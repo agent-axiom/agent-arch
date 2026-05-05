@@ -3233,12 +3233,25 @@ class TestLowCoverageModuleBranches:
                 {"controls": {"require": [], "block_if": ["finding", " finding "]}}
             )
 
+        policy = ControlsPolicy(
+            required_controls=(" registry_reviewed ",),
+            blocked_findings=(" manual_override ",),
+        )
+        assert policy.required_controls == ("registry_reviewed",)
+        assert policy.blocked_findings == ("manual_override",)
+        with pytest.raises(ValueError, match="controls.require entries must be unique"):
+            ControlsPolicy(
+                required_controls=("registry_reviewed", " registry_reviewed "),
+                blocked_findings=(),
+            )
+
     def test_assess_controls_marks_inventory_drift_as_blocking(self) -> None:
         from agent_runtime_ref.controls import ControlsPolicy, InventoryDrift, assess_controls
 
         assessment = assess_controls(
             ControlsPolicy(
-                required_controls=("registry_reviewed",), blocked_findings=("manual_override",)
+                required_controls=(" registry_reviewed ",),
+                blocked_findings=(" manual_override ",),
             ),
             {"registry_reviewed": True, "manual_override": False},
             inventory_drift=InventoryDrift(

@@ -31,6 +31,24 @@ class ControlsPolicy:
     required_controls: tuple[str, ...]
     blocked_findings: tuple[str, ...]
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "required_controls",
+            _read_string_list_items(
+                list(self.required_controls),
+                label="controls.require",
+            ),
+        )
+        object.__setattr__(
+            self,
+            "blocked_findings",
+            _read_string_list_items(
+                list(self.blocked_findings),
+                label="controls.block_if",
+            ),
+        )
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ControlsPolicy":
         raw_controls = data.get("controls", {})
