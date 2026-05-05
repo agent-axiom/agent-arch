@@ -161,6 +161,10 @@ def _read_known_cli_values(
     return normalized
 
 
+def _read_cli_trace_id(value: str) -> str:
+    return _read_required_cli_string(value, field="trace_id")
+
+
 def _read_cli_session_id(value: str) -> str:
     return _read_required_cli_string(value, field="session_id")
 
@@ -697,19 +701,21 @@ def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
 
 def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    trace_id = _read_cli_trace_id(args.trace_id)
+    session_id = _read_cli_session_id(args.session_id)
     runtime, _ = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
-        session_id=args.session_id,
+        trace_id=trace_id,
+        session_id=session_id,
         agent_id=args.agent_id,
     )
     approvals = runtime.approvals.all()
     return {
-        "trace_id": args.trace_id,
-        "session_id": args.session_id,
+        "trace_id": trace_id,
+        "session_id": session_id,
         "count": len(approvals),
         "approvals": [
             {
@@ -732,13 +738,15 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
 
 def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    trace_id = _read_cli_trace_id(args.trace_id)
+    session_id = _read_cli_session_id(args.session_id)
     runtime, _ = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
-        session_id=args.session_id,
+        trace_id=trace_id,
+        session_id=session_id,
         agent_id=args.agent_id,
     )
     pending = runtime.approvals.pending()
