@@ -573,6 +573,28 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_reference_package_documents_tool_request_validation_errors(self) -> None:
+        """Keep runtime docs aligned with tool request boundary validation."""
+        required_errors = (
+            "Tool request capability name must be a string",
+            "Tool request capability name must not be empty",
+            "Tool request arguments must be a mapping",
+            "Tool request argument key must be a string",
+            "Tool request argument key must not be empty",
+            "Tool request argument value must be a string: {argument_key}",
+            "Tool request capability does not match catalog entry: "
+            "{capability_name} != {capability.name}",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "Runtime CLI failure paths" in text
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
