@@ -29,12 +29,19 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
 
 
 def _normalize_string_items(items: tuple[str, ...] | list[object], *, key: str) -> tuple[str, ...]:
-    values = tuple(str(item).strip() for item in items)
-    if any(not item for item in values):
-        raise ValueError(f"{key} entries must not be empty")
-    if len(set(values)) != len(values):
-        raise ValueError(f"{key} entries must be unique")
-    return values
+    values: list[str] = []
+    seen: set[str] = set()
+    for item in items:
+        if not isinstance(item, str):
+            raise TypeError(f"{key} entries must be strings")
+        value = item.strip()
+        if not value:
+            raise ValueError(f"{key} entries must not be empty")
+        if value in seen:
+            raise ValueError(f"{key} entries must be unique")
+        seen.add(value)
+        values.append(value)
+    return tuple(values)
 
 
 def _read_bool_value(value: object, key: str, *, label: str) -> bool:
