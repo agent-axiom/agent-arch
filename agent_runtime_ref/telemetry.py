@@ -112,6 +112,9 @@ class TelemetryEmitter:
         return [event.as_dict() for event in self.events]
 
     def events_for_trace(self, trace_id: str) -> list[StructuredEvent]:
+        trace_id = str(trace_id).strip()
+        if not trace_id:
+            raise ValueError("Telemetry event field must not be empty: trace_id")
         return [event for event in self.events if event.trace_id == trace_id]
 
     def export_jsonl(
