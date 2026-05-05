@@ -9,24 +9,26 @@ class ApprovalPolicy:
     default_reviewer: str
     escalation_sla_minutes: int
 
+    def __post_init__(self) -> None:
+        default_reviewer = str(self.default_reviewer).strip()
+        if not default_reviewer:
+            raise ValueError("approvals.default_reviewer is required")
+        if not isinstance(self.escalation_sla_minutes, int) or isinstance(
+            self.escalation_sla_minutes, bool
+        ):
+            raise TypeError("approvals.escalation_sla_minutes must be an integer")
+        if self.escalation_sla_minutes <= 0:
+            raise ValueError("approvals.escalation_sla_minutes must be positive")
+        object.__setattr__(self, "default_reviewer", default_reviewer)
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ApprovalPolicy":
         raw_approvals = data.get("approvals", {})
         if not isinstance(raw_approvals, Mapping):
             raise TypeError("'approvals' must be a mapping")
-        default_reviewer = str(raw_approvals.get("default_reviewer", "manager")).strip()
-        if not default_reviewer:
-            raise ValueError("approvals.default_reviewer is required")
-        escalation_sla_minutes = raw_approvals.get("escalation_sla_minutes", 30)
-        if not isinstance(escalation_sla_minutes, int) or isinstance(
-            escalation_sla_minutes, bool
-        ):
-            raise TypeError("approvals.escalation_sla_minutes must be an integer")
-        if escalation_sla_minutes <= 0:
-            raise ValueError("approvals.escalation_sla_minutes must be positive")
         return cls(
-            default_reviewer=default_reviewer,
-            escalation_sla_minutes=escalation_sla_minutes,
+            default_reviewer=str(raw_approvals.get("default_reviewer", "manager")),
+            escalation_sla_minutes=raw_approvals.get("escalation_sla_minutes", 30),
         )
 
 
