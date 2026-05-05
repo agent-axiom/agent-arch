@@ -415,6 +415,23 @@ class TestRuntimeDocsParity:
             assert "capability_session_id" in text
             assert "capability_session_status" in text
 
+    def test_approval_schema_documents_policy_loader_errors(self) -> None:
+        """Keep approval schema docs aligned with policy validation errors."""
+        required_errors = (
+            "approvals.default_reviewer must be a string",
+            "approvals.default_reviewer is required",
+            "approvals.escalation_sla_minutes must be an integer",
+            "approvals.escalation_sla_minutes must be positive",
+        )
+        for path in (
+            Path("docs/appendix/approval-schema.en.md"),
+            Path("docs/appendix/approval-schema.md"),
+            Path("docs/appendix/approval-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
