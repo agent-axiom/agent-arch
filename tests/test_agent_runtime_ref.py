@@ -1460,15 +1460,15 @@ class TestExecutionAndPolicyBranches:
             allowed_egress=("example.com",),
         )
         approved_write = CapabilitySpec(
-            name="write_tool",
-            owner="platform",
-            mode="write",
-            transport="gateway",
+            name=" write_tool ",
+            owner=" platform ",
+            mode=" write ",
+            transport=" gateway ",
             timeout_seconds=5,
-            tool_principal="svc-write",
-            risk_tier="medium",
-            network_access="restricted",
-            allowed_egress=("internal",),
+            tool_principal=" svc-write ",
+            risk_tier=" medium ",
+            network_access=" restricted ",
+            allowed_egress=(" internal ",),
             approval_required=False,
         )
         unsupported_mode = CapabilitySpec(
@@ -3556,7 +3556,7 @@ class TestLowCoverageModuleBranches:
             ApprovalPolicy.from_dict({"approvals": {"escalation_sla_minutes": 0}})
 
     def test_catalog_loader_rejects_bad_shapes(self) -> None:
-        from agent_runtime_ref.catalog import CapabilityCatalog
+        from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
 
         with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
             CapabilityCatalog.from_dict({"capabilities": []})
@@ -3710,6 +3710,32 @@ class TestLowCoverageModuleBranches:
         assert capability is not None
         assert capability.approval_required is True
         assert capability.idempotency_key_required is True
+
+        direct_capability = CapabilitySpec(
+            name=" search_docs ",
+            owner=" knowledge_platform ",
+            mode=" read ",
+            transport=" mcp ",
+            timeout_seconds=5,
+            tool_principal=" svc-knowledge-reader ",
+            risk_tier=" low ",
+            network_access=" restricted ",
+            allowed_egress=(" docs.internal ",),
+        )
+        assert direct_capability.name == "search_docs"
+        assert direct_capability.allowed_egress == ("docs.internal",)
+        with pytest.raises(ValueError, match="capability.name is required"):
+            CapabilitySpec(
+                name=" ",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=("docs.internal",),
+            )
 
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
         from agent_runtime_ref.identity import ApprovedInventory, load_agent_identity

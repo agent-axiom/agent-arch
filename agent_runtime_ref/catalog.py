@@ -1,23 +1,35 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 
-def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
-    if not isinstance(items, list):
-        raise TypeError(f"'{label}' must be a list")
+def _normalize_string_list_items(
+    items: list[object] | tuple[str, ...],
+    *,
+    label: str,
+) -> tuple[str, ...]:
     values = tuple(str(item).strip() for item in items)
     if any(not value for value in values):
         raise ValueError(f"{label} entries must not be empty")
     return values
 
 
+def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
+    if not isinstance(items, list):
+        raise TypeError(f"'{label}' must be a list")
+    return _normalize_string_list_items(cast(list[object], items), label=label)
+
+
+def _normalize_required_string(value: object, *, label: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"{label} is required")
+    return normalized
+
+
 def _read_required_string(spec: Mapping[str, Any], key: str, *, label: str) -> str:
-    value = str(spec.get(key, "")).strip()
-    if not value:
-        raise ValueError(f"{label}.{key} is required")
-    return value
+    return _normalize_required_string(spec.get(key, ""), label=f"{label}.{key}")
 
 
 def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
@@ -58,6 +70,30 @@ class CapabilitySpec:
     allowed_egress: tuple[str, ...]
     approval_required: bool = False
     idempotency_key_required: bool = False
+
+    def __post_init__(self) -> None:
+        for field in (
+            "name",
+            "owner",
+            "mode",
+            "transport",
+            "tool_principal",
+            "risk_tier",
+            "network_access",
+        ):
+            object.__setattr__(
+                self,
+                field,
+                _normalize_required_string(
+                    getattr(self, field),
+                    label=f"capability.{field}",
+                ),
+            )
+        object.__setattr__(
+            self,
+            "allowed_egress",
+            _normalize_string_list_items(self.allowed_egress, label="allowed_egress"),
+        )
 
 
 class CapabilityCatalog:
