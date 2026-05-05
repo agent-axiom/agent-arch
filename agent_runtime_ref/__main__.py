@@ -173,6 +173,12 @@ def _read_cli_approval_id(value: str) -> str:
     return _read_required_cli_string(value, field="approval_id")
 
 
+def _read_non_negative_cli_int(value: int, *, field: str) -> int:
+    if value < 0:
+        raise ValueError(f"CLI field must be non-negative: {field}")
+    return value
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -375,7 +381,8 @@ def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
     if args.memory_class:
         records = [record for record in records if record.memory_class == args.memory_class]
     if args.limit is not None:
-        records = records[: args.limit]
+        limit = _read_non_negative_cli_int(args.limit, field="limit")
+        records = records[:limit]
     return {
         "count": len(records),
         "config_dir": str(config_dir),
