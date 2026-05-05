@@ -81,6 +81,8 @@
 - `export-session`
 - `export-eval-dataset`
 
+Trace replay валидирует эти evidence до того, как они могут стать seed для нового run: `Trace ID not found in event file: {requested_trace_id}`, `Trace file does not contain any trace IDs`, `Trace file contains multiple trace IDs; pass --trace-id explicitly`, `Trace file does not contain a run_start event`, `Trace file contains multiple run_start events`, `Trace run_start event is missing replay fields: {missing_keys}`, `Trace run_start event has redacted replay fields: {redacted_keys}`, `Trace run_start replay field must be a string: {field}` и `Trace run_start replay field must not be empty: {field}`.
+
 ## Каталог событий справочного рантайма
 
 Ниже текущий минимальный каталог событий.

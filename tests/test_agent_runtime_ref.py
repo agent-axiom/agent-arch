@@ -477,6 +477,28 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_trace_schema_documents_replay_validation_errors(self) -> None:
+        """Keep trace schema docs aligned with replay evidence validation."""
+        required_errors = (
+            "Trace ID not found in event file: {requested_trace_id}",
+            "Trace file does not contain any trace IDs",
+            "Trace file contains multiple trace IDs; pass --trace-id explicitly",
+            "Trace file does not contain a run_start event",
+            "Trace file contains multiple run_start events",
+            "Trace run_start event is missing replay fields: {missing_keys}",
+            "Trace run_start event has redacted replay fields: {redacted_keys}",
+            "Trace run_start replay field must be a string: {field}",
+            "Trace run_start replay field must not be empty: {field}",
+        )
+        for path in (
+            Path("docs/appendix/trace-schema.en.md"),
+            Path("docs/appendix/trace-schema.md"),
+            Path("docs/appendix/trace-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
