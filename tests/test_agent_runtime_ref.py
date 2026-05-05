@@ -1214,6 +1214,16 @@ class TestExecutionAndPolicyBranches:
         assert result.status == "validation_failure"
         assert result.payload["reason"] == "missing_idempotency_key"
 
+        normalized_result = execute_tool(
+            capability,
+            ToolRequest(
+                capability_name="create_ticket",
+                arguments={" idempotency_key ": "ticket-123"},
+            ),
+            PolicyDecision("allow", "approved_write", "cap_202"),
+        )
+        assert normalized_result.status == "success"
+
     def test_execute_tool_can_simulate_timeout_failure(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
         assert capability is not None
@@ -1270,13 +1280,39 @@ class TestExecutionAndPolicyBranches:
 
         with pytest.raises(
             TypeError,
-            match="Tool request argument value must be a string: 1",
+            match="Tool request argument key must be a string",
         ):
             execute_tool(
                 capability,
                 ToolRequest(
                     capability_name="search_docs",
-                    arguments=cast(dict[str, str], {1: 2}),
+                    arguments=cast(dict[str, str], {1: "policy"}),
+                ),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
+
+        with pytest.raises(
+            ValueError,
+            match="Tool request argument key must not be empty",
+        ):
+            execute_tool(
+                capability,
+                ToolRequest(
+                    capability_name="search_docs",
+                    arguments={" ": "policy"},
+                ),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
+
+        with pytest.raises(
+            TypeError,
+            match="Tool request argument value must be a string: query",
+        ):
+            execute_tool(
+                capability,
+                ToolRequest(
+                    capability_name="search_docs",
+                    arguments=cast(dict[str, str], {" query ": 2}),
                 ),
                 PolicyDecision("allow", "low_risk_read", "cap_101"),
             )
@@ -3986,6 +4022,40 @@ class TestPolicyAndControls:
 
     def test_policy_rejects_malformed_tool_argument_values(self) -> None:
         policy = PolicyEngine()
+        with pytest.raises(
+            TypeError,
+            match="Tool request argument key must be a string",
+        ):
+            policy.evaluate_tool(
+                RunContext(
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-bad-tool-arg-key-001",
+                ),
+                ToolRequest(
+                    capability_name="create_ticket",
+                    arguments=cast(dict[str, str], {1: "ticket-123"}),
+                ),
+                None,
+            )
+
+        with pytest.raises(
+            ValueError,
+            match="Tool request argument key must not be empty",
+        ):
+            policy.evaluate_tool(
+                RunContext(
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-blank-tool-arg-key-001",
+                ),
+                ToolRequest(
+                    capability_name="create_ticket",
+                    arguments={" ": "ticket-123"},
+                ),
+                None,
+            )
+
         with pytest.raises(
             TypeError,
             match="Tool request argument value must be a string: idempotency_key",
