@@ -1703,6 +1703,8 @@ class TestExecutionAndPolicyBranches:
             match="memory_write.allow_kinds entries must be unique",
         ):
             PolicyEngine(allowed_memory_kinds={"session_summary", " session_summary "})
+        with pytest.raises(TypeError, match="Policy memory kind must be a string"):
+            PolicyEngine().allow_memory_write(cast(str, 7))
         with pytest.raises(ValueError, match="Policy memory kind must not be empty"):
             PolicyEngine().allow_memory_write(" ")
 
