@@ -136,6 +136,8 @@ class ApprovalQueue:
         resolution_note = str(note).strip()
         for item in self._items:
             if item.approval_id == approval_id:
+                if item.status != "pending":
+                    raise ValueError(f"Approval request is not pending: {approval_id}")
                 item.status = decision
                 item.capability_session_status = decision
                 item.resolution_note = resolution_note

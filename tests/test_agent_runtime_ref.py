@@ -2074,6 +2074,27 @@ class TestRuntimeControlPaths:
         assert request.status == "pending"
         assert request.capability_session_status == "pending"
 
+    def test_approval_queue_rejects_duplicate_resolution(self) -> None:
+        queue = AgentRuntime().approvals
+        request = queue.submit(
+            trace_id="trace-approval-duplicate-resolve-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-duplicate-resolve-001",
+        )
+        queue.resolve(request.approval_id, decision="approved", note="first decision")
+
+        with pytest.raises(
+            ValueError,
+            match=f"Approval request is not pending: {request.approval_id}",
+        ):
+            queue.resolve(request.approval_id, decision="rejected", note="second decision")
+        assert request.status == "approved"
+        assert request.capability_session_status == "approved"
+        assert request.resolution_note == "first decision"
+
     def test_session_export_includes_capability_session_fields(self, tmp_path: Path) -> None:
         runtime = AgentRuntime()
         session_id = "session-export-capability-001"
