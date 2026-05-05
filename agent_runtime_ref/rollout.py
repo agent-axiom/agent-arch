@@ -59,6 +59,32 @@ class RolloutPolicy:
     blocked_checks: tuple[str, ...]
     rollout_mode: dict[str, str]
 
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "required_checks",
+            _read_string_list_items(
+                list(self.required_checks),
+                label="rollout.require",
+            ),
+        )
+        object.__setattr__(
+            self,
+            "blocked_checks",
+            _read_string_list_items(
+                list(self.blocked_checks),
+                label="rollout.block_if",
+            ),
+        )
+        object.__setattr__(
+            self,
+            "rollout_mode",
+            _read_string_mapping_items(
+                self.rollout_mode,
+                label="rollout.rollout_mode",
+            ),
+        )
+
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RolloutPolicy":
         raw_rollout = data.get("rollout", {})

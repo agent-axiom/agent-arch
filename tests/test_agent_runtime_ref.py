@@ -3498,6 +3498,21 @@ class TestLowCoverageModuleBranches:
             }
         ).rollout_mode == {"initial": "canary"}
 
+        policy = RolloutPolicy(
+            required_checks=(" trace_coverage ",),
+            blocked_checks=(" direct_tool_access_present ",),
+            rollout_mode={" initial ": " canary "},
+        )
+        assert policy.required_checks == ("trace_coverage",)
+        assert policy.blocked_checks == ("direct_tool_access_present",)
+        assert policy.rollout_mode == {"initial": "canary"}
+        with pytest.raises(ValueError, match="rollout.require entries must be unique"):
+            RolloutPolicy(
+                required_checks=("trace_coverage", " trace_coverage "),
+                blocked_checks=(),
+                rollout_mode={},
+            )
+
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:
         assert not ready_for_rollout(
             RolloutReadiness(
@@ -3859,6 +3874,11 @@ class TestPolicyAndControls:
 
     def test_rollout_policy_detects_blockers(self, config_dir: Path) -> None:
         policy = load_rollout_policy(config_dir / "rollout.yaml")
+        policy = type(policy)(
+            required_checks=tuple(f" {check} " for check in policy.required_checks),
+            blocked_checks=tuple(f" {check} " for check in policy.blocked_checks),
+            rollout_mode=policy.rollout_mode,
+        )
         assessment = assess_rollout(
             policy,
             {
