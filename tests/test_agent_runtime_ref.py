@@ -2998,7 +2998,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         change = load_change_record(config_dir / "change.yaml")
         change_assessment = assess_change_gate(
             change,
-            {signal: True for signal in change.required_signals},
+            {f" {signal} ": True for signal in change.required_signals},
         )
         assert change_assessment.ready
         assert change_assessment.missing_signals == ()
@@ -3006,7 +3006,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         plan = load_retirement_plan(config_dir / "retirement.yaml")
         retirement_assessment = assess_retirement(
             plan,
-            {step: True for step in plan.required_steps},
+            {f" {step} ": True for step in plan.required_steps},
         )
         assert retirement_assessment.ready
         assert retirement_assessment.missing_steps == ()
