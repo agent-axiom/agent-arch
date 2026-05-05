@@ -550,6 +550,29 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_reference_package_documents_inventory_validation_errors(self) -> None:
+        """Keep inspect-agent docs aligned with inventory/catalog validation."""
+        required_errors = (
+            "approved_capabilities entries must be strings",
+            "approved_capabilities entries must not be empty",
+            "approved_capabilities entries must be unique",
+            "'allowed_egress' must be a list",
+            "allowed_egress entries must be strings",
+            "allowed_egress entries must not be empty",
+            "allowed_egress entries must be unique",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "inspect-agent" in text
+            assert "approved_capabilities" in text
+            assert "allowed_egress" in text
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
