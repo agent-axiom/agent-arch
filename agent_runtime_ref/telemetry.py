@@ -23,7 +23,7 @@ class StructuredEvent:
         if not isinstance(self.redacted_fields, tuple):
             raise TypeError("Telemetry event redacted_fields must be a tuple")
         self.payload = {str(key): str(value) for key, value in self.payload.items()}
-        self.redacted_fields = tuple(str(field) for field in self.redacted_fields)
+        self.redacted_fields = self._normalize_redacted_fields(self.redacted_fields)
         self.event_type = self.event_type.strip()
         if not self.event_type:
             raise ValueError("Telemetry event field must not be empty: event_type")
@@ -80,6 +80,13 @@ class StructuredEvent:
             payload={str(key): str(value) for key, value in payload.items()},
             redacted_fields=tuple(str(item) for item in redacted_fields),
         )
+
+    @staticmethod
+    def _normalize_redacted_fields(redacted_fields: tuple[str, ...]) -> tuple[str, ...]:
+        normalized = tuple(str(field).strip() for field in redacted_fields)
+        if "" in normalized:
+            raise ValueError("Telemetry redact field must not be empty")
+        return tuple(dict.fromkeys(normalized))
 
 
 class TelemetryEmitter:
@@ -139,10 +146,7 @@ class TelemetryEmitter:
 
     @staticmethod
     def _normalize_redact_fields(redact_fields: tuple[str, ...]) -> tuple[str, ...]:
-        normalized = tuple(str(field).strip() for field in redact_fields)
-        if "" in normalized:
-            raise ValueError("Telemetry redact field must not be empty")
-        return tuple(dict.fromkeys(normalized))
+        return StructuredEvent._normalize_redacted_fields(redact_fields)
 
     @staticmethod
     def _redact_event(

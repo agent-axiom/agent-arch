@@ -718,6 +718,36 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
+    def test_cli_replay_run_rejects_untrimmed_redacted_run_start_fields(
+        self, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "untrimmed-redacted-run-start.jsonl"
+        output_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "event_type": "run_start",
+                    "trace_id": "trace-untrimmed-redacted-replay",
+                    "payload": {
+                        "user_input": "[REDACTED]",
+                        "tenant_id": "tenant-acme",
+                        "principal_id": "user-1",
+                    },
+                    "redacted_fields": [" user_input ", "user_input"],
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Trace run_start event has redacted replay fields: user_input",
+        ):
+            main(["replay-run", "--input", str(output_path)])
+
     def test_cli_replay_run_rejects_missing_trace_id(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
         code, _ = cli_json(
