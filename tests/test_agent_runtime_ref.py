@@ -3546,6 +3546,21 @@ class TestCli:
         assert all("provenance" in item for item in payload["records"])
         assert all("revision" in item for item in payload["records"])
 
+    def test_cli_inspect_memory_normalizes_filter_values(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "inspect-memory",
+                "--tenant-id",
+                " tenant-acme ",
+                "--memory-class",
+                " profile ",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["count"] >= 1
+        assert all(item["tenant_id"] == "tenant-acme" for item in payload["records"])
+        assert all(item["memory_class"] == "profile" for item in payload["records"])
+
     def test_cli_inspect_memory_rejects_negative_limit(self) -> None:
         from agent_runtime_ref.__main__ import main
 
