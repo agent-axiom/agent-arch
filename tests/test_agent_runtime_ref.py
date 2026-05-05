@@ -458,6 +458,25 @@ class TestRuntimeDocsParity:
             assert "capability_session_id" in text
             assert "capability_session_status" in text
 
+    def test_trace_schema_documents_loader_validation_errors(self) -> None:
+        """Keep trace schema docs aligned with telemetry loader validation."""
+        required_errors = (
+            "Telemetry event field must be a string: {field}",
+            "Telemetry event field must not be empty: {field}",
+            "Telemetry schema version is not supported: {schema_version}",
+            "Telemetry event payload value must be a string: {payload_key}",
+            "redacted_fields entries must be strings",
+            "Telemetry redact field must not be empty",
+        )
+        for path in (
+            Path("docs/appendix/trace-schema.en.md"),
+            Path("docs/appendix/trace-schema.md"),
+            Path("docs/appendix/trace-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
