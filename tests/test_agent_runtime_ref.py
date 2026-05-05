@@ -2606,6 +2606,23 @@ class TestRuntimeControlPaths:
                 output_text="failed cleanly",
                 failure_reason=" ",
             )
+        with pytest.raises(TypeError, match="Session field must be a string: trace_id"):
+            RunRecord(
+                trace_id=cast(str, 7),
+                session_id="session-direct-type-001",
+                status="success",
+                user_input="hello",
+                output_text="done",
+            )
+        with pytest.raises(TypeError, match="Session field must be a string: failure_reason"):
+            RunRecord(
+                trace_id="trace-direct-type-001",
+                session_id="session-direct-type-001",
+                status="failed",
+                user_input="hello",
+                output_text="done",
+                failure_reason=cast(str, 7),
+            )
         with pytest.raises(ValueError, match="Session status is not supported: maybe"):
             RunRecord(
                 trace_id="trace-direct-bad-status-001",
@@ -2614,6 +2631,43 @@ class TestRuntimeControlPaths:
                 user_input="hello",
                 output_text="done",
             )
+
+    def test_session_store_rejects_malformed_identity_fields(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        malformed_fields = (
+            ("session_id", {"session_id": cast(str, 7)}),
+            ("tenant_id", {"tenant_id": cast(str, 7)}),
+            ("principal_id", {"principal_id": cast(str, 7)}),
+            ("trace_id", {"trace_id": cast(str, 7)}),
+            ("status", {"status": cast(str, 7)}),
+            ("user_input", {"user_input": cast(str, 7)}),
+            ("output_text", {"output_text": cast(str, 7)}),
+            ("failure_reason", {"status": "failed", "failure_reason": cast(str, 7)}),
+            ("capability_session_id", {"capability_session_id": cast(str, 7)}),
+            (
+                "capability_session_status",
+                {"capability_session_status": cast(str, 7)},
+            ),
+            ("authorization_mode", {"authorization_mode": cast(str, 7)}),
+            ("delegated_principal_id", {"delegated_principal_id": cast(str, 7)}),
+            ("delegated_scope", {"delegated_scope": cast(str, 7)}),
+        )
+        for field, override in malformed_fields:
+            store = SessionStore()
+            request = {
+                "session_id": "session-type-001",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-session-type-001",
+                "status": "success",
+                "user_input": "hello",
+                "output_text": "done",
+            }
+            request.update(override)
+            with pytest.raises(TypeError, match=f"Session field must be a string: {field}"):
+                store.register_run(**cast(Any, request))
+            assert store.get_session("session-type-001") is None
 
     def test_session_lookup_rejects_blank_session_id(self) -> None:
         from agent_runtime_ref.session import SessionStore

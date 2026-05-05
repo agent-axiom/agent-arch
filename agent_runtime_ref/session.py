@@ -64,14 +64,27 @@ class RunRecord:
         self.status = _read_required_string(self.status, field="status")
         self.user_input = _read_required_string(self.user_input, field="user_input")
         self.output_text = _read_required_string(self.output_text, field="output_text")
-        self.failure_reason = _read_optional_string(self.failure_reason)
-        self.capability_session_id = _read_optional_string(self.capability_session_id)
+        self.failure_reason = _read_optional_string(
+            self.failure_reason,
+            field="failure_reason",
+        )
+        self.capability_session_id = _read_optional_string(
+            self.capability_session_id,
+            field="capability_session_id",
+        )
         self.capability_session_status = _read_optional_string(
-            self.capability_session_status
+            self.capability_session_status,
+            field="capability_session_status",
         )
         self.authorization_mode = _read_authorization_mode(self.authorization_mode)
-        self.delegated_principal_id = _read_optional_string(self.delegated_principal_id)
-        self.delegated_scope = _read_optional_string(self.delegated_scope)
+        self.delegated_principal_id = _read_optional_string(
+            self.delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        self.delegated_scope = _read_optional_string(
+            self.delegated_scope,
+            field="delegated_scope",
+        )
         status = self.status
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
@@ -99,15 +112,17 @@ class SessionRecord:
     traces: list[str] = field(default_factory=list)
 
 
+def _read_optional_string(value: str, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Session field must be a string: {field}")
+    return value.strip()
+
+
 def _read_required_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    normalized = _read_optional_string(value, field=field)
     if not normalized:
         raise ValueError(f"Session field is required: {field}")
     return normalized
-
-
-def _read_optional_string(value: str) -> str:
-    return str(value).strip()
 
 
 def _read_authorization_mode(value: str) -> str:
@@ -142,24 +157,33 @@ class SessionStore:
         session_id = _read_required_string(session_id, field="session_id")
         status = _read_required_string(status, field="status")
         tenant_id = (
-            _read_optional_string(tenant_id)
+            _read_optional_string(tenant_id, field="tenant_id")
             if status == "denied"
             else _read_required_string(tenant_id, field="tenant_id")
         )
         principal_id = (
-            _read_optional_string(principal_id)
+            _read_optional_string(principal_id, field="principal_id")
             if status == "denied"
             else _read_required_string(principal_id, field="principal_id")
         )
         trace_id = _read_required_string(trace_id, field="trace_id")
         user_input = _read_required_string(user_input, field="user_input")
         output_text = _read_required_string(output_text, field="output_text")
-        failure_reason = _read_optional_string(failure_reason)
-        capability_session_id = _read_optional_string(capability_session_id)
-        capability_session_status = _read_optional_string(capability_session_status)
+        failure_reason = _read_optional_string(failure_reason, field="failure_reason")
+        capability_session_id = _read_optional_string(
+            capability_session_id,
+            field="capability_session_id",
+        )
+        capability_session_status = _read_optional_string(
+            capability_session_status,
+            field="capability_session_status",
+        )
         authorization_mode = _read_authorization_mode(authorization_mode)
-        delegated_principal_id = _read_optional_string(delegated_principal_id)
-        delegated_scope = _read_optional_string(delegated_scope)
+        delegated_principal_id = _read_optional_string(
+            delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        delegated_scope = _read_optional_string(delegated_scope, field="delegated_scope")
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
