@@ -3551,14 +3551,14 @@ class TestPolicyAndControls:
         assessment = assess_rollout(
             policy,
             {
-                "trace_coverage": True,
+                " trace_coverage ": True,
                 "policy_prechecks": True,
                 "capability_owners": True,
                 "offline_eval_pass": True,
                 "slo_defined": True,
                 "rollback_plan": True,
                 "oncall_owner": True,
-                "direct_tool_access_present": True,
+                " direct_tool_access_present ": True,
             },
         )
         assert not assessment.ready
@@ -3572,12 +3572,12 @@ class TestPolicyAndControls:
         assessment = assess_controls(
             policy,
             {
-                "registry_reviewed": True,
+                " registry_reviewed ": True,
                 "capability_owners_confirmed": True,
                 "memory_provenance_enforced": True,
                 "policy_traces_present": True,
                 "direct_tool_access_present": False,
-                "unmanaged_runtime_present": False,
+                " unmanaged_runtime_present ": False,
             },
             inventory_drift=drift,
         )
