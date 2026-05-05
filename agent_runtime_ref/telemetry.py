@@ -108,9 +108,14 @@ class StructuredEvent:
 
     @staticmethod
     def _normalize_redacted_fields(redacted_fields: tuple[str, ...]) -> tuple[str, ...]:
-        normalized = tuple(str(field).strip() for field in redacted_fields)
-        if "" in normalized:
-            raise ValueError("Telemetry redact field must not be empty")
+        normalized: list[str] = []
+        for field in redacted_fields:
+            if not isinstance(field, str):
+                raise TypeError("redacted_fields entries must be strings")
+            value = field.strip()
+            if not value:
+                raise ValueError("Telemetry redact field must not be empty")
+            normalized.append(value)
         return tuple(dict.fromkeys(normalized))
 
 
