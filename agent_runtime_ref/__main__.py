@@ -471,6 +471,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
         raise ValueError(f"Trace run_start event is missing replay fields: {missing_keys}")
+    redacted_payload_keys = [
+        key for key in required_payload_keys if key in run_start.redacted_fields
+    ]
+    if redacted_payload_keys:
+        redacted_keys = ", ".join(redacted_payload_keys)
+        raise ValueError(f"Trace run_start event has redacted replay fields: {redacted_keys}")
 
     config_dir = Path(args.config_dir)
     replay_trace_id = args.replay_trace_id or f"{source_trace_id}-replay"
