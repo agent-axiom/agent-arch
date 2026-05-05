@@ -1407,6 +1407,17 @@ class TestExecutionAndPolicyBranches:
                     }
                 }
             )
+        with pytest.raises(ValueError, match="Policy capability names must be unique"):
+            PolicyEngine.from_dict(
+                {
+                    "policy": {
+                        "capabilities": {
+                            "search_docs": {"decision": "allow"},
+                            " search_docs ": {"decision": "deny"},
+                        }
+                    }
+                }
+            )
         normalized_policy = PolicyEngine.from_dict(
             {
                 "policy": {
@@ -1422,6 +1433,37 @@ class TestExecutionAndPolicyBranches:
         )
         assert normalized_policy.capability_policies["search_docs"].decision == "allow"
         assert normalized_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        direct_policy = PolicyEngine(
+            capability_policies={
+                " search_docs ": CapabilityPolicy(" allow "),
+                " create_ticket ": CapabilityPolicy(
+                    " approval_required ",
+                    " runtime-review ",
+                ),
+            }
+        )
+        assert direct_policy.capability_policies["search_docs"].decision == "allow"
+        assert direct_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        with pytest.raises(ValueError, match="Policy capability name must not be empty"):
+            PolicyEngine(capability_policies={" ": CapabilityPolicy("allow")})
+        with pytest.raises(ValueError, match="Policy capability names must be unique"):
+            PolicyEngine(
+                capability_policies={
+                    "search_docs": CapabilityPolicy("allow"),
+                    " search_docs ": CapabilityPolicy("deny"),
+                }
+            )
+        with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
+            CapabilityPolicy(" escalate ")
+        with pytest.raises(
+            ValueError,
+            match="Policy approver must not be empty: create_ticket",
+        ):
+            PolicyEngine(
+                capability_policies={
+                    "create_ticket": CapabilityPolicy("approval_required", " ")
+                }
+            )
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
             PolicyEngine.from_dict(
                 {"policy": {"memory_write": {"allow_kinds": [" "]}}}
@@ -1462,7 +1504,9 @@ class TestExecutionAndPolicyBranches:
         context = RunContext(
             tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-001"
         )
-        allow_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("allow")})
+        allow_engine = PolicyEngine(
+            capability_policies={" search_docs ": CapabilityPolicy(" allow ")}
+        )
         deny_engine = PolicyEngine(capability_policies={"search_docs": CapabilityPolicy("deny")})
         allow_decision = allow_engine.evaluate_tool(
             context,
