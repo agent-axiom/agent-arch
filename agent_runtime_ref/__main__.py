@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import cast
 
@@ -323,6 +323,15 @@ def _resolve_trace_id(events: list[StructuredEvent], requested_trace_id: str | N
     return trace_ids[0]
 
 
+def _read_replay_payload_string(payload: Mapping[str, object], field: str) -> str | None:
+    if field not in payload:
+        return None
+    value = payload[field]
+    if not isinstance(value, str):
+        raise TypeError(f"Trace run_start replay field must be a string: {field}")
+    return value
+
+
 def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     session_id = _read_cli_session_id(args.session_id)
@@ -488,17 +497,22 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if redacted_payload_keys:
         redacted_keys = ", ".join(redacted_payload_keys)
         raise ValueError(f"Trace run_start event has redacted replay fields: {redacted_keys}")
+    user_input = _read_replay_payload_string(run_start.payload, "user_input")
+    tenant_id = _read_replay_payload_string(run_start.payload, "tenant_id")
+    principal_id = _read_replay_payload_string(run_start.payload, "principal_id")
+    session_id = _read_replay_payload_string(run_start.payload, "session_id")
+    agent_id = _read_replay_payload_string(run_start.payload, "agent_id")
 
     config_dir = Path(args.config_dir)
     replay_trace_id = args.replay_trace_id or f"{source_trace_id}-replay"
     runtime, result = _run_runtime(
         config_dir,
-        user_input=run_start.payload["user_input"],
-        tenant_id=run_start.payload["tenant_id"],
-        principal_id=run_start.payload["principal_id"],
+        user_input=cast(str, user_input),
+        tenant_id=cast(str, tenant_id),
+        principal_id=cast(str, principal_id),
         trace_id=replay_trace_id,
-        session_id=run_start.payload.get("session_id", "session-replay-001"),
-        agent_id=run_start.payload.get("agent_id"),
+        session_id=session_id or "session-replay-001",
+        agent_id=agent_id,
     )
     return {
         "source_trace_id": source_trace_id,

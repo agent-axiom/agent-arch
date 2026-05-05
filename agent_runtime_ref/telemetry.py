@@ -70,6 +70,14 @@ class StructuredEvent:
         payload = data.get("payload", {})
         if not isinstance(payload, dict):
             raise TypeError("payload must be a mapping")
+        normalized_payload: dict[str, str] = {}
+        for key, value in payload.items():
+            payload_key = str(key)
+            if not isinstance(value, str):
+                raise TypeError(
+                    f"Telemetry event payload value must be a string: {payload_key}"
+                )
+            normalized_payload[payload_key] = value
         redacted_fields = data.get("redacted_fields", [])
         if not isinstance(redacted_fields, list):
             raise TypeError("redacted_fields must be a list")
@@ -77,7 +85,7 @@ class StructuredEvent:
             schema_version=schema_version,
             event_type=required_values["event_type"],
             trace_id=required_values["trace_id"],
-            payload={str(key): str(value) for key, value in payload.items()},
+            payload=normalized_payload,
             redacted_fields=tuple(str(item) for item in redacted_fields),
         )
 
