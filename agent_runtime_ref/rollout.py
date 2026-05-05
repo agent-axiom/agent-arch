@@ -38,12 +38,18 @@ class RolloutReadiness:
     rollback_plan: bool
 
 
+def _read_readiness_flag(value: bool, *, field: str) -> bool:
+    if not isinstance(value, bool):
+        raise TypeError(f"Rollout readiness flag must be a boolean: {field}")
+    return value
+
+
 def ready_for_rollout(state: RolloutReadiness) -> bool:
     return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
+        _read_readiness_flag(state.trace_coverage, field="trace_coverage")
+        and _read_readiness_flag(state.offline_eval_pass, field="offline_eval_pass")
+        and _read_readiness_flag(state.slo_defined, field="slo_defined")
+        and _read_readiness_flag(state.rollback_plan, field="rollback_plan")
     )
 
 

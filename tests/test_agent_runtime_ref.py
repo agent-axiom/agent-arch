@@ -3441,6 +3441,18 @@ class TestLowCoverageModuleBranches:
                 rollback_plan=True,
             ),
         )
+        with pytest.raises(
+            TypeError,
+            match="Rollout readiness flag must be a boolean: slo_defined",
+        ):
+            ready_for_rollout(
+                RolloutReadiness(
+                    trace_coverage=True,
+                    offline_eval_pass=True,
+                    slo_defined=cast(bool, "false"),
+                    rollback_plan=True,
+                ),
+            )
 
     def test_approval_policy_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.approvals import ApprovalPolicy
