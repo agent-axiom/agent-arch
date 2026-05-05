@@ -3995,6 +3995,15 @@ class TestLowCoverageModuleBranches:
         from agent_runtime_ref.telemetry import StructuredEvent
 
         with pytest.raises(
+            TypeError,
+            match="Telemetry event field must be a string: event_type",
+        ):
+            StructuredEvent(
+                event_type=cast(str, 7),
+                trace_id="trace-direct",
+                payload={},
+            )
+        with pytest.raises(
             ValueError,
             match="Telemetry event field must not be empty: event_type",
         ):
@@ -4109,6 +4118,18 @@ class TestLowCoverageModuleBranches:
     def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
 
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event field must be a string: event_type",
+        ):
+            StructuredEvent.from_dict({"event_type": 7, "trace_id": "t", "payload": {}})
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event field must be a string: schema_version",
+        ):
+            StructuredEvent.from_dict(
+                {"event_type": "x", "trace_id": "t", "schema_version": 1, "payload": {}}
+            )
         with pytest.raises(TypeError, match="payload must be a mapping"):
             StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": []})
         with pytest.raises(TypeError, match="redacted_fields must be a list"):
@@ -4137,6 +4158,8 @@ class TestLowCoverageModuleBranches:
         events = emitter.events_for_trace(" trace-a ")
         assert len(events) == 1
         assert events[0].trace_id == "trace-a"
+        with pytest.raises(TypeError, match="Telemetry event field must be a string: trace_id"):
+            emitter.events_for_trace(cast(str, 7))
         with pytest.raises(
             ValueError,
             match="Telemetry event field must not be empty: trace_id",

@@ -10,6 +10,15 @@ SCHEMA_VERSION = "1.0"
 REDACTED_VALUE = "[REDACTED]"
 
 
+def _read_event_field(value: object, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Telemetry event field must be a string: {field}")
+    normalized = value.strip()
+    if not normalized:
+        raise ValueError(f"Telemetry event field must not be empty: {field}")
+    return normalized
+
+
 def _normalize_payload(payload: Mapping[Any, Any]) -> dict[str, str]:
     normalized_payload: dict[str, str] = {}
     for key, value in payload.items():
@@ -43,15 +52,9 @@ class StructuredEvent:
             raise TypeError("Telemetry event redacted_fields must be a tuple")
         self.payload = _normalize_payload(self.payload)
         self.redacted_fields = self._normalize_redacted_fields(self.redacted_fields)
-        self.event_type = self.event_type.strip()
-        if not self.event_type:
-            raise ValueError("Telemetry event field must not be empty: event_type")
-        self.trace_id = self.trace_id.strip()
-        if not self.trace_id:
-            raise ValueError("Telemetry event field must not be empty: trace_id")
-        schema_version = self.schema_version.strip()
-        if not schema_version:
-            raise ValueError("Telemetry event field must not be empty: schema_version")
+        self.event_type = _read_event_field(self.event_type, field="event_type")
+        self.trace_id = _read_event_field(self.trace_id, field="trace_id")
+        schema_version = _read_event_field(self.schema_version, field="schema_version")
         if schema_version != SCHEMA_VERSION:
             raise ValueError(
                 f"Telemetry schema version is not supported: {schema_version}"
@@ -75,15 +78,14 @@ class StructuredEvent:
                 raise ValueError(
                     f"Telemetry event is missing required field: {required_field}"
                 )
-            value = str(data[required_field]).strip()
-            if not value:
-                raise ValueError(
-                    f"Telemetry event field must not be empty: {required_field}"
-                )
-            required_values[required_field] = value
-        schema_version = str(data.get("schema_version", SCHEMA_VERSION)).strip()
-        if not schema_version:
-            raise ValueError("Telemetry event field must not be empty: schema_version")
+            required_values[required_field] = _read_event_field(
+                data[required_field],
+                field=required_field,
+            )
+        schema_version = _read_event_field(
+            data.get("schema_version", SCHEMA_VERSION),
+            field="schema_version",
+        )
         if schema_version != SCHEMA_VERSION:
             raise ValueError(f"Telemetry schema version is not supported: {schema_version}")
         payload = data.get("payload", {})
@@ -129,10 +131,8 @@ class TelemetryEmitter:
         return [event.as_dict() for event in self.events]
 
     def events_for_trace(self, trace_id: str) -> list[StructuredEvent]:
-        trace_id = str(trace_id).strip()
-        if not trace_id:
-            raise ValueError("Telemetry event field must not be empty: trace_id")
-        return [event for event in self.events if event.trace_id == trace_id]
+        normalized_trace_id = _read_event_field(trace_id, field="trace_id")
+        return [event for event in self.events if event.trace_id == normalized_trace_id]
 
     def export_jsonl(
         self,
