@@ -1294,14 +1294,17 @@ class TestRuntimeCore:
         result = runtime.run(
             RunRequest(
                 user_input="Summarize the current architecture.",
-                tenant_id="tenant-acme",
-                principal_id="user-1",
+                tenant_id=" tenant-acme ",
+                principal_id=" user-1 ",
                 trace_id=" trace-runtime-normalized-001 ",
                 session_id=" session-runtime-normalized-001 ",
-                agent_id="agent-runtime-ref",
+                agent_id=" agent-runtime-ref ",
             ),
         )
         assert result.status == "success"
+        assert runtime.telemetry.events[0].payload["tenant_id"] == "tenant-acme"
+        assert runtime.telemetry.events[0].payload["principal_id"] == "user-1"
+        assert runtime.telemetry.events[0].payload["agent_id"] == "agent-runtime-ref"
         assert runtime.telemetry.events[0].trace_id == "trace-runtime-normalized-001"
         assert runtime.sessions.get_session("session-runtime-normalized-001") is not None
 
@@ -3168,6 +3171,13 @@ class TestDelegatedAuthorizationRuntime:
         assert approval_event.payload["authorization_mode"] == "user_delegated"
         assert approval_event.payload["delegated_principal_id"] == "user-1"
         assert approval_event.payload["delegated_scope"] == "tickets.write"
+
+        tool_event = next(
+            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
+        )
+        assert tool_event.payload["authorization_mode"] == "user_delegated"
+        assert tool_event.payload["delegated_principal_id"] == "user-1"
+        assert tool_event.payload["delegated_scope"] == "tickets.write"
 
         session_run = runtime.sessions.runs_for_session("session-authz-001")[0]
         assert session_run.authorization_mode == "user_delegated"
