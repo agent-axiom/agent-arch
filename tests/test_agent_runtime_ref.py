@@ -895,6 +895,51 @@ class TestFailurePaths:
         assert export_payload["status"] == "success"
         assert output_path.exists()
 
+    def test_cli_trace_commands_normalize_trace_id_for_lineage(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        padded_trace_id = " trace-cli-normalized-001 "
+        simulate_code, simulate_payload = cli_json(
+            ["simulate-run", "--trace-id", padded_trace_id]
+        )
+        assert simulate_code == 0
+        assert simulate_payload["trace_id"] == "trace-cli-normalized-001"
+
+        dump_code, dump_payload = cli_json(["dump-events", "--trace-id", padded_trace_id])
+        assert dump_code == 0
+        assert dump_payload["trace_id"] == "trace-cli-normalized-001"
+        assert {event["trace_id"] for event in dump_payload["events"]} == {
+            "trace-cli-normalized-001"
+        }
+
+        output_path = tmp_path / "normalized-trace.jsonl"
+        export_code, export_payload = cli_json(
+            ["export-events", "--trace-id", padded_trace_id, "--output", str(output_path)]
+        )
+        assert export_code == 0
+        assert export_payload["trace_id"] == "trace-cli-normalized-001"
+
+        inspect_code, inspect_payload = cli_json(
+            ["inspect-trace", "--input", str(output_path), "--trace-id", padded_trace_id]
+        )
+        assert inspect_code == 0
+        assert inspect_payload["trace_id"] == "trace-cli-normalized-001"
+
+        replay_code, replay_payload = cli_json(
+            [
+                "replay-run",
+                "--input",
+                str(output_path),
+                "--trace-id",
+                padded_trace_id,
+                "--replay-trace-id",
+                " trace-cli-normalized-replay-001 ",
+            ]
+        )
+        assert replay_code == 0
+        assert replay_payload["source_trace_id"] == "trace-cli-normalized-001"
+        assert replay_payload["replay_trace_id"] == "trace-cli-normalized-replay-001"
+
     def test_cli_session_commands_normalize_session_id_for_lookup(
         self, cli_json, tmp_path: Path
     ) -> None:

@@ -334,13 +334,14 @@ def _read_replay_payload_string(payload: Mapping[str, object], field: str) -> st
 
 def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    trace_id = _read_cli_trace_id(args.trace_id)
     session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
+        trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
@@ -353,7 +354,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "result": result.output_text,
         "status": result.status,
         "failure_reason": latest_run.get("failure_reason", ""),
-        "trace_id": args.trace_id,
+        "trace_id": trace_id,
         "events": len(runtime.telemetry.events),
         "memory_records": len(runtime.memory.all()),
         "pending_approvals": len(runtime.approvals.pending()),
@@ -415,13 +416,14 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
 
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    trace_id = _read_cli_trace_id(args.trace_id)
     session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
+        trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
@@ -432,7 +434,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "status": result.status,
         "result": result.output_text,
         "failure_reason": latest_run.get("failure_reason", ""),
-        "trace_id": args.trace_id,
+        "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
@@ -440,13 +442,14 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
 
 def _export_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
+    trace_id = _read_cli_trace_id(args.trace_id)
     session_id = _read_cli_session_id(args.session_id)
     runtime, result = _run_runtime(
         config_dir,
         user_input=args.user_input,
         tenant_id=args.tenant_id,
         principal_id=args.principal_id,
-        trace_id=args.trace_id,
+        trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
         simulate_failure=args.simulate_failure,
@@ -461,7 +464,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "status": result.status,
         "result": result.output_text,
         "failure_reason": latest_run.get("failure_reason", ""),
-        "trace_id": args.trace_id,
+        "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
         "output_path": str(output_path),
         "redact_fields": list(args.redact_field),
@@ -470,7 +473,10 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
 
 def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     events = TelemetryEmitter.load_jsonl(args.input)
-    trace_id = _resolve_trace_id(events, args.trace_id)
+    requested_trace_id = (
+        _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
+    )
+    trace_id = _resolve_trace_id(events, requested_trace_id)
     filtered = [event for event in events if event.trace_id == trace_id]
     return {
         "trace_id": trace_id,
@@ -481,7 +487,10 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
 
 def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     events = TelemetryEmitter.load_jsonl(args.input)
-    source_trace_id = _resolve_trace_id(events, args.trace_id)
+    requested_trace_id = (
+        _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
+    )
+    source_trace_id = _resolve_trace_id(events, requested_trace_id)
     source_events = [event for event in events if event.trace_id == source_trace_id]
     run_start = next((event for event in source_events if event.event_type == "run_start"), None)
     if run_start is None:
@@ -504,7 +513,11 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     agent_id = _read_replay_payload_string(run_start.payload, "agent_id")
 
     config_dir = Path(args.config_dir)
-    replay_trace_id = args.replay_trace_id or f"{source_trace_id}-replay"
+    replay_trace_id = (
+        _read_cli_trace_id(args.replay_trace_id)
+        if args.replay_trace_id is not None
+        else f"{source_trace_id}-replay"
+    )
     runtime, result = _run_runtime(
         config_dir,
         user_input=cast(str, user_input),
