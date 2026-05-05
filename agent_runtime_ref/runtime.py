@@ -91,6 +91,8 @@ class AgentRuntime:
             request.user_input,
             field="user_input",
         )
+        request.tenant_id = _read_optional_request_string(request.tenant_id)
+        request.principal_id = _read_optional_request_string(request.principal_id)
         request.trace_id = _read_required_request_string(
             request.trace_id,
             field="trace_id",
@@ -99,6 +101,7 @@ class AgentRuntime:
             request.session_id,
             field="session_id",
         )
+        request.agent_id = _read_optional_request_string(request.agent_id)
         request.authorization_mode = _read_required_request_string(
             request.authorization_mode,
             field="authorization_mode",
@@ -462,6 +465,9 @@ class AgentRuntime:
                 capability=tool_result.capability_name,
                 status=tool_result.status,
                 tool_principal="pending_review",
+                authorization_mode=tool_result.payload["authorization_mode"],
+                delegated_principal_id=tool_result.payload["delegated_principal_id"],
+                delegated_scope=tool_result.payload["delegated_scope"],
             )
             return decision
 
