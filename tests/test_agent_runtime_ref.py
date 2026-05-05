@@ -461,6 +461,8 @@ class TestRuntimeDocsParity:
     def test_trace_schema_documents_loader_validation_errors(self) -> None:
         """Keep trace schema docs aligned with telemetry loader validation."""
         required_errors = (
+            "Telemetry event must be a mapping",
+            "Telemetry event is missing required field: {required_field}",
             "Telemetry event field must be a string: {field}",
             "Telemetry event field must not be empty: {field}",
             "Telemetry schema version is not supported: {schema_version}",
