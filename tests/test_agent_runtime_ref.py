@@ -595,6 +595,26 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_reference_package_documents_session_state_conflict_errors(self) -> None:
+        """Keep runtime docs aligned with session and approval state conflicts."""
+        required_errors = (
+            "Approval request is not pending: {approval_id}",
+            "Session tenant_id does not match existing session: {session_id}",
+            "Session principal_id does not match existing session: {session_id}",
+            "Session trace_id already exists: {trace_id}",
+            "Session field entries must be unique: {field}",
+            "Session field entries must be unique: session_id",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "Runtime CLI failure paths" in text
+            for error in required_errors:
+                assert error in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
