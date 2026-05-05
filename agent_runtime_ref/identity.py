@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Iterable, Mapping
 
 
 def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> str:
@@ -9,6 +9,20 @@ def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> s
     if not value:
         raise ValueError(f"{label}.{key} is required")
     return value
+
+
+def _normalize_approved_capabilities(items: Iterable[object]) -> frozenset[str]:
+    capabilities: set[str] = set()
+    for item in items:
+        if not isinstance(item, str):
+            raise TypeError("approved_capabilities entries must be strings")
+        capability = item.strip()
+        if not capability:
+            raise ValueError("approved_capabilities entries must not be empty")
+        if capability in capabilities:
+            raise ValueError("approved_capabilities entries must be unique")
+        capabilities.add(capability)
+    return frozenset(capabilities)
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,10 +52,11 @@ class ApprovedInventory:
     capabilities: frozenset[str]
 
     def __post_init__(self) -> None:
-        capabilities = frozenset(str(capability).strip() for capability in self.capabilities)
-        if "" in capabilities:
-            raise ValueError("approved_capabilities entries must not be empty")
-        object.__setattr__(self, "capabilities", capabilities)
+        object.__setattr__(
+            self,
+            "capabilities",
+            _normalize_approved_capabilities(self.capabilities),
+        )
 
     def allows(self, capability_name: str) -> bool:
         return str(capability_name).strip() in self.capabilities
@@ -54,10 +69,7 @@ class ApprovedInventory:
         raw_inventory = raw_agent.get("approved_capabilities", [])
         if not isinstance(raw_inventory, list):
             raise TypeError("'approved_capabilities' must be a list")
-        capabilities = frozenset(str(item).strip() for item in raw_inventory)
-        if "" in capabilities:
-            raise ValueError("approved_capabilities entries must not be empty")
-        return cls(capabilities=capabilities)
+        return cls(capabilities=_normalize_approved_capabilities(raw_inventory))
 
 
 def load_agent_identity(data: Mapping[str, Any]) -> AgentIdentity:
