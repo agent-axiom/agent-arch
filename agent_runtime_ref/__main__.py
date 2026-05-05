@@ -179,6 +179,12 @@ def _read_non_negative_cli_int(value: int, *, field: str) -> int:
     return value
 
 
+def _read_optional_cli_string(value: str | None, *, field: str) -> str | None:
+    if value is None:
+        return None
+    return _read_required_cli_string(value, field=field)
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -376,10 +382,12 @@ def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     store = load_memory_store(config_dir / "memory.yaml")
     records = list(store.all())
-    if args.tenant_id:
-        records = [record for record in records if record.tenant_id == args.tenant_id]
-    if args.memory_class:
-        records = [record for record in records if record.memory_class == args.memory_class]
+    tenant_id = _read_optional_cli_string(args.tenant_id, field="tenant_id")
+    memory_class = _read_optional_cli_string(args.memory_class, field="memory_class")
+    if tenant_id:
+        records = [record for record in records if record.tenant_id == tenant_id]
+    if memory_class:
+        records = [record for record in records if record.memory_class == memory_class]
     if args.limit is not None:
         limit = _read_non_negative_cli_int(args.limit, field="limit")
         records = records[:limit]
