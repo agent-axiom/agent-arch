@@ -146,6 +146,8 @@ class SessionStore:
             raise ValueError(f"Session tenant_id does not match existing session: {session_id}")
         elif session.principal_id != principal_id:
             raise ValueError(f"Session principal_id does not match existing session: {session_id}")
+        if trace_id in session.traces:
+            raise ValueError(f"Session trace_id already exists: {trace_id}")
         session.traces.append(trace_id)
         record = RunRecord(
             trace_id=trace_id,
