@@ -15,6 +15,7 @@ from agent_runtime_ref.models import (
     RunResult,
     ToolRequest,
     ToolResult,
+    normalize_tool_arguments,
 )
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
 from agent_runtime_ref.session import SessionStore
@@ -390,6 +391,7 @@ class AgentRuntime:
         tool_request.capability_name = normalize_tool_capability_name(
             tool_request.capability_name
         )
+        tool_request.arguments = normalize_tool_arguments(tool_request.arguments)
         capability = self.catalog.get(tool_request.capability_name)
         decision = self.policy.evaluate_tool(context, tool_request, capability)
         self.telemetry.emit(

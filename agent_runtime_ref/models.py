@@ -3,6 +3,20 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+
+def normalize_tool_arguments(value: object) -> dict[str, str]:
+    if not isinstance(value, dict):
+        raise TypeError("Tool request arguments must be a mapping")
+    normalized: dict[str, str] = {}
+    for key, argument in value.items():
+        argument_key = str(key)
+        if not isinstance(argument, str):
+            raise TypeError(
+                f"Tool request argument value must be a string: {argument_key}"
+            )
+        normalized[argument_key] = argument
+    return normalized
+
 if TYPE_CHECKING:
     from agent_runtime_ref.identity import AgentIdentity
     from agent_runtime_ref.memory import MemoryRecord

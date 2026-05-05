@@ -1268,12 +1268,18 @@ class TestExecutionAndPolicyBranches:
                 PolicyDecision("allow", "low_risk_read", "cap_101"),
             )
 
-        result = execute_tool(
-            capability,
-            ToolRequest(capability_name="search_docs", arguments=cast(dict[str, str], {1: 2})),
-            PolicyDecision("allow", "low_risk_read", "cap_101"),
-        )
-        assert result.status == "success"
+        with pytest.raises(
+            TypeError,
+            match="Tool request argument value must be a string: 1",
+        ):
+            execute_tool(
+                capability,
+                ToolRequest(
+                    capability_name="search_docs",
+                    arguments=cast(dict[str, str], {1: 2}),
+                ),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
 
     @pytest.mark.parametrize(
         ("capability_name", "expected_message"),
@@ -3680,6 +3686,25 @@ class TestPolicyAndControls:
         )
         assert decision.action == "deny"
         assert decision.reason == "egress_policy_missing"
+
+    def test_policy_rejects_malformed_tool_argument_values(self) -> None:
+        policy = PolicyEngine()
+        with pytest.raises(
+            TypeError,
+            match="Tool request argument value must be a string: idempotency_key",
+        ):
+            policy.evaluate_tool(
+                RunContext(
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-bad-tool-arg-001",
+                ),
+                ToolRequest(
+                    capability_name="create_ticket",
+                    arguments=cast(dict[str, str], {"idempotency_key": 123}),
+                ),
+                None,
+            )
 
     @pytest.mark.parametrize(
         ("offline_eval_pass", "expected_ready"),
