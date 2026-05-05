@@ -196,15 +196,21 @@ class SessionStore:
         dataset_name = _read_required_string(dataset_name, field="dataset_name")
         destination = Path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
+        normalized_session_ids = tuple(
+            _read_required_string(session_id, field="session_id")
+            for session_id in session_ids
+        )
+        if len(set(normalized_session_ids)) != len(normalized_session_ids):
+            raise ValueError("Session field entries must be unique: session_id")
         sessions = []
-        for session_id in session_ids:
+        for session_id in normalized_session_ids:
             payload = self._session_payload(session_id)
             if eval_specs is not None and session_id in eval_specs:
                 payload["eval"] = eval_specs[session_id]
             sessions.append(payload)
         run_count = sum(
             summarize_session(session_id, self.runs_for_session(session_id)).total_runs
-            for session_id in session_ids
+            for session_id in normalized_session_ids
         )
         payload = {
             "dataset_name": dataset_name,
