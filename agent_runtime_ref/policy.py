@@ -45,6 +45,14 @@ class CapabilityPolicy:
     decision: str
     approver: str | None = None
 
+    def __post_init__(self) -> None:
+        decision = str(self.decision).strip()
+        if decision not in {"allow", "approval_required", "deny"}:
+            raise ValueError(f"Policy decision is not supported: {decision}")
+        approver = str(self.approver).strip() if self.approver is not None else None
+        object.__setattr__(self, "decision", decision)
+        object.__setattr__(self, "approver", approver)
+
 
 class PolicyEngine:
     """Reference policy engine with explicit structured decisions."""
@@ -61,7 +69,16 @@ class PolicyEngine:
     ) -> None:
         self.require_tenant = require_tenant
         self.deny_if_principal_missing = deny_if_principal_missing
-        self.capability_policies = dict(capability_policies or {})
+        self.capability_policies: dict[str, CapabilityPolicy] = {}
+        for name, policy in (capability_policies or {}).items():
+            capability_name = str(name).strip()
+            if not capability_name:
+                raise ValueError("Policy capability name must not be empty")
+            if capability_name in self.capability_policies:
+                raise ValueError("Policy capability names must be unique")
+            if policy.decision == "approval_required" and policy.approver == "":
+                raise ValueError(f"Policy approver must not be empty: {capability_name}")
+            self.capability_policies[capability_name] = policy
         self.allowed_memory_kinds = _read_string_list_items(
             list(allowed_memory_kinds or {"validated_fact", "session_summary"}),
             label="memory_write.allow_kinds",
@@ -103,6 +120,8 @@ class PolicyEngine:
             )
             if decision == "approval_required" and approver == "":
                 raise ValueError(f"Policy approver must not be empty: {capability_name}")
+            if capability_name in capability_policies:
+                raise ValueError("Policy capability names must be unique")
             capability_policies[capability_name] = CapabilityPolicy(
                 decision=decision,
                 approver=approver,
