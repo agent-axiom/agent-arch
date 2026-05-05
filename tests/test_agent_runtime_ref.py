@@ -860,6 +860,15 @@ class TestFailurePaths:
                 ]
             )
 
+    def test_cli_export_eval_dataset_rejects_unknown_scenarios(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="CLI field is not supported: scenario=suport_ticket",
+        ):
+            main(["export-eval-dataset", "--scenario", " suport_ticket "])
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:

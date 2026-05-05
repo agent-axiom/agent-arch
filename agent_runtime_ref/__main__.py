@@ -144,6 +144,23 @@ def _read_unique_cli_values(values: Sequence[str], *, field: str) -> list[str]:
     return normalized
 
 
+def _read_known_cli_values(
+    values: Sequence[str],
+    *,
+    field: str,
+    known_values: Sequence[str],
+) -> list[str]:
+    normalized = _read_unique_cli_values(values, field=field)
+    known = set(known_values)
+    for value in normalized:
+        if value not in known:
+            expected = ", ".join(sorted(known))
+            raise ValueError(
+                f"CLI field is not supported: {field}={value}; expected one of: {expected}"
+            )
+    return normalized
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -903,9 +920,10 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
 def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     runtime = _build_runtime(config_dir)
-    selected_scenarios = _read_unique_cli_values(
+    selected_scenarios = _read_known_cli_values(
         args.scenario or list(EVAL_DATASET_SCENARIOS),
         field="scenario",
+        known_values=tuple(EVAL_DATASET_SCENARIOS),
     )
     dataset_name = _read_required_cli_string(args.dataset_name, field="dataset_name")
     session_prefix = _read_required_cli_string(args.session_prefix, field="session_prefix")
@@ -1348,7 +1366,6 @@ def build_parser() -> argparse.ArgumentParser:
     export_eval_dataset.add_argument(
         "--scenario",
         action="append",
-        choices=tuple(EVAL_DATASET_SCENARIOS),
         default=[],
         help="Repeatable built-in scenario to include; all scenarios are used when omitted",
     )
