@@ -57,6 +57,8 @@ def _read_lookup_string(value: str, *, field: str) -> str:
 
 
 def _read_lookup_limit(value: int) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError("Memory lookup limit must be an integer")
     if value < 0:
         raise ValueError("Memory lookup limit must be non-negative")
     return value
