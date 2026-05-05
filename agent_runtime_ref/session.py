@@ -101,10 +101,18 @@ class SessionStore:
         delegated_scope: str = "",
     ) -> RunRecord:
         session_id = _read_required_string(session_id, field="session_id")
-        tenant_id = _read_required_string(tenant_id, field="tenant_id")
-        principal_id = _read_required_string(principal_id, field="principal_id")
-        trace_id = _read_required_string(trace_id, field="trace_id")
         status = _read_required_string(status, field="status")
+        tenant_id = (
+            _read_optional_string(tenant_id)
+            if status == "denied"
+            else _read_required_string(tenant_id, field="tenant_id")
+        )
+        principal_id = (
+            _read_optional_string(principal_id)
+            if status == "denied"
+            else _read_required_string(principal_id, field="principal_id")
+        )
+        trace_id = _read_required_string(trace_id, field="trace_id")
         user_input = _read_required_string(user_input, field="user_input")
         output_text = _read_required_string(output_text, field="output_text")
         failure_reason = _read_optional_string(failure_reason)

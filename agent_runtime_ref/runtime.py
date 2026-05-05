@@ -149,11 +149,28 @@ class AgentRuntime:
         )
         if precheck.action != "allow":
             result = RunResult(output_text="Request denied by policy.", status="denied")
+            self.sessions.register_run(
+                session_id=request.session_id,
+                tenant_id=request.tenant_id,
+                principal_id=request.principal_id,
+                trace_id=request.trace_id,
+                status=result.status,
+                user_input=request.user_input,
+                output_text=result.output_text,
+                failure_reason=precheck.reason,
+                authorization_mode=authorization_mode,
+                delegated_principal_id=delegated_principal_id,
+                delegated_scope=delegated_scope,
+            )
             self.telemetry.emit(
                 "run_complete",
                 request.trace_id,
+                session_id=request.session_id,
                 status=result.status,
                 output_preview=result.output_text[:80],
+                authorization_mode=authorization_mode,
+                delegated_principal_id=delegated_principal_id,
+                delegated_scope=delegated_scope,
             )
             return result
 
