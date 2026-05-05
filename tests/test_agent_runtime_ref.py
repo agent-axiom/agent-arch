@@ -3972,6 +3972,20 @@ class TestCli:
         assert payload["capability_session_status"] == "approved"
         assert payload["authorization_mode"] == "platform_owned"
 
+    def test_cli_resolve_approval_normalizes_approval_id(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "resolve-approval",
+                "--approval-id",
+                " apr-001 ",
+                "--decision",
+                "approved",
+            ]
+        )
+        assert exit_code == 0
+        assert payload["approval_id"] == "apr-001"
+        assert payload["status"] == "approved"
+
     def test_cli_resolve_approval_rejects_unknown_approval_id(self) -> None:
         from agent_runtime_ref.__main__ import main
 

@@ -169,6 +169,10 @@ def _read_cli_session_id(value: str) -> str:
     return _read_required_cli_string(value, field="session_id")
 
 
+def _read_cli_approval_id(value: str) -> str:
+    return _read_required_cli_string(value, field="approval_id")
+
+
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
@@ -782,7 +786,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     if args.approval_id is None:
         target = pending[0]
     else:
-        approval_id = args.approval_id
+        approval_id = _read_cli_approval_id(args.approval_id)
         target = next(
             (item for item in pending if item.approval_id == approval_id),
             None,
