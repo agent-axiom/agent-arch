@@ -3360,6 +3360,15 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
+        with pytest.raises(TypeError, match="required_signals entries must be strings"):
+            ChangeRecord.from_dict(
+                {
+                    "change": {
+                        **valid_change,
+                        "required_signals": [7],
+                    }
+                }
+            )
         with pytest.raises(ValueError, match="required_signals entries must not be empty"):
             ChangeRecord.from_dict(
                 {
@@ -3423,6 +3432,10 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         bundle = ArtifactBundle.from_dict({"bundle": {**valid_bundle, "signed": True}})
         assert bundle.provenance_required is True
         assert bundle.signed is True
+        with pytest.raises(TypeError, match="artifacts entries must be strings"):
+            ArtifactBundle.from_dict(
+                {"bundle": {**valid_bundle, "artifacts": [7]}}
+            )
         with pytest.raises(ValueError, match="artifacts entries must not be empty"):
             ArtifactBundle.from_dict(
                 {"bundle": {**valid_bundle, "artifacts": [""]}}
@@ -3442,6 +3455,15 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         with pytest.raises(ValueError, match="retirement.emergency_freeze_owner is required"):
             RetirementPlan.from_dict(
                 {"retirement": {**valid_retirement, "emergency_freeze_owner": " "}}
+            )
+        with pytest.raises(TypeError, match="archive_targets entries must be strings"):
+            RetirementPlan.from_dict(
+                {
+                    "retirement": {
+                        **valid_retirement,
+                        "archive_targets": [7],
+                    }
+                }
             )
         with pytest.raises(ValueError, match="archive_targets entries must not be empty"):
             RetirementPlan.from_dict(
@@ -3535,6 +3557,14 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 triggers=(),
                 required_steps=(),
                 archive_targets=(),
+            )
+        with pytest.raises(TypeError, match="required_signals entries must be strings"):
+            ChangeRecord(
+                **valid_change,
+                artifacts=(),
+                affected_surfaces=(),
+                required_signals=cast(tuple[str, ...], (7,)),
+                approval_roles=(),
             )
         with pytest.raises(ValueError, match="required_signals entries must be unique"):
             ChangeRecord(
