@@ -49,6 +49,13 @@ def _read_candidate_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_lookup_string(value: str, *, field: str) -> str:
+    normalized = str(value).strip()
+    if not normalized:
+        raise ValueError(f"Memory lookup field is required: {field}")
+    return normalized
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryRecord:
     memory_id: str
@@ -148,6 +155,7 @@ class MemoryStore:
         return tuple(self._records)
 
     def retrieve(self, query: str, tenant_id: str, *, limit: int = 3) -> list[MemoryRecord]:
+        tenant_id = _read_lookup_string(tenant_id, field="tenant_id")
         query_tokens = {token for token in query.lower().split() if token}
         scoped = [record for record in self._records if record.tenant_id == tenant_id]
         ranked = sorted(
@@ -196,6 +204,7 @@ class MemoryStore:
         return record
 
     def compact(self, tenant_id: str) -> int:
+        tenant_id = _read_lookup_string(tenant_id, field="tenant_id")
         seen: set[tuple[str, str, str]] = set()
         compacted: list[MemoryRecord] = []
         removed = 0

@@ -1813,10 +1813,17 @@ class TestRuntimeCore:
 
     def test_memory_store_filters_by_tenant(self) -> None:
         store = MemoryStore()
-        records = store.retrieve("language preference", "tenant-acme", limit=5)
+        records = store.retrieve("language preference", " tenant-acme ", limit=5)
         assert records
         assert all(record.tenant_id == "tenant-acme" for record in records)
         assert all(record.provenance for record in records)
+
+    def test_memory_store_rejects_blank_lookup_tenant(self) -> None:
+        store = MemoryStore()
+        with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
+            store.retrieve("language preference", " ")
+        with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
+            store.compact(" ")
 
 
 class TestRuntimeControlPaths:
@@ -2801,7 +2808,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 provenance="demo",
             ),
         )
-        removed = store.compact("tenant-acme")
+        removed = store.compact(" tenant-acme ")
         assert removed >= 1
         remaining_other = [record for record in store.all() if record.tenant_id == "tenant-other"]
         assert len(remaining_other) == 1
