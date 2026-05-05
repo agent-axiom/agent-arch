@@ -74,6 +74,10 @@ def _read_required_string(value: str, *, field: str) -> str:
     return normalized
 
 
+def _read_optional_string(value: str) -> str:
+    return str(value).strip()
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -103,11 +107,25 @@ class SessionStore:
         status = _read_required_string(status, field="status")
         user_input = _read_required_string(user_input, field="user_input")
         output_text = _read_required_string(output_text, field="output_text")
-        failure_reason = str(failure_reason).strip()
+        failure_reason = _read_optional_string(failure_reason)
+        capability_session_id = _read_optional_string(capability_session_id)
+        capability_session_status = _read_optional_string(capability_session_status)
+        authorization_mode = _read_required_string(
+            authorization_mode,
+            field="authorization_mode",
+        )
+        delegated_principal_id = _read_optional_string(delegated_principal_id)
+        delegated_scope = _read_optional_string(delegated_scope)
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
             failure_reason = _read_required_string(failure_reason, field="failure_reason")
+        if authorization_mode == "user_delegated":
+            delegated_principal_id = _read_required_string(
+                delegated_principal_id,
+                field="delegated_principal_id",
+            )
+            delegated_scope = _read_required_string(delegated_scope, field="delegated_scope")
         session = self._sessions.setdefault(
             session_id,
             SessionRecord(

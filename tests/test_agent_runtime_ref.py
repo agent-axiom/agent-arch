@@ -1368,6 +1368,55 @@ class TestRuntimeCore:
         assert "waiting for human approval" in result.output_text
         assert len(runtime.approvals.pending()) == 1
 
+    def test_runtime_handles_unknown_tool_capability_as_policy_denial(self) -> None:
+        class UnknownToolRuntime(AgentRuntime):
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                if second_pass:
+                    return ModelOutput(text="Unknown tool was denied safely.")
+                return ModelOutput(
+                    text="needs unavailable tool",
+                    tool_request=ToolRequest(
+                        capability_name="missing_capability",
+                        arguments={},
+                    ),
+                )
+
+        runtime = UnknownToolRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Call the missing capability.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-unknown-tool-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        session_run = runtime.sessions.runs_for_session("session-demo-001")[0]
+        policy_events = [
+            event
+            for event in runtime.telemetry.events
+            if event.event_type == "tool_policy_decision"
+        ]
+        execution_events = [
+            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
+        ]
+
+        assert result.status == "failed"
+        assert session_run.status == "failed"
+        assert session_run.failure_reason == "capability_unknown"
+        assert "missing_capability returned denied" in session_run.output_text
+        assert runtime.telemetry.events[-1].event_type == "run_complete"
+        assert policy_events[0].payload["reason"] == "capability_unknown"
+        assert policy_events[0].payload["policy_id"] == "cap_404"
+        assert execution_events[0].payload["capability"] == "missing_capability"
+        assert execution_events[0].payload["status"] == "denied"
+
     def test_runtime_rejects_bad_second_pass_model_output(self) -> None:
         class BadSecondPassRuntime(AgentRuntime):
             def _call_model(
@@ -1780,6 +1829,60 @@ class TestRuntimeControlPaths:
                 output_text="done",
             )
         assert store.get_session("session-bad-status-001") is None
+
+    def test_session_store_requires_delegated_authorization_identity(self) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        required_fields = {
+            "authorization_mode": {
+                "authorization_mode": " ",
+            },
+            "delegated_principal_id": {
+                "authorization_mode": "user_delegated",
+                "delegated_principal_id": " ",
+                "delegated_scope": "tickets.write",
+            },
+            "delegated_scope": {
+                "authorization_mode": "user_delegated",
+                "delegated_principal_id": "user-1",
+                "delegated_scope": " ",
+            },
+        }
+        for field, delegated_fields in required_fields.items():
+            store = SessionStore()
+            with pytest.raises(ValueError, match=f"Session field is required: {field}"):
+                store.register_run(
+                    session_id="session-delegated-required-001",
+                    tenant_id="tenant-acme",
+                    principal_id="user-1",
+                    trace_id="trace-delegated-required-001",
+                    status="success",
+                    user_input="hello",
+                    output_text="done",
+                    **delegated_fields,
+                )
+            assert store.get_session("session-delegated-required-001") is None
+
+        store = SessionStore()
+        record = store.register_run(
+            session_id="session-delegated-normalized-001",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-delegated-normalized-001",
+            status="success",
+            user_input="hello",
+            output_text="done",
+            capability_session_id=" cap-session-001 ",
+            capability_session_status=" pending ",
+            authorization_mode=" user_delegated ",
+            delegated_principal_id=" user-1 ",
+            delegated_scope=" tickets.write ",
+        )
+        assert record.capability_session_id == "cap-session-001"
+        assert record.capability_session_status == "pending"
+        assert record.authorization_mode == "user_delegated"
+        assert record.delegated_principal_id == "user-1"
+        assert record.delegated_scope == "tickets.write"
 
     def test_session_store_requires_eval_dataset_name(self, tmp_path: Path) -> None:
         from agent_runtime_ref.session import SessionStore
