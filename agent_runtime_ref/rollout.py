@@ -14,9 +14,17 @@ def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ..
 
 
 def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> dict[str, str]:
-    values = {str(key).strip(): str(value).strip() for key, value in items.items()}
-    if any(not key or not value for key, value in values.items()):
-        raise ValueError(f"{label} entries must not be empty")
+    values: dict[str, str] = {}
+    for key, value in items.items():
+        if not isinstance(key, str):
+            raise TypeError(f"{label} keys must be strings")
+        field = key.strip()
+        mode = str(value).strip()
+        if not field or not mode:
+            raise ValueError(f"{label} entries must not be empty")
+        if field in values:
+            raise ValueError(f"{label} entries must be unique")
+        values[field] = mode
     return values
 
 
