@@ -1392,6 +1392,10 @@ class TestExecutionAndPolicyBranches:
             PolicyEngine.from_dict(
                 {"policy": {"capabilities": {"search_docs": {"decision": " "}}}}
             )
+        with pytest.raises(TypeError, match="Policy capability names must be strings"):
+            PolicyEngine.from_dict(
+                {"policy": {"capabilities": {7: {"decision": "allow"}}}}
+            )
         with pytest.raises(
             ValueError, match="Policy approver must not be empty: create_ticket"
         ):
@@ -1444,6 +1448,13 @@ class TestExecutionAndPolicyBranches:
         )
         assert direct_policy.capability_policies["search_docs"].decision == "allow"
         assert direct_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        with pytest.raises(TypeError, match="Policy capability names must be strings"):
+            PolicyEngine(
+                capability_policies=cast(
+                    dict[str, CapabilityPolicy],
+                    {7: CapabilityPolicy("allow")},
+                )
+            )
         with pytest.raises(ValueError, match="Policy capability name must not be empty"):
             PolicyEngine(capability_policies={" ": CapabilityPolicy("allow")})
         with pytest.raises(ValueError, match="Policy capability names must be unique"):
