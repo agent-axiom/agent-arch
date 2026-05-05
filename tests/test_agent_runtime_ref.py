@@ -1435,7 +1435,7 @@ class TestExecutionAndPolicyBranches:
     def test_policy_evaluate_tool_covers_network_and_mode_branches(self) -> None:
         from agent_runtime_ref.catalog import CapabilitySpec
 
-        engine = PolicyEngine(allowed_network_access={"restricted"})
+        engine = PolicyEngine(allowed_network_access={" restricted "})
         context = RunContext(
             tenant_id="tenant-acme", principal_id="user-1", trace_id="trace-pol-002"
         )
@@ -1492,6 +1492,12 @@ class TestExecutionAndPolicyBranches:
         assert write_allowed.reason == "approved_write"
         assert unsupported.reason == "unsupported_mode"
 
+        with pytest.raises(
+            ValueError,
+            match="execution.allow_network_access entries must not be empty",
+        ):
+            PolicyEngine(allowed_network_access={" "})
+
     def test_policy_evaluate_tool_covers_critical_risk_branch(self) -> None:
         from agent_runtime_ref.catalog import CapabilitySpec
 
@@ -1521,12 +1527,17 @@ class TestExecutionAndPolicyBranches:
         assert decision.action == "deny"
         assert decision.reason == "memory_kind_denied"
 
-        allowed = PolicyEngine(allowed_memory_kinds={"session_summary"}).allow_memory_write(
+        allowed = PolicyEngine(allowed_memory_kinds={" session_summary "}).allow_memory_write(
             " session_summary "
         )
         assert allowed.action == "allow"
         assert allowed.reason == "memory_kind_allowed"
 
+        with pytest.raises(
+            ValueError,
+            match="memory_write.allow_kinds entries must not be empty",
+        ):
+            PolicyEngine(allowed_memory_kinds={" "})
         with pytest.raises(ValueError, match="Policy memory kind must not be empty"):
             PolicyEngine().allow_memory_write(" ")
 

@@ -57,9 +57,15 @@ class PolicyEngine:
         self.require_tenant = require_tenant
         self.deny_if_principal_missing = deny_if_principal_missing
         self.capability_policies = dict(capability_policies or {})
-        self.allowed_memory_kinds = allowed_memory_kinds or {"validated_fact", "session_summary"}
+        self.allowed_memory_kinds = _read_string_list_items(
+            list(allowed_memory_kinds or {"validated_fact", "session_summary"}),
+            label="memory_write.allow_kinds",
+        )
         self.approved_inventory = approved_inventory
-        self.allowed_network_access = allowed_network_access or {"restricted", "brokered"}
+        self.allowed_network_access = _read_string_list_items(
+            list(allowed_network_access or {"restricted", "brokered"}),
+            label="execution.allow_network_access",
+        )
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PolicyEngine":
