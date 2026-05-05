@@ -3121,7 +3121,14 @@ class TestLowCoverageModuleBranches:
         emitter = TelemetryEmitter()
         emitter.emit("run_start", "trace-a", user_input="hello")
         emitter.emit("run_complete", "trace-b", status="success")
-        assert len(emitter.events_for_trace("trace-a")) == 1
+        events = emitter.events_for_trace(" trace-a ")
+        assert len(events) == 1
+        assert events[0].trace_id == "trace-a"
+        with pytest.raises(
+            ValueError,
+            match="Telemetry event field must not be empty: trace_id",
+        ):
+            emitter.events_for_trace(" ")
 
         output_path = tmp_path / "events.jsonl"
         emitter.export_jsonl(output_path)
