@@ -32,8 +32,7 @@ def _read_required_string(spec: Mapping[str, Any], key: str, *, label: str) -> s
     return _normalize_required_string(spec.get(key, ""), label=f"{label}.{key}")
 
 
-def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
-    value = spec.get(key, 10)
+def _normalize_positive_int(value: object, key: str, *, label: str) -> int:
     if not isinstance(value, int) or isinstance(value, bool):
         raise TypeError(f"'{label}.{key}' must be an integer")
     if value < 1:
@@ -41,11 +40,18 @@ def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
     return value
 
 
-def _read_bool(spec: Mapping[str, Any], key: str, *, label: str) -> bool:
-    value = spec.get(key, False)
+def _read_positive_int(spec: Mapping[str, Any], key: str, *, label: str) -> int:
+    return _normalize_positive_int(spec.get(key, 10), key, label=label)
+
+
+def _normalize_bool(value: object, key: str, *, label: str) -> bool:
     if not isinstance(value, bool):
         raise TypeError(f"'{label}.{key}' must be a boolean")
     return value
+
+
+def _read_bool(spec: Mapping[str, Any], key: str, *, label: str) -> bool:
+    return _normalize_bool(spec.get(key, False), key, label=label)
 
 
 def _read_approval(spec: Mapping[str, Any], *, label: str) -> str:
@@ -91,8 +97,35 @@ class CapabilitySpec:
             )
         object.__setattr__(
             self,
+            "timeout_seconds",
+            _normalize_positive_int(
+                self.timeout_seconds,
+                "timeout_seconds",
+                label="capability",
+            ),
+        )
+        object.__setattr__(
+            self,
             "allowed_egress",
             _normalize_string_list_items(self.allowed_egress, label="allowed_egress"),
+        )
+        object.__setattr__(
+            self,
+            "approval_required",
+            _normalize_bool(
+                self.approval_required,
+                "approval_required",
+                label="capability",
+            ),
+        )
+        object.__setattr__(
+            self,
+            "idempotency_key_required",
+            _normalize_bool(
+                self.idempotency_key_required,
+                "idempotency_key_required",
+                label="capability",
+            ),
         )
 
 
@@ -100,7 +133,14 @@ class CapabilityCatalog:
     """Small in-memory capability registry for the reference runtime."""
 
     def __init__(self, registry: Mapping[str, CapabilitySpec] | None = None) -> None:
-        self._registry = dict(registry or self._default_registry())
+        self._registry: dict[str, CapabilitySpec] = {}
+        for name, capability in (registry or self._default_registry()).items():
+            capability_name = str(name).strip()
+            if not capability_name:
+                raise ValueError("Capability name must not be empty")
+            if capability_name in self._registry:
+                raise ValueError("Capability names must be unique")
+            self._registry[capability_name] = capability
 
     @staticmethod
     def _default_registry() -> dict[str, CapabilitySpec]:
@@ -137,11 +177,20 @@ class CapabilityCatalog:
         if not isinstance(raw_capabilities, Mapping):
             raise TypeError("'capabilities' must be a mapping")
 
-        registry: dict[str, CapabilitySpec] = {}
-        for name, raw_spec in raw_capabilities.items():
+        normalized_names: dict[object, str] = {}
+        seen_names: set[str] = set()
+        for name in raw_capabilities:
             capability_name = str(name).strip()
             if not capability_name:
                 raise ValueError("Capability name must not be empty")
+            if capability_name in seen_names:
+                raise ValueError("Capability names must be unique")
+            seen_names.add(capability_name)
+            normalized_names[name] = capability_name
+
+        registry: dict[str, CapabilitySpec] = {}
+        for name, raw_spec in raw_capabilities.items():
+            capability_name = normalized_names[name]
             if not isinstance(raw_spec, Mapping):
                 raise TypeError(f"Capability spec for {name!r} must be a mapping")
             label = f"capabilities.{capability_name}"
