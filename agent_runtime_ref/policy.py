@@ -21,6 +21,13 @@ def _read_bool(value: object, *, label: str) -> bool:
     return value
 
 
+def _read_memory_kind(value: str) -> str:
+    kind = str(value).strip()
+    if not kind:
+        raise ValueError("Policy memory kind must not be empty")
+    return kind
+
+
 @dataclass(frozen=True, slots=True)
 class PolicyDecision:
     action: str
@@ -175,6 +182,7 @@ class PolicyEngine:
         return PolicyDecision("deny", "unsupported_mode", "cap_999")
 
     def allow_memory_write(self, kind: str) -> PolicyDecision:
+        kind = _read_memory_kind(kind)
         if kind in self.allowed_memory_kinds:
             return PolicyDecision("allow", "memory_kind_allowed", "mem_001")
         return PolicyDecision("deny", "memory_kind_denied", "mem_002")

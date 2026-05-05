@@ -1514,12 +1514,21 @@ class TestExecutionAndPolicyBranches:
         assert decision.action == "approval_required"
         assert decision.reason == "critical_risk_tier"
 
-    def test_policy_allow_memory_write_denies_unknown_kind(self) -> None:
+    def test_policy_allow_memory_write_normalizes_kind(self) -> None:
         decision = PolicyEngine(allowed_memory_kinds={"profile"}).allow_memory_write(
             "session_summary"
         )
         assert decision.action == "deny"
         assert decision.reason == "memory_kind_denied"
+
+        allowed = PolicyEngine(allowed_memory_kinds={"session_summary"}).allow_memory_write(
+            " session_summary "
+        )
+        assert allowed.action == "allow"
+        assert allowed.reason == "memory_kind_allowed"
+
+        with pytest.raises(ValueError, match="Policy memory kind must not be empty"):
+            PolicyEngine().allow_memory_write(" ")
 
 
 class TestRuntimeCore:
