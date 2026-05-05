@@ -2904,7 +2904,27 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             }
         ).all()[0]
         assert record.memory_id == "mem-custom"
-        for confidence in (2, "nan", "inf"):
+        for confidence in ("0.9", True):
+            with pytest.raises(
+                TypeError, match="Memory record #1 confidence must be a number"
+            ):
+                MemoryStore.from_dict(
+                    {
+                        "memory": {
+                            "seed_records": [
+                                {
+                                    "tenant_id": "tenant-acme",
+                                    "memory_class": "profile",
+                                    "kind": "language_preference",
+                                    "content": "concise replies",
+                                    "source": "trusted_profile",
+                                    "confidence": confidence,
+                                }
+                            ]
+                        }
+                    }
+                )
+        for confidence in (2, float("nan"), float("inf")):
             with pytest.raises(
                 ValueError, match="Memory record #1 confidence must be between 0 and 1"
             ):
@@ -2990,6 +3010,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 content="concise replies",
                 source="trusted_profile",
                 confidence=0.9,
+            )
+        with pytest.raises(TypeError, match="Memory record confidence must be a number"):
+            MemoryRecord(
+                memory_id="mem-direct",
+                tenant_id="tenant-acme",
+                memory_class="profile",
+                kind="language_preference",
+                content="concise replies",
+                source="trusted_profile",
+                confidence=cast(float, "0.9"),
             )
         with pytest.raises(ValueError, match="Memory record confidence must be between 0 and 1"):
             MemoryRecord(
