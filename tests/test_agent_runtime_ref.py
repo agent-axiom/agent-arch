@@ -3546,6 +3546,12 @@ class TestCli:
         assert all("provenance" in item for item in payload["records"])
         assert all("revision" in item for item in payload["records"])
 
+    def test_cli_inspect_memory_rejects_negative_limit(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(ValueError, match="CLI field must be non-negative: limit"):
+            main(["inspect-memory", "--limit", "-1"])
+
     def test_cli_inspect_agent_returns_identity_and_inventory(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-agent"])
         assert exit_code == 0
