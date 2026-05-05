@@ -149,8 +149,9 @@ def assess_change_gate(
     change: ChangeRecord,
     observed_signals: dict[str, bool],
 ) -> ChangeGateAssessment:
+    observed = {str(key).strip(): value for key, value in observed_signals.items()}
     missing = tuple(
-        signal for signal in change.required_signals if not observed_signals.get(signal, False)
+        signal for signal in change.required_signals if not observed.get(signal, False)
     )
     return ChangeGateAssessment(ready=not missing, missing_signals=missing)
 
@@ -159,7 +160,8 @@ def assess_retirement(
     plan: RetirementPlan,
     observed_steps: dict[str, bool],
 ) -> RetirementAssessment:
+    observed = {str(key).strip(): value for key, value in observed_steps.items()}
     missing = tuple(
-        step for step in plan.required_steps if not observed_steps.get(step, False)
+        step for step in plan.required_steps if not observed.get(step, False)
     )
     return RetirementAssessment(ready=not missing, missing_steps=missing)
