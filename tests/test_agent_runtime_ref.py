@@ -1464,15 +1464,51 @@ class TestExecutionAndPolicyBranches:
                     "create_ticket": CapabilityPolicy("approval_required", " ")
                 }
             )
+        with pytest.raises(
+            TypeError, match="memory_write.allow_kinds entries must be strings"
+        ):
+            PolicyEngine.from_dict(
+                {"policy": {"memory_write": {"allow_kinds": [7]}}}
+            )
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
             PolicyEngine.from_dict(
                 {"policy": {"memory_write": {"allow_kinds": [" "]}}}
+            )
+        with pytest.raises(
+            ValueError, match="memory_write.allow_kinds entries must be unique"
+        ):
+            PolicyEngine.from_dict(
+                {
+                    "policy": {
+                        "memory_write": {
+                            "allow_kinds": ["validated_fact", " validated_fact "]
+                        }
+                    }
+                }
+            )
+        with pytest.raises(
+            TypeError, match="execution.allow_network_access entries must be strings"
+        ):
+            PolicyEngine.from_dict(
+                {"policy": {"execution": {"allow_network_access": [7]}}}
             )
         with pytest.raises(
             ValueError, match="execution.allow_network_access entries must not be empty"
         ):
             PolicyEngine.from_dict(
                 {"policy": {"execution": {"allow_network_access": [""]}}}
+            )
+        with pytest.raises(
+            ValueError, match="execution.allow_network_access entries must be unique"
+        ):
+            PolicyEngine.from_dict(
+                {
+                    "policy": {
+                        "execution": {
+                            "allow_network_access": ["restricted", " restricted "]
+                        }
+                    }
+                }
             )
 
     def test_policy_precheck_denies_missing_tenant_and_agent(self) -> None:
@@ -1582,10 +1618,20 @@ class TestExecutionAndPolicyBranches:
         assert unsupported.reason == "unsupported_mode"
 
         with pytest.raises(
+            TypeError,
+            match="execution.allow_network_access entries must be strings",
+        ):
+            PolicyEngine(allowed_network_access=cast(set[str], {7}))
+        with pytest.raises(
             ValueError,
             match="execution.allow_network_access entries must not be empty",
         ):
             PolicyEngine(allowed_network_access={" "})
+        with pytest.raises(
+            ValueError,
+            match="execution.allow_network_access entries must be unique",
+        ):
+            PolicyEngine(allowed_network_access={"restricted", " restricted "})
 
     def test_policy_evaluate_tool_covers_critical_risk_branch(self) -> None:
         from agent_runtime_ref.catalog import CapabilitySpec
@@ -1623,10 +1669,20 @@ class TestExecutionAndPolicyBranches:
         assert allowed.reason == "memory_kind_allowed"
 
         with pytest.raises(
+            TypeError,
+            match="memory_write.allow_kinds entries must be strings",
+        ):
+            PolicyEngine(allowed_memory_kinds=cast(set[str], {7}))
+        with pytest.raises(
             ValueError,
             match="memory_write.allow_kinds entries must not be empty",
         ):
             PolicyEngine(allowed_memory_kinds={" "})
+        with pytest.raises(
+            ValueError,
+            match="memory_write.allow_kinds entries must be unique",
+        ):
+            PolicyEngine(allowed_memory_kinds={"session_summary", " session_summary "})
         with pytest.raises(ValueError, match="Policy memory kind must not be empty"):
             PolicyEngine().allow_memory_write(" ")
 

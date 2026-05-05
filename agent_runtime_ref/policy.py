@@ -14,9 +14,16 @@ from agent_runtime_ref.models import (
 
 
 def _read_string_list_items(items: list[object], *, label: str) -> set[str]:
-    values = {str(item).strip() for item in items}
-    if "" in values:
-        raise ValueError(f"{label} entries must not be empty")
+    values: set[str] = set()
+    for item in items:
+        if not isinstance(item, str):
+            raise TypeError(f"{label} entries must be strings")
+        value = item.strip()
+        if not value:
+            raise ValueError(f"{label} entries must not be empty")
+        if value in values:
+            raise ValueError(f"{label} entries must be unique")
+        values.add(value)
     return values
 
 
