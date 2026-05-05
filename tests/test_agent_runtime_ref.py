@@ -499,6 +499,37 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_eval_schema_documents_runtime_export_contract(self) -> None:
+        """Keep eval schema docs aligned with bundled dataset export shape."""
+        required_terms = (
+            "agent-runtime-ref-eval-seed",
+            "session_count",
+            "run_count",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "failed_run_timeout",
+            "profile_memory",
+            "memory_read",
+            "profile_lookup",
+            "grounded_answer",
+            "mixed_session",
+            "multi_run",
+            "approval_then_memory",
+            "session_evals",
+            "required_run_count",
+            "support_ticket",
+            "sandbox_profile_review",
+        )
+        for path in (
+            Path("docs/appendix/eval-schema.en.md"),
+            Path("docs/appendix/eval-schema.md"),
+            Path("docs/appendix/eval-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
+
 
 class TestFailurePaths:
     def test_config_loader_rejects_non_mapping_yaml(self, tmp_path: Path) -> None:
