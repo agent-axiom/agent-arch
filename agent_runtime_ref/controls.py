@@ -16,6 +16,16 @@ def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ..
     return values
 
 
+def _read_observed_flags(items: Mapping[str, bool]) -> dict[str, bool]:
+    observed: dict[str, bool] = {}
+    for key, value in items.items():
+        field = str(key).strip()
+        if not isinstance(value, bool):
+            raise TypeError(f"Assessment signal value must be a boolean: {field}")
+        observed[field] = value
+    return observed
+
+
 @dataclass(frozen=True, slots=True)
 class ControlsPolicy:
     required_controls: tuple[str, ...]
@@ -74,7 +84,7 @@ def assess_controls(
     *,
     inventory_drift: InventoryDrift,
 ) -> ControlsAssessment:
-    observed = {str(key).strip(): value for key, value in observed_controls.items()}
+    observed = _read_observed_flags(observed_controls)
     missing_controls = tuple(
         control for control in policy.required_controls if not observed.get(control, False)
     )
