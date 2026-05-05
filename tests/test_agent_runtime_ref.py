@@ -2585,6 +2585,16 @@ class TestRuntimeControlPaths:
         assert payload["dataset_name"] == "eval-seed"
         assert payload["sessions"][0]["session"]["session_id"] == "session-eval-name-required-001"
 
+        output_path = tmp_path / "normalized-eval-spec.json"
+        store.export_eval_dataset_json(
+            ("session-eval-name-required-001",),
+            output_path=output_path,
+            dataset_name="eval-seed",
+            eval_specs={" session-eval-name-required-001 ": {"labels": ["happy_path"]}},
+        )
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+        assert payload["sessions"][0]["eval"]["labels"] == ["happy_path"]
+
     def test_session_store_rejects_duplicate_eval_session_ids(self, tmp_path: Path) -> None:
         from agent_runtime_ref.session import SessionStore
 
@@ -2610,6 +2620,19 @@ class TestRuntimeControlPaths:
                 dataset_name="eval-seed",
             )
         assert not output_path.exists()
+        with pytest.raises(
+            ValueError,
+            match="Session field entries must be unique: session_id",
+        ):
+            store.export_eval_dataset_json(
+                ("session-eval-duplicate-001",),
+                output_path=output_path,
+                dataset_name="eval-seed",
+                eval_specs={
+                    "session-eval-duplicate-001": {"labels": ["happy_path"]},
+                    " session-eval-duplicate-001 ": {"labels": ["duplicate"]},
+                },
+            )
 
     def test_cli_check_retirement_detects_runtime_control_shutdown_gaps(self, cli_json) -> None:
         exit_code, payload = cli_json(
