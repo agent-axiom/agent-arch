@@ -3773,6 +3773,8 @@ class TestCli:
         assert exit_code == 0
         assert payload["status"] == "approved"
         assert payload["resolution_note"] == "manager approved demo request"
+        assert payload["capability_session_id"].startswith("cap-session-")
+        assert payload["capability_session_status"] == "approved"
         assert payload["authorization_mode"] == "platform_owned"
 
     def test_cli_resolve_approval_rejects_unknown_approval_id(self) -> None:

@@ -757,6 +757,8 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "status": resolved.status,
         "reviewer": resolved.reviewer,
         "resolution_note": resolved.resolution_note,
+        "capability_session_id": resolved.capability_session_id,
+        "capability_session_status": resolved.capability_session_status,
         "authorization_mode": resolved.authorization_mode,
         "delegated_principal_id": resolved.delegated_principal_id,
         "delegated_scope": resolved.delegated_scope,
