@@ -2199,16 +2199,22 @@ class TestRuntimeCore:
         assert run_start.payload["runtime_principal"] == "svc-agent-runtime-ref"
 
     @pytest.mark.parametrize(
-        ("user_input", "expected_fragment"),
+        ("user_input", "expected_output"),
         [
-            ("Summarize the current architecture.", "Reference runtime completed"),
-            ("What language preference do you remember?", "Retrieved profile hint"),
+            (
+                "Summarize the current architecture.",
+                "Reference runtime completed without tool usage. Retrieved 3 memory records.",
+            ),
+            (
+                "What language preference do you remember?",
+                "Retrieved profile hint: User usually prefers concise English answers.",
+            ),
         ],
     )
     def test_runtime_paths_return_expected_output(
         self,
         user_input: str,
-        expected_fragment: str,
+        expected_output: str,
     ) -> None:
         runtime = AgentRuntime()
         result = runtime.run(
@@ -2221,7 +2227,7 @@ class TestRuntimeCore:
             ),
         )
         assert result.status == "success"
-        assert expected_fragment in result.output_text
+        assert result.output_text == expected_output
 
     def test_runtime_rejects_blank_user_input(self) -> None:
         runtime = AgentRuntime()
