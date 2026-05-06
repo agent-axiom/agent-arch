@@ -1287,10 +1287,24 @@ class TestFailurePaths:
             ]
         )
         assert code == 0
+        assert set(payload) == {
+            "output_path",
+            "trace_id",
+            "status",
+            "result",
+            "event_count",
+            "redact_fields",
+            "failure_reason",
+        }
+        assert payload["output_path"] == str(output_path)
+        assert payload["trace_id"] == "trace-cli-export-failure-001"
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "upstream_unavailable"
+        assert "upstream_unavailable" in payload["result"]
+        assert payload["redact_fields"] == []
         assert output_path.exists()
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
+        assert payload["event_count"] == len(lines)
         assert any("run_failed" in line for line in lines)
 
     def test_cli_dump_events_surfaces_failure_reason(self, cli_json) -> None:
