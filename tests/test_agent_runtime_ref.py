@@ -6857,13 +6857,17 @@ class TestCli:
         assert payload["summary"]["total_runs"] == 2
         self._assert_session_run_contract(payload["runs"][0])
         self._assert_session_run_contract(payload["runs"][1])
-        assert "waiting for human approval" in payload["runs"][0]["output_text"]
+        assert payload["runs"][0]["output_text"] == (
+            "Ticket request is waiting for human approval (apr-001)."
+        )
         assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
         assert payload["runs"][0]["delegated_principal_id"] == ""
         assert payload["runs"][0]["delegated_scope"] == ""
-        assert "Retrieved profile hint" in payload["runs"][1]["output_text"]
+        assert payload["runs"][1]["output_text"] == (
+            "Retrieved profile hint: User usually prefers concise English answers."
+        )
 
     def test_cli_inspect_session_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
