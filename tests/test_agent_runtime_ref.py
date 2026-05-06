@@ -2470,12 +2470,39 @@ class TestRuntimeCore:
         execution_event = runtime.telemetry.events[7]
 
         assert result.status == "success"
+        assert result.output_text == "Padded tool request was handled safely."
         assert approval.capability_name == "create_ticket"
-        assert policy_event.payload["capability"] == "create_ticket"
-        assert policy_event.payload["reason"] == "write_action"
-        assert approval_event.payload["capability"] == "create_ticket"
-        assert approval_event.payload["capability_session_id"] == "cap-session-001"
-        assert execution_event.payload["capability"] == "create_ticket"
+        assert approval.capability_session_id == "cap-session-001"
+        assert approval.capability_session_status == "pending"
+        assert policy_event.payload == {
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-demo-001",
+            "capability": "create_ticket",
+            "action": "approval_required",
+            "reason": "write_action",
+            "policy_id": "cap_201",
+        }
+        assert approval_event.payload == {
+            "session_id": "session-demo-001",
+            "approval_id": "apr-001",
+            "capability": "create_ticket",
+            "reviewer": "manager",
+            "status": "pending",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "pending",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert execution_event.payload == {
+            "session_id": "session-demo-001",
+            "capability": "create_ticket",
+            "status": "approval_required",
+            "tool_principal": "pending_review",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     def test_runtime_handles_unknown_tool_capability_as_policy_denial(self) -> None:
         class UnknownToolRuntime(AgentRuntime):
