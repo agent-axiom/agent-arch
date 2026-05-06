@@ -4010,8 +4010,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 revision_mode="replace",
             ),
         )
-        assert first.revision >= 2
-        assert second.revision == first.revision + 1
+        assert first.revision == 2
+        assert second.revision == 3
 
     def test_memory_store_rejects_unsupported_candidate_revision_modes(self) -> None:
         from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
