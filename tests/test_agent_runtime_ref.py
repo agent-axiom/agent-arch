@@ -2710,19 +2710,46 @@ class TestRuntimeControlPaths:
             ),
         )
         assert result.status == "success"
-        approval_requested = next(
-            event for event in runtime.telemetry.events if event.event_type == "approval_requested"
-        )
-        tool_execution = next(
-            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
-        )
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        approval_requested = runtime.telemetry.events[6]
+        tool_execution = runtime.telemetry.events[7]
         session_record = runtime.sessions.get_session(session_id)
         assert approval_requested.trace_id == trace_id
-        assert approval_requested.payload["status"] == "pending"
-        assert approval_requested.payload["capability_session_id"] == "cap-session-001"
-        assert approval_requested.payload["capability_session_status"] == "pending"
-        assert tool_execution.payload["status"] == "approval_required"
-        assert tool_execution.payload["tool_principal"] == "pending_review"
+        assert approval_requested.payload == {
+            "session_id": session_id,
+            "approval_id": "apr-001",
+            "capability": "create_ticket",
+            "reviewer": "manager",
+            "status": "pending",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "pending",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert tool_execution.payload == {
+            "session_id": session_id,
+            "capability": "create_ticket",
+            "status": "approval_required",
+            "tool_principal": "pending_review",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
         assert len(runtime.approvals.pending()) == 1
         assert session_record is not None
         run_record = runtime.sessions.runs_for_session(session_id)[0]
