@@ -6329,12 +6329,22 @@ class TestCli:
             "trace-consistent-001",
             "trace-consistent-001",
         ]
-        session_ids = {
-            item["payload"]["session_id"]
-            for item in inspect_payload["events"]
-            if "session_id" in item["payload"]
-        }
-        assert session_ids == {"session-consistent-001"}
+        assert [item["payload"].get("session_id") for item in inspect_payload["events"]] == [
+            "session-consistent-001",
+            "session-consistent-001",
+            "session-consistent-001",
+            "session-consistent-001",
+            None,
+            "session-consistent-001",
+            "session-consistent-001",
+            "session-consistent-001",
+            "session-consistent-001",
+            None,
+            None,
+            None,
+            "session-consistent-001",
+            "session-consistent-001",
+        ]
 
     def test_cli_replay_run_uses_exported_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
