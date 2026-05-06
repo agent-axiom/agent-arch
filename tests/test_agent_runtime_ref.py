@@ -5513,15 +5513,36 @@ class TestLifecycleArtifacts:
 
 
 class TestCli:
-    def test_cli_simulate_run_returns_json(self, cli_json) -> None:
-        exit_code, payload = cli_json([])
+    @pytest.mark.parametrize("command", [[], ["simulate-run"]])
+    def test_cli_simulate_run_returns_json(
+        self,
+        command: list[str],
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(command)
         assert exit_code == 0
+        assert set(payload) == {
+            "agent_id",
+            "session_id",
+            "result",
+            "status",
+            "failure_reason",
+            "trace_id",
+            "events",
+            "memory_records",
+            "pending_approvals",
+            "config_dir",
+        }
         assert payload["agent_id"] == "support-triage-ref"
         assert payload["session_id"] == "session-demo-001"
+        assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["status"] == "success"
-        assert payload["events"] >= 1
-        assert payload["memory_records"] >= 3
-        assert payload["pending_approvals"] >= 1
+        assert payload["failure_reason"] == ""
+        assert payload["trace_id"] == "trace-demo-001"
+        assert payload["events"] == 14
+        assert payload["memory_records"] == 4
+        assert payload["pending_approvals"] == 1
+        assert payload["config_dir"].endswith("agent_runtime_ref/configs")
 
     def test_cli_inspect_memory_filters_records(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-memory", "--memory-class", "profile"])

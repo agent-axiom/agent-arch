@@ -65,7 +65,7 @@ That same runtime-control surface is also the natural place to keep delegated au
 Expected output:
 
 ```json
-{"result": "Ticket request accepted and ready for follow-up.", "status": "success", "events": 9, "memory_records": 4, "config_dir": ".../agent_runtime_ref/configs"}
+{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "events": 14, "memory_records": 4, "pending_approvals": 1, "config_dir": ".../agent_runtime_ref/configs"}
 ```
 
 Explicit runtime execution via subcommand:
