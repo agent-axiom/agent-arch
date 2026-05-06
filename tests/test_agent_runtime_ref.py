@@ -3319,9 +3319,23 @@ class TestRuntimeControlPaths:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "system_id",
+            "ready",
+            "missing_steps",
+            "failed_run_archive_targets",
+            "replacement_mode",
+        }
+        assert payload["system_id"] == "support-triage-ref"
         assert not payload["ready"]
         assert "expire_paused_runs" in payload["missing_steps"]
         assert "stop_background_routes" in payload["missing_steps"]
+        assert payload["failed_run_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+        ]
+        assert payload["replacement_mode"] == "staged_replacement"
 
     def test_cli_check_change_accepts_runtime_control_signal_contract(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -6095,8 +6109,22 @@ class TestCli:
     ) -> None:
         exit_code, payload = cli_json(["check-retirement"])
         assert exit_code == 0
-        assert "telemetry_jsonl" in payload["failed_run_archive_targets"]
-        assert "session_exports" in payload["failed_run_archive_targets"]
+        assert set(payload) == {
+            "system_id",
+            "ready",
+            "missing_steps",
+            "failed_run_archive_targets",
+            "replacement_mode",
+        }
+        assert payload["system_id"] == "support-triage-ref"
+        assert payload["ready"] is True
+        assert payload["missing_steps"] == []
+        assert payload["failed_run_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+        ]
+        assert payload["replacement_mode"] == "staged_replacement"
 
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])
