@@ -5982,9 +5982,19 @@ class TestCli:
             ],
         )
         assert replay_code == 0
+        assert set(replay_payload) == {
+            "source_trace_id",
+            "replay_trace_id",
+            "status",
+            "result",
+            "event_count",
+        }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["result"] == (
+            "Retrieved profile hint: User usually prefers concise English answers."
+        )
         assert replay_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
         )
