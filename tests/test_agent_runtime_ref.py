@@ -7138,11 +7138,8 @@ class TestCli:
             "expected_outcomes",
             "grading_rules",
         }
-        mixed_session = next(
-            session
-            for session in exported["sessions"]
-            if session["session"]["session_id"] == "session-eval-mixed"
-        )
+        mixed_session = exported["sessions"][2]
+        assert mixed_session["session"]["session_id"] == "session-eval-mixed"
         assert "required_run_count" not in mixed_session["eval"]["labels"]
         assert mixed_session["eval"]["expected_outcomes"]["required_run_count"] == 2
         assert exported["sessions"][0]["summary"]["approval_wait_runs"] == 1
