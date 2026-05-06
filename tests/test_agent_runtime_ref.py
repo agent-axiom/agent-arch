@@ -5347,7 +5347,7 @@ class TestPolicyAndControls:
             approved_inventory=restricted_inventory,
         )
         runtime = AgentRuntime(catalog=catalog, policy=policy, memory=memory, agent=agent)
-        runtime.run(
+        result = runtime.run(
             RunRequest(
                 user_input="Please open a ticket for this issue.",
                 tenant_id="tenant-acme",
@@ -5356,12 +5356,32 @@ class TestPolicyAndControls:
                 agent_id=agent.agent_id,
             ),
         )
-        tool_event = next(
-            event
-            for event in runtime.telemetry.events
-            if event.event_type == "tool_policy_decision"
+        assert result.status == "failed"
+        assert result.output_text == (
+            "Runtime halted before side effects completed: create_ticket returned "
+            "denied (capability_not_in_inventory)."
         )
-        assert tool_event.payload["reason"] == "capability_not_in_inventory"
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "span",
+            "tool_execution",
+            "run_failed",
+            "run_complete",
+        ]
+        tool_event = runtime.telemetry.events[5]
+        assert tool_event.payload == {
+            "agent_id": agent.agent_id,
+            "session_id": "session-demo-001",
+            "capability": "create_ticket",
+            "action": "deny",
+            "reason": "capability_not_in_inventory",
+            "policy_id": "cap_403",
+        }
 
     def test_policy_denies_capability_without_egress_policy(self, config_dir: Path) -> None:
         catalog = load_capability_catalog(config_dir / "capabilities.yaml")
