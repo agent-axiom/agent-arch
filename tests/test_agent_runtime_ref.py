@@ -5811,7 +5811,24 @@ class TestCli:
             ],
         )
         assert export_code == 0
+        assert set(export_payload) == {
+            "output_path",
+            "trace_id",
+            "status",
+            "result",
+            "event_count",
+            "redact_fields",
+            "failure_reason",
+        }
+        assert export_payload["output_path"] == str(output_path)
+        assert export_payload["trace_id"] == "trace-redacted-001"
+        assert export_payload["status"] == "success"
+        assert export_payload["failure_reason"] == ""
         assert export_payload["redact_fields"] == ["user_input"]
+        assert output_path.exists()
+        assert export_payload["event_count"] == len(
+            output_path.read_text(encoding="utf-8").splitlines()
+        )
 
         inspect_code, inspect_payload = cli_json(
             [
