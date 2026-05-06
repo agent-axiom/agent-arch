@@ -5844,8 +5844,44 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "ready",
+            "missing_required",
+            "blocking_signals",
+            "rollout_mode",
+        }
         assert not payload["ready"]
         assert "offline_eval_pass" in payload["missing_required"]
+        assert payload["blocking_signals"] == []
+        assert payload["rollout_mode"] == {
+            "initial": "canary",
+            "max_tenant_exposure_pct": "5",
+            "require_shadow_period": "True",
+        }
+
+    def test_cli_check_rollout_reports_blocking_signal(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "check-rollout",
+                "--signal",
+                "unknown_side_effect_path_missing=true",
+            ],
+        )
+        assert exit_code == 0
+        assert set(payload) == {
+            "ready",
+            "missing_required",
+            "blocking_signals",
+            "rollout_mode",
+        }
+        assert not payload["ready"]
+        assert payload["missing_required"] == []
+        assert payload["blocking_signals"] == ["unknown_side_effect_path_missing"]
+        assert payload["rollout_mode"] == {
+            "initial": "canary",
+            "max_tenant_exposure_pct": "5",
+            "require_shadow_period": "True",
+        }
 
     @pytest.mark.parametrize(
         ("raw_signal", "expected_message"),
