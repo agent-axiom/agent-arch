@@ -762,13 +762,45 @@ class TestFailurePaths:
             "run_failed",
             "run_complete",
         ]
+        policy_event = runtime.telemetry.events[5]
+        tool_event = runtime.telemetry.events[7]
         run_failed = runtime.telemetry.events[8]
-        assert run_failed.payload["session_id"] == "session-tool-failure-001"
-        assert run_failed.payload["capability"] == "create_ticket"
-        assert run_failed.payload["tool_status"] == "validation_failure"
-        assert run_failed.payload["authorization_mode"] == "human_approved"
-        assert run_failed.payload["delegated_principal_id"] == ""
-        assert run_failed.payload["delegated_scope"] == ""
+        run_complete = runtime.telemetry.events[9]
+        assert policy_event.payload == {
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-tool-failure-001",
+            "capability": "create_ticket",
+            "action": "allow",
+            "reason": "validation_drill_execution",
+            "policy_id": "cap_121",
+        }
+        assert tool_event.payload == {
+            "session_id": "session-tool-failure-001",
+            "capability": "create_ticket",
+            "status": "validation_failure",
+            "tool_principal": "n/a",
+            "authorization_mode": "human_approved",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert run_failed.payload == {
+            "session_id": "session-tool-failure-001",
+            "capability": "create_ticket",
+            "tool_status": "validation_failure",
+            "authorization_mode": "human_approved",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert run_complete.payload == {
+            "session_id": "session-tool-failure-001",
+            "status": "failed",
+            "output_preview": (
+                "Runtime halted before side effects completed: create_ticket returned validation_"
+            ),
+            "authorization_mode": "human_approved",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(
         self, cli_json, tmp_path: Path
