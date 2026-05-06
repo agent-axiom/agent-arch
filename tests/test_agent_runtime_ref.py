@@ -6251,6 +6251,13 @@ class TestCli:
         assert len(exported["sessions"]) == 4
         assert exported["sessions"][0]["eval"]["labels"]
         assert "expected_outcomes" in exported["sessions"][0]["eval"]
+        mixed_session = next(
+            session
+            for session in exported["sessions"]
+            if session["session"]["session_id"] == "session-eval-mixed"
+        )
+        assert "required_run_count" not in mixed_session["eval"]["labels"]
+        assert mixed_session["eval"]["expected_outcomes"]["required_run_count"] == 2
         assert any(
             session["summary"]["approval_wait_runs"] >= 1 for session in exported["sessions"]
         )
