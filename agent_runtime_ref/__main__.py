@@ -442,8 +442,10 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "catalog_capabilities": [
             {
                 "name": spec.name,
+                "owner": spec.owner,
                 "risk_tier": spec.risk_tier,
                 "network_access": spec.network_access,
+                "tool_principal": spec.tool_principal,
                 "allowed_egress": list(spec.allowed_egress),
             }
             for spec in sorted(catalog.all(), key=lambda item: item.name)
