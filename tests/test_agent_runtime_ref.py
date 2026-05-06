@@ -6124,6 +6124,24 @@ class TestCli:
 
         inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
         assert inspect_code == 0
+        assert inspect_payload["trace_id"] == "trace-consistent-001"
+        assert inspect_payload["event_count"] == len(inspect_payload["events"])
+        assert [item["event_type"] for item in inspect_payload["events"]] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
         assert all(item["trace_id"] == "trace-consistent-001" for item in inspect_payload["events"])
         session_ids = {
             item["payload"]["session_id"]
