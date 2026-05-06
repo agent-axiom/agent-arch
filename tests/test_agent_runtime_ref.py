@@ -2391,8 +2391,13 @@ class TestRuntimeCore:
             ),
         )
         assert result.status == "success"
-        assert "waiting for human approval" in result.output_text
-        assert len(runtime.approvals.pending()) == 1
+        assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
+        pending_approval = runtime.approvals.pending()
+        assert len(pending_approval) == 1
+        assert pending_approval[0].approval_id == "apr-001"
+        assert pending_approval[0].capability_name == "create_ticket"
+        assert pending_approval[0].capability_session_id == "cap-session-001"
+        assert pending_approval[0].capability_session_status == "pending"
 
     def test_runtime_normalizes_model_tool_capability_before_policy(self) -> None:
         class PaddedToolRuntime(AgentRuntime):
