@@ -1226,6 +1226,53 @@ class TestFailurePaths:
         assert payload["failure_reason"] == "tool_timeout"
         assert "tool_timeout" in payload["result"]
 
+    @pytest.mark.parametrize(
+        ("command", "expected_status", "expected_failure_reason"),
+        [
+            (
+                ["simulate-run", "--simulate-failure", "tool_timeout"],
+                "failed",
+                "tool_timeout",
+            ),
+            (
+                ["simulate-run", "--simulate-failure", "upstream_unavailable"],
+                "failed",
+                "upstream_unavailable",
+            ),
+            (["simulate-run", "--tenant-id", " "], "denied", "tenant_missing"),
+            (["simulate-run", "--principal-id", " "], "denied", "principal_missing"),
+            (["simulate-run", "--agent-id", " "], "denied", "agent_identity_missing"),
+        ],
+    )
+    def test_cli_simulate_run_non_happy_paths_keep_documented_contract(
+        self,
+        command: list[str],
+        expected_status: str,
+        expected_failure_reason: str,
+        cli_json,
+    ) -> None:
+        code, payload = cli_json(command)
+        assert code == 0
+        assert set(payload) == {
+            "agent_id",
+            "session_id",
+            "result",
+            "status",
+            "failure_reason",
+            "trace_id",
+            "events",
+            "memory_records",
+            "pending_approvals",
+            "config_dir",
+        }
+        assert payload["agent_id"] == "support-triage-ref"
+        assert payload["session_id"] == "session-demo-001"
+        assert payload["status"] == expected_status
+        assert payload["failure_reason"] == expected_failure_reason
+        assert payload["trace_id"] == "trace-demo-001"
+        assert payload["pending_approvals"] == 0
+        assert payload["config_dir"].endswith("agent_runtime_ref/configs")
+
     def test_cli_export_events_supports_failure_injection(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "failed-trace.jsonl"
         code, payload = cli_json(
