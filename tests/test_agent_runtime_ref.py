@@ -6641,6 +6641,20 @@ class TestCli:
             "delegated_scope",
         }
 
+    @staticmethod
+    def _assert_session_summary_contract(summary: dict[str, object]) -> None:
+        assert set(summary) == {
+            "total_runs",
+            "success_runs",
+            "approval_wait_runs",
+            "denied_runs",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "latest_trace_id",
+            "latest_status",
+        }
+
     def test_cli_session_replay_runs_multiple_inputs(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
@@ -6652,7 +6666,10 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {"session_id", "run_count", "summary", "runs"}
+        assert payload["session_id"] == "session-demo-001"
         assert payload["run_count"] == 2
+        self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
         assert payload["summary"]["approval_wait_runs"] == 1
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
@@ -6697,7 +6714,21 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "trace_count",
+            "latest_status",
+            "summary",
+            "runs",
+        }
+        assert payload["session_id"] == "session-demo-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["principal_id"] == "user-42"
         assert payload["trace_count"] == 2
+        assert payload["latest_status"] == "success"
+        self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
         self._assert_session_run_contract(payload["runs"][0])
         self._assert_session_run_contract(payload["runs"][1])
