@@ -7061,7 +7061,12 @@ class TestCli:
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
         assert exported["run_count"] == 5
-        assert len(exported["sessions"]) == 4
+        assert [session["session"]["session_id"] for session in exported["sessions"]] == [
+            "session-eval-support",
+            "session-eval-memory",
+            "session-eval-mixed",
+            "session-eval-failed-run",
+        ]
         assert exported["sessions"][0]["eval"]["labels"]
         assert set(exported["sessions"][0]["eval"]) == {
             "scenario",
@@ -7076,7 +7081,5 @@ class TestCli:
         )
         assert "required_run_count" not in mixed_session["eval"]["labels"]
         assert mixed_session["eval"]["expected_outcomes"]["required_run_count"] == 2
-        assert any(
-            session["summary"]["approval_wait_runs"] >= 1 for session in exported["sessions"]
-        )
-        assert any(session["summary"]["total_runs"] >= 2 for session in exported["sessions"])
+        assert exported["sessions"][0]["summary"]["approval_wait_runs"] == 1
+        assert mixed_session["summary"]["total_runs"] == 2
