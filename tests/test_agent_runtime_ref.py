@@ -6506,7 +6506,7 @@ class TestCli:
         }
         assert payload["change_id"] == "chg-2026-04-07-support-runtime"
         assert not payload["ready"]
-        assert "failed_run_drill_checked" in payload["missing_signals"]
+        assert payload["missing_signals"] == ["failed_run_drill_checked"]
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["rollout_strategy"] == "staged_canary"
         assert payload["risk_level"] == "high"
