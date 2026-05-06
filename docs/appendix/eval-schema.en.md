@@ -142,7 +142,7 @@ already produces a small structured artifact with:
 - `expected_outcomes`;
 - a failed-run drill scenario that preserves failed status and `failure_reason` in session export and eval expectations.
 
-The bundled export contract is intentionally concrete: the default `dataset_name` is `agent-runtime-ref-eval-seed`; the top-level summary includes `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason`; and the built-in scenarios include `failed_run_timeout`, `profile_memory` with `memory_read`, `profile_lookup`, and `grounded_answer` labels, `mixed_session` with `multi_run`, `approval_then_memory`, and `session_evals` labels plus `required_run_count` as an expected outcome, and `support_ticket` with a blocking `sandbox_profile_review` grading rule.
+The bundled export contract is intentionally concrete: the default `dataset_name` is `agent-runtime-ref-eval-seed`; the top-level summary includes `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason`; and the built-in scenarios include `failed_run_timeout`, `profile_memory` with `memory_read`, `profile_lookup`, and `grounded_answer` labels, `mixed_session` with `multi_run`, `approval_then_memory`, and `session_evals` labels plus `required_run_count` as an expected outcome, and `support_ticket` with a `sandbox_profile_review` label, `sandbox_profile_reviewed` expected outcome, and blocking `sandbox_profile_review` grading rule.
 
 It is not yet a full industrial eval framework, but it is already a reasonable seed for:
 
