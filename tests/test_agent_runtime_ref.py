@@ -1224,7 +1224,10 @@ class TestFailurePaths:
         assert code == 0
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
-        assert "tool_timeout" in payload["result"]
+        assert payload["result"] == (
+            "Runtime halted before side effects completed: create_ticket returned "
+            "failed (tool_timeout)."
+        )
 
     @pytest.mark.parametrize(
         ("command", "expected_status", "expected_failure_reason"),
@@ -1300,7 +1303,10 @@ class TestFailurePaths:
         assert payload["trace_id"] == "trace-cli-export-failure-001"
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "upstream_unavailable"
-        assert "upstream_unavailable" in payload["result"]
+        assert payload["result"] == (
+            "Runtime halted before side effects completed: create_ticket returned "
+            "failed (upstream_unavailable)."
+        )
         assert payload["redact_fields"] == []
         assert output_path.exists()
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
@@ -1329,7 +1335,10 @@ class TestFailurePaths:
         assert payload["trace_id"] == "trace-cli-dump-failure-001"
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
-        assert "tool_timeout" in payload["result"]
+        assert payload["result"] == (
+            "Runtime halted before side effects completed: create_ticket returned "
+            "failed (tool_timeout)."
+        )
         assert payload["event_count"] == len(payload["events"])
         assert any(event["event_type"] == "run_failed" for event in payload["events"])
 
