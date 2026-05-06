@@ -6635,7 +6635,7 @@ class TestCli:
         assert exit_code == 0
         assert payload["session_id"] == "session-approval-normalized-001"
         assert payload["trace_id"] == "trace-approval-normalized-001"
-        assert payload["approvals"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["approvals"][0]["capability_session_id"] == "cap-session-001"
 
         resolve_code, resolve_payload = cli_json(
             [
@@ -6650,7 +6650,7 @@ class TestCli:
         )
         assert resolve_code == 0
         assert resolve_payload["status"] == "approved"
-        assert resolve_payload["capability_session_id"].startswith("cap-session-")
+        assert resolve_payload["capability_session_id"] == "cap-session-001"
 
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
