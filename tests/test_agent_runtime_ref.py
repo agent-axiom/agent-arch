@@ -5564,10 +5564,14 @@ class TestCli:
             item for item in payload["catalog_capabilities"] if item["name"] == "create_ticket"
         )
         assert search_docs["owner"] == "knowledge_platform"
+        assert search_docs["network_access"] == "restricted"
         assert search_docs["tool_principal"] == "svc-knowledge-reader"
+        assert search_docs["allowed_egress"] == ["docs.internal"]
         assert create_ticket["risk_tier"] == "high"
         assert create_ticket["owner"] == "support_platform"
+        assert create_ticket["network_access"] == "brokered"
         assert create_ticket["tool_principal"] == "svc-ticket-writer"
+        assert create_ticket["allowed_egress"] == ["tickets.internal"]
 
     @pytest.mark.parametrize(
         ("command", "expected_key"),
