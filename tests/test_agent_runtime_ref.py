@@ -5814,21 +5814,20 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {"config_dir", "count", "records"}
         assert payload["config_dir"].endswith("agent_runtime_ref/configs")
-        assert payload["count"] == len(payload["records"])
-        assert payload["count"] >= 1
-        for item in payload["records"]:
-            assert set(item) == {
-                "memory_id",
-                "tenant_id",
-                "memory_class",
-                "kind",
-                "source",
-                "confidence",
-                "provenance",
-                "revision",
-                "content",
+        assert payload["count"] == 1
+        assert payload["records"] == [
+            {
+                "memory_id": "mem-001",
+                "tenant_id": "tenant-acme",
+                "memory_class": "profile",
+                "kind": "language_preference",
+                "source": "trusted_profile",
+                "confidence": 0.95,
+                "provenance": "user_confirmed_preference",
+                "revision": 1,
+                "content": "User usually prefers concise English answers.",
             }
-            assert item["memory_class"] == "profile"
+        ]
 
     def test_cli_inspect_memory_normalizes_filter_values(self, cli_json) -> None:
         exit_code, payload = cli_json(
