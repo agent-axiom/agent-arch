@@ -5762,9 +5762,27 @@ class TestCli:
 
     def test_cli_dump_events_reports_event_count(self, cli_json) -> None:
         exit_code, payload = cli_json(
-            ["dump-events", "--user-input", "Please open a ticket for this issue."]
+            [
+                "dump-events",
+                "--user-input",
+                "Please open a ticket for this issue.",
+                "--trace-id",
+                "trace-cli-dump-success-001",
+            ]
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "status",
+            "result",
+            "failure_reason",
+            "trace_id",
+            "event_count",
+            "events",
+        }
+        assert payload["trace_id"] == "trace-cli-dump-success-001"
+        assert payload["status"] == "success"
+        assert payload["failure_reason"] == ""
+        assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["event_count"] == len(payload["events"])
 
     def test_cli_export_and_inspect_trace(self, cli_json, tmp_path: Path) -> None:
