@@ -6058,18 +6058,22 @@ class TestCli:
         inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
         assert inspect_code == 0
         event_types = [item["event_type"] for item in inspect_payload["events"]]
-        assert event_types[0] == "run_start"
-        assert event_types[-1] == "run_complete"
-        assert "policy_precheck" in event_types
-        assert "approval_requested" in event_types
-        assert "sandbox_profile_reviewed" in event_types
-        assert "tool_execution" in event_types
-        assert (
-            event_types.index("approval_requested")
-            < event_types.index("sandbox_profile_reviewed")
-            < event_types.index("tool_execution")
-            < event_types.index("run_complete")
-        )
+        assert event_types == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
         sandbox_review = next(
             item
             for item in inspect_payload["events"]
