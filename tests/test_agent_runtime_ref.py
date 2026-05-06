@@ -5561,6 +5561,46 @@ class TestCli:
         assert exit_code == 0
         assert expected_key in payload
 
+    @pytest.mark.parametrize(
+        "command",
+        [
+            ["session-eval-summary"],
+            [
+                "session-eval-summary",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--user-input",
+                "What language preference do you remember?",
+            ],
+            [
+                "session-eval-summary",
+                "--simulate-failure",
+                "tool_timeout",
+                "--user-input",
+                "Trigger a timeout while creating a ticket.",
+            ],
+        ],
+    )
+    def test_cli_session_eval_summary_keeps_documented_contract(
+        self,
+        command: list[str],
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(command)
+        assert exit_code == 0
+        assert set(payload) == {
+            "session_id",
+            "total_runs",
+            "success_runs",
+            "approval_wait_runs",
+            "denied_runs",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "latest_trace_id",
+            "latest_status",
+        }
+
     def test_cli_session_eval_summary_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
@@ -6281,7 +6321,17 @@ class TestCli:
         )
         assert exit_code == 0
         assert output_path.exists()
+        assert set(payload) == {
+            "session_id",
+            "output_path",
+            "total_runs",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "latest_trace_id",
+        }
         assert payload["session_id"] == "session-demo-001"
+        assert payload["output_path"] == str(output_path)
         assert payload["total_runs"] == 2
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["total_runs"] == 2
@@ -6306,6 +6356,16 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "session_id",
+            "output_path",
+            "total_runs",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "latest_trace_id",
+        }
+        assert payload["output_path"] == str(output_path)
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["latest_failure_reason"] == "tool_timeout"
