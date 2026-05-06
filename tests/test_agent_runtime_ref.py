@@ -5719,30 +5719,24 @@ class TestCli:
         assert payload["owner_team"] == "agent_platform"
         assert payload["runtime_principal"] == "svc-support-triage-ref"
         assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]
-        for item in payload["catalog_capabilities"]:
-            assert set(item) == {
-                "name",
-                "owner",
-                "risk_tier",
-                "network_access",
-                "tool_principal",
-                "allowed_egress",
-            }
-        search_docs = next(
-            item for item in payload["catalog_capabilities"] if item["name"] == "search_docs"
-        )
-        create_ticket = next(
-            item for item in payload["catalog_capabilities"] if item["name"] == "create_ticket"
-        )
-        assert search_docs["owner"] == "knowledge_platform"
-        assert search_docs["network_access"] == "restricted"
-        assert search_docs["tool_principal"] == "svc-knowledge-reader"
-        assert search_docs["allowed_egress"] == ["docs.internal"]
-        assert create_ticket["risk_tier"] == "high"
-        assert create_ticket["owner"] == "support_platform"
-        assert create_ticket["network_access"] == "brokered"
-        assert create_ticket["tool_principal"] == "svc-ticket-writer"
-        assert create_ticket["allowed_egress"] == ["tickets.internal"]
+        assert payload["catalog_capabilities"] == [
+            {
+                "name": "create_ticket",
+                "owner": "support_platform",
+                "risk_tier": "high",
+                "network_access": "brokered",
+                "tool_principal": "svc-ticket-writer",
+                "allowed_egress": ["tickets.internal"],
+            },
+            {
+                "name": "search_docs",
+                "owner": "knowledge_platform",
+                "risk_tier": "low",
+                "network_access": "restricted",
+                "tool_principal": "svc-knowledge-reader",
+                "allowed_egress": ["docs.internal"],
+            },
+        ]
 
     @pytest.mark.parametrize(
         ("command", "expected_key"),
