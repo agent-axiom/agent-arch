@@ -6125,7 +6125,7 @@ class TestCli:
             "rollout_mode",
         }
         assert not payload["ready"]
-        assert "offline_eval_pass" in payload["missing_required"]
+        assert payload["missing_required"] == ["offline_eval_pass"]
         assert payload["blocking_signals"] == []
         assert payload["rollout_mode"] == {
             "initial": "canary",
