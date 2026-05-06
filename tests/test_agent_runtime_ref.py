@@ -2695,9 +2695,17 @@ class TestRuntimeCore:
     def test_memory_store_filters_by_tenant(self) -> None:
         store = MemoryStore()
         records = store.retrieve("language preference", " tenant-acme ", limit=5)
-        assert records
-        assert all(record.tenant_id == "tenant-acme" for record in records)
-        assert all(record.provenance for record in records)
+        assert [record.memory_id for record in records] == ["mem-001", "mem-002", "mem-003"]
+        assert [record.tenant_id for record in records] == [
+            "tenant-acme",
+            "tenant-acme",
+            "tenant-acme",
+        ]
+        assert [record.provenance for record in records] == [
+            "user_confirmed_preference",
+            "validated_service_rule",
+            "ephemeral_session_note",
+        ]
 
     def test_memory_store_rejects_blank_lookup_tenant(self) -> None:
         store = MemoryStore()
