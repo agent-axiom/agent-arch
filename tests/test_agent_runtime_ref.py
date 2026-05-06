@@ -6305,7 +6305,19 @@ class TestCli:
             "platform-owner",
             "security-reviewer",
         ]
-        assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
+        assert payload["artifact_bundle"]["artifacts"] == [
+            "agent.yaml",
+            "capabilities.yaml",
+            "policy.yaml",
+            "memory.yaml",
+            "controls.yaml",
+            "approvals.yaml",
+            "runtime-controls.yaml",
+            "change.yaml",
+            "retirement.yaml",
+            "eval-dataset.json",
+            "runtime-control-bundle-metadata",
+        ]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
         assert set(payload["artifact_bundle"]["review_evidence"]) == {
             "sandbox_profile_reviewed"
@@ -6335,11 +6347,35 @@ class TestCli:
         assert payload["retirement"]["system_id"] == "support-triage-ref"
         assert payload["retirement"]["session_control_owner"] == "support-ops"
         assert payload["retirement"]["emergency_freeze_owner"] == "platform-runtime"
-        assert "expire_paused_runs" in payload["retirement"]["required_steps"]
-        assert "stop_background_routes" in payload["retirement"]["required_steps"]
-        assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]
-        assert "sandbox_profile_reviewed" in payload["change"]["required_signals"]
-        assert "telemetry_jsonl" in payload["retirement"]["failed_run_archive_targets"]
+        assert payload["retirement"]["triggers"] == [
+            "deprecated_runtime",
+            "replacement_ready",
+            "unsafe_capability_pattern",
+        ]
+        assert payload["retirement"]["required_steps"] == [
+            "freeze_rollout",
+            "disable_risky_capabilities",
+            "stop_memory_write",
+            "expire_paused_runs",
+            "stop_background_routes",
+            "freeze_reinitialization",
+            "revoke_egress",
+            "archive_audit_state",
+            "set_retired_status",
+        ]
+        assert payload["retirement"]["archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "paused_run_state",
+            "capability_session_state",
+            "runtime_control_bundle",
+        ]
+        assert payload["retirement"]["failed_run_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+        ]
         assert set(payload["controls"]) == {
             "failed_run_control_expectations",
             "failed_run_control_domains",
