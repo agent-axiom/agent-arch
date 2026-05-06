@@ -5682,9 +5682,20 @@ class TestCli:
             ]
         )
         assert exit_code == 0
-        assert payload["count"] >= 1
-        assert all(item["tenant_id"] == "tenant-acme" for item in payload["records"])
-        assert all(item["memory_class"] == "profile" for item in payload["records"])
+        assert payload["count"] == 1
+        assert payload["records"] == [
+            {
+                "memory_id": "mem-001",
+                "tenant_id": "tenant-acme",
+                "memory_class": "profile",
+                "kind": "language_preference",
+                "source": "trusted_profile",
+                "confidence": 0.95,
+                "provenance": "user_confirmed_preference",
+                "revision": 1,
+                "content": "User usually prefers concise English answers.",
+            }
+        ]
 
     def test_cli_inspect_memory_rejects_negative_limit(self) -> None:
         from agent_runtime_ref.__main__ import main
