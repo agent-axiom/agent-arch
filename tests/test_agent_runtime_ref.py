@@ -6443,8 +6443,10 @@ class TestCli:
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])
         assert exit_code == 0
+        assert set(payload) == {"trace_id", "session_id", "count", "approvals"}
         assert payload["trace_id"] == "trace-approval-001"
         assert payload["session_id"] == "session-approval-001"
+        assert payload["count"] == len(payload["approvals"])
         assert payload["count"] >= 1
         approval = payload["approvals"][0]
         assert set(approval) == {
