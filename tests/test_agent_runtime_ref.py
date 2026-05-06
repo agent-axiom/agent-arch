@@ -3401,8 +3401,10 @@ class TestRuntimeControlPaths:
         }
         assert payload["system_id"] == "support-triage-ref"
         assert not payload["ready"]
-        assert "expire_paused_runs" in payload["missing_steps"]
-        assert "stop_background_routes" in payload["missing_steps"]
+        assert payload["missing_steps"] == [
+            "expire_paused_runs",
+            "stop_background_routes",
+        ]
         assert payload["failed_run_archive_targets"] == [
             "telemetry_jsonl",
             "session_exports",
