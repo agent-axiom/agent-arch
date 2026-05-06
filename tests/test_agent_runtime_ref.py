@@ -5719,28 +5719,68 @@ class TestCli:
         assert expected_key in payload
 
     @pytest.mark.parametrize(
-        "command",
+        ("command", "expected_summary"),
         [
-            ["session-eval-summary"],
-            [
-                "session-eval-summary",
-                "--user-input",
-                "Please create a ticket for this onboarding issue.",
-                "--user-input",
-                "What language preference do you remember?",
-            ],
-            [
-                "session-eval-summary",
-                "--simulate-failure",
-                "tool_timeout",
-                "--user-input",
-                "Trigger a timeout while creating a ticket.",
-            ],
+            (
+                ["session-eval-summary"],
+                {
+                    "total_runs": 1,
+                    "success_runs": 1,
+                    "approval_wait_runs": 1,
+                    "denied_runs": 0,
+                    "failed_runs": 0,
+                    "traceable_failed_runs": 0,
+                    "latest_failure_reason": "",
+                    "latest_trace_id": "trace-session-001",
+                    "latest_status": "success",
+                },
+            ),
+            (
+                [
+                    "session-eval-summary",
+                    "--user-input",
+                    "Please create a ticket for this onboarding issue.",
+                    "--user-input",
+                    "What language preference do you remember?",
+                ],
+                {
+                    "total_runs": 2,
+                    "success_runs": 2,
+                    "approval_wait_runs": 1,
+                    "denied_runs": 0,
+                    "failed_runs": 0,
+                    "traceable_failed_runs": 0,
+                    "latest_failure_reason": "",
+                    "latest_trace_id": "trace-session-002",
+                    "latest_status": "success",
+                },
+            ),
+            (
+                [
+                    "session-eval-summary",
+                    "--simulate-failure",
+                    "tool_timeout",
+                    "--user-input",
+                    "Trigger a timeout while creating a ticket.",
+                ],
+                {
+                    "total_runs": 1,
+                    "success_runs": 0,
+                    "approval_wait_runs": 0,
+                    "denied_runs": 0,
+                    "failed_runs": 1,
+                    "traceable_failed_runs": 1,
+                    "latest_failure_reason": "tool_timeout",
+                    "latest_trace_id": "trace-session-001",
+                    "latest_status": "failed",
+                },
+            ),
         ],
     )
     def test_cli_session_eval_summary_keeps_documented_contract(
         self,
         command: list[str],
+        expected_summary: dict[str, object],
         cli_json,
     ) -> None:
         exit_code, payload = cli_json(command)
@@ -5757,6 +5797,9 @@ class TestCli:
             "latest_trace_id",
             "latest_status",
         }
+        assert payload["session_id"] == "session-demo-001"
+        for key, value in expected_summary.items():
+            assert payload[key] == value
 
     def test_cli_session_eval_summary_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
