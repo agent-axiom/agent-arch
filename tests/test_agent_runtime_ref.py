@@ -2299,8 +2299,19 @@ class TestRuntimeCore:
                     agent_id="agent-runtime-ref",
                 ),
             )
-        event_types = [event.event_type for event in runtime.telemetry.events]
-        assert "sandbox_profile_reviewed" not in event_types
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+        ]
+        approval_event = runtime.telemetry.events[6]
+        assert approval_event.payload["session_id"] == "session-bad-sandbox-001"
+        assert approval_event.payload["capability_session_id"] == "cap-session-001"
+        assert approval_event.payload["capability_session_status"] == "pending"
 
     def test_runtime_rejects_malformed_request_fields_before_telemetry(self) -> None:
         malformed_fields = (
