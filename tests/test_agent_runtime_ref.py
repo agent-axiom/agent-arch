@@ -6018,22 +6018,50 @@ class TestCli:
         ]
 
     @pytest.mark.parametrize(
-        ("command", "expected_key"),
+        ("command", "expected_keys"),
         [
-            (["dump-events", "--user-input", "Please open a ticket for this issue."], "events"),
-            (["inspect-session"], "runs"),
-            (["session-eval-summary"], "total_runs"),
+            (
+                ["dump-events", "--user-input", "Please open a ticket for this issue."],
+                ["status", "result", "failure_reason", "trace_id", "event_count", "events"],
+            ),
+            (
+                ["inspect-session"],
+                [
+                    "session_id",
+                    "tenant_id",
+                    "principal_id",
+                    "trace_count",
+                    "latest_status",
+                    "summary",
+                    "runs",
+                ],
+            ),
+            (
+                ["session-eval-summary"],
+                [
+                    "session_id",
+                    "total_runs",
+                    "success_runs",
+                    "approval_wait_runs",
+                    "denied_runs",
+                    "failed_runs",
+                    "traceable_failed_runs",
+                    "latest_failure_reason",
+                    "latest_trace_id",
+                    "latest_status",
+                ],
+            ),
         ],
     )
     def test_cli_commands_return_json_payloads(
         self,
         command: list[str],
-        expected_key: str,
+        expected_keys: list[str],
         cli_json,
     ) -> None:
         exit_code, payload = cli_json(command)
         assert exit_code == 0
-        assert expected_key in payload
+        assert list(payload) == expected_keys
 
     @pytest.mark.parametrize(
         ("command", "expected_summary"),
