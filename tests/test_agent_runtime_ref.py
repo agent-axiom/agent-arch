@@ -6273,10 +6273,32 @@ class TestCli:
             "state",
         }
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
+        assert payload["change"]["artifacts"] == [
+            "agent.yaml",
+            "capabilities.yaml",
+            "policy.yaml",
+            "runtime-controls.yaml",
+            "eval-dataset.json",
+        ]
+        assert payload["change"]["affected_surfaces"] == [
+            "capability_contract",
+            "runtime_control_schema",
+            "capability_session_contract",
+            "sandbox_profile_contract",
+            "failed_run_handling",
+        ]
+        assert payload["change"]["required_signals"] == [
+            "design_review_passed",
+            "offline_eval_passed",
+            "policy_diff_reviewed",
+            "rollback_plan_ready",
+            "session_expiry_behavior_checked",
+            "reinit_policy_reviewed",
+            "sandbox_profile_reviewed",
+            "failed_run_drill_checked",
+        ]
+        assert payload["change"]["failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
-        assert "capability_session_contract" in payload["change"]["affected_surfaces"]
-        assert "sandbox_profile_contract" in payload["change"]["affected_surfaces"]
-        assert "runtime-controls.yaml" in payload["change"]["artifacts"]
         assert payload["change"]["session_control_owner"] == "support-ops"
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert payload["change"]["approval_roles"] == [
