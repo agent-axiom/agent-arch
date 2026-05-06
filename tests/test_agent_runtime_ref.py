@@ -6181,6 +6181,53 @@ class TestCli:
     def test_cli_inspect_lifecycle_returns_all_artifacts(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-lifecycle"])
         assert exit_code == 0
+        assert set(payload) == {
+            "change",
+            "artifact_bundle",
+            "retirement",
+            "sandbox_profile",
+            "controls",
+        }
+        assert set(payload["change"]) == {
+            "change_id",
+            "change_type",
+            "risk_level",
+            "rollout_strategy",
+            "artifacts",
+            "affected_surfaces",
+            "required_signals",
+            "approval_roles",
+            "session_control_owner",
+            "emergency_freeze_owner",
+            "failed_run_signals",
+        }
+        assert set(payload["artifact_bundle"]) == {
+            "bundle_name",
+            "version",
+            "provenance_required",
+            "signed",
+            "session_control_owner",
+            "artifacts",
+            "review_evidence",
+            "sandbox_profile_review_evidence",
+        }
+        assert set(payload["retirement"]) == {
+            "system_id",
+            "replacement_mode",
+            "triggers",
+            "required_steps",
+            "session_control_owner",
+            "emergency_freeze_owner",
+            "archive_targets",
+            "failed_run_archive_targets",
+        }
+        assert set(payload["sandbox_profile"]) == {
+            "manifest_version",
+            "workspace_entries",
+            "capabilities",
+            "permissions",
+            "state",
+        }
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
         assert "capability_session_contract" in payload["change"]["affected_surfaces"]
@@ -6212,6 +6259,19 @@ class TestCli:
         assert "failed_run_drill_checked" in payload["change"]["failed_run_signals"]
         assert "sandbox_profile_reviewed" in payload["change"]["required_signals"]
         assert "telemetry_jsonl" in payload["retirement"]["failed_run_archive_targets"]
+        assert set(payload["controls"]) == {
+            "failed_run_control_expectations",
+            "failed_run_control_domains",
+            "failed_run_control_count",
+            "failed_run_control_summary",
+            "failed_run_control_status",
+            "failed_run_control_review_required",
+            "failed_run_control_owner",
+            "failed_run_control_source",
+            "failed_run_control_last_review",
+            "failed_run_control_next_review",
+            "failed_run_control_release_binding",
+        }
         assert payload["controls"]["failed_run_control_expectations"] == [
             "policy_traces_present",
             "memory_provenance_enforced",
