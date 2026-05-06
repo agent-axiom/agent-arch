@@ -6095,11 +6095,58 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "approval_id",
+            "status",
+            "reviewer",
+            "resolution_note",
+            "capability_session_id",
+            "capability_session_status",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        }
+        assert payload["approval_id"] == "apr-001"
         assert payload["status"] == "approved"
+        assert payload["reviewer"] == "manager"
         assert payload["resolution_note"] == "manager approved demo request"
-        assert payload["capability_session_id"].startswith("cap-session-")
+        assert payload["capability_session_id"] == "cap-session-001"
         assert payload["capability_session_status"] == "approved"
         assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
+
+    def test_cli_resolve_approval_marks_item_rejected(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "resolve-approval",
+                "--decision",
+                "rejected",
+                "--note",
+                "manager rejected demo request",
+            ],
+        )
+        assert exit_code == 0
+        assert set(payload) == {
+            "approval_id",
+            "status",
+            "reviewer",
+            "resolution_note",
+            "capability_session_id",
+            "capability_session_status",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        }
+        assert payload["approval_id"] == "apr-001"
+        assert payload["status"] == "rejected"
+        assert payload["reviewer"] == "manager"
+        assert payload["resolution_note"] == "manager rejected demo request"
+        assert payload["capability_session_id"] == "cap-session-001"
+        assert payload["capability_session_status"] == "rejected"
+        assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
 
     def test_cli_resolve_approval_normalizes_approval_id(self, cli_json) -> None:
         exit_code, payload = cli_json(
