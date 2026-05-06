@@ -2568,11 +2568,26 @@ class TestRuntimeCore:
                 ),
             )
         assert runtime.sessions.runs_for_session("session-demo-001") == ()
-        assert {event.event_type for event in runtime.telemetry.events} >= {
-            "tool_execution",
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
             "span",
+            "tool_policy_decision",
+            "span",
+            "tool_execution",
+        ]
+        tool_event = runtime.telemetry.events[7]
+        assert tool_event.payload == {
+            "session_id": "session-demo-001",
+            "capability": "search_docs",
+            "status": "success",
+            "tool_principal": "svc-knowledge-reader",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
         }
-        assert "run_complete" not in {event.event_type for event in runtime.telemetry.events}
 
     def test_background_persisted_records_include_revision_and_provenance(self) -> None:
         runtime = AgentRuntime()
