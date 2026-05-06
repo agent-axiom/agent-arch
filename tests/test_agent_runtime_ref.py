@@ -6002,6 +6002,24 @@ class TestCli:
             ],
         )
         assert inspect_code == 0
+        assert inspect_payload["trace_id"] == "trace-redacted-001"
+        assert inspect_payload["event_count"] == len(inspect_payload["events"])
+        assert [item["event_type"] for item in inspect_payload["events"]] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
         run_start = next(
             item for item in inspect_payload["events"] if item["event_type"] == "run_start"
         )
