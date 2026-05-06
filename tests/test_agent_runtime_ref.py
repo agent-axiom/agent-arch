@@ -6527,9 +6527,11 @@ class TestCli:
             "inventory_drift",
         }
         assert not payload["healthy"]
-        assert "policy_traces_present" in payload["missing_controls"]
+        assert payload["missing_controls"] == ["policy_traces_present"]
         assert payload["failed_run_controls"] == ["policy_traces_present"]
-        assert "memory_provenance_enforced" in payload["preserved_failed_run_controls"]
+        assert payload["preserved_failed_run_controls"] == [
+            "memory_provenance_enforced"
+        ]
         assert payload["failed_run_controls_healthy"] is False
         assert payload["blocking_findings"] == []
         assert payload["inventory_drift"] == {
