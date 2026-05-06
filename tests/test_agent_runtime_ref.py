@@ -727,7 +727,10 @@ class TestFailurePaths:
             ),
         )
         assert result.status == "failed"
-        assert "validation_failure" in result.output_text
+        assert result.output_text == (
+            "Runtime halted before side effects completed: create_ticket returned "
+            "validation_failure (missing_idempotency_key)."
+        )
         session = runtime.sessions.get_session("session-tool-failure-001")
         assert session is not None
         runs = runtime.sessions.runs_for_session("session-tool-failure-001")
@@ -738,11 +741,25 @@ class TestFailurePaths:
         exported_run = runtime.sessions._session_payload("session-tool-failure-001")["runs"][-1]
         assert exported_run["failure_reason"] == "missing_idempotency_key"
         event_types = [event.event_type for event in runtime.telemetry.events]
-        assert "run_failed" in event_types
-        run_failed = next(
-            event for event in runtime.telemetry.events if event.event_type == "run_failed"
-        )
+        assert event_types == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "span",
+            "tool_execution",
+            "run_failed",
+            "run_complete",
+        ]
+        run_failed = runtime.telemetry.events[8]
+        assert run_failed.payload["session_id"] == "session-tool-failure-001"
+        assert run_failed.payload["capability"] == "create_ticket"
         assert run_failed.payload["tool_status"] == "validation_failure"
+        assert run_failed.payload["authorization_mode"] == "human_approved"
+        assert run_failed.payload["delegated_principal_id"] == ""
+        assert run_failed.payload["delegated_scope"] == ""
 
     def test_cli_inspect_trace_requires_trace_id_for_multi_trace_file(
         self, cli_json, tmp_path: Path
