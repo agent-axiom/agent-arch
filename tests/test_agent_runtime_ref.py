@@ -2177,10 +2177,23 @@ class TestRuntimeCore:
             ),
         )
         assert result.status == "success"
+        assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
         assert runtime_from_config.agent.agent_id == "support-triage-ref"
         assert runtime_from_config.catalog.get("create_ticket") is not None
         assert runtime_from_config.policy.allow_memory_write("session_summary").action == "allow"
-        assert len(runtime_from_config.memory.all()) >= 4
+        config_memory = runtime_from_config.memory.all()
+        assert [record.memory_id for record in config_memory] == [
+            "mem-001",
+            "mem-002",
+            "mem-003",
+            "mem-004",
+        ]
+        assert [record.kind for record in config_memory] == [
+            "language_preference",
+            "validated_fact",
+            "working_note",
+            "session_summary",
+        ]
 
         from agent_runtime_ref.identity import AgentIdentity
 
