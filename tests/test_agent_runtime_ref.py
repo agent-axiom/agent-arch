@@ -5661,6 +5661,13 @@ class TestCli:
         assert payload["denied_runs"] == 1
         assert payload["latest_status"] == "denied"
 
+    def test_cli_dump_events_reports_event_count(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            ["dump-events", "--user-input", "Please open a ticket for this issue."]
+        )
+        assert exit_code == 0
+        assert payload["event_count"] == len(payload["events"])
+
     def test_cli_export_and_inspect_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
         export_code, export_payload = cli_json(
@@ -5677,6 +5684,9 @@ class TestCli:
         assert export_code == 0
         assert output_path.exists()
         assert export_payload["trace_id"] == "trace-export-001"
+        assert export_payload["event_count"] == len(
+            output_path.read_text(encoding="utf-8").splitlines()
+        )
 
         inspect_code, inspect_payload = cli_json(
             [
@@ -5687,6 +5697,7 @@ class TestCli:
         )
         assert inspect_code == 0
         assert inspect_payload["trace_id"] == "trace-export-001"
+        assert inspect_payload["event_count"] == len(inspect_payload["events"])
         assert any(item["event_type"] == "run_complete" for item in inspect_payload["events"])
         assert any(
             item["payload"].get("session_id") == "session-demo-001"
@@ -5858,6 +5869,9 @@ class TestCli:
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["event_count"] == len(
+            output_path.read_text(encoding="utf-8").splitlines()
+        )
 
     def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:
         exit_code, payload = cli_json(
