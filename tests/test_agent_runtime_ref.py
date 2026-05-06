@@ -1486,21 +1486,33 @@ class TestFailurePaths:
         assert payload["session_count"] == 1
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
-        assert "sandbox_profile_review" in session["eval"]["labels"]
-        assert session["eval"]["expected_outcomes"]["sandbox_profile_reviewed"] is True
-        sandbox_rule = next(
-            rule
-            for rule in session["eval"]["grading_rules"]
-            if rule["type"] == "sandbox_profile_review"
-        )
-        assert set(sandbox_rule) == {"type", "expected", "blocking"}
-        assert sandbox_rule["blocking"] is True
-        assert sandbox_rule["expected"] == {
-            "sandbox_profile_contract": "sandbox-profile-v1",
-            "workspace_entries_reviewed": True,
-            "permissions_profile": "restricted-shell-network-denied",
-            "network_secrets_posture": "network:denied,secrets:none",
-            "snapshot_policy": "required_on_completion",
+        assert session["eval"] == {
+            "scenario": "support_ticket",
+            "labels": [
+                "write_path",
+                "approval_required",
+                "ticketing",
+                "sandbox_profile_review",
+            ],
+            "expected_outcomes": {
+                "latest_status": "success",
+                "approval_wait_runs": 1,
+                "required_output_substrings": ["waiting for human approval"],
+                "sandbox_profile_reviewed": True,
+            },
+            "grading_rules": [
+                {
+                    "type": "sandbox_profile_review",
+                    "expected": {
+                        "sandbox_profile_contract": "sandbox-profile-v1",
+                        "workspace_entries_reviewed": True,
+                        "permissions_profile": "restricted-shell-network-denied",
+                        "network_secrets_posture": "network:denied,secrets:none",
+                        "snapshot_policy": "required_on_completion",
+                    },
+                    "blocking": True,
+                }
+            ],
         }
 
     def test_cli_export_eval_dataset_includes_failed_run_scenario(
