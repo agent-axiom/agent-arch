@@ -6033,7 +6033,17 @@ class TestCli:
             "secrets": "none",
             "run_as": "sandbox_user",
         }
-        assert payload["sandbox_profile"]["state"]["snapshot"] == "required_on_completion"
+        assert payload["sandbox_profile"]["capabilities"] == {
+            "filesystem": True,
+            "memory": "read_write",
+            "shell": "restricted",
+            "skills": "read_only",
+        }
+        assert payload["sandbox_profile"]["state"] == {
+            "persist_session_state": True,
+            "resume": "allowed",
+            "snapshot": "required_on_completion",
+        }
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
