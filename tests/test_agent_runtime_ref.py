@@ -2418,19 +2418,32 @@ class TestRuntimeCore:
             ),
         )
         approval = runtime.approvals.pending()[0]
-        policy_event = next(
-            event
-            for event in runtime.telemetry.events
-            if event.event_type == "tool_policy_decision"
-        )
-        execution_event = next(
-            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
-        )
+        event_types = [event.event_type for event in runtime.telemetry.events]
+        assert event_types == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        policy_event = runtime.telemetry.events[5]
+        approval_event = runtime.telemetry.events[6]
+        execution_event = runtime.telemetry.events[7]
 
         assert result.status == "success"
         assert approval.capability_name == "create_ticket"
         assert policy_event.payload["capability"] == "create_ticket"
         assert policy_event.payload["reason"] == "write_action"
+        assert approval_event.payload["capability"] == "create_ticket"
+        assert approval_event.payload["capability_session_id"] == "cap-session-001"
         assert execution_event.payload["capability"] == "create_ticket"
 
     def test_runtime_handles_unknown_tool_capability_as_policy_denial(self) -> None:
