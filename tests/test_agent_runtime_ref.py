@@ -3332,8 +3332,20 @@ class TestRuntimeControlPaths:
             ]
         )
         assert exit_code == 0
-        assert "ready" in payload
-        assert "rollout_strategy" in payload
+        assert set(payload) == {
+            "change_id",
+            "ready",
+            "missing_signals",
+            "missing_failed_run_signals",
+            "rollout_strategy",
+            "risk_level",
+        }
+        assert payload["change_id"] == "chg-2026-04-07-support-runtime"
+        assert payload["ready"] is True
+        assert payload["missing_signals"] == []
+        assert payload["missing_failed_run_signals"] == []
+        assert payload["rollout_strategy"] == "staged_canary"
+        assert payload["risk_level"] == "high"
 
 
 class TestMeaningfulMemoryAndLifecycleCoverage:
@@ -6050,9 +6062,20 @@ class TestCli:
             ["check-change", "--signal", "failed_run_drill_checked=false"]
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "change_id",
+            "ready",
+            "missing_signals",
+            "missing_failed_run_signals",
+            "rollout_strategy",
+            "risk_level",
+        }
+        assert payload["change_id"] == "chg-2026-04-07-support-runtime"
         assert not payload["ready"]
         assert "failed_run_drill_checked" in payload["missing_signals"]
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
+        assert payload["rollout_strategy"] == "staged_canary"
+        assert payload["risk_level"] == "high"
 
     def test_cli_check_controls_surfaces_failed_run_related_controls(
         self,
