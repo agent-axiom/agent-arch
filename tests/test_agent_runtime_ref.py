@@ -6192,7 +6192,7 @@ class TestCli:
             "inventory_drift",
         }
         assert not payload["healthy"]
-        assert "registry_reviewed" in payload["missing_controls"]
+        assert payload["missing_controls"] == ["registry_reviewed"]
         assert payload["failed_run_controls"] == []
         assert payload["preserved_failed_run_controls"] == [
             "policy_traces_present",
