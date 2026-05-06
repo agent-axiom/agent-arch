@@ -6413,6 +6413,10 @@ class TestCli:
             {"path": "repo", "source": "local_dir", "read_only": False},
             {"path": "task.md", "source": "inline_file", "read_only": True},
         ]
+        assert all(
+            set(entry) == {"path", "source", "read_only"}
+            for entry in payload["sandbox_profile"]["workspace_entries"]
+        )
         assert payload["sandbox_profile"]["permissions"] == {
             "network": "denied",
             "secrets": "none",
