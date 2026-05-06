@@ -7031,9 +7031,17 @@ class TestCli:
             ],
         )
         assert exit_code == 0
-        assert "authorization_mode" in payload
-        assert "delegated_principal_id" in payload
-        assert "delegated_scope" in payload
+        assert payload == {
+            "approval_id": "apr-001",
+            "status": "approved",
+            "reviewer": "manager",
+            "resolution_note": "manager approved delegated request",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "approved",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     @staticmethod
     def _assert_session_run_contract(run: dict[str, object]) -> None:
