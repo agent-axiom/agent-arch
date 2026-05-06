@@ -6789,9 +6789,27 @@ class TestCli:
         assert payload["output_path"] == str(output_path)
         assert payload["total_runs"] == 2
         exported = json.loads(output_path.read_text(encoding="utf-8"))
+        assert set(exported) == {"session", "summary", "runs"}
+        assert exported["session"] == {
+            "session_id": "session-demo-001",
+            "tenant_id": "tenant-acme",
+            "principal_id": "user-42",
+            "traces": ["trace-session-001", "trace-session-002"],
+        }
+        assert set(exported["summary"]) == {
+            "total_runs",
+            "success_runs",
+            "approval_wait_runs",
+            "denied_runs",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_trace_id",
+            "latest_status",
+        }
         assert exported["summary"]["total_runs"] == 2
         assert len(exported["runs"]) == 2
-        assert "failure_reason" in exported["runs"][0]
+        self._assert_session_run_contract(exported["runs"][0])
+        self._assert_session_run_contract(exported["runs"][1])
 
     def test_cli_export_session_surfaces_latest_failure_reason(
         self,
