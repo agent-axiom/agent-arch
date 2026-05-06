@@ -5661,8 +5661,28 @@ class TestCli:
     def test_cli_inspect_agent_returns_identity_and_inventory(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-agent"])
         assert exit_code == 0
+        assert set(payload) == {
+            "agent_id",
+            "display_name",
+            "owner_team",
+            "runtime_principal",
+            "approved_capabilities",
+            "catalog_capabilities",
+        }
         assert payload["agent_id"] == "support-triage-ref"
-        assert "create_ticket" in payload["approved_capabilities"]
+        assert payload["display_name"] == "Support Triage Reference Agent"
+        assert payload["owner_team"] == "agent_platform"
+        assert payload["runtime_principal"] == "svc-support-triage-ref"
+        assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]
+        for item in payload["catalog_capabilities"]:
+            assert set(item) == {
+                "name",
+                "owner",
+                "risk_tier",
+                "network_access",
+                "tool_principal",
+                "allowed_egress",
+            }
         search_docs = next(
             item for item in payload["catalog_capabilities"] if item["name"] == "search_docs"
         )
