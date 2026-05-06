@@ -6093,11 +6093,8 @@ class TestCli:
             "background_update_scheduled",
             "run_complete",
         ]
-        sandbox_review = next(
-            item
-            for item in inspect_payload["events"]
-            if item["event_type"] == "sandbox_profile_reviewed"
-        )
+        sandbox_review = inspect_payload["events"][7]
+        assert sandbox_review["event_type"] == "sandbox_profile_reviewed"
         assert sandbox_review["payload"]["sandbox_profile_contract"] == "sandbox-profile-v1"
         assert sandbox_review["payload"]["workspace_entries_reviewed"] == "true"
         assert sandbox_review["payload"]["snapshot_policy"] == "required_on_completion"
