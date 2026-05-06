@@ -5984,6 +5984,10 @@ class TestCli:
         assert "runtime-controls.yaml" in payload["change"]["artifacts"]
         assert payload["change"]["session_control_owner"] == "support-ops"
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
+        assert payload["change"]["approval_roles"] == [
+            "platform-owner",
+            "security-reviewer",
+        ]
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
         sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
