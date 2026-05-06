@@ -897,6 +897,11 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "user_input": run.user_input,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "capability_session_id": run.capability_session_id,
+                "capability_session_status": run.capability_session_status,
+                "authorization_mode": run.authorization_mode,
+                "delegated_principal_id": run.delegated_principal_id,
+                "delegated_scope": run.delegated_scope,
             }
             for run in runs
         ],
@@ -977,6 +982,11 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "user_input": run.user_input,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "capability_session_id": run.capability_session_id,
+                "capability_session_status": run.capability_session_status,
+                "authorization_mode": run.authorization_mode,
+                "delegated_principal_id": run.delegated_principal_id,
+                "delegated_scope": run.delegated_scope,
             }
             for run in runs
         ],
