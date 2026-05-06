@@ -6025,14 +6025,10 @@ class TestCli:
             "background_update_scheduled",
             "run_complete",
         ]
-        run_start = next(
-            item for item in inspect_payload["events"] if item["event_type"] == "run_start"
-        )
+        run_start = inspect_payload["events"][0]
         assert run_start["payload"]["user_input"] == "[REDACTED]"
         assert run_start["redacted_fields"] == ["user_input"]
-        run_complete = next(
-            item for item in inspect_payload["events"] if item["event_type"] == "run_complete"
-        )
+        run_complete = inspect_payload["events"][-1]
         assert run_complete["redacted_fields"] == []
 
     def test_cli_export_trace_rejects_unknown_redact_fields(
