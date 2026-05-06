@@ -2887,7 +2887,7 @@ class TestRuntimeControlPaths:
         runtime.sessions.export_session_json(f" {session_id} ", output_path=output_path)
         payload = json.loads(output_path.read_text(encoding="utf-8"))
         assert payload["session"]["session_id"] == session_id
-        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
 
     def test_session_export_rejects_blank_session_id(self, tmp_path: Path) -> None:
@@ -6800,7 +6800,7 @@ class TestCli:
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
         self._assert_session_run_contract(payload["runs"][0])
         self._assert_session_run_contract(payload["runs"][1])
-        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
         assert payload["runs"][0]["delegated_principal_id"] == ""
@@ -6860,7 +6860,7 @@ class TestCli:
         assert payload["runs"][0]["output_text"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
-        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
         assert payload["runs"][0]["delegated_principal_id"] == ""
