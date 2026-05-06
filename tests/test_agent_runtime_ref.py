@@ -6099,6 +6099,11 @@ class TestCli:
         assert payload["summary"]["total_runs"] == 2
         assert payload["summary"]["approval_wait_runs"] == 1
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
+        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_status"] == "pending"
+        assert payload["runs"][0]["authorization_mode"] == "platform_owned"
+        assert "delegated_principal_id" in payload["runs"][0]
+        assert "delegated_scope" in payload["runs"][0]
         assert payload["runs"][1]["trace_id"] == "trace-session-002"
 
     def test_cli_session_replay_surfaces_failed_run_fields(self, cli_json) -> None:
@@ -6135,6 +6140,11 @@ class TestCli:
         assert payload["trace_count"] == 2
         assert payload["summary"]["total_runs"] == 2
         assert "waiting for human approval" in payload["runs"][0]["output_text"]
+        assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
+        assert payload["runs"][0]["capability_session_status"] == "pending"
+        assert payload["runs"][0]["authorization_mode"] == "platform_owned"
+        assert "delegated_principal_id" in payload["runs"][0]
+        assert "delegated_scope" in payload["runs"][0]
         assert "Retrieved profile hint" in payload["runs"][1]["output_text"]
 
     def test_cli_inspect_session_surfaces_failed_run_fields(self, cli_json) -> None:
