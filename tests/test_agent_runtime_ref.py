@@ -2602,14 +2602,14 @@ class TestRuntimeControlPaths:
         session_record = runtime.sessions.get_session(session_id)
         assert approval_requested.trace_id == trace_id
         assert approval_requested.payload["status"] == "pending"
-        assert approval_requested.payload["capability_session_id"].startswith("cap-session-")
+        assert approval_requested.payload["capability_session_id"] == "cap-session-001"
         assert approval_requested.payload["capability_session_status"] == "pending"
         assert tool_execution.payload["status"] == "approval_required"
         assert tool_execution.payload["tool_principal"] == "pending_review"
         assert len(runtime.approvals.pending()) == 1
         assert session_record is not None
         run_record = runtime.sessions.runs_for_session(session_id)[0]
-        assert run_record.capability_session_id.startswith("cap-session-")
+        assert run_record.capability_session_id == "cap-session-001"
         assert run_record.capability_session_status == "pending"
 
     def test_approval_queue_resolution_updates_capability_session_status(self) -> None:
