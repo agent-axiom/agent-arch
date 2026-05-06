@@ -2476,24 +2476,44 @@ class TestRuntimeCore:
             ),
         )
         session_run = runtime.sessions.runs_for_session("session-demo-001")[0]
-        policy_events = [
-            event
-            for event in runtime.telemetry.events
-            if event.event_type == "tool_policy_decision"
-        ]
-        execution_events = [
-            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
-        ]
-
         assert result.status == "failed"
+        assert result.output_text == (
+            "Runtime halted before side effects completed: missing_capability returned "
+            "denied (capability_unknown)."
+        )
         assert session_run.status == "failed"
         assert session_run.failure_reason == "capability_unknown"
-        assert "missing_capability returned denied" in session_run.output_text
-        assert runtime.telemetry.events[-1].event_type == "run_complete"
-        assert policy_events[0].payload["reason"] == "capability_unknown"
-        assert policy_events[0].payload["policy_id"] == "cap_404"
-        assert execution_events[0].payload["capability"] == "missing_capability"
-        assert execution_events[0].payload["status"] == "denied"
+        assert session_run.output_text == result.output_text
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "tool_execution",
+            "run_failed",
+            "run_complete",
+        ]
+        policy_event = runtime.telemetry.events[5]
+        execution_event = runtime.telemetry.events[6]
+        assert policy_event.payload == {
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-demo-001",
+            "capability": "missing_capability",
+            "action": "deny",
+            "reason": "capability_unknown",
+            "policy_id": "cap_404",
+        }
+        assert execution_event.payload == {
+            "session_id": "session-demo-001",
+            "capability": "missing_capability",
+            "status": "denied",
+            "tool_principal": "n/a",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     def test_runtime_rejects_bad_second_pass_model_output(self) -> None:
         class BadSecondPassRuntime(AgentRuntime):
