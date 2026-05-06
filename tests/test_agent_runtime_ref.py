@@ -1318,8 +1318,19 @@ class TestFailurePaths:
             ]
         )
         assert code == 0
+        assert set(payload) == {
+            "status",
+            "result",
+            "failure_reason",
+            "trace_id",
+            "event_count",
+            "events",
+        }
+        assert payload["trace_id"] == "trace-cli-dump-failure-001"
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
+        assert "tool_timeout" in payload["result"]
+        assert payload["event_count"] == len(payload["events"])
         assert any(event["event_type"] == "run_failed" for event in payload["events"])
 
     def test_cli_run_event_commands_normalize_session_id_for_lookup(
