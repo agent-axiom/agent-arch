@@ -1376,9 +1376,23 @@ class TestFailurePaths:
 
         dump_code, dump_payload = cli_json(["dump-events", "--session-id", padded_session_id])
         assert dump_code == 0
-        run_start = next(
-            event for event in dump_payload["events"] if event["event_type"] == "run_start"
-        )
+        assert [event["event_type"] for event in dump_payload["events"]] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        run_start = dump_payload["events"][0]
         assert run_start["payload"]["session_id"] == "session-cli-normalized-001"
 
         output_path = tmp_path / "normalized-session-trace.jsonl"
