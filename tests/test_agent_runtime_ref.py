@@ -5795,6 +5795,7 @@ class TestCli:
             ],
         )
         assert inspect_code == 0
+        assert set(inspect_payload) == {"trace_id", "event_count", "events"}
         assert inspect_payload["trace_id"] == "trace-export-001"
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
         assert any(item["event_type"] == "run_complete" for item in inspect_payload["events"])
