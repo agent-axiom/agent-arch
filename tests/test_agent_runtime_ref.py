@@ -6119,7 +6119,22 @@ class TestCli:
             "run_complete",
         ]
         assert inspect_payload["events"][0]["payload"]["session_id"] == "session-demo-001"
-        assert all(item["schema_version"] == "1.0" for item in inspect_payload["events"])
+        assert [item["schema_version"] for item in inspect_payload["events"]] == [
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+            "1.0",
+        ]
 
     def test_cli_export_trace_supports_redaction(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace-redacted.jsonl"
@@ -6299,7 +6314,22 @@ class TestCli:
             "background_update_scheduled",
             "run_complete",
         ]
-        assert all(item["trace_id"] == "trace-consistent-001" for item in inspect_payload["events"])
+        assert [item["trace_id"] for item in inspect_payload["events"]] == [
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+            "trace-consistent-001",
+        ]
         session_ids = {
             item["payload"]["session_id"]
             for item in inspect_payload["events"]
