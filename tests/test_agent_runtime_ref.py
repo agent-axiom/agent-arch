@@ -6002,11 +6002,34 @@ class TestCli:
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])
         assert exit_code == 0
+        assert payload["trace_id"] == "trace-approval-001"
+        assert payload["session_id"] == "session-approval-001"
         assert payload["count"] >= 1
-        assert payload["approvals"][0]["status"] == "pending"
-        assert payload["approvals"][0]["capability_session_id"].startswith("cap-session-")
-        assert payload["approvals"][0]["capability_session_status"] == "pending"
-        assert payload["approvals"][0]["authorization_mode"] == "platform_owned"
+        approval = payload["approvals"][0]
+        assert set(approval) == {
+            "approval_id",
+            "capability_name",
+            "requested_by",
+            "reviewer",
+            "reason",
+            "status",
+            "capability_session_id",
+            "capability_session_status",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        }
+        assert approval["approval_id"] == "apr-001"
+        assert approval["capability_name"] == "create_ticket"
+        assert approval["requested_by"] == "user-42"
+        assert approval["reviewer"] == "manager"
+        assert approval["reason"] == "approver:manager"
+        assert approval["status"] == "pending"
+        assert approval["capability_session_id"] == "cap-session-001"
+        assert approval["capability_session_status"] == "pending"
+        assert approval["authorization_mode"] == "platform_owned"
+        assert approval["delegated_principal_id"] == ""
+        assert approval["delegated_scope"] == ""
 
     def test_cli_inspect_approvals_surfaces_delegated_auth_context(self, cli_json) -> None:
         exit_code, payload = cli_json(
