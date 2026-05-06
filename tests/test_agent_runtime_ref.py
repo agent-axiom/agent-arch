@@ -7382,7 +7382,18 @@ class TestCli:
         }
         mixed_session = exported["sessions"][2]
         assert mixed_session["session"]["session_id"] == "session-eval-mixed"
-        assert "required_run_count" not in mixed_session["eval"]["labels"]
-        assert mixed_session["eval"]["expected_outcomes"]["required_run_count"] == 2
+        assert mixed_session["eval"] == {
+            "scenario": "mixed_session",
+            "labels": ["multi_run", "approval_then_memory", "session_evals"],
+            "expected_outcomes": {
+                "latest_status": "success",
+                "approval_wait_runs": 1,
+                "required_run_count": 2,
+                "required_output_substrings": [
+                    "waiting for human approval",
+                    "Retrieved profile hint",
+                ],
+            },
+        }
         assert exported["sessions"][0]["summary"]["approval_wait_runs"] == 1
         assert mixed_session["summary"]["total_runs"] == 2
