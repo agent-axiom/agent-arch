@@ -540,6 +540,7 @@ class TestRuntimeDocsParity:
             "required_run_count",
             "support_ticket",
             "sandbox_profile_review",
+            "sandbox_profile_reviewed",
         )
         for path in (
             Path("docs/appendix/eval-schema.en.md"),
@@ -547,6 +548,25 @@ class TestRuntimeDocsParity:
             Path("docs/appendix/eval-schema.zh.md"),
         ):
             text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
+
+    def test_reference_package_documents_eval_artifact_contract(self) -> None:
+        """Keep reference package docs aligned with nested eval artifact fields."""
+        required_terms = (
+            "support_ticket",
+            "sandbox_profile_review",
+            "sandbox_profile_reviewed",
+            "required_run_count",
+            "expected outcome",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "export-eval-dataset" in text
             for term in required_terms:
                 assert term in text
 
