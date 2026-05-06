@@ -5644,19 +5644,45 @@ class TestDelegatedAuthorizationRuntime:
         assert approval_request.delegated_principal_id == "user-1"
         assert approval_request.delegated_scope == "tickets.write"
 
-        approval_event = next(
-            event for event in runtime.telemetry.events if event.event_type == "approval_requested"
-        )
-        assert approval_event.payload["authorization_mode"] == "user_delegated"
-        assert approval_event.payload["delegated_principal_id"] == "user-1"
-        assert approval_event.payload["delegated_scope"] == "tickets.write"
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        approval_event = runtime.telemetry.events[6]
+        assert approval_event.payload == {
+            "session_id": "session-authz-001",
+            "approval_id": "apr-001",
+            "capability": "create_ticket",
+            "reviewer": "manager",
+            "status": "pending",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "pending",
+            "authorization_mode": "user_delegated",
+            "delegated_principal_id": "user-1",
+            "delegated_scope": "tickets.write",
+        }
 
-        tool_event = next(
-            event for event in runtime.telemetry.events if event.event_type == "tool_execution"
-        )
-        assert tool_event.payload["authorization_mode"] == "user_delegated"
-        assert tool_event.payload["delegated_principal_id"] == "user-1"
-        assert tool_event.payload["delegated_scope"] == "tickets.write"
+        tool_event = runtime.telemetry.events[7]
+        assert tool_event.payload == {
+            "session_id": "session-authz-001",
+            "capability": "create_ticket",
+            "status": "approval_required",
+            "tool_principal": "pending_review",
+            "authorization_mode": "user_delegated",
+            "delegated_principal_id": "user-1",
+            "delegated_scope": "tickets.write",
+        }
 
         session_run = runtime.sessions.runs_for_session("session-authz-001")[0]
         assert session_run.authorization_mode == "user_delegated"
