@@ -4181,9 +4181,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             ),
         )
         removed = store.compact(" tenant-acme ")
-        assert removed >= 1
+        assert removed == 1
+        assert [record.memory_id for record in store.all()] == [
+            "mem-001",
+            "mem-002",
+            "mem-003",
+            "mem-004",
+            "mem-006",
+        ]
         remaining_other = [record for record in store.all() if record.tenant_id == "tenant-other"]
-        assert len(remaining_other) == 1
+        assert [record.memory_id for record in remaining_other] == ["mem-006"]
 
     def test_memory_score_prefers_trusted_profile_signal(self) -> None:
         from agent_runtime_ref.memory import MemoryRecord, MemoryStore
