@@ -6861,19 +6861,42 @@ class TestCli:
         )
         assert exit_code == 0
         assert output_path.exists()
+        assert set(payload) == {
+            "dataset_name",
+            "output_path",
+            "session_count",
+            "run_count",
+            "failed_runs",
+            "traceable_failed_runs",
+            "latest_failure_reason",
+            "sessions",
+        }
         assert payload["dataset_name"] == "agent-runtime-ref-eval-seed"
+        assert payload["output_path"] == str(output_path)
         assert payload["session_count"] == 4
         assert payload["run_count"] == 5
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["latest_failure_reason"] == "tool_timeout"
+        assert payload["sessions"] == [
+            "session-eval-support",
+            "session-eval-memory",
+            "session-eval-mixed",
+            "session-eval-failed-run",
+        ]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
+        assert set(exported) == {"dataset_name", "session_count", "run_count", "sessions"}
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
         assert exported["run_count"] == 5
         assert len(exported["sessions"]) == 4
         assert exported["sessions"][0]["eval"]["labels"]
-        assert "expected_outcomes" in exported["sessions"][0]["eval"]
+        assert set(exported["sessions"][0]["eval"]) == {
+            "scenario",
+            "labels",
+            "expected_outcomes",
+            "grading_rules",
+        }
         mixed_session = next(
             session
             for session in exported["sessions"]
