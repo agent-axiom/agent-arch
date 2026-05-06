@@ -6895,11 +6895,26 @@ class TestCli:
             ]
         )
         assert exit_code == 0
-        assert payload["count"] >= 1
-        approval = payload["approvals"][0]
-        assert "authorization_mode" in approval
-        assert "delegated_principal_id" in approval
-        assert "delegated_scope" in approval
+        assert payload == {
+            "trace_id": "trace-approval-authz-001",
+            "session_id": "session-approval-authz-001",
+            "count": 1,
+            "approvals": [
+                {
+                    "approval_id": "apr-001",
+                    "capability_name": "create_ticket",
+                    "requested_by": "manager-1",
+                    "reviewer": "manager",
+                    "reason": "approver:manager",
+                    "status": "pending",
+                    "capability_session_id": "cap-session-001",
+                    "capability_session_status": "pending",
+                    "authorization_mode": "platform_owned",
+                    "delegated_principal_id": "",
+                    "delegated_scope": "",
+                }
+            ],
+        }
 
     def test_cli_approval_commands_normalize_lineage_ids(self, cli_json) -> None:
         exit_code, payload = cli_json(
