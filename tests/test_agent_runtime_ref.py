@@ -5511,8 +5511,17 @@ class TestCli:
         assert exit_code == 0
         assert payload["agent_id"] == "support-triage-ref"
         assert "create_ticket" in payload["approved_capabilities"]
-        assert any(item["name"] == "search_docs" for item in payload["catalog_capabilities"])
-        assert any(item["risk_tier"] == "high" for item in payload["catalog_capabilities"])
+        search_docs = next(
+            item for item in payload["catalog_capabilities"] if item["name"] == "search_docs"
+        )
+        create_ticket = next(
+            item for item in payload["catalog_capabilities"] if item["name"] == "create_ticket"
+        )
+        assert search_docs["owner"] == "knowledge_platform"
+        assert search_docs["tool_principal"] == "svc-knowledge-reader"
+        assert create_ticket["risk_tier"] == "high"
+        assert create_ticket["owner"] == "support_platform"
+        assert create_ticket["tool_principal"] == "svc-ticket-writer"
 
     @pytest.mark.parametrize(
         ("command", "expected_key"),
