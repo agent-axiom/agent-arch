@@ -2543,12 +2543,29 @@ class TestRuntimeCore:
                 agent_id="agent-runtime-ref",
             ),
         )
-        persisted_event = next(
-            event for event in runtime.telemetry.events if event.event_type == "memory_persisted"
-        )
-        assert "provenance" in persisted_event.payload
-        assert "revision" in persisted_event.payload
-        assert persisted_event.payload["revision"] == "1"
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        persisted_event = runtime.telemetry.events[9]
+        assert persisted_event.payload == {
+            "memory_id": "mem-004",
+            "memory_class": "long_term",
+            "kind": "session_summary",
+            "provenance": "conversation_summary",
+            "revision": "1",
+        }
 
     def test_runtime_emits_context_layers(self) -> None:
         runtime = AgentRuntime()
@@ -2561,13 +2578,26 @@ class TestRuntimeCore:
                 agent_id="agent-runtime-ref",
             ),
         )
-        context_event = next(
-            event
-            for event in runtime.telemetry.events
-            if event.event_type == "context_layers_built"
-        )
-        assert int(context_event.payload["static_items"]) >= 1
-        assert int(context_event.payload["retrieved_items"]) >= 1
+        assert [event.event_type for event in runtime.telemetry.events] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        context_event = runtime.telemetry.events[3]
+        assert context_event.payload == {
+            "session_id": "session-demo-001",
+            "static_items": "2",
+            "session_items": "3",
+            "retrieved_items": "3",
+            "tool_items": "0",
+        }
 
     def test_memory_store_filters_by_tenant(self) -> None:
         store = MemoryStore()
