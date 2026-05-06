@@ -6223,6 +6223,21 @@ class TestCli:
         assert "delegated_principal_id" in payload
         assert "delegated_scope" in payload
 
+    @staticmethod
+    def _assert_session_run_contract(run: dict[str, object]) -> None:
+        assert set(run) == {
+            "trace_id",
+            "status",
+            "user_input",
+            "output_text",
+            "failure_reason",
+            "capability_session_id",
+            "capability_session_status",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        }
+
     def test_cli_session_replay_runs_multiple_inputs(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
@@ -6238,6 +6253,8 @@ class TestCli:
         assert payload["summary"]["total_runs"] == 2
         assert payload["summary"]["approval_wait_runs"] == 1
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
+        self._assert_session_run_contract(payload["runs"][0])
+        self._assert_session_run_contract(payload["runs"][1])
         assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
@@ -6263,6 +6280,7 @@ class TestCli:
         assert payload["summary"]["failed_runs"] == 1
         assert payload["summary"]["traceable_failed_runs"] == 1
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
+        self._assert_session_run_contract(payload["runs"][0])
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_inspect_session_with_multiple_inputs_returns_both_runs(self, cli_json) -> None:
@@ -6278,6 +6296,8 @@ class TestCli:
         assert exit_code == 0
         assert payload["trace_count"] == 2
         assert payload["summary"]["total_runs"] == 2
+        self._assert_session_run_contract(payload["runs"][0])
+        self._assert_session_run_contract(payload["runs"][1])
         assert "waiting for human approval" in payload["runs"][0]["output_text"]
         assert payload["runs"][0]["capability_session_id"].startswith("cap-session-")
         assert payload["runs"][0]["capability_session_status"] == "pending"
@@ -6304,6 +6324,7 @@ class TestCli:
         assert payload["summary"]["failed_runs"] == 1
         assert payload["summary"]["traceable_failed_runs"] == 1
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
+        self._assert_session_run_contract(payload["runs"][0])
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_export_session_writes_structured_json(
