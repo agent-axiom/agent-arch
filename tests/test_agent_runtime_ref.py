@@ -1448,6 +1448,7 @@ class TestFailurePaths:
             for rule in session["eval"]["grading_rules"]
             if rule["type"] == "sandbox_profile_review"
         )
+        assert set(sandbox_rule) == {"type", "expected", "blocking"}
         assert sandbox_rule["blocking"] is True
         assert sandbox_rule["expected"] == {
             "sandbox_profile_contract": "sandbox-profile-v1",
