@@ -701,17 +701,26 @@ class TestFailurePaths:
             ),
         )
         assert result.status == "denied"
+        assert result.output_text == "Request denied by policy."
         session = runtime.sessions.get_session("session-denied-001")
         assert session is not None
         assert session.traces == ["trace-denied-001"]
         runs = runtime.sessions.runs_for_session("session-denied-001")
         assert len(runs) == 1
         assert runs[0].status == "denied"
+        assert runs[0].output_text == "Request denied by policy."
         assert runs[0].failure_reason == "principal_missing"
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == ["run_start", "policy_precheck", "run_complete"]
         run_complete = runtime.telemetry.events[-1]
-        assert run_complete.payload["session_id"] == "session-denied-001"
+        assert run_complete.payload == {
+            "session_id": "session-denied-001",
+            "status": "denied",
+            "output_preview": "Request denied by policy.",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     def test_runtime_marks_validation_failure_tool_path_as_failed(self) -> None:
         runtime = AgentRuntime()
