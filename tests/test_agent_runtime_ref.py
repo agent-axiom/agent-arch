@@ -6285,7 +6285,14 @@ class TestCli:
         ]
         assert "runtime-controls.yaml" in payload["artifact_bundle"]["artifacts"]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
+        assert set(payload["artifact_bundle"]["review_evidence"]) == {
+            "sandbox_profile_reviewed"
+        }
         sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
+        assert (
+            payload["artifact_bundle"]["review_evidence"]["sandbox_profile_reviewed"]
+            == sandbox_review
+        )
         assert set(sandbox_review) == {
             "trace_event",
             "workspace_manifest_ref",
