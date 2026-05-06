@@ -5934,9 +5934,30 @@ class TestCli:
             ],
         )
         assert exit_code == 0
+        assert set(payload) == {
+            "healthy",
+            "missing_controls",
+            "failed_run_controls",
+            "preserved_failed_run_controls",
+            "failed_run_controls_healthy",
+            "blocking_findings",
+            "inventory_drift",
+        }
         assert not payload["healthy"]
         assert "registry_reviewed" in payload["missing_controls"]
+        assert payload["failed_run_controls"] == []
+        assert payload["preserved_failed_run_controls"] == [
+            "policy_traces_present",
+            "memory_provenance_enforced",
+        ]
+        assert payload["failed_run_controls_healthy"] is True
+        assert payload["blocking_findings"] == []
         assert not payload["inventory_drift"]["has_drift"]
+        assert payload["inventory_drift"] == {
+            "has_drift": False,
+            "missing_from_catalog": [],
+            "missing_from_inventory": [],
+        }
 
     @pytest.mark.parametrize(
         ("raw_signal", "expected_message"),
@@ -6097,11 +6118,26 @@ class TestCli:
     ) -> None:
         exit_code, payload = cli_json(["check-controls", "--signal", "policy_traces_present=false"])
         assert exit_code == 0
+        assert set(payload) == {
+            "healthy",
+            "missing_controls",
+            "failed_run_controls",
+            "preserved_failed_run_controls",
+            "failed_run_controls_healthy",
+            "blocking_findings",
+            "inventory_drift",
+        }
         assert not payload["healthy"]
         assert "policy_traces_present" in payload["missing_controls"]
         assert payload["failed_run_controls"] == ["policy_traces_present"]
         assert "memory_provenance_enforced" in payload["preserved_failed_run_controls"]
         assert payload["failed_run_controls_healthy"] is False
+        assert payload["blocking_findings"] == []
+        assert payload["inventory_drift"] == {
+            "has_drift": False,
+            "missing_from_catalog": [],
+            "missing_from_inventory": [],
+        }
 
     def test_cli_check_retirement_surfaces_failed_run_archive_targets(
         self,
