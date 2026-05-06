@@ -1311,7 +1311,18 @@ class TestFailurePaths:
         assert output_path.exists()
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
         assert payload["event_count"] == len(lines)
-        assert any("run_failed" in line for line in lines)
+        assert [json.loads(line)["event_type"] for line in lines] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "span",
+            "tool_execution",
+            "run_failed",
+            "run_complete",
+        ]
 
     def test_cli_dump_events_surfaces_failure_reason(self, cli_json) -> None:
         code, payload = cli_json(
@@ -1340,7 +1351,18 @@ class TestFailurePaths:
             "failed (tool_timeout)."
         )
         assert payload["event_count"] == len(payload["events"])
-        assert any(event["event_type"] == "run_failed" for event in payload["events"])
+        assert [event["event_type"] for event in payload["events"]] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "span",
+            "tool_execution",
+            "run_failed",
+            "run_complete",
+        ]
 
     def test_cli_run_event_commands_normalize_session_id_for_lookup(
         self, cli_json, tmp_path: Path
