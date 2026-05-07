@@ -169,7 +169,8 @@ class CapabilityCatalog:
 
     def __init__(self, registry: Mapping[str, CapabilitySpec] | None = None) -> None:
         self._registry: dict[str, CapabilitySpec] = {}
-        for name, capability in (registry or self._default_registry()).items():
+        source_registry = self._default_registry() if registry is None else registry
+        for name, capability in source_registry.items():
             capability_name = _normalize_capability_key(name)
             if capability_name in self._registry:
                 raise ValueError("Capability names must be unique")
