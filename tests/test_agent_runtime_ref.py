@@ -2483,6 +2483,49 @@ class TestRuntimeCore:
             "delegated_scope": "",
         }
 
+    def test_runtime_rejects_malformed_direct_dependencies(self) -> None:
+        from agent_runtime_ref.approvals import ApprovalQueue
+        from agent_runtime_ref.background import BackgroundWorker
+        from agent_runtime_ref.catalog import CapabilityCatalog
+        from agent_runtime_ref.identity import AgentIdentity
+        from agent_runtime_ref.session import SessionStore
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        malformed_dependencies: tuple[tuple[dict[str, object], str], ...] = (
+            ({"catalog": object()}, "Runtime catalog must be CapabilityCatalog"),
+            ({"policy": object()}, "Runtime policy must be PolicyEngine"),
+            ({"telemetry": object()}, "Runtime telemetry must be TelemetryEmitter"),
+            ({"memory": object()}, "Runtime memory must be MemoryStore"),
+            ({"approvals": object()}, "Runtime approvals must be ApprovalQueue"),
+            ({"sessions": object()}, "Runtime sessions must be SessionStore"),
+            ({"agent": object()}, "Runtime agent must be AgentIdentity"),
+            ({"background": object()}, "Runtime background must be BackgroundWorker"),
+        )
+        for kwargs, message in malformed_dependencies:
+            with pytest.raises(TypeError, match=message):
+                AgentRuntime(**cast(dict[str, Any], kwargs))
+
+        runtime = AgentRuntime(
+            catalog=CapabilityCatalog(),
+            policy=PolicyEngine(),
+            telemetry=TelemetryEmitter(),
+            memory=MemoryStore(),
+            approvals=ApprovalQueue(),
+            sessions=SessionStore(),
+            agent=AgentIdentity(
+                agent_id="agent-runtime-ref",
+                display_name="Reference Runtime",
+                owner_team="agent_platform",
+                runtime_principal="svc-agent-runtime-ref",
+            ),
+            background=BackgroundWorker(
+                memory_store=MemoryStore(),
+                policy=PolicyEngine(),
+                telemetry=TelemetryEmitter(),
+            ),
+        )
+        assert isinstance(runtime.catalog, CapabilityCatalog)
+
     def test_runtime_rejects_bad_direct_sandbox_profile_sections(self) -> None:
         malformed_sections = (
             ("workspace", {"workspace": []}),
