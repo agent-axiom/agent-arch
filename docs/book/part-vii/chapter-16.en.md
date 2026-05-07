@@ -202,6 +202,22 @@ For a reference runtime, that means sandbox state should not disappear inside a 
 
 Then long-running work over files, shell, and memory does not become an opaque directory on disk. It becomes part of the same runtime-control layer that already holds approvals, background runs, capability sessions, and trace evidence.
 
+### 8.2. Stateful Named Agent Instance as a Runtime Topology
+
+Cloudflare Agents SDK shows another useful baseline pattern: an agent can be not only a transient execution loop, but a **named durable runtime object**. In that model, each agent instance runs on a Durable Object with its own durable SQL/key-value state, WebSocket connections, scheduled tasks, the ability to wake on an event, and the ability to hibernate when idle.[^cloudflare-agents]
+
+This is worth importing into the book as an architectural shape, not as “use Cloudflare.” When an agent is bound to the stable name of a real thing — a customer case, project, device, tenant workspace, room, thread, or research dossier — the runtime should explicitly separate:
+
+- `agent_instance_id`, which outlives a single run;
+- `run_id`, which describes one execution;
+- `session_id`, which describes a user-facing or transport session;
+- durable agent state, which survives disconnects, deploys, hibernation, and background wake-ups;
+- external knowledge stores, which are not the private mutable state of one instance.
+
+This pattern is especially useful for chat, voice, workflow, and monitoring agents where users expect continuity rather than stateless request/response behavior. It also adds risks the baseline runtime should make visible: tenant isolation for named instances, leakage across WebSocket sessions, replay/resume after hibernation, scheduled side effects without an active user, and durable-state migrations when the agent version changes.
+
+So the reference runtime does not need to implement Durable Objects, but it does need an abstraction such as `AgentInstanceStore` and `SchedulerBoundary`: a place where operators can see which named instance owns state, which runs changed it, which scheduled tasks may wake it, and which traces prove safe resume.
+
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
 
 Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
@@ -395,5 +411,7 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 
 [^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)

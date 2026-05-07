@@ -202,6 +202,22 @@ def run_agent(request: RunRequest) -> RunResult:
 
 Тогда длительная работа с файлами, shell и memory не превращается в непрозрачную папку на диске. Она становится частью того же runtime-control слоя, где уже живут approvals, background runs, capability sessions и trace evidence.
 
+### 8.2. Stateful named agent instance как отдельная runtime topology
+
+Cloudflare Agents SDK показывает другой полезный baseline-паттерн: агент может быть не только transient execution loop, но и **именованный долговечный runtime object**. В их модели каждый agent instance работает поверх Durable Object: у него есть собственное durable SQL/key-value state, WebSocket-соединения, scheduled tasks, возможность проснуться по событию и снова hibernate, когда он idle.[^cloudflare-agents]
+
+В книгу это стоит переносить не как рекомендацию “используйте именно Cloudflare”, а как архитектурную форму. Если агент привязан к стабильному имени реальной сущности — customer case, project, device, tenant workspace, room, thread, research dossier, — runtime должен явно разделять:
+
+- `agent_instance_id`, который живет дольше одного run;
+- `run_id`, который описывает конкретное выполнение;
+- `session_id`, который описывает user-facing или transport session;
+- durable agent state, который переживает disconnect, deploy, hibernation и background wake-up;
+- external knowledge store, который не является private mutable state одного instance.
+
+Такой паттерн особенно полезен для chat, voice, workflow и monitoring agents, где пользователь ожидает continuity, а не stateless request/response. Но он же добавляет риски, которые baseline runtime должен сделать видимыми: tenant isolation для named instances, leakage между WebSocket sessions, replay/resume после hibernation, scheduled side effects без активного пользователя и миграции durable state при изменении версии агента.
+
+Поэтому эталонный runtime не обязан реализовывать Durable Objects, но ему нужна абстракция вроде `AgentInstanceStore` и `SchedulerBoundary`: место, где видно, какой named instance владеет состоянием, какие runs его меняли, какие scheduled tasks могут его разбудить и какие traces доказывают безопасный resume.
+
 ## 9. Stateful tool sessions тоже должны входить в baseline
 
 Как только execution layer начинает работать с stateful MCP-подобными capability, у baseline runtime появляется еще одна обязательная граница: **состояние user-visible run не равно состоянию capability session**.[^aws-stateful-mcp]
@@ -395,5 +411,7 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) и [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)

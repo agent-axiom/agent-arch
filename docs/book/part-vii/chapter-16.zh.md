@@ -202,6 +202,22 @@ OpenAI Agents SDK 的 Sandbox Agents 做了一个很有用的区分，应该进�
 
 这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、trace evidence 放在一起管理。
 
+### 8.2. Stateful named agent instance 作为一种运行时拓扑
+
+Cloudflare Agents SDK 展示了另一个有用的基线模式：智能体不一定只是 transient execution loop，也可以是一个**有名字的耐久运行时对象**。在这个模型里，每个 agent instance 都运行在 Durable Object 之上，拥有自己的 durable SQL/key-value state、WebSocket 连接、scheduled tasks，能在事件到来时醒来，也能在空闲时 hibernate。[^cloudflare-agents]
+
+把它放进本书时，重点不是“应该使用 Cloudflare”，而是保留这种架构形态。当智能体绑定到某个真实事物的稳定名字上——customer case、project、device、tenant workspace、room、thread 或 research dossier——运行时就应该明确区分：
+
+- `agent_instance_id`，它比单次 run 活得更久；
+- `run_id`，它描述一次具体执行；
+- `session_id`，它描述用户可见会话或 transport session；
+- durable agent state，它可以跨 disconnect、deploy、hibernation 和 background wake-up 保留下来；
+- external knowledge store，它不是某一个 instance 的私有可变状态。
+
+这个模式特别适合 chat、voice、workflow 和 monitoring agents，因为用户期待的是连续性，而不是 stateless request/response。但它也引入了基线运行时必须显式暴露的风险：named instances 的 tenant isolation、跨 WebSocket sessions 的泄漏、hibernation 之后的 replay/resume、没有活跃用户时的 scheduled side effects，以及 agent version 变化时的 durable-state migrations。
+
+因此，参考运行时不必实现 Durable Objects，但需要类似 `AgentInstanceStore` 和 `SchedulerBoundary` 的抽象：一个能看清哪个 named instance 拥有哪些状态、哪些 runs 修改过它、哪些 scheduled tasks 可能唤醒它、哪些 traces 能证明安全恢复的位置。
+
 ## 9. 有状态工具会话也应该属于基线
 
 一旦执行层开始接入类似有状态 MCP 能力，基线运行时就会多出一条必须明确的边界：**用户可见运行的状态，不等于能力会话的状态**。[^aws-stateful-mcp]
@@ -395,5 +411,7 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
