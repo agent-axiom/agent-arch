@@ -205,6 +205,8 @@ class CapabilityCatalog:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "CapabilityCatalog":
+        if not isinstance(data, Mapping):
+            raise TypeError("Capability catalog config must be a mapping")
         raw_capabilities = data.get("capabilities", {})
         if not isinstance(raw_capabilities, Mapping):
             raise TypeError("'capabilities' must be a mapping")

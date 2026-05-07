@@ -72,6 +72,8 @@ class StructuredEvent:
 
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> StructuredEvent:
+        if not isinstance(data, dict):
+            raise TypeError("Telemetry event must be a mapping")
         required_values: dict[str, str] = {}
         for required_field in ("event_type", "trace_id"):
             if required_field not in data:

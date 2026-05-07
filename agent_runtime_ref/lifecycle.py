@@ -169,7 +169,8 @@ class ChangeRecord:
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ChangeRecord:
-        data = _require_mapping(payload.get("change", payload), label="change")
+        root = _require_mapping(payload, label="change")
+        data = _require_mapping(root.get("change", root), label="change")
         return cls(
             change_id=_read_required_string(data, "change_id", label="change"),
             change_type=_read_required_string(data, "change_type", label="change"),
@@ -247,7 +248,8 @@ class ArtifactBundle:
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> ArtifactBundle:
-        data = _require_mapping(payload.get("bundle", payload), label="artifact bundle")
+        root = _require_mapping(payload, label="artifact bundle")
+        data = _require_mapping(root.get("bundle", root), label="artifact bundle")
         return cls(
             bundle_name=_read_required_string(data, "bundle_name", label="bundle"),
             version=_read_required_string(data, "version", label="bundle"),
@@ -324,7 +326,8 @@ class RetirementPlan:
 
     @classmethod
     def from_dict(cls, payload: dict[str, object]) -> RetirementPlan:
-        data = _require_mapping(payload.get("retirement", payload), label="retirement")
+        root = _require_mapping(payload, label="retirement")
+        data = _require_mapping(root.get("retirement", root), label="retirement")
         return cls(
             system_id=_read_required_string(data, "system_id", label="retirement"),
             replacement_mode=_read_required_string(

@@ -201,6 +201,8 @@ class MemoryStore:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "MemoryStore":
+        if not isinstance(data, Mapping):
+            raise TypeError("Memory store config must be a mapping")
         raw_memory = data.get("memory", {})
         if not isinstance(raw_memory, Mapping):
             raise TypeError("'memory' must be a mapping")

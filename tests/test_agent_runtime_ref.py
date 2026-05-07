@@ -1961,6 +1961,8 @@ class TestExecutionAndPolicyBranches:
                 engine.evaluate_tool(**cast(dict[str, Any], kwargs))
 
     def test_policy_from_dict_rejects_bad_shapes(self) -> None:
+        with pytest.raises(TypeError, match="Policy config must be a mapping"):
+            PolicyEngine.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'policy' must be a mapping"):
             PolicyEngine.from_dict({"policy": []})
         with pytest.raises(TypeError, match="'run_precheck' must be a mapping"):
@@ -4253,6 +4255,8 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
     def test_memory_store_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.memory import MemoryRecord, MemoryStore
 
+        with pytest.raises(TypeError, match="Memory store config must be a mapping"):
+            MemoryStore.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'memory' must be a mapping"):
             MemoryStore.from_dict({"memory": []})
         with pytest.raises(TypeError, match="'seed_records' must be a list"):
@@ -4782,11 +4786,17 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         from agent_runtime_ref.lifecycle import ArtifactBundle, ChangeRecord, RetirementPlan
 
         with pytest.raises(TypeError, match="change config must be a mapping"):
+            ChangeRecord.from_dict(cast(Any, []))
+        with pytest.raises(TypeError, match="change config must be a mapping"):
             ChangeRecord.from_dict({"change": []})
         with pytest.raises(TypeError, match="change config keys must be strings"):
             ChangeRecord.from_dict({"change": {7: "malformed"}})
         with pytest.raises(TypeError, match="artifact bundle config must be a mapping"):
+            ArtifactBundle.from_dict(cast(Any, []))
+        with pytest.raises(TypeError, match="artifact bundle config must be a mapping"):
             ArtifactBundle.from_dict({"bundle": []})
+        with pytest.raises(TypeError, match="retirement config must be a mapping"):
+            RetirementPlan.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
             RetirementPlan.from_dict({"retirement": []})
         valid_change = {
@@ -5161,6 +5171,8 @@ class TestLowCoverageModuleBranches:
     def test_controls_policy_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.controls import ControlsPolicy
 
+        with pytest.raises(TypeError, match="Controls policy config must be a mapping"):
+            ControlsPolicy.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'controls' must be a mapping"):
             ControlsPolicy.from_dict({"controls": []})
         with pytest.raises(TypeError, match="'controls.require' must be a list"):
@@ -5348,6 +5360,8 @@ class TestLowCoverageModuleBranches:
     def test_structured_event_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
 
+        with pytest.raises(TypeError, match="Telemetry event must be a mapping"):
+            StructuredEvent.from_dict(cast(Any, []))
         with pytest.raises(
             TypeError,
             match="Telemetry event field must be a string: event_type",
@@ -5449,6 +5463,8 @@ class TestLowCoverageModuleBranches:
     def test_rollout_policy_from_dict_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.rollout import RolloutPolicy
 
+        with pytest.raises(TypeError, match="Rollout policy config must be a mapping"):
+            RolloutPolicy.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'rollout' must be a mapping"):
             RolloutPolicy.from_dict({"rollout": []})
         with pytest.raises(TypeError, match="'require' must be a list"):
@@ -5577,6 +5593,8 @@ class TestLowCoverageModuleBranches:
     def test_approval_policy_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.approvals import ApprovalPolicy
 
+        with pytest.raises(TypeError, match="Approval policy config must be a mapping"):
+            ApprovalPolicy.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'approvals' must be a mapping"):
             ApprovalPolicy.from_dict({"approvals": []})
         with pytest.raises(TypeError, match="approvals.default_reviewer must be a string"):
@@ -5618,6 +5636,8 @@ class TestLowCoverageModuleBranches:
     def test_catalog_loader_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
 
+        with pytest.raises(TypeError, match="Capability catalog config must be a mapping"):
+            CapabilityCatalog.from_dict(cast(Any, []))
         with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
             CapabilityCatalog.from_dict({"capabilities": []})
         with pytest.raises(TypeError, match="Capability names must be strings"):

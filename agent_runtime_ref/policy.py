@@ -124,6 +124,8 @@ class PolicyEngine:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "PolicyEngine":
+        if not isinstance(data, Mapping):
+            raise TypeError("Policy config must be a mapping")
         raw_policy = data.get("policy", {})
         if not isinstance(raw_policy, Mapping):
             raise TypeError("'policy' must be a mapping")
