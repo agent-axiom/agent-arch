@@ -90,8 +90,14 @@ class PolicyEngine:
         approved_inventory: ApprovedInventory | None = None,
         allowed_network_access: set[str] | None = None,
     ) -> None:
-        self.require_tenant = require_tenant
-        self.deny_if_principal_missing = deny_if_principal_missing
+        self.require_tenant = _read_bool(
+            require_tenant,
+            label="run_precheck.require_tenant",
+        )
+        self.deny_if_principal_missing = _read_bool(
+            deny_if_principal_missing,
+            label="run_precheck.deny_if_principal_missing",
+        )
         self.capability_policies: dict[str, CapabilityPolicy] = {}
         for name, policy in (capability_policies or {}).items():
             if not isinstance(name, str):
