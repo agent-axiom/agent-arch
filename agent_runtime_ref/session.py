@@ -375,19 +375,26 @@ def summarize_session(
     session_id: str,
     runs: tuple[RunRecord, ...],
 ) -> SessionEvalSummary:
-    latest = runs[-1] if runs else None
+    session_id = _read_required_string(session_id, field="session_id")
+    if not isinstance(runs, Sequence) or isinstance(runs, str):
+        raise TypeError("Session runs must be a sequence")
+    normalized_runs: tuple[RunRecord, ...] = tuple(runs)
+    for run in normalized_runs:
+        if not isinstance(run, RunRecord):
+            raise TypeError("Session runs entries must be RunRecord")
+    latest = normalized_runs[-1] if normalized_runs else None
     return SessionEvalSummary(
         session_id=session_id,
-        total_runs=len(runs),
-        success_runs=sum(1 for run in runs if run.status == "success"),
+        total_runs=len(normalized_runs),
+        success_runs=sum(1 for run in normalized_runs if run.status == "success"),
         approval_wait_runs=sum(
-            1 for run in runs if "waiting for human approval" in run.output_text.lower()
+            1 for run in normalized_runs if "waiting for human approval" in run.output_text.lower()
         ),
-        denied_runs=sum(1 for run in runs if run.status == "denied"),
-        failed_runs=sum(1 for run in runs if run.status == "failed"),
+        denied_runs=sum(1 for run in normalized_runs if run.status == "denied"),
+        failed_runs=sum(1 for run in normalized_runs if run.status == "failed"),
         traceable_failed_runs=sum(
             1
-            for run in runs
+            for run in normalized_runs
             if run.status == "failed"
             and bool(run.trace_id)
             and bool(run.output_text)

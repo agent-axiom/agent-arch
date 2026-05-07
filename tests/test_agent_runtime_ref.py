@@ -3752,8 +3752,17 @@ class TestRuntimeControlPaths:
             " session-direct-normalized-001 ",
             (direct_record,),
         )
+        assert summary.session_id == "session-direct-normalized-001"
         assert summary.failed_runs == 1
         assert summary.traceable_failed_runs == 1
+        with pytest.raises(ValueError, match="Session field is required: session_id"):
+            summarize_session(" ", (direct_record,))
+        with pytest.raises(TypeError, match="Session runs must be a sequence"):
+            summarize_session("session-direct-normalized-001", cast(Any, 7))
+        with pytest.raises(TypeError, match="Session runs must be a sequence"):
+            summarize_session("session-direct-normalized-001", cast(Any, "run"))
+        with pytest.raises(TypeError, match="Session runs entries must be RunRecord"):
+            summarize_session("session-direct-normalized-001", cast(Any, (object(),)))
         with pytest.raises(ValueError, match="Session field is required: failure_reason"):
             RunRecord(
                 trace_id="trace-direct-failed-required-001",
