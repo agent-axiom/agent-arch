@@ -712,7 +712,27 @@ class TestFailurePaths:
         assert runs[0].failure_reason == "principal_missing"
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == ["run_start", "policy_precheck", "run_complete"]
-        run_complete = runtime.telemetry.events[-1]
+        run_start = runtime.telemetry.events[0]
+        policy_precheck = runtime.telemetry.events[1]
+        run_complete = runtime.telemetry.events[2]
+        assert run_start.payload == {
+            "user_input": "hi",
+            "tenant_id": "tenant-acme",
+            "principal_id": "",
+            "session_id": "session-denied-001",
+            "agent_id": "agent-runtime-ref",
+            "runtime_principal": "svc-agent-runtime-ref",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert policy_precheck.payload == {
+            "action": "deny",
+            "reason": "principal_missing",
+            "policy_id": "run_002",
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-denied-001",
+        }
         assert run_complete.payload == {
             "session_id": "session-denied-001",
             "status": "denied",
