@@ -98,7 +98,7 @@ class StructuredEvent:
         normalized_redacted_fields: list[str] = []
         for item in redacted_fields:
             if not isinstance(item, str):
-                raise TypeError("redacted_fields entries must be strings")
+                raise TypeError("Telemetry event redacted_fields entries must be strings")
             normalized_redacted_fields.append(item)
         return cls(
             schema_version=schema_version,
@@ -113,7 +113,7 @@ class StructuredEvent:
         normalized: list[str] = []
         for field in redacted_fields:
             if not isinstance(field, str):
-                raise TypeError("redacted_fields entries must be strings")
+                raise TypeError("Telemetry event redacted_fields entries must be strings")
             value = field.strip()
             if not value:
                 raise ValueError("Telemetry redact field must not be empty")
