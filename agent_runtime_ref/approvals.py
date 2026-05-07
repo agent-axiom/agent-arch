@@ -59,6 +59,13 @@ def _read_authorization_mode(value: str) -> str:
     return authorization_mode
 
 
+def _read_approval_status(value: str, *, field: str) -> str:
+    status = _read_required_approval_string(value, field=field)
+    if status not in {"pending", "approved", "rejected"}:
+        raise ValueError(f"Approval status is not supported: {status}")
+    return status
+
+
 @dataclass(slots=True)
 class ApprovalRequest:
     approval_id: str
@@ -75,6 +82,58 @@ class ApprovalRequest:
     delegated_scope: str = ""
     status: str = "pending"
     resolution_note: str = ""
+
+    def __post_init__(self) -> None:
+        self.approval_id = _read_required_approval_string(
+            self.approval_id,
+            field="approval_id",
+        )
+        self.trace_id = _read_required_approval_string(self.trace_id, field="trace_id")
+        self.capability_name = _read_required_approval_string(
+            self.capability_name,
+            field="capability_name",
+        )
+        self.requested_by = _read_required_approval_string(
+            self.requested_by,
+            field="requested_by",
+        )
+        self.reviewer = _read_required_approval_string(self.reviewer, field="reviewer")
+        self.reason = _read_required_approval_string(self.reason, field="reason")
+        self.session_id = _read_optional_approval_string(
+            self.session_id,
+            field="session_id",
+        )
+        self.capability_session_id = _read_optional_approval_string(
+            self.capability_session_id,
+            field="capability_session_id",
+        )
+        self.capability_session_status = _read_approval_status(
+            self.capability_session_status,
+            field="capability_session_status",
+        )
+        self.authorization_mode = _read_authorization_mode(self.authorization_mode)
+        self.delegated_principal_id = _read_optional_approval_string(
+            self.delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        self.delegated_scope = _read_optional_approval_string(
+            self.delegated_scope,
+            field="delegated_scope",
+        )
+        if self.authorization_mode == "user_delegated":
+            self.delegated_principal_id = _read_required_approval_string(
+                self.delegated_principal_id,
+                field="delegated_principal_id",
+            )
+            self.delegated_scope = _read_required_approval_string(
+                self.delegated_scope,
+                field="delegated_scope",
+            )
+        self.status = _read_approval_status(self.status, field="status")
+        self.resolution_note = _read_optional_approval_string(
+            self.resolution_note,
+            field="resolution_note",
+        )
 
 
 class ApprovalQueue:
