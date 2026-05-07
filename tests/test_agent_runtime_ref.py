@@ -4381,6 +4381,11 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
 
         store = MemoryStore()
         with pytest.raises(
+            TypeError,
+            match="Memory store candidate must be MemoryCandidate",
+        ):
+            store.persist(cast(MemoryCandidate, object()))
+        with pytest.raises(
             ValueError,
             match="Memory candidate revision mode is not supported: repalce",
         ):

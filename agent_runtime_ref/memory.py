@@ -248,6 +248,8 @@ class MemoryStore:
         return ranked[:limit]
 
     def persist(self, candidate: MemoryCandidate) -> MemoryRecord:
+        if not isinstance(candidate, MemoryCandidate):
+            raise TypeError("Memory store candidate must be MemoryCandidate")
         tenant_id = _read_candidate_string(candidate.tenant_id, field="tenant_id")
         memory_class = _read_candidate_string(candidate.memory_class, field="memory_class")
         kind = _read_candidate_string(candidate.kind, field="kind")
