@@ -189,6 +189,8 @@ class PolicyEngine:
         )
 
     def precheck(self, request: RunRequest) -> PolicyDecision:
+        if not isinstance(request, RunRequest):
+            raise TypeError("Policy precheck request must be RunRequest")
         if self.require_tenant and not request.tenant_id:
             return PolicyDecision("deny", "tenant_missing", "run_001")
         if self.deny_if_principal_missing and not request.principal_id:
@@ -203,6 +205,12 @@ class PolicyEngine:
         tool_request: ToolRequest,
         capability: CapabilitySpec | None,
     ) -> PolicyDecision:
+        if not isinstance(context, RunContext):
+            raise TypeError("Policy context must be RunContext")
+        if not isinstance(tool_request, ToolRequest):
+            raise TypeError("Policy tool request must be ToolRequest")
+        if capability is not None and not isinstance(capability, CapabilitySpec):
+            raise TypeError("Policy capability must be CapabilitySpec")
         del context
         capability_name = normalize_tool_capability_name(tool_request.capability_name)
         tool_arguments = normalize_tool_arguments(tool_request.arguments)
