@@ -5985,6 +5985,8 @@ class TestLowCoverageModuleBranches:
     def test_identity_loaders_reject_bad_shapes_and_allow_lookup(self) -> None:
         from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory, load_agent_identity
 
+        with pytest.raises(TypeError, match="Agent inventory config must be a mapping"):
+            ApprovedInventory.from_agent_config(cast(Any, []))
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             ApprovedInventory.from_agent_config({"agent": []})
         with pytest.raises(TypeError, match="'approved_capabilities' must be a list"):
@@ -6003,6 +6005,8 @@ class TestLowCoverageModuleBranches:
             ApprovedInventory.from_agent_config(
                 {"agent": {"approved_capabilities": ["search_docs", " search_docs "]}}
             )
+        with pytest.raises(TypeError, match="Agent identity config must be a mapping"):
+            load_agent_identity(cast(Any, []))
         with pytest.raises(TypeError, match="'agent' must be a mapping"):
             load_agent_identity({"agent": []})
         with pytest.raises(TypeError, match="agent.id must be a string"):
