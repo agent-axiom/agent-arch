@@ -2063,6 +2063,19 @@ class TestExecutionAndPolicyBranches:
         )
         assert normalized_policy.capability_policies["search_docs"].decision == "allow"
         assert normalized_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        default_policy = PolicyEngine.from_dict({"policy": {}})
+        assert default_policy.allowed_memory_kinds == {"validated_fact", "session_summary"}
+        assert default_policy.allowed_network_access == {"restricted", "brokered"}
+        empty_policy = PolicyEngine.from_dict(
+            {
+                "policy": {
+                    "memory_write": {"allow_kinds": []},
+                    "execution": {"allow_network_access": []},
+                }
+            }
+        )
+        assert empty_policy.allowed_memory_kinds == set()
+        assert empty_policy.allowed_network_access == set()
         direct_policy = PolicyEngine(
             capability_policies={
                 " search_docs ": CapabilityPolicy(" allow "),
@@ -2074,6 +2087,12 @@ class TestExecutionAndPolicyBranches:
         )
         assert direct_policy.capability_policies["search_docs"].decision == "allow"
         assert direct_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        direct_empty_policy = PolicyEngine(
+            allowed_memory_kinds=set(),
+            allowed_network_access=set(),
+        )
+        assert direct_empty_policy.allowed_memory_kinds == set()
+        assert direct_empty_policy.allowed_network_access == set()
         with pytest.raises(TypeError, match="'run_precheck.require_tenant' must be a boolean"):
             PolicyEngine(require_tenant=cast(bool, "false"))
         with pytest.raises(
