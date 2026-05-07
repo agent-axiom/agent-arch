@@ -133,6 +133,8 @@ class AgentRuntime:
         self.background = background
 
     def run(self, request: RunRequest) -> RunResult:
+        if not isinstance(request, RunRequest):
+            raise TypeError("Runtime request must be RunRequest")
         request.user_input = _read_required_request_string(
             request.user_input,
             field="user_input",
