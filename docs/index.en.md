@@ -4,6 +4,8 @@ This book is for teams that need not a flashy demo, but an agent system that can
 
 Its central thesis is simple: **an agent needs a platform, not magic**. As soon as a system gains risky actions, memory, approvals, rollout, and a long operational tail, a model with a few tools stops being enough. You need explicit trust boundaries, a policy layer, controlled execution, observability, quality judgment, and lifecycle discipline.
 
+Building agents is boring, but the result is staggering: instead of a flashy one-off trick, the team gets a system it can constrain, observe, ship, and improve without guessing.
+
 <div class="hero-actions" markdown="1">
 
 [Start Here](start-here.en.md){ .md-button .md-button--primary }
