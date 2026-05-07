@@ -2404,10 +2404,28 @@ class TestRuntimeCore:
             "tool_policy_decision",
             "approval_requested",
         ]
+        policy_event = runtime.telemetry.events[5]
         approval_event = runtime.telemetry.events[6]
-        assert approval_event.payload["session_id"] == "session-bad-sandbox-001"
-        assert approval_event.payload["capability_session_id"] == "cap-session-001"
-        assert approval_event.payload["capability_session_status"] == "pending"
+        assert policy_event.payload == {
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-bad-sandbox-001",
+            "capability": "create_ticket",
+            "action": "approval_required",
+            "reason": "write_action",
+            "policy_id": "cap_201",
+        }
+        assert approval_event.payload == {
+            "session_id": "session-bad-sandbox-001",
+            "approval_id": "apr-001",
+            "capability": "create_ticket",
+            "reviewer": "manager",
+            "status": "pending",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "pending",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
 
     def test_runtime_rejects_malformed_request_fields_before_telemetry(self) -> None:
         malformed_fields = (
