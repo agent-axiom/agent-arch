@@ -24,6 +24,12 @@ class BackgroundWorker:
         policy: PolicyEngine,
         telemetry: TelemetryEmitter,
     ) -> None:
+        if not isinstance(memory_store, MemoryStore):
+            raise TypeError("Background memory_store must be MemoryStore")
+        if not isinstance(policy, PolicyEngine):
+            raise TypeError("Background policy must be PolicyEngine")
+        if not isinstance(telemetry, TelemetryEmitter):
+            raise TypeError("Background telemetry must be TelemetryEmitter")
         self.memory_store = memory_store
         self.policy = policy
         self.telemetry = telemetry
