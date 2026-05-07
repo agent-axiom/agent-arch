@@ -1052,6 +1052,14 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match=expected_entries):
             main(["simulate-run", "--config-dir", str(bad_config_dir)])
 
+    def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
+        from agent_runtime_ref.__main__ import _resolve_trace_id
+        from agent_runtime_ref.telemetry import StructuredEvent
+
+        events = [StructuredEvent(event_type="run_start", trace_id="trace-001", payload={})]
+        with pytest.raises(TypeError, match="Trace ID request must be a string"):
+            _resolve_trace_id(events, cast(str, 42))
+
     def test_cli_replay_run_rejects_incomplete_run_start_payload(
         self, tmp_path: Path
     ) -> None:
