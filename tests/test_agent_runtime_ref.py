@@ -576,6 +576,7 @@ class TestRuntimeDocsParity:
             "runtime_controls.sandbox_profile config must be a mapping",
             "runtime_controls.sandbox_profile.{key} config must be a mapping",
             "runtime_controls.sandbox_profile.workspace.entries must be a list",
+            "Sandbox profile {section}.{key} must be a string",
             "Sandbox profile workspace entries must be a list",
         )
         for path in (
@@ -2452,6 +2453,41 @@ class TestRuntimeCore:
                         principal_id="user-1",
                         trace_id=f"trace-bad-sandbox-{section}-001",
                         session_id=f"session-bad-sandbox-{section}-001",
+                        agent_id="agent-runtime-ref",
+                    ),
+                )
+            assert [event.event_type for event in runtime.telemetry.events] == [
+                "run_start",
+                "policy_precheck",
+                "retrieval",
+                "context_layers_built",
+                "span",
+                "tool_policy_decision",
+                "approval_requested",
+            ]
+
+    def test_runtime_rejects_bad_direct_sandbox_profile_nested_values(self) -> None:
+        malformed_values = (
+            ("capabilities", "shell", {"capabilities": {"shell": []}}),
+            ("permissions", "network", {"permissions": {"network": []}}),
+            ("permissions", "secrets", {"permissions": {"secrets": []}}),
+            ("state", "snapshot", {"state": {"snapshot": []}}),
+        )
+        for section, key, sandbox_profile in malformed_values:
+            runtime = AgentRuntime(
+                sandbox_profile={"workspace": {"entries": []}, **sandbox_profile}
+            )
+            with pytest.raises(
+                TypeError,
+                match=f"Sandbox profile {section}.{key} must be a string",
+            ):
+                runtime.run(
+                    RunRequest(
+                        user_input="Please open a ticket for this issue.",
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        trace_id=f"trace-bad-sandbox-{section}-{key}-001",
+                        session_id=f"session-bad-sandbox-{section}-{key}-001",
                         agent_id="agent-runtime-ref",
                     ),
                 )

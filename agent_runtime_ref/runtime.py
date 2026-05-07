@@ -588,7 +588,10 @@ class AgentRuntime:
         return cast(dict[str, object], value)
 
     def _sandbox_profile_nested_value(self, section: str, key: str) -> str:
-        return str(self._sandbox_profile_mapping(section).get(key, "unknown"))
+        value = self._sandbox_profile_mapping(section).get(key, "unknown")
+        if not isinstance(value, str):
+            raise TypeError(f"Sandbox profile {section}.{key} must be a string")
+        return value
 
     def _schedule_background_updates(
         self,
