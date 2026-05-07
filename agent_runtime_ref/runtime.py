@@ -81,24 +81,56 @@ class AgentRuntime:
         sessions: SessionStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
-        self.catalog = catalog or CapabilityCatalog()
-        self.policy = policy or PolicyEngine()
-        self.telemetry = telemetry or TelemetryEmitter()
-        self.memory = memory or MemoryStore()
-        self.approvals = approvals or ApprovalQueue()
-        self.sessions = sessions or SessionStore()
+        if catalog is None:
+            catalog = CapabilityCatalog()
+        if not isinstance(catalog, CapabilityCatalog):
+            raise TypeError("Runtime catalog must be CapabilityCatalog")
+        self.catalog = catalog
+        if policy is None:
+            policy = PolicyEngine()
+        if not isinstance(policy, PolicyEngine):
+            raise TypeError("Runtime policy must be PolicyEngine")
+        self.policy = policy
+        if telemetry is None:
+            telemetry = TelemetryEmitter()
+        if not isinstance(telemetry, TelemetryEmitter):
+            raise TypeError("Runtime telemetry must be TelemetryEmitter")
+        self.telemetry = telemetry
+        if memory is None:
+            memory = MemoryStore()
+        if not isinstance(memory, MemoryStore):
+            raise TypeError("Runtime memory must be MemoryStore")
+        self.memory = memory
+        if approvals is None:
+            approvals = ApprovalQueue()
+        if not isinstance(approvals, ApprovalQueue):
+            raise TypeError("Runtime approvals must be ApprovalQueue")
+        self.approvals = approvals
+        if sessions is None:
+            sessions = SessionStore()
+        if not isinstance(sessions, SessionStore):
+            raise TypeError("Runtime sessions must be SessionStore")
+        self.sessions = sessions
         self.sandbox_profile = sandbox_profile or {}
-        self.agent = agent or AgentIdentity(
-            agent_id="agent-runtime-ref",
-            display_name="Reference Runtime",
-            owner_team="agent_platform",
-            runtime_principal="svc-agent-runtime-ref",
-        )
-        self.background = background or BackgroundWorker(
-            memory_store=self.memory,
-            policy=self.policy,
-            telemetry=self.telemetry,
-        )
+        if agent is None:
+            agent = AgentIdentity(
+                agent_id="agent-runtime-ref",
+                display_name="Reference Runtime",
+                owner_team="agent_platform",
+                runtime_principal="svc-agent-runtime-ref",
+            )
+        if not isinstance(agent, AgentIdentity):
+            raise TypeError("Runtime agent must be AgentIdentity")
+        self.agent = agent
+        if background is None:
+            background = BackgroundWorker(
+                memory_store=self.memory,
+                policy=self.policy,
+                telemetry=self.telemetry,
+            )
+        if not isinstance(background, BackgroundWorker):
+            raise TypeError("Runtime background must be BackgroundWorker")
+        self.background = background
 
     def run(self, request: RunRequest) -> RunResult:
         request.user_input = _read_required_request_string(
