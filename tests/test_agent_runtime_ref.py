@@ -7149,7 +7149,10 @@ class TestCli:
         assert sandbox_review["payload"]["sandbox_profile_contract"] == "sandbox-profile-v1"
         assert sandbox_review["payload"]["workspace_entries_reviewed"] == "true"
         assert sandbox_review["payload"]["snapshot_policy"] == "required_on_completion"
-        assert "eval:sandbox_profile_review" in sandbox_review["payload"]["review_evidence_refs"]
+        assert (
+            sandbox_review["payload"]["review_evidence_refs"]
+            == "trace:trace-ordered-001;eval:sandbox_profile_review"
+        )
 
     def test_cli_export_trace_keeps_single_trace_and_session_consistent(
         self, cli_json, tmp_path: Path
@@ -7502,7 +7505,10 @@ class TestCli:
         assert sandbox_review["permissions_profile"] == "restricted-shell-network-denied"
         assert sandbox_review["network_secrets_posture"] == "network:denied,secrets:none"
         assert sandbox_review["snapshot_policy"] == "required_on_completion"
-        assert "eval:sandbox_profile_review" in sandbox_review["review_evidence_refs"]
+        assert sandbox_review["review_evidence_refs"] == [
+            "trace:sandbox_profile_reviewed",
+            "eval:sandbox_profile_review",
+        ]
         assert payload["retirement"]["system_id"] == "support-triage-ref"
         assert payload["retirement"]["session_control_owner"] == "support-ops"
         assert payload["retirement"]["emergency_freeze_owner"] == "platform-runtime"
@@ -7614,7 +7620,7 @@ class TestCli:
         assert exit_code == 0
         assert not payload["ready"]
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
-        assert expected_missing in missing
+        assert missing == [expected_missing]
 
     @pytest.mark.parametrize(
         ("command", "expected_message"),
