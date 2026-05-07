@@ -90,11 +90,11 @@ class StructuredEvent:
             raise ValueError(f"Telemetry schema version is not supported: {schema_version}")
         payload = data.get("payload", {})
         if not isinstance(payload, dict):
-            raise TypeError("payload must be a mapping")
+            raise TypeError("Telemetry event payload must be a mapping")
         normalized_payload = _normalize_payload(payload)
         redacted_fields = data.get("redacted_fields", [])
         if not isinstance(redacted_fields, list):
-            raise TypeError("redacted_fields must be a list")
+            raise TypeError("Telemetry event redacted_fields must be a list")
         normalized_redacted_fields: list[str] = []
         for item in redacted_fields:
             if not isinstance(item, str):

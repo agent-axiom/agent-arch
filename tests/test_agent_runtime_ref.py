@@ -480,10 +480,9 @@ class TestRuntimeDocsParity:
             "Telemetry event field must not be empty: {field}",
             "Telemetry schema version is not supported: {schema_version}",
             "Telemetry event payload must be a mapping",
-            "payload must be a mapping",
             "Telemetry event payload value must be a string: {payload_key}",
             "Telemetry event redacted_fields must be a tuple",
-            "redacted_fields must be a list",
+            "Telemetry event redacted_fields must be a list",
             "redacted_fields entries must be strings",
             "Telemetry redact field must not be empty",
             "Telemetry redact field is not present in events: {missing}",
@@ -970,8 +969,11 @@ class TestFailurePaths:
                 {"schema_version": "2.0"},
                 "Telemetry schema version is not supported: 2.0",
             ),
-            ({"payload": []}, "payload must be a mapping"),
-            ({"redacted_fields": "trace_id"}, "redacted_fields must be a list"),
+            ({"payload": []}, "Telemetry event payload must be a mapping"),
+            (
+                {"redacted_fields": "trace_id"},
+                "Telemetry event redacted_fields must be a list",
+            ),
         ],
     )
     def test_cli_inspect_trace_rejects_malformed_event_shapes(
@@ -5102,9 +5104,9 @@ class TestLowCoverageModuleBranches:
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "schema_version": 1, "payload": {}}
             )
-        with pytest.raises(TypeError, match="payload must be a mapping"):
+        with pytest.raises(TypeError, match="Telemetry event payload must be a mapping"):
             StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": []})
-        with pytest.raises(TypeError, match="redacted_fields must be a list"):
+        with pytest.raises(TypeError, match="Telemetry event redacted_fields must be a list"):
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"}
             )
