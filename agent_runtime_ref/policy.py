@@ -115,13 +115,23 @@ class PolicyEngine:
             if policy.decision == "approval_required" and policy.approver == "":
                 raise ValueError(f"Policy approver must not be empty: {capability_name}")
             self.capability_policies[capability_name] = policy
+        memory_kinds = (
+            {"validated_fact", "session_summary"}
+            if allowed_memory_kinds is None
+            else allowed_memory_kinds
+        )
         self.allowed_memory_kinds = _read_string_list_items(
-            allowed_memory_kinds or {"validated_fact", "session_summary"},
+            memory_kinds,
             label="memory_write.allow_kinds",
         )
         self.approved_inventory = approved_inventory
+        network_access = (
+            {"restricted", "brokered"}
+            if allowed_network_access is None
+            else allowed_network_access
+        )
         self.allowed_network_access = _read_string_list_items(
-            allowed_network_access or {"restricted", "brokered"},
+            network_access,
             label="execution.allow_network_access",
         )
 
@@ -164,15 +174,15 @@ class PolicyEngine:
         raw_memory = raw_policy.get("memory_write", {})
         if not isinstance(raw_memory, Mapping):
             raise TypeError("'memory_write' must be a mapping")
-        allow_kinds = raw_memory.get("allow_kinds", [])
-        if not isinstance(allow_kinds, list):
+        allow_kinds = raw_memory.get("allow_kinds")
+        if allow_kinds is not None and not isinstance(allow_kinds, list):
             raise TypeError("'allow_kinds' must be a list")
 
         raw_execution = raw_policy.get("execution", {})
         if not isinstance(raw_execution, Mapping):
             raise TypeError("'execution' must be a mapping")
-        allowed_network_access = raw_execution.get("allow_network_access", [])
-        if not isinstance(allowed_network_access, list):
+        allowed_network_access = raw_execution.get("allow_network_access")
+        if allowed_network_access is not None and not isinstance(allowed_network_access, list):
             raise TypeError("'allow_network_access' must be a list")
 
         return cls(
@@ -185,11 +195,18 @@ class PolicyEngine:
                 label="run_precheck.deny_if_principal_missing",
             ),
             capability_policies=capability_policies,
-            allowed_memory_kinds=_read_string_list_items(
-                allow_kinds, label="memory_write.allow_kinds"
+            allowed_memory_kinds=(
+                None
+                if allow_kinds is None
+                else _read_string_list_items(allow_kinds, label="memory_write.allow_kinds")
             ),
-            allowed_network_access=_read_string_list_items(
-                allowed_network_access, label="execution.allow_network_access"
+            allowed_network_access=(
+                None
+                if allowed_network_access is None
+                else _read_string_list_items(
+                    allowed_network_access,
+                    label="execution.allow_network_access",
+                )
             ),
         )
 
