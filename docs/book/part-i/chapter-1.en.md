@@ -73,6 +73,11 @@ This is conservative advice. That is also why it works.
 
 One of Anthropic's most useful practical points is that teams should resist framework-first thinking in the early phase.[^anthropic] If a direct API call plus a small amount of orchestration already solves the task, adding another abstraction layer too early usually makes debugging, prompt inspection, and operational ownership worse, not better.
 
+!!! note "Evidence and interpretation"
+    The external sources converge on two stable ideas here: start with the simpler executable pattern, and use agency only when it buys real flexibility.[^anthropic][^openai-practical]
+
+    The engineering interpretation in this book goes one step further: once autonomy touches write paths, access, memory, or incidents, it should be treated not as a UX effect, but as part of an execution platform with policies, traces, and lifecycle controls.
+
 ## 5. When an Agent Is Actually Justified
 
 An agent should be justified by the shape of the task, not by style.
