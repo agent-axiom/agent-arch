@@ -483,7 +483,7 @@ class TestRuntimeDocsParity:
             "Telemetry event payload value must be a string: {payload_key}",
             "Telemetry event redacted_fields must be a tuple",
             "Telemetry event redacted_fields must be a list",
-            "redacted_fields entries must be strings",
+            "Telemetry event redacted_fields entries must be strings",
             "Telemetry redact field must not be empty",
             "Telemetry redact field is not present in events: {missing}",
         )
@@ -1217,7 +1217,10 @@ class TestFailurePaths:
 
         from agent_runtime_ref.__main__ import main
 
-        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event redacted_fields entries must be strings",
+        ):
             main(["replay-run", "--input", str(output_path)])
 
     @pytest.mark.parametrize("field", ["user_input", "session_id", "agent_id"])
@@ -5064,7 +5067,10 @@ class TestLowCoverageModuleBranches:
                 payload=payload,
                 redacted_fields=("count",),
             )
-        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event redacted_fields entries must be strings",
+        ):
             StructuredEvent(
                 event_type="run_start",
                 trace_id="trace-direct",
@@ -5110,7 +5116,10 @@ class TestLowCoverageModuleBranches:
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": "x"}
             )
-        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event redacted_fields entries must be strings",
+        ):
             StructuredEvent.from_dict(
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": [1]}
             )
@@ -5164,7 +5173,10 @@ class TestLowCoverageModuleBranches:
 
         emitter = TelemetryEmitter()
         emitter.emit("run_start", "trace-a", user_input="hello")
-        with pytest.raises(TypeError, match="redacted_fields entries must be strings"):
+        with pytest.raises(
+            TypeError,
+            match="Telemetry event redacted_fields entries must be strings",
+        ):
             emitter.export_jsonl(
                 tmp_path / "events.jsonl",
                 redact_fields=cast(tuple[str, ...], (1,)),
