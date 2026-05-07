@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from os import PathLike
 from pathlib import Path
 from time import monotonic
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 SCHEMA_VERSION = "1.0"
 REDACTED_VALUE = "[REDACTED]"
@@ -35,6 +36,12 @@ def _normalize_payload(payload: Mapping[Any, Any]) -> dict[str, str]:
             )
         normalized_payload[payload_key] = value
     return normalized_payload
+
+
+def _read_telemetry_path(path: object) -> Path:
+    if not isinstance(path, (str, PathLike)):
+        raise TypeError("Telemetry path must be a string or path-like object")
+    return Path(cast(str | PathLike[str], path))
 
 
 @dataclass(slots=True)
@@ -143,7 +150,7 @@ class TelemetryEmitter:
         redact_fields: tuple[str, ...] = (),
     ) -> Path:
         normalized_redact_fields = self._normalize_redact_fields(redact_fields)
-        output_path = Path(path)
+        output_path = _read_telemetry_path(path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         with output_path.open("w", encoding="utf-8") as handle:
             for event in self.events:
@@ -156,7 +163,7 @@ class TelemetryEmitter:
 
     @staticmethod
     def load_jsonl(path: str | Path) -> list[StructuredEvent]:
-        input_path = Path(path)
+        input_path = _read_telemetry_path(path)
         events: list[StructuredEvent] = []
         with input_path.open("r", encoding="utf-8") as handle:
             for line_number, raw_line in enumerate(handle, start=1):

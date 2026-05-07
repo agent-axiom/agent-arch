@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from os import PathLike
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
@@ -19,11 +20,18 @@ def default_config_dir() -> Path:
     return Path(__file__).resolve().parent / "configs"
 
 
+def _read_config_path(path: object) -> Path:
+    if not isinstance(path, (str, PathLike)):
+        raise TypeError("Config path must be a string or path-like object")
+    return Path(cast(str | PathLike[str], path))
+
+
 def load_yaml_file(path: str | Path) -> dict[str, Any]:
-    with Path(path).open("r", encoding="utf-8") as handle:
+    config_path = _read_config_path(path)
+    with config_path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle) or {}
     if not isinstance(payload, dict):
-        raise TypeError(f"Config at {path!s} must be a mapping at the top level")
+        raise TypeError(f"Config at {config_path!s} must be a mapping at the top level")
     return payload
 
 

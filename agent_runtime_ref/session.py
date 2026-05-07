@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
+from os import PathLike
 from pathlib import Path
-from typing import TypedDict
+from typing import TypedDict, cast
 
 
 class RunPayload(TypedDict):
@@ -133,6 +134,12 @@ def _read_authorization_mode(value: str) -> str:
     return authorization_mode
 
 
+def _read_session_output_path(path: object) -> Path:
+    if not isinstance(path, (str, PathLike)):
+        raise TypeError("Session output path must be a string or path-like object")
+    return Path(cast(str | PathLike[str], path))
+
+
 def _read_eval_spec(value: object) -> dict[str, object]:
     if not isinstance(value, dict):
         raise TypeError("Session eval spec must be a mapping")
@@ -257,7 +264,7 @@ class SessionStore:
         output_path: str | Path,
     ) -> Path:
         session_id = _read_required_string(session_id, field="session_id")
-        destination = Path(output_path)
+        destination = _read_session_output_path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
         payload = self._session_payload(session_id)
         with destination.open("w", encoding="utf-8") as handle:
@@ -274,7 +281,7 @@ class SessionStore:
         eval_specs: dict[str, dict[str, object]] | None = None,
     ) -> Path:
         dataset_name = _read_required_string(dataset_name, field="dataset_name")
-        destination = Path(output_path)
+        destination = _read_session_output_path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
         if not isinstance(session_ids, Sequence) or isinstance(session_ids, str):
             raise TypeError("Session field entries must be a sequence: session_id")
