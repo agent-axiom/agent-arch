@@ -765,10 +765,32 @@ class TestFailurePaths:
         runs = runtime.sessions.runs_for_session("session-tool-failure-001")
         assert runs[-1].status == "failed"
         summary = runtime.sessions._session_payload("session-tool-failure-001")["summary"]
-        assert summary["failed_runs"] == 1
-        assert summary["traceable_failed_runs"] == 1
+        assert summary == {
+            "total_runs": 1,
+            "success_runs": 0,
+            "approval_wait_runs": 0,
+            "denied_runs": 0,
+            "failed_runs": 1,
+            "traceable_failed_runs": 1,
+            "latest_trace_id": "trace-tool-failure-001",
+            "latest_status": "failed",
+        }
         exported_run = runtime.sessions._session_payload("session-tool-failure-001")["runs"][-1]
-        assert exported_run["failure_reason"] == "missing_idempotency_key"
+        assert exported_run == {
+            "trace_id": "trace-tool-failure-001",
+            "status": "failed",
+            "user_input": "Please create a ticket without the usual safeguards.",
+            "output_text": (
+                "Runtime halted before side effects completed: create_ticket returned "
+                "validation_failure (missing_idempotency_key)."
+            ),
+            "failure_reason": "missing_idempotency_key",
+            "capability_session_id": "",
+            "capability_session_status": "validation_failure",
+            "authorization_mode": "human_approved",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == [
             "run_start",
