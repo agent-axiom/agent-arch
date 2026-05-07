@@ -2679,6 +2679,64 @@ class TestRuntimeCore:
             "delegated_scope": "",
         }
 
+    def test_approval_request_rejects_malformed_direct_fields(self) -> None:
+        from agent_runtime_ref.approvals import ApprovalRequest
+
+        valid_fields: dict[str, object] = {
+            "approval_id": "apr-001",
+            "trace_id": "trace-approval-direct-001",
+            "capability_name": "create_ticket",
+            "requested_by": "agent-runtime-ref",
+            "reviewer": "manager",
+            "reason": "write_action",
+            "session_id": "session-approval-direct-001",
+            "capability_session_id": "cap-session-001",
+            "capability_session_status": "pending",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+            "status": "pending",
+            "resolution_note": "",
+        }
+        malformed_fields: tuple[tuple[dict[str, object], type[Exception], str], ...] = (
+            ({"approval_id": 7}, TypeError, "Approval field must be a string: approval_id"),
+            ({"trace_id": " "}, ValueError, "Approval field is required: trace_id"),
+            ({"status": []}, TypeError, "Approval field must be a string: status"),
+            ({"status": "expired"}, ValueError, "Approval status is not supported: expired"),
+            (
+                {"capability_session_status": "failed"},
+                ValueError,
+                "Approval status is not supported: failed",
+            ),
+            (
+                {"authorization_mode": "shared_secret"},
+                ValueError,
+                "Authorization mode is not supported: shared_secret",
+            ),
+            (
+                {"authorization_mode": "user_delegated", "delegated_principal_id": " "},
+                ValueError,
+                "Approval field is required: delegated_principal_id",
+            ),
+        )
+        for overrides, exception_type, message in malformed_fields:
+            fields = {**valid_fields, **overrides}
+            with pytest.raises(exception_type, match=message):
+                ApprovalRequest(**cast(dict[str, Any], fields))
+
+        normalized = ApprovalRequest(
+            **cast(
+                dict[str, Any],
+                {
+                    **valid_fields,
+                    "approval_id": " apr-001 ",
+                    "resolution_note": " resolved ",
+                },
+            ),
+        )
+        assert normalized.approval_id == "apr-001"
+        assert normalized.resolution_note == "resolved"
+
     def test_runtime_rejects_malformed_direct_dependencies(self) -> None:
         from agent_runtime_ref.approvals import ApprovalQueue
         from agent_runtime_ref.background import BackgroundWorker
