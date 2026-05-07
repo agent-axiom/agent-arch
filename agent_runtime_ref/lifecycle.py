@@ -77,6 +77,19 @@ def _read_observed_flags(items: dict[str, bool]) -> dict[str, bool]:
     return observed
 
 
+def _read_review_evidence(items: object) -> dict[str, object]:
+    data = _require_mapping(items, label="artifact bundle review_evidence")
+    normalized: dict[str, object] = {}
+    for key, value in data.items():
+        field = key.strip()
+        if not field:
+            raise ValueError("artifact bundle review_evidence key must not be empty")
+        if field in normalized:
+            raise ValueError("artifact bundle review_evidence keys must be unique")
+        normalized[field] = value
+    return normalized
+
+
 @dataclass(frozen=True, slots=True)
 class ChangeRecord:
     change_id: str
@@ -229,10 +242,7 @@ class ArtifactBundle:
         object.__setattr__(
             self,
             "review_evidence",
-            _require_mapping(
-                self.review_evidence,
-                label="artifact bundle review_evidence",
-            ),
+            _read_review_evidence(self.review_evidence),
         )
 
     @classmethod
@@ -249,10 +259,7 @@ class ArtifactBundle:
                 data, "session_control_owner", label="bundle"
             ),
             artifacts=_read_string_list(data, "artifacts"),
-            review_evidence=_require_mapping(
-                data.get("review_evidence", {}),
-                label="artifact bundle review_evidence",
-            ),
+            review_evidence=_read_review_evidence(data.get("review_evidence", {})),
         )
 
 

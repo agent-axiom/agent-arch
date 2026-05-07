@@ -4628,7 +4628,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert direct_bundle.bundle_name == "bundle"
         assert direct_bundle.session_control_owner == "support-ops"
         assert direct_bundle.artifacts == ("runtime.py",)
-        assert " sandbox_profile_reviewed " in direct_bundle.review_evidence
+        assert direct_bundle.review_evidence == {"sandbox_profile_reviewed": True}
         direct_plan = RetirementPlan(
             system_id=" legacy-system ",
             replacement_mode=" none ",
@@ -4686,6 +4686,31 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 signed=False,
                 artifacts=(),
                 review_evidence=cast(dict[str, object], {7: True}),
+            )
+        with pytest.raises(
+            ValueError,
+            match="artifact bundle review_evidence key must not be empty",
+        ):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=False,
+                artifacts=(),
+                review_evidence={" ": True},
+            )
+        with pytest.raises(
+            ValueError,
+            match="artifact bundle review_evidence keys must be unique",
+        ):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=False,
+                artifacts=(),
+                review_evidence={
+                    " sandbox_profile_reviewed ": True,
+                    "sandbox_profile_reviewed": True,
+                },
             )
         with pytest.raises(ValueError, match="retirement.system_id is required"):
             RetirementPlan(
