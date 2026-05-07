@@ -5142,6 +5142,14 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 required_signals=cast(tuple[str, ...], (7,)),
                 approval_roles=(),
             )
+        with pytest.raises(TypeError, match="required_signals entries must be strings"):
+            ChangeRecord(
+                **valid_change,
+                artifacts=(),
+                affected_surfaces=(),
+                required_signals=cast(tuple[str, ...], "offline_eval"),
+                approval_roles=(),
+            )
         with pytest.raises(ValueError, match="required_signals entries must be unique"):
             ChangeRecord(
                 **valid_change,
@@ -5149,6 +5157,21 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 affected_surfaces=(),
                 required_signals=("offline_eval", " offline_eval "),
                 approval_roles=(),
+            )
+        with pytest.raises(TypeError, match="artifacts entries must be strings"):
+            ArtifactBundle(
+                **valid_bundle,
+                provenance_required=True,
+                signed=False,
+                artifacts=cast(tuple[str, ...], "runtime.py"),
+                review_evidence={},
+            )
+        with pytest.raises(TypeError, match="archive_targets entries must be strings"):
+            RetirementPlan(
+                **valid_retirement,
+                triggers=(),
+                required_steps=(),
+                archive_targets=cast(tuple[str, ...], "telemetry_jsonl"),
             )
 
     def test_lifecycle_assessments_report_ready_when_complete(self, config_dir: Path) -> None:
