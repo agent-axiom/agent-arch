@@ -13,6 +13,9 @@ exclude_docs: |
   chapter-surgery-plan.md
   late-book-overlap-audit.md
   reader-journey-map.md
+  appendix/google-integration-roadmap.md
+  appendix/google-integration-roadmap.en.md
+  appendix/google-integration-roadmap.zh.md
 
 theme:
   name: material
@@ -422,5 +425,4 @@ nav:
       - Project Meta:
           - Выбор стека публикации: appendix/stack.md
           - Дорожная карта для сообщества: appendix/community-roadmap.md
-          - План интеграции идей Google: appendix/google-integration-roadmap.md
           - Источники: appendix/sources.md
