@@ -5551,6 +5551,8 @@ class TestLowCoverageModuleBranches:
             )
 
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:
+        with pytest.raises(TypeError, match="Rollout readiness must be RolloutReadiness"):
+            ready_for_rollout(cast(Any, object()))
         assert not ready_for_rollout(
             RolloutReadiness(
                 trace_coverage=True,
@@ -6290,6 +6292,10 @@ class TestPolicyAndControls:
         policy = load_controls_policy(config_dir / "controls.yaml")
         catalog = load_capability_catalog(config_dir / "capabilities.yaml")
         _, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
+        with pytest.raises(TypeError, match="Controls inventory must be ApprovedInventory"):
+            assess_inventory_drift(cast(Any, object()), catalog)
+        with pytest.raises(TypeError, match="Controls catalog must be CapabilityCatalog"):
+            assess_inventory_drift(approved_inventory, cast(Any, object()))
         drift = assess_inventory_drift(approved_inventory, catalog)
         assessment = assess_controls(
             policy,

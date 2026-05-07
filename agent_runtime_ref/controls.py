@@ -103,6 +103,10 @@ def assess_inventory_drift(
     approved_inventory: ApprovedInventory,
     catalog: CapabilityCatalog,
 ) -> InventoryDrift:
+    if not isinstance(approved_inventory, ApprovedInventory):
+        raise TypeError("Controls inventory must be ApprovedInventory")
+    if not isinstance(catalog, CapabilityCatalog):
+        raise TypeError("Controls catalog must be CapabilityCatalog")
     approved = set(approved_inventory.capabilities)
     catalog_names = {spec.name for spec in catalog.all()}
     return InventoryDrift(
