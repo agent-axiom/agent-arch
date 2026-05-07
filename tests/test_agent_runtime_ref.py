@@ -2100,6 +2100,8 @@ class TestExecutionAndPolicyBranches:
             match="'run_precheck.deny_if_principal_missing' must be a boolean",
         ):
             PolicyEngine(deny_if_principal_missing=cast(bool, "true"))
+        with pytest.raises(TypeError, match="'capabilities' must be a mapping"):
+            PolicyEngine(capability_policies=cast(dict[str, CapabilityPolicy], []))
         with pytest.raises(TypeError, match="Policy capability names must be strings"):
             PolicyEngine(
                 capability_policies=cast(
