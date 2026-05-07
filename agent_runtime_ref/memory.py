@@ -232,6 +232,7 @@ class MemoryStore:
         return tuple(self._records)
 
     def retrieve(self, query: str, tenant_id: str, *, limit: int = 3) -> list[MemoryRecord]:
+        query = _read_lookup_string(query, field="query")
         tenant_id = _read_lookup_string(tenant_id, field="tenant_id")
         limit = _read_lookup_limit(limit)
         query_tokens = {token for token in query.lower().split() if token}
