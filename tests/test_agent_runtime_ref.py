@@ -1695,6 +1695,12 @@ class TestFailurePaths:
         ):
             main(["export-eval-dataset", "--scenario", " suport_ticket "])
 
+    def test_parse_signal_rejects_malformed_direct_values(self) -> None:
+        from agent_runtime_ref.__main__ import _parse_signal
+
+        with pytest.raises(TypeError, match="Signal must be a string"):
+            _parse_signal(cast(str, 42))
+
 
 class TestExecutionAndPolicyBranches:
     def test_execute_tool_returns_denied_payload(self, config_dir: Path) -> None:

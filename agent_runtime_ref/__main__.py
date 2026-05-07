@@ -205,6 +205,8 @@ def _ensure_redact_fields_exist(
 
 
 def _parse_signal(raw_signal: str) -> tuple[str, bool]:
+    if not isinstance(raw_signal, str):
+        raise TypeError("Signal must be a string")
     if "=" not in raw_signal:
         raise ValueError(f"Signal must use key=value format: {raw_signal!r}")
     key, raw_value = raw_signal.split("=", 1)
