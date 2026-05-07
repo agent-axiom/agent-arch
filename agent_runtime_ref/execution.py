@@ -10,6 +10,15 @@ from agent_runtime_ref.models import (
 from agent_runtime_ref.policy import PolicyDecision
 
 
+def _read_policy_action(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Policy action must be a string")
+    action = value.strip()
+    if action not in {"allow", "approval_required", "deny"}:
+        raise ValueError(f"Policy action is not supported: {action}")
+    return action
+
+
 def execute_tool(
     capability: CapabilitySpec,
     tool_request: ToolRequest,
@@ -22,9 +31,7 @@ def execute_tool(
             "Tool request capability does not match catalog entry: "
             f"{capability_name} != {capability.name}"
         )
-    action = decision.action.strip()
-    if action not in {"allow", "approval_required", "deny"}:
-        raise ValueError(f"Policy action is not supported: {action}")
+    action = _read_policy_action(decision.action)
     if action == "deny":
         return ToolResult(
             capability_name=capability_name,

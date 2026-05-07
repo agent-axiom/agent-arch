@@ -1876,6 +1876,12 @@ class TestExecutionAndPolicyBranches:
                 ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
                 PolicyDecision(action, "malformed_policy_action", "cap_bad"),
             )
+        with pytest.raises(TypeError, match="Policy action must be a string"):
+            execute_tool(
+                capability,
+                ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
+                PolicyDecision(cast(str, 7), "malformed_policy_action", "cap_bad"),
+            )
 
     def test_policy_from_dict_rejects_bad_shapes(self) -> None:
         with pytest.raises(TypeError, match="'policy' must be a mapping"):
