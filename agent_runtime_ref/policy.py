@@ -102,7 +102,11 @@ class PolicyEngine:
             label="run_precheck.deny_if_principal_missing",
         )
         self.capability_policies: dict[str, CapabilityPolicy] = {}
-        for name, policy in (capability_policies or {}).items():
+        if capability_policies is None:
+            capability_policies = {}
+        if not isinstance(capability_policies, Mapping):
+            raise TypeError("'capabilities' must be a mapping")
+        for name, policy in capability_policies.items():
             if not isinstance(name, str):
                 raise TypeError("Policy capability names must be strings")
             capability_name = name.strip()
