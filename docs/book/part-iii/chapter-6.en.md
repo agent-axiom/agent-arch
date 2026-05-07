@@ -86,6 +86,14 @@ The important distinction is that profile memory answers the question "how shoul
 
 If the agent starts putting arbitrary facts there, profile memory turns into a muddy mix of personalization, rumors, and accidental observations.
 
+### 4.1. Durable Agent State Is Not Memory
+
+Cloudflare Agents SDK highlights another boundary: a stateful agent instance may have persistent state that is automatically saved, survives restarts and hibernation, and synchronizes across WebSocket clients.[^cloudflare-state] That is a useful runtime capability, but it should not automatically be treated as long-term memory or profile memory.
+
+`state` answers “what condition is this named agent instance in right now”: a game score, open case, current workflow, client-visible settings, or last-active marker. `memory` answers “what information should later be retrieved, summarized, or reused as knowledge.” If those roles are mixed, runtime state starts entering retrieval as if it were validated knowledge, while memory records get used as mutable UI/session state.
+
+The practical rule is simple: durable state should have an owner instance, schema version, serialization constraints, and sync policy; a memory record should have a class, provenance, tenant boundary, retention rule, and retrieval semantics. Both layers may live in durable storage, but their operational contracts are different.
+
 <div class="diagram-card">
 <p>Different memory types solve different problems and should not collapse into one storage</p>
 
@@ -302,5 +310,7 @@ The next step in this part is very natural: after memory types, we need to look 
 - [Chapter 7. Retrieval, Compaction, and Background Updates](chapter-7.en.md)
 - [Part III. Memory and Knowledge](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^cloudflare-state]: [Cloudflare Agents SDK, Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/)
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

@@ -86,6 +86,14 @@ Profile memory особенно легко испортить, потому чт
 
 Если агент начинает складывать сюда произвольные факты, profile memory превращается в мутную смесь персонализации, слухов и случайных наблюдений.
 
+### 4.1. Durable agent state не равен memory
+
+Cloudflare Agents SDK хорошо подсвечивает еще одну границу: у stateful agent instance может быть persistent state, который автоматически сохраняется, переживает restart и hibernation и синхронизируется между WebSocket clients.[^cloudflare-state] Это полезная runtime capability, но ее нельзя автоматически считать long-term memory или profile memory.
+
+`state` отвечает на вопрос “в каком состоянии находится этот named agent instance прямо сейчас”: счет игры, открытый case, текущий workflow, client-visible настройки, last active marker. `memory` отвечает на вопрос “какую информацию стоит позже извлечь, обобщить или использовать как знание”. Если эти две роли смешать, runtime state начнет попадать в retrieval как будто это validated knowledge, а memory records начнут использоваться как mutable UI/session state.
+
+Практическое правило простое: durable state должен иметь owner-instance, schema version, serialization constraints и sync policy; memory record должен иметь class, provenance, tenant boundary, retention rule и retrieval semantics. Оба слоя могут жить в durable storage, но operational contract у них разный.
+
 <div class="diagram-card">
 <p>Разные типы памяти решают разные задачи и не должны сливаться в один storage</p>
 
@@ -302,5 +310,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 - [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](chapter-7.md)
 - [Часть III. Память и знания](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^cloudflare-state]: [Cloudflare Agents SDK, Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/)
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
