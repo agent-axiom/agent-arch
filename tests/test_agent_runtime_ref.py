@@ -5133,6 +5133,14 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert retirement_assessment.ready
         assert retirement_assessment.missing_steps == ()
 
+        with pytest.raises(TypeError, match="Lifecycle change must be ChangeRecord"):
+            assess_change_gate(cast(Any, object()), {})
+        with pytest.raises(TypeError, match="Lifecycle retirement plan must be RetirementPlan"):
+            assess_retirement(cast(Any, object()), {})
+        with pytest.raises(TypeError, match="Assessment signals must be a mapping"):
+            assess_change_gate(change, cast(dict[str, bool], []))
+        with pytest.raises(TypeError, match="Assessment signals must be a mapping"):
+            assess_retirement(plan, cast(dict[str, bool], []))
         with pytest.raises(TypeError, match="Assessment signal key must be a string"):
             assess_change_gate(change, cast(dict[str, bool], {1: True}))
         with pytest.raises(ValueError, match="Assessment signal key must not be empty"):
