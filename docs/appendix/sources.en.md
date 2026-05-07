@@ -33,6 +33,7 @@ Below is the main set of primary sources used by the current version of the book
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
+- LangGraph, [Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
 - LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - Google Cloud, [Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)
