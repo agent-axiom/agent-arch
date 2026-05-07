@@ -218,6 +218,8 @@ This pattern is especially useful for chat, voice, workflow, and monitoring agen
 
 So the reference runtime does not need to implement Durable Objects, but it does need an abstraction such as `AgentInstanceStore` and `SchedulerBoundary`: a place where operators can see which named instance owns state, which runs changed it, which scheduled tasks may wake it, and which traces prove safe resume.
 
+The scheduling side matters in particular: Cloudflare shows delayed, scheduled, cron, and interval tasks that survive restarts, persist in SQLite, and wake the agent through Durable Object alarms.[^cloudflare-schedule] The architectural takeaway for the book is that a schedule should not remain an invisible callback. It should be represented as a durable control record with an owner instance, payload schema, idempotency key, overlap policy, next fire time, and trace linkage.
+
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
 
 Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
@@ -411,6 +413,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 
 [^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 

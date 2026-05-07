@@ -218,6 +218,8 @@ Cloudflare Agents SDK 展示了另一个有用的基线模式：智能体不一�
 
 因此，参考运行时不必实现 Durable Objects，但需要类似 `AgentInstanceStore` 和 `SchedulerBoundary` 的抽象：一个能看清哪个 named instance 拥有哪些状态、哪些 runs 修改过它、哪些 scheduled tasks 可能唤醒它、哪些 traces 能证明安全恢复的位置。
 
+Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cron 和 interval tasks，这些任务会跨 restart 保留，persist 到 SQLite，并通过 Durable Object alarms 唤醒 agent。[^cloudflare-schedule] 对本书的架构结论是：schedule 不应该只是不可见的 callback，而应该表示成 durable control record，带有 owner instance、payload schema、idempotency key、overlap policy、next fire time 和 trace linkage。
+
 ## 9. 有状态工具会话也应该属于基线
 
 一旦执行层开始接入类似有状态 MCP 能力，基线运行时就会多出一条必须明确的边界：**用户可见运行的状态，不等于能力会话的状态**。[^aws-stateful-mcp]
@@ -411,6 +413,8 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 
 [^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 

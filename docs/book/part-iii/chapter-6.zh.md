@@ -86,6 +86,14 @@
 
 如果智能体开始往里面塞任意事实，画像记忆很快就会变成个性化、流言和偶然观察的混合物。
 
+### 4.1. Durable agent state 不是 memory
+
+Cloudflare Agents SDK 很好地暴露了另一条边界：一个 stateful agent instance 可以拥有 persistent state，这些 state 会自动保存，跨 restart 和 hibernation 保留，并在 WebSocket clients 之间同步。[^cloudflare-state] 这是很有用的运行时能力，但不应该自动被当成长程记忆或 profile memory。
+
+`state` 回答的是“这个 named agent instance 现在处于什么状态”：游戏分数、打开的 case、当前 workflow、客户端可见设置、last-active marker。`memory` 回答的是“哪些信息之后值得被检索、总结，或作为知识复用”。如果混淆这两种角色，runtime state 就会像 validated knowledge 一样进入 retrieval，而 memory records 也会被拿来当作可变的 UI/session state。
+
+实用规则很简单：durable state 应该有 owner instance、schema version、serialization constraints 和 sync policy；memory record 应该有 class、provenance、tenant boundary、retention rule 和 retrieval semantics。两个层都可以存放在 durable storage 中，但它们的 operational contract 不同。
+
 <div class="diagram-card">
 <p>不同类型的记忆解决不同问题，不应该挤进同一个存储</p>
 
@@ -302,5 +310,7 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 - [第 7 章：检索、压缩与后台更新](chapter-7.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^cloudflare-state]: [Cloudflare Agents SDK, Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/)
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

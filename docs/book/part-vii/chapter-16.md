@@ -218,6 +218,8 @@ Cloudflare Agents SDK показывает другой полезный baselin
 
 Поэтому эталонный runtime не обязан реализовывать Durable Objects, но ему нужна абстракция вроде `AgentInstanceStore` и `SchedulerBoundary`: место, где видно, какой named instance владеет состоянием, какие runs его меняли, какие scheduled tasks могут его разбудить и какие traces доказывают безопасный resume.
 
+Scheduling side особенно важен: Cloudflare показывает delayed, scheduled, cron и interval tasks, которые переживают restart, persist в SQLite и wake agent через Durable Object alarms.[^cloudflare-schedule] Архитектурный вывод для книги: schedule нельзя оставлять невидимым callback. Его нужно отражать как durable control record с owner instance, payload schema, idempotency key, overlap policy, next fire time и trace linkage.
+
 ## 9. Stateful tool sessions тоже должны входить в baseline
 
 Как только execution layer начинает работать с stateful MCP-подобными capability, у baseline runtime появляется еще одна обязательная граница: **состояние user-visible run не равно состоянию capability session**.[^aws-stateful-mcp]
@@ -411,6 +413,8 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 
 [^cloudflare-agents]: [Cloudflare, Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 
