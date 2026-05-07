@@ -2427,6 +2427,39 @@ class TestRuntimeCore:
             "delegated_scope": "",
         }
 
+    def test_runtime_rejects_bad_direct_sandbox_profile_sections(self) -> None:
+        malformed_sections = (
+            ("workspace", {"workspace": []}),
+            ("capabilities", {"workspace": {"entries": []}, "capabilities": []}),
+            ("permissions", {"workspace": {"entries": []}, "permissions": []}),
+            ("state", {"workspace": {"entries": []}, "state": []}),
+        )
+        for section, sandbox_profile in malformed_sections:
+            runtime = AgentRuntime(sandbox_profile=cast(dict[str, object], sandbox_profile))
+            with pytest.raises(
+                TypeError,
+                match=f"Sandbox profile {section} config must be a mapping",
+            ):
+                runtime.run(
+                    RunRequest(
+                        user_input="Please open a ticket for this issue.",
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        trace_id=f"trace-bad-sandbox-{section}-001",
+                        session_id=f"session-bad-sandbox-{section}-001",
+                        agent_id="agent-runtime-ref",
+                    ),
+                )
+            assert [event.event_type for event in runtime.telemetry.events] == [
+                "run_start",
+                "policy_precheck",
+                "retrieval",
+                "context_layers_built",
+                "span",
+                "tool_policy_decision",
+                "approval_requested",
+            ]
+
     def test_runtime_rejects_malformed_request_fields_before_telemetry(self) -> None:
         malformed_fields = (
             ("user_input", {"user_input": cast(str, 7)}),
