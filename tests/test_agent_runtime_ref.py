@@ -5704,6 +5704,13 @@ class TestLowCoverageModuleBranches:
                     " search_docs ": direct_capability,
                 }
             )
+        with pytest.raises(TypeError, match="Capability catalog entries must be CapabilitySpec"):
+            CapabilityCatalog(
+                registry=cast(
+                    dict[str, CapabilitySpec],
+                    {"search_docs": object()},
+                )
+            )
         with pytest.raises(TypeError, match="capability.name must be a string"):
             CapabilitySpec(
                 name=cast(str, 7),
