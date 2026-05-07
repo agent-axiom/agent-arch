@@ -2957,22 +2957,71 @@ class TestRuntimeControlPaths:
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
 
-        assert "runtime-controls.yaml" in change["artifacts"]
-        assert "capability_session_contract" in change["affected_surfaces"]
-        assert "sandbox_profile_contract" in change["affected_surfaces"]
-        assert "session_expiry_behavior_checked" in change["required_signals"]
-        assert "sandbox_profile_reviewed" in change["required_signals"]
+        assert change["artifacts"] == [
+            "agent.yaml",
+            "capabilities.yaml",
+            "policy.yaml",
+            "runtime-controls.yaml",
+            "eval-dataset.json",
+        ]
+        assert change["affected_surfaces"] == [
+            "capability_contract",
+            "runtime_control_schema",
+            "capability_session_contract",
+            "sandbox_profile_contract",
+            "failed_run_handling",
+        ]
+        assert change["required_signals"] == [
+            "design_review_passed",
+            "offline_eval_passed",
+            "policy_diff_reviewed",
+            "rollback_plan_ready",
+            "session_expiry_behavior_checked",
+            "reinit_policy_reviewed",
+            "sandbox_profile_reviewed",
+            "failed_run_drill_checked",
+        ]
+        assert change["approval_roles"] == ["platform-owner", "security-reviewer"]
         assert change["session_control_owner"] == "support-ops"
         assert change["emergency_freeze_owner"] == "platform-runtime"
 
-        assert "freeze_reinitialization" in retirement["required_steps"]
-        assert "capability_session_state" in retirement["archive_targets"]
+        assert retirement["required_steps"] == [
+            "freeze_rollout",
+            "disable_risky_capabilities",
+            "stop_memory_write",
+            "expire_paused_runs",
+            "stop_background_routes",
+            "freeze_reinitialization",
+            "revoke_egress",
+            "archive_audit_state",
+            "set_retired_status",
+        ]
+        assert retirement["archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "paused_run_state",
+            "capability_session_state",
+            "runtime_control_bundle",
+        ]
         assert retirement["session_control_owner"] == "support-ops"
         assert retirement["emergency_freeze_owner"] == "platform-runtime"
 
         assert bundle["version"] == "2026.04.16"
         assert bundle["session_control_owner"] == "support-ops"
-        assert "runtime-control-bundle-metadata" in bundle["artifacts"]
+        assert bundle["artifacts"] == [
+            "agent.yaml",
+            "capabilities.yaml",
+            "policy.yaml",
+            "memory.yaml",
+            "controls.yaml",
+            "approvals.yaml",
+            "runtime-controls.yaml",
+            "change.yaml",
+            "retirement.yaml",
+            "eval-dataset.json",
+            "runtime-control-bundle-metadata",
+        ]
 
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
