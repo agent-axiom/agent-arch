@@ -3230,6 +3230,8 @@ class TestRuntimeControlPaths:
         )
         assert policy.default_reviewer == "manager"
         assert default_review_request.reviewer == "manager"
+        with pytest.raises(TypeError, match="Approval queue policy must be ApprovalPolicy"):
+            ApprovalQueue(cast(ApprovalPolicy, object()))
 
         queue = AgentRuntime().approvals
         request = queue.submit(

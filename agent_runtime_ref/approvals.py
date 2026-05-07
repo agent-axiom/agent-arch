@@ -77,10 +77,14 @@ class ApprovalRequest:
 
 class ApprovalQueue:
     def __init__(self, policy: ApprovalPolicy | None = None) -> None:
-        self.policy = policy or ApprovalPolicy(
-            default_reviewer="manager",
-            escalation_sla_minutes=30,
-        )
+        if policy is None:
+            policy = ApprovalPolicy(
+                default_reviewer="manager",
+                escalation_sla_minutes=30,
+            )
+        if not isinstance(policy, ApprovalPolicy):
+            raise TypeError("Approval queue policy must be ApprovalPolicy")
+        self.policy = policy
         self._items: list[ApprovalRequest] = []
         self._counter = 0
 
