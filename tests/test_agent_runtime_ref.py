@@ -2008,6 +2008,13 @@ class TestExecutionAndPolicyBranches:
                     " search_docs ": CapabilityPolicy("deny"),
                 }
             )
+        with pytest.raises(TypeError, match="Policy capability entries must be CapabilityPolicy"):
+            PolicyEngine(
+                capability_policies=cast(
+                    dict[str, CapabilityPolicy],
+                    {"search_docs": object()},
+                )
+            )
         with pytest.raises(TypeError, match="Policy decision must be a string"):
             CapabilityPolicy(cast(str, 7))
         with pytest.raises(TypeError, match="Policy approver must be a string"):
