@@ -68,6 +68,8 @@ class ApprovedInventory:
 
     @classmethod
     def from_agent_config(cls, data: Mapping[str, Any]) -> "ApprovedInventory":
+        if not isinstance(data, Mapping):
+            raise TypeError("Agent inventory config must be a mapping")
         raw_agent = data.get("agent", {})
         if not isinstance(raw_agent, Mapping):
             raise TypeError("'agent' must be a mapping")
@@ -78,6 +80,8 @@ class ApprovedInventory:
 
 
 def load_agent_identity(data: Mapping[str, Any]) -> AgentIdentity:
+    if not isinstance(data, Mapping):
+        raise TypeError("Agent identity config must be a mapping")
     raw_agent = data.get("agent", {})
     if not isinstance(raw_agent, Mapping):
         raise TypeError("'agent' must be a mapping")
