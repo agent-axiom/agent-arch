@@ -2599,6 +2599,10 @@ class TestRuntimeCore:
             with pytest.raises(TypeError, match=message):
                 worker.process_post_run(**cast(dict[str, Any], kwargs))
 
+    def test_runtime_rejects_malformed_direct_run_request(self) -> None:
+        with pytest.raises(TypeError, match="Runtime request must be RunRequest"):
+            AgentRuntime().run(cast(RunRequest, object()))
+
     def test_runtime_rejects_bad_direct_sandbox_profile_sections(self) -> None:
         malformed_sections = (
             ("workspace", {"workspace": []}),
