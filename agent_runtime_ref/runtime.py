@@ -111,7 +111,11 @@ class AgentRuntime:
         if not isinstance(sessions, SessionStore):
             raise TypeError("Runtime sessions must be SessionStore")
         self.sessions = sessions
-        self.sandbox_profile = sandbox_profile or {}
+        if sandbox_profile is None:
+            sandbox_profile = {}
+        if not isinstance(sandbox_profile, dict):
+            raise TypeError("Sandbox profile config must be a mapping")
+        self.sandbox_profile = sandbox_profile
         if agent is None:
             agent = AgentIdentity(
                 agent_id="agent-runtime-ref",
