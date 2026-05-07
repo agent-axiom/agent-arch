@@ -38,6 +38,8 @@ def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> di
 
 
 def _read_observed_flags(items: Mapping[str, bool]) -> dict[str, bool]:
+    if not isinstance(items, Mapping):
+        raise TypeError("Assessment signals must be a mapping")
     observed: dict[str, bool] = {}
     for key, value in items.items():
         if not isinstance(key, str):
@@ -137,6 +139,8 @@ class RolloutAssessment:
 
 
 def assess_rollout(policy: RolloutPolicy, observed_checks: Mapping[str, bool]) -> RolloutAssessment:
+    if not isinstance(policy, RolloutPolicy):
+        raise TypeError("Rollout policy must be RolloutPolicy")
     observed = _read_observed_flags(observed_checks)
     missing_required = tuple(
         check for check in policy.required_checks if not observed.get(check, False)
