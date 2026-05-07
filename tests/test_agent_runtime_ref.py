@@ -2491,6 +2491,21 @@ class TestRuntimeCore:
         from agent_runtime_ref.session import SessionStore
         from agent_runtime_ref.telemetry import TelemetryEmitter
 
+        malformed_background_dependencies: tuple[tuple[dict[str, object], str], ...] = (
+            ({"memory_store": object()}, "Background memory_store must be MemoryStore"),
+            ({"policy": object()}, "Background policy must be PolicyEngine"),
+            ({"telemetry": object()}, "Background telemetry must be TelemetryEmitter"),
+        )
+        for kwargs, message in malformed_background_dependencies:
+            background_kwargs: dict[str, object] = {
+                "memory_store": MemoryStore(),
+                "policy": PolicyEngine(),
+                "telemetry": TelemetryEmitter(),
+                **kwargs,
+            }
+            with pytest.raises(TypeError, match=message):
+                BackgroundWorker(**cast(dict[str, Any], background_kwargs))
+
         malformed_dependencies: tuple[tuple[dict[str, object], str], ...] = (
             ({"catalog": object()}, "Runtime catalog must be CapabilityCatalog"),
             ({"policy": object()}, "Runtime policy must be PolicyEngine"),
