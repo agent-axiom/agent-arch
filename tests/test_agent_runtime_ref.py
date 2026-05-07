@@ -665,6 +665,7 @@ class TestRuntimeDocsParity:
             "Assessment signal keys must be unique",
             "Assessment signal value must be a boolean: {field}",
             "Rollout readiness flag must be a boolean: {field}",
+            "rollout.rollout_mode values must be scalar: {field}",
         )
         for path in (
             Path("docs/appendix/change-rollout-schema.en.md"),
@@ -5269,6 +5270,13 @@ class TestLowCoverageModuleBranches:
             RolloutPolicy.from_dict(
                 {"rollout": {"require": [], "block_if": [], "rollout_mode": {" ": "canary"}}}
             )
+        with pytest.raises(
+            TypeError,
+            match="rollout.rollout_mode values must be scalar: initial",
+        ):
+            RolloutPolicy.from_dict(
+                {"rollout": {"require": [], "block_if": [], "rollout_mode": {"initial": []}}}
+            )
         with pytest.raises(ValueError, match="rollout.rollout_mode entries must not be empty"):
             RolloutPolicy.from_dict(
                 {"rollout": {"require": [], "block_if": [], "rollout_mode": {"initial": " "}}}
@@ -5318,6 +5326,15 @@ class TestLowCoverageModuleBranches:
                 required_checks=(),
                 blocked_checks=(),
                 rollout_mode={" initial ": "canary", "initial": "shadow"},
+            )
+        with pytest.raises(
+            TypeError,
+            match="rollout.rollout_mode values must be scalar: initial",
+        ):
+            RolloutPolicy(
+                required_checks=(),
+                blocked_checks=(),
+                rollout_mode={"initial": cast(str, [])},
             )
 
     def test_ready_for_rollout_false_when_flags_missing(self) -> None:

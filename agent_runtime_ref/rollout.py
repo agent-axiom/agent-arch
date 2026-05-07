@@ -26,6 +26,8 @@ def _read_string_mapping_items(items: Mapping[str, object], *, label: str) -> di
         if not isinstance(key, str):
             raise TypeError(f"{label} keys must be strings")
         field = key.strip()
+        if not isinstance(value, (str, int, bool)):
+            raise TypeError(f"{label} values must be scalar: {field}")
         mode = str(value).strip()
         if not field or not mode:
             raise ValueError(f"{label} entries must not be empty")
