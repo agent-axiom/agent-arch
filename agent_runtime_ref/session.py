@@ -132,6 +132,22 @@ def _read_authorization_mode(value: str) -> str:
     return authorization_mode
 
 
+def _read_eval_spec(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise TypeError("Session eval spec must be a mapping")
+    normalized: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise TypeError("Session eval spec key must be a string")
+        field = key.strip()
+        if not field:
+            raise ValueError("Session eval spec key must not be empty")
+        if field in normalized:
+            raise ValueError("Session eval spec keys must be unique")
+        normalized[field] = item
+    return normalized
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -274,7 +290,7 @@ class SessionStore:
                 )
                 if normalized_session_id in normalized_eval_specs:
                     raise ValueError("Session field entries must be unique: session_id")
-                normalized_eval_specs[normalized_session_id] = eval_spec
+                normalized_eval_specs[normalized_session_id] = _read_eval_spec(eval_spec)
         sessions = []
         for session_id in normalized_session_ids:
             payload = self._session_payload(session_id)

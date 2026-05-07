@@ -3812,7 +3812,66 @@ class TestRuntimeControlPaths:
             eval_specs={" session-eval-name-required-001 ": {"labels": ["happy_path"]}},
         )
         payload = json.loads(output_path.read_text(encoding="utf-8"))
-        assert payload["sessions"][0]["eval"]["labels"] == ["happy_path"]
+        assert payload["sessions"][0]["eval"] == {"labels": ["happy_path"]}
+
+        output_path = tmp_path / "normalized-eval-spec-keys.json"
+        store.export_eval_dataset_json(
+            ("session-eval-name-required-001",),
+            output_path=output_path,
+            dataset_name="eval-seed",
+            eval_specs={
+                "session-eval-name-required-001": {
+                    " labels ": ["happy_path"],
+                    "required_run_count": 1,
+                }
+            },
+        )
+        payload = json.loads(output_path.read_text(encoding="utf-8"))
+        assert payload["sessions"][0]["eval"] == {
+            "labels": ["happy_path"],
+            "required_run_count": 1,
+        }
+
+    def test_session_store_rejects_malformed_eval_specs(self, tmp_path: Path) -> None:
+        from agent_runtime_ref.session import SessionStore
+
+        store = SessionStore()
+        store.register_run(
+            session_id="session-eval-malformed-001",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-eval-malformed-001",
+            status="success",
+            user_input="hello",
+            output_text="done",
+        )
+        output_path = tmp_path / "malformed-eval.json"
+        malformed_specs = (
+            (
+                cast(dict[str, object], []),
+                "Session eval spec must be a mapping",
+            ),
+            (
+                {1: ["happy_path"]},
+                "Session eval spec key must be a string",
+            ),
+            ({" ": ["happy_path"]}, "Session eval spec key must not be empty"),
+            (
+                {" labels ": ["happy_path"], "labels": ["duplicate"]},
+                "Session eval spec keys must be unique",
+            ),
+        )
+        for eval_spec, expected_message in malformed_specs:
+            with pytest.raises((TypeError, ValueError), match=expected_message):
+                store.export_eval_dataset_json(
+                    ("session-eval-malformed-001",),
+                    output_path=output_path,
+                    dataset_name="eval-seed",
+                    eval_specs={
+                        "session-eval-malformed-001": cast(dict[str, object], eval_spec)
+                    },
+                )
+            assert not output_path.exists()
 
     def test_session_store_rejects_duplicate_eval_session_ids(self, tmp_path: Path) -> None:
         from agent_runtime_ref.session import SessionStore
