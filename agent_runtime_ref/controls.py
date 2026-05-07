@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Mapping
 
@@ -7,7 +8,9 @@ from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.identity import ApprovedInventory
 
 
-def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ...]:
+def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
+    if not isinstance(items, Sequence) or isinstance(items, str):
+        raise TypeError(f"{label} entries must be strings")
     values: list[str] = []
     seen: set[str] = set()
     for item in items:
@@ -51,7 +54,7 @@ class ControlsPolicy:
             self,
             "required_controls",
             _read_string_list_items(
-                list(self.required_controls),
+                self.required_controls,
                 label="controls.require",
             ),
         )
@@ -59,7 +62,7 @@ class ControlsPolicy:
             self,
             "blocked_findings",
             _read_string_list_items(
-                list(self.blocked_findings),
+                self.blocked_findings,
                 label="controls.block_if",
             ),
         )
