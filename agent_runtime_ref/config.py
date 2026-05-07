@@ -26,7 +26,7 @@ def _read_config_path(path: object) -> Path:
     return Path(cast(str | PathLike[str], path))
 
 
-def load_yaml_file(path: str | Path) -> dict[str, Any]:
+def load_yaml_file(path: str | PathLike[str]) -> dict[str, Any]:
     config_path = _read_config_path(path)
     with config_path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle) or {}
@@ -35,17 +35,17 @@ def load_yaml_file(path: str | Path) -> dict[str, Any]:
     return payload
 
 
-def load_capability_catalog(path: str | Path) -> CapabilityCatalog:
+def load_capability_catalog(path: str | PathLike[str]) -> CapabilityCatalog:
     return CapabilityCatalog.from_dict(load_yaml_file(path))
 
 
-def load_agent_profile(path: str | Path) -> tuple[AgentIdentity, ApprovedInventory]:
+def load_agent_profile(path: str | PathLike[str]) -> tuple[AgentIdentity, ApprovedInventory]:
     payload = load_yaml_file(path)
     return load_agent_identity(payload), ApprovedInventory.from_agent_config(payload)
 
 
 def load_policy_engine(
-    path: str | Path,
+    path: str | PathLike[str],
     *,
     approved_inventory: ApprovedInventory | None = None,
 ) -> PolicyEngine:
@@ -55,29 +55,29 @@ def load_policy_engine(
     return engine
 
 
-def load_rollout_policy(path: str | Path) -> RolloutPolicy:
+def load_rollout_policy(path: str | PathLike[str]) -> RolloutPolicy:
     return RolloutPolicy.from_dict(load_yaml_file(path))
 
 
-def load_memory_store(path: str | Path) -> MemoryStore:
+def load_memory_store(path: str | PathLike[str]) -> MemoryStore:
     return MemoryStore.from_dict(load_yaml_file(path))
 
 
-def load_controls_policy(path: str | Path) -> ControlsPolicy:
+def load_controls_policy(path: str | PathLike[str]) -> ControlsPolicy:
     return ControlsPolicy.from_dict(load_yaml_file(path))
 
 
-def load_approval_policy(path: str | Path) -> ApprovalPolicy:
+def load_approval_policy(path: str | PathLike[str]) -> ApprovalPolicy:
     return ApprovalPolicy.from_dict(load_yaml_file(path))
 
 
-def load_change_record(path: str | Path) -> ChangeRecord:
+def load_change_record(path: str | PathLike[str]) -> ChangeRecord:
     return ChangeRecord.from_dict(load_yaml_file(path))
 
 
-def load_artifact_bundle(path: str | Path) -> ArtifactBundle:
+def load_artifact_bundle(path: str | PathLike[str]) -> ArtifactBundle:
     return ArtifactBundle.from_dict(load_yaml_file(path))
 
 
-def load_retirement_plan(path: str | Path) -> RetirementPlan:
+def load_retirement_plan(path: str | PathLike[str]) -> RetirementPlan:
     return RetirementPlan.from_dict(load_yaml_file(path))
