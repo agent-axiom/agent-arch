@@ -140,6 +140,8 @@ def _format_trace_id(trace_prefix: str, index: int) -> str:
 
 
 def _read_unique_cli_values(values: Sequence[str], *, field: str) -> list[str]:
+    if isinstance(values, str) or not isinstance(values, Sequence):
+        raise TypeError(f"CLI field entries must be a sequence: {field}")
     normalized = [_read_required_cli_string(value, field=field) for value in values]
     if len(set(normalized)) != len(normalized):
         raise ValueError(f"CLI field entries must be unique: {field}")

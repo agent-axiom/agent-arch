@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import json
 import shutil
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, cast
 
@@ -1693,6 +1694,14 @@ class TestFailurePaths:
                     "support_ticket",
                 ]
             )
+
+    def test_cli_unique_values_rejects_malformed_direct_sequence(self) -> None:
+        from agent_runtime_ref.__main__ import _read_unique_cli_values
+
+        with pytest.raises(
+            TypeError, match="CLI field entries must be a sequence: scenario"
+        ):
+            _read_unique_cli_values(cast(Sequence[str], "support_ticket"), field="scenario")
 
     def test_cli_export_eval_dataset_rejects_unknown_scenarios(self) -> None:
         from agent_runtime_ref.__main__ import main
