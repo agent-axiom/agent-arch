@@ -2750,6 +2750,59 @@ class TestRuntimeCore:
             "delegated_scope": "",
         }
 
+    def test_runtime_rejects_malformed_model_output_fields(self) -> None:
+        class BadModelOutputRuntime(AgentRuntime):
+            def __init__(self, model_output: ModelOutput) -> None:
+                super().__init__()
+                self.model_output = model_output
+
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                return self.model_output
+
+        bad_outputs = (
+            (
+                BadModelOutputRuntime(ModelOutput(text=cast(str, 7))),
+                "Model output text must be a string",
+            ),
+            (
+                BadModelOutputRuntime(
+                    ModelOutput(
+                        text="not enough structure",
+                        tool_request=cast(ToolRequest, {"capability_name": "search_docs"}),
+                    )
+                ),
+                "Model output tool_request must be ToolRequest",
+            ),
+        )
+        for runtime, expected_message in bad_outputs:
+            with pytest.raises(TypeError, match=expected_message):
+                runtime.run(
+                    RunRequest(
+                        user_input="Summarize the current architecture.",
+                        tenant_id="tenant-acme",
+                        principal_id="user-2",
+                        trace_id="trace-bad-model-output-001",
+                        agent_id="agent-runtime-ref",
+                    ),
+                )
+            assert runtime.sessions.runs_for_session("session-demo-001") == ()
+            assert [event.event_type for event in runtime.telemetry.events] == [
+                "run_start",
+                "policy_precheck",
+                "retrieval",
+                "context_layers_built",
+                "span",
+            ]
+            failure_span = runtime.telemetry.events[4]
+            assert failure_span.payload["span_name"] == "model_step"
+            assert failure_span.payload["status"] == "failure"
+
     def test_background_persisted_records_include_revision_and_provenance(self) -> None:
         runtime = AgentRuntime()
         runtime.run(

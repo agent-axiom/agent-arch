@@ -52,6 +52,10 @@ def _read_authorization_mode(value: str) -> str:
 def _read_model_output(value: object) -> ModelOutput:
     if not isinstance(value, ModelOutput):
         raise TypeError("Model step must return ModelOutput")
+    if not isinstance(value.text, str):
+        raise TypeError("Model output text must be a string")
+    if value.tool_request is not None and not isinstance(value.tool_request, ToolRequest):
+        raise TypeError("Model output tool_request must be ToolRequest")
     return value
 
 
@@ -214,12 +218,13 @@ class AgentRuntime:
             tool_items=str(len(context.context_layers.get("tool", []))),
         )
 
-        model_output = _read_model_output(
+        model_output = cast(
+            ModelOutput,
             self.telemetry.traced_call(
                 request.trace_id,
                 "model_step",
-                lambda: self._call_model(request, context),
-            )
+                lambda: _read_model_output(self._call_model(request, context)),
+            ),
         )
 
         if model_output.tool_request is not None:
