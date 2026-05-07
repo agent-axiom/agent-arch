@@ -107,6 +107,10 @@ sequenceDiagram
 
 </div>
 
+不同产品会用不同方式实现这一点，但有用的平台通常不应该只有一种 approval pattern。Cloudflare Agents SDK 明确区分 durable workflow approval、AI chat tools 的 approval、client-side tool confirmation、MCP elicitation，以及通过 state/WebSocket 完成的轻量确认。[^cloudflare-hitl] 这是一个很好的实践提示：approval boundary 应该和 side effect 真正发生的位置一致。
+
+如果 approval 属于 long-running workflow，它需要 timeout、escalation 和 durable resume。如果它是 browser/client-side tool，运行时必须知道一部分检查和结果来自 client boundary。如果它是 MCP elicitation，approval 就不只是 yes/no 开关，而更像带有自己 schema 的 structured input request。
+
 一个好的审批流程总是会保存：
 
 - 谁发起了这个动作；
@@ -219,6 +223,8 @@ sequenceDiagram
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../part-iii/chapter-5.zh.md)
 - [第二部分：安全边界](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
