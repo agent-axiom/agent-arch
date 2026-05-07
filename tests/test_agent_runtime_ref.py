@@ -689,6 +689,8 @@ class TestFailurePaths:
 
         with pytest.raises(TypeError, match="must be a mapping"):
             load_yaml_file(bad_config)
+        with pytest.raises(TypeError, match="Config path must be a string or path-like object"):
+            load_yaml_file(cast(Any, 7))
 
     def test_runtime_denied_precheck_records_session_evidence(self) -> None:
         runtime = AgentRuntime()
@@ -4138,6 +4140,23 @@ class TestRuntimeControlPaths:
             output_text="done",
         )
         output_path = tmp_path / "malformed-eval.json"
+        with pytest.raises(
+            TypeError,
+            match="Session output path must be a string or path-like object",
+        ):
+            store.export_session_json(
+                "session-eval-malformed-001",
+                output_path=cast(Any, 7),
+            )
+        with pytest.raises(
+            TypeError,
+            match="Session output path must be a string or path-like object",
+        ):
+            store.export_eval_dataset_json(
+                ("session-eval-malformed-001",),
+                output_path=cast(Any, 7),
+                dataset_name="eval-seed",
+            )
         with pytest.raises(TypeError, match="Session field entries must be a sequence: session_id"):
             store.export_eval_dataset_json(
                 cast(Any, "session-eval-malformed-001"),
@@ -5473,6 +5492,10 @@ class TestLowCoverageModuleBranches:
 
         emitter = TelemetryEmitter()
         emitter.emit("run_start", "trace-a", user_input="hello")
+        with pytest.raises(TypeError, match="Telemetry path must be a string or path-like object"):
+            emitter.export_jsonl(cast(Any, 7))
+        with pytest.raises(TypeError, match="Telemetry path must be a string or path-like object"):
+            TelemetryEmitter.load_jsonl(cast(Any, 7))
         with pytest.raises(
             TypeError,
             match="Telemetry event redacted_fields entries must be strings",
