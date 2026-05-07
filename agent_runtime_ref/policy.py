@@ -101,6 +101,8 @@ class PolicyEngine:
                 raise ValueError("Policy capability name must not be empty")
             if capability_name in self.capability_policies:
                 raise ValueError("Policy capability names must be unique")
+            if not isinstance(policy, CapabilityPolicy):
+                raise TypeError("Policy capability entries must be CapabilityPolicy")
             if policy.decision == "approval_required" and policy.approver == "":
                 raise ValueError(f"Policy approver must not be empty: {capability_name}")
             self.capability_policies[capability_name] = policy
