@@ -5284,7 +5284,10 @@ class TestLowCoverageModuleBranches:
             ),
         )
         assert not assessment.healthy
-        assert "inventory_drift_present" in assessment.blocking_findings
+        assert assessment.missing_controls == ()
+        assert assessment.blocking_findings == ("inventory_drift_present",)
+        assert assessment.inventory_drift.missing_from_catalog == ("ghost_cap",)
+        assert assessment.inventory_drift.missing_from_inventory == ()
 
     def test_structured_event_rejects_direct_bad_identity_fields(self) -> None:
         from agent_runtime_ref.telemetry import StructuredEvent
@@ -6354,7 +6357,8 @@ class TestPolicyAndControls:
             },
         )
         assert not assessment.ready
-        assert "direct_tool_access_present" in assessment.blocking_signals
+        assert assessment.missing_required == ()
+        assert assessment.blocking_signals == ("direct_tool_access_present",)
 
         with pytest.raises(TypeError, match="Rollout policy must be RolloutPolicy"):
             assess_rollout(cast(Any, object()), {})
