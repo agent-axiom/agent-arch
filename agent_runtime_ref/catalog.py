@@ -170,6 +170,8 @@ class CapabilityCatalog:
             capability_name = _normalize_capability_key(name)
             if capability_name in self._registry:
                 raise ValueError("Capability names must be unique")
+            if not isinstance(capability, CapabilitySpec):
+                raise TypeError("Capability catalog entries must be CapabilitySpec")
             self._registry[capability_name] = capability
 
     @staticmethod
