@@ -107,6 +107,10 @@ sequenceDiagram
 
 </div>
 
+Разные продукты будут реализовывать это по-разному, но полезно иметь не один approval pattern, а несколько. Cloudflare Agents SDK прямо разделяет durable workflow approval, approval для AI chat tools, client-side tool confirmation, MCP elicitation и легкие подтверждения через state/WebSocket.[^cloudflare-hitl] Это хорошая практическая подсказка: approval boundary должен соответствовать тому, где реально живет side effect.
+
+Если approval относится к long-running workflow, ему нужен timeout, escalation и durable resume. Если это browser/client-side tool, runtime должен понимать, что часть проверки и результата пришла с client boundary. Если это MCP elicitation, approval похож не на “yes/no”, а на structured input request с собственной schema.
+
 Хороший approval flow всегда хранит:
 
 - кто запросил действие;
@@ -219,6 +223,8 @@ sequenceDiagram
 - [Глава 5. Зачем агенту память и почему она опасна](../part-iii/chapter-5.md)
 - [Часть II. Контур безопасности](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

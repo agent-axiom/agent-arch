@@ -42,6 +42,7 @@ Below is the main set of primary sources used by the current version of the book
 - Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
 - Cloudflare, [Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 - Cloudflare Agents SDK, [Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) and [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
+- Cloudflare Agents SDK, [Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) and [WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 - Cloudflare, [Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
 
 ## Observability, Evals, and Verifier Design

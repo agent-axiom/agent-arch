@@ -107,6 +107,10 @@ sequenceDiagram
 
 </div>
 
+Different products will implement this differently, but a useful platform usually needs more than one approval pattern. Cloudflare Agents SDK explicitly separates durable workflow approval, approval for AI chat tools, client-side tool confirmation, MCP elicitation, and lightweight confirmations through state/WebSocket.[^cloudflare-hitl] That is a good practical hint: the approval boundary should match where the side effect actually lives.
+
+If approval belongs to a long-running workflow, it needs timeout, escalation, and durable resume. If it is a browser/client-side tool, the runtime must recognize that part of the check and result came from the client boundary. If it is MCP elicitation, the approval is less like a yes/no switch and more like a structured input request with its own schema.
+
 A good approval flow always stores:
 
 - who requested the action;
@@ -219,6 +223,8 @@ First map the real execution boundaries and approval points, then carry that sam
 - [Chapter 5. Why an Agent Needs Memory, and Why Memory Is Risky](../part-iii/chapter-5.en.md)
 - [Part II. Security Perimeter](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
