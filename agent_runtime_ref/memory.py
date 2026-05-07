@@ -158,7 +158,7 @@ class MemoryStore:
     """Small in-memory store with explicit record classes and tenant filtering."""
 
     def __init__(self, records: list[MemoryRecord] | None = None) -> None:
-        self._records = list(records or self._default_records())
+        self._records = list(self._default_records() if records is None else records)
         for record in self._records:
             if not isinstance(record, MemoryRecord):
                 raise TypeError("Memory store records must be MemoryRecord")
