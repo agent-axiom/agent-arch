@@ -1912,6 +1912,26 @@ class TestExecutionAndPolicyBranches:
                 PolicyDecision(cast(str, 7), "malformed_policy_action", "cap_bad"),
             )
 
+    def test_execute_tool_rejects_malformed_direct_inputs(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        tool_request = ToolRequest(capability_name="search_docs", arguments={"query": "policy"})
+        decision = PolicyDecision("allow", "low_risk_read", "cap_101")
+        malformed_inputs: tuple[tuple[dict[str, object], str], ...] = (
+            ({"capability": object()}, "Tool capability must be CapabilitySpec"),
+            ({"tool_request": object()}, "Tool request must be ToolRequest"),
+            ({"decision": object()}, "Tool policy decision must be PolicyDecision"),
+        )
+        for overrides, message in malformed_inputs:
+            kwargs: dict[str, object] = {
+                "capability": capability,
+                "tool_request": tool_request,
+                "decision": decision,
+                **overrides,
+            }
+            with pytest.raises(TypeError, match=message):
+                execute_tool(**cast(dict[str, Any], kwargs))
+
     def test_policy_from_dict_rejects_bad_shapes(self) -> None:
         with pytest.raises(TypeError, match="'policy' must be a mapping"):
             PolicyEngine.from_dict({"policy": []})

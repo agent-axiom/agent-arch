@@ -24,6 +24,12 @@ def execute_tool(
     tool_request: ToolRequest,
     decision: PolicyDecision,
 ) -> ToolResult:
+    if not isinstance(capability, CapabilitySpec):
+        raise TypeError("Tool capability must be CapabilitySpec")
+    if not isinstance(tool_request, ToolRequest):
+        raise TypeError("Tool request must be ToolRequest")
+    if not isinstance(decision, PolicyDecision):
+        raise TypeError("Tool policy decision must be PolicyDecision")
     capability_name = normalize_tool_capability_name(tool_request.capability_name)
     arguments = normalize_tool_arguments(tool_request.arguments)
     if capability_name != capability.name:
