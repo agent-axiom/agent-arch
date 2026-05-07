@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
-from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest
+from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest, ToolResult
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.telemetry import TelemetryEmitter
 
@@ -29,6 +29,17 @@ def _read_model_output(value: ModelOutput) -> ModelOutput:
     if value.tool_request is not None and not isinstance(value.tool_request, ToolRequest):
         raise TypeError("Model output tool_request must be ToolRequest")
     return value
+
+
+def _read_tool_results(value: object) -> list[ToolResult]:
+    if not isinstance(value, list):
+        raise TypeError("Background context tool_results must be a list")
+    normalized: list[ToolResult] = []
+    for item in value:
+        if not isinstance(item, ToolResult):
+            raise TypeError("Background context tool_results entries must be ToolResult")
+        normalized.append(item)
+    return normalized
 
 
 class BackgroundWorker:
@@ -63,6 +74,7 @@ class BackgroundWorker:
             raise TypeError("Background context must be RunContext")
         if not isinstance(model_output, ModelOutput):
             raise TypeError("Background model_output must be ModelOutput")
+        context.tool_results = _read_tool_results(context.tool_results)
         request.user_input = _read_required_request_string(
             request.user_input,
             field="user_input",

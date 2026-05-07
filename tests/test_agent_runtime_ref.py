@@ -2785,6 +2785,30 @@ class TestRuntimeCore:
                 {"model_output": ModelOutput("remembered", cast(ToolRequest, object()))},
                 "Model output tool_request must be ToolRequest",
             ),
+            (
+                {
+                    "context": RunContext(
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        trace_id="trace-background-direct-001",
+                        session_id="session-background-direct-001",
+                        tool_results=cast(list[ToolResult], "search_docs:success"),
+                    ),
+                },
+                "Background context tool_results must be a list",
+            ),
+            (
+                {
+                    "context": RunContext(
+                        tenant_id="tenant-acme",
+                        principal_id="user-1",
+                        trace_id="trace-background-direct-001",
+                        session_id="session-background-direct-001",
+                        tool_results=cast(list[ToolResult], [object()]),
+                    ),
+                },
+                "Background context tool_results entries must be ToolResult",
+            ),
         )
         for overrides, message in malformed_inputs:
             kwargs: dict[str, object] = {
