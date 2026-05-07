@@ -126,7 +126,9 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
 
 
 def _read_required_cli_string(value: str, *, field: str) -> str:
-    normalized = str(value).strip()
+    if not isinstance(value, str):
+        raise TypeError(f"CLI field must be a string: {field}")
+    normalized = value.strip()
     if not normalized:
         raise ValueError(f"CLI field is required: {field}")
     return normalized
