@@ -62,6 +62,8 @@ def _read_bool(data: dict[str, Any], key: str, *, label: str, default: bool) -> 
 
 
 def _read_observed_flags(items: dict[str, bool]) -> dict[str, bool]:
+    if not isinstance(items, dict):
+        raise TypeError("Assessment signals must be a mapping")
     observed: dict[str, bool] = {}
     for key, value in items.items():
         if not isinstance(key, str):
@@ -361,6 +363,8 @@ def assess_change_gate(
     change: ChangeRecord,
     observed_signals: dict[str, bool],
 ) -> ChangeGateAssessment:
+    if not isinstance(change, ChangeRecord):
+        raise TypeError("Lifecycle change must be ChangeRecord")
     observed = _read_observed_flags(observed_signals)
     missing = tuple(
         signal for signal in change.required_signals if not observed.get(signal, False)
@@ -372,6 +376,8 @@ def assess_retirement(
     plan: RetirementPlan,
     observed_steps: dict[str, bool],
 ) -> RetirementAssessment:
+    if not isinstance(plan, RetirementPlan):
+        raise TypeError("Lifecycle retirement plan must be RetirementPlan")
     observed = _read_observed_flags(observed_steps)
     missing = tuple(
         step for step in plan.required_steps if not observed.get(step, False)
