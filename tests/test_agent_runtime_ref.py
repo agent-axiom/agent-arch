@@ -6270,6 +6270,10 @@ class TestPolicyAndControls:
         assert not assessment.ready
         assert "direct_tool_access_present" in assessment.blocking_signals
 
+        with pytest.raises(TypeError, match="Rollout policy must be RolloutPolicy"):
+            assess_rollout(cast(Any, object()), {})
+        with pytest.raises(TypeError, match="Assessment signals must be a mapping"):
+            assess_rollout(policy, cast(dict[str, bool], []))
         with pytest.raises(TypeError, match="Assessment signal key must be a string"):
             assess_rollout(policy, cast(dict[str, bool], {1: True}))
         with pytest.raises(ValueError, match="Assessment signal key must not be empty"):
@@ -6302,6 +6306,12 @@ class TestPolicyAndControls:
         assert assessment.healthy
         assert not assessment.inventory_drift.has_drift
 
+        with pytest.raises(TypeError, match="Controls policy must be ControlsPolicy"):
+            assess_controls(cast(Any, object()), {}, inventory_drift=drift)
+        with pytest.raises(TypeError, match="Controls inventory_drift must be InventoryDrift"):
+            assess_controls(policy, {}, inventory_drift=cast(Any, object()))
+        with pytest.raises(TypeError, match="Assessment signals must be a mapping"):
+            assess_controls(policy, cast(dict[str, bool], []), inventory_drift=drift)
         with pytest.raises(TypeError, match="Assessment signal key must be a string"):
             assess_controls(
                 policy,

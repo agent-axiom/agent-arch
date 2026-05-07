@@ -24,6 +24,8 @@ def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ..
 
 
 def _read_observed_flags(items: Mapping[str, bool]) -> dict[str, bool]:
+    if not isinstance(items, Mapping):
+        raise TypeError("Assessment signals must be a mapping")
     observed: dict[str, bool] = {}
     for key, value in items.items():
         if not isinstance(key, str):
@@ -115,6 +117,10 @@ def assess_controls(
     *,
     inventory_drift: InventoryDrift,
 ) -> ControlsAssessment:
+    if not isinstance(policy, ControlsPolicy):
+        raise TypeError("Controls policy must be ControlsPolicy")
+    if not isinstance(inventory_drift, InventoryDrift):
+        raise TypeError("Controls inventory_drift must be InventoryDrift")
     observed = _read_observed_flags(observed_controls)
     missing_controls = tuple(
         control for control in policy.required_controls if not observed.get(control, False)
