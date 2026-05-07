@@ -40,6 +40,12 @@ class BackgroundWorker:
         context: RunContext,
         model_output: ModelOutput,
     ) -> BackgroundUpdateResult:
+        if not isinstance(request, RunRequest):
+            raise TypeError("Background request must be RunRequest")
+        if not isinstance(context, RunContext):
+            raise TypeError("Background context must be RunContext")
+        if not isinstance(model_output, ModelOutput):
+            raise TypeError("Background model_output must be ModelOutput")
         candidates = self._build_candidates(request, context, model_output)
         persisted = 0
         for candidate in candidates:
