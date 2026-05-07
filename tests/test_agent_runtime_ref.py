@@ -4546,6 +4546,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert MemoryStore(records=[direct_record]).retrieve(
             "concise", " tenant-acme "
         ) == [direct_record]
+        assert MemoryStore(records=[]).all() == ()
         with pytest.raises(TypeError, match="Memory store records must be MemoryRecord"):
             MemoryStore(records=cast(list[MemoryRecord], [object()]))
         with pytest.raises(TypeError, match="Memory record field must be a string: tenant_id"):
