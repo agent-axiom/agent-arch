@@ -6413,6 +6413,13 @@ class TestCli:
         with pytest.raises(ValueError, match="CLI field must be non-negative: limit"):
             main(["inspect-memory", "--limit", "-1"])
 
+    def test_cli_non_negative_int_rejects_malformed_direct_values(self) -> None:
+        from agent_runtime_ref.__main__ import _read_non_negative_cli_int
+
+        for value in (cast(int, True), cast(int, "3")):
+            with pytest.raises(TypeError, match="CLI field must be an integer: limit"):
+                _read_non_negative_cli_int(value, field="limit")
+
     def test_cli_inspect_agent_returns_identity_and_inventory(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-agent"])
         assert exit_code == 0

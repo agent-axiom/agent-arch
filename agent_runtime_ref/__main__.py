@@ -176,6 +176,8 @@ def _read_cli_approval_id(value: str) -> str:
 
 
 def _read_non_negative_cli_int(value: int, *, field: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise TypeError(f"CLI field must be an integer: {field}")
     if value < 0:
         raise ValueError(f"CLI field must be non-negative: {field}")
     return value
