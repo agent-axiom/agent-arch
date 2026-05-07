@@ -29,7 +29,9 @@ def _read_config_path(path: object) -> Path:
 def load_yaml_file(path: str | PathLike[str]) -> dict[str, Any]:
     config_path = _read_config_path(path)
     with config_path.open("r", encoding="utf-8") as handle:
-        payload = yaml.safe_load(handle) or {}
+        payload = yaml.safe_load(handle)
+    if payload is None:
+        payload = {}
     if not isinstance(payload, dict):
         raise TypeError(f"Config at {config_path!s} must be a mapping at the top level")
     return payload
