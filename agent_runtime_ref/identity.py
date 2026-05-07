@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping
+from typing import Any
 
 
 def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> str:
@@ -15,6 +16,8 @@ def _read_required_string(data: Mapping[str, Any], key: str, *, label: str) -> s
 
 
 def _normalize_approved_capabilities(items: Iterable[object]) -> frozenset[str]:
+    if isinstance(items, str):
+        raise TypeError("approved_capabilities entries must be strings")
     capabilities: set[str] = set()
     for item in items:
         if not isinstance(item, str):
