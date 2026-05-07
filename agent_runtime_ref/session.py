@@ -113,21 +113,41 @@ class SessionRecord:
     principal_id: str
     traces: list[str] = field(default_factory=list)
 
+    def __post_init__(self) -> None:
+        self.session_id = _read_required_string(self.session_id, field="session_id")
+        self.tenant_id = _read_optional_string(self.tenant_id, field="tenant_id")
+        self.principal_id = _read_optional_string(self.principal_id, field="principal_id")
+        self.traces = _read_string_entries(self.traces, field="trace_id")
 
-def _read_optional_string(value: str, *, field: str) -> str:
+
+def _read_optional_string(value: object, *, field: str) -> str:
     if not isinstance(value, str):
         raise TypeError(f"Session field must be a string: {field}")
     return value.strip()
 
 
-def _read_required_string(value: str, *, field: str) -> str:
+def _read_required_string(value: object, *, field: str) -> str:
     normalized = _read_optional_string(value, field=field)
     if not normalized:
         raise ValueError(f"Session field is required: {field}")
     return normalized
 
 
-def _read_authorization_mode(value: str) -> str:
+def _read_string_entries(value: object, *, field: str) -> list[str]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        raise TypeError(f"Session field entries must be a sequence: {field}")
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for item in value:
+        entry = _read_required_string(item, field=field)
+        if entry in seen:
+            raise ValueError(f"Session field entries must be unique: {field}")
+        seen.add(entry)
+        normalized.append(entry)
+    return normalized
+
+
+def _read_authorization_mode(value: object) -> str:
     authorization_mode = _read_required_string(value, field="authorization_mode")
     if authorization_mode not in {"platform_owned", "user_delegated", "human_approved"}:
         raise ValueError(f"Authorization mode is not supported: {authorization_mode}")

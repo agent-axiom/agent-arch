@@ -3695,7 +3695,12 @@ class TestRuntimeControlPaths:
         assert not output_path.exists()
 
     def test_session_store_rejects_blank_identity_fields(self) -> None:
-        from agent_runtime_ref.session import RunRecord, SessionStore, summarize_session
+        from agent_runtime_ref.session import (
+            RunRecord,
+            SessionRecord,
+            SessionStore,
+            summarize_session,
+        )
 
         store = SessionStore()
         required_fields = {
@@ -3767,6 +3772,15 @@ class TestRuntimeControlPaths:
         session = store.get_session(" session-normalized-001 ")
         assert session is not None
         assert session.session_id == "session-normalized-001"
+        assert session.traces == ["trace-normalized-001"]
+        direct_session = SessionRecord(
+            session_id=" session-direct-normalized-001 ",
+            tenant_id=" tenant-acme ",
+            principal_id=" user-1 ",
+            traces=[" trace-one ", "trace-two"],
+        )
+        assert direct_session.session_id == "session-direct-normalized-001"
+        assert direct_session.traces == ["trace-one", "trace-two"]
         runs = store.runs_for_session(" session-normalized-001 ")
         assert len(runs) == 1
         assert runs[0].trace_id == "trace-normalized-001"
@@ -3797,6 +3811,20 @@ class TestRuntimeControlPaths:
         assert summary.traceable_failed_runs == 1
         with pytest.raises(ValueError, match="Session field is required: session_id"):
             summarize_session(" ", (direct_record,))
+        with pytest.raises(TypeError, match="Session field entries must be a sequence: trace_id"):
+            SessionRecord(
+                session_id="session-direct-bad-traces-001",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                traces=cast(list[str], "trace-one"),
+            )
+        with pytest.raises(ValueError, match="Session field entries must be unique: trace_id"):
+            SessionRecord(
+                session_id="session-direct-duplicate-traces-001",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                traces=["trace-one", " trace-one "],
+            )
         with pytest.raises(TypeError, match="Session runs must be a sequence"):
             summarize_session("session-direct-normalized-001", cast(Any, 7))
         with pytest.raises(TypeError, match="Session runs must be a sequence"):
