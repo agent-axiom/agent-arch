@@ -181,6 +181,8 @@ That is the right mental model for a baseline runtime too. The runtime should al
 
 Anthropic's workflow taxonomy sharpens this further because different orchestration patterns create different checkpoint needs.[^anthropic] A `prompt chaining` path may checkpoint between fixed stages, `routing` may checkpoint only at classification and handoff boundaries, `parallelization` needs join-state visibility, and `orchestrator-workers` needs parent/worker coordination state that survives partial completion.
 
+LangGraph persistence makes the same point at checkpoint granularity: durable state is organized by thread, checkpoints are saved at super-step boundaries, and successful node writes inside a failed super-step can be kept as pending writes instead of being recomputed on resume.[^langgraph-persistence] The architectural lesson is that “checkpointing” is not one boolean. A runtime should name the cursor that resumes work, the boundary at which replay is allowed, and the partial writes that must not be duplicated after failure.
+
 Their later harness work adds one more practical runtime lesson: long-running application work often needs an explicit distinction between **compaction** and **context reset**.[^anthropic-harness] Compaction keeps the same agent alive on a shortened history, which preserves continuity but may keep the same context anxiety and drift. A reset starts a fresh agent and depends on a structured handoff artifact that carries state, next steps, and evaluation context forward. That is not just a prompt trick. It is runtime architecture, because once resets are part of the harness, the platform must decide what state is durable enough to survive them and what review artifact the next agent inherits.
 
 So bounded autonomy is not only a policy issue. It is also a runtime-state design issue: every allowed execution pattern implies its own pause, resume, reset, and completion semantics.
@@ -413,6 +415,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
+
+[^langgraph-persistence]: [LangGraph, Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
 

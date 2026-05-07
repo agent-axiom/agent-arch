@@ -181,6 +181,8 @@ OpenAI 最近关于后台模式的材料很有帮助，因为它把后台执行�
 
 Anthropic 的工作流分类又把这个问题压得更具体了，因为不同编排模式会带来不同的检查点需求。[^anthropic] `prompt chaining` 往往需要在固定阶段之间 checkpoint，`routing` 往往只需要在分类和交接边界 checkpoint，`parallelization` 需要汇合状态可见性，而 `orchestrator-workers` 需要能跨部分完成而存活的父/worker 协调状态。
 
+LangGraph persistence 在 checkpoint granularity 层面说明了同一个原则：durable state 按 thread 组织，checkpoints 在 super-step 边界保存，而失败 super-step 中已经成功完成的 node writes 可以作为 pending writes 保留下来，这样 resume 时不需要重新执行已经成功的节点。[^langgraph-persistence] 架构结论是：“checkpointing” 不是一个 boolean。Runtime 应该明确命名用于 resume 的 cursor、允许 replay 的边界，以及故障之后不能重复提交的 partial writes。
+
 他们后续关于 harness 设计的工作又补上了一个更实际的运行时经验：在长时间运行的应用工作里，往往必须明确区分 **compaction** 和 **上下文重置**。[^anthropic-harness] Compaction 会让同一个智能体在缩短后的历史上继续工作，因此连续性还在，但上下文焦虑和累计漂移也可能继续存在。Reset 则是启动一个全新的智能体，并依赖结构化的交接工件来携带状态、下一步动作和评估上下文。这不只是提示技巧，而是运行时架构的一部分，因为一旦 resets 成为 harness 的组成部分，平台就必须决定哪些状态足够耐久、能跨 reset 保留下来，以及下一个智能体会继承什么审查工件。
 
 所以有界自主不只是策略问题，也是一种运行时状态设计问题：每一种被允许的执行模式，都会带来自己的一套 pause、resume、reset 和完成语义。
@@ -413,6 +415,8 @@ runtime:
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
+
+[^langgraph-persistence]: [LangGraph, Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
 
