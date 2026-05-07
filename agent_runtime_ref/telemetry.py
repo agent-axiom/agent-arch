@@ -145,7 +145,7 @@ class TelemetryEmitter:
 
     def export_jsonl(
         self,
-        path: str | Path,
+        path: str | PathLike[str],
         *,
         redact_fields: tuple[str, ...] = (),
     ) -> Path:
@@ -162,7 +162,7 @@ class TelemetryEmitter:
         return output_path
 
     @staticmethod
-    def load_jsonl(path: str | Path) -> list[StructuredEvent]:
+    def load_jsonl(path: str | PathLike[str]) -> list[StructuredEvent]:
         input_path = _read_telemetry_path(path)
         events: list[StructuredEvent] = []
         with input_path.open("r", encoding="utf-8") as handle:

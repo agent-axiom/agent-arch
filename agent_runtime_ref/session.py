@@ -261,7 +261,7 @@ class SessionStore:
         self,
         session_id: str,
         *,
-        output_path: str | Path,
+        output_path: str | PathLike[str],
     ) -> Path:
         session_id = _read_required_string(session_id, field="session_id")
         destination = _read_session_output_path(output_path)
@@ -276,7 +276,7 @@ class SessionStore:
         self,
         session_ids: tuple[str, ...],
         *,
-        output_path: str | Path,
+        output_path: str | PathLike[str],
         dataset_name: str,
         eval_specs: dict[str, dict[str, object]] | None = None,
     ) -> Path:
