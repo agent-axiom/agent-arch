@@ -690,6 +690,11 @@ class TestFailurePaths:
 
         with pytest.raises(TypeError, match="must be a mapping"):
             load_yaml_file(bad_config)
+        bad_config.write_text("false\n", encoding="utf-8")
+        with pytest.raises(TypeError, match="must be a mapping"):
+            load_yaml_file(bad_config)
+        bad_config.write_text("", encoding="utf-8")
+        assert load_yaml_file(bad_config) == {}
         with pytest.raises(TypeError, match="Config path must be a string or path-like object"):
             load_yaml_file(cast(Any, 7))
 
