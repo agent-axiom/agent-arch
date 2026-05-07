@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from agent_runtime_ref.memory import MemoryCandidate, MemoryStore
-from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest
+from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest
 from agent_runtime_ref.policy import PolicyEngine
 from agent_runtime_ref.telemetry import TelemetryEmitter
 
@@ -12,6 +12,23 @@ from agent_runtime_ref.telemetry import TelemetryEmitter
 class BackgroundUpdateResult:
     persisted_records: int
     compacted_records: int
+
+
+def _read_required_request_string(value: object, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Run request field must be a string: {field}")
+    normalized = value.strip()
+    if not normalized:
+        raise ValueError(f"Run request field is required: {field}")
+    return normalized
+
+
+def _read_model_output(value: ModelOutput) -> ModelOutput:
+    if not isinstance(value.text, str):
+        raise TypeError("Model output text must be a string")
+    if value.tool_request is not None and not isinstance(value.tool_request, ToolRequest):
+        raise TypeError("Model output tool_request must be ToolRequest")
+    return value
 
 
 class BackgroundWorker:
@@ -46,6 +63,19 @@ class BackgroundWorker:
             raise TypeError("Background context must be RunContext")
         if not isinstance(model_output, ModelOutput):
             raise TypeError("Background model_output must be ModelOutput")
+        request.user_input = _read_required_request_string(
+            request.user_input,
+            field="user_input",
+        )
+        request.tenant_id = _read_required_request_string(
+            request.tenant_id,
+            field="tenant_id",
+        )
+        request.trace_id = _read_required_request_string(
+            request.trace_id,
+            field="trace_id",
+        )
+        model_output = _read_model_output(model_output)
         candidates = self._build_candidates(request, context, model_output)
         persisted = 0
         for candidate in candidates:

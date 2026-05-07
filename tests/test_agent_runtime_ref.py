@@ -2683,6 +2683,26 @@ class TestRuntimeCore:
             ({"request": object()}, "Background request must be RunRequest"),
             ({"context": object()}, "Background context must be RunContext"),
             ({"model_output": object()}, "Background model_output must be ModelOutput"),
+            (
+                {"request": RunRequest(cast(str, 7), "tenant-acme", "user-1", "trace")},
+                "Run request field must be a string: user_input",
+            ),
+            (
+                {"request": RunRequest("remember this", cast(str, 7), "user-1", "trace")},
+                "Run request field must be a string: tenant_id",
+            ),
+            (
+                {"request": RunRequest("remember this", "tenant-acme", "user-1", cast(str, 7))},
+                "Run request field must be a string: trace_id",
+            ),
+            (
+                {"model_output": ModelOutput(text=cast(str, 7))},
+                "Model output text must be a string",
+            ),
+            (
+                {"model_output": ModelOutput("remembered", cast(ToolRequest, object()))},
+                "Model output tool_request must be ToolRequest",
+            ),
         )
         for overrides, message in malformed_inputs:
             kwargs: dict[str, object] = {
@@ -2692,6 +2712,30 @@ class TestRuntimeCore:
                 **overrides,
             }
             with pytest.raises(TypeError, match=message):
+                worker.process_post_run(**cast(dict[str, Any], kwargs))
+
+        required_request_fields = (
+            (
+                {"request": RunRequest(" ", "tenant-acme", "user-1", "trace")},
+                "Run request field is required: user_input",
+            ),
+            (
+                {"request": RunRequest("remember this", " ", "user-1", "trace")},
+                "Run request field is required: tenant_id",
+            ),
+            (
+                {"request": RunRequest("remember this", "tenant-acme", "user-1", " ")},
+                "Run request field is required: trace_id",
+            ),
+        )
+        for overrides, message in required_request_fields:
+            kwargs = {
+                "request": request,
+                "context": context,
+                "model_output": model_output,
+                **overrides,
+            }
+            with pytest.raises(ValueError, match=message):
                 worker.process_post_run(**cast(dict[str, Any], kwargs))
 
     def test_runtime_rejects_malformed_direct_run_request(self) -> None:
