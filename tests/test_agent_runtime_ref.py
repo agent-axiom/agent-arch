@@ -6033,6 +6033,18 @@ class TestLowCoverageModuleBranches:
                 network_access="restricted",
                 allowed_egress=cast(tuple[str, ...], (7,)),
             )
+        with pytest.raises(TypeError, match="allowed_egress entries must be strings"):
+            CapabilitySpec(
+                name="search_docs",
+                owner="knowledge_platform",
+                mode="read",
+                transport="mcp",
+                timeout_seconds=5,
+                tool_principal="svc-knowledge-reader",
+                risk_tier="low",
+                network_access="restricted",
+                allowed_egress=cast(tuple[str, ...], "docs.internal"),
+            )
         with pytest.raises(ValueError, match="allowed_egress entries must be unique"):
             CapabilitySpec(
                 name="search_docs",
@@ -6178,6 +6190,11 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="approved_capabilities lookup must be a string"):
             inventory.allows(cast(str, 7))
         assert not inventory.allows("create_ticket")
+        with pytest.raises(
+            TypeError,
+            match="approved_capabilities entries must be strings",
+        ):
+            ApprovedInventory(capabilities=cast(frozenset[str], "search_docs"))
         with pytest.raises(
             TypeError,
             match="approved_capabilities entries must be strings",

@@ -1,14 +1,17 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Mapping, cast
 
 
 def _normalize_string_list_items(
-    items: list[object] | tuple[str, ...],
+    items: object,
     *,
     label: str,
 ) -> tuple[str, ...]:
+    if not isinstance(items, Sequence) or isinstance(items, str):
+        raise TypeError(f"{label} entries must be strings")
     values: list[str] = []
     seen: set[str] = set()
     for item in items:
