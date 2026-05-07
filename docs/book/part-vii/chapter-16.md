@@ -220,6 +220,8 @@ Cloudflare Agents SDK показывает другой полезный baselin
 
 Scheduling side особенно важен: Cloudflare показывает delayed, scheduled, cron и interval tasks, которые переживают restart, persist в SQLite и wake agent через Durable Object alarms.[^cloudflare-schedule] Архитектурный вывод для книги: schedule нельзя оставлять невидимым callback. Его нужно отражать как durable control record с owner instance, payload schema, idempotency key, overlap policy, next fire time и trace linkage.
 
+Real-time side добавляет еще одну границу: connection state не равен agent state. В Cloudflare Agents WebSocket model у connection есть собственный `id`, `uri`, per-connection `state`, tags, lifecycle hooks и возможность выключить protocol messages вроде identity/state/MCP для конкретного connection.[^cloudflare-websockets] Для baseline runtime это означает, что broadcast, user presence, approval UI и streaming updates должны проходить через connection-scoped authorization и traceable fan-out, а не напрямую читать весь durable state агента.
+
 ## 9. Stateful tool sessions тоже должны входить в baseline
 
 Как только execution layer начинает работать с stateful MCP-подобными capability, у baseline runtime появляется еще одна обязательная граница: **состояние user-visible run не равно состоянию capability session**.[^aws-stateful-mcp]
@@ -413,6 +415,8 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 

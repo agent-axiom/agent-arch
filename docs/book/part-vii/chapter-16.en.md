@@ -220,6 +220,8 @@ So the reference runtime does not need to implement Durable Objects, but it does
 
 The scheduling side matters in particular: Cloudflare shows delayed, scheduled, cron, and interval tasks that survive restarts, persist in SQLite, and wake the agent through Durable Object alarms.[^cloudflare-schedule] The architectural takeaway for the book is that a schedule should not remain an invisible callback. It should be represented as a durable control record with an owner instance, payload schema, idempotency key, overlap policy, next fire time, and trace linkage.
 
+The real-time side adds one more boundary: connection state is not agent state. In Cloudflare Agents WebSocket model, a connection has its own `id`, `uri`, per-connection `state`, tags, lifecycle hooks, and the option to disable protocol messages such as identity/state/MCP for a specific connection.[^cloudflare-websockets] For a baseline runtime, that means broadcast, presence, approval UI, and streaming updates should pass through connection-scoped authorization and traceable fan-out, not directly expose the whole durable state of the agent.
+
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
 
 Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
@@ -413,6 +415,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 

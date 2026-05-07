@@ -220,6 +220,8 @@ Cloudflare Agents SDK 展示了另一个有用的基线模式：智能体不一�
 
 Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cron 和 interval tasks，这些任务会跨 restart 保留，persist 到 SQLite，并通过 Durable Object alarms 唤醒 agent。[^cloudflare-schedule] 对本书的架构结论是：schedule 不应该只是不可见的 callback，而应该表示成 durable control record，带有 owner instance、payload schema、idempotency key、overlap policy、next fire time 和 trace linkage。
 
+Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
+
 ## 9. 有状态工具会话也应该属于基线
 
 一旦执行层开始接入类似有状态 MCP 能力，基线运行时就会多出一条必须明确的边界：**用户可见运行的状态，不等于能力会话的状态**。[^aws-stateful-mcp]
@@ -413,6 +415,8 @@ runtime:
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+
+[^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 
