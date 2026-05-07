@@ -5983,6 +5983,8 @@ class TestLowCoverageModuleBranches:
         assert direct_capability.allowed_egress == ("docs.internal",)
         direct_catalog = CapabilityCatalog(registry={" search_docs ": direct_capability})
         assert direct_catalog.get("search_docs") is direct_capability
+        assert CapabilityCatalog(registry={}).all() == ()
+        assert CapabilityCatalog.from_dict({"capabilities": {}}).all() == ()
         with pytest.raises(TypeError, match="Tool request capability name must be a string"):
             direct_catalog.get(cast(str, 7))
         with pytest.raises(TypeError, match="Capability names must be strings"):
