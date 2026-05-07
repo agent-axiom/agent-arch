@@ -159,6 +159,9 @@ class MemoryStore:
 
     def __init__(self, records: list[MemoryRecord] | None = None) -> None:
         self._records = list(records or self._default_records())
+        for record in self._records:
+            if not isinstance(record, MemoryRecord):
+                raise TypeError("Memory store records must be MemoryRecord")
         self._counter = len(self._records)
 
     @staticmethod
