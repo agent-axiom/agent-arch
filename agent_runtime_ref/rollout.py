@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Mapping
 
 
-def _read_string_list_items(items: list[object], *, label: str) -> tuple[str, ...]:
+def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
+    if not isinstance(items, Sequence) or isinstance(items, str):
+        raise TypeError(f"{label} entries must be strings")
     values: list[str] = []
     seen: set[str] = set()
     for item in items:
@@ -91,7 +94,7 @@ class RolloutPolicy:
             self,
             "required_checks",
             _read_string_list_items(
-                list(self.required_checks),
+                self.required_checks,
                 label="rollout.require",
             ),
         )
@@ -99,7 +102,7 @@ class RolloutPolicy:
             self,
             "blocked_checks",
             _read_string_list_items(
-                list(self.blocked_checks),
+                self.blocked_checks,
                 label="rollout.block_if",
             ),
         )

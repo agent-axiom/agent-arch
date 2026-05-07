@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Mapping
 
@@ -14,7 +15,9 @@ from agent_runtime_ref.models import (
 )
 
 
-def _read_string_list_items(items: list[object], *, label: str) -> set[str]:
+def _read_string_list_items(items: object, *, label: str) -> set[str]:
+    if not isinstance(items, Iterable) or isinstance(items, str):
+        raise TypeError(f"{label} entries must be strings")
     values: set[str] = set()
     for item in items:
         if not isinstance(item, str):
@@ -113,12 +116,12 @@ class PolicyEngine:
                 raise ValueError(f"Policy approver must not be empty: {capability_name}")
             self.capability_policies[capability_name] = policy
         self.allowed_memory_kinds = _read_string_list_items(
-            list(allowed_memory_kinds or {"validated_fact", "session_summary"}),
+            allowed_memory_kinds or {"validated_fact", "session_summary"},
             label="memory_write.allow_kinds",
         )
         self.approved_inventory = approved_inventory
         self.allowed_network_access = _read_string_list_items(
-            list(allowed_network_access or {"restricted", "brokered"}),
+            allowed_network_access or {"restricted", "brokered"},
             label="execution.allow_network_access",
         )
 

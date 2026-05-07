@@ -2278,6 +2278,11 @@ class TestExecutionAndPolicyBranches:
         ):
             PolicyEngine(allowed_network_access=cast(set[str], {7}))
         with pytest.raises(
+            TypeError,
+            match="execution.allow_network_access entries must be strings",
+        ):
+            PolicyEngine(allowed_network_access=cast(set[str], "restricted"))
+        with pytest.raises(
             ValueError,
             match="execution.allow_network_access entries must not be empty",
         ):
@@ -2328,6 +2333,11 @@ class TestExecutionAndPolicyBranches:
             match="memory_write.allow_kinds entries must be strings",
         ):
             PolicyEngine(allowed_memory_kinds=cast(set[str], {7}))
+        with pytest.raises(
+            TypeError,
+            match="memory_write.allow_kinds entries must be strings",
+        ):
+            PolicyEngine(allowed_memory_kinds=cast(set[str], "session_summary"))
         with pytest.raises(
             ValueError,
             match="memory_write.allow_kinds entries must not be empty",
@@ -5263,6 +5273,11 @@ class TestLowCoverageModuleBranches:
                 required_controls=cast(tuple[str, ...], (7,)),
                 blocked_findings=(),
             )
+        with pytest.raises(TypeError, match="controls.require entries must be strings"):
+            ControlsPolicy(
+                required_controls=cast(tuple[str, ...], "registry_reviewed"),
+                blocked_findings=(),
+            )
         with pytest.raises(ValueError, match="controls.require entries must be unique"):
             ControlsPolicy(
                 required_controls=("registry_reviewed", " registry_reviewed "),
@@ -5604,6 +5619,12 @@ class TestLowCoverageModuleBranches:
         with pytest.raises(TypeError, match="rollout.require entries must be strings"):
             RolloutPolicy(
                 required_checks=cast(tuple[str, ...], (7,)),
+                blocked_checks=(),
+                rollout_mode={},
+            )
+        with pytest.raises(TypeError, match="rollout.require entries must be strings"):
+            RolloutPolicy(
+                required_checks=cast(tuple[str, ...], "trace_coverage"),
                 blocked_checks=(),
                 rollout_mode={},
             )
