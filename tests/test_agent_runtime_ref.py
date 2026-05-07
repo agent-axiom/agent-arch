@@ -2660,6 +2660,8 @@ class TestRuntimeCore:
         ]
         policy_event = runtime.telemetry.events[5]
         execution_event = runtime.telemetry.events[6]
+        run_failed = runtime.telemetry.events[7]
+        run_complete = runtime.telemetry.events[8]
         assert policy_event.payload == {
             "agent_id": "agent-runtime-ref",
             "session_id": "session-demo-001",
@@ -2673,6 +2675,24 @@ class TestRuntimeCore:
             "capability": "missing_capability",
             "status": "denied",
             "tool_principal": "n/a",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert run_failed.payload == {
+            "session_id": "session-demo-001",
+            "capability": "missing_capability",
+            "tool_status": "denied",
+            "authorization_mode": "platform_owned",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+        }
+        assert run_complete.payload == {
+            "session_id": "session-demo-001",
+            "status": "failed",
+            "output_preview": (
+                "Runtime halted before side effects completed: missing_capability returned denied"
+            ),
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
