@@ -2021,6 +2021,13 @@ class TestExecutionAndPolicyBranches:
         )
         assert direct_policy.capability_policies["search_docs"].decision == "allow"
         assert direct_policy.capability_policies["create_ticket"].approver == "runtime-review"
+        with pytest.raises(TypeError, match="'run_precheck.require_tenant' must be a boolean"):
+            PolicyEngine(require_tenant=cast(bool, "false"))
+        with pytest.raises(
+            TypeError,
+            match="'run_precheck.deny_if_principal_missing' must be a boolean",
+        ):
+            PolicyEngine(deny_if_principal_missing=cast(bool, "true"))
         with pytest.raises(TypeError, match="Policy capability names must be strings"):
             PolicyEngine(
                 capability_policies=cast(
