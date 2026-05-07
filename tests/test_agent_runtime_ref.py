@@ -2595,6 +2595,7 @@ class TestRuntimeCore:
             ({"memory": object()}, "Runtime memory must be MemoryStore"),
             ({"approvals": object()}, "Runtime approvals must be ApprovalQueue"),
             ({"sessions": object()}, "Runtime sessions must be SessionStore"),
+            ({"sandbox_profile": []}, "Sandbox profile config must be a mapping"),
             ({"agent": object()}, "Runtime agent must be AgentIdentity"),
             ({"background": object()}, "Runtime background must be BackgroundWorker"),
         )
