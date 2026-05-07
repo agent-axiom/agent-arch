@@ -4129,6 +4129,25 @@ class TestRuntimeControlPaths:
             output_text="done",
         )
         output_path = tmp_path / "malformed-eval.json"
+        with pytest.raises(TypeError, match="Session field entries must be a sequence: session_id"):
+            store.export_eval_dataset_json(
+                cast(Any, "session-eval-malformed-001"),
+                output_path=output_path,
+                dataset_name="eval-seed",
+            )
+        with pytest.raises(TypeError, match="Session field entries must be a sequence: session_id"):
+            store.export_eval_dataset_json(
+                cast(Any, 7),
+                output_path=output_path,
+                dataset_name="eval-seed",
+            )
+        with pytest.raises(TypeError, match="Session eval specs must be a mapping"):
+            store.export_eval_dataset_json(
+                ("session-eval-malformed-001",),
+                output_path=output_path,
+                dataset_name="eval-seed",
+                eval_specs=cast(Any, []),
+            )
         malformed_specs = (
             (
                 cast(dict[str, object], []),
