@@ -350,6 +350,8 @@ def _run_session_sequence(
 def _resolve_trace_id(events: list[StructuredEvent], requested_trace_id: str | None) -> str:
     trace_ids = sorted({event.trace_id for event in events})
     if requested_trace_id is not None:
+        if not isinstance(requested_trace_id, str):
+            raise TypeError("Trace ID request must be a string")
         if requested_trace_id not in trace_ids:
             raise ValueError(f"Trace ID not found in event file: {requested_trace_id}")
         return requested_trace_id
