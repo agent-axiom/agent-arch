@@ -1932,6 +1932,34 @@ class TestExecutionAndPolicyBranches:
             with pytest.raises(TypeError, match=message):
                 execute_tool(**cast(dict[str, Any], kwargs))
 
+    def test_policy_engine_rejects_malformed_direct_method_inputs(self, config_dir: Path) -> None:
+        capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
+        assert capability is not None
+        engine = PolicyEngine()
+        context = RunContext(
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-policy-direct-001",
+            session_id="session-policy-direct-001",
+        )
+        tool_request = ToolRequest(capability_name="search_docs", arguments={"query": "policy"})
+        with pytest.raises(TypeError, match="Policy precheck request must be RunRequest"):
+            engine.precheck(cast(RunRequest, object()))
+        malformed_tool_inputs: tuple[tuple[dict[str, object], str], ...] = (
+            ({"context": object()}, "Policy context must be RunContext"),
+            ({"tool_request": object()}, "Policy tool request must be ToolRequest"),
+            ({"capability": object()}, "Policy capability must be CapabilitySpec"),
+        )
+        for overrides, message in malformed_tool_inputs:
+            kwargs: dict[str, object] = {
+                "context": context,
+                "tool_request": tool_request,
+                "capability": capability,
+                **overrides,
+            }
+            with pytest.raises(TypeError, match=message):
+                engine.evaluate_tool(**cast(dict[str, Any], kwargs))
+
     def test_policy_from_dict_rejects_bad_shapes(self) -> None:
         with pytest.raises(TypeError, match="'policy' must be a mapping"):
             PolicyEngine.from_dict({"policy": []})
