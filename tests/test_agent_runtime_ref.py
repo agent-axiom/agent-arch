@@ -472,6 +472,17 @@ class TestRuntimeDocsParity:
             assert "delegated_authorization" in text
             assert "Authorization mode is not supported: {authorization_mode}" in text
 
+    def test_approval_schema_documents_status_validation(self) -> None:
+        """Keep approval docs aligned with approval status validation."""
+        for path in (
+            Path("docs/appendix/approval-schema.en.md"),
+            Path("docs/appendix/approval-schema.md"),
+            Path("docs/appendix/approval-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "capability_session_status" in text
+            assert "Approval status is not supported: {status}" in text
+
     def test_trace_schema_documents_loader_validation_errors(self) -> None:
         """Keep trace schema docs aligned with telemetry loader validation."""
         required_errors = (
