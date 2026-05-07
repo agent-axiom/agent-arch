@@ -119,6 +119,8 @@ class StructuredEvent:
 
     @staticmethod
     def _normalize_redacted_fields(redacted_fields: tuple[str, ...]) -> tuple[str, ...]:
+        if not isinstance(redacted_fields, tuple):
+            raise TypeError("Telemetry event redacted_fields must be a tuple")
         normalized: list[str] = []
         for field in redacted_fields:
             if not isinstance(field, str):

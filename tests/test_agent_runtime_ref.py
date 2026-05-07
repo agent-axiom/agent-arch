@@ -5540,6 +5540,14 @@ class TestLowCoverageModuleBranches:
             TelemetryEmitter.load_jsonl(cast(Any, 7))
         with pytest.raises(
             TypeError,
+            match="Telemetry event redacted_fields must be a tuple",
+        ):
+            emitter.export_jsonl(
+                tmp_path / "events.jsonl",
+                redact_fields=cast(tuple[str, ...], "user_input"),
+            )
+        with pytest.raises(
+            TypeError,
             match="Telemetry event redacted_fields entries must be strings",
         ):
             emitter.export_jsonl(
