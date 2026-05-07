@@ -4,6 +4,8 @@ If you just arrived at this book, start with one question: do you need an impres
 
 This book is written for the second case. It is most useful when read as one argument about how agent systems mature: from prompt-heavy prototypes to governed systems with trust boundaries, a policy layer, approvals, observability, evals, and lifecycle discipline.
 
+Building agents is boring, but the result is staggering: discipline around trust boundaries, traces, approvals, and rollout turns a demo into a system that can be improved safely.
+
 This page exists for one reason: to help you choose a reading route quickly.
 
 ## If You Read Only One Thing
