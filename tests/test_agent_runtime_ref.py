@@ -10,6 +10,7 @@ from typing import Any, cast
 import pytest
 
 from agent_runtime_ref.config import (
+    default_config_dir,
     load_agent_profile,
     load_capability_catalog,
     load_controls_policy,
@@ -1392,7 +1393,7 @@ class TestFailurePaths:
         assert payload["failure_reason"] == expected_failure_reason
         assert payload["trace_id"] == "trace-demo-001"
         assert payload["pending_approvals"] == 0
-        assert payload["config_dir"].endswith("agent_runtime_ref/configs")
+        assert payload["config_dir"] == str(default_config_dir())
 
     def test_cli_export_events_supports_failure_injection(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "failed-trace.jsonl"
@@ -6645,13 +6646,13 @@ class TestCli:
         assert payload["events"] == 14
         assert payload["memory_records"] == 4
         assert payload["pending_approvals"] == 1
-        assert payload["config_dir"].endswith("agent_runtime_ref/configs")
+        assert payload["config_dir"] == str(default_config_dir())
 
     def test_cli_inspect_memory_filters_records(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-memory", "--memory-class", "profile"])
         assert exit_code == 0
         assert set(payload) == {"config_dir", "count", "records"}
-        assert payload["config_dir"].endswith("agent_runtime_ref/configs")
+        assert payload["config_dir"] == str(default_config_dir())
         assert payload["count"] == 1
         assert payload["records"] == [
             {
