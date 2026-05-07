@@ -114,6 +114,8 @@ class RolloutPolicy:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "RolloutPolicy":
+        if not isinstance(data, Mapping):
+            raise TypeError("Rollout policy config must be a mapping")
         raw_rollout = data.get("rollout", {})
         if not isinstance(raw_rollout, Mapping):
             raise TypeError("'rollout' must be a mapping")

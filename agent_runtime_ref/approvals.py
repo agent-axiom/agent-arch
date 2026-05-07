@@ -25,6 +25,8 @@ class ApprovalPolicy:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ApprovalPolicy":
+        if not isinstance(data, Mapping):
+            raise TypeError("Approval policy config must be a mapping")
         raw_approvals = data.get("approvals", {})
         if not isinstance(raw_approvals, Mapping):
             raise TypeError("'approvals' must be a mapping")

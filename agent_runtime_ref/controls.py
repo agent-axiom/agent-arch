@@ -66,6 +66,8 @@ class ControlsPolicy:
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ControlsPolicy":
+        if not isinstance(data, Mapping):
+            raise TypeError("Controls policy config must be a mapping")
         raw_controls = data.get("controls", {})
         if not isinstance(raw_controls, Mapping):
             raise TypeError("'controls' must be a mapping")
