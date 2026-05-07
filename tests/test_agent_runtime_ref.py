@@ -2197,9 +2197,18 @@ class TestExecutionAndPolicyBranches:
         tenant_missing = engine.precheck(
             RunRequest(
                 user_input="hi",
-                tenant_id="",
+                tenant_id=" ",
                 principal_id="user-1",
                 trace_id="trace-precheck-tenant",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+        principal_missing = engine.precheck(
+            RunRequest(
+                user_input="hi",
+                tenant_id="tenant-acme",
+                principal_id=" ",
+                trace_id="trace-precheck-principal",
                 agent_id="agent-runtime-ref",
             ),
         )
@@ -2209,11 +2218,27 @@ class TestExecutionAndPolicyBranches:
                 tenant_id="tenant-acme",
                 principal_id="user-1",
                 trace_id="trace-precheck-agent",
-                agent_id="",
+                agent_id=" ",
             ),
         )
         assert tenant_missing.reason == "tenant_missing"
+        assert principal_missing.reason == "principal_missing"
         assert agent_missing.reason == "agent_identity_missing"
+        for field, payload in {
+            "tenant_id": {"tenant_id": cast(str, 7)},
+            "principal_id": {"principal_id": cast(str, 7)},
+            "agent_id": {"agent_id": cast(str, 7)},
+        }.items():
+            request = {
+                "user_input": "hi",
+                "tenant_id": "tenant-acme",
+                "principal_id": "user-1",
+                "trace_id": "trace-precheck-type",
+                "agent_id": "agent-runtime-ref",
+                **payload,
+            }
+            with pytest.raises(TypeError, match=f"Run request field must be a string: {field}"):
+                engine.precheck(RunRequest(**request))
 
     def test_policy_evaluate_tool_covers_configured_allow_and_deny(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
