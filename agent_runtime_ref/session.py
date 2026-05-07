@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TypedDict
@@ -275,6 +276,8 @@ class SessionStore:
         dataset_name = _read_required_string(dataset_name, field="dataset_name")
         destination = Path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
+        if not isinstance(session_ids, Sequence) or isinstance(session_ids, str):
+            raise TypeError("Session field entries must be a sequence: session_id")
         normalized_session_ids = tuple(
             _read_required_string(session_id, field="session_id")
             for session_id in session_ids
@@ -283,6 +286,8 @@ class SessionStore:
             raise ValueError("Session field entries must be unique: session_id")
         normalized_eval_specs: dict[str, dict[str, object]] = {}
         if eval_specs is not None:
+            if not isinstance(eval_specs, Mapping):
+                raise TypeError("Session eval specs must be a mapping")
             for session_id, eval_spec in eval_specs.items():
                 normalized_session_id = _read_required_string(
                     session_id,
