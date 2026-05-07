@@ -37,6 +37,12 @@ def _read_bool(value: object, *, label: str) -> bool:
     return value
 
 
+def _read_optional_request_string(value: object, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Run request field must be a string: {field}")
+    return value.strip()
+
+
 def _read_memory_kind(value: str) -> str:
     if not isinstance(value, str):
         raise TypeError("Policy memory kind must be a string")
@@ -217,11 +223,17 @@ class PolicyEngine:
     def precheck(self, request: RunRequest) -> PolicyDecision:
         if not isinstance(request, RunRequest):
             raise TypeError("Policy precheck request must be RunRequest")
-        if self.require_tenant and not request.tenant_id:
+        tenant_id = _read_optional_request_string(request.tenant_id, field="tenant_id")
+        principal_id = _read_optional_request_string(
+            request.principal_id,
+            field="principal_id",
+        )
+        agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
+        if self.require_tenant and not tenant_id:
             return PolicyDecision("deny", "tenant_missing", "run_001")
-        if self.deny_if_principal_missing and not request.principal_id:
+        if self.deny_if_principal_missing and not principal_id:
             return PolicyDecision("deny", "principal_missing", "run_002")
-        if not request.agent_id:
+        if not agent_id:
             return PolicyDecision("deny", "agent_identity_missing", "run_003")
         return PolicyDecision("allow", "run_context_valid", "run_010")
 
