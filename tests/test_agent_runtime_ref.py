@@ -2541,6 +2541,44 @@ class TestRuntimeCore:
         )
         assert isinstance(runtime.catalog, CapabilityCatalog)
 
+    def test_background_worker_rejects_malformed_direct_process_inputs(self) -> None:
+        from agent_runtime_ref.background import BackgroundWorker
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        worker = BackgroundWorker(
+            memory_store=MemoryStore(),
+            policy=PolicyEngine(),
+            telemetry=TelemetryEmitter(),
+        )
+        request = RunRequest(
+            user_input="remember this",
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-background-direct-001",
+            session_id="session-background-direct-001",
+        )
+        context = RunContext(
+            tenant_id="tenant-acme",
+            principal_id="user-1",
+            trace_id="trace-background-direct-001",
+            session_id="session-background-direct-001",
+        )
+        model_output = ModelOutput(text="remembered")
+        malformed_inputs: tuple[tuple[dict[str, object], str], ...] = (
+            ({"request": object()}, "Background request must be RunRequest"),
+            ({"context": object()}, "Background context must be RunContext"),
+            ({"model_output": object()}, "Background model_output must be ModelOutput"),
+        )
+        for overrides, message in malformed_inputs:
+            kwargs: dict[str, object] = {
+                "request": request,
+                "context": context,
+                "model_output": model_output,
+                **overrides,
+            }
+            with pytest.raises(TypeError, match=message):
+                worker.process_post_run(**cast(dict[str, Any], kwargs))
+
     def test_runtime_rejects_bad_direct_sandbox_profile_sections(self) -> None:
         malformed_sections = (
             ("workspace", {"workspace": []}),
