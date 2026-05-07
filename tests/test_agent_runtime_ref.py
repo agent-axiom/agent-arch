@@ -1654,6 +1654,12 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="CLI field is required: session_prefix"):
             main(["export-eval-dataset", "--session-prefix", " "])
 
+    def test_cli_required_string_rejects_non_string_values(self) -> None:
+        from agent_runtime_ref.__main__ import _read_required_cli_string
+
+        with pytest.raises(TypeError, match="CLI field must be a string: trace_prefix"):
+            _read_required_cli_string(cast(str, 42), field="trace_prefix")
+
     def test_cli_session_commands_reject_blank_trace_prefix(self) -> None:
         from agent_runtime_ref.__main__ import main
 
