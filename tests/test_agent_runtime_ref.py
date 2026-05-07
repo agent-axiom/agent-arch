@@ -2971,6 +2971,13 @@ class TestRuntimeCore:
         with pytest.raises(ValueError, match="Memory lookup field is required: tenant_id"):
             store.compact(" ")
 
+    def test_memory_store_rejects_blank_lookup_query(self) -> None:
+        store = MemoryStore()
+        with pytest.raises(TypeError, match="Memory lookup field must be a string: query"):
+            store.retrieve(cast(str, 7), "tenant-acme")
+        with pytest.raises(ValueError, match="Memory lookup field is required: query"):
+            store.retrieve(" ", "tenant-acme")
+
     def test_memory_store_rejects_malformed_retrieve_limits(self) -> None:
         store = MemoryStore()
         with pytest.raises(TypeError, match="Memory lookup limit must be an integer"):
