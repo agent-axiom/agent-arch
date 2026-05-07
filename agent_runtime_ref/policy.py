@@ -61,6 +61,24 @@ def _read_policy_decision(value: object) -> str:
     return decision
 
 
+def _read_policy_action(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Policy action must be a string")
+    action = value.strip()
+    if action not in {"allow", "approval_required", "deny"}:
+        raise ValueError(f"Policy action is not supported: {action}")
+    return action
+
+
+def _read_policy_field(value: object, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Policy field must be a string: {field}")
+    normalized = value.strip()
+    if not normalized:
+        raise ValueError(f"Policy field is required: {field}")
+    return normalized
+
+
 def _read_policy_approver(value: object) -> str | None:
     if value is None:
         return None
@@ -74,6 +92,15 @@ class PolicyDecision:
     action: str
     reason: str
     policy_id: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "action", _read_policy_action(self.action))
+        object.__setattr__(self, "reason", _read_policy_field(self.reason, field="reason"))
+        object.__setattr__(
+            self,
+            "policy_id",
+            _read_policy_field(self.policy_id, field="policy_id"),
+        )
 
 
 @dataclass(frozen=True, slots=True)

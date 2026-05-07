@@ -1734,7 +1734,7 @@ class TestExecutionAndPolicyBranches:
         result = execute_tool(
             capability,
             ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
-            PolicyDecision("deny", "configured_deny", "cap_410"),
+            PolicyDecision(" deny ", " configured_deny ", " cap_410 "),
         )
         assert result.status == "denied"
         assert result.payload["reason"] == "configured_deny"
@@ -1919,6 +1919,29 @@ class TestExecutionAndPolicyBranches:
                 ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
                 PolicyDecision(cast(str, 7), "malformed_policy_action", "cap_bad"),
             )
+
+    @pytest.mark.parametrize(
+        ("payload", "message"),
+        [
+            ({"reason": cast(str, 7)}, "Policy field must be a string: reason"),
+            ({"policy_id": cast(str, 7)}, "Policy field must be a string: policy_id"),
+            ({"reason": " "}, "Policy field is required: reason"),
+            ({"policy_id": " "}, "Policy field is required: policy_id"),
+        ],
+    )
+    def test_policy_decision_rejects_malformed_direct_fields(
+        self,
+        payload: dict[str, object],
+        message: str,
+    ) -> None:
+        decision_payload = {
+            "action": "allow",
+            "reason": "low_risk_read",
+            "policy_id": "cap_101",
+            **payload,
+        }
+        with pytest.raises((TypeError, ValueError), match=message):
+            PolicyDecision(**cast(dict[str, str], decision_payload))
 
     def test_execute_tool_rejects_malformed_direct_inputs(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
