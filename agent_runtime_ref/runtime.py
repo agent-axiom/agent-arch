@@ -584,7 +584,7 @@ class AgentRuntime:
     def _sandbox_profile_mapping(self, key: str) -> dict[str, object]:
         value = self.sandbox_profile.get(key, {})
         if not isinstance(value, dict):
-            return {}
+            raise TypeError(f"Sandbox profile {key} config must be a mapping")
         return cast(dict[str, object], value)
 
     def _sandbox_profile_nested_value(self, section: str, key: str) -> str:
