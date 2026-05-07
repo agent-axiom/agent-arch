@@ -141,6 +141,12 @@ plugins:
           build: true
           site_name: Secure AI Agent Architecture
           site_description: A modern book on architecture, safety, observability, and governance for AI agents.
+          theme:
+            palette:
+              - toggle:
+                  name: Dark theme
+              - toggle:
+                  name: Light theme
           nav_translations:
             Главная: Home
             Start Here: Start Here
@@ -201,7 +207,6 @@ plugins:
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
             Плейбук реагирования на инциденты в агентных системах: Incident Response Playbook for Agent Systems
             Handbook по agent registry и inventory operations: Handbook for Agent Registry and Inventory Operations
-            План интеграции идей Google: Google Ideas Integration Plan
             Шаблон postmortem для агентных систем: Postmortem Template for Agent Systems
             Causal debugging и root-cause analysis для agent systems: Causal Debugging and Root-Cause Analysis for Agent Systems
             Memory eval patterns для agent systems: Memory Eval Patterns for Agent Systems
@@ -224,6 +229,12 @@ plugins:
           build: true
           site_name: 安全 AI 智能体架构
           site_description: 一本关于 AI 智能体架构、安全、可观测性与治理的现代书籍。
+          theme:
+            palette:
+              - toggle:
+                  name: 深色主题
+              - toggle:
+                  name: 浅色主题
           nav_translations:
             Главная: 首页
             Start Here: 从这里开始
@@ -284,7 +295,6 @@ plugins:
             Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
             Handbook по agent registry и inventory operations: 智能体注册表与清单运维手册
-            План интеграции идей Google: Google 思路整合计划
             Шаблон postmortem для агентных систем: 智能体系统事后复盘模板
             Causal debugging и root-cause analysis для agent systems: 智能体系统中的因果调试与根因分析
             Memory eval patterns для agent systems: 智能体系统的记忆评测模式
