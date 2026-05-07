@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -35,7 +36,9 @@ def _read_string_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     return _normalize_string_items(value, key=key)
 
 
-def _normalize_string_items(items: tuple[str, ...] | list[object], *, key: str) -> tuple[str, ...]:
+def _normalize_string_items(items: object, *, key: str) -> tuple[str, ...]:
+    if not isinstance(items, Sequence) or isinstance(items, str):
+        raise TypeError(f"{key} entries must be strings")
     values: list[str] = []
     seen: set[str] = set()
     for item in items:
