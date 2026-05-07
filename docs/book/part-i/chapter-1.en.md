@@ -43,6 +43,8 @@ For that reason, it is more useful to think about a safe agent system not as one
 
 This is the book's main claim in its shortest form: **agents need a platform, not magic**.
 
+Building agents is boring, but the result is staggering: the boring layers — policies, traces, approvals, idempotency, and lifecycle — turn an impressive demo into a system people can trust.
+
 ## 3. What Vikulin Framed Well, and What Is No Longer Enough
 
 Dmitry Vikulin's article asks the right starting question: what building blocks does a reliable agent consist of?[^vikulin] That is a good foundation.
