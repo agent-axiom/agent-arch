@@ -23,7 +23,7 @@ from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
 from agent_runtime_ref.execution import execute_tool
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
 from agent_runtime_ref.memory import MemoryStore
-from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest
+from agent_runtime_ref.models import ModelOutput, RunContext, RunRequest, ToolRequest, ToolResult
 from agent_runtime_ref.policy import CapabilityPolicy, PolicyDecision, PolicyEngine
 from agent_runtime_ref.rollout import RolloutReadiness, assess_rollout, ready_for_rollout
 from agent_runtime_ref.runtime import AgentRuntime
@@ -1815,6 +1815,65 @@ class TestExecutionAndPolicyBranches:
         assert result.status == "success"
         assert result.payload["transport"] == capability.transport
         assert result.payload["tool_principal"] == capability.tool_principal
+
+        direct_result = ToolResult(
+            capability_name=" search_docs ",
+            status=" success ",
+            payload={" tool_principal ": "svc-tool-search"},
+        )
+        assert direct_result.capability_name == "search_docs"
+        assert direct_result.status == "success"
+        assert direct_result.payload == {"tool_principal": "svc-tool-search"}
+
+    def test_tool_result_rejects_malformed_direct_fields(self) -> None:
+        malformed_results: tuple[tuple[dict[str, object], str, type[Exception]], ...] = (
+            (
+                {"capability_name": cast(str, 7)},
+                "Tool request capability name must be a string",
+                TypeError,
+            ),
+            (
+                {"capability_name": " "},
+                "Tool request capability name must not be empty",
+                ValueError,
+            ),
+            ({"status": cast(str, 7)}, "Tool result status must be a string", TypeError),
+            ({"status": " "}, "Tool result status must not be empty", ValueError),
+            (
+                {"payload": cast(dict[str, str], [])},
+                "Tool result payload must be a mapping",
+                TypeError,
+            ),
+            (
+                {"payload": cast(dict[str, str], {7: "svc-tool-search"})},
+                "Tool result payload key must be a string",
+                TypeError,
+            ),
+            (
+                {"payload": {" ": "svc-tool-search"}},
+                "Tool result payload key must not be empty",
+                ValueError,
+            ),
+            (
+                {"payload": {" tool_principal ": "a", "tool_principal": "b"}},
+                "Tool result payload keys must be unique",
+                ValueError,
+            ),
+            (
+                {"payload": cast(dict[str, str], {"tool_principal": 7})},
+                "Tool result payload value must be a string: tool_principal",
+                TypeError,
+            ),
+        )
+        for payload, message, error_type in malformed_results:
+            result_payload = {
+                "capability_name": "search_docs",
+                "status": "success",
+                "payload": {"tool_principal": "svc-tool-search"},
+                **payload,
+            }
+            with pytest.raises(error_type, match=message):
+                ToolResult(**cast(dict[str, Any], result_payload))
 
     def test_execute_tool_rejects_bad_request_arguments(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
