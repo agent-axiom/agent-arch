@@ -70,6 +70,8 @@ def _read_readiness_flag(value: bool, *, field: str) -> bool:
 
 
 def ready_for_rollout(state: RolloutReadiness) -> bool:
+    if not isinstance(state, RolloutReadiness):
+        raise TypeError("Rollout readiness must be RolloutReadiness")
     return (
         _read_readiness_flag(state.trace_coverage, field="trace_coverage")
         and _read_readiness_flag(state.offline_eval_pass, field="offline_eval_pass")
