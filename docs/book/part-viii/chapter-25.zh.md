@@ -113,6 +113,8 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 控制评测检查控制本身是否真的有效；
 - runtime-control evals 还要验证 pause/resume、background、capability-session expiry/re-init、contract-version behavior，以及 orchestration-pattern behavior 在受压场景下是否按预期工作。
 
+OpenAI 关于 agent evals 的指南给出了一条有用的操作阶梯：在调试单个 workflow 行为时先从 traces 开始，用 structured graders 评估 tool choice、handoff、guardrail 和 instruction-following failures，然后把稳定的问题迁移到 datasets 和可重复的 eval runs 中，用于跨时间比较变更。[^openai-agent-evals][^openai-trace-grading] 换句话说，trace grading 是显微镜，而 datasets 和 eval runs 是 regression harness。成熟的 agent 程序需要这两层：traces 解释某一次 run 为什么失败；datasets 证明新的 prompt、policy、routing rule 或 tool surface 是否改善了一类 runs，同时没有削弱其他地方的 controls。
+
 ## 6. 哪些地方最需要这类评测
 
 这类场景尤其适合放在：
@@ -318,6 +320,9 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - [第 24 章：智能体失配与内部人风险](chapter-24.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](chapter-26.zh.md)
 - [第 27 章：智能体清单、注册表与蔓延治理](chapter-27.zh.md)
+
+[^openai-agent-evals]: OpenAI, [Evaluate agent workflows](https://developers.openai.com/api/docs/guides/agent-evals)
+[^openai-trace-grading]: OpenAI, [Trace grading](https://developers.openai.com/api/docs/guides/trace-grading)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)

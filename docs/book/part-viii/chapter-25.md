@@ -113,6 +113,8 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - control evals проверяют, что сами controls действительно работают;
 - runtime-control evals проверяют pause/resume, background, capability-session expiry/re-init, contract-version behavior и поведение orchestration patterns под давлением.
 
+Рекомендации OpenAI по agent evals дают полезную операционную лестницу: начинать с traces, пока команда отлаживает поведение отдельного workflow, использовать structured graders для оценки tool choice, handoff, guardrail и instruction-following failures, а затем переносить стабильные вопросы в datasets и повторяемые eval runs для сравнения изменений во времени.[^openai-agent-evals][^openai-trace-grading] Иначе говоря, trace grading — это микроскоп, а datasets и eval runs — regression harness. Зрелой agent-программе нужны оба слоя: traces объясняют, почему провалился один run; datasets показывают, улучшил ли новый prompt, policy, routing rule или tool surface целый класс runs, не ослабив controls в другом месте.
+
 ## 6. Где такие evals особенно нужны
 
 Эти сценарии особенно полезны для:
@@ -318,6 +320,9 @@ Grading contract становится сильнее, если умеет хра
 - [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
 - [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](chapter-26.md)
 - [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
+
+[^openai-agent-evals]: OpenAI, [Evaluate agent workflows](https://developers.openai.com/api/docs/guides/agent-evals)
+[^openai-trace-grading]: OpenAI, [Trace grading](https://developers.openai.com/api/docs/guides/trace-grading)
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
