@@ -6,6 +6,8 @@ This is the main entry page for the book itself. If you want the shortest route 
 
 This book argues one core thesis: agents need a platform, not magic.
 
+Building agents is boring, but the result is staggering: instead of a flashy one-off trick, you get a system that can be constrained, observed, shipped, and improved without guessing.
+
 By reading it, you should be able to:
 
 - decide when an agent is justified and when a normal workflow is enough;
