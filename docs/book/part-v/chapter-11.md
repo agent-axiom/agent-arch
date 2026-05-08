@@ -92,6 +92,9 @@ flowchart LR
 - был ли approval;
 - какой policy gate разрешил действие.
 
+!!! example "Сквозной кейс: trace как ответ на спор"
+    В support-triage инциденте trace должен не просто сказать “тикет создан”. Он должен показать связку `trace_id`, `session_id`, `idempotency_key`, policy decision, approval status и итог `create_support_ticket`. Тогда спор “модель повторила вызов или retry сделал дубль” превращается из догадки в проверку одной цепочки событий.
+
 ## 5. Что стоит делать отдельными spans
 
 Не нужно делать отдельный span на каждую мелочь. Но и один giant span на весь run почти бесполезен.

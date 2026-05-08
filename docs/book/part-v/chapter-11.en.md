@@ -92,6 +92,9 @@ If this trace is built correctly, the team should quickly see:
 - whether there was approval;
 - which policy gate allowed the action.
 
+!!! example "Case thread: trace as the answer to the dispute"
+    In the support-triage incident, the trace should not merely say “ticket created.” It should show the linked `trace_id`, `session_id`, `idempotency_key`, policy decision, approval status, and final `create_support_ticket` outcome. Then the dispute “did the model repeat the call, or did retry create the duplicate?” becomes a check against one event chain instead of a guess.
+
 ## 5. What Should Become Separate Spans
 
 You do not need a span for every tiny detail. But one giant span for the whole run is almost useless too.
