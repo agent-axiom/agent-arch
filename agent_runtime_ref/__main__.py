@@ -418,6 +418,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "status": result.status,
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
+        "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": len(runtime.telemetry.events),
         "memory_records": len(runtime.memory.all()),
         "pending_approvals": len(runtime.approvals.pending()),

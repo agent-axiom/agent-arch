@@ -1406,6 +1406,7 @@ class TestFailurePaths:
             "status",
             "failure_reason",
             "trace_id",
+            "idempotency_keys",
             "events",
             "memory_records",
             "pending_approvals",
@@ -1416,6 +1417,8 @@ class TestFailurePaths:
         assert payload["status"] == expected_status
         assert payload["failure_reason"] == expected_failure_reason
         assert payload["trace_id"] == "trace-demo-001"
+        expected_idempotency_keys = [] if expected_status == "denied" else ["trace-demo-001"]
+        assert payload["idempotency_keys"] == expected_idempotency_keys
         assert payload["pending_approvals"] == 0
         assert payload["config_dir"] == str(default_config_dir())
 
@@ -7080,6 +7083,7 @@ class TestCli:
             "status",
             "failure_reason",
             "trace_id",
+            "idempotency_keys",
             "events",
             "memory_records",
             "pending_approvals",
@@ -7091,6 +7095,7 @@ class TestCli:
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
         assert payload["trace_id"] == "trace-demo-001"
+        assert payload["idempotency_keys"] == ["trace-demo-001"]
         assert payload["events"] == 14
         assert payload["memory_records"] == 4
         assert payload["pending_approvals"] == 1
