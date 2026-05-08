@@ -6,6 +6,9 @@
 
 如果你需要的不是场景，而是可以直接复用的策略工件，请去看[策略模板](policy-templates.zh.md)。如果你想看这本书接下来还要补什么，则看[社区路线图](community-roadmap.zh.md)。
 
+!!! example "现在如何阅读这个案例"
+    support triage 案例已经成为本书的贯穿线索：从这里开始，然后看同一个重复工单故障如何穿过 trust boundaries、tool gateway、memory/retrieval、idempotency、traces、SLO、eval gates、ownership、runtime、policy、rollout、ADLC、assurance、provenance、retirement、misalignment controls、telemetry 和 registry。
+
 ## 案例 1：支持分诊智能体
 
 ### 系统做什么
