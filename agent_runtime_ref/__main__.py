@@ -961,6 +961,9 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
     assessment = assess_change_gate(change, observed)
+    failed_run_signals = [
+        signal for signal in change.required_signals if "failed_run" in signal
+    ]
     support_duplicate_signals = [
         signal
         for signal in ("duplicate_ticket_eval_passed",)
@@ -977,8 +980,9 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         "required_signals": list(change.required_signals),
         "approval_roles": list(change.approval_roles),
         "missing_signals": list(assessment.missing_signals),
+        "failed_run_signals": failed_run_signals,
         "missing_failed_run_signals": [
-            signal for signal in assessment.missing_signals if "failed_run" in signal
+            signal for signal in assessment.missing_signals if signal in failed_run_signals
         ],
         "support_duplicate_signals": support_duplicate_signals,
         "missing_support_duplicate_signals": missing_support_duplicate_signals,
