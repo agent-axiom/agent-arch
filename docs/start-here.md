@@ -35,6 +35,9 @@
 - почему одной “умной модели” мало без traces, SLO и evals;
 - что требуется до первого серьезного rollout.
 
+!!! example "Если хочешь идти по сквозному кейсу"
+    Следи за support-triage историей: она начинается с retrieval и safe tool execution, проходит через duplicate-ticket recovery, traces, SLO и eval gates, а затем доводится до rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это хороший маршрут, если хочется увидеть не абстрактные layers, а один incident-to-platform-contract путь.
+
 ## Маршруты по ролям
 
 ### Если ты инженер продукта
