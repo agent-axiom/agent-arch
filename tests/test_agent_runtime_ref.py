@@ -7748,12 +7748,14 @@ class TestCli:
             "status",
             "result",
             "event_count",
+            "idempotency_keys",
             "source_idempotency_keys",
             "replay_idempotency_keys",
         }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["idempotency_keys"] == []
         assert replay_payload["source_idempotency_keys"] == []
         assert replay_payload["replay_idempotency_keys"] == []
         assert replay_payload["result"] == (
@@ -7792,6 +7794,10 @@ class TestCli:
         assert replay_code == 0
         assert replay_payload["source_trace_id"] == "trace-replay-ticket-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-ticket-target"
+        assert replay_payload["idempotency_keys"] == [
+            "trace-replay-ticket-source",
+            "trace-replay-ticket-target",
+        ]
         assert replay_payload["source_idempotency_keys"] == ["trace-replay-ticket-source"]
         assert replay_payload["replay_idempotency_keys"] == ["trace-replay-ticket-target"]
         assert replay_payload["status"] == "success"
