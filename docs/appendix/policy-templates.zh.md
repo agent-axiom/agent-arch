@@ -16,6 +16,9 @@
 - 哪些停止条件和升级规则是必要的；
 - 哪些追踪和审计信号应该被视为强制项。
 
+!!! example "重复工单线索的策略"
+    对于贯穿的 support-triage 案例，`create_ticket` 不能只是一个写工具：它需要受治理的能力边界、强制 idempotency key、可追踪的写入意图、针对 `side_effect_unknown` 的停止条件，以及能在变更发布前捕获重复建单的 rollout/eval gate。
+
 ## 模板 1：支持分诊智能体
 
 ### 这类策略需要保证什么

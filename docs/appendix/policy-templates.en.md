@@ -16,6 +16,9 @@ Treat them not as finished production YAML, but as a skeleton:
 - which stop conditions and escalation rules matter;
 - which traces and audit signals should be mandatory.
 
+!!! example "Policy for the duplicate-ticket thread"
+    For the running support-triage case, `create_ticket` must be more than a write tool: it needs a governed capability boundary, required idempotency key, traceable write intent, a stop condition for `side_effect_unknown`, and a rollout/eval gate that catches duplicate ticket creation before a change ships.
+
 ## Template 1. Support Triage Agent
 
 ### What the policy should enforce
