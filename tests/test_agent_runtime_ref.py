@@ -3987,6 +3987,7 @@ class TestRuntimeControlPaths:
         runtime.sessions.export_session_json(f" {session_id} ", output_path=output_path)
         payload = json.loads(output_path.read_text(encoding="utf-8"))
         assert payload["session"]["session_id"] == session_id
+        assert payload["idempotency_keys"] == ["trace-export-capability-001"]
         assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["idempotency_key"] == "trace-export-capability-001"
@@ -8782,7 +8783,7 @@ class TestCli:
         assert payload["total_runs"] == 2
         assert payload["idempotency_keys"] == ["trace-session-001"]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
-        assert set(exported) == {"session", "summary", "runs"}
+        assert set(exported) == {"session", "summary", "idempotency_keys", "runs"}
         assert exported["session"] == {
             "session_id": "session-demo-001",
             "tenant_id": "tenant-acme",
@@ -8802,6 +8803,7 @@ class TestCli:
         }
         assert exported["summary"]["total_runs"] == 2
         assert exported["summary"]["idempotency_keys"] == ["trace-session-001"]
+        assert exported["idempotency_keys"] == ["trace-session-001"]
         assert len(exported["runs"]) == 2
         self._assert_session_run_contract(exported["runs"][0])
         self._assert_session_run_contract(exported["runs"][1])
@@ -8843,6 +8845,7 @@ class TestCli:
         assert payload["latest_failure_reason"] == "tool_timeout"
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["failed_runs"] == 1
+        assert exported["idempotency_keys"] == ["trace-session-001"]
         assert exported["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_export_eval_dataset_writes_multi_session_json(
