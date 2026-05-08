@@ -8330,6 +8330,7 @@ class TestCli:
             "trace_id": "trace-approval-001",
             "session_id": "session-approval-001",
             "count": 1,
+            "idempotency_keys": ["trace-approval-001"],
             "approvals": [
                 {
                     "approval_id": "apr-001",
@@ -8369,6 +8370,7 @@ class TestCli:
             "trace_id": "trace-approval-authz-001",
             "session_id": "session-approval-authz-001",
             "count": 1,
+            "idempotency_keys": ["trace-approval-authz-001"],
             "approvals": [
                 {
                     "approval_id": "apr-001",
@@ -8400,6 +8402,7 @@ class TestCli:
         assert exit_code == 0
         assert payload["session_id"] == "session-approval-normalized-001"
         assert payload["trace_id"] == "trace-approval-normalized-001"
+        assert payload["idempotency_keys"] == ["trace-approval-normalized-001"]
         assert payload["approvals"][0]["capability_session_id"] == "cap-session-001"
         assert payload["approvals"][0]["idempotency_key"] == "trace-approval-normalized-001"
 
