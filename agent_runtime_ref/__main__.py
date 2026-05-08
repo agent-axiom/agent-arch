@@ -501,6 +501,7 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "runtime_principal": agent.runtime_principal,
         "approved_capabilities": sorted(approved_inventory.capabilities),
         "catalog_capability_names": [spec.name for spec in catalog_specs],
+        "write_capabilities": [spec.name for spec in catalog_specs if spec.mode == "write"],
         "approval_required_capabilities": [
             spec.name for spec in catalog_specs if spec.approval_required
         ],
@@ -520,6 +521,8 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
             {
                 "name": spec.name,
                 "owner": spec.owner,
+                "mode": spec.mode,
+                "transport": spec.transport,
                 "risk_tier": spec.risk_tier,
                 "network_access": spec.network_access,
                 "tool_principal": spec.tool_principal,
