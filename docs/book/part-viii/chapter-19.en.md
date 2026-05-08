@@ -95,6 +95,9 @@ In ordinary SDLC, teams usually focus on code, infrastructure, and schemas. In A
 - approval policies;
 - rollout gates.
 
+!!! example "Case thread: duplicates as an ADLC change"
+    In the support-triage system, fixing the duplicate-ticket incident does not end with a retry-code patch. The release-bearing artifacts now include a new eval dataset, the policy bundle for `side_effect_unknown`, the capability contract for `create_support_ticket`, the canary rollout gate, and the trace schema used later to investigate the outcome. In ADLC, those changes should move as one reviewable change set; otherwise the team ships code while leaving the lifecycle broken.
+
 This is one of the most important operational shifts. If a team treats only code as a release, it will miss risky agent changes.
 
 ## 6. Why tests are no longer enough
