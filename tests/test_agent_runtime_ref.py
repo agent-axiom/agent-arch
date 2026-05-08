@@ -7218,6 +7218,7 @@ class TestCli:
             "approved_capabilities",
             "catalog_capability_names",
             "write_capabilities",
+            "write_capability_egress",
             "approval_required_capabilities",
             "idempotency_required_capabilities",
             "idempotency_required_capability_bindings",
@@ -7230,6 +7231,13 @@ class TestCli:
         assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]
         assert payload["catalog_capability_names"] == ["create_ticket", "search_docs"]
         assert payload["write_capabilities"] == ["create_ticket"]
+        assert payload["write_capability_egress"] == [
+            {
+                "name": "create_ticket",
+                "network_access": "brokered",
+                "allowed_egress": ["tickets.internal"],
+            }
+        ]
         assert payload["approval_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capability_bindings"] == [
