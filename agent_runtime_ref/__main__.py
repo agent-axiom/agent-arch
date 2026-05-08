@@ -764,6 +764,9 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "sandbox_profile_review_evidence": bundle.review_evidence.get(
                 "sandbox_profile_reviewed", {}
             ),
+            "duplicate_ticket_guard_evidence": bundle.review_evidence.get(
+                "duplicate_ticket_guard", {}
+            ),
         },
         "retirement": {
             "system_id": retirement.system_id,

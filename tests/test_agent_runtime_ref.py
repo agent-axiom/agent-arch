@@ -7966,6 +7966,7 @@ class TestCli:
             "artifacts",
             "review_evidence",
             "sandbox_profile_review_evidence",
+            "duplicate_ticket_guard_evidence",
         }
         assert set(payload["retirement"]) == {
             "system_id",
@@ -8046,6 +8047,10 @@ class TestCli:
             "approval_ref": "approval:apr-2026-04-07-001",
             "rollout_gate_ref": "gate:gate-2026-04-07-001",
         }
+        assert (
+            payload["artifact_bundle"]["duplicate_ticket_guard_evidence"]
+            == duplicate_guard
+        )
         sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
         assert (
             payload["artifact_bundle"]["review_evidence"]["sandbox_profile_reviewed"]
