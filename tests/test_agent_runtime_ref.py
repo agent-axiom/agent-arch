@@ -8003,6 +8003,8 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "healthy",
+            "required_controls",
+            "blocked_findings_expected",
             "missing_controls",
             "failed_run_controls",
             "preserved_failed_run_controls",
@@ -8416,6 +8418,8 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "healthy",
+            "required_controls",
+            "blocked_findings_expected",
             "missing_controls",
             "failed_run_controls",
             "preserved_failed_run_controls",
@@ -8427,6 +8431,18 @@ class TestCli:
             "inventory_drift",
         }
         assert not payload["healthy"]
+        assert payload["required_controls"] == [
+            "registry_reviewed",
+            "capability_owners_confirmed",
+            "memory_provenance_enforced",
+            "policy_traces_present",
+            "duplicate_ticket_eval_passed",
+            "idempotency_keys_present",
+        ]
+        assert payload["blocked_findings_expected"] == [
+            "direct_tool_access_present",
+            "unmanaged_runtime_present",
+        ]
         assert payload["missing_controls"] == ["policy_traces_present"]
         assert payload["failed_run_controls"] == ["policy_traces_present"]
         assert payload["preserved_failed_run_controls"] == [

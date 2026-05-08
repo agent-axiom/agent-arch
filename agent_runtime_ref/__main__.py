@@ -759,6 +759,8 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
     ]
     return {
         "healthy": assessment.healthy,
+        "required_controls": list(policy.required_controls),
+        "blocked_findings_expected": list(policy.blocked_findings),
         "missing_controls": list(assessment.missing_controls),
         "failed_run_controls": [
             control
