@@ -114,13 +114,32 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
     },
     "failed_run_timeout": {
         "scenario": "failed_run_timeout",
-        "labels": ["failed_run", "tool_timeout", "failure_drill"],
+        "labels": [
+            "failed_run",
+            "tool_timeout",
+            "failure_drill",
+            "duplicate_ticket_eval_passed",
+        ],
         "expected_outcomes": {
             "latest_status": "failed",
             "failed_runs": 1,
             "required_output_substrings": ["tool_timeout"],
             "failed_run_traceable": True,
+            "duplicate_ticket_eval_passed": True,
+            "idempotency_key_required": True,
+            "max_ticket_side_effects": 1,
         },
+        "grading_rules": [
+            {
+                "type": "duplicate_ticket_guard",
+                "expected": {
+                    "idempotency_key_required": True,
+                    "max_ticket_side_effects": 1,
+                    "on_unknown_side_effect": "stop_or_reconcile",
+                },
+                "blocking": True,
+            }
+        ],
     },
 }
 
