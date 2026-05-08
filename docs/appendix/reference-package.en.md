@@ -78,7 +78,7 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals`, `pending_approval_ids`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
+The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
 
 Inspect the agent identity and approved inventory:
 
@@ -110,7 +110,7 @@ Inspect memory records:
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-`inspect-memory` now returns `config_dir`, `count`, and `records`; each record shows not only content, but also `provenance` and `revision`.
+`inspect-memory` now returns `config_dir`, `count`, `memory_ids`, and `records`; each record shows not only content, but also `provenance` and `revision`.
 `dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:

@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals`, `pending_approval_ids` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
 
 Просмотр identity агента и approved inventory:
 
@@ -110,7 +110,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref inspect-memory --memory-class profile
 ```
 
-`inspect-memory` теперь возвращает `config_dir`, `count` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
+`inspect-memory` теперь возвращает `config_dir`, `count`, `memory_ids` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
 `dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
 
 Вывод структурированных событий для одного запуска:
