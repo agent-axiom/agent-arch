@@ -12,6 +12,9 @@ Once an agent system lives longer than a single demo, a different class of quest
 
 This part answers exactly those questions. It reads the agent system no longer as an architectural diagram, but as a governed lifecycle.
 
+!!! example "Case thread in this part"
+    The support-triage case now runs through the whole lifecycle arc: the duplicate-ticket fix becomes an ADLC change set, high-risk change packet, managed assurance finding, approved artifact bundle, retirement control for the old ticket writer, misalignment/control-eval scenario, detection-ready telemetry, and registry record with an owner. That lets the reader see that one incident should change not only code, but evidence, rollout, operations, and accountability.
+
 !!! info "Short path through this part"
     If you want a fast pass, read it this way:
 
