@@ -868,10 +868,14 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         agent_id=args.agent_id,
     )
     approvals = runtime.approvals.all()
+    idempotency_keys = list(
+        dict.fromkeys(item.idempotency_key for item in approvals if item.idempotency_key)
+    )
     return {
         "trace_id": trace_id,
         "session_id": session_id,
         "count": len(approvals),
+        "idempotency_keys": idempotency_keys,
         "approvals": [
             {
                 "approval_id": item.approval_id,
