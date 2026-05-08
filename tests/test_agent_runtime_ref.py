@@ -1500,6 +1500,7 @@ class TestFailurePaths:
             "event_count",
             "event_types",
             "approval_ids",
+            "approval_capability_names",
             "idempotency_keys",
             "events",
         }
@@ -7292,6 +7293,9 @@ class TestCli:
                     "failure_reason",
                     "trace_id",
                     "event_count",
+                    "event_types",
+                    "approval_ids",
+                    "approval_capability_names",
                     "idempotency_keys",
                     "events",
                 ],
@@ -7494,6 +7498,7 @@ class TestCli:
             "event_count",
             "event_types",
             "approval_ids",
+            "approval_capability_names",
             "idempotency_keys",
             "events",
         }
@@ -7501,6 +7506,7 @@ class TestCli:
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
         assert payload["approval_ids"] == ["apr-001"]
+        assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["idempotency_keys"] == ["trace-cli-dump-success-001"]
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["event_count"] == len(payload["events"])
@@ -7529,6 +7535,7 @@ class TestCli:
             "event_types",
             "redact_fields",
             "approval_ids",
+            "approval_capability_names",
             "idempotency_keys",
             "failure_reason",
         }
@@ -7540,6 +7547,7 @@ class TestCli:
         assert export_payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert export_payload["redact_fields"] == []
         assert export_payload["approval_ids"] == ["apr-001"]
+        assert export_payload["approval_capability_names"] == ["create_ticket"]
         assert export_payload["idempotency_keys"] == ["trace-export-001"]
         assert export_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
@@ -7574,11 +7582,13 @@ class TestCli:
             "event_count",
             "event_types",
             "approval_ids",
+            "approval_capability_names",
             "idempotency_keys",
             "events",
         }
         assert inspect_payload["trace_id"] == "trace-export-001"
         assert inspect_payload["approval_ids"] == ["apr-001"]
+        assert inspect_payload["approval_capability_names"] == ["create_ticket"]
         assert inspect_payload["idempotency_keys"] == ["trace-export-001"]
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
         assert inspect_payload["event_types"] == [
@@ -7645,6 +7655,7 @@ class TestCli:
             "event_types",
             "redact_fields",
             "approval_ids",
+            "approval_capability_names",
             "idempotency_keys",
             "failure_reason",
         }
@@ -7654,6 +7665,7 @@ class TestCli:
         assert export_payload["failure_reason"] == ""
         assert export_payload["redact_fields"] == ["user_input"]
         assert export_payload["approval_ids"] == ["apr-001"]
+        assert export_payload["approval_capability_names"] == ["create_ticket"]
         assert export_payload["idempotency_keys"] == ["trace-redacted-001"]
         assert output_path.exists()
         assert export_payload["event_count"] == len(
