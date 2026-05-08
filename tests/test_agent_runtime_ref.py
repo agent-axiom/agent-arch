@@ -9052,8 +9052,12 @@ class TestCli:
             "session_count",
             "session_ids",
             "run_count",
+            "failed_runs",
+            "traceable_failed_runs",
             "trace_ids",
+            "failed_trace_ids",
             "idempotency_keys",
+            "latest_failure_reason",
             "duplicate_ticket_scenarios",
             "sessions",
         }
@@ -9066,6 +9070,8 @@ class TestCli:
             "session-eval-failed-run",
         ]
         assert exported["run_count"] == 5
+        assert exported["failed_runs"] == 1
+        assert exported["traceable_failed_runs"] == 1
         assert exported["trace_ids"] == [
             "trace-eval-support-001",
             "trace-eval-memory-001",
@@ -9073,11 +9079,13 @@ class TestCli:
             "trace-eval-mixed-002",
             "trace-eval-failed-run-001",
         ]
+        assert exported["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         assert exported["idempotency_keys"] == [
             "trace-eval-support-001",
             "trace-eval-mixed-001",
             "trace-eval-failed-run-001",
         ]
+        assert exported["latest_failure_reason"] == "tool_timeout"
         assert exported["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
         assert [session["session"]["session_id"] for session in exported["sessions"]] == [
             "session-eval-support",

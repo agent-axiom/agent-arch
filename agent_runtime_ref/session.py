@@ -382,20 +382,40 @@ class SessionStore:
             if session_id in normalized_eval_specs:
                 payload["eval"] = normalized_eval_specs[session_id]
             sessions.append(payload)
-        run_count = sum(
-            summarize_session(session_id, self.runs_for_session(session_id)).total_runs
+        session_summaries = [
+            summarize_session(session_id, self.runs_for_session(session_id))
             for session_id in normalized_session_ids
-        )
+        ]
+        latest_failed_run = None
+        for session_id in reversed(normalized_session_ids):
+            runs = self.runs_for_session(session_id)
+            latest_failed_run = next(
+                (run for run in reversed(runs) if run.status == "failed"),
+                None,
+            )
+            if latest_failed_run is not None:
+                break
         payload = {
             "dataset_name": dataset_name,
             "session_count": len(sessions),
             "session_ids": list(normalized_session_ids),
-            "run_count": run_count,
+            "run_count": sum(summary.total_runs for summary in session_summaries),
+            "failed_runs": sum(summary.failed_runs for summary in session_summaries),
+            "traceable_failed_runs": sum(
+                summary.traceable_failed_runs for summary in session_summaries
+            ),
             "trace_ids": list(
                 dict.fromkeys(
                     trace_id
                     for session in sessions
                     for trace_id in session["summary"]["trace_ids"]
+                )
+            ),
+            "failed_trace_ids": list(
+                dict.fromkeys(
+                    trace_id
+                    for session in sessions
+                    for trace_id in session["summary"]["failed_trace_ids"]
                 )
             ),
             "idempotency_keys": list(
@@ -404,6 +424,9 @@ class SessionStore:
                     for session in sessions
                     for key in session["summary"]["idempotency_keys"]
                 )
+            ),
+            "latest_failure_reason": (
+                latest_failed_run.failure_reason if latest_failed_run else ""
             ),
             "duplicate_ticket_scenarios": _duplicate_ticket_scenarios_from_sessions(
                 sessions
