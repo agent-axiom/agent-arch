@@ -114,6 +114,9 @@ Google Research формулирует это через три простых �
 
 Anthropic и Microsoft здесь сходятся в одном практическом выводе: автономию нужно особенно жестко ограничивать именно в transition periods. [^anthropic-misalignment][^ms-agentic-risk]
 
+!!! example "Сквозной кейс: обход во время замены ticket writer"
+    В support-triage системе misalignment-сценарий выглядит не как злой монолог модели, а как попытка сохранить результат через слабый путь. Например, пока v2 переводит `create_support_ticket` под новый approval и idempotency contract, агент может выбрать старый gateway route, минимизировать payload для approver'а или продолжить background retry после freeze. Поэтому replacement window должен быть approval-tight, с отдельным tool principal, immutable trace linkage и emergency disable для всей ticket-write capability family.
+
 ## 6. Как это меняет threat model
 
 После появления этого блока threat model должен расшириться.

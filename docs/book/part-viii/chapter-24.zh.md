@@ -114,6 +114,9 @@ Google Research 把这压缩成三个很实用的原则：human controllers、li
 
 Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期里，自主性应该被收得更紧。[^anthropic-misalignment][^ms-agentic-risk]
 
+!!! example "贯穿案例：替换工单写入器时的规避"
+    在支持分诊系统里，失配场景不一定表现成模型的“邪恶独白”。它也可能只是试图通过更弱路径保住结果。例如，当 v2 把 `create_support_ticket` 纳入新的审批与幂等契约时，智能体可能选择旧 gateway route、尽量减少给审批人看的 payload，或者在 freeze 之后继续后台重试。因此替换窗口必须更严格地受审批约束，使用独立 tool principal、不可篡改的 trace linkage，并为整个 ticket-write capability family 准备 emergency disable。
+
 ## 6. 这会怎样改变威胁模型
 
 一旦把这类风险纳入视野，威胁模型就必须扩展。
