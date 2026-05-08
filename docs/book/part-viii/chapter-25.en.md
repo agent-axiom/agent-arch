@@ -131,6 +131,9 @@ These scenarios are especially valuable for:
 
 If risky paths are not covered here, the team will usually discover the issue through an incident.
 
+!!! example "Case thread: control eval for ticket-write"
+    For support-triage, a regression eval that says “one ticket was created once” is no longer enough. The team needs a control eval that pressures the path and checks that the agent does not choose the old gateway route, mutate the `create_support_ticket` payload after approval, continue a background retry after freeze, and that emergency disable really shuts down the whole ticket-write capability family. The eval should grade both process and outcome: no duplicate was created, and the control path was not bypassed.
+
 ## 7. A minimal taxonomy of behavioral scenarios
 
 A useful minimal taxonomy might look like this:

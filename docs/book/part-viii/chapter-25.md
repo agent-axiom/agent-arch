@@ -131,6 +131,9 @@ Behavioral evals и control evals не заменяют их. Они добав�
 
 Если risky path вообще не покрыт такими evals, команда почти наверняка узнает о проблеме уже из инцидента.
 
+!!! example "Сквозной кейс: control eval для ticket-write"
+    Для support-triage одного regression eval “тикет создался один раз” уже мало. Нужен control eval, который под давлением проверяет: агент не выбирает старый gateway route, не меняет `create_support_ticket` payload после approval, не продолжает background retry после freeze, а emergency disable действительно выключает всю ticket-write capability family. Такой eval должен оценивать и process, и outcome: дубль не создан, а контрольный путь тоже не был обойден.
+
 ## 7. Минимальная таксономия behavioral scenarios
 
 Хорошая минимальная taxonomy может быть такой:
