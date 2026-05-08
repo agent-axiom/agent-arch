@@ -111,6 +111,9 @@
 
 如果事故不回流到评测和发布规则，团队往往会重复同一类故障。
 
+!!! example "重复工单线索的事后复盘"
+    对于 support-triage 事故，事后复盘需要明确回答：是哪一次 `create_ticket` 调用产生了副作用，是否存在 `idempotency_key`，哪个 `policy_bundle` 和 `rollout_wave` 放行了它，为什么 `side_effect_unknown` 没能阻止重复写入，以及哪些纠正动作会更新评测数据集、发布门禁、审批策略、注册表记录和旧 ticket writer 的退役计划。
+
 ## 11. YAML 简版模板
 
 ```yaml
