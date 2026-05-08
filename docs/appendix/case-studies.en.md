@@ -6,6 +6,9 @@ Below are three scenarios where architectural layers, guardrails, and orchestrat
 
 If you need reusable policy artifacts rather than scenarios, go to [Policy Templates](policy-templates.en.md). If you want the next layer of book improvements, open the [Community Roadmap](community-roadmap.en.md).
 
+!!! example "How to read this case now"
+    The support triage case has become the book's running thread: start here, then watch the same duplicate-ticket failure move through trust boundaries, tool gateway, memory/retrieval, idempotency, traces, SLOs, eval gates, ownership, runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry.
+
 ## Case 1. Support Triage Agent
 
 ### What the system does

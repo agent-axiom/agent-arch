@@ -6,6 +6,9 @@
 
 Если тебе нужны не сценарии, а шаблоны политик, переходи на страницу [шаблонов политик](policy-templates.md). Если интересует, что еще стоит добавить в книгу, смотри [дорожную карту для сообщества](community-roadmap.md).
 
+!!! example "Как этот кейс теперь читать"
+    Кейс support triage стал сквозной нитью книги: начни здесь, затем смотри, как та же duplicate-ticket failure проходит через trust boundaries, tool gateway, memory/retrieval, idempotency, traces, SLO, eval gates, ownership, runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry.
+
 ## Кейс 1. Агент разбора обращений поддержки
 
 ### Что делает система
