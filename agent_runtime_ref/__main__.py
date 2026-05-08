@@ -947,8 +947,10 @@ def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
     return {
         "system_id": plan.system_id,
         "ready": assessment.ready,
+        "triggers": list(plan.triggers),
         "required_steps": list(plan.required_steps),
         "missing_steps": list(assessment.missing_steps),
+        "archive_targets": list(plan.archive_targets),
         "failed_run_archive_targets": [
             target
             for target in plan.archive_targets
