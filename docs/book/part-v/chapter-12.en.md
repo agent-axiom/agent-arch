@@ -99,6 +99,9 @@ That is why success SLO should be tied to things like:
 
 For a support agent, success must describe not “no exception happened,” but “the task was actually resolved.”
 
+!!! example "Case thread: SLO for duplicate tickets"
+    In the support-triage case, the success SLO should count a duplicate ticket as an outcome failure, not as “successful creation.” A better target is task-shaped: stuck requests produce exactly one correct ticket with the right context, and `side_effect_unknown` does not end in blind repetition. Then the SLO protects the user and operator, not merely a green HTTP status.
+
 ## 5. Latency SLO Should Break Delay Down by Stage
 
 If you only see overall p95 run latency, you know the system got slower, but you do not know why.
