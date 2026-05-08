@@ -56,6 +56,9 @@ tools:
 
 В этом YAML нет ничего “умного”, и именно это хорошо. Security perimeter любит обозримые правила.
 
+!!! example "Сквозной кейс: gated `create_ticket`"
+    В support-triage кейсе `read_kb` может оставаться low-risk чтением, но `create_ticket` — первая настоящая write boundary. Gateway должен сохранить намерение агента, проверить аргументы тикета, привязать actor и tenant context, запросить approval, если этого требует policy, и только потом разрешить side effect.
+
 ### 2.1. Gateway должен знать не только tool, но и actor
 
 Если gateway валидирует только имя инструмента и аргументы, этого мало. Ему еще нужно понимать, **кто именно пытается вызвать capability**.
