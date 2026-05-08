@@ -103,6 +103,9 @@ You need a normal vulnerability workflow:
 
 This is an important SDLC-like point: findings must live as managed engineering objects, not as workshop notes.
 
+!!! example "Case thread: finding after a repeated duplicate"
+    If a red-team drill reproduces the duplicate ticket through timeout and retry, it is not an “interesting observation”; it is a managed finding. The record should include the exploit path, affected capability `create_support_ticket`, risk level, owner, temporary mitigation such as approval-only mode, a detection rule for duplicate-outcome growth, and a remediation deadline. The assurance loop closes the finding only after the updated eval, policy gate, and confirmed traceable outcome.
+
 ## 5. Detection must look wider than error rate
 
 For ordinary services, detection often revolves around error rate, latency, and infrastructure signals. For agent systems, that is too narrow.
