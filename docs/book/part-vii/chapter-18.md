@@ -76,6 +76,9 @@
 
 Для нашего support-кейса это означает: прежде чем выпускать даже canary на 5%, команда должна быть готова ответить не только “работает ли happy path”, но и “что именно произойдет при частичном сбое”.
 
+!!! example "Сквозной кейс: canary после дубля"
+    Перед 5% rollout support-агента команда должна показать не только успешный статус-чек и создание тикета. Review должен увидеть, что duplicate-ticket regression gate пройден, `create_support_ticket` имеет idempotency strategy, `side_effect_unknown` останавливает run до reconcile, traces сохраняют outcome, а rollback owner уже назначен. Иначе canary проверяет надежду, а не готовность.
+
 ## 4. Runtime correctness
 
 На этом уровне полезно задавать очень приземленные вопросы:

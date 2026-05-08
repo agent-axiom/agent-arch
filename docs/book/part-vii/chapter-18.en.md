@@ -74,6 +74,9 @@ If even one of those blocks is not genuinely closed, the system is already expos
 
 For our support case, that means that before even a 5% canary, the team must be ready to answer not only "does the happy path work?" but also "what happens under partial failure?"
 
+!!! example "Case thread: canary after the duplicate"
+    Before a 5% rollout of the support agent, the team should show more than a successful status check and ticket creation. The review should see that the duplicate-ticket regression gate passed, `create_support_ticket` has an idempotency strategy, `side_effect_unknown` stops the run until reconciliation, traces preserve the outcome, and a rollback owner is already assigned. Otherwise the canary tests hope, not readiness.
+
 ## 4. Runtime Correctness
 
 At this layer, it helps to ask very grounded questions:
