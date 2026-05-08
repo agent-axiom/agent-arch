@@ -38,6 +38,7 @@
 - **面向原则，而非单一厂商。** 这本书关注的是能跨越具体框架和模型厂商长期成立的架构原则与运行模型。
 - **关注生产现实，而不是智能体表演。** 它强调策略、审批、可观测性、评测与生命周期纪律。
 - **不仅有文字，也有可运行参考层。** 仓库里包含可执行的参考资产，而不只是概念说明。
+- **一条贯穿全栈的案例线。** support-triage / duplicate-ticket thread 把书籍、参考 Schema 和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索与工具执行一路看到 telemetry、evals、rollout、lifecycle 和 registry control。
 
 ## 从这里开始
 

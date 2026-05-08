@@ -38,6 +38,7 @@ This repository exists to document that full operating model.
 - **Vendor-neutral architecture.** The book focuses on principles and operating models that outlive any single framework or model provider.
 - **Production reality over agent theater.** It emphasizes policy, approvals, observability, evals, and lifecycle discipline.
 - **A runnable reference layer.** The repository includes executable reference assets, not just prose.
+- **One running case across the stack.** The support-triage / duplicate-ticket thread connects the book, reference schemas, and `agent_runtime_ref` so readers can follow one incident from retrieval and tool execution to telemetry, evals, rollout, lifecycle, and registry control.
 
 ## Start here
 
