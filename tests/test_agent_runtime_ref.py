@@ -8421,6 +8421,7 @@ class TestCli:
         assert resolve_payload["status"] == "approved"
         assert resolve_payload["capability_session_id"] == "cap-session-001"
         assert resolve_payload["idempotency_key"] == "trace-approval-normalized-002"
+        assert resolve_payload["idempotency_keys"] == ["trace-approval-normalized-002"]
 
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8444,6 +8445,7 @@ class TestCli:
             "delegated_principal_id",
             "delegated_scope",
             "idempotency_key",
+            "idempotency_keys",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["status"] == "approved"
@@ -8455,6 +8457,7 @@ class TestCli:
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
         assert payload["idempotency_key"] == "trace-approval-001"
+        assert payload["idempotency_keys"] == ["trace-approval-001"]
 
     def test_cli_resolve_approval_marks_item_rejected(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8478,6 +8481,7 @@ class TestCli:
             "delegated_principal_id",
             "delegated_scope",
             "idempotency_key",
+            "idempotency_keys",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["status"] == "rejected"
@@ -8489,6 +8493,7 @@ class TestCli:
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
         assert payload["idempotency_key"] == "trace-approval-001"
+        assert payload["idempotency_keys"] == ["trace-approval-001"]
 
     def test_cli_resolve_approval_normalizes_approval_id(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8532,6 +8537,7 @@ class TestCli:
             "delegated_principal_id": "",
             "delegated_scope": "",
             "idempotency_key": "trace-approval-001",
+            "idempotency_keys": ["trace-approval-001"],
         }
 
     @staticmethod
