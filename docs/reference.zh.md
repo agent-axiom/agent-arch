@@ -27,6 +27,9 @@
 2. [速查表](appendix/cheat-sheets.zh.md)
 3. [参考运行时包](appendix/reference-package.zh.md)
 
+!!! example "support-triage 工件路线"
+    如果你按 support-triage 案例来读这本书，可以把 traces、评测数据集、policy bundle、审批记录、事故记录、变更发布、生命周期工件和 registry operations 这些页面放在旁边。正是这些契约把重复工单事故从故事变成可审阅的工件集合。
+
 ## 模式页与契约页
 
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
