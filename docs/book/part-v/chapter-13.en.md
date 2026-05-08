@@ -126,6 +126,9 @@ flowchart LR
 
 For the same support case, that loop means one thing: an incident should not remain only in a postmortem. It should become both an eval case and a rollout rule.
 
+!!! example "Case thread: duplicate ticket as a regression gate"
+    After the duplicate-ticket incident, the eval case should check more than the final answer text. It should force the system through a timeout-after-side-effect scenario, preserve `trace_id` and `idempotency_key`, avoid creating a second ticket, and emit an outcome the rollout gate can inspect. If a new prompt or adapter sends the system back into blind retry, the release should stop before production.
+
 ## 4.1. A User Simulator Helps When Static Cases Stop Being Enough
 
 Recent Google material highlights one more practical layer: it is useful to complement the eval loop with a user simulator instead of relying only on a fixed test set.[^google-govern]

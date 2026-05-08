@@ -119,6 +119,9 @@ flowchart LR
 
 Для того же support-кейса этот контур означает: incident не должен оставаться только в postmortem. Он должен превращаться в eval case и в rollout rule.
 
+!!! example "Сквозной кейс: дубль как regression gate"
+    После duplicate-ticket инцидента eval case должен проверять не только финальный текст ответа. Он должен заставить систему пройти timeout-after-side-effect сценарий, сохранить `trace_id` и `idempotency_key`, не создать второй тикет и выставить outcome, который rollout gate может проверить. Если новый prompt или adapter снова уводит систему в blind retry, релиз должен остановиться до production.
+
 ## 4.1. User simulator полезен там, где статичных кейсов уже мало
 
 Свежие материалы Google хорошо подсвечивают еще один практический слой: evaluation loop полезно дополнять user simulator, а не полагаться только на фиксированный набор тестов.[^google-govern]
