@@ -144,6 +144,30 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
 }
 
 
+def _duplicate_ticket_eval_scenarios(scenarios: Sequence[str]) -> list[str]:
+    duplicate_scenarios: list[str] = []
+    for scenario in scenarios:
+        spec = EVAL_DATASET_LABELS[scenario]
+        labels = spec.get("labels")
+        grading_rules = spec.get("grading_rules")
+        has_label = isinstance(labels, Sequence) and not isinstance(labels, str) and any(
+            label == "duplicate_ticket_eval_passed" for label in labels
+        )
+        has_guard = (
+            isinstance(grading_rules, Sequence)
+            and not isinstance(grading_rules, str)
+            and any(
+                isinstance(rule, Mapping)
+                and cast(Mapping[str, object], rule).get("type")
+                == "duplicate_ticket_guard"
+                for rule in grading_rules
+            )
+        )
+        if has_label or has_guard:
+            duplicate_scenarios.append(scenario)
+    return duplicate_scenarios
+
+
 def _read_required_cli_string(value: str, *, field: str) -> str:
     if not isinstance(value, str):
         raise TypeError(f"CLI field must be a string: {field}")
@@ -1238,6 +1262,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
             dict.fromkeys(
                 key for summary in session_summaries for key in summary.idempotency_keys
             )
+        ),
+        "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(
+            selected_scenarios
         ),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "sessions": session_ids,
