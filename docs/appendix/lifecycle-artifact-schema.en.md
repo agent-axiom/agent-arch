@@ -2,6 +2,9 @@
 
 This page defines a minimal contract layer for lifecycle artifacts: change records, approved artifact bundles, and retirement plans. If the trace schema answers "what happened" and the eval schema answers "how do we grade it," the lifecycle artifact schema answers "what exactly was approved, changed, replaced, or retired."
 
+!!! example "Lifecycle artifact for the duplicate-ticket thread"
+    For support-triage, the bundle should hold together not only `policy_bundle` and `eval_dataset`, but also evidence for the duplicate-ticket guard: the `idempotency_key` requirement, approval record, trace with `side_effect_unknown`, `duplicate_ticket_eval_passed`, and rollout gate. Then incident review reconstructs one `change -> bundle -> approval -> trace -> eval -> rollout` chain instead of searching for proof across separate pages.
+
 It also connects directly to the book's [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md), because lifecycle artifacts are part of the governed record that later judgment and incident review stand on.
 
 ## 1. Why this matters
@@ -103,6 +106,11 @@ review_evidence:
     review_evidence_refs:
       - trace:trace-sandbox-review-001
       - eval:sandbox_profile_review
+  duplicate_ticket_guard:
+    idempotency_key_required: true
+    eval_ref: eval:duplicate_ticket_eval_passed
+    approval_ref: approval:apr-2026-04-07-001
+    rollout_gate_ref: gate:gate-2026-04-07-001
 status: approved
 release_scope: canary
 provenance:
