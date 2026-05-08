@@ -4661,6 +4661,8 @@ class TestRuntimeControlPaths:
             "ready",
             "missing_signals",
             "missing_failed_run_signals",
+            "missing_support_duplicate_signals",
+            "support_duplicate_signals_ready",
             "rollout_strategy",
             "risk_level",
         }
@@ -4668,6 +4670,8 @@ class TestRuntimeControlPaths:
         assert payload["ready"] is True
         assert payload["missing_signals"] == []
         assert payload["missing_failed_run_signals"] == []
+        assert payload["missing_support_duplicate_signals"] == []
+        assert payload["support_duplicate_signals_ready"] is True
         assert payload["rollout_strategy"] == "staged_canary"
         assert payload["risk_level"] == "high"
 
@@ -7796,6 +7800,8 @@ class TestCli:
         assert set(payload) == {
             "ready",
             "missing_required",
+            "missing_support_duplicate_required",
+            "support_duplicate_required_ready",
             "blocking_signals",
             "rollout_mode",
         }
@@ -7819,6 +7825,10 @@ class TestCli:
         assert exit_code == 0
         assert not payload["ready"]
         assert payload["missing_required"] == ["duplicate_ticket_eval_passed"]
+        assert payload["missing_support_duplicate_required"] == [
+            "duplicate_ticket_eval_passed"
+        ]
+        assert payload["support_duplicate_required_ready"] is False
         assert payload["blocking_signals"] == []
 
     def test_cli_check_rollout_reports_blocking_signal(self, cli_json) -> None:
@@ -7833,11 +7843,15 @@ class TestCli:
         assert set(payload) == {
             "ready",
             "missing_required",
+            "missing_support_duplicate_required",
+            "support_duplicate_required_ready",
             "blocking_signals",
             "rollout_mode",
         }
         assert not payload["ready"]
         assert payload["missing_required"] == []
+        assert payload["missing_support_duplicate_required"] == []
+        assert payload["support_duplicate_required_ready"] is True
         assert payload["blocking_signals"] == ["unknown_side_effect_path_missing"]
         assert payload["rollout_mode"] == {
             "initial": "canary",
@@ -8186,6 +8200,11 @@ class TestCli:
         assert not payload["ready"]
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
         assert missing == [expected_missing]
+        if expected_missing == "duplicate_ticket_eval_passed":
+            assert payload["missing_support_duplicate_signals"] == [
+                "duplicate_ticket_eval_passed"
+            ]
+            assert payload["support_duplicate_signals_ready"] is False
 
     @pytest.mark.parametrize(
         ("command", "expected_message"),
@@ -8229,6 +8248,8 @@ class TestCli:
             "ready",
             "missing_signals",
             "missing_failed_run_signals",
+            "missing_support_duplicate_signals",
+            "support_duplicate_signals_ready",
             "rollout_strategy",
             "risk_level",
         }
@@ -8236,6 +8257,8 @@ class TestCli:
         assert not payload["ready"]
         assert payload["missing_signals"] == ["failed_run_drill_checked"]
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
+        assert payload["missing_support_duplicate_signals"] == []
+        assert payload["support_duplicate_signals_ready"] is True
         assert payload["rollout_strategy"] == "staged_canary"
         assert payload["risk_level"] == "high"
 
