@@ -27,6 +27,9 @@ For a short path in, start with:
 2. [Cheat Sheets](appendix/cheat-sheets.en.md)
 3. [Reference Package](appendix/reference-package.en.md)
 
+!!! example "Support-triage artifact route"
+    If you read the book through the support-triage case, keep the trace, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifact, and registry operations pages next to it. Those contracts turn the duplicate-ticket incident from a story into a reviewable artifact set.
+
 ## Schemas and contract pages
 
 - [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
