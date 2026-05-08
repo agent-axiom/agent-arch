@@ -541,6 +541,9 @@ class TestRuntimeDocsParity:
             "traceable_failed_runs",
             "latest_failure_reason",
             "failed_run_timeout",
+            "duplicate_ticket_eval_passed",
+            "duplicate_ticket_guard",
+            "max_ticket_side_effects",
             "profile_memory",
             "memory_read",
             "profile_lookup",
@@ -551,6 +554,8 @@ class TestRuntimeDocsParity:
             "session_evals",
             "required_run_count",
             "support_ticket",
+            "duplicate_ticket_eval_passed",
+            "duplicate_ticket_guard",
             "sandbox_profile_review",
             "sandbox_profile_reviewed",
         )
@@ -1673,7 +1678,27 @@ class TestFailurePaths:
         session = data["sessions"][0]
         assert session["summary"]["failed_runs"] == 1
         assert session["runs"][-1]["failure_reason"] == "tool_timeout"
+        assert session["eval"]["labels"] == [
+            "failed_run",
+            "tool_timeout",
+            "failure_drill",
+            "duplicate_ticket_eval_passed",
+        ]
         assert session["eval"]["expected_outcomes"]["failed_run_traceable"] is True
+        assert session["eval"]["expected_outcomes"]["duplicate_ticket_eval_passed"] is True
+        assert session["eval"]["expected_outcomes"]["idempotency_key_required"] is True
+        assert session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
+        assert session["eval"]["grading_rules"] == [
+            {
+                "type": "duplicate_ticket_guard",
+                "expected": {
+                    "idempotency_key_required": True,
+                    "max_ticket_side_effects": 1,
+                    "on_unknown_side_effect": "stop_or_reconcile",
+                },
+                "blocking": True,
+            }
+        ]
 
     def test_cli_export_eval_dataset_rejects_blank_export_fields(self) -> None:
         from agent_runtime_ref.__main__ import main
@@ -8652,3 +8677,6 @@ class TestCli:
         }
         assert exported["sessions"][0]["summary"]["approval_wait_runs"] == 1
         assert mixed_session["summary"]["total_runs"] == 2
+        failed_session = exported["sessions"][3]
+        assert "duplicate_ticket_eval_passed" in failed_session["eval"]["labels"]
+        assert failed_session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
