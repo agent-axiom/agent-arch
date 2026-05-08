@@ -3553,6 +3553,7 @@ class TestRuntimeControlPaths:
         assert change["required_signals"] == [
             "design_review_passed",
             "offline_eval_passed",
+            "duplicate_ticket_eval_passed",
             "policy_diff_reviewed",
             "rollback_plan_ready",
             "session_expiry_behavior_checked",
@@ -5569,6 +5570,18 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert not assessment.ready
         assert assessment.missing_signals == ("failed_run_drill_checked",)
 
+    def test_change_gate_can_block_on_missing_duplicate_ticket_eval(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_change_record
+
+        change = load_change_record(config_dir / "change.yaml")
+        observed = {signal: True for signal in change.required_signals}
+        observed["duplicate_ticket_eval_passed"] = False
+        assessment = assess_change_gate(change, observed)
+        assert not assessment.ready
+        assert assessment.missing_signals == ("duplicate_ticket_eval_passed",)
+
 
 class TestLowCoverageModuleBranches:
     def test_controls_policy_from_dict_rejects_bad_shapes(self) -> None:
@@ -6979,6 +6992,7 @@ class TestLifecycleArtifacts:
         assert not assessment.ready
         assert assessment.missing_signals == (
             "offline_eval_passed",
+            "duplicate_ticket_eval_passed",
             "session_expiry_behavior_checked",
             "reinit_policy_reviewed",
             "sandbox_profile_reviewed",
@@ -7853,6 +7867,7 @@ class TestCli:
         assert payload["change"]["required_signals"] == [
             "design_review_passed",
             "offline_eval_passed",
+            "duplicate_ticket_eval_passed",
             "policy_diff_reviewed",
             "rollback_plan_ready",
             "session_expiry_behavior_checked",
@@ -8014,6 +8029,10 @@ class TestCli:
             (
                 ["check-change", "--signal", "offline_eval_passed=false"],
                 "offline_eval_passed",
+            ),
+            (
+                ["check-change", "--signal", "duplicate_ticket_eval_passed=false"],
+                "duplicate_ticket_eval_passed",
             ),
             (
                 ["check-retirement", "--step", "revoke_egress=false"],
