@@ -183,6 +183,44 @@ def _read_eval_spec(value: object) -> dict[str, object]:
     return normalized
 
 
+def _eval_spec_has_duplicate_ticket_evidence(eval_spec: Mapping[str, object]) -> bool:
+    labels = eval_spec.get("labels")
+    if isinstance(labels, Sequence) and not isinstance(labels, str):
+        if any(label == "duplicate_ticket_eval_passed" for label in labels):
+            return True
+    grading_rules = eval_spec.get("grading_rules")
+    if isinstance(grading_rules, Sequence) and not isinstance(grading_rules, str):
+        for rule in grading_rules:
+            if (
+                isinstance(rule, Mapping)
+                and cast(Mapping[str, object], rule).get("type")
+                == "duplicate_ticket_guard"
+            ):
+                return True
+    return False
+
+
+def _duplicate_ticket_scenarios_from_sessions(
+    sessions: Sequence[SessionPayload],
+) -> list[str]:
+    scenarios: list[str] = []
+    seen: set[str] = set()
+    for session in sessions:
+        eval_spec = session.get("eval")
+        if not isinstance(eval_spec, Mapping):
+            continue
+        if not _eval_spec_has_duplicate_ticket_evidence(eval_spec):
+            continue
+        scenario = eval_spec.get("scenario")
+        if not isinstance(scenario, str):
+            continue
+        normalized = scenario.strip()
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            scenarios.append(normalized)
+    return scenarios
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -353,6 +391,9 @@ class SessionStore:
                     for session in sessions
                     for key in session["summary"]["idempotency_keys"]
                 )
+            ),
+            "duplicate_ticket_scenarios": _duplicate_ticket_scenarios_from_sessions(
+                sessions
             ),
             "sessions": sessions,
         }

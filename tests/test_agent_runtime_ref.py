@@ -1685,6 +1685,7 @@ class TestFailurePaths:
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["idempotency_keys"] == ["trace-eval-failed-run-001"]
+        assert payload["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
         assert payload["latest_failure_reason"] == "tool_timeout"
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
@@ -8861,6 +8862,7 @@ class TestCli:
             "failed_runs",
             "traceable_failed_runs",
             "idempotency_keys",
+            "duplicate_ticket_scenarios",
             "latest_failure_reason",
             "sessions",
         }
@@ -8875,6 +8877,7 @@ class TestCli:
             "trace-eval-mixed-001",
             "trace-eval-failed-run-001",
         ]
+        assert payload["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["sessions"] == [
             "session-eval-support",
@@ -8888,6 +8891,7 @@ class TestCli:
             "session_count",
             "run_count",
             "idempotency_keys",
+            "duplicate_ticket_scenarios",
             "sessions",
         }
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
@@ -8898,6 +8902,7 @@ class TestCli:
             "trace-eval-mixed-001",
             "trace-eval-failed-run-001",
         ]
+        assert exported["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
         assert [session["session"]["session_id"] for session in exported["sessions"]] == [
             "session-eval-support",
             "session-eval-memory",
