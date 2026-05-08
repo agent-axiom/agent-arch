@@ -111,7 +111,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 ```
 
 现在 `inspect-memory` 会返回 `config_dir`、`count` 和 `records`；每条记录不只显示内容，也会显示 `provenance` 和 `revision`。
-`dump-events` 现在会在退化路径演练的 JSON 输出里返回 `trace_id`、`status`、`result`、`event_count`、`events` 和 `failure_reason`。
+`dump-events` 现在会在退化路径演练的 JSON 输出里返回 `trace_id`、`status`、`result`、`event_count`、`idempotency_keys`、`events` 和 `failure_reason`。
 
 导出一次运行的结构化事件：
 
@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` 会返回 `trace_id`、`event_count`、`idempotency_keys` 和 `events`；`export-events` 也会在 `redact_fields` 旁汇总 `idempotency_keys`，让重复写入谱系在操作者深入单个 payload 之前就可见。`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result`、`event_count`、`source_idempotency_keys` 和 `replay_idempotency_keys`，让调查与重放都保留来源/运行谱系，并能对比原始写入 key 和 replay 写入 key。
+`dump-events` 会返回 `status`、`result`、`failure_reason`、`trace_id`、`event_count`、`idempotency_keys` 和 `events`；`inspect-trace` 会返回 `trace_id`、`event_count`、`idempotency_keys` 和 `events`；`export-events` 也会在 `redact_fields` 旁汇总 `idempotency_keys`，让重复写入谱系在操作者深入单个 payload 之前就可见。`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result`、`event_count`、`source_idempotency_keys` 和 `replay_idempotency_keys`，让调查与重放都保留来源/运行谱系，并能对比原始写入 key 和 replay 写入 key。
 
 带信号覆盖的上线策略检查：
 
