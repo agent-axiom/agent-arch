@@ -95,6 +95,9 @@ flowchart LR
 - approval policies;
 - rollout gates.
 
+!!! example "Сквозной кейс: дубли как ADLC-change"
+    В support-triage системе исправление duplicate-ticket incident не заканчивается patch'ем retry-кода. Release-bearing артефактами становятся новый eval dataset, policy bundle для `side_effect_unknown`, capability contract для `create_support_ticket`, rollout gate для canary и trace schema, по которой потом можно расследовать outcome. В ADLC все эти изменения должны идти как один проверяемый change set, иначе команда выпустит код, но оставит lifecycle сломанным.
+
 Это один из самых важных operational сдвигов. Если команда считает релизом только изменение кода, она почти наверняка пропустит рискованные agent changes.
 
 ## 6. Почему в ADLC tests уже недостаточно
