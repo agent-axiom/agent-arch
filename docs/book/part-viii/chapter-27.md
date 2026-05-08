@@ -189,6 +189,9 @@ Microsoft прямо связывает это с security posture: неполн
 
 Реестр отвечает, какая production entity владела этим path и кто отвечает за него сейчас.
 
+!!! example "Сквозной кейс: support-triage в реестре"
+    После всех исправлений support-triage должен быть не просто “агентом поддержки”, а registry record с owner, lifecycle state, allowed capabilities, `create_support_ticket` tool principal, approval mode, observability status, eval-evidence linkage и retirement plan для старого ticket writer. Тогда duplicate-ticket сигнал можно привязать не только к trace или artifact bundle, но и к named production entity: кто владеет path, кто расширяет canary, кто отключает write capability и кто отвечает за deprecated route.
+
 ## 8.1. Реестр без непрерывной сверки быстро становится красивым, но неточным
 
 Здесь важно не переоценить сам реестр. Наличие реестра еще не доказывает, что control layer действительно работает.
