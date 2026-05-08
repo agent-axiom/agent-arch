@@ -103,6 +103,9 @@ Google Research очень хорошо формулирует здесь гла
 
 Это важный SDLC-like момент: findings должны жить как управляемые инженерные объекты, а не как заметки после воркшопа.
 
+!!! example "Сквозной кейс: finding после повторного дубля"
+    Если red-team drill снова воспроизводит duplicate ticket через timeout и retry, это не “интересное наблюдение”, а managed finding. В записи должны быть exploit path, affected capability `create_support_ticket`, risk level, owner, temporary mitigation вроде approval-only mode, detection rule на рост duplicate outcomes и remediation deadline. Assurance loop закрывает finding только после обновленного eval, policy gate и подтвержденного traceable outcome.
+
 ## 5. Detection должна смотреть шире, чем error rate
 
 Для обычных сервисов detection часто строится вокруг error rate, latency и infrastructure signals. Для agent systems этого мало.
