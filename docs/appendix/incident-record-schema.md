@@ -48,6 +48,7 @@ change_id: chg-2026-04-07-001
 rollout_wave: canary
 tool_principal: svc-ticket-writer
 approval_id: apr-2026-04-09-001
+idempotency_key: ticket-req-2026-04-09-001
 affected_surfaces:
   - approval_path
   - tool_gateway
@@ -62,8 +63,11 @@ owner: platform-operations
 
 - `category` позволяет связывать incident с triage taxonomy и eval updates;
 - `bundle_id`, `change_id` и `rollout_wave` связывают incident с release discipline;
-- `tool_principal` и `approval_id` сокращают путь до реального side effect;
+- `tool_principal`, `approval_id` и `idempotency_key` сокращают путь до реального side effect и показывают, мог ли retry безопасно сопоставиться с уже созданным объектом;
 - `affected_surfaces` помогает не сводить разбор к одному только model response.
+
+!!! example "Incident record для duplicate-ticket thread"
+    В support-triage инциденте запись должна явно хранить `idempotency_key` рядом с `trace_id`, `session_id`, `approval_id`, `tool_principal`, `bundle_id` и `rollout_wave`. Без этого review не сможет надежно отличить один unknown write от второго реального `create_ticket` side effect и превратить incident в eval/update gate.
 
 ## 4. Incident postmortem link
 
