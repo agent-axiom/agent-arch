@@ -4,6 +4,7 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
