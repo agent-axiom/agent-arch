@@ -144,6 +144,9 @@ already produces a small structured artifact with:
 
 The bundled export contract is intentionally concrete: the default `dataset_name` is `agent-runtime-ref-eval-seed`; the top-level summary includes `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs`, and `latest_failure_reason`; and the built-in scenarios include `failed_run_timeout`, `profile_memory` with `memory_read`, `profile_lookup`, and `grounded_answer` labels, `mixed_session` with `multi_run`, `approval_then_memory`, and `session_evals` labels plus `required_run_count` as an expected outcome, and `support_ticket` with a `sandbox_profile_review` label, `sandbox_profile_reviewed` expected outcome, and blocking `sandbox_profile_review` grading rule.
 
+!!! example "Eval gate for the duplicate-ticket thread"
+    For the running support-triage case, a dedicated eval should reproduce a timeout after `create_ticket`, require preserved `trace_id` and `idempotency_key`, expect exactly one ticket side effect or a `side_effect_unknown` stop, and block rollout if a new prompt/model/adapter version blindly retries and creates a second ticket.
+
 It is not yet a full industrial eval framework, but it is already a reasonable seed for:
 
 - regression grading;

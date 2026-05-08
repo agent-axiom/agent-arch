@@ -144,6 +144,9 @@
 
 Bundled export contract намеренно конкретный: default `dataset_name` — `agent-runtime-ref-eval-seed`; top-level summary включает `session_count`, `run_count`, `failed_runs`, `traceable_failed_runs` и `latest_failure_reason`; built-in scenarios включают `failed_run_timeout`, `profile_memory` с labels `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с labels `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как expected outcome, а также `support_ticket` с label `sandbox_profile_review`, expected outcome `sandbox_profile_reviewed` и blocking `sandbox_profile_review` grading rule.
 
+!!! example "Eval gate для duplicate-ticket thread"
+    Для сквозного support-triage кейса отдельный eval должен воспроизводить timeout после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один ticket side effect или `side_effect_unknown` stop, и блокировать rollout, если новая prompt/model/adapter версия снова делает blind retry и создает второй тикет.
+
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 
 - регрессионной проверки;
