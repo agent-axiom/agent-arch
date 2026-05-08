@@ -111,6 +111,9 @@ This section is useful because it ties the postmortem to managed artifacts, not 
 
 If incidents do not flow back into evals and rollout rules, teams usually repeat the same failure class.
 
+!!! example "Postmortem for the duplicate-ticket thread"
+    For the support-triage incident, the postmortem should answer explicitly: which `create_ticket` call produced the side effect, which `idempotency_key` existed or was missing, which `policy_bundle` and `rollout_wave` let it through, why `side_effect_unknown` did not stop the repeat, and which corrective actions update the eval dataset, rollout gate, approval policy, registry record, and retirement plan for the old ticket writer.
+
 ## 11. Short YAML template
 
 ```yaml

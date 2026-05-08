@@ -111,6 +111,9 @@
 
 Если incidents не возвращаются в evals и rollout rules, организация обычно повторяет один и тот же класс ошибок.
 
+!!! example "Postmortem для duplicate-ticket thread"
+    Для support-triage инцидента postmortem должен явно ответить: какой `create_ticket` call создал side effect, какой `idempotency_key` был или отсутствовал, какой `policy_bundle` и `rollout_wave` это пропустили, почему `side_effect_unknown` не остановил повтор, и какие corrective actions обновляют eval dataset, rollout gate, approval policy, registry record и retirement plan для старого ticket writer.
+
 ## 11. Короткий шаблон в YAML
 
 ```yaml
