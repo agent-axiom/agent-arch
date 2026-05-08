@@ -8886,7 +8886,14 @@ class TestCli:
         assert payload["total_runs"] == 2
         assert payload["idempotency_keys"] == ["trace-session-001"]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
-        assert set(exported) == {"session", "summary", "idempotency_keys", "runs"}
+        assert set(exported) == {
+            "session",
+            "summary",
+            "trace_ids",
+            "failed_trace_ids",
+            "idempotency_keys",
+            "runs",
+        }
         assert exported["session"] == {
             "session_id": "session-demo-001",
             "tenant_id": "tenant-acme",
@@ -8907,6 +8914,10 @@ class TestCli:
             "latest_status",
         }
         assert exported["summary"]["total_runs"] == 2
+        assert exported["summary"]["trace_ids"] == ["trace-session-001", "trace-session-002"]
+        assert exported["summary"]["failed_trace_ids"] == []
+        assert exported["trace_ids"] == ["trace-session-001", "trace-session-002"]
+        assert exported["failed_trace_ids"] == []
         assert exported["summary"]["idempotency_keys"] == ["trace-session-001"]
         assert exported["idempotency_keys"] == ["trace-session-001"]
         assert len(exported["runs"]) == 2
@@ -8955,6 +8966,8 @@ class TestCli:
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["failed_runs"] == 1
         assert exported["summary"]["failed_trace_ids"] == ["trace-session-001"]
+        assert exported["trace_ids"] == ["trace-session-001"]
+        assert exported["failed_trace_ids"] == ["trace-session-001"]
         assert exported["idempotency_keys"] == ["trace-session-001"]
         assert exported["runs"][0]["failure_reason"] == "tool_timeout"
 
