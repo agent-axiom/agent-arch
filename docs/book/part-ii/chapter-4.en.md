@@ -56,6 +56,9 @@ tools:
 
 There is nothing "smart" in that YAML, and that is exactly why it is good. Security perimeters like visible rules.
 
+!!! example "Case thread: gated `create_ticket`"
+    In the support-triage case, `read_kb` can stay a low-risk read, but `create_ticket` is the first real write boundary. The gateway should persist the agent's intent, validate the ticket arguments, attach the actor and tenant context, request approval when policy requires it, and only then let the side effect happen.
+
 ### 2.1. The Gateway Must Know Not Only the Tool, but Also the Actor
 
 If the gateway validates only the tool name and the arguments, that is not enough. It also has to know **who is trying to invoke the capability**.
