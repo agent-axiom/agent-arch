@@ -499,6 +499,15 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_required_capabilities": [
             spec.name for spec in catalog_specs if spec.idempotency_key_required
         ],
+        "idempotency_required_capability_bindings": [
+            {
+                "name": spec.name,
+                "owner": spec.owner,
+                "tool_principal": spec.tool_principal,
+            }
+            for spec in catalog_specs
+            if spec.idempotency_key_required
+        ],
         "catalog_capabilities": [
             {
                 "name": spec.name,
