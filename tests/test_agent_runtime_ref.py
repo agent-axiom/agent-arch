@@ -7259,6 +7259,7 @@ class TestCli:
                     "denied_runs",
                     "failed_runs",
                     "traceable_failed_runs",
+                    "trace_ids",
                     "failed_trace_ids",
                     "idempotency_keys",
                     "latest_failure_reason",
@@ -7290,6 +7291,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 0,
                     "traceable_failed_runs": 0,
+                    "trace_ids": ["trace-session-001"],
                     "failed_trace_ids": [],
                     "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "",
@@ -7312,6 +7314,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 0,
                     "traceable_failed_runs": 0,
+                    "trace_ids": ["trace-session-001", "trace-session-002"],
                     "failed_trace_ids": [],
                     "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "",
@@ -7334,6 +7337,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 1,
                     "traceable_failed_runs": 1,
+                    "trace_ids": ["trace-session-001"],
                     "failed_trace_ids": ["trace-session-001"],
                     "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "tool_timeout",
@@ -7359,6 +7363,7 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "latest_failure_reason",
@@ -7386,6 +7391,7 @@ class TestCli:
         assert exit_code == 0
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["trace_ids"] == ["trace-session-failure-001"]
         assert payload["failed_trace_ids"] == ["trace-session-failure-001"]
         assert payload["idempotency_keys"] == ["trace-session-failure-001"]
         assert payload["latest_failure_reason"] == "tool_timeout"
@@ -8647,6 +8653,7 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "latest_failure_reason",
@@ -8800,6 +8807,7 @@ class TestCli:
             "total_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "latest_failure_reason",
@@ -8824,6 +8832,7 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "latest_trace_id",
@@ -8862,6 +8871,7 @@ class TestCli:
             "total_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "latest_failure_reason",
@@ -8870,6 +8880,7 @@ class TestCli:
         assert payload["output_path"] == str(output_path)
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["trace_ids"] == ["trace-session-001"]
         assert payload["failed_trace_ids"] == ["trace-session-001"]
         assert payload["idempotency_keys"] == ["trace-session-001"]
         assert payload["latest_failure_reason"] == "tool_timeout"
@@ -8901,6 +8912,7 @@ class TestCli:
             "run_count",
             "failed_runs",
             "traceable_failed_runs",
+            "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
             "duplicate_ticket_scenarios",
@@ -8913,6 +8925,13 @@ class TestCli:
         assert payload["run_count"] == 5
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["trace_ids"] == [
+            "trace-eval-support-001",
+            "trace-eval-memory-001",
+            "trace-eval-mixed-001",
+            "trace-eval-mixed-002",
+            "trace-eval-failed-run-001",
+        ]
         assert payload["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         assert payload["idempotency_keys"] == [
             "trace-eval-support-001",
@@ -8932,6 +8951,7 @@ class TestCli:
             "dataset_name",
             "session_count",
             "run_count",
+            "trace_ids",
             "idempotency_keys",
             "duplicate_ticket_scenarios",
             "sessions",
@@ -8939,6 +8959,13 @@ class TestCli:
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
         assert exported["run_count"] == 5
+        assert exported["trace_ids"] == [
+            "trace-eval-support-001",
+            "trace-eval-memory-001",
+            "trace-eval-mixed-001",
+            "trace-eval-mixed-002",
+            "trace-eval-failed-run-001",
+        ]
         assert exported["idempotency_keys"] == [
             "trace-eval-support-001",
             "trace-eval-mixed-001",

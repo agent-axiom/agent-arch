@@ -36,6 +36,7 @@ class SessionSummaryPayload(TypedDict):
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    trace_ids: list[str]
     failed_trace_ids: list[str]
     idempotency_keys: list[str]
     latest_trace_id: str | None
@@ -387,6 +388,13 @@ class SessionStore:
             "dataset_name": dataset_name,
             "session_count": len(sessions),
             "run_count": run_count,
+            "trace_ids": list(
+                dict.fromkeys(
+                    trace_id
+                    for session in sessions
+                    for trace_id in session["summary"]["trace_ids"]
+                )
+            ),
             "idempotency_keys": list(
                 dict.fromkeys(
                     key
@@ -424,6 +432,7 @@ class SessionStore:
                 "denied_runs": summary.denied_runs,
                 "failed_runs": summary.failed_runs,
                 "traceable_failed_runs": summary.traceable_failed_runs,
+                "trace_ids": list(summary.trace_ids),
                 "failed_trace_ids": list(summary.failed_trace_ids),
                 "idempotency_keys": list(summary.idempotency_keys),
                 "latest_trace_id": summary.latest_trace_id,
@@ -458,6 +467,7 @@ class SessionEvalSummary:
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    trace_ids: tuple[str, ...]
     failed_trace_ids: tuple[str, ...]
     idempotency_keys: tuple[str, ...]
     latest_trace_id: str | None
@@ -479,6 +489,7 @@ def summarize_session(
     idempotency_keys = tuple(
         dict.fromkeys(run.idempotency_key for run in normalized_runs if run.idempotency_key)
     )
+    trace_ids = tuple(dict.fromkeys(run.trace_id for run in normalized_runs if run.trace_id))
     failed_trace_ids = tuple(
         run.trace_id
         for run in normalized_runs
@@ -497,6 +508,7 @@ def summarize_session(
         denied_runs=sum(1 for run in normalized_runs if run.status == "denied"),
         failed_runs=sum(1 for run in normalized_runs if run.status == "failed"),
         traceable_failed_runs=len(failed_trace_ids),
+        trace_ids=trace_ids,
         failed_trace_ids=failed_trace_ids,
         idempotency_keys=idempotency_keys,
         latest_trace_id=latest.trace_id if latest is not None else None,
