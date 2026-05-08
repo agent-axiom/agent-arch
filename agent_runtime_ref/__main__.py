@@ -463,12 +463,16 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+    catalog_specs = sorted(catalog.all(), key=lambda item: item.name)
     return {
         "agent_id": agent.agent_id,
         "display_name": agent.display_name,
         "owner_team": agent.owner_team,
         "runtime_principal": agent.runtime_principal,
         "approved_capabilities": sorted(approved_inventory.capabilities),
+        "idempotency_required_capabilities": [
+            spec.name for spec in catalog_specs if spec.idempotency_key_required
+        ],
         "catalog_capabilities": [
             {
                 "name": spec.name,
@@ -479,7 +483,7 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
                 "idempotency_key_required": spec.idempotency_key_required,
                 "allowed_egress": list(spec.allowed_egress),
             }
-            for spec in sorted(catalog.all(), key=lambda item: item.name)
+            for spec in catalog_specs
         ],
     }
 
