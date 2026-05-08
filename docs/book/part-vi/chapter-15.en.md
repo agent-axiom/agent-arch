@@ -43,6 +43,9 @@ It usually includes:
 
 A golden path is good when a team benefits from staying on it.
 
+!!! example "Case thread: template instead of local patch"
+    After the duplicate-ticket incident, the golden path for support-like agents should already include an idempotent write tool, retry policy, trace/eval hooks, and a rollout gate for `side_effect_unknown`. Then the next team does not copy a postmortem into a wiki and fix the same flaw again; it receives the safer path as the starting shape.
+
 ## 3. Shared Gateways Exist So You Do Not Replicate Critical Mistakes Across the Company
 
 There are several layers that are especially risky to leave to local improvisation:
