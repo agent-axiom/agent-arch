@@ -8918,6 +8918,9 @@ class TestCli:
             "session-eval-mixed",
             "session-eval-failed-run",
         ]
+        assert exported["sessions"][0]["idempotency_keys"] == [
+            "trace-eval-support-001"
+        ]
         assert exported["sessions"][0]["summary"]["idempotency_keys"] == [
             "trace-eval-support-001"
         ]
@@ -8947,5 +8950,6 @@ class TestCli:
         assert exported["sessions"][0]["summary"]["approval_wait_runs"] == 1
         assert mixed_session["summary"]["total_runs"] == 2
         failed_session = exported["sessions"][3]
+        assert failed_session["idempotency_keys"] == ["trace-eval-failed-run-001"]
         assert "duplicate_ticket_eval_passed" in failed_session["eval"]["labels"]
         assert failed_session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
