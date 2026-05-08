@@ -35,6 +35,9 @@ After that route, you should already have a working frame for:
 - why a smart model is not enough without traces, SLO, and evals;
 - what is required before the first serious rollout.
 
+!!! example "If you want to follow the running case"
+    Follow the support-triage story: it starts with retrieval and safe tool execution, moves through duplicate-ticket recovery, traces, SLOs, and eval gates, then continues into rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. This is the best route if you want one incident-to-platform-contract path instead of abstract layers.
+
 ## Reading Paths by Role
 
 ### If You Are a Product Engineer
