@@ -502,6 +502,15 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "approved_capabilities": sorted(approved_inventory.capabilities),
         "catalog_capability_names": [spec.name for spec in catalog_specs],
         "write_capabilities": [spec.name for spec in catalog_specs if spec.mode == "write"],
+        "write_capability_egress": [
+            {
+                "name": spec.name,
+                "network_access": spec.network_access,
+                "allowed_egress": list(spec.allowed_egress),
+            }
+            for spec in catalog_specs
+            if spec.mode == "write"
+        ],
         "approval_required_capabilities": [
             spec.name for spec in catalog_specs if spec.approval_required
         ],
