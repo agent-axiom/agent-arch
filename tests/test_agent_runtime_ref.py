@@ -7217,6 +7217,7 @@ class TestCli:
             "runtime_principal",
             "approved_capabilities",
             "catalog_capability_names",
+            "approval_required_capabilities",
             "idempotency_required_capabilities",
             "idempotency_required_capability_bindings",
             "catalog_capabilities",
@@ -7227,6 +7228,7 @@ class TestCli:
         assert payload["runtime_principal"] == "svc-support-triage-ref"
         assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]
         assert payload["catalog_capability_names"] == ["create_ticket", "search_docs"]
+        assert payload["approval_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capability_bindings"] == [
             {
@@ -7242,6 +7244,7 @@ class TestCli:
                 "risk_tier": "high",
                 "network_access": "brokered",
                 "tool_principal": "svc-ticket-writer",
+                "approval_required": True,
                 "idempotency_key_required": True,
                 "allowed_egress": ["tickets.internal"],
             },
@@ -7251,6 +7254,7 @@ class TestCli:
                 "risk_tier": "low",
                 "network_access": "restricted",
                 "tool_principal": "svc-knowledge-reader",
+                "approval_required": False,
                 "idempotency_key_required": False,
                 "allowed_egress": ["docs.internal"],
             },

@@ -501,6 +501,9 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "runtime_principal": agent.runtime_principal,
         "approved_capabilities": sorted(approved_inventory.capabilities),
         "catalog_capability_names": [spec.name for spec in catalog_specs],
+        "approval_required_capabilities": [
+            spec.name for spec in catalog_specs if spec.approval_required
+        ],
         "idempotency_required_capabilities": [
             spec.name for spec in catalog_specs if spec.idempotency_key_required
         ],
@@ -520,6 +523,7 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
                 "risk_tier": spec.risk_tier,
                 "network_access": spec.network_access,
                 "tool_principal": spec.tool_principal,
+                "approval_required": spec.approval_required,
                 "idempotency_key_required": spec.idempotency_key_required,
                 "allowed_egress": list(spec.allowed_egress),
             }
