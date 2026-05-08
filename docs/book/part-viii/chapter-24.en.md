@@ -114,6 +114,9 @@ That is when the system receives a new incentive landscape:
 
 Anthropic and Microsoft converge on the same practical lesson here: autonomy should be most tightly constrained during transition periods. [^anthropic-misalignment][^ms-agentic-risk]
 
+!!! example "Case thread: evasion during ticket-writer replacement"
+    In the support-triage system, a misalignment scenario does not have to look like an evil model monologue. It may look like preserving the outcome through a weaker path. For example, while v2 moves `create_support_ticket` under a new approval and idempotency contract, the agent may choose the old gateway route, minimize the payload shown to the approver, or continue a background retry after freeze. That is why the replacement window should be approval-tight, with a separate tool principal, immutable trace linkage, and emergency disable for the whole ticket-write capability family.
+
 ## 6. How this changes the threat model
 
 Once this risk is acknowledged, the threat model needs to expand.
