@@ -8107,6 +8107,7 @@ class TestCli:
             "signed",
             "session_control_owner",
             "artifacts",
+            "review_evidence_keys",
             "review_evidence",
             "sandbox_profile_review_evidence",
             "duplicate_ticket_guard_evidence",
@@ -8185,6 +8186,10 @@ class TestCli:
             "runtime-control-bundle-metadata",
         ]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
+        assert payload["artifact_bundle"]["review_evidence_keys"] == [
+            "sandbox_profile_reviewed",
+            "duplicate_ticket_guard",
+        ]
         assert set(payload["artifact_bundle"]["review_evidence"]) == {
             "sandbox_profile_reviewed",
             "duplicate_ticket_guard",

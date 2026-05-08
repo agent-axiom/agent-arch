@@ -839,6 +839,7 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "signed": bundle.signed,
             "session_control_owner": bundle.session_control_owner,
             "artifacts": list(bundle.artifacts),
+            "review_evidence_keys": list(bundle.review_evidence),
             "review_evidence": bundle.review_evidence,
             "sandbox_profile_review_evidence": bundle.review_evidence.get(
                 "sandbox_profile_reviewed", {}
