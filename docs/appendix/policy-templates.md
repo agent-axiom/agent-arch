@@ -16,6 +16,9 @@
 - какие условия остановки и правила эскалации нужны;
 - какие трассы и сигналы аудита стоит считать обязательными.
 
+!!! example "Политика для duplicate-ticket thread"
+    Для сквозного support-triage кейса `create_ticket` должен быть не просто write tool, а governed capability: approval boundary, обязательный idempotency key, traceable write intent, stop condition при `side_effect_unknown` и rollout/eval gate, который ловит повторное создание тикета до публикации изменения.
+
 ## Шаблон 1. Агент разбора обращений поддержки
 
 ### Что должна обеспечивать политика
