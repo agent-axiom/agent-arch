@@ -79,6 +79,9 @@ Formally the system is “dead,” but operationally it can still act.
 
 That is especially dangerous for agents because autonomous and semi-autonomous execution paths are easy to forget.
 
+!!! example "Case thread: the old ticket writer after replacement"
+    If support-triage v2 replaces the old path that once created duplicate tickets, retirement must prove that the old `create_support_ticket` path can no longer act. Removing the prompt route is not enough: the team must close the tool principal, revoke gateway exposure, expire paused approvals, stop background retries, and preserve the audit trail so a future duplicate cannot be blamed on an “unknown” old agent.
+
 ## 5. Retirement should happen layer by layer
 
 A good end-of-life process rarely looks like one action. It is usually better to break it down by layer:
