@@ -115,6 +115,9 @@ It is useful for any meaningful change to be collected into a small reviewable p
 
 If a change arrives as “I improved behavior a bit,” it is almost impossible to evaluate properly.
 
+!!! example "Case thread: change packet for duplicate protection"
+    For the support-triage fix, the minimum change packet should classify the change as `high-risk`, because it changes a write capability, retry behavior, and the rollout gate. The packet should include the `side_effect_unknown` policy-bundle diff, the updated `create_support_ticket` contract, a duplicate-ticket eval, a rollback hook that can disable the write path, and first-wave canary monitoring. Without that, “we fixed retry” sounds safer than it really is.
+
 ## 6. Evals should map to the change type
 
 Not every change needs the same validation.

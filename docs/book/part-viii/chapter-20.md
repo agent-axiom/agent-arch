@@ -115,6 +115,9 @@ Prompt, routine или instruction change могут:
 
 Если change приходит в виде “я тут немного улучшил поведение”, его почти невозможно нормально оценить.
 
+!!! example "Сквозной кейс: change packet для защиты от дублей"
+    Для support-triage фикса минимальный change packet должен назвать риск-класс как `high-risk`, потому что меняются write-capability, retry behavior и rollout gate. В пакете должны лежать: diff policy bundle для `side_effect_unknown`, обновленный contract `create_support_ticket`, eval на duplicate ticket, rollback hook для отключения write path и мониторинг первой canary-волны. Без этого “исправили retry” звучит безопаснее, чем оно есть на самом деле.
+
 ## 6. Evals должны быть привязаны к change type
 
 Не все изменения требуют одинаковых проверок.
