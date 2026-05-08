@@ -638,9 +638,21 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
     assessment = assess_rollout(policy, observed)
+    support_duplicate_required = [
+        signal
+        for signal in ("duplicate_ticket_eval_passed",)
+        if signal in policy.required_checks
+    ]
+    missing_support_duplicate_required = [
+        signal
+        for signal in assessment.missing_required
+        if signal in support_duplicate_required
+    ]
     return {
         "ready": assessment.ready,
         "missing_required": list(assessment.missing_required),
+        "missing_support_duplicate_required": missing_support_duplicate_required,
+        "support_duplicate_required_ready": not missing_support_duplicate_required,
         "blocking_signals": list(assessment.blocking_signals),
         "rollout_mode": policy.rollout_mode,
     }
@@ -821,6 +833,16 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
     assessment = assess_change_gate(change, observed)
+    support_duplicate_signals = [
+        signal
+        for signal in ("duplicate_ticket_eval_passed",)
+        if signal in change.required_signals
+    ]
+    missing_support_duplicate_signals = [
+        signal
+        for signal in assessment.missing_signals
+        if signal in support_duplicate_signals
+    ]
     return {
         "change_id": change.change_id,
         "ready": assessment.ready,
@@ -828,6 +850,8 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         "missing_failed_run_signals": [
             signal for signal in assessment.missing_signals if "failed_run" in signal
         ],
+        "missing_support_duplicate_signals": missing_support_duplicate_signals,
+        "support_duplicate_signals_ready": not missing_support_duplicate_signals,
         "rollout_strategy": change.rollout_strategy,
         "risk_level": change.risk_level,
     }
