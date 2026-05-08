@@ -538,6 +538,7 @@ class TestRuntimeDocsParity:
         required_terms = (
             "agent-runtime-ref-eval-seed",
             "session_count",
+            "session_ids",
             "run_count",
             "failed_runs",
             "traceable_failed_runs",
@@ -4478,6 +4479,7 @@ class TestRuntimeControlPaths:
         )
         payload = json.loads(output_path.read_text(encoding="utf-8"))
         assert payload["dataset_name"] == "eval-seed"
+        assert payload["session_ids"] == ["session-eval-name-required-001"]
         assert payload["sessions"][0]["session"]["session_id"] == "session-eval-name-required-001"
 
         output_path = tmp_path / "normalized-eval-spec.json"
@@ -8975,6 +8977,7 @@ class TestCli:
             "dataset_name",
             "output_path",
             "session_count",
+            "session_ids",
             "run_count",
             "failed_runs",
             "traceable_failed_runs",
@@ -8988,6 +8991,12 @@ class TestCli:
         assert payload["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert payload["output_path"] == str(output_path)
         assert payload["session_count"] == 4
+        assert payload["session_ids"] == [
+            "session-eval-support",
+            "session-eval-memory",
+            "session-eval-mixed",
+            "session-eval-failed-run",
+        ]
         assert payload["run_count"] == 5
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
@@ -9016,6 +9025,7 @@ class TestCli:
         assert set(exported) == {
             "dataset_name",
             "session_count",
+            "session_ids",
             "run_count",
             "trace_ids",
             "idempotency_keys",
@@ -9024,6 +9034,12 @@ class TestCli:
         }
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
+        assert exported["session_ids"] == [
+            "session-eval-support",
+            "session-eval-memory",
+            "session-eval-mixed",
+            "session-eval-failed-run",
+        ]
         assert exported["run_count"] == 5
         assert exported["trace_ids"] == [
             "trace-eval-support-001",

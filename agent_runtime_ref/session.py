@@ -387,6 +387,7 @@ class SessionStore:
         payload = {
             "dataset_name": dataset_name,
             "session_count": len(sessions),
+            "session_ids": list(normalized_session_ids),
             "run_count": run_count,
             "trace_ids": list(
                 dict.fromkeys(
