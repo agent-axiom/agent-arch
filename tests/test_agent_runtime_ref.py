@@ -6833,6 +6833,8 @@ class TestPolicyAndControls:
                 "capability_owners_confirmed": True,
                 "memory_provenance_enforced": True,
                 "policy_traces_present": True,
+                "duplicate_ticket_eval_passed": True,
+                "idempotency_keys_present": True,
                 "direct_tool_access_present": False,
                 " unmanaged_runtime_present ": False,
             },
@@ -7855,6 +7857,9 @@ class TestCli:
             "failed_run_controls",
             "preserved_failed_run_controls",
             "failed_run_controls_healthy",
+            "support_duplicate_controls",
+            "preserved_support_duplicate_controls",
+            "support_duplicate_controls_healthy",
             "blocking_findings",
             "inventory_drift",
         }
@@ -8069,6 +8074,12 @@ class TestCli:
             "failed_run_control_last_review",
             "failed_run_control_next_review",
             "failed_run_control_release_binding",
+            "support_duplicate_control_expectations",
+            "support_duplicate_control_domains",
+            "support_duplicate_control_count",
+            "support_duplicate_control_summary",
+            "support_duplicate_control_status",
+            "support_duplicate_control_release_binding",
         }
         assert payload["controls"]["failed_run_control_expectations"] == [
             "policy_traces_present",
@@ -8089,6 +8100,21 @@ class TestCli:
         assert payload["controls"]["failed_run_control_last_review"] == "release-readiness"
         assert payload["controls"]["failed_run_control_next_review"] == "rollout-gate"
         assert payload["controls"]["failed_run_control_release_binding"] == "required"
+        assert payload["controls"]["support_duplicate_control_expectations"] == [
+            "duplicate_ticket_eval_passed",
+            "idempotency_keys_present",
+        ]
+        assert payload["controls"]["support_duplicate_control_domains"] == [
+            "eval_gate",
+            "session_idempotency_summary",
+        ]
+        assert payload["controls"]["support_duplicate_control_count"] == 2
+        assert payload["controls"]["support_duplicate_control_summary"] == (
+            "2 duplicate-ticket control expectations across eval gates and "
+            "session idempotency summaries"
+        )
+        assert payload["controls"]["support_duplicate_control_status"] == "covered"
+        assert payload["controls"]["support_duplicate_control_release_binding"] == "required"
         assert payload["sandbox_profile"] == {
             "manifest_version": 1,
             "workspace_entries": [
@@ -8206,6 +8232,9 @@ class TestCli:
             "failed_run_controls",
             "preserved_failed_run_controls",
             "failed_run_controls_healthy",
+            "support_duplicate_controls",
+            "preserved_support_duplicate_controls",
+            "support_duplicate_controls_healthy",
             "blocking_findings",
             "inventory_drift",
         }
@@ -8216,12 +8245,41 @@ class TestCli:
             "memory_provenance_enforced"
         ]
         assert payload["failed_run_controls_healthy"] is False
+        assert payload["support_duplicate_controls"] == []
+        assert payload["preserved_support_duplicate_controls"] == [
+            "duplicate_ticket_eval_passed",
+            "idempotency_keys_present",
+        ]
+        assert payload["support_duplicate_controls_healthy"] is True
         assert payload["blocking_findings"] == []
         assert payload["inventory_drift"] == {
             "has_drift": False,
             "missing_from_catalog": [],
             "missing_from_inventory": [],
         }
+
+    def test_cli_check_controls_surfaces_support_duplicate_controls(
+        self,
+        cli_json,
+    ) -> None:
+        exit_code, payload = cli_json(
+            ["check-controls", "--signal", "idempotency_keys_present=false"]
+        )
+        assert exit_code == 0
+        assert not payload["healthy"]
+        assert payload["missing_controls"] == ["idempotency_keys_present"]
+        assert payload["failed_run_controls"] == []
+        assert payload["preserved_failed_run_controls"] == [
+            "policy_traces_present",
+            "memory_provenance_enforced",
+        ]
+        assert payload["failed_run_controls_healthy"] is True
+        assert payload["support_duplicate_controls"] == ["idempotency_keys_present"]
+        assert payload["preserved_support_duplicate_controls"] == [
+            "duplicate_ticket_eval_passed"
+        ]
+        assert payload["support_duplicate_controls_healthy"] is False
+        assert payload["blocking_findings"] == []
 
     def test_cli_check_retirement_surfaces_failed_run_archive_targets(
         self,

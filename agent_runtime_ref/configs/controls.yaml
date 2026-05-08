@@ -4,6 +4,8 @@ controls:
     - capability_owners_confirmed
     - memory_provenance_enforced
     - policy_traces_present
+    - duplicate_ticket_eval_passed
+    - idempotency_keys_present
   block_if:
     - direct_tool_access_present
     - unmanaged_runtime_present
