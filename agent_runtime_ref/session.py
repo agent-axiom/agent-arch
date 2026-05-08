@@ -36,6 +36,7 @@ class SessionSummaryPayload(TypedDict):
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    idempotency_keys: list[str]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -346,6 +347,13 @@ class SessionStore:
             "dataset_name": dataset_name,
             "session_count": len(sessions),
             "run_count": run_count,
+            "idempotency_keys": list(
+                dict.fromkeys(
+                    key
+                    for session in sessions
+                    for key in session["summary"]["idempotency_keys"]
+                )
+            ),
             "sessions": sessions,
         }
         with destination.open("w", encoding="utf-8") as handle:
@@ -373,6 +381,7 @@ class SessionStore:
                 "denied_runs": summary.denied_runs,
                 "failed_runs": summary.failed_runs,
                 "traceable_failed_runs": summary.traceable_failed_runs,
+                "idempotency_keys": list(summary.idempotency_keys),
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
@@ -404,6 +413,7 @@ class SessionEvalSummary:
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    idempotency_keys: tuple[str, ...]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -420,6 +430,9 @@ def summarize_session(
         if not isinstance(run, RunRecord):
             raise TypeError("Session runs entries must be RunRecord")
     latest = normalized_runs[-1] if normalized_runs else None
+    idempotency_keys = tuple(
+        dict.fromkeys(run.idempotency_key for run in normalized_runs if run.idempotency_key)
+    )
     return SessionEvalSummary(
         session_id=session_id,
         total_runs=len(normalized_runs),
@@ -437,6 +450,7 @@ def summarize_session(
             and bool(run.output_text)
             and bool(run.failure_reason)
         ),
+        idempotency_keys=idempotency_keys,
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
     )
