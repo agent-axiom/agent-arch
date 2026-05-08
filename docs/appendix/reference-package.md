@@ -68,7 +68,7 @@
 Ожидаемый результат:
 
 ```json
-{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "idempotency_keys": ["trace-demo-001"], "events": 14, "memory_records": 4, "pending_approvals": 1, "config_dir": ".../agent_runtime_ref/configs"}
+{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "idempotency_keys": ["trace-demo-001"], "events": 14, "memory_records": 4, "pending_approvals": 1, "pending_approval_ids": ["apr-001"], "config_dir": ".../agent_runtime_ref/configs"}
 ```
 
 Явный запуск рантайма через подкоманду:
@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `pending_approvals`, `pending_approval_ids` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
 
 Просмотр identity агента и approved inventory:
 

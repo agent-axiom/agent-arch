@@ -435,6 +435,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     )
     session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
+    pending_approvals = runtime.approvals.pending()
     return {
         "agent_id": runtime.agent.agent_id,
         "session_id": session_id,
@@ -445,7 +446,8 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": len(runtime.telemetry.events),
         "memory_records": len(runtime.memory.all()),
-        "pending_approvals": len(runtime.approvals.pending()),
+        "pending_approvals": len(pending_approvals),
+        "pending_approval_ids": [item.approval_id for item in pending_approvals],
         "config_dir": str(config_dir),
     }
 
