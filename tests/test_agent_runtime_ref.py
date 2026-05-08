@@ -1497,6 +1497,7 @@ class TestFailurePaths:
             "trace_id",
             "event_count",
             "event_types",
+            "approval_ids",
             "idempotency_keys",
             "events",
         }
@@ -7481,12 +7482,14 @@ class TestCli:
             "trace_id",
             "event_count",
             "event_types",
+            "approval_ids",
             "idempotency_keys",
             "events",
         }
         assert payload["trace_id"] == "trace-cli-dump-success-001"
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
+        assert payload["approval_ids"] == ["apr-001"]
         assert payload["idempotency_keys"] == ["trace-cli-dump-success-001"]
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["event_count"] == len(payload["events"])
@@ -7514,6 +7517,7 @@ class TestCli:
             "event_count",
             "event_types",
             "redact_fields",
+            "approval_ids",
             "idempotency_keys",
             "failure_reason",
         }
@@ -7524,6 +7528,7 @@ class TestCli:
         assert export_payload["failure_reason"] == ""
         assert export_payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert export_payload["redact_fields"] == []
+        assert export_payload["approval_ids"] == ["apr-001"]
         assert export_payload["idempotency_keys"] == ["trace-export-001"]
         assert export_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
@@ -7557,10 +7562,12 @@ class TestCli:
             "trace_id",
             "event_count",
             "event_types",
+            "approval_ids",
             "idempotency_keys",
             "events",
         }
         assert inspect_payload["trace_id"] == "trace-export-001"
+        assert inspect_payload["approval_ids"] == ["apr-001"]
         assert inspect_payload["idempotency_keys"] == ["trace-export-001"]
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
         assert inspect_payload["event_types"] == [
@@ -7626,6 +7633,7 @@ class TestCli:
             "event_count",
             "event_types",
             "redact_fields",
+            "approval_ids",
             "idempotency_keys",
             "failure_reason",
         }
@@ -7634,6 +7642,7 @@ class TestCli:
         assert export_payload["status"] == "success"
         assert export_payload["failure_reason"] == ""
         assert export_payload["redact_fields"] == ["user_input"]
+        assert export_payload["approval_ids"] == ["apr-001"]
         assert export_payload["idempotency_keys"] == ["trace-redacted-001"]
         assert output_path.exists()
         assert export_payload["event_count"] == len(
@@ -7858,6 +7867,9 @@ class TestCli:
             "idempotency_keys",
             "source_idempotency_keys",
             "replay_idempotency_keys",
+            "approval_ids",
+            "source_approval_ids",
+            "replay_approval_ids",
         }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
@@ -7865,6 +7877,9 @@ class TestCli:
         assert replay_payload["idempotency_keys"] == []
         assert replay_payload["source_idempotency_keys"] == []
         assert replay_payload["replay_idempotency_keys"] == []
+        assert replay_payload["approval_ids"] == []
+        assert replay_payload["source_approval_ids"] == []
+        assert replay_payload["replay_approval_ids"] == []
         assert replay_payload["result"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
@@ -7907,6 +7922,9 @@ class TestCli:
         ]
         assert replay_payload["source_idempotency_keys"] == ["trace-replay-ticket-source"]
         assert replay_payload["replay_idempotency_keys"] == ["trace-replay-ticket-target"]
+        assert replay_payload["approval_ids"] == ["apr-001"]
+        assert replay_payload["source_approval_ids"] == ["apr-001"]
+        assert replay_payload["replay_approval_ids"] == ["apr-001"]
         assert replay_payload["status"] == "success"
 
     def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:

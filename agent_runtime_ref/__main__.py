@@ -558,6 +558,19 @@ def _idempotency_keys_from_events(events: Sequence[StructuredEvent]) -> list[str
     return keys
 
 
+def _approval_ids_from_events(events: Sequence[StructuredEvent]) -> list[str]:
+    approval_ids: list[str] = []
+    seen: set[str] = set()
+    for event in events:
+        approval_id = event.payload.get("approval_id")
+        if isinstance(approval_id, str):
+            normalized = approval_id.strip()
+            if normalized and normalized not in seen:
+                seen.add(normalized)
+                approval_ids.append(normalized)
+    return approval_ids
+
+
 def _event_types_from_events(events: Sequence[StructuredEvent]) -> list[str]:
     return [event.event_type for event in events]
 
@@ -585,6 +598,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
         "event_types": _event_types_from_events(runtime.telemetry.events),
+        "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
@@ -621,6 +635,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "event_types": _event_types_from_events(runtime.telemetry.events),
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
+        "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
     }
 
@@ -636,6 +651,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": trace_id,
         "event_count": len(filtered),
         "event_types": _event_types_from_events(filtered),
+        "approval_ids": _approval_ids_from_events(filtered),
         "idempotency_keys": _idempotency_keys_from_events(filtered),
         "events": [event.as_dict() for event in filtered],
     }
@@ -689,6 +705,8 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     )
     source_idempotency_keys = _idempotency_keys_from_events(source_events)
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
+    source_approval_ids = _approval_ids_from_events(source_events)
+    replay_approval_ids = _approval_ids_from_events(runtime.telemetry.events)
     return {
         "source_trace_id": source_trace_id,
         "replay_trace_id": replay_trace_id,
@@ -701,6 +719,9 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "source_idempotency_keys": source_idempotency_keys,
         "replay_idempotency_keys": replay_idempotency_keys,
+        "approval_ids": list(dict.fromkeys(source_approval_ids + replay_approval_ids)),
+        "source_approval_ids": source_approval_ids,
+        "replay_approval_ids": replay_approval_ids,
     }
 
 
