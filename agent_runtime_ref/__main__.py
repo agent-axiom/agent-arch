@@ -456,6 +456,7 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
                 "risk_tier": spec.risk_tier,
                 "network_access": spec.network_access,
                 "tool_principal": spec.tool_principal,
+                "idempotency_key_required": spec.idempotency_key_required,
                 "allowed_egress": list(spec.allowed_egress),
             }
             for spec in sorted(catalog.all(), key=lambda item: item.name)
