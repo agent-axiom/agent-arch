@@ -92,6 +92,9 @@ flowchart LR
 - 是否存在审批；
 - 哪个策略门放行了这个动作。
 
+!!! example "贯穿案例：用 trace 回答争议"
+    在支持分诊事故里，trace 不应该只写“工单已创建”。它应该展示关联的 `trace_id`、`session_id`、`idempotency_key`、策略决策、审批状态，以及最终 `create_support_ticket` 结果。这样，“是模型重复调用，还是重试制造了重复工单？”就不再是猜测，而是对同一条事件链的检查。
+
 ## 5. 哪些东西适合做成独立 span
 
 没必要给每个小细节都建 span，但整个运行只有一个巨大 span 也几乎没用。
