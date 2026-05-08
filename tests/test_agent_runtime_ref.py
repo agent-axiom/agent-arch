@@ -7706,16 +7706,53 @@ class TestCli:
             "status",
             "result",
             "event_count",
+            "source_idempotency_keys",
+            "replay_idempotency_keys",
         }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["source_idempotency_keys"] == []
+        assert replay_payload["replay_idempotency_keys"] == []
         assert replay_payload["result"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
         assert replay_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
         )
+
+    def test_cli_replay_run_summarizes_source_and_replay_idempotency(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "ticket-trace.jsonl"
+        export_code, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please create a ticket for this replay issue.",
+                "--trace-id",
+                "trace-replay-ticket-source",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert export_code == 0
+
+        replay_code, replay_payload = cli_json(
+            [
+                "replay-run",
+                "--input",
+                str(output_path),
+                "--replay-trace-id",
+                "trace-replay-ticket-target",
+            ],
+        )
+        assert replay_code == 0
+        assert replay_payload["source_trace_id"] == "trace-replay-ticket-source"
+        assert replay_payload["replay_trace_id"] == "trace-replay-ticket-target"
+        assert replay_payload["source_idempotency_keys"] == ["trace-replay-ticket-source"]
+        assert replay_payload["replay_idempotency_keys"] == ["trace-replay-ticket-target"]
+        assert replay_payload["status"] == "success"
 
     def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:
         exit_code, payload = cli_json(

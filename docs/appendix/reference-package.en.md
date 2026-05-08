@@ -147,7 +147,7 @@ Replay a run from a saved trace:
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` returns `trace_id`, `event_count`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, and `event_count`, so investigation and replay preserve source/run lineage.
+`inspect-trace` returns `trace_id`, `event_count`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
 
 Rollout policy check with signal overrides:
 
