@@ -574,6 +574,23 @@ def _approval_ids_from_events(events: Sequence[StructuredEvent]) -> list[str]:
     return approval_ids
 
 
+def _approval_capability_names_from_events(
+    events: Sequence[StructuredEvent],
+) -> list[str]:
+    capability_names: list[str] = []
+    seen: set[str] = set()
+    for event in events:
+        if event.event_type != "approval_requested":
+            continue
+        capability = event.payload.get("capability")
+        if isinstance(capability, str):
+            normalized = capability.strip()
+            if normalized and normalized not in seen:
+                seen.add(normalized)
+                capability_names.append(normalized)
+    return capability_names
+
+
 def _event_types_from_events(events: Sequence[StructuredEvent]) -> list[str]:
     return [event.event_type for event in events]
 
@@ -602,6 +619,9 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "event_count": len(runtime.telemetry.events),
         "event_types": _event_types_from_events(runtime.telemetry.events),
         "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
+        "approval_capability_names": _approval_capability_names_from_events(
+            runtime.telemetry.events
+        ),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
@@ -639,6 +659,9 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
         "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
+        "approval_capability_names": _approval_capability_names_from_events(
+            runtime.telemetry.events
+        ),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
     }
 
@@ -655,6 +678,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
         "event_count": len(filtered),
         "event_types": _event_types_from_events(filtered),
         "approval_ids": _approval_ids_from_events(filtered),
+        "approval_capability_names": _approval_capability_names_from_events(filtered),
         "idempotency_keys": _idempotency_keys_from_events(filtered),
         "events": [event.as_dict() for event in filtered],
     }
