@@ -6735,6 +6735,7 @@ class TestPolicyAndControls:
                 "policy_prechecks": True,
                 "capability_owners": True,
                 "offline_eval_pass": True,
+                "duplicate_ticket_eval_passed": True,
                 "slo_defined": True,
                 "rollback_plan": True,
                 "oncall_owner": True,
@@ -7681,6 +7682,19 @@ class TestCli:
             "max_tenant_exposure_pct": "5",
             "require_shadow_period": "True",
         }
+
+    def test_cli_check_rollout_requires_duplicate_ticket_eval(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "check-rollout",
+                "--signal",
+                "duplicate_ticket_eval_passed=false",
+            ],
+        )
+        assert exit_code == 0
+        assert not payload["ready"]
+        assert payload["missing_required"] == ["duplicate_ticket_eval_passed"]
+        assert payload["blocking_signals"] == []
 
     def test_cli_check_rollout_reports_blocking_signal(self, cli_json) -> None:
         exit_code, payload = cli_json(
