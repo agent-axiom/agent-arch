@@ -959,6 +959,7 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": trace_id,
         "session_id": session_id,
         "count": len(approvals),
+        "approval_ids": [item.approval_id for item in approvals],
         "idempotency_keys": idempotency_keys,
         "approvals": [
             {
