@@ -183,6 +183,7 @@ class AgentRuntime:
         authorization_mode = request.authorization_mode
         delegated_principal_id = request.delegated_principal_id
         delegated_scope = request.delegated_scope
+        idempotency_key = ""
         self.telemetry.emit(
             "run_start",
             request.trace_id,
@@ -280,6 +281,7 @@ class AgentRuntime:
                     "delegated_principal_id", delegated_principal_id
                 )
                 delegated_scope = latest_tool.payload.get("delegated_scope", delegated_scope)
+                idempotency_key = latest_tool.payload.get("idempotency_key", idempotency_key)
                 if latest_tool.status in {"denied", "validation_failure", "failed"}:
                     failure_reason = latest_tool.payload.get("reason", latest_tool.status)
                     result = RunResult(
@@ -304,6 +306,7 @@ class AgentRuntime:
                         authorization_mode=authorization_mode,
                         delegated_principal_id=delegated_principal_id,
                         delegated_scope=delegated_scope,
+                        idempotency_key=idempotency_key,
                     )
                     self.telemetry.emit(
                         "run_failed",
@@ -314,6 +317,7 @@ class AgentRuntime:
                         authorization_mode=authorization_mode,
                         delegated_principal_id=delegated_principal_id,
                         delegated_scope=delegated_scope,
+                        idempotency_key=idempotency_key,
                     )
                     self.telemetry.emit(
                         "run_complete",
@@ -346,6 +350,7 @@ class AgentRuntime:
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            idempotency_key=idempotency_key,
         )
         self.telemetry.emit(
             "run_complete",
