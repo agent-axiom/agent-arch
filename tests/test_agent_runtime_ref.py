@@ -8582,9 +8582,16 @@ class TestCli:
             ],
         )
         assert exit_code == 0
-        assert set(payload) == {"session_id", "run_count", "summary", "runs"}
+        assert set(payload) == {
+            "session_id",
+            "run_count",
+            "idempotency_keys",
+            "summary",
+            "runs",
+        }
         assert payload["session_id"] == "session-demo-001"
         assert payload["run_count"] == 2
+        assert payload["idempotency_keys"] == ["trace-session-001"]
         self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
         assert payload["summary"]["approval_wait_runs"] == 1
@@ -8638,6 +8645,7 @@ class TestCli:
             "principal_id",
             "trace_count",
             "latest_status",
+            "idempotency_keys",
             "summary",
             "runs",
         }
@@ -8646,6 +8654,7 @@ class TestCli:
         assert payload["principal_id"] == "user-42"
         assert payload["trace_count"] == 2
         assert payload["latest_status"] == "success"
+        assert payload["idempotency_keys"] == ["trace-session-001"]
         self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
         self._assert_session_run_contract(payload["runs"][0])

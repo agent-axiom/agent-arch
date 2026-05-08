@@ -971,6 +971,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "principal_id": session.principal_id,
         "trace_count": len(session.traces),
         "latest_status": results[-1].status if results else None,
+        "idempotency_keys": list(summary.idempotency_keys),
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
@@ -1059,6 +1060,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
     return {
         "session_id": session_id,
         "run_count": len(results),
+        "idempotency_keys": list(summary.idempotency_keys),
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
