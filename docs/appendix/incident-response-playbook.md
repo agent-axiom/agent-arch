@@ -71,6 +71,9 @@
 
 Эти категории удобны не только для тикета, но и для связи с eval dataset, rollout gates и postmortem discipline.
 
+!!! example "Duplicate-ticket response path"
+    Для сквозного support-triage инцидента сначала заморозь `create_ticket` или переведи его в mandatory approval, сохрани `trace_id`, `session_id`, `approval_id`, `tool_principal`, `idempotency_key`, `bundle_id` и `rollout_wave`, затем проверь, был ли side effect уже создан. Если статус неизвестен, пометь run как `side_effect_unknown`, не повторяй write blindly и преврати разбор в eval/rollout gate перед следующим выпуском.
+
 ## 6. Что проверить в traces и событиях
 
 Во время первичного разбора важно быстро ответить на несколько вопросов:

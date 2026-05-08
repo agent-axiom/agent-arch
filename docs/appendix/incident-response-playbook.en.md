@@ -71,6 +71,9 @@ It is useful to classify the incident immediately:
 
 These categories are useful not only for a ticket, but also for linking incidents back into eval datasets, rollout gates, and postmortem discipline.
 
+!!! example "Duplicate-ticket response path"
+    For the running support-triage incident, first freeze `create_ticket` or switch it to mandatory approval, preserve `trace_id`, `session_id`, `approval_id`, `tool_principal`, `idempotency_key`, `bundle_id`, and `rollout_wave`, then check whether the side effect already happened. If status is unknown, mark the run as `side_effect_unknown`, do not blindly repeat the write, and turn the review into an eval/rollout gate before the next release.
+
 ## 6. What to check in traces and events
 
 During first-pass investigation, the team should answer a few questions quickly:
