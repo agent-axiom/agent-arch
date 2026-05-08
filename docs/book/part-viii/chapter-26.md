@@ -159,6 +159,9 @@ Microsoft отдельно подчеркивает полный произво�
 
 Рекомендации Microsoft по observability делают вопрос покрытия более конкретным: командам стоит измерять долю AI systems, которые вообще emit logs и traces, долю releases, прошедших стандартный evaluation suite, и долю abuse/security scenarios, покрытых telemetry.[^ms-observability] Так observability перестает быть фразой “у нас есть dashboards” и становится измеримой production obligation: inventory coverage, release-eval coverage и detection-scenario coverage.
 
+!!! example "Сквозной кейс: telemetry для ticket-write control eval"
+    Control eval из support-triage становится полезным для rollout только если его telemetry detection-ready. Для каждого `create_support_ticket` run trace должен связывать `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown` и verdict process/outcome verifier'а. Тогда команда может видеть не только “дубля нет”, но и какой процент ticket-write paths реально observable, где bypass path еще слепой и можно ли safely расширять canary.
+
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
 Контур управления нередко оформляют как:
