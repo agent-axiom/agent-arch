@@ -91,6 +91,9 @@ There are several boundaries worth making explicit in code even in version one:
 
 When all of this is packed into one big handler, the first demos come fast, but the system becomes painful to mature almost immediately.
 
+!!! example "Case thread: where duplicate protection lives"
+    In the support-triage runtime, duplicate-ticket protection should not hide inside the helpdesk adapter. `runtime.py` should own run context and the retry branch, `execution.py` should execute the write tool through an idempotent contract, `telemetry.py` should record `side_effect_unknown`, and `policy.py` plus the rollout gate should decide whether the run may continue. Then one incident does not spread across handlers.
+
 ## 5. Do Not Mix Orchestration With Business Adapters
 
 One of the most expensive mistakes in early implementations is when the runtime knows too much about concrete external systems.
