@@ -451,6 +451,9 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "memory_record_ids": memory_record_ids,
         "pending_approvals": len(pending_approvals),
         "pending_approval_ids": [item.approval_id for item in pending_approvals],
+        "pending_approval_capability_names": list(
+            dict.fromkeys(item.capability_name for item in pending_approvals)
+        ),
         "config_dir": str(config_dir),
     }
 

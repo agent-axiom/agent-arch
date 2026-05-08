@@ -1415,6 +1415,7 @@ class TestFailurePaths:
             "memory_record_ids",
             "pending_approvals",
             "pending_approval_ids",
+            "pending_approval_capability_names",
             "config_dir",
         }
         assert payload["agent_id"] == "support-triage-ref"
@@ -1426,6 +1427,7 @@ class TestFailurePaths:
         assert payload["idempotency_keys"] == expected_idempotency_keys
         assert payload["pending_approvals"] == 0
         assert payload["pending_approval_ids"] == []
+        assert payload["pending_approval_capability_names"] == []
         assert payload["config_dir"] == str(default_config_dir())
 
     def test_cli_export_events_supports_failure_injection(self, cli_json, tmp_path: Path) -> None:
@@ -7133,6 +7135,7 @@ class TestCli:
             "memory_record_ids",
             "pending_approvals",
             "pending_approval_ids",
+            "pending_approval_capability_names",
             "config_dir",
         }
         assert payload["agent_id"] == "support-triage-ref"
@@ -7147,6 +7150,7 @@ class TestCli:
         assert payload["memory_record_ids"] == ["mem-001", "mem-002", "mem-003", "mem-004"]
         assert payload["pending_approvals"] == 1
         assert payload["pending_approval_ids"] == ["apr-001"]
+        assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["config_dir"] == str(default_config_dir())
 
     def test_cli_inspect_memory_filters_records(self, cli_json) -> None:
