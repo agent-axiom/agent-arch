@@ -68,6 +68,9 @@ The practical rule is usually this: first bring retrieval to a coherent level, a
 
 There is also a useful operational signal here: if a support agent worked well for a long time and later degrades without meaningful changes in prompts or model routing, suspect a stale retrieval corpus, indexing drift, or data-freshness issue before assuming some mysterious model decay.
 
+!!! example "Case thread: what to retrieve"
+    In the support-triage case, retrieval should not simply pull every past customer interaction back into the prompt. For the current run, the useful context is the latest open tickets, a verified profile fact such as preferred language, and a current excerpt from the support playbook. Old drafts, unreviewed complaints, and stale summaries should either move through background compaction or stay out of the prompt entirely.
+
 ## 3. A Good Prompt Loves Signal Density, Not Completeness
 
 It is very tempting to think "the more context, the smarter the agent." In practice, the opposite is often true: the more garbage you put into the prompt, the worse the model holds priorities.
