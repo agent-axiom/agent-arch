@@ -83,6 +83,9 @@ You need to be able to answer:
 - which delegated authorization mode, principal binding, and revoke policy governed the run;
 - who approved the change.
 
+!!! example "Case thread: provenance for the duplicate-ticket fix"
+    After the duplicate-ticket incident, a later review should be able to reconstruct more than the retry-patch commit. It needs the versions of the eval dataset, `side_effect_unknown` policy bundle, `create_support_ticket` capability contract, rollout gate, approval schema, and trace schema that were active during the canary. If even one of those artifacts lives “somewhere in chat” instead of the approved release bundle, the team cannot prove whether a repeated duplicate happened under the fixed controls or the old rule set.
+
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
 
 That is why provenance in this chapter should be read narrowly and concretely. It is not the whole evidence layer. It is the governed lineage layer for approved artifacts, release identity, and decision-bearing versions.
