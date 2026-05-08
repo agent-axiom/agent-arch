@@ -1005,11 +1005,19 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
     idempotency_keys = list(
         dict.fromkeys(item.idempotency_key for item in approvals if item.idempotency_key)
     )
+    approval_status_counts = {
+        status: sum(1 for item in approvals if item.status == status)
+        for status in sorted({item.status for item in approvals})
+    }
     return {
         "trace_id": trace_id,
         "session_id": session_id,
         "count": len(approvals),
         "approval_ids": [item.approval_id for item in approvals],
+        "pending_approval_ids": [
+            item.approval_id for item in approvals if item.status == "pending"
+        ],
+        "approval_status_counts": approval_status_counts,
         "idempotency_keys": idempotency_keys,
         "approvals": [
             {
