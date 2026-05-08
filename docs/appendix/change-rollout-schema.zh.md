@@ -89,6 +89,7 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - duplicate_ticket_eval_passed
   - sandbox_profile_reviewed
   - failed_run_traceability_verified
 blocking_findings: []
@@ -103,6 +104,9 @@ decided_by:
 ```
 
 这一层重要的原因在于：一个好的变更评审，并不自动等于“现在就可以发布”。
+
+!!! example "重复工单线索的 rollout gate"
+    对 support-triage canary 来说，gate 不应只检查 `offline_eval_pass`，还应检查具体的 `duplicate_ticket_eval_passed`：已复现 `create_ticket` 之后的超时，保留了 `trace_id` 与 `idempotency_key`，outcome 是一个工单副作用或一次 `side_effect_unknown` 停止；只有 blind retry 没有回来时，`blocking_findings` 才能保持为空。
 
 当发布依赖更丰富的验证器输出，而不是只看二元通过/失败状态时，这一点会更重要。此时门禁记录应该显式写出：受影响的高风险路径是否已经审过验证器质量与证据链接。
 
