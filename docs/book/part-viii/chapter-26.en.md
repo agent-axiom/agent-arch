@@ -159,6 +159,9 @@ If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`,
 
 Microsoft's observability guidance makes the coverage question more concrete: teams should measure the proportion of AI systems that emit logs and traces, the proportion of releases that ran a standard evaluation suite, and the proportion of abuse or security scenarios covered by telemetry.[^ms-observability] That turns observability from “we have dashboards” into a measurable production obligation: inventory coverage, release-eval coverage, and detection-scenario coverage.
 
+!!! example "Case thread: telemetry for the ticket-write control eval"
+    The support-triage control eval becomes useful for rollout only if its telemetry is detection-ready. For every `create_support_ticket` run, the trace should link `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown`, and the process/outcome verifier verdict. Then the team can see not only “no duplicate happened,” but what share of ticket-write paths are actually observable, where a bypass path remains blind, and whether the canary can safely expand.
+
 ## 7. Why governance without observability is fragile
 
 Governance is often expressed as:

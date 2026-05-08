@@ -159,6 +159,9 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应该衡量有多少比例的 AI systems 会发出 logs 和 traces，有多少比例的 releases 运行过标准 evaluation suite，以及有多少比例的 abuse/security scenarios 已经被 telemetry 覆盖。[^ms-observability] 这样，observability 就不再只是“我们有 dashboards”，而是变成可度量的 production obligation：inventory coverage、release-eval coverage 和 detection-scenario coverage。
 
+!!! example "贯穿案例：ticket-write 控制评测的 telemetry"
+    support-triage 的控制评测只有在 telemetry 已经 detection-ready 时，才真正能服务 rollout。对每一次 `create_support_ticket` run，trace 都应该关联 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`、outcome、`side_effect_unknown`，以及 process/outcome verifier verdict。这样团队看到的不只是“没有重复工单”，还包括 ticket-write paths 中有多少真正可观测，哪里还有盲区 bypass path，以及 canary 是否可以安全扩大。
+
 ## 7. 为什么没有可观测性的治理往往很脆
 
 治理往往会被写成：
