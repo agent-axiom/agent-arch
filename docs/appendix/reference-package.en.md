@@ -78,7 +78,7 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
+The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `event_types`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
 
 Inspect the agent identity and approved inventory:
 
@@ -111,7 +111,7 @@ Inspect memory records:
 ```
 
 `inspect-memory` now returns `config_dir`, `count`, `memory_ids`, and `records`; each record shows not only content, but also `provenance` and `revision`.
-`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
+`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:
 
@@ -147,7 +147,7 @@ Replay a run from a saved trace:
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`dump-events` returns `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `idempotency_keys`, and `events`; `inspect-trace` returns `trace_id`, `event_count`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
+`dump-events` returns `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `idempotency_keys`, and `events`; `inspect-trace` returns `trace_id`, `event_count`, `event_types`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
 
 Rollout policy check with signal overrides:
 

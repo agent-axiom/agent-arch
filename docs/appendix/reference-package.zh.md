@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`idempotency_keys`、`session_id`、`status`、`result`、`events`、`memory_records`、`memory_record_ids`、`pending_approvals`、`pending_approval_ids` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。更专门的 selectors 包括用于 memory inspection 的 `--limit`、用于 approval closure 的 `--approval-id`、用于 trace replay 的 `--replay-trace-id`、用于 session commands 的 `--trace-prefix`，以及用于 eval dataset exports 的 `--session-prefix`。
+第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`idempotency_keys`、`event_types`、`session_id`、`status`、`result`、`events`、`memory_records`、`memory_record_ids`、`pending_approvals`、`pending_approval_ids` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。更专门的 selectors 包括用于 memory inspection 的 `--limit`、用于 approval closure 的 `--approval-id`、用于 trace replay 的 `--replay-trace-id`、用于 session commands 的 `--trace-prefix`，以及用于 eval dataset exports 的 `--session-prefix`。
 
 查看智能体身份与已批准能力清单：
 
@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`dump-events` 会返回 `status`、`result`、`failure_reason`、`trace_id`、`event_count`、`idempotency_keys` 和 `events`；`inspect-trace` 会返回 `trace_id`、`event_count`、`idempotency_keys` 和 `events`；`export-events` 也会在 `redact_fields` 旁汇总 `idempotency_keys`，让重复写入谱系在操作者深入单个 payload 之前就可见。`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result`、`event_count`、`idempotency_keys`、`source_idempotency_keys` 和 `replay_idempotency_keys`，让调查与重放都保留来源/运行谱系，并能对比原始写入 key 和 replay 写入 key。
+`dump-events` 会返回 `status`、`result`、`failure_reason`、`trace_id`、`event_count`、`event_types`、`idempotency_keys` 和 `events`；`inspect-trace` 会返回 `trace_id`、`event_count`、`event_types`、`idempotency_keys` 和 `events`；`export-events` 也会在 `redact_fields` 旁汇总 `idempotency_keys`，让重复写入谱系在操作者深入单个 payload 之前就可见。`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result`、`event_count`、`event_types`、`idempotency_keys`、`source_idempotency_keys` 和 `replay_idempotency_keys`，让调查与重放都保留来源/运行谱系，并能对比原始写入 key 和 replay 写入 key。
 
 带信号覆盖的上线策略检查：
 

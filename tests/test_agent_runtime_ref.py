@@ -1408,6 +1408,7 @@ class TestFailurePaths:
             "failure_reason",
             "trace_id",
             "idempotency_keys",
+            "event_types",
             "events",
             "memory_records",
             "memory_record_ids",
@@ -1446,6 +1447,7 @@ class TestFailurePaths:
             "status",
             "result",
             "event_count",
+            "event_types",
             "redact_fields",
             "idempotency_keys",
             "failure_reason",
@@ -1493,6 +1495,7 @@ class TestFailurePaths:
             "failure_reason",
             "trace_id",
             "event_count",
+            "event_types",
             "idempotency_keys",
             "events",
         }
@@ -7107,6 +7110,7 @@ class TestCli:
             "failure_reason",
             "trace_id",
             "idempotency_keys",
+            "event_types",
             "events",
             "memory_records",
             "memory_record_ids",
@@ -7442,6 +7446,7 @@ class TestCli:
             "failure_reason",
             "trace_id",
             "event_count",
+            "event_types",
             "idempotency_keys",
             "events",
         }
@@ -7451,6 +7456,7 @@ class TestCli:
         assert payload["idempotency_keys"] == ["trace-cli-dump-success-001"]
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["event_count"] == len(payload["events"])
+        assert payload["event_types"] == [item["event_type"] for item in payload["events"]]
 
     def test_cli_export_and_inspect_trace(self, cli_json, tmp_path: Path) -> None:
         output_path = tmp_path / "trace.jsonl"
@@ -7472,6 +7478,7 @@ class TestCli:
             "status",
             "result",
             "event_count",
+            "event_types",
             "redact_fields",
             "idempotency_keys",
             "failure_reason",
@@ -7487,6 +7494,22 @@ class TestCli:
         assert export_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
         )
+        assert export_payload["event_types"] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
 
         inspect_code, inspect_payload = cli_json(
             [
@@ -7496,10 +7519,19 @@ class TestCli:
             ],
         )
         assert inspect_code == 0
-        assert set(inspect_payload) == {"trace_id", "event_count", "idempotency_keys", "events"}
+        assert set(inspect_payload) == {
+            "trace_id",
+            "event_count",
+            "event_types",
+            "idempotency_keys",
+            "events",
+        }
         assert inspect_payload["trace_id"] == "trace-export-001"
         assert inspect_payload["idempotency_keys"] == ["trace-export-001"]
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
+        assert inspect_payload["event_types"] == [
+            item["event_type"] for item in inspect_payload["events"]
+        ]
         assert [item["event_type"] for item in inspect_payload["events"]] == [
             "run_start",
             "policy_precheck",
@@ -7558,6 +7590,7 @@ class TestCli:
             "status",
             "result",
             "event_count",
+            "event_types",
             "redact_fields",
             "idempotency_keys",
             "failure_reason",
@@ -7583,6 +7616,9 @@ class TestCli:
         assert inspect_code == 0
         assert inspect_payload["trace_id"] == "trace-redacted-001"
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
+        assert inspect_payload["event_types"] == [
+            item["event_type"] for item in inspect_payload["events"]
+        ]
         assert [item["event_type"] for item in inspect_payload["events"]] == [
             "run_start",
             "policy_precheck",
@@ -7701,6 +7737,9 @@ class TestCli:
         assert inspect_code == 0
         assert inspect_payload["trace_id"] == "trace-consistent-001"
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
+        assert inspect_payload["event_types"] == [
+            item["event_type"] for item in inspect_payload["events"]
+        ]
         assert [item["event_type"] for item in inspect_payload["events"]] == [
             "run_start",
             "policy_precheck",
@@ -7781,6 +7820,7 @@ class TestCli:
             "status",
             "result",
             "event_count",
+            "event_types",
             "idempotency_keys",
             "source_idempotency_keys",
             "replay_idempotency_keys",
