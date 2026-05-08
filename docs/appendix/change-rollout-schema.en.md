@@ -89,6 +89,7 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - duplicate_ticket_eval_passed
   - sandbox_profile_reviewed
   - failed_run_traceability_verified
 blocking_findings: []
@@ -103,6 +104,9 @@ decided_by:
 ```
 
 This layer matters because even a good change review does not automatically imply rollout readiness.
+
+!!! example "Rollout gate for the duplicate-ticket thread"
+    For a support-triage canary, the gate should check not only `offline_eval_pass`, but also a specific `duplicate_ticket_eval_passed`: timeout after `create_ticket` was reproduced, `trace_id` and `idempotency_key` were preserved, the outcome was one ticket side effect or a `side_effect_unknown` stop, and `blocking_findings` stay empty only if blind retry did not return.
 
 That becomes even more important when rollout depends on richer verifier outputs rather than only binary pass/fail status. In that case, gate records should make explicit whether verifier quality and evidence linkage were reviewed for the affected high-risk paths.
 

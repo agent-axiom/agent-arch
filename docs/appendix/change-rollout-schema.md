@@ -89,6 +89,7 @@ required_checks:
   - rollback_plan_ready
   - approval_path_verified
   - high_risk_flow_checked
+  - duplicate_ticket_eval_passed
   - sandbox_profile_reviewed
   - failed_run_traceability_verified
 blocking_findings: []
@@ -103,6 +104,9 @@ decided_by:
 ```
 
 Этот слой нужен потому, что даже хороший change review еще не означает автоматическую готовность к rollout.
+
+!!! example "Rollout gate для duplicate-ticket thread"
+    Для support-triage canary gate должен проверять не только `offline_eval_pass`, но и конкретный `duplicate_ticket_eval_passed`: timeout после `create_ticket` воспроизведён, `trace_id` и `idempotency_key` сохранены, outcome — один ticket side effect или `side_effect_unknown` stop, а `blocking_findings` остаются пустыми только если blind retry не вернулся.
 
 Это еще важнее, когда rollout опирается на richer verifier outputs, а не только на binary pass/fail status. Тогда gate record должен явно показывать, проверялись ли для затронутых high-risk paths качество verifier'а и linkage его evidence.
 
