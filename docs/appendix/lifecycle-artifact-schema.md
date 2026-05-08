@@ -79,7 +79,7 @@ status: approved
 
 `artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
 
-Reference runtime хранит этот contract в `artifacts.yaml`: `bundle_name` — например, `support-triage-runtime-bundle` — `version`, `provenance_required`, `signed` и `session_control_owner` описывают bundle identity и accountability; `review_evidence` также может указывать на evidence refs вроде `trace:sandbox_profile_reviewed`; а `artifacts` явно перечисляет release-bearing files: `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json` и `runtime-control-bundle-metadata`.
+Reference runtime хранит этот contract в `artifacts.yaml`: `bundle_name` — например, `support-triage-runtime-bundle` — `version`, `provenance_required`, `signed` и `session_control_owner` описывают bundle identity и accountability; `review_evidence` также может указывать на evidence refs вроде `trace:sandbox_profile_reviewed` и на evidence chain `duplicate_ticket_guard`; а `artifacts` явно перечисляет release-bearing files: `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json` и `runtime-control-bundle-metadata`.
 
 ```yaml
 kind: artifact_bundle
