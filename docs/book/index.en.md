@@ -15,6 +15,9 @@ By reading it, you should be able to:
 - follow one governed run through policy, execution, evidence, approval, rollout, and lifecycle control;
 - reason about memory, evals, provenance, retirement, and operator accountability as one operating model.
 
+!!! example "Running support case"
+    One way to read the book is to follow the support-triage case: from retrieval and tool execution to duplicate-ticket recovery, traces, SLOs, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. That turns the chapters from a set of topics into one reviewable story about how an incident becomes a platform contract.
+
 ## Recommended Reading Path
 
 If you want the shortest useful route, read in this order:

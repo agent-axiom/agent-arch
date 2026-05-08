@@ -15,6 +15,9 @@
 - прослеживать один управляемый run через policy, execution, evidence, approval, rollout и lifecycle control;
 - рассматривать memory, evals, provenance, retirement и operator accountability как единую рабочую модель.
 
+!!! example "Сквозной support-кейс"
+    Один из способов читать книгу — следить за support-triage кейсом: от retrieval и tool execution до duplicate-ticket recovery, traces, SLO, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это превращает главы из набора тем в одну проверяемую историю о том, как инцидент становится платформенным контрактом.
+
 ## Рекомендуемый маршрут чтения
 
 Если нужен самый короткий полезный маршрут, иди так:
