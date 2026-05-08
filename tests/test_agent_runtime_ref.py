@@ -8735,6 +8735,10 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "approval_id",
+            "trace_id",
+            "session_id",
+            "capability_name",
+            "requested_by",
             "status",
             "reviewer",
             "resolution_note",
@@ -8747,6 +8751,10 @@ class TestCli:
             "idempotency_keys",
         }
         assert payload["approval_id"] == "apr-001"
+        assert payload["trace_id"] == "trace-approval-001"
+        assert payload["session_id"] == "session-approval-001"
+        assert payload["capability_name"] == "create_ticket"
+        assert payload["requested_by"] == "user-42"
         assert payload["status"] == "approved"
         assert payload["reviewer"] == "manager"
         assert payload["resolution_note"] == "manager approved demo request"
@@ -8771,6 +8779,10 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "approval_id",
+            "trace_id",
+            "session_id",
+            "capability_name",
+            "requested_by",
             "status",
             "reviewer",
             "resolution_note",
@@ -8783,6 +8795,10 @@ class TestCli:
             "idempotency_keys",
         }
         assert payload["approval_id"] == "apr-001"
+        assert payload["trace_id"] == "trace-approval-001"
+        assert payload["session_id"] == "session-approval-001"
+        assert payload["capability_name"] == "create_ticket"
+        assert payload["requested_by"] == "user-42"
         assert payload["status"] == "rejected"
         assert payload["reviewer"] == "manager"
         assert payload["resolution_note"] == "manager rejected demo request"
@@ -8827,6 +8843,10 @@ class TestCli:
         assert exit_code == 0
         assert payload == {
             "approval_id": "apr-001",
+            "trace_id": "trace-approval-001",
+            "session_id": "session-approval-001",
+            "capability_name": "create_ticket",
+            "requested_by": "user-42",
             "status": "approved",
             "reviewer": "manager",
             "resolution_note": "manager approved delegated request",
