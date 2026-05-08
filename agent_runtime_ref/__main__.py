@@ -647,14 +647,19 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         session_id=session_id or "session-replay-001",
         agent_id=agent_id,
     )
+    source_idempotency_keys = _idempotency_keys_from_events(source_events)
+    replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     return {
         "source_trace_id": source_trace_id,
         "replay_trace_id": replay_trace_id,
         "status": result.status,
         "result": result.output_text,
         "event_count": len(runtime.telemetry.events),
-        "source_idempotency_keys": _idempotency_keys_from_events(source_events),
-        "replay_idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
+        "idempotency_keys": list(
+            dict.fromkeys(source_idempotency_keys + replay_idempotency_keys)
+        ),
+        "source_idempotency_keys": source_idempotency_keys,
+        "replay_idempotency_keys": replay_idempotency_keys,
     }
 
 
