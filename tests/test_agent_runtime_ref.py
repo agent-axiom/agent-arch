@@ -4640,8 +4640,10 @@ class TestRuntimeControlPaths:
         assert set(payload) == {
             "system_id",
             "ready",
+            "triggers",
             "missing_steps",
             "required_steps",
+            "archive_targets",
             "failed_run_archive_targets",
             "support_duplicate_archive_targets",
             "replacement_mode",
@@ -4651,6 +4653,14 @@ class TestRuntimeControlPaths:
         assert payload["missing_steps"] == [
             "expire_paused_runs",
             "stop_background_routes",
+        ]
+        assert payload["archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "paused_run_state",
+            "capability_session_state",
+            "runtime_control_bundle",
         ]
         assert payload["failed_run_archive_targets"] == [
             "telemetry_jsonl",
@@ -8494,14 +8504,21 @@ class TestCli:
         assert set(payload) == {
             "system_id",
             "ready",
+            "triggers",
             "missing_steps",
             "required_steps",
+            "archive_targets",
             "failed_run_archive_targets",
             "support_duplicate_archive_targets",
             "replacement_mode",
         }
         assert payload["system_id"] == "support-triage-ref"
         assert payload["ready"] is True
+        assert payload["triggers"] == [
+            "deprecated_runtime",
+            "replacement_ready",
+            "unsafe_capability_pattern",
+        ]
         assert payload["missing_steps"] == []
         assert payload["required_steps"] == [
             "freeze_rollout",
