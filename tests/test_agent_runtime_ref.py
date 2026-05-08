@@ -8901,9 +8901,14 @@ class TestCli:
         assert set(exported) == {
             "session",
             "summary",
+            "total_runs",
+            "failed_runs",
+            "traceable_failed_runs",
             "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
+            "latest_failure_reason",
+            "latest_trace_id",
             "runs",
         }
         assert exported["session"] == {
@@ -8926,10 +8931,15 @@ class TestCli:
             "latest_status",
         }
         assert exported["summary"]["total_runs"] == 2
+        assert exported["total_runs"] == 2
+        assert exported["failed_runs"] == 0
+        assert exported["traceable_failed_runs"] == 0
         assert exported["summary"]["trace_ids"] == ["trace-session-001", "trace-session-002"]
         assert exported["summary"]["failed_trace_ids"] == []
         assert exported["trace_ids"] == ["trace-session-001", "trace-session-002"]
         assert exported["failed_trace_ids"] == []
+        assert exported["latest_failure_reason"] == ""
+        assert exported["latest_trace_id"] == "trace-session-002"
         assert exported["summary"]["idempotency_keys"] == ["trace-session-001"]
         assert exported["idempotency_keys"] == ["trace-session-001"]
         assert len(exported["runs"]) == 2
@@ -8977,10 +8987,14 @@ class TestCli:
         assert payload["latest_failure_reason"] == "tool_timeout"
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["failed_runs"] == 1
+        assert exported["failed_runs"] == 1
+        assert exported["traceable_failed_runs"] == 1
         assert exported["summary"]["failed_trace_ids"] == ["trace-session-001"]
         assert exported["trace_ids"] == ["trace-session-001"]
         assert exported["failed_trace_ids"] == ["trace-session-001"]
         assert exported["idempotency_keys"] == ["trace-session-001"]
+        assert exported["latest_failure_reason"] == "tool_timeout"
+        assert exported["latest_trace_id"] == "trace-session-001"
         assert exported["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_export_eval_dataset_writes_multi_session_json(

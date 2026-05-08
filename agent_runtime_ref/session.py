@@ -46,9 +46,14 @@ class SessionSummaryPayload(TypedDict):
 class SessionPayload(TypedDict, total=False):
     session: SessionMetadataPayload
     summary: SessionSummaryPayload
+    total_runs: int
+    failed_runs: int
+    traceable_failed_runs: int
     trace_ids: list[str]
     failed_trace_ids: list[str]
     idempotency_keys: list[str]
+    latest_failure_reason: str
+    latest_trace_id: str | None
     runs: list[RunPayload]
     eval: dict[str, object]
 
@@ -444,6 +449,7 @@ class SessionStore:
             raise ValueError(f"Session not found: {session_id}")
         runs = self.runs_for_session(session_id)
         summary = summarize_session(session_id, runs)
+        latest_failed_run = next((run for run in reversed(runs) if run.status == "failed"), None)
         return {
             "session": {
                 "session_id": session.session_id,
@@ -464,9 +470,14 @@ class SessionStore:
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
+            "total_runs": summary.total_runs,
+            "failed_runs": summary.failed_runs,
+            "traceable_failed_runs": summary.traceable_failed_runs,
             "trace_ids": list(summary.trace_ids),
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
+            "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
+            "latest_trace_id": summary.latest_trace_id,
             "runs": [
                 {
                     "trace_id": run.trace_id,
