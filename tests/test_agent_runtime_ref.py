@@ -7869,7 +7869,17 @@ class TestCli:
         ]
         assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
         assert set(payload["artifact_bundle"]["review_evidence"]) == {
-            "sandbox_profile_reviewed"
+            "sandbox_profile_reviewed",
+            "duplicate_ticket_guard",
+        }
+        duplicate_guard = payload["artifact_bundle"]["review_evidence"][
+            "duplicate_ticket_guard"
+        ]
+        assert duplicate_guard == {
+            "idempotency_key_required": True,
+            "eval_ref": "eval:duplicate_ticket_eval_passed",
+            "approval_ref": "approval:apr-2026-04-07-001",
+            "rollout_gate_ref": "gate:gate-2026-04-07-001",
         }
         sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
         assert (

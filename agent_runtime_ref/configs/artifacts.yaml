@@ -26,3 +26,8 @@ bundle:
       review_evidence_refs:
         - trace:sandbox_profile_reviewed
         - eval:sandbox_profile_review
+    duplicate_ticket_guard:
+      idempotency_key_required: true
+      eval_ref: eval:duplicate_ticket_eval_passed
+      approval_ref: approval:apr-2026-04-07-001
+      rollout_gate_ref: gate:gate-2026-04-07-001
