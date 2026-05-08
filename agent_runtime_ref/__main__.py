@@ -936,6 +936,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "authorization_mode": run.authorization_mode,
                 "delegated_principal_id": run.delegated_principal_id,
                 "delegated_scope": run.delegated_scope,
+                "idempotency_key": run.idempotency_key,
             }
             for run in runs
         ],
@@ -1021,6 +1022,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "authorization_mode": run.authorization_mode,
                 "delegated_principal_id": run.delegated_principal_id,
                 "delegated_scope": run.delegated_scope,
+                "idempotency_key": run.idempotency_key,
             }
             for run in runs
         ],

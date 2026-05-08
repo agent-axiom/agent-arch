@@ -429,6 +429,7 @@ class TestRuntimeDocsParity:
             assert "export-session" in text
             assert "capability_session_id" in text
             assert "capability_session_status" in text
+            assert "idempotency_key" in text
 
     def test_approval_schema_documents_policy_loader_errors(self) -> None:
         """Keep approval schema docs aligned with policy validation errors."""
@@ -3894,10 +3895,12 @@ class TestRuntimeControlPaths:
             authorization_mode=" user_delegated ",
             delegated_principal_id=" user-1 ",
             delegated_scope=" tickets.write ",
+            idempotency_key=" ticket-session-001 ",
         )
         assert request.authorization_mode == "user_delegated"
         assert request.delegated_principal_id == "user-1"
         assert request.delegated_scope == "tickets.write"
+        assert request.idempotency_key == "ticket-session-001"
 
     def test_approval_queue_rejects_unsupported_resolution_decisions(self) -> None:
         queue = AgentRuntime().approvals
@@ -3975,6 +3978,7 @@ class TestRuntimeControlPaths:
         assert payload["session"]["session_id"] == session_id
         assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
+        assert payload["runs"][0]["idempotency_key"] == "trace-export-capability-001"
 
     def test_session_export_rejects_blank_session_id(self, tmp_path: Path) -> None:
         from agent_runtime_ref.session import SessionStore
@@ -4177,6 +4181,7 @@ class TestRuntimeControlPaths:
             ("authorization_mode", {"authorization_mode": cast(str, 7)}),
             ("delegated_principal_id", {"delegated_principal_id": cast(str, 7)}),
             ("delegated_scope", {"delegated_scope": cast(str, 7)}),
+            ("idempotency_key", {"idempotency_key": cast(str, 7)}),
         )
         for field, override in malformed_fields:
             store = SessionStore()
@@ -4417,12 +4422,14 @@ class TestRuntimeControlPaths:
             authorization_mode=" user_delegated ",
             delegated_principal_id=" user-1 ",
             delegated_scope=" tickets.write ",
+            idempotency_key=" ticket-session-001 ",
         )
         assert record.capability_session_id == "cap-session-001"
         assert record.capability_session_status == "pending"
         assert record.authorization_mode == "user_delegated"
         assert record.delegated_principal_id == "user-1"
         assert record.delegated_scope == "tickets.write"
+        assert record.idempotency_key == "ticket-session-001"
 
     def test_session_store_requires_eval_dataset_name(self, tmp_path: Path) -> None:
         from agent_runtime_ref.session import SessionStore
@@ -8409,6 +8416,7 @@ class TestCli:
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "idempotency_key",
         }
 
     @staticmethod
@@ -8450,7 +8458,9 @@ class TestCli:
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
         assert payload["runs"][0]["delegated_principal_id"] == ""
         assert payload["runs"][0]["delegated_scope"] == ""
+        assert payload["runs"][0]["idempotency_key"] == "trace-session-001"
         assert payload["runs"][1]["trace_id"] == "trace-session-002"
+        assert payload["runs"][1]["idempotency_key"] == ""
 
     def test_cli_session_replay_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8510,6 +8520,8 @@ class TestCli:
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
         assert payload["runs"][0]["delegated_principal_id"] == ""
         assert payload["runs"][0]["delegated_scope"] == ""
+        assert payload["runs"][0]["idempotency_key"] == "trace-session-001"
+        assert payload["runs"][1]["idempotency_key"] == ""
         assert payload["runs"][1]["output_text"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
@@ -8584,6 +8596,8 @@ class TestCli:
         assert len(exported["runs"]) == 2
         self._assert_session_run_contract(exported["runs"][0])
         self._assert_session_run_contract(exported["runs"][1])
+        assert exported["runs"][0]["idempotency_key"] == "trace-session-001"
+        assert exported["runs"][1]["idempotency_key"] == ""
 
     def test_cli_export_session_surfaces_latest_failure_reason(
         self,
@@ -8669,6 +8683,7 @@ class TestCli:
             "session-eval-mixed",
             "session-eval-failed-run",
         ]
+        assert exported["sessions"][0]["runs"][0]["idempotency_key"] == "trace-eval-support-001"
         assert exported["sessions"][0]["eval"]["labels"]
         assert set(exported["sessions"][0]["eval"]) == {
             "scenario",

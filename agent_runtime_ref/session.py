@@ -19,6 +19,7 @@ class RunPayload(TypedDict):
     authorization_mode: str
     delegated_principal_id: str
     delegated_scope: str
+    idempotency_key: str
 
 
 class SessionMetadataPayload(TypedDict):
@@ -59,6 +60,7 @@ class RunRecord:
     authorization_mode: str = "platform_owned"
     delegated_principal_id: str = ""
     delegated_scope: str = ""
+    idempotency_key: str = ""
 
     def __post_init__(self) -> None:
         self.trace_id = _read_required_string(self.trace_id, field="trace_id")
@@ -86,6 +88,10 @@ class RunRecord:
         self.delegated_scope = _read_optional_string(
             self.delegated_scope,
             field="delegated_scope",
+        )
+        self.idempotency_key = _read_optional_string(
+            self.idempotency_key,
+            field="idempotency_key",
         )
         status = self.status
         if status not in {"success", "denied", "failed", "approval_required"}:
@@ -197,6 +203,7 @@ class SessionStore:
         authorization_mode: str = "platform_owned",
         delegated_principal_id: str = "",
         delegated_scope: str = "",
+        idempotency_key: str = "",
     ) -> RunRecord:
         session_id = _read_required_string(session_id, field="session_id")
         status = _read_required_string(status, field="status")
@@ -228,6 +235,7 @@ class SessionStore:
             field="delegated_principal_id",
         )
         delegated_scope = _read_optional_string(delegated_scope, field="delegated_scope")
+        idempotency_key = _read_optional_string(idempotency_key, field="idempotency_key")
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
@@ -265,6 +273,7 @@ class SessionStore:
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            idempotency_key=idempotency_key,
         )
         self._runs.append(record)
         return record
@@ -379,6 +388,7 @@ class SessionStore:
                     "authorization_mode": run.authorization_mode,
                     "delegated_principal_id": run.delegated_principal_id,
                     "delegated_scope": run.delegated_scope,
+                    "idempotency_key": run.idempotency_key,
                 }
                 for run in runs
             ],
