@@ -1294,6 +1294,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "dataset_name": dataset_name,
         "output_path": str(output_path),
         "session_count": len(session_ids),
+        "session_ids": list(session_ids),
         "run_count": sum(summary.total_runs for summary in session_summaries),
         "failed_runs": sum(summary.failed_runs for summary in session_summaries),
         "traceable_failed_runs": sum(
