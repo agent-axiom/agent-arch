@@ -68,7 +68,7 @@
 预期输出：
 
 ```json
-{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "events": 14, "memory_records": 4, "pending_approvals": 1, "config_dir": ".../agent_runtime_ref/configs"}
+{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "idempotency_keys": ["trace-demo-001"], "events": 14, "memory_records": 4, "pending_approvals": 1, "config_dir": ".../agent_runtime_ref/configs"}
 ```
 
 通过显式子命令运行运行时：
@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`session_id`、`status`、`result`、`events`、`memory_records`、`pending_approvals` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。更专门的 selectors 包括用于 memory inspection 的 `--limit`、用于 approval closure 的 `--approval-id`、用于 trace replay 的 `--replay-trace-id`、用于 session commands 的 `--trace-prefix`，以及用于 eval dataset exports 的 `--session-prefix`。
+第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`config_dir`、`trace_id`、`idempotency_keys`、`session_id`、`status`、`result`、`events`、`memory_records`、`pending_approvals` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。更专门的 selectors 包括用于 memory inspection 的 `--limit`、用于 approval closure 的 `--approval-id`、用于 trace replay 的 `--replay-trace-id`、用于 session commands 的 `--trace-prefix`，以及用于 eval dataset exports 的 `--session-prefix`。
 
 查看智能体身份与已批准能力清单：
 
