@@ -7119,6 +7119,7 @@ class TestCli:
                 "risk_tier": "high",
                 "network_access": "brokered",
                 "tool_principal": "svc-ticket-writer",
+                "idempotency_key_required": True,
                 "allowed_egress": ["tickets.internal"],
             },
             {
@@ -7127,6 +7128,7 @@ class TestCli:
                 "risk_tier": "low",
                 "network_access": "restricted",
                 "tool_principal": "svc-knowledge-reader",
+                "idempotency_key_required": False,
                 "allowed_egress": ["docs.internal"],
             },
         ]
