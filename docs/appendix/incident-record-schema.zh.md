@@ -48,6 +48,7 @@ change_id: chg-2026-04-07-001
 rollout_wave: canary
 tool_principal: svc-ticket-writer
 approval_id: apr-2026-04-09-001
+idempotency_key: ticket-req-2026-04-09-001
 affected_surfaces:
   - approval_path
   - tool_gateway
@@ -62,8 +63,11 @@ owner: platform-operations
 
 - `category`，它把事故与分诊分类、评测更新连接起来；
 - `bundle_id`、`change_id` 与 `rollout_wave`，它们把事故与发布纪律连接起来；
-- `tool_principal` 与 `approval_id`，它们能更快定位真实的副作用；
+- `tool_principal`、`approval_id` 与 `idempotency_key`，它们能更快定位真实副作用，并说明重试是否可以安全匹配已经创建的对象；
 - `affected_surfaces`，它提醒团队不要把问题缩减成单纯的模型输出。
+
+!!! example "重复工单线索的事故记录"
+    在 support-triage 事故里，记录必须把 `idempotency_key` 和 `trace_id`、`session_id`、`approval_id`、`tool_principal`、`bundle_id`、`rollout_wave` 放在一起。否则，复盘就无法可靠地区分一次状态未知的写入和第二次真实的 `create_ticket` 副作用，也无法把事故转成评测/更新门禁。
 
 ## 4. 事故事后复盘链接
 
