@@ -1677,6 +1677,7 @@ class TestFailurePaths:
         assert payload["session_count"] == 1
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["idempotency_keys"] == ["trace-eval-failed-run-001"]
         assert payload["latest_failure_reason"] == "tool_timeout"
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
@@ -7218,6 +7219,7 @@ class TestCli:
                     "denied_runs",
                     "failed_runs",
                     "traceable_failed_runs",
+                    "idempotency_keys",
                     "latest_failure_reason",
                     "latest_trace_id",
                     "latest_status",
@@ -7247,6 +7249,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 0,
                     "traceable_failed_runs": 0,
+                    "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "",
                     "latest_trace_id": "trace-session-001",
                     "latest_status": "success",
@@ -7267,6 +7270,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 0,
                     "traceable_failed_runs": 0,
+                    "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "",
                     "latest_trace_id": "trace-session-002",
                     "latest_status": "success",
@@ -7287,6 +7291,7 @@ class TestCli:
                     "denied_runs": 0,
                     "failed_runs": 1,
                     "traceable_failed_runs": 1,
+                    "idempotency_keys": ["trace-session-001"],
                     "latest_failure_reason": "tool_timeout",
                     "latest_trace_id": "trace-session-001",
                     "latest_status": "failed",
@@ -7310,6 +7315,7 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_failure_reason",
             "latest_trace_id",
             "latest_status",
@@ -7335,6 +7341,7 @@ class TestCli:
         assert exit_code == 0
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["idempotency_keys"] == ["trace-session-failure-001"]
         assert payload["latest_failure_reason"] == "tool_timeout"
 
     def test_cli_session_eval_summary_counts_precheck_denials(self, cli_json) -> None:
@@ -8472,6 +8479,7 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_failure_reason",
             "latest_trace_id",
             "latest_status",
@@ -8612,12 +8620,14 @@ class TestCli:
             "total_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_failure_reason",
             "latest_trace_id",
         }
         assert payload["session_id"] == "session-demo-001"
         assert payload["output_path"] == str(output_path)
         assert payload["total_runs"] == 2
+        assert payload["idempotency_keys"] == ["trace-session-001"]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert set(exported) == {"session", "summary", "runs"}
         assert exported["session"] == {
@@ -8633,10 +8643,12 @@ class TestCli:
             "denied_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_trace_id",
             "latest_status",
         }
         assert exported["summary"]["total_runs"] == 2
+        assert exported["summary"]["idempotency_keys"] == ["trace-session-001"]
         assert len(exported["runs"]) == 2
         self._assert_session_run_contract(exported["runs"][0])
         self._assert_session_run_contract(exported["runs"][1])
@@ -8667,12 +8679,14 @@ class TestCli:
             "total_runs",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_failure_reason",
             "latest_trace_id",
         }
         assert payload["output_path"] == str(output_path)
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["idempotency_keys"] == ["trace-session-001"]
         assert payload["latest_failure_reason"] == "tool_timeout"
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert exported["summary"]["failed_runs"] == 1
@@ -8700,6 +8714,7 @@ class TestCli:
             "run_count",
             "failed_runs",
             "traceable_failed_runs",
+            "idempotency_keys",
             "latest_failure_reason",
             "sessions",
         }
@@ -8709,6 +8724,11 @@ class TestCli:
         assert payload["run_count"] == 5
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
+        assert payload["idempotency_keys"] == [
+            "trace-eval-support-001",
+            "trace-eval-mixed-001",
+            "trace-eval-failed-run-001",
+        ]
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["sessions"] == [
             "session-eval-support",
@@ -8717,15 +8737,29 @@ class TestCli:
             "session-eval-failed-run",
         ]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
-        assert set(exported) == {"dataset_name", "session_count", "run_count", "sessions"}
+        assert set(exported) == {
+            "dataset_name",
+            "session_count",
+            "run_count",
+            "idempotency_keys",
+            "sessions",
+        }
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert exported["session_count"] == 4
         assert exported["run_count"] == 5
+        assert exported["idempotency_keys"] == [
+            "trace-eval-support-001",
+            "trace-eval-mixed-001",
+            "trace-eval-failed-run-001",
+        ]
         assert [session["session"]["session_id"] for session in exported["sessions"]] == [
             "session-eval-support",
             "session-eval-memory",
             "session-eval-mixed",
             "session-eval-failed-run",
+        ]
+        assert exported["sessions"][0]["summary"]["idempotency_keys"] == [
+            "trace-eval-support-001"
         ]
         assert exported["sessions"][0]["runs"][0]["idempotency_key"] == "trace-eval-support-001"
         assert exported["sessions"][0]["eval"]["labels"]

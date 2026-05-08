@@ -937,6 +937,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             "denied_runs": summary.denied_runs,
             "failed_runs": summary.failed_runs,
             "traceable_failed_runs": summary.traceable_failed_runs,
+            "idempotency_keys": list(summary.idempotency_keys),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -986,6 +987,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
         "denied_runs": summary.denied_runs,
         "failed_runs": summary.failed_runs,
         "traceable_failed_runs": summary.traceable_failed_runs,
+        "idempotency_keys": list(summary.idempotency_keys),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
         "latest_status": summary.latest_status,
@@ -1023,6 +1025,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
             "denied_runs": summary.denied_runs,
             "failed_runs": summary.failed_runs,
             "traceable_failed_runs": summary.traceable_failed_runs,
+            "idempotency_keys": list(summary.idempotency_keys),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1074,6 +1077,7 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
         "total_runs": summary.total_runs,
         "failed_runs": summary.failed_runs,
         "traceable_failed_runs": summary.traceable_failed_runs,
+        "idempotency_keys": list(summary.idempotency_keys),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
@@ -1133,6 +1137,11 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "failed_runs": sum(summary.failed_runs for summary in session_summaries),
         "traceable_failed_runs": sum(
             summary.traceable_failed_runs for summary in session_summaries
+        ),
+        "idempotency_keys": list(
+            dict.fromkeys(
+                key for summary in session_summaries for key in summary.idempotency_keys
+            )
         ),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "sessions": session_ids,
