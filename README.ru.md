@@ -38,6 +38,7 @@
 - **Vendor-neutral архитектура.** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк или model provider.
 - **Production reality вместо agent theater.** Фокус на политиках, подтверждениях, наблюдаемости, evals и дисциплине жизненного цикла.
 - **Исполняемый справочный слой.** В репозитории есть не только текст, но и рабочие reference assets.
+- **Один сквозной кейс по всему стеку.** Support-triage / duplicate-ticket thread связывает книгу, справочные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от retrieval и tool execution до telemetry, evals, rollout, lifecycle и registry control.
 
 ## С чего начать
 
