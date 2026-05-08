@@ -938,6 +938,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "delegated_principal_id": resolved.delegated_principal_id,
         "delegated_scope": resolved.delegated_scope,
         "idempotency_key": resolved.idempotency_key,
+        "idempotency_keys": [resolved.idempotency_key] if resolved.idempotency_key else [],
     }
 
 
