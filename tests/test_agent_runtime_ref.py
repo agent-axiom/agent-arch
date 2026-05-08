@@ -4691,6 +4691,7 @@ class TestRuntimeControlPaths:
             "required_signals",
             "approval_roles",
             "missing_signals",
+            "failed_run_signals",
             "missing_failed_run_signals",
             "support_duplicate_signals",
             "missing_support_duplicate_signals",
@@ -4701,6 +4702,7 @@ class TestRuntimeControlPaths:
         assert payload["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["ready"] is True
         assert payload["missing_signals"] == []
+        assert payload["failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["missing_failed_run_signals"] == []
         assert payload["support_duplicate_signals"] == ["duplicate_ticket_eval_passed"]
         assert payload["missing_support_duplicate_signals"] == []
@@ -8456,6 +8458,7 @@ class TestCli:
             "required_signals",
             "approval_roles",
             "missing_signals",
+            "failed_run_signals",
             "missing_failed_run_signals",
             "support_duplicate_signals",
             "missing_support_duplicate_signals",
@@ -8478,6 +8481,7 @@ class TestCli:
         ]
         assert payload["approval_roles"] == ["platform-owner", "security-reviewer"]
         assert payload["missing_signals"] == ["failed_run_drill_checked"]
+        assert payload["failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["support_duplicate_signals"] == ["duplicate_ticket_eval_passed"]
         assert payload["missing_support_duplicate_signals"] == []
