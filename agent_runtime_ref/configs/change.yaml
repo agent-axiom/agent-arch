@@ -18,6 +18,7 @@ change:
   required_signals:
     - design_review_passed
     - offline_eval_passed
+    - duplicate_ticket_eval_passed
     - policy_diff_reviewed
     - rollback_plan_ready
     - session_expiry_behavior_checked
