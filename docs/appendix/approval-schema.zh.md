@@ -51,6 +51,7 @@ requested_action: create_incident_ticket
 reason: write_path_requires_human_review
 requested_fields:
   summary: "Open a Sev-2 onboarding incident"
+  idempotency_key: ticket-req-2026-04-09-001
   target_system: jira
   destination: project://OPS
 sandbox_context:
@@ -106,6 +107,7 @@ decision: approved
 executed: true
 executed_capability: ticket_write
 tool_principal: svc-ticket-writer
+idempotency_key: ticket-req-2026-04-09-001
 result_status: success
 linked_events:
   - approval_requested
@@ -132,6 +134,9 @@ linked_events:
 - `tool_failed`
 
 这也是为什么好的审批流程应该既能从审计记录还原，也能从追踪还原。如果审批出现在失败运行演练或其他退化路径里，这种还原还应该和会话导出对得上，包括 `failure_reason` 这样的字段，而不是只停留在审批记录本身。
+
+!!! example "重复工单线索的 approval record"
+    在 support-triage 案例中，approver 按下 approve 之前就应该在 payload 旁看到 `idempotency_key`。如果之后 `create_ticket` 超时，audit record 会把同一个 key 保存在 `approval_id`、`trace_id` 和 `tool_principal` 旁边，让 review 能区分一次已审批的写入意图和 blind retry 之后重复发生的副作用。
 
 ## 7. 它和策略包的关系
 
