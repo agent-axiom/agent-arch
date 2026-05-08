@@ -8622,6 +8622,8 @@ class TestCli:
             "count": 1,
             "approval_ids": ["apr-001"],
             "pending_approval_ids": ["apr-001"],
+            "approval_capability_names": ["create_ticket"],
+            "pending_approval_capability_names": ["create_ticket"],
             "approval_status_counts": {"pending": 1},
             "idempotency_keys": ["trace-approval-001"],
             "approvals": [
@@ -8665,6 +8667,8 @@ class TestCli:
             "count": 1,
             "approval_ids": ["apr-001"],
             "pending_approval_ids": ["apr-001"],
+            "approval_capability_names": ["create_ticket"],
+            "pending_approval_capability_names": ["create_ticket"],
             "approval_status_counts": {"pending": 1},
             "idempotency_keys": ["trace-approval-authz-001"],
             "approvals": [
@@ -8700,6 +8704,8 @@ class TestCli:
         assert payload["trace_id"] == "trace-approval-normalized-001"
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["pending_approval_ids"] == ["apr-001"]
+        assert payload["approval_capability_names"] == ["create_ticket"]
+        assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["approval_status_counts"] == {"pending": 1}
         assert payload["idempotency_keys"] == ["trace-approval-normalized-001"]
         assert payload["approvals"][0]["capability_session_id"] == "cap-session-001"
