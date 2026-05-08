@@ -4632,6 +4632,7 @@ class TestRuntimeControlPaths:
             "ready",
             "missing_steps",
             "failed_run_archive_targets",
+            "support_duplicate_archive_targets",
             "replacement_mode",
         }
         assert payload["system_id"] == "support-triage-ref"
@@ -4644,6 +4645,12 @@ class TestRuntimeControlPaths:
             "telemetry_jsonl",
             "session_exports",
             "approval_history",
+        ]
+        assert payload["support_duplicate_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "runtime_control_bundle",
         ]
         assert payload["replacement_mode"] == "staged_replacement"
 
@@ -7969,6 +7976,7 @@ class TestCli:
             "emergency_freeze_owner",
             "archive_targets",
             "failed_run_archive_targets",
+            "support_duplicate_archive_targets",
         }
         assert set(payload["sandbox_profile"]) == {
             "manifest_version",
@@ -8094,6 +8102,12 @@ class TestCli:
             "telemetry_jsonl",
             "session_exports",
             "approval_history",
+        ]
+        assert payload["retirement"]["support_duplicate_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "runtime_control_bundle",
         ]
         assert set(payload["controls"]) == {
             "failed_run_control_expectations",
@@ -8334,6 +8348,7 @@ class TestCli:
             "ready",
             "missing_steps",
             "failed_run_archive_targets",
+            "support_duplicate_archive_targets",
             "replacement_mode",
         }
         assert payload["system_id"] == "support-triage-ref"
@@ -8343,6 +8358,12 @@ class TestCli:
             "telemetry_jsonl",
             "session_exports",
             "approval_history",
+        ]
+        assert payload["support_duplicate_archive_targets"] == [
+            "telemetry_jsonl",
+            "session_exports",
+            "approval_history",
+            "runtime_control_bundle",
         ]
         assert payload["replacement_mode"] == "staged_replacement"
 

@@ -778,6 +778,17 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
                 for target in retirement.archive_targets
                 if target in {"telemetry_jsonl", "session_exports", "approval_history"}
             ],
+            "support_duplicate_archive_targets": [
+                target
+                for target in retirement.archive_targets
+                if target
+                in {
+                    "telemetry_jsonl",
+                    "session_exports",
+                    "approval_history",
+                    "runtime_control_bundle",
+                }
+            ],
         },
         "sandbox_profile": {
             "manifest_version": sandbox_profile.get("manifest_version"),
@@ -873,6 +884,17 @@ def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
             target
             for target in plan.archive_targets
             if target in {"telemetry_jsonl", "session_exports", "approval_history"}
+        ],
+        "support_duplicate_archive_targets": [
+            target
+            for target in plan.archive_targets
+            if target
+            in {
+                "telemetry_jsonl",
+                "session_exports",
+                "approval_history",
+                "runtime_control_bundle",
+            }
         ],
         "replacement_mode": plan.replacement_mode,
     }
