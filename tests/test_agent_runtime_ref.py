@@ -1410,6 +1410,7 @@ class TestFailurePaths:
             "idempotency_keys",
             "events",
             "memory_records",
+            "memory_record_ids",
             "pending_approvals",
             "pending_approval_ids",
             "config_dir",
@@ -7108,6 +7109,7 @@ class TestCli:
             "idempotency_keys",
             "events",
             "memory_records",
+            "memory_record_ids",
             "pending_approvals",
             "pending_approval_ids",
             "config_dir",
@@ -7121,6 +7123,7 @@ class TestCli:
         assert payload["idempotency_keys"] == ["trace-demo-001"]
         assert payload["events"] == 14
         assert payload["memory_records"] == 4
+        assert payload["memory_record_ids"] == ["mem-001", "mem-002", "mem-003", "mem-004"]
         assert payload["pending_approvals"] == 1
         assert payload["pending_approval_ids"] == ["apr-001"]
         assert payload["config_dir"] == str(default_config_dir())
@@ -7128,9 +7131,10 @@ class TestCli:
     def test_cli_inspect_memory_filters_records(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-memory", "--memory-class", "profile"])
         assert exit_code == 0
-        assert set(payload) == {"config_dir", "count", "records"}
+        assert set(payload) == {"config_dir", "count", "memory_ids", "records"}
         assert payload["config_dir"] == str(default_config_dir())
         assert payload["count"] == 1
+        assert payload["memory_ids"] == ["mem-001"]
         assert payload["records"] == [
             {
                 "memory_id": "mem-001",
@@ -7157,6 +7161,7 @@ class TestCli:
         )
         assert exit_code == 0
         assert payload["count"] == 1
+        assert payload["memory_ids"] == ["mem-001"]
         assert payload["records"] == [
             {
                 "memory_id": "mem-001",
