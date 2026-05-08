@@ -500,6 +500,7 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "owner_team": agent.owner_team,
         "runtime_principal": agent.runtime_principal,
         "approved_capabilities": sorted(approved_inventory.capabilities),
+        "catalog_capability_names": [spec.name for spec in catalog_specs],
         "idempotency_required_capabilities": [
             spec.name for spec in catalog_specs if spec.idempotency_key_required
         ],
