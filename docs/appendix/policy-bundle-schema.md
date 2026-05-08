@@ -115,6 +115,7 @@ approval_contract:
   request_fields:
     - trace_id
     - session_id
+    - idempotency_key
     - requested_by
     - reason
     - tool_arguments_redacted
@@ -129,6 +130,9 @@ approval_contract:
 ```
 
 Смысл тут простой: подтверждение должно быть не галочкой в интерфейсе, а машиночитаемым рабочим контрактом. А если подтверждение влияет на выпуск, такой контракт должен еще и явно показывать, к какой версии набора и к какой идентичности выпуска относится человеческое решение.
+
+!!! example "Policy contract для duplicate-ticket thread"
+    Для support-triage `create_ticket` contract должен требовать `idempotency_key` уже в approval request, а не только в tool execution. Тогда человек, gateway и trace видят один и тот же write intent, policy bundle может запретить retry без reconciliation при `side_effect_unknown`, а rollout review проверяет именно governed capability, не loose tool call.
 
 ## Как набор политик связан с жизненным циклом
 

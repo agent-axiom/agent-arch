@@ -115,6 +115,7 @@ approval_contract:
   request_fields:
     - trace_id
     - session_id
+    - idempotency_key
     - requested_by
     - reason
     - tool_arguments_redacted
@@ -129,6 +130,9 @@ approval_contract:
 ```
 
 重点很简单：审批应该是机器可读的运行契约，而不只是界面上的一颗按钮。而当审批本身会影响发布时，这个契约也应该明确写出它所属的包版本和发布身份。
+
+!!! example "重复工单线索的策略契约"
+    对 support-triage 来说，`create_ticket` 契约应该在审批请求里就要求 `idempotency_key`，而不是只在工具执行时才出现。这样，人工审批、gateway 和 trace 会看到同一个写入意图；policy bundle 可以在 `side_effect_unknown` 时禁止没有 reconciliation 的重试；rollout review 检查的是受治理能力，而不是松散的工具调用。
 
 ## 策略包和生命周期的关系
 

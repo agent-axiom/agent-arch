@@ -115,6 +115,7 @@ approval_contract:
   request_fields:
     - trace_id
     - session_id
+    - idempotency_key
     - requested_by
     - reason
     - tool_arguments_redacted
@@ -129,6 +130,9 @@ approval_contract:
 ```
 
 The point is simple: approval should be a machine-readable operational contract, not just a checkbox in a UI. And when approvals are release-bearing, that contract should also make clear which bundle version and release identity the human decision belonged to.
+
+!!! example "Policy contract for the duplicate-ticket thread"
+    For support-triage, the `create_ticket` contract should require `idempotency_key` in the approval request, not only during tool execution. Then the human, gateway, and trace see the same write intent, the policy bundle can forbid retry without reconciliation on `side_effect_unknown`, and rollout review checks a governed capability rather than a loose tool call.
 
 ## How the policy bundle connects to the lifecycle
 
