@@ -1174,6 +1174,8 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
     return {
         "session_id": session_id,
         "run_count": len(results),
+        "trace_ids": list(summary.trace_ids),
+        "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
         "summary": {
             "total_runs": summary.total_runs,
