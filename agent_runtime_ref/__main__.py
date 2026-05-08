@@ -1080,6 +1080,8 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "tenant_id": session.tenant_id,
         "principal_id": session.principal_id,
         "trace_count": len(session.traces),
+        "trace_ids": list(summary.trace_ids),
+        "failed_trace_ids": list(summary.failed_trace_ids),
         "latest_status": results[-1].status if results else None,
         "idempotency_keys": list(summary.idempotency_keys),
         "summary": {

@@ -8809,6 +8809,8 @@ class TestCli:
             "tenant_id",
             "principal_id",
             "trace_count",
+            "trace_ids",
+            "failed_trace_ids",
             "latest_status",
             "idempotency_keys",
             "summary",
@@ -8818,6 +8820,8 @@ class TestCli:
         assert payload["tenant_id"] == "tenant-acme"
         assert payload["principal_id"] == "user-42"
         assert payload["trace_count"] == 2
+        assert payload["trace_ids"] == ["trace-session-001", "trace-session-002"]
+        assert payload["failed_trace_ids"] == []
         assert payload["latest_status"] == "success"
         assert payload["idempotency_keys"] == ["trace-session-001"]
         self._assert_session_summary_contract(payload["summary"])
@@ -8855,6 +8859,8 @@ class TestCli:
         assert exit_code == 0
         assert payload["summary"]["failed_runs"] == 1
         assert payload["summary"]["traceable_failed_runs"] == 1
+        assert payload["trace_ids"] == ["trace-inspect-failure-001"]
+        assert payload["failed_trace_ids"] == ["trace-inspect-failure-001"]
         assert payload["summary"]["failed_trace_ids"] == ["trace-inspect-failure-001"]
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
         self._assert_session_run_contract(payload["runs"][0])
