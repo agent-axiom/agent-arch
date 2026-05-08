@@ -10,6 +10,9 @@
 
     Если читаешь книгу впервые, держись сначала устойчивого ядра. Если нужен самый свежий operational contour, потом переходи к более подвижному слою.
 
+!!! example "Редакционная нить: support-triage"
+    В текущем опубликованном слое support-triage кейс работает как сквозной editorial thread. Он связывает retrieval, tool execution, duplicate-ticket recovery, traces, SLO, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это помогает проверять, что структура книги не распадается на отдельные темы.
+
 ## Структура
 
 ### Часть I. Основания

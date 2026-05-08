@@ -10,6 +10,9 @@ This page is about the structure and status of the book. If you need a reading r
 
     If you are reading the book for the first time, stay with the stable core first. If you need the newest operational contour, move to the faster layer afterward.
 
+!!! example "Editorial thread: support-triage"
+    In the current published layer, the support-triage case acts as the running editorial thread. It connects retrieval, tool execution, duplicate-ticket recovery, traces, SLOs, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. This helps verify that the book structure does not fragment into isolated topics.
+
 ## Structure
 
 ### Part I. Foundations
