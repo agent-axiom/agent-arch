@@ -78,7 +78,7 @@
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
 
-Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
+Второй вариант специально добавлен как небольшой failure-rich сценарий. Он позволяет пакету показать, что даже разрешенная capability может завершиться как управляемый failed run с явной телеметрией, а не раствориться за общим happy path. `simulate-run` возвращает `agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `event_types`, `session_id`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids` и опциональный `failure_reason`. Common identity and trace overrides включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы examples можно было сделать deterministic без редактирования configs. Более специальные selectors включают `--limit` для memory inspection, `--approval-id` для approval closure, `--replay-trace-id` для trace replay, `--trace-prefix` для session commands и `--session-prefix` для eval dataset exports.
 
 Просмотр identity агента и approved inventory:
 
@@ -111,7 +111,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 ```
 
 `inspect-memory` теперь возвращает `config_dir`, `count`, `memory_ids` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
-`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
+`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
 
 Вывод структурированных событий для одного запуска:
 
@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`dump-events` возвращает `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `idempotency_keys` и `events`; `inspect-trace` возвращает `trace_id`, `event_count`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `source_idempotency_keys` и `replay_idempotency_keys`, чтобы investigation и replay сохраняли source/run lineage и позволяли сравнить исходные и replay write keys.
+`dump-events` возвращает `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `idempotency_keys` и `events`; `inspect-trace` возвращает `trace_id`, `event_count`, `event_types`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys` и `replay_idempotency_keys`, чтобы investigation и replay сохраняли source/run lineage и позволяли сравнить исходные и replay write keys.
 
 Проверка политики выкладки с переопределением сигналов:
 

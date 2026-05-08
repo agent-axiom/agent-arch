@@ -445,6 +445,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
+        "event_types": _event_types_from_events(runtime.telemetry.events),
         "events": len(runtime.telemetry.events),
         "memory_records": len(memory_record_ids),
         "memory_record_ids": memory_record_ids,
@@ -539,6 +540,11 @@ def _idempotency_keys_from_events(events: Sequence[StructuredEvent]) -> list[str
                 keys.append(normalized)
     return keys
 
+
+def _event_types_from_events(events: Sequence[StructuredEvent]) -> list[str]:
+    return [event.event_type for event in events]
+
+
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
@@ -561,6 +567,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
+        "event_types": _event_types_from_events(runtime.telemetry.events),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
@@ -594,6 +601,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
+        "event_types": _event_types_from_events(runtime.telemetry.events),
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
@@ -610,6 +618,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     return {
         "trace_id": trace_id,
         "event_count": len(filtered),
+        "event_types": _event_types_from_events(filtered),
         "idempotency_keys": _idempotency_keys_from_events(filtered),
         "events": [event.as_dict() for event in filtered],
     }
@@ -669,6 +678,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "status": result.status,
         "result": result.output_text,
         "event_count": len(runtime.telemetry.events),
+        "event_types": _event_types_from_events(runtime.telemetry.events),
         "idempotency_keys": list(
             dict.fromkeys(source_idempotency_keys + replay_idempotency_keys)
         ),
