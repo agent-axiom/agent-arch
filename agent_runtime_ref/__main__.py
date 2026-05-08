@@ -707,6 +707,8 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     ]
     return {
         "ready": assessment.ready,
+        "required_checks": list(policy.required_checks),
+        "blocked_checks": list(policy.blocked_checks),
         "missing_required": list(assessment.missing_required),
         "support_duplicate_required": support_duplicate_required,
         "missing_support_duplicate_required": missing_support_duplicate_required,
@@ -918,6 +920,8 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
     return {
         "change_id": change.change_id,
         "ready": assessment.ready,
+        "required_signals": list(change.required_signals),
+        "approval_roles": list(change.approval_roles),
         "missing_signals": list(assessment.missing_signals),
         "missing_failed_run_signals": [
             signal for signal in assessment.missing_signals if "failed_run" in signal
