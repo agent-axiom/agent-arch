@@ -111,7 +111,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 ```
 
 `inspect-memory` теперь возвращает `config_dir`, `count` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
-`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
+`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
 
 Вывод структурированных событий для одного запуска:
 
@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` возвращает `trace_id`, `event_count`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys` и `replay_idempotency_keys`, чтобы investigation и replay сохраняли source/run lineage и позволяли сравнить исходные и replay write keys.
+`dump-events` возвращает `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `idempotency_keys` и `events`; `inspect-trace` возвращает `trace_id`, `event_count`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys` и `replay_idempotency_keys`, чтобы investigation и replay сохраняли source/run lineage и позволяли сравнить исходные и replay write keys.
 
 Проверка политики выкладки с переопределением сигналов:
 

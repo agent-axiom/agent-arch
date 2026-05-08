@@ -519,6 +519,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
         "event_count": len(runtime.telemetry.events),
+        "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
 

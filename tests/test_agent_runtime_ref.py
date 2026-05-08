@@ -1367,6 +1367,7 @@ class TestFailurePaths:
         assert code == 0
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
+        assert payload["idempotency_keys"] == ["trace-cli-failure-001"]
         assert payload["result"] == (
             "Runtime halted before side effects completed: create_ticket returned "
             "failed (tool_timeout)."
@@ -1489,11 +1490,13 @@ class TestFailurePaths:
             "failure_reason",
             "trace_id",
             "event_count",
+            "idempotency_keys",
             "events",
         }
         assert payload["trace_id"] == "trace-cli-dump-failure-001"
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
+        assert payload["idempotency_keys"] == ["trace-cli-dump-failure-001"]
         assert payload["result"] == (
             "Runtime halted before side effects completed: create_ticket returned "
             "failed (tool_timeout)."
@@ -1564,6 +1567,7 @@ class TestFailurePaths:
         dump_code, dump_payload = cli_json(["dump-events", "--trace-id", padded_trace_id])
         assert dump_code == 0
         assert dump_payload["trace_id"] == "trace-cli-normalized-001"
+        assert dump_payload["idempotency_keys"] == ["trace-cli-normalized-001"]
         assert {event["trace_id"] for event in dump_payload["events"]} == {
             "trace-cli-normalized-001"
         }
@@ -7202,7 +7206,15 @@ class TestCli:
         [
             (
                 ["dump-events", "--user-input", "Please open a ticket for this issue."],
-                ["status", "result", "failure_reason", "trace_id", "event_count", "events"],
+                [
+                    "status",
+                    "result",
+                    "failure_reason",
+                    "trace_id",
+                    "event_count",
+                    "idempotency_keys",
+                    "events",
+                ],
             ),
             (
                 ["inspect-session"],
@@ -7383,11 +7395,13 @@ class TestCli:
             "failure_reason",
             "trace_id",
             "event_count",
+            "idempotency_keys",
             "events",
         }
         assert payload["trace_id"] == "trace-cli-dump-success-001"
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
+        assert payload["idempotency_keys"] == ["trace-cli-dump-success-001"]
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["event_count"] == len(payload["events"])
 

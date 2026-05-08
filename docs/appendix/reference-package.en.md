@@ -111,7 +111,7 @@ Inspect memory records:
 ```
 
 `inspect-memory` now returns `config_dir`, `count`, and `records`; each record shows not only content, but also `provenance` and `revision`.
-`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
+`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:
 
@@ -147,7 +147,7 @@ Replay a run from a saved trace:
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` returns `trace_id`, `event_count`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
+`dump-events` returns `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `idempotency_keys`, and `events`; `inspect-trace` returns `trace_id`, `event_count`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
 
 Rollout policy check with signal overrides:
 
