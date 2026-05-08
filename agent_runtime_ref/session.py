@@ -36,6 +36,7 @@ class SessionSummaryPayload(TypedDict):
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    failed_trace_ids: list[str]
     idempotency_keys: list[str]
     latest_trace_id: str | None
     latest_status: str | None
@@ -423,6 +424,7 @@ class SessionStore:
                 "denied_runs": summary.denied_runs,
                 "failed_runs": summary.failed_runs,
                 "traceable_failed_runs": summary.traceable_failed_runs,
+                "failed_trace_ids": list(summary.failed_trace_ids),
                 "idempotency_keys": list(summary.idempotency_keys),
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
@@ -456,6 +458,7 @@ class SessionEvalSummary:
     denied_runs: int
     failed_runs: int
     traceable_failed_runs: int
+    failed_trace_ids: tuple[str, ...]
     idempotency_keys: tuple[str, ...]
     latest_trace_id: str | None
     latest_status: str | None
@@ -476,6 +479,14 @@ def summarize_session(
     idempotency_keys = tuple(
         dict.fromkeys(run.idempotency_key for run in normalized_runs if run.idempotency_key)
     )
+    failed_trace_ids = tuple(
+        run.trace_id
+        for run in normalized_runs
+        if run.status == "failed"
+        and bool(run.trace_id)
+        and bool(run.output_text)
+        and bool(run.failure_reason)
+    )
     return SessionEvalSummary(
         session_id=session_id,
         total_runs=len(normalized_runs),
@@ -485,14 +496,8 @@ def summarize_session(
         ),
         denied_runs=sum(1 for run in normalized_runs if run.status == "denied"),
         failed_runs=sum(1 for run in normalized_runs if run.status == "failed"),
-        traceable_failed_runs=sum(
-            1
-            for run in normalized_runs
-            if run.status == "failed"
-            and bool(run.trace_id)
-            and bool(run.output_text)
-            and bool(run.failure_reason)
-        ),
+        traceable_failed_runs=len(failed_trace_ids),
+        failed_trace_ids=failed_trace_ids,
         idempotency_keys=idempotency_keys,
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
