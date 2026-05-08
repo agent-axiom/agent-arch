@@ -77,6 +77,9 @@ flowchart LR
 
 </div>
 
+!!! example "Сквозной кейс: `create_support_ticket` как capability"
+    В support-triage системе `create_support_ticket` не должен быть просто tool name в prompt. В каталоге это write-capability с owner, approval requirement, idempotency requirement, timeout/retry defaults и brokered gateway transport. Policy layer может тогда явно сказать: этот run разрешен, чтение статуса разрешено, создание тикета требует идемпотентного ключа и approval, а при `side_effect_unknown` продолжение запрещено без reconcile.
+
 ## 4. Поверхность инструментов это не то же самое, что управляемая поверхность возможностей
 
 Свежие материалы OpenAI по tooling полезны тем, что проводят различие, которое на практике размывают многие команды: модель может видеть tools, MCP servers, hosted capabilities или local functions, но рантайм все равно должен решать, к какой поверхности управления все это относится.[^openai-tools]
