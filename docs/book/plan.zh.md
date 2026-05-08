@@ -10,6 +10,9 @@
 
     如果你第一次读这本书，先走稳定内核。如果你需要最新的运营轮廓，再进入更快变化的层。
 
+!!! example "编辑线索：support-triage"
+    在当前已发布层里，support-triage 案例承担着贯穿全书的编辑线索。它把检索、工具执行、重复工单恢复、traces、SLO、评测门、ownership、运行时模块、能力策略、rollout gates、ADLC、保障、来源谱系、退役、失配控制、telemetry 和 registry 串在一起。这有助于检查全书结构没有碎成一组互不相干的主题。
+
 ## 结构
 
 ### 第一部分：基础
