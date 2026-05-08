@@ -686,6 +686,7 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     return {
         "ready": assessment.ready,
         "missing_required": list(assessment.missing_required),
+        "support_duplicate_required": support_duplicate_required,
         "missing_support_duplicate_required": missing_support_duplicate_required,
         "support_duplicate_required_ready": not missing_support_duplicate_required,
         "blocking_signals": list(assessment.blocking_signals),
@@ -899,6 +900,7 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
         "missing_failed_run_signals": [
             signal for signal in assessment.missing_signals if "failed_run" in signal
         ],
+        "support_duplicate_signals": support_duplicate_signals,
         "missing_support_duplicate_signals": missing_support_duplicate_signals,
         "support_duplicate_signals_ready": not missing_support_duplicate_signals,
         "rollout_strategy": change.rollout_strategy,
