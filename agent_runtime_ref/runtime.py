@@ -502,6 +502,7 @@ class AgentRuntime:
                 authorization_mode=request.authorization_mode,
                 delegated_principal_id=request.delegated_principal_id,
                 delegated_scope=request.delegated_scope,
+                idempotency_key=tool_request.arguments.get("idempotency_key", ""),
             )
             self.telemetry.emit(
                 "approval_requested",
@@ -516,6 +517,7 @@ class AgentRuntime:
                 authorization_mode=approval_request.authorization_mode,
                 delegated_principal_id=approval_request.delegated_principal_id,
                 delegated_scope=approval_request.delegated_scope,
+                idempotency_key=approval_request.idempotency_key,
             )
             self._emit_sandbox_profile_reviewed(
                 request=request,
@@ -533,6 +535,7 @@ class AgentRuntime:
                     "authorization_mode": approval_request.authorization_mode,
                     "delegated_principal_id": approval_request.delegated_principal_id,
                     "delegated_scope": approval_request.delegated_scope,
+                    "idempotency_key": approval_request.idempotency_key,
                 },
             )
             context.tool_results.append(tool_result)
@@ -549,6 +552,7 @@ class AgentRuntime:
                 authorization_mode=tool_result.payload["authorization_mode"],
                 delegated_principal_id=tool_result.payload["delegated_principal_id"],
                 delegated_scope=tool_result.payload["delegated_scope"],
+                idempotency_key=tool_result.payload["idempotency_key"],
             )
             return decision
 

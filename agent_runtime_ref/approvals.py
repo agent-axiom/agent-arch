@@ -80,6 +80,7 @@ class ApprovalRequest:
     authorization_mode: str = "platform_owned"
     delegated_principal_id: str = ""
     delegated_scope: str = ""
+    idempotency_key: str = ""
     status: str = "pending"
     resolution_note: str = ""
 
@@ -119,6 +120,10 @@ class ApprovalRequest:
         self.delegated_scope = _read_optional_approval_string(
             self.delegated_scope,
             field="delegated_scope",
+        )
+        self.idempotency_key = _read_optional_approval_string(
+            self.idempotency_key,
+            field="idempotency_key",
         )
         if self.authorization_mode == "user_delegated":
             self.delegated_principal_id = _read_required_approval_string(
@@ -161,6 +166,7 @@ class ApprovalQueue:
         authorization_mode: str = "platform_owned",
         delegated_principal_id: str = "",
         delegated_scope: str = "",
+        idempotency_key: str = "",
     ) -> ApprovalRequest:
         trace_id = _read_required_approval_string(trace_id, field="trace_id")
         capability_name = _read_required_approval_string(
@@ -184,6 +190,10 @@ class ApprovalQueue:
             delegated_scope,
             field="delegated_scope",
         )
+        idempotency_key = _read_optional_approval_string(
+            idempotency_key,
+            field="idempotency_key",
+        )
         if authorization_mode == "user_delegated":
             delegated_principal_id = _read_required_approval_string(
                 delegated_principal_id,
@@ -206,6 +216,7 @@ class ApprovalQueue:
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            idempotency_key=idempotency_key,
         )
         self._items.append(request)
         return request
