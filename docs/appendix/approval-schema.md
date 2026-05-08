@@ -51,6 +51,7 @@ requested_action: create_incident_ticket
 reason: write_path_requires_human_review
 requested_fields:
   summary: "Open a Sev-2 onboarding incident"
+  idempotency_key: ticket-req-2026-04-09-001
   target_system: jira
   destination: project://OPS
 sandbox_context:
@@ -106,6 +107,7 @@ decision: approved
 executed: true
 executed_capability: ticket_write
 tool_principal: svc-ticket-writer
+idempotency_key: ticket-req-2026-04-09-001
 result_status: success
 linked_events:
   - approval_requested
@@ -132,6 +134,9 @@ Approval schema живет не отдельно, а рядом с trace schema:
 - `tool_failed`
 
 Именно поэтому хороший approval flow должен легко восстанавливаться как из отдельного audit record, так и из trace. Если approval участвует в failed-run drill или другом degraded path, такое восстановление должно сходиться и с session export, включая поле `failure_reason`, а не останавливаться только на approval record.
+
+!!! example "Approval record для duplicate-ticket thread"
+    В support-triage кейсе approver должен видеть `idempotency_key` вместе с payload до нажатия approve. Если `create_ticket` затем timeout-ится, audit record сохраняет тот же key рядом с `approval_id`, `trace_id` и `tool_principal`, чтобы review отличал один approved write intent от повторного side effect после blind retry.
 
 ## 7. Как это связано с policy bundle
 
