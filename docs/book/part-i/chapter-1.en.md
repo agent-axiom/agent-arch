@@ -24,6 +24,9 @@ The problems appear later:
 
 This is the central point of the whole book: most of the time, what breaks is not the model's "intelligence." What breaks is the engineering system around it.
 
+!!! example "Running case thread"
+    The support triage story is not just an opening anecdote. It is one of the book's recurring practical cases: the same shape comes back later as trust boundaries, tool gateways, approvals, traces, evals, and rollout checks. If you prefer to read from concrete systems first, start with [Practical Case Studies](../../appendix/case-studies.en.md) and then return to this chapter.
+
 That is why this book is not really about how to make an agent feel magical. It is about how to stop the magic from collapsing the first time the system meets retries, side effects, approvals, long context, or incident pressure.
 
 ## 2. What These Systems Usually Lack
