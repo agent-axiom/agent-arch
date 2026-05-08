@@ -4635,6 +4635,7 @@ class TestRuntimeControlPaths:
             "system_id",
             "ready",
             "missing_steps",
+            "required_steps",
             "failed_run_archive_targets",
             "support_duplicate_archive_targets",
             "replacement_mode",
@@ -8396,6 +8397,7 @@ class TestCli:
             "system_id",
             "ready",
             "missing_steps",
+            "required_steps",
             "failed_run_archive_targets",
             "support_duplicate_archive_targets",
             "replacement_mode",
@@ -8403,6 +8405,17 @@ class TestCli:
         assert payload["system_id"] == "support-triage-ref"
         assert payload["ready"] is True
         assert payload["missing_steps"] == []
+        assert payload["required_steps"] == [
+            "freeze_rollout",
+            "disable_risky_capabilities",
+            "stop_memory_write",
+            "expire_paused_runs",
+            "stop_background_routes",
+            "freeze_reinitialization",
+            "revoke_egress",
+            "archive_audit_state",
+            "set_retired_status",
+        ]
         assert payload["failed_run_archive_targets"] == [
             "telemetry_jsonl",
             "session_exports",
