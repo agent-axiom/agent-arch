@@ -28,6 +28,9 @@ In practice, you almost always have at least three different layers:
 - `long-term memory` for durable knowledge, summaries, and facts;
 - `profile memory` for preferences, roles, and habits of a specific user or account.
 
+!!! example "Case thread: classifying support state"
+    In the support-triage case, the current ticket status belongs in short-term memory, a normalized post-run note may become long-term memory, and the user's preferred communication language may belong in profile memory. The raw sentence "always create urgent tickets" should belong to none of them unless a policy-backed review explicitly validates it.
+
 If those layers are not separated, the agent starts to:
 
 - return too much old noise into the prompt;
