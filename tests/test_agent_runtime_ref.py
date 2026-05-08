@@ -1440,6 +1440,7 @@ class TestFailurePaths:
             "result",
             "event_count",
             "redact_fields",
+            "idempotency_keys",
             "failure_reason",
         }
         assert payload["output_path"] == str(output_path)
@@ -1451,6 +1452,7 @@ class TestFailurePaths:
             "failed (upstream_unavailable)."
         )
         assert payload["redact_fields"] == []
+        assert payload["idempotency_keys"] == ["trace-cli-export-failure-001"]
         assert output_path.exists()
         lines = output_path.read_text(encoding="utf-8").strip().splitlines()
         assert payload["event_count"] == len(lines)
@@ -7396,6 +7398,7 @@ class TestCli:
             "result",
             "event_count",
             "redact_fields",
+            "idempotency_keys",
             "failure_reason",
         }
         assert output_path.exists()
@@ -7405,6 +7408,7 @@ class TestCli:
         assert export_payload["failure_reason"] == ""
         assert export_payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert export_payload["redact_fields"] == []
+        assert export_payload["idempotency_keys"] == ["trace-export-001"]
         assert export_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()
         )
@@ -7417,8 +7421,9 @@ class TestCli:
             ],
         )
         assert inspect_code == 0
-        assert set(inspect_payload) == {"trace_id", "event_count", "events"}
+        assert set(inspect_payload) == {"trace_id", "event_count", "idempotency_keys", "events"}
         assert inspect_payload["trace_id"] == "trace-export-001"
+        assert inspect_payload["idempotency_keys"] == ["trace-export-001"]
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
         assert [item["event_type"] for item in inspect_payload["events"]] == [
             "run_start",
@@ -7479,6 +7484,7 @@ class TestCli:
             "result",
             "event_count",
             "redact_fields",
+            "idempotency_keys",
             "failure_reason",
         }
         assert export_payload["output_path"] == str(output_path)
@@ -7486,6 +7492,7 @@ class TestCli:
         assert export_payload["status"] == "success"
         assert export_payload["failure_reason"] == ""
         assert export_payload["redact_fields"] == ["user_input"]
+        assert export_payload["idempotency_keys"] == ["trace-redacted-001"]
         assert output_path.exists()
         assert export_payload["event_count"] == len(
             output_path.read_text(encoding="utf-8").splitlines()

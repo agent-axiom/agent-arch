@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` 会返回 `trace_id`、`event_count` 和 `events`；`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result` 和 `event_count`，让调查与重放都保留来源/运行谱系。
+`inspect-trace` 会返回 `trace_id`、`event_count`、`idempotency_keys` 和 `events`；`export-events` 也会在 `redact_fields` 旁汇总 `idempotency_keys`，让重复写入谱系在操作者深入单个 payload 之前就可见。`replay-run` 会返回 `source_trace_id`、`replay_trace_id`、`status`、`result` 和 `event_count`，让调查与重放都保留来源/运行谱系。
 
 带信号覆盖的上线策略检查：
 

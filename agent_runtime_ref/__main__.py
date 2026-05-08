@@ -483,6 +483,19 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+
+def _idempotency_keys_from_events(events: Sequence[StructuredEvent]) -> list[str]:
+    keys: list[str] = []
+    seen: set[str] = set()
+    for event in events:
+        key = event.payload.get("idempotency_key")
+        if isinstance(key, str):
+            normalized = key.strip()
+            if normalized and normalized not in seen:
+                seen.add(normalized)
+                keys.append(normalized)
+    return keys
+
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
@@ -539,6 +552,7 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "event_count": len(runtime.telemetry.events),
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
+        "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
     }
 
 
@@ -552,6 +566,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     return {
         "trace_id": trace_id,
         "event_count": len(filtered),
+        "idempotency_keys": _idempotency_keys_from_events(filtered),
         "events": [event.as_dict() for event in filtered],
     }
 

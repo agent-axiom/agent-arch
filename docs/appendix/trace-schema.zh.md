@@ -81,6 +81,8 @@
 - `export-session`
 - `export-eval-dataset`
 
+`export-events` 和 `inspect-trace` 也会在命令响应层汇总非空 `idempotency_keys`，因此 support duplicate-ticket path 不必手动扫描每个 `approval_requested` 或 `tool_execution` payload 就能检查。
+
 Trace replay 会先校验这些 evidence，然后才允许它们作为新 run 的 seed：`Trace ID not found in event file: {requested_trace_id}`、`Trace file does not contain any trace IDs`、`Trace file contains multiple trace IDs; pass --trace-id explicitly`、`Trace file does not contain a run_start event`、`Trace file contains multiple run_start events`、`Trace run_start event is missing replay fields: {missing_keys}`、`Trace run_start event has redacted replay fields: {redacted_keys}`、`Trace run_start replay field must be a string: {field}` 和 `Trace run_start replay field must not be empty: {field}`。
 
 ## 参考运行时的事件目录

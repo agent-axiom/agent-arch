@@ -578,6 +578,9 @@ class AgentRuntime:
         tool_result.payload["delegated_scope"] = tool_result.payload.get(
             "delegated_scope", request.delegated_scope
         )
+        tool_result.payload["idempotency_key"] = tool_result.payload.get(
+            "idempotency_key", tool_request.arguments.get("idempotency_key", "")
+        )
         context.tool_results.append(tool_result)
         context.context_layers.setdefault("tool", []).append(
             f"{tool_result.capability_name}:{tool_result.status}",
@@ -596,6 +599,7 @@ class AgentRuntime:
                 "delegated_principal_id", request.delegated_principal_id
             ),
             delegated_scope=tool_result.payload.get("delegated_scope", request.delegated_scope),
+            idempotency_key=tool_result.payload.get("idempotency_key", ""),
         )
         return decision
 
