@@ -81,7 +81,7 @@ That is why the package includes:
 - `export-session`
 - `export-eval-dataset`
 
-`export-events` and `inspect-trace` also summarize non-empty `idempotency_keys` at the command response level, so the support duplicate-ticket path can be checked without manually scanning every `approval_requested` or `tool_execution` payload.
+`export-events` and `inspect-trace` also summarize non-empty `idempotency_keys` at the command response level, so the support duplicate-ticket path can be checked without manually scanning every `approval_requested` or `tool_execution` payload. `replay-run` then reports `source_idempotency_keys` and `replay_idempotency_keys` separately, making it explicit that replay is a new run with its own duplicate-write key rather than a silent reuse of the original write.
 
 Trace replay validates this evidence before it can seed a new run: `Trace ID not found in event file: {requested_trace_id}`, `Trace file does not contain any trace IDs`, `Trace file contains multiple trace IDs; pass --trace-id explicitly`, `Trace file does not contain a run_start event`, `Trace file contains multiple run_start events`, `Trace run_start event is missing replay fields: {missing_keys}`, `Trace run_start event has redacted replay fields: {redacted_keys}`, `Trace run_start replay field must be a string: {field}`, and `Trace run_start replay field must not be empty: {field}`.
 

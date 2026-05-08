@@ -623,6 +623,8 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "status": result.status,
         "result": result.output_text,
         "event_count": len(runtime.telemetry.events),
+        "source_idempotency_keys": _idempotency_keys_from_events(source_events),
+        "replay_idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
     }
 
 

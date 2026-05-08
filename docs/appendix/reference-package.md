@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`inspect-trace` возвращает `trace_id`, `event_count`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result` и `event_count`, чтобы investigation и replay сохраняли source/run lineage.
+`inspect-trace` возвращает `trace_id`, `event_count`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `idempotency_keys` рядом с `redact_fields`, чтобы duplicate-write lineage был виден до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `source_idempotency_keys` и `replay_idempotency_keys`, чтобы investigation и replay сохраняли source/run lineage и позволяли сравнить исходные и replay write keys.
 
 Проверка политики выкладки с переопределением сигналов:
 
