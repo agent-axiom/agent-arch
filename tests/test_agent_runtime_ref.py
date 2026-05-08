@@ -7216,6 +7216,7 @@ class TestCli:
             "owner_team",
             "runtime_principal",
             "approved_capabilities",
+            "catalog_capability_names",
             "idempotency_required_capabilities",
             "idempotency_required_capability_bindings",
             "catalog_capabilities",
@@ -7225,6 +7226,7 @@ class TestCli:
         assert payload["owner_team"] == "agent_platform"
         assert payload["runtime_principal"] == "svc-support-triage-ref"
         assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]
+        assert payload["catalog_capability_names"] == ["create_ticket", "search_docs"]
         assert payload["idempotency_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capability_bindings"] == [
             {
