@@ -1153,6 +1153,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "latest_status": results[-1].status if results else None,
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "idempotency_keys": list(summary.idempotency_keys),
+        "approval_ids": list(summary.approval_ids),
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
@@ -1163,6 +1164,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             "trace_ids": list(summary.trace_ids),
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
+            "approval_ids": list(summary.approval_ids),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1180,6 +1182,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "delegated_principal_id": run.delegated_principal_id,
                 "delegated_scope": run.delegated_scope,
                 "idempotency_key": run.idempotency_key,
+                "approval_id": run.approval_id,
             }
             for run in runs
         ],
@@ -1215,6 +1218,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
         "trace_ids": list(summary.trace_ids),
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
+        "approval_ids": list(summary.approval_ids),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
         "latest_status": summary.latest_status,
@@ -1248,6 +1252,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
         "trace_ids": list(summary.trace_ids),
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
+        "approval_ids": list(summary.approval_ids),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "summary": {
             "total_runs": summary.total_runs,
@@ -1259,6 +1264,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
             "trace_ids": list(summary.trace_ids),
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
+            "approval_ids": list(summary.approval_ids),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1276,6 +1282,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "delegated_principal_id": run.delegated_principal_id,
                 "delegated_scope": run.delegated_scope,
                 "idempotency_key": run.idempotency_key,
+                "approval_id": run.approval_id,
             }
             for run in runs
         ],
@@ -1313,6 +1320,7 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
         "trace_ids": list(summary.trace_ids),
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
+        "approval_ids": list(summary.approval_ids),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
@@ -1387,6 +1395,13 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": list(
             dict.fromkeys(
                 key for summary in session_summaries for key in summary.idempotency_keys
+            )
+        ),
+        "approval_ids": list(
+            dict.fromkeys(
+                approval_id
+                for summary in session_summaries
+                for approval_id in summary.approval_ids
             )
         ),
         "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(
