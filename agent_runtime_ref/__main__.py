@@ -831,6 +831,7 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
                 "authorization_mode": item.authorization_mode,
                 "delegated_principal_id": item.delegated_principal_id,
                 "delegated_scope": item.delegated_scope,
+                "idempotency_key": item.idempotency_key,
                 "status": item.status,
             }
             for item in approvals
@@ -879,6 +880,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "authorization_mode": resolved.authorization_mode,
         "delegated_principal_id": resolved.delegated_principal_id,
         "delegated_scope": resolved.delegated_scope,
+        "idempotency_key": resolved.idempotency_key,
     }
 
 

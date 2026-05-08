@@ -459,6 +459,7 @@ class TestRuntimeDocsParity:
             assert "resolve-approval" in text
             assert "capability_session_id" in text
             assert "capability_session_status" in text
+            assert "idempotency_key" in text
 
     def test_approval_schema_documents_authorization_mode_validation(self) -> None:
         """Keep approval docs aligned with delegated-authorization validation."""
@@ -3673,6 +3674,7 @@ class TestRuntimeControlPaths:
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
+            "idempotency_key": trace_id,
         }
         assert tool_execution.payload == {
             "session_id": session_id,
@@ -3682,6 +3684,7 @@ class TestRuntimeControlPaths:
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
+            "idempotency_key": trace_id,
         }
         assert len(runtime.approvals.pending()) == 1
         assert session_record is not None
@@ -3715,6 +3718,7 @@ class TestRuntimeControlPaths:
             reviewer=" manager ",
             reason=" write_action ",
             session_id=" session-approval-resolve-001 ",
+            idempotency_key=" ticket-approval-001 ",
         )
         resolved = queue.resolve(
             " apr-001 ",
@@ -3727,6 +3731,8 @@ class TestRuntimeControlPaths:
         assert request.reviewer == "manager"
         assert request.reason == "write_action"
         assert request.session_id == "session-approval-resolve-001"
+        assert request.idempotency_key == "ticket-approval-001"
+        assert resolved.idempotency_key == "ticket-approval-001"
         assert resolved.status == "approved"
         assert resolved.capability_session_status == "approved"
         assert resolved.resolution_note == "ok"
@@ -3792,6 +3798,7 @@ class TestRuntimeControlPaths:
             ("reason", {"reason": cast(str, 7)}),
             ("session_id", {"session_id": cast(str, 7)}),
             ("authorization_mode", {"authorization_mode": cast(str, 7)}),
+            ("idempotency_key", {"idempotency_key": cast(str, 7)}),
         )
         for field, override in malformed_fields:
             queue = AgentRuntime().approvals
@@ -8201,6 +8208,7 @@ class TestCli:
                     "authorization_mode": "platform_owned",
                     "delegated_principal_id": "",
                     "delegated_scope": "",
+                    "idempotency_key": "trace-approval-001",
                 }
             ],
         }
@@ -8239,6 +8247,7 @@ class TestCli:
                     "authorization_mode": "platform_owned",
                     "delegated_principal_id": "",
                     "delegated_scope": "",
+                    "idempotency_key": "trace-approval-authz-001",
                 }
             ],
         }
@@ -8257,6 +8266,7 @@ class TestCli:
         assert payload["session_id"] == "session-approval-normalized-001"
         assert payload["trace_id"] == "trace-approval-normalized-001"
         assert payload["approvals"][0]["capability_session_id"] == "cap-session-001"
+        assert payload["approvals"][0]["idempotency_key"] == "trace-approval-normalized-001"
 
         resolve_code, resolve_payload = cli_json(
             [
@@ -8272,6 +8282,7 @@ class TestCli:
         assert resolve_code == 0
         assert resolve_payload["status"] == "approved"
         assert resolve_payload["capability_session_id"] == "cap-session-001"
+        assert resolve_payload["idempotency_key"] == "trace-approval-normalized-002"
 
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8294,6 +8305,7 @@ class TestCli:
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "idempotency_key",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["status"] == "approved"
@@ -8304,6 +8316,7 @@ class TestCli:
         assert payload["authorization_mode"] == "platform_owned"
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
+        assert payload["idempotency_key"] == "trace-approval-001"
 
     def test_cli_resolve_approval_marks_item_rejected(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8326,6 +8339,7 @@ class TestCli:
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "idempotency_key",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["status"] == "rejected"
@@ -8336,6 +8350,7 @@ class TestCli:
         assert payload["authorization_mode"] == "platform_owned"
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
+        assert payload["idempotency_key"] == "trace-approval-001"
 
     def test_cli_resolve_approval_normalizes_approval_id(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8378,6 +8393,7 @@ class TestCli:
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
+            "idempotency_key": "trace-approval-001",
         }
 
     @staticmethod
