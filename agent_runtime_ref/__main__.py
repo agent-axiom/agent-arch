@@ -879,6 +879,19 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "permissions": permissions,
             "state": state,
         },
+        "sandbox_profile_summary": {
+            "manifest_version": sandbox_profile.get("manifest_version"),
+            "workspace_paths": [
+                str(cast(Mapping[str, object], entry).get("path", ""))
+                if isinstance(entry, Mapping)
+                else ""
+                for entry in workspace_entries
+            ],
+            "shell": capabilities.get("shell"),
+            "network": permissions.get("network"),
+            "secrets": permissions.get("secrets"),
+            "snapshot": state.get("snapshot"),
+        },
         "controls": {
             "failed_run_control_expectations": [
                 "policy_traces_present",

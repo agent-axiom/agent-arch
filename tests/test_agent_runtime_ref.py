@@ -8084,6 +8084,7 @@ class TestCli:
             "artifact_bundle",
             "retirement",
             "sandbox_profile",
+            "sandbox_profile_summary",
             "controls",
         }
         assert set(payload["change"]) == {
@@ -8127,6 +8128,14 @@ class TestCli:
             "capabilities",
             "permissions",
             "state",
+        }
+        assert set(payload["sandbox_profile_summary"]) == {
+            "manifest_version",
+            "workspace_paths",
+            "shell",
+            "network",
+            "secrets",
+            "snapshot",
         }
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["change"]["artifacts"] == [
@@ -8331,6 +8340,14 @@ class TestCli:
                 "resume": "allowed",
                 "snapshot": "required_on_completion",
             },
+        }
+        assert payload["sandbox_profile_summary"] == {
+            "manifest_version": 1,
+            "workspace_paths": ["repo", "task.md"],
+            "shell": "restricted",
+            "network": "denied",
+            "secrets": "none",
+            "snapshot": "required_on_completion",
         }
 
     @pytest.mark.parametrize(
