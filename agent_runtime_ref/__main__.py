@@ -734,6 +734,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     source_approval_ids = _approval_ids_from_events(source_events)
     replay_approval_ids = _approval_ids_from_events(runtime.telemetry.events)
+    source_approval_capability_names = _approval_capability_names_from_events(
+        source_events
+    )
+    replay_approval_capability_names = _approval_capability_names_from_events(
+        runtime.telemetry.events
+    )
     return {
         "source_trace_id": source_trace_id,
         "replay_trace_id": replay_trace_id,
@@ -749,6 +755,13 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "approval_ids": list(dict.fromkeys(source_approval_ids + replay_approval_ids)),
         "source_approval_ids": source_approval_ids,
         "replay_approval_ids": replay_approval_ids,
+        "approval_capability_names": list(
+            dict.fromkeys(
+                source_approval_capability_names + replay_approval_capability_names
+            )
+        ),
+        "source_approval_capability_names": source_approval_capability_names,
+        "replay_approval_capability_names": replay_approval_capability_names,
     }
 
 

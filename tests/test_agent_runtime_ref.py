@@ -7893,6 +7893,9 @@ class TestCli:
             "approval_ids",
             "source_approval_ids",
             "replay_approval_ids",
+            "approval_capability_names",
+            "source_approval_capability_names",
+            "replay_approval_capability_names",
         }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
@@ -7903,6 +7906,9 @@ class TestCli:
         assert replay_payload["approval_ids"] == []
         assert replay_payload["source_approval_ids"] == []
         assert replay_payload["replay_approval_ids"] == []
+        assert replay_payload["approval_capability_names"] == []
+        assert replay_payload["source_approval_capability_names"] == []
+        assert replay_payload["replay_approval_capability_names"] == []
         assert replay_payload["result"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
@@ -7948,6 +7954,9 @@ class TestCli:
         assert replay_payload["approval_ids"] == ["apr-001"]
         assert replay_payload["source_approval_ids"] == ["apr-001"]
         assert replay_payload["replay_approval_ids"] == ["apr-001"]
+        assert replay_payload["approval_capability_names"] == ["create_ticket"]
+        assert replay_payload["source_approval_capability_names"] == ["create_ticket"]
+        assert replay_payload["replay_approval_capability_names"] == ["create_ticket"]
         assert replay_payload["status"] == "success"
 
     def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:
