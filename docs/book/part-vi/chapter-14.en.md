@@ -86,6 +86,9 @@ flowchart LR
 
 </div>
 
+!!! example "Case thread: who fixes the shared layer"
+    After the duplicate-ticket incident, the product team should own how the support workflow answers the user and when it escalates. But the platform team should own the runtime retry policy, idempotency contract, trace schema, and rollout gate, because those decisions serve every write-capability scenario, not only one agent. If that split is not explicit before the incident, the next incident becomes another ownership dispute.
+
 ## 5. The Platform Should Offer Golden Paths, Not Just Low-Level Pieces
 
 If the platform team only ships a bag of parts, product teams will still assemble systems in different ways.
