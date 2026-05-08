@@ -8834,6 +8834,7 @@ class TestCli:
             "trace_ids",
             "failed_trace_ids",
             "idempotency_keys",
+            "latest_failure_reason",
             "summary",
             "runs",
         }
@@ -8842,6 +8843,7 @@ class TestCli:
         assert payload["trace_ids"] == ["trace-session-001", "trace-session-002"]
         assert payload["failed_trace_ids"] == []
         assert payload["idempotency_keys"] == ["trace-session-001"]
+        assert payload["latest_failure_reason"] == ""
         self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
         assert payload["summary"]["approval_wait_runs"] == 1
@@ -8877,6 +8879,7 @@ class TestCli:
         assert payload["trace_ids"] == ["trace-replay-failure-001"]
         assert payload["failed_trace_ids"] == ["trace-replay-failure-001"]
         assert payload["summary"]["failed_trace_ids"] == ["trace-replay-failure-001"]
+        assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
         self._assert_session_run_contract(payload["runs"][0])
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"
@@ -8900,6 +8903,7 @@ class TestCli:
             "trace_ids",
             "failed_trace_ids",
             "latest_status",
+            "latest_failure_reason",
             "idempotency_keys",
             "summary",
             "runs",
@@ -8911,6 +8915,7 @@ class TestCli:
         assert payload["trace_ids"] == ["trace-session-001", "trace-session-002"]
         assert payload["failed_trace_ids"] == []
         assert payload["latest_status"] == "success"
+        assert payload["latest_failure_reason"] == ""
         assert payload["idempotency_keys"] == ["trace-session-001"]
         self._assert_session_summary_contract(payload["summary"])
         assert payload["summary"]["total_runs"] == 2
@@ -8950,6 +8955,7 @@ class TestCli:
         assert payload["trace_ids"] == ["trace-inspect-failure-001"]
         assert payload["failed_trace_ids"] == ["trace-inspect-failure-001"]
         assert payload["summary"]["failed_trace_ids"] == ["trace-inspect-failure-001"]
+        assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
         self._assert_session_run_contract(payload["runs"][0])
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"

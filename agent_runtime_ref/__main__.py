@@ -1108,6 +1108,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "trace_ids": list(summary.trace_ids),
         "failed_trace_ids": list(summary.failed_trace_ids),
         "latest_status": results[-1].status if results else None,
+        "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "idempotency_keys": list(summary.idempotency_keys),
         "summary": {
             "total_runs": summary.total_runs,
@@ -1204,6 +1205,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
         "trace_ids": list(summary.trace_ids),
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
+        "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
