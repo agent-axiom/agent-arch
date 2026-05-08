@@ -46,6 +46,8 @@ class SessionSummaryPayload(TypedDict):
 class SessionPayload(TypedDict, total=False):
     session: SessionMetadataPayload
     summary: SessionSummaryPayload
+    trace_ids: list[str]
+    failed_trace_ids: list[str]
     idempotency_keys: list[str]
     runs: list[RunPayload]
     eval: dict[str, object]
@@ -439,6 +441,8 @@ class SessionStore:
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
+            "trace_ids": list(summary.trace_ids),
+            "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
             "runs": [
                 {
