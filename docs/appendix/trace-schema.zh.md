@@ -134,6 +134,9 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `risk_tier`
 - `tool_principal`
 
+!!! example "重复工单线索的 trace"
+    在 support-triage 案例里，`tool_policy_decision`、`approval_requested`、`tool_execution` 和最终 outcome 应该由同一个 `trace_id`、`session_id`、`approval_id`、`tool_principal` 与 `idempotency_key` 连接起来。如果 `create_ticket` 超时且副作用状态未知，trace 应显示 `side_effect_unknown`，而不是把运行伪装成成功，或在没有 reconciliation 的情况下重复写入。
+
 对于由 sandbox 支撑的运行，也应该预留把追踪和执行边界关联起来的字段：
 
 - `sandbox_session_id`

@@ -134,6 +134,9 @@ Trace replay валидирует эти evidence до того, как они �
 - `risk_tier`
 - `tool_principal`
 
+!!! example "Trace для duplicate-ticket thread"
+    В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.
+
 А для sandbox-backed run полезно заранее зарезервировать поля, которые связывают трассу с execution boundary:
 
 - `sandbox_session_id`

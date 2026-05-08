@@ -134,6 +134,9 @@ For example, `tool_policy_decision` should usually include at least:
 - `risk_tier`
 - `tool_principal`
 
+!!! example "Trace for the duplicate-ticket thread"
+    In the support-triage case, `tool_policy_decision`, `approval_requested`, `tool_execution`, and the final outcome should be tied by one `trace_id`, `session_id`, `approval_id`, `tool_principal`, and `idempotency_key`. If `create_ticket` times out and the side-effect status is unknown, the trace should show `side_effect_unknown` instead of masking the run as successful or repeating the write without reconciliation.
+
 For a sandbox-backed run, reserve fields that link the trace to the execution boundary:
 
 - `sandbox_session_id`
