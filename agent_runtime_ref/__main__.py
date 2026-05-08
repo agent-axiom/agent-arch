@@ -654,6 +654,8 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
         "capability_owners_confirmed": True,
         "memory_provenance_enforced": True,
         "policy_traces_present": True,
+        "duplicate_ticket_eval_passed": True,
+        "idempotency_keys_present": True,
         "direct_tool_access_present": False,
         "unmanaged_runtime_present": False,
     }
@@ -667,9 +669,18 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
         inventory_drift=inventory_drift,
     )
     failed_run_control_names = ("policy_traces_present", "memory_provenance_enforced")
+    support_duplicate_control_names = (
+        "duplicate_ticket_eval_passed",
+        "idempotency_keys_present",
+    )
     preserved_failed_run_controls = [
         control
         for control in failed_run_control_names
+        if control not in assessment.missing_controls
+    ]
+    preserved_support_duplicate_controls = [
+        control
+        for control in support_duplicate_control_names
         if control not in assessment.missing_controls
     ]
     return {
@@ -683,6 +694,14 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
         "preserved_failed_run_controls": preserved_failed_run_controls,
         "failed_run_controls_healthy": len(preserved_failed_run_controls)
         == len(failed_run_control_names),
+        "support_duplicate_controls": [
+            control
+            for control in assessment.missing_controls
+            if control in support_duplicate_control_names
+        ],
+        "preserved_support_duplicate_controls": preserved_support_duplicate_controls,
+        "support_duplicate_controls_healthy": len(preserved_support_duplicate_controls)
+        == len(support_duplicate_control_names),
         "blocking_findings": list(assessment.blocking_findings),
         "inventory_drift": {
             "has_drift": assessment.inventory_drift.has_drift,
@@ -773,6 +792,21 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "failed_run_control_last_review": "release-readiness",
             "failed_run_control_next_review": "rollout-gate",
             "failed_run_control_release_binding": "required",
+            "support_duplicate_control_expectations": [
+                "duplicate_ticket_eval_passed",
+                "idempotency_keys_present",
+            ],
+            "support_duplicate_control_domains": [
+                "eval_gate",
+                "session_idempotency_summary",
+            ],
+            "support_duplicate_control_count": 2,
+            "support_duplicate_control_summary": (
+                "2 duplicate-ticket control expectations across eval gates and "
+                "session idempotency summaries"
+            ),
+            "support_duplicate_control_status": "covered",
+            "support_duplicate_control_release_binding": "required",
         },
     }
 
