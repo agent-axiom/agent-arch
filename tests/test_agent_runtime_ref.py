@@ -634,6 +634,7 @@ class TestRuntimeDocsParity:
             "Tool request arguments must be a mapping",
             "Tool request argument key must be a string",
             "Tool request argument key must not be empty",
+            "Tool request argument keys must be unique",
             "Tool request argument value must be a string: {argument_key}",
             "Tool request capability does not match catalog entry: "
             "{capability_name} != {capability.name}",
@@ -1919,6 +1920,19 @@ class TestExecutionAndPolicyBranches:
                 ToolRequest(
                     capability_name="search_docs",
                     arguments={" ": "policy"},
+                ),
+                PolicyDecision("allow", "low_risk_read", "cap_101"),
+            )
+
+        with pytest.raises(
+            ValueError,
+            match="Tool request argument keys must be unique",
+        ):
+            execute_tool(
+                capability,
+                ToolRequest(
+                    capability_name="search_docs",
+                    arguments={" query ": "policy", "query": "runtime"},
                 ),
                 PolicyDecision("allow", "low_risk_read", "cap_101"),
             )
