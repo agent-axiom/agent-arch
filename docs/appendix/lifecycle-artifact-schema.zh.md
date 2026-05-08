@@ -2,6 +2,9 @@
 
 这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪 Schema 回答的是“发生了什么”，评测 Schema 回答的是“如何评估”，那生命周期工件 Schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
 
+!!! example "重复工单线索的 lifecycle artifact"
+    对 support-triage 来说，bundle 不只应该把 `policy_bundle` 和 `eval_dataset` 放在一起，还应该保留 duplicate-ticket guard 的 evidence：`idempotency_key` 要求、approval record、带有 `side_effect_unknown` 的 trace、`duplicate_ticket_eval_passed` 和 rollout gate。这样 incident review 可以重建一条 `change -> bundle -> approval -> trace -> eval -> rollout` 链，而不是在不同页面里寻找证据。
+
 它也直接连接到书里的 [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)，因为生命周期工件本身就是后续判断和事故评审所依赖的那条受治理记录的一部分。
 
 ## 1. 为什么需要它
@@ -103,6 +106,11 @@ review_evidence:
     review_evidence_refs:
       - trace:trace-sandbox-review-001
       - eval:sandbox_profile_review
+  duplicate_ticket_guard:
+    idempotency_key_required: true
+    eval_ref: eval:duplicate_ticket_eval_passed
+    approval_ref: approval:apr-2026-04-07-001
+    rollout_gate_ref: gate:gate-2026-04-07-001
 status: approved
 release_scope: canary
 provenance:

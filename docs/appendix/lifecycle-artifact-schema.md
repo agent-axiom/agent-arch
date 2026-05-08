@@ -2,6 +2,9 @@
 
 Эта страница собирает в одном месте минимальный contract layer для lifecycle-артефактов: change record, approved artifact bundle и retirement plan. Если trace schema отвечает на вопрос "что произошло", а eval schema отвечает на вопрос "как это оценивать", то lifecycle artifact schema отвечает на вопрос "что именно было одобрено, изменено, заменено или выведено из эксплуатации".
 
+!!! example "Lifecycle artifact для duplicate-ticket thread"
+    Для support-triage bundle должен удерживать вместе не только `policy_bundle` и `eval_dataset`, но и evidence о duplicate-ticket guard: требование `idempotency_key`, approval record, trace с `side_effect_unknown`, `duplicate_ticket_eval_passed` и rollout gate. Тогда incident review восстанавливает одну цепочку `change -> bundle -> approval -> trace -> eval -> rollout`, а не ищет доказательства по разным страницам.
+
 Она напрямую связана и со страницей [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md), потому что lifecycle-артефакты входят в ту управляемую запись, на которую потом опираются judgment и incident review.
 
 ## 1. Зачем это нужно
@@ -103,6 +106,11 @@ review_evidence:
     review_evidence_refs:
       - trace:trace-sandbox-review-001
       - eval:sandbox_profile_review
+  duplicate_ticket_guard:
+    idempotency_key_required: true
+    eval_ref: eval:duplicate_ticket_eval_passed
+    approval_ref: approval:apr-2026-04-07-001
+    rollout_gate_ref: gate:gate-2026-04-07-001
 status: approved
 release_scope: canary
 provenance:
