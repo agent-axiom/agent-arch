@@ -111,7 +111,7 @@ Inspect memory records:
 ```
 
 `inspect-memory` now returns `config_dir`, `count`, `memory_ids`, and `records`; each record shows not only content, but also `provenance` and `revision`.
-`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
+`dump-events` now returns `trace_id`, `status`, `result`, `event_count`, `event_types`, `approval_ids`, `idempotency_keys`, `events`, and `failure_reason` in its JSON output for degraded-path drills.
 
 Dump structured events for one run:
 
@@ -127,7 +127,7 @@ Export events to JSONL for later inspection and replay:
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
-`export-events` returns `output_path`, `trace_id`, `status`, `result`, `event_count`, `redact_fields`, and optional `failure_reason`, so redaction and degraded-path evidence are visible in the command summary.
+`export-events` returns `output_path`, `trace_id`, `status`, `result`, `event_count`, `event_types`, `redact_fields`, `approval_ids`, `idempotency_keys`, and optional `failure_reason`, so redaction and degraded-path evidence are visible in the command summary.
 
 If you need a redacted export for external review, you can hide sensitive fields at export time:
 
@@ -147,7 +147,7 @@ Replay a run from a saved trace:
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`dump-events` returns `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `idempotency_keys`, and `events`; `inspect-trace` returns `trace_id`, `event_count`, `event_types`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `idempotency_keys` next to `redact_fields`, so duplicate-write lineage is visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys`, and `replay_idempotency_keys`, so investigation and replay preserve source/run lineage while making the original and replay write keys comparable.
+`dump-events` returns `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `approval_ids`, `idempotency_keys`, and `events`; `inspect-trace` returns `trace_id`, `event_count`, `event_types`, `approval_ids`, `idempotency_keys`, and `events`; `export-events` likewise summarizes `approval_ids` and `idempotency_keys` next to `redact_fields`, so approval lineage and duplicate-write lineage are visible before an operator drills into individual payloads. `replay-run` returns `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys`, `replay_idempotency_keys`, `approval_ids`, `source_approval_ids`, and `replay_approval_ids`, so investigation and replay preserve source/run approval lineage while making the original and replay write keys comparable.
 
 Rollout policy check with signal overrides:
 
