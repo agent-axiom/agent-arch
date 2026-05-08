@@ -24,6 +24,9 @@
 - 第 22 章配合生命周期 Schema 看受治理工件链接、发布身份、验证器契约谱系与委派授权来源证明，
 - 第 23 到 27 章看能力会话周围的中断、过期、重新初始化、退役、可观测性、注册表负责人、验证器证据义务与委派授权生命周期控制。
 
+!!! example "support-triage 的运行时锚点"
+    内置的 `support-triage-ref` 以可执行形式展示同一个贯穿案例：智能体身份、已批准的 `search_docs`/`create_ticket` 能力、审批等待、trace/session IDs、生命周期检查和评测导出。因此，书中的重复工单线索不只是 prose，也可以作为可运行的契约表面来审阅。
+
 ## 里面有什么
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)

@@ -24,6 +24,9 @@ A practical reading path is:
 - Chapter 22 and the lifecycle schema for governed artifact linkage, release identity, verifier-contract lineage, and delegated authorization provenance,
 - Chapters 23-27 for interruption, expiry, re-init, retirement, observability, registry ownership, verifier-evidence obligations, and delegated-authorization lifecycle control around capability sessions.
 
+!!! example "Runtime anchor for support-triage"
+    The bundled `support-triage-ref` shows the same running case in executable form: agent identity, approved `search_docs`/`create_ticket` capabilities, approval wait, trace/session IDs, lifecycle checks, and eval export. That means the duplicate-ticket thread in the book can be reviewed not only as prose, but as a runnable contract surface.
+
 ## What Is Inside
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)
