@@ -814,6 +814,9 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     return {
         "trace_id": trace_id,
         "session_id": _run_start_field_from_events(filtered, "session_id"),
+        "tenant_id": _run_start_field_from_events(filtered, "tenant_id"),
+        "principal_id": _run_start_field_from_events(filtered, "principal_id"),
+        "agent_id": _run_start_field_from_events(filtered, "agent_id"),
         "status": _run_complete_field_from_events(filtered, "status"),
         "output_preview": _run_complete_field_from_events(filtered, "output_preview"),
         "event_count": len(filtered),
