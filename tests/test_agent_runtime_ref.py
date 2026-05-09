@@ -463,6 +463,7 @@ class TestRuntimeDocsParity:
             assert "approval_capability_names" in text
             assert "pending_approval_capability_names" in text
             assert "approval_status_counts" in text
+            assert text.count("approval_status_counts") >= 2
             assert "capability_session_id" in text
             assert "capability_session_status" in text
             assert "idempotency_key" in text
@@ -8898,6 +8899,7 @@ class TestCli:
         assert resolve_payload["capability_session_id"] == "cap-session-001"
         assert resolve_payload["idempotency_key"] == "trace-approval-normalized-002"
         assert resolve_payload["idempotency_keys"] == ["trace-approval-normalized-002"]
+        assert resolve_payload["approval_status_counts"] == {"approved": 1}
 
     def test_cli_resolve_approval_marks_item_resolved(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8926,6 +8928,7 @@ class TestCli:
             "delegated_scope",
             "idempotency_key",
             "idempotency_keys",
+            "approval_status_counts",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["trace_id"] == "trace-approval-001"
@@ -8942,6 +8945,7 @@ class TestCli:
         assert payload["delegated_scope"] == ""
         assert payload["idempotency_key"] == "trace-approval-001"
         assert payload["idempotency_keys"] == ["trace-approval-001"]
+        assert payload["approval_status_counts"] == {"approved": 1}
 
     def test_cli_resolve_approval_marks_item_rejected(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -8970,6 +8974,7 @@ class TestCli:
             "delegated_scope",
             "idempotency_key",
             "idempotency_keys",
+            "approval_status_counts",
         }
         assert payload["approval_id"] == "apr-001"
         assert payload["trace_id"] == "trace-approval-001"
@@ -8986,6 +8991,7 @@ class TestCli:
         assert payload["delegated_scope"] == ""
         assert payload["idempotency_key"] == "trace-approval-001"
         assert payload["idempotency_keys"] == ["trace-approval-001"]
+        assert payload["approval_status_counts"] == {"rejected": 1}
 
     def test_cli_resolve_approval_normalizes_approval_id(self, cli_json) -> None:
         exit_code, payload = cli_json(
@@ -9034,6 +9040,7 @@ class TestCli:
             "delegated_scope": "",
             "idempotency_key": "trace-approval-001",
             "idempotency_keys": ["trace-approval-001"],
+            "approval_status_counts": {"approved": 1},
         }
 
     @staticmethod
