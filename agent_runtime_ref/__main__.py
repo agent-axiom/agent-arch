@@ -1219,6 +1219,11 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         decision=args.decision,
         note=args.note,
     )
+    approvals = runtime.approvals.all()
+    approval_status_counts = {
+        status: sum(1 for item in approvals if item.status == status)
+        for status in sorted({item.status for item in approvals})
+    }
     return {
         "approval_id": resolved.approval_id,
         "trace_id": resolved.trace_id,
@@ -1235,6 +1240,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "delegated_scope": resolved.delegated_scope,
         "idempotency_key": resolved.idempotency_key,
         "idempotency_keys": [resolved.idempotency_key] if resolved.idempotency_key else [],
+        "approval_status_counts": approval_status_counts,
     }
 
 
