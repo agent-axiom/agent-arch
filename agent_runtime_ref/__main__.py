@@ -73,6 +73,7 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
         "expected_outcomes": {
             "latest_status": "success",
             "approval_wait_runs": 1,
+            "approval_status_counts": {"pending": 1},
             "required_output_substrings": ["waiting for human approval"],
             "sandbox_profile_reviewed": True,
         },
@@ -105,6 +106,7 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
         "expected_outcomes": {
             "latest_status": "success",
             "approval_wait_runs": 1,
+            "approval_status_counts": {"pending": 1},
             "required_run_count": 2,
             "required_output_substrings": [
                 "waiting for human approval",
