@@ -43,6 +43,8 @@ class SessionSummaryPayload(TypedDict):
     idempotency_keys: list[str]
     approval_ids: list[str]
     approval_capability_names: list[str]
+    pending_approval_ids: list[str]
+    pending_approval_capability_names: list[str]
     approval_status_counts: dict[str, int]
     latest_trace_id: str | None
     latest_status: str | None
@@ -59,6 +61,8 @@ class SessionPayload(TypedDict, total=False):
     idempotency_keys: list[str]
     approval_ids: list[str]
     approval_capability_names: list[str]
+    pending_approval_ids: list[str]
+    pending_approval_capability_names: list[str]
     approval_status_counts: dict[str, int]
     latest_failure_reason: str
     latest_trace_id: str | None
@@ -478,6 +482,20 @@ class SessionStore:
                     for capability_name in session["summary"]["approval_capability_names"]
                 )
             ),
+            "pending_approval_ids": list(
+                dict.fromkeys(
+                    approval_id
+                    for session in sessions
+                    for approval_id in session["summary"]["pending_approval_ids"]
+                )
+            ),
+            "pending_approval_capability_names": list(
+                dict.fromkeys(
+                    capability_name
+                    for session in sessions
+                    for capability_name in session["summary"]["pending_approval_capability_names"]
+                )
+            ),
             "approval_status_counts": _merge_approval_status_counts(
                 session["summary"]["approval_status_counts"] for session in sessions
             ),
@@ -520,6 +538,10 @@ class SessionStore:
                 "idempotency_keys": list(summary.idempotency_keys),
                 "approval_ids": list(summary.approval_ids),
                 "approval_capability_names": list(summary.approval_capability_names),
+                "pending_approval_ids": list(summary.pending_approval_ids),
+                "pending_approval_capability_names": list(
+                    summary.pending_approval_capability_names
+                ),
                 "approval_status_counts": dict(summary.approval_status_counts),
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
@@ -532,6 +554,8 @@ class SessionStore:
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
             "approval_capability_names": list(summary.approval_capability_names),
+            "pending_approval_ids": list(summary.pending_approval_ids),
+            "pending_approval_capability_names": list(summary.pending_approval_capability_names),
             "approval_status_counts": dict(summary.approval_status_counts),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
@@ -570,6 +594,8 @@ class SessionEvalSummary:
     idempotency_keys: tuple[str, ...]
     approval_ids: tuple[str, ...]
     approval_capability_names: tuple[str, ...]
+    pending_approval_ids: tuple[str, ...]
+    pending_approval_capability_names: tuple[str, ...]
     approval_status_counts: dict[str, int]
     latest_trace_id: str | None
     latest_status: str | None
@@ -598,6 +624,22 @@ def summarize_session(
             run.capability_name
             for run in normalized_runs
             if run.approval_id and run.capability_name
+        )
+    )
+    pending_approval_ids = tuple(
+        dict.fromkeys(
+            run.approval_id
+            for run in normalized_runs
+            if run.approval_id and run.capability_session_status == "pending"
+        )
+    )
+    pending_approval_capability_names = tuple(
+        dict.fromkeys(
+            run.capability_name
+            for run in normalized_runs
+            if run.approval_id
+            and run.capability_name
+            and run.capability_session_status == "pending"
         )
     )
     approval_status_counts: dict[str, int] = {}
@@ -632,6 +674,8 @@ def summarize_session(
         idempotency_keys=idempotency_keys,
         approval_ids=approval_ids,
         approval_capability_names=approval_capability_names,
+        pending_approval_ids=pending_approval_ids,
+        pending_approval_capability_names=pending_approval_capability_names,
         approval_status_counts=approval_status_counts,
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
