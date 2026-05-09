@@ -458,6 +458,11 @@ class TestRuntimeDocsParity:
             text = path.read_text(encoding="utf-8")
             assert "inspect-approvals" in text
             assert "resolve-approval" in text
+            assert "approval_ids" in text
+            assert "pending_approval_ids" in text
+            assert "approval_capability_names" in text
+            assert "pending_approval_capability_names" in text
+            assert "approval_status_counts" in text
             assert "capability_session_id" in text
             assert "capability_session_status" in text
             assert "idempotency_key" in text
