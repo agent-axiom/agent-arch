@@ -1029,6 +1029,7 @@ class TestRuntimeDocsParity:
             "change.rollout_strategy is required",
             "change.session_control_owner is required",
             "change.emergency_freeze_owner is required",
+            "{key} must be a list",
             "{key} entries must be strings",
             "{key} entries must not be empty",
             "{key} entries must be unique",
