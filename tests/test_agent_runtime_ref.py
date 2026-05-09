@@ -994,6 +994,15 @@ class TestRuntimeDocsParity:
             "Assessment signal value must be a boolean: {field}",
             "Rollout readiness flag must be a boolean: {field}",
             "rollout.rollout_mode values must be scalar: {field}",
+            "change config must be a mapping",
+            "change config keys must be strings",
+            "change.change_id must be a string",
+            "change.change_id is required",
+            "change.session_control_owner is required",
+            "change.emergency_freeze_owner is required",
+            "{key} entries must be strings",
+            "{key} entries must not be empty",
+            "{key} entries must be unique",
         )
         rollout_fields = (
             "`ready`",
