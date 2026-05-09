@@ -574,6 +574,21 @@ class TestRuntimeDocsParity:
             for term in required_terms:
                 assert term in text
 
+
+    def test_runtime_readme_documents_eval_approval_summary_fields(self) -> None:
+        """Keep runtime README aligned with eval approval summary fields."""
+        text = Path("agent_runtime_ref/README.md").read_text(encoding="utf-8")
+        assert (
+            "`approval_ids`, `approval_capability_names`, "
+            "`approval_status_counts`, `duplicate_ticket_scenarios`"
+        ) in text
+        assert (
+            "top-level `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
+            "`failed_trace_ids`, `idempotency_keys`, `approval_ids`, "
+            "`approval_capability_names`, `approval_status_counts`, "
+            "and `latest_failure_reason`"
+        ) in text
+
     def test_reference_package_documents_eval_artifact_contract(self) -> None:
         """Keep reference package docs aligned with nested eval artifact fields."""
         required_terms = (
