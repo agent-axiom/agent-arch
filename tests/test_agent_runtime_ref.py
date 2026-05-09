@@ -866,6 +866,7 @@ class TestRuntimeDocsParity:
             "retirement.replacement_mode is required",
             "retirement.session_control_owner is required",
             "retirement.emergency_freeze_owner is required",
+            "{key} must be a list",
             "{key} entries must be strings",
             "{key} entries must not be empty",
             "{key} entries must be unique",
