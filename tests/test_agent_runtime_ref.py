@@ -8117,9 +8117,15 @@ class TestCli:
             "approval_ids",
             "source_approval_ids",
             "replay_approval_ids",
+            "pending_approval_ids",
+            "source_pending_approval_ids",
+            "replay_pending_approval_ids",
             "approval_capability_names",
             "source_approval_capability_names",
             "replay_approval_capability_names",
+            "pending_approval_capability_names",
+            "source_pending_approval_capability_names",
+            "replay_pending_approval_capability_names",
             "approval_status_counts",
             "source_approval_status_counts",
             "replay_approval_status_counts",
@@ -8133,9 +8139,15 @@ class TestCli:
         assert replay_payload["approval_ids"] == []
         assert replay_payload["source_approval_ids"] == []
         assert replay_payload["replay_approval_ids"] == []
+        assert replay_payload["pending_approval_ids"] == []
+        assert replay_payload["source_pending_approval_ids"] == []
+        assert replay_payload["replay_pending_approval_ids"] == []
         assert replay_payload["approval_capability_names"] == []
         assert replay_payload["source_approval_capability_names"] == []
         assert replay_payload["replay_approval_capability_names"] == []
+        assert replay_payload["pending_approval_capability_names"] == []
+        assert replay_payload["source_pending_approval_capability_names"] == []
+        assert replay_payload["replay_pending_approval_capability_names"] == []
         assert replay_payload["approval_status_counts"] == {}
         assert replay_payload["source_approval_status_counts"] == {}
         assert replay_payload["replay_approval_status_counts"] == {}
@@ -8184,9 +8196,19 @@ class TestCli:
         assert replay_payload["approval_ids"] == ["apr-001"]
         assert replay_payload["source_approval_ids"] == ["apr-001"]
         assert replay_payload["replay_approval_ids"] == ["apr-001"]
+        assert replay_payload["pending_approval_ids"] == ["apr-001"]
+        assert replay_payload["source_pending_approval_ids"] == ["apr-001"]
+        assert replay_payload["replay_pending_approval_ids"] == ["apr-001"]
         assert replay_payload["approval_capability_names"] == ["create_ticket"]
         assert replay_payload["source_approval_capability_names"] == ["create_ticket"]
         assert replay_payload["replay_approval_capability_names"] == ["create_ticket"]
+        assert replay_payload["pending_approval_capability_names"] == ["create_ticket"]
+        assert replay_payload["source_pending_approval_capability_names"] == [
+            "create_ticket"
+        ]
+        assert replay_payload["replay_pending_approval_capability_names"] == [
+            "create_ticket"
+        ]
         assert replay_payload["approval_status_counts"] == {"pending": 2}
         assert replay_payload["source_approval_status_counts"] == {"pending": 1}
         assert replay_payload["replay_approval_status_counts"] == {"pending": 1}
