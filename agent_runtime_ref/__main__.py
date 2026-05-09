@@ -441,6 +441,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     memory_record_ids = [record.memory_id for record in runtime.memory.all()]
     return {
         "agent_id": runtime.agent.agent_id,
+        "request_agent_id": _run_start_field_from_events(runtime.telemetry.events, "agent_id"),
         "session_id": session_id,
         "tenant_id": _run_start_field_from_events(runtime.telemetry.events, "tenant_id"),
         "principal_id": _run_start_field_from_events(runtime.telemetry.events, "principal_id"),

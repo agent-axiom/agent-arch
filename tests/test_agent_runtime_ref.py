@@ -627,6 +627,7 @@ class TestRuntimeDocsParity:
         """Keep simulate-run docs aligned with actor/auth summary fields."""
         required_terms = (
             "simulate-run",
+            "request_agent_id",
             "tenant_id",
             "principal_id",
             "authorization_mode",
@@ -1573,6 +1574,7 @@ class TestFailurePaths:
         assert code == 0
         assert set(payload) == {
             "agent_id",
+            "request_agent_id",
             "session_id",
             "tenant_id",
             "principal_id",
@@ -1608,7 +1610,13 @@ class TestFailurePaths:
             if "--principal-id" in command
             else "user-42"
         )
+        expected_request_agent_id = (
+            command[command.index("--agent-id") + 1].strip()
+            if "--agent-id" in command
+            else "support-triage-ref"
+        )
         assert payload["agent_id"] == "support-triage-ref"
+        assert payload["request_agent_id"] == expected_request_agent_id
         assert payload["session_id"] == "session-demo-001"
         assert payload["tenant_id"] == expected_tenant_id
         assert payload["principal_id"] == expected_principal_id
@@ -7427,6 +7435,7 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "agent_id",
+            "request_agent_id",
             "session_id",
             "tenant_id",
             "principal_id",
@@ -7453,6 +7462,7 @@ class TestCli:
             "config_dir",
         }
         assert payload["agent_id"] == "support-triage-ref"
+        assert payload["request_agent_id"] == "support-triage-ref"
         assert payload["session_id"] == "session-demo-001"
         assert payload["tenant_id"] == "tenant-acme"
         assert payload["principal_id"] == "user-42"
