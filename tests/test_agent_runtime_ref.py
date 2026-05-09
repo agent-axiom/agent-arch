@@ -1573,6 +1573,8 @@ class TestFailurePaths:
             "redact_fields",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "failure_reason",
@@ -1588,6 +1590,8 @@ class TestFailurePaths:
         assert payload["redact_fields"] == []
         assert payload["approval_ids"] == []
         assert payload["approval_capability_names"] == []
+        assert payload["pending_approval_ids"] == []
+        assert payload["pending_approval_capability_names"] == []
         assert payload["approval_status_counts"] == {}
         assert payload["idempotency_keys"] == ["trace-cli-export-failure-001"]
         assert output_path.exists()
@@ -1626,6 +1630,8 @@ class TestFailurePaths:
             "event_types",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "events",
@@ -1634,6 +1640,11 @@ class TestFailurePaths:
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
         assert payload["idempotency_keys"] == ["trace-cli-dump-failure-001"]
+        assert payload["approval_ids"] == []
+        assert payload["approval_capability_names"] == []
+        assert payload["pending_approval_ids"] == []
+        assert payload["pending_approval_capability_names"] == []
+        assert payload["approval_status_counts"] == {}
         assert payload["result"] == (
             "Runtime halted before side effects completed: create_ticket returned "
             "failed (tool_timeout)."
@@ -7448,6 +7459,8 @@ class TestCli:
                     "event_types",
                     "approval_ids",
                     "approval_capability_names",
+                    "pending_approval_ids",
+                    "pending_approval_capability_names",
                     "approval_status_counts",
                     "idempotency_keys",
                     "events",
@@ -7686,6 +7699,8 @@ class TestCli:
             "event_types",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "events",
@@ -7695,6 +7710,8 @@ class TestCli:
         assert payload["failure_reason"] == ""
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["approval_capability_names"] == ["create_ticket"]
+        assert payload["pending_approval_ids"] == ["apr-001"]
+        assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["approval_status_counts"] == {"pending": 1}
         assert payload["idempotency_keys"] == ["trace-cli-dump-success-001"]
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
@@ -7725,6 +7742,8 @@ class TestCli:
             "redact_fields",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "failure_reason",
@@ -7738,6 +7757,8 @@ class TestCli:
         assert export_payload["redact_fields"] == []
         assert export_payload["approval_ids"] == ["apr-001"]
         assert export_payload["approval_capability_names"] == ["create_ticket"]
+        assert export_payload["pending_approval_ids"] == ["apr-001"]
+        assert export_payload["pending_approval_capability_names"] == ["create_ticket"]
         assert export_payload["approval_status_counts"] == {"pending": 1}
         assert export_payload["idempotency_keys"] == ["trace-export-001"]
         assert export_payload["event_count"] == len(
@@ -7774,6 +7795,8 @@ class TestCli:
             "event_types",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "events",
@@ -7781,6 +7804,8 @@ class TestCli:
         assert inspect_payload["trace_id"] == "trace-export-001"
         assert inspect_payload["approval_ids"] == ["apr-001"]
         assert inspect_payload["approval_capability_names"] == ["create_ticket"]
+        assert inspect_payload["pending_approval_ids"] == ["apr-001"]
+        assert inspect_payload["pending_approval_capability_names"] == ["create_ticket"]
         assert inspect_payload["approval_status_counts"] == {"pending": 1}
         assert inspect_payload["idempotency_keys"] == ["trace-export-001"]
         assert inspect_payload["event_count"] == len(inspect_payload["events"])
@@ -7849,6 +7874,8 @@ class TestCli:
             "redact_fields",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
             "failure_reason",
@@ -7860,6 +7887,8 @@ class TestCli:
         assert export_payload["redact_fields"] == ["user_input"]
         assert export_payload["approval_ids"] == ["apr-001"]
         assert export_payload["approval_capability_names"] == ["create_ticket"]
+        assert export_payload["pending_approval_ids"] == ["apr-001"]
+        assert export_payload["pending_approval_capability_names"] == ["create_ticket"]
         assert export_payload["approval_status_counts"] == {"pending": 1}
         assert export_payload["idempotency_keys"] == ["trace-redacted-001"]
         assert output_path.exists()
