@@ -1380,6 +1380,9 @@ class TestFailurePaths:
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
         assert payload["idempotency_keys"] == ["trace-cli-failure-001"]
+        assert payload["approval_ids"] == []
+        assert payload["approval_capability_names"] == []
+        assert payload["approval_status_counts"] == {}
         assert payload["result"] == (
             "Runtime halted before side effects completed: create_ticket returned "
             "failed (tool_timeout)."
@@ -1420,6 +1423,9 @@ class TestFailurePaths:
             "failure_reason",
             "trace_id",
             "idempotency_keys",
+            "approval_ids",
+            "approval_capability_names",
+            "approval_status_counts",
             "event_types",
             "events",
             "memory_records",
@@ -1436,6 +1442,9 @@ class TestFailurePaths:
         assert payload["trace_id"] == "trace-demo-001"
         expected_idempotency_keys = [] if expected_status == "denied" else ["trace-demo-001"]
         assert payload["idempotency_keys"] == expected_idempotency_keys
+        assert payload["approval_ids"] == []
+        assert payload["approval_capability_names"] == []
+        assert payload["approval_status_counts"] == {}
         assert payload["pending_approvals"] == 0
         assert payload["pending_approval_ids"] == []
         assert payload["pending_approval_capability_names"] == []
@@ -7155,6 +7164,9 @@ class TestCli:
             "failure_reason",
             "trace_id",
             "idempotency_keys",
+            "approval_ids",
+            "approval_capability_names",
+            "approval_status_counts",
             "event_types",
             "events",
             "memory_records",
@@ -7171,6 +7183,9 @@ class TestCli:
         assert payload["failure_reason"] == ""
         assert payload["trace_id"] == "trace-demo-001"
         assert payload["idempotency_keys"] == ["trace-demo-001"]
+        assert payload["approval_ids"] == ["apr-001"]
+        assert payload["approval_capability_names"] == ["create_ticket"]
+        assert payload["approval_status_counts"] == {"pending": 1}
         assert payload["events"] == 14
         assert payload["memory_records"] == 4
         assert payload["memory_record_ids"] == ["mem-001", "mem-002", "mem-003", "mem-004"]
