@@ -772,6 +772,14 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     replay_approval_capability_names = _approval_capability_names_from_events(
         runtime.telemetry.events
     )
+    source_approval_status_counts = _approval_status_counts_from_events(source_events)
+    replay_approval_status_counts = _approval_status_counts_from_events(
+        runtime.telemetry.events
+    )
+    approval_status_counts: dict[str, int] = {}
+    for status_counts in (source_approval_status_counts, replay_approval_status_counts):
+        for status, count in status_counts.items():
+            approval_status_counts[status] = approval_status_counts.get(status, 0) + count
     return {
         "source_trace_id": source_trace_id,
         "replay_trace_id": replay_trace_id,
@@ -794,6 +802,9 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "source_approval_capability_names": source_approval_capability_names,
         "replay_approval_capability_names": replay_approval_capability_names,
+        "approval_status_counts": approval_status_counts,
+        "source_approval_status_counts": source_approval_status_counts,
+        "replay_approval_status_counts": replay_approval_status_counts,
     }
 
 
