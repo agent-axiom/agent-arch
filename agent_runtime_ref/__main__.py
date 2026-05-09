@@ -694,6 +694,16 @@ def _run_complete_field_from_events(
     return ""
 
 
+def _failure_reason_from_events(events: Sequence[StructuredEvent]) -> str:
+    for event in reversed(events):
+        if event.event_type != "run_failed":
+            continue
+        value = event.payload.get("failure_reason")
+        if isinstance(value, str):
+            return value
+    return ""
+
+
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
@@ -790,6 +800,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
         "trace_id": trace_id,
         "event_count": len(filtered),
         "event_types": _event_types_from_events(filtered),
+        "failure_reason": _failure_reason_from_events(filtered),
         "approval_ids": _approval_ids_from_events(filtered),
         "approval_capability_names": _approval_capability_names_from_events(filtered),
         "pending_approval_ids": _pending_approval_ids_from_events(filtered),
@@ -853,6 +864,8 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         source_events,
         "output_preview",
     )
+    source_failure_reason = _failure_reason_from_events(source_events)
+    replay_failure_reason = _failure_reason_from_events(runtime.telemetry.events)
     source_idempotency_keys = _idempotency_keys_from_events(source_events)
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     source_approval_ids = _approval_ids_from_events(source_events)
@@ -888,8 +901,10 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "result": result.output_text,
         "source_status": source_status,
         "source_output_preview": source_output_preview,
+        "source_failure_reason": source_failure_reason,
         "replay_status": result.status,
         "replay_output_preview": result.output_text[:80],
+        "replay_failure_reason": replay_failure_reason,
         "event_count": len(runtime.telemetry.events),
         "event_types": _event_types_from_events(runtime.telemetry.events),
         "source_event_count": len(source_events),

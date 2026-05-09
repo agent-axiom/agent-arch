@@ -962,6 +962,7 @@ class TestFailurePaths:
             "session_id": "session-tool-failure-001",
             "capability": "create_ticket",
             "tool_status": "validation_failure",
+            "failure_reason": "missing_idempotency_key",
             "authorization_mode": "human_approved",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -1609,6 +1610,17 @@ class TestFailurePaths:
             "run_failed",
             "run_complete",
         ]
+        exported_events = [json.loads(line) for line in lines]
+        run_failed = next(
+            event for event in exported_events if event["event_type"] == "run_failed"
+        )
+        assert run_failed["payload"]["failure_reason"] == "upstream_unavailable"
+
+        inspect_code, inspect_payload = cli_json(
+            ["inspect-trace", "--input", str(output_path)]
+        )
+        assert inspect_code == 0
+        assert inspect_payload["failure_reason"] == "upstream_unavailable"
 
     def test_cli_dump_events_surfaces_failure_reason(self, cli_json) -> None:
         code, payload = cli_json(
@@ -1662,6 +1674,10 @@ class TestFailurePaths:
             "run_failed",
             "run_complete",
         ]
+        run_failed = next(
+            event for event in payload["events"] if event["event_type"] == "run_failed"
+        )
+        assert run_failed["payload"]["failure_reason"] == "tool_timeout"
 
     def test_cli_run_event_commands_normalize_session_id_for_lookup(
         self, cli_json, tmp_path: Path
@@ -3445,6 +3461,7 @@ class TestRuntimeCore:
             "session_id": "session-demo-001",
             "capability": "missing_capability",
             "tool_status": "denied",
+            "failure_reason": "capability_unknown",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -7793,6 +7810,7 @@ class TestCli:
             "trace_id",
             "event_count",
             "event_types",
+            "failure_reason",
             "approval_ids",
             "approval_capability_names",
             "pending_approval_ids",
@@ -7802,6 +7820,7 @@ class TestCli:
             "events",
         }
         assert inspect_payload["trace_id"] == "trace-export-001"
+        assert inspect_payload["failure_reason"] == ""
         assert inspect_payload["approval_ids"] == ["apr-001"]
         assert inspect_payload["approval_capability_names"] == ["create_ticket"]
         assert inspect_payload["pending_approval_ids"] == ["apr-001"]
@@ -8111,8 +8130,10 @@ class TestCli:
             "result",
             "source_status",
             "source_output_preview",
+            "source_failure_reason",
             "replay_status",
             "replay_output_preview",
+            "replay_failure_reason",
             "event_count",
             "event_types",
             "source_event_count",
@@ -8145,10 +8166,12 @@ class TestCli:
         assert replay_payload["source_output_preview"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
+        assert replay_payload["source_failure_reason"] == ""
         assert replay_payload["replay_status"] == "success"
         assert replay_payload["replay_output_preview"] == (
             "Retrieved profile hint: User usually prefers concise English answers."
         )
+        assert replay_payload["replay_failure_reason"] == ""
         assert replay_payload["event_count"] == replay_payload["replay_event_count"]
         assert replay_payload["source_event_count"] == 10
         assert replay_payload["source_event_types"] == [
@@ -8223,10 +8246,12 @@ class TestCli:
         assert replay_payload["source_output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
+        assert replay_payload["source_failure_reason"] == ""
         assert replay_payload["replay_status"] == "success"
         assert replay_payload["replay_output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
+        assert replay_payload["replay_failure_reason"] == ""
         assert replay_payload["event_count"] == replay_payload["replay_event_count"]
         assert replay_payload["source_event_count"] == 14
         assert replay_payload["source_event_types"] == [
@@ -8272,7 +8297,41 @@ class TestCli:
         assert replay_payload["approval_status_counts"] == {"pending": 2}
         assert replay_payload["source_approval_status_counts"] == {"pending": 1}
         assert replay_payload["replay_approval_status_counts"] == {"pending": 1}
-        assert replay_payload["status"] == "success"
+
+    def test_cli_replay_run_summarizes_source_failure_reason(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "failed-trace.jsonl"
+        export_code, _ = cli_json(
+            [
+                "export-events",
+                "--trace-id",
+                "trace-replay-failed-source",
+                "--simulate-failure",
+                "tool_timeout",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert export_code == 0
+
+        replay_code, replay_payload = cli_json(
+            [
+                "replay-run",
+                "--input",
+                str(output_path),
+                "--replay-trace-id",
+                "trace-replay-failed-target",
+            ],
+        )
+        assert replay_code == 0
+        assert replay_payload["source_trace_id"] == "trace-replay-failed-source"
+        assert replay_payload["replay_trace_id"] == "trace-replay-failed-target"
+        assert replay_payload["source_status"] == "failed"
+        assert replay_payload["source_failure_reason"] == "tool_timeout"
+        assert replay_payload["replay_status"] == "failed"
+        assert replay_payload["replay_failure_reason"] == "tool_timeout"
+        assert replay_payload["status"] == "failed"
 
     def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:
         exit_code, payload = cli_json(
