@@ -616,6 +616,14 @@ def _approval_status_counts_from_events(
     return counts
 
 
+def _merge_status_counts(status_counts: Sequence[Mapping[str, int]]) -> dict[str, int]:
+    merged: dict[str, int] = {}
+    for counts in status_counts:
+        for status, count in counts.items():
+            merged[status] = merged.get(status, 0) + count
+    return merged
+
+
 def _event_types_from_events(events: Sequence[StructuredEvent]) -> list[str]:
     return [event.event_type for event in events]
 
@@ -1256,6 +1264,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
         "approval_capability_names": list(summary.approval_capability_names),
+        "approval_status_counts": dict(summary.approval_status_counts),
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
@@ -1268,6 +1277,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
             "approval_capability_names": list(summary.approval_capability_names),
+            "approval_status_counts": dict(summary.approval_status_counts),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1324,6 +1334,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
         "approval_capability_names": list(summary.approval_capability_names),
+        "approval_status_counts": dict(summary.approval_status_counts),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
         "latest_status": summary.latest_status,
@@ -1359,6 +1370,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
         "approval_capability_names": list(summary.approval_capability_names),
+        "approval_status_counts": dict(summary.approval_status_counts),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "summary": {
             "total_runs": summary.total_runs,
@@ -1372,6 +1384,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
             "approval_capability_names": list(summary.approval_capability_names),
+            "approval_status_counts": dict(summary.approval_status_counts),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1430,6 +1443,7 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
         "approval_capability_names": list(summary.approval_capability_names),
+        "approval_status_counts": dict(summary.approval_status_counts),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
@@ -1519,6 +1533,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 for summary in session_summaries
                 for capability_name in summary.approval_capability_names
             )
+        ),
+        "approval_status_counts": _merge_status_counts(
+            summary.approval_status_counts for summary in session_summaries
         ),
         "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(
             selected_scenarios
