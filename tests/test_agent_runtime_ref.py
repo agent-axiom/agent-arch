@@ -636,6 +636,20 @@ class TestRuntimeDocsParity:
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "source_session_id",
+            "replay_session_id",
+            "source_tenant_id",
+            "replay_tenant_id",
+            "source_principal_id",
+            "replay_principal_id",
+            "source_agent_id",
+            "replay_agent_id",
+            "source_authorization_mode",
+            "replay_authorization_mode",
+            "source_delegated_principal_id",
+            "replay_delegated_principal_id",
+            "source_delegated_scope",
+            "replay_delegated_scope",
         )
         for path in (
             Path("agent_runtime_ref/README.md"),
@@ -8282,6 +8296,20 @@ class TestCli:
         assert set(replay_payload) == {
             "source_trace_id",
             "replay_trace_id",
+            "source_session_id",
+            "replay_session_id",
+            "source_tenant_id",
+            "replay_tenant_id",
+            "source_principal_id",
+            "replay_principal_id",
+            "source_agent_id",
+            "replay_agent_id",
+            "source_authorization_mode",
+            "replay_authorization_mode",
+            "source_delegated_principal_id",
+            "replay_delegated_principal_id",
+            "source_delegated_scope",
+            "replay_delegated_scope",
             "status",
             "result",
             "source_status",
@@ -8317,6 +8345,20 @@ class TestCli:
         }
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
+        assert replay_payload["source_session_id"] == "session-demo-001"
+        assert replay_payload["replay_session_id"] == "session-demo-001"
+        assert replay_payload["source_tenant_id"] == "tenant-acme"
+        assert replay_payload["replay_tenant_id"] == "tenant-acme"
+        assert replay_payload["source_principal_id"] == "user-42"
+        assert replay_payload["replay_principal_id"] == "user-42"
+        assert replay_payload["source_agent_id"] == "support-triage-ref"
+        assert replay_payload["replay_agent_id"] == "support-triage-ref"
+        assert replay_payload["source_authorization_mode"] == "platform_owned"
+        assert replay_payload["replay_authorization_mode"] == "platform_owned"
+        assert replay_payload["source_delegated_principal_id"] == ""
+        assert replay_payload["replay_delegated_principal_id"] == ""
+        assert replay_payload["source_delegated_scope"] == ""
+        assert replay_payload["replay_delegated_scope"] == ""
         assert replay_payload["status"] == "success"
         assert replay_payload["source_status"] == "success"
         assert replay_payload["source_output_preview"] == (
@@ -8398,6 +8440,20 @@ class TestCli:
         assert replay_code == 0
         assert replay_payload["source_trace_id"] == "trace-replay-ticket-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-ticket-target"
+        assert replay_payload["source_session_id"] == "session-demo-001"
+        assert replay_payload["replay_session_id"] == "session-demo-001"
+        assert replay_payload["source_tenant_id"] == "tenant-acme"
+        assert replay_payload["replay_tenant_id"] == "tenant-acme"
+        assert replay_payload["source_principal_id"] == "user-42"
+        assert replay_payload["replay_principal_id"] == "user-42"
+        assert replay_payload["source_agent_id"] == "support-triage-ref"
+        assert replay_payload["replay_agent_id"] == "support-triage-ref"
+        assert replay_payload["source_authorization_mode"] == "platform_owned"
+        assert replay_payload["replay_authorization_mode"] == "platform_owned"
+        assert replay_payload["source_delegated_principal_id"] == ""
+        assert replay_payload["replay_delegated_principal_id"] == ""
+        assert replay_payload["source_delegated_scope"] == ""
+        assert replay_payload["replay_delegated_scope"] == ""
         assert replay_payload["source_status"] == "success"
         assert replay_payload["source_output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
@@ -8483,6 +8539,8 @@ class TestCli:
         assert replay_code == 0
         assert replay_payload["source_trace_id"] == "trace-replay-failed-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-failed-target"
+        assert replay_payload["source_session_id"] == "session-demo-001"
+        assert replay_payload["replay_session_id"] == "session-demo-001"
         assert replay_payload["source_status"] == "failed"
         assert replay_payload["source_failure_reason"] == "tool_timeout"
         assert replay_payload["replay_status"] == "failed"

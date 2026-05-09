@@ -925,6 +925,33 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     )
     source_failure_reason = _failure_reason_from_events(source_events)
     replay_failure_reason = _failure_reason_from_events(runtime.telemetry.events)
+    replay_events = runtime.telemetry.events
+    source_session_id = _run_start_field_from_events(source_events, "session_id")
+    replay_session_id = _run_start_field_from_events(replay_events, "session_id")
+    source_tenant_id = _run_start_field_from_events(source_events, "tenant_id")
+    replay_tenant_id = _run_start_field_from_events(replay_events, "tenant_id")
+    source_principal_id = _run_start_field_from_events(source_events, "principal_id")
+    replay_principal_id = _run_start_field_from_events(replay_events, "principal_id")
+    source_agent_id = _run_start_field_from_events(source_events, "agent_id")
+    replay_agent_id = _run_start_field_from_events(replay_events, "agent_id")
+    source_authorization_mode = _run_start_field_from_events(
+        source_events,
+        "authorization_mode",
+    )
+    replay_authorization_mode = _run_start_field_from_events(
+        replay_events,
+        "authorization_mode",
+    )
+    source_delegated_principal_id = _run_start_field_from_events(
+        source_events,
+        "delegated_principal_id",
+    )
+    replay_delegated_principal_id = _run_start_field_from_events(
+        replay_events,
+        "delegated_principal_id",
+    )
+    source_delegated_scope = _run_start_field_from_events(source_events, "delegated_scope")
+    replay_delegated_scope = _run_start_field_from_events(replay_events, "delegated_scope")
     source_idempotency_keys = _idempotency_keys_from_events(source_events)
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     source_approval_ids = _approval_ids_from_events(source_events)
@@ -956,6 +983,20 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     return {
         "source_trace_id": source_trace_id,
         "replay_trace_id": replay_trace_id,
+        "source_session_id": source_session_id,
+        "replay_session_id": replay_session_id,
+        "source_tenant_id": source_tenant_id,
+        "replay_tenant_id": replay_tenant_id,
+        "source_principal_id": source_principal_id,
+        "replay_principal_id": replay_principal_id,
+        "source_agent_id": source_agent_id,
+        "replay_agent_id": replay_agent_id,
+        "source_authorization_mode": source_authorization_mode,
+        "replay_authorization_mode": replay_authorization_mode,
+        "source_delegated_principal_id": source_delegated_principal_id,
+        "replay_delegated_principal_id": replay_delegated_principal_id,
+        "source_delegated_scope": source_delegated_scope,
+        "replay_delegated_scope": replay_delegated_scope,
         "status": result.status,
         "result": result.output_text,
         "source_status": source_status,
