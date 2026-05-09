@@ -14,6 +14,7 @@ class RunPayload(TypedDict):
     user_input: str
     output_text: str
     failure_reason: str
+    request_agent_id: str
     capability_session_id: str
     capability_session_status: str
     authorization_mode: str
@@ -78,6 +79,7 @@ class RunRecord:
     user_input: str
     output_text: str
     failure_reason: str = ""
+    request_agent_id: str = ""
     capability_session_id: str = ""
     capability_session_status: str = ""
     authorization_mode: str = "platform_owned"
@@ -96,6 +98,10 @@ class RunRecord:
         self.failure_reason = _read_optional_string(
             self.failure_reason,
             field="failure_reason",
+        )
+        self.request_agent_id = _read_optional_string(
+            self.request_agent_id,
+            field="request_agent_id",
         )
         self.capability_session_id = _read_optional_string(
             self.capability_session_id,
@@ -279,6 +285,7 @@ class SessionStore:
         user_input: str,
         output_text: str,
         failure_reason: str = "",
+        request_agent_id: str = "",
         capability_session_id: str = "",
         capability_session_status: str = "",
         authorization_mode: str = "platform_owned",
@@ -304,6 +311,10 @@ class SessionStore:
         user_input = _read_required_string(user_input, field="user_input")
         output_text = _read_required_string(output_text, field="output_text")
         failure_reason = _read_optional_string(failure_reason, field="failure_reason")
+        request_agent_id = _read_optional_string(
+            request_agent_id,
+            field="request_agent_id",
+        )
         capability_session_id = _read_optional_string(
             capability_session_id,
             field="capability_session_id",
@@ -353,6 +364,7 @@ class SessionStore:
             user_input=user_input,
             output_text=output_text,
             failure_reason=failure_reason,
+            request_agent_id=request_agent_id,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
             authorization_mode=authorization_mode,
@@ -566,6 +578,7 @@ class SessionStore:
                     "user_input": run.user_input,
                     "output_text": run.output_text,
                     "failure_reason": run.failure_reason,
+                    "request_agent_id": run.request_agent_id,
                     "capability_session_id": run.capability_session_id,
                     "capability_session_status": run.capability_session_status,
                     "authorization_mode": run.authorization_mode,
