@@ -817,6 +817,12 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
         "tenant_id": _run_start_field_from_events(filtered, "tenant_id"),
         "principal_id": _run_start_field_from_events(filtered, "principal_id"),
         "agent_id": _run_start_field_from_events(filtered, "agent_id"),
+        "authorization_mode": _run_start_field_from_events(filtered, "authorization_mode"),
+        "delegated_principal_id": _run_start_field_from_events(
+            filtered,
+            "delegated_principal_id",
+        ),
+        "delegated_scope": _run_start_field_from_events(filtered, "delegated_scope"),
         "status": _run_complete_field_from_events(filtered, "status"),
         "output_preview": _run_complete_field_from_events(filtered, "output_preview"),
         "event_count": len(filtered),

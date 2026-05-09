@@ -1652,6 +1652,9 @@ class TestFailurePaths:
         assert inspect_payload["tenant_id"] == "tenant-acme"
         assert inspect_payload["principal_id"] == ""
         assert inspect_payload["agent_id"] == "support-triage-ref"
+        assert inspect_payload["authorization_mode"] == "platform_owned"
+        assert inspect_payload["delegated_principal_id"] == ""
+        assert inspect_payload["delegated_scope"] == ""
         assert inspect_payload["status"] == "denied"
         assert inspect_payload["output_preview"] == "Request denied by policy."
         assert inspect_payload["failure_reason"] == "principal_missing"
@@ -7851,6 +7854,9 @@ class TestCli:
             "tenant_id",
             "principal_id",
             "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "status",
             "output_preview",
             "event_count",
@@ -7869,6 +7875,9 @@ class TestCli:
         assert inspect_payload["tenant_id"] == "tenant-acme"
         assert inspect_payload["principal_id"] == "user-42"
         assert inspect_payload["agent_id"] == "support-triage-ref"
+        assert inspect_payload["authorization_mode"] == "platform_owned"
+        assert inspect_payload["delegated_principal_id"] == ""
+        assert inspect_payload["delegated_scope"] == ""
         assert inspect_payload["status"] == "success"
         assert inspect_payload["output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
