@@ -773,6 +773,29 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_lifecycle_artifact_schema_documents_retirement_summary(self) -> None:
+        """Keep retirement artifact docs aligned with executable summary fields."""
+        retirement_fields = (
+            "`system_id`",
+            "`ready`",
+            "`triggers`",
+            "`missing_steps`",
+            "`required_steps`",
+            "`archive_targets`",
+            "`failed_run_archive_targets`",
+            "`support_duplicate_archive_targets`",
+            "`replacement_mode`",
+        )
+        for path in (
+            Path("docs/appendix/lifecycle-artifact-schema.en.md"),
+            Path("docs/appendix/lifecycle-artifact-schema.md"),
+            Path("docs/appendix/lifecycle-artifact-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "check-retirement" in text
+            for field in retirement_fields:
+                assert field in text
+
     def test_reference_package_documents_inventory_validation_errors(self) -> None:
         """Keep inspect-agent docs aligned with inventory/catalog validation."""
         required_errors = (
