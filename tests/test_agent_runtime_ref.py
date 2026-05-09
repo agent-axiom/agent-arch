@@ -580,6 +580,8 @@ class TestRuntimeDocsParity:
             "delegated_principal_id",
             "delegated_scope",
             "status",
+            "result",
+            "output_preview",
             "failure_reason",
             "approval_ids",
             "approval_capability_names",
