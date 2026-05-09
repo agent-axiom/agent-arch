@@ -9799,6 +9799,24 @@ class TestCli:
             "Retrieved profile hint: User usually prefers concise English answers."
         )
 
+    def test_cli_inspect_session_preserves_custom_request_agent_id(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "inspect-session",
+                "--agent-id",
+                "custom-support-agent",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--user-input",
+                "What language preference do you remember?",
+            ],
+        )
+        assert exit_code == 0
+        self._assert_session_run_contract(payload["runs"][0])
+        self._assert_session_run_contract(payload["runs"][1])
+        assert payload["runs"][0]["request_agent_id"] == "custom-support-agent"
+        assert payload["runs"][1]["request_agent_id"] == "custom-support-agent"
+
     def test_cli_inspect_session_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
