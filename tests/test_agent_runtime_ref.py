@@ -623,6 +623,26 @@ class TestRuntimeDocsParity:
             for term in required_terms:
                 assert term in text
 
+    def test_reference_package_documents_simulate_run_lineage(self) -> None:
+        """Keep simulate-run docs aligned with actor/auth summary fields."""
+        required_terms = (
+            "simulate-run",
+            "tenant_id",
+            "principal_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        )
+        for path in (
+            Path("agent_runtime_ref/README.md"),
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
+
     def test_reference_package_documents_trace_command_lineage(self) -> None:
         """Keep trace command docs aligned with actor/session auth lineage."""
         required_terms = (
@@ -1554,6 +1574,11 @@ class TestFailurePaths:
         assert set(payload) == {
             "agent_id",
             "session_id",
+            "tenant_id",
+            "principal_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "result",
             "status",
             "failure_reason",
@@ -1573,8 +1598,23 @@ class TestFailurePaths:
             "pending_approval_capability_names",
             "config_dir",
         }
+        expected_tenant_id = (
+            command[command.index("--tenant-id") + 1].strip()
+            if "--tenant-id" in command
+            else "tenant-acme"
+        )
+        expected_principal_id = (
+            command[command.index("--principal-id") + 1].strip()
+            if "--principal-id" in command
+            else "user-42"
+        )
         assert payload["agent_id"] == "support-triage-ref"
         assert payload["session_id"] == "session-demo-001"
+        assert payload["tenant_id"] == expected_tenant_id
+        assert payload["principal_id"] == expected_principal_id
+        assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
         assert payload["status"] == expected_status
         assert payload["failure_reason"] == expected_failure_reason
         assert payload["trace_id"] == "trace-demo-001"
@@ -7388,6 +7428,11 @@ class TestCli:
         assert set(payload) == {
             "agent_id",
             "session_id",
+            "tenant_id",
+            "principal_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "result",
             "status",
             "failure_reason",
@@ -7409,6 +7454,11 @@ class TestCli:
         }
         assert payload["agent_id"] == "support-triage-ref"
         assert payload["session_id"] == "session-demo-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["principal_id"] == "user-42"
+        assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
