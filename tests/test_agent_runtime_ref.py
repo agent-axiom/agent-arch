@@ -830,6 +830,27 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_reference_package_documents_lifecycle_identity_fields(self) -> None:
+        """Keep reference package docs aligned with lifecycle identity fields."""
+        required_fields = (
+            "`artifact_bundle.bundle_name`",
+            "`artifact_bundle.version`",
+            "`artifact_bundle.provenance_required`",
+            "`artifact_bundle.signed`",
+            "`change.change_type`",
+            "`change.risk_level`",
+            "`change.rollout_strategy`",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "inspect-lifecycle" in text
+            for field in required_fields:
+                assert field in text
+
     def test_reference_package_documents_lifecycle_list_validation(self) -> None:
         """Keep reference package docs aligned with lifecycle list validation."""
         required_errors = (
