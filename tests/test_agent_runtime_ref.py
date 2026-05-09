@@ -851,6 +851,17 @@ class TestRuntimeDocsParity:
             "Rollout readiness flag must be a boolean: {field}",
             "rollout.rollout_mode values must be scalar: {field}",
         )
+        rollout_fields = (
+            "`ready`",
+            "`required_checks`",
+            "`blocked_checks`",
+            "`missing_required`",
+            "`support_duplicate_required`",
+            "`missing_support_duplicate_required`",
+            "`support_duplicate_required_ready`",
+            "`blocking_signals`",
+            "`rollout_mode`",
+        )
         for path in (
             Path("docs/appendix/change-rollout-schema.en.md"),
             Path("docs/appendix/change-rollout-schema.md"),
@@ -859,6 +870,8 @@ class TestRuntimeDocsParity:
             text = path.read_text(encoding="utf-8")
             assert "check-rollout" in text
             assert "check-change" in text
+            for field in rollout_fields:
+                assert field in text
             for error in required_errors:
                 assert error in text
 
