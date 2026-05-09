@@ -8109,6 +8109,10 @@ class TestCli:
             "replay_trace_id",
             "status",
             "result",
+            "source_status",
+            "source_output_preview",
+            "replay_status",
+            "replay_output_preview",
             "event_count",
             "event_types",
             "source_event_count",
@@ -8137,6 +8141,14 @@ class TestCli:
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["source_status"] == "success"
+        assert replay_payload["source_output_preview"] == (
+            "Retrieved profile hint: User usually prefers concise English answers."
+        )
+        assert replay_payload["replay_status"] == "success"
+        assert replay_payload["replay_output_preview"] == (
+            "Retrieved profile hint: User usually prefers concise English answers."
+        )
         assert replay_payload["event_count"] == replay_payload["replay_event_count"]
         assert replay_payload["source_event_count"] == 10
         assert replay_payload["source_event_types"] == [
@@ -8207,6 +8219,14 @@ class TestCli:
         assert replay_code == 0
         assert replay_payload["source_trace_id"] == "trace-replay-ticket-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-ticket-target"
+        assert replay_payload["source_status"] == "success"
+        assert replay_payload["source_output_preview"] == (
+            "Ticket request is waiting for human approval (apr-001)."
+        )
+        assert replay_payload["replay_status"] == "success"
+        assert replay_payload["replay_output_preview"] == (
+            "Ticket request is waiting for human approval (apr-001)."
+        )
         assert replay_payload["event_count"] == replay_payload["replay_event_count"]
         assert replay_payload["source_event_count"] == 14
         assert replay_payload["source_event_types"] == [

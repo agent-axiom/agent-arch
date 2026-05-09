@@ -681,6 +681,19 @@ def _event_types_from_events(events: Sequence[StructuredEvent]) -> list[str]:
     return [event.event_type for event in events]
 
 
+def _run_complete_field_from_events(
+    events: Sequence[StructuredEvent],
+    field: str,
+) -> str:
+    for event in reversed(events):
+        if event.event_type != "run_complete":
+            continue
+        value = event.payload.get(field)
+        if isinstance(value, str):
+            return value
+    return ""
+
+
 def _dump_events(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
@@ -835,6 +848,11 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         session_id=session_id or "session-replay-001",
         agent_id=agent_id,
     )
+    source_status = _run_complete_field_from_events(source_events, "status")
+    source_output_preview = _run_complete_field_from_events(
+        source_events,
+        "output_preview",
+    )
     source_idempotency_keys = _idempotency_keys_from_events(source_events)
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     source_approval_ids = _approval_ids_from_events(source_events)
@@ -868,6 +886,10 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "replay_trace_id": replay_trace_id,
         "status": result.status,
         "result": result.output_text,
+        "source_status": source_status,
+        "source_output_preview": source_output_preview,
+        "replay_status": result.status,
+        "replay_output_preview": result.output_text[:80],
         "event_count": len(runtime.telemetry.events),
         "event_types": _event_types_from_events(runtime.telemetry.events),
         "source_event_count": len(source_events),
