@@ -174,7 +174,7 @@ approval_contract:
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-То есть пакет уже живет в модели, где политики, подтверждения и runtime-control contracts не просто побочные настройки, а отдельные управляемые артефакты.
+То есть пакет уже живет в модели, где политики, подтверждения и runtime-control contracts не просто побочные настройки, а отдельные управляемые артефакты. Executable gate `check-controls` делает control bundle тоже reviewable: он возвращает `healthy`, `required_controls`, `blocked_findings_expected`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `support_duplicate_controls`, `preserved_support_duplicate_controls`, `support_duplicate_controls_healthy`, `blocking_findings` и `inventory_drift`, где вложенные поля `has_drift`, `missing_from_catalog` и `missing_from_inventory` отделяют policy/control failures от capability inventory drift.
 
 ## Что должна добавить промышленная схема
 

@@ -174,7 +174,7 @@ approval_contract:
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-也就是说，这个参考包已经活在一种模型里：策略、审批与 runtime-control contracts 不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。
+也就是说，这个参考包已经活在一种模型里：策略、审批与 runtime-control contracts 不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。Executable gate `check-controls` 也让 control bundle 可审查：它会返回 `healthy`、`required_controls`、`blocked_findings_expected`、`missing_controls`、`failed_run_controls`、`preserved_failed_run_controls`、`failed_run_controls_healthy`、`support_duplicate_controls`、`preserved_support_duplicate_controls`、`support_duplicate_controls_healthy`、`blocking_findings` 和 `inventory_drift`，其中嵌套字段 `has_drift`、`missing_from_catalog` 与 `missing_from_inventory` 会把 policy/control failures 和 capability inventory drift 分开。
 
 ## 生产级 Schema 还应该补什么
 
