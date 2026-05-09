@@ -111,7 +111,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 ```
 
 `inspect-memory` теперь возвращает `config_dir`, `count`, `memory_ids` и `records`; каждая запись показывает не только содержимое, но и `provenance` с `revision`.
-`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
+`dump-events` теперь возвращает `trace_id`, `status`, `result`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `approval_status_counts`, `idempotency_keys`, `events` и `failure_reason` в JSON-ответе для degraded-path drills.
 
 Вывод структурированных событий для одного запуска:
 
@@ -127,7 +127,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
-`export-events` возвращает `output_path`, `trace_id`, `status`, `result`, `event_count`, `event_types`, `redact_fields`, `approval_ids`, `approval_capability_names`, `idempotency_keys` и опциональный `failure_reason`, чтобы redaction и degraded-path evidence были видны уже в command summary.
+`export-events` возвращает `output_path`, `trace_id`, `status`, `result`, `event_count`, `event_types`, `redact_fields`, `approval_ids`, `approval_capability_names`, `approval_status_counts`, `idempotency_keys` и опциональный `failure_reason`, чтобы redaction и degraded-path evidence были видны уже в command summary.
 
 Если нужен redacted export для внешнего разбора, можно сразу скрыть чувствительные поля:
 
@@ -147,7 +147,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl
 ```
 
-`dump-events` возвращает `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `idempotency_keys` и `events`; `inspect-trace` возвращает `trace_id`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `approval_ids`, `approval_capability_names` и `idempotency_keys` рядом с `redact_fields`, чтобы approval lineage, approval capability lineage и duplicate-write lineage были видны до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys`, `replay_idempotency_keys`, `approval_ids`, `source_approval_ids`, `replay_approval_ids`, `approval_capability_names`, `source_approval_capability_names` и `replay_approval_capability_names`, чтобы investigation и replay сохраняли source/run approval capability lineage и позволяли сравнить исходные и replay write keys.
+`dump-events` возвращает `status`, `result`, `failure_reason`, `trace_id`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `approval_status_counts`, `idempotency_keys` и `events`; `inspect-trace` возвращает `trace_id`, `event_count`, `event_types`, `approval_ids`, `approval_capability_names`, `approval_status_counts`, `idempotency_keys` и `events`; `export-events` тоже показывает summary `approval_ids`, `approval_capability_names`, `approval_status_counts` и `idempotency_keys` рядом с `redact_fields`, чтобы approval lineage, approval capability lineage, approval status и duplicate-write lineage были видны до ручного просмотра отдельных payloads. `replay-run` возвращает `source_trace_id`, `replay_trace_id`, `status`, `result`, `event_count`, `event_types`, `idempotency_keys`, `source_idempotency_keys`, `replay_idempotency_keys`, `approval_ids`, `source_approval_ids`, `replay_approval_ids`, `approval_capability_names`, `source_approval_capability_names` и `replay_approval_capability_names`, чтобы investigation и replay сохраняли source/run approval capability lineage и позволяли сравнить исходные и replay write keys.
 
 Проверка политики выкладки с переопределением сигналов:
 
