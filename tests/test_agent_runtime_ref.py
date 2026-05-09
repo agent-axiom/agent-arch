@@ -579,6 +579,7 @@ class TestRuntimeDocsParity:
             "sandbox_profile_reviewed",
             "required_run_count",
             "expected outcome",
+            "summary.approval_status_counts",
         )
         for path in (
             Path("docs/appendix/reference-package.en.md"),
