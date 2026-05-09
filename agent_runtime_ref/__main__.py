@@ -442,6 +442,20 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     return {
         "agent_id": runtime.agent.agent_id,
         "session_id": session_id,
+        "tenant_id": _run_start_field_from_events(runtime.telemetry.events, "tenant_id"),
+        "principal_id": _run_start_field_from_events(runtime.telemetry.events, "principal_id"),
+        "authorization_mode": _run_start_field_from_events(
+            runtime.telemetry.events,
+            "authorization_mode",
+        ),
+        "delegated_principal_id": _run_start_field_from_events(
+            runtime.telemetry.events,
+            "delegated_principal_id",
+        ),
+        "delegated_scope": _run_start_field_from_events(
+            runtime.telemetry.events,
+            "delegated_scope",
+        ),
         "result": result.output_text,
         "status": result.status,
         "failure_reason": latest_run.get("failure_reason", ""),
