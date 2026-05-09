@@ -566,6 +566,37 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_trace_schema_documents_command_summary_fields(self) -> None:
+        """Keep trace schema docs aligned with trace command triage summaries."""
+        required_terms = (
+            "dump-events",
+            "export-events",
+            "inspect-trace",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+            "status",
+            "failure_reason",
+            "approval_ids",
+            "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
+            "approval_status_counts",
+            "idempotency_keys",
+        )
+        for path in (
+            Path("docs/appendix/trace-schema.en.md"),
+            Path("docs/appendix/trace-schema.md"),
+            Path("docs/appendix/trace-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
+
     def test_eval_schema_documents_runtime_export_contract(self) -> None:
         """Keep eval schema docs aligned with bundled dataset export shape."""
         required_terms = (
