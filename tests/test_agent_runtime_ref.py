@@ -1691,6 +1691,7 @@ class TestFailurePaths:
             "expected_outcomes": {
                 "latest_status": "success",
                 "approval_wait_runs": 1,
+                "approval_status_counts": {"pending": 1},
                 "required_output_substrings": ["waiting for human approval"],
                 "sandbox_profile_reviewed": True,
             },
@@ -9479,6 +9480,9 @@ class TestCli:
         assert exported["sessions"][0]["runs"][0]["approval_id"] == "apr-001"
         assert exported["sessions"][0]["runs"][0]["capability_name"] == "create_ticket"
         assert exported["sessions"][0]["eval"]["labels"]
+        assert exported["sessions"][0]["eval"]["expected_outcomes"][
+            "approval_status_counts"
+        ] == {"pending": 1}
         assert set(exported["sessions"][0]["eval"]) == {
             "scenario",
             "labels",
@@ -9493,6 +9497,7 @@ class TestCli:
             "expected_outcomes": {
                 "latest_status": "success",
                 "approval_wait_runs": 1,
+                "approval_status_counts": {"pending": 1},
                 "required_run_count": 2,
                 "required_output_substrings": [
                     "waiting for human approval",
