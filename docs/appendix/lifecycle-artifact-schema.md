@@ -140,7 +140,7 @@ provenance:
 
 ## 5. Retirement plan
 
-`retirement_plan` нужен не только для полного выключения агента, но и для controlled replacement capability, policy bundle или artifact family.
+`retirement_plan` нужен не только для полного выключения агента, но и для controlled replacement capability, policy bundle или artifact family. Reference loader также явно фиксирует replacement identity: malformed replacement fields падают с `retirement.replacement_mode must be a string` и `retirement.replacement_mode is required`, рядом с уже описанной validation для `retirement.system_id`.
 
 ```yaml
 kind: retirement_plan
