@@ -43,6 +43,7 @@ class SessionSummaryPayload(TypedDict):
     idempotency_keys: list[str]
     approval_ids: list[str]
     approval_capability_names: list[str]
+    approval_status_counts: dict[str, int]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -58,6 +59,7 @@ class SessionPayload(TypedDict, total=False):
     idempotency_keys: list[str]
     approval_ids: list[str]
     approval_capability_names: list[str]
+    approval_status_counts: dict[str, int]
     latest_failure_reason: str
     latest_trace_id: str | None
     runs: list[RunPayload]
@@ -245,6 +247,16 @@ def _duplicate_ticket_scenarios_from_sessions(
             seen.add(normalized)
             scenarios.append(normalized)
     return scenarios
+
+
+def _merge_approval_status_counts(
+    status_counts: Sequence[Mapping[str, int]],
+) -> dict[str, int]:
+    merged: dict[str, int] = {}
+    for counts in status_counts:
+        for status, count in counts.items():
+            merged[status] = merged.get(status, 0) + count
+    return merged
 
 
 class SessionStore:
@@ -466,6 +478,9 @@ class SessionStore:
                     for capability_name in session["summary"]["approval_capability_names"]
                 )
             ),
+            "approval_status_counts": _merge_approval_status_counts(
+                session["summary"]["approval_status_counts"] for session in sessions
+            ),
             "latest_failure_reason": (
                 latest_failed_run.failure_reason if latest_failed_run else ""
             ),
@@ -505,6 +520,7 @@ class SessionStore:
                 "idempotency_keys": list(summary.idempotency_keys),
                 "approval_ids": list(summary.approval_ids),
                 "approval_capability_names": list(summary.approval_capability_names),
+                "approval_status_counts": dict(summary.approval_status_counts),
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
@@ -516,6 +532,7 @@ class SessionStore:
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
             "approval_capability_names": list(summary.approval_capability_names),
+            "approval_status_counts": dict(summary.approval_status_counts),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "runs": [
@@ -553,6 +570,7 @@ class SessionEvalSummary:
     idempotency_keys: tuple[str, ...]
     approval_ids: tuple[str, ...]
     approval_capability_names: tuple[str, ...]
+    approval_status_counts: dict[str, int]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -582,6 +600,14 @@ def summarize_session(
             if run.approval_id and run.capability_name
         )
     )
+    approval_status_counts: dict[str, int] = {}
+    for run in normalized_runs:
+        if not run.approval_id:
+            continue
+        approval_status = run.capability_session_status or run.status
+        approval_status_counts[approval_status] = (
+            approval_status_counts.get(approval_status, 0) + 1
+        )
     trace_ids = tuple(dict.fromkeys(run.trace_id for run in normalized_runs if run.trace_id))
     failed_trace_ids = tuple(
         run.trace_id
@@ -606,6 +632,7 @@ def summarize_session(
         idempotency_keys=idempotency_keys,
         approval_ids=approval_ids,
         approval_capability_names=approval_capability_names,
+        approval_status_counts=approval_status_counts,
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
     )
