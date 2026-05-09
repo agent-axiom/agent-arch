@@ -74,6 +74,8 @@ class ApprovalRequest:
     requested_by: str
     reviewer: str
     reason: str
+    tenant_id: str = ""
+    agent_id: str = ""
     session_id: str = ""
     capability_session_id: str = ""
     capability_session_status: str = "pending"
@@ -90,6 +92,14 @@ class ApprovalRequest:
             field="approval_id",
         )
         self.trace_id = _read_required_approval_string(self.trace_id, field="trace_id")
+        self.tenant_id = _read_optional_approval_string(
+            self.tenant_id,
+            field="tenant_id",
+        )
+        self.agent_id = _read_optional_approval_string(
+            self.agent_id,
+            field="agent_id",
+        )
         self.capability_name = _read_required_approval_string(
             self.capability_name,
             field="capability_name",
@@ -160,6 +170,8 @@ class ApprovalQueue:
         trace_id: str,
         capability_name: str,
         requested_by: str,
+        tenant_id: str = "",
+        agent_id: str = "",
         reviewer: str | None,
         reason: str,
         session_id: str = "",
@@ -174,6 +186,8 @@ class ApprovalQueue:
             field="capability_name",
         )
         requested_by = _read_required_approval_string(requested_by, field="requested_by")
+        tenant_id = _read_optional_approval_string(tenant_id, field="tenant_id")
+        agent_id = _read_optional_approval_string(agent_id, field="agent_id")
         reason = _read_required_approval_string(reason, field="reason")
         session_id = _read_required_approval_string(session_id, field="session_id")
         reviewer = (
@@ -207,6 +221,8 @@ class ApprovalQueue:
         request = ApprovalRequest(
             approval_id=f"apr-{self._counter:03d}",
             trace_id=trace_id,
+            tenant_id=tenant_id,
+            agent_id=agent_id,
             capability_name=capability_name,
             requested_by=requested_by,
             reviewer=reviewer,
