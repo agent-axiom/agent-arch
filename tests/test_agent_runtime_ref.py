@@ -9959,6 +9959,30 @@ class TestCli:
         assert exported["runs"][1]["approval_id"] == ""
         assert exported["runs"][1]["capability_name"] == ""
 
+    def test_cli_export_session_preserves_custom_request_agent_id(
+        self,
+        cli_json,
+        tmp_path: Path,
+    ) -> None:
+        output_path = tmp_path / "custom-agent-session.json"
+        exit_code, payload = cli_json(
+            [
+                "export-session",
+                "--agent-id",
+                "custom-support-agent",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert exit_code == 0
+        assert payload["session_id"] == "session-demo-001"
+        exported = json.loads(output_path.read_text(encoding="utf-8"))
+        assert len(exported["runs"]) == 2
+        self._assert_session_run_contract(exported["runs"][0])
+        self._assert_session_run_contract(exported["runs"][1])
+        assert exported["runs"][0]["request_agent_id"] == "custom-support-agent"
+        assert exported["runs"][1]["request_agent_id"] == "custom-support-agent"
+
     def test_cli_export_session_surfaces_latest_failure_reason(
         self,
         cli_json,
