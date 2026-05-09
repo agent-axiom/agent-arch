@@ -830,6 +830,24 @@ class TestRuntimeDocsParity:
             for error in required_errors:
                 assert error in text
 
+    def test_reference_package_documents_lifecycle_list_validation(self) -> None:
+        """Keep reference package docs aligned with lifecycle list validation."""
+        required_errors = (
+            "{key} must be a list",
+            "{key} entries must be strings",
+            "{key} entries must not be empty",
+            "{key} entries must be unique",
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "Lifecycle list loaders" in text
+            for error in required_errors:
+                assert error in text
+
     def test_lifecycle_artifact_schema_documents_retirement_summary(self) -> None:
         """Keep retirement artifact docs aligned with executable summary fields."""
         retirement_fields = (
