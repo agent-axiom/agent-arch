@@ -842,6 +842,24 @@ class TestRuntimeDocsParity:
             "`support_duplicate_archive_targets`",
             "`replacement_mode`",
         )
+        lifecycle_errors = (
+            "change config must be a mapping",
+            "artifact bundle config must be a mapping",
+            "retirement config must be a mapping",
+            "change.change_id must be a string",
+            "change.change_id is required",
+            "change.session_control_owner is required",
+            "bundle.bundle_name must be a string",
+            "bundle.bundle_name is required",
+            "bundle.session_control_owner is required",
+            "retirement.system_id must be a string",
+            "retirement.system_id is required",
+            "retirement.session_control_owner is required",
+            "retirement.emergency_freeze_owner is required",
+            "{key} entries must be strings",
+            "{key} entries must not be empty",
+            "{key} entries must be unique",
+        )
         for path in (
             Path("docs/appendix/lifecycle-artifact-schema.en.md"),
             Path("docs/appendix/lifecycle-artifact-schema.md"),
@@ -851,6 +869,8 @@ class TestRuntimeDocsParity:
             assert "check-retirement" in text
             for field in retirement_fields:
                 assert field in text
+            for error in lifecycle_errors:
+                assert error in text
 
     def test_policy_bundle_schema_documents_controls_summary(self) -> None:
         """Keep policy-bundle docs aligned with executable controls summary fields."""
