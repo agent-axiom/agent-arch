@@ -839,11 +839,21 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     replay_idempotency_keys = _idempotency_keys_from_events(runtime.telemetry.events)
     source_approval_ids = _approval_ids_from_events(source_events)
     replay_approval_ids = _approval_ids_from_events(runtime.telemetry.events)
+    source_pending_approval_ids = _pending_approval_ids_from_events(source_events)
+    replay_pending_approval_ids = _pending_approval_ids_from_events(
+        runtime.telemetry.events
+    )
     source_approval_capability_names = _approval_capability_names_from_events(
         source_events
     )
     replay_approval_capability_names = _approval_capability_names_from_events(
         runtime.telemetry.events
+    )
+    source_pending_approval_capability_names = (
+        _pending_approval_capability_names_from_events(source_events)
+    )
+    replay_pending_approval_capability_names = (
+        _pending_approval_capability_names_from_events(runtime.telemetry.events)
     )
     source_approval_status_counts = _approval_status_counts_from_events(source_events)
     replay_approval_status_counts = _approval_status_counts_from_events(
@@ -868,6 +878,11 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "approval_ids": list(dict.fromkeys(source_approval_ids + replay_approval_ids)),
         "source_approval_ids": source_approval_ids,
         "replay_approval_ids": replay_approval_ids,
+        "pending_approval_ids": list(
+            dict.fromkeys(source_pending_approval_ids + replay_pending_approval_ids)
+        ),
+        "source_pending_approval_ids": source_pending_approval_ids,
+        "replay_pending_approval_ids": replay_pending_approval_ids,
         "approval_capability_names": list(
             dict.fromkeys(
                 source_approval_capability_names + replay_approval_capability_names
@@ -875,6 +890,14 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "source_approval_capability_names": source_approval_capability_names,
         "replay_approval_capability_names": replay_approval_capability_names,
+        "pending_approval_capability_names": list(
+            dict.fromkeys(
+                source_pending_approval_capability_names
+                + replay_pending_approval_capability_names
+            )
+        ),
+        "source_pending_approval_capability_names": source_pending_approval_capability_names,
+        "replay_pending_approval_capability_names": replay_pending_approval_capability_names,
         "approval_status_counts": approval_status_counts,
         "source_approval_status_counts": source_approval_status_counts,
         "replay_approval_status_counts": replay_approval_status_counts,
