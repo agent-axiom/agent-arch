@@ -8111,6 +8111,10 @@ class TestCli:
             "result",
             "event_count",
             "event_types",
+            "source_event_count",
+            "source_event_types",
+            "replay_event_count",
+            "replay_event_types",
             "idempotency_keys",
             "source_idempotency_keys",
             "replay_idempotency_keys",
@@ -8133,6 +8137,22 @@ class TestCli:
         assert replay_payload["source_trace_id"] == "trace-replay-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-target"
         assert replay_payload["status"] == "success"
+        assert replay_payload["event_count"] == replay_payload["replay_event_count"]
+        assert replay_payload["source_event_count"] == 10
+        assert replay_payload["source_event_types"] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        assert replay_payload["replay_event_count"] == 10
+        assert replay_payload["replay_event_types"] == replay_payload["event_types"]
         assert replay_payload["idempotency_keys"] == []
         assert replay_payload["source_idempotency_keys"] == []
         assert replay_payload["replay_idempotency_keys"] == []
@@ -8187,6 +8207,26 @@ class TestCli:
         assert replay_code == 0
         assert replay_payload["source_trace_id"] == "trace-replay-ticket-source"
         assert replay_payload["replay_trace_id"] == "trace-replay-ticket-target"
+        assert replay_payload["event_count"] == replay_payload["replay_event_count"]
+        assert replay_payload["source_event_count"] == 14
+        assert replay_payload["source_event_types"] == [
+            "run_start",
+            "policy_precheck",
+            "retrieval",
+            "context_layers_built",
+            "span",
+            "tool_policy_decision",
+            "approval_requested",
+            "sandbox_profile_reviewed",
+            "tool_execution",
+            "memory_write_decision",
+            "memory_persisted",
+            "background_compaction",
+            "background_update_scheduled",
+            "run_complete",
+        ]
+        assert replay_payload["replay_event_count"] == 14
+        assert replay_payload["replay_event_types"] == replay_payload["event_types"]
         assert replay_payload["idempotency_keys"] == [
             "trace-replay-ticket-source",
             "trace-replay-ticket-target",
