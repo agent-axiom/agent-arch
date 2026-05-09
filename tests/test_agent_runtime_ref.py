@@ -623,6 +623,30 @@ class TestRuntimeDocsParity:
             for term in required_terms:
                 assert term in text
 
+    def test_reference_package_documents_trace_command_lineage(self) -> None:
+        """Keep trace command docs aligned with actor/session auth lineage."""
+        required_terms = (
+            "dump-events",
+            "export-events",
+            "inspect-trace",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
+        )
+        for path in (
+            Path("agent_runtime_ref/README.md"),
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
+
     def test_runtime_readme_documents_eval_approval_summary_fields(self) -> None:
         """Keep runtime README aligned with eval approval summary fields."""
         text = Path("agent_runtime_ref/README.md").read_text(encoding="utf-8")
@@ -1569,6 +1593,13 @@ class TestFailurePaths:
         assert set(payload) == {
             "output_path",
             "trace_id",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "status",
             "result",
             "event_count",
@@ -1679,6 +1710,13 @@ class TestFailurePaths:
             "result",
             "failure_reason",
             "trace_id",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "event_count",
             "event_types",
             "approval_ids",
@@ -1690,6 +1728,13 @@ class TestFailurePaths:
             "events",
         }
         assert payload["trace_id"] == "trace-cli-dump-failure-001"
+        assert payload["session_id"] == "session-demo-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["principal_id"] == "user-42"
+        assert payload["agent_id"] == "support-triage-ref"
+        assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
         assert payload["status"] == "failed"
         assert payload["failure_reason"] == "tool_timeout"
         assert payload["idempotency_keys"] == ["trace-cli-dump-failure-001"]
@@ -7514,6 +7559,13 @@ class TestCli:
                     "result",
                     "failure_reason",
                     "trace_id",
+                    "session_id",
+                    "tenant_id",
+                    "principal_id",
+                    "agent_id",
+                    "authorization_mode",
+                    "delegated_principal_id",
+                    "delegated_scope",
                     "event_count",
                     "event_types",
                     "approval_ids",
@@ -7754,6 +7806,13 @@ class TestCli:
             "result",
             "failure_reason",
             "trace_id",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "event_count",
             "event_types",
             "approval_ids",
@@ -7765,6 +7824,13 @@ class TestCli:
             "events",
         }
         assert payload["trace_id"] == "trace-cli-dump-success-001"
+        assert payload["session_id"] == "session-demo-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["principal_id"] == "user-42"
+        assert payload["agent_id"] == "support-triage-ref"
+        assert payload["authorization_mode"] == "platform_owned"
+        assert payload["delegated_principal_id"] == ""
+        assert payload["delegated_scope"] == ""
         assert payload["status"] == "success"
         assert payload["failure_reason"] == ""
         assert payload["approval_ids"] == ["apr-001"]
@@ -7794,6 +7860,13 @@ class TestCli:
         assert set(export_payload) == {
             "output_path",
             "trace_id",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "status",
             "result",
             "event_count",
@@ -7810,6 +7883,13 @@ class TestCli:
         assert output_path.exists()
         assert export_payload["output_path"] == str(output_path)
         assert export_payload["trace_id"] == "trace-export-001"
+        assert export_payload["session_id"] == "session-demo-001"
+        assert export_payload["tenant_id"] == "tenant-acme"
+        assert export_payload["principal_id"] == "user-42"
+        assert export_payload["agent_id"] == "support-triage-ref"
+        assert export_payload["authorization_mode"] == "platform_owned"
+        assert export_payload["delegated_principal_id"] == ""
+        assert export_payload["delegated_scope"] == ""
         assert export_payload["status"] == "success"
         assert export_payload["failure_reason"] == ""
         assert export_payload["result"] == "Ticket request is waiting for human approval (apr-001)."
@@ -7948,6 +8028,13 @@ class TestCli:
         assert set(export_payload) == {
             "output_path",
             "trace_id",
+            "session_id",
+            "tenant_id",
+            "principal_id",
+            "agent_id",
+            "authorization_mode",
+            "delegated_principal_id",
+            "delegated_scope",
             "status",
             "result",
             "event_count",
@@ -7963,6 +8050,13 @@ class TestCli:
         }
         assert export_payload["output_path"] == str(output_path)
         assert export_payload["trace_id"] == "trace-redacted-001"
+        assert export_payload["session_id"] == "session-demo-001"
+        assert export_payload["tenant_id"] == "tenant-acme"
+        assert export_payload["principal_id"] == "user-42"
+        assert export_payload["agent_id"] == "support-triage-ref"
+        assert export_payload["authorization_mode"] == "platform_owned"
+        assert export_payload["delegated_principal_id"] == ""
+        assert export_payload["delegated_scope"] == ""
         assert export_payload["status"] == "success"
         assert export_payload["failure_reason"] == ""
         assert export_payload["redact_fields"] == ["user_input"]
