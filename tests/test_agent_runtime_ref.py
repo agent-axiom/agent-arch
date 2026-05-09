@@ -862,6 +862,8 @@ class TestRuntimeDocsParity:
             "bundle.session_control_owner is required",
             "retirement.system_id must be a string",
             "retirement.system_id is required",
+            "retirement.replacement_mode must be a string",
+            "retirement.replacement_mode is required",
             "retirement.session_control_owner is required",
             "retirement.emergency_freeze_owner is required",
             "{key} entries must be strings",

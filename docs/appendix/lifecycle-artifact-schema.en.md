@@ -140,7 +140,7 @@ And once capability-session governance is explicit, the bundle should usually ma
 
 ## 5. Retirement plan
 
-`retirement_plan` is useful not only for shutting down a whole agent, but also for controlled replacement of a capability, policy bundle, or artifact family.
+`retirement_plan` is useful not only for shutting down a whole agent, but also for controlled replacement of a capability, policy bundle, or artifact family. The reference loader keeps the replacement identity explicit too: malformed replacement fields fail with `retirement.replacement_mode must be a string` and `retirement.replacement_mode is required`, next to the existing `retirement.system_id` validation.
 
 ```yaml
 kind: retirement_plan

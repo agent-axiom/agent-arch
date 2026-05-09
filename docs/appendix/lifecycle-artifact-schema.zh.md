@@ -140,7 +140,7 @@ provenance:
 
 ## 5. 退役计划
 
-`retirement_plan` 不只是给整个智能体下线用的。它同样适用于能力、策略包或工件族的受控替换。
+`retirement_plan` 不只是给整个智能体下线用的。它同样适用于能力、策略包或工件族的受控替换。Reference loader 也会明确约束 replacement identity：malformed replacement fields 会失败为 `retirement.replacement_mode must be a string` 和 `retirement.replacement_mode is required`，与已有的 `retirement.system_id` validation 并列。
 
 ```yaml
 kind: retirement_plan
