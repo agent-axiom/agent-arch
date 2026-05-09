@@ -815,6 +815,7 @@ class TestRuntimeDocsParity:
             "runtime_controls.sandbox_profile config must be a mapping",
             "runtime_controls.sandbox_profile.{key} config must be a mapping",
             "runtime_controls.sandbox_profile.workspace.entries must be a list",
+            "Sandbox profile {key} config must be a mapping",
             "Sandbox profile {section}.{key} must be a string",
             "Sandbox profile workspace entries must be a list",
         )
