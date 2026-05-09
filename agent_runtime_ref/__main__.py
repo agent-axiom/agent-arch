@@ -696,11 +696,13 @@ def _run_complete_field_from_events(
 
 def _failure_reason_from_events(events: Sequence[StructuredEvent]) -> str:
     for event in reversed(events):
-        if event.event_type != "run_failed":
+        if event.event_type not in {"run_failed", "run_complete"}:
             continue
         value = event.payload.get("failure_reason")
         if isinstance(value, str):
-            return value
+            normalized = value.strip()
+            if normalized:
+                return normalized
     return ""
 
 
