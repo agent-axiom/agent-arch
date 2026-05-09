@@ -174,7 +174,7 @@ In `agent_runtime_ref`, there are already:
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-So the package already lives in a model where policy, approvals, and runtime-control contracts are not “secondary settings”, but governed artifacts tied to concrete bundle versions and release-bearing control surfaces.
+So the package already lives in a model where policy, approvals, and runtime-control contracts are not “secondary settings”, but governed artifacts tied to concrete bundle versions and release-bearing control surfaces. The executable `check-controls` gate makes the control bundle reviewable too: it returns `healthy`, `required_controls`, `blocked_findings_expected`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `support_duplicate_controls`, `preserved_support_duplicate_controls`, `support_duplicate_controls_healthy`, `blocking_findings`, and `inventory_drift`, whose nested fields `has_drift`, `missing_from_catalog`, and `missing_from_inventory` separate policy/control failures from capability inventory drift.
 
 ## What a production schema should add
 

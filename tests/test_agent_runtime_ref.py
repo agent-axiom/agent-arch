@@ -796,6 +796,35 @@ class TestRuntimeDocsParity:
             for field in retirement_fields:
                 assert field in text
 
+    def test_policy_bundle_schema_documents_controls_summary(self) -> None:
+        """Keep policy-bundle docs aligned with executable controls summary fields."""
+        controls_fields = (
+            "`healthy`",
+            "`required_controls`",
+            "`blocked_findings_expected`",
+            "`missing_controls`",
+            "`failed_run_controls`",
+            "`preserved_failed_run_controls`",
+            "`failed_run_controls_healthy`",
+            "`support_duplicate_controls`",
+            "`preserved_support_duplicate_controls`",
+            "`support_duplicate_controls_healthy`",
+            "`blocking_findings`",
+            "`inventory_drift`",
+            "`has_drift`",
+            "`missing_from_catalog`",
+            "`missing_from_inventory`",
+        )
+        for path in (
+            Path("docs/appendix/policy-bundle-schema.en.md"),
+            Path("docs/appendix/policy-bundle-schema.md"),
+            Path("docs/appendix/policy-bundle-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "check-controls" in text
+            for field in controls_fields:
+                assert field in text
+
     def test_reference_package_documents_inventory_validation_errors(self) -> None:
         """Keep inspect-agent docs aligned with inventory/catalog validation."""
         required_errors = (
