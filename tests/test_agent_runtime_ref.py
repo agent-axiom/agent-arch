@@ -584,15 +584,32 @@ class TestRuntimeDocsParity:
             "expected outcome",
             "summary.approval_status_counts",
         )
-        for path in (
-            Path("docs/appendix/reference-package.en.md"),
-            Path("docs/appendix/reference-package.md"),
-            Path("docs/appendix/reference-package.zh.md"),
-        ):
+        required_artifact_snippets = {
+            Path("docs/appendix/reference-package.en.md"): (
+                "top-level `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
+                "`failed_trace_ids`, `idempotency_keys`, `approval_ids`, "
+                "`approval_capability_names`, `approval_status_counts`, "
+                "and `latest_failure_reason`"
+            ),
+            Path("docs/appendix/reference-package.md"): (
+                "top-level `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
+                "`failed_trace_ids`, `idempotency_keys`, `approval_ids`, "
+                "`approval_capability_names`, `approval_status_counts` "
+                "и `latest_failure_reason`"
+            ),
+            Path("docs/appendix/reference-package.zh.md"): (
+                "top-level `failed_runs`、`traceable_failed_runs`、`trace_ids`、"
+                "`failed_trace_ids`、`idempotency_keys`、`approval_ids`、"
+                "`approval_capability_names`、`approval_status_counts` "
+                "和 `latest_failure_reason`"
+            ),
+        }
+        for path, artifact_snippet in required_artifact_snippets.items():
             text = path.read_text(encoding="utf-8")
             assert "export-eval-dataset" in text
             for term in required_terms:
                 assert term in text
+            assert artifact_snippet in text
 
     def test_reference_package_documents_sandbox_profile_loader_errors(self) -> None:
         """Keep lifecycle docs aligned with sandbox-profile config validation."""
