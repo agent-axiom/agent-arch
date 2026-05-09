@@ -858,6 +858,7 @@ class TestFailurePaths:
             "session_id": "session-denied-001",
             "status": "denied",
             "output_preview": "Request denied by policy.",
+            "failure_reason": "principal_missing",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -974,6 +975,7 @@ class TestFailurePaths:
             "output_preview": (
                 "Runtime halted before side effects completed: create_ticket returned validation_"
             ),
+            "failure_reason": "missing_idempotency_key",
             "authorization_mode": "human_approved",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -1621,6 +1623,36 @@ class TestFailurePaths:
         )
         assert inspect_code == 0
         assert inspect_payload["failure_reason"] == "upstream_unavailable"
+
+    def test_cli_export_trace_preserves_policy_denial_reason(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "denied-trace.jsonl"
+        code, payload = cli_json(
+            [
+                "export-events",
+                "--trace-id",
+                "trace-cli-export-denied-001",
+                "--principal-id",
+                " ",
+                "--output",
+                str(output_path),
+            ]
+        )
+        assert code == 0
+        assert payload["status"] == "denied"
+        assert payload["failure_reason"] == "principal_missing"
+        assert output_path.exists()
+
+        inspect_code, inspect_payload = cli_json(
+            ["inspect-trace", "--input", str(output_path)]
+        )
+        assert inspect_code == 0
+        assert inspect_payload["failure_reason"] == "principal_missing"
+        run_complete = inspect_payload["events"][-1]
+        assert run_complete["event_type"] == "run_complete"
+        assert run_complete["payload"]["status"] == "denied"
+        assert run_complete["payload"]["failure_reason"] == "principal_missing"
 
     def test_cli_dump_events_surfaces_failure_reason(self, cli_json) -> None:
         code, payload = cli_json(
@@ -3473,6 +3505,7 @@ class TestRuntimeCore:
             "output_preview": (
                 "Runtime halted before side effects completed: missing_capability returned denied"
             ),
+            "failure_reason": "capability_unknown",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
