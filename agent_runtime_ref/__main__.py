@@ -1212,6 +1212,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
+        "approval_capability_names": list(summary.approval_capability_names),
         "summary": {
             "total_runs": summary.total_runs,
             "success_runs": summary.success_runs,
@@ -1223,6 +1224,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
+            "approval_capability_names": list(summary.approval_capability_names),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1241,6 +1243,7 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "delegated_scope": run.delegated_scope,
                 "idempotency_key": run.idempotency_key,
                 "approval_id": run.approval_id,
+                "capability_name": run.capability_name,
             }
             for run in runs
         ],
@@ -1277,6 +1280,7 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
+        "approval_capability_names": list(summary.approval_capability_names),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
         "latest_status": summary.latest_status,
@@ -1311,6 +1315,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
+        "approval_capability_names": list(summary.approval_capability_names),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "summary": {
             "total_runs": summary.total_runs,
@@ -1323,6 +1328,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
+            "approval_capability_names": list(summary.approval_capability_names),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "latest_status": summary.latest_status,
@@ -1341,6 +1347,7 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "delegated_scope": run.delegated_scope,
                 "idempotency_key": run.idempotency_key,
                 "approval_id": run.approval_id,
+                "capability_name": run.capability_name,
             }
             for run in runs
         ],
@@ -1379,6 +1386,7 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
         "failed_trace_ids": list(summary.failed_trace_ids),
         "idempotency_keys": list(summary.idempotency_keys),
         "approval_ids": list(summary.approval_ids),
+        "approval_capability_names": list(summary.approval_capability_names),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "latest_trace_id": summary.latest_trace_id,
     }
@@ -1460,6 +1468,13 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 approval_id
                 for summary in session_summaries
                 for approval_id in summary.approval_ids
+            )
+        ),
+        "approval_capability_names": list(
+            dict.fromkeys(
+                capability_name
+                for summary in session_summaries
+                for capability_name in summary.approval_capability_names
             )
         ),
         "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(

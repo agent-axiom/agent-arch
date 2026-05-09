@@ -21,6 +21,7 @@ class RunPayload(TypedDict):
     delegated_scope: str
     idempotency_key: str
     approval_id: str
+    capability_name: str
 
 
 class SessionMetadataPayload(TypedDict):
@@ -41,6 +42,7 @@ class SessionSummaryPayload(TypedDict):
     failed_trace_ids: list[str]
     idempotency_keys: list[str]
     approval_ids: list[str]
+    approval_capability_names: list[str]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -55,6 +57,7 @@ class SessionPayload(TypedDict, total=False):
     failed_trace_ids: list[str]
     idempotency_keys: list[str]
     approval_ids: list[str]
+    approval_capability_names: list[str]
     latest_failure_reason: str
     latest_trace_id: str | None
     runs: list[RunPayload]
@@ -76,6 +79,7 @@ class RunRecord:
     delegated_scope: str = ""
     idempotency_key: str = ""
     approval_id: str = ""
+    capability_name: str = ""
 
     def __post_init__(self) -> None:
         self.trace_id = _read_required_string(self.trace_id, field="trace_id")
@@ -111,6 +115,10 @@ class RunRecord:
         self.approval_id = _read_optional_string(
             self.approval_id,
             field="approval_id",
+        )
+        self.capability_name = _read_optional_string(
+            self.capability_name,
+            field="capability_name",
         )
         status = self.status
         if status not in {"success", "denied", "failed", "approval_required"}:
@@ -262,6 +270,7 @@ class SessionStore:
         delegated_scope: str = "",
         idempotency_key: str = "",
         approval_id: str = "",
+        capability_name: str = "",
     ) -> RunRecord:
         session_id = _read_required_string(session_id, field="session_id")
         status = _read_required_string(status, field="status")
@@ -295,6 +304,7 @@ class SessionStore:
         delegated_scope = _read_optional_string(delegated_scope, field="delegated_scope")
         idempotency_key = _read_optional_string(idempotency_key, field="idempotency_key")
         approval_id = _read_optional_string(approval_id, field="approval_id")
+        capability_name = _read_optional_string(capability_name, field="capability_name")
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
@@ -334,6 +344,7 @@ class SessionStore:
             delegated_scope=delegated_scope,
             idempotency_key=idempotency_key,
             approval_id=approval_id,
+            capability_name=capability_name,
         )
         self._runs.append(record)
         return record
@@ -448,6 +459,13 @@ class SessionStore:
                     for approval_id in session["summary"]["approval_ids"]
                 )
             ),
+            "approval_capability_names": list(
+                dict.fromkeys(
+                    capability_name
+                    for session in sessions
+                    for capability_name in session["summary"]["approval_capability_names"]
+                )
+            ),
             "latest_failure_reason": (
                 latest_failed_run.failure_reason if latest_failed_run else ""
             ),
@@ -486,6 +504,7 @@ class SessionStore:
                 "failed_trace_ids": list(summary.failed_trace_ids),
                 "idempotency_keys": list(summary.idempotency_keys),
                 "approval_ids": list(summary.approval_ids),
+                "approval_capability_names": list(summary.approval_capability_names),
                 "latest_trace_id": summary.latest_trace_id,
                 "latest_status": summary.latest_status,
             },
@@ -496,6 +515,7 @@ class SessionStore:
             "failed_trace_ids": list(summary.failed_trace_ids),
             "idempotency_keys": list(summary.idempotency_keys),
             "approval_ids": list(summary.approval_ids),
+            "approval_capability_names": list(summary.approval_capability_names),
             "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
             "latest_trace_id": summary.latest_trace_id,
             "runs": [
@@ -512,6 +532,7 @@ class SessionStore:
                     "delegated_scope": run.delegated_scope,
                     "idempotency_key": run.idempotency_key,
                     "approval_id": run.approval_id,
+                    "capability_name": run.capability_name,
                 }
                 for run in runs
             ],
@@ -531,6 +552,7 @@ class SessionEvalSummary:
     failed_trace_ids: tuple[str, ...]
     idempotency_keys: tuple[str, ...]
     approval_ids: tuple[str, ...]
+    approval_capability_names: tuple[str, ...]
     latest_trace_id: str | None
     latest_status: str | None
 
@@ -552,6 +574,13 @@ def summarize_session(
     )
     approval_ids = tuple(
         dict.fromkeys(run.approval_id for run in normalized_runs if run.approval_id)
+    )
+    approval_capability_names = tuple(
+        dict.fromkeys(
+            run.capability_name
+            for run in normalized_runs
+            if run.approval_id and run.capability_name
+        )
     )
     trace_ids = tuple(dict.fromkeys(run.trace_id for run in normalized_runs if run.trace_id))
     failed_trace_ids = tuple(
@@ -576,6 +605,7 @@ def summarize_session(
         failed_trace_ids=failed_trace_ids,
         idempotency_keys=idempotency_keys,
         approval_ids=approval_ids,
+        approval_capability_names=approval_capability_names,
         latest_trace_id=latest.trace_id if latest is not None else None,
         latest_status=latest.status if latest is not None else None,
     )
