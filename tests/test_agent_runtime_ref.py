@@ -9707,6 +9707,24 @@ class TestCli:
         assert payload["runs"][1]["idempotency_key"] == ""
         assert payload["runs"][1]["approval_id"] == ""
 
+    def test_cli_session_replay_preserves_custom_request_agent_id(self, cli_json) -> None:
+        exit_code, payload = cli_json(
+            [
+                "session-replay",
+                "--agent-id",
+                "custom-support-agent",
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
+                "--user-input",
+                "What language preference do you remember?",
+            ],
+        )
+        assert exit_code == 0
+        self._assert_session_run_contract(payload["runs"][0])
+        self._assert_session_run_contract(payload["runs"][1])
+        assert payload["runs"][0]["request_agent_id"] == "custom-support-agent"
+        assert payload["runs"][1]["request_agent_id"] == "custom-support-agent"
+
     def test_cli_session_replay_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
