@@ -709,6 +709,29 @@ class TestRuntimeDocsParity:
             "and `latest_failure_reason`"
         ) in text
 
+    def test_eval_schema_documents_eval_artifact_lineage_fields(self) -> None:
+        """Keep eval schema docs aligned with top-level exported artifact lineage."""
+        required_terms = (
+            "`trace_ids`",
+            "`failed_trace_ids`",
+            "`idempotency_keys`",
+            "`approval_ids`",
+            "`approval_capability_names`",
+            "`pending_approval_ids`",
+            "`pending_approval_capability_names`",
+            "`approval_status_counts`",
+            "`latest_failure_reason`",
+        )
+        for path in (
+            Path("docs/appendix/eval-schema.en.md"),
+            Path("docs/appendix/eval-schema.md"),
+            Path("docs/appendix/eval-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            assert "top-level" in text
+            for term in required_terms:
+                assert term in text
+
     def test_reference_package_documents_eval_artifact_contract(self) -> None:
         """Keep reference package docs aligned with nested eval artifact fields."""
         required_terms = (
