@@ -720,6 +720,7 @@ class TestRuntimeDocsParity:
             "summary.pending_approval_ids",
             "summary.pending_approval_capability_names",
             "summary.approval_status_counts",
+            "per-run `request_agent_id`",
         )
         required_artifact_snippets = {
             Path("docs/appendix/reference-package.en.md"): (
@@ -10021,6 +10022,30 @@ class TestCli:
         assert exported["latest_failure_reason"] == "tool_timeout"
         assert exported["latest_trace_id"] == "trace-session-001"
         assert exported["runs"][0]["failure_reason"] == "tool_timeout"
+
+    def test_cli_export_eval_dataset_preserves_custom_request_agent_id(
+        self,
+        cli_json,
+        tmp_path: Path,
+    ) -> None:
+        output_path = tmp_path / "eval-custom-agent.json"
+        exit_code, payload = cli_json(
+            [
+                "export-eval-dataset",
+                "--scenario",
+                "support_ticket",
+                "--agent-id",
+                "custom-support-agent",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert exit_code == 0
+        assert payload["sessions"] == ["session-eval-support"]
+        exported = json.loads(output_path.read_text(encoding="utf-8"))
+        run = exported["sessions"][0]["runs"][0]
+        self._assert_session_run_contract(run)
+        assert run["request_agent_id"] == "custom-support-agent"
 
     def test_cli_export_eval_dataset_writes_multi_session_json(
         self,
