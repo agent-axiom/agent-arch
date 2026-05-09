@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import cast
 
@@ -616,7 +616,7 @@ def _approval_status_counts_from_events(
     return counts
 
 
-def _merge_status_counts(status_counts: Sequence[Mapping[str, int]]) -> dict[str, int]:
+def _merge_status_counts(status_counts: Iterable[Mapping[str, int]]) -> dict[str, int]:
     merged: dict[str, int] = {}
     for counts in status_counts:
         for status, count in counts.items():
