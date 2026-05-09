@@ -1226,9 +1226,11 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     }
     return {
         "approval_id": resolved.approval_id,
+        "approval_ids": [resolved.approval_id],
         "trace_id": resolved.trace_id,
         "session_id": resolved.session_id,
         "capability_name": resolved.capability_name,
+        "approval_capability_names": [resolved.capability_name],
         "requested_by": resolved.requested_by,
         "status": resolved.status,
         "reviewer": resolved.reviewer,

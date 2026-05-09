@@ -468,6 +468,26 @@ class TestRuntimeDocsParity:
             assert "capability_session_status" in text
             assert "idempotency_key" in text
 
+
+    def test_approval_schema_documents_resolve_summary_lineage(self) -> None:
+        """Keep approval docs aligned with resolve-approval summary lineage."""
+        required_terms = (
+            "resolve-approval",
+            "approval_ids",
+            "approval_capability_names",
+            "approval_status_counts",
+            "idempotency_keys",
+        )
+        for path in (
+            Path("docs/appendix/approval-schema.en.md"),
+            Path("docs/appendix/approval-schema.md"),
+            Path("docs/appendix/approval-schema.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            resolve_section = text.split("resolve-approval", maxsplit=1)[1]
+            for term in required_terms[1:]:
+                assert term in resolve_section
+
     def test_approval_schema_documents_authorization_mode_validation(self) -> None:
         """Keep approval docs aligned with delegated-authorization validation."""
         for path in (
@@ -8896,6 +8916,8 @@ class TestCli:
         )
         assert resolve_code == 0
         assert resolve_payload["status"] == "approved"
+        assert resolve_payload["approval_ids"] == ["apr-001"]
+        assert resolve_payload["approval_capability_names"] == ["create_ticket"]
         assert resolve_payload["capability_session_id"] == "cap-session-001"
         assert resolve_payload["idempotency_key"] == "trace-approval-normalized-002"
         assert resolve_payload["idempotency_keys"] == ["trace-approval-normalized-002"]
@@ -8914,9 +8936,11 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "approval_id",
+            "approval_ids",
             "trace_id",
             "session_id",
             "capability_name",
+            "approval_capability_names",
             "requested_by",
             "status",
             "reviewer",
@@ -8931,9 +8955,11 @@ class TestCli:
             "approval_status_counts",
         }
         assert payload["approval_id"] == "apr-001"
+        assert payload["approval_ids"] == ["apr-001"]
         assert payload["trace_id"] == "trace-approval-001"
         assert payload["session_id"] == "session-approval-001"
         assert payload["capability_name"] == "create_ticket"
+        assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["requested_by"] == "user-42"
         assert payload["status"] == "approved"
         assert payload["reviewer"] == "manager"
@@ -8960,9 +8986,11 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "approval_id",
+            "approval_ids",
             "trace_id",
             "session_id",
             "capability_name",
+            "approval_capability_names",
             "requested_by",
             "status",
             "reviewer",
@@ -8977,9 +9005,11 @@ class TestCli:
             "approval_status_counts",
         }
         assert payload["approval_id"] == "apr-001"
+        assert payload["approval_ids"] == ["apr-001"]
         assert payload["trace_id"] == "trace-approval-001"
         assert payload["session_id"] == "session-approval-001"
         assert payload["capability_name"] == "create_ticket"
+        assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["requested_by"] == "user-42"
         assert payload["status"] == "rejected"
         assert payload["reviewer"] == "manager"
@@ -9026,9 +9056,11 @@ class TestCli:
         assert exit_code == 0
         assert payload == {
             "approval_id": "apr-001",
+            "approval_ids": ["apr-001"],
             "trace_id": "trace-approval-001",
             "session_id": "session-approval-001",
             "capability_name": "create_ticket",
+            "approval_capability_names": ["create_ticket"],
             "requested_by": "user-42",
             "status": "approved",
             "reviewer": "manager",
