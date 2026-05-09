@@ -517,6 +517,15 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
         "approval_required_capabilities": [
             spec.name for spec in catalog_specs if spec.approval_required
         ],
+        "approval_required_capability_bindings": [
+            {
+                "name": spec.name,
+                "owner": spec.owner,
+                "tool_principal": spec.tool_principal,
+            }
+            for spec in catalog_specs
+            if spec.approval_required
+        ],
         "idempotency_required_capabilities": [
             spec.name for spec in catalog_specs if spec.idempotency_key_required
         ],
