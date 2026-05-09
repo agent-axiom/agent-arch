@@ -873,6 +873,11 @@ class TestRuntimeDocsParity:
             "artifact bundle review_evidence config keys must be strings",
             "artifact bundle review_evidence key must not be empty",
             "artifact bundle review_evidence keys must be unique",
+            "Assessment signals must be a mapping",
+            "Assessment signal key must be a string",
+            "Assessment signal key must not be empty",
+            "Assessment signal keys must be unique",
+            "Assessment signal value must be a boolean: {field}",
         )
         for path in (
             Path("docs/appendix/lifecycle-artifact-schema.en.md"),
