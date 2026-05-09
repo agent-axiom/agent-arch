@@ -1220,10 +1220,14 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         note=args.note,
     )
     approvals = runtime.approvals.all()
+    pending_approvals = [item for item in approvals if item.status == "pending"]
     approval_status_counts = {
         status: sum(1 for item in approvals if item.status == status)
         for status in sorted({item.status for item in approvals})
     }
+    pending_approval_capability_names = list(
+        dict.fromkeys(item.capability_name for item in pending_approvals)
+    )
     return {
         "approval_id": resolved.approval_id,
         "approval_ids": [resolved.approval_id],
@@ -1231,6 +1235,8 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "session_id": resolved.session_id,
         "capability_name": resolved.capability_name,
         "approval_capability_names": [resolved.capability_name],
+        "pending_approval_ids": [item.approval_id for item in pending_approvals],
+        "pending_approval_capability_names": pending_approval_capability_names,
         "requested_by": resolved.requested_by,
         "status": resolved.status,
         "reviewer": resolved.reviewer,

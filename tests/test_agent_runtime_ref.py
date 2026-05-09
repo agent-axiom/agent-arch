@@ -475,6 +475,8 @@ class TestRuntimeDocsParity:
             "resolve-approval",
             "approval_ids",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "approval_status_counts",
             "idempotency_keys",
         )
@@ -8918,6 +8920,8 @@ class TestCli:
         assert resolve_payload["status"] == "approved"
         assert resolve_payload["approval_ids"] == ["apr-001"]
         assert resolve_payload["approval_capability_names"] == ["create_ticket"]
+        assert resolve_payload["pending_approval_ids"] == []
+        assert resolve_payload["pending_approval_capability_names"] == []
         assert resolve_payload["capability_session_id"] == "cap-session-001"
         assert resolve_payload["idempotency_key"] == "trace-approval-normalized-002"
         assert resolve_payload["idempotency_keys"] == ["trace-approval-normalized-002"]
@@ -8941,6 +8945,8 @@ class TestCli:
             "session_id",
             "capability_name",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "requested_by",
             "status",
             "reviewer",
@@ -8960,6 +8966,8 @@ class TestCli:
         assert payload["session_id"] == "session-approval-001"
         assert payload["capability_name"] == "create_ticket"
         assert payload["approval_capability_names"] == ["create_ticket"]
+        assert payload["pending_approval_ids"] == []
+        assert payload["pending_approval_capability_names"] == []
         assert payload["requested_by"] == "user-42"
         assert payload["status"] == "approved"
         assert payload["reviewer"] == "manager"
@@ -8991,6 +8999,8 @@ class TestCli:
             "session_id",
             "capability_name",
             "approval_capability_names",
+            "pending_approval_ids",
+            "pending_approval_capability_names",
             "requested_by",
             "status",
             "reviewer",
@@ -9010,6 +9020,8 @@ class TestCli:
         assert payload["session_id"] == "session-approval-001"
         assert payload["capability_name"] == "create_ticket"
         assert payload["approval_capability_names"] == ["create_ticket"]
+        assert payload["pending_approval_ids"] == []
+        assert payload["pending_approval_capability_names"] == []
         assert payload["requested_by"] == "user-42"
         assert payload["status"] == "rejected"
         assert payload["reviewer"] == "manager"
@@ -9061,6 +9073,8 @@ class TestCli:
             "session_id": "session-approval-001",
             "capability_name": "create_ticket",
             "approval_capability_names": ["create_ticket"],
+            "pending_approval_ids": [],
+            "pending_approval_capability_names": [],
             "requested_by": "user-42",
             "status": "approved",
             "reviewer": "manager",
