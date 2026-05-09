@@ -862,6 +862,19 @@ class TestRuntimeDocsParity:
             "`blocking_signals`",
             "`rollout_mode`",
         )
+        change_fields = (
+            "`change_id`",
+            "`required_signals`",
+            "`approval_roles`",
+            "`missing_signals`",
+            "`failed_run_signals`",
+            "`missing_failed_run_signals`",
+            "`support_duplicate_signals`",
+            "`missing_support_duplicate_signals`",
+            "`support_duplicate_signals_ready`",
+            "`rollout_strategy`",
+            "`risk_level`",
+        )
         for path in (
             Path("docs/appendix/change-rollout-schema.en.md"),
             Path("docs/appendix/change-rollout-schema.md"),
@@ -871,6 +884,8 @@ class TestRuntimeDocsParity:
             assert "check-rollout" in text
             assert "check-change" in text
             for field in rollout_fields:
+                assert field in text
+            for field in change_fields:
                 assert field in text
             for error in required_errors:
                 assert error in text
