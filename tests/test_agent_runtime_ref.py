@@ -7228,6 +7228,7 @@ class TestCli:
             "write_capabilities",
             "write_capability_egress",
             "approval_required_capabilities",
+            "approval_required_capability_bindings",
             "idempotency_required_capabilities",
             "idempotency_required_capability_bindings",
             "catalog_capabilities",
@@ -7247,6 +7248,13 @@ class TestCli:
             }
         ]
         assert payload["approval_required_capabilities"] == ["create_ticket"]
+        assert payload["approval_required_capability_bindings"] == [
+            {
+                "name": "create_ticket",
+                "owner": "support_platform",
+                "tool_principal": "svc-ticket-writer",
+            }
+        ]
         assert payload["idempotency_required_capabilities"] == ["create_ticket"]
         assert payload["idempotency_required_capability_bindings"] == [
             {
