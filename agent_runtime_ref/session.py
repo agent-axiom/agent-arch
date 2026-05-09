@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from os import PathLike
 from pathlib import Path
@@ -250,7 +250,7 @@ def _duplicate_ticket_scenarios_from_sessions(
 
 
 def _merge_approval_status_counts(
-    status_counts: Sequence[Mapping[str, int]],
+    status_counts: Iterable[Mapping[str, int]],
 ) -> dict[str, int]:
     merged: dict[str, int] = {}
     for counts in status_counts:
