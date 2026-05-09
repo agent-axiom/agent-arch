@@ -574,6 +574,24 @@ class TestRuntimeDocsParity:
             for term in required_terms:
                 assert term in text
 
+    def test_reference_package_expected_output_keeps_approval_summary(self) -> None:
+        """Keep documented default output aligned with simulate-run approval fields."""
+        required_terms = (
+            '"approval_ids": ["apr-001"]',
+            '"approval_capability_names": ["create_ticket"]',
+            '"approval_status_counts": {"pending": 1}',
+            '"event_types": ["run_start"',
+            '"memory_record_ids": ["mem-001"',
+            '"pending_approval_capability_names": ["create_ticket"]',
+        )
+        for path in (
+            Path("docs/appendix/reference-package.en.md"),
+            Path("docs/appendix/reference-package.md"),
+            Path("docs/appendix/reference-package.zh.md"),
+        ):
+            text = path.read_text(encoding="utf-8")
+            for term in required_terms:
+                assert term in text
 
     def test_runtime_readme_documents_eval_approval_summary_fields(self) -> None:
         """Keep runtime README aligned with eval approval summary fields."""

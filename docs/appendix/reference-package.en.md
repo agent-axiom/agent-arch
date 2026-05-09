@@ -68,7 +68,7 @@ That same runtime-control surface is also the natural place to keep delegated au
 Expected output:
 
 ```json
-{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "idempotency_keys": ["trace-demo-001"], "events": 14, "memory_records": 4, "pending_approvals": 1, "pending_approval_ids": ["apr-001"], "config_dir": ".../agent_runtime_ref/configs"}
+{"agent_id": "support-triage-ref", "session_id": "session-demo-001", "result": "Ticket request is waiting for human approval (apr-001).", "status": "success", "failure_reason": "", "trace_id": "trace-demo-001", "idempotency_keys": ["trace-demo-001"], "approval_ids": ["apr-001"], "approval_capability_names": ["create_ticket"], "approval_status_counts": {"pending": 1}, "event_types": ["run_start", "policy_precheck", "retrieval", "context_layers_built", "span", "tool_policy_decision", "approval_requested", "sandbox_profile_reviewed", "tool_execution", "memory_write_decision", "memory_persisted", "background_compaction", "background_update_scheduled", "run_complete"], "events": 14, "memory_records": 4, "memory_record_ids": ["mem-001", "mem-002", "mem-003", "mem-004"], "pending_approvals": 1, "pending_approval_ids": ["apr-001"], "pending_approval_capability_names": ["create_ticket"], "config_dir": ".../agent_runtime_ref/configs"}
 ```
 
 Explicit runtime execution via subcommand:
