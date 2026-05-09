@@ -607,6 +607,12 @@ class TestRuntimeDocsParity:
     def test_reference_package_expected_output_keeps_approval_summary(self) -> None:
         """Keep documented default output aligned with simulate-run approval fields."""
         required_terms = (
+            '"request_agent_id": "support-triage-ref"',
+            '"tenant_id": "tenant-acme"',
+            '"principal_id": "user-42"',
+            '"authorization_mode": "platform_owned"',
+            '"delegated_principal_id": ""',
+            '"delegated_scope": ""',
             '"approval_ids": ["apr-001"]',
             '"approval_capability_names": ["create_ticket"]',
             '"approval_status_counts": {"pending": 1}',
