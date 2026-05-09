@@ -800,6 +800,8 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     filtered = [event for event in events if event.trace_id == trace_id]
     return {
         "trace_id": trace_id,
+        "status": _run_complete_field_from_events(filtered, "status"),
+        "output_preview": _run_complete_field_from_events(filtered, "output_preview"),
         "event_count": len(filtered),
         "event_types": _event_types_from_events(filtered),
         "failure_reason": _failure_reason_from_events(filtered),
