@@ -427,6 +427,7 @@ class TestRuntimeDocsParity:
             text = path.read_text(encoding="utf-8")
             assert "inspect-session" in text
             assert "export-session" in text
+            assert "request_agent_id" in text
             assert "capability_session_id" in text
             assert "capability_session_status" in text
             assert "idempotency_key" in text
@@ -984,6 +985,7 @@ class TestFailurePaths:
                 "validation_failure (missing_idempotency_key)."
             ),
             "failure_reason": "missing_idempotency_key",
+            "request_agent_id": "agent-runtime-ref",
             "capability_session_id": "",
             "capability_session_status": "validation_failure",
             "authorization_mode": "human_approved",
@@ -9614,6 +9616,7 @@ class TestCli:
             "user_input",
             "output_text",
             "failure_reason",
+            "request_agent_id",
             "capability_session_id",
             "capability_session_status",
             "authorization_mode",
@@ -9689,6 +9692,8 @@ class TestCli:
         assert payload["summary"]["latest_trace_id"] == "trace-session-002"
         self._assert_session_run_contract(payload["runs"][0])
         self._assert_session_run_contract(payload["runs"][1])
+        assert payload["runs"][0]["request_agent_id"] == "support-triage-ref"
+        assert payload["runs"][1]["request_agent_id"] == "support-triage-ref"
         assert payload["runs"][0]["capability_session_id"] == "cap-session-001"
         assert payload["runs"][0]["capability_session_status"] == "pending"
         assert payload["runs"][0]["authorization_mode"] == "platform_owned"
@@ -9724,6 +9729,7 @@ class TestCli:
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
         self._assert_session_run_contract(payload["runs"][0])
+        assert payload["runs"][0]["request_agent_id"] == "support-triage-ref"
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_inspect_session_with_multiple_inputs_returns_both_runs(self, cli_json) -> None:
@@ -9773,6 +9779,8 @@ class TestCli:
         assert payload["summary"]["total_runs"] == 2
         self._assert_session_run_contract(payload["runs"][0])
         self._assert_session_run_contract(payload["runs"][1])
+        assert payload["runs"][0]["request_agent_id"] == "support-triage-ref"
+        assert payload["runs"][1]["request_agent_id"] == "support-triage-ref"
         assert payload["runs"][0]["output_text"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
@@ -9814,6 +9822,7 @@ class TestCli:
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["summary"]["latest_failure_reason"] == "tool_timeout"
         self._assert_session_run_contract(payload["runs"][0])
+        assert payload["runs"][0]["request_agent_id"] == "support-triage-ref"
         assert payload["runs"][0]["failure_reason"] == "tool_timeout"
 
     def test_cli_export_session_writes_structured_json(
@@ -9922,6 +9931,8 @@ class TestCli:
         assert len(exported["runs"]) == 2
         self._assert_session_run_contract(exported["runs"][0])
         self._assert_session_run_contract(exported["runs"][1])
+        assert exported["runs"][0]["request_agent_id"] == "support-triage-ref"
+        assert exported["runs"][1]["request_agent_id"] == "support-triage-ref"
         assert exported["runs"][0]["idempotency_key"] == "trace-session-001"
         assert exported["runs"][0]["approval_id"] == "apr-001"
         assert exported["runs"][0]["capability_name"] == "create_ticket"
