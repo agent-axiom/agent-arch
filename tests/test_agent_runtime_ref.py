@@ -464,6 +464,8 @@ class TestRuntimeDocsParity:
             assert "pending_approval_capability_names" in text
             assert "approval_status_counts" in text
             assert text.count("approval_status_counts") >= 2
+            assert "tenant_id" in text
+            assert "agent_id" in text
             assert "capability_session_id" in text
             assert "capability_session_status" in text
             assert "idempotency_key" in text
@@ -474,6 +476,8 @@ class TestRuntimeDocsParity:
         required_terms = (
             "resolve-approval",
             "approval_ids",
+            "tenant_id",
+            "agent_id",
             "approval_capability_names",
             "pending_approval_ids",
             "pending_approval_capability_names",
@@ -3050,6 +3054,8 @@ class TestRuntimeCore:
         }
         assert approval_event.payload == {
             "session_id": "session-bad-sandbox-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "agent-runtime-ref",
             "approval_id": "apr-001",
             "capability": "create_ticket",
             "reviewer": "manager",
@@ -3068,6 +3074,8 @@ class TestRuntimeCore:
         valid_fields: dict[str, object] = {
             "approval_id": "apr-001",
             "trace_id": "trace-approval-direct-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "support-triage-ref",
             "capability_name": "create_ticket",
             "requested_by": "agent-runtime-ref",
             "reviewer": "manager",
@@ -3519,6 +3527,8 @@ class TestRuntimeCore:
         }
         assert approval_event.payload == {
             "session_id": "session-demo-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "agent-runtime-ref",
             "approval_id": "apr-001",
             "capability": "create_ticket",
             "reviewer": "manager",
@@ -4003,6 +4013,8 @@ class TestRuntimeControlPaths:
         assert approval_requested.trace_id == trace_id
         assert approval_requested.payload == {
             "session_id": session_id,
+            "tenant_id": "tenant-acme",
+            "agent_id": "agent-runtime-ref",
             "approval_id": "apr-001",
             "capability": "create_ticket",
             "reviewer": "manager",
@@ -7332,6 +7344,8 @@ class TestDelegatedAuthorizationRuntime:
         approval_event = runtime.telemetry.events[6]
         assert approval_event.payload == {
             "session_id": "session-authz-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "agent-runtime-ref",
             "approval_id": "apr-001",
             "capability": "create_ticket",
             "reviewer": "manager",
@@ -9298,6 +9312,8 @@ class TestCli:
         assert payload == {
             "trace_id": "trace-approval-001",
             "session_id": "session-approval-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "support-triage-ref",
             "count": 1,
             "approval_ids": ["apr-001"],
             "pending_approval_ids": ["apr-001"],
@@ -9308,6 +9324,8 @@ class TestCli:
             "approvals": [
                 {
                     "approval_id": "apr-001",
+                    "tenant_id": "tenant-acme",
+                    "agent_id": "support-triage-ref",
                     "capability_name": "create_ticket",
                     "requested_by": "user-42",
                     "reviewer": "manager",
@@ -9343,6 +9361,8 @@ class TestCli:
         assert payload == {
             "trace_id": "trace-approval-authz-001",
             "session_id": "session-approval-authz-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "support-triage-ref",
             "count": 1,
             "approval_ids": ["apr-001"],
             "pending_approval_ids": ["apr-001"],
@@ -9353,6 +9373,8 @@ class TestCli:
             "approvals": [
                 {
                     "approval_id": "apr-001",
+                    "tenant_id": "tenant-acme",
+                    "agent_id": "support-triage-ref",
                     "capability_name": "create_ticket",
                     "requested_by": "manager-1",
                     "reviewer": "manager",
@@ -9428,6 +9450,8 @@ class TestCli:
             "approval_ids",
             "trace_id",
             "session_id",
+            "tenant_id",
+            "agent_id",
             "capability_name",
             "approval_capability_names",
             "pending_approval_ids",
@@ -9449,6 +9473,8 @@ class TestCli:
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["trace_id"] == "trace-approval-001"
         assert payload["session_id"] == "session-approval-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["agent_id"] == "support-triage-ref"
         assert payload["capability_name"] == "create_ticket"
         assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["pending_approval_ids"] == []
@@ -9482,6 +9508,8 @@ class TestCli:
             "approval_ids",
             "trace_id",
             "session_id",
+            "tenant_id",
+            "agent_id",
             "capability_name",
             "approval_capability_names",
             "pending_approval_ids",
@@ -9503,6 +9531,8 @@ class TestCli:
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["trace_id"] == "trace-approval-001"
         assert payload["session_id"] == "session-approval-001"
+        assert payload["tenant_id"] == "tenant-acme"
+        assert payload["agent_id"] == "support-triage-ref"
         assert payload["capability_name"] == "create_ticket"
         assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["pending_approval_ids"] == []
@@ -9556,6 +9586,8 @@ class TestCli:
             "approval_ids": ["apr-001"],
             "trace_id": "trace-approval-001",
             "session_id": "session-approval-001",
+            "tenant_id": "tenant-acme",
+            "agent_id": "support-triage-ref",
             "capability_name": "create_ticket",
             "approval_capability_names": ["create_ticket"],
             "pending_approval_ids": [],

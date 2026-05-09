@@ -1394,6 +1394,8 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
     return {
         "trace_id": trace_id,
         "session_id": session_id,
+        "tenant_id": args.tenant_id,
+        "agent_id": runtime.agent.agent_id,
         "count": len(approvals),
         "approval_ids": [item.approval_id for item in approvals],
         "pending_approval_ids": [
@@ -1406,6 +1408,8 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         "approvals": [
             {
                 "approval_id": item.approval_id,
+                "tenant_id": item.tenant_id,
+                "agent_id": item.agent_id,
                 "capability_name": item.capability_name,
                 "requested_by": item.requested_by,
                 "reviewer": item.reviewer,
@@ -1468,6 +1472,8 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "approval_ids": [resolved.approval_id],
         "trace_id": resolved.trace_id,
         "session_id": resolved.session_id,
+        "tenant_id": resolved.tenant_id,
+        "agent_id": resolved.agent_id,
         "capability_name": resolved.capability_name,
         "approval_capability_names": [resolved.capability_name],
         "pending_approval_ids": [item.approval_id for item in pending_approvals],
