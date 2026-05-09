@@ -1648,6 +1648,7 @@ class TestFailurePaths:
             ["inspect-trace", "--input", str(output_path)]
         )
         assert inspect_code == 0
+        assert inspect_payload["session_id"] == "session-demo-001"
         assert inspect_payload["status"] == "denied"
         assert inspect_payload["output_preview"] == "Request denied by policy."
         assert inspect_payload["failure_reason"] == "principal_missing"
@@ -7843,6 +7844,7 @@ class TestCli:
         assert inspect_code == 0
         assert set(inspect_payload) == {
             "trace_id",
+            "session_id",
             "status",
             "output_preview",
             "event_count",
@@ -7857,6 +7859,7 @@ class TestCli:
             "events",
         }
         assert inspect_payload["trace_id"] == "trace-export-001"
+        assert inspect_payload["session_id"] == "session-demo-001"
         assert inspect_payload["status"] == "success"
         assert inspect_payload["output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."

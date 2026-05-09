@@ -694,6 +694,19 @@ def _run_complete_field_from_events(
     return ""
 
 
+def _run_start_field_from_events(
+    events: Sequence[StructuredEvent],
+    field: str,
+) -> str:
+    for event in events:
+        if event.event_type != "run_start":
+            continue
+        value = event.payload.get(field)
+        if isinstance(value, str):
+            return value
+    return ""
+
+
 def _failure_reason_from_events(events: Sequence[StructuredEvent]) -> str:
     for event in reversed(events):
         if event.event_type not in {"run_failed", "run_complete"}:
@@ -800,6 +813,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     filtered = [event for event in events if event.trace_id == trace_id]
     return {
         "trace_id": trace_id,
+        "session_id": _run_start_field_from_events(filtered, "session_id"),
         "status": _run_complete_field_from_events(filtered, "status"),
         "output_preview": _run_complete_field_from_events(filtered, "output_preview"),
         "event_count": len(filtered),
