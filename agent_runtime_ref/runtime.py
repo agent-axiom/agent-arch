@@ -320,6 +320,7 @@ class AgentRuntime:
                         session_id=request.session_id,
                         capability=latest_tool.capability_name,
                         tool_status=latest_tool.status,
+                        failure_reason=str(failure_reason),
                         authorization_mode=authorization_mode,
                         delegated_principal_id=delegated_principal_id,
                         delegated_scope=delegated_scope,
