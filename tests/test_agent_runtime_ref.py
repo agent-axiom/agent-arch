@@ -863,6 +863,10 @@ class TestRuntimeDocsParity:
             "{key} entries must be strings",
             "{key} entries must not be empty",
             "{key} entries must be unique",
+            "artifact bundle review_evidence config must be a mapping",
+            "artifact bundle review_evidence config keys must be strings",
+            "artifact bundle review_evidence key must not be empty",
+            "artifact bundle review_evidence keys must be unique",
         )
         for path in (
             Path("docs/appendix/lifecycle-artifact-schema.en.md"),
