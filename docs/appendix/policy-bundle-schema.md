@@ -176,6 +176,8 @@ approval_contract:
 
 То есть пакет уже живет в модели, где политики, подтверждения и runtime-control contracts не просто побочные настройки, а отдельные управляемые артефакты. Executable gate `check-controls` делает control bundle тоже reviewable: он возвращает `healthy`, `required_controls`, `blocked_findings_expected`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `support_duplicate_controls`, `preserved_support_duplicate_controls`, `support_duplicate_controls_healthy`, `blocking_findings` и `inventory_drift`, где вложенные поля `has_drift`, `missing_from_catalog` и `missing_from_inventory` отделяют policy/control failures от capability inventory drift.
 
+Этот же gate явно фиксирует форму входного control bundle: validation для controls config сообщает `Controls policy config must be a mapping`, `'controls' must be a mapping`, `'controls.require' must be a list`, `'controls.block_if' must be a list`, `controls.require entries must be strings`, `controls.require entries must not be empty` и `controls.require entries must be unique`; signal overrides сообщают `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`. Поэтому оператор может отличить malformed policy bundle от провалившейся, но корректно сформированной control assessment.
+
 ## Что должна добавить промышленная схема
 
 Как только в runtime появляются stateful MCP и resumable capability sessions, набор политик уже должен описывать не только допустимость capability “в принципе”, но и то, как управляется ее живая session lifecycle.

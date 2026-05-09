@@ -871,6 +871,20 @@ class TestRuntimeDocsParity:
             "`missing_from_catalog`",
             "`missing_from_inventory`",
         )
+        controls_errors = (
+            "Controls policy config must be a mapping",
+            "'controls' must be a mapping",
+            "'controls.require' must be a list",
+            "'controls.block_if' must be a list",
+            "controls.require entries must be strings",
+            "controls.require entries must not be empty",
+            "controls.require entries must be unique",
+            "Assessment signals must be a mapping",
+            "Assessment signal key must be a string",
+            "Assessment signal key must not be empty",
+            "Assessment signal keys must be unique",
+            "Assessment signal value must be a boolean: {field}",
+        )
         for path in (
             Path("docs/appendix/policy-bundle-schema.en.md"),
             Path("docs/appendix/policy-bundle-schema.md"),
@@ -880,6 +894,8 @@ class TestRuntimeDocsParity:
             assert "check-controls" in text
             for field in controls_fields:
                 assert field in text
+            for error in controls_errors:
+                assert error in text
 
     def test_reference_package_documents_inventory_validation_errors(self) -> None:
         """Keep inspect-agent docs aligned with inventory/catalog validation."""

@@ -176,6 +176,8 @@ approval_contract:
 
 也就是说，这个参考包已经活在一种模型里：策略、审批与 runtime-control contracts 不再只是“附带设置”，而是绑定到具体包版本与发布控制面的受治理工件。Executable gate `check-controls` 也让 control bundle 可审查：它会返回 `healthy`、`required_controls`、`blocked_findings_expected`、`missing_controls`、`failed_run_controls`、`preserved_failed_run_controls`、`failed_run_controls_healthy`、`support_duplicate_controls`、`preserved_support_duplicate_controls`、`support_duplicate_controls_healthy`、`blocking_findings` 和 `inventory_drift`，其中嵌套字段 `has_drift`、`missing_from_catalog` 与 `missing_from_inventory` 会把 policy/control failures 和 capability inventory drift 分开。
 
+同一个 gate 也会明确约束 control bundle 的输入形状：controls config validation 会报告 `Controls policy config must be a mapping`、`'controls' must be a mapping`、`'controls.require' must be a list`、`'controls.block_if' must be a list`、`controls.require entries must be strings`、`controls.require entries must not be empty` 和 `controls.require entries must be unique`；signal overrides 会报告 `Assessment signals must be a mapping`、`Assessment signal key must be a string`、`Assessment signal key must not be empty`、`Assessment signal keys must be unique` 和 `Assessment signal value must be a boolean: {field}`。这样操作者可以区分 malformed policy bundle 与格式正确但评估失败的 control assessment。
+
 ## 生产级 Schema 还应该补什么
 
 一旦运行时开始包含有状态 MCP 与可恢复能力会话，策略包就不能只描述能力原则上能不能用，还必须描述这些在线会话是如何被治理的。
