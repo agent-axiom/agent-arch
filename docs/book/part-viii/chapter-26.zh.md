@@ -339,7 +339,17 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 这通常意味着平台还只能描述活动，却还不能提供那种足以让 reviewer、incident owner 或 estate governor 有信心依赖的稳定证据。
 
-## 14. 值得配套阅读的参考页
+## 14. 本章的证据模型
+
+本章应该被读成一层 evidence readiness，而不是 logging checklist：
+
+- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 verifier evidence 事后无法关联，智能体系统就无法被治理。
+- **厂商实践：** 当前 observability 与 infrastructure inventory 指南越来越把 telemetry coverage 和 asset coverage 视为生产控制，而不只是 debugging aids。
+- **运行时实践：** structured events、inventory coverage checks、behavioral baselines 与 detection-ready fields 让 traces 可以用于 release review 和 incident response。
+- **作者解释：** AI-native observability 是 evals、assurance、registry 与 lifecycle governance 之间的桥梁。
+- **快速变化层：** tracing products、detectors 与 telemetry pipelines 会继续变化；但 attributable、reviewable evidence 的需求不会。
+
+## 15. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)

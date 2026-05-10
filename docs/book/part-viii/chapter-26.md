@@ -337,7 +337,17 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 Обычно это означает, что платформа еще умеет описывать активность, но пока не умеет давать тот тип устойчивого evidence, на который reviewer, incident owner или estate governor могут уверенно опираться.
 
-## 14. Полезные справочные страницы
+## 14. Модель доказательности этой главы
+
+Эту главу стоит читать как слой evidence readiness, а не как checklist логирования:
+
+- **Устойчивые утверждения:** агентной системой нельзя управлять, если high-risk actions, approvals, principals, artifacts и verifier evidence нельзя связать постфактум.
+- **Вендорская практика:** современные материалы по observability и infrastructure inventory всё чаще рассматривают telemetry coverage и asset coverage как production controls, а не только debugging aids.
+- **Runtime-практика:** structured events, inventory coverage checks, behavioral baselines и detection-ready fields делают traces пригодными для release review и incident response.
+- **Авторская интерпретация:** AI-native observability — мост между evals, assurance, registry и lifecycle governance.
+- **Быстро меняющаяся область:** tracing products, detectors и telemetry pipelines будут меняться; потребность в attributable, reviewable evidence — нет.
+
+## 15. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
