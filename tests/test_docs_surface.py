@@ -101,6 +101,29 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_reference_package_export_events_identity_fields_are_documented() -> None:
+    required_fields = (
+        "session_id",
+        "tenant_id",
+        "principal_id",
+        "agent_id",
+        "authorization_mode",
+        "delegated_principal_id",
+        "delegated_scope",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        export_events_section = text.split("export-events", maxsplit=1)[1]
+        for field in required_fields:
+            assert field in export_events_section, (path, field)
+
+
 def test_markdown_rendering_regression_patterns_are_absent() -> None:
     checked_files = [
         "docs/book/part-i/chapter-1.en.md",
