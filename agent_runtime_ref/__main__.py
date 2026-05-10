@@ -1823,6 +1823,9 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
                 trace_id=_format_trace_id(trace_prefix, index),
                 session_id=session_id,
                 agent_id=args.agent_id,
+                authorization_mode=args.authorization_mode,
+                delegated_principal_id=args.delegated_principal_id,
+                delegated_scope=args.delegated_scope,
                 simulate_failure=simulate_failure,
             )
         session_ids.append(session_id)
@@ -2321,6 +2324,7 @@ def build_parser() -> argparse.ArgumentParser:
     export_eval_dataset.add_argument("--principal-id", default="user-42")
     export_eval_dataset.add_argument("--session-prefix", default="session-eval")
     export_eval_dataset.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(export_eval_dataset)
     export_eval_dataset.add_argument(
         "--dataset-name",
         default="agent-runtime-ref-eval-seed",
