@@ -4437,6 +4437,12 @@ class TestRuntimeControlPaths:
         assert queue.all() == ()
 
     def test_approval_queue_requires_delegated_submit_identity_fields(self) -> None:
+        from agent_runtime_ref.approvals import (
+            ApprovalPolicy,
+            ApprovalQueue,
+            DelegatedAuthorizationPolicy,
+        )
+
         required_fields = {
             "delegated_principal_id": {
                 "delegated_principal_id": " ",
@@ -4501,9 +4507,52 @@ class TestRuntimeControlPaths:
             idempotency_key=" ticket-session-001 ",
         )
         assert request.authorization_mode == "user_delegated"
+        assert request.reviewer == "manager"
         assert request.delegated_principal_id == "user-1"
         assert request.delegated_scope == "tickets.write"
         assert request.idempotency_key == "ticket-session-001"
+
+        policy = ApprovalPolicy(
+            default_reviewer="platform-reviewer",
+            escalation_sla_minutes=30,
+            delegated_authorization=DelegatedAuthorizationPolicy(
+                reviewer_required_for_user_delegation="delegated-reviewer"
+            ),
+        )
+        queue = ApprovalQueue(policy)
+        delegated_request = queue.submit(
+            trace_id="trace-approval-delegated-reviewer-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-delegated-reviewer-001",
+            authorization_mode="user_delegated",
+            delegated_principal_id="user-1",
+            delegated_scope="tickets.write",
+        )
+        platform_request = queue.submit(
+            trace_id="trace-approval-platform-reviewer-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=None,
+            reason="write_action",
+            session_id="session-approval-platform-reviewer-001",
+        )
+        explicit_request = queue.submit(
+            trace_id="trace-approval-explicit-reviewer-001",
+            capability_name="create_ticket",
+            requested_by="user-1",
+            reviewer=" explicit-reviewer ",
+            reason="write_action",
+            session_id="session-approval-explicit-reviewer-001",
+            authorization_mode="user_delegated",
+            delegated_principal_id="user-1",
+            delegated_scope="tickets.write",
+        )
+        assert delegated_request.reviewer == "delegated-reviewer"
+        assert platform_request.reviewer == "platform-reviewer"
+        assert explicit_request.reviewer == "explicit-reviewer"
 
     def test_approval_queue_rejects_unsupported_resolution_decisions(self) -> None:
         queue = AgentRuntime().approvals

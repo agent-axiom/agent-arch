@@ -250,11 +250,6 @@ class ApprovalQueue:
         agent_id = _read_optional_approval_string(agent_id, field="agent_id")
         reason = _read_required_approval_string(reason, field="reason")
         session_id = _read_required_approval_string(session_id, field="session_id")
-        reviewer = (
-            self.policy.default_reviewer
-            if reviewer is None
-            else _read_required_approval_string(reviewer, field="reviewer")
-        )
         authorization_mode = _read_authorization_mode(authorization_mode)
         delegated_principal_id = _read_optional_approval_string(
             delegated_principal_id,
@@ -268,6 +263,14 @@ class ApprovalQueue:
             idempotency_key,
             field="idempotency_key",
         )
+        if reviewer is None and authorization_mode == "user_delegated":
+            reviewer = (
+                self.policy.delegated_authorization.reviewer_required_for_user_delegation
+            )
+        elif reviewer is None:
+            reviewer = self.policy.default_reviewer
+        else:
+            reviewer = _read_required_approval_string(reviewer, field="reviewer")
         if authorization_mode == "user_delegated":
             delegated_principal_id = _read_required_approval_string(
                 delegated_principal_id,
