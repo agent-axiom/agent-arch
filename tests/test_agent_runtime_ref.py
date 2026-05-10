@@ -6705,7 +6705,7 @@ class TestLowCoverageModuleBranches:
             )
 
     def test_approval_policy_rejects_bad_shapes(self) -> None:
-        from agent_runtime_ref.approvals import ApprovalPolicy
+        from agent_runtime_ref.approvals import ApprovalPolicy, DelegatedAuthorizationPolicy
 
         with pytest.raises(TypeError, match="Approval policy config must be a mapping"):
             ApprovalPolicy.from_dict(cast(Any, []))
@@ -6727,11 +6727,69 @@ class TestLowCoverageModuleBranches:
             ValueError, match="approvals.escalation_sla_minutes must be positive"
         ):
             ApprovalPolicy.from_dict({"approvals": {"escalation_sla_minutes": 0}})
+        with pytest.raises(
+            TypeError,
+            match="approvals.delegated_authorization must be a mapping",
+        ):
+            ApprovalPolicy.from_dict({"approvals": {"delegated_authorization": []}})
+        delegated_bad_shapes = (
+            (
+                {"reviewer_required_for_user_delegation": 7},
+                TypeError,
+                "Approval field must be a string: "
+                "delegated_authorization.reviewer_required_for_user_delegation",
+            ),
+            (
+                {"reviewer_required_for_user_delegation": " "},
+                ValueError,
+                "Approval field is required: "
+                "delegated_authorization.reviewer_required_for_user_delegation",
+            ),
+            (
+                {"require_principal_binding": "true"},
+                TypeError,
+                "delegated_authorization.require_principal_binding must be a boolean",
+            ),
+            (
+                {"require_scope_visibility": 1},
+                TypeError,
+                "delegated_authorization.require_scope_visibility must be a boolean",
+            ),
+            (
+                {"on_scope_revoked": " "},
+                ValueError,
+                "Approval field is required: delegated_authorization.on_scope_revoked",
+            ),
+            (
+                {"subagent_inheritance": None},
+                TypeError,
+                "Approval field must be a string: delegated_authorization.subagent_inheritance",
+            ),
+        )
+        for delegated_authorization, error_type, expected_message in delegated_bad_shapes:
+            with pytest.raises(error_type, match=expected_message):
+                ApprovalPolicy.from_dict(
+                    {"approvals": {"delegated_authorization": delegated_authorization}}
+                )
 
         assert ApprovalPolicy(
             default_reviewer=" manager ",
             escalation_sla_minutes=30,
         ).default_reviewer == "manager"
+        policy = ApprovalPolicy(
+            default_reviewer="manager",
+            escalation_sla_minutes=30,
+            delegated_authorization=DelegatedAuthorizationPolicy(
+                reviewer_required_for_user_delegation=" manager ",
+                require_principal_binding=True,
+                require_scope_visibility=True,
+                on_scope_revoked=" cancel_or_reapprove ",
+                subagent_inheritance=" explicit_only ",
+            ),
+        )
+        assert policy.delegated_authorization.reviewer_required_for_user_delegation == "manager"
+        assert policy.delegated_authorization.on_scope_revoked == "cancel_or_reapprove"
+        assert policy.delegated_authorization.subagent_inheritance == "explicit_only"
         with pytest.raises(TypeError, match="approvals.default_reviewer must be a string"):
             ApprovalPolicy(default_reviewer=cast(str, 7), escalation_sla_minutes=30)
         with pytest.raises(ValueError, match="approvals.default_reviewer is required"):
@@ -6746,6 +6804,28 @@ class TestLowCoverageModuleBranches:
             match="approvals.escalation_sla_minutes must be positive",
         ):
             ApprovalPolicy(default_reviewer="manager", escalation_sla_minutes=0)
+        with pytest.raises(
+            TypeError,
+            match="approvals.delegated_authorization must be DelegatedAuthorizationPolicy",
+        ):
+            ApprovalPolicy(
+                default_reviewer="manager",
+                escalation_sla_minutes=30,
+                delegated_authorization=cast(DelegatedAuthorizationPolicy, object()),
+            )
+
+    def test_approval_policy_loads_delegated_authorization_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_approval_policy
+
+        policy = load_approval_policy(config_dir / "approvals.yaml")
+
+        assert policy.delegated_authorization.reviewer_required_for_user_delegation == "manager"
+        assert policy.delegated_authorization.require_principal_binding is True
+        assert policy.delegated_authorization.require_scope_visibility is True
+        assert policy.delegated_authorization.on_scope_revoked == "cancel_or_reapprove"
+        assert policy.delegated_authorization.subagent_inheritance == "explicit_only"
 
     def test_catalog_loader_rejects_bad_shapes(self) -> None:
         from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
