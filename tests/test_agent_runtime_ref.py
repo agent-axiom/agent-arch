@@ -1840,6 +1840,70 @@ class TestFailurePaths:
             "failed (tool_timeout)."
         )
 
+    def test_cli_run_event_commands_support_delegated_authorization(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        delegated_args = [
+            "--authorization-mode",
+            "user_delegated",
+            "--delegated-principal-id",
+            "customer-17",
+            "--delegated-scope",
+            "ticket:create",
+        ]
+        simulate_code, simulate_payload = cli_json(["simulate-run", *delegated_args])
+        assert simulate_code == 0
+        assert simulate_payload["authorization_mode"] == "user_delegated"
+        assert simulate_payload["delegated_principal_id"] == "customer-17"
+        assert simulate_payload["delegated_scope"] == "ticket:create"
+        assert simulate_payload["pending_approval_ids"] == ["apr-001"]
+
+        dump_code, dump_payload = cli_json(["dump-events", *delegated_args])
+        assert dump_code == 0
+        run_start = dump_payload["events"][0]
+        assert run_start["payload"]["authorization_mode"] == "user_delegated"
+        assert run_start["payload"]["delegated_principal_id"] == "customer-17"
+        assert run_start["payload"]["delegated_scope"] == "ticket:create"
+
+        output_path = tmp_path / "delegated-trace.jsonl"
+        export_code, export_payload = cli_json(
+            ["export-events", *delegated_args, "--output", str(output_path)]
+        )
+        assert export_code == 0
+        assert export_payload["authorization_mode"] == "user_delegated"
+        assert export_payload["delegated_principal_id"] == "customer-17"
+        assert export_payload["delegated_scope"] == "ticket:create"
+
+        inspect_code, inspect_payload = cli_json(
+            ["inspect-trace", "--input", str(output_path)]
+        )
+        assert inspect_code == 0
+        assert inspect_payload["authorization_mode"] == "user_delegated"
+        assert inspect_payload["delegated_principal_id"] == "customer-17"
+        assert inspect_payload["delegated_scope"] == "ticket:create"
+
+    def test_cli_run_event_commands_require_delegated_identity(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_principal_id",
+        ):
+            main(["simulate-run", "--authorization-mode", "user_delegated"])
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_scope",
+        ):
+            main(
+                [
+                    "export-events",
+                    "--authorization-mode",
+                    "user_delegated",
+                    "--delegated-principal-id",
+                    "customer-17",
+                ]
+            )
+
     @pytest.mark.parametrize(
         ("command", "expected_status", "expected_failure_reason"),
         [
