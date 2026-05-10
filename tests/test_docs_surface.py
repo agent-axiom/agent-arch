@@ -101,6 +101,26 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_policy_schema_runtime_policy_errors_are_documented() -> None:
+    required_errors = (
+        "'capabilities' must be a mapping",
+        "Policy action must be a string",
+        "Policy action is not supported: {action}",
+        "Policy field must be a string: {field}",
+        "Policy field is required: {field}",
+    )
+    checked_files = (
+        "docs/appendix/policy-bundle-schema.md",
+        "docs/appendix/policy-bundle-schema.en.md",
+        "docs/appendix/policy-bundle-schema.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_memory_schema_loader_root_error_is_documented() -> None:
     checked_files = (
         "docs/appendix/memory-retrieval-schema.md",
