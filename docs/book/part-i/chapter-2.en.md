@@ -398,6 +398,7 @@ This chapter combines several kinds of evidence:
 - **Stable claims:** identity, policy, approval, tool execution, memory, and telemetry should not collapse into the prompt.
 - **Vendor practice:** OpenAI, Google Cloud, Microsoft, and Anthropic all describe agents as systems that combine models, tools, instructions, orchestration, and governance rather than as raw model calls.
 - **Runtime practice:** gateways, policy engines, approval services, and trace schemas are concrete ways to make the right to act inspectable.
+- **Competing view:** some teams prefer local guardrails inside each tool or product surface, because they are close to the code and can move quickly. That can work for small, low-risk systems. This chapter argues for a shared policy/control layer once the same agent crosses tenants, tools, approvals, or write paths, because local rules alone make it harder to audit the right to act consistently.
 - **Author interpretation:** the exact layer names are less important than the separation of rights, side effects, state, and evidence.
 - **Fast-moving area:** productized agent builders and orchestration frameworks will evolve; the review questions at the end should remain useful across those changes.
 

@@ -398,6 +398,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 - **稳定主张：** identity、policy、approval、tool execution、memory 和 telemetry 不应该被压缩进 prompt。
 - **厂商实践：** OpenAI、Google Cloud、Microsoft 与 Anthropic 都把 agents 描述成由 models、tools、instructions、orchestration 和 governance 组成的系统，而不是裸模型调用。
 - **运行时实践：** gateways、policy engines、approval services 和 trace schemas 是让行动权可检查的具体方式。
+- **另一种观点：** 有些团队更喜欢把 local guardrails 放在每个工具或产品表面里，因为它们离代码更近，变化也更快。对于小型、低风险系统，这可能有效。本章的主张是：当同一个智能体跨越 tenants、tools、approvals 或 write paths 时，应该有共享的 policy/control layer，因为只靠局部规则会让行动权的一致审计变得更难。
 - **作者解释：** 精确的层名称不如 rights、side effects、state 与 evidence 的分离重要。
 - **快速变化层：** productized agent builders 与 orchestration frameworks 会继续变化；章末的 review questions 应该能跨越这些变化继续有用。
 

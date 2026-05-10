@@ -400,6 +400,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 - **Устойчивые утверждения:** identity, policy, approval, tool execution, memory и telemetry не должны схлопываться в prompt.
 - **Вендорская практика:** OpenAI, Google Cloud, Microsoft и Anthropic описывают agents как системы из models, tools, instructions, orchestration и governance, а не как голые model calls.
 - **Runtime-практика:** gateways, policy engines, approval services и trace schemas — конкретные способы сделать право на действие проверяемым.
+- **Противоположный взгляд:** некоторые команды предпочитают local guardrails внутри каждого инструмента или product surface, потому что они ближе к коду и быстрее меняются. Для маленьких low-risk систем это может работать. Аргумент этой главы — за общий policy/control layer там, где один агент пересекает tenants, tools, approvals или write paths, потому что одни локальные правила усложняют единый audit права на действие.
 - **Авторская интерпретация:** точные названия слоев менее важны, чем разделение rights, side effects, state и evidence.
 - **Быстро меняющаяся область:** productized agent builders и orchestration frameworks будут меняться; review questions в конце главы должны оставаться полезными поверх этих изменений.
 
