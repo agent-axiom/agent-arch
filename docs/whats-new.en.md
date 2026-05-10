@@ -45,12 +45,12 @@ Why it matters: readers can now move directly from explanatory chapters to revie
 
 The repository includes [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref), a small runnable package that now supports:
 
-- approvals;
-- controls;
+- approvals and delegated authorization context;
+- controls and lifecycle runtime-control inspection;
 - lifecycle artifacts;
-- session export;
+- session export and replay summaries;
 - eval dataset export;
-- trace export with redaction and schema versioning.
+- trace export with redaction, redacted summaries, replay preservation, and schema versioning.
 
 Why it matters: the book is now backed by runnable code, not only narrative documentation.
 

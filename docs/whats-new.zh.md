@@ -45,12 +45,12 @@ _更新于 2026 年 4 月 29 日。_
 
 仓库中的 [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 现在支持：
 
-- 审批；
-- 控制项；
+- 审批与 delegated authorization context；
+- 控制项与 lifecycle runtime-control inspection；
 - 生命周期工件；
-- 会话导出；
+- 会话导出与 replay summaries；
 - 评测数据集导出；
-- 带脱敏与模式版本控制的追踪导出。
+- 带 redaction、redacted summaries、replay preservation 与 schema versioning 的追踪导出。
 
 为什么这很重要：这本书现在不只依赖叙述性章节，也有可运行的参考实现作为支撑。
 
