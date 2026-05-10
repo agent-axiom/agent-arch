@@ -217,6 +217,26 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
             assert error in text, (path, error)
 
 
+def test_reference_package_cli_boundary_errors_are_documented() -> None:
+    required_errors = (
+        "CLI field is not supported: {field}={value}; expected one of: {expected}",
+        "CLI field must be an integer: {field}",
+        "CLI field must be non-negative: {field}",
+        "Signal key must not be empty: {raw_signal!r}",
+        "Unsupported boolean value in signal: {raw_signal!r}",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_reference_package_model_output_errors_are_documented() -> None:
     required_errors = (
         "Model step must return ModelOutput",
