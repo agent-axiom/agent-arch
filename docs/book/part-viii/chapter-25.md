@@ -310,7 +310,17 @@ Grading contract становится сильнее, если умеет хра
 
 Если на несколько вопросов подряд ответ “нет”, то твой eval layer уже есть, но он еще не готов к автономному поведению.
 
-## 15. Полезные справочные страницы
+## 15. Модель доказательности этой главы
+
+Эту главу стоит читать как слой control evidence, а не как список дополнительных видов тестов:
+
+- **Устойчивые утверждения:** автономным системам нужны evals для risky trajectories, а не только для final answers.
+- **Вендорская практика:** современные материалы по agent evals всё чаще рассматривают traces, trajectories и rollout gates как first-class inputs для оценки.
+- **Runtime-практика:** scenario classes, verifier contracts, trace-backed failures и rollout gates — конкретные способы сделать behavioral и control evidence проверяемым.
+- **Авторская интерпретация:** behavioral evals, control evals и automated red teaming — разные роли в одной judgment system, а не взаимозаменяемые ярлыки.
+- **Быстро меняющаяся область:** качество simulators, judge models и red-team generation будет быстро меняться; потребность разделять process failure, outcome failure и control failure — нет.
+
+## 16. Полезные справочные страницы
 
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)

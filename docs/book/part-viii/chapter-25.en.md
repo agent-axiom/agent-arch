@@ -310,7 +310,17 @@ At that point, the team may be measuring behavior without yet producing the kind
 
 If several answers are “no,” your eval layer exists but is not yet ready for autonomous behavior.
 
-## 15. Useful reference pages
+## 15. Evidence Model for This Chapter
+
+This chapter should be read as a control-evidence layer, not as a list of extra test types:
+
+- **Stable claims:** autonomous systems need evals for risky trajectories, not only final answers.
+- **Vendor practice:** modern agent-eval material increasingly treats traces, trajectories, and rollout gates as first-class evaluation inputs.
+- **Runtime practice:** scenario classes, verifier contracts, trace-backed failures, and rollout gates are concrete ways to make behavioral and control evidence reviewable.
+- **Author interpretation:** behavioral evals, control evals, and automated red teaming are different roles in one judgment system, not interchangeable labels.
+- **Fast-moving area:** simulator quality, judge models, and red-team generation will change quickly; the need to separate process failure, outcome failure, and control failure should not.
+
+## 16. Useful reference pages
 
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
