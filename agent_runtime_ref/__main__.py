@@ -28,7 +28,7 @@ from agent_runtime_ref.models import RunRequest, RunResult
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
 from agent_runtime_ref.session import summarize_session
-from agent_runtime_ref.telemetry import StructuredEvent, TelemetryEmitter
+from agent_runtime_ref.telemetry import REDACTED_VALUE, StructuredEvent, TelemetryEmitter
 
 DEFAULT_SESSION_INPUTS = ("Please create a ticket for this onboarding issue.",)
 DEFAULT_MULTI_RUN_INPUTS = (
@@ -238,6 +238,12 @@ def _read_optional_cli_string(value: str | None, *, field: str) -> str | None:
 
 def _read_cli_redact_fields(values: Sequence[str]) -> tuple[str, ...]:
     return StructuredEvent._normalize_redacted_fields(tuple(values))
+
+
+def _redacted_if_requested(value: str, *, field: str, redact_fields: tuple[str, ...]) -> str:
+    if field in redact_fields:
+        return REDACTED_VALUE
+    return value
 
 
 def _ensure_redact_fields_exist(
@@ -852,9 +858,21 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
     )
     exported_events = TelemetryEmitter.load_jsonl(output_path)
     return {
-        "status": result.status,
-        "result": result.output_text,
-        "failure_reason": latest_run.get("failure_reason", ""),
+        "status": _redacted_if_requested(
+            result.status,
+            field="status",
+            redact_fields=redact_fields,
+        ),
+        "result": _redacted_if_requested(
+            result.output_text,
+            field="output_preview",
+            redact_fields=redact_fields,
+        ),
+        "failure_reason": _redacted_if_requested(
+            str(latest_run.get("failure_reason", "")),
+            field="failure_reason",
+            redact_fields=redact_fields,
+        ),
         "trace_id": trace_id,
         "session_id": _run_start_field_from_events(exported_events, "session_id"),
         "tenant_id": _run_start_field_from_events(exported_events, "tenant_id"),

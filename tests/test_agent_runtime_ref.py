@@ -8732,6 +8732,51 @@ class TestCli:
             "delegated_principal_id",
         ]
 
+    def test_cli_export_trace_summary_honors_redacted_terminal_fields(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "trace-redacted-terminal.jsonl"
+        export_code, export_payload = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please open a ticket for this failing redaction issue.",
+                "--trace-id",
+                "trace-redacted-terminal-001",
+                "--simulate-failure",
+                "tool_timeout",
+                "--output",
+                str(output_path),
+                "--redact-field",
+                "status",
+                "--redact-field",
+                "output_preview",
+                "--redact-field",
+                "failure_reason",
+            ],
+        )
+        assert export_code == 0
+        assert export_payload["redact_fields"] == [
+            "status",
+            "output_preview",
+            "failure_reason",
+        ]
+        assert export_payload["status"] == "[REDACTED]"
+        assert export_payload["result"] == "[REDACTED]"
+        assert export_payload["failure_reason"] == "[REDACTED]"
+
+        inspect_code, inspect_payload = cli_json(
+            [
+                "inspect-trace",
+                "--input",
+                str(output_path),
+            ],
+        )
+        assert inspect_code == 0
+        assert inspect_payload["status"] == "[REDACTED]"
+        assert inspect_payload["output_preview"] == "[REDACTED]"
+        assert inspect_payload["failure_reason"] == "[REDACTED]"
+
     def test_cli_export_trace_rejects_unknown_redact_fields(
         self, tmp_path: Path
     ) -> None:
