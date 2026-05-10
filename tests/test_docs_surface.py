@@ -62,6 +62,32 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_evidence_model_spine_is_present_in_key_chapters() -> None:
+    expected = {
+        "docs/book/part-i/chapter-1.md": "Модель доказательности этой главы",
+        "docs/book/part-i/chapter-1.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-i/chapter-1.zh.md": "本章的证据模型",
+        "docs/book/part-i/chapter-2.md": "Модель доказательности этой главы",
+        "docs/book/part-i/chapter-2.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-i/chapter-2.zh.md": "本章的证据模型",
+        "docs/book/part-v/chapter-13.md": "Модель доказательности этой главы",
+        "docs/book/part-v/chapter-13.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-v/chapter-13.zh.md": "本章的证据模型",
+        "docs/book/part-viii/chapter-25.md": "Модель доказательности этой главы",
+        "docs/book/part-viii/chapter-25.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-viii/chapter-25.zh.md": "本章的证据模型",
+        "docs/book/part-viii/chapter-26.md": "Модель доказательности этой главы",
+        "docs/book/part-viii/chapter-26.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-viii/chapter-26.zh.md": "本章的证据模型",
+        "docs/book/part-viii/chapter-27.md": "Модель доказательности этой главы",
+        "docs/book/part-viii/chapter-27.en.md": "Evidence Model for This Chapter",
+        "docs/book/part-viii/chapter-27.zh.md": "本章的证据模型",
+    }
+
+    for path, heading in expected.items():
+        assert heading in _read(path), path
+
+
 def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> None:
     for path in (ROOT / "docs/book").rglob("*.md"):
         top_level_numbers = []
