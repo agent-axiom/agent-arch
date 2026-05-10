@@ -850,43 +850,44 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         args.output,
         redact_fields=redact_fields,
     )
+    exported_events = TelemetryEmitter.load_jsonl(output_path)
     return {
         "status": result.status,
         "result": result.output_text,
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
-        "session_id": _run_start_field_from_events(runtime.telemetry.events, "session_id"),
-        "tenant_id": _run_start_field_from_events(runtime.telemetry.events, "tenant_id"),
-        "principal_id": _run_start_field_from_events(runtime.telemetry.events, "principal_id"),
-        "agent_id": _run_start_field_from_events(runtime.telemetry.events, "agent_id"),
+        "session_id": _run_start_field_from_events(exported_events, "session_id"),
+        "tenant_id": _run_start_field_from_events(exported_events, "tenant_id"),
+        "principal_id": _run_start_field_from_events(exported_events, "principal_id"),
+        "agent_id": _run_start_field_from_events(exported_events, "agent_id"),
         "authorization_mode": _run_start_field_from_events(
-            runtime.telemetry.events,
+            exported_events,
             "authorization_mode",
         ),
         "delegated_principal_id": _run_start_field_from_events(
-            runtime.telemetry.events,
+            exported_events,
             "delegated_principal_id",
         ),
         "delegated_scope": _run_start_field_from_events(
-            runtime.telemetry.events,
+            exported_events,
             "delegated_scope",
         ),
-        "event_count": len(runtime.telemetry.events),
-        "event_types": _event_types_from_events(runtime.telemetry.events),
+        "event_count": len(exported_events),
+        "event_types": _event_types_from_events(exported_events),
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
-        "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
+        "approval_ids": _approval_ids_from_events(exported_events),
         "approval_capability_names": _approval_capability_names_from_events(
-            runtime.telemetry.events
+            exported_events
         ),
-        "pending_approval_ids": _pending_approval_ids_from_events(runtime.telemetry.events),
+        "pending_approval_ids": _pending_approval_ids_from_events(exported_events),
         "pending_approval_capability_names": _pending_approval_capability_names_from_events(
-            runtime.telemetry.events
+            exported_events
         ),
         "approval_status_counts": _approval_status_counts_from_events(
-            runtime.telemetry.events
+            exported_events
         ),
-        "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
+        "idempotency_keys": _idempotency_keys_from_events(exported_events),
     }
 
 
