@@ -10708,6 +10708,46 @@ class TestCli:
         self._assert_session_run_contract(run)
         assert run["request_agent_id"] == "custom-support-agent"
 
+    def test_cli_export_eval_dataset_supports_delegated_authorization(
+        self,
+        cli_json,
+        tmp_path: Path,
+    ) -> None:
+        output_path = tmp_path / "eval-delegated.json"
+        exit_code, payload = cli_json(
+            [
+                "export-eval-dataset",
+                "--scenario",
+                "support_ticket",
+                "--authorization-mode",
+                "user_delegated",
+                "--delegated-principal-id",
+                "customer-17",
+                "--delegated-scope",
+                "ticket:create",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert exit_code == 0
+        assert payload["approval_ids"] == ["apr-001"]
+        assert payload["pending_approval_ids"] == ["apr-001"]
+        exported = json.loads(output_path.read_text(encoding="utf-8"))
+        run = exported["sessions"][0]["runs"][0]
+        self._assert_session_run_contract(run)
+        assert run["authorization_mode"] == "user_delegated"
+        assert run["delegated_principal_id"] == "customer-17"
+        assert run["delegated_scope"] == "ticket:create"
+
+    def test_cli_export_eval_dataset_requires_delegated_identity(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_principal_id",
+        ):
+            main(["export-eval-dataset", "--authorization-mode", "user_delegated"])
+
     def test_cli_export_eval_dataset_writes_multi_session_json(
         self,
         cli_json,
