@@ -127,7 +127,7 @@ Lifecycle list loaders reject malformed, blank, and duplicate entries with `{key
 .venv/bin/python -m agent_runtime_ref export-events --simulate-failure upstream_unavailable --output artifacts/trace-demo-failed.jsonl
 ```
 
-`export-events` 会返回 `output_path`、`trace_id`、`status`、`result`、`event_count`、`event_types`、`redact_fields`、`approval_ids`、`approval_capability_names`、`pending_approval_ids`、`pending_approval_capability_names`、`approval_status_counts`、`idempotency_keys` 和可选的 `failure_reason`，因此脱敏和退化路径证据会直接出现在命令摘要里。
+`export-events` 会返回 `output_path`、`trace_id`、`session_id`、`tenant_id`、`principal_id`、`agent_id`、`authorization_mode`、`delegated_principal_id`、`delegated_scope`、`status`、`result`、`event_count`、`event_types`、`redact_fields`、`approval_ids`、`approval_capability_names`、`pending_approval_ids`、`pending_approval_capability_names`、`approval_status_counts`、`idempotency_keys` 和可选的 `failure_reason`，因此脱敏和退化路径证据会直接出现在命令摘要里。
 
 如果你需要给外部人员查看脱敏后的导出结果，也可以在导出时直接隐藏敏感字段：
 
