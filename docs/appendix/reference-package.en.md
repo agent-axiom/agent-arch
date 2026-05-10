@@ -27,6 +27,8 @@ A practical reading path is:
 !!! example "Runtime anchor for support-triage"
     The bundled `support-triage-ref` shows the same running case in executable form: agent identity, approved `search_docs`/`create_ticket` capabilities, approval wait, trace/session IDs, lifecycle checks, and eval export. That means the duplicate-ticket thread in the book can be reviewed not only as prose, but as a runnable contract surface.
 
+Recent contract updates make that surface more useful for review: delegated authorization context is preserved through CLI demos, sessions, eval exports, and replay; trace export redaction now covers command summaries as well as JSONL artifacts; lifecycle inspection exposes runtime-control assumptions; and the docs now guard the stable validation errors that define these boundaries.
+
 ## What Is Inside
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)

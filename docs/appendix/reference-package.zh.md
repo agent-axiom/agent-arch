@@ -27,6 +27,8 @@
 !!! example "support-triage 的运行时锚点"
     内置的 `support-triage-ref` 以可执行形式展示同一个贯穿案例：智能体身份、已批准的 `search_docs`/`create_ticket` 能力、审批等待、trace/session IDs、生命周期检查和评测导出。因此，书中的重复工单线索不只是 prose，也可以作为可运行的契约表面来审阅。
 
+最近的 contract updates 让这个表面更适合 review：delegated authorization context 会贯穿 CLI demos、sessions、eval exports 与 replay；trace export redaction 现在覆盖 command summaries 和 JSONL artifacts；lifecycle inspection 会暴露 runtime-control assumptions；docs guard 也固定了定义这些边界的 stable validation errors。
+
 ## 里面有什么
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)
