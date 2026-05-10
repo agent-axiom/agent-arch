@@ -43,6 +43,9 @@ Instead, you want an execution layer that:
 
 For the same support case, that means the model should not call the helpdesk API or IAM service directly. It should talk only to the execution layer.
 
+!!! example "Case thread: duplicate-ticket control"
+    The support-triage case is where the execution layer becomes concrete. `check_access_request_status` is a scoped read, while `create_support_ticket` is a governed write with approval, idempotency, timeout handling, and outcome telemetry. If the helpdesk API times out after creating the ticket, the runtime must not let the model simply try again; it needs a reconciliation path that can prove whether the side effect already happened.
+
 ## 3. How One Request Moves Through the Execution Layer
 
 Now look at the same scenario as an execution path.
