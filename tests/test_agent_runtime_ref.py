@@ -8678,6 +8678,60 @@ class TestCli:
         run_complete = inspect_payload["events"][-1]
         assert run_complete["redacted_fields"] == []
 
+    def test_cli_export_trace_summary_honors_redacted_payload_fields(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "trace-redacted-summary.jsonl"
+        export_code, export_payload = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please open a ticket for this delegated redaction issue.",
+                "--authorization-mode",
+                "user_delegated",
+                "--delegated-principal-id",
+                "customer-17",
+                "--delegated-scope",
+                "ticket:create",
+                "--trace-id",
+                "trace-redacted-summary-001",
+                "--output",
+                str(output_path),
+                "--redact-field",
+                "principal_id",
+                "--redact-field",
+                "delegated_principal_id",
+            ],
+        )
+        assert export_code == 0
+        assert export_payload["redact_fields"] == [
+            "principal_id",
+            "delegated_principal_id",
+        ]
+        assert export_payload["principal_id"] == "[REDACTED]"
+        assert export_payload["authorization_mode"] == "user_delegated"
+        assert export_payload["delegated_principal_id"] == "[REDACTED]"
+        assert export_payload["delegated_scope"] == "ticket:create"
+
+        inspect_code, inspect_payload = cli_json(
+            [
+                "inspect-trace",
+                "--input",
+                str(output_path),
+            ],
+        )
+        assert inspect_code == 0
+        assert inspect_payload["principal_id"] == "[REDACTED]"
+        assert inspect_payload["delegated_principal_id"] == "[REDACTED]"
+        assert inspect_payload["delegated_scope"] == "ticket:create"
+        run_start = inspect_payload["events"][0]
+        assert run_start["payload"]["principal_id"] == "[REDACTED]"
+        assert run_start["payload"]["delegated_principal_id"] == "[REDACTED]"
+        assert run_start["redacted_fields"] == [
+            "principal_id",
+            "delegated_principal_id",
+        ]
+
     def test_cli_export_trace_rejects_unknown_redact_fields(
         self, tmp_path: Path
     ) -> None:
