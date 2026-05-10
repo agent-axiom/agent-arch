@@ -173,7 +173,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `provenance`
 - `revision`
 
-当前 reference payloads 也使用这些 operational metadata fields：`runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`。
+当前 reference payloads 也使用这些 operational metadata fields：`runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`。Tool request/result model validation 也属于同一条 trace boundary：malformed tool calls 会以 `Tool request capability name must be a string`、`Tool request capability name must not be empty`、`Tool request arguments must be a mapping`、`Tool request argument key must be a string`、`Tool request argument key must not be empty`、`Tool request argument keys must be unique`、`Tool request argument value must be a string: {argument_key}` 失败；malformed tool results 会以 `Tool result status must be a string`、`Tool result status must not be empty`、`Tool result payload must be a mapping`、`Tool result payload key must be a string`、`Tool result payload key must not be empty`、`Tool result payload keys must be unique` 和 `Tool result payload value must be a string: {payload_key}` 失败。
 
 ## 参考包现在已经支持什么
 
