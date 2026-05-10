@@ -391,7 +391,17 @@ If you are designing an agent system right now, write down at least this:
 
 If those things are already written down, an architecture is beginning to exist. If not, you still only have an agent idea.
 
-## 13. What to Read Next
+## 13. Evidence Model for This Chapter
+
+This chapter combines several kinds of evidence:
+
+- **Stable claims:** identity, policy, approval, tool execution, memory, and telemetry should not collapse into the prompt.
+- **Vendor practice:** OpenAI, Google Cloud, Microsoft, and Anthropic all describe agents as systems that combine models, tools, instructions, orchestration, and governance rather than as raw model calls.
+- **Runtime practice:** gateways, policy engines, approval services, and trace schemas are concrete ways to make the right to act inspectable.
+- **Author interpretation:** the exact layer names are less important than the separation of rights, side effects, state, and evidence.
+- **Fast-moving area:** productized agent builders and orchestration frameworks will evolve; the review questions at the end should remain useful across those changes.
+
+## 14. What to Read Next
 
 - [Chapter 1. Why an Agent Needs a Platform, Not Magic](chapter-1.en.md)
 - [Part II. Security Perimeter](../part-ii/index.en.md)

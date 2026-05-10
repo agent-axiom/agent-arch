@@ -391,7 +391,17 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 如果这些东西已经写清楚了，架构就开始存在了。如果没有，那你现在还只有一个“智能体想法”。
 
-## 13. 接下来读什么
+## 13. 本章的证据模型
+
+本章结合了几类证据：
+
+- **稳定主张：** identity、policy、approval、tool execution、memory 和 telemetry 不应该被压缩进 prompt。
+- **厂商实践：** OpenAI、Google Cloud、Microsoft 与 Anthropic 都把 agents 描述成由 models、tools、instructions、orchestration 和 governance 组成的系统，而不是裸模型调用。
+- **运行时实践：** gateways、policy engines、approval services 和 trace schemas 是让行动权可检查的具体方式。
+- **作者解释：** 精确的层名称不如 rights、side effects、state 与 evidence 的分离重要。
+- **快速变化层：** productized agent builders 与 orchestration frameworks 会继续变化；章末的 review questions 应该能跨越这些变化继续有用。
+
+## 14. 接下来读什么
 
 - [第 1 章：为什么智能体需要的是平台，而不是魔法](chapter-1.zh.md)
 - [第二部分：安全边界](../part-ii/index.zh.md)

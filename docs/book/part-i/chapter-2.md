@@ -393,7 +393,17 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 
 Если эти вещи уже описаны, у тебя начинает появляться архитектура. Если нет, у тебя пока только идея агента.
 
-## 13. Что читать дальше
+## 13. Модель доказательности этой главы
+
+Эта глава соединяет несколько типов evidence:
+
+- **Устойчивые утверждения:** identity, policy, approval, tool execution, memory и telemetry не должны схлопываться в prompt.
+- **Вендорская практика:** OpenAI, Google Cloud, Microsoft и Anthropic описывают agents как системы из models, tools, instructions, orchestration и governance, а не как голые model calls.
+- **Runtime-практика:** gateways, policy engines, approval services и trace schemas — конкретные способы сделать право на действие проверяемым.
+- **Авторская интерпретация:** точные названия слоев менее важны, чем разделение rights, side effects, state и evidence.
+- **Быстро меняющаяся область:** productized agent builders и orchestration frameworks будут меняться; review questions в конце главы должны оставаться полезными поверх этих изменений.
+
+## 14. Что читать дальше
 
 - [Глава 1. Почему агенту нужна платформа, а не магия](chapter-1.md)
 - [Часть II. Контур безопасности](../part-ii/index.md)

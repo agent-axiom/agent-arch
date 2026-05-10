@@ -204,7 +204,17 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 所以下一章不会继续谈抽象意义上的“聪明”，而会进入平台架构：为了让智能体系统可以安全上线、被观察、被演进，到底必须有哪些层。
 
-## 13. 接下来读什么
+## 13. 本章的证据模型
+
+阅读本章观点时，可以把它们分成不同置信层级：
+
+- **稳定主张：** 高风险 side effects 需要明确控制点；traces 与 eval signals 是生产问责的基础。
+- **厂商实践：** OpenAI 与 Anthropic 都建议先从更简单的可执行形态开始，只在确实带来有用灵活性时才增加 agency。
+- **运行时实践：** durable execution、approvals 和可复现 traces 是工程机制，不是修辞。
+- **作者解释：** `platform, not magic` 是本书把这些实践压缩成的一条设计规则。
+- **快速变化层：** agent frameworks、SDKs 与 orchestration patterns 会比底层控制原则变化更快。
+
+## 14. 接下来读什么
 
 - [第一部分：基础](index.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
