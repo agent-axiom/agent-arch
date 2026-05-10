@@ -107,13 +107,14 @@ Question of the part: how to live with an agent system for months, release chang
 1. Tighten the entry surfaces and the opening act of the book.
 2. Keep compressing late-book overlap and maintain chapter-role separation.
 3. Strengthen the evidence base where the book makes its strongest claims.
-4. Finish the editorial pass on the Russian source manuscript.
-5. After the Russian layer stabilizes, sync the `.en` and `.zh` pages.
+4. Continue editorial cleanup on public entry surfaces and sample chapters.
+5. Keep `.en` and `.zh` as readable draft translation layers, syncing them after semantic changes to the Russian core.
 
 ## What Is Already Done
 
 - The site skeleton on MkDocs and Material.
-- The full book structure and published core.
+- The full book structure and published Russian core.
+- Readable `.en` and `.zh` translation layers that are still going through editorial cleanup.
 - The runnable `agent_runtime_ref` reference runtime.
 - The reference layer with traces, evals, memory, approvals, and lifecycle schemas.
 - Practical case studies, policy templates, checklists, and the glossary.

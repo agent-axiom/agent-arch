@@ -107,13 +107,14 @@
 1. 继续收紧入口页和第一幕。
 2. 继续压缩后半本的重叠内容，并保持章节角色分离。
 3. 在本书提出强论断的地方继续加强证据基础。
-4. 完成俄文原稿的 editorial pass。
-5. 俄文层稳定后，再同步 `.en` 和 `.zh` 页面。
+4. 继续清理公开入口页和 sample chapters。
+5. 将 `.en` 和 `.zh` 保持为可读的 draft translation layers，并在俄文 core 出现语义修改后同步。
 
 ## 已经完成的内容
 
 - 基于 MkDocs 和 Material 的站点骨架。
-- 完整的全书结构和已发布核心内容。
+- 完整的全书结构和已发布的俄文 core。
+- 仍在进行 editorial cleanup、但已经可读的 `.en` 与 `.zh` translation layers。
 - 可运行的参考运行时 `agent_runtime_ref`。
 - 覆盖追踪、评测、记忆、审批和生命周期的参考层。
 - 实战案例、策略模板、检查清单与术语表。
