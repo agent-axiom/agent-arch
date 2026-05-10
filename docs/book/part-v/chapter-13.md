@@ -461,7 +461,18 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 В этот момент у команды уже может быть scoring activity, но еще нет того типа reviewable eval discipline, на который последующие operational functions могут уверенно опираться.
 
-## 15. Что читать дальше
+## 15. Модель доказательности этой главы
+
+Эту главу стоит читать как модель judgment, а не как checklist бенчмарков:
+
+- **Устойчивые утверждения:** final-answer success недостаточен; evals должны учитывать process quality, outcome quality, failure attribution и regression gates.
+- **Вендорская практика:** guidance Google Cloud по agent governance и современные agent-platform материалы рассматривают evals как часть rollout и operational control, а не только выбора модели.
+- **Research и human-AI practice:** работы по human-centered evaluation напоминают, что apparent agreement или user satisfaction могут скрывать слабые judgment signals.
+- **Runtime-практика:** trace-linked eval rows, verifier outputs, rollout gates и failed-run reasons делают eval evidence проверяемым для операторов.
+- **Авторская интерпретация:** эта книга трактует evals как release-judgment layer между observability и lifecycle governance.
+- **Быстро меняющаяся область:** judge models, simulators и automated red-team techniques будут быстро меняться; потребность в explicit gates и attributable failures — нет.
+
+## 16. Что читать дальше
 
 Часть V к этому моменту уже собирает эксплуатационный контур целиком: трассировку, SLO и цикл оценки. Следующий логичный слой здесь уже организационный, потому что такие платформы упираются не только в код, но и в устройство команды.
 

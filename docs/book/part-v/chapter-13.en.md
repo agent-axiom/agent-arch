@@ -468,7 +468,18 @@ If the answer is "no" several times in a row, you may already have an eval layer
 
 At that point, the team may have scoring activity, but it still does not have the kind of reviewable eval discipline that later operational functions can rely on with confidence.
 
-## 15. What to Read Next
+## 15. Evidence Model for This Chapter
+
+This chapter should be read as a judgment model, not as a benchmark checklist:
+
+- **Stable claims:** final-answer success is not enough; evals need process quality, outcome quality, failure attribution, and regression gates.
+- **Vendor practice:** Google Cloud's agent governance guidance and modern agent-platform material treat evals as part of rollout and operational control, not only model selection.
+- **Research and human-AI practice:** human-centered evaluation work is a useful warning that apparent agreement or user satisfaction can hide weak judgment signals.
+- **Runtime practice:** trace-linked eval rows, verifier outputs, rollout gates, and failed-run reasons make eval evidence reviewable by operators.
+- **Author interpretation:** this book treats evals as the release-judgment layer between observability and lifecycle governance.
+- **Fast-moving area:** judge models, simulators, and automated red-team techniques will change quickly; the need for explicit gates and attributable failures should not.
+
+## 16. What to Read Next
 
 By this point Part V forms a coherent operational block: traces, SLO, and the eval loop. The next step is the organizational model, because platforms like this run into team design questions as much as code questions.
 

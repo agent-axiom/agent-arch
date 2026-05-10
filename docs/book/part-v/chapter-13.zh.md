@@ -466,7 +466,18 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 这时团队也许已经有评分活动，但还没有形成那种足以让后续运营功能稳定依赖的可审查评测纪律。
 
-## 15. 接下来读什么
+## 15. 本章的证据模型
+
+本章应该被读成一套 judgment model，而不是 benchmark checklist：
+
+- **稳定主张：** final-answer success 不够；evals 需要覆盖 process quality、outcome quality、failure attribution 和 regression gates。
+- **厂商实践：** Google Cloud 的 agent governance guidance 和现代 agent-platform 材料都把 evals 视为 rollout 与 operational control 的一部分，而不只是模型选择。
+- **研究与 human-AI practice：** human-centered evaluation 相关工作提醒我们，apparent agreement 或 user satisfaction 可能掩盖薄弱的 judgment signals。
+- **运行时实践：** trace-linked eval rows、verifier outputs、rollout gates 和 failed-run reasons 让 eval evidence 可以被 operators 审查。
+- **作者解释：** 本书把 evals 视为 observability 与 lifecycle governance 之间的 release-judgment layer。
+- **快速变化层：** judge models、simulators 与 automated red-team techniques 会快速变化；但 explicit gates 与 attributable failures 的需求不会。
+
+## 16. 接下来读什么
 
 到这里，第五部分已经形成一个完整的运行闭环：追踪、SLO 和评测回路。下一步就是组织模型，因为这种平台最终既会碰到代码问题，也会碰到团队设计问题。
 
