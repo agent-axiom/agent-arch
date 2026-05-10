@@ -481,7 +481,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 到这里，第五部分已经形成一个完整的运行闭环：追踪、SLO 和评测回路。下一步就是组织模型，因为这种平台最终既会碰到代码问题，也会碰到团队设计问题。
 
-## 16. 值得配套阅读的参考页
+## 17. 值得配套阅读的参考页
 
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
