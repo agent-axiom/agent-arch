@@ -1564,6 +1564,9 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
             trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=session_id,
             agent_id=args.agent_id,
+            authorization_mode=args.authorization_mode,
+            delegated_principal_id=args.delegated_principal_id,
+            delegated_scope=args.delegated_scope,
             simulate_failure=args.simulate_failure,
         )
         results.append(result)
@@ -1642,6 +1645,9 @@ def _session_eval_summary(args: argparse.Namespace) -> dict[str, object]:
             trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=session_id,
             agent_id=args.agent_id,
+            authorization_mode=args.authorization_mode,
+            delegated_principal_id=args.delegated_principal_id,
+            delegated_scope=args.delegated_scope,
             simulate_failure=args.simulate_failure,
         )
     runs = runtime.sessions.runs_for_session(session_id)
@@ -1684,6 +1690,9 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 trace_id=_format_trace_id(args.trace_prefix, index),
                 session_id=session_id,
                 agent_id=args.agent_id,
+                authorization_mode=args.authorization_mode,
+                delegated_principal_id=args.delegated_principal_id,
+                delegated_scope=args.delegated_scope,
                 simulate_failure=args.simulate_failure,
             )
         )
@@ -1756,6 +1765,9 @@ def _export_session(args: argparse.Namespace) -> dict[str, object]:
             trace_id=_format_trace_id(args.trace_prefix, index),
             session_id=session_id,
             agent_id=args.agent_id,
+            authorization_mode=args.authorization_mode,
+            delegated_principal_id=args.delegated_principal_id,
+            delegated_scope=args.delegated_scope,
             simulate_failure=args.simulate_failure,
         )
     output_path = runtime.sessions.export_session_json(
@@ -2193,6 +2205,7 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_session.add_argument("--session-id", default="session-demo-001")
     inspect_session.add_argument("--trace-prefix", default="trace-session")
     inspect_session.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(inspect_session)
     inspect_session.add_argument(
         "--simulate-failure",
         choices=("tool_timeout", "upstream_unavailable"),
@@ -2220,6 +2233,7 @@ def build_parser() -> argparse.ArgumentParser:
     session_eval.add_argument("--session-id", default="session-demo-001")
     session_eval.add_argument("--trace-prefix", default="trace-session")
     session_eval.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(session_eval)
     session_eval.add_argument(
         "--simulate-failure",
         choices=("tool_timeout", "upstream_unavailable"),
@@ -2247,6 +2261,7 @@ def build_parser() -> argparse.ArgumentParser:
     session_replay.add_argument("--session-id", default="session-demo-001")
     session_replay.add_argument("--trace-prefix", default="trace-session")
     session_replay.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(session_replay)
     session_replay.add_argument(
         "--simulate-failure",
         choices=("tool_timeout", "upstream_unavailable"),
@@ -2274,6 +2289,7 @@ def build_parser() -> argparse.ArgumentParser:
     export_session.add_argument("--session-id", default="session-demo-001")
     export_session.add_argument("--trace-prefix", default="trace-session")
     export_session.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(export_session)
     export_session.add_argument(
         "--simulate-failure",
         choices=("tool_timeout", "upstream_unavailable"),

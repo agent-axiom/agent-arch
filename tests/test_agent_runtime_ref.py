@@ -10277,6 +10277,73 @@ class TestCli:
         assert payload["runs"][0]["request_agent_id"] == "custom-support-agent"
         assert payload["runs"][1]["request_agent_id"] == "custom-support-agent"
 
+    def test_cli_session_commands_support_delegated_authorization(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        delegated_args = [
+            "--authorization-mode",
+            "user_delegated",
+            "--delegated-principal-id",
+            "customer-17",
+            "--delegated-scope",
+            "ticket:create",
+        ]
+        inspect_code, inspect_payload = cli_json(
+            ["inspect-session", *delegated_args]
+        )
+        assert inspect_code == 0
+        self._assert_session_run_contract(inspect_payload["runs"][0])
+        assert inspect_payload["runs"][0]["authorization_mode"] == "user_delegated"
+        assert inspect_payload["runs"][0]["delegated_principal_id"] == "customer-17"
+        assert inspect_payload["runs"][0]["delegated_scope"] == "ticket:create"
+
+        eval_code, eval_payload = cli_json(
+            ["session-eval-summary", *delegated_args]
+        )
+        assert eval_code == 0
+        assert eval_payload["approval_ids"] == ["apr-001"]
+        assert eval_payload["pending_approval_ids"] == ["apr-001"]
+        assert eval_payload["approval_status_counts"] == {"pending": 1}
+
+        replay_code, replay_payload = cli_json(["session-replay", *delegated_args])
+        assert replay_code == 0
+        assert replay_payload["runs"][0]["authorization_mode"] == "user_delegated"
+        assert replay_payload["runs"][0]["delegated_principal_id"] == "customer-17"
+        assert replay_payload["runs"][0]["delegated_scope"] == "ticket:create"
+
+        output_path = tmp_path / "delegated-session.json"
+        export_code, export_payload = cli_json(
+            ["export-session", *delegated_args, "--output", str(output_path)]
+        )
+        assert export_code == 0
+        assert export_payload["approval_ids"] == ["apr-001"]
+        exported = json.loads(output_path.read_text(encoding="utf-8"))
+        assert exported["runs"][0]["authorization_mode"] == "user_delegated"
+        assert exported["runs"][0]["delegated_principal_id"] == "customer-17"
+        assert exported["runs"][0]["delegated_scope"] == "ticket:create"
+
+    def test_cli_session_commands_require_delegated_identity(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_principal_id",
+        ):
+            main(["inspect-session", "--authorization-mode", "user_delegated"])
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_scope",
+        ):
+            main(
+                [
+                    "session-eval-summary",
+                    "--authorization-mode",
+                    "user_delegated",
+                    "--delegated-principal-id",
+                    "customer-17",
+                ]
+            )
+
     def test_cli_session_replay_surfaces_failed_run_fields(self, cli_json) -> None:
         exit_code, payload = cli_json(
             [
