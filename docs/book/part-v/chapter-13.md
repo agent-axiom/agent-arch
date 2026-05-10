@@ -469,6 +469,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - **Вендорская практика:** guidance Google Cloud по agent governance и современные agent-platform материалы рассматривают evals как часть rollout и operational control, а не только выбора модели.
 - **Research и human-AI practice:** работы по human-centered evaluation напоминают, что apparent agreement или user satisfaction могут скрывать слабые judgment signals.
 - **Runtime-практика:** trace-linked eval rows, verifier outputs, rollout gates и failed-run reasons делают eval evidence проверяемым для операторов.
+- **Противоположный взгляд:** automated judges привлекательны, потому что масштабируют review и уменьшают human bottleneck. Эта глава принимает эту пользу, но трактует judge output как evidence для калибровки, а не как authority, которой надо подчиняться; high-risk rollout decisions всё равно требуют разбора disagreement, владельца rubric и trace-backed attribution.
 - **Авторская интерпретация:** эта книга трактует evals как release-judgment layer между observability и lifecycle governance.
 - **Быстро меняющаяся область:** judge models, simulators и automated red-team techniques будут быстро меняться; потребность в explicit gates и attributable failures — нет.
 
