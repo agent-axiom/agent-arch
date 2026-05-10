@@ -81,6 +81,9 @@ One of Anthropic's most useful practical points is that teams should resist fram
 
     The engineering interpretation in this book goes one step further: once autonomy touches write paths, access, memory, or incidents, it should be treated not as a UX effect, but as part of an execution platform with policies, traces, and lifecycle controls.
 
+!!! question "Competing view: why not start agent-first?"
+    There is a reasonable opposing view: if models are improving quickly and tasks are messy, teams should start with an agent loop and constrain it later. That can be valid for discovery, internal prototypes, or low-risk assistants. The production argument in this chapter is narrower: once the system touches real users, private data, or write paths, the default should flip. Start with the least dynamic executable shape, then add agency where the extra flexibility earns back its operational cost.
+
 ## 5. When an Agent Is Actually Justified
 
 An agent should be justified by the shape of the task, not by style.
