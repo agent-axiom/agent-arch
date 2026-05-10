@@ -1,0 +1,95 @@
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class MkDocsConfigLoader(yaml.SafeLoader):
+    pass
+
+
+def _construct_python_name(loader: yaml.SafeLoader, node: yaml.Node) -> str:
+    return loader.construct_scalar(node)
+
+
+MkDocsConfigLoader.add_multi_constructor(
+    "tag:yaml.org,2002:python/name:",
+    lambda loader, _suffix, node: _construct_python_name(loader, node),
+)
+
+
+def _read(path: str) -> str:
+    return (ROOT / path).read_text(encoding="utf-8")
+
+
+def _load_mkdocs_config() -> dict:
+    return yaml.load(_read("mkdocs.yml"), Loader=MkDocsConfigLoader)
+
+
+def test_public_book_canonical_redirects_are_configured() -> None:
+    mkdocs_config = _load_mkdocs_config()
+    scripts = mkdocs_config["extra_javascript"]
+
+    assert "javascripts/canonical-redirects.js" in scripts
+
+    redirect_script = _read("docs/javascripts/canonical-redirects.js")
+    for route in ('"/book"', '"/en/book"', '"/zh/book"'):
+        assert route in redirect_script
+    assert 'projectPrefix = "/agent-arch"' in redirect_script
+
+
+def test_translated_navigation_has_no_known_russian_leaks() -> None:
+    mkdocs_config = _load_mkdocs_config()
+    locales = {}
+    for plugin in mkdocs_config["plugins"]:
+        if isinstance(plugin, dict) and "i18n" in plugin:
+            locales = {language["locale"]: language for language in plugin["i18n"]["languages"]}
+            break
+
+    forbidden = (
+        "Глава 24",
+        "Глава 25",
+        "Глава 26",
+        "Глава 27",
+        "План интеграции идей Google",
+        "Схема ",
+    )
+    for locale in ("en", "zh"):
+        nav_targets = locales[locale]["nav_translations"].values()
+        for target in nav_targets:
+            assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
+
+
+def test_markdown_rendering_regression_patterns_are_absent() -> None:
+    checked_files = [
+        "docs/book/part-i/chapter-1.en.md",
+        "docs/book/part-i/chapter-1.md",
+        "docs/book/part-i/chapter-1.zh.md",
+        "docs/book/part-i/chapter-2.en.md",
+        "docs/book/part-i/chapter-2.md",
+        "docs/book/part-i/chapter-2.zh.md",
+        "docs/whats-new.en.md",
+        "docs/whats-new.md",
+        "docs/whats-new.zh.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.zh.md",
+    ]
+    forbidden_patterns = (
+        "Why it matters: -",
+        "Почему это важно: -",
+        "为什么重要： -",
+        "Layer What it does Why it hurts",
+        "If the task looks like this Start with this Why",
+        "Как выглядит задача С чего начинать Почему",
+        "任务看起来像什么 从哪里开始 为什么",
+        "delegated authorization assumptions explicit: which principal delegated access, whether "
+        "that authorization may survive pause/resume, and what the runtime does if delegated "
+        "access is revoked before the action completes.\n- [lifecycle.py]",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for pattern in forbidden_patterns:
+            assert pattern not in text, (path, pattern)
