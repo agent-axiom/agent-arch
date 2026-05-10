@@ -217,6 +217,32 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
             assert error in text, (path, error)
 
 
+def test_reference_package_controls_lifecycle_errors_are_documented() -> None:
+    required_errors = (
+        "Controls inventory must be ApprovedInventory",
+        "Controls catalog must be CapabilityCatalog",
+        "Controls policy must be ControlsPolicy",
+        "Controls inventory_drift must be InventoryDrift",
+        "Lifecycle change must be ChangeRecord",
+        "Lifecycle retirement plan must be RetirementPlan",
+        "Assessment signals must be a mapping",
+        "Assessment signal key must be a string",
+        "Assessment signal key must not be empty",
+        "Assessment signal keys must be unique",
+        "Assessment signal value must be a boolean: {field}",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_reference_package_cli_boundary_errors_are_documented() -> None:
     required_errors = (
         "CLI field is not supported: {field}={value}; expected one of: {expected}",
