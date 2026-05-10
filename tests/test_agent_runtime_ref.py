@@ -9812,6 +9812,12 @@ class TestCli:
                 "trace-approval-authz-001",
                 "--agent-id",
                 "support-triage-ref",
+                "--authorization-mode",
+                "user_delegated",
+                "--delegated-principal-id",
+                "customer-17",
+                "--delegated-scope",
+                "ticket:create",
             ]
         )
         assert exit_code == 0
@@ -9839,9 +9845,9 @@ class TestCli:
                     "status": "pending",
                     "capability_session_id": "cap-session-001",
                     "capability_session_status": "pending",
-                    "authorization_mode": "platform_owned",
-                    "delegated_principal_id": "",
-                    "delegated_scope": "",
+                    "authorization_mode": "user_delegated",
+                    "delegated_principal_id": "customer-17",
+                    "delegated_scope": "ticket:create",
                     "idempotency_key": "trace-approval-authz-001",
                 }
             ],
@@ -10035,6 +10041,12 @@ class TestCli:
                 "approved",
                 "--note",
                 "manager approved delegated request",
+                "--authorization-mode",
+                "user_delegated",
+                "--delegated-principal-id",
+                "customer-17",
+                "--delegated-scope",
+                "ticket:create",
             ],
         )
         assert exit_code == 0
@@ -10055,13 +10067,35 @@ class TestCli:
             "resolution_note": "manager approved delegated request",
             "capability_session_id": "cap-session-001",
             "capability_session_status": "approved",
-            "authorization_mode": "platform_owned",
-            "delegated_principal_id": "",
-            "delegated_scope": "",
+            "authorization_mode": "user_delegated",
+            "delegated_principal_id": "customer-17",
+            "delegated_scope": "ticket:create",
             "idempotency_key": "trace-approval-001",
             "idempotency_keys": ["trace-approval-001"],
             "approval_status_counts": {"approved": 1},
         }
+
+    def test_cli_approval_commands_require_delegated_identity(self) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_principal_id",
+        ):
+            main(["inspect-approvals", "--authorization-mode", "user_delegated"])
+        with pytest.raises(
+            ValueError,
+            match="Delegated authorization field is required: delegated_scope",
+        ):
+            main(
+                [
+                    "resolve-approval",
+                    "--authorization-mode",
+                    "user_delegated",
+                    "--delegated-principal-id",
+                    "customer-17",
+                ]
+            )
 
     @staticmethod
     def _assert_session_run_contract(run: dict[str, object]) -> None:
