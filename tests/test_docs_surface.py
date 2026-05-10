@@ -101,6 +101,23 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_trace_schema_path_and_trace_id_errors_are_documented() -> None:
+    required_errors = (
+        "Telemetry path must be a string or path-like object",
+        "Trace ID request must be a string",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_eval_schema_session_eval_errors_are_documented() -> None:
     required_errors = (
         "Session eval specs must be a mapping",
