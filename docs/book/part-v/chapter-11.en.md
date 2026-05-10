@@ -213,11 +213,9 @@ If the goal is not only dashboards but real incident investigation, it is usuall
 - `verifier_id`
 - `evidence_refs`
 
-Those fields often make the difference between:
+Those fields make it easier to connect operational telemetry to later grading or rollout review, instead of forcing teams to reconstruct verifier evidence from scratch.
 
-They also make it easier to connect operational telemetry to later grading or rollout review, instead of forcing teams to reconstruct verifier evidence from scratch.
-
-Those fields often make the difference between:
+They also often make the difference between:
 
 - a duplicate tool call;
 - a late retry;
