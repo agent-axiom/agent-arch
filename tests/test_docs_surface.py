@@ -28,6 +28,13 @@ def _load_mkdocs_config() -> dict:
     return yaml.load(_read("mkdocs.yml"), Loader=MkDocsConfigLoader)
 
 
+def _assert_files_contain_all(paths: tuple[str, ...], expected: tuple[str, ...]) -> None:
+    for path in paths:
+        text = _read(path)
+        for item in expected:
+            assert item in text, (path, item)
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
@@ -112,10 +119,7 @@ def test_trace_schema_path_and_trace_id_errors_are_documented() -> None:
         "docs/appendix/trace-schema.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_eval_schema_session_eval_errors_are_documented() -> None:
@@ -132,10 +136,7 @@ def test_eval_schema_session_eval_errors_are_documented() -> None:
         "docs/appendix/eval-schema.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_trace_schema_tool_model_errors_are_documented() -> None:
@@ -161,10 +162,7 @@ def test_trace_schema_tool_model_errors_are_documented() -> None:
         "docs/appendix/trace-schema.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_policy_schema_runtime_policy_errors_are_documented() -> None:
@@ -181,10 +179,7 @@ def test_policy_schema_runtime_policy_errors_are_documented() -> None:
         "docs/appendix/policy-bundle-schema.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_memory_schema_loader_root_error_is_documented() -> None:
@@ -211,10 +206,7 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
         "docs/appendix/approval-schema.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_reference_package_rollout_errors_are_documented() -> None:
@@ -229,10 +221,7 @@ def test_reference_package_rollout_errors_are_documented() -> None:
         "docs/appendix/reference-package.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_reference_package_controls_lifecycle_errors_are_documented() -> None:
@@ -255,10 +244,7 @@ def test_reference_package_controls_lifecycle_errors_are_documented() -> None:
         "docs/appendix/reference-package.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_reference_package_cli_boundary_errors_are_documented() -> None:
@@ -275,10 +261,7 @@ def test_reference_package_cli_boundary_errors_are_documented() -> None:
         "docs/appendix/reference-package.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_reference_package_model_output_errors_are_documented() -> None:
@@ -293,10 +276,7 @@ def test_reference_package_model_output_errors_are_documented() -> None:
         "docs/appendix/reference-package.zh.md",
     )
 
-    for path in checked_files:
-        text = _read(path)
-        for error in required_errors:
-            assert error in text, (path, error)
+    _assert_files_contain_all(checked_files, required_errors)
 
 
 def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> None:
