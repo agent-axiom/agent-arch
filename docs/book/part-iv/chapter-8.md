@@ -43,6 +43,9 @@
 
 Для того же support-кейса это означает, что модель не должна сама ходить в helpdesk API или IAM service. Она должна разговаривать только с execution layer.
 
+!!! example "Сквозной кейс: контроль duplicate-ticket"
+    Именно в support-triage кейсе execution layer становится конкретным. `check_access_request_status` — scoped read, а `create_support_ticket` — управляемая write-операция с approval, idempotency, timeout handling и outcome telemetry. Если helpdesk API отвечает timeout после создания тикета, runtime не должен позволить модели просто попробовать еще раз; ему нужен reconciliation path, который докажет, произошел ли side effect уже.
+
 ## 3. Как один запрос проходит через execution layer
 
 Посмотрим на тот же сценарий уже как на путь выполнения.

@@ -43,6 +43,9 @@
 
 对于同一个支持场景，这意味着模型不应该直接调用 helpdesk API 或 IAM 服务。它应该只和执行层说话。
 
+!!! example "贯穿案例：重复工单控制"
+    在 support-triage 案例里，执行层会变得非常具体。`check_access_request_status` 是带作用域的读操作，而 `create_support_ticket` 是受治理的写操作，需要 approval、idempotency、timeout handling 和 outcome telemetry。如果 helpdesk API 在创建工单后超时，运行时不能让模型简单重试；它需要一条 reconciliation path，用来证明副作用是否已经发生。
+
 ## 3. 一个请求如何穿过执行层
 
 现在把同一个场景看成一条执行路径。
