@@ -27,6 +27,8 @@
 !!! example "Runtime-опора для support-triage"
     Встроенный `support-triage-ref` показывает тот же сквозной кейс в исполняемой форме: agent identity, approved `search_docs`/`create_ticket` capabilities, approval wait, trace/session IDs, lifecycle checks и eval export. Поэтому duplicate-ticket thread из книги можно проверять не только как prose, но и как runnable contract surface.
 
+Недавние contract updates делают эту поверхность полезнее для review: delegated authorization context сохраняется через CLI demos, sessions, eval exports и replay; trace export redaction теперь покрывает command summaries вместе с JSONL artifacts; lifecycle inspection показывает runtime-control assumptions; а docs guard фиксирует stable validation errors, задающие эти boundaries.
+
 ## Что внутри
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)
