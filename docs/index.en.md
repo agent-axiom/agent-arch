@@ -51,11 +51,12 @@ The shortest useful path through the book looks like this:
 
 ## What Already Exists Here
 
-- The full Russian manuscript with `en` and `zh` translations.
-- Eight book parts, from architectural foundations to lifecycle governance.
+- Published Russian core manuscript across eight book parts, from architectural foundations to lifecycle governance.
+- Draft `en` and `zh` translation layers that are useful for reading, but still going through editorial cleanup.
 - The runnable `agent_runtime_ref` reference package.
 - Reference pages for traces, evals, policy bundles, approvals, memory, and lifecycle artifacts.
 - Practical case studies, checklists, policy templates, and a glossary.
+- Active editorial pass on the book manuscript and public site surface.
 
 ## What the Book Is Not Trying To Be
 

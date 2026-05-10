@@ -7,9 +7,10 @@ The book already has a strong core: architecture, safety, memory, execution, obs
 - a [Start Here](../start-here.en.md) page;
 - a [multilingual glossary](glossary.en.md);
 - a [cheat sheets page](cheat-sheets.en.md);
-- a first set of [Practical Case Studies](case-studies.en.md);
-- a first set of [Policy Templates](policy-templates.en.md);
+- a representative set of [Practical Case Studies](case-studies.en.md);
+- reusable [Policy Templates](policy-templates.en.md);
 - a runnable reference package and its [package docs](reference-package.en.md);
+- reference schemas for traces, evals, policies, approvals, memory, rollout, and lifecycle artifacts;
 - a dedicated [Publishing Stack](stack.en.md) page.
 
 ## How I Select the Next Steps
@@ -44,17 +45,16 @@ The book already contains first examples, but the community needs more explicit 
 
 Why it matters: a template people can copy and adapt is more valuable than a long explanation of why the template matters.
 
-### 3. A trace schema and event catalog
+### 3. Richer trace examples and visual QA
 
-Add a dedicated telemetry reference page:
+The trace schema and event catalog exist already. The next step is to make them easier to validate and read:
 
-- what event types exist;
-- which fields are mandatory;
-- what a `trace_id` should look like;
-- which spans count as baseline;
-- what should never appear in events.
+- add more realistic JSONL trace examples;
+- show one successful run, one approval wait, one denied run, and one failed run;
+- keep the rendered schema pages free of broken tables, list joins, and raw diagram blocks;
+- add a lightweight rendered-site QA checklist for the most visible pages.
 
-Why it matters: observability becomes much stronger when the community has a shared event model, not only a shared idea.
+Why it matters: observability becomes much stronger when the community has both a shared event model and concrete examples of how it appears in the published site.
 
 ### 4. More realistic scenarios in `agent_runtime_ref`
 

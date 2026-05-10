@@ -350,6 +350,7 @@ extra_css:
   - stylesheets/extra.css
 
 extra_javascript:
+  - javascripts/canonical-redirects.js
   - javascripts/mermaid-init.js
   - javascripts/observable-plot.js
 
