@@ -310,7 +310,17 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 如果连续几个答案都是“否”，那你的评测层虽然已经存在，但还没准备好面对自主行为。
 
-## 15. 值得配套阅读的参考页
+## 15. 本章的证据模型
+
+本章应该被读成一层 control evidence，而不是一组额外测试类型清单：
+
+- **稳定主张：** 自主系统需要针对 risky trajectories 的 evals，而不只是 final answers。
+- **厂商实践：** 现代 agent-eval 材料越来越把 traces、trajectories 与 rollout gates 当作评测的一等输入。
+- **运行时实践：** scenario classes、verifier contracts、trace-backed failures 与 rollout gates 是让 behavioral 和 control evidence 可审查的具体方式。
+- **作者解释：** behavioral evals、control evals 与 automated red teaming 是同一个 judgment system 中的不同角色，而不是可以互换的标签。
+- **快速变化层：** simulator quality、judge models 与 red-team generation 会快速变化；但区分 process failure、outcome failure 与 control failure 的需求不会。
+
+## 16. 值得配套阅读的参考页
 
 - [评测数据集模式与分级契约](../../appendix/eval-schema.zh.md)
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
