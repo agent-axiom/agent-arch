@@ -9068,6 +9068,48 @@ class TestCli:
         assert replay_payload["source_approval_status_counts"] == {"pending": 1}
         assert replay_payload["replay_approval_status_counts"] == {"pending": 1}
 
+    def test_cli_replay_run_preserves_delegated_authorization(
+        self, cli_json, tmp_path: Path
+    ) -> None:
+        output_path = tmp_path / "delegated-trace.jsonl"
+        export_code, _ = cli_json(
+            [
+                "export-events",
+                "--user-input",
+                "Please create a ticket for this delegated replay issue.",
+                "--trace-id",
+                "trace-replay-delegated-source",
+                "--authorization-mode",
+                "user_delegated",
+                "--delegated-principal-id",
+                "customer-17",
+                "--delegated-scope",
+                "ticket:create",
+                "--output",
+                str(output_path),
+            ],
+        )
+        assert export_code == 0
+
+        replay_code, replay_payload = cli_json(
+            [
+                "replay-run",
+                "--input",
+                str(output_path),
+                "--replay-trace-id",
+                "trace-replay-delegated-target",
+            ],
+        )
+        assert replay_code == 0
+        assert replay_payload["source_authorization_mode"] == "user_delegated"
+        assert replay_payload["replay_authorization_mode"] == "user_delegated"
+        assert replay_payload["source_delegated_principal_id"] == "customer-17"
+        assert replay_payload["replay_delegated_principal_id"] == "customer-17"
+        assert replay_payload["source_delegated_scope"] == "ticket:create"
+        assert replay_payload["replay_delegated_scope"] == "ticket:create"
+        assert replay_payload["source_approval_ids"] == ["apr-001"]
+        assert replay_payload["replay_approval_ids"] == ["apr-001"]
+
     def test_cli_replay_run_summarizes_source_failure_reason(
         self, cli_json, tmp_path: Path
     ) -> None:
