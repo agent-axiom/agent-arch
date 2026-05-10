@@ -1,13 +1,65 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Mapping
+
+
+@dataclass(frozen=True, slots=True)
+class DelegatedAuthorizationPolicy:
+    reviewer_required_for_user_delegation: str = "manager"
+    require_principal_binding: bool = True
+    require_scope_visibility: bool = True
+    on_scope_revoked: str = "cancel_or_reapprove"
+    subagent_inheritance: str = "explicit_only"
+
+    def __post_init__(self) -> None:
+        reviewer = _read_required_approval_string(
+            self.reviewer_required_for_user_delegation,
+            field="delegated_authorization.reviewer_required_for_user_delegation",
+        )
+        on_scope_revoked = _read_required_approval_string(
+            self.on_scope_revoked,
+            field="delegated_authorization.on_scope_revoked",
+        )
+        subagent_inheritance = _read_required_approval_string(
+            self.subagent_inheritance,
+            field="delegated_authorization.subagent_inheritance",
+        )
+        if not isinstance(self.require_principal_binding, bool):
+            raise TypeError(
+                "delegated_authorization.require_principal_binding must be a boolean"
+            )
+        if not isinstance(self.require_scope_visibility, bool):
+            raise TypeError(
+                "delegated_authorization.require_scope_visibility must be a boolean"
+            )
+        object.__setattr__(self, "reviewer_required_for_user_delegation", reviewer)
+        object.__setattr__(self, "on_scope_revoked", on_scope_revoked)
+        object.__setattr__(self, "subagent_inheritance", subagent_inheritance)
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "DelegatedAuthorizationPolicy":
+        if not isinstance(data, Mapping):
+            raise TypeError("approvals.delegated_authorization must be a mapping")
+        return cls(
+            reviewer_required_for_user_delegation=data.get(
+                "reviewer_required_for_user_delegation",
+                "manager",
+            ),
+            require_principal_binding=data.get("require_principal_binding", True),
+            require_scope_visibility=data.get("require_scope_visibility", True),
+            on_scope_revoked=data.get("on_scope_revoked", "cancel_or_reapprove"),
+            subagent_inheritance=data.get("subagent_inheritance", "explicit_only"),
+        )
 
 
 @dataclass(frozen=True, slots=True)
 class ApprovalPolicy:
     default_reviewer: str
     escalation_sla_minutes: int
+    delegated_authorization: DelegatedAuthorizationPolicy = field(
+        default_factory=DelegatedAuthorizationPolicy
+    )
 
     def __post_init__(self) -> None:
         if not isinstance(self.default_reviewer, str):
@@ -21,6 +73,10 @@ class ApprovalPolicy:
             raise TypeError("approvals.escalation_sla_minutes must be an integer")
         if self.escalation_sla_minutes <= 0:
             raise ValueError("approvals.escalation_sla_minutes must be positive")
+        if not isinstance(self.delegated_authorization, DelegatedAuthorizationPolicy):
+            raise TypeError(
+                "approvals.delegated_authorization must be DelegatedAuthorizationPolicy"
+            )
         object.__setattr__(self, "default_reviewer", default_reviewer)
 
     @classmethod
@@ -30,9 +86,13 @@ class ApprovalPolicy:
         raw_approvals = data.get("approvals", {})
         if not isinstance(raw_approvals, Mapping):
             raise TypeError("'approvals' must be a mapping")
+        raw_delegated_authorization = raw_approvals.get("delegated_authorization", {})
         return cls(
             default_reviewer=raw_approvals.get("default_reviewer", "manager"),
             escalation_sla_minutes=raw_approvals.get("escalation_sla_minutes", 30),
+            delegated_authorization=DelegatedAuthorizationPolicy.from_dict(
+                raw_delegated_authorization
+            ),
         )
 
 
