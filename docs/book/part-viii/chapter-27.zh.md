@@ -353,7 +353,17 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 如果连续几个答案都是“否”，那说明你已经有一整套智能体群体，但还没有真正建立起智能体治理。
 
-## 15. 值得配套阅读的参考页
+## 15. 本章的证据模型
+
+本章应该被读成 accountability layer，而不是 inventory spreadsheet：
+
+- **稳定主张：** 智能体治理不只是 discovery；每个 production agent 都需要 ownership、lifecycle state、policy linkage 与 observable control status。
+- **厂商实践：** infrastructure inventory 与 agentic-risk guidance 都指向 continuous asset coverage、ownership 和 control accountability。
+- **运行时实践：** registry records、lifecycle artifacts、policy bundles、approval modes、principal status 与 telemetry coverage 让 agent estate 可以被审查。
+- **作者解释：** registry 是收束层，把 observability、policy、lifecycle 与 retirement 连接成一个 accountable production entity。
+- **快速变化层：** agent builders、registries 与 discovery mechanisms 会继续变化；但 discovered entities 与 approved production agents 的区别不应消失。
+
+## 16. 值得配套阅读的参考页
 
 - [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)

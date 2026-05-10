@@ -367,7 +367,17 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 Если несколько ответов подряд “нет”, то агентский контур у тебя уже есть, а управления агентами еще нет.
 
-## 15. Полезные справочные страницы
+## 15. Модель доказательности этой главы
+
+Эту главу стоит читать как accountability layer, а не как spreadsheet инвентаризации:
+
+- **Устойчивые утверждения:** governance агентов требует больше, чем discovery; каждому production agent нужны ownership, lifecycle state, policy linkage и observable control status.
+- **Вендорская практика:** guidance по infrastructure inventory и agentic risk сходится к continuous asset coverage, ownership и control accountability.
+- **Runtime-практика:** registry records, lifecycle artifacts, policy bundles, approval modes, principal status и telemetry coverage делают agent estate проверяемым.
+- **Авторская интерпретация:** registry — закрывающий слой, который связывает observability, policy, lifecycle и retirement в одну accountable production entity.
+- **Быстро меняющаяся область:** agent builders, registries и discovery mechanisms будут меняться; различие между discovered entities и approved production agents — нет.
+
+## 16. Полезные справочные страницы
 
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
