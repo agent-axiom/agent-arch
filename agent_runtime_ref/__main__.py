@@ -336,6 +336,9 @@ def _run_runtime(
     trace_id: str,
     session_id: str,
     agent_id: str | None = None,
+    authorization_mode: str = "platform_owned",
+    delegated_principal_id: str = "",
+    delegated_scope: str = "",
     simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     runtime = _build_runtime(config_dir)
@@ -347,6 +350,9 @@ def _run_runtime(
         trace_id=trace_id,
         session_id=session_id,
         agent_id=agent_id,
+        authorization_mode=authorization_mode,
+        delegated_principal_id=delegated_principal_id,
+        delegated_scope=delegated_scope,
         simulate_failure=simulate_failure,
     )
 
@@ -360,6 +366,9 @@ def _run_on_runtime(
     trace_id: str,
     session_id: str,
     agent_id: str | None = None,
+    authorization_mode: str = "platform_owned",
+    delegated_principal_id: str = "",
+    delegated_scope: str = "",
     simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
     if simulate_failure and "ticket" in user_input.lower():
@@ -372,6 +381,9 @@ def _run_on_runtime(
             trace_id=trace_id,
             session_id=session_id,
             agent_id=agent_id or runtime.agent.agent_id,
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
         ),
     )
     return runtime, result
@@ -1404,6 +1416,9 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
+        authorization_mode=args.authorization_mode,
+        delegated_principal_id=args.delegated_principal_id,
+        delegated_scope=args.delegated_scope,
     )
     approvals = runtime.approvals.all()
     idempotency_keys = list(
@@ -1469,6 +1484,9 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
+        authorization_mode=args.authorization_mode,
+        delegated_principal_id=args.delegated_principal_id,
+        delegated_scope=args.delegated_scope,
     )
     pending = runtime.approvals.pending()
     if not pending:
@@ -2104,6 +2122,13 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_approvals.add_argument("--trace-id", default="trace-approval-001")
     inspect_approvals.add_argument("--session-id", default="session-approval-001")
     inspect_approvals.add_argument("--agent-id", default=None)
+    inspect_approvals.add_argument(
+        "--authorization-mode",
+        choices=("platform_owned", "user_delegated", "human_approved"),
+        default="platform_owned",
+    )
+    inspect_approvals.add_argument("--delegated-principal-id", default="")
+    inspect_approvals.add_argument("--delegated-scope", default="")
 
     resolve_approval = subparsers.add_parser(
         "resolve-approval",
@@ -2123,6 +2148,13 @@ def build_parser() -> argparse.ArgumentParser:
     resolve_approval.add_argument("--trace-id", default="trace-approval-001")
     resolve_approval.add_argument("--session-id", default="session-approval-001")
     resolve_approval.add_argument("--agent-id", default=None)
+    resolve_approval.add_argument(
+        "--authorization-mode",
+        choices=("platform_owned", "user_delegated", "human_approved"),
+        default="platform_owned",
+    )
+    resolve_approval.add_argument("--delegated-principal-id", default="")
+    resolve_approval.add_argument("--delegated-scope", default="")
     resolve_approval.add_argument("--approval-id", default=None)
     resolve_approval.add_argument(
         "--decision",
