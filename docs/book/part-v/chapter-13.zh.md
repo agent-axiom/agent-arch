@@ -474,6 +474,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - **厂商实践：** Google Cloud 的 agent governance guidance 和现代 agent-platform 材料都把 evals 视为 rollout 与 operational control 的一部分，而不只是模型选择。
 - **研究与 human-AI practice：** human-centered evaluation 相关工作提醒我们，apparent agreement 或 user satisfaction 可能掩盖薄弱的 judgment signals。
 - **运行时实践：** trace-linked eval rows、verifier outputs、rollout gates 和 failed-run reasons 让 eval evidence 可以被 operators 审查。
+- **另一种观点：** automated judges 很有吸引力，因为它们可以扩大 review 规模并减少 human bottleneck。本章承认这种价值，但把 judge output 视为需要校准的 evidence，而不是必须服从的 authority；高风险 rollout decisions 仍然需要 disagreement review、明确的 rubric owner 和 trace-backed attribution。
 - **作者解释：** 本书把 evals 视为 observability 与 lifecycle governance 之间的 release-judgment layer。
 - **快速变化层：** judge models、simulators 与 automated red-team techniques 会快速变化；但 explicit gates 与 attributable failures 的需求不会。
 
