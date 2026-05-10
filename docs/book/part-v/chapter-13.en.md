@@ -483,7 +483,7 @@ This chapter should be read as a judgment model, not as a benchmark checklist:
 
 By this point Part V forms a coherent operational block: traces, SLO, and the eval loop. The next step is the organizational model, because platforms like this run into team design questions as much as code questions.
 
-## 16. Useful Reference Pages
+## 17. Useful Reference Pages
 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
