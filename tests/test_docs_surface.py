@@ -101,6 +101,17 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_memory_schema_loader_root_error_is_documented() -> None:
+    checked_files = (
+        "docs/appendix/memory-retrieval-schema.md",
+        "docs/appendix/memory-retrieval-schema.en.md",
+        "docs/appendix/memory-retrieval-schema.zh.md",
+    )
+
+    for path in checked_files:
+        assert "Memory store config must be a mapping" in _read(path), path
+
+
 def test_approval_schema_delegated_authorization_errors_are_documented() -> None:
     required_errors = (
         "approvals.delegated_authorization must be a mapping",
