@@ -101,6 +101,31 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> None:
+    required_fields = (
+        "pause_allowed",
+        "resume_allowed",
+        "background_mode_allowed",
+        "max_wait_seconds",
+        "on_expiry",
+        "contract_version",
+        "capability_session_owner",
+        "capability_sessions",
+        "delegated_authorization",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        lifecycle_section = text.split("inspect-lifecycle", maxsplit=1)[1]
+        for field in required_fields:
+            assert f"`{field}`" in lifecycle_section, (path, field)
+
+
 def test_reference_package_export_events_identity_fields_are_documented() -> None:
     required_fields = (
         "session_id",
