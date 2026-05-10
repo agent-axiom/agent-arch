@@ -101,6 +101,26 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_eval_schema_session_eval_errors_are_documented() -> None:
+    required_errors = (
+        "Session eval specs must be a mapping",
+        "Session eval spec must be a mapping",
+        "Session eval spec key must be a string",
+        "Session eval spec key must not be empty",
+        "Session eval spec keys must be unique",
+    )
+    checked_files = (
+        "docs/appendix/eval-schema.md",
+        "docs/appendix/eval-schema.en.md",
+        "docs/appendix/eval-schema.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_trace_schema_tool_model_errors_are_documented() -> None:
     required_errors = (
         "Tool request capability name must be a string",
