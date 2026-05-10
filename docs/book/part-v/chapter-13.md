@@ -122,7 +122,7 @@ flowchart LR
 !!! example "Сквозной кейс: дубль как regression gate"
     После duplicate-ticket инцидента eval case должен проверять не только финальный текст ответа. Он должен заставить систему пройти timeout-after-side-effect сценарий, сохранить `trace_id` и `idempotency_key`, не создать второй тикет и выставить outcome, который rollout gate может проверить. Если новый prompt или adapter снова уводит систему в blind retry, релиз должен остановиться до production.
 
-## 4.1. User simulator полезен там, где статичных кейсов уже мало
+### 4.1. User simulator полезен там, где статичных кейсов уже мало
 
 Свежие материалы Google хорошо подсвечивают еще один практический слой: evaluation loop полезно дополнять user simulator, а не полагаться только на фиксированный набор тестов.[^google-govern]
 
@@ -143,7 +143,7 @@ flowchart LR
 
 Static eval set хорош для сравнения known cases. User simulator полезен там, где тебе важна динамика поведения, а не только итоговый score на одном заранее подготовленном примере.
 
-## 4.2. Continuous eval loop должен замыкаться в rollout decisions
+### 4.2. Continuous eval loop должен замыкаться в rollout decisions
 
 Когда online evals, trace grading и simulated conversations уже есть, следующий важный шаг очень простой: результаты должны не просто собираться, а влиять на release process.
 
@@ -184,7 +184,7 @@ Trace grading полезен тем, что позволяет оцениват�
 - слишком рано уходит в escalation;
 - возвращает статус без достаточного grounding.
 
-## 5.1. Behavioral evals и control evals проверяют не только ответ, но и поведение системы
+### 5.1. Behavioral evals и control evals проверяют не только ответ, но и поведение системы
 
 По мере того как agent systems получают больше autonomy, становится полезно оценивать не только “справился ли run с задачей”, но и “какое поведение система продемонстрировала по пути”.
 
@@ -208,7 +208,7 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Хороший eval judgment может сказать: "rollout дальше расширять нельзя" или "этому сценарию больше нельзя доверять". Но operational response на такой judgment уже принадлежит более поздним слоям, прежде всего rollout control и assurance ownership.
 
-## 5.2. Coordination failure тоже должна быть частью eval design
+### 5.2. Coordination failure тоже должна быть частью eval design
 
 Если система использует handoffs, manager pattern или несколько cooperating agents, то обычной проверки “ответ был правильным” уже мало.
 
@@ -222,7 +222,7 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Именно поэтому multi-agent reliability research полезен здесь не как призыв срочно усложнять runtime, а как напоминание: чем сложнее orchestration, тем богаче должен быть eval design.
 
-## 5.3. Multi-turn consistency тоже стоит проверять отдельно
+### 5.3. Multi-turn consistency тоже стоит проверять отдельно
 
 Еще один полезный сигнал свежих работ: agent может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинной interaction loop.
 
@@ -240,7 +240,7 @@ Trace grading полезен тем, что позволяет оцениват�
 - не начинает ли длинная deliberation плодить больше contradiction, а не меньше;
 - можно ли локализовать temporal drift по traces.
 
-## 5.4. LLM-as-a-judge полезен только при калибровке
+### 5.4. LLM-as-a-judge полезен только при калибровке
 
 По мере роста eval layer почти неизбежно появляется еще один соблазн: использовать judge-model и считать, что теперь grading можно масштабировать почти автоматически.
 
@@ -292,7 +292,7 @@ Trace grading полезен тем, что позволяет оцениват�
 
 Полезно также включать cases, где правильное поведение все равно заканчивается неполным outcome из-за ограничений среды. Без таких cases команды часто переобучаются на binary completion и недооценивают вопрос, вело ли себя system correctly под давлением.
 
-## 6.1. Memory layer тоже должен входить в eval dataset явно
+### 6.1. Memory layer тоже должен входить в eval dataset явно
 
 Отдельно полезно проверять не только ответ, но и качество state across runs.
 

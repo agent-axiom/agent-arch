@@ -88,7 +88,7 @@ In a good design, MCP gives you several benefits:
 
 That becomes especially valuable once you have not one runtime and one integration, but a set of capabilities you want to connect systematically rather than chaotically.
 
-## 4.1. It Helps Not to Confuse the MCP Host, Client, and Server
+### 4.1. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 
@@ -287,7 +287,7 @@ Examples:
 
 If every tool gets the same soft execution profile, the platform becomes either unsafe or incident-prone.
 
-## 7. A Capability Contract Must Include More Than Input/Output
+## 8. A Capability Contract Must Include More Than Input/Output
 
 Many teams do a decent job describing input schema, but the operational contract is missing. In practice, that part is often more important.
 
@@ -341,7 +341,7 @@ capabilities:
 
 This is no longer just a function description. It is a behavioral contract for a capability.
 
-## 8. Sandbox Execution Should Return Execution Facts, Not Only Output
+## 9. Sandbox Execution Should Return Execution Facts, Not Only Output
 
 If the sandbox returns only stdout or a payload, you lose half the value of the isolation layer.
 
@@ -356,7 +356,7 @@ For investigations and control, it is useful to return:
 
 Then the execution layer can explain not just "the command failed", but something mature like: "the operation was terminated by timeout after 8 seconds, network was denied, side effect is not confirmed".
 
-### 8.1. Network Egress Deserves Its Own Rule Set
+### 9.1. Network Egress Deserves Its Own Rule Set
 
 Many incidents happen not because a capability "broke," but because it was able to reach a destination nobody expected.
 
@@ -375,7 +375,7 @@ For a production-grade platform, a good default is often:
 - external API adapters: `allowlisted_external`;
 - code execution and shell-like tools: `denied` by default.
 
-### 8.2. The Sandbox Manifest as an Execution Contract
+### 9.2. The Sandbox Manifest as an Execution Contract
 
 Recent OpenAI Sandbox Agents documentation adds a useful practical shape to this discussion: describe a sandbox not only as a "container" or "isolated environment", but through an explicit `Manifest`, capabilities, permissions, workspace entries, snapshot, and session state.[^openai-sandbox-agents]
 
@@ -388,7 +388,7 @@ That maps cleanly onto the execution contracts in this chapter. A platform needs
 
 Such a manifest does not replace the policy layer. It makes the execution boundary reviewable: reviewers can see what enters the workspace, what rights the agent receives, and whether the work can be safely resumed or snapshotted.
 
-## 9. A Simple Capability Dispatch Example
+## 10. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.
 
@@ -414,7 +414,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 It is intentionally simple, but it locks in the right idea: the way execution happens is determined by the platform, not improvised by the model every time.
 
-## 10. Common Mistakes
+## 11. Common Mistakes
 
 The same problems now repeat at two levels: at the individual adapter level, and at the MCP estate level.
 
@@ -429,7 +429,7 @@ The same problems repeat over and over:
 
 That is why sandboxing cannot be a checkbox feature. It has to be part of execution design.
 
-## 11. What to Do Right Away
+## 12. What to Do Right Away
 
 Start with this short list and mark every "no" explicitly:
 
@@ -445,7 +445,7 @@ Start with this short list and mark every "no" explicitly:
 
 If those answers are vague, the capability layer is still a pile of useful integrations, not a managed platform.
 
-## 12. What to Do Next
+## 13. What to Do Next
 
 First lock down execution profiles and isolation boundaries, then move to retries, rate limits, and rollback boundaries.
 

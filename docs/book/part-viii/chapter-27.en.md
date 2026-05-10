@@ -194,7 +194,7 @@ Registry answers which production entity owned that path and who is accountable 
 !!! example "Case thread: support-triage in the registry"
     After all the fixes, support-triage should not be merely “the support agent.” It should be a registry record with an owner, lifecycle state, allowed capabilities, `create_support_ticket` tool principal, approval mode, observability status, eval-evidence linkage, and retirement plan for the old ticket writer. Then a duplicate-ticket signal can be attached not only to a trace or artifact bundle, but to a named production entity: who owns the path, who expands the canary, who disables the write capability, and who is accountable for the deprecated route.
 
-## 8.1. A registry without continuous verification becomes neat but inaccurate
+### 8.1. A registry without continuous verification becomes neat but inaccurate
 
 It is important not to overestimate the registry itself. The existence of a registry does not prove that the control layer actually works.
 

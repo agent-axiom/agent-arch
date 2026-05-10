@@ -127,7 +127,7 @@ That turns latency SLO from a pretty number into a diagnostic instrument.
 
 But it is still a budget instrument, not a response loop. A latency SLO tells the team how much slowness can be tolerated before action is required. The later assurance chapter handles containment, ownership, and response when that tolerance is breached.
 
-## 5.1. The Latency Budget Starts with User Patience, Not Model Speed
+### 5.1. The Latency Budget Starts with User Patience, Not Model Speed
 
 There is one more product question worth keeping in view: the latency budget should start not from a model benchmark, but from how long the user is actually willing to wait.
 

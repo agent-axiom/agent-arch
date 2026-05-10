@@ -107,7 +107,7 @@ There are many threats in agent systems, but a production system like the suppor
 | Cross-tenant access | Identity layer, retrieval, tools | tenant scoping, signed context, metadata filters |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
-## 5.1. Prompt Injection, Jailbreaking, and Action Hallucination Are Not the Same
+### 5.1. Prompt Injection, Jailbreaking, and Action Hallucination Are Not the Same
 
 It is useful to distinguish at least three different failure classes:
 

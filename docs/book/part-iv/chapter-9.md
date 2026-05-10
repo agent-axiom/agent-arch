@@ -88,7 +88,7 @@ MCP удобен не потому, что это модное слово, а п
 
 Это особенно полезно, когда у тебя не один agent runtime и не одна интеграция, а набор capabilities, которые хочется подключать системно, а не хаотично.
 
-## 4.1. Полезно не путать MCP host, client и server
+### 4.1. Полезно не путать MCP host, client и server
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 
@@ -287,7 +287,7 @@ flowchart LR
 
 Если ко всем инструментам применить одинаково мягкий execution profile, платформа будет либо небезопасной, либо очень быстро столкнется с инцидентами по side effects.
 
-## 7. Контракт capability должен включать не только input/output
+## 8. Контракт capability должен включать не только input/output
 
 Часто schema инструмента описана неплохо, а вот operational contract нигде не зафиксирован. Но именно он часто критичен.
 
@@ -343,7 +343,7 @@ capabilities:
 
 Это уже не просто описание функции. Это описание поведенческого контракта capability.
 
-## 8. Sandbox execution должен возвращать не только output, но и execution facts
+## 9. Sandbox execution должен возвращать не только output, но и execution facts
 
 Если sandbox возвращает только stdout или payload, ты теряешь половину ценности слоя изоляции.
 
@@ -358,7 +358,7 @@ capabilities:
 
 Тогда execution layer может объяснить не просто “команда не сработала”, а более взрослое: “операция была прервана по timeout после 8 секунд, сеть была запрещена, side effect не подтвержден”.
 
-### 8.1. Network egress deserves its own rule set
+### 9.1. Network egress deserves its own rule set
 
 Очень много инцидентов происходит не потому, что capability “сломалась”, а потому, что она смогла уйти в неожиданное место.
 
@@ -377,7 +377,7 @@ capabilities:
 - external API adapters: `allowlisted_external`;
 - code execution и shell-like tools: `denied` по умолчанию.
 
-### 8.2. Sandbox manifest как контракт исполнения
+### 9.2. Sandbox manifest как контракт исполнения
 
 Свежие документы OpenAI по Sandbox Agents добавляют к этой картине полезную практическую форму: sandbox стоит описывать не только словами “контейнер” или “изолированная среда”, а через явный `Manifest`, capabilities, permissions, workspace entries, snapshot и session state.[^openai-sandbox-agents]
 
@@ -390,7 +390,7 @@ capabilities:
 
 Такой manifest не заменяет policy layer. Он делает границу исполнения проверяемой: review может увидеть, что именно материализуется в workspace, какие права получает агент и можно ли безопасно resume/snapshot эту работу.
 
-## 9. Простой кодовый пример capability dispatch
+## 10. Простой кодовый пример capability dispatch
 
 Ниже каркас, который показывает саму идею: transport и execution profile выбираются по capability contract, а не определяются логикой модели на лету.
 
@@ -416,7 +416,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Это простой пример, но он закрепляет правильную мысль: способ исполнения задается платформой, а не придумывается моделью каждый раз заново.
 
-## 10. Частые ошибки
+## 11. Частые ошибки
 
 Теперь типовые проблемы повторяются уже на двух уровнях: на уровне отдельного adapter и на уровне всего MCP estate.
 
@@ -431,7 +431,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Именно поэтому sandbox не должен быть checkbox-функцией. Он должен быть частью execution design.
 
-## 11. Что сделать сразу
+## 12. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
@@ -447,7 +447,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 Если ответы расплывчаты, capability layer у тебя пока больше похож на набор удобных интеграций, чем на управляемую платформу.
 
-## 12. Что делать дальше
+## 13. Что делать дальше
 
 Сначала зафиксируй execution profile и isolation boundaries, а потом переходи к retries, rate limits и rollback boundaries.
 

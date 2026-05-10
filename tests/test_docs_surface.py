@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import yaml
@@ -59,6 +60,19 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
         nav_targets = locales[locale]["nav_translations"].values()
         for target in nav_targets:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
+
+
+def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> None:
+    for path in (ROOT / "docs/book").rglob("*.md"):
+        top_level_numbers = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            assert not re.match(r"^## \d+\.\d+\. ", line), path
+            match = re.match(r"^## (\d+)\. ", line)
+            if match:
+                top_level_numbers.append(match.group(1))
+
+        duplicates = {number for number in top_level_numbers if top_level_numbers.count(number) > 1}
+        assert not duplicates, (path, sorted(duplicates, key=int))
 
 
 def test_markdown_rendering_regression_patterns_are_absent() -> None:

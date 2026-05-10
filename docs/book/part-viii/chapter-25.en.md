@@ -170,7 +170,7 @@ At a mature level, both roles coexist:
 - the simulator gives you realistic task distribution;
 - the adversary gives you pressure testing.
 
-## 8.1. Research is useful here as a source of scenario classes
+### 8.1. Research is useful here as a source of scenario classes
 
 Recent work on behavioral risk and automated red teaming is useful not only for its conclusions, but also for its vocabulary.
 
