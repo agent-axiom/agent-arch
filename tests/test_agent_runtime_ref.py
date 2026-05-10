@@ -1511,6 +1511,37 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match=expected_entries):
             main(["simulate-run", "--config-dir", str(bad_config_dir)])
 
+        (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n"
+            "  capability_sessions:\n"
+            "    - not-a-mapping\n"
+            "  sandbox_profile:\n"
+            "    workspace:\n"
+            "      entries: []\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(
+            TypeError,
+            match="runtime_controls.capability_sessions config must be a mapping",
+        ):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+
+        (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n"
+            "  capability_sessions: {}\n"
+            "  delegated_authorization:\n"
+            "    - not-a-mapping\n"
+            "  sandbox_profile:\n"
+            "    workspace:\n"
+            "      entries: []\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(
+            TypeError,
+            match="runtime_controls.delegated_authorization config must be a mapping",
+        ):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+
     def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
         from agent_runtime_ref.__main__ import _resolve_trace_id
         from agent_runtime_ref.telemetry import StructuredEvent
@@ -9186,6 +9217,7 @@ class TestCli:
             "retirement",
             "sandbox_profile",
             "sandbox_profile_summary",
+            "runtime_controls",
             "controls",
         }
         assert set(payload["change"]) == {
@@ -9238,6 +9270,19 @@ class TestCli:
             "network",
             "secrets",
             "snapshot",
+        }
+        assert set(payload["runtime_controls"]) == {
+            "pause_allowed",
+            "resume_allowed",
+            "background_mode_allowed",
+            "max_wait_seconds",
+            "on_expiry",
+            "contract_version",
+            "capability_session_owner",
+            "expiry_signal_owner",
+            "emergency_freeze_owner",
+            "capability_sessions",
+            "delegated_authorization",
         }
         assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["change"]["artifacts"] == [
@@ -9454,6 +9499,35 @@ class TestCli:
             "network": "denied",
             "secrets": "none",
             "snapshot": "required_on_completion",
+        }
+        assert payload["runtime_controls"] == {
+            "pause_allowed": True,
+            "resume_allowed": True,
+            "background_mode_allowed": True,
+            "max_wait_seconds": 1800,
+            "on_expiry": "cancel_run",
+            "contract_version": "capability-contract-v5",
+            "capability_session_owner": "support-ops",
+            "expiry_signal_owner": "support-ops",
+            "emergency_freeze_owner": "platform-runtime",
+            "capability_sessions": {
+                "session_mode": "stateful",
+                "track_session_ids": True,
+                "allow_progress_events": True,
+                "allow_elicitation": True,
+                "resume_policy": "resume_existing_session_if_valid",
+                "on_session_expiry": "reinitialize_or_cancel",
+                "expiry_policy": "reinitialize_or_cancel",
+                "reinit_policy": "resume_existing_session_if_valid",
+                "reinit_requires_approval": False,
+            },
+            "delegated_authorization": {
+                "authorization_mode": "user_delegated_or_platform_owned",
+                "delegated_principal_policy": "explicit_principal_binding_required",
+                "token_reuse_policy": "reuse_within_valid_paused_run_only",
+                "on_authorization_revoke": "cancel_or_reapprove",
+                "subagent_inheritance": "denied_by_default",
+            },
         }
 
     @pytest.mark.parametrize(

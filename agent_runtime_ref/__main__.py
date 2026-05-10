@@ -293,6 +293,15 @@ def _read_sandbox_profile_section(
     return cast(dict[str, object], value)
 
 
+def _read_runtime_controls_section(
+    runtime_controls: dict[str, object], key: str
+) -> dict[str, object]:
+    value = runtime_controls.get(key, {})
+    if not isinstance(value, dict):
+        raise TypeError(f"runtime_controls.{key} config must be a mapping")
+    return cast(dict[str, object], value)
+
+
 def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
     entries = workspace.get("entries", [])
     if not isinstance(entries, list):
@@ -1167,6 +1176,14 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
     retirement = load_retirement_plan(config_dir / "retirement.yaml")
     runtime_controls = _read_runtime_controls(config_dir)
     sandbox_profile = _read_sandbox_profile(runtime_controls)
+    capability_sessions = _read_runtime_controls_section(
+        runtime_controls,
+        "capability_sessions",
+    )
+    delegated_authorization = _read_runtime_controls_section(
+        runtime_controls,
+        "delegated_authorization",
+    )
     workspace = _read_sandbox_profile_section(sandbox_profile, "workspace")
     workspace_entries = _read_workspace_entries(workspace)
     capabilities = _read_sandbox_profile_section(sandbox_profile, "capabilities")
@@ -1248,6 +1265,19 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
             "network": permissions.get("network"),
             "secrets": permissions.get("secrets"),
             "snapshot": state.get("snapshot"),
+        },
+        "runtime_controls": {
+            "pause_allowed": runtime_controls.get("pause_allowed"),
+            "resume_allowed": runtime_controls.get("resume_allowed"),
+            "background_mode_allowed": runtime_controls.get("background_mode_allowed"),
+            "max_wait_seconds": runtime_controls.get("max_wait_seconds"),
+            "on_expiry": runtime_controls.get("on_expiry"),
+            "contract_version": runtime_controls.get("contract_version"),
+            "capability_session_owner": runtime_controls.get("capability_session_owner"),
+            "expiry_signal_owner": runtime_controls.get("expiry_signal_owner"),
+            "emergency_freeze_owner": runtime_controls.get("emergency_freeze_owner"),
+            "capability_sessions": capability_sessions,
+            "delegated_authorization": delegated_authorization,
         },
         "controls": {
             "failed_run_control_expectations": [
