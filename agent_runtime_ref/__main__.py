@@ -454,6 +454,9 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
+        authorization_mode=args.authorization_mode,
+        delegated_principal_id=args.delegated_principal_id,
+        delegated_scope=args.delegated_scope,
         simulate_failure=args.simulate_failure,
     )
     session_payload = runtime.sessions._session_payload(session_id)
@@ -767,6 +770,9 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
+        authorization_mode=args.authorization_mode,
+        delegated_principal_id=args.delegated_principal_id,
+        delegated_scope=args.delegated_scope,
         simulate_failure=args.simulate_failure,
     )
     session_payload = runtime.sessions._session_payload(session_id)
@@ -822,6 +828,9 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         trace_id=trace_id,
         session_id=session_id,
         agent_id=args.agent_id,
+        authorization_mode=args.authorization_mode,
+        delegated_principal_id=args.delegated_principal_id,
+        delegated_scope=args.delegated_scope,
         simulate_failure=args.simulate_failure,
     )
     session_payload = runtime.sessions._session_payload(session_id)
@@ -1885,6 +1894,16 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
+def _add_authorization_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--authorization-mode",
+        choices=("platform_owned", "user_delegated", "human_approved"),
+        default="platform_owned",
+    )
+    parser.add_argument("--delegated-principal-id", default="")
+    parser.add_argument("--delegated-scope", default="")
+
+
 def build_parser() -> argparse.ArgumentParser:
     config_dir = default_config_dir()
     parser = argparse.ArgumentParser(description="Reference runtime demo CLI")
@@ -1905,6 +1924,7 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--trace-id", default="trace-demo-001")
     simulate.add_argument("--session-id", default="session-demo-001")
     simulate.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(simulate)
     simulate.add_argument(
         "--simulate-failure",
         choices=["tool_timeout", "upstream_unavailable"],
@@ -1952,6 +1972,7 @@ def build_parser() -> argparse.ArgumentParser:
     dump_events.add_argument("--trace-id", default="trace-demo-001")
     dump_events.add_argument("--session-id", default="session-demo-001")
     dump_events.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(dump_events)
     dump_events.add_argument(
         "--simulate-failure",
         choices=["tool_timeout", "upstream_unavailable"],
@@ -1976,6 +1997,7 @@ def build_parser() -> argparse.ArgumentParser:
     export_events.add_argument("--trace-id", default="trace-demo-001")
     export_events.add_argument("--session-id", default="session-demo-001")
     export_events.add_argument("--agent-id", default=None)
+    _add_authorization_arguments(export_events)
     export_events.add_argument(
         "--simulate-failure",
         choices=["tool_timeout", "upstream_unavailable"],
@@ -2122,13 +2144,7 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_approvals.add_argument("--trace-id", default="trace-approval-001")
     inspect_approvals.add_argument("--session-id", default="session-approval-001")
     inspect_approvals.add_argument("--agent-id", default=None)
-    inspect_approvals.add_argument(
-        "--authorization-mode",
-        choices=("platform_owned", "user_delegated", "human_approved"),
-        default="platform_owned",
-    )
-    inspect_approvals.add_argument("--delegated-principal-id", default="")
-    inspect_approvals.add_argument("--delegated-scope", default="")
+    _add_authorization_arguments(inspect_approvals)
 
     resolve_approval = subparsers.add_parser(
         "resolve-approval",
@@ -2148,13 +2164,7 @@ def build_parser() -> argparse.ArgumentParser:
     resolve_approval.add_argument("--trace-id", default="trace-approval-001")
     resolve_approval.add_argument("--session-id", default="session-approval-001")
     resolve_approval.add_argument("--agent-id", default=None)
-    resolve_approval.add_argument(
-        "--authorization-mode",
-        choices=("platform_owned", "user_delegated", "human_approved"),
-        default="platform_owned",
-    )
-    resolve_approval.add_argument("--delegated-principal-id", default="")
-    resolve_approval.add_argument("--delegated-scope", default="")
+    _add_authorization_arguments(resolve_approval)
     resolve_approval.add_argument("--approval-id", default=None)
     resolve_approval.add_argument(
         "--decision",
