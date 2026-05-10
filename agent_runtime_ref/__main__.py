@@ -442,6 +442,15 @@ def _read_replay_payload_string(payload: Mapping[str, object], field: str) -> st
     return normalized
 
 
+def _read_replay_payload_optional_string(payload: Mapping[str, object], field: str) -> str:
+    if field not in payload:
+        return ""
+    value = payload[field]
+    if not isinstance(value, str):
+        raise TypeError(f"Trace run_start replay field must be a string: {field}")
+    return value.strip()
+
+
 def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
@@ -931,7 +940,14 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         raise ValueError("Trace file contains multiple run_start events")
     run_start = run_start_events[0]
     required_payload_keys = ("user_input", "tenant_id", "principal_id")
-    replay_payload_keys = (*required_payload_keys, "session_id", "agent_id")
+    replay_payload_keys = (
+        *required_payload_keys,
+        "session_id",
+        "agent_id",
+        "authorization_mode",
+        "delegated_principal_id",
+        "delegated_scope",
+    )
     missing_payload_keys = [key for key in required_payload_keys if key not in run_start.payload]
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
@@ -947,6 +963,18 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     principal_id = _read_replay_payload_string(run_start.payload, "principal_id")
     session_id = _read_replay_payload_string(run_start.payload, "session_id")
     agent_id = _read_replay_payload_string(run_start.payload, "agent_id")
+    authorization_mode = (
+        _read_replay_payload_string(run_start.payload, "authorization_mode")
+        or "platform_owned"
+    )
+    delegated_principal_id = _read_replay_payload_optional_string(
+        run_start.payload,
+        "delegated_principal_id",
+    )
+    delegated_scope = _read_replay_payload_optional_string(
+        run_start.payload,
+        "delegated_scope",
+    )
 
     config_dir = Path(args.config_dir)
     replay_trace_id = (
@@ -962,6 +990,9 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         trace_id=replay_trace_id,
         session_id=session_id or "session-replay-001",
         agent_id=agent_id,
+        authorization_mode=authorization_mode,
+        delegated_principal_id=delegated_principal_id,
+        delegated_scope=delegated_scope,
     )
     source_status = _run_complete_field_from_events(source_events, "status")
     source_output_preview = _run_complete_field_from_events(
