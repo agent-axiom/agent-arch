@@ -121,7 +121,7 @@ A good catalog usually has:
 
 That makes the execution layer inspectable: the team sees not "something the model might call," but a concrete platform contract.
 
-## 4.1. A Catalog That Is Too Large Hurts Selection Instead of Expanding Freedom
+### 4.1. A Catalog That Is Too Large Hurts Selection Instead of Expanding Freedom
 
 Another very practical problem appears as soon as the catalog becomes too large.
 

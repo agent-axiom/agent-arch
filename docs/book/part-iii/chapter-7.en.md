@@ -33,7 +33,7 @@ A normal retrieval pipeline almost always takes into account not only similarity
 - provenance;
 - policy filters.
 
-## 2.1. The Semantic Gap Between the User and the Knowledge Layer Is Real
+### 2.1. The Semantic Gap Between the User and the Knowledge Layer Is Real
 
 Another problem here often stays invisible in demos: the user asks in conversational language, while documents and knowledge records are usually written in formal, technical, or internal-system language.
 
@@ -48,7 +48,7 @@ In practice, that means the retrieval query is often worth shaping:
 
 But one discipline matters here: that intermediate query aid must not turn into a new "fact". HyDE or query rewriting are useful as retrieval tools, not as substitutes for a grounded answer.
 
-## 2.2. In Most Cases, Start with RAG, Not Training
+### 2.2. In Most Cases, Start with RAG, Not Training
 
 If the problem is that the agent lacks fresh knowledge or access to internal documents, the most practical first step is usually not training, but a sane retrieval layer.
 
@@ -153,7 +153,7 @@ This matters not only for performance, but also for decision quality. When one c
 
 it quickly becomes fragile and hard to explain.
 
-## 6.1. Frontier memory is moving toward adaptive shaping, but production still needs discipline
+### 6.1. Frontier memory is moving toward adaptive shaping, but production still needs discipline
 
 Recent memory research pushes the architecture further: not only to store records and compact them occasionally, but to gradually reshape the memory layer around actual usage patterns.
 

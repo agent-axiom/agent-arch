@@ -74,7 +74,7 @@ If the system still has no real reason to split responsibility between agents, t
 
 A good practical rule is: **if the entity does not make its own decisions and does not have its own operational role, it is probably not an agent yet. It is a capability**.
 
-## 4.1. Multi-agent reliability research currently reinforces skepticism
+### 4.1. Multi-agent reliability research currently reinforces skepticism
 
 This point is worth one more practical note. Recent papers on multi-agent reliability do not yet provide a strong reason to make runtimes more complex by default. If anything, they show how quickly coordination failures, verification gaps, and ambiguity grow when a system is split without a clear need.
 
@@ -86,7 +86,7 @@ The practical reading is:
 
 That is why `A2A` should be introduced not because it looks architecturally elegant, but because the system already contains separate operational roles that can no longer be honestly described as tools.
 
-## 4.2. Agreement between several agents is not independent verification
+### 4.2. Agreement between several agents is not independent verification
 
 Even if several agents reach a similar conclusion, that still does not prove the system has produced an independent verification signal.
 

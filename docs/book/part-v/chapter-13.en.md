@@ -129,7 +129,7 @@ For the same support case, that loop means one thing: an incident should not rem
 !!! example "Case thread: duplicate ticket as a regression gate"
     After the duplicate-ticket incident, the eval case should check more than the final answer text. It should force the system through a timeout-after-side-effect scenario, preserve `trace_id` and `idempotency_key`, avoid creating a second ticket, and emit an outcome the rollout gate can inspect. If a new prompt or adapter sends the system back into blind retry, the release should stop before production.
 
-## 4.1. A User Simulator Helps When Static Cases Stop Being Enough
+### 4.1. A User Simulator Helps When Static Cases Stop Being Enough
 
 Recent Google material highlights one more practical layer: it is useful to complement the eval loop with a user simulator instead of relying only on a fixed test set.[^google-govern]
 
@@ -150,7 +150,7 @@ For the support agent, a user simulator is especially useful in scenarios like:
 
 A static eval set is great for comparing known cases. A user simulator is useful when you care about the dynamics of behavior, not only the score on one prepared example.
 
-## 4.2. The Continuous Eval Loop Should Feed Rollout Decisions
+### 4.2. The Continuous Eval Loop Should Feed Rollout Decisions
 
 Once you already have online evals, trace grading, and simulated conversations, the next important step is simple: the results should not just be collected. They should influence the release process.
 
@@ -191,7 +191,7 @@ For our support agent, that is especially valuable when the user-facing answer s
 - escalate too early;
 - return status without enough grounding.
 
-## 5.1. Behavioral Evals and Control Evals Look Beyond the Answer
+### 5.1. Behavioral Evals and Control Evals Look Beyond the Answer
 
 As agent systems gain more autonomy, it becomes useful to evaluate not only “did the run complete the task,” but also “what kind of behavior did the system display along the way.”
 
@@ -217,7 +217,7 @@ That is also why verifier design matters. If the grading layer cannot separate p
 
 A good eval judgment may say "do not expand rollout" or "this scenario is no longer trustworthy." But the operational response to that judgment belongs to later layers, especially rollout control and assurance ownership.
 
-## 5.2. Coordination Failure Should Also Be Part of Eval Design
+### 5.2. Coordination Failure Should Also Be Part of Eval Design
 
 If the system uses handoffs, a manager pattern, or several cooperating agents, then checking only whether “the answer was correct” is no longer enough.
 
@@ -231,7 +231,7 @@ You also need to look at:
 
 That is why multi-agent reliability research matters here not as an invitation to make the runtime more complex by default, but as a reminder: the more complex the orchestration, the richer the eval design must be.
 
-## 5.3. Multi-Turn Consistency Also Deserves Its Own Checks
+### 5.3. Multi-Turn Consistency Also Deserves Its Own Checks
 
 Another useful signal from recent work is that an agent may look reasonable in a short scenario while gradually drifting into contradiction across a longer interaction loop.
 
@@ -249,7 +249,7 @@ That is why it is useful to keep explicit consistency checks:
 - does longer deliberation create more contradiction rather than less;
 - can temporal drift be localized through traces.
 
-## 5.4. LLM-as-a-Judge Is Useful Only After Calibration
+### 5.4. LLM-as-a-Judge Is Useful Only After Calibration
 
 As the eval layer grows, one more temptation almost always appears: use a judge model and assume grading can now scale almost automatically.
 
@@ -299,7 +299,7 @@ The real engineering value almost always lives in those difficult and uncomforta
 
 It is also useful to include cases where the right behavior still ends in an incomplete outcome because of environment-side constraints. Without those cases, teams often overfit to binary completion and underinvest in judging whether the system behaved correctly under pressure.
 
-## 6.1. The Memory Layer Should Also Enter the Eval Dataset Explicitly
+### 6.1. The Memory Layer Should Also Enter the Eval Dataset Explicitly
 
 It is useful to test not only answers, but also the quality of state across runs.
 

@@ -107,7 +107,7 @@ flowchart LR
 | Cross-tenant access | Identity layer, retrieval, tools | tenant scoping, signed context, metadata filters |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
-## 5.1. Prompt injection, jailbreak и action hallucination это не одно и то же
+### 5.1. Prompt injection, jailbreak и action hallucination это не одно и то же
 
 Полезно различать как минимум три разных failure classes:
 

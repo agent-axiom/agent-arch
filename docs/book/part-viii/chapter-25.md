@@ -170,7 +170,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 - simulator дает realistic task distribution;
 - adversary дает pressure testing.
 
-## 8.1. Research полезен здесь как источник scenario classes
+### 8.1. Research полезен здесь как источник scenario classes
 
 Свежие papers по behavioral risk и automated red teaming полезны не только выводами, но и vocabulary.
 

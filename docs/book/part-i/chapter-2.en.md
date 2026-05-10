@@ -65,7 +65,7 @@ the minimal triad stops being an architecture. It remains only the core around w
 
 This is the proof step after Chapter 1. The earlier claim was that agents need a platform. Here the reason becomes concrete: `model + tools + instructions` is enough to make a prototype behave, but not enough to explain rights, side effects, accountability, and recovery once the system touches reality.
 
-## 2.1. What Belongs to the Runtime Architecture, and What Does Not
+### 2.1. What Belongs to the Runtime Architecture, and What Does Not
 
 It is useful to draw one more boundary here, because teams very often mix runtime design, model training, and the product surface.
 
