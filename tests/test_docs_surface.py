@@ -124,6 +124,30 @@ def test_reference_package_export_events_identity_fields_are_documented() -> Non
             assert field in export_events_section, (path, field)
 
 
+def test_reference_package_eval_artifact_fields_are_documented() -> None:
+    required_fields = (
+        "session",
+        "eval",
+        "scenario",
+        "labels",
+        "expected_outcomes",
+        "grading_rules",
+        "request_agent_id",
+        "user_input",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        eval_section = text.split("export-eval-dataset", maxsplit=1)[1]
+        for field in required_fields:
+            assert f"`{field}`" in eval_section, (path, field)
+
+
 def test_markdown_rendering_regression_patterns_are_absent() -> None:
     checked_files = [
         "docs/book/part-i/chapter-1.en.md",
