@@ -369,7 +369,17 @@ A mature registry acts more like an accountability layer that continuously recon
 
 If several answers are “no,” you already have an agent estate but not yet agent governance.
 
-## 15. Useful reference pages
+## 15. Evidence Model for This Chapter
+
+This chapter should be read as an accountability layer, not as an inventory spreadsheet:
+
+- **Stable claims:** agent governance requires more than discovery; each production agent needs ownership, lifecycle state, policy linkage, and observable control status.
+- **Vendor practice:** infrastructure inventory and agentic-risk guidance both point toward continuous asset coverage, ownership, and control accountability.
+- **Runtime practice:** registry records, lifecycle artifacts, policy bundles, approval modes, principal status, and telemetry coverage make the agent estate reviewable.
+- **Author interpretation:** registry is the closing layer that ties observability, policy, lifecycle, and retirement into one accountable production entity.
+- **Fast-moving area:** agent builders, registries, and discovery mechanisms will change; the distinction between discovered entities and approved production agents should not.
+
+## 16. Useful reference pages
 
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
