@@ -101,6 +101,25 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_approval_schema_delegated_authorization_errors_are_documented() -> None:
+    required_errors = (
+        "approvals.delegated_authorization must be a mapping",
+        "approvals.delegated_authorization must be DelegatedAuthorizationPolicy",
+        "delegated_authorization.require_principal_binding must be a boolean",
+        "delegated_authorization.require_scope_visibility must be a boolean",
+    )
+    checked_files = (
+        "docs/appendix/approval-schema.md",
+        "docs/appendix/approval-schema.en.md",
+        "docs/appendix/approval-schema.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> None:
     required_fields = (
         "pause_allowed",
