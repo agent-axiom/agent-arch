@@ -101,6 +101,35 @@ def test_book_numbered_subsections_do_not_render_as_top_level_duplicates() -> No
         assert not duplicates, (path, sorted(duplicates, key=int))
 
 
+def test_trace_schema_tool_model_errors_are_documented() -> None:
+    required_errors = (
+        "Tool request capability name must be a string",
+        "Tool request capability name must not be empty",
+        "Tool request arguments must be a mapping",
+        "Tool request argument key must be a string",
+        "Tool request argument key must not be empty",
+        "Tool request argument keys must be unique",
+        "Tool request argument value must be a string: {argument_key}",
+        "Tool result status must be a string",
+        "Tool result status must not be empty",
+        "Tool result payload must be a mapping",
+        "Tool result payload key must be a string",
+        "Tool result payload key must not be empty",
+        "Tool result payload keys must be unique",
+        "Tool result payload value must be a string: {payload_key}",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_policy_schema_runtime_policy_errors_are_documented() -> None:
     required_errors = (
         "'capabilities' must be a mapping",
