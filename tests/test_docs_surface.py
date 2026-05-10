@@ -217,6 +217,24 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
             assert error in text, (path, error)
 
 
+def test_reference_package_rollout_errors_are_documented() -> None:
+    required_errors = (
+        "Rollout policy must be RolloutPolicy",
+        "Rollout readiness must be RolloutReadiness",
+        "Rollout readiness flag must be a boolean: {field}",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        for error in required_errors:
+            assert error in text, (path, error)
+
+
 def test_reference_package_controls_lifecycle_errors_are_documented() -> None:
     required_errors = (
         "Controls inventory must be ApprovedInventory",
