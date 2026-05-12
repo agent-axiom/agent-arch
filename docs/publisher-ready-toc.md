@@ -181,6 +181,22 @@ Online companion:
 
 Practical pitch line: the book should read cleanly in print, while the companion site proves that the architecture is concrete enough to run, test, and inspect.
 
+## Public Links Draft
+
+Use these links in the final pitch packet after a fresh availability check:
+
+- **Public book site:** <https://agent-axiom.github.io/agent-arch/>
+- **English landing page:** <https://agent-axiom.github.io/agent-arch/en/>
+- **Chinese landing page:** <https://agent-axiom.github.io/agent-arch/zh/>
+- **Sample chapter candidate:** <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>
+- **Technical credibility sample:** <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>
+- **Reference runtime source:** <https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref>
+- **Runnable reference package README:** <https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/README.md>
+- **Runtime configs:** <https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref/configs>
+- **Runtime tests:** <https://github.com/agent-axiom/agent-arch/tree/main/tests>
+
+Pitch usage: send the public site and the two sample chapters first; keep the source/runtime/test links as proof points for editors who want to verify that the companion is concrete.
+
 ## Pitch Packet Checklist
 
 Before sending to a publisher:
@@ -191,4 +207,4 @@ Before sending to a publisher:
 - author/platform credibility note;
 - print manuscript vs online companion note;
 - comparable-books note;
-- links to the public site and runnable reference package.
+- public site and runnable reference links.
