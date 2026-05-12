@@ -52,6 +52,14 @@ This is a good candidate for `workflow + guarded agent loop`.
 - stop conditions stored in the triage routine;
 - logging of all write intents and approvals.
 
+### Operational minimum
+
+- **Success criteria:** the answer or ticket is created once, in the right tenant context, with an explainable basis.
+- **Failure criteria:** unnecessary write action, neighboring-context leakage, lost approval, or no recoverable trace.
+- **Minimum telemetry:** `session_id`, `trace_id`, selected action, retrieval sources, policy decision, approval state, and idempotency key.
+- **Minimum eval dataset:** normal request, ambiguous request, prompt-injection attempt, retry after timeout, and duplicate-ticket scenario.
+- **Rollout gate:** canary shows no duplicate writes, and the verifier confirms tenant isolation and the correct approval path.
+
 ### Where to read in the book
 
 - [Chapter 3. Security Perimeter and Trust Boundaries](../book/part-ii/chapter-3.en.md)
@@ -97,6 +105,14 @@ Most of the time, it is enough to have:
 - short-term state separated from long-term memory;
 - source references in the output;
 - traces for retrieval and answer assembly.
+
+### Operational minimum
+
+- **Success criteria:** the answer is grounded in allowed sources, shows citations, and honestly limits confidence.
+- **Failure criteria:** answer without sources, role-inappropriate access, mixed short-term state and long-term memory, or hallucinated policy.
+- **Minimum telemetry:** query, retrieval scope, source IDs, confidence signal, denied sources, and answer-grounding verdict.
+- **Minimum eval dataset:** known answer, insufficient context, role-denied document, conflicting sources, and stale knowledge.
+- **Rollout gate:** regression set confirms grounding, role isolation, and correct low-confidence behavior.
 
 ### Where to read in the book
 
@@ -144,6 +160,14 @@ A good starting shape is usually:
 - explicit ownership at every handoff;
 - idempotency for ticketing and notifications;
 - human approval for risky remediation actions.
+
+### Operational minimum
+
+- **Success criteria:** the incident has one trace, the right owner, and one agreed next step.
+- **Failure criteria:** duplicate notifications, lost handoff responsibility, risky remediation without approval, or split-brain across channels.
+- **Minimum telemetry:** alert source, incident thread ID, handoff owner, runbook step, write intents, approvals, and notification idempotency keys.
+- **Minimum eval dataset:** noisy alert, duplicate notification, wrong-owner handoff, missing runbook context, and risky remediation request.
+- **Rollout gate:** dry run shows one trace chain, no duplicate side effects, and human approval for high-risk steps.
 
 ### Where to read in the book
 
