@@ -209,6 +209,21 @@ Before sending to a publisher:
 - comparable-books note;
 - public site and runnable reference links.
 
+## Recommended Submission Packet Order
+
+Default packet order:
+
+1. short cover note with title, reader, problem, and unique promise;
+2. one-page positioning memo;
+3. publisher-ready table of contents;
+4. Chapter 1 as the primary sample chapter;
+5. optional Chapter 13 technical sample if the editor asks for proof of production depth;
+6. author/platform credibility note;
+7. comparable-books note;
+8. public site, runtime, config, and test links as companion proof points.
+
+Default recommendation: lead with Chapter 1 only. It carries the thesis and reads best as a first editorial sample. Keep Chapter 13 ready as a second attachment or follow-up when the conversation turns to technical credibility.
+
 ## Pitch Packet Status
 
 Drafted and ready for editorial assembly:
