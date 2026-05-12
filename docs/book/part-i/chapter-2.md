@@ -208,6 +208,8 @@ flowchart TB
 | Tool execution plane | Gateway, sandbox, side-effect isolation | Иначе blast radius слишком велик, а write path живет в модели |
 | Telemetry and eval plane | Traces, metrics, datasets, regression gates | Иначе качество нельзя измерять и расследовать |
 
+В текстовом виде эта схема сводится к простой цепочке: вход превращается в identity-bound execution context; control plane решает, что разрешено; runtime выбирает и сохраняет ход выполнения; cognition, memory и tools работают только через свои границы; telemetry/evals оставляют evidence для расследования и release decisions.
+
 ## 5. Пять опор production-платформы
 
 Свежие материалы Google Cloud полезны тем, что предлагают еще одну удобную рамку: не "один умный агент", а пять опор production-платформы.[^google-five-pillars]

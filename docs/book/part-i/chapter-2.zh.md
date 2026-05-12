@@ -206,6 +206,8 @@ flowchart TB
 | 工具执行平面 | 网关、沙箱、副作用隔离 | 否则爆炸半径太大 |
 | 遥测与评测平面 | 追踪、指标、数据集、回归门禁 | 否则质量无法被测量和调查 |
 
+如果只看文本版，这张图可以压缩成一条链：入口先变成带身份边界的 execution context；control plane 决定什么被允许；runtime 选择并保存执行路径；cognition、memory 和 tools 只能通过各自边界工作；telemetry 与 evals 留下可用于调查和发布决策的 evidence。
+
 ## 5. 生产平台的五个支柱
 
 Google Cloud 最近的材料还给出了一条很实用的补充框架：不要围绕“一个聪明智能体”思考，而要围绕生产平台的五个支柱思考。[^google-five-pillars]
