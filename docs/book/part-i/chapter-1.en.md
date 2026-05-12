@@ -207,7 +207,13 @@ That principle is intentionally less exciting than most agent demos. It is also 
 
 That is why the next chapter is not about "smartness" in the abstract. It is about the architecture of that platform: which layers need to exist so the system can be launched, observed, and evolved safely.
 
-## 13. Evidence Model for This Chapter
+## 13. What This Chapter Proves
+
+This chapter does not prove that agents are always needed. It argues almost the opposite: useful agency starts with constraint.
+
+If the path can be described in advance, start with a workflow. If flexibility is needed, add it only together with ownership, policy boundaries, approvals, traces, and eval signals. The core claim is therefore simple: an agent is not a replacement for engineering discipline; it increases the need for it.
+
+## 14. Evidence Model for This Chapter
 
 Use the claims in this chapter with different confidence levels:
 
