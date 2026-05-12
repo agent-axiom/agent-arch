@@ -208,3 +208,23 @@ Before sending to a publisher:
 - print manuscript vs online companion note;
 - comparable-books note;
 - public site and runnable reference links.
+
+## Pitch Packet Status
+
+Drafted and ready for editorial assembly:
+
+- positioning memo;
+- publisher-ready TOC shape;
+- Chapter 1 as primary sample-chapter candidate;
+- Chapter 13 as technical credibility sample;
+- platform credibility note;
+- comparable-books note;
+- print/companion split;
+- public and runtime/reference links.
+
+Still needs human/editorial input before external submission:
+
+- final author bio and credential framing;
+- independent copy-edit of the selected sample chapter for print rhythm;
+- decision on whether to send Chapter 1 only or include Chapter 13 as a secondary technical sample;
+- final publisher-specific formatting after the target editor or imprint is chosen.
