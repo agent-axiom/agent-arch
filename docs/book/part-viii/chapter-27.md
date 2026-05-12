@@ -102,6 +102,14 @@ Microsoft прямо связывает это с security posture: неполн
 - связь с artifact bundle;
 - связь с retirement plan.
 
+Чтобы такая запись не превращалась в длинную форму ради формы, ее удобно читать как пять групп:
+
+1. **Identity:** `agent_id`, runtime identity, owner team и business purpose.
+2. **Lifecycle:** lifecycle state, retirement plan и deprecated paths.
+3. **Capabilities:** allowed capabilities, tool principals и approval requirements.
+4. **Runtime ownership:** кто отвечает за paused runs, background runs и capability sessions.
+5. **Evidence links:** observability status, verifier/eval evidence, verifier contracts и artifact bundle linkage.
+
 Эта запись важна не ради “таблички”, а потому что она связывает агента как сущность с:
 
 - security controls;

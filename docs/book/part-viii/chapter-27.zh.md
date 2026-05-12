@@ -100,6 +100,14 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 - 制品包关联
 - 退役计划关联
 
+为了避免这条记录变成一张为了填写而填写的长表，可以把它读成五组字段：
+
+1. **Identity：** `agent_id`、运行时身份、负责团队和业务用途。
+2. **Lifecycle：** 生命周期状态、退役计划和已废弃路径。
+3. **Capabilities：** 允许使用的能力、工具主体和审批要求。
+4. **Runtime ownership：** 谁负责 paused runs、background runs 和 capability sessions。
+5. **Evidence links：** 可观测性状态、verifier/eval evidence、verifier contracts 和制品包关联。
+
 它的意义不是“多一张表”，而是把智能体这个实体明确接到：
 
 - 安全控制；

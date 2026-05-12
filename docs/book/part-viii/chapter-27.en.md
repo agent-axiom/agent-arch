@@ -104,6 +104,14 @@ A minimal registry record for production-grade agent systems should usually incl
 - artifact-bundle linkage;
 - retirement-plan linkage.
 
+To keep that record from becoming a long form for its own sake, read it as five groups:
+
+1. **Identity:** `agent_id`, runtime identity, owner team, and business purpose.
+2. **Lifecycle:** lifecycle state, retirement plan, and deprecated paths.
+3. **Capabilities:** allowed capabilities, tool principals, and approval requirements.
+4. **Runtime ownership:** who owns paused runs, background runs, and capability sessions.
+5. **Evidence links:** observability status, verifier/eval evidence, verifier contracts, and artifact-bundle linkage.
+
 This matters not because of “documentation,” but because it links the agent as an entity to:
 
 - security controls;
