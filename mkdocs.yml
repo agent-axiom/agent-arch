@@ -107,6 +107,10 @@ plugins:
             "Глава 21. Assurance loop: red teaming, detection и response": "Глава 21. Assurance loop: red teaming, detection и response"
             "Глава 22. Цепочка поставки, происхождение и доверенные артефакты": "Глава 22. Цепочка поставки, происхождение и доверенные артефакты"
             "Глава 23. Retirement, replacement и end-of-life discipline": "Глава 23. Retirement, replacement и end-of-life discipline"
+            "Глава 24. Agentic misalignment и insider-risk": "Глава 24. Agentic misalignment и insider-risk"
+            "Глава 25. Behavioral evals, control evals и automated red teaming": "Глава 25. Behavioral evals, control evals и automated red teaming"
+            "Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем": "Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем"
+            "Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием": "Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием"
             Приложения: Приложения
             Concepts: Обзорные страницы
             Schemas: Схемы
@@ -115,6 +119,7 @@ plugins:
             Выбор стека публикации: Выбор стека публикации
             Дорожная карта для сообщества: Дорожная карта для сообщества
             Глоссарий терминов: Глоссарий терминов
+            Зачем нужна эта книга: Зачем нужна эта книга
             Шпаргалки: Шпаргалки
             Rust для платформы агентных систем: Rust для платформы агентных систем
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python и TypeScript для платформы агентных систем
