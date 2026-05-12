@@ -223,7 +223,7 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 - **作者解释：** `platform, not magic` 是本书把这些实践压缩成的一条设计规则。
 - **快速变化层：** agent frameworks、SDKs 与 orchestration patterns 会比底层控制原则变化更快。
 
-## 14. 接下来读什么
+## 15. 接下来读什么
 
 - [第一部分：基础](index.zh.md)
 - [第 2 章：安全智能体的参考架构](chapter-2.zh.md)
