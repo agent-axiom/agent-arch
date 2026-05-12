@@ -81,6 +81,14 @@ A useful telemetry contract for agent systems usually includes:
 - active verifier contract and verifier contract version;
 - bundle, version, rollout wave, and contract version.
 
+To keep that list from becoming an undifferentiated bag of fields, treat it as five signal groups:
+
+1. **Identity and scope:** who is acting, on whose behalf, and within which tenant/request scope.
+2. **Control evidence:** which policy decisions, approvals, quotas, and capability sessions constrained the run.
+3. **Execution state:** which orchestration pattern was chosen, where the run paused/backgrounded/delegated, and how it resumed.
+4. **Quality evidence:** which verifier outputs, eval verdicts, and failure attribution are attached to the outcome.
+5. **Release and artifact context:** which bundle, contract version, and rollout wave supported this run.
+
 In other words, traces must explain not only “what failed,” but also:
 
 - who acted;

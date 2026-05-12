@@ -81,6 +81,14 @@ Microsoft точно формулирует этот сдвиг: для аген
 - active verifier contract и версию verifier contract;
 - набор артефактов, версию, волну раскатки и contract version.
 
+Чтобы этот список не превращался в свалку полей, его полезно держать как пять групп сигналов:
+
+1. **Identity and scope:** кто действует, от чьего имени и в каком tenant/request scope.
+2. **Control evidence:** какие policy decisions, approvals, quotas и capability sessions ограничивали run.
+3. **Execution state:** какой orchestration pattern выбран, где run paused/background/delegated и как он возобновлялся.
+4. **Quality evidence:** какие verifier outputs, eval verdicts и failure attribution связаны с outcome.
+5. **Release and artifact context:** какой bundle, contract version и rollout wave поддерживали этот запуск.
+
 То есть трассы должны рассказывать не только «что упало», но и:
 
 - кто действовал;
