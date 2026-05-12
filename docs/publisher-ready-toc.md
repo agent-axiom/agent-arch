@@ -138,6 +138,21 @@ Remaining before external submission:
 - Use Support Triage as the primary running case; use Internal Knowledge and Incident Coordination as secondary contrast cases.
 - End chapters with: what to remember, common failure modes, design-review use, companion assets, and next chapter.
 
+## Author / Platform Credibility Note Draft
+
+Use this as a conservative draft until the final bio is written:
+
+The project already has more than a manuscript outline: it has a public multilingual book site, a runnable reference runtime, configuration examples, tests, and appendix material that demonstrate the operating model in concrete artifacts. That platform supports the book's central claim: production AI agents should be designed as governed systems, not as prompt demos.
+
+Credibility points to emphasize:
+
+- the manuscript connects architecture, safety, observability, evals, rollout, and lifecycle ownership rather than treating them as separate topics;
+- the companion material includes runnable/reference artifacts, so readers can inspect the contracts behind the prose;
+- the book is written for practitioners who need to ship and operate agents, not only understand model behavior in the abstract;
+- the multilingual surface broadens reach without changing the technical promise.
+
+Bio gap to fill before submission: add a short human author bio with role, relevant production/engineering background, public writing or project links, and any constraints on how personal credentials should be presented.
+
 ## Comparable Books Draft
 
 Use these as shelf-positioning references, not as direct substitutes:
@@ -173,7 +188,7 @@ Before sending to a publisher:
 - one-page positioning memo;
 - this publisher-ready TOC;
 - one polished sample chapter;
-- short author/platform credibility note;
+- author/platform credibility note;
 - print manuscript vs online companion note;
 - comparable-books note;
 - links to the public site and runnable reference package.
