@@ -206,6 +206,8 @@ The important thing in this diagram is not the elegance of the layers. It is tha
 | Tool execution plane | Gateway, sandbox, side-effect isolation | Otherwise blast radius gets too large |
 | Telemetry and eval plane | Traces, metrics, datasets, regression gates | Otherwise quality cannot be measured or investigated |
 
+In text-only form, the diagram reduces to one chain: ingress becomes an identity-bound execution context; the control plane decides what is allowed; the runtime chooses and preserves the execution path; cognition, memory, and tools operate only through their boundaries; telemetry and evals leave evidence for investigation and release decisions.
+
 ## 5. The Five Pillars of a Production Platform
 
 Recent Google Cloud material is useful because it offers another practical frame: not "one smart agent," but five pillars of a production platform.[^google-five-pillars]
