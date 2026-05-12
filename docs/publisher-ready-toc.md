@@ -1,8 +1,8 @@
-# Publisher-Ready TOC Draft
+# Publisher Packet Draft
 
-Purpose: keep a publisher-facing table of contents separate from the MkDocs site tree. The web site can stay broad; this draft is the tighter book-shaped manuscript.
+Purpose: keep publisher-facing packet notes separate from the MkDocs site tree. The web site can stay broad; this draft keeps the tighter book-shaped manuscript, sample strategy, positioning, cover note, comparable shelf, and companion links in one editorial artifact.
 
-Status: working editorial artifact, not a public navigation page.
+Status: working editorial artifact, not a public navigation page and not final email copy.
 
 ## Positioning
 
