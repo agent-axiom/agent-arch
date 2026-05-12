@@ -93,14 +93,14 @@ Why it matters: the new topics are now visible not only inside individual chapte
 
 ### A cleaner site before publication
 
-Before the next deploy, the publisher-facing quality layer was tightened:
+Before the next deploy, a publisher-facing quality pass was started and moved forward:
 
 - draft and planning pages are excluded from the published site and sitemap;
 - OpenGraph/Twitter metadata and a social preview image were added;
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-Why it matters: the published site should feel like a polished reader-facing product, not a raw build of Markdown files.
+Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 
 ## What this means for readers
 
