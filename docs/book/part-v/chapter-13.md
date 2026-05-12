@@ -122,6 +122,8 @@ flowchart LR
 !!! example "Сквозной кейс: дубль как regression gate"
     После duplicate-ticket инцидента eval case должен проверять не только финальный текст ответа. Он должен заставить систему пройти timeout-after-side-effect сценарий, сохранить `trace_id` и `idempotency_key`, не создать второй тикет и выставить outcome, который rollout gate может проверить. Если новый prompt или adapter снова уводит систему в blind retry, релиз должен остановиться до production.
 
+    Полная цепочка выглядит так: trace показывает `side_effect_unknown`; verifier ставит failure attribution на retry/reconciliation path; regression gate помечает релиз как blocked; rollout owner либо чинит adapter, либо оставляет canary на прежнем проценте. Так eval decision перестает быть абстрактным score и становится конкретным release judgment.
+
 ### 4.1. User simulator полезен там, где статичных кейсов уже мало
 
 Свежие материалы Google хорошо подсвечивают еще один практический слой: evaluation loop полезно дополнять user simulator, а не полагаться только на фиксированный набор тестов.[^google-govern]
