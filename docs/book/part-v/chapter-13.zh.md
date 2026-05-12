@@ -129,6 +129,8 @@ flowchart LR
 !!! example "贯穿案例：把重复工单变成回归门"
     在重复工单事故之后，评测案例不应该只检查最终答复文本。它应该让系统走过“副作用之后超时”的场景，保留 `trace_id` 和 `idempotency_key`，避免创建第二张工单，并输出可供发布门检查的结果。如果新的提示或适配器又把系统带回盲目重试，发布就应该在进入生产前停止。
 
+    完整链条应该是这样：trace 显示 `side_effect_unknown`；verifier 把 failure attribution 归到 retry/reconciliation path；regression gate 把这次发布标记为 blocked；rollout owner 要么修复 adapter，要么让 canary 停在当前比例。这样 eval decision 就不再是抽象分数，而是具体的 release judgment。
+
 ### 4.1. 当静态案例不够时，user simulator 很有价值
 
 Google 最近的材料还强调了一个很实用的层次：评测闭环最好不要只靠固定测试集，还可以补上一层用户模拟器。[^google-govern]

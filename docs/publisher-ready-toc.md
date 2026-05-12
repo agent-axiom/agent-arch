@@ -113,17 +113,21 @@ Remaining before external submission:
 
 - independent copy-edit pass for print rhythm.
 
-### Chapter 12 or 13 — strongest technical credibility sample
+### Chapter 13 — strongest technical credibility sample
 
 Why: evals, traces, failure attribution, regression gates, and release judgment show production maturity.
 
-Needs before submission:
+Current strengths:
 
-- one complete support-triage example from trace to eval decision;
-- clear distinction between behavioral evals, control evals, and release gates;
-- calibrated judge/human-review discussion;
-- compact evidence model;
-- practical checklist.
+- includes a support-triage duplicate-ticket example from trace to verifier attribution, regression gate, rollout owner action, and release judgment;
+- distinguishes behavioral evals, control evals, rollout gates, and verifier outputs;
+- includes calibrated judge/human-review guidance;
+- includes an evidence model;
+- includes practical maturity and post-chapter checklists.
+
+Remaining before external submission:
+
+- independent copy-edit pass for print rhythm.
 
 ## Editorial Compression Rules
 

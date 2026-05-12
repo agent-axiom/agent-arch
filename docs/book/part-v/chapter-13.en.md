@@ -129,6 +129,8 @@ For the same support case, that loop means one thing: an incident should not rem
 !!! example "Case thread: duplicate ticket as a regression gate"
     After the duplicate-ticket incident, the eval case should check more than the final answer text. It should force the system through a timeout-after-side-effect scenario, preserve `trace_id` and `idempotency_key`, avoid creating a second ticket, and emit an outcome the rollout gate can inspect. If a new prompt or adapter sends the system back into blind retry, the release should stop before production.
 
+    The complete chain looks like this: the trace shows `side_effect_unknown`; the verifier attributes the failure to the retry/reconciliation path; the regression gate marks the release as blocked; the rollout owner either fixes the adapter or keeps the canary at the current percentage. The eval decision stops being an abstract score and becomes a concrete release judgment.
+
 ### 4.1. A User Simulator Helps When Static Cases Stop Being Enough
 
 Recent Google material highlights one more practical layer: it is useful to complement the eval loop with a user simulator instead of relying only on a fixed test set.[^google-govern]
