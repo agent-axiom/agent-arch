@@ -157,14 +157,14 @@ Google Research хорошо показывает, что security assurance з�
 
 Для production-grade агентной системы я бы рекомендовал минимум такие стадии:
 
-1. Intake and suitability review
-2. Architecture and safety design review
-3. Build and integration
-4. Eval baseline
-5. Staged rollout
-6. Steady-state operations
-7. Incident response and corrective action
-8. Retirement or replacement
+1. Прием инициативы и проверка уместности агента
+2. Архитектурное и safety design review
+3. Сборка и интеграция
+4. Базовая линия evals
+5. Поэтапный rollout
+6. Устойчивая эксплуатация
+7. Incident response и corrective actions
+8. Вывод из эксплуатации или замена
 
 <div class="diagram-card">
 <p>ADLC полезно мыслить как непрерывный контур, а не как путь до первой выкладки</p>
