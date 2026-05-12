@@ -209,6 +209,22 @@ Before sending to a publisher:
 - comparable-books note;
 - public site and runnable reference links.
 
+## Cover Note Draft
+
+Use this as a short editable note, not as final email copy:
+
+> Dear [Editor],
+>
+> I am preparing **Secure AI Agent Architecture**, a practical systems book for platform engineers, product engineers, security engineers, staff engineers, and technical leads who need to ship AI agents with real tool access, memory, approvals, observability, evals, rollout discipline, and lifecycle ownership.
+>
+> The book's premise is that production agents should be treated as governed systems, not prompt demos. It explains how identity, policy, tools, memory, traces, eval gates, rollout, and retirement become explicit engineering contracts.
+>
+> The manuscript is paired with a public multilingual companion site and runnable reference material, so the architecture is not only described but inspectable. I would lead with Chapter 1 as the sample chapter; Chapter 13 is available as a secondary technical sample if you would like to see the eval and release-gate treatment in more depth.
+>
+> I would be glad to share the positioning memo, publisher-ready table of contents, sample chapter, and companion links for review.
+
+Before sending, replace the greeting, add the final author bio/credential sentence, and tailor the final paragraph to the target editor or imprint.
+
 ## Recommended Submission Packet Order
 
 Default packet order:
