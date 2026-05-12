@@ -223,7 +223,7 @@ Use the claims in this chapter with different confidence levels:
 - **Author interpretation:** the phrase `platform, not magic` is this book's synthesis of those practices into one design rule.
 - **Fast-moving area:** agent frameworks, SDKs, and orchestration patterns will change faster than the underlying control principle.
 
-## 14. What to Read Next
+## 15. What to Read Next
 
 - [Part I. Foundations](index.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)
