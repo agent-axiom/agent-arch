@@ -138,6 +138,18 @@ Remaining before external submission:
 - Use Support Triage as the primary running case; use Internal Knowledge and Incident Coordination as secondary contrast cases.
 - End chapters with: what to remember, common failure modes, design-review use, companion assets, and next chapter.
 
+## Comparable Books Draft
+
+Use these as shelf-positioning references, not as direct substitutes:
+
+- **Designing Data-Intensive Applications** — comparable in systems-thinking discipline; this book applies that level of operational seriousness to agent behavior, policy, memory, evals, and lifecycle.
+- **Designing Machine Learning Systems** — comparable in production ML framing; this book narrows the lens to agent systems with tools, approvals, traces, rollout gates, and runtime control.
+- **AI Engineering** — comparable in practical LLM application building; this book goes deeper on governed side effects, evidence, registry, and production accountability.
+- **Building Secure & Reliable Systems** — comparable in security/reliability posture; this book translates those instincts into agent-specific trust boundaries, approvals, evals, and observability.
+- **Site Reliability Engineering** — comparable in operational culture; this book focuses on the agent-specific question of how autonomy, memory, tools, and lifecycle should be made observable and governable.
+
+Short differentiation: the book is not trying to be the broadest AI overview or the deepest ML training book. Its shelf claim is narrower: **how to architect production AI agents as governed systems with explicit rights, evidence, side-effect control, eval gates, and lifecycle ownership**.
+
 ## Pitch Packet Checklist
 
 Before sending to a publisher:
@@ -147,5 +159,5 @@ Before sending to a publisher:
 - one polished sample chapter;
 - short author/platform credibility note;
 - explanation of print manuscript vs online companion;
-- 3-5 comparable books and why this one is different;
+- comparable-books note;
 - links to the public site and runnable reference package.
