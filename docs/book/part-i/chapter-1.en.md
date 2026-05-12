@@ -117,6 +117,8 @@ This is the most useful short frame to start with.
     | Constrained choice of next step or tool | `single-agent loop` | It adds flexibility without an early complexity explosion. |
     | Independent subtasks with different contexts and owners | `multi-agent` | It separates responsibility and context only when that separation is real. |
 
+In text-only form, the same rule is: known path — `workflow`; constrained next-step choice — `single-agent loop`; independent subtasks with different owners — only then `multi-agent`.
+
 There is one more practical rule:
 
 - if you cannot explain in one paragraph why this should be an agent, it probably should not be one yet;
