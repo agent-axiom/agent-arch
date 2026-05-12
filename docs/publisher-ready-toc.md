@@ -99,13 +99,13 @@ Current strengths:
 - opens from a concrete support-triage failure story;
 - states the workflow-first / constrained-agency thesis;
 - includes a text-safe workflow vs single-agent vs multi-agent rule;
+- includes an explicit competing-view note for the agent-first argument;
 - includes a short "what this chapter proves" section;
 - includes an evidence model.
 
 Needs before submission:
 
 - one clean platform diagram or visual summary;
-- explicit competing views;
 - tighter design-review checklist;
 - final copy-edit pass for print rhythm.
 
