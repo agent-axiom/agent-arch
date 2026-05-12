@@ -71,5 +71,6 @@ If you do not need the whole reference layer, but only a short path into one con
 - [Sources](appendix/sources.en.md)
 
 The simplest rule is:
+
 - use the book for argument and sequencing;
 - use the reference layer for support artifacts and implementation-facing detail.
