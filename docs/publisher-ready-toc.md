@@ -150,6 +150,22 @@ Use these as shelf-positioning references, not as direct substitutes:
 
 Short differentiation: the book is not trying to be the broadest AI overview or the deepest ML training book. Its shelf claim is narrower: **how to architect production AI agents as governed systems with explicit rights, evidence, side-effect control, eval gates, and lifecycle ownership**.
 
+## Print Manuscript vs Online Companion Draft
+
+Print manuscript:
+
+- carries the argument, chapter questions, decision frameworks, failure stories, and durable operating model;
+- keeps long field lists, exhaustive schemas, and fast-moving implementation details out of the main reading path;
+- uses Support Triage as the primary through-line, with Internal Knowledge and Incident Coordination as contrast cases.
+
+Online companion:
+
+- hosts the multilingual public site;
+- keeps runnable reference-runtime material, schemas, configs, and tests close to the text;
+- can evolve with tooling, eval practice, and implementation details without forcing the print manuscript to chase every framework change.
+
+Practical pitch line: the book should read cleanly in print, while the companion site proves that the architecture is concrete enough to run, test, and inspect.
+
 ## Pitch Packet Checklist
 
 Before sending to a publisher:
@@ -158,6 +174,6 @@ Before sending to a publisher:
 - this publisher-ready TOC;
 - one polished sample chapter;
 - short author/platform credibility note;
-- explanation of print manuscript vs online companion;
+- print manuscript vs online companion note;
 - comparable-books note;
 - links to the public site and runnable reference package.
