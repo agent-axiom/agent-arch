@@ -177,6 +177,21 @@ Anthropic довольно прямо разделяет `workflows` и `agents`
 
 Если агент "выглядит умным", но у тебя нет трасс, оценок и метаданных по шагам, ты не управляешь системой.[^openai-sdk][^openai-evals]
 
+<div class="diagram-card">
+<p>Короткая визуальная формула главы: агенту нужна платформа, а не магия</p>
+
+``` mermaid
+flowchart LR
+    A["Запрос"] --> B["Execution context"]
+    B --> C["Policy / approvals"]
+    C --> D["Runtime path"]
+    D --> E["Model / memory / tools"]
+    E --> F["Trace / eval evidence"]
+    F --> G["Rollout / lifecycle"]
+```
+
+</div>
+
 ## 10. Что production-команда должна видеть всегда
 
 Минимально полезный набор очень приземленный:

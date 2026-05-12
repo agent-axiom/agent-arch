@@ -175,6 +175,21 @@ Long-running tasks should not lose steps, approvals, or side effects just becaus
 
 If the agent "looks smart" but you have no traces, evals, or step metadata, then you do not control the system.[^openai-sdk][^openai-evals]
 
+<div class="diagram-card">
+<p>The chapter's short visual formula: an agent needs a platform, not magic</p>
+
+``` mermaid
+flowchart LR
+    A["Request"] --> B["Execution context"]
+    B --> C["Policy / approvals"]
+    C --> D["Runtime path"]
+    D --> E["Model / memory / tools"]
+    E --> F["Trace / eval evidence"]
+    F --> G["Rollout / lifecycle"]
+```
+
+</div>
+
 ## 10. What a Production Team Should Always See
 
 The minimally useful set is very concrete:

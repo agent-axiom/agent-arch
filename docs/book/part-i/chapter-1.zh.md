@@ -175,6 +175,21 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 如果智能体“看上去很聪明”，但你没有 traces、evals 和 step metadata，那你其实没有控制住这个系统。[^openai-sdk][^openai-evals]
 
+<div class="diagram-card">
+<p>本章的简短视觉公式：智能体需要平台，而不是魔法</p>
+
+``` mermaid
+flowchart LR
+    A["Request"] --> B["Execution context"]
+    B --> C["Policy / approvals"]
+    C --> D["Runtime path"]
+    D --> E["Model / memory / tools"]
+    E --> F["Trace / eval evidence"]
+    F --> G["Rollout / lifecycle"]
+```
+
+</div>
+
 ## 10. Production 团队必须始终看见什么
 
 最低可用的一组信息应该非常具体：
