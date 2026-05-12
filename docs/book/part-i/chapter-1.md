@@ -201,6 +201,9 @@ Anthropic довольно прямо разделяет `workflows` и `agents`
 
 Если на эти вопросы пока нет ответа, рано обсуждать "уровень автономности". Сначала нужна платформа исполнения.
 
+!!! tip "Мини-чеклист для design review"
+    Перед тем как назвать систему production-ready, проверь пять вещей: выбран минимально достаточный execution pattern; все risky side effects проходят через control layer; есть owner для write path; trace показывает identity, policy decision и outcome; первый eval set покрывает retry, timeout и incident-shaped failure.
+
 ## 12. Короткий вывод
 
 Если из этой главы запомнить только одну мысль, пусть будет эта:

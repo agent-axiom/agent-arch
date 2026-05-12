@@ -199,6 +199,9 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 如果这些问题现在还答不上来，那就还太早，不该先讨论“自治程度”。你先需要一个执行平台。
 
+!!! tip "Mini design-review checklist"
+    在把系统称为 production-ready 之前，先检查五件事：execution pattern 是否已经是仍然有效的最低动态形态；所有高风险 side effects 是否都经过 control layer；write path 是否有 owner；trace 是否显示 identity、policy decision 和 outcome；第一批 eval set 是否覆盖 retry、timeout 与 incident-shaped failure。
+
 ## 12. 一个简短结论
 
 如果这一章你只记住一句话，那就记这句：

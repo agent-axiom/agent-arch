@@ -199,6 +199,9 @@ If you are designing an agent system right now, do not start with the prompt. St
 
 If you do not yet have answers to those questions, it is too early to debate "how autonomous" the system should be. First you need an execution platform.
 
+!!! tip "Mini design-review checklist"
+    Before calling the system production-ready, check five things: the execution pattern is the least dynamic one that still works; all risky side effects pass through a control layer; the write path has an owner; the trace shows identity, policy decision, and outcome; the first eval set covers retry, timeout, and incident-shaped failure.
+
 ## 12. Short Practical Takeaway
 
 If you remember only one idea from this chapter, let it be this:
