@@ -105,9 +105,13 @@ Current strengths:
 - includes a compact platform visual summary;
 - includes an evidence model.
 
-Needs before submission:
+Structural readiness:
 
-- final copy-edit pass for print rhythm.
+- ready as the first sample-chapter candidate for editorial review.
+
+Remaining before external submission:
+
+- independent copy-edit pass for print rhythm.
 
 ### Chapter 12 or 13 — strongest technical credibility sample
 
