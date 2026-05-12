@@ -81,6 +81,14 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 - active verifier contract 与 verifier contract version；
 - bundle、version、rollout wave 与 contract version。
 
+为了避免这份清单变成一堆没有结构的字段，可以把它看成五组 signals：
+
+1. **Identity and scope：** 谁在行动、代表谁行动、处在哪个 tenant/request scope 中。
+2. **Control evidence：** 哪些 policy decisions、approvals、quotas 和 capability sessions 约束了这次 run。
+3. **Execution state：** 选择了哪种 orchestration pattern，run 在哪里 paused/backgrounded/delegated，又如何 resumed。
+4. **Quality evidence：** 哪些 verifier outputs、eval verdicts 和 failure attribution 连接到了 outcome。
+5. **Release and artifact context：** 哪个 bundle、contract version 与 rollout wave 支撑了这次 run。
+
 也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
 
 - 是谁在行动；
