@@ -30,7 +30,7 @@ Non-goal: this is not a framework manual, not a prompt-trick book, and not a sur
 
 **Competing shelf:** cloud architecture, secure software design, MLOps/LLMOps, and practical AI engineering books. The distinction is the focus on governed agent behavior rather than only model quality, prompts, or generic platform operations.
 
-**Manuscript status:** public open manuscript with runnable reference package; core argument is strong, while sample chapter polish, print compression, and localization cleanup continue.
+**Manuscript status:** public open manuscript with runnable reference package; core argument and sample-chapter structure are strong. The publisher packet is drafted for editorial assembly; remaining pre-submission work is human author-bio framing, independent sample-chapter copy-edit, sample-selection decision, and publisher-specific formatting.
 
 **Companion assets:** reference runtime, schemas, checklists, case studies, source catalog, and public documentation site.
 
