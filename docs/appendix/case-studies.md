@@ -52,6 +52,14 @@
 - хранить условия остановки в сценарии разбора;
 - логировать все намерения записи и подтверждения.
 
+### Операционный минимум
+
+- **Критерий успеха:** ответ или тикет создается один раз, в правильном tenant context и с объяснимым основанием.
+- **Критерий провала:** лишний write action, утечка соседнего контекста, потерянный approval или невозможность восстановить trace.
+- **Минимальная telemetry:** `session_id`, `trace_id`, выбранный action, retrieval sources, policy decision, approval state и idempotency key.
+- **Минимальный eval dataset:** нормальный запрос, ambiguous request, prompt-injection attempt, retry после timeout и duplicate-ticket сценарий.
+- **Rollout gate:** canary проходит без duplicate writes, а verifier подтверждает tenant isolation и корректный approval path.
+
 ### Где читать в книге
 
 - [Глава 3. Контур безопасности и границы доверия](../book/part-ii/chapter-3.md)
@@ -97,6 +105,14 @@
 - short-term state отдельно от long-term memory;
 - цитаты и source references в output;
 - traces по retrieval и answer assembly.
+
+### Операционный минимум
+
+- **Критерий успеха:** ответ опирается на разрешенные источники, показывает citations и честно ограничивает уверенность.
+- **Критерий провала:** ответ без источников, доступ не по роли, смешение short-term state и long-term memory или hallucinated policy.
+- **Минимальная telemetry:** query, retrieval scope, source IDs, confidence signal, denied sources и answer-grounding verdict.
+- **Минимальный eval dataset:** известный ответ, недостаточный контекст, role-denied document, conflicting sources и stale knowledge.
+- **Rollout gate:** regression set подтверждает grounding, role isolation и корректное поведение при low confidence.
 
 ### Где читать в книге
 
@@ -144,6 +160,14 @@
 - явная ответственность на каждом переходе;
 - idempotency для ticketing и notifications;
 - человеческое подтверждение для рискованных действий по восстановлению.
+
+### Операционный минимум
+
+- **Критерий успеха:** инцидент получает единый trace, правильного owner и один согласованный следующий шаг.
+- **Критерий провала:** повторные уведомления, потерянная ответственность при handoff, risky remediation без approval или split-brain между каналами.
+- **Минимальная telemetry:** alert source, incident thread ID, handoff owner, runbook step, write intents, approvals и notification idempotency keys.
+- **Минимальный eval dataset:** noisy alert, duplicate notification, wrong-owner handoff, missing runbook context и risky remediation request.
+- **Rollout gate:** dry run показывает единую trace chain, no duplicate side effects и human approval на high-risk steps.
 
 ### Где читать в книге
 
