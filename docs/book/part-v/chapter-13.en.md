@@ -111,6 +111,7 @@ A very workable model looks like this:
 
 <div class="diagram-card">
 <p>It helps to think about evals as a continuous loop, not a one-time check</p>
+<p><strong>Text fallback:</strong> a code, prompt, or policy change moves through offline evals, regression gates, production rollout, online evals with traces, and failure analysis before feeding lessons back into the next change cycle.</p>
 
 ``` mermaid
 flowchart LR

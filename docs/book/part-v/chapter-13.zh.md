@@ -111,6 +111,7 @@ SLO 帮你定义什么叫系统健康。
 
 <div class="diagram-card">
 <p>最好把评测闭环理解成持续循环，而不是一次性检查</p>
+<p><strong>文本 fallback：</strong>code、prompt 或 policy 的变更会经过离线评测、回归门禁、生产 rollout、在线评测与追踪、失败分析，然后把经验反馈到下一轮变更。</p>
 
 ``` mermaid
 flowchart LR
