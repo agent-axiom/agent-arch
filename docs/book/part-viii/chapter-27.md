@@ -42,7 +42,7 @@
 
 Эта глава отвечает на один вопрос: **как инвентарь и реестр превращают набор agent-like сущностей в подотчетный производственный контур**.
 
-Здесь реестр важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability.
+Здесь реестр важен не как еще один telemetry layer, а как слой ownership, lifecycle state и accountability. Главный артефакт этой главы — registry record: запись, которая связывает agent identity, owner, lifecycle state, capabilities, runtime-control ownership и evidence links.
 
 ## 2. Почему разрастание опасно не только организационно
 
