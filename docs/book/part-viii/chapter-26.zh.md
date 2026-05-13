@@ -102,7 +102,7 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 
 但这并不意味着可观测性成了 工件谱系 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 来源证明层 仍然回答，后续决策依赖的是哪一个 受治理工件、已批准版本或发布身份。
 
-这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份运行记录之上。
+这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份运行记录之上。本章的主要工件是 trace and telemetry coverage record：一张说明哪些 agents、capabilities、control paths 与 side effects 真正可观测、哪些地方仍有 blind spots 的覆盖图。
 
 ## 4. 清单覆盖率其实也是可观测性
 
