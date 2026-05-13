@@ -5,7 +5,7 @@
 
     Быстрее всего здесь меняются:
 
-    - готовые средства для управления релизами агентных систем, approvals и staged rollout;
+    - готовые средства для управления релизами агентных систем, approvals и поэтапного rollout;
     - наборы поверхностей, которые разные платформы считают значимыми для релиза;
     - вендорские интерфейсы для policy bundles, routing changes и managed agent updates.
 
@@ -28,7 +28,7 @@
 
 У агентной системы так уже не работает. Здесь релиз-значимые изменения шире, а риск может прийти не только из кода.
 
-Именно поэтому change management становится отдельной operational функцией, а не просто “что-то запушили в main”.
+Именно поэтому change management становится отдельной операционной функцией, а не просто “что-то запушили в main”.
 
 Эта глава отвечает на один вопрос: **как превратить суждение о релиз-значимости в повторяемую дисциплину**. Не в абстрактные предупреждения о риске, а в способ классифицировать change, подбирать под него evidence и решать, что именно заслуживает formal gate.
 
@@ -48,8 +48,8 @@
 - approval rules;
 - delegated authorization rules и assumptions про token handling;
 - retrieval corpus;
-- memory write semantics;
-- выбор orchestration pattern и boundaries для worker delegation;
+- семантику записи в memory;
+- выбор orchestration pattern и границы worker delegation;
 - interruption и expiry semantics для capability sessions;
 - eval datasets и grading logic;
 - verifier rubric, assumptions про evidence linkage и rules для failure attribution;
@@ -65,7 +65,7 @@
 
 - `low-risk`: wording tweaks, harmless retrieval tuning, internal observability changes;
 - `medium-risk`: prompt restructuring, ranking changes, model routing updates;
-- `high-risk`: новые write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion, а также changes в interruption / re-init behavior для approval-bound stateful capabilities.
+- `high-risk`: новые write-capabilities, policy relaxations, memory write expansion, egress changes, autonomy expansion, а также изменения в interruption / re-init behavior для approval-bound stateful capabilities.
 
 Это не идеальная классификация, но она помогает перестать обсуждать все изменения в одном тоне.
 
@@ -74,11 +74,11 @@
 
 ``` mermaid
 flowchart LR
-    A["Change proposed"] --> B["Classify change"]
-    B --> C["Low risk"]
-    B --> D["Medium risk"]
-    B --> E["High risk"]
-    C --> F["Light validation"]
+    A["Изменение предложено"] --> B["Классифицировать изменение"]
+    B --> C["Низкий риск"]
+    B --> D["Средний риск"]
+    B --> E["Высокий риск"]
+    C --> F["Легкая проверка"]
     D --> G["Eval + review"]
     E --> H["Formal gate + approval + staged rollout"]
 ```
@@ -87,7 +87,7 @@ flowchart LR
 
 ## 4. Классическая ошибка: считать prompt change “не настоящим релизом”
 
-Одна из самых частых operational ошибок в agent teams звучит так: “Мы же не меняли код, только подправили system prompt.”
+Одна из самых частых операционных ошибок в agent teams звучит так: “Мы же не меняли код, только подправили system prompt.”
 
 Это опасная логика.
 
@@ -116,7 +116,7 @@ Prompt, routine или instruction change могут:
 Если change приходит в виде “я тут немного улучшил поведение”, его почти невозможно нормально оценить.
 
 !!! example "Сквозной кейс: change packet для защиты от дублей"
-    Для support-triage фикса минимальный change packet должен назвать риск-класс как `high-risk`, потому что меняются write-capability, retry behavior и rollout gate. В пакете должны лежать: diff policy bundle для `side_effect_unknown`, обновленный contract `create_support_ticket`, eval на duplicate ticket, rollback hook для отключения write path и мониторинг первой canary-волны. Без этого “исправили retry” звучит безопаснее, чем оно есть на самом деле.
+    Для фикса support-triage минимальный change packet должен назвать риск-класс как `high-risk`, потому что меняются write-capability, retry behavior и rollout gate. В пакете должны лежать: diff policy bundle для `side_effect_unknown`, обновленный contract `create_support_ticket`, eval на duplicate ticket, rollback hook для отключения write path и мониторинг первой canary-волны. Без этого “исправили retry” звучит безопаснее, чем оно есть на самом деле.
 
 ## 6. Evals должны быть привязаны к change type
 
@@ -131,7 +131,7 @@ Prompt, routine или instruction change могут:
 - delegated authorization changes -> principal-binding checks, scope-visibility checks, revoke-during-pause behavior и continuity между traces и approval records;
 - interruption-governance changes -> paused-run expiry checks, re-init behavior checks, telemetry linkage checks, approval-resume invariants;
 - verifier changes -> false-positive checks, false-negative checks, evidence-linkage checks, consistency между process/outcome grading и review для failure attribution, а также видимость экспортируемых failed-run полей вроде `failure_reason`;
-- changes в orchestration pattern -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks и pattern-specific trace continuity;
+- изменения в orchestration pattern -> routing-class coverage, join-state checks, worker-boundary checks, review-point checks и pattern-specific trace continuity;
 - model routing changes -> quality, latency, safety, cost deltas.
 
 Это важный практический принцип: eval strategy должна быть привязана к классу изменения, а не быть одной универсальной проверкой на все случаи.
@@ -153,7 +153,7 @@ Prompt, routine или instruction change могут:
 
 А если change затрагивает approval-bound или stateful capability flows, gate почти всегда должен задавать еще один явный вопрос:
 
-> Не поменяли ли мы interruption behavior, expiry handling или re-initialization semantics так, что runtime control уже изменилась, хотя user-visible feature set остался прежним?
+> Не поменяли ли мы interruption behavior, expiry handling или re-initialization semantics так, что runtime control уже изменился, хотя user-visible feature set остался прежним?
 
 Именно этот класс изменений особенно легко недооценить: продуктовая поверхность может выглядеть прежней, а operational risk profile уже заметно сдвинулся.
 
@@ -161,7 +161,7 @@ Prompt, routine или instruction change могут:
 
 То же самое верно и для ситуации, когда runtime меняет orchestration pattern без изменения user-visible feature description. Перевод path с fixed workflow на `routing`, добавление `parallelization` или внедрение `orchestrator-workers` могут существенно поменять checkpoint behavior, approval ordering, delegated worker exposure и failure recovery. Такие изменения тоже нужно считать релиз-значимыми изменениями runtime-контроля.
 
-OpenAI и Microsoft в разных формулировках приходят к одной и той же operational мысли: agent systems нужно усиливать через measurable readiness, staged adoption и managed operations, а не через hope-driven shipping.[^openai-guide][^microsoft-maturity]
+OpenAI и Microsoft в разных формулировках приходят к одной и той же операционной мысли: agent systems нужно усиливать через measurable readiness, staged adoption и managed operations, а не через hope-driven shipping.[^openai-guide][^microsoft-maturity]
 
 ## 8. Rollback в агентных системах сложнее, чем кажется
 
@@ -197,7 +197,7 @@ OpenAI и Microsoft в разных формулировках приходят 
 
 ## 10. Provenance нужен не только для supply chain, но и для change review
 
-Google Research хорошо показывает, что provenance полезен не только как security concept, но и как operational инструмент.[^google-supply-chain]
+Google Research хорошо показывает, что provenance полезен не только как security concept, но и как операционный инструмент.[^google-supply-chain]
 
 Для change management это означает, что ты должен уметь ответить:
 
@@ -274,7 +274,7 @@ def classify_change(change: ChangeRequest) -> str:
 
 - prompt changes не считаются релизами;
 - policy changes выкатываются без evals;
-- changes в orchestration pattern проходят как «деталь реализации»;
+- изменения в orchestration pattern проходят как «деталь реализации»;
 - new tool exposure проходит как “техническая мелочь”;
 - rollback существует только на словах;
 - impact analysis никто не делает;
@@ -284,7 +284,7 @@ def classify_change(change: ChangeRequest) -> str:
 
 ## 14. Быстрый тест зрелости для change discipline
 
-Команде не стоит считать release process зрелым только потому, что изменения проходят review и проезжают через CI.
+Команде не стоит считать release process зрелым только потому, что изменения проходят review и проходят через CI.
 
 Более сильная планка такая:
 
