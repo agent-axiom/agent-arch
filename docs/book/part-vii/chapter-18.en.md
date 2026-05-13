@@ -54,6 +54,8 @@ For the same support agent, the risk is very concrete: if rollout goes wrong, th
 - the support team gets extra noise;
 - investigation starts only after side effects already happened.
 
+This is not a theoretical risk: even a user-facing AI scenario can turn into external harm and company liability, as the Moffatt v. Air Canada case showed.[^moffatt]
+
 A good rollout checklist is not there for ceremony. It is there to surface hidden gaps before the incident, not after it.
 
 ## 3. What Must Be Closed Before the First Rollout Wave
@@ -403,4 +405,5 @@ This chapter turns the governed runtime path from Chapter 17 into rollout discip
 - [Sources](../../appendix/sources.en.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
