@@ -12,7 +12,13 @@ What this page does **not** promise:
 - it does not become the main place where architectural trade-offs are learned;
 - it does not try to turn the repository into a general-purpose agent framework.
 
-This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here.
+This is the canonical page for the package. The README keeps only a short quickstart, while the full CLI, config, and structure walkthrough lives here. To keep the first screen from reading like runtime internals, scan the page by layers:
+
+- **Quick start** — the “How to Run It” section and the first CLI commands.
+- **Minimal architecture map** — the “What Is Inside” section.
+- **Config contracts** — the “Sample Configs” section.
+- **Advanced lifecycle / controls details** — the verification and lifecycle-inspection sections below.
+- **Source links** — the file lists under `agent_runtime_ref`.
 
 A practical reading path is:
 
