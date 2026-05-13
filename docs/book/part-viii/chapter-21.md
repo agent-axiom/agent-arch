@@ -40,7 +40,7 @@
 
 Это значит, что эта глава начинается там, где заканчиваются главы про budgets. SLO задают допустимые health и risk budgets. Assurance начинается тогда, когда эти budgets оказываются под угрозой, уже нарушены или им больше нельзя доверять, и команда должна действовать.
 
-Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в ответные действия**. Не в новый оценочный слой и не в общую observability-педагогику, а в containment, remediation и назначенное ownership.
+Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в ответные действия**. Не в новый оценочный слой и не в общую observability-педагогику, а в containment, remediation и назначенное ownership. Главный артефакт этой главы — finding and response record: запись, которая связывает сигнал, риск, владельца, временное containment, remediation и условие закрытия.
 
 Если тебе нужен связующий слой, который удерживает request, policy, approvals, traces, evals, incidents и rollout judgment внутри одной reviewable chain, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
 
