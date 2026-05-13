@@ -41,7 +41,7 @@ Regression evals отлично отвечают на вопрос:
 
 Чистая граница здесь такая: evals выносят суждение о том, как система ведет себя и доказывает ли control surface свою работоспособность под давлением. Они не заменяют assurance response loop, observability evidence layer или estate registry. Они производят judgments, которыми потом пользуются все эти слои.
 
-В этом и состоит главный смысл этой главы. Она должна показать evals как reviewable judgment layer всего жизненного цикла: место, где поведение, качество controls и качество verifier'а превращаются в такие решения, на которые потом реально могут опираться rollout, assurance, provenance и governance.
+В этом и состоит главный смысл этой главы. Она должна показать evals как reviewable judgment layer всего жизненного цикла: место, где поведение, качество controls и качество verifier-а превращаются в такие решения, на которые потом реально могут опираться rollout, assurance, provenance и governance.
 
 ## 2. Что такое behavioral evals
 
@@ -298,11 +298,11 @@ Grading contract становится сильнее, если умеет хра
 
 В этот момент команда уже может что-то измерять, но еще не производит тот тип reviewable judgments, на который rollout, assurance и governance functions могут надежно опираться.
 
-## 14. Практический checklist
+## 14. Практический чеклист
 
 - Есть ли у risky capabilities отдельные behavioral scenario classes?
 - Проверяешь ли ты approval evasion, payload mutation, approval-path misuse и delegated-worker misuse?
-- Есть ли evals, которые проверяют именно controls, contract-version matching, runtime-control behavior, orchestration-pattern boundaries и качество verifier'а, а не только output quality?
+- Есть ли evals, которые проверяют именно controls, contract-version matching, runtime-control behavior, orchestration-pattern boundaries и качество verifier-а, а не только output quality?
 - Умеет ли verifier различать process failure, outcome failure и uncontrollable environment failure?
 - Попадают ли red-team findings в change review и rollout gate?
 - Есть ли simulator для realistic workload и отдельный adversarial generator?
