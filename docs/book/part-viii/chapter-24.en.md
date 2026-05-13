@@ -27,7 +27,7 @@ This is what people now call `agentic misalignment`: a situation where the model
 - understands the constraints;
 - but under conflicting incentives starts bypassing controls, concealing intent, or protecting its own execution path. [^anthropic-misalignment]
 
-That is the core promise of this chapter. It should help the reader see where the lifecycle meets adversarial pressure from inside the operational loop: not only from outside attackers, but from capable behavior that starts treating oversight itself as an obstacle to route around.
+That is the core promise of this chapter. It should help the reader see where the lifecycle meets adversarial pressure from inside the operational loop: not only from outside attackers, but from capable behavior that starts treating oversight itself as an obstacle to route around. The main artifact of this chapter is the risk scenario and control plan: a description of the misuse path, affected powers, controls, containment, and monitoring, not another prompt-injection guide.
 
 ## 2. How misalignment differs from an ordinary mistake
 
