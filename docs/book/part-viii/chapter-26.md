@@ -140,7 +140,7 @@ Microsoft отдельно подчеркивает полный произво�
 
 Именно здесь наблюдаемость начинает пересекаться с обнаружением угроз и рабочим управлением.
 
-Но она не должна в них растворяться. Observability, это evidence substrate, который позволяет assurance, rollout и registry functions опираться на одну и ту же traceable record, а не на конкурирующие dashboards, screenshots или воспоминания участников.
+Но она не должна в них растворяться. Observability — это evidence substrate, который позволяет assurance, rollout и registry functions опираться на одну и ту же traceable record, а не на конкурирующие dashboards, screenshots или воспоминания участников.
 
 Этот substrate говорит о usable telemetry на масштабе множества runs и systems. Это не то же самое, что provenance backbone, которая хранит approved artifact identity и decision lineage во времени.
 
@@ -161,14 +161,14 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence, identity verifier contract и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence, identity, verifier contract и артефактами жизненного цикла.
 
 Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и verifier evidence о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
 Рекомендации Microsoft по observability делают вопрос покрытия более конкретным: командам стоит измерять долю AI systems, которые вообще emit logs и traces, долю releases, прошедших стандартный evaluation suite, и долю abuse/security scenarios, покрытых telemetry.[^ms-observability] Так observability перестает быть фразой “у нас есть dashboards” и становится измеримой production obligation: inventory coverage, release-eval coverage и detection-scenario coverage.
 
 !!! example "Сквозной кейс: telemetry для ticket-write control eval"
-    Control eval из support-triage становится полезным для rollout только если его telemetry detection-ready. Для каждого `create_support_ticket` run trace должен связывать `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown` и verdict process/outcome verifier'а. Тогда команда может видеть не только “дубля нет”, но и какой процент ticket-write paths реально observable, где bypass path еще слепой и можно ли safely расширять canary.
+    Control eval из support-triage становится полезным для rollout только если его telemetry detection-ready. Для каждого `create_support_ticket` run trace должен связывать `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown` и verdict process/outcome verifier-а. Тогда команда может видеть не только “дубля нет”, но и какой процент ticket-write paths реально observable, где bypass path еще слепой и можно ли safely расширять canary.
 
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
@@ -191,7 +191,7 @@ Microsoft отдельно подчеркивает полный произво�
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
-Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability, это общий слой, который делает обе функции audit-friendly.
+Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability — это общий слой, который делает обе функции audit-friendly.
 
 И ее же важно удерживать отдельно от provenance chapter. Observability спрашивает, emitted ли система достаточно evidence, coverage и correlation для расследования и detection. Provenance спрашивает, какой approved artifact set, contract version или governed bundle потом обосновывали решение.
 
@@ -222,11 +222,11 @@ Microsoft отдельно подчеркивает полный произво�
 
 ``` mermaid
 flowchart LR
-    A["Inventory coverage"] --> D["AI-native observability"]
-    B["Runtime telemetry"] --> D
-    C["Policy and approval evidence"] --> D
-    D --> E["Incident reconstruction"]
-    D --> F["Behavioral baselines"]
+    A["Покрытие реестра"] --> D["AI-native observability"]
+    B["Телеметрия рантайма"] --> D
+    C["Policy и approval evidence"] --> D
+    D --> E["Реконструкция инцидента"]
+    D --> F["Поведенческие baseline"]
     D --> G["Abuse detection"]
     D --> H["Release evidence"]
 ```
@@ -311,7 +311,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - paused runs и background runs существуют, но их возраст и ownership не видны в телеметрии;
 - телеметрия покрывает штатный путь, но не обходной;
 - contract-version drift замечают только после того, как payloads перестают соответствовать ожиданиям;
-- orchestration-pattern drift или crossings worker boundaries не видны как first-class telemetry;
+- orchestration-pattern drift или пересечения worker boundaries не видны как first-class telemetry;
 - verifier evidence оторван от traces или screenshots;
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
@@ -324,7 +324,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - inventory coverage и telemetry coverage считаются одной control problem;
 - high-risk actions можно связать с approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns и verifier evidence;
-- alongside raw telemetry существуют behavioral baselines;
+- наряду с raw telemetry существуют behavioral baselines;
 - возраст paused runs, approval backlog и старение background runs видны как first-class signals;
 - unobserved agents считаются governance risk, а не просто пробелом в учете;
 - на телеметрию можно опираться как на evidence в release и incident decisions.
@@ -347,7 +347,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 ## 14. Модель доказательности этой главы
 
-Эту главу стоит читать как слой evidence readiness, а не как checklist логирования:
+Эту главу стоит читать как слой evidence readiness, а не как чеклист логирования:
 
 - **Устойчивые утверждения:** агентной системой нельзя управлять, если high-risk actions, approvals, principals, artifacts и verifier evidence нельзя связать постфактум.
 - **Вендорская практика:** современные материалы по observability и infrastructure inventory всё чаще рассматривают telemetry coverage и asset coverage как production controls, а не только debugging aids.
