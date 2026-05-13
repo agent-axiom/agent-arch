@@ -48,7 +48,7 @@ Use this map to keep the late-book chapters from sounding like the same governan
 | Observability | Keeps the evidence substrate visible and queryable | Trace and telemetry coverage record | The owner of governance decisions |
 | Inventory and registry | Makes the estate answerable through owners and lifecycle state | Registry record | A loose spreadsheet of agents |
 
-Read the chapters as a chain: lifecycle defines the states, change management controls movement, evals judge readiness, provenance records what was trusted, observability preserves evidence, assurance responds when evidence turns into risk, retirement closes old paths, and registry keeps the whole estate accountable.
+Read the chapters as a chain: lifecycle defines the states, change management controls movement, evals judge readiness, provenance records what was trusted, observability preserves evidence, assurance responds when evidence turns into risk, retirement closes old paths, and registry keeps the whole estate accountable. If two chapters sound like "governance," distinguish them by the artifact they are responsible for leaving after review.
 
 ## In This Part
 

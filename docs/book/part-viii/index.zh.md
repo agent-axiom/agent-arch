@@ -48,7 +48,7 @@
 | 可观测性 | 让 evidence substrate 可见、可查询 | Trace 与 telemetry 覆盖记录 | governance decision 的负责人 |
 | 清单与注册表 | 通过 owner 和生命周期状态让整个 estate 可问责 | Registry record | 松散的智能体表格 |
 
-把这些章节当作一条链来读：lifecycle 定义状态，change management 控制移动，evals 判断是否可发布，provenance 记录哪些工件可信，observability 保留 evidence，assurance 在 evidence 变成 risk 时响应，retirement 关闭旧路径，registry 维持整个 estate 的 accountability。
+把这些章节当作一条链来读：lifecycle 定义状态，change management 控制移动，evals 判断是否可发布，provenance 记录哪些工件可信，observability 保留 evidence，assurance 在 evidence 变成 risk 时响应，retirement 关闭旧路径，registry 维持整个 estate 的 accountability。如果两章听起来都像 “governance”，就用它们在 review 后必须留下的工件来区分。
 
 ## 本部分内容
 
