@@ -10,10 +10,10 @@
 - как выводить систему из эксплуатации;
 - как не потерять контроль над целым estate, а не только над одним агентом.
 
-Эта часть отвечает именно на них. Она читает agent system уже не как архитектурную схему, а как управляемый жизненный цикл.
+Эта часть отвечает именно на них. Она рассматривает agent system уже не как архитектурную схему, а как управляемый жизненный цикл.
 
 !!! example "Сквозной кейс в этой части"
-    Support-triage кейс здесь проходит весь lifecycle arc: duplicate-ticket fix становится ADLC change set, high-risk change packet, managed assurance finding, approved artifact bundle, retirement control для старого ticket writer, misalignment/control-eval сценарий, detection-ready telemetry и registry record с owner. Так читатель видит, что один инцидент должен менять не только код, но и evidence, rollout, operations и accountability.
+    Кейс support-triage здесь проходит весь lifecycle arc: duplicate-ticket fix становится ADLC change set, high-risk change packet, managed assurance finding, approved artifact bundle, retirement control для старого ticket writer, misalignment/control-eval сценарий, detection-ready telemetry и registry record с owner. Так читатель видит, что один инцидент должен менять не только код, но и evidence, rollout, operations и accountability.
 
 !!! info "Короткий маршрут по этой части"
     Если нужен быстрый проход, иди так:
