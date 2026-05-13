@@ -45,7 +45,7 @@
 - 项目站点：<https://agent-axiom.github.io/agent-arch/>
 - 书籍首页：[docs/index.zh.md](docs/index.zh.md)
 - 导航入口页：[docs/start-here.zh.md](docs/start-here.zh.md)
-- 参考运行时：[docs/appendix/reference-package.zh.md](docs/appendix/reference-package.zh.md)
+- 参考包：[docs/appendix/reference-package.zh.md](docs/appendix/reference-package.zh.md)
 
 ## 本地开发
 
@@ -65,7 +65,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-## 参考运行时
+## 参考包
 
 仓库中包含一个可运行的最小参考骨架包：
 
@@ -95,7 +95,7 @@ uv run mkdocs build --strict
 
 规范说明、完整 CLI 列表和配置概览可见：
 
-- [参考运行时](docs/appendix/reference-package.zh.md)
+- [参考包](docs/appendix/reference-package.zh.md)
 
 ## 可选研究依赖
 
