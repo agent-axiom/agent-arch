@@ -76,10 +76,10 @@ Anthropic 很明确地区分了 `workflows` 和 `agents`，并建议先从更简
 
 Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先上框架。[^anthropic] 如果直接调用 API，再加上一层很薄的编排就已经足够解决问题，那么过早引入额外抽象，通常只会让调试、提示检查和运行责任变得更糟，而不是更好。
 
-!!! note "证据与解释"
-    这里的外部来源在两个稳定判断上是一致的：先从更简单、可执行的模式开始；只有当智能体能力能换来真实灵活性时，才值得引入它。[^anthropic][^openai-practical]
+!!! note "证据简述"
+    外部来源在一个实践规则上是一致的：先从更简单的可执行形态开始，只在确实带来真实灵活性时才增加 agency。[^anthropic][^openai-practical]
 
-    本书在此基础上给出进一步的工程解释：一旦自主性触及写路径、访问权限、记忆或事故响应，它就不再只是一个 UX 效果，而应该被当成带有策略、追踪和生命周期控制的执行平台的一部分。
+    本章的作者解释更严格：一旦自主性触及写路径、访问权限、记忆或事故响应，它就应该被当成执行平台的一部分。本章完整的置信模型放在第 14 节。
 
 !!! question "另一种观点：为什么不先 agent-first？"
     也有一种合理的相反观点：如果模型进步很快，而任务本身很 messy，团队可以先从 agent loop 开始，再逐步加约束。对于探索、内部原型或低风险助手，这有时是成立的。本章的 production 论点更窄：一旦系统接触真实用户、私有数据或写路径，默认选择就应该反过来。先从动态性最低的可执行形态开始，再在额外灵活性足以抵消运营成本的地方加入 agency。
@@ -237,11 +237,12 @@ flowchart LR
 
 阅读本章观点时，可以把它们分成不同置信层级：
 
+- **Standards / normative sources：** 设定治理、可审计性和风险控制预期，但不提供完整的智能体蓝图。
+- **Vendor / platform practice：** OpenAI 与 Anthropic 都建议先从更简单的可执行形态开始，只在确实带来有用灵活性时才增加 agency。
+- **Runtime practice：** durable execution、approvals 和可复现 traces 是工程机制，不是修辞。
 - **稳定主张：** 高风险 side effects 需要明确控制点；traces 与 eval signals 是生产问责的基础。
-- **厂商实践：** OpenAI 与 Anthropic 都建议先从更简单的可执行形态开始，只在确实带来有用灵活性时才增加 agency。
-- **运行时实践：** durable execution、approvals 和可复现 traces 是工程机制，不是修辞。
-- **作者解释：** `platform, not magic` 是本书把这些实践压缩成的一条设计规则。
 - **快速变化层：** agent frameworks、SDKs 与 orchestration patterns 会比底层控制原则变化更快。
+- **作者解释：** `platform, not magic` 是本书把这些实践压缩成的一条设计规则。
 
 ## 15. 接下来读什么
 

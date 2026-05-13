@@ -76,10 +76,10 @@ This is conservative advice. That is also why it works.
 
 One of Anthropic's most useful practical points is that teams should resist framework-first thinking in the early phase.[^anthropic] If a direct API call plus a small amount of orchestration already solves the task, adding another abstraction layer too early usually makes debugging, prompt inspection, and operational ownership worse, not better.
 
-!!! note "Evidence and interpretation"
-    The external sources converge on two stable ideas here: start with the simpler executable pattern, and use agency only when it buys real flexibility.[^anthropic][^openai-practical]
+!!! note "Evidence in brief"
+    The external sources converge on a practical rule: start with the simpler executable shape, and add agency only where it buys real flexibility.[^anthropic][^openai-practical]
 
-    The engineering interpretation in this book goes one step further: once autonomy touches write paths, access, memory, or incidents, it should be treated not as a UX effect, but as part of an execution platform with policies, traces, and lifecycle controls.
+    This chapter's interpretation is stricter: once autonomy touches write paths, access, memory, or incidents, it should be treated as part of an execution platform. The full confidence model for the chapter appears in section 14.
 
 !!! question "Competing view: why not start agent-first?"
     There is a reasonable opposing view: if models are improving quickly and tasks are messy, teams should start with an agent loop and constrain it later. That can be valid for discovery, internal prototypes, or low-risk assistants. The production argument in this chapter is narrower: once the system touches real users, private data, or write paths, the default should flip. Start with the least dynamic executable shape, then add agency where the extra flexibility earns back its operational cost.
@@ -237,11 +237,12 @@ If the path can be described in advance, start with a workflow. If flexibility i
 
 Use the claims in this chapter with different confidence levels:
 
-- **Stable claims:** risky side effects need explicit control points; traces and eval signals are required for production accountability.
-- **Vendor practice:** OpenAI and Anthropic both recommend starting with simpler executable patterns and adding agency only when it buys useful flexibility.
+- **Standards / normative sources:** set expectations for governance, auditability, and risk control, but do not provide a finished agent blueprint.
+- **Vendor / platform practice:** OpenAI and Anthropic both recommend starting with simpler executable patterns and adding agency only when it buys useful flexibility.
 - **Runtime practice:** durable execution, approvals, and replayable traces are engineering mechanisms, not literary metaphors.
-- **Author interpretation:** the phrase `platform, not magic` is this book's synthesis of those practices into one design rule.
+- **Stable claims:** risky side effects need explicit control points; traces and eval signals are required for production accountability.
 - **Fast-moving area:** agent frameworks, SDKs, and orchestration patterns will change faster than the underlying control principle.
+- **Author interpretation:** the phrase `platform, not magic` is this book's synthesis of those practices into one design rule.
 
 ## 15. What to Read Next
 
