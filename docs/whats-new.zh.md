@@ -100,6 +100,8 @@ _更新于 2026 年 4 月 29 日。_
 - 检查了搜索索引、sitemap、robots、本地资源、锚点、图片 alt 文本和外部链接；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的 fast-forward 发布检查清单。
 
+这并不意味着面向出版的质量层已经完全关闭：深层 EN/ZH QA、rendering/export QA、sample-chapter polish，以及 manuscript/online companion 的包装仍然需要继续推进。
+
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
 ## 这对读者意味着什么

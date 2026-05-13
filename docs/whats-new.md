@@ -100,6 +100,8 @@ _Актуально на 29 апреля 2026 года._
 - проверены search index, sitemap, robots, локальные assets, anchors, alt text и внешние ссылки;
 - README на трех языках теперь содержит fast-forward publish checklist для `main` и `docs-prod`.
 
+Это не означает, что publisher-facing слой полностью закрыт: еще остаются глубокая EN/ZH-проверка, rendering/export QA, sample-chapter polish и упаковка manuscript/online companion.
+
 Почему это важно: опубликованный сайт должен постепенно приближаться к аккуратному reader-facing продукту, а не выглядеть как сырая сборка из Markdown-файлов.
 
 ## Что это дает читателю
