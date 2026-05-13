@@ -29,7 +29,7 @@
 - Есть ли compaction или background maintenance path?
 - Ограничен ли retrieval по объему и релевантности?
 - Пытаетесь ли вы сначала улучшить RAG и freshness corpus, прежде чем идти в training?
-- Есть ли clear deletion или revision strategy?
+- Есть ли понятная deletion или revision strategy?
 
 Читать дальше:
 
@@ -60,7 +60,7 @@
 - Видно ли, какой policy decision принял gateway?
 - Видно ли, какой tool principal исполнил side effect?
 - Можно ли отличить success, denied, approval_wait и failure?
-- Есть ли way to aggregate runs into session-level or eval-level summaries?
+- Есть ли способ агрегировать runs в session-level или eval-level summaries?
 - Если используется LLM-as-a-judge, откалиброван ли judge против human review и outcome checks?
 - Не меняете ли вы одновременно model и prompt там, где нужен причинный вывод по eval results?
 
@@ -75,7 +75,7 @@
 - Ясно ли, read это tool или write tool?
 - Не показываете ли вы модели слишком большой каталог tools вместо узкого релевантного поднабора?
 - Есть ли execution profile: sandbox, network access, allowed egress?
-- Проверяет ли gateway actor identity и policy before execution?
+- Проверяет ли gateway actor identity и policy до execution?
 - Есть ли idempotency semantics и retry policy?
 - Понятно ли, когда нужен approval, а когда tool может исполниться автоматически?
 - Есть ли audit trail на каждое внешнее действие?
