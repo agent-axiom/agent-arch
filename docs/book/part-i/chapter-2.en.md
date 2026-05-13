@@ -163,7 +163,7 @@ Without that, you do not have a platform. You have a complicated black box.
 
 ## 4. Now the Full Map Makes Sense
 
-If the map still feels dense at this point, do not try to memorize every block name. First answer only three questions:
+If the map still feels dense at this point, do not try to memorize every block name. First answer only four questions:
 
 - where the execution context is formed;
 - where the right to act lives;
