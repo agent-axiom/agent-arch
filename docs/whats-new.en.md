@@ -100,6 +100,8 @@ Before the next deploy, a publisher-facing quality pass was started and moved fo
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
+This does not mean the publisher-facing layer is fully closed: deep EN/ZH QA, rendering/export QA, sample-chapter polish, and manuscript/online-companion packaging still remain.
+
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 
 ## What this means for readers
