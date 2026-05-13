@@ -59,6 +59,8 @@ This is a good candidate for `workflow + guarded agent loop`.
 - **Minimum telemetry:** `session_id`, `trace_id`, selected action, retrieval sources, policy decision, approval state, and idempotency key.
 - **Minimum eval dataset:** normal request, ambiguous request, prompt-injection attempt, retry after timeout, and duplicate-ticket scenario.
 - **Rollout gate:** canary shows no duplicate writes, and the verifier confirms tenant isolation and the correct approval path.
+- **Example incident:** a timeout after `create_ticket` leaves `side_effect_unknown`, and a retry attempts to create a second ticket.
+- **Postmortem questions:** where did idempotency fail, who saw the approval state, why did the trace not stop the retry, and which eval should block the regression now?
 
 ### Where to read in the book
 
@@ -113,6 +115,8 @@ Most of the time, it is enough to have:
 - **Minimum telemetry:** query, retrieval scope, source IDs, confidence signal, denied sources, and answer-grounding verdict.
 - **Minimum eval dataset:** known answer, insufficient context, role-denied document, conflicting sources, and stale knowledge.
 - **Rollout gate:** regression set confirms grounding, role isolation, and correct low-confidence behavior.
+- **Example incident:** the agent answers from a stale runbook without citations and exposes a document outside the employee's role.
+- **Postmortem questions:** why did retrieval scope expand, which source was trusted, where should the low-confidence stop have fired, and which eval covers stale knowledge?
 
 ### Where to read in the book
 
@@ -168,6 +172,8 @@ A good starting shape is usually:
 - **Minimum telemetry:** alert source, incident thread ID, handoff owner, runbook step, write intents, approvals, and notification idempotency keys.
 - **Minimum eval dataset:** noisy alert, duplicate notification, wrong-owner handoff, missing runbook context, and risky remediation request.
 - **Rollout gate:** dry run shows one trace chain, no duplicate side effects, and human approval for high-risk steps.
+- **Example incident:** a noisy alert starts two parallel handoffs and sends duplicate notifications into different channels.
+- **Postmortem questions:** where did split-brain enter the process, who owned each step, which idempotency keys were missing, and which dry run should have caught the duplicate?
 
 ### Where to read in the book
 
