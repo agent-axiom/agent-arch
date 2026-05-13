@@ -55,7 +55,7 @@ The most practical engineering model is simple:
 
 `ADLC = SDLC + model behavior + prompts/routines + policies + retrieval/memory + tools + evals + governed autonomy`
 
-The new lifecycle exists not because “agents are magical,” but because there are more moving parts that can change and must be released and governed.
+The new lifecycle exists not because “agents are magical,” but because there are more moving parts that can change and must be released and governed. The main artifact of this chapter is the ADLC state model: a map of states and transitions, not another generic governance checklist.
 
 <div class="diagram-card">
 <p>ADLC works best as an extension of SDLC, not a replacement for it</p>
