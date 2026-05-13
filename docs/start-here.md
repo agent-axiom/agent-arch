@@ -82,7 +82,7 @@
 
 Если важнее не линейное чтение, а исполняемые опоры, начни с этого:
 
-- [Справочный пакет](appendix/reference-package.md)
+- [Эталонный пакет](appendix/reference-package.md)
 - [Глава 16. Базовая схема рантайма](book/part-vii/chapter-16.md)
 - [Глава 17. Слой политик и каталог возможностей](book/part-vii/chapter-17.md)
 - [Справочные страницы](reference.md)

@@ -116,5 +116,5 @@ TypeScript часто оказывается самым практичным в�
 - [Rust для платформы агентных систем](rust-agent-platforms.md)
 - [Глава 8. Модель выполнения и каталог инструментов](../book/part-iv/chapter-8.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 - [Источники](sources.md)

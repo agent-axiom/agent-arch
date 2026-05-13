@@ -136,5 +136,5 @@ Trace schema и event catalog уже есть. Следующий шаг — с�
 
 - [Главная](../index.md)
 - [План книги](../book/plan.md)
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 - [Источники](sources.md)

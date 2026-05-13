@@ -212,6 +212,6 @@ Approval schema отвечает на другой слой:
 - [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 - [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](../book/part-ii/chapter-4.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)
