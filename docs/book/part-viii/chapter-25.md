@@ -41,7 +41,7 @@ Regression evals отлично отвечают на вопрос:
 
 Чистая граница здесь такая: evals выносят суждение о том, как система ведет себя и доказывает ли control surface свою работоспособность под давлением. Они не заменяют assurance response loop, observability evidence layer или estate registry. Они производят judgments, которыми потом пользуются все эти слои.
 
-В этом и состоит главный смысл этой главы. Она должна показать evals как reviewable judgment layer всего жизненного цикла: место, где поведение, качество controls и качество verifier-а превращаются в такие решения, на которые потом реально могут опираться rollout, assurance, provenance и governance.
+В этом и состоит главный смысл этой главы. Она должна показать evals как reviewable judgment layer всего жизненного цикла: место, где поведение, качество controls и качество verifier-а превращаются в такие решения, на которые потом реально могут опираться rollout, assurance, provenance и governance. Главный артефакт этой главы — eval gate and verifier contract: проверяемое условие выпуска и контракт проверки, а не incident response и не общая telemetry.
 
 ## 2. Что такое behavioral evals
 
