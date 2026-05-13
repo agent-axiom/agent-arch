@@ -116,5 +116,5 @@ TypeScript 特别实用的情况包括：
 - [Rust 与智能体平台](rust-agent-platforms.zh.md)
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
-- [参考运行时包](reference-package.zh.md)
+- [参考包](reference-package.zh.md)
 - [参考来源](sources.zh.md)

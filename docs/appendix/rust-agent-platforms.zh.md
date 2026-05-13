@@ -123,5 +123,5 @@ Rust 已经值得进入这本书，但位置应该是 **智能体平台层**：
 - [第 8 章：执行模型与工具目录](../book/part-iv/chapter-8.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](../book/part-iv/chapter-9.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
-- [参考运行时包](reference-package.zh.md)
+- [参考包](reference-package.zh.md)
 - [参考来源](sources.zh.md)

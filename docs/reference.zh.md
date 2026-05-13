@@ -25,7 +25,7 @@
 
 1. [术语表](appendix/glossary.zh.md)
 2. [速查表](appendix/cheat-sheets.zh.md)
-3. [参考运行时包](appendix/reference-package.zh.md)
+3. [参考包](appendix/reference-package.zh.md)
 
 !!! example "support-triage 工件路线"
     如果你按 support-triage 案例来读这本书，可以把 traces、评测数据集、policy bundle、审批记录、事故记录、变更发布、生命周期工件和 registry operations 这些页面放在旁边。正是这些契约把重复工单事故从故事变成可审阅的工件集合。
@@ -46,7 +46,7 @@
 
 ## 实践页面
 
-- [参考运行时包](appendix/reference-package.zh.md)
+- [参考包](appendix/reference-package.zh.md)
 - [案例研究](appendix/case-studies.zh.md)
 - [按场景组织的策略模板与检查清单](appendix/policy-templates.zh.md)
 - [智能体系统事故响应手册](appendix/incident-response-playbook.zh.md)

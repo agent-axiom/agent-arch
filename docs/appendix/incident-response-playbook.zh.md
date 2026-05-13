@@ -131,7 +131,7 @@
 - [审批请求与决策记录 Schema](approval-schema.zh.md)
 - [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
 - [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
-- [参考运行时包](reference-package.zh.md)
+- [参考包](reference-package.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 23 章：退役、替换与终止使用纪律](../book/part-viii/chapter-23.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
