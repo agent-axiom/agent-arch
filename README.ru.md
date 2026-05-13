@@ -7,7 +7,7 @@
 [Contributing guide](CONTRIBUTING.md)
 [Code of Conduct](CODE_OF_CONDUCT.md)
 
-Практическая книга и документационный сайт о безопасной, управляемой и production-ready архитектуре AI-агентов.
+Практическая книга и документационный сайт о безопасной, управляемой и готовой к production архитектуре AI-агентов.
 
 Этот проект для тех, кто хочет строить не магию для демо, а спокойные, контролируемые и безопасные агентные системы, которые выдерживают контакт с реальными пользователями, реальными инструментами и реальной эксплуатацией.
 
@@ -15,7 +15,7 @@
 
 ## Зачем существует этот репозиторий
 
-Большинство материалов про агентов оптимизируют путь к быстрому демо. Реальным системам нужно больше, чем clever prompting и вызовы инструментов. Им нужны:
+Большинство материалов про агентов оптимизируют путь к быстрому демо. Реальным системам нужно больше, чем удачный prompting и вызовы инструментов. Им нужны:
 
 - явные границы доверия
 - слой политик и подтверждений
@@ -29,23 +29,23 @@
 
 - многоязычная книга по архитектуре безопасных AI-агентов
 - документационный сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
-- исполняемый справочный рантайм в `agent_runtime_ref/`
+- исполняемый эталонный runtime в `agent_runtime_ref/`
 - практические схемы, чеклисты и операционные артефакты
 - современный Python-first стек на базе `uv`
 
 ## Почему это стоит читать
 
-- **Vendor-neutral архитектура.** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк или model provider.
+- **Vendor-neutral архитектура.** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк или провайдера моделей.
 - **Production reality вместо agent theater.** Фокус на политиках, подтверждениях, наблюдаемости, evals и дисциплине жизненного цикла.
-- **Исполняемый справочный слой.** В репозитории есть не только текст, но и рабочие reference assets.
-- **Один сквозной кейс по всему стеку.** Support-triage / duplicate-ticket thread связывает книгу, справочные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от retrieval и tool execution до telemetry, evals, rollout, lifecycle и registry control.
+- **Исполняемый эталонный слой.** В репозитории есть не только текст, но и рабочие эталонные assets.
+- **Один сквозной кейс по всему стеку.** Support-triage / duplicate-ticket thread связывает книгу, эталонные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от retrieval и tool execution до telemetry, evals, rollout, lifecycle и registry control.
 
 ## С чего начать
 
 - Сайт проекта: <https://agent-axiom.github.io/agent-arch/>
 - Главная страница книги: [docs/index.md](docs/index.md)
 - Навигационная стартовая страница: [docs/start-here.md](docs/start-here.md)
-- Справочный рантайм: [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
+- Эталонный runtime: [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
 
 ## Локальная разработка
 
@@ -65,9 +65,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-## Справочный пакет
+## Эталонный пакет
 
-В репозитории есть минимальный справочный пакет, который можно запустить:
+В репозитории есть минимальный эталонный пакет, который можно запустить:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref
@@ -75,7 +75,7 @@ uv run mkdocs build --strict
 
 Это компактная кодовая опора для книги:
 
-- справочный рантайм и слой политик
+- эталонный runtime и слой политик
 - каталог возможностей и approved inventory
 - память, телеметрия, approvals и rollout checks
 - lifecycle-артефакты для change records, artifact bundles и retirement plans
@@ -95,7 +95,7 @@ uv run mkdocs build --strict
 
 Каноническое описание пакета, полный список CLI-команд и обзор конфигов вынесены на отдельную страницу:
 
-- [Справочный пакет](docs/appendix/reference-package.md)
+- [Эталонный пакет](docs/appendix/reference-package.md)
 
 ## Опциональные исследовательские зависимости
 
@@ -109,13 +109,13 @@ uv sync --group research
 
 ## Публикация
 
-В репозитории настроен GitHub Actions workflow для GitHub Pages:
+В репозитории настроен рабочий процесс GitHub Actions для GitHub Pages:
 
 - сборка через `uv`
 - строгая проверка `mkdocs build --strict`
 - деплой в Pages из ветки `docs-prod`
 
-Перед публикацией прогоните локальные проверки и убедитесь, что `main` может fast-forward обновить обе remote-ветки:
+Перед публикацией прогоните локальные проверки и убедитесь, что `main` может обновить обе удалённые ветки fast-forward способом:
 
 ```bash
 .venv/bin/ruff check .
@@ -139,14 +139,14 @@ git push origin HEAD:docs-prod
 
 ## Первый запуск GitHub Pages
 
-У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать Pages site.
+У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать сайт Pages.
 
 Есть два корректных варианта:
 
 1. Один раз вручную включить Pages в `Settings -> Pages` и выбрать `GitHub Actions`.
-2. Добавить секрет `PAGES_PAT` с нужными правами, и workflow сможет включить Pages автоматически.
+2. Добавить секрет `PAGES_PAT` с нужными правами, и рабочий процесс сможет включить Pages автоматически.
 
-Если для environment `github-pages` заданы ограничения по веткам, нужно явно разрешить деплой из `docs-prod`.
+Если для окружения `github-pages` заданы ограничения по веткам, нужно явно разрешить деплой из `docs-prod`.
 
 Для `PAGES_PAT` нужен отдельный токен, а не `GITHUB_TOKEN`:
 
@@ -161,7 +161,7 @@ git push origin HEAD:docs-prod
 ## Стек
 
 - `uv` для окружения и зависимостей
-- `ruff` для linting
+- `ruff` для линтинга
 - `ty` для проверки типов
 - `MkDocs + Material for MkDocs` для публикации
 - `Mermaid` и `Observable Plot` для визуализаций
