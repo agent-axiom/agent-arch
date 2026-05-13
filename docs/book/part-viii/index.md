@@ -48,7 +48,7 @@
 | Observability | Делает evidence substrate видимым и проверяемым | Trace and telemetry coverage record | Владельцем governance decisions |
 | Inventory и registry | Делают estate accountable через owners и lifecycle state | Registry record | Свободной таблицей агентов |
 
-Читай главы как цепочку: lifecycle задает состояния, change management контролирует движение, evals выносят judgment о готовности, provenance фиксирует доверенные артефакты, observability сохраняет evidence, assurance реагирует, когда evidence превращается в risk, retirement закрывает старые пути, а registry удерживает accountability всего estate.
+Читай главы как цепочку: lifecycle задает состояния, change management контролирует движение, evals выносят judgment о готовности, provenance фиксирует доверенные артефакты, observability сохраняет evidence, assurance реагирует, когда evidence превращается в risk, retirement закрывает старые пути, а registry удерживает accountability всего estate. Если две главы звучат как "governance", различай их по тому, какой артефакт они обязаны оставить после review.
 
 ## В этой части
 
