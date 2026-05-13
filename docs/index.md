@@ -53,7 +53,7 @@
 
 - Опубликованная русская core-рукопись в восьми частях: от архитектурных оснований до lifecycle governance.
 - Переводческие слои `en` и `zh`, уже пригодные для чтения, но все еще проходящие editorial cleanup.
-- Исполняемый справочный пакет `agent_runtime_ref`.
+- Исполняемый эталонный пакет `agent_runtime_ref`.
 - Справочные страницы со схемами traces, evals, policy bundles, approvals, памяти и lifecycle-артефактов.
 - Практические кейсы, чеклисты, шаблоны политик и глоссарий.
 - Активный editorial pass по рукописи и публичной поверхности сайта.
@@ -68,6 +68,6 @@
 
 [С чего начать](start-here.md){ .md-button .md-button--primary }
 [Перейти к первой части](book/part-i/index.md){ .md-button }
-[Открыть справочный пакет](appendix/reference-package.md){ .md-button }
+[Открыть эталонный пакет](appendix/reference-package.md){ .md-button }
 
 </div>
