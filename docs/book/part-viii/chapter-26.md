@@ -102,7 +102,7 @@ Microsoft точно формулирует этот сдвиг: для аген
 
 Но это еще не делает observability владельцем artifact lineage. Observability сохраняет и коррелирует evidence поперек runs. А provenance layer по-прежнему отвечает на вопрос, какой governed artifact, approved version или release identity потом поддерживали решение.
 
-В этом и состоит главный смысл этой главы. Она должна показать observability как evidence substrate всего жизненного цикла: слой, который делает поведение рантайма, control signals, approvals и активность между системами достаточно видимыми, чтобы assurance, rollout, judgment и registry functions могли опираться на одну и ту же operational record.
+В этом и состоит главный смысл этой главы. Она должна показать observability как evidence substrate всего жизненного цикла: слой, который делает поведение рантайма, control signals, approvals и активность между системами достаточно видимыми, чтобы assurance, rollout, judgment и registry functions могли опираться на одну и ту же operational record. Главный артефакт этой главы — trace and telemetry coverage record: карта того, какие агенты, capabilities, control paths и side effects действительно наблюдаемы, а где остаются blind spots.
 
 ## 4. Покрытие реестра — это тоже наблюдаемость
 
