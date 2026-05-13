@@ -15,8 +15,8 @@
 - прослеживать один управляемый run через policy, execution, evidence, approval, rollout и lifecycle control;
 - рассматривать memory, evals, provenance, retirement и operator accountability как единую рабочую модель.
 
-!!! example "Сквозной support-кейс"
-    Один из способов читать книгу — следить за support-triage кейсом: от retrieval и tool execution до duplicate-ticket recovery, traces, SLO, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это превращает главы из набора тем в одну проверяемую историю о том, как инцидент становится платформенным контрактом.
+!!! example "Сквозной кейс поддержки"
+    Один из способов читать книгу — следить за кейсом support-triage: от retrieval и tool execution до duplicate-ticket recovery, traces, SLO, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это превращает главы из набора тем в одну проверяемую историю о том, как инцидент становится платформенным контрактом.
 
 ## Рекомендуемый маршрут чтения
 
@@ -35,8 +35,8 @@
 
 У книги есть два практических слоя:
 
-- `Стабильное ядро`: Parts I-VII, особенно Chapters 1-12 и 18;
-- `Быстро меняющийся слой`: Chapter 13, Part VIII и исследовательские страницы приложений.
+- `Стабильное ядро`: части I-VII, особенно главы 1-12 и 18;
+- `Быстро меняющийся слой`: глава 13, часть VIII и исследовательские страницы приложений.
 
 Если читаешь книгу впервые, сначала лучше пройти стабильное ядро, а потом вернуться к более подвижному слою.
 
