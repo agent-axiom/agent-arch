@@ -35,14 +35,14 @@
 
 Полезно перестать воспринимать retirement как нечто далекое и неприятное.
 
-На практике trigger'ами часто становятся:
+На практике триггерами часто становятся:
 
-- runtime or model устарел;
+- runtime или model устарел;
 - capability contract больше не считается безопасным;
 - maintenance cost стал слишком высоким;
 - quality ceiling reached, дальше нужен replacement;
 - новый platform path вытесняет старый;
-- regulatory or governance requirements изменились;
+- regulatory или governance requirements изменились;
 - продуктовая задача больше не существует.
 
 Если у команды нет явных retirement triggers, старые agent systems почти всегда живут дольше, чем безопасно и полезно.
@@ -106,11 +106,11 @@
 
 ``` mermaid
 flowchart LR
-    A["Freeze rollout"] --> B["Disable risky capabilities"]
-    B --> C["Disable writes and background jobs"]
-    C --> D["Revoke egress and principals"]
-    D --> E["Archive audit and memory state"]
-    E --> F["Mark system retired"]
+    A["Заморозить rollout"] --> B["Отключить risky capabilities"]
+    B --> C["Отключить writes и background jobs"]
+    C --> D["Отозвать egress и principals"]
+    D --> E["Архивировать audit и memory state"]
+    E --> F["Пометить систему retired"]
 ```
 
 </div>
@@ -210,7 +210,7 @@ retirement:
     - set_retired_status
 ```
 
-Это полезно не потому, что YAML “решает проблему”, а потому что retirement превращается в явный operational contract.
+Это полезно не потому, что YAML “решает проблему”, а потому что retirement превращается в явный операционный contract.
 
 ## 11. Пример replacement readiness check
 
@@ -292,7 +292,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 ## 15. Что читать дальше
 
-Эта глава замыкает Part VIII в цельный operational цикл:
+Эта глава замыкает часть VIII в цельный операционный цикл:
 
 - SDLC -> ADLC;
 - change management;
