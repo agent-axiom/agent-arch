@@ -30,7 +30,7 @@
 
 所以变更管理在这里会变成一个独立的运行职能，而不是“有人往 main 推了一点东西”。
 
-这也正是本章的核心承诺。它要帮助读者看见：承载发布意义的判断是如何变成一套运行纪律的，不是停留在抽象的风险提醒里，而是落实为一套可重复的方法，用来给变更分类、为不同变更匹配证据，并决定什么值得进入正式门禁。
+这也正是本章的核心承诺。它要帮助读者看见：承载发布意义的判断是如何变成一套运行纪律的，不是停留在抽象的风险提醒里，而是落实为一套可重复的方法，用来给变更分类、为不同变更匹配证据，并决定什么值得进入正式门禁。本章的主要工件是 change packet：一个发布重要性决策包，而不是普通任务日志或项目管理记录。
 
 如果你想看一页专门说明请求、策略、审批、追踪、评测、事故和 rollout 判断如何被维持在同一条链上，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
 
@@ -55,7 +55,7 @@
 - 验证器评分规则、证据链接假设与失败归因规则；
 - 发布参数。
 
-如果这些东西被当成“小调优”直接发出去，团队几乎一定会失去对系统行为的控制。
+如果这些东西被当成“小调优”直接发出去，团队几乎一定会失去对系统行为的控制。这套逻辑在 AI 之外也很熟悉：NIST 已经把 change control 和 component accountability 作为独立控制轮廓，而智能体系统只是扩大了必须纳入这个制度的工件集合。[^nist-sp53]
 
 ## 3. 不是所有变更都一样危险
 
@@ -327,3 +327,4 @@ def classify_change(change: ChangeRequest) -> str:
 [^openai-guide]: [OpenAI, A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

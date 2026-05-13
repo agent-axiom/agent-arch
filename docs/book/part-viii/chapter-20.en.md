@@ -30,7 +30,7 @@ That no longer works for agent systems. The release-bearing surface is wider, an
 
 That is why change management becomes its own operational function, not just “something got pushed to main.”
 
-That is the core promise of this chapter. It should help the reader see where release-bearing judgment becomes operational discipline: not in abstract warnings about risk, but in a repeatable way of classifying change, matching evidence to that change, and deciding what deserves a formal gate.
+That is the core promise of this chapter. It should help the reader see where release-bearing judgment becomes operational discipline: not in abstract warnings about risk, but in a repeatable way of classifying change, matching evidence to that change, and deciding what deserves a formal gate. The main artifact of this chapter is the change packet: a release-significance decision packet, not a general task log or project-management record.
 
 If you want the connective layer that shows how request, policy, approvals, traces, evals, incidents, and rollout judgment stay tied together, use the dedicated [Evidence Spine](../part-v/evidence-spine.en.md) page.
 
@@ -55,7 +55,7 @@ It is useful to treat not only code, but every surface that can materially alter
 - verifier rubric, evidence-linkage assumptions, and failure-attribution rules;
 - rollout parameters.
 
-If these are released as “small tweaks,” the team will almost certainly lose control of system behavior.
+If these are released as “small tweaks,” the team will almost certainly lose control of system behavior. The same logic is familiar outside AI: in NIST change control and component accountability are already distinct control contours, and agent systems simply widen the artifact set that must live under that regime.[^nist-sp53]
 
 ## 3. Not all changes carry the same risk
 
@@ -327,3 +327,4 @@ After change management, the natural next step is the assurance loop: red teamin
 [^openai-guide]: [OpenAI, A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
