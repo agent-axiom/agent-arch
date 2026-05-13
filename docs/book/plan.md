@@ -11,7 +11,7 @@
     Если читаешь книгу впервые, держись сначала устойчивого ядра. Если нужен самый свежий operational contour, потом переходи к более подвижному слою.
 
 !!! example "Редакционная нить: support-triage"
-    В текущем опубликованном слое support-triage кейс работает как сквозной editorial thread. Он связывает retrieval, tool execution, duplicate-ticket recovery, traces, SLO, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это помогает проверять, что структура книги не распадается на отдельные темы.
+    В текущем опубликованном слое кейс support-triage работает как сквозной editorial thread. Он связывает retrieval, tool execution, duplicate-ticket recovery, traces, SLO, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это помогает проверять, что структура книги не распадается на отдельные темы.
 
 ## Структура
 
@@ -115,7 +115,7 @@
 - Каркас сайта на MkDocs и Material.
 - Полная структура книги и опубликованное русское core-ядро.
 - Читаемые `.en` и `.zh` translation layers, все еще проходящие editorial cleanup.
-- Исполняемый reference runtime `agent_runtime_ref`.
+- Исполняемый эталонный runtime `agent_runtime_ref`.
 - Справочный слой со схемами traces, evals, memory, approvals и lifecycle.
 - Практические кейсы, шаблоны политик, чеклисты и глоссарий.
 
