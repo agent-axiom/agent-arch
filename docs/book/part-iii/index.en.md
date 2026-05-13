@@ -11,6 +11,12 @@ At this point, the agent is no longer just reasoning, and no longer just approac
 
     Together, these three steps give you a memory layer you can discuss as an engineering system, not as an abstract “let's add memory”.
 
+<div class="book-cover" markdown="1">
+
+![Cover for the memory and knowledge part](../../assets/images/part-iii-memory.png)
+
+</div>
+
 ## What This Part Solves
 
 That is the right step, but it is also where many systems start quietly accumulating debt. The same support agent can easily turn useful state into a durable error source unless memory is designed as a controlled layer.

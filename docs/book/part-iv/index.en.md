@@ -8,6 +8,12 @@ Up to this point, we already have three important layers for the same support ag
 
 Now it is time to move to the place where an agent stops being "smart text" and starts doing real work: checking status, opening a ticket, involving a human, or stopping safely.
 
+<div class="book-cover" markdown="1">
+
+![Cover for the tools and execution part](../../assets/images/part-iv.png)
+
+</div>
+
 This is exactly where the most expensive mistakes usually appear:
 
 - incorrect tool calls;
