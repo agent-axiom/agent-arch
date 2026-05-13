@@ -38,7 +38,7 @@
 
 И здесь важно не спутать две вещи: eval loop помогает понять, становится ли поведение системы лучше или хуже. Assurance loop нужен для другого: для containment, response ownership и принудительного возврата системы в более безопасное состояние, когда появляется новый риск.
 
-Это значит, что эта глава начинается там, где заканчиваются budget-setting chapters. SLO задают допустимые health и risk budgets. Assurance начинается тогда, когда эти budgets оказываются под угрозой, уже нарушены или им больше нельзя доверять, и команда должна действовать.
+Это значит, что эта глава начинается там, где заканчиваются главы про budgets. SLO задают допустимые health и risk budgets. Assurance начинается тогда, когда эти budgets оказываются под угрозой, уже нарушены или им больше нельзя доверять, и команда должна действовать.
 
 Эта глава отвечает на один вопрос: **как findings и сигналы превращаются в ответные действия**. Не в новый оценочный слой и не в общую observability-педагогику, а в containment, remediation и назначенное ownership.
 
@@ -70,7 +70,7 @@ Google Research очень хорошо формулирует здесь гла
 
 Это слабый подход.
 
-Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а сбои, реально значимые для production, вроде:
+Полезный red teaming для agent systems должен искать не абстрактные “злые запросы”, а сбои, реально значимые для production, например:
 
 - prompt injection;
 - hidden instruction override;
@@ -131,7 +131,7 @@ Google Research очень хорошо формулирует здесь гла
 - contract drift между ожидаемой и наблюдаемой формой payloads;
 - regressions в orchestration pattern, например неожиданный routing-path drift, нестабильное join-state behavior или delegated worker activity вне reviewed boundaries;
 - verifier drift, например потерю согласованности по process quality, outcome quality или failure attribution;
-- неожиданные changes в verifier contract version, которые меняют grading behavior без reviewed rollout control.
+- неожиданные изменения в verifier contract version, которые меняют grading behavior без reviewed rollout control.
 
 То есть detection здесь должна работать не только как observability, но и как abuse and safety monitoring.
 
@@ -161,18 +161,18 @@ Response layer полезно строить вокруг очень конкр�
 
 Поэтому assurance здесь стоит читать как response function, а не просто как каталог detection-сигналов. Ее задача - сократить время между сигналом и безопасным containment.
 
-Budget может сказать, что система теперь нездорова. Assurance говорит, кто freeze'ит route, кто ужесточает контур управления и кто владеет путем назад к безопасному состоянию.
+Budget может сказать, что система теперь нездорова. Assurance говорит, кто замораживает route, кто ужесточает контур управления и кто владеет путем назад к безопасному состоянию.
 
 <div class="diagram-card">
 <p>Assurance loop работает как постоянный цикл: искать, замечать, сдерживать, исправлять, учиться</p>
 
 ``` mermaid
 flowchart LR
-    A["Red teaming and incidents"] --> B["Findings"]
-    B --> C["Detection rules and monitors"]
+    A["Red teaming и incidents"] --> B["Findings"]
+    B --> C["Detection rules и monitors"]
     C --> D["Response actions"]
     D --> E["Remediation"]
-    E --> F["Updated policy, evals, and rollout rules"]
+    E --> F["Обновленные policy, evals и rollout rules"]
     F --> A
 ```
 
@@ -213,7 +213,7 @@ flowchart LR
 - postmortems;
 - online eval drift;
 - red-team findings;
-- verifier regressions, changes в verifier contract version или расхождения с human review.
+- verifier regressions, изменения в verifier contract version или расхождения с human review.
 
 Именно эти сигналы должны возвращаться обратно в:
 
@@ -233,7 +233,7 @@ flowchart LR
 Полезно заранее понимать:
 
 - кто ведет red-team backlog;
-- кто triage'ит findings;
+- кто triage-ит findings;
 - кто владеет mitigations;
 - кто может emergency-disable capability;
 - кто решает, что remediation достаточно;
@@ -330,7 +330,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - findings не получают owners;
 - incidents не попадают в eval datasets;
 - detection смотрит только на latency и errors;
-- paused approval saturation видна operations, но не считается assurance signal;
+- paused approval saturation видна operations, но не считается assurance-сигнал;
 - regressions в orchestration pattern замечают только после drift в runtime behavior уже в production;
 - stale background runs тихо накапливаются;
 - contract drift обнаруживается только после того, как runtime failures уже разошлись;
@@ -347,9 +347,9 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 - findings превращаются в инженерные объекты с owner;
 - detection ищет unsafe behavior, а не только errors и latency;
-- paused approvals, regressions в capability-session lifecycle, orchestration-pattern regressions, stale background runs и contract drift считаются реальными assurance signals;
+- paused approvals, regressions в capability-session lifecycle, orchestration-pattern regressions, stale background runs и contract drift считаются реальными assurance-сигналами;
 - response actions существуют до следующего инцидента, а не появляются после него;
-- remediation меняет operating system, а не только document trail;
+- remediation меняет операционный контур, а не только document trail;
 - incidents возвращаются обратно в evals, policies и rollout rules.
 
 Если большинство этих условий не выполняется, у команды уже может быть security activity, но assurance loop у нее пока нет.
@@ -378,7 +378,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 
-Эта глава замыкает контур, открытый в Chapters 17 и 18. Там policy, approval и runtime-control paths становятся явными, а здесь эти же пути превращаются в detection, containment и response surfaces.
+Эта глава замыкает контур, открытый в главах 17 и 18. Там policy, approval и runtime-control paths становятся явными, а здесь эти же пути превращаются в detection, containment и response surfaces.
 
 - [Глава 20. Change management для агентных систем](chapter-20.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)
