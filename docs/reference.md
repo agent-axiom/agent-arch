@@ -25,10 +25,10 @@
 
 1. [Глоссарий терминов](appendix/glossary.md)
 2. [Шпаргалки](appendix/cheat-sheets.md)
-3. [Справочный пакет](appendix/reference-package.md)
+3. [Эталонный пакет](appendix/reference-package.md)
 
 !!! example "Артефактный маршрут support-triage"
-    Если читаешь книгу через support-triage кейс, в справочном слое держи рядом страницы про traces, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifacts и registry operations. Именно эти контракты превращают duplicate-ticket incident из рассказа в проверяемый набор артефактов.
+    Если читаешь книгу через кейс support-triage, в справочном слое держи рядом страницы про traces, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifacts и registry operations. Именно эти контракты превращают duplicate-ticket incident из рассказа в проверяемый набор артефактов.
 
 ## Схемы и контрактные страницы
 
@@ -46,7 +46,7 @@
 
 ## Практические страницы
 
-- [Справочный пакет](appendix/reference-package.md)
+- [Эталонный пакет](appendix/reference-package.md)
 - [Практические кейсы](appendix/case-studies.md)
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
 - [Плейбук реагирования на инциденты в агентных системах](appendix/incident-response-playbook.md)
