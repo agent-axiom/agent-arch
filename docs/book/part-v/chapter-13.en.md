@@ -270,6 +270,8 @@ Otherwise the system can easily earn a “good score” for polished text while 
 
 Another practical rule matters a lot here: if judge-human agreement is low, the first step is usually not to scale the dataset, but to inspect disagreement cases and fix the rubric or the judge prompt.
 
+This also aligns with broader HCI discipline: when an AI system is wrong, people need to understand the limits of automation and be able to correct behavior instead of blindly accepting auto-grading.[^amershi][^consensus]
+
 One useful signal here is `Cohen's kappa`, but the exact number often matters less than the shape of the disagreement: where exactly the judge misunderstands a policy violation, tool misuse, or ambiguous outcome.
 
 There is one more common source of self-deception: a judge prompt calibrated on a strong model may transfer poorly to a weaker one. So when the judge model changes, calibration should be checked again rather than assuming the old prompt still carries over.
@@ -501,3 +503,5 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 - [Sources](../../appendix/sources.en.md)
 
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+[^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)

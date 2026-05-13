@@ -54,6 +54,8 @@
 - 支持团队会收到额外噪音；
 - 事故调查会在副作用已经发生之后才开始。
 
+这不是理论风险：Moffatt v. Air Canada 案例已经说明，即使是面向用户的 AI 场景，也可能转化为外部损害和公司责任。[^moffatt]
+
 好的上线检查清单不是为了仪式感，而是为了在事故前暴露隐藏缺口，而不是事后补救。
 
 ## 3. 第一波 rollout 前必须真正闭合什么
@@ -403,4 +405,5 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).

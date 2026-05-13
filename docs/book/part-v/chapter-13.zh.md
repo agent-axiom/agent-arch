@@ -270,6 +270,8 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这里还有一个很重要的实用规则：如果评判器与人工的一致性很低，第一步通常不应该是扩大数据集，而应该先分析分歧案例，再修正评分规程或评判提示。
 
+这也符合更广泛的人机交互纪律：当 AI 系统出错时，人需要理解自动化的边界，并且能够纠正行为，而不是盲目接受自动评分。[^amershi][^consensus]
+
 这里一个有用信号是 `Cohen's kappa`，但往往比具体数值更重要的是分歧长什么样：评判器到底是在策略违规、工具误用，还是模糊结果上理解错了。
 
 还有一个很常见的自我欺骗来源：一个在强模型上校准好的评判提示，换到更弱模型后可能迁移得很差。所以评判模型一旦变化，最好重新做校准，而不是假设旧提示还能自动沿用。
@@ -499,3 +501,5 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+[^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
