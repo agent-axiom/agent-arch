@@ -8,7 +8,7 @@
 
 ## Как читать эти шаблоны
 
-Смотри на них не как на готовый продовый YAML, а как на каркас:
+Смотри на них не как на готовый production YAML, а как на каркас:
 
 - что система считает рискованным;
 - где проходит граница подтверждения;
@@ -17,7 +17,7 @@
 - какие трассы и сигналы аудита стоит считать обязательными.
 
 !!! example "Политика для duplicate-ticket thread"
-    Для сквозного support-triage кейса `create_ticket` должен быть не просто write tool, а governed capability: approval boundary, обязательный idempotency key, traceable write intent, stop condition при `side_effect_unknown` и rollout/eval gate, который ловит повторное создание тикета до публикации изменения.
+    Для сквозного кейса support-triage `create_ticket` должен быть не просто write tool, а governed capability: approval boundary, обязательный idempotency key, traceable write intent, stop condition при `side_effect_unknown` и rollout/eval gate, который ловит повторное создание тикета до публикации изменения.
 
 ## Шаблон 1. Агент разбора обращений поддержки
 
@@ -67,7 +67,7 @@ output:
 ### Проверочный список
 
 - У read tools есть tenant scope?
-- Agent умеет не только отвечать, но и честно эскалировать?
+- Агент умеет не только отвечать, но и честно эскалировать?
 - `create_ticket` не вызывается без явного approval policy?
 - В trace видно, почему был выбран write path?
 - Есть ли stop condition на недостаточную уверенность?
