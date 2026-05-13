@@ -42,7 +42,7 @@
 
 这种可追责性就是本章的重心。注册表并不拥有证据主干，也不拥有遥测基底。它真正维护的是，受治理实体与负责人、状态和问责路径之间的映射。
 
-这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。
+这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。本章的主要工件是 registry record：一条把 agent identity、owner、lifecycle state、capabilities、runtime-control ownership 与 evidence links 连起来的记录。
 
 ## 2. 为什么蔓延不只是组织问题
 
@@ -57,6 +57,8 @@
 - 清单漂移会让发布门禁和事故复盘变得不可靠。
 
 Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不一致和发现滞后联系在一起。[^ms-inventory][^ms-agentic-risk]
+
+同样的基础纪律也和 NIST SP 800-53 一致：清单必须完整、持续维护并连接到 accountability，否则控制很快就会变成装饰。[^nist-sp53]
 
 ## 3. 清单和注册表不是同一层
 
@@ -385,3 +387,4 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

@@ -46,7 +46,7 @@ It owns the mapping from governed entities to owners, states, and accountability
 
 That is the core promise of this chapter.
 
-It should help the reader see registry as the accountability layer of the estate: the place where governed entities stop being a blurry population of tools and assistants and become answerable production systems with owners, lifecycle state, and explicit responsibility.
+It should help the reader see registry as the accountability layer of the estate: the place where governed entities stop being a blurry population of tools and assistants and become answerable production systems with owners, lifecycle state, and explicit responsibility. The main artifact of this chapter is the registry record: an entry that links agent identity, owner, lifecycle state, capabilities, runtime-control ownership, and evidence links.
 
 ## 2. Why sprawl is not only an organizational problem
 
@@ -61,6 +61,8 @@ In practice, sprawl quickly becomes a risk multiplier:
 - inventory drift makes release gates and incident review less reliable.
 
 Microsoft explicitly links incomplete inventory and agent sprawl to blind spots, inconsistent enforcement, and delayed detection.[^ms-inventory][^ms-agentic-risk]
+
+The same basic discipline also aligns with NIST SP 800-53: inventory should be complete, maintained, and tied to accountability, or the control quickly becomes decorative.[^nist-sp53]
 
 ## 3. Inventory and registry are not the same layer
 
@@ -401,3 +403,4 @@ This chapter should be read as an accountability layer, not as an inventory spre
 
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
+[^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
