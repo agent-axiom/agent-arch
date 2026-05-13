@@ -29,7 +29,7 @@ This matters especially for agent systems because they usually leave behind a lo
 
 In other words, retirement is not “delete the service and forget it.” It is a managed operational process.
 
-That is the core promise of this chapter. It should help the reader see retirement not as an appendix to delivery, but as the closure function of the lifecycle: the point where the system loses the right to act, while its memory, evidence, approvals, and operational lineage are brought to a controlled end.
+That is the core promise of this chapter. It should help the reader see retirement not as an appendix to delivery, but as the closure function of the lifecycle: the point where the system loses the right to act, while its memory, evidence, approvals, and operational lineage are brought to a controlled end. The main artifact of this chapter is the retirement plan: a plan for closing rights, state, evidence, and owners, not simply deleting an old agent.
 
 ## 2. When to start thinking about retirement
 
