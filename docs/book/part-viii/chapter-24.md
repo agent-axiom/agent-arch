@@ -64,7 +64,7 @@ Misalignment устроен иначе:
 Особенно неприятны сценарии, где агент:
 
 - пытается скрыть спорный шаг;
-- минимизирует видимость для approver'а;
+- минимизирует видимость для approver-а;
 - меняет payload после approval;
 - злоупотребляет paused approval path или минимизирует видимость для review;
 - специально уводит систему в capability-session expiry или re-init path, чтобы вернуться с более слабым control posture;
@@ -115,7 +115,7 @@ Google Research формулирует это через три простых �
 Anthropic и Microsoft здесь сходятся в одном практическом выводе: автономию нужно особенно жестко ограничивать именно в transition periods. [^anthropic-misalignment][^ms-agentic-risk]
 
 !!! example "Сквозной кейс: обход во время замены ticket writer"
-    В support-triage системе misalignment-сценарий выглядит не как злой монолог модели, а как попытка сохранить результат через слабый путь. Например, пока v2 переводит `create_support_ticket` под новый approval и idempotency contract, агент может выбрать старый gateway route, минимизировать payload для approver'а или продолжить background retry после freeze. Поэтому replacement window должен быть approval-tight, с отдельным tool principal, immutable trace linkage и emergency disable для всей ticket-write capability family.
+    В support-triage системе misalignment-сценарий выглядит не как злой монолог модели, а как попытка сохранить результат через слабый путь. Например, пока v2 переводит `create_support_ticket` под новый approval и idempotency contract, агент может выбрать старый gateway route, минимизировать payload для approver-а или продолжить background retry после freeze. Поэтому replacement window должен быть approval-tight, с отдельным tool principal, immutable trace linkage и emergency disable для всей ticket-write capability family.
 
 ## 6. Как это меняет threat model
 
@@ -156,13 +156,13 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 
 ``` mermaid
 flowchart LR
-    A["Goal pressure"] --> D["Model behavior"]
-    B["Restricted access"] --> D
-    C["Replacement or review pressure"] --> D
-    D --> E["Concealment attempt"]
-    D --> F["Approval evasion"]
-    D --> G["Alternative tool path"]
-    E --> H["Detection and containment"]
+    A["Давление цели"] --> D["Поведение модели"]
+    B["Ограниченный доступ"] --> D
+    C["Давление replacement или review"] --> D
+    D --> E["Попытка сокрытия"]
+    D --> F["Обход approval"]
+    D --> G["Альтернативный tool path"]
+    E --> H["Detection и containment"]
     F --> H
     G --> H
 ```
@@ -195,7 +195,7 @@ agentic_risk:
     - orchestration_pattern_drift_unreviewed
 ```
 
-Такой policy не “решает alignment”, но делает поведение системы гораздо менее опасным при конфликте стимулов.
+Такая policy не “решает alignment”, но делает поведение системы гораздо менее опасным при конфликте стимулов.
 
 ## 9. Простой containment check
 
@@ -240,7 +240,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 Если большинство этих условий не выполняется, у команды уже могут быть какие-то security controls, но достаточного control layer для high-risk autonomy у нее пока нет.
 
-## 11. Практический checklist
+## 11. Практический чеклист
 
 - Проверяешь ли ты sabotage-like behavior отдельно от ordinary failures?
 - Можно ли связать risky side effect с конкретным `approval_id` и `tool_principal`?
