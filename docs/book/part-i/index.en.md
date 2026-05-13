@@ -5,8 +5,8 @@ The first part answers the question that decides whether the rest of the book wi
 !!! info "Short path through Part I"
     If time is tight, take this route:
 
-    - [Chapter 1](chapter-1.md): decide whether you need an agent at all or a normal workflow is enough;
-    - [Chapter 2](chapter-2.md): follow one request through the reference architecture;
+    - [Chapter 1](chapter-1.en.md): decide whether you need an agent at all or a normal workflow is enough;
+    - [Chapter 2](chapter-2.en.md): follow one request through the reference architecture;
     - [Part II](../part-ii/index.en.md): see where the real trust boundaries live.
 
     That is already enough to discuss the system as an engineering contour, not as an idea.
@@ -47,7 +47,7 @@ By the end of Part I, the reader should have:
   This chapter continues the same support case from Chapter 1 and shows how one request moves through the platform layers.
 - [Practice. Instructions, routines, and prompt templates](practical-routines.en.md)
 - [Practice. Manager pattern vs handoffs](practical-manager-handoffs.en.md)
-- [Why this publishing stack was chosen](../../appendix/stack.md)
+- [Why this publishing stack was chosen](../../appendix/stack.en.md)
 - [Bibliography and sources](../../appendix/sources.en.md)
 
 ## Where It Leads Next
