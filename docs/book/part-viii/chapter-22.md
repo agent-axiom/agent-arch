@@ -35,9 +35,9 @@
 - контракты возможностей;
 - наборы для оценки;
 - verifier contracts, rubric definitions и правила связывания доказательной базы;
-- правила и схемы подтверждения;
+- правила и схемы approval;
 - схемы runtime-control;
-- правила governance для orchestration pattern и определения worker-safe catalog;
+- governance-правила для orchestration pattern и определения worker-safe catalog;
 - правила interruption и re-initialization для capability sessions;
 - наборы для раскатки.
 
@@ -77,14 +77,14 @@ Google Research очень точно показывает, что подтве�
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
 - какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
-- какая contract version и approval schema были активны;
+- какие contract version и approval schema были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
 - какой delegated authorization mode, principal binding и revoke policy управляли этим run;
 - кто одобрил это изменение.
 
 !!! example "Сквозной кейс: provenance для duplicate-ticket fix"
-    После duplicate-ticket incident последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии eval dataset, policy bundle для `side_effect_unknown`, capability contract `create_support_ticket`, rollout gate, approval schema и trace schema, которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в approved release bundle, команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
+    После инцидента с дублем тикета последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии eval dataset, policy bundle для `side_effect_unknown`, capability contract `create_support_ticket`, rollout gate, approval schema и trace schema, которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в approved release bundle, команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
 
@@ -119,13 +119,13 @@ Google Research очень точно показывает, что подтве�
 
 ``` mermaid
 flowchart LR
-    A["Code and build"] --> G["Approved release bundle"]
-    B["Model artifacts"] --> G
-    C["Prompt and routine bundles"] --> G
+    A["Код и сборка"] --> G["Утвержденный release bundle"]
+    B["Артефакты модели"] --> G
+    C["Prompt- и routine-наборы"] --> G
     D["Policy bundles"] --> G
     E["Capability contracts"] --> G
-    F["Approval and runtime-control schemas"] --> G
-    H["Eval datasets and reports"] --> G
+    F["Approval и runtime-control schemas"] --> G
+    H["Eval datasets и отчеты"] --> G
 ```
 
 </div>
@@ -151,7 +151,7 @@ flowchart LR
 
 Именно эта дисциплина уровня релиза и составляет здесь сердцевину подтвержденного происхождения. Вопрос не только в том, есть ли телеметрия, а в том, под какой управляемой версией, утвержденным набором, проверенной схемой или семейством контрактов с verifier-ограничениями система реально работала.
 
-То же правило важно и для failed runs. Если capability упала по timeout, путь approval закончился validation failure или внешний dependency обрушился, последующий разбор все равно должен видеть, какой набор доверенных артефактов и какая идентичность выпуска управляли этим сбоем, какое экспортируемое поле, например `failure_reason`, сохранило конкретное условие сбоя, отображалось ли оно в operator-facing summary через поля вроде `latest_failure_reason` и продолжал ли этот run учитываться как `traceable_failed_runs` на уровне session review. Иначе организация сохраняет подтвержденное происхождение только для happy path, а деградировавшее поведение превращает в бесхозный остаток.
+То же правило важно и для failed runs. Если capability упала по timeout, путь approval закончился validation failure или внешняя dependency обрушилась, последующий разбор все равно должен видеть, какой набор доверенных артефактов и какая идентичность выпуска управляли этим сбоем, какое экспортируемое поле, например `failure_reason`, сохранило конкретное условие сбоя, отображалось ли оно в operator-facing summary через поля вроде `latest_failure_reason` и продолжал ли этот run учитываться как `traceable_failed_runs` на уровне session review. Иначе организация сохраняет подтвержденное происхождение только для happy path, а деградировавшее поведение превращает в бесхозный остаток.
 
 ## 6. Набор prompt-правил без происхождения — это такой же пробел, как неподписанная сборка
 
@@ -191,7 +191,7 @@ flowchart LR
 
 Поэтому хороший ADLC должен относиться к наборам для оценки как к части модели доверенных артефактов.
 
-То же все больше верно и для verifier contracts. Если выпуск или assurance зависят от process scores, outcome scores, failure attribution или связанной доказательной базы, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный управляемый производственный артефакт.
+То же все больше верно и для verifier contracts. Если выпуск или assurance зависят от process scores, outcome scores, failure attribution или связанной доказательной базы, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный управляемый промышленный артефакт.
 
 ## 8. Контракты возможностей и правила сетевого выхода тоже входят в цепочку поставки
 
@@ -201,7 +201,7 @@ flowchart LR
 
 - кто владелец;
 - какой уровень риска;
-- какой инструментальный принципал;
+- какой инструментальный principal;
 - какой профиль сетевого доступа;
 - какие направления выхода разрешены;
 - как устроена семантика подтверждения.
