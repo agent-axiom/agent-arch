@@ -59,6 +59,8 @@
 - **最低遥测：** `session_id`、`trace_id`、所选动作、检索来源、策略决策、审批状态和幂等键。
 - **最低评测集：** 正常请求、含糊请求、提示注入尝试、timeout 后重试，以及重复工单场景。
 - **发布门禁：** canary 不产生重复写入，verifier 确认租户隔离和正确审批路径。
+- **事故示例：** `create_ticket` 之后发生 timeout，留下 `side_effect_unknown`，重试又尝试创建第二张工单。
+- **复盘问题：** 幂等性在哪里失效，谁看到了审批状态，为什么 trace 没有阻止重试，现在应该用哪个 eval 阻挡这类回归？
 
 ### 书里对应阅读
 
@@ -113,6 +115,8 @@
 - **最低遥测：** query、检索范围、source IDs、置信信号、被拒绝来源和答案 grounding verdict。
 - **最低评测集：** 已知答案、上下文不足、角色不可访问文档、冲突来源和过期知识。
 - **发布门禁：** regression set 确认 grounding、角色隔离和低置信度时的正确行为。
+- **事故示例：** 智能体引用过期 runbook 回答，没有 citations，并向员工暴露了超出角色权限的文档。
+- **复盘问题：** retrieval scope 为什么扩大，哪个 source 被当作 trusted，low-confidence stop 应该在哪里触发，哪个 eval 覆盖 stale knowledge？
 
 ### 书里对应阅读
 
@@ -168,6 +172,8 @@
 - **最低遥测：** alert source、incident thread ID、handoff owner、runbook step、写入意图、审批和通知幂等键。
 - **最低评测集：** noisy alert、重复通知、错误 owner 交接、缺失 runbook context 和高风险修复请求。
 - **发布门禁：** dry run 显示单一 trace chain、无重复副作用，并且 high-risk steps 需要人工审批。
+- **事故示例：** noisy alert 触发两条并行 handoff，并向不同渠道发送重复通知。
+- **复盘问题：** split-brain 是从哪里进入流程的，每一步 owner 是谁，哪些 idempotency keys 缺失，哪个 dry run 应该捕捉到重复？
 
 ### 书里对应阅读
 

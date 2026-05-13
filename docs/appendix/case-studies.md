@@ -59,6 +59,8 @@
 - **Минимальная telemetry:** `session_id`, `trace_id`, выбранный action, retrieval sources, policy decision, approval state и idempotency key.
 - **Минимальный eval dataset:** нормальный запрос, ambiguous request, prompt-injection attempt, retry после timeout и duplicate-ticket сценарий.
 - **Rollout gate:** canary проходит без duplicate writes, а verifier подтверждает tenant isolation и корректный approval path.
+- **Пример инцидента:** timeout после `create_ticket` оставляет `side_effect_unknown`, и повторный запуск пытается создать второй тикет.
+- **Вопросы postmortem:** где потерялась idempotency, кто видел approval state, почему trace не остановил повтор и какой eval теперь должен блокировать регрессию?
 
 ### Где читать в книге
 
@@ -113,6 +115,8 @@
 - **Минимальная telemetry:** query, retrieval scope, source IDs, confidence signal, denied sources и answer-grounding verdict.
 - **Минимальный eval dataset:** известный ответ, недостаточный контекст, role-denied document, conflicting sources и stale knowledge.
 - **Rollout gate:** regression set подтверждает grounding, role isolation и корректное поведение при low confidence.
+- **Пример инцидента:** агент отвечает по устаревшему runbook без citations и показывает сотруднику документ вне его роли.
+- **Вопросы postmortem:** почему retrieval scope расширился, какой source был trusted, где должен был сработать low-confidence stop и какой eval покрывает stale knowledge?
 
 ### Где читать в книге
 
@@ -168,6 +172,8 @@
 - **Минимальная telemetry:** alert source, incident thread ID, handoff owner, runbook step, write intents, approvals и notification idempotency keys.
 - **Минимальный eval dataset:** noisy alert, duplicate notification, wrong-owner handoff, missing runbook context и risky remediation request.
 - **Rollout gate:** dry run показывает единую trace chain, no duplicate side effects и human approval на high-risk steps.
+- **Пример инцидента:** noisy alert запускает два параллельных handoff и отправляет duplicate notifications в разные каналы.
+- **Вопросы postmortem:** где split-brain вошел в процесс, кто был owner на каждом шаге, какие idempotency keys отсутствовали и какой dry run должен был поймать повтор?
 
 ### Где читать в книге
 
