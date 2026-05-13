@@ -24,7 +24,7 @@
 
 - Для инженеров продукта, которые хотят строить agent features без превращения системы в набор промптов и исключений.
 - Для платформенных команд, которым нужны общий runtime, policy layer, approvals, observability и управляемый rollout.
-- Для security engineers, которым важны trust boundaries, risky execution paths и surfaces для abuse.
+- Для инженеров по безопасности, которым важны trust boundaries, risky execution paths и surfaces для abuse.
 - Для техлидов и архитекторов, которым нужен не AI-театр, а воспроизводимая инженерная дисциплина.
 
 ## Что она должна изменить в мышлении читателя
@@ -56,7 +56,7 @@
 - Исполняемый справочный пакет `agent_runtime_ref`.
 - Справочные страницы со схемами traces, evals, policy bundles, approvals, памяти и lifecycle-артефактов.
 - Практические кейсы, чеклисты, шаблоны политик и глоссарий.
-- Активный editorial pass по рукописи и public site surface.
+- Активный editorial pass по рукописи и публичной поверхности сайта.
 
 ## Что не является целью книги
 
