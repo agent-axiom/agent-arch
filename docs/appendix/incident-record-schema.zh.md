@@ -127,7 +127,7 @@ status: open
 
 这就是为什么事故记录应该和 [变更评审与发布门禁 Schema](change-rollout-schema.zh.md) 以及 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 相连。
 
-## 8. 与参考运行时包的关系
+## 8. 与参考包的关系
 
 [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 已经具备几类能让这套模型落地的基础构件：
 
