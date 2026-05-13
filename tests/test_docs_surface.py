@@ -1,6 +1,11 @@
+import json
 import re
+import shutil
+import subprocess
+import textwrap
 from pathlib import Path
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +50,51 @@ def test_public_book_canonical_redirects_are_configured() -> None:
     for route in ('"/book"', '"/en/book"', '"/zh/book"'):
         assert route in redirect_script
     assert 'projectPrefix = "/agent-arch"' in redirect_script
+
+
+def _canonical_redirects_for(pathname: str, search: str = "", hash_: str = "") -> list[str]:
+    node = shutil.which("node")
+    if node is None:
+        pytest.skip("node is required to execute canonical-redirects.js")
+
+    redirect_script = _read("docs/javascripts/canonical-redirects.js")
+    harness = f"""
+    const redirects = [];
+    const location = {{
+      origin: "https://agent-axiom.github.io",
+      pathname: {json.dumps(pathname)},
+      search: {json.dumps(search)},
+      hash: {json.dumps(hash_)},
+      get href() {{
+        return this.origin + this.pathname + this.search + this.hash;
+      }},
+      replace(url) {{
+        redirects.push(url);
+      }}
+    }};
+    global.window = {{ location }};
+    {redirect_script}
+    process.stdout.write(JSON.stringify(redirects));
+    """
+    result = subprocess.run(
+        [node, "-e", textwrap.dedent(harness)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return json.loads(result.stdout)
+
+
+def test_public_book_canonical_redirects_do_not_reload_current_canonical_urls() -> None:
+    assert _canonical_redirects_for("/agent-arch/book/") == []
+    assert _canonical_redirects_for("/agent-arch/en/book/") == []
+    assert _canonical_redirects_for("/agent-arch/zh/book/") == []
+
+
+def test_public_book_canonical_redirects_add_trailing_slash_to_entrypoints() -> None:
+    assert _canonical_redirects_for("/agent-arch/book", "?tab=toc", "#intro") == [
+        "https://agent-axiom.github.io/agent-arch/book/?tab=toc#intro"
+    ]
 
 
 def test_translated_navigation_has_no_known_russian_leaks() -> None:
