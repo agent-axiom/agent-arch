@@ -13,6 +13,12 @@ If in the first part we assembled the architectural picture, here the same suppo
 
 This part exists so that you do not develop the dangerous illusion that agent security can be "added later." In our running case, this is the moment when it becomes obvious that without a defined perimeter the agent stops helping and starts creating new risk.
 
+<div class="book-cover" markdown="1">
+
+![Cover for the security perimeter part](../../assets/images/part-ii-security.png)
+
+</div>
+
 - if trust boundaries are not defined in advance, the agent quickly starts pulling in extra context;
 - if tools are not isolated, one bad call turns into a real incident;
 - if policy, approval, and audit are not built into the runtime, the team loses control at the worst possible moment.
