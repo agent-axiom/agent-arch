@@ -5,8 +5,8 @@
 !!! info "第一部分的快速路线"
     如果时间有限，可以这样读：
 
-    - [第 1 章](chapter-1.md)：先判断这里到底需不需要智能体，而不是普通工作流；
-    - [第 2 章](chapter-2.md)：顺着一个请求走完参考架构；
+    - [第 1 章](chapter-1.zh.md)：先判断这里到底需不需要智能体，而不是普通工作流；
+    - [第 2 章](chapter-2.zh.md)：顺着一个请求走完参考架构；
     - [第二部分](../part-ii/index.zh.md)：再去看真正的信任边界在哪里。
 
     只走完这条路线，也已经足够把系统当作工程轮廓来讨论，而不是停留在概念层面。
@@ -47,7 +47,7 @@
   这一章沿用第 1 章的支持场景，展示同一个请求如何穿过平台各层。
 - [实践篇：Instructions、Routines 与 Prompt Templates](practical-routines.zh.md)
 - [实践篇：Manager Pattern vs Handoffs](practical-manager-handoffs.zh.md)
-- [为什么选择这套发布技术栈](../../appendix/stack.md)
+- [为什么选择这套发布技术栈](../../appendix/stack.zh.md)
 - [参考文献与来源](../../appendix/sources.zh.md)
 
 ## 这一部分之后去哪里
