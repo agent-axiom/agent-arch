@@ -7,9 +7,9 @@
 - [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)
 - [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md)
 
-И опирается на справочный пакет:
+И опирается на эталонный пакет:
 
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 
 Если страницы о схеме трасс и схеме оценки отвечают на вопросы:
 
@@ -132,11 +132,11 @@ approval_contract:
 Смысл тут простой: подтверждение должно быть не галочкой в интерфейсе, а машиночитаемым рабочим контрактом. А если подтверждение влияет на выпуск, такой контракт должен еще и явно показывать, к какой версии набора и к какой идентичности выпуска относится человеческое решение.
 
 !!! example "Policy contract для duplicate-ticket thread"
-    Для support-triage `create_ticket` contract должен требовать `idempotency_key` уже в approval request, а не только в tool execution. Тогда человек, gateway и trace видят один и тот же write intent, policy bundle может запретить retry без reconciliation при `side_effect_unknown`, а rollout review проверяет именно governed capability, не loose tool call.
+    Для support-triage contract `create_ticket` должен требовать `idempotency_key` уже в approval request, а не только во время tool execution. Тогда человек, gateway и trace видят один и тот же write intent, policy bundle может запретить retry без reconciliation при `side_effect_unknown`, а rollout review проверяет governed capability, а не loose tool call.
 
 ## Как набор политик связан с жизненным циклом
 
-Из Part VIII здесь особенно важны две мысли:
+Из Части VIII здесь особенно важны две мысли:
 
 - изменения политик — это значимые изменения выпуска;
 - набор политик должен участвовать в управлении изменениями как полноценный артефакт.
@@ -164,7 +164,7 @@ approval_contract:
 
 Без этой связки из четырех элементов расследование быстро превращается в угадайку.
 
-## Что уже умеет справочный рантайм
+## Что уже умеет эталонный runtime
 
 В `agent_runtime_ref` сейчас уже есть:
 
@@ -286,7 +286,7 @@ Reference runtime делает этот стык конкретным в `capabi
 - [Схема трасс и каталог событий](trace-schema.md)
 - [Схема наборов для оценки и правил проверки](eval-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 - [Шаблоны политик и проверочные списки по кейсам](policy-templates.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
