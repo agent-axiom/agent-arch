@@ -1,4 +1,4 @@
-# Справочный пакет
+# Эталонный пакет
 
 В репозитории теперь есть небольшой исполняемый каркас: [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref).
 
@@ -209,7 +209,7 @@ Session и eval команды явно показывают summary fields: `in
 
 Пакет по-прежнему намеренно маленький, но теперь он уже отражает, что governed runtime иногда обязан объяснять все три контура отдельно, не сливая их в один непрозрачный state object.
 
-Это же место теперь полезно и как привязка для нового урока Anthropic про harness design: длинная application-работа может требовать явных context resets, структурированных handoff artifacts и разделения ролей planner/generator/evaluator, а не одного непрерывного agent loop. Справочный пакет не реализует такой harness целиком, но уже показывает те швы рантайма, в которых должны жить reset-safe handoff, sprint contracts, evaluator review и resumed control state.
+Это же место теперь полезно и как привязка для нового урока Anthropic про harness design: длинная application-работа может требовать явных context resets, структурированных handoff artifacts и разделения ролей planner/generator/evaluator, а не одного непрерывного agent loop. Эталонный пакет не реализует такой harness целиком, но уже показывает те швы рантайма, в которых должны жить reset-safe handoff, sprint contracts, evaluator review и resumed control state.
 
 Это еще и полезный якорь для verifier-aware governance: если rollout или assurance зависят от eval output, runtime должен сохранять достаточно связей между trace, session и artifacts, чтобы объяснять не только что произошло, но и почему verifier оценил run именно так.
 

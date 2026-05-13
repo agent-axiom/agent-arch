@@ -131,7 +131,7 @@
 - [Схема запроса на подтверждение и записи о решении](approval-schema.md)
 - [Схема проверки изменений и шлюза раскатки](change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
-- [Справочный пакет](reference-package.md)
+- [Эталонный пакет](reference-package.md)
 - [Глава 21. Assurance loop: red teaming, detection и response](../book/part-viii/chapter-21.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](../book/part-viii/chapter-23.md)
 - [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)

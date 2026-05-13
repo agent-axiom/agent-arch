@@ -31,7 +31,7 @@
 Если тебе нужно увидеть, как это управляемое policy decision дальше связывается с traces, approvals, eval judgments, incidents и rollout, открой отдельную страницу [Сквозная цепочка доказательств](../part-v/evidence-spine.md).
 
 !!! info "Нужен контрактный слой?"
-    Для более прикладной формы открой [схему policy bundle и approval contract](../../appendix/policy-bundle-schema.md), [схему запроса на approval и записи о решении](../../appendix/approval-schema.md) и [справочный пакет](../../appendix/reference-package.md).
+    Для более прикладной формы открой [схему policy bundle и approval contract](../../appendix/policy-bundle-schema.md), [схему запроса на approval и записи о решении](../../appendix/approval-schema.md) и [эталонный пакет](../../appendix/reference-package.md).
 
 ## 2. Слой политик должен отвечать на маленькие и понятные вопросы
 
@@ -433,7 +433,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
-- [Справочный пакет](../../appendix/reference-package.md)
+- [Эталонный пакет](../../appendix/reference-package.md)
 
 Эта глава служит контрактным шарниром для всего runtime-control cluster. Дальше полезнее всего идти в главу 18 за rollout gates и в главу 21 за assurance response, построенный на тех же approval и policy paths.
 
