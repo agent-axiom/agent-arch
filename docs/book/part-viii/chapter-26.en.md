@@ -193,6 +193,20 @@ Strong governance requires:
 
 That is why observability in agent systems is best understood as an `evidence layer for governance`.
 
+### 7.1. Governance-Aware Telemetry Closes the Enforcement Loop
+
+The next maturity step is not merely seeing an event, but making telemetry usable for governance action. `Governance-aware telemetry` should feed back into the control loop as input for policy decisions, containment, rollout gates, and incident response.
+
+A minimal closed-loop contract looks like this:
+
+- `policy_decision_feedback`: which telemetry signals change a later policy decision or risk tier;
+- `containment_decision`: which signal moves a run, agent, capability, or rollout wave into a paused / quarantined state;
+- `rollout_gate_input`: which coverage, verifier, and drift signals block canary expansion;
+- `incident_response_trigger`: which patterns create an investigation, escalation, or postmortem task;
+- `registry_update_signal`: which blind spots, stale owners, or shadow capabilities require inventory updates.
+
+Telemetry then stops being only evidence after the fact. It becomes an operational input to the governance loop: observe → policy decision → containment or rollout action → new evidence about the result.
+
 That framing also keeps this chapter separate from the assurance chapter and the registry chapter. Assurance is about containment and response. Registry is about estate accountability. Observability is the shared substrate that makes both of those functions auditable.
 
 It should also stay separate from the provenance chapter. Observability asks whether the system emitted enough evidence, coverage, and correlation to investigate or detect. Provenance asks which approved artifact set, contract version, or governed bundle later justified the decision.

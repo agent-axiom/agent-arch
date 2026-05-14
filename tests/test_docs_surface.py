@@ -119,6 +119,25 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_governance_aware_telemetry_contract_is_documented() -> None:
+    required_fields = (
+        "Governance-aware telemetry",
+        "policy_decision_feedback",
+        "containment_decision",
+        "rollout_gate_input",
+        "incident_response_trigger",
+        "registry_update_signal",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-26.md",
+        "docs/book/part-viii/chapter-26.en.md",
+        "docs/book/part-viii/chapter-26.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), required_fields)
+
+
 def test_verifier_contract_fields_are_documented() -> None:
     required_fields = (
         "rubric_version",

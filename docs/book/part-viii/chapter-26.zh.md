@@ -193,6 +193,20 @@ Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应
 
 所以对智能体系统来说，最好把可观测性理解成`治理的证据层`。
 
+### 7.1. Governance-aware telemetry 会闭合 enforcement loop
+
+下一个成熟度层级，不只是“看见事件”，而是让 telemetry 可以直接服务治理动作。`Governance-aware telemetry` 应该回流到控制闭环，作为 policy decisions、containment、rollout gates 和 incident response 的输入。
+
+最小 closed-loop contract 可以这样定义：
+
+- `policy_decision_feedback`：哪些 telemetry signals 会改变后续 policy decision 或 risk tier；
+- `containment_decision`：哪个信号会把 run、agent、capability 或 rollout wave 置为 paused / quarantined state；
+- `rollout_gate_input`：哪些 coverage、verifier 和 drift signals 会阻止 canary 扩大；
+- `incident_response_trigger`：哪些 patterns 会创建 investigation、escalation 或 postmortem task；
+- `registry_update_signal`：哪些 blind spots、stale owners 或 shadow capabilities 需要更新 inventory。
+
+这样，telemetry 就不再只是事后的 evidence。它会变成 governance loop 的运行输入：observe → policy decision → containment 或 rollout action → 关于结果的新 evidence。
+
 这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
 
 它也应该和 provenance chapter 保持分离。可观测性关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和检测；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
