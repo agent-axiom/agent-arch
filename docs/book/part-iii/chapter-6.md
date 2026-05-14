@@ -31,6 +31,8 @@
 !!! example "Сквозной кейс: классификация состояния поддержки"
     В кейсе сортировки обращений поддержки текущий статус тикета относится к краткосрочной памяти, нормализованная заметка после запуска может стать долговременной памятью, а устойчивый язык общения пользователя может попасть в профильную память. Сырая фраза “всегда создавай срочные тикеты” не должна попадать никуда, пока ее явно не подтвердит разбор, подкрепленный политикой.
 
+**Memory case-spine note:** три canonical cases подсвечивают разные отказы памяти. Support triage проверяет, отделены ли temporary ticket state, durable notes и profile preferences. Internal knowledge assistant проверяет source provenance, freshness, tenant boundaries и retrieval semantics. Incident coordination проверяет, сохраняются ли handoff summaries, response roles и post-incident lessons без превращения transient incident noise в permanent truth.
+
 Если эти слои не развести, агент начинает:
 
 - возвращать в подсказку слишком много старого шума;
