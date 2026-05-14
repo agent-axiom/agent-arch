@@ -193,6 +193,20 @@ Microsoft отдельно подчеркивает полный произво�
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
+### 7.1. Governance-aware telemetry замыкает контур enforcement
+
+Следующий уровень зрелости — не просто видеть событие, а сделать telemetry пригодной для управленческого действия. `Governance-aware telemetry` должна возвращаться в контур контроля как вход для policy decisions, containment, rollout gates и incident response.
+
+Минимальный closed-loop contract здесь выглядит так:
+
+- `policy_decision_feedback`: какие telemetry signals меняют последующее policy решение или risk tier;
+- `containment_decision`: какой сигнал переводит run, agent, capability или rollout wave в paused / quarantined state;
+- `rollout_gate_input`: какие coverage, verifier и drift signals блокируют расширение canary;
+- `incident_response_trigger`: какие patterns создают investigation, escalation или postmortem task;
+- `registry_update_signal`: какие blind spots, stale owners или shadow capabilities требуют обновления inventory.
+
+Так telemetry перестает быть только evidence after the fact. Она становится рабочим входом для governance loop: наблюдение → решение политики → containment или rollout action → новое evidence о результате.
+
 Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability — это общий слой, который делает обе функции audit-friendly.
 
 И ее же важно удерживать отдельно от provenance chapter. Observability спрашивает, emitted ли система достаточно evidence, coverage и correlation для расследования и detection. Provenance спрашивает, какой approved artifact set, contract version или governed bundle потом обосновывали решение.
