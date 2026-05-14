@@ -36,6 +36,8 @@
 
 如果你想看一页专门说明请求、策略、审批、追踪、评测、事故和 rollout 判断如何被维持在同一条链上，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
 
+**Change case-spine note：**change packet 应该能对三个 canonical cases 都做分类。Support triage 会让 approval rules、retries 和 write capabilities 的变化变成 release-bearing。Internal knowledge assistant 会让 retrieval corpus、freshness windows、memory write semantics 和 access control 的变化变成 release-bearing。Incident coordination 会让 escalation policy、notification routing、ownership transfer 和 incident state 的变化变成 release-bearing。
+
 !!! info "需要变更工件？"
     如果你需要更落地的工程层，可以打开 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)、[Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 

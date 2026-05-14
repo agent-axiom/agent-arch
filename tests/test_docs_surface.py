@@ -358,6 +358,28 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
+    required_markers = (
+        "Change case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approval rules",
+        "write capabilities",
+        "retrieval corpus",
+        "freshness windows",
+        "memory write semantics",
+        "incident state",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-20.md",
+        "docs/book/part-viii/chapter-20.en.md",
+        "docs/book/part-viii/chapter-20.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_7_retrieval_threads_three_canonical_cases() -> None:
     required_markers = (
         "Retrieval case-spine note",
