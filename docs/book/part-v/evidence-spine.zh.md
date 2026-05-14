@@ -40,6 +40,8 @@ Evidence Spine 是一种最小但受治理的连续性，它能让操作员不�
 
 如果缺少这种连续性，团队也许仍然拥有追踪、审批日志和评测报告，但依然没有一条可复核的统一运行记录。
 
+**Case-spine routing note：**同一条 evidence spine 应该在本书三个 canonical cases 中都保持可见。Support triage 重点考验 approvals 和 side effects；internal knowledge assistant 重点考验 retrieval provenance、freshness 和 access control；incident coordination 重点考验 escalation、response ownership 和 post-incident rollout judgment。如果某个 control 只适用于一个 case，它只是 local feature，而不是 evidence spine。
+
 ## 最小共享实体图
 
 强健的 Evidence Spine 不需要一个巨大的统一 schema 文件，但它要求各层之间有一组稳定的标识符和链接。

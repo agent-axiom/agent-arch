@@ -40,6 +40,8 @@ That also has to remain true for degraded paths. A failed-run drill is useful on
 
 Without that continuity, a team may have traces, approval logs, and eval reports and still lack one reviewable operational record.
 
+**Case-spine routing note:** the same evidence spine should stay visible across the book's three canonical cases. Support triage stresses approvals and side effects; the internal knowledge assistant stresses retrieval provenance, freshness, and access control; incident coordination stresses escalation, response ownership, and post-incident rollout judgment. If a control only works for one case, it is a local feature, not an evidence spine.
+
 ## Minimal Shared Entity Map
 
 A strong evidence spine does not require one giant schema file. It does require a stable set of identifiers and links across layers.
