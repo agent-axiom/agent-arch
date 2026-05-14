@@ -45,6 +45,8 @@ The role of the eval loop in this book is specific: it is the layer that produce
 
 If you want the connective layer that ties eval judgment back to request, policy, approvals, traces, incidents, and rollout, use the dedicated [Evidence Spine](evidence-spine.en.md) page.
 
+**Eval case-spine note:** keep the eval suite balanced across the three canonical cases. Support triage should test duplicate tickets, approval gates, retries, and side effects. Internal knowledge assistant should test retrieval freshness, source attribution, memory provenance, and access-control failures. Incident coordination should test escalation timing, handoff quality, response ownership, and whether post-incident changes become regression cases before the next rollout.
+
 !!! info "Need the schemas and artifacts?"
     If you need more than explanation, open the [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md) and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).
 

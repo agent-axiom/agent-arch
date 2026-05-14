@@ -45,6 +45,8 @@ SLO 帮你定义什么叫系统健康。
 
 如果你想看一页专门把评测判断再连接回请求、策略、审批、追踪、事故和 rollout 的桥接层，可以直接使用单独的 [Evidence Spine](evidence-spine.zh.md) 页面。
 
+**Eval case-spine note：**评测集应该在三个 canonical cases 之间保持平衡。Support triage 要测试 duplicate tickets、approval gates、retries 和 side effects。Internal knowledge assistant 要测试 retrieval freshness、source attribution、memory provenance 和 access-control failures。Incident coordination 要测试 escalation timing、handoff quality、response ownership，以及 post-incident changes 是否会在下一次 rollout 前变成 regression cases。
+
 !!! info "需要配套的 schema 和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
 
