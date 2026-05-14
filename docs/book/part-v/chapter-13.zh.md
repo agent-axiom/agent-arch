@@ -77,6 +77,19 @@ SLO 帮你定义什么叫系统健康。
 
 否则，团队就分不清一次运行是“行为正确但被环境阻断”，还是“通过薄弱或不安全路径达成了名义结果”。
 
+因此，实践中的 `verifier contract` 应该被明确写出来，而不是藏在 judge prompt 里。最小契约应该包括：
+
+- `rubric_version`，让团队知道 verdict 是按哪一版评分规则产生的；
+- `process_score`，用于评价执行路径，而不只是最终结果；
+- `outcome_score`，用于评价真实的用户或业务结果；
+- `failure_attribution`，包括 `controllable` / `uncontrollable` 以及具体失败层；
+- `judge_human_agreement`，让 automated judge 持续相对于 human review 校准；
+- `false_positive_budget` 和 `false_negative_budget`，因为不同 rollout gates 的错误成本不同；
+- `calibration_dataset_id`，让 judge、prompt 或 rubric 的变化可以在稳定样本集上重放；
+- `replay_protocol`，说明如何恢复有争议 verdict 对应的 traces、inputs、policy bundle 和 artifact version。
+
+这样的契约会把 verifier 从自由文本评论变成 release-bearing artifact：它可以被版本化、跨发布比较，并作为阻止 rollout 的依据。
+
 ## 3. 在线评测之所以必要，是因为真实世界永远比测试集更大
 
 即使很好的离线评测，也无法覆盖生产环境中真正发生的一切：
