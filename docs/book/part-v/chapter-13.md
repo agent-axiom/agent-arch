@@ -36,6 +36,8 @@
 
 Если тебе нужен связующий слой, который снова привязывает оценочное суждение к запросу, политике, подтверждениям, трассам, инцидентам и раскатке, используй отдельную страницу [Evidence Spine](evidence-spine.md).
 
+**Eval case-spine note:** держи eval suite сбалансированным по трем canonical cases. Support triage должен проверять duplicate tickets, approval gates, retries и side effects. Internal knowledge assistant должен проверять retrieval freshness, source attribution, memory provenance и access-control failures. Incident coordination должен проверять escalation timing, handoff quality, response ownership и то, превращаются ли post-incident changes в regression cases перед следующим rollout.
+
 Трассы помогают понять, что произошло. SLO помогают определить, что считать здоровьем системы. Оценки отвечают на следующий вопрос: можно ли снова доверять этому поведению после изменений.
 
 !!! info "Нужны схемы и артефакты?"
