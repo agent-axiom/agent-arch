@@ -119,6 +119,25 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_book_plan_defines_three_case_spines() -> None:
+    required_markers = (
+        "Case-spine map",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "side effects",
+        "context quality",
+        "response and governance",
+    )
+    checked_files = (
+        "docs/book/plan.md",
+        "docs/book/plan.en.md",
+        "docs/book/plan.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
