@@ -100,12 +100,18 @@ flowchart LR
 
 | Угроза | Где ловить в первую очередь | Что помогает |
 | --- | --- | --- |
-| Внедрение инструкций через подсказку | Сборка подсказки, поиск, шлюз инструментов | границы между доверенным и недоверенным содержимым, проверки политики, ограничения на инструменты |
-| Утечка данных | Поиск, выходные фильтры, шлюз инструментов | DLP, редактирование чувствительных полей, фильтры ответа, доступ по области |
-| Злоупотребление инструментами | Шлюз инструментов, поток подтверждения | allowlist, проверка аргументов, подтверждение человеком |
-| Утечка секретов | Вход, шлюз модели, инструменты | изоляция секретов, очистка содержимого, ограничение коннекторов |
-| Доступ между арендаторами | Слой идентичности, поиск, инструменты | область арендатора, подписанный контекст, фильтры метаданных |
-| Отсутствующий след аудита | Рантайм, слой телеметрии | структурированные трассы, неизменяемые журналы, проверяемые подтверждения |
+| Prompt injection | Сборка подсказки, retrieval, gateway модели | границы между trusted/untrusted content, policy checks, отказ от смешивания instructions и data |
+| Indirect injection | Retrieval, tool return values, memory write path | маркировка источников, sanitizer для tool output, запрет недоверенному контенту менять policy/tool-use logic |
+| RAG poisoning | Индексация, retrieval, provenance layer | source allowlist, document provenance, freshness/reputation signals, quarantine подозрительных источников |
+| Memory poisoning | Memory write/retrieval path | approval или confidence gate на запись, TTL, provenance, audit trail и rollback памяти |
+| Tool abuse | Tool gateway, approval flow | allowlist, argument validation, risk-tiering, human approval для side effects |
+| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation record, проверка caller/callee identity |
+| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation вместо бесконечной автономии |
+| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access |
+| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry |
+| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation |
+| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review |
+| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
 
 ### 5.1. Внедрение инструкций, jailbreak и галлюцинация действия — не одно и то же
 

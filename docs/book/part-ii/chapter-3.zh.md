@@ -100,12 +100,18 @@ flowchart LR
 
 | 威胁 | 最先该在哪一层拦 | 有效手段 |
 | --- | --- | --- |
-| 提示注入 | 提示组装、检索、工具网关 | 可信/不可信边界、策略检查、工具限制 |
-| 数据外泄 | 检索、出口、工具网关 | DLP、脱敏、输出过滤器、作用域访问 |
-| 工具滥用 | 工具网关、审批流程 | 允许列表、参数校验、人工审批 |
-| 密钥泄露 | 入口、模型网关、工具 | 密钥隔离、清洗器、连接器作用域 |
-| 跨租户访问 | 身份层、检索、工具 | 租户作用域、签名上下文、元数据过滤器 |
-| 缺失审计轨迹 | 运行时、遥测平面 | 结构化追踪、不可变日志、可审查审批 |
+| Prompt injection | 提示组装、retrieval、模型网关 | trusted/untrusted content 边界、policy checks、把 instructions 和 data 分开 |
+| Indirect injection | Retrieval、tool return values、memory write path | 来源标记、tool-output sanitization、防止不可信内容改写 policy/tool-use logic |
+| RAG poisoning | 索引、retrieval、provenance layer | source allowlist、document provenance、freshness/reputation signals、隔离可疑来源 |
+| Memory poisoning | Memory write/retrieval path | 写入前 approval 或 confidence gate、TTL、provenance、audit trail、memory rollback |
+| Tool abuse | Tool gateway、approval flow | allowlist、argument validation、risk-tiering、对 side effects 做 human approval |
+| Confused deputy | Identity layer、delegated auth、MCP/A2A boundary | scoped tokens、subject binding、显式 delegation record、caller/callee identity checks |
+| Excessive agency | Planner/orchestrator、action policy | bounded goals、stopping conditions、budget limits、用 escalation 代替开放式自治 |
+| Data exfiltration | Retrieval、egress、tool gateway | DLP、redaction、output filters、tenant-scoped access |
+| Denial of wallet | Planner、tool gateway、model gateway | rate limits、cost budgets、circuit breakers、per-run spend telemetry |
+| Cascading multi-agent failure | A2A handoff、coordinator、eval loop | handoff contracts、containment、independent verification、traceable delegation |
+| Supply-chain compromise | MCP servers、model/tool artifacts、dependency path | approved registry、signatures/provenance、sandboxing、lifecycle review |
+| Missing audit trail | Runtime、telemetry plane | structured traces、immutable logs、reviewable approvals |
 
 ### 5.1. 提示注入、越狱与动作幻觉不是一回事
 

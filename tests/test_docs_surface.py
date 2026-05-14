@@ -119,6 +119,31 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_agent_threat_model_matrix_covers_required_classes() -> None:
+    required_threats = (
+        "Prompt injection",
+        "Indirect injection",
+        "RAG poisoning",
+        "Memory poisoning",
+        "Tool abuse",
+        "Confused deputy",
+        "Excessive agency",
+        "Data exfiltration",
+        "Denial of wallet",
+        "Cascading multi-agent failure",
+        "Supply-chain compromise",
+        "Missing audit trail",
+    )
+    checked_files = (
+        "docs/book/part-ii/chapter-3.md",
+        "docs/book/part-ii/chapter-3.en.md",
+        "docs/book/part-ii/chapter-3.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), required_threats)
+
+
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": (
