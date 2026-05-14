@@ -119,6 +119,24 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_print_pdf_readiness_gate() -> None:
+    required_markers = (
+        "Print/PDF Readiness Gate Draft",
+        "Print/PDF checks",
+        "stable heading hierarchy",
+        "page breaks",
+        "code-block wrapping",
+        "readable in grayscale",
+        "online companion",
+        "packet version",
+        "sample-chapter date",
+        "clipped code blocks",
+        "live site navigation",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_submission_release_discipline() -> None:
     required_markers = (
         "Submission Release Discipline Draft",

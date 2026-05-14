@@ -240,6 +240,21 @@ Default packet order:
 
 Default recommendation: lead with Chapter 1 only. It carries the thesis and reads best as a first editorial sample. Keep Chapter 13 ready as a second attachment or follow-up when the conversation turns to technical credibility.
 
+## Print/PDF Readiness Gate Draft
+
+Before any print-style PDF or sample-chapter export is sent externally, run a separate pass for print friction rather than assuming the web page will translate cleanly.
+
+**Print/PDF checks:**
+
+- exported sample chapter has stable heading hierarchy, page breaks, footnotes, and code-block wrapping;
+- diagrams, tables, admonitions, and callout boxes remain readable in grayscale and on narrow pages;
+- URLs are visible enough for print readers, while companion-only links are grouped instead of scattered through the prose;
+- long schema tables, command-output field lists, validation-error catalogs, and runtime internals stay in the online companion;
+- screenshots or generated figures, if added later, have source files and alt-text notes;
+- the export includes title, subtitle, author placeholder, packet version, and sample-chapter date.
+
+**No-go signals:** broken heading levels, clipped code blocks, unreadable diagrams, orphaned footnotes, missing packet version, or any print sample that depends on live site navigation to make sense.
+
 ## Submission Release Discipline Draft
 
 Treat the publisher packet as a small release, not as a loose collection of notes.
