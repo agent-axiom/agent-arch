@@ -182,6 +182,27 @@ def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     _assert_files_contain_all(("docs/book-improvement-blueprint.md",), required_markers)
 
 
+def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
+    required_markers = (
+        "Publisher Packet Draft",
+        "Positioning",
+        "One-Page Positioning Memo Draft",
+        "Print Manuscript Shape",
+        "Online Companion Boundary",
+        "Working title: **Secure AI Agent Architecture**",
+        "Subtitle:** From prompt demos to governed production systems.",
+        "Primary reader",
+        "Unique promise",
+        "Companion assets",
+        "Keep schemas, runtime command details, long checklists, and source catalogs in the online companion.",
+        "runnable `agent_runtime_ref` package",
+        "command-output field lists and validation-error catalogs",
+        "any print sample that depends on live site navigation",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
     required_markers = (
         "Blocker Waiver / Decision Log Draft",
