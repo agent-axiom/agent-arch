@@ -119,6 +119,23 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_book_improvement_blueprint_records_review_remediation_status() -> None:
+    required_markers = (
+        "Implementation status, 15 May 2026",
+        "P0:",
+        "P1:",
+        "P2:",
+        "P3:",
+        "draft-localization status",
+        "MCP security boundary",
+        "three canonical case spines",
+        "publisher packet is drafted and internally gated",
+        "Still blocked before external submission",
+    )
+
+    _assert_files_contain_all(("docs/book-improvement-blueprint.md",), required_markers)
+
+
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
     required_markers = (
         "Blocker Waiver / Decision Log Draft",
