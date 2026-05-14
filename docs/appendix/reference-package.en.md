@@ -20,6 +20,9 @@ This is the canonical page for the package. The README keeps only a short quicks
 - **Advanced lifecycle / controls details** — the verification and lifecycle-inspection sections below.
 - **Source links** — the file lists under `agent_runtime_ref`.
 
+!!! summary "Reader-route contract"
+    Use this page as a map, not as a linear chapter: **Quick start** for the first run, **Architecture map** for the layers, **CLI examples** for reproducible commands, **Config contracts** for configuration review, **Advanced lifecycle-controls** for Part VIII scenarios, and **Runtime internals** only when you need to inspect a specific module.
+
 A practical reading path is:
 
 - Chapter 16 for the baseline runtime and capability session state,

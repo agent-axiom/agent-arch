@@ -493,6 +493,25 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
     _assert_files_contain_all(checked_files, required_errors)
 
 
+def test_reference_package_has_reader_route_contract() -> None:
+    required_markers = (
+        "Reader-route contract",
+        "Quick start",
+        "Architecture map",
+        "CLI examples",
+        "Config contracts",
+        "Advanced lifecycle-controls",
+        "Runtime internals",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_reference_package_rollout_errors_are_documented() -> None:
     required_errors = (
         "Rollout policy must be RolloutPolicy",
