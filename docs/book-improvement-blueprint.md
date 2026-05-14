@@ -181,6 +181,14 @@ First implementation slice: Chapter 1 decision frame, freshness metadata for Cha
 4. Run print/PDF readiness: figures, captions, Mermaid fallbacks, tables, code blocks, long lines, anchors, glossary, and cross-references.
 5. Establish book release discipline: community edition, Russian manuscript, EN editorial draft, and publisher proposal package.
 
+### Implementation status, 15 May 2026
+
+- **P0:** closed for the known review defects. Canonical book redirects are configured and tested; known EN/ZH Russian leak strings are guarded; ZH entry surfaces disclose draft-localization status; Chapter 1 extraction safety and fast-moving freshness metadata are tested.
+- **P1:** closed for the named safe-agent upgrades. MCP security boundary, A2A governance, threat model matrix, verifier contract fields, and governance-aware telemetry are documented across RU/EN/ZH and covered by docs-surface tests.
+- **P2:** mostly closed for the reviewed book-shape items. Chapter 1 now has a sample-chapter ending template; the plan defines the three canonical case spines; Part VIII role-map material exists; the Reference Package has a reader-route contract. Remaining P2 work should be evidence-backed polish only, not another broad restructuring pass.
+- **P3:** publisher packet is drafted and internally gated. The packet now includes publisher-ready TOC, print/companion split, positioning memo, public-link record, sample export manifest, print/PDF readiness gate, release discipline, author-bio input brief, target-editor formatting brief, copy-edit handoff, blocker register, and waiver/decision log.
+- **Still blocked before external submission:** author bio/credential framing, independent sample copy-edit, target-specific sample decision, and target editor/imprint formatting. These require human/editorial input or explicit author waiver.
+
 ## Priority Order
 
 ### Phase A. Strategy
