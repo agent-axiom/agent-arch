@@ -56,6 +56,20 @@ And they need to:
 
 That means `A2A` appears not where you need "one more adapter," but where real agent boundaries already exist in the system.
 
+### 3.1. A2A Needs Governance, Not Just a Handoff Protocol
+
+If one agent can hand a task to another agent, the platform must govern not only the message but also trust between operational roles. Otherwise A2A quickly becomes an opaque delegation chain where nobody can explain who was allowed to act, which policy applied, or who owns the result.
+
+A minimal governance contract for A2A should record:
+
+- the identity of the calling agent and the executing agent;
+- the boundaries and lifetime of delegated authority;
+- capability discovery: which roles an agent may discover and call;
+- an audit trail for the handoff, intermediate status, and final result;
+- policy checks before delegation and before external side effects.
+
+The simple production test is this: if an incident review cannot reconstruct which agent delegated what to whom, under which policy, and with which scope, the A2A contour is not production-ready yet.
+
 ## 4. The Typical Mistake: Building Multi-Agent Too Early
 
 In practice, the confusion usually looks like this:
