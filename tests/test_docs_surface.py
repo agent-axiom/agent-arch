@@ -119,6 +119,52 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_part_viii_role_map_is_present_in_all_languages() -> None:
+    expected_by_file = {
+        "docs/book/part-viii/index.md": (
+            "Карта ролей этой части",
+            "Lifecycle frame",
+            "Change management",
+            "Assurance",
+            "Provenance",
+            "Retirement",
+            "Misalignment и insider risk",
+            "Behavioral/control evals",
+            "Observability",
+            "Inventory и registry",
+        ),
+        "docs/book/part-viii/index.en.md": (
+            "Role Map for This Part",
+            "Lifecycle frame",
+            "Change management",
+            "Assurance",
+            "Provenance",
+            "Retirement",
+            "Misalignment and insider risk",
+            "Behavioral/control evals",
+            "Observability",
+            "Inventory and registry",
+        ),
+        "docs/book/part-viii/index.zh.md": (
+            "这一部分的角色地图",
+            "生命周期框架",
+            "变更管理",
+            "保障闭环",
+            "来源追踪",
+            "退役",
+            "失配与内部人风险",
+            "行为/控制评测",
+            "可观测性",
+            "清单与注册表",
+        ),
+    }
+
+    for relative_path, markers in expected_by_file.items():
+        text = _read(relative_path)
+        missing = [marker for marker in markers if marker not in text]
+        assert not missing, f"{relative_path} missing role-map markers: {missing}"
+
+
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
         "Implementation status, 15 May 2026",
