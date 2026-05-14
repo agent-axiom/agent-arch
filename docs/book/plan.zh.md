@@ -16,6 +16,11 @@
 !!! example "编辑线索：support-triage"
     在当前已发布层里，support-triage 案例承担着贯穿全书的编辑线索。它把检索、工具执行、重复工单恢复、traces、SLO、评测门、ownership、运行时模块、能力策略、rollout gates、ADLC、保障、来源谱系、退役、失配控制、telemetry 和 registry 串在一起。这有助于检查全书结构没有碎成一组互不相干的主题。
 
+!!! summary "Case-spine map"
+    本书使用三个 canonical cases，但它们承担不同角色。**Support triage** 是主线案例，用来贯穿 write capabilities、approvals、duplicate-ticket recovery 和 production lifecycle。**Internal knowledge assistant** 是辅助案例，用来承载 retrieval、memory、access control、freshness 和 knowledge provenance。**Incident coordination** 是辅助案例，用来承载 traces、SLO、assurance loop、escalation 和 post-incident learning。
+
+    当某章引入新机制时，检查它强化的是哪条 case：support triage 对应 side effects，internal knowledge 对应 context quality，incident coordination 对应 response and governance。
+
 ## 结构
 
 ### 第一部分：基础

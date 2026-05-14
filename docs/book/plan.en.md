@@ -13,6 +13,11 @@ This page is about the structure and status of the book. If you need a reading r
 !!! example "Editorial thread: support-triage"
     In the current published layer, the support-triage case acts as the running editorial thread. It connects retrieval, tool execution, duplicate-ticket recovery, traces, SLOs, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. This helps verify that the book structure does not fragment into isolated topics.
 
+!!! summary "Case-spine map"
+    The book uses three canonical cases, but they have different jobs. **Support triage** is the main running case for write capabilities, approvals, duplicate-ticket recovery, and production lifecycle. **Internal knowledge assistant** is the secondary case for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is the secondary case for traces, SLOs, the assurance loop, escalation, and post-incident learning.
+
+    When a chapter introduces a new mechanism, check which case it strengthens: support triage for side effects, internal knowledge for context quality, and incident coordination for response and governance.
+
 ## Structure
 
 ### Part I. Foundations

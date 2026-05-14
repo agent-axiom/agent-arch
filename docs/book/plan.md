@@ -13,6 +13,11 @@
 !!! example "Редакционная нить: support-triage"
     В текущем опубликованном слое кейс support-triage работает как сквозной editorial thread. Он связывает retrieval, tool execution, duplicate-ticket recovery, traces, SLO, eval gates, ownership, runtime modules, capability policy, rollout gates, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это помогает проверять, что структура книги не распадается на отдельные темы.
 
+!!! summary "Case-spine map"
+    В книге есть три canonical cases, но у них разные роли. **Support triage** — главный сквозной кейс для write-capability, approvals, duplicate-ticket recovery и production lifecycle. **Internal knowledge assistant** — вторичный кейс для retrieval, memory, access control, freshness и knowledge provenance. **Incident coordination** — вторичный кейс для traces, SLO, assurance loop, escalation и post-incident learning.
+
+    Если глава вводит новый механизм, проверь, какой из этих cases она усиливает: support triage для side effects, internal knowledge для context quality, incident coordination для response and governance.
+
 ## Структура
 
 ### Часть I. Основания
