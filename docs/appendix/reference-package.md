@@ -20,6 +20,9 @@
 - **Расширенные lifecycle/controls детали** — разделы проверки и lifecycle-inspection ниже.
 - **Ссылки на исходники** — списки файлов в `agent_runtime_ref`.
 
+!!! summary "Reader-route contract"
+    Используй эту страницу как карту, а не как последовательную главу: **Quick start** для первого запуска, **Architecture map** для понимания слоев, **CLI examples** для воспроизводимых команд, **Config contracts** для review конфигураций, **Advanced lifecycle-controls** для Part VIII сценариев и **Runtime internals** только когда нужно сверить конкретный модуль.
+
 Практичный маршрут чтения такой:
 
 - Chapter 16 для baseline runtime и capability session state,

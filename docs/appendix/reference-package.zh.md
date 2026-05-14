@@ -20,6 +20,9 @@
 - **高级 lifecycle / controls 细节** — 后面的验证与 lifecycle-inspection 内容。
 - **源码链接** — `agent_runtime_ref` 文件列表。
 
+!!! summary "Reader-route contract"
+    把这一页当成地图，而不是线性章节：**Quick start** 用于首次运行，**Architecture map** 用于理解层次，**CLI examples** 用于可复现命令，**Config contracts** 用于配置审查，**Advanced lifecycle-controls** 用于第 VIII 部分场景，**Runtime internals** 只在需要核对具体模块时再读。
+
 一个实用的阅读路径是：
 
 - 第 16 章看基线运行时与能力会话状态，
