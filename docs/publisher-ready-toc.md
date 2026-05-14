@@ -143,6 +143,20 @@ Use this manifest when assembling the first external packet so the sample is rep
 
 **No-go signals:** stale public URL, mismatched source path, missing export date, missing packet version, or sending Chapter 13 as the first sample without a specific technical-credibility reason.
 
+## Sample Copy-Edit Handoff Brief Draft
+
+Use this brief when handing Chapter 1, and optionally Chapter 13, to an independent copy editor for print rhythm.
+
+**Copy-edit scope:** sentence flow, opening hook, paragraph cadence, transitions between failure story and architecture argument, consistency of `agent`, `workflow`, `runtime`, `policy`, `approval`, `trace`, `eval`, and `governance` terms, and whether the chapter can stand alone without site navigation.
+
+**Do not rewrite:** technical claims, case-spine roles, source references, companion-link boundaries, code identifiers, schema names, or the workflow-first / governed-systems thesis.
+
+**Questions for the editor:** where does the sample feel too dense, where does jargon appear before context, which paragraph should be shortened for print, and whether the ending template feels like a useful close rather than a checklist pasted onto the chapter.
+
+**Return format:** annotated sample, short summary of top 5 changes, unresolved questions, and any suggested cuts that would move material to the online companion.
+
+**No-go signals:** copy edits that weaken safety claims, remove the support-triage through-line, blur print vs companion boundaries, or turn the chapter into a framework tutorial.
+
 ## Editorial Compression Rules
 
 - Every print chapter needs one main question.

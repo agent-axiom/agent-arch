@@ -119,6 +119,24 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
+    required_markers = (
+        "Sample Copy-Edit Handoff Brief Draft",
+        "Copy-edit scope",
+        "sentence flow",
+        "opening hook",
+        "paragraph cadence",
+        "Do not rewrite",
+        "workflow-first / governed-systems thesis",
+        "Questions for the editor",
+        "Return format",
+        "top 5 changes",
+        "No-go signals",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_public_link_availability_record() -> None:
     required_markers = (
         "Public Link Availability Record",
