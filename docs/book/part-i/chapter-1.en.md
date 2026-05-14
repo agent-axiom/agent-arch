@@ -109,15 +109,15 @@ The signs in favor of an ordinary workflow look different:
 This is the most useful short frame to start with.
 
 !!! info "Fast decision: workflow, single-agent, or multi-agent"
-    Start with the least dynamic shape that can safely solve the problem:
+    Start with the least dynamic shape that can safely solve the problem.
 
-    | If the task looks like this | Start with this | Why |
-    | --- | --- | --- |
-    | Mostly known path | `workflow` | It is cheaper to operate, easier to test, and easier to explain. |
-    | Constrained choice of next step or tool | `single-agent loop` | It adds flexibility without an early complexity explosion. |
-    | Independent subtasks with different contexts and owners | `multi-agent` | It separates responsibility and context only when that separation is real. |
+    **Mostly known path.** Start with `workflow`: it is cheaper to operate, easier to test, and easier to explain.
 
-In text-only form, the same rule is: known path — `workflow`; constrained next-step choice — `single-agent loop`; independent subtasks with different owners — only then `multi-agent`.
+    **Constrained choice of next step or tool.** Use a `single-agent loop`: it adds flexibility without an early complexity explosion.
+
+    **Independent subtasks with different contexts and owners.** Only then consider `multi-agent`: it separates responsibility and context when that separation is real.
+
+Text-only formula: known path — `workflow`; constrained next-step choice — `single-agent loop`; independent subtasks with different owners — only then `multi-agent`.
 
 There is one more practical rule:
 

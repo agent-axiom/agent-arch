@@ -1,6 +1,6 @@
 # Sources
 
-Below is the main set of primary sources used by the current version of the book. Access date: **April 22, 2026**.
+Below is the main set of primary sources used by the current version of the book. Last editorial source review: **May 14, 2026**.
 
 !!! info "How to read this list"
     It is useful to separate these sources not only by topic, but also by the strength of support they provide:
