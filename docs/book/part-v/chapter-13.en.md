@@ -77,6 +77,19 @@ A useful refinement from recent verifier work is that offline evals should not d
 
 Otherwise the team cannot tell the difference between a run that behaved correctly but was blocked by the environment, and a run that reached the nominal result through a weak or unsafe path.
 
+That is why the practical `verifier contract` should be explicit rather than hidden inside a judge prompt. A minimal contract should include:
+
+- `rubric_version`, so the team knows which grading rules produced the verdict;
+- `process_score`, which grades the execution path rather than only the final result;
+- `outcome_score`, which grades the actual user or business outcome;
+- `failure_attribution`, including `controllable` / `uncontrollable` and the concrete failing layer;
+- `judge_human_agreement`, so the automated judge stays calibrated against human review;
+- `false_positive_budget` and `false_negative_budget`, because different rollout gates have different error costs;
+- `calibration_dataset_id`, so judge, prompt, or rubric changes can be replayed on a stable set;
+- `replay_protocol`, which explains how to recover traces, inputs, policy bundle, and artifact version for a disputed verdict.
+
+That contract turns the verifier from a free-form comment into a release-bearing artifact: it can be versioned, compared across releases, and used as a basis for blocking rollout.
+
 ## 3. Online Evals Matter Because the Real World Is Always Larger Than the Test Set
 
 Even very good offline evals do not cover everything that happens in production:

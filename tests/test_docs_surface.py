@@ -119,6 +119,28 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_verifier_contract_fields_are_documented() -> None:
+    required_fields = (
+        "rubric_version",
+        "process_score",
+        "outcome_score",
+        "failure_attribution",
+        "judge_human_agreement",
+        "false_positive_budget",
+        "false_negative_budget",
+        "calibration_dataset_id",
+        "replay_protocol",
+    )
+    checked_files = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), required_fields)
+
+
 def test_agent_threat_model_matrix_covers_required_classes() -> None:
     required_threats = (
         "Prompt injection",
