@@ -119,6 +119,22 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_external_submission_blocker_register() -> None:
+    required_markers = (
+        "External Submission Blocker Register",
+        "not externally sendable",
+        "Author bio and credential framing",
+        "Independent sample copy-edit",
+        "Sample selection",
+        "Target editor / imprint formatting",
+        "Owner/input needed",
+        "Packet action when closed",
+        "explicitly waived by the author",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
     required_markers = (
         "Sample Copy-Edit Handoff Brief Draft",

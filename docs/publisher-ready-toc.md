@@ -357,3 +357,16 @@ Still needs human/editorial input before external submission:
 - independent copy-edit of the selected sample chapter for print rhythm;
 - decision on whether to send Chapter 1 only or include Chapter 13 as a secondary technical sample;
 - final publisher-specific formatting after the target editor or imprint is chosen.
+
+## External Submission Blocker Register
+
+The packet is drafted, link-checked, and internally gated, but it should not be sent externally until these human/editorial blockers are closed.
+
+| Blocker | Current state | Owner/input needed | Packet action when closed |
+| --- | --- | --- | --- |
+| Author bio and credential framing | open | human author supplies preferred name, role, public links, and credential constraints | replace placeholder bio and cover-note credential sentence |
+| Independent sample copy-edit | open | copy editor returns annotated Chapter 1 sample and top 5 changes | apply accepted edits and update sample export date |
+| Sample selection | default chosen, not target-specific | editor/imprint policy or author decision confirms Chapter 1 only vs Chapter 1 plus Chapter 13 | freeze attachment list and proposal order |
+| Target editor / imprint formatting | open | target editor, imprint, submission channel, attachment rules, and page limits | tailor cover note, file names, and proposal format |
+
+**Submission state:** not externally sendable until all four blockers are closed or explicitly waived by the author.
