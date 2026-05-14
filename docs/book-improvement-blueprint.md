@@ -143,6 +143,44 @@ Push to appendix/reference/runtime where appropriate:
 - exhaustive examples
 - implementation details that interrupt reading flow
 
+## Review-Driven Remediation Plan, 14 May 2026
+
+This plan turns the external editorial review into a controlled implementation queue. Items are ordered by reader trust first, then by architectural authority, then by publisher readiness.
+
+### P0. Trust-breaking surface defects
+
+1. **Canonical routing.** Keep `/book`, `/en/book`, and `/zh/book` redirect coverage explicit in `canonical-redirects.js` and tests; verify generated 404 fallback behavior after every build.
+2. **Deep localization cleanup.** Treat Russian leftovers in EN/ZH nav, book, appendix, and reference pages as blocking defects; keep regression tests for known leak strings such as `Глава`, `План интеграции идей Google`, and `Схема`.
+3. **ZH positioning.** Until a full Chinese editorial pass is scheduled, describe ZH as a draft localization preview rather than a publisher-ready edition.
+4. **Rendering/export QA.** Prioritize extraction-safe surfaces in Chapter 1, Chapter 13, the Reference page, and Chapter 26. Prefer prose cards or explicit fallbacks over dense tables where the frame must survive HTML, PDF, print, and plain-text extraction.
+5. **Freshness metadata.** Fast-moving chapters and source/status pages must carry `last reviewed`, `next review`, and a short change note.
+
+First implementation slice: Chapter 1 decision frame, freshness metadata for Chapter 13 / Part VIII / Sources / What’s New, and regression tests for those surfaces.
+
+### P1. Safe-agent practice upgrades
+
+1. Add a mini-section that treats **MCP as a security boundary**, not only an integration convenience.
+2. Add a mini-section on **A2A governance and agent-to-agent trust**: identity, delegation, capability discovery, audit, and policy enforcement between agents.
+3. Add a compact **agent-system threat model matrix** covering prompt injection, indirect injection, RAG poisoning, memory poisoning, tool abuse, confused deputy, excessive agency, data exfiltration, denial of wallet, cascading multi-agent failure, and supply-chain compromise.
+4. Strengthen the verifier contract with rubric version, process score, outcome score, failure attribution, judge-human agreement, false-positive / false-negative budget, calibration dataset, and replay protocol.
+5. Extend Chapter 26 from observability toward **governance-aware telemetry**: telemetry that feeds containment, rollout gates, policy decisions, and incident response.
+
+### P2. Book-shape improvements
+
+1. Make Chapter 1 the sample chapter: clean opening, stable decision frame, stronger ending, and a diagram/fallback pair that survives export.
+2. Thread the three canonical cases — support triage, internal knowledge, incident coordination — through trust boundaries, memory, tool gateway, evals, rollout, registry, and retirement.
+3. Compress Part VIII with a role map: lifecycle governance = state transitions; assurance = containment/response; provenance = lineage; observability = evidence substrate; evals = release judgment; registry = ownership/accountability.
+4. Restructure the Reference Package page into quick start, architecture map, CLI examples, config contracts, advanced lifecycle/controls, and runtime internals.
+5. Add a chapter-ending template: what to remember, common mistakes, what to check in your system, companion assets, and what to read next.
+
+### P3. Publisher package
+
+1. Create a publisher-ready TOC separate from the web TOC.
+2. Split manuscript content from online companion material.
+3. Prepare a one-page positioning memo: title, subtitle, reader, problem, why now, unique angle, comparable titles, author credibility, status, and companion assets.
+4. Run print/PDF readiness: figures, captions, Mermaid fallbacks, tables, code blocks, long lines, anchors, glossary, and cross-references.
+5. Establish book release discipline: community edition, Russian manuscript, EN editorial draft, and publisher proposal package.
+
 ## Priority Order
 
 ### Phase A. Strategy

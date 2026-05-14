@@ -119,6 +119,94 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_chapter_1_decision_frame_is_extraction_safe() -> None:
+    checked_files = (
+        "docs/book/part-i/chapter-1.md",
+        "docs/book/part-i/chapter-1.en.md",
+        "docs/book/part-i/chapter-1.zh.md",
+    )
+    forbidden_table_headers = (
+        "| Как выглядит задача |",
+        "| If the task looks like this |",
+        "| 任务看起来像什么 |",
+    )
+    required_text_markers = (
+        "Короткая текстовая формула",
+        "Text-only formula",
+        "文本版公式",
+    )
+
+    for path in checked_files:
+        text = _read(path)
+        assert not any(header in text for header in forbidden_table_headers), path
+    for path, marker in zip(checked_files, required_text_markers, strict=True):
+        assert marker in _read(path), (path, marker)
+
+
+def test_fast_moving_pages_have_may_2026_review_metadata() -> None:
+    fast_moving_pages = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+        "docs/book/part-viii/chapter-20.md",
+        "docs/book/part-viii/chapter-20.en.md",
+        "docs/book/part-viii/chapter-20.zh.md",
+        "docs/book/part-viii/chapter-21.md",
+        "docs/book/part-viii/chapter-21.en.md",
+        "docs/book/part-viii/chapter-21.zh.md",
+        "docs/book/part-viii/chapter-22.md",
+        "docs/book/part-viii/chapter-22.en.md",
+        "docs/book/part-viii/chapter-22.zh.md",
+        "docs/book/part-viii/chapter-24.md",
+        "docs/book/part-viii/chapter-24.en.md",
+        "docs/book/part-viii/chapter-24.zh.md",
+        "docs/book/part-viii/chapter-25.md",
+        "docs/book/part-viii/chapter-25.en.md",
+        "docs/book/part-viii/chapter-25.zh.md",
+        "docs/book/part-viii/chapter-26.md",
+        "docs/book/part-viii/chapter-26.en.md",
+        "docs/book/part-viii/chapter-26.zh.md",
+        "docs/book/part-viii/chapter-27.md",
+        "docs/book/part-viii/chapter-27.en.md",
+        "docs/book/part-viii/chapter-27.zh.md",
+    )
+    stale_markers = (
+        "11 апреля 2026 года",
+        "April 11, 2026",
+        "2026 年 4 月 11 日",
+    )
+
+    for path in fast_moving_pages:
+        text = _read(path)
+        assert not any(marker in text for marker in stale_markers), path
+        assert any(
+            marker in text
+            for marker in (
+                "14 мая 2026 года",
+                "May 14, 2026",
+                "2026 年 5 月 14 日",
+            )
+        ), path
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+            "docs/whats-new.md",
+            "docs/whats-new.en.md",
+            "docs/whats-new.zh.md",
+        ),
+        ("2026",),
+    )
+    assert "22 апреля 2026 года" not in _read("docs/appendix/sources.md")
+    assert "April 22, 2026" not in _read("docs/appendix/sources.en.md")
+    assert "2026 年 4 月 22 日" not in _read("docs/appendix/sources.zh.md")
+    assert "29 апреля 2026 года" not in _read("docs/whats-new.md")
+    assert "April 29, 2026" not in _read("docs/whats-new.en.md")
+    assert "2026 年 4 月 29 日" not in _read("docs/whats-new.zh.md")
+
+
 def test_evidence_model_spine_is_present_in_key_chapters() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": "Модель доказательности этой главы",

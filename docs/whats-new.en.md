@@ -2,9 +2,15 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of April 29, 2026._
+_Current as of May 14, 2026._
 
 ## Book
+
+### Editorial QA pass on May 14, 2026
+
+The first publisher-readiness QA package is now closed: the Chapter 1 decision frame was moved from a table into extraction-safe prose for HTML/PDF/plain-text surfaces, and fast-moving chapters, Sources, and What’s New now carry a fresh editorial review date.
+
+Why it matters: the external book surface now depends less on table rendering quirks and is clearer about when the fast-moving agent-security sections were reviewed.
 
 ### Part VIII on the lifecycle of agent systems
 
