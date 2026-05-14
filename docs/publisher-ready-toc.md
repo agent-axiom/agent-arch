@@ -225,6 +225,16 @@ Use these links in the final pitch packet after a fresh availability check:
 
 Pitch usage: send the public site and the two sample chapters first; keep the source/runtime/test links as proof points for editors who want to verify that the companion is concrete.
 
+## Public Link Availability Record
+
+Last checked: **2026-05-14** for packet version `publisher-packet-2026-05`.
+
+Checked links: public book site, English landing page, Chinese landing page, Chapter 1 sample, Chapter 13 technical sample, reference runtime source, runtime README, runtime configs, and runtime tests.
+
+Result: all checked public links returned HTTP 200 during the packet-readiness pass.
+
+Before external submission, rerun the check and update this record if any URL, branch, or packet version changes.
+
 ## Pitch Packet Checklist
 
 Before sending to a publisher:
