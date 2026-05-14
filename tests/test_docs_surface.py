@@ -119,6 +119,24 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_author_bio_input_brief() -> None:
+    required_markers = (
+        "Author Bio Input Brief Draft",
+        "Required inputs",
+        "preferred author name",
+        "production/engineering background",
+        "public project links",
+        "Tone constraints",
+        "avoid inflated authority claims",
+        "Bio slots to prepare",
+        "50-word short bio",
+        "100-word proposal bio",
+        "No-go signals",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
         "Sample Chapter Export Manifest Draft",
