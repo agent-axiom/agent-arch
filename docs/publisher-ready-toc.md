@@ -240,6 +240,25 @@ Default packet order:
 
 Default recommendation: lead with Chapter 1 only. It carries the thesis and reads best as a first editorial sample. Keep Chapter 13 ready as a second attachment or follow-up when the conversation turns to technical credibility.
 
+## Submission Release Discipline Draft
+
+Treat the publisher packet as a small release, not as a loose collection of notes.
+
+**Packet version:** `publisher-packet-2026-05` until a target editor or imprint requires a different format.
+
+**Freeze scope before sending:** cover note, one-page positioning memo, publisher-ready TOC, selected sample chapter, author/platform credibility note, comparable-books note, print/companion split, and public links.
+
+**Pre-send gates:**
+
+- author bio and credential framing are final enough for the chosen editor;
+- selected sample chapter has had an independent print-rhythm copy-edit;
+- public site, sample-chapter links, repository links, runtime links, and test links have passed a fresh availability check;
+- Chinese surfaces remain labeled as draft localization preview unless a finished Chinese edition is actually prepared;
+- packet attachments match the order in “Recommended Submission Packet Order”;
+- no runtime internals, validation-error catalogs, or long schema tables are moved into the print manuscript packet by accident.
+
+**No-go signals:** missing author bio, unverified links, unclear sample selection, publisher-specific format not applied, or any claim that implies the Chinese layer is a finished edition.
+
 ## Pitch Packet Status
 
 Drafted and ready for editorial assembly:
