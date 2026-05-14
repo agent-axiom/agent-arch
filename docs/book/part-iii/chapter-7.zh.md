@@ -71,6 +71,8 @@
 !!! example "贯穿案例：应该取回什么"
     在支持分诊案例里，检索不应该简单地把客户过去的所有互动都塞回提示。对当前运行真正有用的上下文，是最近仍然打开的工单、经过验证的用户画像事实（比如偏好语言），以及当前版本支持 playbook 的相关摘录。旧草稿、未经审查的投诉和过期摘要，要么进入后台压缩流程，要么完全不要进入提示。
 
+**Retrieval case-spine note：**同一个 retrieval loop 应该用三个 canonical cases 来测试。Support triage 考验 current ticket state 和 approved playbooks；internal knowledge assistant 考验 source attribution、freshness windows、tenant filters 和 stale-index detection；incident coordination 考验 current incident timeline、owner handoffs、escalation status，以及哪些 post-incident facts 会被压缩成 durable lessons。
+
 ## 3. 一个好的提示爱的是高密度信号，不是完整性
 
 人很容易以为“上下文越多，智能体越聪明”。实践里，情况往往相反：你塞进提示的噪音越多，模型越难抓住真正的优先级。

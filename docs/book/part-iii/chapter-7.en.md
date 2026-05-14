@@ -71,6 +71,8 @@ There is also a useful operational signal here: if a support agent worked well f
 !!! example "Case thread: what to retrieve"
     In the support-triage case, retrieval should not simply pull every past customer interaction back into the prompt. For the current run, the useful context is the latest open tickets, a verified profile fact such as preferred language, and a current excerpt from the support playbook. Old drafts, unreviewed complaints, and stale summaries should either move through background compaction or stay out of the prompt entirely.
 
+**Retrieval case-spine note:** the same retrieval loop should be tested against all three canonical cases. Support triage stresses current ticket state and approved playbooks; internal knowledge assistant stresses source attribution, freshness windows, tenant filters, and stale-index detection; incident coordination stresses current incident timeline, owner handoffs, escalation status, and which post-incident facts are compacted into durable lessons.
+
 ## 3. A Good Prompt Loves Signal Density, Not Completeness
 
 It is very tempting to think "the more context, the smarter the agent." In practice, the opposite is often true: the more garbage you put into the prompt, the worse the model holds priorities.
