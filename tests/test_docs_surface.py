@@ -358,6 +358,28 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_chapter_4_gateway_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Gateway case-spine note",
+        "Support triage",
+        "internal knowledge assistant",
+        "incident coordination",
+        "governed writes",
+        "scoped reads",
+        "retrieval limits",
+        "escalation tools",
+        "notification tools",
+        "incident state",
+    )
+    checked_files = (
+        "docs/book/part-ii/chapter-4.md",
+        "docs/book/part-ii/chapter-4.en.md",
+        "docs/book/part-ii/chapter-4.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_13_eval_suite_threads_three_canonical_cases() -> None:
     required_markers = (
         "Eval case-spine note",
