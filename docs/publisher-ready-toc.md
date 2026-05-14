@@ -241,7 +241,7 @@ Pitch usage: send the public site and the two sample chapters first; keep the so
 
 ## Public Link Availability Record
 
-Last checked: **2026-05-14** for packet version `publisher-packet-2026-05`.
+Last checked: **2026-05-15** for packet version `publisher-packet-2026-05`.
 
 Checked links: public book site, English landing page, Chinese landing page, Chapter 1 sample, Chapter 13 technical sample, reference runtime source, runtime README, runtime configs, and runtime tests.
 
