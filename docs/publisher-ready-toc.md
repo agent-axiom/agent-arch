@@ -370,3 +370,15 @@ The packet is drafted, link-checked, and internally gated, but it should not be 
 | Target editor / imprint formatting | open | target editor, imprint, submission channel, attachment rules, and page limits | tailor cover note, file names, and proposal format |
 
 **Submission state:** not externally sendable until all four blockers are closed or explicitly waived by the author.
+
+## Blocker Waiver / Decision Log Draft
+
+Use this log if the author decides to waive a blocker or make a target-specific packet decision. Do not remove the blocker register; record why the exception is safe enough for the chosen submission.
+
+| Date | Decision | Applies to blocker | Decider | Rationale | Follow-up |
+| --- | --- | --- | --- | --- | --- |
+| TBD | no waivers yet | n/a | n/a | all four blockers remain open | collect author/editor inputs before external submission |
+
+**Waiver rules:** every waiver needs a named decider, date, scope, rationale, and follow-up owner. Waivers must not override factual constraints: no invented author credentials, no unverified links, no claim that the Chinese layer is a finished edition, and no promise that the companion runtime is a production framework.
+
+**No-go signals:** anonymous waiver, global waiver without scope, waived link check after URLs changed, waived copy-edit after substantive sample edits, or waiver text that contradicts the packet's governed-systems positioning.
