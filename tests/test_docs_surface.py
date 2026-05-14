@@ -358,6 +358,26 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_evidence_spine_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Case-spine routing note",
+        "Support triage",
+        "internal knowledge assistant",
+        "incident coordination",
+        "approvals",
+        "retrieval provenance",
+        "response ownership",
+        "post-incident rollout judgment",
+    )
+    checked_files = (
+        "docs/book/part-v/evidence-spine.md",
+        "docs/book/part-v/evidence-spine.en.md",
+        "docs/book/part-v/evidence-spine.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
