@@ -173,7 +173,7 @@ def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
 def test_publisher_packet_has_public_link_availability_record() -> None:
     required_markers = (
         "Public Link Availability Record",
-        "Last checked: **2026-05-14**",
+        "Last checked: **2026-05-15**",
         "publisher-packet-2026-05",
         "public book site",
         "Chapter 1 sample",
