@@ -167,6 +167,20 @@ Credibility points to emphasize:
 
 Bio gap to fill before submission: add a short human author bio with role, relevant production/engineering background, public writing or project links, and any constraints on how personal credentials should be presented.
 
+## Author Bio Input Brief Draft
+
+Before this packet becomes external email copy, collect the human-authored facts that should not be invented by the manuscript artifact.
+
+**Required inputs:** preferred author name, current role or independent label, 2-3 sentence production/engineering background, relevant public project links, public writing/talk links if any, and geographic/language framing if the author wants it included.
+
+**Optional inputs:** prior books or publications, notable systems shipped, open-source maintainership, security/reliability/AI platform experience, and communities or companies that can be named publicly.
+
+**Tone constraints:** avoid inflated authority claims, unverifiable employment claims, private client details, or credentials that cannot be shown to an editor. Prefer concrete artifact-backed credibility: public book site, runnable reference runtime, tests, schemas, and maintained companion material.
+
+**Bio slots to prepare:** one-line byline, 50-word short bio, 100-word proposal bio, and one credential sentence for the cover note.
+
+**No-go signals:** missing preferred name, unverifiable claims, private employer/client details, or a bio that makes the project sound like a vendor framework rather than a systems architecture book.
+
 ## Comparable Books Draft
 
 Use these as shelf-positioning references, not as direct substitutes:
