@@ -88,7 +88,21 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 当你有的不是一个运行时 + 一个集成，而是一组能力时，这一点就尤其重要。
 
-### 4.1. 最好不要把 MCP host、client 和 server 搞混
+### 4.1. MCP 是安全边界，不只是方便的连接器
+
+一旦 MCP 承载了对数据、写入工具或执行环境的访问，它就变成了安全边界。穿过这条边界的不只是有用的 tool results，也可能是恶意指令、被污染的工具描述、过宽的 OAuth scopes、confused-deputy 路径，以及 MCP server 本身带来的供应链风险。
+
+这条边界的实践契约至少要回答五个问题：
+
+- 谁拥有这个 MCP server 及其生命周期；
+- 它暴露哪些 tools/resources，哪些写入操作需要 approval；
+- server 获得哪些 scopes、network paths 和 sandbox limits；
+- runtime 如何在把 tool descriptions 和 tool return values 交给模型之前进行验证；
+- 哪些 telemetry 能证明这次调用背后的 agent run、identity 和 policy decision。
+
+如果这些答案不存在，MCP 并不会因此不再是风险；它只是变成了平台表面里的隐式 trust boundary。
+
+### 4.2. 最好不要把 MCP host、client 和 server 搞混
 
 MCP 周围常常会出现一些没必要的混乱，因为这些词听起来都很熟，但它们在系统里的角色其实很具体。
 

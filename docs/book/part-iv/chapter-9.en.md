@@ -88,7 +88,21 @@ In a good design, MCP gives you several benefits:
 
 That becomes especially valuable once you have not one runtime and one integration, but a set of capabilities you want to connect systematically rather than chaotically.
 
-### 4.1. It Helps Not to Confuse the MCP Host, Client, and Server
+### 4.1. MCP Is a Security Boundary, Not Just a Convenient Connector
+
+Once MCP carries access to data, write tools, or execution environments, it becomes a security boundary. Useful tool results can cross that boundary, but so can malicious instructions, poisoned tool descriptions, over-scoped OAuth grants, confused-deputy paths, and supply-chain risk from the server itself.
+
+The practical contract for that boundary should answer at least five questions:
+
+- who owns the MCP server and its lifecycle;
+- which tools/resources it exposes and which write operations require approval;
+- which scopes, network paths, and sandbox limits the server receives;
+- how the runtime validates tool descriptions and tool return values before giving them to the model;
+- which telemetry proves the agent run, identity, and policy decision behind the call.
+
+If those answers are missing, MCP does not stop being a risk. It becomes an implicit trust boundary inside the platform surface.
+
+### 4.2. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 

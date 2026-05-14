@@ -119,6 +119,38 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_mcp_a2a_security_governance_sections_are_present() -> None:
+    expected = {
+        "docs/book/part-iv/chapter-9.md": (
+            "MCP — это security boundary",
+            "tool descriptions и tool return values",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "MCP Is a Security Boundary",
+            "tool descriptions and tool return values",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "MCP 是安全边界",
+            "tool descriptions 和 tool return values",
+        ),
+        "docs/book/part-iv/practical-mcp-a2a.md": (
+            "A2A требует governance",
+            "delegated authority",
+        ),
+        "docs/book/part-iv/practical-mcp-a2a.en.md": (
+            "A2A Needs Governance",
+            "delegated authority",
+        ),
+        "docs/book/part-iv/practical-mcp-a2a.zh.md": (
+            "A2A 需要治理",
+            "delegated authority",
+        ),
+    }
+
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
+
+
 def test_chapter_1_decision_frame_is_extraction_safe() -> None:
     checked_files = (
         "docs/book/part-i/chapter-1.md",
