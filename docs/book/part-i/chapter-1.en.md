@@ -217,6 +217,17 @@ If you do not yet have answers to those questions, it is too early to debate "ho
 !!! tip "Mini design-review checklist"
     Before calling the system production-ready, check five things: the execution pattern is the least dynamic one that still works; all risky side effects pass through a control layer; the write path has an owner; the trace shows identity, policy decision, and outcome; the first eval set covers retry, timeout, and incident-shaped failure.
 
+!!! summary "Chapter ending template"
+    **What to remember:** an agent product starts with a governed execution platform, not with maximum autonomy.
+
+    **Common mistakes:** starting with a multi-agent topology, mixing trusted instructions with user data, and giving the model a write path without a policy/approval layer.
+
+    **What to check in your system:** where a workflow is enough; which side effects require approval; which traces/evals are needed on day one.
+
+    **Companion assets:** use the reference architecture, production readiness checklist, and reference runtime as reviewable artifacts, not as a mandatory framework.
+
+    **What to read next:** move to Chapter 2 to break this principle into runtime, policy, memory, tools, telemetry, and ownership layers.
+
 ## 12. Short Practical Takeaway
 
 If you remember only one idea from this chapter, let it be this:

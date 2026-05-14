@@ -217,6 +217,17 @@ flowchart LR
 !!! tip "小型架构评审清单"
     在把系统称为可投入生产之前，先检查五件事：执行模式是否已经是仍然有效的最低动态形态；所有高风险副作用是否都经过控制层；写入路径是否有负责人；追踪是否显示身份、策略决策和结果；第一批评测集是否覆盖重试、超时，以及形态接近真实事故的失败。
 
+!!! summary "章节结尾模板"
+    **要记住什么：** agent product 应该从受治理的 execution platform 开始，而不是从最大 autonomy 开始。
+
+    **常见错误：** 一上来就设计 multi-agent topology，把 trusted instructions 和 user data 混在一起，或者在没有 policy/approval layer 的情况下把写入路径交给模型。
+
+    **检查自己的系统：** 哪里 workflow 已经足够；哪些 side effects 需要 approval；第一天就需要哪些 traces/evals。
+
+    **Companion assets：** 把 reference architecture、production readiness checklist 和 reference runtime 当作可审查工件，而不是必须采用的 framework。
+
+    **接下来读什么：** 进入第 2 章，把这个原则拆成 runtime、policy、memory、tools、telemetry 和 ownership layers。
+
 ## 12. 一个简短结论
 
 如果这一章你只记住一句话，那就记这句：

@@ -119,6 +119,38 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_chapter_1_has_sample_chapter_ending_template() -> None:
+    expected = {
+        "docs/book/part-i/chapter-1.md": (
+            "Шаблон завершения главы",
+            "Что запомнить",
+            "Типичные ошибки",
+            "Что проверить в своей системе",
+            "Companion assets",
+            "Что читать дальше",
+        ),
+        "docs/book/part-i/chapter-1.en.md": (
+            "Chapter ending template",
+            "What to remember",
+            "Common mistakes",
+            "What to check in your system",
+            "Companion assets",
+            "What to read next",
+        ),
+        "docs/book/part-i/chapter-1.zh.md": (
+            "章节结尾模板",
+            "要记住什么",
+            "常见错误",
+            "检查自己的系统",
+            "Companion assets",
+            "接下来读什么",
+        ),
+    }
+
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
+
+
 def test_chinese_entry_surfaces_disclose_draft_localization_status() -> None:
     checked_files = (
         "docs/index.zh.md",
