@@ -119,6 +119,23 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
+    required_markers = (
+        "Blocker Waiver / Decision Log Draft",
+        "no waivers yet",
+        "all four blockers remain open",
+        "Waiver rules",
+        "named decider",
+        "date",
+        "scope",
+        "follow-up owner",
+        "No-go signals",
+        "governed-systems positioning",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_external_submission_blocker_register() -> None:
     required_markers = (
         "External Submission Blocker Register",
