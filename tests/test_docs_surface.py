@@ -119,6 +119,22 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_chinese_entry_surfaces_disclose_draft_localization_status() -> None:
+    checked_files = (
+        "docs/index.zh.md",
+        "docs/start-here.zh.md",
+        "docs/book/plan.zh.md",
+    )
+    required_markers = (
+        "Draft localization preview",
+        "finished Chinese edition",
+        "正式出版前",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), required_markers)
+
+
 def test_governance_aware_telemetry_contract_is_documented() -> None:
     required_fields = (
         "Governance-aware telemetry",
