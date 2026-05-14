@@ -119,6 +119,20 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_submission_release_discipline() -> None:
+    required_markers = (
+        "Submission Release Discipline Draft",
+        "publisher-packet-2026-05",
+        "Freeze scope before sending",
+        "Pre-send gates",
+        "fresh availability check",
+        "draft localization preview",
+        "No-go signals",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
