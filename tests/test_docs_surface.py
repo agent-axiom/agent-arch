@@ -119,6 +119,24 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
 
 
+def test_publisher_packet_has_public_link_availability_record() -> None:
+    required_markers = (
+        "Public Link Availability Record",
+        "Last checked: **2026-05-14**",
+        "publisher-packet-2026-05",
+        "public book site",
+        "Chapter 1 sample",
+        "Chapter 13 technical sample",
+        "reference runtime source",
+        "runtime README",
+        "runtime configs",
+        "runtime tests",
+        "HTTP 200",
+    )
+
+    _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
 def test_publisher_packet_has_target_editor_formatting_brief() -> None:
     required_markers = (
         "Target Editor / Imprint Formatting Brief Draft",
