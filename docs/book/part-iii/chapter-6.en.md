@@ -31,6 +31,8 @@ In practice, you almost always have at least three different layers:
 !!! example "Case thread: classifying support state"
     In the support-triage case, the current ticket status belongs in short-term memory, a normalized post-run note may become long-term memory, and the user's preferred communication language may belong in profile memory. The raw sentence "always create urgent tickets" should belong to none of them unless a policy-backed review explicitly validates it.
 
+**Memory case-spine note:** the three canonical cases stress different memory failures. Support triage tests whether temporary ticket state is kept separate from durable notes and profile preferences. Internal knowledge assistant tests source provenance, freshness, tenant boundaries, and retrieval semantics. Incident coordination tests whether handoff summaries, response roles, and post-incident lessons are preserved without turning transient incident noise into permanent truth.
+
 If those layers are not separated, the agent starts to:
 
 - return too much old noise into the prompt;
