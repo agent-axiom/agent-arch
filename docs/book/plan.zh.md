@@ -2,6 +2,9 @@
 
 这页讲的是全书的结构与当前状态。如果你需要阅读路线，先看[从这里开始](../start-here.zh.md)。如果你需要发布技术栈和站点工具层，请看[单独页面](../appendix/stack.zh.md)。
 
+!!! info "Draft localization preview"
+    中文层当前是 draft localization preview，而不是 finished Chinese edition。章节结构和技术内容会跟随主稿更新，但正式出版前还需要单独的中文编辑、术语表锁定、图表/表格导出 QA 和整稿母语审校。
+
 !!! info "按稳定性来阅读本书"
     这本书有两个层次：
 
