@@ -2,6 +2,9 @@
 
 This page is for quick working checks. If you do not want to reread an entire part before a design review, an agent launch, or a team discussion, start here.
 
+!!! note "Canonical checklist cases"
+    Use these checklist blocks as a fast route for the three canonical cases. **Support triage** starts with safety, tool gateway, approval, idempotency, and rollout checks. **Internal knowledge assistant** starts with memory, retrieval, source grounding, tenant boundary, and observability checks. **Incident coordination** starts with rollout, observability, incident review, response ownership, and post-incident learning checks.
+
 ## Safety checklist
 
 - Are trust boundaries explicit between user input, memory, tools, and external systems?

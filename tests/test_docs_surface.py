@@ -1707,6 +1707,36 @@ def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_cheat_sheets_surface_three_canonical_checklist_cases() -> None:
+    required_markers = (
+        "Canonical checklist cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "fast route",
+        "safety",
+        "tool gateway",
+        "approval",
+        "idempotency",
+        "rollout checks",
+        "memory",
+        "retrieval",
+        "source grounding",
+        "tenant boundary",
+        "observability checks",
+        "incident review",
+        "response ownership",
+        "post-incident learning checks",
+    )
+    checked_files = (
+        "docs/appendix/cheat-sheets.md",
+        "docs/appendix/cheat-sheets.en.md",
+        "docs/appendix/cheat-sheets.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

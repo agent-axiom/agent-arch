@@ -2,6 +2,9 @@
 
 这页是给实际工作快速使用的。如果你不想在设计评审、上线前检查或团队讨论前重读整整一部分内容，就先看这里。
 
+!!! note "Canonical checklist cases"
+    Use these checklist blocks 作为三个 canonical cases 的 fast route。**Support triage** 从 safety、tool gateway、approval、idempotency 和 rollout checks 开始。**Internal knowledge assistant** 从 memory、retrieval、source grounding、tenant boundary 和 observability checks 开始。**Incident coordination** 从 rollout、observability、incident review、response ownership 和 post-incident learning checks 开始。
+
 ## 安全检查清单
 
 - 用户输入、记忆、工具和外部系统之间是否有明确的信任边界？

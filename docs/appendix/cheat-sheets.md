@@ -2,6 +2,9 @@
 
 Эта страница нужна для быстрых рабочих проверок. Если тебе не хочется перечитывать целую часть книги перед ревью дизайна, запуском агента или обсуждением с командой, начни отсюда.
 
+!!! note "Canonical checklist cases"
+    Используй эти checklist blocks как fast route для трех canonical cases. **Support triage** начинается с safety, tool gateway, approval, idempotency и rollout checks. **Internal knowledge assistant** начинается с memory, retrieval, source grounding, tenant boundary и observability checks. **Incident coordination** начинается с rollout, observability, incident review, response ownership и post-incident learning checks.
+
 ## Safety checklist
 
 - Есть ли у агента явные trust boundaries между вводом пользователя, памятью, инструментами и внешними системами?
