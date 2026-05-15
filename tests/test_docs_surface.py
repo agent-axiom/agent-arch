@@ -40,6 +40,20 @@ def _assert_files_contain_all(paths: tuple[str, ...], expected: tuple[str, ...])
             assert item in text, (path, item)
 
 
+def test_all_book_chapters_carry_case_spine_markers() -> None:
+    chapter_paths = sorted(Path("docs/book").glob("part-*/chapter-*.md"))
+
+    assert chapter_paths
+
+    missing = []
+    for path in chapter_paths:
+        text = _read(str(path))
+        if "case-spine" not in text.lower() and "case spine" not in text.lower():
+            missing.append(str(path))
+
+    assert missing == []
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
