@@ -620,6 +620,30 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Assurance case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "finding and response record",
+        "containment paths",
+        "duplicate-outcome detection",
+        "approval-only containment",
+        "retrieval-poisoning signal",
+        "tenant-boundary containment",
+        "notification throttling",
+        "post-incident control update",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-21.md",
+        "docs/book/part-viii/chapter-21.en.md",
+        "docs/book/part-viii/chapter-21.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

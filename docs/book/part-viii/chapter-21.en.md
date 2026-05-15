@@ -108,6 +108,8 @@ This is an important SDLC-like point: findings must live as managed engineering 
 !!! example "Case thread: finding after a repeated duplicate"
     If a red-team drill reproduces the duplicate ticket through timeout and retry, it is not an “interesting observation”; it is a managed finding. The record should include the exploit path, affected capability `create_support_ticket`, risk level, owner, temporary mitigation such as approval-only mode, a detection rule for duplicate-outcome growth, and a remediation deadline. The assurance loop closes the finding only after the updated eval, policy gate, and confirmed traceable outcome.
 
+**Assurance case-spine note:** the finding and response record should close all three canonical cases through different containment paths. Support triage links duplicate-outcome detection, approval-only containment, `create_support_ticket` owner, updated eval, and traceable outcome. Internal knowledge assistant links retrieval-poisoning signal, source-grounding review, tenant-boundary containment, memory-write quarantine, and freshness remediation. Incident coordination links escalation abuse signal, notification throttling, responder-role owner, incident-state rollback, and post-incident control update.
+
 ## 5. Detection must look wider than error rate
 
 For ordinary services, detection often revolves around error rate, latency, and infrastructure signals. For agent systems, that is too narrow.
