@@ -1834,6 +1834,42 @@ def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_language_stack_surfaces_three_canonical_language_cases() -> None:
+    required_markers = (
+        "Canonical language cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Language choice",
+        "canonical cases",
+        "Python/TypeScript",
+        "behavior iteration",
+        "tool gateway",
+        "approval service",
+        "idempotency control",
+        "audit trail",
+        "stricter platform services",
+        "retrieval experiments",
+        "eval loop",
+        "contract layer",
+        "memory/index service",
+        "source provenance",
+        "tenant-aware access",
+        "runtime reliability",
+        "trace ingestion pipeline",
+        "notification safety",
+        "response ownership",
+        "platform control",
+    )
+    checked_files = (
+        "docs/appendix/rust-vs-python-typescript.md",
+        "docs/appendix/rust-vs-python-typescript.en.md",
+        "docs/appendix/rust-vs-python-typescript.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

@@ -12,6 +12,9 @@
 - **Rust** для долговечных платформенных сервисов, где важны строгие контракты, производительность и надежность;
 - смешанный стек лучше полного идеологического выбора одного языка.
 
+!!! note "Canonical language cases"
+    Language choice должен проходить через три canonical cases, а не через вкус команды. **Support triage** обычно начинает с Python/TypeScript для behavior iteration, но выносит tool gateway, approval service, idempotency control и audit trail в stricter platform services, где Rust может быть уместен. **Internal knowledge assistant** держит retrieval experiments и eval loop ближе к Python, но требует contract layer для memory/index service, source provenance и tenant-aware access. **Incident coordination** сильнее давит на runtime reliability, trace ingestion pipeline, notification safety и response ownership, поэтому platform control может раньше потребовать Rust или другой строгий сервисный слой.
+
 ## Decision matrix
 
 | Критерий | Rust | Python | TypeScript |

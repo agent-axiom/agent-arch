@@ -12,6 +12,9 @@ For most teams in 2026, the practical setup looks like this:
 - **Rust** for long-lived platform services where strict contracts, performance, and reliability matter most;
 - a mixed stack is usually better than forcing a single-language ideology.
 
+!!! note "Canonical language cases"
+    Language choice should pass through the three canonical cases, not only team preference. **Support triage** often starts with Python/TypeScript for behavior iteration, but moves the tool gateway, approval service, idempotency control, and audit trail into stricter platform services where Rust may fit. **Internal knowledge assistant** keeps retrieval experiments and the eval loop close to Python, but needs a contract layer for the memory/index service, source provenance, and tenant-aware access. **Incident coordination** puts more pressure on runtime reliability, trace ingestion pipeline, notification safety, and response ownership, so platform control may need Rust or another strict service layer earlier.
+
 ## Decision matrix
 
 | Criterion | Rust | Python | TypeScript |
