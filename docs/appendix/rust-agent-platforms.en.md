@@ -9,6 +9,9 @@ As of 2026, it helps to separate two different questions:
 
 The first is already fairly strong. The second is still much less even.
 
+!!! note "Canonical Rust platform cases"
+    Rust infrastructure should prove its value against the three canonical cases. **Support triage** tests the tool gateway, policy enforcement service, approval queue service, idempotency semantics, and audit pipeline. **Internal knowledge assistant** tests memory/index layers, retrieval service boundaries, source provenance, tenant isolation, and trace processors. **Incident coordination** tests a long-lived runtime, MCP-compatible integration layer, egress control services, notification safety, and control-plane reliability.
+
 ## Where Rust is already a strong fit
 
 Rust is especially useful for components where you care about:

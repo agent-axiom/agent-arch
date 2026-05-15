@@ -1870,6 +1870,39 @@ def test_language_stack_surfaces_three_canonical_language_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
+    required_markers = (
+        "Canonical Rust platform cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Rust infrastructure",
+        "canonical cases",
+        "tool gateway",
+        "policy enforcement service",
+        "approval queue service",
+        "idempotency semantics",
+        "audit pipeline",
+        "memory/index layers",
+        "retrieval service boundaries",
+        "source provenance",
+        "tenant isolation",
+        "trace processors",
+        "long-lived runtime",
+        "MCP-compatible integration layer",
+        "egress control services",
+        "notification safety",
+        "control-plane reliability",
+    )
+    checked_files = (
+        "docs/appendix/rust-agent-platforms.md",
+        "docs/appendix/rust-agent-platforms.en.md",
+        "docs/appendix/rust-agent-platforms.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
