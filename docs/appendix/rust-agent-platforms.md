@@ -9,6 +9,9 @@ Rust уже стоит рассматривать как серьезный яз
 
 В первой теме картина уже сильная. Во второй она пока заметно менее ровная.
 
+!!! note "Canonical Rust platform cases"
+    Rust infrastructure должен доказывать пользу на трех canonical cases. **Support triage** проверяет tool gateway, policy enforcement service, approval queue service, idempotency semantics и audit pipeline. **Internal knowledge assistant** проверяет memory/index layers, retrieval service boundaries, source provenance, tenant isolation и trace processors. **Incident coordination** проверяет long-lived runtime, MCP-compatible integration layer, egress control services, notification safety и control-plane reliability.
+
 ## Где Rust действительно оправдан
 
 Rust особенно хорошо подходит для компонентов, где важны:

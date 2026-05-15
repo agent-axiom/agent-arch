@@ -9,6 +9,9 @@ Rust 现在已经值得被认真看作智能体系统基础设施层的一门语
 
 前者已经相当有说服力，后者仍然明显不够均衡。
 
+!!! note "Canonical Rust platform cases"
+    Rust infrastructure 应该通过三个 canonical cases 证明价值。**Support triage** 检查 tool gateway、policy enforcement service、approval queue service、idempotency semantics 和 audit pipeline。**Internal knowledge assistant** 检查 memory/index layers、retrieval service boundaries、source provenance、tenant isolation 和 trace processors。**Incident coordination** 检查 long-lived runtime、MCP-compatible integration layer、egress control services、notification safety 和 control-plane reliability。
+
 ## Rust 已经很适合哪些地方
 
 Rust 特别适合这些要求明显的组件：
