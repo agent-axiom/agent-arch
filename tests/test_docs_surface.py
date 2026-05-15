@@ -1200,6 +1200,34 @@ def test_part_iv_index_surfaces_three_execution_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_iii_index_surfaces_three_memory_case_routes() -> None:
+    required_markers = (
+        "Part III canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "memory/retrieval layer",
+        "temporary ticket state",
+        "duplicate-ticket context",
+        "approved playbook retrieval",
+        "source attribution",
+        "freshness window",
+        "tenant boundary",
+        "memory provenance",
+        "incident timeline",
+        "owner handoff summaries",
+        "escalation status",
+        "post-incident lessons",
+    )
+    checked_files = (
+        "docs/book/part-iii/index.md",
+        "docs/book/part-iii/index.en.md",
+        "docs/book/part-iii/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",

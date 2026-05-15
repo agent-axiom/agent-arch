@@ -11,6 +11,9 @@
 
     这三步合在一起，才构成一个可以被当作工程系统讨论的记忆层，而不是一句“给智能体加记忆”。
 
+!!! note "Part III canonical case routes"
+    在 memory/retrieval layer 中，三个 canonical cases 会检查不同风险。**Support triage** 检查 temporary ticket state、duplicate-ticket context 和 approved playbook retrieval。**Internal knowledge assistant** 检查 source attribution、freshness window、tenant boundary 和 memory provenance。**Incident coordination** 检查 incident timeline、owner handoff summaries、escalation status 和 post-incident lessons。
+
 <div class="book-cover" markdown="1">
 
 ![记忆与知识部分封面](../../assets/images/part-iii-memory.png)
