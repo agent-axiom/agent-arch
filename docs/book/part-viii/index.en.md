@@ -15,6 +15,9 @@ This part answers exactly those questions. It reads the agent system no longer a
 !!! example "Case thread in this part"
     The support-triage case now runs through the whole lifecycle arc: the duplicate-ticket fix becomes an ADLC change set, high-risk change packet, managed assurance finding, approved artifact bundle, retirement control for the old ticket writer, misalignment/control-eval scenario, detection-ready telemetry, and registry record with an owner. That lets the reader see that one incident should change not only code, but evidence, rollout, operations, and accountability.
 
+!!! note "Canonical lifecycle cases"
+    In this part, the three canonical cases split across different lifecycle questions. **Support triage** checks write-capability change packets, approvals, and duplicate-ticket recovery evidence. **Internal knowledge assistant** checks corpus ownership, freshness review, access control, and knowledge provenance. **Incident coordination** checks escalation authority, notification side effects, response ownership, and post-incident learning.
+
 !!! info "Short path through this part"
     If you want a fast pass, read it this way:
 

@@ -15,6 +15,9 @@
 !!! example "这一部分中的贯穿案例"
     support-triage 案例在这里贯穿完整生命周期弧线：重复工单修复会变成 ADLC 变更集、高风险变更包、受管理的保障 finding、已批准工件包、旧工单写入器的退役控制、失配/控制评测场景、可用于检测的 telemetry，以及带负责人的 registry record。这样读者能看到，一个事故应该改变的不只是代码，还包括 evidence、rollout、operations 和 accountability。
 
+!!! note "Canonical lifecycle cases"
+    在这一部分，三个 canonical cases 会拆到不同 lifecycle questions 上。**Support triage** 检查 write-capability change packets、approvals 和 duplicate-ticket recovery evidence。**Internal knowledge assistant** 检查 corpus ownership、freshness review、access control 和 knowledge provenance。**Incident coordination** 检查 escalation authority、notification side effects、response ownership 和 post-incident learning。
+
 !!! info "这一部分的快速路线"
     如果你想快速读完关键部分，可以这样走：
 

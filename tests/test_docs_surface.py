@@ -1182,6 +1182,33 @@ def test_reference_layer_surfaces_three_canonical_case_artifacts() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
+    required_markers = (
+        "Canonical lifecycle cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write-capability change packets",
+        "approvals",
+        "duplicate-ticket recovery evidence",
+        "corpus ownership",
+        "freshness review",
+        "access control",
+        "knowledge provenance",
+        "escalation authority",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/book/part-viii/index.md",
+        "docs/book/part-viii/index.en.md",
+        "docs/book/part-viii/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
