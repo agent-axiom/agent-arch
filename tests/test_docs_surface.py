@@ -1604,6 +1604,9 @@ def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
 
 
 def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
+    from agent_runtime_ref.config import load_agent_profile
+
+    agent, _ = load_agent_profile(ROOT / "agent_runtime_ref/configs/agent.yaml")
     required_markers = (
         "Canonical case runtime scope",
         "Support triage",
@@ -1622,10 +1625,10 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
         "response ownership",
         "post-incident learning",
         "runnable configs",
-        "agent_id `support-triage-ref`",
-        "`Support triage reference agent`",
-        "owner_team `agent_platform`",
-        "runtime_principal `svc-support-triage-ref`",
+        f"agent_id `{agent.agent_id}`",
+        f"`{agent.display_name}`",
+        f"owner_team `{agent.owner_team}`",
+        f"runtime_principal `{agent.runtime_principal}`",
         "policy, telemetry, lifecycle",
         "registry contracts",
     )
