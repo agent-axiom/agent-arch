@@ -2,6 +2,9 @@
 
 This page is a quick reference for the key terms used across the book. It does not replace the chapters, but it makes it easier to recall a term and jump to the right section.
 
+!!! note "Canonical glossary routes"
+    Use the glossary as a fast route through the three canonical cases. **Support triage** starts with Tool gateway, Approval gate, Policy gate, Capability catalog, Trace, and Eval dataset. **Internal knowledge assistant** starts with Retrieval, Long-term memory, Profile memory, Provenance, Trust boundary, and Egress policy. **Incident coordination** starts with Agent runtime, Control plane, Rollout gate, Trace, Span, and Approved inventory.
+
 ## Agent runtime
 
 The execution environment of the agent: the place where the run loop, context assembly, tool calls, policy checks, memory, and telemetry live.

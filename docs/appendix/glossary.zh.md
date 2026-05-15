@@ -2,6 +2,9 @@
 
 这页是整本书的快速术语参考。它不替代正文，但可以帮助你快速回忆一个词的含义，并跳到相关章节继续读。
 
+!!! note "Canonical glossary routes"
+    Use the glossary 作为三个 canonical cases 的 fast route。**Support triage** 从 Tool gateway、Approval gate、Policy gate、Capability catalog、Trace 和 Eval dataset 开始。**Internal knowledge assistant** 从 Retrieval、Long-term memory、Profile memory、Provenance、Trust boundary 和 Egress policy 开始。**Incident coordination** 从 Agent runtime、Control plane、Rollout gate、Trace、Span 和 Approved inventory 开始。
+
 ## 智能体运行时
 
 智能体的执行环境，也就是运行循环、上下文组装、工具调用、策略检查、记忆和遥测所在的地方。
