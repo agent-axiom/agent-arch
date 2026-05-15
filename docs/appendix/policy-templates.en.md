@@ -22,7 +22,7 @@ Treat them not as finished production YAML, but as a skeleton:
 !!! note "Canonical policy template cases"
     These templates are operational starters for the three canonical cases. **Support triage** starts with governed write capability, approval boundary, idempotency key, traceable write intent, and duplicate-ticket guard. **Internal knowledge assistant** starts with role-scoped retrieval, source references, grounding checks, tenant boundaries, and access-denied behavior. **Incident coordination** starts with controlled handoffs, current owner, notification approval, risky remediation disabled by default, and incident trace coverage.
 
-## Template 1. Support Triage Agent
+## Template 1. Support triage
 
 ### What the policy should enforce
 
@@ -75,7 +75,7 @@ output:
 - Does the trace show why the write path was selected?
 - Is there a stop condition for low confidence?
 
-## Template 2. Internal Knowledge Agent
+## Template 2. Internal knowledge assistant
 
 ### What the policy should enforce
 
@@ -120,7 +120,7 @@ output:
 - Can retrieval leak a private knowledge zone?
 - Do traces show which documents were actually used?
 
-## Template 3. Incident Coordination Agent
+## Template 3. Incident coordination
 
 ### What the policy should enforce
 
