@@ -1737,6 +1737,35 @@ def test_cheat_sheets_surface_three_canonical_checklist_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_community_roadmap_surfaces_three_canonical_roadmap_cases() -> None:
+    required_markers = (
+        "Canonical roadmap cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "next layer of value",
+        "richer trace examples",
+        "approval policy templates",
+        "duplicate-ticket evals",
+        "runnable high-risk scenario",
+        "knowledge scenario",
+        "retrieval policy template",
+        "memory eval patterns",
+        "source-grounding QA",
+        "incident trace examples",
+        "escalation/notification templates",
+        "response ownership checks",
+        "post-incident learning assets",
+    )
+    checked_files = (
+        "docs/appendix/community-roadmap.md",
+        "docs/appendix/community-roadmap.en.md",
+        "docs/appendix/community-roadmap.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
