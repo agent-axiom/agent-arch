@@ -74,6 +74,9 @@ These categories are useful not only for a ticket, but also for linking incident
 !!! example "Duplicate-ticket response path"
     For the running support-triage incident, first freeze `create_ticket` or switch it to mandatory approval, preserve `trace_id`, `session_id`, `approval_id`, `tool_principal`, `idempotency_key`, `bundle_id`, and `rollout_wave`, then check whether the side effect already happened. If status is unknown, mark the run as `side_effect_unknown`, do not blindly repeat the write, and turn the review into an eval/rollout gate before the next release.
 
+!!! note "Canonical response cases"
+    Incident response should choose different containment paths for the three canonical cases. **Support triage** first freezes write capability, preserves approval evidence, `idempotency_key`, side-effect status, and rollout wave. **Internal knowledge assistant** first narrows retrieval scope, pauses memory writes, preserves source provenance, tenant boundary evidence, and access-control decision. **Incident coordination** first records escalation status, notification side effects, response ownership, handoff state, and emergency rollback owner.
+
 ## 6. What to check in traces and events
 
 During first-pass investigation, the team should answer a few questions quickly:

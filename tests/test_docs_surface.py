@@ -1515,6 +1515,38 @@ def test_postmortem_template_surfaces_three_canonical_postmortem_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_incident_response_playbook_surfaces_three_canonical_response_cases() -> None:
+    required_markers = (
+        "Canonical response cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "containment paths",
+        "write capability",
+        "approval evidence",
+        "idempotency_key",
+        "side-effect status",
+        "rollout wave",
+        "retrieval scope",
+        "pauses memory writes",
+        "source provenance",
+        "tenant boundary evidence",
+        "access-control decision",
+        "escalation status",
+        "notification side effects",
+        "response ownership",
+        "handoff state",
+        "emergency rollback owner",
+    )
+    checked_files = (
+        "docs/appendix/incident-response-playbook.md",
+        "docs/appendix/incident-response-playbook.en.md",
+        "docs/appendix/incident-response-playbook.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
