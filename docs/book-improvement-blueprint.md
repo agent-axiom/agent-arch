@@ -79,9 +79,9 @@ Each connected chapter should make clear where it sits on that spine and what op
 
 ### 3. Case-driven narrative reinforcement
 Introduce 2 to 3 recurring canonical scenarios and thread them through major chapters:
-- support triage agent
-- internal enterprise knowledge assistant
-- high-risk action / approval-bound agent
+- Support triage
+- Internal knowledge assistant
+- Incident coordination
 
 Each major chapter should show:
 - how the scenario breaks at this maturity level

@@ -73,14 +73,14 @@ The mature problem is no longer one agent. It is governing many systems, contrac
 
 To make this arc memorable, the manuscript should repeatedly return to:
 
-1. Support triage agent
+1. Support triage
 - best for architecture, trust boundaries, rollout, observability, eval loop
 
-2. Internal enterprise knowledge assistant
+2. Internal knowledge assistant
 - best for memory discipline, retrieval, authorization, MCP governance, estate concerns
 
-3. Approval-bound high-risk action agent
-- best for policy, approval, delegated authorization, verifier trust, lifecycle governance
+3. Incident coordination
+- best for traces, SLOs, escalation, notification side effects, response ownership, post-incident learning, and lifecycle governance
 
 ## Where current journey is weak
 
