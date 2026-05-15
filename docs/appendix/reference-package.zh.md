@@ -36,6 +36,9 @@
 !!! example "support-triage 的运行时锚点"
     内置的 `support-triage-ref` 以可执行形式展示同一个贯穿案例：智能体身份、已批准的 `search_docs`/`create_ticket` 能力、审批等待、trace/session IDs、生命周期检查和评测导出。因此，书中的重复工单线索不只是 prose，也可以作为可运行的契约表面来审阅。
 
+!!! note "Canonical case runtime scope"
+    参考包把 **Support triage** 作为 runnable baseline，用来承载 write capabilities、approvals 和 duplicate-ticket recovery。**Internal knowledge assistant** 与 **Incident coordination** 仍是同一架构的 coverage lenses：前者检查 retrieval、memory、freshness 和 knowledge provenance，后者检查 traces、escalation、notification side effects、response ownership 和 post-incident learning。如果以后把它们也做成 runnable configs，它们应该复用同一组 policy, telemetry, lifecycle 和 registry contracts，而不是变成彼此分离的演示。
+
 最近的 contract updates 让这个表面更适合 review：delegated authorization context 会贯穿 CLI demos、sessions、eval exports 与 replay；trace export redaction 现在覆盖 command summaries 和 JSONL artifacts；lifecycle inspection 会暴露 runtime-control assumptions；docs guard 也固定了定义这些边界的 stable validation errors。
 
 ## 里面有什么

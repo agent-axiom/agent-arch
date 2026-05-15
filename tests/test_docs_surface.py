@@ -1209,6 +1209,37 @@ def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
+    required_markers = (
+        "Canonical case runtime scope",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "runnable baseline",
+        "write capabilities",
+        "approvals",
+        "duplicate-ticket recovery",
+        "coverage lenses",
+        "retrieval",
+        "memory",
+        "freshness",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+        "runnable configs",
+        "policy, telemetry, lifecycle",
+        "registry contracts",
+    )
+    checked_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

@@ -36,6 +36,9 @@
 !!! example "Runtime-опора для support-triage"
     Встроенный `support-triage-ref` показывает тот же сквозной кейс в исполняемой форме: agent identity, approved `search_docs`/`create_ticket` capabilities, approval wait, trace/session IDs, lifecycle checks и eval export. Поэтому duplicate-ticket thread из книги можно проверять не только как prose, но и как runnable contract surface.
 
+!!! note "Canonical case runtime scope"
+    Эталонный пакет исполняет **Support triage** как runnable baseline для write capabilities, approvals и duplicate-ticket recovery. **Internal knowledge assistant** и **Incident coordination** остаются coverage lenses для той же архитектуры: первый проверяет retrieval, memory, freshness и knowledge provenance, второй — traces, escalation, notification side effects, response ownership и post-incident learning. Если добавлять их как runnable configs, они должны повторять те же policy, telemetry, lifecycle и registry contracts, а не становиться отдельными демо.
+
 Недавние contract updates делают эту поверхность полезнее для review: delegated authorization context сохраняется через CLI demos, sessions, eval exports и replay; trace export redaction теперь покрывает command summaries вместе с JSONL artifacts; lifecycle inspection показывает runtime-control assumptions; а docs guard фиксирует stable validation errors, задающие эти boundaries.
 
 ## Что внутри

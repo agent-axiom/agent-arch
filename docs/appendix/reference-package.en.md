@@ -36,6 +36,9 @@ A practical reading path is:
 !!! example "Runtime anchor for support-triage"
     The bundled `support-triage-ref` shows the same running case in executable form: agent identity, approved `search_docs`/`create_ticket` capabilities, approval wait, trace/session IDs, lifecycle checks, and eval export. That means the duplicate-ticket thread in the book can be reviewed not only as prose, but as a runnable contract surface.
 
+!!! note "Canonical case runtime scope"
+    The reference package executes **Support triage** as the runnable baseline for write capabilities, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** and **Incident coordination** remain coverage lenses for the same architecture: the first checks retrieval, memory, freshness, and knowledge provenance, while the second checks traces, escalation, notification side effects, response ownership, and post-incident learning. If they become runnable configs later, they should reuse the same policy, telemetry, lifecycle, and registry contracts instead of becoming separate demos.
+
 Recent contract updates make that surface more useful for review: delegated authorization context is preserved through CLI demos, sessions, eval exports, and replay; trace export redaction now covers command summaries as well as JSONL artifacts; lifecycle inspection exposes runtime-control assumptions; and the docs now guard the stable validation errors that define these boundaries.
 
 ## What Is Inside
