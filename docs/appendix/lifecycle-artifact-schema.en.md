@@ -5,6 +5,9 @@ This page defines a minimal contract layer for lifecycle artifacts: change recor
 !!! example "Lifecycle artifact for the duplicate-ticket thread"
     For support-triage, the bundle should hold together not only `policy_bundle` and `eval_dataset`, but also evidence for the duplicate-ticket guard: the `idempotency_key` requirement, approval record, trace with `side_effect_unknown`, `duplicate_ticket_eval_passed`, and rollout gate. Then incident review reconstructs one `change -> bundle -> approval -> trace -> eval -> rollout` chain instead of searching for proof across separate pages.
 
+!!! note "Canonical lifecycle cases"
+    Lifecycle artifacts should preserve different artifact chains for the three canonical cases. **Support triage** connects change record, approved artifact bundle, approval record, trace, eval dataset, rollout gate, and retirement plan for the duplicate-ticket guard. **Internal knowledge assistant** connects retrieval policy, memory policy, source provenance, access-control review, and knowledge-base replacement plan. **Incident coordination** connects escalation policy, notification capability, response ownership map, handoff artifact, and post-incident learning retirement or replacement plan.
+
 It also connects directly to the book's [Evidence Spine: From Request to Rollout Judgment](../book/part-v/evidence-spine.en.md), because lifecycle artifacts are part of the governed record that later judgment and incident review stand on.
 
 ## 1. Why this matters
