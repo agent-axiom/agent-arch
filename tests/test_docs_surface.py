@@ -2005,6 +2005,42 @@ def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
+    required_markers = (
+        "Canonical publishing cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Publishing stack",
+        "canonical cases",
+        "reader routes",
+        "build pages",
+        "fast build",
+        "GitHub Pages deployment",
+        "search/navigation",
+        "policy/approval examples",
+        "trace/eval artifacts",
+        "Markdown-first authoring",
+        "multilingual pages",
+        "glossary/search surface",
+        "source links",
+        "memory/retrieval material",
+        "strict build gate",
+        "reproducible docs commands",
+        "incident/rollout pages",
+        "stable navigation",
+        "visible changelog-style diffs",
+        "migration-risk discipline",
+    )
+    checked_files = (
+        "docs/appendix/stack.md",
+        "docs/appendix/stack.en.md",
+        "docs/appendix/stack.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

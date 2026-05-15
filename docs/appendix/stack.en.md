@@ -14,6 +14,9 @@ This page explains why the book uses this publishing stack.
 
 At the same time, the ecosystem is in a transition period. This repository intentionally pins `mkdocs<2` to preserve compatibility with the current plugin and theme stack and to avoid unnecessary migration risk in the first public version.
 
+!!! note "Canonical publishing cases"
+    Publishing stack should support the three canonical cases as reader routes, not only build pages. **Support triage** needs fast build, GitHub Pages deployment, search/navigation, readable policy/approval examples, and stable links to trace/eval artifacts. **Internal knowledge assistant** needs Markdown-first authoring, multilingual pages, glossary/search surface, source links, and low-friction updates for memory/retrieval material. **Incident coordination** needs a strict build gate, reproducible docs commands, stable navigation to incident/rollout pages, visible changelog-style diffs, and migration-risk discipline.
+
 ## Why I did not switch to Astro Starlight immediately
 
 `Starlight` is a strong option if you need:

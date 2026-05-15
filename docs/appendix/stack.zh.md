@@ -14,6 +14,9 @@
 
 同时，生态确实处于过渡期。这个仓库故意固定 `mkdocs<2`，以保持当前插件和主题栈的兼容性，并避免在第一版公开发布时引入不必要的迁移风险。
 
+!!! note "Canonical publishing cases"
+    Publishing stack 应该把三个 canonical cases 支撑成 reader routes，而不只是 build pages。**Support triage** 需要 fast build、GitHub Pages deployment、search/navigation、readable policy/approval examples，以及指向 trace/eval artifacts 的 stable links。**Internal knowledge assistant** 需要 Markdown-first authoring、multilingual pages、glossary/search surface、source links，以及低摩擦更新 memory/retrieval material。**Incident coordination** 需要 strict build gate、reproducible docs commands、指向 incident/rollout pages 的 stable navigation、visible changelog-style diffs 和 migration-risk discipline。
+
 ## 为什么没有立刻切到 Astro Starlight
 
 如果你需要下面这些能力，`Starlight` 是很强的选择：
