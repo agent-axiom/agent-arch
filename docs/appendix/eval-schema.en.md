@@ -149,6 +149,9 @@ The export contract is intentionally concrete: the default `dataset_name` is `ag
 !!! example "Eval gate for the duplicate-ticket thread"
     For the running support-triage case, a dedicated eval should reproduce a timeout after `create_ticket`, require preserved `trace_id` and `idempotency_key`, expect exactly one ticket side effect or a `side_effect_unknown` stop, and block rollout if a new prompt/model/adapter version blindly retries and creates a second ticket.
 
+!!! note "Canonical eval cases"
+    The eval dataset should cover more than duplicate-ticket regression. **Support triage** checks approval gates, idempotency evidence, retry behavior, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval freshness, source attribution, memory provenance, access control, and grounded answer quality. **Incident coordination** checks escalation timing, notification side effects, response ownership, handoff quality, and post-incident learning regressions.
+
 It is not yet a full industrial eval framework, but it is already a reasonable seed for:
 
 - regression grading;

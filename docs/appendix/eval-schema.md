@@ -149,6 +149,9 @@ Export contract намеренно конкретный: default `dataset_name` 
 !!! example "Eval gate для duplicate-ticket thread"
     Для сквозного support-triage кейса отдельный eval должен воспроизводить timeout после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один ticket side effect или `side_effect_unknown` stop, и блокировать rollout, если новая prompt/model/adapter версия снова делает blind retry и создает второй тикет.
 
+!!! note "Canonical eval cases"
+    Eval dataset должен покрывать не только duplicate-ticket regression. **Support triage** проверяет approval gates, idempotency evidence, retry behavior и duplicate-ticket recovery. **Internal knowledge assistant** проверяет retrieval freshness, source attribution, memory provenance, access control и grounded answer quality. **Incident coordination** проверяет escalation timing, notification side effects, response ownership, handoff quality и post-incident learning regressions.
+
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 
 - регрессионной проверки;
