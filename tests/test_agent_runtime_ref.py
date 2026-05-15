@@ -408,6 +408,7 @@ class TestRuntimeDocsParity:
         """Keep the local runtime README aligned with bundled agent.yaml identity."""
         text = Path("agent_runtime_ref/README.md").read_text(encoding="utf-8")
         for marker in (
+            "support-triage-ref",
             "Support triage reference agent",
             "agent_platform",
             "svc-support-triage-ref",
