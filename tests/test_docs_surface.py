@@ -2084,6 +2084,30 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
     _assert_files_contain_all(checked_files, required_markers[4:])
 
 
+def test_editorial_artifacts_use_current_canonical_cases() -> None:
+    checked_files = (
+        "docs/book-improvement-blueprint.md",
+        "docs/reader-journey-map.md",
+    )
+    required_markers = (
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+    )
+    deprecated_markers = (
+        "Support triage agent",
+        "Internal enterprise knowledge assistant",
+        "Approval-bound high-risk action agent",
+        "high-risk action / approval-bound agent",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+    for path in checked_files:
+        text = _read(path)
+        for marker in deprecated_markers:
+            assert marker not in text, (path, marker)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
