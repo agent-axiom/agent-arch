@@ -59,7 +59,7 @@ tools:
 !!! example "Сквозной кейс: управляемый `create_ticket`"
     В кейсе разбора обращений `read_kb` может оставаться низкорисковым чтением, но `create_ticket` — первая настоящая граница записи. Шлюз должен сохранить намерение агента, проверить аргументы тикета, привязать субъект и контекст арендатора, запросить подтверждение, если этого требует политика, и только потом разрешить побочный эффект.
 
-**Gateway case-spine note:** одна и та же граница меняет форму в трех canonical cases. Support triage проверяет governed writes вроде `create_ticket`; internal knowledge assistant проверяет scoped reads, source visibility и retrieval limits; incident coordination проверяет escalation tools, notification tools и то, кто может объявлять или менять incident state. Gateway, который понимает только одну из этих форм, все еще слишком узок.
+**Gateway case-spine note:** одна и та же граница меняет форму в трех canonical cases. Support triage проверяет governed writes вроде `create_ticket`; Internal knowledge assistant проверяет scoped reads, source visibility и retrieval limits; Incident coordination проверяет escalation tools, notification tools и то, кто может объявлять или менять incident state. Gateway, который понимает только одну из этих форм, все еще слишком узок.
 
 ### 2.1. Шлюз должен знать не только инструмент, но и субъекта
 

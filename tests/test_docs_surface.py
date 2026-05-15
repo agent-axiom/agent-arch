@@ -977,8 +977,8 @@ def test_chapter_4_gateway_threads_three_canonical_cases() -> None:
     required_markers = (
         "Gateway case-spine note",
         "Support triage",
-        "internal knowledge assistant",
-        "incident coordination",
+        "Internal knowledge assistant",
+        "Incident coordination",
         "governed writes",
         "scoped reads",
         "retrieval limits",
@@ -993,6 +993,10 @@ def test_chapter_4_gateway_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+    for path in checked_files:
+        text = _read(path)
+        assert "internal knowledge assistant" not in text, path
+        assert "incident coordination" not in text, path
 
 
 def test_chapter_13_eval_suite_threads_three_canonical_cases() -> None:
