@@ -96,7 +96,7 @@ Why: it carries the thesis, starts from a failure story, and shows how the book 
 
 Current strengths:
 
-- opens from a concrete support-triage failure story;
+- opens from a concrete Support triage failure story;
 - states the workflow-first / constrained-agency thesis;
 - includes a text-safe workflow vs single-agent vs multi-agent rule;
 - includes an explicit competing-view note for the agent-first argument;
@@ -119,7 +119,7 @@ Why: evals, traces, failure attribution, regression gates, and release judgment 
 
 Current strengths:
 
-- includes a support-triage duplicate-ticket example from trace to verifier attribution, regression gate, rollout owner action, and release judgment;
+- includes a Support triage duplicate-ticket example from trace to verifier attribution, regression gate, rollout owner action, and release judgment;
 - distinguishes behavioral evals, control evals, rollout gates, and verifier outputs;
 - includes calibrated judge/human-review guidance;
 - includes an evidence model;
@@ -155,7 +155,7 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 
 **Return format:** annotated sample, short summary of top 5 changes, unresolved questions, and any suggested cuts that would move material to the online companion.
 
-**No-go signals:** copy edits that weaken safety claims, remove the support-triage through-line, blur print vs companion boundaries, or turn the chapter into a framework tutorial.
+**No-go signals:** copy edits that weaken safety claims, remove the Support triage through-line, blur print vs companion boundaries, or turn the chapter into a framework tutorial.
 
 ## Editorial Compression Rules
 
@@ -163,7 +163,7 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 - Every print chapter needs one unique artifact or decision framework.
 - Avoid repeating governance language unless the chapter owns a distinct role.
 - Keep long field lists online.
-- Use Support Triage as the primary running case; use Internal Knowledge and Incident Coordination as secondary contrast cases.
+- Use Support triage as the primary running case; use Internal knowledge assistant and Incident coordination as secondary contrast cases.
 - End chapters with: what to remember, common failure modes, design-review use, companion assets, and next chapter.
 
 ## Author / Platform Credibility Note Draft
@@ -213,7 +213,7 @@ Print manuscript:
 
 - carries the argument, chapter questions, decision frameworks, failure stories, and durable operating model;
 - keeps long field lists, exhaustive schemas, and fast-moving implementation details out of the main reading path;
-- uses Support Triage as the primary through-line, with Internal Knowledge and Incident Coordination as contrast cases.
+- uses Support triage as the primary through-line, with Internal knowledge assistant and Incident coordination as contrast cases.
 
 Online companion:
 
