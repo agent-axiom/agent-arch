@@ -139,6 +139,9 @@ For example, `tool_policy_decision` should usually include at least:
 !!! example "Trace for the duplicate-ticket thread"
     In the support-triage case, `tool_policy_decision`, `approval_requested`, `tool_execution`, and the final outcome should be tied by one `trace_id`, `session_id`, `approval_id`, `tool_principal`, and `idempotency_key`. If `create_ticket` times out and the side-effect status is unknown, the trace should show `side_effect_unknown` instead of masking the run as successful or repeating the write without reconciliation.
 
+!!! note "Canonical trace cases"
+    The three canonical cases need different trace emphases. **Support triage** ties approval events, `idempotency_key`, tool side effects, and duplicate-ticket recovery evidence. **Internal knowledge assistant** should preserve retrieval spans, memory access, source attribution, freshness checks, and access control decisions. **Incident coordination** should show escalation timeline, notification side effects, response ownership, handoff events, and post-incident learning.
+
 For a sandbox-backed run, reserve fields that link the trace to the execution boundary:
 
 - `sandbox_session_id`

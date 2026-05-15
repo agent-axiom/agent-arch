@@ -1295,6 +1295,36 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
+    required_markers = (
+        "Canonical trace cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approval events",
+        "idempotency_key",
+        "tool side effects",
+        "duplicate-ticket recovery evidence",
+        "retrieval spans",
+        "memory access",
+        "source attribution",
+        "freshness checks",
+        "access control decisions",
+        "escalation timeline",
+        "notification side effects",
+        "response ownership",
+        "handoff events",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
