@@ -172,6 +172,8 @@ Microsoft отдельно подчеркивает полный произво�
 !!! example "Сквозной кейс: telemetry для ticket-write control eval"
     Control eval из support-triage становится полезным для rollout только если его telemetry detection-ready. Для каждого `create_support_ticket` run trace должен связывать `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown` и verdict process/outcome verifier-а. Тогда команда может видеть не только “дубля нет”, но и какой процент ticket-write paths реально observable, где bypass path еще слепой и можно ли safely расширять canary.
 
+**Observability case-spine note:** trace and telemetry coverage record должен показывать observability coverage для всех трех canonical cases. Support triage требует coverage для ticket-write paths, approval linkage, `tool_principal`, `policy_bundle`, `contract_version`, duplicate outcome и bypass blind spots. Internal knowledge assistant требует coverage для retrieval provenance, source-grounding verdicts, tenant-filter decisions, memory-write events и freshness drift. Incident coordination требует coverage для escalation path, notification delivery, responder-role identity, incident-state transitions, rollback events и post-incident control changes.
+
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
 Контур управления нередко оформляют как:

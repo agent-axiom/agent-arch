@@ -172,6 +172,8 @@ Microsoft's observability guidance makes the coverage question more concrete: te
 !!! example "Case thread: telemetry for the ticket-write control eval"
     The support-triage control eval becomes useful for rollout only if its telemetry is detection-ready. For every `create_support_ticket` run, the trace should link `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown`, and the process/outcome verifier verdict. Then the team can see not only “no duplicate happened,” but what share of ticket-write paths are actually observable, where a bypass path remains blind, and whether the canary can safely expand.
 
+**Observability case-spine note:** the trace and telemetry coverage record should show observability coverage for all three canonical cases. Support triage needs coverage for ticket-write paths, approval linkage, `tool_principal`, `policy_bundle`, `contract_version`, duplicate outcome, and bypass blind spots. Internal knowledge assistant needs coverage for retrieval provenance, source-grounding verdicts, tenant-filter decisions, memory-write events, and freshness drift. Incident coordination needs coverage for escalation path, notification delivery, responder-role identity, incident-state transitions, rollback events, and post-incident control changes.
+
 ## 7. Why governance without observability is fragile
 
 Governance is often expressed as:

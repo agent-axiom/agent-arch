@@ -716,6 +716,30 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_26_observability_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Observability case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "trace and telemetry coverage record",
+        "observability coverage",
+        "ticket-write paths",
+        "bypass blind spots",
+        "retrieval provenance",
+        "source-grounding verdicts",
+        "notification delivery",
+        "post-incident control changes",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-26.md",
+        "docs/book/part-viii/chapter-26.en.md",
+        "docs/book/part-viii/chapter-26.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
