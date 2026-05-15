@@ -1258,6 +1258,35 @@ def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_vi_index_surfaces_three_ownership_case_routes() -> None:
+    required_markers = (
+        "Part VI canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "operating model",
+        "ownership boundaries",
+        "ticket-write defaults",
+        "approval mode",
+        "duplicate-ticket recovery path",
+        "corpus ownership",
+        "access review",
+        "retrieval quality",
+        "knowledge provenance",
+        "escalation authority",
+        "notification policy",
+        "response ownership",
+        "post-incident action items",
+    )
+    checked_files = (
+        "docs/book/part-vi/index.md",
+        "docs/book/part-vi/index.en.md",
+        "docs/book/part-vi/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",

@@ -30,6 +30,9 @@ In this part, we will look at the operating model: who owns what, how to build g
 
     Together, this shows that the operating model is not for org charts. It is for keeping the production system stable.
 
+!!! note "Part VI canonical case routes"
+    In the operating model, the three canonical cases require different ownership boundaries. **Support triage** checks who owns ticket-write defaults, approval mode, and duplicate-ticket recovery path. **Internal knowledge assistant** checks who owns corpus ownership, access review, retrieval quality, and knowledge provenance. **Incident coordination** checks who owns escalation authority, notification policy, response ownership, and post-incident action items.
+
 ## What This Part Solves
 
 - it makes ownership boundaries explicit before the platform turns into organizational drift;

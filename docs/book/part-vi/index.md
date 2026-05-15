@@ -30,6 +30,9 @@ Part V уже объяснила, как систему наблюдать и к
 
     Вместе это показывает, что operating model нужен не для орг-диаграммы, а для устойчивости всей production-системы.
 
+!!! note "Part VI canonical case routes"
+    В operating model три canonical cases требуют разных ownership boundaries. **Support triage** проверяет, кто владеет ticket-write defaults, approval mode и duplicate-ticket recovery path. **Internal knowledge assistant** проверяет, кто владеет corpus ownership, access review, retrieval quality и knowledge provenance. **Incident coordination** проверяет, кто владеет escalation authority, notification policy, response ownership и post-incident action items.
+
 ## Что решает эта часть
 
 - делает ownership boundaries явными до того, как платформа расползется организационно;
