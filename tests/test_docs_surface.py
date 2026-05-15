@@ -1766,6 +1766,40 @@ def test_community_roadmap_surfaces_three_canonical_roadmap_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_google_integration_roadmap_surfaces_three_canonical_platform_cases() -> None:
+    required_markers = (
+        "Canonical Google integration cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "platform-grade ideas",
+        "agent identity",
+        "least privilege",
+        "approval/audit linkage",
+        "sandbox profile",
+        "high-risk tools",
+        "duplicate-ticket controls",
+        "context layers",
+        "memory governance",
+        "retrieval policy",
+        "source provenance",
+        "tenant-aware access",
+        "registry governance",
+        "A2A boundaries",
+        "continuous controls",
+        "rollout gates",
+        "escalation traces",
+        "response ownership",
+    )
+    checked_files = (
+        "docs/appendix/google-integration-roadmap.md",
+        "docs/appendix/google-integration-roadmap.en.md",
+        "docs/appendix/google-integration-roadmap.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
