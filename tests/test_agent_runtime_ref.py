@@ -4381,6 +4381,24 @@ class TestRuntimeControlPaths:
             == f"eval:{duplicate_ticket_gate}"
         )
 
+    def test_release_configs_share_sandbox_profile_review_gate(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        sandbox_review_gate = "sandbox_profile_reviewed"
+        sandbox_review_evidence = bundle["review_evidence"][sandbox_review_gate]
+
+        assert sandbox_review_gate in change["required_signals"]
+        assert sandbox_review_evidence["trace_event"] == sandbox_review_gate
+        assert sandbox_review_evidence["review_evidence_refs"] == [
+            f"trace:{sandbox_review_gate}",
+            "eval:sandbox_profile_review",
+        ]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
