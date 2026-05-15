@@ -108,6 +108,9 @@ decided_by:
 !!! example "重复工单线索的 rollout gate"
     对 support-triage canary 来说，gate 不应只检查 `offline_eval_pass`，还应检查具体的 `duplicate_ticket_eval_passed`：已复现 `create_ticket` 之后的超时，保留了 `trace_id` 与 `idempotency_key`，outcome 是一个工单副作用或一次 `side_effect_unknown` 停止；只有 blind retry 没有回来时，`blocking_findings` 才能保持为空。
 
+!!! note "Canonical rollout cases"
+    Rollout gate 应为三个 canonical cases 检查不同 readiness signals。**Support triage** 需要 duplicate-ticket eval pass、rollback plan、approval readiness 和 idempotency evidence。**Internal knowledge assistant** 需要 retrieval freshness window、source attribution review、memory provenance review 和 access control signoff。**Incident coordination** 需要 escalation drill、notification side effects review、response ownership readiness 和 post-incident learning gate。
+
 当发布依赖更丰富的验证器输出，而不是只看二元通过/失败状态时，这一点会更重要。此时门禁记录应该显式写出：受影响的高风险路径是否已经审过验证器质量与证据链接。
 
 一旦运行时里已经有审批和有状态能力会话，门禁还应该明确说明：中断行为是否被单独审过，而不是默认“应该没问题”。

@@ -108,6 +108,9 @@ decided_by:
 !!! example "Rollout gate для duplicate-ticket thread"
     Для support-triage canary gate должен проверять не только `offline_eval_pass`, но и конкретный `duplicate_ticket_eval_passed`: timeout после `create_ticket` воспроизведён, `trace_id` и `idempotency_key` сохранены, outcome — один ticket side effect или `side_effect_unknown` stop, а `blocking_findings` остаются пустыми только если blind retry не вернулся.
 
+!!! note "Canonical rollout cases"
+    Rollout gate должен проверять разные readiness signals для трех canonical cases. **Support triage** требует duplicate-ticket eval pass, rollback plan, approval readiness и idempotency evidence. **Internal knowledge assistant** требует retrieval freshness window, source attribution review, memory provenance review и access control signoff. **Incident coordination** требует escalation drill, notification side effects review, response ownership readiness и post-incident learning gate.
+
 Это еще важнее, когда rollout опирается на richer verifier outputs, а не только на binary pass/fail status. Тогда gate record должен явно показывать, проверялись ли для затронутых high-risk paths качество verifier'а и linkage его evidence.
 
 Как только в runtime появляются approval и stateful capability sessions, gate еще должен явно фиксировать, было ли interruption behavior отдельно проверено, а не просто принято по умолчанию.
