@@ -1240,6 +1240,34 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
+    required_markers = (
+        "Canonical policy cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write-capability approval policy",
+        "idempotency evidence",
+        "duplicate-ticket recovery controls",
+        "retrieval policy",
+        "memory write rules",
+        "freshness checks",
+        "access control",
+        "knowledge provenance",
+        "escalation rules",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning gates",
+    )
+    checked_files = (
+        "docs/appendix/policy-bundle-schema.md",
+        "docs/appendix/policy-bundle-schema.en.md",
+        "docs/appendix/policy-bundle-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

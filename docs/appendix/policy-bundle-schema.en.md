@@ -53,6 +53,9 @@ The point is not that everything must live in one YAML file. The point is that t
 - traceable;
 - releasable.
 
+!!! note "Canonical policy cases"
+    A policy bundle should not look identical across the three canonical cases. **Support triage** needs write-capability approval policy, idempotency evidence, and duplicate-ticket recovery controls. **Internal knowledge assistant** needs retrieval policy, memory write rules, freshness checks, access control, and knowledge provenance. **Incident coordination** needs escalation rules, notification side effects, response ownership, and post-incident learning gates.
+
 ## Minimal policy bundle structure
 
 A minimally useful bundle can look like this:

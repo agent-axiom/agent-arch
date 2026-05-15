@@ -53,6 +53,9 @@
 - traceable;
 - releasable.
 
+!!! note "Canonical policy cases"
+    Policy bundle не должен выглядеть одинаково во всех трех canonical cases. **Support triage** требует write-capability approval policy, idempotency evidence и duplicate-ticket recovery controls. **Internal knowledge assistant** требует retrieval policy, memory write rules, freshness checks, access control и knowledge provenance. **Incident coordination** требует escalation rules, notification side effects, response ownership и post-incident learning gates.
+
 ## Минимальная структура набора политик
 
 Минимально полезный набор может выглядеть так:
