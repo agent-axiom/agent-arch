@@ -16,6 +16,9 @@
     - [第 13 章](chapter-13.zh.md)：把系统行为变成可评审判断；
     - [Evidence Spine](evidence-spine.zh.md)：看清这些层怎样汇成一条运营记录。
 
+!!! note "Part V canonical case routes"
+    在 reliability/observability layer 中，三个 canonical cases 需要不同 evidence routes。**Support triage** 检查 ticket writes 的 trace coverage、duplicate-ticket regression 和 approval-path evidence。**Internal knowledge assistant** 检查 retrieval quality、source-grounding judgment、freshness budget 和 memory-provenance evidence。**Incident coordination** 检查 escalation latency、notification delivery、response ownership 和 post-incident rollout judgment。
+
 <div class="book-cover" markdown="1">
 
 ![可靠性与可观测性部分的封面](../../assets/images/part-v.png)

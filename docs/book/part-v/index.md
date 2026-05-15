@@ -16,6 +16,9 @@
     - [Глава 13](chapter-13.md): превратить поведение системы в reviewable judgments;
     - [Evidence Spine](evidence-spine.md): увидеть, как эти слои собираются в одну эксплуатационную запись.
 
+!!! note "Part V canonical case routes"
+    В reliability/observability layer три canonical cases требуют разных evidence routes. **Support triage** проверяет trace coverage для ticket writes, duplicate-ticket regression и approval-path evidence. **Internal knowledge assistant** проверяет retrieval quality, source-grounding judgment, freshness budget и memory-provenance evidence. **Incident coordination** проверяет escalation latency, notification delivery, response ownership и post-incident rollout judgment.
+
 <div class="book-cover" markdown="1">
 
 ![Обложка части про надежность и наблюдаемость](../../assets/images/part-v.png)

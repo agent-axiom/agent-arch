@@ -16,6 +16,9 @@ This part answers three practical questions:
     - [Chapter 13](chapter-13.en.md): turn system behavior into reviewable judgments;
     - [Evidence Spine](evidence-spine.en.md): see how those layers become one operational record.
 
+!!! note "Part V canonical case routes"
+    In the reliability/observability layer, the three canonical cases require different evidence routes. **Support triage** checks trace coverage for ticket writes, duplicate-ticket regression, and approval-path evidence. **Internal knowledge assistant** checks retrieval quality, source-grounding judgment, freshness budget, and memory-provenance evidence. **Incident coordination** checks escalation latency, notification delivery, response ownership, and post-incident rollout judgment.
+
 <div class="book-cover" markdown="1">
 
 ![Cover for the reliability and observability part](../../assets/images/part-v.png)
