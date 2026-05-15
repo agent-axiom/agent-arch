@@ -4,6 +4,9 @@
 
 Эта книга нужна, чтобы закрыть именно этот разрыв.
 
+!!! note "Canonical book cases"
+    Разрыв, который закрывает книга, лучше всего виден на трех canonical cases. **Support triage** показывает, почему write actions, approvals, policy gates, duplicate-ticket recovery и audit trail важнее polished demo. **Internal knowledge assistant** показывает, почему retrieval, memory boundaries, source grounding, provenance и tenant-aware access должны быть архитектурными решениями, а не prompt tricks. **Incident coordination** показывает, почему traces, SLOs, escalation, response ownership, rollout control и post-incident learning нужны до production incident, а не после него.
+
 ## Чем она не является
 
 Это не:

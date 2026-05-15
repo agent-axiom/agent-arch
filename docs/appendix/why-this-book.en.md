@@ -4,6 +4,9 @@ There is already a lot of material about AI agents. There is much less material 
 
 This book exists to close exactly that gap.
 
+!!! note "Canonical book cases"
+    The gap this book closes is clearest in the three canonical cases. **Support triage** shows why write actions, approvals, policy gates, duplicate-ticket recovery, and audit trail matter more than a polished demo. **Internal knowledge assistant** shows why retrieval, memory boundaries, source grounding, provenance, and tenant-aware access must be architectural decisions, not prompt tricks. **Incident coordination** shows why traces, SLOs, escalation, response ownership, rollout control, and post-incident learning need to exist before a production incident, not after it.
+
 ## What It Is Not
 
 This is not:
