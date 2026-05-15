@@ -94,6 +94,8 @@ flowchart LR
 !!! example "贯穿案例：防重复保护应该放在哪里"
     在支持分诊运行时里，防止重复工单的逻辑不应该藏在 helpdesk 适配器里。`runtime.py` 应该负责运行上下文和重试分支，`execution.py` 应该通过幂等契约执行写工具，`telemetry.py` 应该记录 `side_effect_unknown`，而 `policy.py` 加发布门应该决定运行是否可以继续。这样，同一个事故就不会散落到一堆处理器里。
 
+**Runtime case-spine note：**baseline runtime 应该支持三个 canonical cases，而不依赖本地绕路。Support triage 需要带 approval hooks、idempotency contract 和 duplicate-ticket telemetry 的 write-capability path。Internal knowledge assistant 需要带 source grounding、tenant filters、freshness checks 和 guarded memory writes 的 retrieval path。Incident coordination 需要带 responder-role checks、notification dispatch、incident-state updates 和 post-incident background tasks 的 escalation path。
+
 ## 5. 不要把编排和业务适配器混在一起
 
 早期实现里最贵的错误之一，就是运行时直接知道太多具体外部系统的细节。
