@@ -4,6 +4,9 @@ This page defines the minimal contract layer for memory and retrieval in agent s
 
 If the [trace schema and event catalog](trace-schema.en.md) answer “how this appears in telemetry,” and the [lifecycle artifact schema](lifecycle-artifact-schema.en.md) answers “what counts as a governed operational artifact,” then the memory-retrieval schema answers “which records and filters are actually allowed inside the memory layer.”
 
+!!! note "Canonical memory cases"
+    The memory and retrieval contract should separate different memory boundaries for the three canonical cases. **Support triage** stores requester context, ticket state, `idempotency_key` evidence, and short-lived working notes. **Internal knowledge assistant** needs retrieval freshness, source attribution, tenant filters, memory provenance, and access control. **Incident coordination** stores incident timeline, response ownership, handoff summaries, escalation status, and post-incident lessons without turning transient incident noise into durable truth.
+
 ## 1. Why a separate schema layer matters
 
 A very common memory failure mode looks like this:
