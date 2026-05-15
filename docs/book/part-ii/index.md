@@ -11,6 +11,9 @@
 
     Вместе эти три точки дают уже не просто словарь безопасности, а рабочий контур для промышленной системы.
 
+!!! note "Part II canonical case routes"
+    В security perimeter три canonical cases требуют разных control points. **Support triage** проверяет tool gateway, approval stop, audit trail и least-privilege access для ticket writes. **Internal knowledge assistant** проверяет retrieval boundary, access control, prompt assembly и egress filtering для protected reads. **Incident coordination** проверяет escalation tools, notification approvals, incident-data boundary и audit trail для side effects during response.
+
 Эта часть нужна, чтобы у тебя не возникало опасной иллюзии, будто безопасность агента можно “прикрутить потом”. Для нашего сквозного кейса это именно тот момент, где становится ясно: без заранее заданного периметра агент начинает не помогать, а создавать новые риски.
 
 <div class="book-cover" markdown="1">

@@ -11,6 +11,9 @@ If in the first part we assembled the architectural picture, here the same suppo
 
     Those three points already give you not just security vocabulary, but a working production contour.
 
+!!! note "Part II canonical case routes"
+    In the security perimeter, the three canonical cases require different control points. **Support triage** checks the tool gateway, approval stop, audit trail, and least-privilege access for ticket writes. **Internal knowledge assistant** checks retrieval boundary, access control, prompt assembly, and egress filtering for protected reads. **Incident coordination** checks escalation tools, notification approvals, incident-data boundary, and audit trail for side effects during response.
+
 This part exists so that you do not develop the dangerous illusion that agent security can be "added later." In our running case, this is the moment when it becomes obvious that without a defined perimeter the agent stops helping and starts creating new risk.
 
 <div class="book-cover" markdown="1">

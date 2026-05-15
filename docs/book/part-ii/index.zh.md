@@ -11,6 +11,9 @@
 
     这三步已经足够组成一个可工作的生产轮廓，而不只是安全术语表。
 
+!!! note "Part II canonical case routes"
+    在 security perimeter 中，三个 canonical cases 需要不同 control points。**Support triage** 检查 ticket writes 的 tool gateway、approval stop、audit trail 和 least-privilege access。**Internal knowledge assistant** 检查 protected reads 的 retrieval boundary、access control、prompt assembly 和 egress filtering。**Incident coordination** 检查 side effects during response 的 escalation tools、notification approvals、incident-data boundary 和 audit trail。
+
 这一部分的意义，是避免你产生一个危险错觉，好像智能体的安全可以“以后再补”。对这条贯穿全书的支持场景来说，正是在这里你会清楚看到：如果边界没有先定义好，智能体就会从“帮忙”滑向“制造新风险”。
 
 <div class="book-cover" markdown="1">
