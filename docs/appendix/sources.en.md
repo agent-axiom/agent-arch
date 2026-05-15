@@ -12,6 +12,9 @@ Below is the main set of primary sources used by the current version of the book
 
     If you need the strongest base for Parts I, V, and VIII, start with the normative frame and the HCI/HITL layer. If you need current engineering practice, read the platform docs and recent research, but always pay attention to publication dates.
 
+!!! note "Canonical source routes"
+    Use the sources as a fast route for the three canonical cases. **Support triage** starts with OWASP, OpenAI agent guides, HITL sources, policy/approval material, trace grading, and incident cases. **Internal knowledge assistant** starts with LangGraph memory, OpenAI Agent memory, retrieval/eval sources, provenance-oriented governance, and the memory research frontier. **Incident coordination** starts with NIST/AI RMF, Google/Microsoft governance, observability sources, multi-agent reliability research, incident review, and rollout/control-plane material.
+
 ## Normative Frameworks and Governance Contours
 
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
