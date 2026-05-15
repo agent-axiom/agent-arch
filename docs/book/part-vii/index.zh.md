@@ -21,6 +21,9 @@
 
     如果把这一部分当成一个连续论证来读，它其实由三个承诺串起来：第 16 章给运行时一种可运行的结构，第 17 章给这套结构一个受治理的契约核心，而第 18 章则追问同一套系统能不能承受真正的上线/不上线压力。
 
+!!! note "Part VII canonical case routes"
+    在 reference implementation 中，三个 canonical cases 应该表现为不同 runtime paths。**Support triage** 检查 ticket writes 的 run loop、capability catalog、approval pause/resume 和 rollout checklist。**Internal knowledge assistant** 检查 memory/retrieval service、read capability policy、source attribution 和 tenant isolation。**Incident coordination** 检查 escalation capability、notification side effects、incident state handoff 和 rollout readiness evidence。
+
 <div class="book-cover" markdown="1">
 
 ![参考实现部分封面](../../assets/images/part-vii.png)

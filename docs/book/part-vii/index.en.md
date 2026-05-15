@@ -21,6 +21,9 @@ Now it is time to turn that into a more coherent reference implementation. Not a
 
     Read as one argument, this part moves through three promises: Chapter 16 gives the runtime a runnable structure, Chapter 17 gives that structure a governed contract core, and Chapter 18 asks whether the same system can withstand real go/no-go pressure.
 
+!!! note "Part VII canonical case routes"
+    In the reference implementation, the three canonical cases should appear as different runtime paths. **Support triage** checks the run loop, capability catalog, approval pause/resume, and rollout checklist for ticket writes. **Internal knowledge assistant** checks the memory/retrieval service, read capability policy, source attribution, and tenant isolation. **Incident coordination** checks escalation capability, notification side effects, incident state handoff, and rollout readiness evidence.
+
 <div class="book-cover" markdown="1">
 
 ![Cover for the reference implementation part](../../assets/images/part-vii.png)

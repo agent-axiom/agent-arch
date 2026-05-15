@@ -21,6 +21,9 @@
 
     Если читать эту часть как единый аргумент, она держится на трех обещаниях: Глава 16 придает рантайму работающую форму, Глава 17 дает этой форме управляемое договорное ядро, а Глава 18 проверяет, выдержит ли та же система реальное давление решения о запуске.
 
+!!! note "Part VII canonical case routes"
+    В reference implementation три canonical cases должны проявляться как разные runtime paths. **Support triage** проверяет run loop, capability catalog, approval pause/resume и rollout checklist для ticket writes. **Internal knowledge assistant** проверяет memory/retrieval service, read capability policy, source attribution и tenant isolation. **Incident coordination** проверяет escalation capability, notification side effects, incident state handoff и rollout readiness evidence.
+
 <div class="book-cover" markdown="1">
 
 ![Обложка части с эталонной реализацией](../../assets/images/part-vii.png)
