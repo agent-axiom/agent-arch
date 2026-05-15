@@ -4275,6 +4275,9 @@ class TestRuntimeControlPaths:
         change = load_yaml_file(config_dir / "change.yaml")["change"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
 
         assert change["artifacts"] == [
             "agent.yaml",
@@ -4302,6 +4305,9 @@ class TestRuntimeControlPaths:
             "failed_run_drill_checked",
         ]
         assert change["approval_roles"] == ["platform-owner", "security-reviewer"]
+        assert change["session_control_owner"] == runtime_controls[
+            "capability_session_owner"
+        ]
         assert change["session_control_owner"] == "support-ops"
         assert change["emergency_freeze_owner"] == "platform-runtime"
 
@@ -4325,10 +4331,16 @@ class TestRuntimeControlPaths:
             "runtime_control_bundle",
         ]
         assert retirement["system_id"] == agent.agent_id
+        assert retirement["session_control_owner"] == runtime_controls[
+            "capability_session_owner"
+        ]
         assert retirement["session_control_owner"] == "support-ops"
         assert retirement["emergency_freeze_owner"] == "platform-runtime"
 
         assert bundle["version"] == "2026.04.16"
+        assert bundle["session_control_owner"] == runtime_controls[
+            "capability_session_owner"
+        ]
         assert bundle["session_control_owner"] == "support-ops"
         assert bundle["artifacts"] == [
             "agent.yaml",
