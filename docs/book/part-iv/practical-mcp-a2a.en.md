@@ -149,6 +149,9 @@ The healthy pattern is:
 - an agent works with another agent through `A2A`;
 - policy and audit should cover both directions.
 
+!!! note "MCP/A2A case-spine note"
+    The MCP-vs-A2A choice shows up differently across the three canonical cases. **Support triage** usually keeps helpdesk, CRM, and ticket-write tools behind an MCP boundary, and only adds A2A when a separate responsible role appears. **Internal knowledge assistant** tests the knowledge server, retrieval adapter, source attribution, and tenant boundary through MCP. **Incident coordination** more often needs A2A handoff between intake, investigation, remediation, and owner record, while notification tools and incident state resources still remain under MCP/policy audit.
+
 ## 7. When Not to Use A2A
 
 There are a few red flags:
