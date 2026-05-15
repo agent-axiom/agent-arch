@@ -358,6 +358,28 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Retirement case-spine note",
+        "Support triage",
+        "internal knowledge assistant",
+        "incident coordination",
+        "deprecated write paths",
+        "paused approvals",
+        "stale corpora",
+        "obsolete embeddings",
+        "emergency-only capabilities",
+        "notification channels",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-23.md",
+        "docs/book/part-viii/chapter-23.en.md",
+        "docs/book/part-viii/chapter-23.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
