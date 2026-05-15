@@ -4409,6 +4409,24 @@ class TestRuntimeControlPaths:
         assert "failed_run_handling" in change["affected_surfaces"]
         assert "failed_run_drill_checked" in change["required_signals"]
 
+    def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        capability_sessions = runtime_controls["capability_sessions"]
+
+        assert "session_expiry_behavior_checked" in change["required_signals"]
+        assert capability_sessions["on_session_expiry"] == "reinitialize_or_cancel"
+        assert capability_sessions["expiry_policy"] == "reinitialize_or_cancel"
+
+        assert "reinit_policy_reviewed" in change["required_signals"]
+        assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
