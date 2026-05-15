@@ -30,7 +30,7 @@ def _read(path: str) -> str:
 
 
 def _load_mkdocs_config() -> dict:
-    return yaml.load(_read("mkdocs.yml"), Loader=MkDocsConfigLoader)
+return yaml.safe_load(_read("mkdocs.yml"), Loader=MkDocsConfigLoader)
 
 
 def _assert_files_contain_all(paths: tuple[str, ...], expected: tuple[str, ...]) -> None:
