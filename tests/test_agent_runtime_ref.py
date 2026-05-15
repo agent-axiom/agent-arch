@@ -4363,6 +4363,24 @@ class TestRuntimeControlPaths:
         ]
         assert set(change["artifacts"]).issubset(bundle["artifacts"])
 
+    def test_release_configs_share_duplicate_ticket_gate(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        duplicate_ticket_gate = "duplicate_ticket_eval_passed"
+
+        assert duplicate_ticket_gate in change["required_signals"]
+        assert duplicate_ticket_gate in rollout["require"]
+        assert duplicate_ticket_gate in controls["require"]
+        assert (
+            bundle["review_evidence"]["duplicate_ticket_guard"]["eval_ref"]
+            == f"eval:{duplicate_ticket_gate}"
+        )
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
