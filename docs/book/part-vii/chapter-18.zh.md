@@ -79,6 +79,8 @@
 !!! example "贯穿案例：重复工单后的金丝雀"
     在把支持智能体放到 5% rollout 之前，团队不应该只展示一次成功的状态检查和工单创建。评审应该看到：重复工单回归门已经通过，`create_support_ticket` 有幂等策略，`side_effect_unknown` 会让运行停在对账前，traces 保留了结果，而且回滚负责人已经明确。否则，金丝雀测试的是希望，而不是就绪性。
 
+**Rollout case-spine note：**production checklist 应该分别闭合三个 canonical cases。Support triage 需要 duplicate-ticket regression gate、approval coverage、idempotency strategy 和 rollback owner。Internal knowledge assistant 需要 retrieval freshness gate、source-grounding evals、tenant-boundary checks 和 memory-write review。Incident coordination 需要 escalation-drill evidence、notification delivery checks、responder handoff owner，以及 canary 之前的 post-incident regression plan。
+
 ## 4. 运行时正确性
 
 这一层适合问一些非常接地气的问题：

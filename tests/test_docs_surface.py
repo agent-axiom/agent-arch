@@ -572,6 +572,30 @@ def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Rollout case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "production checklist",
+        "duplicate-ticket regression gate",
+        "approval coverage",
+        "idempotency strategy",
+        "retrieval freshness gate",
+        "source-grounding evals",
+        "tenant-boundary checks",
+        "post-incident regression plan",
+    )
+    checked_files = (
+        "docs/book/part-vii/chapter-18.md",
+        "docs/book/part-vii/chapter-18.en.md",
+        "docs/book/part-vii/chapter-18.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
