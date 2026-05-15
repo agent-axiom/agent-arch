@@ -1415,6 +1415,40 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() -> None:
+    required_markers = (
+        "Canonical lifecycle cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "artifact chains",
+        "change record",
+        "approved artifact bundle",
+        "approval record",
+        "eval dataset",
+        "rollout gate",
+        "retirement plan",
+        "duplicate-ticket guard",
+        "retrieval policy",
+        "memory policy",
+        "source provenance",
+        "access-control review",
+        "knowledge-base replacement plan",
+        "escalation policy",
+        "notification capability",
+        "response ownership map",
+        "handoff artifact",
+        "post-incident learning retirement or replacement plan",
+    )
+    checked_files = (
+        "docs/appendix/lifecycle-artifact-schema.md",
+        "docs/appendix/lifecycle-artifact-schema.en.md",
+        "docs/appendix/lifecycle-artifact-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

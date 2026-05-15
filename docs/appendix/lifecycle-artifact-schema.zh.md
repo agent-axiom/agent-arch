@@ -5,6 +5,9 @@
 !!! example "重复工单线索的 lifecycle artifact"
     对 support-triage 来说，bundle 不只应该把 `policy_bundle` 和 `eval_dataset` 放在一起，还应该保留 duplicate-ticket guard 的 evidence：`idempotency_key` 要求、approval record、带有 `side_effect_unknown` 的 trace、`duplicate_ticket_eval_passed` 和 rollout gate。这样 incident review 可以重建一条 `change -> bundle -> approval -> trace -> eval -> rollout` 链，而不是在不同页面里寻找证据。
 
+!!! note "Canonical lifecycle cases"
+    Lifecycle artifacts 应为三个 canonical cases 保留不同 artifact chains。**Support triage** 把 change record、approved artifact bundle、approval record、trace、eval dataset、rollout gate 和 retirement plan 连接到 duplicate-ticket guard。**Internal knowledge assistant** 连接 retrieval policy、memory policy、source provenance、access-control review 和 knowledge-base replacement plan。**Incident coordination** 连接 escalation policy、notification capability、response ownership map、handoff artifact 和 post-incident learning retirement or replacement plan。
+
 它也直接连接到书里的 [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)，因为生命周期工件本身就是后续判断和事故评审所依赖的那条受治理记录的一部分。
 
 ## 1. 为什么需要它

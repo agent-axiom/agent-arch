@@ -5,6 +5,9 @@
 !!! example "Lifecycle artifact для duplicate-ticket thread"
     Для support-triage bundle должен удерживать вместе не только `policy_bundle` и `eval_dataset`, но и evidence о duplicate-ticket guard: требование `idempotency_key`, approval record, trace с `side_effect_unknown`, `duplicate_ticket_eval_passed` и rollout gate. Тогда incident review восстанавливает одну цепочку `change -> bundle -> approval -> trace -> eval -> rollout`, а не ищет доказательства по разным страницам.
 
+!!! note "Canonical lifecycle cases"
+    Lifecycle artifacts должны удерживать разные artifact chains для трех canonical cases. **Support triage** связывает change record, approved artifact bundle, approval record, trace, eval dataset, rollout gate и retirement plan для duplicate-ticket guard. **Internal knowledge assistant** связывает retrieval policy, memory policy, source provenance, access-control review и knowledge-base replacement plan. **Incident coordination** связывает escalation policy, notification capability, response ownership map, handoff artifact и post-incident learning retirement or replacement plan.
+
 Она напрямую связана и со страницей [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md), потому что lifecycle-артефакты входят в ту управляемую запись, на которую потом опираются judgment и incident review.
 
 ## 1. Зачем это нужно
