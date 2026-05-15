@@ -14,6 +14,9 @@
 
 При этом экосистема сейчас находится в переходной точке: в этом репозитории стек намеренно зафиксирован на `mkdocs<2`, чтобы сохранить совместимость с текущими плагинами и темой и не тащить в первую версию книги ненужный migration-risk.
 
+!!! note "Canonical publishing cases"
+    Publishing stack должен поддерживать три canonical cases как reader routes, а не только build pages. **Support triage** требует fast build, GitHub Pages deployment, search/navigation, readable policy/approval examples и stable links на trace/eval artifacts. **Internal knowledge assistant** требует Markdown-first authoring, multilingual pages, glossary/search surface, source links и low-friction updates для memory/retrieval material. **Incident coordination** требует strict build gate, reproducible docs commands, stable navigation к incident/rollout pages, visible changelog-style diffs и migration-risk discipline.
+
 ## Почему я не ушел сразу в Astro Starlight
 
 `Starlight` очень хорош, если вам нужны:
