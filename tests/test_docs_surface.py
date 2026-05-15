@@ -1445,6 +1445,15 @@ def test_case_studies_align_with_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+    deprecated_markers = (
+        "Support Triage Agent",
+        "Internal Knowledge Agent",
+        "Incident Coordination Agent",
+    )
+    for path in checked_files:
+        text = _read(path)
+        for marker in deprecated_markers:
+            assert marker not in text, (path, marker)
 
 
 def test_readmes_surface_three_canonical_cases() -> None:
