@@ -30,6 +30,9 @@
 !!! example "support-triage 工件路线"
     如果你按 support-triage 案例来读这本书，可以把 traces、评测数据集、policy bundle、审批记录、事故记录、变更发布、生命周期工件和 registry operations 这些页面放在旁边。正是这些契约把重复工单事故从故事变成可审阅的工件集合。
 
+!!! note "Canonical case artifacts"
+    三个 canonical cases 会从不同工件集合进入参考层。**Support triage** 依赖 approval record、policy bundle、trace schema 和 duplicate-ticket recovery evidence。**Internal knowledge assistant** 需要 memory/retrieval contract、freshness checks、access control 和 knowledge provenance。**Incident coordination** 连接 incident record、escalation evidence、notification side effects、response ownership 和 post-incident learning。
+
 ## 模式页与契约页
 
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)

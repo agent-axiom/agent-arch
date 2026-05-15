@@ -1156,6 +1156,32 @@ def test_homepage_surfaces_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_reference_layer_surfaces_three_canonical_case_artifacts() -> None:
+    required_markers = (
+        "Canonical case artifacts",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approval record",
+        "policy bundle",
+        "duplicate-ticket recovery evidence",
+        "memory/retrieval contract",
+        "freshness checks",
+        "access control",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/reference.md",
+        "docs/reference.en.md",
+        "docs/reference.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

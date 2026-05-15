@@ -30,6 +30,9 @@ For a short path in, start with:
 !!! example "Support-triage artifact route"
     If you read the book through the support-triage case, keep the trace, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifact, and registry operations pages next to it. Those contracts turn the duplicate-ticket incident from a story into a reviewable artifact set.
 
+!!! note "Canonical case artifacts"
+    The three canonical cases enter the reference layer through different artifact sets. **Support triage** depends on the approval record, policy bundle, trace schema, and duplicate-ticket recovery evidence. **Internal knowledge assistant** needs the memory/retrieval contract, freshness checks, access control, and knowledge provenance. **Incident coordination** connects the incident record, escalation evidence, notification side effects, response ownership, and post-incident learning.
+
 ## Schemas and contract pages
 
 - [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
