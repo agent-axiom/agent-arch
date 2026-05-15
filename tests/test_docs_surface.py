@@ -1903,6 +1903,40 @@ def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_glossary_surfaces_three_canonical_routes() -> None:
+    required_markers = (
+        "Canonical glossary routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "fast route",
+        "Tool gateway",
+        "Approval gate",
+        "Policy gate",
+        "Capability catalog",
+        "Trace",
+        "Eval dataset",
+        "Retrieval",
+        "Long-term memory",
+        "Profile memory",
+        "Provenance",
+        "Trust boundary",
+        "Egress policy",
+        "Agent runtime",
+        "Control plane",
+        "Rollout gate",
+        "Span",
+        "Approved inventory",
+    )
+    checked_files = (
+        "docs/appendix/glossary.md",
+        "docs/appendix/glossary.en.md",
+        "docs/appendix/glossary.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
