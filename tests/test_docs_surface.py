@@ -644,6 +644,30 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Supply-chain case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approved artifact bundle",
+        "provenance",
+        "capability contract",
+        "approval schema",
+        "approved retrieval corpus",
+        "source-grounding rubric",
+        "responder-role map",
+        "post-incident artifact update",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-22.md",
+        "docs/book/part-viii/chapter-22.en.md",
+        "docs/book/part-viii/chapter-22.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
