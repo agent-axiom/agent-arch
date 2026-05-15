@@ -25,6 +25,8 @@
 
 这就是记忆带来的核心变化：它会把错误变成持久状态。
 
+**Memory-risk case-spine note：**memory design 应该把三个 canonical cases 作为不同 durable-state risks 来闭合。Support triage 需要针对 profile preference 的 memory-write policy、saved user phrases 的 provenance、tenant isolation，以及 ticket-write behavior 复用旧上下文前的 review。Internal knowledge assistant 需要 retrieval-memory split、source grounding、freshness evidence、tenant-filter enforcement，以及 unvalidated summaries 的 quarantine。Incident coordination 需要 scoped incident memory、responder-role visibility、notification history provenance、rollback notes 和 post-incident cleanup rules。
+
 ## 2. 但没有记忆，智能体也会很快撞到天花板
 
 与此同时，记忆又确实是需要的。

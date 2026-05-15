@@ -25,6 +25,8 @@
 
 Вот это и есть главный сдвиг, который приносит память: она делает ошибки долговечными.
 
+**Memory-risk case-spine note:** memory design должен закрывать все три canonical cases как разные durable-state risks. Support triage требует memory-write policy для profile preference, provenance on saved user phrases, tenant isolation и review before ticket-write behavior can reuse old context. Internal knowledge assistant требует retrieval-memory split, source grounding, freshness evidence, tenant-filter enforcement и quarantine для unvalidated summaries. Incident coordination требует scoped incident memory, responder-role visibility, notification history provenance, rollback notes и post-incident cleanup rules.
+
 ## 2. Почему без памяти агент все равно быстро упирается в потолок
 
 При этом память действительно нужна.

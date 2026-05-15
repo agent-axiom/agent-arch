@@ -25,6 +25,8 @@ The problem is not one bad answer. The real problem is this:
 
 That is the main shift memory introduces: it makes mistakes durable.
 
+**Memory-risk case-spine note:** memory design should close all three canonical cases as different durable-state risks. Support triage needs memory-write policy for profile preference, provenance on saved user phrases, tenant isolation, and review before ticket-write behavior can reuse old context. Internal knowledge assistant needs retrieval-memory split, source grounding, freshness evidence, tenant-filter enforcement, and quarantine for unvalidated summaries. Incident coordination needs scoped incident memory, responder-role visibility, notification history provenance, rollback notes, and post-incident cleanup rules.
+
 ## 2. Why an Agent Without Memory Still Hits a Ceiling
 
 At the same time, memory is genuinely necessary.

@@ -788,6 +788,30 @@ def test_chapter_1_platform_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Memory-risk case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "durable-state risks",
+        "memory-write policy",
+        "profile preference",
+        "tenant isolation",
+        "retrieval-memory split",
+        "tenant-filter enforcement",
+        "notification history provenance",
+        "post-incident cleanup rules",
+    )
+    checked_files = (
+        "docs/book/part-iii/chapter-5.md",
+        "docs/book/part-iii/chapter-5.en.md",
+        "docs/book/part-iii/chapter-5.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
