@@ -27,6 +27,8 @@ This is the central point of the whole book: most of the time, what breaks is no
 !!! example "Running case thread"
     The support triage story is not just an opening anecdote. It is one of the book's recurring practical cases: the same shape comes back later as trust boundaries, tool gateways, approvals, traces, evals, and rollout checks. If you prefer to read from concrete systems first, start with [Practical Case Studies](../../appendix/case-studies.en.md) and then return to this chapter.
 
+**Platform case-spine note:** the “platform, not magic” argument should hold across all three canonical cases from the start. Support triage shows how retries, approvals, ticket writes, and incident reconstruction break demo-only thinking. Internal knowledge assistant shows how retrieval scope, source grounding, tenant boundaries, and memory writes require platform controls. Incident coordination shows how escalation, notification side effects, responder roles, and rollback evidence turn a “smart assistant” into a governed execution system.
+
 That is why this book is not really about how to make an agent feel magical. It is about how to stop the magic from collapsing the first time the system meets retries, side effects, approvals, long context, or incident pressure.
 
 ## 2. What These Systems Usually Lack
