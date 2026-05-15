@@ -46,6 +46,8 @@ For the same support case, that means the model should not call the helpdesk API
 !!! example "Case thread: duplicate-ticket control"
     The support-triage case is where the execution layer becomes concrete. `check_access_request_status` is a scoped read, while `create_support_ticket` is a governed write with approval, idempotency, timeout handling, and outcome telemetry. If the helpdesk API times out after creating the ticket, the runtime must not let the model simply try again; it needs a reconciliation path that can prove whether the side effect already happened.
 
+**Execution case-spine note:** the execution layer should serve all three canonical cases, not only a ticket workflow. Support triage tests read tools, write tools, approval handoff, and idempotency keys. Internal knowledge assistant tests retrieval tools, corpus filters, source visibility, and the ban on hidden writes. Incident coordination tests escalation tools, notification tools, responder-role checks, and timeout paths where the side effect may already have happened.
+
 ## 3. How One Request Moves Through the Execution Layer
 
 Now look at the same scenario as an execution path.
