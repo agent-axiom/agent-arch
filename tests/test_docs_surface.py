@@ -1133,6 +1133,29 @@ def test_start_here_surfaces_three_canonical_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_homepage_surfaces_three_canonical_cases() -> None:
+    required_markers = (
+        "Canonical case map",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "approvals",
+        "duplicate-ticket recovery",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/index.md",
+        "docs/index.en.md",
+        "docs/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

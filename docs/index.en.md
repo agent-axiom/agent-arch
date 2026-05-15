@@ -49,6 +49,9 @@ The shortest useful path through the book looks like this:
 4. [Part V. Reliability and Observability](book/part-v/index.en.md)
 5. [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 
+!!! note "Canonical case map"
+    Keep three canonical cases visible while you read that route. **Support triage** checks write capabilities, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval, memory, freshness, and knowledge provenance. **Incident coordination** checks traces, escalation, notification side effects, response ownership, and post-incident learning.
+
 ## What Already Exists Here
 
 - Published Russian core manuscript across eight book parts, from architectural foundations to lifecycle governance.

@@ -49,6 +49,9 @@
 4. [Часть V. Надежность и наблюдаемость](book/part-v/index.md)
 5. [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
 
+!!! note "Canonical case map"
+    На этом маршруте держи в поле зрения три canonical cases. **Support triage** проверяет write capabilities, approvals и duplicate-ticket recovery. **Internal knowledge assistant** проверяет retrieval, memory, freshness и knowledge provenance. **Incident coordination** проверяет traces, escalation, notification side effects, response ownership и post-incident learning.
+
 ## Что здесь уже есть
 
 - Опубликованная русская core-рукопись в восьми частях: от архитектурных оснований до lifecycle governance.
