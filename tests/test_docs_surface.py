@@ -1482,6 +1482,39 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_postmortem_template_surfaces_three_canonical_postmortem_cases() -> None:
+    required_markers = (
+        "Canonical postmortem cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "failure classes",
+        "control loop",
+        "duplicate-ticket root cause",
+        "approval scope",
+        "idempotency_key",
+        "side-effect containment",
+        "eval/rollout correction",
+        "stale source",
+        "retrieval freshness",
+        "memory provenance",
+        "access-control gap",
+        "knowledge-base correction",
+        "escalation delay",
+        "notification side effects",
+        "response ownership gap",
+        "handoff breakdown",
+        "post-incident learning update",
+    )
+    checked_files = (
+        "docs/appendix/postmortem-template.md",
+        "docs/appendix/postmortem-template.en.md",
+        "docs/appendix/postmortem-template.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

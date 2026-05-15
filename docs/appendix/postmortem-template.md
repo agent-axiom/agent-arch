@@ -114,6 +114,9 @@
 !!! example "Postmortem для duplicate-ticket thread"
     Для support-triage инцидента postmortem должен явно ответить: какой `create_ticket` call создал side effect, какой `idempotency_key` был или отсутствовал, какой `policy_bundle` и `rollout_wave` это пропустили, почему `side_effect_unknown` не остановил повтор, и какие corrective actions обновляют eval dataset, rollout gate, approval policy, registry record и retirement plan для старого ticket writer.
 
+!!! note "Canonical postmortem cases"
+    Postmortem должен возвращать разные failure classes в control loop для трех canonical cases. **Support triage** проверяет duplicate-ticket root cause, approval scope, `idempotency_key`, side-effect containment и eval/rollout correction. **Internal knowledge assistant** проверяет stale source, retrieval freshness, memory provenance, access-control gap и knowledge-base correction. **Incident coordination** проверяет escalation delay, notification side effects, response ownership gap, handoff breakdown и post-incident learning update.
+
 ## 11. Короткий шаблон в YAML
 
 ```yaml

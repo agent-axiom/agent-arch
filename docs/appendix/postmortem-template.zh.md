@@ -114,6 +114,9 @@
 !!! example "重复工单线索的事后复盘"
     对于 support-triage 事故，事后复盘需要明确回答：是哪一次 `create_ticket` 调用产生了副作用，是否存在 `idempotency_key`，哪个 `policy_bundle` 和 `rollout_wave` 放行了它，为什么 `side_effect_unknown` 没能阻止重复写入，以及哪些纠正动作会更新评测数据集、发布门禁、审批策略、注册表记录和旧 ticket writer 的退役计划。
 
+!!! note "Canonical postmortem cases"
+    Postmortem 应把三个 canonical cases 的不同 failure classes 回流到 control loop。**Support triage** 检查 duplicate-ticket root cause、approval scope、`idempotency_key`、side-effect containment 和 eval/rollout correction。**Internal knowledge assistant** 检查 stale source、retrieval freshness、memory provenance、access-control gap 和 knowledge-base correction。**Incident coordination** 检查 escalation delay、notification side effects、response ownership gap、handoff breakdown 和 post-incident learning update。
+
 ## 11. YAML 简版模板
 
 ```yaml
