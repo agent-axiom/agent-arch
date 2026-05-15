@@ -79,6 +79,8 @@ For our support case, that means that before even a 5% canary, the team must be 
 !!! example "Case thread: canary after the duplicate"
     Before a 5% rollout of the support agent, the team should show more than a successful status check and ticket creation. The review should see that the duplicate-ticket regression gate passed, `create_support_ticket` has an idempotency strategy, `side_effect_unknown` stops the run until reconciliation, traces preserve the outcome, and a rollback owner is already assigned. Otherwise the canary tests hope, not readiness.
 
+**Rollout case-spine note:** the production checklist should close all three canonical cases separately. Support triage needs a duplicate-ticket regression gate, approval coverage, idempotency strategy, and rollback owner. Internal knowledge assistant needs a retrieval freshness gate, source-grounding evals, tenant-boundary checks, and memory-write review. Incident coordination needs escalation-drill evidence, notification delivery checks, responder handoff owner, and a post-incident regression plan before canary.
+
 ## 4. Runtime Correctness
 
 At this layer, it helps to ask very grounded questions:

@@ -79,6 +79,8 @@
 !!! example "Сквозной кейс: canary после дубля"
     Перед 5% rollout агента поддержки команда должна показать не только успешный статус-чек и создание тикета. Разбор должен показать, что duplicate-ticket regression gate пройден, `create_support_ticket` имеет idempotency strategy, `side_effect_unknown` останавливает запуск до reconcile, traces сохраняют outcome, а rollback owner уже назначен. Иначе canary проверяет надежду, а не готовность.
 
+**Rollout case-spine note:** production checklist должен отдельно закрывать все три canonical cases. Support triage требует duplicate-ticket regression gate, approval coverage, idempotency strategy и rollback owner. Internal knowledge assistant требует retrieval freshness gate, source-grounding evals, tenant-boundary checks и memory-write review. Incident coordination требует escalation-drill evidence, notification delivery checks, responder handoff owner и post-incident regression plan перед canary.
+
 ## 4. Корректность рантайма
 
 На этом уровне полезно задавать очень приземленные вопросы:
