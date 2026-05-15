@@ -68,6 +68,26 @@ def test_all_appendix_pages_carry_canonical_case_markers() -> None:
     assert missing == []
 
 
+def test_all_book_part_indexes_surface_three_canonical_cases() -> None:
+    part_index_paths = sorted(Path("docs/book").glob("part-*/index*.md"))
+    required_markers = (
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+    )
+
+    assert part_index_paths
+
+    missing = []
+    for path in part_index_paths:
+        text = _read(str(path))
+        absent = [marker for marker in required_markers if marker not in text]
+        if absent:
+            missing.append((str(path), absent))
+
+    assert missing == []
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
