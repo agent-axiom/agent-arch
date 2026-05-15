@@ -1547,6 +1547,38 @@ def test_incident_response_playbook_surfaces_three_canonical_response_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_policy_templates_surface_three_canonical_policy_template_cases() -> None:
+    required_markers = (
+        "Canonical policy template cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "operational starters",
+        "governed write capability",
+        "approval boundary",
+        "idempotency key",
+        "traceable write intent",
+        "duplicate-ticket guard",
+        "role-scoped retrieval",
+        "source references",
+        "grounding checks",
+        "tenant boundaries",
+        "access-denied behavior",
+        "controlled handoffs",
+        "current owner",
+        "notification approval",
+        "risky remediation disabled by default",
+        "incident trace coverage",
+    )
+    checked_files = (
+        "docs/appendix/policy-templates.md",
+        "docs/appendix/policy-templates.en.md",
+        "docs/appendix/policy-templates.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
