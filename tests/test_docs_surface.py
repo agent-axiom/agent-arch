@@ -1287,6 +1287,37 @@ def test_part_vi_index_surfaces_three_ownership_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_vii_index_surfaces_three_runtime_case_routes() -> None:
+    required_markers = (
+        "Part VII canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "reference implementation",
+        "runtime paths",
+        "run loop",
+        "capability catalog",
+        "approval pause/resume",
+        "rollout checklist",
+        "ticket writes",
+        "memory/retrieval service",
+        "read capability policy",
+        "source attribution",
+        "tenant isolation",
+        "escalation capability",
+        "notification side effects",
+        "incident state handoff",
+        "rollout readiness evidence",
+    )
+    checked_files = (
+        "docs/book/part-vii/index.md",
+        "docs/book/part-vii/index.en.md",
+        "docs/book/part-vii/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
