@@ -102,6 +102,8 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 !!! example "贯穿案例：重复工单的 SLO"
     在支持分诊案例里，成功 SLO 应该把重复工单算作结果失败，而不是“创建成功”。更好的目标应该贴近任务：卡住的请求只产生一张上下文正确的工单，而 `side_effect_unknown` 不会以盲目重复结束。这样，SLO 保护的是用户和操作员，而不只是一个绿色 HTTP 状态。
 
+**SLO case-spine note：**health budgets 应该覆盖三个 canonical cases。Support triage 跟踪 duplicate-ticket rate、approval latency、escalation load，以及 `side_effect_unknown` 的占比。Internal knowledge assistant 跟踪 retrieval freshness、source-grounding success、access-control denials 和 memory-write quality。Incident coordination 跟踪 escalation timing、notification delivery、responder handoff latency，以及需要 manual reconciliation 的 incident-state changes 占比。
+
 ## 5. 延迟 SLO 应该按阶段拆开看
 
 如果你只看整体运行 p95，你知道系统变慢了，但不知道为什么。

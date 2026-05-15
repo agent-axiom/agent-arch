@@ -102,6 +102,8 @@ SLO нужны именно для этого: переводить разгов
 !!! example "Сквозной кейс: SLO для дублей"
     В кейсе сортировки обращений поддержки SLO успешности должен считать дубль тикета не “успешным созданием”, а ошибкой исхода. Хорошая цель звучит ближе к задаче: застрявшие запросы получают ровно один корректный тикет с нужным контекстом, а `side_effect_unknown` не заканчивается слепым повтором. Тогда SLO защищает пользователя и оператора, а не просто зеленый HTTP-статус.
 
+**SLO case-spine note:** health budgets должны быть заданы для всех трех canonical cases. Support triage отслеживает duplicate-ticket rate, approval latency, escalation load и долю `side_effect_unknown`. Internal knowledge assistant отслеживает retrieval freshness, source-grounding success, access-control denials и memory-write quality. Incident coordination отслеживает escalation timing, notification delivery, responder handoff latency и долю incident-state changes, которые требуют ручной сверки.
+
 ## 5. Latency SLO должно раскладывать задержку по этапам
 
 Если ты видишь только общий p95 по запуску, ты знаешь, что система стала медленнее, но не понимаешь почему.
