@@ -95,6 +95,8 @@ flowchart LR
 !!! example "贯穿案例：用 trace 回答争议"
     在支持分诊事故里，trace 不应该只写“工单已创建”。它应该展示关联的 `trace_id`、`session_id`、`idempotency_key`、策略决策、审批状态，以及最终 `create_support_ticket` 结果。这样，“是模型重复调用，还是重试制造了重复工单？”就不再是猜测，而是对同一条事件链的检查。
 
+**Trace case-spine note：**trace structure 应该区分三个 canonical cases。Support triage 需要关联 tool spans、approval status、`idempotency_key` 和最终的 `create_support_ticket` outcome。Internal knowledge assistant 需要带有 source identifiers、freshness markers、tenant scope 和 memory-write events 的 retrieval spans。Incident coordination 需要 escalation spans、notification outcomes、responder-role changes 和 incident-state events，让 post-incident review 看到 decision chain，而不只是 final status。
+
 ## 5. 哪些东西适合做成独立 span
 
 没必要给每个小细节都建 span，但整个运行只有一个巨大 span 也几乎没用。

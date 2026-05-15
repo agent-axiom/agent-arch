@@ -452,6 +452,30 @@ def test_chapter_10_reliability_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_11_traces_thread_three_canonical_cases() -> None:
+    required_markers = (
+        "Trace case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "tool spans",
+        "approval status",
+        "idempotency_key",
+        "retrieval spans",
+        "source identifiers",
+        "freshness markers",
+        "memory-write events",
+        "incident-state events",
+    )
+    checked_files = (
+        "docs/book/part-v/chapter-11.md",
+        "docs/book/part-v/chapter-11.en.md",
+        "docs/book/part-v/chapter-11.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

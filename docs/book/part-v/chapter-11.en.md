@@ -95,6 +95,8 @@ If this trace is built correctly, the team should quickly see:
 !!! example "Case thread: trace as the answer to the dispute"
     In the support-triage incident, the trace should not merely say “ticket created.” It should show the linked `trace_id`, `session_id`, `idempotency_key`, policy decision, approval status, and final `create_support_ticket` outcome. Then the dispute “did the model repeat the call, or did retry create the duplicate?” becomes a check against one event chain instead of a guess.
 
+**Trace case-spine note:** the trace structure should distinguish all three canonical cases. Support triage needs linked tool spans, approval status, `idempotency_key`, and the final `create_support_ticket` outcome. Internal knowledge assistant needs retrieval spans with source identifiers, freshness markers, tenant scope, and memory-write events. Incident coordination needs escalation spans, notification outcomes, responder-role changes, and incident-state events so post-incident review sees the decision chain, not only the final status.
+
 ## 5. What Should Become Separate Spans
 
 You do not need a span for every tiny detail. But one giant span for the whole run is almost useless too.

@@ -95,6 +95,8 @@ flowchart LR
 !!! example "Сквозной кейс: trace как ответ на спор"
     В инциденте сортировки обращений поддержки trace должен не просто сказать “тикет создан”. Он должен показать связку `trace_id`, `session_id`, `idempotency_key`, решение политики, статус подтверждения и итог `create_support_ticket`. Тогда спор “модель повторила вызов или повтор сделал дубль” превращается из догадки в проверку одной цепочки событий.
 
+**Trace case-spine note:** структура trace должна различать все три canonical cases. Support triage требует связать tool spans, approval status, `idempotency_key` и итог `create_support_ticket`. Internal knowledge assistant требует retrieval spans с source identifiers, freshness markers, tenant scope и memory-write events. Incident coordination требует escalation spans, notification outcomes, responder-role changes и incident-state events, чтобы post-incident review видел не только финальный статус, но и цепочку решений.
+
 ## 5. Что стоит делать отдельными span
 
 Не нужно делать отдельный span на каждую мелочь. Но и один гигантский span на весь запуск почти бесполезен.
