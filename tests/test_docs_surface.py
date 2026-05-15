@@ -1622,6 +1622,7 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
         "response ownership",
         "post-incident learning",
         "runnable configs",
+        "agent_id `support-triage-ref`",
         "`Support triage reference agent`",
         "policy, telemetry, lifecycle",
         "registry contracts",
