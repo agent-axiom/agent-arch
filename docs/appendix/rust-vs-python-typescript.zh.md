@@ -12,6 +12,9 @@
 - 用 **Rust** 做长期运行的平台服务，在严格契约、性能和可靠性最重要的地方发力；
 - 混合栈通常比“全站只用一种语言”的意识形态更成熟。
 
+!!! note "Canonical language cases"
+    Language choice 应该通过三个 canonical cases 检查，而不只是团队偏好。**Support triage** 往往先用 Python/TypeScript 做 behavior iteration，但会把 tool gateway、approval service、idempotency control 和 audit trail 放进 stricter platform services，Rust 在那里可能合适。**Internal knowledge assistant** 会把 retrieval experiments 和 eval loop 留在 Python 附近，但需要 contract layer 来约束 memory/index service、source provenance 和 tenant-aware access。**Incident coordination** 对 runtime reliability、trace ingestion pipeline、notification safety 和 response ownership 压力更大，因此 platform control 可能更早需要 Rust 或另一个严格服务层。
+
 ## 决策矩阵
 
 | 维度 | Rust | Python | TypeScript |
