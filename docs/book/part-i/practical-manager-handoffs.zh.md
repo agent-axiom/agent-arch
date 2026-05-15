@@ -95,6 +95,9 @@ manager pattern 通常在这些情况下很好用：
 - 调用多个重读取能力的内部副驾驶；
 - 专家智能体本质上更像类型化工具的场景。
 
+!!! note "Manager/handoff case-spine note"
+    manager-vs-handoff 选择会随三个 canonical cases 改变。**Support triage** 通常更适合 manager pattern，因为 approved write routine 和 ticket state 应该留在同一条 audit story 中。**Internal knowledge assistant** 在 read-heavy capabilities、source attribution 和 tenant boundary 仍可放进同一个 controlled context 时，通常也保持 manager-led。**Incident coordination** 更早需要 handoffs，因为 escalation、security investigation、remediation 和 owner record 往往会跨过不同 accountable roles。
+
 在这些地方，manager pattern 往往是最无聊、也最正确的答案。
 
 ## 6. 什么时候 Handoffs 更好

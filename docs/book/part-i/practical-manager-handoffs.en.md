@@ -95,6 +95,9 @@ Typical examples:
 - an internal copilot calling several read-heavy capabilities;
 - an agent where specialists are basically typed tools.
 
+!!! note "Manager/handoff case-spine note"
+    The manager-vs-handoff choice changes across the three canonical cases. **Support triage** usually benefits from a manager pattern because the approved write routine and ticket state should stay in one audit story. **Internal knowledge assistant** often remains manager-led while read-heavy capabilities, source attribution, and tenant boundary can stay in one controlled context. **Incident coordination** reaches handoffs sooner because escalation, security investigation, remediation, and owner record often move across different accountable roles.
+
 In these cases, manager pattern is often the most boring and most correct answer.
 
 ## 6. When Handoffs Are Better
