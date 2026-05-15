@@ -866,8 +866,8 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
     required_markers = (
         "Retirement case-spine note",
         "Support triage",
-        "internal knowledge assistant",
-        "incident coordination",
+        "Internal knowledge assistant",
+        "Incident coordination",
         "deprecated write paths",
         "paused approvals",
         "stale corpora",
@@ -882,6 +882,10 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+    for path in checked_files:
+        text = _read(path)
+        assert "internal knowledge assistant" not in text, path
+        assert "incident coordination" not in text, path
 
 
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
