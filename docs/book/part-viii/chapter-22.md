@@ -88,6 +88,8 @@ Google Research очень точно показывает, что подтве�
 !!! example "Сквозной кейс: provenance для duplicate-ticket fix"
     После инцидента с дублем тикета последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии eval dataset, policy bundle для `side_effect_unknown`, capability contract `create_support_ticket`, rollout gate, approval schema и trace schema, которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в approved release bundle, команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
 
+**Supply-chain case-spine note:** approved artifact bundle должен удерживать provenance для всех трех canonical cases. Support triage требует версии eval dataset, policy bundle, capability contract, approval schema, trace schema и rollout gate для write path. Internal knowledge assistant требует approved retrieval corpus, source-grounding rubric, tenant-filter config, memory-write policy и freshness attestation. Incident coordination требует escalation-policy bundle, notification contract, responder-role map, incident-state schema и post-incident artifact update.
+
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
 
 Именно поэтому происхождение в этой главе стоит читать узко и предметно. Это не весь доказательный слой целиком. Это управляемый слой происхождения и преемственности для доверенных артефактов, идентичности выпуска и версий, на которые реально опираются решения.

@@ -88,6 +88,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 !!! example "贯穿案例：重复工单修复的 provenance"
     在重复工单事故之后，后续复盘需要能重建的不只是重试补丁对应的 commit。它还需要知道金丝雀期间生效的评测数据集版本、`side_effect_unknown` 策略包、`create_support_ticket` 能力契约、rollout gate、审批模式和 trace schema。如果其中任何一个工件只是“在聊天里某处”，而不是已批准发布包的一部分，团队就无法证明再次出现的重复工单到底发生在修复后的控制之下，还是旧规则集之下。
 
+**Supply-chain case-spine note：**approved artifact bundle 应该为三个 canonical cases 保留 provenance。Support triage 需要 write path 的 eval dataset、policy bundle、capability contract、approval schema、trace schema 和 rollout gate 版本。Internal knowledge assistant 需要 approved retrieval corpus、source-grounding rubric、tenant-filter config、memory-write policy 和 freshness attestation。Incident coordination 需要 escalation-policy bundle、notification contract、responder-role map、incident-state schema 和 post-incident artifact update。
+
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
 
 这也是为什么本章里的来源追踪应该被狭义而具体地理解。它不是整个证据层。它是围绕已批准工件、发布身份与承载决策版本的受治理血缘层。

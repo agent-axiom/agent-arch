@@ -88,6 +88,8 @@ You need to be able to answer:
 !!! example "Case thread: provenance for the duplicate-ticket fix"
     After the duplicate-ticket incident, a later review should be able to reconstruct more than the retry-patch commit. It needs the versions of the eval dataset, `side_effect_unknown` policy bundle, `create_support_ticket` capability contract, rollout gate, approval schema, and trace schema that were active during the canary. If even one of those artifacts lives “somewhere in chat” instead of the approved release bundle, the team cannot prove whether a repeated duplicate happened under the fixed controls or the old rule set.
 
+**Supply-chain case-spine note:** the approved artifact bundle should preserve provenance for all three canonical cases. Support triage needs the eval dataset, policy bundle, capability contract, approval schema, trace schema, and rollout gate versions for the write path. Internal knowledge assistant needs an approved retrieval corpus, source-grounding rubric, tenant-filter config, memory-write policy, and freshness attestation. Incident coordination needs an escalation-policy bundle, notification contract, responder-role map, incident-state schema, and post-incident artifact update.
+
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
 
 That is why provenance in this chapter should be read narrowly and concretely. It is not the whole evidence layer. It is the governed lineage layer for approved artifacts, release identity, and decision-bearing versions.
