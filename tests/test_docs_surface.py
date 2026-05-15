@@ -1228,6 +1228,36 @@ def test_part_iii_index_surfaces_three_memory_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
+    required_markers = (
+        "Part V canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "reliability/observability layer",
+        "evidence routes",
+        "trace coverage",
+        "ticket writes",
+        "duplicate-ticket regression",
+        "approval-path evidence",
+        "retrieval quality",
+        "source-grounding judgment",
+        "freshness budget",
+        "memory-provenance evidence",
+        "escalation latency",
+        "notification delivery",
+        "response ownership",
+        "post-incident rollout judgment",
+    )
+    checked_files = (
+        "docs/book/part-v/index.md",
+        "docs/book/part-v/index.en.md",
+        "docs/book/part-v/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
