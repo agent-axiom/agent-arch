@@ -4,6 +4,9 @@
 
 Обычные логи отвечают на вопрос “что произошло”. Causal debugging нужен для вопроса “какой шаг, связь или скрытая зависимость действительно привели систему к отказу”.
 
+!!! note "Canonical causal cases"
+    Causal debugging должен искать разные decisive edges для трех canonical cases. **Support triage** отделяет retrieved context, approval decision, `idempotency_key`, tool execution и duplicate-ticket cascade. **Internal knowledge assistant** отделяет stale source, retrieval filtering, source attribution, memory write и access-control decision. **Incident coordination** отделяет escalation trigger, notification side effects, handoff edge, response ownership и post-incident learning update.
+
 ## 1. Почему обычной трассировки недостаточно
 
 В agent systems длинный run часто состоит из:

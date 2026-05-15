@@ -4,6 +4,9 @@
 
 普通日志回答的是“发生了什么”。因果调试回答的是“哪个步骤、哪条边、哪种隐藏依赖真正把系统带到了坏结果”。
 
+!!! note "Canonical causal cases"
+    Causal debugging 应在三个 canonical cases 中寻找不同 decisive edges。**Support triage** 区分 retrieved context、approval decision、`idempotency_key`、tool execution 和 duplicate-ticket cascade。**Internal knowledge assistant** 区分 stale source、retrieval filtering、source attribution、memory write 和 access-control decision。**Incident coordination** 区分 escalation trigger、notification side effects、handoff edge、response ownership 和 post-incident learning update。
+
 ## 1. 为什么普通追踪还不够
 
 在智能体系统中，一次长链路运行可能同时包含：
