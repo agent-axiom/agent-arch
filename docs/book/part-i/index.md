@@ -11,6 +11,9 @@
 
     Этого уже достаточно, чтобы обсуждать систему как инженерный контур, а не как идею.
 
+!!! note "Part I canonical case routes"
+    В foundations layer три canonical cases помогают проверить, нужен ли агент и какой architecture shape безопасен. **Support triage** проверяет workflow vs agent boundary, right to act, guarded autonomy и first risky write path. **Internal knowledge assistant** проверяет read-only workflow, retrieval need, memory discipline и source-grounded answers. **Incident coordination** проверяет coordination loop, escalation trigger, handoff boundary и single-agent first decision.
+
 ## Что решает эта часть
 
 - Она объясняет, почему агент не равен LLM и почему LLM принимает только часть решений.

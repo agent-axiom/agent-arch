@@ -11,6 +11,9 @@
 
     只走完这条路线，也已经足够把系统当作工程轮廓来讨论，而不是停留在概念层面。
 
+!!! note "Part I canonical case routes"
+    在 foundations layer 中，三个 canonical cases 帮助判断是否真的需要智能体，以及哪种 architecture shape 才安全。**Support triage** 检查 workflow vs agent boundary、right to act、guarded autonomy 和 first risky write path。**Internal knowledge assistant** 检查 read-only workflow、retrieval need、memory discipline 和 source-grounded answers。**Incident coordination** 检查 coordination loop、escalation trigger、handoff boundary 和 single-agent first decision。
+
 ## 这一部分解决什么问题
 
 - 它解释为什么智能体不等于 LLM，以及为什么 LLM 只负责部分决策。

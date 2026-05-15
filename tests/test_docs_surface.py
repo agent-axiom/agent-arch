@@ -1260,6 +1260,37 @@ def test_part_ii_index_surfaces_three_security_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_i_index_surfaces_three_foundation_case_routes() -> None:
+    required_markers = (
+        "Part I canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "foundations layer",
+        "canonical cases",
+        "architecture shape",
+        "workflow vs agent boundary",
+        "right to act",
+        "guarded autonomy",
+        "first risky write path",
+        "read-only workflow",
+        "retrieval need",
+        "memory discipline",
+        "source-grounded answers",
+        "coordination loop",
+        "escalation trigger",
+        "handoff boundary",
+        "single-agent first decision",
+    )
+    checked_files = (
+        "docs/book/part-i/index.md",
+        "docs/book/part-i/index.en.md",
+        "docs/book/part-i/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
     required_markers = (
         "Part V canonical case routes",
