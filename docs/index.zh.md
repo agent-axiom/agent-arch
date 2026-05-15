@@ -52,6 +52,9 @@
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
+!!! note "Canonical case map"
+    阅读这条路线时，要同时保留三个 canonical cases。**Support triage** 检查 write capabilities、approvals 和 duplicate-ticket recovery。**Internal knowledge assistant** 检查 retrieval、memory、freshness 和 knowledge provenance。**Incident coordination** 检查 traces、escalation、notification side effects、response ownership 和 post-incident learning。
+
 ## 这里已经有什么
 
 - 已发布的俄文核心原稿，覆盖从架构基础到生命周期治理的八个部分。
