@@ -88,6 +88,8 @@ MCP удобен не потому, что это модное слово, а п
 
 Это особенно полезно, когда у тебя не один рантайм агента и не одна интеграция, а набор возможностей, которые хочется подключать системно, а не хаотично.
 
+**Sandbox/MCP case-spine note:** песочница и MCP contract должны быть проверены на всех трех canonical cases. Support triage требует sandbox limits для helpdesk writes, approval-aware MCP tools и reconciliation path после timeout. Internal knowledge assistant требует read-only MCP resources, corpus-scoped network access, source validation и запрет на скрытые side effects. Incident coordination требует изолированных escalation adapters, notification scopes, responder-role enforcement и emergency paths, которые не обходят audit trail.
+
 ### 4.1. MCP — это security boundary, а не просто удобный коннектор
 
 Как только через MCP проходит доступ к данным, инструментам записи или средам выполнения, он становится границей безопасности. Через нее могут прийти не только полезные tool results, но и вредные инструкции, подмененные описания инструментов, избыточные OAuth scopes, confused-deputy сценарии и supply-chain риск самого сервера.
