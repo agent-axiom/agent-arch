@@ -2,7 +2,10 @@
 
 Эта страница нужна как короткий журнал крупных улучшений книги и опорного пакета. Она не заменяет git history, а помогает читателю быстро увидеть, насколько проект живой и какие слои уже появились.
 
-_Актуально на 14 мая 2026 года._
+_Актуально на 15 мая 2026 года._
+
+!!! note "Canonical case update"
+    Крупный слой обновлений от 15 мая 2026 года — сквозная карта трех canonical cases. **Support triage**, **Internal knowledge assistant** и **Incident coordination** теперь видны в book chapters, public entry points, reference pages и appendix artifacts, а coverage guards защищают chapters и appendix pages от потери этих маршрутов.
 
 ## Book
 
