@@ -1386,6 +1386,35 @@ def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> Non
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
+    required_markers = (
+        "Canonical rollout cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "readiness signals",
+        "duplicate-ticket eval pass",
+        "rollback plan",
+        "approval readiness",
+        "idempotency evidence",
+        "retrieval freshness window",
+        "source attribution review",
+        "memory provenance review",
+        "access control signoff",
+        "escalation drill",
+        "notification side effects review",
+        "response ownership readiness",
+        "post-incident learning gate",
+    )
+    checked_files = (
+        "docs/appendix/change-rollout-schema.md",
+        "docs/appendix/change-rollout-schema.en.md",
+        "docs/appendix/change-rollout-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

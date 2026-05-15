@@ -108,6 +108,9 @@ This layer matters because even a good change review does not automatically impl
 !!! example "Rollout gate for the duplicate-ticket thread"
     For a support-triage canary, the gate should check not only `offline_eval_pass`, but also a specific `duplicate_ticket_eval_passed`: timeout after `create_ticket` was reproduced, `trace_id` and `idempotency_key` were preserved, the outcome was one ticket side effect or a `side_effect_unknown` stop, and `blocking_findings` stay empty only if blind retry did not return.
 
+!!! note "Canonical rollout cases"
+    The rollout gate should check different readiness signals for the three canonical cases. **Support triage** needs duplicate-ticket eval pass, rollback plan, approval readiness, and idempotency evidence. **Internal knowledge assistant** needs retrieval freshness window, source attribution review, memory provenance review, and access control signoff. **Incident coordination** needs escalation drill, notification side effects review, response ownership readiness, and post-incident learning gate.
+
 That becomes even more important when rollout depends on richer verifier outputs rather than only binary pass/fail status. In that case, gate records should make explicit whether verifier quality and evidence linkage were reviewed for the affected high-risk paths.
 
 Once approval and stateful capability sessions are part of the runtime, the gate should also say whether interruption behavior was reviewed explicitly, not assumed.
