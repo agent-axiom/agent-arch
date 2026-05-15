@@ -2000,6 +2000,7 @@ def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     checked_files = (
         "docs/appendix/why-this-book.md",
         "docs/appendix/why-this-book.en.md",
+        "docs/appendix/why-this-book.zh.md",
     )
 
     _assert_files_contain_all(checked_files, required_markers)

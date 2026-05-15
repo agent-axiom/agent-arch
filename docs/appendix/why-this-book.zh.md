@@ -4,6 +4,9 @@
 
 这本书就是为了补上这个缺口。
 
+!!! note "Canonical book cases"
+    这本书要补上的缺口，在三个 canonical cases 里最清楚。**Support triage** 说明为什么 write actions、approvals、policy gates、duplicate-ticket recovery 和 audit trail 比 polished demo 更重要。**Internal knowledge assistant** 说明为什么 retrieval、memory boundaries、source grounding、provenance 和 tenant-aware access 必须是架构决策，而不是 prompt tricks。**Incident coordination** 说明为什么 traces、SLOs、escalation、response ownership、rollout control 和 post-incident learning 必须在 production incident 之前就存在，而不是事后再补。
+
 ## 它不是什么
 
 它不是：
