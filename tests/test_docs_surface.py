@@ -2056,6 +2056,34 @@ def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_whats_new_surfaces_canonical_case_update() -> None:
+    required_markers = (
+        "Canonical case update",
+        "May 15, 2026",
+        "15 мая 2026 года",
+        "2026 年 5 月 15 日",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "book chapters",
+        "public entry points",
+        "reference pages",
+        "appendix artifacts",
+        "coverage guards",
+        "chapters",
+        "appendix pages",
+    )
+    checked_files = (
+        "docs/whats-new.md",
+        "docs/whats-new.en.md",
+        "docs/whats-new.zh.md",
+    )
+
+    for marker in required_markers[:4]:
+        assert any(marker in _read(path) for path in checked_files), marker
+    _assert_files_contain_all(checked_files, required_markers[4:])
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

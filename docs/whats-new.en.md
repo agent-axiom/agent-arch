@@ -2,7 +2,10 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of May 14, 2026._
+_Current as of May 15, 2026._
+
+!!! note "Canonical case update"
+    The major update from May 15, 2026 is the end-to-end map of the three canonical cases. **Support triage**, **Internal knowledge assistant**, and **Incident coordination** are now visible across book chapters, public entry points, reference pages, and appendix artifacts, while coverage guards protect chapters and appendix pages from losing those routes.
 
 ## Book
 
