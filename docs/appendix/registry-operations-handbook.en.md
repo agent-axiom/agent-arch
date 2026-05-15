@@ -46,6 +46,9 @@ A minimal record is easiest to review against one template:
 
 Without that, the registry quickly turns into a list of names without operational meaning.
 
+!!! note "Canonical registry cases"
+    The registry record should capture different accountability anchors for the three canonical cases. **Support triage** needs an owner for write capability, approval mode, idempotency controls, policy bundle, and retirement linkage. **Internal knowledge assistant** needs corpus owner, retrieval policy, tenant scope, source provenance review, and freshness review cadence. **Incident coordination** needs incident role owner, escalation authority, notification channel ownership, emergency rollback owner, and lifecycle state for emergency-only capabilities.
+
 ## 4. When an agent must enter inventory
 
 A strong default usually looks like this:

@@ -1579,6 +1579,38 @@ def test_policy_templates_surface_three_canonical_policy_template_cases() -> Non
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() -> None:
+    required_markers = (
+        "Canonical registry cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "accountability anchors",
+        "write capability",
+        "approval mode",
+        "idempotency controls",
+        "policy bundle",
+        "retirement linkage",
+        "corpus owner",
+        "retrieval policy",
+        "tenant scope",
+        "source provenance review",
+        "freshness review cadence",
+        "incident role owner",
+        "escalation authority",
+        "notification channel ownership",
+        "emergency rollback owner",
+        "emergency-only capabilities",
+    )
+    checked_files = (
+        "docs/appendix/registry-operations-handbook.md",
+        "docs/appendix/registry-operations-handbook.en.md",
+        "docs/appendix/registry-operations-handbook.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

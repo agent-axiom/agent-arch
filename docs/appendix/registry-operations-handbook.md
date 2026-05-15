@@ -46,6 +46,9 @@ Registry редко работает, если ownership размыт.
 
 Без этого registry быстро превращается в список имен без operational смысла.
 
+!!! note "Canonical registry cases"
+    Registry record должен фиксировать разные accountability anchors для трех canonical cases. **Support triage** требует owner для write capability, approval mode, idempotency controls, policy bundle и retirement linkage. **Internal knowledge assistant** требует corpus owner, retrieval policy, tenant scope, source provenance review и freshness review cadence. **Incident coordination** требует incident role owner, escalation authority, notification channel ownership, emergency rollback owner и lifecycle state для emergency-only capabilities.
+
 ## 4. Когда agent должен попадать в inventory
 
 Хороший сильный default выглядит так:

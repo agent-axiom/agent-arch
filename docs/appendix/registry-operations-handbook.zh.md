@@ -46,6 +46,9 @@
 
 没有这些内容，注册表很快就会退化成一个只有名字的列表，缺少运行意义。
 
+!!! note "Canonical registry cases"
+    Registry record 应为三个 canonical cases 固定不同 accountability anchors。**Support triage** 需要 write capability、approval mode、idempotency controls、policy bundle 和 retirement linkage 的 owner。**Internal knowledge assistant** 需要 corpus owner、retrieval policy、tenant scope、source provenance review 和 freshness review cadence。**Incident coordination** 需要 incident role owner、escalation authority、notification channel ownership、emergency rollback owner，以及 emergency-only capabilities 的 lifecycle state。
+
 ## 4. 什么时候智能体必须进入清单
 
 一个比较强的默认规则通常是：
