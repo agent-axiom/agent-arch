@@ -8065,7 +8065,7 @@ class TestCli:
             "catalog_capabilities",
         }
         assert payload["agent_id"] == "support-triage-ref"
-        assert payload["display_name"] == "Support Triage Reference Agent"
+        assert payload["display_name"] == "Support triage reference agent"
         assert payload["owner_team"] == "agent_platform"
         assert payload["runtime_principal"] == "svc-support-triage-ref"
         assert payload["approved_capabilities"] == ["create_ticket", "search_docs"]

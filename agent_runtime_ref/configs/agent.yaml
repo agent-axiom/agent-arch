@@ -1,6 +1,6 @@
 agent:
   id: support-triage-ref
-  display_name: Support Triage Reference Agent
+  display_name: Support triage reference agent
   owner_team: agent_platform
   runtime_principal: svc-support-triage-ref
   approved_capabilities:
