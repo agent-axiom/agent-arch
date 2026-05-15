@@ -30,6 +30,9 @@
 !!! example "Артефактный маршрут support-triage"
     Если читаешь книгу через кейс support-triage, в справочном слое держи рядом страницы про traces, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifacts и registry operations. Именно эти контракты превращают duplicate-ticket incident из рассказа в проверяемый набор артефактов.
 
+!!! note "Canonical case artifacts"
+    Три canonical cases дают разные входы в справочный слой. **Support triage** опирается на approval record, policy bundle, trace schema и duplicate-ticket recovery evidence. **Internal knowledge assistant** требует memory/retrieval contract, freshness checks, access control и knowledge provenance. **Incident coordination** связывает incident record, escalation evidence, notification side effects, response ownership и post-incident learning.
+
 ## Схемы и контрактные страницы
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
