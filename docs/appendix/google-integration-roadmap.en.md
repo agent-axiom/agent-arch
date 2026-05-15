@@ -13,6 +13,9 @@ Google's strongest recent material is not generic "AI agents" commentary. It is 
 
 That complements the OpenAI, Anthropic, and LangGraph material already embedded in the book.
 
+!!! note "Canonical Google integration cases"
+    The Google integration roadmap is more useful when platform-grade ideas are checked against the three canonical cases. **Support triage** tests agent identity, least privilege, approval/audit linkage, sandbox profile, high-risk tools, and duplicate-ticket controls. **Internal knowledge assistant** tests context layers, memory governance, retrieval policy, source provenance, and tenant-aware access. **Incident coordination** tests registry governance, A2A boundaries, continuous controls, rollout gates, escalation traces, and response ownership.
+
 ## Step-by-step plan
 
 ### Step 1. Five pillars of the platform and context layers

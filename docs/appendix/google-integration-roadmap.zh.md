@@ -13,6 +13,9 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 这些内容和书里已经使用的 OpenAI、Anthropic、LangGraph 材料正好互补。
 
+!!! note "Canonical Google integration cases"
+    Google integration roadmap 在用三个 canonical cases 检查 platform-grade ideas 时更有用。**Support triage** 检查 agent identity、least privilege、approval/audit linkage、sandbox profile、high-risk tools 和 duplicate-ticket controls。**Internal knowledge assistant** 检查 context layers、memory governance、retrieval policy、source provenance 和 tenant-aware access。**Incident coordination** 检查 registry governance、A2A boundaries、continuous controls、rollout gates、escalation traces 和 response ownership。
+
 ## 分步计划
 
 ### 步骤 1：平台五大支柱与上下文层
