@@ -1945,6 +1945,15 @@ def test_policy_templates_surface_three_canonical_policy_template_cases() -> Non
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+    deprecated_markers = (
+        "Support Triage Agent",
+        "Internal Knowledge Agent",
+        "Incident Coordination Agent",
+    )
+    for path in checked_files:
+        text = _read(path)
+        for marker in deprecated_markers:
+            assert marker not in text, (path, marker)
 
 
 def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() -> None:
