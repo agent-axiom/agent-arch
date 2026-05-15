@@ -4269,8 +4269,9 @@ class TestRuntimeControlPaths:
         }
 
     def test_lifecycle_configs_expose_session_governance_ownership(self, config_dir: Path) -> None:
-        from agent_runtime_ref.config import load_yaml_file
+        from agent_runtime_ref.config import load_agent_profile, load_yaml_file
 
+        agent, _ = load_agent_profile(config_dir / "agent.yaml")
         change = load_yaml_file(config_dir / "change.yaml")["change"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -4323,6 +4324,7 @@ class TestRuntimeControlPaths:
             "capability_session_state",
             "runtime_control_bundle",
         ]
+        assert retirement["system_id"] == agent.agent_id
         assert retirement["session_control_owner"] == "support-ops"
         assert retirement["emergency_freeze_owner"] == "platform-runtime"
 
