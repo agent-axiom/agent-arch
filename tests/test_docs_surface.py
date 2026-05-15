@@ -1675,6 +1675,38 @@ def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> Non
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
+    required_markers = (
+        "Canonical causal cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "decisive edges",
+        "retrieved context",
+        "approval decision",
+        "idempotency_key",
+        "tool execution",
+        "duplicate-ticket cascade",
+        "stale source",
+        "retrieval filtering",
+        "source attribution",
+        "memory write",
+        "access-control decision",
+        "escalation trigger",
+        "notification side effects",
+        "handoff edge",
+        "response ownership",
+        "post-incident learning update",
+    )
+    checked_files = (
+        "docs/appendix/causal-debugging.md",
+        "docs/appendix/causal-debugging.en.md",
+        "docs/appendix/causal-debugging.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

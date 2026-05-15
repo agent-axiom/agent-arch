@@ -4,6 +4,9 @@ Once a team already has traces, session summaries, and incident records, the nex
 
 Ordinary logs answer “what happened.” Causal debugging is for answering “which step, edge, or hidden dependency actually drove the system into the bad outcome.”
 
+!!! note "Canonical causal cases"
+    Causal debugging should look for different decisive edges in the three canonical cases. **Support triage** separates retrieved context, approval decision, `idempotency_key`, tool execution, and duplicate-ticket cascade. **Internal knowledge assistant** separates stale source, retrieval filtering, source attribution, memory write, and access-control decision. **Incident coordination** separates escalation trigger, notification side effects, handoff edge, response ownership, and post-incident learning update.
+
 ## 1. Why plain tracing is not enough
 
 In agent systems, a long run may include:
