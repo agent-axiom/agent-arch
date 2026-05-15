@@ -1937,6 +1937,40 @@ def test_glossary_surfaces_three_canonical_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_sources_surface_three_canonical_source_routes() -> None:
+    required_markers = (
+        "Canonical source routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "fast route",
+        "OWASP",
+        "OpenAI agent guides",
+        "HITL sources",
+        "policy/approval material",
+        "trace grading",
+        "incident cases",
+        "LangGraph memory",
+        "OpenAI Agent memory",
+        "retrieval/eval sources",
+        "provenance-oriented governance",
+        "memory research frontier",
+        "NIST/AI RMF",
+        "Google/Microsoft governance",
+        "observability sources",
+        "multi-agent reliability research",
+        "incident review",
+        "rollout/control-plane material",
+    )
+    checked_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

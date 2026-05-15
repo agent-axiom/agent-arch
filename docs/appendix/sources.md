@@ -12,6 +12,9 @@
 
     Если нужна самая надежная база для Parts I, V и VIII, начинай с нормативного каркаса и слоя HCI/HITL. Если нужна текущая инженерная практика, смотри платформенные документы и свежие исследования, но всегда учитывай дату публикации.
 
+!!! note "Canonical source routes"
+    Используй sources как fast route для трех canonical cases. **Support triage** начинается с OWASP, OpenAI agent guides, HITL sources, policy/approval material, trace grading и incident cases. **Internal knowledge assistant** начинается с LangGraph memory, OpenAI Agent memory, retrieval/eval sources, provenance-oriented governance и memory research frontier. **Incident coordination** начинается с NIST/AI RMF, Google/Microsoft governance, observability sources, multi-agent reliability research, incident review и rollout/control-plane material.
+
 ## Нормативные рамки и контуры управления
 
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)

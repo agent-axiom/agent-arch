@@ -12,6 +12,9 @@
 
     如果你要给第一、第五和第八部分建立最稳的基础，先从规范性框架和 HCI/HITL 层开始。如果你要看当前工程实践，就读平台文档和近期研究，但始终要留意发布日期。
 
+!!! note "Canonical source routes"
+    Use the sources 作为三个 canonical cases 的 fast route。**Support triage** 从 OWASP、OpenAI agent guides、HITL sources、policy/approval material、trace grading 和 incident cases 开始。**Internal knowledge assistant** 从 LangGraph memory、OpenAI Agent memory、retrieval/eval sources、provenance-oriented governance 和 memory research frontier 开始。**Incident coordination** 从 NIST/AI RMF、Google/Microsoft governance、observability sources、multi-agent reliability research、incident review 和 rollout/control-plane material 开始。
+
 ## 规范性框架与治理轮廓
 
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
