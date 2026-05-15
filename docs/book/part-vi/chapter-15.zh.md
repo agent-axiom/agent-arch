@@ -46,6 +46,8 @@
 !!! example "贯穿案例：用模板代替本地补丁"
     在重复工单事故之后，面向支持类智能体的黄金路径应该已经包含幂等写工具、重试策略、trace/eval 钩子，以及针对 `side_effect_unknown` 的发布门。这样，下一个团队就不用把复盘复制进 wiki 再重新修一遍同样的问题，而是从一条更安全的默认路径开始。
 
+**Golden-path case-spine note：**anti-zoo strategy 应该为三个 canonical cases 提供现成路径。Support triage 使用 workflow-agent template，内含 approved write gateway、approval hooks、idempotency defaults 和 duplicate-ticket evals。Internal knowledge assistant 使用 knowledge-agent template，内含 retrieval policy、source grounding、tenant filters 和 memory-write guardrails。Incident coordination 使用 incident-agent template，内含 escalation gateway、notification defaults、responder-role checks 和 post-incident regression hooks。
+
 ## 3. 共享网关的意义，是避免把关键错误复制到整个组织
 
 有几层能力特别不适合留给各团队自由发挥：
