@@ -1110,6 +1110,29 @@ def test_readmes_surface_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_start_here_surfaces_three_canonical_case_routes() -> None:
+    required_markers = (
+        "Canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "approvals",
+        "duplicate-ticket recovery",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/start-here.md",
+        "docs/start-here.en.md",
+        "docs/start-here.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

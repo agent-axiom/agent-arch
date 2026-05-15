@@ -38,6 +38,9 @@ After that route, you should already have a working frame for:
 !!! example "If you want to follow the running case"
     Follow the support-triage story: it starts with retrieval and safe tool execution, moves through duplicate-ticket recovery, traces, SLOs, and eval gates, then continues into rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. This is the best route if you want one incident-to-platform-contract path instead of abstract layers.
 
+!!! note "Canonical case routes"
+    Keep the three canonical cases beside the route as coverage checks. **Support triage** carries write capabilities, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** highlights retrieval, memory, freshness, and knowledge provenance. **Incident coordination** checks traces, escalation, notification side effects, response ownership, and post-incident learning.
+
 ## Reading Paths by Role
 
 ### If You Are a Product Engineer
