@@ -20,6 +20,9 @@
 
 一个最小可用的记忆评测集通常至少应覆盖：
 
+!!! note "Canonical memory eval cases"
+    Memory eval suite 应为三个 canonical cases 分别检查 state quality。**Support triage** 检查 requester context carryover、ticket state retrieval、`idempotency_key` evidence、no-write decision 和 duplicate-ticket regression。**Internal knowledge assistant** 检查 retrieval freshness、source attribution、tenant isolation、memory provenance 和 grounded-answer quality。**Incident coordination** 检查 incident timeline recall、response ownership handoff、escalation status、noisy alert filtering 和 post-incident lesson retention。
+
 - 错误写入；
 - 缺失写入；
 - 不安全写入；

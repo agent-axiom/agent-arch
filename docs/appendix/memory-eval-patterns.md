@@ -20,6 +20,9 @@
 
 Минимальный memory eval set обычно должен покрывать:
 
+!!! note "Canonical memory eval cases"
+    Memory eval suite должен по-разному проверять state quality для трех canonical cases. **Support triage** проверяет requester context carryover, ticket state retrieval, `idempotency_key` evidence, no-write decision и duplicate-ticket regression. **Internal knowledge assistant** проверяет retrieval freshness, source attribution, tenant isolation, memory provenance и grounded-answer quality. **Incident coordination** проверяет incident timeline recall, response ownership handoff, escalation status, noisy alert filtering и post-incident lesson retention.
+
 - incorrect write;
 - missing write;
 - unsafe write;
