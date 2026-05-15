@@ -55,6 +55,8 @@ For the support case, the same questions look like this:
 !!! example "Case thread: support triage"
     The same support-triage case from [Chapter 1](../part-i/chapter-1.en.md) now becomes a boundary map: customer text is untrusted input, profile and ticket history are scoped reads, `create_ticket` is a governed write, and escalation is a policy decision that may require approval.
 
+**Trust-boundary case-spine note:** the same read/decide/act split should be drawn for all three canonical cases. Support triage separates customer input, ticket history, escalation decisions, and ticket writes. Internal knowledge assistant separates trusted instructions from retrieved documents, source authority, tenant scope, and memory writes. Incident coordination separates incident reports, escalation authority, responder roles, and external notifications.
+
 ## 4. What the Perimeter Looks Like on One Real Request
 
 The diagram below is useful because it shows not abstract security, but the actual places where one request can go wrong.

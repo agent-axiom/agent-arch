@@ -55,6 +55,8 @@
 !!! example "贯穿案例：支持分诊"
     [第 1 章](../part-i/chapter-1.zh.md)里的同一个支持分诊案例，在这里变成一张边界图：客户文本是不可信输入，用户画像和工单历史是有作用域的读取，`create_ticket` 是受治理的写入操作，升级处理则是可能需要审批的策略决策。
 
+**Trust-boundary case-spine note：**同样的 read/decide/act split 应该在三个 canonical cases 中都画出来。Support triage 区分 customer input、ticket history、escalation decisions 和 ticket writes。Internal knowledge assistant 区分 trusted instructions、retrieved documents、source authority、tenant scope 和 memory writes。Incident coordination 区分 incident reports、escalation authority、responder roles 和 external notifications。
+
 ## 4. 一个真实请求上的边界长什么样
 
 下面这张图有价值，是因为它展示的不是抽象安全，而是一个真实请求在哪些点上可能偏离正确路径。

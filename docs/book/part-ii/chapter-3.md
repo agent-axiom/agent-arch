@@ -55,6 +55,8 @@
 !!! example "Сквозной кейс: разбор обращений поддержки"
     Тот же кейс разбора обращений из [главы 1](../part-i/chapter-1.md) здесь превращается в карту границ: текст клиента — недоверенный ввод, профиль и история тикетов — чтение в заданной области, `create_ticket` — управляемая операция записи, а эскалация — решение политики, которому может потребоваться подтверждение.
 
+**Trust-boundary case-spine note:** тот же read/decide/act split нужно провести для всех трех canonical cases. Support triage разделяет customer input, ticket history, escalation decisions и ticket writes. Internal knowledge assistant разделяет trusted instructions, retrieved documents, source authority, tenant scope и memory writes. Incident coordination разделяет incident reports, escalation authority, responder roles и external notifications.
+
 ## 4. Как периметр выглядит на одном реальном запросе
 
 Ниже схема полезна именно потому, что она показывает не абстрактную безопасность, а места, где запрос реально может уйти не туда.
