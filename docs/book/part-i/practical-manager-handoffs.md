@@ -95,6 +95,9 @@
 - внутренний помощник, который вызывает несколько возможностей для чтения;
 - агент, где специализированные агенты по сути похожи на типизированные инструменты.
 
+!!! note "Manager/handoff case-spine note"
+    Выбор между coordinator и handoff меняется по трем canonical cases. **Support triage** обычно выигрывает от manager pattern, потому что approved write routine и ticket state должны оставаться в одном audit story. **Internal knowledge assistant** часто остается manager-led, пока read-heavy capabilities, source attribution и tenant boundary можно держать в одном controlled context. **Incident coordination** быстрее доходит до handoffs, потому что escalation, security investigation, remediation и owner record часто переходят между разными accountable roles.
+
 Здесь паттерн координатора часто оказывается самым скучным и самым правильным решением.
 
 ## 6. Когда передача управления лучше

@@ -1115,6 +1115,31 @@ def test_practical_routines_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_practical_manager_handoffs_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Manager/handoff case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approved write routine",
+        "ticket state",
+        "audit story",
+        "read-heavy capabilities",
+        "source attribution",
+        "tenant boundary",
+        "escalation",
+        "owner record",
+        "accountable roles",
+    )
+    checked_files = (
+        "docs/book/part-i/practical-manager-handoffs.md",
+        "docs/book/part-i/practical-manager-handoffs.en.md",
+        "docs/book/part-i/practical-manager-handoffs.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
