@@ -149,6 +149,9 @@ Export contract 是有意保持具体的：默认 `dataset_name` 是 `agent-runt
 !!! example "重复工单线索的 eval gate"
     对于贯穿的 support-triage 案例，应该有一个专门 eval 复现 `create_ticket` 之后的超时，要求保留 `trace_id` 与 `idempotency_key`，期望恰好一个工单副作用或一次 `side_effect_unknown` 停止；如果新的 prompt/model/adapter 版本盲目重试并创建第二个工单，就阻断 rollout。
 
+!!! note "Canonical eval cases"
+    Eval dataset 不应该只覆盖 duplicate-ticket regression。**Support triage** 检查 approval gates、idempotency evidence、retry behavior 和 duplicate-ticket recovery。**Internal knowledge assistant** 检查 retrieval freshness、source attribution、memory provenance、access control 和 grounded answer quality。**Incident coordination** 检查 escalation timing、notification side effects、response ownership、handoff quality 和 post-incident learning regressions。
+
 它还不是完整的工业级评测框架，但已经足够作为：
 
 - 回归分级的种子；
