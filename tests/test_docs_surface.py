@@ -1624,6 +1624,8 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
         "runnable configs",
         "agent_id `support-triage-ref`",
         "`Support triage reference agent`",
+        "owner_team `agent_platform`",
+        "runtime_principal `svc-support-triage-ref`",
         "policy, telemetry, lifecycle",
         "registry contracts",
     )
