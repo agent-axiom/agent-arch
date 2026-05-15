@@ -1449,6 +1449,39 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
+    required_markers = (
+        "Canonical memory cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "memory boundaries",
+        "requester context",
+        "ticket state",
+        "idempotency_key",
+        "short-lived working notes",
+        "retrieval freshness",
+        "source attribution",
+        "tenant filters",
+        "memory provenance",
+        "access control",
+        "incident timeline",
+        "response ownership",
+        "handoff summaries",
+        "escalation status",
+        "post-incident lessons",
+        "transient incident noise",
+        "durable truth",
+    )
+    checked_files = (
+        "docs/appendix/memory-retrieval-schema.md",
+        "docs/appendix/memory-retrieval-schema.en.md",
+        "docs/appendix/memory-retrieval-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

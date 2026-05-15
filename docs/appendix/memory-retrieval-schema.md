@@ -4,6 +4,9 @@
 
 Если [схема трасс и каталог событий](trace-schema.md) отвечает на вопрос «как это видно в телеметрии», а [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос «что считается управляемым рабочим артефактом», то эта схема отвечает на вопрос «какие именно записи и фильтры вообще допустимы в слое памяти».
 
+!!! note "Canonical memory cases"
+    Memory and retrieval contract должен отделять разные memory boundaries для трех canonical cases. **Support triage** хранит requester context, ticket state, `idempotency_key` evidence и short-lived working notes. **Internal knowledge assistant** требует retrieval freshness, source attribution, tenant filters, memory provenance и access control. **Incident coordination** хранит incident timeline, response ownership, handoff summaries, escalation status и post-incident lessons без превращения transient incident noise в durable truth.
+
 ## 1. Зачем нужен отдельный слой схем
 
 Очень частая ошибка с памятью устроена так:
