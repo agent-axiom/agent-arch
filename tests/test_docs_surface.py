@@ -2432,6 +2432,7 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
 def test_editorial_artifacts_use_current_canonical_cases() -> None:
     checked_files = (
         "docs/book-improvement-blueprint.md",
+        "docs/publisher-ready-toc.md",
         "docs/reader-journey-map.md",
     )
     required_markers = (
@@ -2445,6 +2446,9 @@ def test_editorial_artifacts_use_current_canonical_cases() -> None:
         "Approval-bound high-risk action agent",
         "high-risk action / approval-bound agent",
         "support triage, internal knowledge, incident coordination",
+        "Support Triage",
+        "Internal Knowledge",
+        "Incident Coordination",
     )
 
     _assert_files_contain_all(checked_files, required_markers)
