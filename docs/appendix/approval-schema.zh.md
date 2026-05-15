@@ -138,6 +138,9 @@ linked_events:
 !!! example "重复工单线索的 approval record"
     在 support-triage 案例中，approver 按下 approve 之前就应该在 payload 旁看到 `idempotency_key`。如果之后 `create_ticket` 超时，audit record 会把同一个 key 保存在 `approval_id`、`trace_id` 和 `tool_principal` 旁边，让 review 能区分一次已审批的写入意图和 blind retry 之后重复发生的副作用。
 
+!!! note "Canonical approval cases"
+    Approval record 不只服务于 write path。**Support triage** 需要 explicit human approval、`idempotency_key` 和 duplicate-ticket recovery evidence。**Internal knowledge assistant** 更常需要针对 memory writes、access-control exceptions 和 source visibility decisions 的 approval 或 review。**Incident coordination** 需要一条 approval trail，用来覆盖 escalation authority、notification side effects、response ownership transfer 和 post-incident learning updates。
+
 ## 7. 它和策略包的关系
 
 策略包回答的是：

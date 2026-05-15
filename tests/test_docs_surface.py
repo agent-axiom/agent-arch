@@ -1268,6 +1268,33 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
+    required_markers = (
+        "Canonical approval cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "explicit human approval",
+        "idempotency_key",
+        "duplicate-ticket recovery evidence",
+        "memory writes",
+        "access-control exceptions",
+        "source visibility decisions",
+        "approval trail",
+        "escalation authority",
+        "notification side effects",
+        "response ownership transfer",
+        "post-incident learning updates",
+    )
+    checked_files = (
+        "docs/appendix/approval-schema.md",
+        "docs/appendix/approval-schema.en.md",
+        "docs/appendix/approval-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
