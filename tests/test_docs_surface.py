@@ -1971,6 +1971,40 @@ def test_sources_surface_three_canonical_source_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
+    required_markers = (
+        "Canonical book cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write actions",
+        "approvals",
+        "policy gates",
+        "duplicate-ticket recovery",
+        "audit trail",
+        "polished demo",
+        "retrieval",
+        "memory boundaries",
+        "source grounding",
+        "provenance",
+        "tenant-aware access",
+        "prompt tricks",
+        "traces",
+        "SLOs",
+        "escalation",
+        "response ownership",
+        "rollout control",
+        "post-incident learning",
+        "production incident",
+    )
+    checked_files = (
+        "docs/appendix/why-this-book.md",
+        "docs/appendix/why-this-book.en.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
