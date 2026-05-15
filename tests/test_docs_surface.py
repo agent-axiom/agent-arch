@@ -54,6 +54,20 @@ def test_all_book_chapters_carry_case_spine_markers() -> None:
     assert missing == []
 
 
+def test_all_appendix_pages_carry_canonical_case_markers() -> None:
+    appendix_paths = sorted(Path("docs/appendix").glob("*.md"))
+
+    assert appendix_paths
+
+    missing = []
+    for path in appendix_paths:
+        text = _read(str(path))
+        if "Canonical " not in text:
+            missing.append(str(path))
+
+    assert missing == []
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
