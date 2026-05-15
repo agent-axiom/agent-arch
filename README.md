@@ -39,6 +39,7 @@ This repository exists to document that full operating model.
 - **Production reality over agent theater.** It emphasizes policy, approvals, observability, evals, and lifecycle discipline.
 - **A runnable reference layer.** The repository includes executable reference assets, not just prose.
 - **One running case across the stack.** The support-triage / duplicate-ticket thread connects the book, reference schemas, and `agent_runtime_ref` so readers can follow one incident from retrieval and tool execution to telemetry, evals, rollout, lifecycle, and registry control.
+- **Three canonical cases for coverage.** Support triage covers write capabilities and approvals, Internal knowledge assistant covers retrieval, memory, freshness, and knowledge provenance, and Incident coordination covers traces, escalation, notification side effects, response ownership, and post-incident learning.
 
 ## Start here
 

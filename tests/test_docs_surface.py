@@ -1088,6 +1088,28 @@ def test_case_studies_align_with_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_readmes_surface_three_canonical_cases() -> None:
+    required_markers = (
+        "canonical cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "approvals",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "README.md",
+        "README.ru.md",
+        "README.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

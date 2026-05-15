@@ -39,6 +39,7 @@
 - **Production reality вместо agent theater.** Фокус на политиках, подтверждениях, наблюдаемости, evals и дисциплине жизненного цикла.
 - **Исполняемый эталонный слой.** В репозитории есть не только текст, но и рабочие эталонные assets.
 - **Один сквозной кейс по всему стеку.** Support-triage / duplicate-ticket thread связывает книгу, эталонные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от retrieval и tool execution до telemetry, evals, rollout, lifecycle и registry control.
+- **Три canonical cases для покрытия.** Support triage покрывает write capabilities и approvals, Internal knowledge assistant — retrieval, memory, freshness и knowledge provenance, а Incident coordination — traces, escalation, notification side effects, response ownership и post-incident learning.
 
 ## С чего начать
 
