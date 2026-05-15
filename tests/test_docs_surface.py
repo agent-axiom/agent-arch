@@ -88,6 +88,32 @@ def test_all_book_part_indexes_surface_three_canonical_cases() -> None:
     assert missing == []
 
 
+def test_docs_do_not_use_deprecated_canonical_case_labels() -> None:
+    doc_paths = sorted(Path("docs").glob("**/*.md"))
+    deprecated_markers = (
+        "Support Triage Agent",
+        "Internal Knowledge Agent",
+        "Incident Coordination Agent",
+        "Support Triage",
+        "Internal Knowledge",
+        "Incident Coordination",
+        "Internal enterprise knowledge assistant",
+        "Approval-bound high-risk action agent",
+        "support triage, internal knowledge, incident coordination",
+    )
+
+    assert doc_paths
+
+    hits = []
+    for path in doc_paths:
+        text = _read(str(path))
+        found = [marker for marker in deprecated_markers if marker in text]
+        if found:
+            hits.append((str(path), found))
+
+    assert hits == []
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
