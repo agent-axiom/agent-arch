@@ -88,8 +88,8 @@ def test_all_book_part_indexes_surface_three_canonical_cases() -> None:
     assert missing == []
 
 
-def test_docs_do_not_use_deprecated_canonical_case_labels() -> None:
-    doc_paths = sorted(Path("docs").glob("**/*.md"))
+def test_public_markdown_do_not_use_deprecated_canonical_case_labels() -> None:
+    doc_paths = sorted(Path("docs").glob("**/*.md")) + sorted(Path(".").glob("README*.md"))
     deprecated_markers = (
         "Support Triage Agent",
         "Internal Knowledge Agent",
