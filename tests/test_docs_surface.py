@@ -428,6 +428,30 @@ def test_chapter_9_sandbox_mcp_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_10_reliability_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Reliability case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "idempotency keys",
+        "duplicate-ticket detection",
+        "reconciliation",
+        "retrieval fan-out",
+        "freshness backoff",
+        "stale memory writes",
+        "notification throttling",
+        "side_effect_unknown",
+    )
+    checked_files = (
+        "docs/book/part-iv/chapter-10.md",
+        "docs/book/part-iv/chapter-10.en.md",
+        "docs/book/part-iv/chapter-10.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

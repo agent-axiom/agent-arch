@@ -66,6 +66,8 @@ This is exactly where naive retry is most dangerous. Sometimes the right behavio
 !!! example "Case thread: unknown ticket outcome"
     In the support-triage case, the most dangerous moment is not the reasoning error, but the timeout after calling `create_support_ticket`. If the helpdesk may already have created the ticket, repeating the call without an idempotency key turns one customer request into two incidents. The right branch first searches for the ticket by correlation ID, then either attaches the found result to the trace or stops the run and asks an operator to confirm the state.
 
+**Reliability case-spine note:** retries, rate limits, and rollback boundaries should be tested across all three canonical cases. Support triage needs idempotency keys, duplicate-ticket detection, and reconciliation before retry. Internal knowledge assistant needs rate limits for retrieval fan-out, freshness backoff, and a ban on repeating stale memory writes. Incident coordination needs escalation de-duplication, notification throttling, a clear rollback boundary for incident-state changes, and human confirmation on `side_effect_unknown`.
+
 ### 4.1. The recovery branch should also be designed explicitly
 
 Recent work on tool-failure cases reinforces another practical point: the recovery path should rarely be left as improvisation inside the execution layer.
