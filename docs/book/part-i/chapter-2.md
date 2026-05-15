@@ -37,6 +37,8 @@
 
 Именно из этих вопросов и рождается архитектура платформы. Не из любви к слоям как таковым, а из необходимости закрыть конкретные вопросы отказа до того, как в системе появится рискованный контур записи.
 
+**Architecture case-spine note:** reference architecture должна быть проверяема на всех трех canonical cases, а не только на одном support request. Support triage проходит через ingress identity, control plane, approval gate, tool gateway и trace для ticket-write side effect. Internal knowledge assistant проходит через retrieval scope, tenant boundary, source grounding, memory-write policy и freshness evidence. Incident coordination проходит через escalation policy, responder-role identity, notification tool boundary, incident-state trace и rollback-ready evidence.
+
 ## 2. Минимальная форма агента и почему ее мало
 
 Полезно не пытаться удержать всю карту сразу. Сначала достаточно различать две вещи:

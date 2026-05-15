@@ -740,6 +740,30 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Architecture case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "reference architecture",
+        "ingress identity",
+        "control plane",
+        "approval gate",
+        "tool gateway",
+        "retrieval scope",
+        "tenant boundary",
+        "notification tool boundary",
+    )
+    checked_files = (
+        "docs/book/part-i/chapter-2.md",
+        "docs/book/part-i/chapter-2.en.md",
+        "docs/book/part-i/chapter-2.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

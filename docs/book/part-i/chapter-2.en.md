@@ -37,6 +37,8 @@ But a production system cannot run on a hand-wavy version of that flow. Too many
 
 This is exactly where platform architecture comes from. It does not come from a love of layers. It comes from the need to answer those questions before a risky write path exists.
 
+**Architecture case-spine note:** the reference architecture should be testable against all three canonical cases, not only one support request. Support triage moves through ingress identity, control plane, approval gate, tool gateway, and trace for the ticket-write side effect. Internal knowledge assistant moves through retrieval scope, tenant boundary, source grounding, memory-write policy, and freshness evidence. Incident coordination moves through escalation policy, responder-role identity, notification tool boundary, incident-state trace, and rollback-ready evidence.
+
 ## 2. The Minimal Shape of an Agent, and Why It Is Not Enough
 
 It helps not to hold the full map in your head right away. At first, it is enough to distinguish two things:

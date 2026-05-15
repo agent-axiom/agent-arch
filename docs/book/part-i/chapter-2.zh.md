@@ -37,6 +37,8 @@
 
 平台架构，正是从这些问题里长出来的。它不是出于对“分层”的偏爱，而是因为这些问题必须在高风险写路径出现之前就得到回答。
 
+**Architecture case-spine note：**reference architecture 应该能用三个 canonical cases 来验证，而不只是一个 support request。Support triage 会经过 ingress identity、control plane、approval gate、tool gateway，以及 ticket-write side effect 的 trace。Internal knowledge assistant 会经过 retrieval scope、tenant boundary、source grounding、memory-write policy 和 freshness evidence。Incident coordination 会经过 escalation policy、responder-role identity、notification tool boundary、incident-state trace 和 rollback-ready evidence。
+
 ## 2. 智能体的最小形状，以及为什么它还不够
 
 一开始不用把整张图都装进脑子里。先分清两件事就够了：
