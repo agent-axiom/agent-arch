@@ -1228,6 +1228,38 @@ def test_part_iii_index_surfaces_three_memory_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_ii_index_surfaces_three_security_case_routes() -> None:
+    required_markers = (
+        "Part II canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "security perimeter",
+        "control points",
+        "tool gateway",
+        "approval stop",
+        "audit trail",
+        "least-privilege access",
+        "ticket writes",
+        "retrieval boundary",
+        "access control",
+        "prompt assembly",
+        "egress filtering",
+        "protected reads",
+        "escalation tools",
+        "notification approvals",
+        "incident-data boundary",
+        "side effects during response",
+    )
+    checked_files = (
+        "docs/book/part-ii/index.md",
+        "docs/book/part-ii/index.en.md",
+        "docs/book/part-ii/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
     required_markers = (
         "Part V canonical case routes",
