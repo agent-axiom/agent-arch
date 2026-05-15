@@ -15,6 +15,9 @@
 !!! example "Сквозной кейс в этой части"
     Кейс support-triage здесь проходит весь lifecycle arc: duplicate-ticket fix становится ADLC change set, high-risk change packet, managed assurance finding, approved artifact bundle, retirement control для старого ticket writer, misalignment/control-eval сценарий, detection-ready telemetry и registry record с owner. Так читатель видит, что один инцидент должен менять не только код, но и evidence, rollout, operations и accountability.
 
+!!! note "Canonical lifecycle cases"
+    В этой части три canonical cases расходятся по разным lifecycle questions. **Support triage** проверяет write-capability change packets, approvals и duplicate-ticket recovery evidence. **Internal knowledge assistant** проверяет corpus ownership, freshness review, access control и knowledge provenance. **Incident coordination** проверяет escalation authority, notification side effects, response ownership и post-incident learning.
+
 !!! info "Короткий маршрут по этой части"
     Если нужен быстрый проход, иди так:
 
