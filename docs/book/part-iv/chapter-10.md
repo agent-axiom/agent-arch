@@ -66,6 +66,8 @@
 !!! example "Сквозной кейс: неизвестный итог тикета"
     В кейсе сортировки обращений поддержки самый опасный момент — не ошибка в рассуждении, а тайм-аут после вызова `create_support_ticket`. Если helpdesk мог уже создать тикет, повторный вызов без ключа идемпотентности превратит один клиентский запрос в два инцидента. Правильная ветка сначала ищет тикет по correlation ID, затем либо привязывает найденный результат к трассе, либо останавливает запуск и просит оператора подтвердить состояние.
 
+**Reliability case-spine note:** retries, rate limits и rollback boundaries нужно проверять на всех трех canonical cases. Support triage требует idempotency keys, duplicate-ticket detection и reconciliation before retry. Internal knowledge assistant требует rate limits для retrieval fan-out, freshness backoff и запрет повторять stale memory writes. Incident coordination требует escalation de-duplication, notification throttling, clear rollback boundary для incident-state changes и human confirmation при `side_effect_unknown`.
+
 ### 4.1. Ветка восстановления тоже должна проектироваться явно
 
 Свежие работы по сценариям отказов инструментов усиливают еще одну мысль: путь восстановления почти никогда не стоит оставлять как импровизацию слоя выполнения.
