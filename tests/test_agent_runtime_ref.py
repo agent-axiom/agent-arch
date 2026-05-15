@@ -4361,6 +4361,7 @@ class TestRuntimeControlPaths:
             "eval-dataset.json",
             "runtime-control-bundle-metadata",
         ]
+        assert set(change["artifacts"]).issubset(bundle["artifacts"])
 
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
