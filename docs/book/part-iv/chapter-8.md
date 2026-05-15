@@ -46,6 +46,8 @@
 !!! example "Сквозной кейс: контроль дубля тикета"
     Именно в кейсе сортировки обращений поддержки слой выполнения становится конкретным. `check_access_request_status` — ограниченное чтение, а `create_support_ticket` — управляемая операция записи с подтверждением, идемпотентностью, обработкой тайм-аутов и телеметрией исхода. Если helpdesk API отвечает тайм-аутом после создания тикета, рантайм не должен позволить модели просто попробовать еще раз; ему нужен путь сверки, который докажет, произошел ли побочный эффект уже.
 
+**Execution case-spine note:** execution layer должен обслуживать все три canonical cases, а не только ticket workflow. Support triage проверяет read tools, write tools, approval handoff и idempotency keys. Internal knowledge assistant проверяет retrieval tools, corpus filters, source visibility и запрет на скрытые writes. Incident coordination проверяет escalation tools, notification tools, responder-role checks и timeout paths, где побочный эффект мог уже произойти.
+
 ## 3. Как один запрос проходит через слой выполнения
 
 Посмотрим на тот же сценарий уже как на путь выполнения.

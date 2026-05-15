@@ -380,6 +380,30 @@ def test_chapter_17_policy_catalog_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_8_execution_layer_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Execution case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "read tools",
+        "write tools",
+        "approval handoff",
+        "idempotency keys",
+        "retrieval tools",
+        "corpus filters",
+        "responder-role checks",
+        "timeout paths",
+    )
+    checked_files = (
+        "docs/book/part-iv/chapter-8.md",
+        "docs/book/part-iv/chapter-8.en.md",
+        "docs/book/part-iv/chapter-8.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
