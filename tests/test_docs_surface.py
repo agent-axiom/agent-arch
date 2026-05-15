@@ -1092,6 +1092,29 @@ def test_book_plan_defines_three_case_spines() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_practical_routines_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Routine case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "approved write routine",
+        "retrieval routine",
+        "source attribution",
+        "tenant boundary",
+        "incident escalation routine",
+        "notification handoff",
+        "owner record",
+    )
+    checked_files = (
+        "docs/book/part-i/practical-routines.md",
+        "docs/book/part-i/practical-routines.en.md",
+        "docs/book/part-i/practical-routines.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
