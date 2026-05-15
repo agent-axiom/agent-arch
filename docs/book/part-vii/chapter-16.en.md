@@ -94,6 +94,8 @@ When all of this is packed into one big handler, the first demos come fast, but 
 !!! example "Case thread: where duplicate protection lives"
     In the support-triage runtime, duplicate-ticket protection should not hide inside the helpdesk adapter. `runtime.py` should own run context and the retry branch, `execution.py` should execute the write tool through an idempotent contract, `telemetry.py` should record `side_effect_unknown`, and `policy.py` plus the rollout gate should decide whether the run may continue. Then one incident does not spread across handlers.
 
+**Runtime case-spine note:** the baseline runtime should support all three canonical cases without local bypasses. Support triage needs a write-capability path with approval hooks, idempotency contract, and duplicate-ticket telemetry. Internal knowledge assistant needs a retrieval path with source grounding, tenant filters, freshness checks, and guarded memory writes. Incident coordination needs an escalation path with responder-role checks, notification dispatch, incident-state updates, and post-incident background tasks.
+
 ## 5. Do Not Mix Orchestration With Business Adapters
 
 One of the most expensive mistakes in early implementations is when the runtime knows too much about concrete external systems.

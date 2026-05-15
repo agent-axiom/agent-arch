@@ -548,6 +548,30 @@ def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Runtime case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "baseline runtime",
+        "approval hooks",
+        "idempotency contract",
+        "duplicate-ticket telemetry",
+        "source grounding",
+        "tenant filters",
+        "guarded memory writes",
+        "incident-state updates",
+    )
+    checked_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

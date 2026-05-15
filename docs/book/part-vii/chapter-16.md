@@ -94,6 +94,8 @@ flowchart LR
 !!! example "Сквозной кейс: где живет защита от дублей"
     В support-triage рантайме защита от дубля тикета не должна быть спрятана в helpdesk adapter. `runtime.py` должен управлять контекстом запуска и веткой повтора, `execution.py` — выполнять write tool через идемпотентный контракт, `telemetry.py` — фиксировать `side_effect_unknown`, а `policy.py` и шлюз раскатки — решать, можно ли продолжать. Тогда один и тот же инцидент не расползается по обработчикам.
 
+**Runtime case-spine note:** baseline runtime должен поддерживать все три canonical cases без локальных обходов. Support triage требует write-capability path с approval hooks, idempotency contract и duplicate-ticket telemetry. Internal knowledge assistant требует retrieval path с source grounding, tenant filters, freshness checks и guarded memory writes. Incident coordination требует escalation path с responder-role checks, notification dispatch, incident-state updates и post-incident background tasks.
+
 ## 5. Не смешивай оркестрацию и business adapters
 
 Одна из самых дорогих ошибок стартовой реализации: рантайм напрямую знает слишком много про конкретные внешние системы.
