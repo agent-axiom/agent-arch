@@ -692,6 +692,30 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Control-eval case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "eval gate and verifier contract",
+        "behavioral and control eval surfaces",
+        "payload-mutation check",
+        "approval-path misuse check",
+        "source-grounding eval",
+        "retrieval-poisoning scenario",
+        "notification suppression probe",
+        "rollback control eval",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-25.md",
+        "docs/book/part-viii/chapter-25.en.md",
+        "docs/book/part-viii/chapter-25.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
