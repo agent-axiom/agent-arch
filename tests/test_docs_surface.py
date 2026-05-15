@@ -668,6 +668,30 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Misalignment case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "risk scenario and control plan",
+        "insider-risk surfaces",
+        "approval-tight replacement window",
+        "separate tool principal",
+        "retrieval poisoning",
+        "tenant-filter bypass",
+        "notification suppression",
+        "incident-state tampering",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-24.md",
+        "docs/book/part-viii/chapter-24.en.md",
+        "docs/book/part-viii/chapter-24.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
