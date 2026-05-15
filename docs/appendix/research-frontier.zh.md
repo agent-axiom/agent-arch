@@ -23,6 +23,9 @@
 
 简而言之：前沿研究更适合作为方向来源，而不是现成的平台标准。
 
+!!! note "Canonical frontier cases"
+    需要通过三个 canonical cases 过滤 research frontier，避免 promising pattern 过早变成 production default。**Support triage** 检查 agent memory、trace-linked evals、approval gates、duplicate-ticket recovery 和 rollback cost。**Internal knowledge assistant** 检查 hierarchical memory、source provenance、retrieval freshness、tenant-aware access 和 auditability。**Incident coordination** 检查 causal tracing、multi-agent reliability、handoff contracts、incident review 和 diagnosable system boundaries。
+
 ## 记忆方向的前沿
 
 最近关于智能体记忆的研究，主要沿着三个方向推进：
