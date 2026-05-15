@@ -35,6 +35,9 @@ In this part, we break down how to design the execution layer so the agent does 
 
     Together, these three chapters give you an execution model you can discuss as a production layer, not as “the agent can call tools”.
 
+!!! note "Part IV canonical case routes"
+    In the execution layer, the three canonical cases split across different tool boundaries. **Support triage** checks ticket-write capability, approval gate, idempotency key, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval adapter, source attribution, tenant boundary, and read-only MCP contract. **Incident coordination** checks escalation tool, notification side effects, incident state updates, and rollback boundary.
+
 ## In This Part
 
 - [Chapter 8. Execution Model and Tool Catalog](chapter-8.en.md)
