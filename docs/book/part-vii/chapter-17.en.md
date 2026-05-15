@@ -80,6 +80,8 @@ flowchart LR
 !!! example "Case thread: `create_support_ticket` as a capability"
     In the support-triage system, `create_support_ticket` should not be merely a tool name in the prompt. In the catalog it is a write capability with an owner, approval requirement, idempotency requirement, timeout/retry defaults, and brokered gateway transport. The policy layer can then say explicitly: this run may start, status reads are allowed, ticket creation requires an idempotency key and approval, and after `side_effect_unknown` continuation is denied until reconciliation.
 
+**Policy case-spine note:** the capability catalog should encode the three canonical cases, not only ticket writing. Support triage needs write capabilities, approval requirements, and idempotency rules. Internal knowledge assistant needs read capabilities, corpus scope, memory-write permissions, and source-trust constraints. Incident coordination needs escalation capabilities, notification permissions, responder-role checks, and emergency-only policy overrides with explicit expiry.
+
 ## 4. A Tool Surface Is Not the Same Thing as a Governed Capability Surface
 
 Recent OpenAI tooling guidance is useful because it makes a distinction many teams blur in practice: a model may see tools, MCP servers, hosted capabilities, or local functions, but the runtime still has to decide what kind of control surface those things belong to.[^openai-tools]
