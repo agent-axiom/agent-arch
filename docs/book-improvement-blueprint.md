@@ -168,7 +168,7 @@ First implementation slice: Chapter 1 decision frame, freshness metadata for Cha
 ### P2. Book-shape improvements
 
 1. Make Chapter 1 the sample chapter: clean opening, stable decision frame, stronger ending, and a diagram/fallback pair that survives export.
-2. Thread the three canonical cases — support triage, internal knowledge, incident coordination — through trust boundaries, memory, tool gateway, evals, rollout, registry, and retirement.
+2. Thread the three canonical cases — Support triage, Internal knowledge assistant, Incident coordination — through trust boundaries, memory, tool gateway, evals, rollout, registry, and retirement.
 3. Compress Part VIII with a role map: lifecycle governance = state transitions; assurance = containment/response; provenance = lineage; observability = evidence substrate; evals = release judgment; registry = ownership/accountability.
 4. Restructure the Reference Package page into quick start, architecture map, CLI examples, config contracts, advanced lifecycle/controls, and runtime internals.
 5. Add a chapter-ending template: what to remember, common mistakes, what to check in your system, companion assets, and what to read next.

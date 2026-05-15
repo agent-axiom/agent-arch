@@ -2135,6 +2135,7 @@ def test_editorial_artifacts_use_current_canonical_cases() -> None:
         "Internal enterprise knowledge assistant",
         "Approval-bound high-risk action agent",
         "high-risk action / approval-bound agent",
+        "support triage, internal knowledge, incident coordination",
     )
 
     _assert_files_contain_all(checked_files, required_markers)
