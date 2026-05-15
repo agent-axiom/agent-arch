@@ -149,6 +149,9 @@ flowchart LR
 - агент работает с другим агентом через `A2A`;
 - policy и audit должны покрывать оба направления.
 
+!!! note "MCP/A2A case-spine note"
+    Выбор между MCP и A2A по-разному проявляется в трех canonical cases. **Support triage** обычно держит helpdesk, CRM и ticket-write tools за MCP boundary, а A2A добавляет только когда появляется отдельная responsible role. **Internal knowledge assistant** проверяет knowledge server, retrieval adapter, source attribution и tenant boundary через MCP. **Incident coordination** чаще требует A2A handoff между intake, investigation, remediation и owner record, но notification tools и incident state resources все равно остаются под MCP/policy audit.
+
 ## 7. Когда `A2A` лучше не использовать
 
 Есть несколько красных флагов:

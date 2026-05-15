@@ -149,6 +149,9 @@ flowchart LR
 - 智能体通过 `A2A` 与另一个智能体协作；
 - policy 和 audit 要覆盖这两个方向。
 
+!!! note "MCP/A2A case-spine note"
+    MCP-vs-A2A 选择在三个 canonical cases 中会呈现不同形态。**Support triage** 通常把 helpdesk、CRM 和 ticket-write tools 放在 MCP boundary 后面，只有出现单独 responsible role 时才加入 A2A。**Internal knowledge assistant** 通过 MCP 检查 knowledge server、retrieval adapter、source attribution 和 tenant boundary。**Incident coordination** 更常需要 intake、investigation、remediation 和 owner record 之间的 A2A handoff，但 notification tools 和 incident state resources 仍然要留在 MCP/policy audit 之下。
+
 ## 7. 什么情况下不要用 A2A
 
 下面这些都是危险信号：

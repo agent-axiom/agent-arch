@@ -1140,6 +1140,36 @@ def test_practical_manager_handoffs_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "MCP/A2A case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "helpdesk",
+        "CRM",
+        "ticket-write tools",
+        "MCP boundary",
+        "responsible role",
+        "knowledge server",
+        "retrieval adapter",
+        "source attribution",
+        "tenant boundary",
+        "A2A handoff",
+        "owner record",
+        "notification tools",
+        "incident state resources",
+        "MCP/policy audit",
+    )
+    checked_files = (
+        "docs/book/part-iv/practical-mcp-a2a.md",
+        "docs/book/part-iv/practical-mcp-a2a.en.md",
+        "docs/book/part-iv/practical-mcp-a2a.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
