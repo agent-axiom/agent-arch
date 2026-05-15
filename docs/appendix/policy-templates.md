@@ -19,6 +19,9 @@
 !!! example "Политика для duplicate-ticket thread"
     Для сквозного кейса support-triage `create_ticket` должен быть не просто write tool, а governed capability: approval boundary, обязательный idempotency key, traceable write intent, stop condition при `side_effect_unknown` и rollout/eval gate, который ловит повторное создание тикета до публикации изменения.
 
+!!! note "Canonical policy template cases"
+    Эти шаблоны являются operational starters для трех canonical cases. **Support triage** начинает с governed write capability, approval boundary, idempotency key, traceable write intent и duplicate-ticket guard. **Internal knowledge assistant** начинает с role-scoped retrieval, source references, grounding checks, tenant boundaries и access-denied behavior. **Incident coordination** начинает с controlled handoffs, current owner, notification approval, risky remediation disabled by default и incident trace coverage.
+
 ## Шаблон 1. Агент разбора обращений поддержки
 
 ### Что должна обеспечивать политика

@@ -19,6 +19,9 @@ Treat them not as finished production YAML, but as a skeleton:
 !!! example "Policy for the duplicate-ticket thread"
     For the running support-triage case, `create_ticket` must be more than a write tool: it needs a governed capability boundary, required idempotency key, traceable write intent, a stop condition for `side_effect_unknown`, and a rollout/eval gate that catches duplicate ticket creation before a change ships.
 
+!!! note "Canonical policy template cases"
+    These templates are operational starters for the three canonical cases. **Support triage** starts with governed write capability, approval boundary, idempotency key, traceable write intent, and duplicate-ticket guard. **Internal knowledge assistant** starts with role-scoped retrieval, source references, grounding checks, tenant boundaries, and access-denied behavior. **Incident coordination** starts with controlled handoffs, current owner, notification approval, risky remediation disabled by default, and incident trace coverage.
+
 ## Template 1. Support Triage Agent
 
 ### What the policy should enforce
