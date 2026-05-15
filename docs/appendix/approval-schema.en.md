@@ -138,6 +138,9 @@ That is why a good approval flow should be reconstructible both from a dedicated
 !!! example "Approval record for the duplicate-ticket thread"
     In the support-triage case, the approver should see `idempotency_key` beside the payload before pressing approve. If `create_ticket` later times out, the audit record preserves the same key next to `approval_id`, `trace_id`, and `tool_principal`, so review can distinguish one approved write intent from a repeated side effect after blind retry.
 
+!!! note "Canonical approval cases"
+    The approval record is not only for the write path. **Support triage** needs explicit human approval, `idempotency_key`, and duplicate-ticket recovery evidence. **Internal knowledge assistant** more often needs approval or review for memory writes, access-control exceptions, and source visibility decisions. **Incident coordination** needs an approval trail for escalation authority, notification side effects, response ownership transfer, and post-incident learning updates.
+
 ## 7. How this connects to the policy bundle
 
 The policy bundle answers:
