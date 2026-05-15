@@ -4309,6 +4309,9 @@ class TestRuntimeControlPaths:
             "capability_session_owner"
         ]
         assert change["session_control_owner"] == "support-ops"
+        assert change["emergency_freeze_owner"] == runtime_controls[
+            "emergency_freeze_owner"
+        ]
         assert change["emergency_freeze_owner"] == "platform-runtime"
 
         assert retirement["required_steps"] == [
@@ -4335,6 +4338,9 @@ class TestRuntimeControlPaths:
             "capability_session_owner"
         ]
         assert retirement["session_control_owner"] == "support-ops"
+        assert retirement["emergency_freeze_owner"] == runtime_controls[
+            "emergency_freeze_owner"
+        ]
         assert retirement["emergency_freeze_owner"] == "platform-runtime"
 
         assert bundle["version"] == "2026.04.16"
