@@ -21,6 +21,9 @@
 - он полезен не только автору книги, но и внешнему сообществу;
 - он повышает международную читаемость проекта, а не только глубину текста.
 
+!!! note "Canonical roadmap cases"
+    Roadmap должен измерять next layer of value через три canonical cases. **Support triage** задает приоритет для richer trace examples, approval policy templates, duplicate-ticket evals и runnable high-risk scenario. **Internal knowledge assistant** задает приоритет для knowledge scenario, retrieval policy template, memory eval patterns и source-grounding QA. **Incident coordination** задает приоритет для incident trace examples, escalation/notification templates, response ownership checks и post-incident learning assets.
+
 ## Следующие 10 улучшений
 
 ### 1. Расширение набора case studies

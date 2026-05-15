@@ -21,6 +21,9 @@ Each item below passes three tests:
 - it helps the wider community, not only the author of the book;
 - it improves international readability, not only technical depth.
 
+!!! note "Canonical roadmap cases"
+    The roadmap should measure the next layer of value through the three canonical cases. **Support triage** prioritizes richer trace examples, approval policy templates, duplicate-ticket evals, and a runnable high-risk scenario. **Internal knowledge assistant** prioritizes a knowledge scenario, retrieval policy template, memory eval patterns, and source-grounding QA. **Incident coordination** prioritizes incident trace examples, escalation/notification templates, response ownership checks, and post-incident learning assets.
+
 ## Next 10 Improvements
 
 ### 1. Extend the case studies set
