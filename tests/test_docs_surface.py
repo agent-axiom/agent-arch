@@ -1021,12 +1021,17 @@ def test_evidence_spine_threads_three_canonical_cases() -> None:
     required_markers = (
         "Case-spine routing note",
         "Support triage",
-        "internal knowledge assistant",
-        "incident coordination",
+        "Internal knowledge assistant",
+        "Incident coordination",
         "approvals",
         "retrieval provenance",
         "response ownership",
         "post-incident rollout judgment",
+    )
+    deprecated_markers = (
+        "support-triage agent",
+        "internal knowledge assistant stresses",
+        "incident coordination stresses",
     )
     checked_files = (
         "docs/book/part-v/evidence-spine.md",
@@ -1035,6 +1040,10 @@ def test_evidence_spine_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+    for path in checked_files:
+        text = _read(path)
+        for marker in deprecated_markers:
+            assert marker not in text, (path, marker)
 
 
 def test_book_plan_defines_three_case_spines() -> None:
