@@ -1643,6 +1643,38 @@ def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> None:
+    required_markers = (
+        "Canonical memory eval cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "state quality",
+        "requester context carryover",
+        "ticket state retrieval",
+        "idempotency_key",
+        "no-write decision",
+        "duplicate-ticket regression",
+        "retrieval freshness",
+        "source attribution",
+        "tenant isolation",
+        "memory provenance",
+        "grounded-answer quality",
+        "incident timeline recall",
+        "response ownership handoff",
+        "escalation status",
+        "noisy alert filtering",
+        "post-incident lesson retention",
+    )
+    checked_files = (
+        "docs/appendix/memory-eval-patterns.md",
+        "docs/appendix/memory-eval-patterns.en.md",
+        "docs/appendix/memory-eval-patterns.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

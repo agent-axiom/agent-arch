@@ -20,6 +20,9 @@ That is why the memory layer needs its own evaluation logic.
 
 A minimal memory eval set usually needs at least:
 
+!!! note "Canonical memory eval cases"
+    The memory eval suite should test state quality differently for the three canonical cases. **Support triage** checks requester context carryover, ticket state retrieval, `idempotency_key` evidence, no-write decision, and duplicate-ticket regression. **Internal knowledge assistant** checks retrieval freshness, source attribution, tenant isolation, memory provenance, and grounded-answer quality. **Incident coordination** checks incident timeline recall, response ownership handoff, escalation status, noisy alert filtering, and post-incident lesson retention.
+
 - incorrect write;
 - missing write;
 - unsafe write;
