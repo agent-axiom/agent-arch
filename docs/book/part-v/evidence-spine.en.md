@@ -40,7 +40,7 @@ That also has to remain true for degraded paths. A failed-run drill is useful on
 
 Without that continuity, a team may have traces, approval logs, and eval reports and still lack one reviewable operational record.
 
-**Case-spine routing note:** the same evidence spine should stay visible across the book's three canonical cases. Support triage stresses approvals and side effects; the internal knowledge assistant stresses retrieval provenance, freshness, and access control; incident coordination stresses escalation, response ownership, and post-incident rollout judgment. If a control only works for one case, it is a local feature, not an evidence spine.
+**Case-spine routing note:** the same evidence spine should stay visible across the book's three canonical cases. Support triage stresses approvals and side effects; Internal knowledge assistant stresses retrieval provenance, freshness, and access control; Incident coordination stresses escalation, response ownership, and post-incident rollout judgment. If a control only works for one case, it is a local feature, not an evidence spine.
 
 ## Minimal Shared Entity Map
 
@@ -86,7 +86,7 @@ flowchart LR
 
 ## One End-to-End Run Walkthrough
 
-Take a support-triage agent that can classify an incoming request, search internal knowledge, and create a ticket only after approval in high-risk cases.
+Take a Support triage run that can classify an incoming request, search internal knowledge, and create a ticket only after approval in high-risk cases.
 
 ### Step 1. A User Request Enters the System
 

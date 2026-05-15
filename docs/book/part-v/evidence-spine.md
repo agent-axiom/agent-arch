@@ -40,7 +40,7 @@ Evidence spine, это минимальная управляемая непре�
 
 Без этой непрерывности у команды могут быть и traces, и approval logs, и eval reports, но все равно не будет одной reviewable operational record.
 
-**Case-spine routing note:** та же evidence spine должна быть видна во всех трех canonical cases книги. Support triage проверяет approvals и side effects; internal knowledge assistant проверяет retrieval provenance, freshness и access control; incident coordination проверяет escalation, response ownership и post-incident rollout judgment. Если control работает только для одного case, это local feature, а не evidence spine.
+**Case-spine routing note:** та же evidence spine должна быть видна во всех трех canonical cases книги. Support triage проверяет approvals и side effects; Internal knowledge assistant проверяет retrieval provenance, freshness и access control; Incident coordination проверяет escalation, response ownership и post-incident rollout judgment. Если control работает только для одного case, это local feature, а не evidence spine.
 
 ## Минимальная карта общих сущностей
 
@@ -86,7 +86,7 @@ flowchart LR
 
 ## Один сквозной walkthrough run
 
-Возьмем support-triage agent, который умеет классифицировать входящее обращение, искать внутренние знания и создавать ticket только после approval в high-risk случаях.
+Возьмем Support triage run, который умеет классифицировать входящее обращение, искать внутренние знания и создавать ticket только после approval в high-risk случаях.
 
 ### Шаг 1. User request входит в систему
 
