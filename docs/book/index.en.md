@@ -18,6 +18,9 @@ By reading it, you should be able to:
 !!! example "Running support case"
     One way to read the book is to follow the support-triage case: from retrieval and tool execution to duplicate-ticket recovery, traces, SLOs, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry. That turns the chapters from a set of topics into one reviewable story about how an incident becomes a platform contract.
 
+!!! note "Canonical case map"
+    Support triage remains the main thread for write capabilities, approvals, and duplicate-ticket recovery. Internal knowledge assistant checks that retrieval, memory, tenant boundaries, freshness, and source grounding do not disappear from the architecture. Incident coordination checks traces, SLOs, escalation, notification side effects, response ownership, and post-incident learning. Together, these three canonical cases make the book a map of different control surfaces, not only one support story.
+
 ## Recommended Reading Path
 
 If you want the shortest useful route, read in this order:

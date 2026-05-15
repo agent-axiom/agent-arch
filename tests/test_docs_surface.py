@@ -1042,6 +1042,29 @@ def test_book_plan_defines_three_case_spines() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_book_index_surfaces_three_canonical_cases() -> None:
+    required_markers = (
+        "Canonical case map",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "duplicate-ticket recovery",
+        "tenant boundaries",
+        "source grounding",
+        "notification side effects",
+        "post-incident learning",
+        "control surfaces",
+    )
+    checked_files = (
+        "docs/book/index.md",
+        "docs/book/index.en.md",
+        "docs/book/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
