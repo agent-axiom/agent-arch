@@ -35,6 +35,9 @@
 
     Вместе эти три главы дают execution model, который уже можно обсуждать как production-layer, а не как “агент умеет вызывать tools”.
 
+!!! note "Part IV canonical case routes"
+    В execution layer три canonical cases расходятся по разным tool boundaries. **Support triage** проверяет ticket-write capability, approval gate, idempotency key и duplicate-ticket recovery. **Internal knowledge assistant** проверяет retrieval adapter, source attribution, tenant boundary и read-only MCP contract. **Incident coordination** проверяет escalation tool, notification side effects, incident state updates и rollback boundary.
+
 ## В этой части
 
 - [Глава 8. Модель выполнения и каталог инструментов](chapter-8.md)

@@ -1170,6 +1170,36 @@ def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_part_iv_index_surfaces_three_execution_case_routes() -> None:
+    required_markers = (
+        "Part IV canonical case routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "execution layer",
+        "tool boundaries",
+        "ticket-write capability",
+        "approval gate",
+        "idempotency key",
+        "duplicate-ticket recovery",
+        "retrieval adapter",
+        "source attribution",
+        "tenant boundary",
+        "read-only MCP contract",
+        "escalation tool",
+        "notification side effects",
+        "incident state updates",
+        "rollback boundary",
+    )
+    checked_files = (
+        "docs/book/part-iv/index.md",
+        "docs/book/part-iv/index.en.md",
+        "docs/book/part-iv/index.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_book_index_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
