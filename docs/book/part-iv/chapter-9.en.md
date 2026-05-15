@@ -88,6 +88,8 @@ In a good design, MCP gives you several benefits:
 
 That becomes especially valuable once you have not one runtime and one integration, but a set of capabilities you want to connect systematically rather than chaotically.
 
+**Sandbox/MCP case-spine note:** the sandbox and MCP contract should be tested against all three canonical cases. Support triage needs sandbox limits for helpdesk writes, approval-aware MCP tools, and a reconciliation path after timeout. Internal knowledge assistant needs read-only MCP resources, corpus-scoped network access, source validation, and a ban on hidden side effects. Incident coordination needs isolated escalation adapters, notification scopes, responder-role enforcement, and emergency paths that do not bypass the audit trail.
+
 ### 4.1. MCP Is a Security Boundary, Not Just a Convenient Connector
 
 Once MCP carries access to data, write tools, or execution environments, it becomes a security boundary. Useful tool results can cross that boundary, but so can malicious instructions, poisoned tool descriptions, over-scoped OAuth grants, confused-deputy paths, and supply-chain risk from the server itself.

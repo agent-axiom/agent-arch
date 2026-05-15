@@ -88,6 +88,8 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 当你有的不是一个运行时 + 一个集成，而是一组能力时，这一点就尤其重要。
 
+**Sandbox/MCP case-spine note：**sandbox 和 MCP contract 应该用三个 canonical cases 来测试。Support triage 需要 helpdesk writes 的 sandbox limits、approval-aware MCP tools，以及 timeout 后的 reconciliation path。Internal knowledge assistant 需要 read-only MCP resources、corpus-scoped network access、source validation，并禁止 hidden side effects。Incident coordination 需要隔离的 escalation adapters、notification scopes、responder-role enforcement，以及不会绕过 audit trail 的 emergency paths。
+
 ### 4.1. MCP 是安全边界，不只是方便的连接器
 
 一旦 MCP 承载了对数据、写入工具或执行环境的访问，它就变成了安全边界。穿过这条边界的不只是有用的 tool results，也可能是恶意指令、被污染的工具描述、过宽的 OAuth scopes、confused-deputy 路径，以及 MCP server 本身带来的供应链风险。

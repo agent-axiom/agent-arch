@@ -404,6 +404,30 @@ def test_chapter_8_execution_layer_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_9_sandbox_mcp_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "Sandbox/MCP case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "sandbox limits",
+        "approval-aware MCP tools",
+        "reconciliation path",
+        "read-only MCP resources",
+        "corpus-scoped network access",
+        "source validation",
+        "responder-role enforcement",
+        "audit trail",
+    )
+    checked_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
