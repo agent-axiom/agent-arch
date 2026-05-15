@@ -114,6 +114,9 @@ If incidents do not flow back into evals and rollout rules, teams usually repeat
 !!! example "Postmortem for the duplicate-ticket thread"
     For the support-triage incident, the postmortem should answer explicitly: which `create_ticket` call produced the side effect, which `idempotency_key` existed or was missing, which `policy_bundle` and `rollout_wave` let it through, why `side_effect_unknown` did not stop the repeat, and which corrective actions update the eval dataset, rollout gate, approval policy, registry record, and retirement plan for the old ticket writer.
 
+!!! note "Canonical postmortem cases"
+    The postmortem should route different failure classes back into the control loop for the three canonical cases. **Support triage** checks duplicate-ticket root cause, approval scope, `idempotency_key`, side-effect containment, and eval/rollout correction. **Internal knowledge assistant** checks stale source, retrieval freshness, memory provenance, access-control gap, and knowledge-base correction. **Incident coordination** checks escalation delay, notification side effects, response ownership gap, handoff breakdown, and post-incident learning update.
+
 ## 11. Short YAML template
 
 ```yaml
