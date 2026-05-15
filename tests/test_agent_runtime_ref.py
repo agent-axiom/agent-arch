@@ -3260,7 +3260,7 @@ class TestRuntimeCore:
 
         direct_agent = AgentIdentity(
             agent_id=" support-triage-ref ",
-            display_name=" Support Triage ",
+            display_name=" Support triage ",
             owner_team=" support-ops ",
             runtime_principal=" svc-agent-runtime-ref ",
         )
@@ -3276,6 +3276,8 @@ class TestRuntimeCore:
         )
         assert direct_result.status == "success"
         assert direct_runtime.agent.agent_id == "support-triage-ref"
+        assert direct_runtime.agent.display_name == "Support triage"
+        assert direct_runtime.agent.owner_team == "support-ops"
         assert direct_runtime.agent.runtime_principal == "svc-agent-runtime-ref"
         run_start = direct_runtime.telemetry.events[0]
         assert run_start.payload["agent_id"] == "support-triage-ref"
