@@ -27,6 +27,8 @@
 !!! example "贯穿案例"
     支持分诊故事不只是开篇例子。它是本书反复使用的实战案例之一：后面同一个形态会再次出现，只是换成信任边界、工具网关、审批、追踪、评测和发布前检查。如果你更喜欢先从具体系统读起，可以先看[实战案例](../../appendix/case-studies.zh.md)，再回到本章。
 
+**Platform case-spine note：**“platform, not magic” 这个论点从一开始就应该覆盖三个 canonical cases。Support triage 展示 retries、approvals、ticket writes 和 incident reconstruction 怎样打破 demo-only thinking。Internal knowledge assistant 展示 retrieval scope、source grounding、tenant boundaries 和 memory writes 为什么需要 platform controls。Incident coordination 展示 escalation、notification side effects、responder roles 和 rollback evidence 怎样把“聪明助手”变成 governed execution system。
+
 所以，这本书并不是真的在教你如何让一个智能体看起来神奇。它是在讨论，怎样避免这种“魔法感”在第一次重试、第一次副作用、第一次审批边界、长上下文或第一次事故面前就崩掉。
 
 ## 2. 这些系统通常缺的到底是什么

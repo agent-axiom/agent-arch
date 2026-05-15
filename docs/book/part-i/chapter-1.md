@@ -29,6 +29,8 @@
 !!! example "Сквозной кейс"
     История с разбором обращений поддержки здесь не просто вступительный пример. Это один из сквозных практических кейсов книги: дальше та же форма вернется как границы доверия, инструментальный шлюз, подтверждения, трассы, оценки и проверки перед выпуском. Если тебе удобнее читать от конкретных систем, начни с [практических кейсов](../../appendix/case-studies.md), а потом возвращайся к этой главе.
 
+**Platform case-spine note:** аргумент «platform, not magic» должен держаться на трех canonical cases с первого шага. Support triage показывает, как retries, approvals, ticket writes и incident reconstruction ломают demo-only thinking. Internal knowledge assistant показывает, как retrieval scope, source grounding, tenant boundaries и memory writes требуют платформенных controls. Incident coordination показывает, как escalation, notification side effects, responder roles и rollback evidence превращают «умного помощника» в governed execution system.
+
 Поэтому эта книга на самом деле не о том, как сделать агента магическим. Она о том, как не дать этой магии развалиться при первом повторе, первом побочном эффекте, первой границе подтверждения, длинном контексте или первом инциденте.
 
 ## 2. Что именно в таких системах обычно отсутствует
