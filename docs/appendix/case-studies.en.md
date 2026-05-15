@@ -12,7 +12,7 @@ If you need reusable policy artifacts rather than scenarios, go to [Policy Templ
 !!! note "Canonical case alignment"
     These scenarios correspond to the three canonical cases from the book plan. **Support triage** is Case 1 for write capability, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** is Case 2 for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is Case 3 for traces, SLOs, escalation, notification side effects, response ownership, and post-incident learning.
 
-## Case 1. Support Triage Agent
+## Case 1. Support triage
 
 ### What the system does
 
@@ -71,7 +71,7 @@ This is a good candidate for `workflow + guarded agent loop`.
 - [Chapter 8. Execution Model and Tool Catalog](../book/part-iv/chapter-8.en.md)
 - [Practice. Instructions, Routines, and Prompt Templates](../book/part-i/practical-routines.en.md)
 
-## Case 2. Internal Knowledge Agent
+## Case 2. Internal knowledge assistant
 
 ### What the system does
 
@@ -127,7 +127,7 @@ Most of the time, it is enough to have:
 - [Chapter 7. Retrieval, Compaction, and Background Updates](../book/part-iii/chapter-7.en.md)
 - [Chapter 11. Traces, Spans, and Structured Events](../book/part-v/chapter-11.en.md)
 
-## Case 3. Incident Coordination Agent
+## Case 3. Incident coordination
 
 ### What the system does
 
