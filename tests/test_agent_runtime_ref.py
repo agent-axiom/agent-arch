@@ -404,14 +404,17 @@ class TestRuntimeDocsParity:
 
         _assert_all_documented(runtime_keys, runtime_public_docs_text)
 
-    def test_runtime_readme_documents_bundled_agent_identity_values(self) -> None:
+    def test_runtime_readme_documents_bundled_agent_identity_values(
+        self, config_dir: Path
+    ) -> None:
         """Keep the local runtime README aligned with bundled agent.yaml identity."""
+        agent, _ = load_agent_profile(config_dir / "agent.yaml")
         text = Path("agent_runtime_ref/README.md").read_text(encoding="utf-8")
         for marker in (
-            "support-triage-ref",
-            "Support triage reference agent",
-            "agent_platform",
-            "svc-support-triage-ref",
+            agent.agent_id,
+            agent.display_name,
+            agent.owner_team,
+            agent.runtime_principal,
         ):
             assert marker in text
 
