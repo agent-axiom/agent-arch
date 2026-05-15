@@ -71,7 +71,7 @@
 !!! example "Сквозной кейс: что доставать обратно"
     В кейсе сортировки обращений поддержки извлечение не должно просто поднимать все прошлые обращения клиента. Для текущего запуска полезны последние открытые тикеты, проверенный профильный факт вроде предпочитаемого языка и актуальная выдержка из инструкции поддержки. Старые черновики, непроверенные жалобы и устаревшие сводки должны либо уйти в фоновое сжатие контекста, либо вообще не попадать в подсказку.
 
-**Retrieval case-spine note:** тот же retrieval loop нужно проверять на всех трех canonical cases. Support triage проверяет current ticket state и approved playbooks; internal knowledge assistant проверяет source attribution, freshness windows, tenant filters и stale-index detection; incident coordination проверяет current incident timeline, owner handoffs, escalation status и то, какие post-incident facts сжимаются в durable lessons.
+**Retrieval case-spine note:** тот же retrieval loop нужно проверять на всех трех canonical cases. Support triage проверяет current ticket state и approved playbooks; Internal knowledge assistant проверяет source attribution, freshness windows, tenant filters и stale-index detection; Incident coordination проверяет current incident timeline, owner handoffs, escalation status и то, какие post-incident facts сжимаются в durable lessons.
 
 ## 3. Хорошая подсказка любит не полноту, а плотность сигнала
 
