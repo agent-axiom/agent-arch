@@ -19,7 +19,7 @@
 !!! summary "Case-spine map"
     本书使用三个 canonical cases，但它们承担不同角色。**Support triage** 是主线案例，用来贯穿 write capabilities、approvals、duplicate-ticket recovery 和 production lifecycle。**Internal knowledge assistant** 是辅助案例，用来承载 retrieval、memory、access control、freshness 和 knowledge provenance。**Incident coordination** 是辅助案例，用来承载 traces、SLO、assurance loop、escalation 和 post-incident learning。
 
-    当某章引入新机制时，检查它强化的是哪条 case：support triage 对应 side effects，internal knowledge 对应 context quality，incident coordination 对应 response and governance。
+    当某章引入新机制时，检查它强化的是哪条 case：**Support triage** 对应 side effects，**Internal knowledge assistant** 对应 context quality，**Incident coordination** 对应 response and governance。
 
 ## 结构
 

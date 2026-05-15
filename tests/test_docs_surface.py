@@ -1061,8 +1061,23 @@ def test_book_plan_defines_three_case_spines() -> None:
         "docs/book/plan.en.md",
         "docs/book/plan.zh.md",
     )
+    deprecated_markers = (
+        "support triage for side effects",
+        "support triage для side effects",
+        "support triage 对应 side effects",
+        "internal knowledge for context quality",
+        "internal knowledge для context quality",
+        "internal knowledge 对应 context quality",
+        "incident coordination for response and governance",
+        "incident coordination для response and governance",
+        "incident coordination 对应 response and governance",
+    )
 
     _assert_files_contain_all(checked_files, required_markers)
+    for path in checked_files:
+        text = _read(path)
+        for marker in deprecated_markers:
+            assert marker not in text, (path, marker)
 
 
 def test_book_index_surfaces_three_canonical_cases() -> None:

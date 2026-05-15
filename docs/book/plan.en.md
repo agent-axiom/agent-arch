@@ -16,7 +16,7 @@ This page is about the structure and status of the book. If you need a reading r
 !!! summary "Case-spine map"
     The book uses three canonical cases, but they have different jobs. **Support triage** is the main running case for write capabilities, approvals, duplicate-ticket recovery, and production lifecycle. **Internal knowledge assistant** is the secondary case for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is the secondary case for traces, SLOs, the assurance loop, escalation, and post-incident learning.
 
-    When a chapter introduces a new mechanism, check which case it strengthens: support triage for side effects, internal knowledge for context quality, and incident coordination for response and governance.
+    When a chapter introduces a new mechanism, check which case it strengthens: **Support triage** for side effects, **Internal knowledge assistant** for context quality, and **Incident coordination** for response and governance.
 
 ## Structure
 
