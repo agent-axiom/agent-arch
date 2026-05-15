@@ -133,6 +133,9 @@ Escalate when approval is required or when the outcome of a write action is unce
 Always return a structured decision object.
 ```
 
+!!! note "Routine case-spine note"
+    These instructions look like a Support triage example, but the same routine discipline is needed across all three canonical cases. **Support triage** checks the approved write routine before creating a ticket. **Internal knowledge assistant** checks the retrieval routine, source attribution, and tenant boundary. **Incident coordination** checks the incident escalation routine, notification handoff, and owner record.
+
 That is much more useful than trying to describe the entire company's internal world in one overloaded paragraph.
 
 ## 7. Templates Should Be Assembled from Runtime Context
