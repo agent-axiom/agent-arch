@@ -82,7 +82,7 @@
 !!! example "Сквозной кейс: старый ticket writer после замены"
     Если support-triage v2 заменил старый path, который когда-то создавал duplicate tickets, retirement должен доказать, что старый `create_support_ticket` больше не может действовать. Недостаточно убрать prompt route: нужно закрыть tool principal, отозвать gateway exposure, истечь paused approvals, остановить background retries и сохранить audit trail, чтобы будущий дубль нельзя было списать на “непонятно откуда пришедший” старый агент.
 
-**Retirement case-spine note:** каждый canonical case выводит из эксплуатации разный right to act. Support triage закрывает deprecated write paths и paused approvals; internal knowledge assistant выводит stale corpora, obsolete embeddings и memory-write rules; incident coordination закрывает emergency-only capabilities, escalation routes и notification channels, когда response path больше не валиден. Retirement plan, который только удаляет runtime, оставляет старые полномочия жить дальше.
+**Retirement case-spine note:** каждый canonical case выводит из эксплуатации разный right to act. Support triage закрывает deprecated write paths и paused approvals; Internal knowledge assistant выводит stale corpora, obsolete embeddings и memory-write rules; Incident coordination закрывает emergency-only capabilities, escalation routes и notification channels, когда response path больше не валиден. Retirement plan, который только удаляет runtime, оставляет старые полномочия жить дальше.
 
 ## 5. Retirement должен идти по слоям
 
