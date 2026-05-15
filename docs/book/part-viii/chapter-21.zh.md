@@ -108,6 +108,8 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 !!! example "贯穿案例：重复复现后的 finding"
     如果红队演练通过超时和重试再次复现了重复工单，这不是“有意思的观察”，而是一个受管理的 finding。记录里应该包含利用路径、受影响能力 `create_support_ticket`、风险等级、负责人、approval-only mode 这样的临时缓解、针对重复 outcome 增长的检测规则，以及修复截止时间。只有在更新后的评测、策略门和已确认的可追踪结果都通过之后，保障闭环才算关闭这个 finding。
 
+**Assurance case-spine note：**finding and response record 应该通过不同 containment paths 闭合三个 canonical cases。Support triage 连接 duplicate-outcome detection、approval-only containment、`create_support_ticket` owner、updated eval 和 traceable outcome。Internal knowledge assistant 连接 retrieval-poisoning signal、source-grounding review、tenant-boundary containment、memory-write quarantine 和 freshness remediation。Incident coordination 连接 escalation abuse signal、notification throttling、responder-role owner、incident-state rollback 和 post-incident control update。
+
 ## 5. 检测不能只盯着错误率
 
 在普通服务里，检测常常围绕错误率、延迟和基础设施信号展开。对智能体系统来说，这远远不够。

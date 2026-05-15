@@ -108,6 +108,8 @@ Google Research очень хорошо формулирует здесь гла
 !!! example "Сквозной кейс: finding после повторного дубля"
     Если red-team drill снова воспроизводит duplicate ticket через timeout и retry, это не “интересное наблюдение”, а managed finding. В записи должны быть exploit path, affected capability `create_support_ticket`, risk level, owner, temporary mitigation вроде approval-only mode, detection rule на рост duplicate outcomes и remediation deadline. Assurance loop закрывает finding только после обновленного eval, policy gate и подтвержденного traceable outcome.
 
+**Assurance case-spine note:** finding and response record должен закрывать все три canonical cases разными containment paths. Support triage связывает duplicate-outcome detection, approval-only containment, `create_support_ticket` owner, updated eval и traceable outcome. Internal knowledge assistant связывает retrieval-poisoning signal, source-grounding review, tenant-boundary containment, memory-write quarantine и freshness remediation. Incident coordination связывает escalation abuse signal, notification throttling, responder-role owner, incident-state rollback и post-incident control update.
+
 ## 5. Detection должна смотреть шире, чем error rate
 
 Для обычных сервисов detection часто строится вокруг error rate, latency и infrastructure signals. Для agent systems этого мало.
