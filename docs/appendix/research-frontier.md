@@ -23,6 +23,9 @@
 
 Если коротко: research frontier полезен как источник направлений, а не как готовый стандарт платформы.
 
+!!! note "Canonical frontier cases"
+    Research frontier стоит фильтровать через три canonical cases, чтобы promising pattern не стал production default слишком рано. **Support triage** проверяет agent memory, trace-linked evals, approval gates, duplicate-ticket recovery и rollback cost. **Internal knowledge assistant** проверяет hierarchical memory, source provenance, retrieval freshness, tenant-aware access и auditability. **Incident coordination** проверяет causal tracing, multi-agent reliability, handoff contracts, incident review и diagnosable system boundaries.
+
 ## Frontier по памяти
 
 В последние годы papers по agent memory двигаются в трех направлениях:

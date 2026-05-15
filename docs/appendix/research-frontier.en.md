@@ -23,6 +23,9 @@ A practical rule is:
 
 In short: frontier research is useful as a source of direction, not as a ready-made platform standard.
 
+!!! note "Canonical frontier cases"
+    Filter the research frontier through the three canonical cases so that a promising pattern does not become a production default too early. **Support triage** tests agent memory, trace-linked evals, approval gates, duplicate-ticket recovery, and rollback cost. **Internal knowledge assistant** tests hierarchical memory, source provenance, retrieval freshness, tenant-aware access, and auditability. **Incident coordination** tests causal tracing, multi-agent reliability, handoff contracts, incident review, and diagnosable system boundaries.
+
 ## Memory frontier
 
 Recent work on agent memory is moving in three directions:

@@ -1800,6 +1800,40 @@ def test_google_integration_roadmap_surfaces_three_canonical_platform_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
+    required_markers = (
+        "Canonical frontier cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "research frontier",
+        "promising pattern",
+        "production default",
+        "agent memory",
+        "trace-linked evals",
+        "approval gates",
+        "duplicate-ticket recovery",
+        "rollback cost",
+        "hierarchical memory",
+        "source provenance",
+        "retrieval freshness",
+        "tenant-aware access",
+        "auditability",
+        "causal tracing",
+        "multi-agent reliability",
+        "handoff contracts",
+        "incident review",
+        "diagnosable system boundaries",
+    )
+    checked_files = (
+        "docs/appendix/research-frontier.md",
+        "docs/appendix/research-frontier.en.md",
+        "docs/appendix/research-frontier.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
