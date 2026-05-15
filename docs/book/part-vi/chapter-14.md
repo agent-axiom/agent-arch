@@ -89,6 +89,8 @@ flowchart LR
 !!! example "Сквозной кейс: кто чинит общий слой"
     После инцидента с дублем тикета продуктовая команда должна владеть тем, как support workflow отвечает пользователю и когда эскалирует. Но platform team должна владеть политикой повторов рантайма, контрактом идемпотентности, схемой трасс и шлюзом раскатки, потому что эти решения нужны не одному агенту, а всем сценариям с write-capability. Если это не разделить заранее, следующий инцидент снова превратится в спор о владельце.
 
+**Ownership case-spine note:** platform/product split должен быть явным для всех трех canonical cases. Support triage делит ownership между product workflow, approval policy, write-capability contract и duplicate-ticket response. Internal knowledge assistant делит corpus ownership, retrieval policy, memory-write rules и access-control review. Incident coordination делит incident roles, escalation authority, notification ownership и post-incident change ownership, чтобы platform team не стала bottleneck, а product teams не построили три несовместимых control planes.
+
 ## 5. Платформа должна давать golden paths, а не просто набор низкоуровневых деталей
 
 Если platform team поставляет только “конструктор из запчастей”, продуктовые команды все равно начнут собирать системы по-разному.

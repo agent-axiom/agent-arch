@@ -89,6 +89,8 @@ flowchart LR
 !!! example "Case thread: who fixes the shared layer"
     After the duplicate-ticket incident, the product team should own how the support workflow answers the user and when it escalates. But the platform team should own the runtime retry policy, idempotency contract, trace schema, and rollout gate, because those decisions serve every write-capability scenario, not only one agent. If that split is not explicit before the incident, the next incident becomes another ownership dispute.
 
+**Ownership case-spine note:** the platform/product split should be explicit for all three canonical cases. Support triage divides ownership across the product workflow, approval policy, write-capability contract, and duplicate-ticket response. Internal knowledge assistant divides corpus ownership, retrieval policy, memory-write rules, and access-control review. Incident coordination divides incident roles, escalation authority, notification ownership, and post-incident change ownership so the platform team does not become a bottleneck and product teams do not build three incompatible control planes.
+
 ## 5. The Platform Should Offer Golden Paths, Not Just Low-Level Pieces
 
 If the platform team only ships a bag of parts, product teams will still assemble systems in different ways.
