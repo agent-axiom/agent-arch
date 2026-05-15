@@ -1065,6 +1065,29 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_case_studies_align_with_three_canonical_cases() -> None:
+    required_markers = (
+        "Canonical case alignment",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capability",
+        "duplicate-ticket recovery",
+        "access control",
+        "knowledge provenance",
+        "notification side effects",
+        "response ownership",
+        "post-incident learning",
+    )
+    checked_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

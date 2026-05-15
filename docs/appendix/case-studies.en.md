@@ -9,6 +9,9 @@ If you need reusable policy artifacts rather than scenarios, go to [Policy Templ
 !!! example "How to read this case now"
     The support triage case has become the book's running thread: start here, then watch the same duplicate-ticket failure move through trust boundaries, tool gateway, memory/retrieval, idempotency, traces, SLOs, eval gates, ownership, runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry, and registry.
 
+!!! note "Canonical case alignment"
+    These scenarios correspond to the three canonical cases from the book plan. **Support triage** is Case 1 for write capability, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** is Case 2 for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is Case 3 for traces, SLOs, escalation, notification side effects, response ownership, and post-incident learning.
+
 ## Case 1. Support Triage Agent
 
 ### What the system does
