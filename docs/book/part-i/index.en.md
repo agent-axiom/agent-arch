@@ -11,6 +11,9 @@ The first part answers the question that decides whether the rest of the book wi
 
     That is already enough to discuss the system as an engineering contour, not as an idea.
 
+!!! note "Part I canonical case routes"
+    In the foundations layer, the three canonical cases help check whether an agent is needed and which architecture shape is safe. **Support triage** checks workflow vs agent boundary, right to act, guarded autonomy, and first risky write path. **Internal knowledge assistant** checks read-only workflow, retrieval need, memory discipline, and source-grounded answers. **Incident coordination** checks coordination loop, escalation trigger, handoff boundary, and single-agent first decision.
+
 ## What This Part Solves
 
 - It explains why an agent is not the same thing as an LLM and why the LLM makes only part of the decisions.
