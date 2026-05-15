@@ -69,6 +69,9 @@ owner: platform-operations
 !!! example "Incident record для duplicate-ticket thread"
     В support-triage инциденте запись должна явно хранить `idempotency_key` рядом с `trace_id`, `session_id`, `approval_id`, `tool_principal`, `bundle_id` и `rollout_wave`. Без этого review не сможет надежно отличить один unknown write от второго реального `create_ticket` side effect и превратить incident в eval/update gate.
 
+!!! note "Canonical incident cases"
+    Incident record должен оставлять разные corrective paths для трех canonical cases. **Support triage** фиксирует unknown write, `idempotency_key`, duplicate-ticket recovery и eval/update gate. **Internal knowledge assistant** фиксирует stale retrieval, source attribution gaps, memory contamination, access control breach и knowledge provenance repair. **Incident coordination** фиксирует escalation delay, notification side effects, response ownership gap, handoff failure и post-incident learning update.
+
 ## 4. Incident postmortem link
 
 `incident_postmortem_link` связывает конкретный incident с corrective actions и lifecycle artifacts.
