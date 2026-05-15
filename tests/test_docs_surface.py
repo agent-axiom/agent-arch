@@ -358,6 +358,28 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
+    required_markers = (
+        "Trust-boundary case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "read/decide/act split",
+        "ticket writes",
+        "retrieved documents",
+        "source authority",
+        "memory writes",
+        "external notifications",
+    )
+    checked_files = (
+        "docs/book/part-ii/chapter-3.md",
+        "docs/book/part-ii/chapter-3.en.md",
+        "docs/book/part-ii/chapter-3.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
     required_markers = (
         "Retirement case-spine note",
