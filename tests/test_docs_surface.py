@@ -1611,6 +1611,38 @@ def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() 
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None:
+    required_markers = (
+        "Canonical recovery cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "failure surfaces",
+        "side_effect_unknown",
+        "idempotency lookup",
+        "duplicate-ticket prevention",
+        "manual reconciliation",
+        "eval/rollout regression",
+        "stale retrieval",
+        "source lookup failure",
+        "access-denied recovery",
+        "memory write rollback",
+        "grounded-answer recheck",
+        "notification partial delivery",
+        "escalation retry",
+        "owner handoff repair",
+        "emergency rollback decision",
+        "post-incident learning capture",
+    )
+    checked_files = (
+        "docs/appendix/tool-failure-recovery.md",
+        "docs/appendix/tool-failure-recovery.en.md",
+        "docs/appendix/tool-failure-recovery.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

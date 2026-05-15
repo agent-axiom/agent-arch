@@ -38,6 +38,9 @@ If the execution layer does not distinguish these classes, the agent will almost
 
 This is the most dangerous failure class.
 
+!!! note "Canonical recovery cases"
+    The recovery branch should distinguish failure surfaces for the three canonical cases. **Support triage** focuses on `side_effect_unknown`, idempotency lookup, duplicate-ticket prevention, manual reconciliation, and eval/rollout regression. **Internal knowledge assistant** focuses on stale retrieval, source lookup failure, access-denied recovery, memory write rollback, and grounded-answer recheck. **Incident coordination** focuses on notification partial delivery, escalation retry, owner handoff repair, emergency rollback decision, and post-incident learning capture.
+
 Instead of naive retry, it is usually better to:
 
 - check the current state in the external system;
