@@ -102,6 +102,8 @@ For a support agent, success must describe not “no exception happened,” but 
 !!! example "Case thread: SLO for duplicate tickets"
     In the support-triage case, the success SLO should count a duplicate ticket as an outcome failure, not as “successful creation.” A better target is task-shaped: stuck requests produce exactly one correct ticket with the right context, and `side_effect_unknown` does not end in blind repetition. Then the SLO protects the user and operator, not merely a green HTTP status.
 
+**SLO case-spine note:** health budgets should be defined for all three canonical cases. Support triage tracks duplicate-ticket rate, approval latency, escalation load, and the share of `side_effect_unknown`. Internal knowledge assistant tracks retrieval freshness, source-grounding success, access-control denials, and memory-write quality. Incident coordination tracks escalation timing, notification delivery, responder handoff latency, and the share of incident-state changes that require manual reconciliation.
+
 ## 5. Latency SLO Should Break Delay Down by Stage
 
 If you only see overall p95 run latency, you know the system got slower, but you do not know why.

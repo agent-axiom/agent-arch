@@ -476,6 +476,30 @@ def test_chapter_11_traces_thread_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_12_slo_threads_three_canonical_cases() -> None:
+    required_markers = (
+        "SLO case-spine note",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "health budgets",
+        "duplicate-ticket rate",
+        "approval latency",
+        "side_effect_unknown",
+        "retrieval freshness",
+        "source-grounding success",
+        "access-control denials",
+        "responder handoff latency",
+    )
+    checked_files = (
+        "docs/book/part-v/chapter-12.md",
+        "docs/book/part-v/chapter-12.en.md",
+        "docs/book/part-v/chapter-12.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
