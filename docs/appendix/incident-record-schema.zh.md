@@ -69,6 +69,9 @@ owner: platform-operations
 !!! example "重复工单线索的事故记录"
     在 support-triage 事故里，记录必须把 `idempotency_key` 和 `trace_id`、`session_id`、`approval_id`、`tool_principal`、`bundle_id`、`rollout_wave` 放在一起。否则，复盘就无法可靠地区分一次状态未知的写入和第二次真实的 `create_ticket` 副作用，也无法把事故转成评测/更新门禁。
 
+!!! note "Canonical incident cases"
+    Incident record 应为三个 canonical cases 留下不同 corrective paths。**Support triage** 记录 unknown write、`idempotency_key`、duplicate-ticket recovery 和 eval/update gate。**Internal knowledge assistant** 记录 stale retrieval、source attribution gaps、memory contamination、access control breach 和 knowledge provenance repair。**Incident coordination** 记录 escalation delay、notification side effects、response ownership gap、handoff failure 和 post-incident learning update。
+
 ## 4. 事故事后复盘链接
 
 `incident_postmortem_link` 把某个具体事故与纠正动作、生命周期工件连接起来。

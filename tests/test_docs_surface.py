@@ -1355,6 +1355,37 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> None:
+    required_markers = (
+        "Canonical incident cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "corrective paths",
+        "unknown write",
+        "idempotency_key",
+        "duplicate-ticket recovery",
+        "eval/update gate",
+        "stale retrieval",
+        "source attribution gaps",
+        "memory contamination",
+        "access control breach",
+        "knowledge provenance repair",
+        "escalation delay",
+        "notification side effects",
+        "response ownership gap",
+        "handoff failure",
+        "post-incident learning update",
+    )
+    checked_files = (
+        "docs/appendix/incident-record-schema.md",
+        "docs/appendix/incident-record-schema.en.md",
+        "docs/appendix/incident-record-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (

@@ -69,6 +69,9 @@ The most important fields here are:
 !!! example "Incident record for the duplicate-ticket thread"
     In the support-triage incident, the record must keep `idempotency_key` next to `trace_id`, `session_id`, `approval_id`, `tool_principal`, `bundle_id`, and `rollout_wave`. Without that, review cannot reliably distinguish one unknown write from a second real `create_ticket` side effect or turn the incident into an eval/update gate.
 
+!!! note "Canonical incident cases"
+    The incident record should leave different corrective paths for the three canonical cases. **Support triage** records unknown write, `idempotency_key`, duplicate-ticket recovery, and eval/update gate. **Internal knowledge assistant** records stale retrieval, source attribution gaps, memory contamination, access control breach, and knowledge provenance repair. **Incident coordination** records escalation delay, notification side effects, response ownership gap, handoff failure, and post-incident learning update.
+
 ## 4. Incident postmortem link
 
 `incident_postmortem_link` connects a specific incident to corrective actions and lifecycle artifacts.
