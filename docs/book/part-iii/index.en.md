@@ -11,6 +11,9 @@ At this point, the agent is no longer just reasoning, and no longer just approac
 
     Together, these three steps give you a memory layer you can discuss as an engineering system, not as an abstract “let's add memory”.
 
+!!! note "Part III canonical case routes"
+    In the memory/retrieval layer, the three canonical cases check different risks. **Support triage** checks temporary ticket state, duplicate-ticket context, and approved playbook retrieval. **Internal knowledge assistant** checks source attribution, freshness window, tenant boundary, and memory provenance. **Incident coordination** checks incident timeline, owner handoff summaries, escalation status, and post-incident lessons.
+
 <div class="book-cover" markdown="1">
 
 ![Cover for the memory and knowledge part](../../assets/images/part-iii-memory.png)
