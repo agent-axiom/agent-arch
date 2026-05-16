@@ -4758,6 +4758,19 @@ class TestRuntimeControlPaths:
         assert capability_sessions["expiry_policy"] == "reinitialize_or_cancel"
         assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
 
+    def test_retirement_binds_retired_status_to_replacement_readiness(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+
+        assert "set_retired_status" in retirement["required_steps"]
+        assert {"deprecated_runtime", "replacement_ready"}.issubset(
+            retirement["triggers"]
+        )
+        assert retirement["replacement_mode"] == "staged_replacement"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
