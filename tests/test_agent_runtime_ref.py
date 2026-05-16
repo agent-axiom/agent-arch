@@ -4933,6 +4933,24 @@ class TestRuntimeControlPaths:
         )
         assert "duplicate_ticket_eval_passed" in change["required_signals"]
 
+    def test_release_configs_bind_write_approval_to_manager_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+
+        write_capability = capabilities["create_ticket"]
+        write_policy = policy["capabilities"]["create_ticket"]
+
+        assert write_capability["mode"] == "write"
+        assert write_capability["approval"] == approvals["default_reviewer"]
+        assert write_policy["decision"] == "approval_required"
+        assert write_policy["approver"] == approvals["default_reviewer"]
+        assert approvals["escalation_sla_minutes"] == 30
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
