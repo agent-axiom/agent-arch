@@ -4847,6 +4847,34 @@ class TestRuntimeControlPaths:
             scenario = session["eval"]["scenario"]
             assert session["eval"] == EVAL_DATASET_LABELS[scenario]
 
+    def test_release_configs_bind_eval_runs_to_runtime_scenario_specs(self) -> None:
+        from agent_runtime_ref.__main__ import EVAL_DATASET_SCENARIOS
+
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        for session in eval_dataset["sessions"]:
+            scenario = session["eval"]["scenario"]
+            session_id, inputs, trace_prefix, simulated_failure = EVAL_DATASET_SCENARIOS[
+                scenario
+            ]
+            expected_inputs = list(inputs)
+            if simulated_failure:
+                expected_inputs = [
+                    f"{user_input} [simulate_failure={simulated_failure}]"
+                    for user_input in expected_inputs
+                ]
+
+            assert session["session"]["session_id"] == session_id
+            assert [run["user_input"] for run in session["runs"]] == expected_inputs
+            assert [run["trace_id"] for run in session["runs"]] == [
+                f"{trace_prefix}-{index:03d}"
+                for index in range(1, len(session["runs"]) + 1)
+            ]
+            assert [run["failure_reason"] for run in session["runs"]] == [
+                simulated_failure or ""
+                for _ in session["runs"]
+            ]
+
     def test_release_configs_bind_eval_expected_outputs_to_run_outputs(
         self, config_dir: Path
     ) -> None:
