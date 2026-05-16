@@ -4535,6 +4535,23 @@ class TestRuntimeControlPaths:
         assert approval_delegation["subagent_inheritance"] == "explicit_only"
         assert runtime_delegation["subagent_inheritance"] == "denied_by_default"
 
+    def test_release_configs_share_direct_tool_access_blocker(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        direct_tool_blocker = "direct_tool_access_present"
+
+        assert direct_tool_blocker in controls["block_if"]
+        assert direct_tool_blocker in rollout["block_if"]
+        assert "run_shell" not in agent["approved_capabilities"]
+        assert policy["capabilities"]["run_shell"]["decision"] == "deny"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
