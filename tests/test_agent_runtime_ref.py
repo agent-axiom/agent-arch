@@ -4463,6 +4463,42 @@ class TestRuntimeControlPaths:
         assert duplicate_rule["blocking"] is True
         assert duplicate_rule["expected"]["max_ticket_side_effects"] == 1
 
+    def test_release_configs_bind_sandbox_review_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+        support_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "support_ticket"
+        )
+        expected_outcomes = support_session["eval"]["expected_outcomes"]
+        sandbox_rule = next(
+            rule
+            for rule in support_session["eval"]["grading_rules"]
+            if rule["type"] == "sandbox_profile_review"
+        )
+
+        assert sandbox_review["trace_event"] in change["required_signals"]
+        assert "sandbox_profile_review" in support_session["eval"]["labels"]
+        assert expected_outcomes["sandbox_profile_reviewed"] is True
+        assert sandbox_rule["blocking"] is True
+        assert sandbox_rule["expected"]["permissions_profile"] == sandbox_review[
+            "permissions_profile"
+        ]
+        assert sandbox_rule["expected"]["network_secrets_posture"] == sandbox_review[
+            "network_secrets_posture"
+        ]
+        assert sandbox_rule["expected"]["snapshot_policy"] == sandbox_review[
+            "snapshot_policy"
+        ]
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
