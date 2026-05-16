@@ -5240,6 +5240,34 @@ class TestRuntimeControlPaths:
         assert "run_shell" not in agent["approved_capabilities"]
         assert policy["capabilities"]["run_shell"]["decision"] == "deny"
 
+    def test_release_configs_bind_sandbox_network_posture_to_egress_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_permissions = runtime_controls["sandbox_profile"]["permissions"]
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+
+        assert sandbox_permissions["network"] == "denied"
+        assert sandbox_permissions["secrets"] == "none"
+        assert sandbox_review["network_secrets_posture"] == "network:denied,secrets:none"
+        assert "unknown_side_effect_path_missing" in rollout["block_if"]
+        assert set(policy["execution"]["allow_network_access"]) == {
+            capability["network_access"] for capability in capabilities.values()
+        }
+        assert {tuple(capability["allowed_egress"]) for capability in capabilities.values()} == {
+            ("docs.internal",),
+            ("tickets.internal",),
+        }
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
