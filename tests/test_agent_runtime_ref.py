@@ -11127,7 +11127,17 @@ class TestCli:
         with pytest.raises(ValueError, match=expected_message):
             main(["check-rollout", "--signal", raw_signal])
 
-    def test_cli_check_controls_reports_control_failure(self, cli_json) -> None:
+    def test_cli_check_controls_reports_control_failure(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        failed_run_controls = [
+            control
+            for control in ("policy_traces_present", "memory_provenance_enforced")
+            if control in controls["require"]
+        ]
         exit_code, payload = cli_json(
             [
                 "check-controls",
@@ -11151,12 +11161,11 @@ class TestCli:
             "inventory_drift",
         }
         assert not payload["healthy"]
+        assert payload["required_controls"] == controls["require"]
+        assert payload["blocked_findings_expected"] == controls["block_if"]
         assert payload["missing_controls"] == ["registry_reviewed"]
         assert payload["failed_run_controls"] == []
-        assert payload["preserved_failed_run_controls"] == [
-            "policy_traces_present",
-            "memory_provenance_enforced",
-        ]
+        assert payload["preserved_failed_run_controls"] == failed_run_controls
         assert payload["failed_run_controls_healthy"] is True
         assert payload["blocking_findings"] == []
         assert not payload["inventory_drift"]["has_drift"]
