@@ -4771,6 +4771,23 @@ class TestRuntimeControlPaths:
         )
         assert retirement["replacement_mode"] == "staged_replacement"
 
+    def test_retirement_binds_audit_archive_step_to_archive_targets(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        archive_targets = retirement["archive_targets"]
+
+        assert "archive_audit_state" in retirement["required_steps"]
+        assert {"telemetry_jsonl", "session_exports", "approval_history"}.issubset(
+            archive_targets
+        )
+        assert {"paused_run_state", "capability_session_state"}.issubset(
+            archive_targets
+        )
+        assert "runtime_control_bundle" in archive_targets
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
