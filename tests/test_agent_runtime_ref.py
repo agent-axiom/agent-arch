@@ -4625,6 +4625,18 @@ class TestRuntimeControlPaths:
         assert "eval-dataset.json" in change["artifacts"]
         assert "eval-dataset.json" in bundle["artifacts"]
 
+    def test_release_configs_bind_slo_gate_to_approval_escalation_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "slo_defined" in rollout["require"]
+        assert approvals["escalation_sla_minutes"] == 30
+        assert approvals["default_reviewer"] == "manager"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
