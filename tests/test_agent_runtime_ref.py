@@ -4849,6 +4849,28 @@ class TestRuntimeControlPaths:
         )
         assert sandbox_review["snapshot_policy"] == sandbox_profile["state"]["snapshot"]
 
+    def test_release_configs_bind_capability_session_contract_to_runtime_bundle(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        capability_sessions = runtime_controls["capability_sessions"]
+
+        assert "capability_session_contract" in change["affected_surfaces"]
+        assert "runtime-controls.yaml" in change["artifacts"]
+        assert {"runtime-controls.yaml", "runtime-control-bundle-metadata"}.issubset(
+            bundle["artifacts"]
+        )
+        assert runtime_controls["capability_session_owner"] == "support-ops"
+        assert capability_sessions["session_mode"] == "stateful"
+        assert capability_sessions["track_session_ids"] is True
+        assert runtime_controls["sandbox_profile"]["state"]["persist_session_state"] is True
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
