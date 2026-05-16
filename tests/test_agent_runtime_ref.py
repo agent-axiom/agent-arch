@@ -5310,6 +5310,35 @@ class TestRuntimeControlPaths:
         assert set(agent["approved_capabilities"]) == set(capabilities)
         assert all(capability["owner"] for capability in capabilities.values())
 
+    def test_release_configs_bind_sandbox_filesystem_to_workspace_boundary(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_profile = runtime_controls["sandbox_profile"]
+        workspace_entries = sandbox_profile["workspace"]["entries"]
+        writable_entries = [entry for entry in workspace_entries if not entry["read_only"]]
+
+        assert sandbox_profile["capabilities"]["filesystem"] is True
+        assert "sandbox_profile_contract" in change["affected_surfaces"]
+        assert writable_entries == [
+            {"path": "repo", "source": "local_dir", "read_only": False}
+        ]
+        assert all(
+            entry["read_only"]
+            for entry in workspace_entries
+            if entry["source"] != "local_dir"
+        )
+        assert {entry["source"] for entry in workspace_entries} == {
+            "inline_file",
+            "local_dir",
+        }
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
