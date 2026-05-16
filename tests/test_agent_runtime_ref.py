@@ -4499,6 +4499,33 @@ class TestRuntimeControlPaths:
             "snapshot_policy"
         ]
 
+    def test_release_configs_bind_write_approval_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        support_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "support_ticket"
+        )
+        expected_outcomes = support_session["eval"]["expected_outcomes"]
+
+        assert capabilities["create_ticket"]["approval"] == approvals[
+            "default_reviewer"
+        ]
+        assert policy["capabilities"]["create_ticket"]["decision"] == "approval_required"
+        assert "approval_required" in support_session["eval"]["labels"]
+        assert expected_outcomes["approval_wait_runs"] == 1
+        assert expected_outcomes["approval_status_counts"] == {"pending": 1}
+        assert support_session["pending_approval_capability_names"] == ["create_ticket"]
+        assert support_session["approval_status_counts"] == {"pending": 1}
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
