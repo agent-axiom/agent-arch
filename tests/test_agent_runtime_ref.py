@@ -11202,6 +11202,16 @@ class TestCli:
         expected_failed_run_signals = [
             signal for signal in change["required_signals"] if "failed_run" in signal
         ]
+        expected_failed_run_controls = [
+            control
+            for control in ("policy_traces_present", "memory_provenance_enforced")
+            if control in controls["require"]
+        ]
+        expected_support_duplicate_controls = [
+            control
+            for control in ("duplicate_ticket_eval_passed", "idempotency_keys_present")
+            if control in controls["require"]
+        ]
         expected_failed_run_archive_targets = [
             target
             for target in retirement["archive_targets"]
@@ -11418,18 +11428,17 @@ class TestCli:
             "support_duplicate_control_status",
             "support_duplicate_control_release_binding",
         }
-        assert payload["controls"]["failed_run_control_expectations"] == [
-            "policy_traces_present",
-            "memory_provenance_enforced",
-        ]
-        assert set(payload["controls"]["failed_run_control_expectations"]).issubset(
-            controls["require"]
+        assert (
+            payload["controls"]["failed_run_control_expectations"]
+            == expected_failed_run_controls
         )
         assert payload["controls"]["failed_run_control_domains"] == [
             "traceability",
             "memory_provenance",
         ]
-        assert payload["controls"]["failed_run_control_count"] == 2
+        assert payload["controls"]["failed_run_control_count"] == len(
+            expected_failed_run_controls
+        )
         assert payload["controls"]["failed_run_control_summary"] == (
             "2 failed-run control expectations across traceability and memory provenance"
         )
@@ -11440,18 +11449,17 @@ class TestCli:
         assert payload["controls"]["failed_run_control_last_review"] == "release-readiness"
         assert payload["controls"]["failed_run_control_next_review"] == "rollout-gate"
         assert payload["controls"]["failed_run_control_release_binding"] == "required"
-        assert payload["controls"]["support_duplicate_control_expectations"] == [
-            "duplicate_ticket_eval_passed",
-            "idempotency_keys_present",
-        ]
-        assert set(
+        assert (
             payload["controls"]["support_duplicate_control_expectations"]
-        ).issubset(controls["require"])
+            == expected_support_duplicate_controls
+        )
         assert payload["controls"]["support_duplicate_control_domains"] == [
             "eval_gate",
             "session_idempotency_summary",
         ]
-        assert payload["controls"]["support_duplicate_control_count"] == 2
+        assert payload["controls"]["support_duplicate_control_count"] == len(
+            expected_support_duplicate_controls
+        )
         assert payload["controls"]["support_duplicate_control_summary"] == (
             "2 duplicate-ticket control expectations across eval gates and "
             "session idempotency summaries"
