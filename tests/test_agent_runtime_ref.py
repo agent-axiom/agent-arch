@@ -4734,6 +4734,29 @@ class TestRuntimeControlPaths:
             assert session["summary"]["trace_ids"] == session_trace_ids
             assert session["trace_ids"] == session_trace_ids
 
+    def test_release_configs_bind_eval_expected_outputs_to_run_outputs(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        assert "eval-dataset.json" in bundle["artifacts"]
+        for session in eval_dataset["sessions"]:
+            expected_outcomes = session["eval"]["expected_outcomes"]
+            output_texts = [run["output_text"] for run in session["runs"]]
+
+            assert expected_outcomes["latest_status"] == session["summary"][
+                "latest_status"
+            ]
+            for required_substring in expected_outcomes.get(
+                "required_output_substrings", []
+            ):
+                assert any(
+                    required_substring in output_text for output_text in output_texts
+                )
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
