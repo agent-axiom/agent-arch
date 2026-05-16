@@ -4724,6 +4724,24 @@ class TestRuntimeControlPaths:
         assert change["risk_level"] == "high"
         assert high_risk_capabilities == ["create_ticket"]
 
+    def test_retirement_binds_egress_revocation_to_network_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        write_capability = capabilities["create_ticket"]
+
+        assert "revoke_egress" in retirement["required_steps"]
+        assert write_capability["mode"] == "write"
+        assert write_capability["allowed_egress"] == ["tickets.internal"]
+        assert runtime_controls["sandbox_profile"]["permissions"]["network"] == "denied"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
