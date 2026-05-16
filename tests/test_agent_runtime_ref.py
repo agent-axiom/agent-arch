@@ -4611,6 +4611,20 @@ class TestRuntimeControlPaths:
         assert capabilities["create_ticket"]["network_access"] == "brokered"
         assert capabilities["create_ticket"]["allowed_egress"] == ["tickets.internal"]
 
+    def test_release_configs_bind_offline_eval_gate_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "offline_eval_passed" in change["required_signals"]
+        assert "offline_eval_pass" in rollout["require"]
+        assert "eval-dataset.json" in change["artifacts"]
+        assert "eval-dataset.json" in bundle["artifacts"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
