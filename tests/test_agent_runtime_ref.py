@@ -12890,3 +12890,15 @@ class TestCli:
         assert json.loads(output_path.read_text(encoding="utf-8")) == json.loads(
             Path("artifacts/eval-dataset.json").read_text(encoding="utf-8")
         )
+
+    def test_cli_export_eval_dataset_artifact_is_not_ignored(self) -> None:
+        gitignore_lines = {
+            line.strip()
+            for line in Path(".gitignore").read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        }
+
+        assert "artifacts/" not in gitignore_lines
+        assert "artifacts/*" in gitignore_lines
+        assert "!artifacts/eval-dataset.json" in gitignore_lines
+        assert Path("artifacts/eval-dataset.json").is_file()
