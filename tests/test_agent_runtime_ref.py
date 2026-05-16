@@ -5086,6 +5086,25 @@ class TestRuntimeControlPaths:
         assert "language_preference" not in writable_kinds
         assert "working_note" not in writable_kinds
 
+    def test_release_configs_bind_high_risk_change_to_security_approval_roles(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+
+        high_risk_capabilities = {
+            name: capability
+            for name, capability in capabilities.items()
+            if capability["risk_tier"] == "high"
+        }
+
+        assert change["risk_level"] == "high"
+        assert set(change["approval_roles"]) == {"platform-owner", "security-reviewer"}
+        assert set(high_risk_capabilities) == {"create_ticket"}
+        assert high_risk_capabilities["create_ticket"]["approval"] == "manager"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
