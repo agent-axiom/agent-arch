@@ -5268,6 +5268,28 @@ class TestRuntimeControlPaths:
             ("tickets.internal",),
         }
 
+    def test_release_configs_bind_sandbox_run_as_to_principal_isolation(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        run_as = runtime_controls["sandbox_profile"]["permissions"]["run_as"]
+        tool_principals = {
+            capability["tool_principal"] for capability in capabilities.values()
+        }
+
+        assert run_as == "sandbox_user"
+        assert run_as != agent["runtime_principal"]
+        assert agent["runtime_principal"] == "svc-support-triage-ref"
+        assert run_as not in tool_principals
+        assert tool_principals == {"svc-knowledge-reader", "svc-ticket-writer"}
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
