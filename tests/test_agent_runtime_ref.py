@@ -11171,6 +11171,23 @@ class TestCli:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        expected_failed_run_archive_targets = [
+            target
+            for target in retirement["archive_targets"]
+            if target in {"telemetry_jsonl", "session_exports", "approval_history"}
+        ]
+        expected_support_duplicate_archive_targets = [
+            target
+            for target in retirement["archive_targets"]
+            if target
+            in {
+                "telemetry_jsonl",
+                "session_exports",
+                "approval_history",
+                "runtime_control_bundle",
+            }
+        ]
         runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
             "runtime_controls"
         ]
@@ -11371,44 +11388,25 @@ class TestCli:
             "trace:sandbox_profile_reviewed",
             "eval:sandbox_profile_review",
         ]
-        assert payload["retirement"]["system_id"] == "support-triage-ref"
-        assert payload["retirement"]["session_control_owner"] == "support-ops"
-        assert payload["retirement"]["emergency_freeze_owner"] == "platform-runtime"
-        assert payload["retirement"]["triggers"] == [
-            "deprecated_runtime",
-            "replacement_ready",
-            "unsafe_capability_pattern",
+        assert payload["retirement"]["system_id"] == retirement["system_id"]
+        assert payload["retirement"]["replacement_mode"] == retirement["replacement_mode"]
+        assert payload["retirement"]["session_control_owner"] == retirement[
+            "session_control_owner"
         ]
-        assert payload["retirement"]["required_steps"] == [
-            "freeze_rollout",
-            "disable_risky_capabilities",
-            "stop_memory_write",
-            "expire_paused_runs",
-            "stop_background_routes",
-            "freeze_reinitialization",
-            "revoke_egress",
-            "archive_audit_state",
-            "set_retired_status",
+        assert payload["retirement"]["emergency_freeze_owner"] == retirement[
+            "emergency_freeze_owner"
         ]
-        assert payload["retirement"]["archive_targets"] == [
-            "telemetry_jsonl",
-            "session_exports",
-            "approval_history",
-            "paused_run_state",
-            "capability_session_state",
-            "runtime_control_bundle",
-        ]
-        assert payload["retirement"]["failed_run_archive_targets"] == [
-            "telemetry_jsonl",
-            "session_exports",
-            "approval_history",
-        ]
-        assert payload["retirement"]["support_duplicate_archive_targets"] == [
-            "telemetry_jsonl",
-            "session_exports",
-            "approval_history",
-            "runtime_control_bundle",
-        ]
+        assert payload["retirement"]["triggers"] == retirement["triggers"]
+        assert payload["retirement"]["required_steps"] == retirement["required_steps"]
+        assert payload["retirement"]["archive_targets"] == retirement["archive_targets"]
+        assert (
+            payload["retirement"]["failed_run_archive_targets"]
+            == expected_failed_run_archive_targets
+        )
+        assert (
+            payload["retirement"]["support_duplicate_archive_targets"]
+            == expected_support_duplicate_archive_targets
+        )
         assert set(payload["controls"]) == {
             "failed_run_control_expectations",
             "failed_run_control_domains",
