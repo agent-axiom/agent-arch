@@ -4672,6 +4672,23 @@ class TestRuntimeControlPaths:
         assert {"agent.yaml", "capabilities.yaml"}.issubset(bundle["artifacts"])
         assert set(agent["approved_capabilities"]) == set(capabilities)
 
+    def test_retirement_binds_paused_and_background_steps_to_runtime_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        assert "expire_paused_runs" in retirement["required_steps"]
+        assert runtime_controls["pause_allowed"] is True
+        assert runtime_controls["resume_allowed"] is True
+
+        assert "stop_background_routes" in retirement["required_steps"]
+        assert runtime_controls["background_mode_allowed"] is True
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
