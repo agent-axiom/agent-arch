@@ -8,5 +8,6 @@ coverage.xml
 htmlcov/
 __pycache__/
 site/
-artifacts/
+artifacts/*
+!artifacts/eval-dataset.json
 docs/book-backlog.md
