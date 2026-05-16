@@ -4592,6 +4592,25 @@ class TestRuntimeControlPaths:
             "deny",
         }
 
+    def test_release_configs_bind_unknown_side_effect_blocker_to_egress_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "unknown_side_effect_path_missing" in rollout["block_if"]
+        assert set(policy["execution"]["allow_network_access"]) == {
+            capability["network_access"] for capability in capabilities.values()
+        }
+        for capability in capabilities.values():
+            assert capability["allowed_egress"]
+        assert capabilities["create_ticket"]["mode"] == "write"
+        assert capabilities["create_ticket"]["network_access"] == "brokered"
+        assert capabilities["create_ticket"]["allowed_egress"] == ["tickets.internal"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
