@@ -4621,6 +4621,41 @@ class TestRuntimeControlPaths:
         assert eval_dataset["approval_ids"] == approval_ids
         assert eval_dataset["pending_approval_ids"] == pending_approval_ids
 
+    def test_release_configs_bind_eval_approval_aggregates_to_capabilities(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        runs = [run for session in eval_dataset["sessions"] for run in session["runs"]]
+        approval_runs = [run for run in runs if run["approval_id"]]
+        pending_approval_runs = [
+            run for run in approval_runs if run["capability_session_status"] == "pending"
+        ]
+        status_counts = {
+            status: sum(
+                1
+                for run in approval_runs
+                if run["capability_session_status"] == status
+            )
+            for status in {run["capability_session_status"] for run in approval_runs}
+        }
+
+        assert eval_dataset["approval_capability_names"] == sorted(
+            {run["capability_name"] for run in approval_runs}
+        )
+        assert eval_dataset["pending_approval_capability_names"] == sorted(
+            {run["capability_name"] for run in pending_approval_runs}
+        )
+        assert eval_dataset["approval_status_counts"] == status_counts
+        assert set(eval_dataset["approval_capability_names"]).issubset(capabilities)
+        assert all(
+            capabilities[run["capability_name"]]["approval"]
+            for run in approval_runs
+        )
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
