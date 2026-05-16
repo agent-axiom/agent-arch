@@ -4833,6 +4833,20 @@ class TestRuntimeControlPaths:
         assert len(session_ids) == len(set(session_ids))
         assert all(session_id.startswith("session-eval-") for session_id in session_ids)
 
+    def test_release_configs_bind_eval_metadata_to_runtime_scenarios(self) -> None:
+        from agent_runtime_ref.__main__ import EVAL_DATASET_LABELS
+
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        checked_in_scenarios = [
+            session["eval"]["scenario"] for session in eval_dataset["sessions"]
+        ]
+
+        assert checked_in_scenarios == list(EVAL_DATASET_LABELS)
+        for session in eval_dataset["sessions"]:
+            scenario = session["eval"]["scenario"]
+            assert session["eval"] == EVAL_DATASET_LABELS[scenario]
+
     def test_release_configs_bind_eval_expected_outputs_to_run_outputs(
         self, config_dir: Path
     ) -> None:
