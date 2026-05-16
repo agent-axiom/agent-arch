@@ -4409,6 +4409,29 @@ class TestRuntimeControlPaths:
         assert "failed_run_handling" in change["affected_surfaces"]
         assert "failed_run_drill_checked" in change["required_signals"]
 
+    def test_release_configs_bind_failed_run_drill_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        failed_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "failed_run_timeout"
+        )
+        expected_outcomes = failed_session["eval"]["expected_outcomes"]
+
+        assert "failed_run_drill_checked" in change["required_signals"]
+        assert "eval-dataset.json" in bundle["artifacts"]
+        assert "failure_drill" in failed_session["eval"]["labels"]
+        assert expected_outcomes["failed_run_traceable"] is True
+        assert failed_session["latest_failure_reason"] == "tool_timeout"
+        assert failed_session["traceable_failed_runs"] == 1
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
