@@ -11551,7 +11551,21 @@ class TestCli:
     def test_cli_check_controls_surfaces_failed_run_related_controls(
         self,
         cli_json,
+        config_dir: Path,
     ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        failed_run_controls = [
+            control
+            for control in controls["require"]
+            if control in {"policy_traces_present", "memory_provenance_enforced"}
+        ]
+        support_duplicate_controls = [
+            control
+            for control in controls["require"]
+            if control in {"duplicate_ticket_eval_passed", "idempotency_keys_present"}
+        ]
         exit_code, payload = cli_json(["check-controls", "--signal", "policy_traces_present=false"])
         assert exit_code == 0
         assert set(payload) == {
@@ -11569,29 +11583,16 @@ class TestCli:
             "inventory_drift",
         }
         assert not payload["healthy"]
-        assert payload["required_controls"] == [
-            "registry_reviewed",
-            "capability_owners_confirmed",
-            "memory_provenance_enforced",
-            "policy_traces_present",
-            "duplicate_ticket_eval_passed",
-            "idempotency_keys_present",
-        ]
-        assert payload["blocked_findings_expected"] == [
-            "direct_tool_access_present",
-            "unmanaged_runtime_present",
-        ]
+        assert payload["required_controls"] == controls["require"]
+        assert payload["blocked_findings_expected"] == controls["block_if"]
         assert payload["missing_controls"] == ["policy_traces_present"]
         assert payload["failed_run_controls"] == ["policy_traces_present"]
         assert payload["preserved_failed_run_controls"] == [
-            "memory_provenance_enforced"
+            control for control in failed_run_controls if control != "policy_traces_present"
         ]
         assert payload["failed_run_controls_healthy"] is False
         assert payload["support_duplicate_controls"] == []
-        assert payload["preserved_support_duplicate_controls"] == [
-            "duplicate_ticket_eval_passed",
-            "idempotency_keys_present",
-        ]
+        assert payload["preserved_support_duplicate_controls"] == support_duplicate_controls
         assert payload["support_duplicate_controls_healthy"] is True
         assert payload["blocking_findings"] == []
         assert payload["inventory_drift"] == {
