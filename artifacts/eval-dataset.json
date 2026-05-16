@@ -1,0 +1,477 @@
+{
+  "dataset_name": "agent-runtime-ref-eval-seed",
+  "session_count": 4,
+  "session_ids": [
+    "session-eval-support",
+    "session-eval-memory",
+    "session-eval-mixed",
+    "session-eval-failed-run"
+  ],
+  "run_count": 5,
+  "failed_runs": 1,
+  "traceable_failed_runs": 1,
+  "trace_ids": [
+    "trace-eval-support-001",
+    "trace-eval-memory-001",
+    "trace-eval-mixed-001",
+    "trace-eval-mixed-002",
+    "trace-eval-failed-run-001"
+  ],
+  "failed_trace_ids": [
+    "trace-eval-failed-run-001"
+  ],
+  "idempotency_keys": [
+    "trace-eval-support-001",
+    "trace-eval-mixed-001",
+    "trace-eval-failed-run-001"
+  ],
+  "approval_ids": [
+    "apr-001",
+    "apr-002"
+  ],
+  "approval_capability_names": [
+    "create_ticket"
+  ],
+  "pending_approval_ids": [
+    "apr-001",
+    "apr-002"
+  ],
+  "pending_approval_capability_names": [
+    "create_ticket"
+  ],
+  "approval_status_counts": {
+    "pending": 2
+  },
+  "latest_failure_reason": "tool_timeout",
+  "duplicate_ticket_scenarios": [
+    "failed_run_timeout"
+  ],
+  "sessions": [
+    {
+      "session": {
+        "session_id": "session-eval-support",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-support-001"
+        ]
+      },
+      "summary": {
+        "total_runs": 1,
+        "success_runs": 1,
+        "approval_wait_runs": 1,
+        "denied_runs": 0,
+        "failed_runs": 0,
+        "traceable_failed_runs": 0,
+        "trace_ids": [
+          "trace-eval-support-001"
+        ],
+        "failed_trace_ids": [],
+        "idempotency_keys": [
+          "trace-eval-support-001"
+        ],
+        "approval_ids": [
+          "apr-001"
+        ],
+        "approval_capability_names": [
+          "create_ticket"
+        ],
+        "pending_approval_ids": [
+          "apr-001"
+        ],
+        "pending_approval_capability_names": [
+          "create_ticket"
+        ],
+        "approval_status_counts": {
+          "pending": 1
+        },
+        "latest_trace_id": "trace-eval-support-001",
+        "latest_status": "success"
+      },
+      "total_runs": 1,
+      "failed_runs": 0,
+      "traceable_failed_runs": 0,
+      "trace_ids": [
+        "trace-eval-support-001"
+      ],
+      "failed_trace_ids": [],
+      "idempotency_keys": [
+        "trace-eval-support-001"
+      ],
+      "approval_ids": [
+        "apr-001"
+      ],
+      "approval_capability_names": [
+        "create_ticket"
+      ],
+      "pending_approval_ids": [
+        "apr-001"
+      ],
+      "pending_approval_capability_names": [
+        "create_ticket"
+      ],
+      "approval_status_counts": {
+        "pending": 1
+      },
+      "latest_failure_reason": "",
+      "latest_trace_id": "trace-eval-support-001",
+      "runs": [
+        {
+          "trace_id": "trace-eval-support-001",
+          "status": "success",
+          "user_input": "Please create a ticket for this onboarding issue.",
+          "output_text": "Ticket request is waiting for human approval (apr-001).",
+          "failure_reason": "",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "cap-session-001",
+          "capability_session_status": "pending",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "trace-eval-support-001",
+          "approval_id": "apr-001",
+          "capability_name": "create_ticket"
+        }
+      ],
+      "eval": {
+        "scenario": "support_ticket",
+        "labels": [
+          "write_path",
+          "approval_required",
+          "ticketing",
+          "sandbox_profile_review"
+        ],
+        "expected_outcomes": {
+          "latest_status": "success",
+          "approval_wait_runs": 1,
+          "approval_status_counts": {
+            "pending": 1
+          },
+          "required_output_substrings": [
+            "waiting for human approval"
+          ],
+          "sandbox_profile_reviewed": true
+        },
+        "grading_rules": [
+          {
+            "type": "sandbox_profile_review",
+            "expected": {
+              "sandbox_profile_contract": "sandbox-profile-v1",
+              "workspace_entries_reviewed": true,
+              "permissions_profile": "restricted-shell-network-denied",
+              "network_secrets_posture": "network:denied,secrets:none",
+              "snapshot_policy": "required_on_completion"
+            },
+            "blocking": true
+          }
+        ]
+      }
+    },
+    {
+      "session": {
+        "session_id": "session-eval-memory",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-memory-001"
+        ]
+      },
+      "summary": {
+        "total_runs": 1,
+        "success_runs": 1,
+        "approval_wait_runs": 0,
+        "denied_runs": 0,
+        "failed_runs": 0,
+        "traceable_failed_runs": 0,
+        "trace_ids": [
+          "trace-eval-memory-001"
+        ],
+        "failed_trace_ids": [],
+        "idempotency_keys": [],
+        "approval_ids": [],
+        "approval_capability_names": [],
+        "pending_approval_ids": [],
+        "pending_approval_capability_names": [],
+        "approval_status_counts": {},
+        "latest_trace_id": "trace-eval-memory-001",
+        "latest_status": "success"
+      },
+      "total_runs": 1,
+      "failed_runs": 0,
+      "traceable_failed_runs": 0,
+      "trace_ids": [
+        "trace-eval-memory-001"
+      ],
+      "failed_trace_ids": [],
+      "idempotency_keys": [],
+      "approval_ids": [],
+      "approval_capability_names": [],
+      "pending_approval_ids": [],
+      "pending_approval_capability_names": [],
+      "approval_status_counts": {},
+      "latest_failure_reason": "",
+      "latest_trace_id": "trace-eval-memory-001",
+      "runs": [
+        {
+          "trace_id": "trace-eval-memory-001",
+          "status": "success",
+          "user_input": "What language preference do you remember?",
+          "output_text": "Retrieved profile hint: User usually prefers concise English answers.",
+          "failure_reason": "",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "",
+          "capability_session_status": "",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "",
+          "approval_id": "",
+          "capability_name": ""
+        }
+      ],
+      "eval": {
+        "scenario": "profile_memory",
+        "labels": [
+          "memory_read",
+          "profile_lookup",
+          "grounded_answer"
+        ],
+        "expected_outcomes": {
+          "latest_status": "success",
+          "approval_wait_runs": 0,
+          "required_output_substrings": [
+            "Retrieved profile hint"
+          ]
+        }
+      }
+    },
+    {
+      "session": {
+        "session_id": "session-eval-mixed",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-mixed-001",
+          "trace-eval-mixed-002"
+        ]
+      },
+      "summary": {
+        "total_runs": 2,
+        "success_runs": 2,
+        "approval_wait_runs": 1,
+        "denied_runs": 0,
+        "failed_runs": 0,
+        "traceable_failed_runs": 0,
+        "trace_ids": [
+          "trace-eval-mixed-001",
+          "trace-eval-mixed-002"
+        ],
+        "failed_trace_ids": [],
+        "idempotency_keys": [
+          "trace-eval-mixed-001"
+        ],
+        "approval_ids": [
+          "apr-002"
+        ],
+        "approval_capability_names": [
+          "create_ticket"
+        ],
+        "pending_approval_ids": [
+          "apr-002"
+        ],
+        "pending_approval_capability_names": [
+          "create_ticket"
+        ],
+        "approval_status_counts": {
+          "pending": 1
+        },
+        "latest_trace_id": "trace-eval-mixed-002",
+        "latest_status": "success"
+      },
+      "total_runs": 2,
+      "failed_runs": 0,
+      "traceable_failed_runs": 0,
+      "trace_ids": [
+        "trace-eval-mixed-001",
+        "trace-eval-mixed-002"
+      ],
+      "failed_trace_ids": [],
+      "idempotency_keys": [
+        "trace-eval-mixed-001"
+      ],
+      "approval_ids": [
+        "apr-002"
+      ],
+      "approval_capability_names": [
+        "create_ticket"
+      ],
+      "pending_approval_ids": [
+        "apr-002"
+      ],
+      "pending_approval_capability_names": [
+        "create_ticket"
+      ],
+      "approval_status_counts": {
+        "pending": 1
+      },
+      "latest_failure_reason": "",
+      "latest_trace_id": "trace-eval-mixed-002",
+      "runs": [
+        {
+          "trace_id": "trace-eval-mixed-001",
+          "status": "success",
+          "user_input": "Please create a ticket for this onboarding issue.",
+          "output_text": "Ticket request is waiting for human approval (apr-002).",
+          "failure_reason": "",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "cap-session-002",
+          "capability_session_status": "pending",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "trace-eval-mixed-001",
+          "approval_id": "apr-002",
+          "capability_name": "create_ticket"
+        },
+        {
+          "trace_id": "trace-eval-mixed-002",
+          "status": "success",
+          "user_input": "What language preference do you remember?",
+          "output_text": "Retrieved profile hint: User usually prefers concise English answers.",
+          "failure_reason": "",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "",
+          "capability_session_status": "",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "",
+          "approval_id": "",
+          "capability_name": ""
+        }
+      ],
+      "eval": {
+        "scenario": "mixed_session",
+        "labels": [
+          "multi_run",
+          "approval_then_memory",
+          "session_evals"
+        ],
+        "expected_outcomes": {
+          "latest_status": "success",
+          "approval_wait_runs": 1,
+          "approval_status_counts": {
+            "pending": 1
+          },
+          "required_run_count": 2,
+          "required_output_substrings": [
+            "waiting for human approval",
+            "Retrieved profile hint"
+          ]
+        }
+      }
+    },
+    {
+      "session": {
+        "session_id": "session-eval-failed-run",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-failed-run-001"
+        ]
+      },
+      "summary": {
+        "total_runs": 1,
+        "success_runs": 0,
+        "approval_wait_runs": 0,
+        "denied_runs": 0,
+        "failed_runs": 1,
+        "traceable_failed_runs": 1,
+        "trace_ids": [
+          "trace-eval-failed-run-001"
+        ],
+        "failed_trace_ids": [
+          "trace-eval-failed-run-001"
+        ],
+        "idempotency_keys": [
+          "trace-eval-failed-run-001"
+        ],
+        "approval_ids": [],
+        "approval_capability_names": [],
+        "pending_approval_ids": [],
+        "pending_approval_capability_names": [],
+        "approval_status_counts": {},
+        "latest_trace_id": "trace-eval-failed-run-001",
+        "latest_status": "failed"
+      },
+      "total_runs": 1,
+      "failed_runs": 1,
+      "traceable_failed_runs": 1,
+      "trace_ids": [
+        "trace-eval-failed-run-001"
+      ],
+      "failed_trace_ids": [
+        "trace-eval-failed-run-001"
+      ],
+      "idempotency_keys": [
+        "trace-eval-failed-run-001"
+      ],
+      "approval_ids": [],
+      "approval_capability_names": [],
+      "pending_approval_ids": [],
+      "pending_approval_capability_names": [],
+      "approval_status_counts": {},
+      "latest_failure_reason": "tool_timeout",
+      "latest_trace_id": "trace-eval-failed-run-001",
+      "runs": [
+        {
+          "trace_id": "trace-eval-failed-run-001",
+          "status": "failed",
+          "user_input": "Please create a ticket for this onboarding issue. [simulate_failure=tool_timeout]",
+          "output_text": "Runtime halted before side effects completed: create_ticket returned failed (tool_timeout).",
+          "failure_reason": "tool_timeout",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "",
+          "capability_session_status": "failed",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "trace-eval-failed-run-001",
+          "approval_id": "",
+          "capability_name": "create_ticket"
+        }
+      ],
+      "eval": {
+        "scenario": "failed_run_timeout",
+        "labels": [
+          "failed_run",
+          "tool_timeout",
+          "failure_drill",
+          "duplicate_ticket_eval_passed"
+        ],
+        "expected_outcomes": {
+          "latest_status": "failed",
+          "failed_runs": 1,
+          "required_output_substrings": [
+            "tool_timeout"
+          ],
+          "failed_run_traceable": true,
+          "duplicate_ticket_eval_passed": true,
+          "idempotency_key_required": true,
+          "max_ticket_side_effects": 1
+        },
+        "grading_rules": [
+          {
+            "type": "duplicate_ticket_guard",
+            "expected": {
+              "idempotency_key_required": true,
+              "max_ticket_side_effects": 1,
+              "on_unknown_side_effect": "stop_or_reconcile"
+            },
+            "blocking": true
+          }
+        ]
+      }
+    }
+  ]
+}
