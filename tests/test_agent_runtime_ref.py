@@ -11065,12 +11065,28 @@ class TestCli:
         assert payload["support_duplicate_required_ready"] is False
         assert payload["blocking_signals"] == []
 
-    def test_cli_check_rollout_reports_blocking_signal(self, cli_json) -> None:
+    def test_cli_check_rollout_reports_blocking_signal(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        support_duplicate_required = [
+            signal
+            for signal in ("duplicate_ticket_eval_passed",)
+            if signal in rollout["require"]
+        ]
+        blocking_signal = next(
+            signal
+            for signal in rollout["block_if"]
+            if signal == "unknown_side_effect_path_missing"
+        )
+        rollout_mode = {key: str(value) for key, value in rollout["rollout_mode"].items()}
         exit_code, payload = cli_json(
             [
                 "check-rollout",
                 "--signal",
-                "unknown_side_effect_path_missing=true",
+                f"{blocking_signal}=true",
             ],
         )
         assert exit_code == 0
@@ -11086,16 +11102,14 @@ class TestCli:
             "rollout_mode",
         }
         assert not payload["ready"]
+        assert payload["required_checks"] == rollout["require"]
+        assert payload["blocked_checks"] == rollout["block_if"]
         assert payload["missing_required"] == []
-        assert payload["support_duplicate_required"] == ["duplicate_ticket_eval_passed"]
+        assert payload["support_duplicate_required"] == support_duplicate_required
         assert payload["missing_support_duplicate_required"] == []
         assert payload["support_duplicate_required_ready"] is True
-        assert payload["blocking_signals"] == ["unknown_side_effect_path_missing"]
-        assert payload["rollout_mode"] == {
-            "initial": "canary",
-            "max_tenant_exposure_pct": "5",
-            "require_shadow_period": "True",
-        }
+        assert payload["blocking_signals"] == [blocking_signal]
+        assert payload["rollout_mode"] == rollout_mode
 
     @pytest.mark.parametrize(
         ("raw_signal", "expected_message"),
