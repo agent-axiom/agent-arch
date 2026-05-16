@@ -4993,6 +4993,25 @@ class TestRuntimeControlPaths:
         assert read_policy["decision"] == "allow"
         assert "restricted" in policy["execution"]["allow_network_access"]
 
+    def test_release_configs_bind_write_capability_to_brokered_gateway_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+
+        write_capability = capabilities["create_ticket"]
+        write_policy = policy["capabilities"]["create_ticket"]
+
+        assert write_capability["mode"] == "write"
+        assert write_capability["transport"] == "gateway"
+        assert write_capability["risk_tier"] == "high"
+        assert write_capability["network_access"] == "brokered"
+        assert write_capability["allowed_egress"] == ["tickets.internal"]
+        assert write_policy["decision"] == "approval_required"
+        assert "brokered" in policy["execution"]["allow_network_access"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
