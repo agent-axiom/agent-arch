@@ -5065,6 +5065,27 @@ class TestRuntimeControlPaths:
         assert "policy_decisions_not_traced" in rollout["block_if"]
         assert "direct_tool_access_present" in rollout["block_if"]
 
+    def test_release_configs_bind_memory_write_allowlist_to_seed_classes(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        memory = load_yaml_file(config_dir / "memory.yaml")["memory"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+
+        seed_records = memory["seed_records"]
+        seed_kinds = {record["kind"] for record in seed_records}
+        writable_kinds = policy["memory_write"]["allow_kinds"]
+
+        assert writable_kinds == ["validated_fact", "session_summary"]
+        assert {"language_preference", "validated_fact", "working_note"} == seed_kinds
+        assert any(
+            record["memory_class"] == "long_term" and record["kind"] == "validated_fact"
+            for record in seed_records
+        )
+        assert "language_preference" not in writable_kinds
+        assert "working_note" not in writable_kinds
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
