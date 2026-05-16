@@ -4742,6 +4742,22 @@ class TestRuntimeControlPaths:
         assert write_capability["allowed_egress"] == ["tickets.internal"]
         assert runtime_controls["sandbox_profile"]["permissions"]["network"] == "denied"
 
+    def test_retirement_binds_reinit_freeze_to_session_expiry_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        capability_sessions = runtime_controls["capability_sessions"]
+
+        assert "freeze_reinitialization" in retirement["required_steps"]
+        assert capability_sessions["on_session_expiry"] == "reinitialize_or_cancel"
+        assert capability_sessions["expiry_policy"] == "reinitialize_or_cancel"
+        assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
