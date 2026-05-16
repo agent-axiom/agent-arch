@@ -4757,6 +4757,37 @@ class TestRuntimeControlPaths:
                     required_substring in output_text for output_text in output_texts
                 )
 
+    def test_release_configs_bind_eval_grading_rules_to_review_evidence(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        review_evidence = bundle["review_evidence"]
+        referenced_eval_labels = {
+            ref.removeprefix("eval:")
+            for evidence in review_evidence.values()
+            for ref in evidence.get("review_evidence_refs", [])
+            if ref.startswith("eval:")
+        }
+        referenced_eval_labels.update(
+            evidence["eval_ref"].removeprefix("eval:")
+            for evidence in review_evidence.values()
+            if "eval_ref" in evidence
+        )
+
+        for session in eval_dataset["sessions"]:
+            labels = set(session["eval"]["labels"])
+            for rule in session["eval"].get("grading_rules", []):
+                rule_type = rule["type"]
+                assert rule["blocking"] is True
+                assert rule["expected"]
+                assert rule_type in labels or rule_type in review_evidence
+                if rule_type in labels:
+                    assert rule_type in referenced_eval_labels
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
