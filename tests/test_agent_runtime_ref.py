@@ -5290,6 +5290,26 @@ class TestRuntimeControlPaths:
         assert run_as not in tool_principals
         assert tool_principals == {"svc-knowledge-reader", "svc-ticket-writer"}
 
+    def test_release_configs_bind_sandbox_skill_access_to_registry_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
+
+        assert sandbox_capabilities["skills"] == "read_only"
+        assert "registry_reviewed" in controls["require"]
+        assert "capability_owners_confirmed" in controls["require"]
+        assert set(agent["approved_capabilities"]) == set(capabilities)
+        assert all(capability["owner"] for capability in capabilities.values())
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
