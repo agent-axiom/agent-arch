@@ -4734,6 +4734,26 @@ class TestRuntimeControlPaths:
             assert session["summary"]["trace_ids"] == session_trace_ids
             assert session["trace_ids"] == session_trace_ids
 
+    def test_release_configs_bind_eval_session_ids_to_runtime_tracking(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        session_ids = [
+            session["session"]["session_id"] for session in eval_dataset["sessions"]
+        ]
+
+        assert runtime_controls["capability_sessions"]["track_session_ids"] is True
+        assert eval_dataset["session_ids"] == session_ids
+        assert eval_dataset["session_count"] == len(session_ids)
+        assert len(session_ids) == len(set(session_ids))
+        assert all(session_id.startswith("session-eval-") for session_id in session_ids)
+
     def test_release_configs_bind_eval_expected_outputs_to_run_outputs(
         self, config_dir: Path
     ) -> None:
