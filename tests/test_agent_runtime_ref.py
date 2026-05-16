@@ -4484,6 +4484,27 @@ class TestRuntimeControlPaths:
             "idempotency_key_required"
         ] is True
 
+    def test_release_configs_bind_memory_provenance_control_to_memory_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        memory = load_yaml_file(config_dir / "memory.yaml")["memory"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        assert "memory_provenance_enforced" in controls["require"]
+        assert bundle["provenance_required"] is True
+        assert "memory.yaml" in bundle["artifacts"]
+        assert policy["memory_write"]["allow_kinds"] == [
+            "validated_fact",
+            "session_summary",
+        ]
+        for record in memory["seed_records"]:
+            assert record["provenance"]
+            assert record["revision"] >= 1
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
