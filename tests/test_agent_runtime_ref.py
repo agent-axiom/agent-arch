@@ -4427,6 +4427,19 @@ class TestRuntimeControlPaths:
         assert "reinit_policy_reviewed" in change["required_signals"]
         assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
 
+    def test_release_configs_bind_rollback_gate_to_rollout_check(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "rollback_plan_ready" in change["required_signals"]
+        assert "rollback_plan" in rollout["require"]
+        assert change["rollout_strategy"] == "staged_canary"
+        assert rollout["rollout_mode"]["initial"] == "canary"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
