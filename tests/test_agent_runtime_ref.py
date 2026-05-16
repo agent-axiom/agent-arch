@@ -4777,6 +4777,30 @@ class TestRuntimeControlPaths:
                     required_substring in output_text for output_text in output_texts
                 )
 
+    def test_release_configs_bind_eval_expected_counts_to_session_summaries(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        assert "eval-dataset.json" in bundle["artifacts"]
+        for session in eval_dataset["sessions"]:
+            expected_outcomes = session["eval"]["expected_outcomes"]
+            summary = session["summary"]
+
+            for count_field in ("approval_wait_runs", "failed_runs"):
+                if count_field in expected_outcomes:
+                    assert expected_outcomes[count_field] == summary[count_field]
+            if "approval_status_counts" in expected_outcomes:
+                assert expected_outcomes["approval_status_counts"] == summary[
+                    "approval_status_counts"
+                ]
+            if "required_run_count" in expected_outcomes:
+                assert expected_outcomes["required_run_count"] == len(session["runs"])
+                assert expected_outcomes["required_run_count"] == summary["total_runs"]
+
     def test_release_configs_bind_eval_grading_rules_to_review_evidence(
         self, config_dir: Path
     ) -> None:
