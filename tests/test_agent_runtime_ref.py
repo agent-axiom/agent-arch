@@ -5146,6 +5146,29 @@ class TestRuntimeControlPaths:
         assert runtime_controls["max_wait_seconds"] == approval_sla_seconds
         assert runtime_controls["on_expiry"] == "cancel_run"
 
+    def test_release_configs_bind_persisted_session_state_to_archive_targets(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_state = runtime_controls["sandbox_profile"]["state"]
+        archive_targets = retirement["archive_targets"]
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+
+        assert sandbox_state["persist_session_state"] is True
+        assert sandbox_state["snapshot"] == "required_on_completion"
+        assert sandbox_review["snapshot_policy"] == sandbox_state["snapshot"]
+        assert {"paused_run_state", "capability_session_state"}.issubset(
+            archive_targets
+        )
+        assert "archive_audit_state" in retirement["required_steps"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
