@@ -4689,6 +4689,27 @@ class TestRuntimeControlPaths:
                 "approval_status_counts"
             ]
 
+    def test_release_configs_bind_eval_identity_fields_to_agent_config(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        assert policy["run_precheck"]["require_tenant"] is True
+        assert policy["run_precheck"]["deny_if_principal_missing"] is True
+        for session in eval_dataset["sessions"]:
+            session_identity = session["session"]
+            assert session_identity["tenant_id"] == "tenant-acme"
+            assert session_identity["principal_id"] == "user-42"
+            for run in session["runs"]:
+                assert run["request_agent_id"] == agent["id"]
+                assert run["authorization_mode"] == "platform_owned"
+                assert run["delegated_principal_id"] == ""
+                assert run["delegated_scope"] == ""
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
