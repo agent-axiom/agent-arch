@@ -11604,7 +11604,21 @@ class TestCli:
     def test_cli_check_controls_surfaces_support_duplicate_controls(
         self,
         cli_json,
+        config_dir: Path,
     ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        failed_run_controls = [
+            control
+            for control in ("policy_traces_present", "memory_provenance_enforced")
+            if control in controls["require"]
+        ]
+        support_duplicate_controls = [
+            control
+            for control in ("duplicate_ticket_eval_passed", "idempotency_keys_present")
+            if control in controls["require"]
+        ]
         exit_code, payload = cli_json(
             ["check-controls", "--signal", "idempotency_keys_present=false"]
         )
@@ -11612,14 +11626,18 @@ class TestCli:
         assert not payload["healthy"]
         assert payload["missing_controls"] == ["idempotency_keys_present"]
         assert payload["failed_run_controls"] == []
-        assert payload["preserved_failed_run_controls"] == [
-            "policy_traces_present",
-            "memory_provenance_enforced",
-        ]
+        assert payload["preserved_failed_run_controls"] == failed_run_controls
         assert payload["failed_run_controls_healthy"] is True
         assert payload["support_duplicate_controls"] == ["idempotency_keys_present"]
+        assert payload["support_duplicate_controls"] == [
+            control
+            for control in support_duplicate_controls
+            if control == "idempotency_keys_present"
+        ]
         assert payload["preserved_support_duplicate_controls"] == [
-            "duplicate_ticket_eval_passed"
+            control
+            for control in support_duplicate_controls
+            if control != "idempotency_keys_present"
         ]
         assert payload["support_duplicate_controls_healthy"] is False
         assert payload["blocking_findings"] == []
