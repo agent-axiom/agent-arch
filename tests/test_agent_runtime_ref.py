@@ -11314,37 +11314,17 @@ class TestCli:
             "emergency_freeze_owner"
         ]
         assert payload["change"]["approval_roles"] == change["approval_roles"]
-        assert payload["artifact_bundle"]["artifacts"] == [
-            "agent.yaml",
-            "capabilities.yaml",
-            "policy.yaml",
-            "memory.yaml",
-            "controls.yaml",
-            "approvals.yaml",
-            "runtime-controls.yaml",
-            "change.yaml",
-            "retirement.yaml",
-            "eval-dataset.json",
-            "runtime-control-bundle-metadata",
+        assert payload["artifact_bundle"]["artifacts"] == bundle["artifacts"]
+        assert payload["artifact_bundle"]["session_control_owner"] == bundle[
+            "session_control_owner"
         ]
-        assert payload["artifact_bundle"]["session_control_owner"] == "support-ops"
-        assert payload["artifact_bundle"]["review_evidence_keys"] == [
-            "sandbox_profile_reviewed",
-            "duplicate_ticket_guard",
+        assert payload["artifact_bundle"]["review_evidence_keys"] == list(
+            bundle["review_evidence"]
+        )
+        assert payload["artifact_bundle"]["review_evidence"] == bundle[
+            "review_evidence"
         ]
-        assert set(payload["artifact_bundle"]["review_evidence"]) == {
-            "sandbox_profile_reviewed",
-            "duplicate_ticket_guard",
-        }
-        duplicate_guard = payload["artifact_bundle"]["review_evidence"][
-            "duplicate_ticket_guard"
-        ]
-        assert duplicate_guard == {
-            "idempotency_key_required": True,
-            "eval_ref": "eval:duplicate_ticket_eval_passed",
-            "approval_ref": "approval:apr-2026-04-07-001",
-            "rollout_gate_ref": "gate:gate-2026-04-07-001",
-        }
+        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
         assert (
             payload["artifact_bundle"]["duplicate_ticket_guard_evidence"]
             == duplicate_guard
