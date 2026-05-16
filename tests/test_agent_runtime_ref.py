@@ -5105,6 +5105,25 @@ class TestRuntimeControlPaths:
         assert set(high_risk_capabilities) == {"create_ticket"}
         assert high_risk_capabilities["create_ticket"]["approval"] == "manager"
 
+    def test_release_configs_bind_duplicate_guard_approval_to_audit_archive(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+
+        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
+        write_capability = capabilities["create_ticket"]
+
+        assert "approvals.yaml" in bundle["artifacts"]
+        assert duplicate_guard["approval_ref"].startswith("approval:")
+        assert write_capability["approval"] == approvals["default_reviewer"]
+        assert approvals["default_reviewer"] == "manager"
+        assert "approval_history" in retirement["archive_targets"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
