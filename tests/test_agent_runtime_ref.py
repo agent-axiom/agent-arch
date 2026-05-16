@@ -5012,6 +5012,30 @@ class TestRuntimeControlPaths:
         assert write_policy["decision"] == "approval_required"
         assert "brokered" in policy["execution"]["allow_network_access"]
 
+    def test_release_configs_bind_precheck_identity_gates_to_delegated_auth(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        run_precheck = policy["run_precheck"]
+        approval_delegation = approvals["delegated_authorization"]
+        runtime_delegation = runtime_controls["delegated_authorization"]
+
+        assert run_precheck["require_tenant"] is True
+        assert run_precheck["deny_if_principal_missing"] is True
+        assert approval_delegation["require_principal_binding"] is True
+        assert (
+            runtime_delegation["delegated_principal_policy"]
+            == "explicit_principal_binding_required"
+        )
+        assert runtime_delegation["authorization_mode"] == "user_delegated_or_platform_owned"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
