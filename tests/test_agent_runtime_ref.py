@@ -4689,6 +4689,54 @@ class TestRuntimeControlPaths:
                 "approval_status_counts"
             ]
 
+    def test_release_configs_bind_eval_session_approvals_to_runs(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        for session in eval_dataset["sessions"]:
+            runs = session["runs"]
+            approval_runs = [run for run in runs if run["approval_id"]]
+            pending_approval_runs = [
+                run
+                for run in approval_runs
+                if run["capability_session_status"] == "pending"
+            ]
+            status_counts = {
+                status: sum(
+                    1
+                    for run in approval_runs
+                    if run["capability_session_status"] == status
+                )
+                for status in {run["capability_session_status"] for run in approval_runs}
+            }
+
+            assert session["summary"]["approval_wait_runs"] == len(
+                pending_approval_runs
+            )
+            assert session["summary"]["approval_ids"] == session[
+                "approval_ids"
+            ] == [run["approval_id"] for run in approval_runs]
+            assert session["summary"]["approval_capability_names"] == session[
+                "approval_capability_names"
+            ] == sorted({run["capability_name"] for run in approval_runs})
+            assert session["summary"]["pending_approval_ids"] == session[
+                "pending_approval_ids"
+            ] == [run["approval_id"] for run in pending_approval_runs]
+            assert session["summary"]["pending_approval_capability_names"] == session[
+                "pending_approval_capability_names"
+            ] == sorted({run["capability_name"] for run in pending_approval_runs})
+            assert session["summary"]["approval_status_counts"] == session[
+                "approval_status_counts"
+            ] == status_counts
+            assert all(
+                capabilities[run["capability_name"]]["approval"]
+                for run in approval_runs
+            )
+
     def test_release_configs_bind_eval_identity_fields_to_agent_config(
         self, config_dir: Path
     ) -> None:
