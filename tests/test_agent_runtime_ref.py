@@ -11179,6 +11179,24 @@ class TestCli:
             for key, value in runtime_controls.items()
             if key != "sandbox_profile"
         }
+        sandbox_profile = runtime_controls["sandbox_profile"]
+        expected_sandbox_profile = {
+            "manifest_version": sandbox_profile["manifest_version"],
+            "workspace_entries": sandbox_profile["workspace"]["entries"],
+            "capabilities": sandbox_profile["capabilities"],
+            "permissions": sandbox_profile["permissions"],
+            "state": sandbox_profile["state"],
+        }
+        expected_sandbox_profile_summary = {
+            "manifest_version": sandbox_profile["manifest_version"],
+            "workspace_paths": [
+                entry["path"] for entry in sandbox_profile["workspace"]["entries"]
+            ],
+            "shell": sandbox_profile["capabilities"]["shell"],
+            "network": sandbox_profile["permissions"]["network"],
+            "secrets": sandbox_profile["permissions"]["secrets"],
+            "snapshot": sandbox_profile["state"]["snapshot"],
+        }
         exit_code, payload = cli_json(["inspect-lifecycle"])
         assert exit_code == 0
         assert set(payload) == {
@@ -11444,37 +11462,8 @@ class TestCli:
         )
         assert payload["controls"]["support_duplicate_control_status"] == "covered"
         assert payload["controls"]["support_duplicate_control_release_binding"] == "required"
-        assert payload["sandbox_profile"] == {
-            "manifest_version": 1,
-            "workspace_entries": [
-                {"path": "repo", "source": "local_dir", "read_only": False},
-                {"path": "task.md", "source": "inline_file", "read_only": True},
-            ],
-            "capabilities": {
-                "filesystem": True,
-                "memory": "read_write",
-                "shell": "restricted",
-                "skills": "read_only",
-            },
-            "permissions": {
-                "network": "denied",
-                "secrets": "none",
-                "run_as": "sandbox_user",
-            },
-            "state": {
-                "persist_session_state": True,
-                "resume": "allowed",
-                "snapshot": "required_on_completion",
-            },
-        }
-        assert payload["sandbox_profile_summary"] == {
-            "manifest_version": 1,
-            "workspace_paths": ["repo", "task.md"],
-            "shell": "restricted",
-            "network": "denied",
-            "secrets": "none",
-            "snapshot": "required_on_completion",
-        }
+        assert payload["sandbox_profile"] == expected_sandbox_profile
+        assert payload["sandbox_profile_summary"] == expected_sandbox_profile_summary
         assert payload["runtime_controls"] == surfaced_runtime_controls
 
     @pytest.mark.parametrize(
