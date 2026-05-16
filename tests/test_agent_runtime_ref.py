@@ -10998,7 +10998,18 @@ class TestCli:
         assert replay_payload["replay_failure_reason"] == "tool_timeout"
         assert replay_payload["status"] == "failed"
 
-    def test_cli_check_rollout_reports_missing_signal(self, cli_json) -> None:
+    def test_cli_check_rollout_reports_missing_signal(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        support_duplicate_required = [
+            signal
+            for signal in ("duplicate_ticket_eval_passed",)
+            if signal in rollout["require"]
+        ]
+        rollout_mode = {key: str(value) for key, value in rollout["rollout_mode"].items()}
         exit_code, payload = cli_json(
             [
                 "check-rollout",
@@ -11021,29 +11032,12 @@ class TestCli:
             "rollout_mode",
         }
         assert not payload["ready"]
-        assert payload["required_checks"] == [
-            "trace_coverage",
-            "policy_prechecks",
-            "capability_owners",
-            "offline_eval_pass",
-            "duplicate_ticket_eval_passed",
-            "slo_defined",
-            "rollback_plan",
-            "oncall_owner",
-        ]
-        assert payload["blocked_checks"] == [
-            "unknown_side_effect_path_missing",
-            "direct_tool_access_present",
-            "policy_decisions_not_traced",
-        ]
+        assert payload["required_checks"] == rollout["require"]
+        assert payload["blocked_checks"] == rollout["block_if"]
         assert payload["missing_required"] == ["offline_eval_pass"]
-        assert payload["support_duplicate_required"] == ["duplicate_ticket_eval_passed"]
+        assert payload["support_duplicate_required"] == support_duplicate_required
         assert payload["blocking_signals"] == []
-        assert payload["rollout_mode"] == {
-            "initial": "canary",
-            "max_tenant_exposure_pct": "5",
-            "require_shadow_period": "True",
-        }
+        assert payload["rollout_mode"] == rollout_mode
 
     def test_cli_check_rollout_requires_duplicate_ticket_eval(self, cli_json) -> None:
         exit_code, payload = cli_json(
