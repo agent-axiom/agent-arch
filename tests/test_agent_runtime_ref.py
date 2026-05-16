@@ -4440,6 +4440,19 @@ class TestRuntimeControlPaths:
         assert change["rollout_strategy"] == "staged_canary"
         assert rollout["rollout_mode"]["initial"] == "canary"
 
+    def test_release_configs_bind_policy_review_gates_to_contract_artifacts(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+
+        assert change["change_type"] == "capability_contract_update"
+        assert "capability_contract" in change["affected_surfaces"]
+        assert {"capabilities.yaml", "policy.yaml"}.issubset(change["artifacts"])
+        assert "design_review_passed" in change["required_signals"]
+        assert "policy_diff_reviewed" in change["required_signals"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
