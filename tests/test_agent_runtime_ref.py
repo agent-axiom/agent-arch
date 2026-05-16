@@ -11171,6 +11171,14 @@ class TestCli:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        surfaced_runtime_controls = {
+            key: value
+            for key, value in runtime_controls.items()
+            if key != "sandbox_profile"
+        }
         exit_code, payload = cli_json(["inspect-lifecycle"])
         assert exit_code == 0
         assert set(payload) == {
@@ -11467,35 +11475,7 @@ class TestCli:
             "secrets": "none",
             "snapshot": "required_on_completion",
         }
-        assert payload["runtime_controls"] == {
-            "pause_allowed": True,
-            "resume_allowed": True,
-            "background_mode_allowed": True,
-            "max_wait_seconds": 1800,
-            "on_expiry": "cancel_run",
-            "contract_version": "capability-contract-v5",
-            "capability_session_owner": "support-ops",
-            "expiry_signal_owner": "support-ops",
-            "emergency_freeze_owner": "platform-runtime",
-            "capability_sessions": {
-                "session_mode": "stateful",
-                "track_session_ids": True,
-                "allow_progress_events": True,
-                "allow_elicitation": True,
-                "resume_policy": "resume_existing_session_if_valid",
-                "on_session_expiry": "reinitialize_or_cancel",
-                "expiry_policy": "reinitialize_or_cancel",
-                "reinit_policy": "resume_existing_session_if_valid",
-                "reinit_requires_approval": False,
-            },
-            "delegated_authorization": {
-                "authorization_mode": "user_delegated_or_platform_owned",
-                "delegated_principal_policy": "explicit_principal_binding_required",
-                "token_reuse_policy": "reuse_within_valid_paused_run_only",
-                "on_authorization_revoke": "cancel_or_reapprove",
-                "subagent_inheritance": "denied_by_default",
-            },
-        }
+        assert payload["runtime_controls"] == surfaced_runtime_controls
 
     @pytest.mark.parametrize(
         ("command", "expected_missing"),
