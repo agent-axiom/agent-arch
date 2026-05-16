@@ -4710,6 +4710,30 @@ class TestRuntimeControlPaths:
                 assert run["delegated_principal_id"] == ""
                 assert run["delegated_scope"] == ""
 
+    def test_release_configs_bind_eval_trace_ids_to_policy_trace_control(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        trace_ids = [
+            run["trace_id"]
+            for session in eval_dataset["sessions"]
+            for run in session["runs"]
+        ]
+
+        assert "policy_traces_present" in controls["require"]
+        assert eval_dataset["trace_ids"] == trace_ids
+        assert len(trace_ids) == len(set(trace_ids))
+        assert all(trace_id.startswith("trace-eval-") for trace_id in trace_ids)
+        for session in eval_dataset["sessions"]:
+            session_trace_ids = [run["trace_id"] for run in session["runs"]]
+            assert session["session"]["traces"] == session_trace_ids
+            assert session["summary"]["trace_ids"] == session_trace_ids
+            assert session["trace_ids"] == session_trace_ids
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
