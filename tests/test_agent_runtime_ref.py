@@ -12913,6 +12913,7 @@ class TestCli:
 
         assert "branches: [\"main\"]" in workflow_text
         assert "uv run pytest --cov=agent_runtime_ref" in workflow_text
+        assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
         assert "artifacts/" not in paths_ignore_block
         assert "artifacts/**" not in paths_ignore_block
         assert "artifacts/eval-dataset.json" not in paths_ignore_block
