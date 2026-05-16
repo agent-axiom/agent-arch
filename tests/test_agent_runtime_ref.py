@@ -5169,6 +5169,30 @@ class TestRuntimeControlPaths:
         )
         assert "archive_audit_state" in retirement["required_steps"]
 
+    def test_release_configs_bind_workspace_review_to_sandbox_entries(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        workspace_entries = runtime_controls["sandbox_profile"]["workspace"]["entries"]
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+
+        assert (
+            sandbox_review["workspace_manifest_ref"]
+            == "runtime-controls.yaml#runtime_controls.sandbox_profile.workspace"
+        )
+        assert workspace_entries == [
+            {"path": "repo", "source": "local_dir", "read_only": False},
+            {"path": "task.md", "source": "inline_file", "read_only": True},
+        ]
+        assert {entry["path"] for entry in workspace_entries} == {"repo", "task.md"}
+        assert all(entry["read_only"] for entry in workspace_entries if entry["source"] == "inline_file")
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
