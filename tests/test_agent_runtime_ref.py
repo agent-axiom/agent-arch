@@ -4823,6 +4823,32 @@ class TestRuntimeControlPaths:
         assert duplicate_guard["eval_ref"] == "eval:duplicate_ticket_eval_passed"
         assert duplicate_guard["rollout_gate_ref"] == "gate:gate-2026-04-07-001"
 
+    def test_release_configs_bind_sandbox_review_to_runtime_sandbox_profile(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_profile = runtime_controls["sandbox_profile"]
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+
+        assert sandbox_review["trace_event"] == "sandbox_profile_reviewed"
+        assert (
+            sandbox_review["workspace_manifest_ref"]
+            == "runtime-controls.yaml#runtime_controls.sandbox_profile.workspace"
+        )
+        assert sandbox_review["permissions_profile"] == "restricted-shell-network-denied"
+        assert (
+            sandbox_review["network_secrets_posture"]
+            == f"network:{sandbox_profile['permissions']['network']},"
+            f"secrets:{sandbox_profile['permissions']['secrets']}"
+        )
+        assert sandbox_review["snapshot_policy"] == sandbox_profile["state"]["snapshot"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
