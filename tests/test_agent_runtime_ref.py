@@ -4556,6 +4556,39 @@ class TestRuntimeControlPaths:
             "required_output_substrings"
         ] == ["Retrieved profile hint"]
 
+    def test_release_configs_bind_stateful_session_controls_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        capability_sessions = runtime_controls["capability_sessions"]
+        mixed_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "mixed_session"
+        )
+        mixed_runs = mixed_session["runs"]
+        expected_outcomes = mixed_session["eval"]["expected_outcomes"]
+
+        assert capability_sessions["session_mode"] == "stateful"
+        assert capability_sessions["track_session_ids"] is True
+        assert expected_outcomes["required_run_count"] == len(mixed_runs) == 2
+        assert mixed_session["session"]["traces"] == [
+            run["trace_id"] for run in mixed_runs
+        ]
+        assert {"multi_run", "approval_then_memory", "session_evals"}.issubset(
+            mixed_session["eval"]["labels"]
+        )
+        assert mixed_runs[0]["capability_session_id"] == "cap-session-002"
+        assert mixed_runs[0]["capability_session_status"] == "pending"
+        assert mixed_runs[1]["capability_session_id"] == ""
+        assert mixed_session["latest_trace_id"] == mixed_runs[1]["trace_id"]
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
