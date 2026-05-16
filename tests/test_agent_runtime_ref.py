@@ -4910,6 +4910,29 @@ class TestRuntimeControlPaths:
         )
         assert delegated_authorization["on_authorization_revoke"] == "cancel_or_reapprove"
 
+    def test_release_configs_bind_unsigned_bundle_to_review_evidence(self, config_dir: Path) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+
+        review_evidence = bundle["review_evidence"]
+
+        assert bundle["signed"] is False
+        assert bundle["provenance_required"] is True
+        assert set(review_evidence) == {
+            "sandbox_profile_reviewed",
+            "duplicate_ticket_guard",
+        }
+        assert review_evidence["sandbox_profile_reviewed"]["trace_event"] in change[
+            "required_signals"
+        ]
+        assert (
+            review_evidence["duplicate_ticket_guard"]["eval_ref"]
+            == "eval:duplicate_ticket_eval_passed"
+        )
+        assert "duplicate_ticket_eval_passed" in change["required_signals"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
