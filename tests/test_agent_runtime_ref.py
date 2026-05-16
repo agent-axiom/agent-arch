@@ -4552,6 +4552,25 @@ class TestRuntimeControlPaths:
         assert "run_shell" not in agent["approved_capabilities"]
         assert policy["capabilities"]["run_shell"]["decision"] == "deny"
 
+    def test_release_configs_bind_unmanaged_runtime_blocker_to_runtime_bundle(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        assert "unmanaged_runtime_present" in controls["block_if"]
+        assert "runtime_control_schema" in change["affected_surfaces"]
+        assert {"runtime-controls.yaml", "runtime-control-bundle-metadata"}.issubset(
+            bundle["artifacts"]
+        )
+        assert runtime_controls["contract_version"] == "capability-contract-v5"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
