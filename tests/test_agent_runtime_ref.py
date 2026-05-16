@@ -11170,8 +11170,12 @@ class TestCli:
     ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        expected_failed_run_signals = [
+            signal for signal in change["required_signals"] if "failed_run" in signal
+        ]
         expected_failed_run_archive_targets = [
             target
             for target in retirement["archive_targets"]
@@ -11289,45 +11293,27 @@ class TestCli:
             "capability_sessions",
             "delegated_authorization",
         }
-        assert payload["change"]["change_id"] == "chg-2026-04-07-support-runtime"
-        assert payload["change"]["artifacts"] == [
-            "agent.yaml",
-            "capabilities.yaml",
-            "policy.yaml",
-            "runtime-controls.yaml",
-            "eval-dataset.json",
-        ]
-        assert payload["change"]["affected_surfaces"] == [
-            "capability_contract",
-            "runtime_control_schema",
-            "capability_session_contract",
-            "sandbox_profile_contract",
-            "failed_run_handling",
-        ]
-        assert payload["change"]["required_signals"] == [
-            "design_review_passed",
-            "offline_eval_passed",
-            "duplicate_ticket_eval_passed",
-            "policy_diff_reviewed",
-            "rollback_plan_ready",
-            "session_expiry_behavior_checked",
-            "reinit_policy_reviewed",
-            "sandbox_profile_reviewed",
-            "failed_run_drill_checked",
-        ]
-        assert payload["change"]["failed_run_signals"] == ["failed_run_drill_checked"]
+        assert payload["change"]["change_id"] == change["change_id"]
+        assert payload["change"]["change_type"] == change["change_type"]
+        assert payload["change"]["risk_level"] == change["risk_level"]
+        assert payload["change"]["rollout_strategy"] == change["rollout_strategy"]
+        assert payload["change"]["artifacts"] == change["artifacts"]
+        assert payload["change"]["affected_surfaces"] == change["affected_surfaces"]
+        assert payload["change"]["required_signals"] == change["required_signals"]
+        assert payload["change"]["failed_run_signals"] == expected_failed_run_signals
         assert payload["artifact_bundle"]["bundle_name"] == bundle["bundle_name"]
         assert payload["artifact_bundle"]["version"] == bundle["version"]
         assert payload["artifact_bundle"]["provenance_required"] == bundle[
             "provenance_required"
         ]
         assert payload["artifact_bundle"]["signed"] == bundle["signed"]
-        assert payload["change"]["session_control_owner"] == "support-ops"
-        assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
-        assert payload["change"]["approval_roles"] == [
-            "platform-owner",
-            "security-reviewer",
+        assert payload["change"]["session_control_owner"] == change[
+            "session_control_owner"
         ]
+        assert payload["change"]["emergency_freeze_owner"] == change[
+            "emergency_freeze_owner"
+        ]
+        assert payload["change"]["approval_roles"] == change["approval_roles"]
         assert payload["artifact_bundle"]["artifacts"] == [
             "agent.yaml",
             "capabilities.yaml",
