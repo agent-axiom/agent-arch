@@ -11847,7 +11847,19 @@ class TestCli:
             ],
         }
 
-    def test_cli_approval_commands_normalize_lineage_ids(self, cli_json) -> None:
+    def test_cli_approval_commands_normalize_lineage_ids(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        approval_required_capabilities = [
+            capability
+            for capability in agent["approved_capabilities"]
+            if policy["capabilities"][capability]["decision"] == "approval_required"
+        ]
+        approval_capability = approval_required_capabilities[0]
         exit_code, payload = cli_json(
             [
                 "inspect-approvals",
@@ -11862,10 +11874,13 @@ class TestCli:
         assert payload["trace_id"] == "trace-approval-normalized-001"
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["pending_approval_ids"] == ["apr-001"]
-        assert payload["approval_capability_names"] == ["create_ticket"]
-        assert payload["pending_approval_capability_names"] == ["create_ticket"]
+        assert payload["agent_id"] == agent["id"]
+        assert payload["approval_capability_names"] == [approval_capability]
+        assert payload["pending_approval_capability_names"] == [approval_capability]
         assert payload["approval_status_counts"] == {"pending": 1}
         assert payload["idempotency_keys"] == ["trace-approval-normalized-001"]
+        assert payload["approvals"][0]["agent_id"] == agent["id"]
+        assert payload["approvals"][0]["capability_name"] == approval_capability
         assert payload["approvals"][0]["capability_session_id"] == "cap-session-001"
         assert payload["approvals"][0]["idempotency_key"] == "trace-approval-normalized-001"
 
@@ -11883,7 +11898,9 @@ class TestCli:
         assert resolve_code == 0
         assert resolve_payload["status"] == "approved"
         assert resolve_payload["approval_ids"] == ["apr-001"]
-        assert resolve_payload["approval_capability_names"] == ["create_ticket"]
+        assert resolve_payload["agent_id"] == agent["id"]
+        assert resolve_payload["capability_name"] == approval_capability
+        assert resolve_payload["approval_capability_names"] == [approval_capability]
         assert resolve_payload["pending_approval_ids"] == []
         assert resolve_payload["pending_approval_capability_names"] == []
         assert resolve_payload["capability_session_id"] == "cap-session-001"
