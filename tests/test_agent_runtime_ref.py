@@ -5124,6 +5124,28 @@ class TestRuntimeControlPaths:
         assert approvals["default_reviewer"] == "manager"
         assert "approval_history" in retirement["archive_targets"]
 
+    def test_release_configs_bind_capability_timeouts_to_wait_budget(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        capability_timeouts = {
+            capability["timeout_seconds"] for capability in capabilities.values()
+        }
+        approval_sla_seconds = approvals["escalation_sla_minutes"] * 60
+
+        assert capabilities["search_docs"]["timeout_seconds"] == 5
+        assert capabilities["create_ticket"]["timeout_seconds"] == 15
+        assert max(capability_timeouts) < runtime_controls["max_wait_seconds"]
+        assert runtime_controls["max_wait_seconds"] == approval_sla_seconds
+        assert runtime_controls["on_expiry"] == "cancel_run"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
