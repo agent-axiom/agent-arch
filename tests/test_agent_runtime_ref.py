@@ -5052,6 +5052,19 @@ class TestRuntimeControlPaths:
         assert set(policy["capabilities"]) == {"search_docs", "create_ticket", "run_shell"}
         assert policy["capabilities"]["run_shell"]["decision"] == "deny"
 
+    def test_release_configs_bind_trace_coverage_gate_to_policy_trace_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "trace_coverage" in rollout["require"]
+        assert "policy_traces_present" in controls["require"]
+        assert "policy_decisions_not_traced" in rollout["block_if"]
+        assert "direct_tool_access_present" in rollout["block_if"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
