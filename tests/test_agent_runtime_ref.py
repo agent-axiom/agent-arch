@@ -5339,6 +5339,27 @@ class TestRuntimeControlPaths:
             "local_dir",
         }
 
+    def test_release_configs_bind_sandbox_resume_to_runtime_session_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        capability_sessions = runtime_controls["capability_sessions"]
+        sandbox_state = runtime_controls["sandbox_profile"]["state"]
+
+        assert sandbox_state["resume"] == "allowed"
+        assert runtime_controls["resume_allowed"] is True
+        assert runtime_controls["pause_allowed"] is True
+        assert capability_sessions["resume_policy"] == "resume_existing_session_if_valid"
+        assert capability_sessions["track_session_ids"] is True
+        assert "capability_session_contract" in change["affected_surfaces"]
+        assert "session_expiry_behavior_checked" in change["required_signals"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
