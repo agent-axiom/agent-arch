@@ -4571,6 +4571,27 @@ class TestRuntimeControlPaths:
         )
         assert runtime_controls["contract_version"] == "capability-contract-v5"
 
+    def test_release_configs_bind_policy_trace_blocker_to_policy_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "policy_decisions_not_traced" in rollout["block_if"]
+        assert "policy_traces_present" in controls["require"]
+        assert "policy_diff_reviewed" in change["required_signals"]
+        assert "policy.yaml" in change["artifacts"]
+        assert set(policy["capabilities"]) == {"search_docs", "create_ticket", "run_shell"}
+        assert {capability["decision"] for capability in policy["capabilities"].values()} == {
+            "allow",
+            "approval_required",
+            "deny",
+        }
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
