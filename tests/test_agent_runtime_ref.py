@@ -5415,6 +5415,31 @@ class TestRuntimeControlPaths:
             == "reuse_within_valid_paused_run_only"
         )
 
+    def test_release_configs_bind_delegated_revocation_to_runtime_shutdown(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        delegated_review = approvals["delegated_authorization"]
+        runtime_delegation = runtime_controls["delegated_authorization"]
+
+        assert delegated_review["on_scope_revoked"] == "cancel_or_reapprove"
+        assert (
+            runtime_delegation["on_authorization_revoke"]
+            == delegated_review["on_scope_revoked"]
+        )
+        assert runtime_controls["on_expiry"] == "cancel_run"
+        assert {"expire_paused_runs", "freeze_reinitialization"}.issubset(
+            retirement["required_steps"]
+        )
+        assert runtime_delegation["subagent_inheritance"] == "denied_by_default"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
