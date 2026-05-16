@@ -12930,3 +12930,25 @@ class TestCli:
         assert "artifacts/eval-dataset.json" not in paths_ignore_block
         assert "agent_runtime_ref/" not in paths_ignore_block
         assert "tests/" not in paths_ignore_block
+
+    def test_deploy_workflow_uses_node24_action_releases(self) -> None:
+        workflow_text = Path(".github/workflows/deploy.yml").read_text(
+            encoding="utf-8"
+        )
+
+        assert "branches: [\"docs-prod\"]" in workflow_text
+        assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
+        assert "uv run mkdocs build --strict" in workflow_text
+        assert "actions/checkout@v6.0.2" in workflow_text
+        assert "astral-sh/setup-uv@v8.1.0" in workflow_text
+        assert "actions/configure-pages@v6.0.0" in workflow_text
+        assert "actions/upload-pages-artifact@v5.0.0" in workflow_text
+        assert "actions/deploy-pages@v5.0.0" in workflow_text
+        for deprecated_action_ref in (
+            "actions/checkout@v4",
+            "astral-sh/setup-uv@v6",
+            "actions/configure-pages@v5",
+            "actions/upload-pages-artifact@v3",
+            "actions/deploy-pages@v4",
+        ):
+            assert deprecated_action_ref not in workflow_text

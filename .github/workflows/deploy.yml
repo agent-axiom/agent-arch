@@ -28,11 +28,11 @@ jobs:
 
       - name: Configure Pages
         if: ${{ env.PAGES_PAT == '' }}
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6.0.0
 
       - name: Enable and configure Pages
         if: ${{ env.PAGES_PAT != '' }}
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6.0.0
         with:
           enablement: true
           token: ${{ env.PAGES_PAT }}
@@ -50,7 +50,7 @@ jobs:
         run: uv run mkdocs build --strict
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: site
 
@@ -63,4 +63,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5.0.0
