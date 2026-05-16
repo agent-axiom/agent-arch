@@ -4788,6 +4788,22 @@ class TestRuntimeControlPaths:
         )
         assert "runtime_control_bundle" in archive_targets
 
+    def test_retirement_binds_rollout_freeze_to_staged_canary_plan(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        assert "freeze_rollout" in retirement["required_steps"]
+        assert change["rollout_strategy"] == "staged_canary"
+        assert rollout["rollout_mode"]["initial"] == "canary"
+        assert rollout["rollout_mode"]["require_shadow_period"] is True
+        assert rollout["rollout_mode"]["max_tenant_exposure_pct"] == 5
+        assert "rollback_plan" in rollout["require"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
