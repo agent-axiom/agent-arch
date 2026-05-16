@@ -4951,6 +4951,29 @@ class TestRuntimeControlPaths:
         assert write_policy["approver"] == approvals["default_reviewer"]
         assert approvals["escalation_sla_minutes"] == 30
 
+    def test_release_configs_bind_tool_principals_to_capability_catalog(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+
+        approved_capabilities = agent["approved_capabilities"]
+        approved_tool_principals = {
+            capabilities[capability_name]["tool_principal"]
+            for capability_name in approved_capabilities
+        }
+
+        assert approved_capabilities == ["search_docs", "create_ticket"]
+        assert approved_tool_principals == {
+            "svc-knowledge-reader",
+            "svc-ticket-writer",
+        }
+        assert agent["runtime_principal"] not in approved_tool_principals
+        assert capabilities["create_ticket"]["owner"] == "support_platform"
+        assert capabilities["create_ticket"]["tool_principal"] == "svc-ticket-writer"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
