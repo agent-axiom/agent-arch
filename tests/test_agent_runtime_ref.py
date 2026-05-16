@@ -4505,6 +4505,36 @@ class TestRuntimeControlPaths:
             assert record["provenance"]
             assert record["revision"] >= 1
 
+    def test_release_configs_bind_delegated_authorization_policy_to_runtime_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        approval_delegation = approvals["delegated_authorization"]
+        runtime_delegation = runtime_controls["delegated_authorization"]
+
+        assert {"approvals.yaml", "runtime-controls.yaml"}.issubset(
+            bundle["artifacts"]
+        )
+        assert approval_delegation["require_principal_binding"] is True
+        assert (
+            runtime_delegation["delegated_principal_policy"]
+            == "explicit_principal_binding_required"
+        )
+        assert approval_delegation["require_scope_visibility"] is True
+        assert (
+            approval_delegation["on_scope_revoked"]
+            == runtime_delegation["on_authorization_revoke"]
+        )
+        assert approval_delegation["subagent_inheritance"] == "explicit_only"
+        assert runtime_delegation["subagent_inheritance"] == "denied_by_default"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
