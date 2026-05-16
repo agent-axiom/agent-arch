@@ -11484,6 +11484,7 @@ class TestCli:
         command: list[str],
         expected_missing: str,
         cli_json,
+        config_dir: Path,
     ) -> None:
         exit_code, payload = cli_json(command)
         assert exit_code == 0
@@ -11491,10 +11492,16 @@ class TestCli:
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
         assert missing == [expected_missing]
         if expected_missing == "duplicate_ticket_eval_passed":
-            assert payload["support_duplicate_signals"] == ["duplicate_ticket_eval_passed"]
-            assert payload["missing_support_duplicate_signals"] == [
-                "duplicate_ticket_eval_passed"
+            from agent_runtime_ref.config import load_yaml_file
+
+            change = load_yaml_file(config_dir / "change.yaml")["change"]
+            support_duplicate_signals = [
+                signal
+                for signal in ("duplicate_ticket_eval_passed",)
+                if signal in change["required_signals"]
             ]
+            assert payload["support_duplicate_signals"] == support_duplicate_signals
+            assert payload["missing_support_duplicate_signals"] == support_duplicate_signals
             assert payload["support_duplicate_signals_ready"] is False
 
     @pytest.mark.parametrize(
