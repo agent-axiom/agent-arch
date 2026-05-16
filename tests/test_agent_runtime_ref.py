@@ -4637,6 +4637,27 @@ class TestRuntimeControlPaths:
         assert approvals["escalation_sla_minutes"] == 30
         assert approvals["default_reviewer"] == "manager"
 
+    def test_release_configs_bind_oncall_gate_to_emergency_freeze_owner(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        assert "oncall_owner" in rollout["require"]
+        assert change["emergency_freeze_owner"] == runtime_controls[
+            "emergency_freeze_owner"
+        ]
+        assert retirement["emergency_freeze_owner"] == runtime_controls[
+            "emergency_freeze_owner"
+        ]
+        assert runtime_controls["emergency_freeze_owner"] == "platform-runtime"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
