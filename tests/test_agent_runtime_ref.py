@@ -5193,6 +5193,29 @@ class TestRuntimeControlPaths:
         assert {entry["path"] for entry in workspace_entries} == {"repo", "task.md"}
         assert all(entry["read_only"] for entry in workspace_entries if entry["source"] == "inline_file")
 
+    def test_release_configs_bind_sandbox_memory_access_to_memory_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
+
+        assert sandbox_capabilities["memory"] == "read_write"
+        assert "memory.yaml" in bundle["artifacts"]
+        assert bundle["provenance_required"] is True
+        assert "memory_provenance_enforced" in controls["require"]
+        assert policy["memory_write"]["allow_kinds"] == [
+            "validated_fact",
+            "session_summary",
+        ]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
