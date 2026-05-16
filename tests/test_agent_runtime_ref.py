@@ -4656,6 +4656,39 @@ class TestRuntimeControlPaths:
             for run in approval_runs
         )
 
+    def test_release_configs_bind_eval_session_summaries_to_runs(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        assert "eval-dataset.json" in bundle["artifacts"]
+        for session in eval_dataset["sessions"]:
+            runs = session["runs"]
+            failed_runs = [run for run in runs if run["status"] == "failed"]
+            summary = session["summary"]
+
+            assert summary["total_runs"] == session["total_runs"] == len(runs)
+            assert summary["success_runs"] == sum(
+                1 for run in runs if run["status"] == "success"
+            )
+            assert summary["failed_runs"] == session["failed_runs"] == len(failed_runs)
+            assert summary["traceable_failed_runs"] == session[
+                "traceable_failed_runs"
+            ] == len(failed_runs)
+            assert summary["trace_ids"] == session["trace_ids"] == [
+                run["trace_id"] for run in runs
+            ]
+            assert summary["latest_trace_id"] == session["latest_trace_id"] == runs[-1][
+                "trace_id"
+            ]
+            assert summary["latest_status"] == runs[-1]["status"]
+            assert summary["approval_status_counts"] == session[
+                "approval_status_counts"
+            ]
+
     def test_release_configs_bind_eval_failure_summary_to_failed_session(
         self, config_dir: Path
     ) -> None:
