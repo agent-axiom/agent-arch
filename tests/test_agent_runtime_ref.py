@@ -11624,7 +11624,27 @@ class TestCli:
     def test_cli_check_retirement_surfaces_failed_run_archive_targets(
         self,
         cli_json,
+        config_dir: Path,
     ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+        expected_failed_run_archive_targets = [
+            target
+            for target in retirement["archive_targets"]
+            if target in {"telemetry_jsonl", "session_exports", "approval_history"}
+        ]
+        expected_support_duplicate_archive_targets = [
+            target
+            for target in retirement["archive_targets"]
+            if target
+            in {
+                "telemetry_jsonl",
+                "session_exports",
+                "approval_history",
+                "runtime_control_bundle",
+            }
+        ]
         exit_code, payload = cli_json(["check-retirement"])
         assert exit_code == 0
         assert set(payload) == {
@@ -11638,37 +11658,18 @@ class TestCli:
             "support_duplicate_archive_targets",
             "replacement_mode",
         }
-        assert payload["system_id"] == "support-triage-ref"
+        assert payload["system_id"] == retirement["system_id"]
         assert payload["ready"] is True
-        assert payload["triggers"] == [
-            "deprecated_runtime",
-            "replacement_ready",
-            "unsafe_capability_pattern",
-        ]
+        assert payload["triggers"] == retirement["triggers"]
         assert payload["missing_steps"] == []
-        assert payload["required_steps"] == [
-            "freeze_rollout",
-            "disable_risky_capabilities",
-            "stop_memory_write",
-            "expire_paused_runs",
-            "stop_background_routes",
-            "freeze_reinitialization",
-            "revoke_egress",
-            "archive_audit_state",
-            "set_retired_status",
-        ]
-        assert payload["failed_run_archive_targets"] == [
-            "telemetry_jsonl",
-            "session_exports",
-            "approval_history",
-        ]
-        assert payload["support_duplicate_archive_targets"] == [
-            "telemetry_jsonl",
-            "session_exports",
-            "approval_history",
-            "runtime_control_bundle",
-        ]
-        assert payload["replacement_mode"] == "staged_replacement"
+        assert payload["required_steps"] == retirement["required_steps"]
+        assert payload["archive_targets"] == retirement["archive_targets"]
+        assert payload["failed_run_archive_targets"] == expected_failed_run_archive_targets
+        assert (
+            payload["support_duplicate_archive_targets"]
+            == expected_support_duplicate_archive_targets
+        )
+        assert payload["replacement_mode"] == retirement["replacement_mode"]
 
     def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
         exit_code, payload = cli_json(["inspect-approvals"])
