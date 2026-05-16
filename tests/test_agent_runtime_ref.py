@@ -12902,3 +12902,19 @@ class TestCli:
         assert "artifacts/*" in gitignore_lines
         assert "!artifacts/eval-dataset.json" in gitignore_lines
         assert Path("artifacts/eval-dataset.json").is_file()
+
+    def test_coverage_workflow_runs_when_eval_artifact_changes(self) -> None:
+        workflow_text = Path(".github/workflows/coverage.yml").read_text(
+            encoding="utf-8"
+        )
+        paths_ignore_block = workflow_text.split("paths-ignore:", 1)[1].split(
+            "workflow_dispatch:", 1
+        )[0]
+
+        assert "branches: [\"main\"]" in workflow_text
+        assert "uv run pytest --cov=agent_runtime_ref" in workflow_text
+        assert "artifacts/" not in paths_ignore_block
+        assert "artifacts/**" not in paths_ignore_block
+        assert "artifacts/eval-dataset.json" not in paths_ignore_block
+        assert "agent_runtime_ref/" not in paths_ignore_block
+        assert "tests/" not in paths_ignore_block
