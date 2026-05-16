@@ -5216,6 +5216,30 @@ class TestRuntimeControlPaths:
             "session_summary",
         ]
 
+    def test_release_configs_bind_restricted_shell_to_direct_tool_blockers(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
+        sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
+
+        assert sandbox_capabilities["shell"] == "restricted"
+        assert sandbox_review["permissions_profile"] == "restricted-shell-network-denied"
+        assert "direct_tool_access_present" in controls["block_if"]
+        assert "direct_tool_access_present" in rollout["block_if"]
+        assert "run_shell" not in agent["approved_capabilities"]
+        assert policy["capabilities"]["run_shell"]["decision"] == "deny"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
