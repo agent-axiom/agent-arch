@@ -4894,6 +4894,20 @@ class TestRuntimeControlPaths:
         assert args.output == "artifacts/eval-dataset.json"
         assert Path(args.output).name in bundle["artifacts"]
 
+    def test_release_configs_bind_eval_identity_to_cli_defaults(self) -> None:
+        from agent_runtime_ref.__main__ import build_parser
+
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+        args = build_parser().parse_args(["export-eval-dataset"])
+
+        for session in eval_dataset["sessions"]:
+            assert session["session"]["tenant_id"] == args.tenant_id
+            assert session["session"]["principal_id"] == args.principal_id
+            for run in session["runs"]:
+                assert run["authorization_mode"] == args.authorization_mode
+                assert run["delegated_principal_id"] == args.delegated_principal_id
+                assert run["delegated_scope"] == args.delegated_scope
+
     def test_release_configs_bind_eval_expected_outputs_to_run_outputs(
         self, config_dir: Path
     ) -> None:
