@@ -4432,6 +4432,37 @@ class TestRuntimeControlPaths:
         assert failed_session["latest_failure_reason"] == "tool_timeout"
         assert failed_session["traceable_failed_runs"] == 1
 
+    def test_release_configs_bind_duplicate_guard_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
+        duplicate_signal = duplicate_guard["eval_ref"].removeprefix("eval:")
+        failed_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "failed_run_timeout"
+        )
+        expected_outcomes = failed_session["eval"]["expected_outcomes"]
+        duplicate_rule = next(
+            rule
+            for rule in failed_session["eval"]["grading_rules"]
+            if rule["type"] == "duplicate_ticket_guard"
+        )
+
+        assert duplicate_signal in controls["require"]
+        assert "idempotency_keys_present" in controls["require"]
+        assert duplicate_signal in failed_session["eval"]["labels"]
+        assert expected_outcomes[duplicate_signal] is True
+        assert expected_outcomes["idempotency_key_required"] is True
+        assert duplicate_rule["blocking"] is True
+        assert duplicate_rule["expected"]["max_ticket_side_effects"] == 1
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
