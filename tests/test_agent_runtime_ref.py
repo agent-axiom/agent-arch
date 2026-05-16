@@ -12914,10 +12914,10 @@ class TestCli:
         assert "branches: [\"main\"]" in workflow_text
         assert "uv run pytest --cov=agent_runtime_ref" in workflow_text
         assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
-        assert "actions/checkout@v6" in workflow_text
-        assert "astral-sh/setup-uv@v8" in workflow_text
-        assert "actions/upload-artifact@v7" in workflow_text
-        assert "stefanzweifel/git-auto-commit-action@v7" in workflow_text
+        assert "actions/checkout@v6.0.2" in workflow_text
+        assert "astral-sh/setup-uv@v8.1.0" in workflow_text
+        assert "actions/upload-artifact@v7.0.1" in workflow_text
+        assert "stefanzweifel/git-auto-commit-action@v7.1.0" in workflow_text
         for deprecated_action_ref in (
             "actions/checkout@v4",
             "astral-sh/setup-uv@v6",
