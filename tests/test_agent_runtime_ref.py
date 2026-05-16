@@ -5360,6 +5360,34 @@ class TestRuntimeControlPaths:
         assert "capability_session_contract" in change["affected_surfaces"]
         assert "session_expiry_behavior_checked" in change["required_signals"]
 
+    def test_release_configs_bind_delegated_reviewer_to_write_approval_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+
+        delegated_review = approvals["delegated_authorization"]
+        write_capability = capabilities["create_ticket"]
+        write_policy = policy["capabilities"]["create_ticket"]
+
+        assert (
+            delegated_review["reviewer_required_for_user_delegation"]
+            == approvals["default_reviewer"]
+        )
+        assert write_capability["approval"] == approvals["default_reviewer"]
+        assert write_policy["approver"] == approvals["default_reviewer"]
+        assert write_policy["decision"] == "approval_required"
+        assert (
+            runtime_controls["delegated_authorization"]["authorization_mode"]
+            == "user_delegated_or_platform_owned"
+        )
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
