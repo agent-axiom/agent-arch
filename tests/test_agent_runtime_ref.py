@@ -4453,6 +4453,21 @@ class TestRuntimeControlPaths:
         assert "design_review_passed" in change["required_signals"]
         assert "policy_diff_reviewed" in change["required_signals"]
 
+    def test_release_configs_bind_capability_owner_gates_to_catalog(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+
+        assert "capability_owners" in rollout["require"]
+        assert "capability_owners_confirmed" in controls["require"]
+        for capability_name in agent["approved_capabilities"]:
+            assert capabilities[capability_name]["owner"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
