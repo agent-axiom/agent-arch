@@ -12817,3 +12817,22 @@ class TestCli:
         assert failed_session["summary"]["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         assert "duplicate_ticket_eval_passed" in failed_session["eval"]["labels"]
         assert failed_session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
+
+    def test_cli_export_eval_dataset_matches_checked_in_artifact(
+        self,
+        cli_json,
+        tmp_path: Path,
+    ) -> None:
+        output_path = tmp_path / "eval-dataset.json"
+        exit_code, _ = cli_json(
+            [
+                "export-eval-dataset",
+                "--output",
+                str(output_path),
+            ]
+        )
+
+        assert exit_code == 0
+        assert json.loads(output_path.read_text(encoding="utf-8")) == json.loads(
+            Path("artifacts/eval-dataset.json").read_text(encoding="utf-8")
+        )
