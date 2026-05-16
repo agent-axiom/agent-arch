@@ -4468,6 +4468,22 @@ class TestRuntimeControlPaths:
         for capability_name in agent["approved_capabilities"]:
             assert capabilities[capability_name]["owner"]
 
+    def test_release_configs_bind_idempotency_control_to_write_capability(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+
+        assert "idempotency_keys_present" in controls["require"]
+        assert capabilities["create_ticket"]["mode"] == "write"
+        assert capabilities["create_ticket"]["idempotency_key_required"] is True
+        assert bundle["review_evidence"]["duplicate_ticket_guard"][
+            "idempotency_key_required"
+        ] is True
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
