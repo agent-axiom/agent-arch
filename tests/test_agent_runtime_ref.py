@@ -11171,6 +11171,7 @@ class TestCli:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         expected_failed_run_signals = [
@@ -11396,6 +11397,9 @@ class TestCli:
             "policy_traces_present",
             "memory_provenance_enforced",
         ]
+        assert set(payload["controls"]["failed_run_control_expectations"]).issubset(
+            controls["require"]
+        )
         assert payload["controls"]["failed_run_control_domains"] == [
             "traceability",
             "memory_provenance",
@@ -11415,6 +11419,9 @@ class TestCli:
             "duplicate_ticket_eval_passed",
             "idempotency_keys_present",
         ]
+        assert set(
+            payload["controls"]["support_duplicate_control_expectations"]
+        ).issubset(controls["require"])
         assert payload["controls"]["support_duplicate_control_domains"] == [
             "eval_gate",
             "session_idempotency_summary",
