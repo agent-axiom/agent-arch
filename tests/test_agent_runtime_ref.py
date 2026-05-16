@@ -11504,7 +11504,19 @@ class TestCli:
     def test_cli_check_change_surfaces_failed_run_specific_missing_signals(
         self,
         cli_json,
+        config_dir: Path,
     ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        failed_run_signals = [
+            signal for signal in change["required_signals"] if "failed_run" in signal
+        ]
+        support_duplicate_signals = [
+            signal
+            for signal in ("duplicate_ticket_eval_passed",)
+            if signal in change["required_signals"]
+        ]
         exit_code, payload = cli_json(
             ["check-change", "--signal", "failed_run_drill_checked=false"]
         )
@@ -11523,28 +11535,18 @@ class TestCli:
             "rollout_strategy",
             "risk_level",
         }
-        assert payload["change_id"] == "chg-2026-04-07-support-runtime"
+        assert payload["change_id"] == change["change_id"]
         assert not payload["ready"]
-        assert payload["required_signals"] == [
-            "design_review_passed",
-            "offline_eval_passed",
-            "duplicate_ticket_eval_passed",
-            "policy_diff_reviewed",
-            "rollback_plan_ready",
-            "session_expiry_behavior_checked",
-            "reinit_policy_reviewed",
-            "sandbox_profile_reviewed",
-            "failed_run_drill_checked",
-        ]
-        assert payload["approval_roles"] == ["platform-owner", "security-reviewer"]
+        assert payload["required_signals"] == change["required_signals"]
+        assert payload["approval_roles"] == change["approval_roles"]
         assert payload["missing_signals"] == ["failed_run_drill_checked"]
-        assert payload["failed_run_signals"] == ["failed_run_drill_checked"]
+        assert payload["failed_run_signals"] == failed_run_signals
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
-        assert payload["support_duplicate_signals"] == ["duplicate_ticket_eval_passed"]
+        assert payload["support_duplicate_signals"] == support_duplicate_signals
         assert payload["missing_support_duplicate_signals"] == []
         assert payload["support_duplicate_signals_ready"] is True
-        assert payload["rollout_strategy"] == "staged_canary"
-        assert payload["risk_level"] == "high"
+        assert payload["rollout_strategy"] == change["rollout_strategy"]
+        assert payload["risk_level"] == change["risk_level"]
 
     def test_cli_check_controls_surfaces_failed_run_related_controls(
         self,
