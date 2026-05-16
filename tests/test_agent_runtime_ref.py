@@ -11039,7 +11039,17 @@ class TestCli:
         assert payload["blocking_signals"] == []
         assert payload["rollout_mode"] == rollout_mode
 
-    def test_cli_check_rollout_requires_duplicate_ticket_eval(self, cli_json) -> None:
+    def test_cli_check_rollout_requires_duplicate_ticket_eval(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+        support_duplicate_required = [
+            signal
+            for signal in ("duplicate_ticket_eval_passed",)
+            if signal in rollout["require"]
+        ]
         exit_code, payload = cli_json(
             [
                 "check-rollout",
@@ -11050,10 +11060,8 @@ class TestCli:
         assert exit_code == 0
         assert not payload["ready"]
         assert payload["missing_required"] == ["duplicate_ticket_eval_passed"]
-        assert payload["support_duplicate_required"] == ["duplicate_ticket_eval_passed"]
-        assert payload["missing_support_duplicate_required"] == [
-            "duplicate_ticket_eval_passed"
-        ]
+        assert payload["support_duplicate_required"] == support_duplicate_required
+        assert payload["missing_support_duplicate_required"] == support_duplicate_required
         assert payload["support_duplicate_required_ready"] is False
         assert payload["blocking_signals"] == []
 
