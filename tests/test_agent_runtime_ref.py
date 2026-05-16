@@ -4526,6 +4526,36 @@ class TestRuntimeControlPaths:
         assert support_session["pending_approval_capability_names"] == ["create_ticket"]
         assert support_session["approval_status_counts"] == {"pending": 1}
 
+    def test_release_configs_bind_profile_memory_seed_to_eval_artifact(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        memory = load_yaml_file(config_dir / "memory.yaml")["memory"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        profile_seed = next(
+            record
+            for record in memory["seed_records"]
+            if record["kind"] == "language_preference"
+        )
+        profile_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "profile_memory"
+        )
+        profile_run = profile_session["runs"][0]
+
+        assert profile_seed["memory_class"] == "profile"
+        assert profile_seed["source"] == "trusted_profile"
+        assert profile_seed["content"] in profile_run["output_text"]
+        assert {"memory_read", "profile_lookup", "grounded_answer"}.issubset(
+            profile_session["eval"]["labels"]
+        )
+        assert profile_session["eval"]["expected_outcomes"][
+            "required_output_substrings"
+        ] == ["Retrieved profile hint"]
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
