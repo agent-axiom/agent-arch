@@ -4974,6 +4974,25 @@ class TestRuntimeControlPaths:
         assert capabilities["create_ticket"]["owner"] == "support_platform"
         assert capabilities["create_ticket"]["tool_principal"] == "svc-ticket-writer"
 
+    def test_release_configs_bind_read_capability_to_restricted_mcp_policy(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+
+        read_capability = capabilities["search_docs"]
+        read_policy = policy["capabilities"]["search_docs"]
+
+        assert read_capability["mode"] == "read"
+        assert read_capability["transport"] == "mcp"
+        assert read_capability["risk_tier"] == "low"
+        assert read_capability["network_access"] == "restricted"
+        assert read_capability["allowed_egress"] == ["docs.internal"]
+        assert read_policy["decision"] == "allow"
+        assert "restricted" in policy["execution"]["allow_network_access"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
