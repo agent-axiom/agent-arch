@@ -11732,27 +11732,39 @@ class TestCli:
         )
         assert payload["replacement_mode"] == retirement["replacement_mode"]
 
-    def test_cli_inspect_approvals_returns_pending_item(self, cli_json) -> None:
+    def test_cli_inspect_approvals_returns_pending_item(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        approval_required_capabilities = [
+            capability
+            for capability in agent["approved_capabilities"]
+            if policy["capabilities"][capability]["decision"] == "approval_required"
+        ]
+        approval_capability = approval_required_capabilities[0]
         exit_code, payload = cli_json(["inspect-approvals"])
         assert exit_code == 0
         assert payload == {
             "trace_id": "trace-approval-001",
             "session_id": "session-approval-001",
             "tenant_id": "tenant-acme",
-            "agent_id": "support-triage-ref",
+            "agent_id": agent["id"],
             "count": 1,
             "approval_ids": ["apr-001"],
             "pending_approval_ids": ["apr-001"],
-            "approval_capability_names": ["create_ticket"],
-            "pending_approval_capability_names": ["create_ticket"],
+            "approval_capability_names": [approval_capability],
+            "pending_approval_capability_names": [approval_capability],
             "approval_status_counts": {"pending": 1},
             "idempotency_keys": ["trace-approval-001"],
             "approvals": [
                 {
                     "approval_id": "apr-001",
                     "tenant_id": "tenant-acme",
-                    "agent_id": "support-triage-ref",
-                    "capability_name": "create_ticket",
+                    "agent_id": agent["id"],
+                    "capability_name": approval_capability,
                     "requested_by": "user-42",
                     "reviewer": "manager",
                     "reason": "approver:manager",
