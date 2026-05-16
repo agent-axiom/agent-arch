@@ -4737,6 +4737,40 @@ class TestRuntimeControlPaths:
                 for run in approval_runs
             )
 
+    def test_release_configs_bind_eval_capability_sessions_to_runtime_controls(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
+            "runtime_controls"
+        ]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        capability_sessions = runtime_controls["capability_sessions"]
+        runs = [run for session in eval_dataset["sessions"] for run in session["runs"]]
+        capability_session_ids = [
+            run["capability_session_id"] for run in runs if run["capability_session_id"]
+        ]
+
+        assert capability_sessions["session_mode"] == "stateful"
+        assert capability_sessions["track_session_ids"] is True
+        assert len(capability_session_ids) == len(set(capability_session_ids))
+        assert all(
+            capability_session_id.startswith("cap-session-")
+            for capability_session_id in capability_session_ids
+        )
+        for run in runs:
+            if run["capability_session_id"]:
+                assert run["capability_session_status"] == "pending"
+                assert run["approval_id"]
+            if run["capability_session_status"] == "pending":
+                assert run["capability_session_id"]
+                assert run["approval_id"]
+            if run["capability_session_status"] == "failed":
+                assert run["status"] == "failed"
+                assert not run["approval_id"]
+
     def test_release_configs_bind_eval_session_failure_ids_to_runs(
         self, config_dir: Path
     ) -> None:
