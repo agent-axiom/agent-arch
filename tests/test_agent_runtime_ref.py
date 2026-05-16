@@ -4589,6 +4589,38 @@ class TestRuntimeControlPaths:
         assert mixed_runs[1]["capability_session_id"] == ""
         assert mixed_session["latest_trace_id"] == mixed_runs[1]["trace_id"]
 
+    def test_release_configs_bind_eval_dataset_aggregates_to_sessions(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        sessions = eval_dataset["sessions"]
+        runs = [run for session in sessions for run in session["runs"]]
+        failed_runs = [run for run in runs if run["status"] == "failed"]
+        idempotency_keys = [run["idempotency_key"] for run in runs if run["idempotency_key"]]
+        approval_ids = [run["approval_id"] for run in runs if run["approval_id"]]
+        pending_approval_ids = [
+            run["approval_id"]
+            for run in runs
+            if run["approval_id"] and run["capability_session_status"] == "pending"
+        ]
+
+        assert "eval-dataset.json" in bundle["artifacts"]
+        assert eval_dataset["session_count"] == len(sessions)
+        assert eval_dataset["run_count"] == len(runs)
+        assert eval_dataset["failed_runs"] == len(failed_runs)
+        assert eval_dataset["traceable_failed_runs"] == len(failed_runs)
+        assert eval_dataset["trace_ids"] == [run["trace_id"] for run in runs]
+        assert eval_dataset["failed_trace_ids"] == [
+            run["trace_id"] for run in failed_runs
+        ]
+        assert eval_dataset["idempotency_keys"] == idempotency_keys
+        assert eval_dataset["approval_ids"] == approval_ids
+        assert eval_dataset["pending_approval_ids"] == pending_approval_ids
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
