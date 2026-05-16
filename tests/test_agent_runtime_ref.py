@@ -5036,6 +5036,22 @@ class TestRuntimeControlPaths:
         )
         assert runtime_delegation["authorization_mode"] == "user_delegated_or_platform_owned"
 
+    def test_release_configs_bind_rollout_precheck_gate_to_policy_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
+
+        run_precheck = policy["run_precheck"]
+
+        assert "policy_prechecks" in rollout["require"]
+        assert run_precheck["require_tenant"] is True
+        assert run_precheck["deny_if_principal_missing"] is True
+        assert set(policy["capabilities"]) == {"search_docs", "create_ticket", "run_shell"}
+        assert policy["capabilities"]["run_shell"]["decision"] == "deny"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
