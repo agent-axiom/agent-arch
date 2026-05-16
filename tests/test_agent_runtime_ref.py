@@ -11165,7 +11165,12 @@ class TestCli:
         with pytest.raises(ValueError, match=expected_message):
             main(["check-controls", "--signal", raw_signal])
 
-    def test_cli_inspect_lifecycle_returns_all_artifacts(self, cli_json) -> None:
+    def test_cli_inspect_lifecycle_returns_all_artifacts(
+        self, cli_json, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         exit_code, payload = cli_json(["inspect-lifecycle"])
         assert exit_code == 0
         assert set(payload) == {
@@ -11268,7 +11273,12 @@ class TestCli:
             "failed_run_drill_checked",
         ]
         assert payload["change"]["failed_run_signals"] == ["failed_run_drill_checked"]
-        assert payload["artifact_bundle"]["bundle_name"] == "support-triage-runtime-bundle"
+        assert payload["artifact_bundle"]["bundle_name"] == bundle["bundle_name"]
+        assert payload["artifact_bundle"]["version"] == bundle["version"]
+        assert payload["artifact_bundle"]["provenance_required"] == bundle[
+            "provenance_required"
+        ]
+        assert payload["artifact_bundle"]["signed"] == bundle["signed"]
         assert payload["change"]["session_control_owner"] == "support-ops"
         assert payload["change"]["emergency_freeze_owner"] == "platform-runtime"
         assert payload["change"]["approval_roles"] == [
