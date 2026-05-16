@@ -12917,6 +12917,7 @@ class TestCli:
         assert "actions/checkout@v6.0.2" in workflow_text
         assert "astral-sh/setup-uv@v8.1.0" in workflow_text
         assert "actions/upload-artifact@v7.0.1" in workflow_text
+        assert "tj-actions/coverage-badge-py@v2.0.4" in workflow_text
         assert "stefanzweifel/git-auto-commit-action@v7.1.0" in workflow_text
         for deprecated_action_ref in (
             "actions/checkout@v4",
@@ -12952,3 +12953,21 @@ class TestCli:
             "actions/deploy-pages@v4",
         ):
             assert deprecated_action_ref not in workflow_text
+
+    def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
+        workflow_paths = sorted(Path(".github/workflows").glob("*.yml"))
+        action_refs: list[tuple[str, str]] = []
+        for workflow_path in workflow_paths:
+            for line in workflow_path.read_text(encoding="utf-8").splitlines():
+                stripped = line.strip()
+                if stripped.startswith("uses:"):
+                    action_refs.append((str(workflow_path), stripped.removeprefix("uses:").strip()))
+
+        assert action_refs
+        for workflow_path, action_ref in action_refs:
+            assert "@" in action_ref, (workflow_path, action_ref)
+            ref = action_ref.rsplit("@", 1)[1]
+            ref_parts = ref.removeprefix("v").split(".")
+            assert ref.startswith("v"), (workflow_path, action_ref)
+            assert len(ref_parts) == 3, (workflow_path, action_ref)
+            assert all(part.isdigit() for part in ref_parts), (workflow_path, action_ref)

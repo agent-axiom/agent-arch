@@ -63,7 +63,7 @@ jobs:
         run: mkdir -p docs/assets/badges
 
       - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-py@v2
+        uses: tj-actions/coverage-badge-py@v2.0.4
         with:
           output: docs/assets/badges/coverage.svg
           overwrite: true
