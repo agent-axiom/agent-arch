@@ -4689,6 +4689,22 @@ class TestRuntimeControlPaths:
         assert "stop_background_routes" in retirement["required_steps"]
         assert runtime_controls["background_mode_allowed"] is True
 
+    def test_retirement_binds_memory_shutdown_to_memory_write_contract(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+
+        assert "stop_memory_write" in retirement["required_steps"]
+        assert "memory.yaml" in bundle["artifacts"]
+        assert policy["memory_write"]["allow_kinds"] == [
+            "validated_fact",
+            "session_summary",
+        ]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
