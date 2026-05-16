@@ -4804,6 +4804,25 @@ class TestRuntimeControlPaths:
         assert rollout["rollout_mode"]["max_tenant_exposure_pct"] == 5
         assert "rollback_plan" in rollout["require"]
 
+    def test_retirement_binds_unsafe_capability_trigger_to_duplicate_guard(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+
+        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
+        write_capability = capabilities["create_ticket"]
+
+        assert "unsafe_capability_pattern" in retirement["triggers"]
+        assert write_capability["mode"] == "write"
+        assert write_capability["risk_tier"] == "high"
+        assert duplicate_guard["idempotency_key_required"] is True
+        assert duplicate_guard["eval_ref"] == "eval:duplicate_ticket_eval_passed"
+        assert duplicate_guard["rollout_gate_ref"] == "gate:gate-2026-04-07-001"
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
