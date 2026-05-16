@@ -4737,6 +4737,37 @@ class TestRuntimeControlPaths:
                 for run in approval_runs
             )
 
+    def test_release_configs_bind_eval_session_failure_ids_to_runs(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        assert "idempotency_keys_present" in controls["require"]
+        for session in eval_dataset["sessions"]:
+            runs = session["runs"]
+            failed_runs = [run for run in runs if run["status"] == "failed"]
+            idempotency_keys = [
+                run["idempotency_key"] for run in runs if run["idempotency_key"]
+            ]
+            failed_trace_ids = [run["trace_id"] for run in failed_runs]
+
+            assert session["summary"]["failed_trace_ids"] == session[
+                "failed_trace_ids"
+            ] == failed_trace_ids
+            assert session["summary"]["idempotency_keys"] == session[
+                "idempotency_keys"
+            ] == idempotency_keys
+            for run in runs:
+                if run["idempotency_key"]:
+                    assert run["idempotency_key"] == run["trace_id"]
+                    assert capabilities[run["capability_name"]][
+                        "idempotency_key_required"
+                    ] is True
+
     def test_release_configs_bind_eval_identity_fields_to_agent_config(
         self, config_dir: Path
     ) -> None:
