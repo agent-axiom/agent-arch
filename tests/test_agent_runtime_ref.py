@@ -4621,6 +4621,33 @@ class TestRuntimeControlPaths:
         assert eval_dataset["approval_ids"] == approval_ids
         assert eval_dataset["pending_approval_ids"] == pending_approval_ids
 
+    def test_release_configs_bind_eval_failure_summary_to_failed_session(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
+        eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
+
+        failed_sessions = [
+            session for session in eval_dataset["sessions"] if session["failed_runs"]
+        ]
+        failed_session = failed_sessions[0]
+        failed_run = failed_session["runs"][0]
+
+        assert "eval-dataset.json" in bundle["artifacts"]
+        assert len(failed_sessions) == 1
+        assert eval_dataset["latest_failure_reason"] == failed_run["failure_reason"]
+        assert failed_session["latest_failure_reason"] == failed_run["failure_reason"]
+        assert failed_session["latest_trace_id"] == failed_run["trace_id"]
+        assert failed_session["summary"]["latest_status"] == failed_run["status"]
+        assert eval_dataset["duplicate_ticket_scenarios"] == [
+            failed_session["eval"]["scenario"]
+        ]
+        assert failed_session["eval"]["expected_outcomes"]["failed_runs"] == len(
+            failed_sessions
+        )
+
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
