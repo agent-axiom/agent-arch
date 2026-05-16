@@ -4705,6 +4705,25 @@ class TestRuntimeControlPaths:
             "session_summary",
         ]
 
+    def test_retirement_binds_risky_capability_step_to_high_risk_catalog(
+        self, config_dir: Path
+    ) -> None:
+        from agent_runtime_ref.config import load_yaml_file
+
+        capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
+        change = load_yaml_file(config_dir / "change.yaml")["change"]
+        retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+
+        high_risk_capabilities = [
+            name
+            for name, capability in capabilities.items()
+            if capability["risk_tier"] == "high"
+        ]
+
+        assert "disable_risky_capabilities" in retirement["required_steps"]
+        assert change["risk_level"] == "high"
+        assert high_risk_capabilities == ["create_ticket"]
+
     def test_runtime_approval_request_emits_expected_trace_signals(self) -> None:
         runtime = AgentRuntime()
         trace_id = "trace-approval-signals-001"
