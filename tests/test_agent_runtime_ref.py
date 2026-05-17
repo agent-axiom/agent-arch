@@ -1819,6 +1819,41 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-controls", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_controls_list_entry_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, case, value, expected in (
+            ("require", "non-string", [7], "controls.require entries must be strings"),
+            ("require", "empty", [" "], "controls.require entries must not be empty"),
+            (
+                "require",
+                "duplicate",
+                ["registry_reviewed", " registry_reviewed "],
+                "controls.require entries must be unique",
+            ),
+            ("block_if", "non-string", [7], "controls.block_if entries must be strings"),
+            ("block_if", "empty", [" "], "controls.block_if entries must not be empty"),
+            (
+                "block_if",
+                "duplicate",
+                ["direct_tool_access_present", " direct_tool_access_present "],
+                "controls.block_if entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            controls = load_yaml_file(bad_config_dir / "controls.yaml")
+            cast(dict[str, object], controls["controls"])[field] = value
+            (bad_config_dir / "controls.yaml").write_text(
+                json.dumps(controls),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["check-controls", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_rollout_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
