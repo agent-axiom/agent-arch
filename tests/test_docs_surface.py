@@ -187,6 +187,39 @@ def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
         assert "window.location.search + window.location.hash" in page
 
 
+def test_translated_markdown_pages_have_no_cyrillic_residue() -> None:
+    translated_paths = sorted((ROOT / "docs").rglob("*.en.md")) + sorted(
+        (ROOT / "docs").rglob("*.zh.md")
+    )
+
+    assert translated_paths
+
+    leaked_lines = []
+    for path in translated_paths:
+        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if re.search(r"[А-Яа-яЁё]", line):
+                leaked_lines.append((str(path.relative_to(ROOT)), line_number, line.strip()))
+
+    assert leaked_lines == []
+
+
+def test_translated_navigation_values_have_no_cyrillic_residue() -> None:
+    mkdocs_config = _load_mkdocs_config()
+    locales = {}
+    for plugin in mkdocs_config["plugins"]:
+        if isinstance(plugin, dict) and "i18n" in plugin:
+            locales = {language["locale"]: language for language in plugin["i18n"]["languages"]}
+            break
+
+    leaked_values = []
+    for locale in ("en", "zh"):
+        for target in locales[locale]["nav_translations"].values():
+            if re.search(r"[А-Яа-яЁё]", str(target)):
+                leaked_values.append((locale, target))
+
+    assert leaked_values == []
+
+
 def test_translated_navigation_has_no_known_russian_leaks() -> None:
     mkdocs_config = _load_mkdocs_config()
     locales = {}
