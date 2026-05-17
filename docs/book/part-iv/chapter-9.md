@@ -110,7 +110,24 @@ MCP удобен не потому, что это модное слово, а п
 
 Если этих ответов нет, MCP не исчезает как риск — он просто становится неявным trust boundary внутри platform surface.
 
-### 4.2. Полезно не путать MCP host, client и server
+
+### 4.2. MCP threat model matrix
+
+Для MCP полезно держать threat model не как общий страх перед интеграциями, а как проверочную матрицу у каждой подключаемой возможности. Минимальный вариант выглядит так:
+
+- **tool poisoning** — описание инструмента или результат пытаются изменить поведение модели; контроль: валидировать tool descriptions, отделять tool output от инструкций и держать allowlist известных контрактов.
+- **rug pull attack** — ранее одобренный MCP server меняет инструменты, scopes или поведение после ревью; контроль: version pinning, повторная аттестация, diff review и быстрый quarantine path.
+- **tool shadowing** — новый tool маскируется под похожий approved tool и перехватывает намерение модели; контроль: уникальные capability names, registry ownership и semantic review перед публикацией.
+- **confused deputy** — агент вызывает действие с чужой или слишком широкой delegated authority; контроль: проверка principal, purpose binding, approval state и policy decision прямо перед side effect.
+- **over-scoped tokens** — MCP server получает больше OAuth scopes, чем нужно конкретной операции; контроль: короткоживущие scoped tokens, per-tool scopes и запрет broad standing secrets.
+- **data exfiltration through legitimate channels** — данные уходят через разрешенный tool result, notification или ticket comment; контроль: DLP checks, output classification, tenant boundaries и review для risky writes.
+- **supply-chain attack** — скомпрометированный server, package или adapter становится доверенной возможностью; контроль: provenance, signed artifacts, dependency review и owner accountability.
+- **replay/tampering** — запрос, ответ или stateful session переигрываются или меняются между шагами; контроль: request signing, nonce/idempotency keys, trace correlation и session expiry.
+- **sandbox escape** — tool или adapter выходит за пределы network/filesystem/process boundary; контроль: ephemeral sandbox, минимальные egress rules, secret isolation и runtime-level containment.
+
+Эта матрица нужна не для того, чтобы запретить MCP. Она нужна, чтобы у каждого MCP endpoint был понятный ответ: какой класс угрозы он добавляет, какой контроль его ограничивает и какой след останется в telemetry после инцидента.
+
+### 4.3. Полезно не путать MCP host, client и server
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 

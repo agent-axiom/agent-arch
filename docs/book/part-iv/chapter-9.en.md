@@ -110,7 +110,24 @@ The practical contract for that boundary should answer at least five questions:
 
 If those answers are missing, MCP does not stop being a risk. It becomes an implicit trust boundary inside the platform surface.
 
-### 4.2. It Helps Not to Confuse the MCP Host, Client, and Server
+
+### 4.2. MCP Threat Model Matrix
+
+For MCP, the threat model should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. A minimal version looks like this:
+
+- **tool poisoning** — a tool description or tool result tries to steer the model; control it by validating tool descriptions, separating tool output from instructions, and allowing only known contracts.
+- **rug pull attack** — a previously approved MCP server changes tools, scopes, or behavior after review; control it with version pinning, re-attestation, diff review, and a fast quarantine path.
+- **tool shadowing** — a new tool mimics an approved tool and captures the model's intent; control it with unique capability names, registry ownership, and semantic review before publication.
+- **confused deputy** — the agent performs an action with the wrong or overly broad delegated authority; control it by checking principal, purpose binding, approval state, and policy decision immediately before the side effect.
+- **over-scoped tokens** — the MCP server receives broader OAuth scopes than the operation needs; control it with short-lived scoped tokens, per-tool scopes, and no broad standing secrets.
+- **data exfiltration through legitimate channels** — data leaves through an allowed tool result, notification, or ticket comment; control it with DLP checks, output classification, tenant boundaries, and review for risky writes.
+- **supply-chain attack** — a compromised server, package, or adapter becomes a trusted capability; control it with provenance, signed artifacts, dependency review, and owner accountability.
+- **replay/tampering** — requests, responses, or stateful sessions are replayed or changed between steps; control it with request signing, nonce/idempotency keys, trace correlation, and session expiry.
+- **sandbox escape** — a tool or adapter crosses the network, filesystem, or process boundary; control it with ephemeral sandboxes, minimal egress rules, secret isolation, and runtime-level containment.
+
+The matrix is not there to forbid MCP. It is there so every MCP endpoint has an explicit answer to three questions: which threat class it adds, which control limits it, and which telemetry will still be available after an incident.
+
+### 4.3. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 

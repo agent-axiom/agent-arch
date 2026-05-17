@@ -110,7 +110,24 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 如果这些答案不存在，MCP 并不会因此不再是风险；它只是变成了平台表面里的隐式 trust boundary。
 
-### 4.2. 最好不要把 MCP host、client 和 server 搞混
+
+### 4.2. MCP 威胁模型矩阵
+
+对 MCP 来说，威胁模型不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。一个最小版本可以这样看：
+
+- **tool poisoning** — 工具描述或工具结果试图引导模型行为；控制方式是验证 tool descriptions，把 tool output 与指令分离，并只允许已知契约。
+- **rug pull attack** — 已获批准的 MCP server 在审查后改变 tools、scopes 或行为；控制方式是 version pinning、重新认证、diff review 和快速隔离路径。
+- **tool shadowing** — 新工具伪装成类似的 approved tool，并截获模型意图；控制方式是唯一 capability names、registry ownership，以及发布前的语义审查。
+- **confused deputy** — 智能体用错误或过宽的 delegated authority 执行动作；控制方式是在副作用发生前检查 principal、purpose binding、approval state 和 policy decision。
+- **over-scoped tokens** — MCP server 获得了超过当前操作所需的 OAuth scopes；控制方式是短生命周期 scoped tokens、per-tool scopes，并禁止宽泛的长期密钥。
+- **data exfiltration through legitimate channels** — 数据通过被允许的 tool result、notification 或 ticket comment 外流；控制方式是 DLP checks、output classification、tenant boundaries，以及 risky writes review。
+- **supply-chain attack** — 被攻破的 server、package 或 adapter 变成受信任能力；控制方式是 provenance、signed artifacts、dependency review 和 owner accountability。
+- **replay/tampering** — 请求、响应或有状态 session 在步骤之间被重放或篡改；控制方式是 request signing、nonce/idempotency keys、trace correlation 和 session expiry。
+- **sandbox escape** — tool 或 adapter 越过网络、文件系统或进程边界；控制方式是 ephemeral sandbox、最小 egress rules、secret isolation 和 runtime-level containment。
+
+这张矩阵不是为了禁止 MCP，而是为了让每个 MCP endpoint 都能回答三个问题：它增加了哪类威胁，哪项控制在限制它，事故之后 telemetry 里还能留下什么证据。
+
+### 4.3. 最好不要把 MCP host、client 和 server 搞混
 
 MCP 周围常常会出现一些没必要的混乱，因为这些词听起来都很熟，但它们在系统里的角色其实很具体。
 
