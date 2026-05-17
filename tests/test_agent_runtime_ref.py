@@ -13002,6 +13002,15 @@ class TestCli:
 
         assert actual_permissions == expected_permissions
 
+    def test_workflows_keep_manual_dispatch_escape_hatches(self) -> None:
+        missing_dispatch = [
+            str(workflow_path)
+            for workflow_path in self._workflow_paths()
+            if "  workflow_dispatch:" not in workflow_path.read_text(encoding="utf-8")
+        ]
+
+        assert missing_dispatch == []
+
     def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
         workflow_paths = self._workflow_paths()
         action_refs: list[tuple[str, str]] = []
