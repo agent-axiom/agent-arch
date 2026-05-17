@@ -12985,6 +12985,23 @@ class TestCli:
 
         assert unbounded_jobs == []
 
+    def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
+        expected_permissions = {
+            ".github/workflows/coverage.yml": {"contents": "write"},
+            ".github/workflows/deploy.yml": {
+                "contents": "read",
+                "pages": "write",
+                "id-token": "write",
+            },
+        }
+
+        actual_permissions = {
+            str(workflow_path): load_yaml_file(workflow_path)["permissions"]
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_permissions == expected_permissions
+
     def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
         workflow_paths = self._workflow_paths()
         action_refs: list[tuple[str, str]] = []
