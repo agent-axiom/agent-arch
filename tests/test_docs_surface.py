@@ -2709,6 +2709,12 @@ def test_governance_aware_telemetry_contract_is_documented() -> None:
         "rollout_gate_input",
         "incident_response_trigger",
         "registry_update_signal",
+        "governance_action_id",
+        "source_signal",
+        "decision_owner",
+        "action_state",
+        "evidence_refs",
+        "review_deadline",
     )
     checked_files = (
         "docs/book/part-viii/chapter-26.md",

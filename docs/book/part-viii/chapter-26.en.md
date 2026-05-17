@@ -207,6 +207,17 @@ A minimal closed-loop contract looks like this:
 - `incident_response_trigger`: which patterns create an investigation, escalation, or postmortem task;
 - `registry_update_signal`: which blind spots, stale owners, or shadow capabilities require inventory updates.
 
+To keep this from remaining a nice diagram, each such event should be persisted as a small governance action record:
+
+- `governance_action_id`: a stable identifier for the governance action;
+- `source_signal`: the telemetry signal or detection scenario that triggered the action;
+- `decision_owner`: the role or team responsible for the decision;
+- `action_state`: `open`, `accepted`, `waived`, `contained`, `closed`;
+- `evidence_refs`: links to the trace, verifier output, policy decision, and rollout gate;
+- `review_deadline`: when the action must be revisited or closed.
+
+Then telemetry stops being only a dashboard signal. It becomes input to a reviewable governance queue where the team can see who made the decision, from which evidence, and why the control loop can be considered governed again.
+
 Telemetry then stops being only evidence after the fact. It becomes an operational input to the governance loop: observe → policy decision → containment or rollout action → new evidence about the result.
 
 That framing also keeps this chapter separate from the assurance chapter and the registry chapter. Assurance is about containment and response. Registry is about estate accountability. Observability is the shared substrate that makes both of those functions auditable.

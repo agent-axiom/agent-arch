@@ -207,6 +207,17 @@ Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应
 - `incident_response_trigger`：哪些 patterns 会创建 investigation、escalation 或 postmortem task；
 - `registry_update_signal`：哪些 blind spots、stale owners 或 shadow capabilities 需要更新 inventory。
 
+为了避免这只停留在漂亮图示里，每一个这样的事件都应该保存成一个小的 governance action record：
+
+- `governance_action_id`：治理动作的稳定标识符；
+- `source_signal`：触发该动作的 telemetry signal 或 detection scenario；
+- `decision_owner`：负责该决定的角色或团队；
+- `action_state`：`open`、`accepted`、`waived`、`contained`、`closed`；
+- `evidence_refs`：指向 trace、verifier output、policy decision 和 rollout gate 的链接；
+- `review_deadline`：该动作必须被重新审查或关闭的时间。
+
+这样 telemetry 就不只是 dashboard signal。它会成为可审查 governance queue 的输入，团队可以看到谁做了决定、依据哪些证据，以及为什么控制闭环可以重新被视为受治理。
+
 这样，telemetry 就不再只是事后的 evidence。它会变成 governance loop 的运行输入：observe → policy decision → containment 或 rollout action → 关于结果的新 evidence。
 
 这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。

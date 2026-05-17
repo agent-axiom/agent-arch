@@ -207,6 +207,17 @@ Microsoft отдельно подчеркивает полный произво�
 - `incident_response_trigger`: какие patterns создают investigation, escalation или postmortem task;
 - `registry_update_signal`: какие blind spots, stale owners или shadow capabilities требуют обновления inventory.
 
+Чтобы это не осталось красивой схемой, каждое такое событие полезно сохранять как маленький governance action record:
+
+- `governance_action_id`: стабильный идентификатор управленческого действия;
+- `source_signal`: telemetry signal или detection scenario, который запустил действие;
+- `decision_owner`: роль или команда, отвечающая за решение;
+- `action_state`: `open`, `accepted`, `waived`, `contained`, `closed`;
+- `evidence_refs`: ссылки на trace, verifier output, policy decision и rollout gate;
+- `review_deadline`: когда action должен быть пересмотрен или закрыт.
+
+Тогда telemetry перестает быть только dashboard-сигналом. Она становится входом в проверяемую governance queue, где видно, кто принял решение, на каких доказательствах и почему контур можно снова считать управляемым.
+
 Так telemetry перестает быть только evidence after the fact. Она становится рабочим входом для governance loop: наблюдение → решение политики → containment или rollout action → новое evidence о результате.
 
 Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability — это общий слой, который делает обе функции audit-friendly.
