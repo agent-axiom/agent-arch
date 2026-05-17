@@ -1927,6 +1927,51 @@ class TestFailurePaths:
             with pytest.raises((TypeError, ValueError), match=expected):
                 main(["check-rollout", "--config", str(rollout_config)])
 
+    def test_cli_rejects_malformed_rollout_mode_entries(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for case, rollout_mode, expected in (
+            (
+                "non-string-key",
+                {7: "canary"},
+                "rollout.rollout_mode keys must be strings",
+            ),
+            (
+                "empty-key",
+                {" ": "canary"},
+                "rollout.rollout_mode entries must not be empty",
+            ),
+            (
+                "non-scalar-value",
+                {"initial": []},
+                "rollout.rollout_mode values must be scalar: initial",
+            ),
+            (
+                "empty-value",
+                {"initial": " "},
+                "rollout.rollout_mode entries must not be empty",
+            ),
+            (
+                "duplicate-key",
+                {"initial": "canary", " initial ": "shadow"},
+                "rollout.rollout_mode entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            rollout = load_yaml_file(bad_config_dir / "rollout.yaml")
+            cast(dict[str, object], rollout["rollout"])["rollout_mode"] = rollout_mode
+            rollout_config = bad_config_dir / "rollout.yaml"
+            rollout_config.write_text(
+                yaml.safe_dump(rollout, sort_keys=False),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["check-rollout", "--config", str(rollout_config)])
+
     def test_cli_rejects_malformed_change_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
