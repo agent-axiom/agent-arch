@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, cast
 
 import pytest
+import yaml
 
 from agent_runtime_ref.config import (
     default_config_dir,
@@ -2035,6 +2036,40 @@ class TestFailurePaths:
             cast(dict[str, object], bundle["bundle"])[field] = value
             (bad_config_dir / "artifacts.yaml").write_text(
                 json.dumps(bundle),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+
+    def test_cli_rejects_malformed_artifact_bundle_review_evidence_keys(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for case, review_evidence, expected in (
+            (
+                "non-string-key",
+                {7: True},
+                "artifact bundle review_evidence config keys must be strings",
+            ),
+            (
+                "empty-key",
+                {" ": True},
+                "artifact bundle review_evidence key must not be empty",
+            ),
+            (
+                "duplicate-key",
+                {"sandbox_profile_reviewed": True, " sandbox_profile_reviewed ": True},
+                "artifact bundle review_evidence keys must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            bundle = load_yaml_file(bad_config_dir / "artifacts.yaml")
+            cast(dict[str, object], bundle["bundle"])["review_evidence"] = review_evidence
+            (bad_config_dir / "artifacts.yaml").write_text(
+                yaml.safe_dump(bundle, sort_keys=False),
                 encoding="utf-8",
             )
 
