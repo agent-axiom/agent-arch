@@ -12914,6 +12914,7 @@ class TestCli:
         assert "branches: [\"main\"]" in workflow_text
         assert "group: coverage-${{ github.ref }}" in workflow_text
         assert "cancel-in-progress: true" in workflow_text
+        assert "timeout-minutes: 20" in workflow_text
         assert "uv run pytest --cov=agent_runtime_ref" in workflow_text
         assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
         assert "actions/checkout@v6.0.2" in workflow_text
@@ -12948,6 +12949,8 @@ class TestCli:
         assert "id-token: write" in workflow_text
         assert "group: pages" in workflow_text
         assert "cancel-in-progress: true" in workflow_text
+        assert "timeout-minutes: 15" in workflow_text
+        assert "timeout-minutes: 10" in workflow_text
         assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
         assert "uv run mkdocs build --strict" in workflow_text
         assert "actions/checkout@v6.0.2" in workflow_text
