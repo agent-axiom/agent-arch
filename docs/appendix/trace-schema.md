@@ -97,6 +97,7 @@ Trace replay валидирует эти evidence до того, как они �
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
 | `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
+| `a2a_handoff` | когда один agent делегирует работу другому agent | фиксирует delegation chain, authorization и failure-attribution context |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
 | `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
 | `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена candidate memory write |
@@ -136,6 +137,16 @@ Trace replay валидирует эти evidence до того, как они �
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+Для `a2a_handoff` payload должен сохранять trust contract, а не только текст делегированного сообщения:
+
+- `agent_identity`
+- `delegation_chain`
+- `allowed_collaboration_graph`
+- `inter_agent_authorization`
+- `policy_inheritance`
+- `non_repudiation`
+- `failure_attribution`
 
 !!! example "Trace для duplicate-ticket thread"
     В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.

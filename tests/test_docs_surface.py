@@ -1893,6 +1893,26 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_includes_a2a_handoff_trust_contract_fields() -> None:
+    required_markers = (
+        "a2a_handoff",
+        "agent_identity",
+        "delegation_chain",
+        "allowed_collaboration_graph",
+        "inter_agent_authorization",
+        "policy_inheritance",
+        "non_repudiation",
+        "failure_attribution",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_trace_schema_includes_memory_poisoning_decision_fields() -> None:
     required_markers = (
         "memory_write_decision",
