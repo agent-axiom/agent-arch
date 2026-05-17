@@ -1872,6 +1872,27 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="change config must be a mapping"):
             main(["check-change", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_change_list_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field in ("artifacts", "affected_surfaces", "required_signals", "approval_roles"):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            change = load_yaml_file(bad_config_dir / "change.yaml")
+            cast(dict[str, object], change["change"])[field] = "not-a-list"
+            (bad_config_dir / "change.yaml").write_text(
+                json.dumps(change),
+                encoding="utf-8",
+            )
+
+            expected = f"{field} must be a list"
+            with pytest.raises(TypeError, match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises(TypeError, match=expected):
+                main(["check-change", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_artifact_bundle_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
