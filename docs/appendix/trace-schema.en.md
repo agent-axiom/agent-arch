@@ -93,6 +93,7 @@ Below is the current minimal event catalog.
 | --- | --- | --- |
 | `run_start` | at the beginning of a run | captures input and actor identity |
 | `policy_precheck` | immediately after run admission | records the policy precheck action, reason, and policy ID |
+| `agent_threat_evidence` | when a threat-model control leaves evidence | links threat class to trace/evidence identifiers |
 | `retrieval` | when memory context is fetched | records the source and number of retrieved records |
 | `context_layers_built` | after context assembly | shows which context layers actually entered the run; internally `RunContext` keeps `retrieved_context` and `retrieved_records` before any `tool_request` is handled |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
@@ -130,6 +131,16 @@ For each event type, decide up front:
 - which fields can be added without breaking downstream tooling;
 - which fields matter for grading;
 - which fields matter for audit.
+
+For `agent_threat_evidence`, preserve the evidence markers from the unified agent threat model so threat rows can be checked against traces, not prose only:
+
+- `prompt_boundary_event`
+- `retrieval_source_id`
+- `memory_record_id`
+- `delegation_trace_id`
+- `tenant_id`
+- `cost_budget_event`
+- `decision_trace_id`
 
 For example, `tool_policy_decision` should usually include at least:
 

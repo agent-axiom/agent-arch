@@ -93,6 +93,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 | --- | --- | --- |
 | `run_start` | 运行开始时 | 记录输入与行动者身份 |
 | `policy_precheck` | 运行准入后立刻出现 | 记录 policy precheck 的 action、reason 和 policy ID |
+| `agent_threat_evidence` | threat-model control 留下 evidence 时 | 将 threat class 连接到 trace/evidence identifiers |
 | `retrieval` | 获取 memory context 时 | 记录 source 与 retrieved records 数量 |
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行；internally `RunContext` 会在处理 `tool_request` 前保留 `retrieved_context` 与 `retrieved_records` |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
@@ -130,6 +131,16 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - 哪些字段可以新增而不破坏下游工具；
 - 哪些字段对分级重要；
 - 哪些字段对审计重要。
+
+对于 `agent_threat_evidence`，应保留 unified agent threat model 中的 evidence markers，让 threat rows 能通过 traces 检查，而不只停留在 prose：
+
+- `prompt_boundary_event`
+- `retrieval_source_id`
+- `memory_record_id`
+- `delegation_trace_id`
+- `tenant_id`
+- `cost_budget_event`
+- `decision_trace_id`
 
 例如，`tool_policy_decision` 至少通常应该包含：
 

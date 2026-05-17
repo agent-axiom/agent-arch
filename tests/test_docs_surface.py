@@ -1893,6 +1893,26 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_includes_agent_threat_evidence_markers() -> None:
+    required_markers = (
+        "agent_threat_evidence",
+        "prompt_boundary_event",
+        "retrieval_source_id",
+        "memory_record_id",
+        "delegation_trace_id",
+        "tenant_id",
+        "cost_budget_event",
+        "decision_trace_id",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_trace_schema_includes_mcp_tool_risk_review_fields() -> None:
     required_markers = (
         "mcp_tool_risk_review",
