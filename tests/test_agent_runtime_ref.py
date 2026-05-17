@@ -12923,6 +12923,7 @@ class TestCli:
         assert "actions/checkout@v6.0.2" in workflow_text
         assert "astral-sh/setup-uv@v8.1.0" in workflow_text
         assert "actions/upload-artifact@v7.0.1" in workflow_text
+        assert "retention-days: 14" in workflow_text
         assert "tj-actions/coverage-badge-py@v2.0.4" in workflow_text
         assert "stefanzweifel/git-auto-commit-action@v7.1.0" in workflow_text
         assert "docs/assets/badges/coverage.svg" in paths_ignore_block

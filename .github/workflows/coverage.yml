@@ -63,6 +63,7 @@ jobs:
           path: |
             coverage.xml
             htmlcov/
+          retention-days: 14
 
       - name: Ensure badge directory exists
         run: mkdir -p docs/assets/badges
