@@ -162,11 +162,16 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器证据，例如：
 
+- `verdict_id`
 - `verifier_id`
 - `verifier_contract_version`
+- `input_refs`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
+- `blocking_decision`
+- `comparison_baseline`
+- `reviewer_override`
 - `evidence_refs`
 
 而 `memory_persisted` 通常应该包含：

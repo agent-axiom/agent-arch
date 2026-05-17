@@ -162,11 +162,16 @@ Trace replay валидирует эти evidence до того, как они �
 
 Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract и для verifier evidence, например:
 
+- `verdict_id`
 - `verifier_id`
 - `verifier_contract_version`
+- `input_refs`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
+- `blocking_decision`
+- `comparison_baseline`
+- `reviewer_override`
 - `evidence_refs`
 
 А для `memory_persisted`:

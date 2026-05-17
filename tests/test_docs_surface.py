@@ -1870,6 +1870,29 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_includes_verifier_verdict_record_fields() -> None:
+    required_markers = (
+        "verdict_id",
+        "verifier_id",
+        "verifier_contract_version",
+        "input_refs",
+        "process_score",
+        "outcome_score",
+        "failure_attribution",
+        "blocking_decision",
+        "comparison_baseline",
+        "reviewer_override",
+        "evidence_refs",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     required_markers = (
         "Canonical eval cases",
