@@ -12912,6 +12912,9 @@ class TestCli:
         )[0]
 
         assert "branches: [\"main\"]" in workflow_text
+        assert "permissions:\n  contents: write" in workflow_text
+        assert "pages: write" not in workflow_text
+        assert "id-token: write" not in workflow_text
         assert "group: coverage-${{ github.ref }}" in workflow_text
         assert "cancel-in-progress: true" in workflow_text
         assert "timeout-minutes: 20" in workflow_text
