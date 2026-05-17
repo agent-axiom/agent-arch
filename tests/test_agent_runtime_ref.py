@@ -12999,6 +12999,23 @@ class TestCli:
 
         assert unexpected_runners == []
 
+    def test_workflow_concurrency_groups_cancel_stale_runs(self) -> None:
+        actual_concurrency = {
+            str(workflow_path): load_yaml_file(workflow_path)["concurrency"]
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_concurrency == {
+            ".github/workflows/coverage.yml": {
+                "group": "coverage-${{ github.ref }}",
+                "cancel-in-progress": True,
+            },
+            ".github/workflows/deploy.yml": {
+                "group": "pages",
+                "cancel-in-progress": True,
+            },
+        }
+
     def test_workflows_force_node24_javascript_actions(self) -> None:
         actual_env = {
             str(workflow_path): load_yaml_file(workflow_path)["env"]
