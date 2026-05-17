@@ -12977,10 +12977,26 @@ class TestCli:
         workflow_dir = Path(".github/workflows")
         return sorted([*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")])
 
-    def test_coverage_job_rechecks_main_branch_at_runtime(self) -> None:
-        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+    def test_workflow_jobs_recheck_expected_branch_at_runtime(self) -> None:
+        expected_job_conditions = {
+            ".github/workflows/coverage.yml": {
+                "coverage": "github.ref == 'refs/heads/main'"
+            },
+            ".github/workflows/deploy.yml": {
+                "build": "github.ref == 'refs/heads/docs-prod'",
+                "deploy": "github.ref == 'refs/heads/docs-prod'",
+            },
+        }
 
-        assert workflow["jobs"]["coverage"]["if"] == "github.ref == 'refs/heads/main'"
+        actual_job_conditions = {
+            str(workflow_path): {
+                job_name: job_config.get("if")
+                for job_name, job_config in load_yaml_file(workflow_path)["jobs"].items()
+            }
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_job_conditions == expected_job_conditions
 
     def test_workflow_jobs_have_runtime_bounds(self) -> None:
         unbounded_jobs: list[tuple[str, str]] = []

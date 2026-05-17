@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/docs-prod'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -58,6 +59,7 @@ jobs:
           path: site
 
   deploy:
+    if: github.ref == 'refs/heads/docs-prod'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
