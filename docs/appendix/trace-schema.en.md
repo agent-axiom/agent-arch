@@ -184,6 +184,8 @@ For `governance_action`, record the fields that turn telemetry into a governance
 - `evidence_refs`
 - `review_deadline`
 
+Keep `source_signal` on a constrained vocabulary aligned with governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
+
 And `memory_persisted` should usually include:
 
 - `memory_class`

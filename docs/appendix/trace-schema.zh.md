@@ -184,6 +184,8 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `evidence_refs`
 - `review_deadline`
 
+`source_signal` 应保持在与 governance-aware telemetry 对齐的受限词汇表内：`policy_decision_feedback`、`containment_decision`、`rollout_gate_input`、`incident_response_trigger`、`registry_update_signal`。
+
 而 `memory_persisted` 通常应该包含：
 
 - `memory_class`

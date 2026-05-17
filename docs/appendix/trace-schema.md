@@ -184,6 +184,8 @@ Trace replay валидирует эти evidence до того, как они �
 - `evidence_refs`
 - `review_deadline`
 
+`source_signal` лучше держать в ограниченном словаре, согласованном с governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
+
 А для `memory_persisted`:
 
 - `memory_class`
