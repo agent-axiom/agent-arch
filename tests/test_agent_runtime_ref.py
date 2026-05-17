@@ -1893,6 +1893,33 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-change", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_change_scalar_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, expected in (
+            ("change_id", "change.change_id must be a string"),
+            ("change_type", "change.change_type must be a string"),
+            ("risk_level", "change.risk_level must be a string"),
+            ("rollout_strategy", "change.rollout_strategy must be a string"),
+            ("session_control_owner", "change.session_control_owner must be a string"),
+            ("emergency_freeze_owner", "change.emergency_freeze_owner must be a string"),
+        ):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            change = load_yaml_file(bad_config_dir / "change.yaml")
+            cast(dict[str, object], change["change"])[field] = []
+            (bad_config_dir / "change.yaml").write_text(
+                json.dumps(change),
+                encoding="utf-8",
+            )
+
+            with pytest.raises(TypeError, match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises(TypeError, match=expected):
+                main(["check-change", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_artifact_bundle_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
