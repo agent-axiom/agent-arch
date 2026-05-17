@@ -1987,20 +1987,49 @@ class TestFailurePaths:
     ) -> None:
         from agent_runtime_ref.__main__ import main
 
-        for field, value, expected in (
-            ("artifacts", "not-a-list", "artifacts must be a list"),
+        for field, case, value, expected in (
+            ("artifacts", "not-a-list", "not-a-list", "artifacts must be a list"),
+            (
+                "artifacts",
+                "non-string-entry",
+                [7],
+                "artifacts entries must be strings",
+            ),
+            (
+                "artifacts",
+                "empty-entry",
+                [" "],
+                "artifacts entries must not be empty",
+            ),
+            (
+                "artifacts",
+                "duplicate-entry",
+                ["agent.yaml", " agent.yaml "],
+                "artifacts entries must be unique",
+            ),
             (
                 "review_evidence",
+                "not-a-mapping",
                 ["not-a-mapping"],
                 "artifact bundle review_evidence config must be a mapping",
             ),
-            ("bundle_name", [], "bundle.bundle_name must be a string"),
-            ("version", [], "bundle.version must be a string"),
-            ("session_control_owner", [], "bundle.session_control_owner must be a string"),
-            ("provenance_required", "yes", "'bundle.provenance_required' must be a boolean"),
-            ("signed", "no", "'bundle.signed' must be a boolean"),
+            ("bundle_name", "not-a-string", [], "bundle.bundle_name must be a string"),
+            ("version", "not-a-string", [], "bundle.version must be a string"),
+            (
+                "session_control_owner",
+                "not-a-string",
+                [],
+                "bundle.session_control_owner must be a string",
+            ),
+            (
+                "provenance_required",
+                "not-a-boolean",
+                "yes",
+                "'bundle.provenance_required' must be a boolean",
+            ),
+            ("signed", "not-a-boolean", "no", "'bundle.signed' must be a boolean"),
         ):
-            bad_config_dir = tmp_path / field / "configs"
+            bad_config_dir = tmp_path / field / case / "configs"
             shutil.copytree(config_dir, bad_config_dir)
             bundle = load_yaml_file(bad_config_dir / "artifacts.yaml")
             cast(dict[str, object], bundle["bundle"])[field] = value
@@ -2009,7 +2038,7 @@ class TestFailurePaths:
                 encoding="utf-8",
             )
 
-            with pytest.raises(TypeError, match=expected):
+            with pytest.raises((TypeError, ValueError), match=expected):
                 main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
 
     def test_cli_rejects_malformed_retirement_root_config(
