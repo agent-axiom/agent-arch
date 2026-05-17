@@ -12970,11 +12970,22 @@ class TestCli:
         ):
             assert deprecated_action_ref not in workflow_text
 
-    def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
+    def _workflow_paths(self) -> list[Path]:
         workflow_dir = Path(".github/workflows")
-        workflow_paths = sorted(
-            [*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")]
-        )
+        return sorted([*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")])
+
+    def test_workflow_jobs_have_runtime_bounds(self) -> None:
+        unbounded_jobs: list[tuple[str, str]] = []
+        for workflow_path in self._workflow_paths():
+            jobs = load_yaml_file(workflow_path)["jobs"]
+            for job_name, job_config in jobs.items():
+                if "timeout-minutes" not in job_config:
+                    unbounded_jobs.append((str(workflow_path), job_name))
+
+        assert unbounded_jobs == []
+
+    def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
+        workflow_paths = self._workflow_paths()
         action_refs: list[tuple[str, str]] = []
         for workflow_path in workflow_paths:
             for line in workflow_path.read_text(encoding="utf-8").splitlines():
