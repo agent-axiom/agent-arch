@@ -1948,6 +1948,8 @@ class TestFailurePaths:
                 "artifact bundle review_evidence config must be a mapping",
             ),
             ("bundle_name", [], "bundle.bundle_name must be a string"),
+            ("version", [], "bundle.version must be a string"),
+            ("session_control_owner", [], "bundle.session_control_owner must be a string"),
             ("provenance_required", "yes", "'bundle.provenance_required' must be a boolean"),
             ("signed", "no", "'bundle.signed' must be a boolean"),
         ):
