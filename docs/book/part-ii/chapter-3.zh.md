@@ -100,20 +100,20 @@ flowchart LR
 - 可审计性不足；
 - 不安全的降级行为。
 
-| 威胁 | 最先该在哪一层拦 | 有效手段 |
-| --- | --- | --- |
-| Prompt injection | 提示组装、retrieval、模型网关 | trusted/untrusted content 边界、policy checks、把 instructions 和 data 分开 |
-| Indirect injection | Retrieval、tool return values、memory write path | 来源标记、tool-output sanitization、防止不可信内容改写 policy/tool-use logic |
-| RAG poisoning | 索引、retrieval、provenance layer | source allowlist、document provenance、freshness/reputation signals、隔离可疑来源 |
-| Memory poisoning | Memory write/retrieval path | 写入前 approval 或 confidence gate、TTL、provenance、audit trail、memory rollback |
-| Tool abuse | Tool gateway、approval flow | allowlist、argument validation、risk-tiering、对 side effects 做 human approval |
-| Confused deputy | Identity layer、delegated auth、MCP/A2A boundary | scoped tokens、subject binding、显式 delegation record、caller/callee identity checks |
-| Excessive agency | Planner/orchestrator、action policy | bounded goals、stopping conditions、budget limits、用 escalation 代替开放式自治 |
-| Data exfiltration | Retrieval、egress、tool gateway | DLP、redaction、output filters、tenant-scoped access |
-| Denial of wallet | Planner、tool gateway、model gateway | rate limits、cost budgets、circuit breakers、per-run spend telemetry |
-| Cascading multi-agent failure | A2A handoff、coordinator、eval loop | handoff contracts、containment、independent verification、traceable delegation |
-| Supply-chain compromise | MCP servers、model/tool artifacts、dependency path | approved registry、signatures/provenance、sandboxing、lifecycle review |
-| Missing audit trail | Runtime、telemetry plane | structured traces、immutable logs、reviewable approvals |
+| 威胁 | 最先该在哪一层拦 | 有效手段 | Evidence / telemetry |
+| --- | --- | --- | --- |
+| Prompt injection | 提示组装、retrieval、模型网关 | trusted/untrusted content 边界、policy checks、把 instructions 和 data 分开 | `prompt_boundary_event`、source labels、rejected-instruction trace |
+| Indirect injection | Retrieval、tool return values、memory write path | 来源标记、tool-output sanitization、防止不可信内容改写 policy/tool-use logic | `tool_output_sanitized`、untrusted-content marker、policy-decision trace |
+| RAG poisoning | 索引、retrieval、provenance layer | source allowlist、document provenance、freshness/reputation signals、隔离可疑来源 | `retrieval_source_id`、freshness score、quarantine event |
+| Memory poisoning | Memory write/retrieval path | 写入前 approval 或 confidence gate、TTL、provenance、audit trail、memory rollback | `memory_record_id`、validation state、rollback/replay evidence |
+| Tool abuse | Tool gateway、approval flow | allowlist、argument validation、risk-tiering、对 side effects 做 human approval | `tool_call_id`、approval record、argument validation result |
+| Confused deputy | Identity layer、delegated auth、MCP/A2A boundary | scoped tokens、subject binding、显式 delegation record、caller/callee identity checks | `subject_id`、`delegation_trace_id`、caller/callee identity check |
+| Excessive agency | Planner/orchestrator、action policy | bounded goals、stopping conditions、budget limits、用 escalation 代替开放式自治 | step budget event、stop reason、escalation decision |
+| Data exfiltration | Retrieval、egress、tool gateway | DLP、redaction、output filters、tenant-scoped access | `tenant_id`、egress decision、redaction/DLP result |
+| Denial of wallet | Planner、tool gateway、model gateway | rate limits、cost budgets、circuit breakers、per-run spend telemetry | `cost_budget_event`、rate-limit decision、circuit-breaker state |
+| Cascading multi-agent failure | A2A handoff、coordinator、eval loop | handoff contracts、containment、independent verification、traceable delegation | `handoff_id`、containment state、verifier verdict |
+| Supply-chain compromise | MCP servers、model/tool artifacts、dependency path | approved registry、signatures/provenance、sandboxing、lifecycle review | artifact digest、registry decision、sandbox profile id |
+| Missing audit trail | Runtime、telemetry plane | structured traces、immutable logs、reviewable approvals | `decision_trace_id`、immutable log pointer、evidence completeness flag |
 
 ### 5.1. 提示注入、越狱与动作幻觉不是一回事
 

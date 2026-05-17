@@ -2755,6 +2755,14 @@ def test_agent_threat_model_matrix_covers_required_classes() -> None:
         "Cascading multi-agent failure",
         "Supply-chain compromise",
         "Missing audit trail",
+        "Evidence / telemetry",
+        "prompt_boundary_event",
+        "retrieval_source_id",
+        "memory_record_id",
+        "delegation_trace_id",
+        "tenant_id",
+        "cost_budget_event",
+        "decision_trace_id",
     )
     checked_files = (
         "docs/book/part-ii/chapter-3.md",
