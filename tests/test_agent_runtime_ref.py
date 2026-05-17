@@ -1891,6 +1891,42 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-rollout", "--config", str(rollout_config)])
 
+    def test_cli_rejects_malformed_rollout_list_entry_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, case, value, expected in (
+            ("require", "non-string", [7], "rollout.require entries must be strings"),
+            ("require", "empty", [" "], "rollout.require entries must not be empty"),
+            (
+                "require",
+                "duplicate",
+                ["trace_coverage", " trace_coverage "],
+                "rollout.require entries must be unique",
+            ),
+            ("block_if", "non-string", [7], "rollout.block_if entries must be strings"),
+            ("block_if", "empty", [" "], "rollout.block_if entries must not be empty"),
+            (
+                "block_if",
+                "duplicate",
+                ["direct_tool_access_present", " direct_tool_access_present "],
+                "rollout.block_if entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            rollout = load_yaml_file(bad_config_dir / "rollout.yaml")
+            cast(dict[str, object], rollout["rollout"])[field] = value
+            rollout_config = bad_config_dir / "rollout.yaml"
+            rollout_config.write_text(
+                json.dumps(rollout),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["check-rollout", "--config", str(rollout_config)])
+
     def test_cli_rejects_malformed_change_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
