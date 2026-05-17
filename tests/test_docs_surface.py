@@ -2804,6 +2804,9 @@ def test_chapter_1_decision_frame_is_extraction_safe() -> None:
 
 def test_fast_moving_pages_have_may_2026_review_metadata() -> None:
     fast_moving_pages = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
         "docs/book/part-v/chapter-13.md",
         "docs/book/part-v/chapter-13.en.md",
         "docs/book/part-v/chapter-13.zh.md",
