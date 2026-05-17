@@ -1156,6 +1156,45 @@ def test_evidence_spine_threads_three_canonical_cases() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_chapter_1_decision_frame_is_print_friendly() -> None:
+    chapter_sections = {
+        "docs/book/part-i/chapter-1.md": ("## 6.", "## 7.", "Быстрый выбор"),
+        "docs/book/part-i/chapter-1.en.md": ("## 6.", "## 7.", "Fast decision"),
+        "docs/book/part-i/chapter-1.zh.md": ("## 6.", "## 7.", "快速判断"),
+    }
+
+    for path, (start_marker, end_marker, title_marker) in chapter_sections.items():
+        text = _read(path)
+        section = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
+        assert title_marker in section
+        assert "|" not in section
+        assert "workflow" in section
+        assert "single-agent loop" in section
+        assert "multi-agent" in section
+
+
+def test_reference_final_rule_stays_as_separate_bullet_list() -> None:
+    expected = {
+        "docs/reference.md": (
+            "Самое простое правило такое:\n\n- книгу используй",
+            "- справочный слой используй",
+        ),
+        "docs/reference.en.md": (
+            "The simplest rule is:\n\n- use the book",
+            "- use the reference layer",
+        ),
+        "docs/reference.zh.md": (
+            "最简单的规则是：\n\n- 用本书",
+            "- 用参考层",
+        ),
+    }
+
+    for path, markers in expected.items():
+        text = _read(path)
+        for marker in markers:
+            assert marker in text, (path, marker)
+
+
 def test_english_book_plan_matches_home_publication_status() -> None:
     required_markers = (
         "Current publication status",
