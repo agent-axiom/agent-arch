@@ -12999,6 +12999,27 @@ class TestCli:
 
         assert unexpected_runners == []
 
+    def test_coverage_workflow_uploads_expected_artifacts(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        upload_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("uses") == "actions/upload-artifact@v7.0.1"
+        ]
+
+        assert upload_steps == [
+            {
+                "name": "Upload coverage artifacts",
+                "uses": "actions/upload-artifact@v7.0.1",
+                "with": {
+                    "name": "coverage-report",
+                    "path": "coverage.xml\nhtmlcov/\n",
+                    "if-no-files-found": "error",
+                    "retention-days": 14,
+                },
+            }
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
