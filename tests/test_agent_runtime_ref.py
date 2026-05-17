@@ -1898,19 +1898,38 @@ class TestFailurePaths:
     ) -> None:
         from agent_runtime_ref.__main__ import main
 
-        for case, value, expected in (
-            ("non-string", [7], "required_signals entries must be strings"),
-            ("empty", [" "], "required_signals entries must not be empty"),
+        for field, case, value, expected in (
+            ("artifacts", "non-string", [7], "artifacts entries must be strings"),
             (
+                "affected_surfaces",
+                "non-string",
+                [7],
+                "affected_surfaces entries must be strings",
+            ),
+            (
+                "required_signals",
+                "non-string",
+                [7],
+                "required_signals entries must be strings",
+            ),
+            (
+                "approval_roles",
+                "non-string",
+                [7],
+                "approval_roles entries must be strings",
+            ),
+            ("required_signals", "empty", [" "], "required_signals entries must not be empty"),
+            (
+                "required_signals",
                 "duplicate",
                 ["offline_eval_passed", " offline_eval_passed "],
                 "required_signals entries must be unique",
             ),
         ):
-            bad_config_dir = tmp_path / case / "configs"
+            bad_config_dir = tmp_path / field / case / "configs"
             shutil.copytree(config_dir, bad_config_dir)
             change = load_yaml_file(bad_config_dir / "change.yaml")
-            cast(dict[str, object], change["change"])["required_signals"] = value
+            cast(dict[str, object], change["change"])[field] = value
             (bad_config_dir / "change.yaml").write_text(
                 json.dumps(change),
                 encoding="utf-8",
