@@ -13087,6 +13087,24 @@ class TestCli:
 
         assert actual_checkout_steps == expected_checkout_steps
 
+    def test_coverage_workflow_generates_terminal_xml_and_html_reports(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        coverage_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("name") == "Run tests with coverage"
+        ]
+
+        assert coverage_steps == [
+            {
+                "name": "Run tests with coverage",
+                "run": (
+                    "uv run pytest --cov=agent_runtime_ref "
+                    "--cov-report=term-missing --cov-report=xml --cov-report=html"
+                ),
+            }
+        ]
+
     def test_coverage_workflow_uploads_expected_artifacts(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
         upload_steps = [
