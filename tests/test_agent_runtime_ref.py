@@ -2001,6 +2001,34 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-retirement", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_retirement_scalar_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, expected in (
+            ("system_id", "retirement.system_id must be a string"),
+            ("replacement_mode", "retirement.replacement_mode must be a string"),
+            ("session_control_owner", "retirement.session_control_owner must be a string"),
+            (
+                "emergency_freeze_owner",
+                "retirement.emergency_freeze_owner must be a string",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            retirement = load_yaml_file(bad_config_dir / "retirement.yaml")
+            cast(dict[str, object], retirement["retirement"])[field] = []
+            (bad_config_dir / "retirement.yaml").write_text(
+                json.dumps(retirement),
+                encoding="utf-8",
+            )
+
+            with pytest.raises(TypeError, match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises(TypeError, match=expected):
+                main(["check-retirement", "--config-dir", str(bad_config_dir)])
+
     def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
         from agent_runtime_ref.__main__ import _resolve_trace_id
         from agent_runtime_ref.telemetry import StructuredEvent
