@@ -104,6 +104,7 @@ Trace replay валидирует эти evidence до того, как они �
 | `background_compaction` | после background memory maintenance | фиксирует tenant-level compaction results |
 | `background_update_scheduled` | после постановки или завершения background work | фиксирует background update status для запуска |
 | `run_failed` | когда tool failure становится итогом запуска | сохраняет явную failed-run traceability |
+| `governance_action` | когда telemetry signal запускает policy, containment, rollout или registry decision | связывает governance action record с trace evidence |
 | `run_complete` | в конце запуска | фиксирует итог запуска |
 | `span` | вокруг отдельных вызовов | дает простую телеметрию задержки и статуса |
 
@@ -173,6 +174,15 @@ Trace replay валидирует эти evidence до того, как они �
 - `comparison_baseline`
 - `reviewer_override`
 - `evidence_refs`
+
+А для `governance_action` полезно фиксировать поля, которые делают telemetry управленческим действием, а не просто dashboard-сигналом:
+
+- `governance_action_id`
+- `source_signal`
+- `decision_owner`
+- `action_state`
+- `evidence_refs`
+- `review_deadline`
 
 А для `memory_persisted`:
 

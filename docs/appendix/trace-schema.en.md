@@ -104,6 +104,7 @@ Below is the current minimal event catalog.
 | `background_compaction` | after background memory maintenance | records tenant-level compaction results |
 | `background_update_scheduled` | after background work is queued or completed | records background update status for the run |
 | `run_failed` | when a tool failure becomes the run outcome | preserves explicit failed-run traceability |
+| `governance_action` | when a telemetry signal triggers a policy, containment, rollout, or registry decision | links a governance action record to trace evidence |
 | `run_complete` | at the end of a run | closes the run-level outcome |
 | `span` | around individual calls | provides simple latency and status telemetry |
 
@@ -173,6 +174,15 @@ If the system relies on verifier-aware evals, it is also useful to define an eve
 - `comparison_baseline`
 - `reviewer_override`
 - `evidence_refs`
+
+For `governance_action`, record the fields that turn telemetry into a governance action rather than only a dashboard signal:
+
+- `governance_action_id`
+- `source_signal`
+- `decision_owner`
+- `action_state`
+- `evidence_refs`
+- `review_deadline`
 
 And `memory_persisted` should usually include:
 
