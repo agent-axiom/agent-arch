@@ -1123,6 +1123,38 @@ def test_evidence_spine_threads_three_canonical_cases() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_english_book_plan_matches_home_publication_status() -> None:
+    required_markers = (
+        "Current publication status",
+        "RU core manuscript",
+        "published across eight book parts",
+        "EN translation layer",
+        "readable draft in editorial cleanup",
+        "ZH translation layer",
+        "readable draft localization preview in editorial cleanup",
+        "Reference layer",
+        "active companion material",
+    )
+    deprecated_markers = (
+        "first chapter is published",
+        "First chapter is published",
+        "first part",
+        "First part",
+        "first set of practical case studies",
+        "source base for the next chapters",
+    )
+
+    plan = _read("docs/book/plan.en.md")
+    home = _read("docs/index.en.md")
+
+    for marker in required_markers:
+        assert marker in plan
+    assert "Published Russian core manuscript across eight book parts" in home
+    assert "Draft `en` and `zh` translation layers" in home
+    for marker in deprecated_markers:
+        assert marker not in plan
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
