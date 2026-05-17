@@ -13110,6 +13110,31 @@ class TestCli:
             "url": "${{ steps.deployment.outputs.page_url }}",
         }
 
+    def test_deploy_pages_configuration_supports_pat_fallback(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        configure_steps = [
+            step
+            for step in workflow["jobs"]["build"]["steps"]
+            if step.get("uses") == "actions/configure-pages@v6.0.0"
+        ]
+
+        assert configure_steps == [
+            {
+                "name": "Configure Pages",
+                "if": "${{ env.PAGES_PAT == '' }}",
+                "uses": "actions/configure-pages@v6.0.0",
+            },
+            {
+                "name": "Enable and configure Pages",
+                "if": "${{ env.PAGES_PAT != '' }}",
+                "uses": "actions/configure-pages@v6.0.0",
+                "with": {
+                    "enablement": True,
+                    "token": "${{ env.PAGES_PAT }}",
+                },
+            },
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
