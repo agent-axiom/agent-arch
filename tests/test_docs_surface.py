@@ -939,6 +939,29 @@ def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_memory_retrieval_schema_includes_poisoning_review_fields() -> None:
+    required_markers = (
+        "memory poisoning",
+        "write_trust_boundary",
+        "untrusted_write",
+        "activation_policy",
+        "delayed_activation_review",
+        "contamination_scope",
+        "policy_influence",
+        "provenance_check",
+        "quarantine_state",
+        "rollback_ref",
+        "quarantine and rollback",
+    )
+    checked_files = (
+        "docs/appendix/memory-retrieval-schema.md",
+        "docs/appendix/memory-retrieval-schema.en.md",
+        "docs/appendix/memory-retrieval-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_5_memory_poisoning_scenario_is_documented() -> None:
     required_markers = (
         "memory poisoning",
