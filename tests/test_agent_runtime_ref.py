@@ -1487,6 +1487,17 @@ class TestFailurePaths:
         bad_config_dir = tmp_path / "configs"
         shutil.copytree(config_dir, bad_config_dir)
         (bad_config_dir / "runtime-controls.yaml").write_text(
+            "runtime_controls:\n  - not-a-mapping\n",
+            encoding="utf-8",
+        )
+
+        expected = "runtime_controls config must be a mapping"
+        with pytest.raises(TypeError, match=expected):
+            main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match=expected):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+
+        (bad_config_dir / "runtime-controls.yaml").write_text(
             "runtime_controls:\n  sandbox_profile:\n    - not-a-mapping\n",
             encoding="utf-8",
         )
