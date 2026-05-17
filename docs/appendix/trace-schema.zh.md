@@ -97,6 +97,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行；internally `RunContext` 会在处理 `tool_request` 前保留 `retrieved_context` 与 `retrieved_records` |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
 | `tool_execution` | capability call 或 approval handoff 后 | 记录 capability status 与 tool-principal context |
+| `a2a_handoff` | 一个 agent 将工作委派给另一个 agent 时 | 记录 delegation chain、authorization 与 failure-attribution context |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
 | `sandbox_profile_reviewed` | 由 sandbox 支撑的路径被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
 | `memory_write_decision` | 后台写入记忆前 | 记录 candidate memory write 被允许还是拒绝 |
@@ -136,6 +137,16 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+对于 `a2a_handoff`，payload 应保留 trust contract，而不只是委派消息文本：
+
+- `agent_identity`
+- `delegation_chain`
+- `allowed_collaboration_graph`
+- `inter_agent_authorization`
+- `policy_inheritance`
+- `non_repudiation`
+- `failure_attribution`
 
 !!! example "重复工单线索的 trace"
     在 support-triage 案例里，`tool_policy_decision`、`approval_requested`、`tool_execution` 和最终 outcome 应该由同一个 `trace_id`、`session_id`、`approval_id`、`tool_principal` 与 `idempotency_key` 连接起来。如果 `create_ticket` 超时且副作用状态未知，trace 应显示 `side_effect_unknown`，而不是把运行伪装成成功，或在没有 reconciliation 的情况下重复写入。

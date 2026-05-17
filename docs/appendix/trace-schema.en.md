@@ -97,6 +97,7 @@ Below is the current minimal event catalog.
 | `context_layers_built` | after context assembly | shows which context layers actually entered the run; internally `RunContext` keeps `retrieved_context` and `retrieved_records` before any `tool_request` is handled |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
 | `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
+| `a2a_handoff` | when one agent delegates work to another agent | records delegation chain, authorization, and failure-attribution context |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
 | `sandbox_profile_reviewed` | when a sandbox-backed path is reviewed | records workspace, permissions, and snapshot/resume evidence review |
 | `memory_write_decision` | before background memory persistence | records whether a candidate memory write was allowed or denied |
@@ -136,6 +137,16 @@ For example, `tool_policy_decision` should usually include at least:
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+For `a2a_handoff`, the payload should preserve the trust contract, not only the delegated message text:
+
+- `agent_identity`
+- `delegation_chain`
+- `allowed_collaboration_graph`
+- `inter_agent_authorization`
+- `policy_inheritance`
+- `non_repudiation`
+- `failure_attribution`
 
 !!! example "Trace for the duplicate-ticket thread"
     In the support-triage case, `tool_policy_decision`, `approval_requested`, `tool_execution`, and the final outcome should be tied by one `trace_id`, `session_id`, `approval_id`, `tool_principal`, and `idempotency_key`. If `create_ticket` times out and the side-effect status is unknown, the trace should show `side_effect_unknown` instead of masking the run as successful or repeating the write without reconciliation.
