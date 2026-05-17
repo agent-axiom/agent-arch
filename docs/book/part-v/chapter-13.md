@@ -85,6 +85,19 @@
 
 Такой контракт превращает verifier из свободного комментария в release-bearing artifact: его можно версионировать, сравнивать между релизами и использовать как основание для блокировки раскатки.
 
+На практике полезно сохранять не только текст verdict, но и маленький verifier verdict record:
+
+- `verdict_id`: стабильный идентификатор результата проверки;
+- `verifier_id`: какой verifier или judge выдал результат;
+- `verifier_contract_version`: версия контракта, по которой выставлен verdict;
+- `input_refs`: ссылки на scenario, trace, prompt/model version и policy bundle;
+- `evidence_refs`: доказательства, на которых основан verdict;
+- `blocking_decision`: блокирует ли verdict rollout, только предупреждает или требует human review;
+- `comparison_baseline`: с какой предыдущей release/eval baseline сравнивался результат;
+- `reviewer_override`: был ли автоматический verdict переопределен человеком и почему.
+
+Без такой записи verifier contract легко остается хорошей идеей в prose, но слабым operational control. С ней eval verdict становится сравнимым, спорным и пригодным для release governance.
+
 ## 3. Онлайн-оценки нужны, потому что реальный мир всегда шире тестового набора
 
 Даже очень хорошие офлайн-оценки не покрывают все, что происходит в production:

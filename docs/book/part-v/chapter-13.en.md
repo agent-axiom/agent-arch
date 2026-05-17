@@ -92,6 +92,19 @@ That is why the practical `verifier contract` should be explicit rather than hid
 
 That contract turns the verifier from a free-form comment into a release-bearing artifact: it can be versioned, compared across releases, and used as a basis for blocking rollout.
 
+In practice, it is useful to persist not only the verdict text, but also a small verifier verdict record:
+
+- `verdict_id`: a stable identifier for the review result;
+- `verifier_id`: which verifier or judge produced the result;
+- `verifier_contract_version`: the contract version used to produce the verdict;
+- `input_refs`: links to the scenario, trace, prompt/model version, and policy bundle;
+- `evidence_refs`: the evidence on which the verdict rests;
+- `blocking_decision`: whether the verdict blocks rollout, warns only, or requires human review;
+- `comparison_baseline`: which previous release/eval baseline the result was compared against;
+- `reviewer_override`: whether a human overrode the automated verdict and why.
+
+Without that record, the verifier contract can remain a good prose idea but a weak operational control. With it, an eval verdict becomes comparable, disputable, and usable for release governance.
+
 ## 3. Online Evals Matter Because the Real World Is Always Larger Than the Test Set
 
 Even very good offline evals do not cover everything that happens in production:

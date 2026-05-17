@@ -92,6 +92,19 @@ SLO 帮你定义什么叫系统健康。
 
 这样的契约会把 verifier 从自由文本评论变成 release-bearing artifact：它可以被版本化、跨发布比较，并作为阻止 rollout 的依据。
 
+实践中，最好不要只保存 verdict 文本，还要保存一个小的 verifier verdict record：
+
+- `verdict_id`：评审结果的稳定标识符；
+- `verifier_id`：是哪一个 verifier 或 judge 生成了结果；
+- `verifier_contract_version`：生成 verdict 时使用的 contract version；
+- `input_refs`：指向 scenario、trace、prompt/model version 和 policy bundle 的链接；
+- `evidence_refs`：verdict 所依据的证据；
+- `blocking_decision`：verdict 是阻止 rollout、仅发出 warning，还是要求 human review；
+- `comparison_baseline`：结果是和哪个 previous release/eval baseline 比较的；
+- `reviewer_override`：automated verdict 是否被 human 覆盖，以及原因。
+
+如果没有这条记录，verifier contract 很容易只是 prose 里的好想法，而不是强 operational control。有了它，eval verdict 才能被比较、被质疑，并真正用于 release governance。
+
 ## 3. 在线评测之所以必要，是因为真实世界永远比测试集更大
 
 即使很好的离线评测，也无法覆盖生产环境中真正发生的一切：
