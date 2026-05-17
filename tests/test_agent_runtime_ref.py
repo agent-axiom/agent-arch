@@ -1697,6 +1697,8 @@ class TestFailurePaths:
 
         with pytest.raises(TypeError, match="change config must be a mapping"):
             main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match="change config must be a mapping"):
+            main(["check-change", "--config-dir", str(bad_config_dir)])
 
     def test_cli_rejects_malformed_artifact_bundle_root_config(
         self, config_dir: Path, tmp_path: Path
@@ -1727,6 +1729,8 @@ class TestFailurePaths:
 
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
             main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match="retirement config must be a mapping"):
+            main(["check-retirement", "--config-dir", str(bad_config_dir)])
 
     def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
         from agent_runtime_ref.__main__ import _resolve_trace_id
