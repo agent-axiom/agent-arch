@@ -12971,7 +12971,10 @@ class TestCli:
             assert deprecated_action_ref not in workflow_text
 
     def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
-        workflow_paths = sorted(Path(".github/workflows").glob("*.yml"))
+        workflow_dir = Path(".github/workflows")
+        workflow_paths = sorted(
+            [*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")]
+        )
         action_refs: list[tuple[str, str]] = []
         for workflow_path in workflow_paths:
             for line in workflow_path.read_text(encoding="utf-8").splitlines():
