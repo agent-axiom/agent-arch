@@ -20,6 +20,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       PAGES_PAT: ${{ secrets.PAGES_PAT }}
     steps:
@@ -60,6 +61,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    timeout-minutes: 10
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
