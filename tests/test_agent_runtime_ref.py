@@ -1628,6 +1628,35 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_policy_precheck_bool_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, expected in (
+            ("require_tenant", "'run_precheck.require_tenant' must be a boolean"),
+            (
+                "deny_if_principal_missing",
+                "'run_precheck.deny_if_principal_missing' must be a boolean",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            policy = load_yaml_file(bad_config_dir / "policy.yaml")
+            cast(
+                dict[str, object],
+                cast(dict[str, object], policy["policy"])["run_precheck"],
+            )[field] = "not-a-boolean"
+            (bad_config_dir / "policy.yaml").write_text(
+                json.dumps(policy),
+                encoding="utf-8",
+            )
+
+            with pytest.raises(TypeError, match=expected):
+                main(["simulate-run", "--config-dir", str(bad_config_dir)])
+            with pytest.raises(TypeError, match=expected):
+                main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_policy_allow_list_configs(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
