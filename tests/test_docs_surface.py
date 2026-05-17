@@ -1879,6 +1879,11 @@ def test_trace_schema_includes_governance_action_event_fields() -> None:
         "action_state",
         "evidence_refs",
         "review_deadline",
+        "policy_decision_feedback",
+        "containment_decision",
+        "rollout_gate_input",
+        "incident_response_trigger",
+        "registry_update_signal",
     )
     checked_files = (
         "docs/appendix/trace-schema.md",
