@@ -1870,6 +1870,25 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_includes_governance_action_event_fields() -> None:
+    required_markers = (
+        "governance_action",
+        "governance_action_id",
+        "source_signal",
+        "decision_owner",
+        "action_state",
+        "evidence_refs",
+        "review_deadline",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_trace_schema_includes_verifier_verdict_record_fields() -> None:
     required_markers = (
         "verdict_id",

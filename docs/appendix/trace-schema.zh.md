@@ -104,6 +104,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 | `background_compaction` | background memory maintenance 后 | 记录 tenant-level compaction results |
 | `background_update_scheduled` | background work 排队或完成后 | 记录该运行的 background update status |
 | `run_failed` | 工具失败成为运行结果时 | 保留明确的 failed-run traceability |
+| `governance_action` | telemetry signal 触发 policy、containment、rollout 或 registry decision 时 | 将 governance action record 连接到 trace evidence |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
 | `span` | 单个调用周围 | 提供基础延迟与状态遥测 |
 
@@ -173,6 +174,15 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `comparison_baseline`
 - `reviewer_override`
 - `evidence_refs`
+
+对于 `governance_action`，应该记录能把 telemetry 变成治理动作、而不只是 dashboard signal 的字段：
+
+- `governance_action_id`
+- `source_signal`
+- `decision_owner`
+- `action_state`
+- `evidence_refs`
+- `review_deadline`
 
 而 `memory_persisted` 通常应该包含：
 
