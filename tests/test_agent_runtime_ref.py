@@ -13011,6 +13011,36 @@ class TestCli:
 
         assert missing_dispatch == []
 
+    def test_workflow_triggers_are_expected_branch_scoped_events(self) -> None:
+        expected_triggers = {
+            ".github/workflows/coverage.yml": {
+                "push": {
+                    "branches": ["main"],
+                    "paths-ignore": [
+                        "docs/**",
+                        "README.md",
+                        "README.ru.md",
+                        "README.zh.md",
+                        ".github/workflows/deploy.yml",
+                        "mkdocs.yml",
+                        "docs/assets/badges/coverage.svg",
+                    ],
+                },
+                "workflow_dispatch": None,
+            },
+            ".github/workflows/deploy.yml": {
+                "push": {"branches": ["docs-prod"]},
+                "workflow_dispatch": None,
+            },
+        }
+
+        actual_triggers = {
+            str(workflow_path): load_yaml_file(workflow_path)[True]
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_triggers == expected_triggers
+
     def test_workflow_action_refs_are_pinned_to_patch_releases(self) -> None:
         workflow_paths = self._workflow_paths()
         action_refs: list[tuple[str, str]] = []
