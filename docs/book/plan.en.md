@@ -2,6 +2,14 @@
 
 This page is about the structure and status of the book. If you need a reading route, start with [Start Here](../start-here.en.md). If you need the publishing stack and site tooling, that lives on a [separate page](../appendix/stack.en.md).
 
+!!! info "Current publication status"
+    Use the same status model as the English home page:
+
+    - `RU core manuscript`: published across eight book parts, from architectural foundations to lifecycle governance.
+    - `EN translation layer`: readable draft in editorial cleanup.
+    - `ZH translation layer`: readable draft localization preview in editorial cleanup.
+    - `Reference layer`: active companion material with runtime, schemas, checklists, case studies, and operational contracts.
+
 !!! info "How to read the book by stability level"
     The book has two layers:
 
