@@ -1714,6 +1714,24 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="'approvals' must be a mapping"):
             main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_approval_delegation_config(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        (bad_config_dir / "approvals.yaml").write_text(
+            "approvals:\n  delegated_authorization:\n    - not-a-mapping\n",
+            encoding="utf-8",
+        )
+
+        expected = "approvals.delegated_authorization must be a mapping"
+        with pytest.raises(TypeError, match=expected):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match=expected):
+            main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_capabilities_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
