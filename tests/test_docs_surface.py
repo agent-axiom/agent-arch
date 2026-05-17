@@ -129,7 +129,7 @@ def test_public_book_canonical_redirects_are_configured() -> None:
 def _canonical_redirects_for(pathname: str, search: str = "", hash_: str = "") -> list[str]:
     node = shutil.which("node")
     if node is None:
-        pytest.skip("node is required to execute canonical-redirects.js")
+        raise pytest.skip.Exception("node is required to execute canonical-redirects.js")
 
     redirect_script = _read("docs/javascripts/canonical-redirects.js")
     harness = f"""
@@ -268,7 +268,10 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
         "Primary reader",
         "Unique promise",
         "Companion assets",
-        "Keep schemas, runtime command details, long checklists, and source catalogs in the online companion.",
+        (
+            "Keep schemas, runtime command details, long checklists, and source catalogs "
+            "in the online companion."
+        ),
         "runnable `agent_runtime_ref` package",
         "command-output field lists and validation-error catalogs",
         "any print sample that depends on live site navigation",
