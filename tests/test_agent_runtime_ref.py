@@ -1536,6 +1536,27 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match=expected_entries):
             main(["simulate-run", "--config-dir", str(bad_config_dir)])
 
+        for section, preceding_sections in (
+            ("capabilities", ""),
+            ("permissions", "    capabilities: {}\n"),
+            ("state", "    capabilities: {}\n    permissions: {}\n"),
+        ):
+            (bad_config_dir / "runtime-controls.yaml").write_text(
+                "runtime_controls:\n"
+                "  sandbox_profile:\n"
+                "    workspace:\n"
+                "      entries: []\n"
+                f"{preceding_sections}"
+                f"    {section}:\n"
+                "      - not-a-mapping\n",
+                encoding="utf-8",
+            )
+            expected_section = (
+                f"runtime_controls.sandbox_profile.{section} config must be a mapping"
+            )
+            with pytest.raises(TypeError, match=expected_section):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+
         (bad_config_dir / "runtime-controls.yaml").write_text(
             "runtime_controls:\n"
             "  capability_sessions:\n"
