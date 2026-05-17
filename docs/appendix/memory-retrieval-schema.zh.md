@@ -58,6 +58,20 @@ retention: long_term
 - `revision` 让历史不会被静默覆盖；
 - `trust_level` 防止所有记录被一视同仁。
 
+对于 memory poisoning review，应该把记录或 candidate write 描述成可审查的 security object，而不只是 retrieval payload：
+
+```yaml
+write_trust_boundary: untrusted_write
+activation_policy: delayed_activation_review
+contamination_scope: tenant_local
+policy_influence: false
+provenance_check: required
+quarantine_state: quarantined
+rollback_ref: mem-rollback-2026-05-001
+```
+
+这些字段把 `untrusted write`、`delayed activation`、`cross-tenant contamination`、`policy influence`、`provenance check` 和 `quarantine and rollback` 连接到 machine-checkable memory schema。
+
 ## 4. 检索查询
 
 `retrieval_query` 描述的不是一个简单文本搜索，而是完整的记忆读取上下文。

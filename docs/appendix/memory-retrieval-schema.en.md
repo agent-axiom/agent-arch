@@ -58,6 +58,20 @@ The key parts are:
 - `revision` keeps history from being silently overwritten;
 - `trust_level` stops all records from being treated as equal.
 
+For memory poisoning review, describe a record or candidate write as a reviewable security object, not only as retrieval payload:
+
+```yaml
+write_trust_boundary: untrusted_write
+activation_policy: delayed_activation_review
+contamination_scope: tenant_local
+policy_influence: false
+provenance_check: required
+quarantine_state: quarantined
+rollback_ref: mem-rollback-2026-05-001
+```
+
+These fields connect `untrusted write`, `delayed activation`, `cross-tenant contamination`, `policy influence`, `provenance check`, and `quarantine and rollback` to a machine-checkable memory schema.
+
 ## 4. Retrieval query
 
 `retrieval_query` describes not only a text search, but the full operational context of reading memory.

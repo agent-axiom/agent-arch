@@ -58,6 +58,20 @@ retention: long_term
 - `revision` нужен, чтобы не терять историю тихими перезаписями;
 - `trust_level` помогает не ставить все записи в один ряд.
 
+Для memory poisoning review запись или candidate write полезно дополнительно описывать как проверяемый security object, а не только как retrieval payload:
+
+```yaml
+write_trust_boundary: untrusted_write
+activation_policy: delayed_activation_review
+contamination_scope: tenant_local
+policy_influence: false
+provenance_check: required
+quarantine_state: quarantined
+rollback_ref: mem-rollback-2026-05-001
+```
+
+Эти поля связывают сценарии `untrusted write`, `delayed activation`, `cross-tenant contamination`, `policy influence`, `provenance check` и `quarantine and rollback` с машинно-проверяемой схемой памяти.
+
 ## 4. Запрос на извлечение
 
 `retrieval_query` описывает не просто текстовый запрос, а полный рабочий контекст чтения памяти.
