@@ -938,6 +938,26 @@ def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_5_memory_poisoning_scenario_is_documented() -> None:
+    required_markers = (
+        "memory poisoning",
+        "untrusted write",
+        "delayed activation",
+        "cross-tenant contamination",
+        "policy influence",
+        "provenance check",
+        "quarantine and rollback",
+        "threat-model review",
+    )
+    checked_files = (
+        "docs/book/part-iii/chapter-5.md",
+        "docs/book/part-iii/chapter-5.en.md",
+        "docs/book/part-iii/chapter-5.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
