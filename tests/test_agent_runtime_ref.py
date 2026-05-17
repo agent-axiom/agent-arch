@@ -12999,6 +12999,21 @@ class TestCli:
 
         assert unexpected_runners == []
 
+    def test_workflows_force_node24_javascript_actions(self) -> None:
+        actual_env = {
+            str(workflow_path): load_yaml_file(workflow_path)["env"]
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_env == {
+            ".github/workflows/coverage.yml": {
+                "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"
+            },
+            ".github/workflows/deploy.yml": {
+                "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"
+            },
+        }
+
     def test_workflow_checkout_contracts_are_explicit(self) -> None:
         expected_checkout_steps = {
             ".github/workflows/coverage.yml": [
