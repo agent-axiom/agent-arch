@@ -1893,6 +1893,34 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-change", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_change_list_entry_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for case, value, expected in (
+            ("non-string", [7], "required_signals entries must be strings"),
+            ("empty", [" "], "required_signals entries must not be empty"),
+            (
+                "duplicate",
+                ["offline_eval_passed", " offline_eval_passed "],
+                "required_signals entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            change = load_yaml_file(bad_config_dir / "change.yaml")
+            cast(dict[str, object], change["change"])["required_signals"] = value
+            (bad_config_dir / "change.yaml").write_text(
+                json.dumps(change),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["check-change", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_change_scalar_configs(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
