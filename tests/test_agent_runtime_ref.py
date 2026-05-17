@@ -12977,6 +12977,17 @@ class TestCli:
         workflow_dir = Path(".github/workflows")
         return sorted([*workflow_dir.glob("*.yml"), *workflow_dir.glob("*.yaml")])
 
+    def test_workflow_names_remain_stable_for_status_checks(self) -> None:
+        actual_names = {
+            str(workflow_path): load_yaml_file(workflow_path)["name"]
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_names == {
+            ".github/workflows/coverage.yml": "coverage",
+            ".github/workflows/deploy.yml": "deploy-docs",
+        }
+
     def test_workflow_jobs_recheck_expected_branch_at_runtime(self) -> None:
         expected_job_conditions = {
             ".github/workflows/coverage.yml": {
