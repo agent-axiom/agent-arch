@@ -186,6 +186,16 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 
 `source_signal` 应保持在与 governance-aware telemetry 对齐的受限词汇表内：`policy_decision_feedback`、`containment_decision`、`rollout_gate_input`、`incident_response_trigger`、`registry_update_signal`。
 
+对于 memory poisoning review 中的 `memory_write_decision`，trace 应保留与 memory schema 相同的 review fields：
+
+- `write_trust_boundary`
+- `activation_policy`
+- `contamination_scope`
+- `policy_influence`
+- `provenance_check`
+- `quarantine_state`
+- `rollback_ref`
+
 而 `memory_persisted` 通常应该包含：
 
 - `memory_class`
