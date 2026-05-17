@@ -12921,6 +12921,8 @@ class TestCli:
         assert "actions/upload-artifact@v7.0.1" in workflow_text
         assert "tj-actions/coverage-badge-py@v2.0.4" in workflow_text
         assert "stefanzweifel/git-auto-commit-action@v7.1.0" in workflow_text
+        assert "docs/assets/badges/coverage.svg" in paths_ignore_block
+        assert "file_pattern: docs/assets/badges/coverage.svg" in workflow_text
         for deprecated_action_ref in (
             "actions/checkout@v4",
             "astral-sh/setup-uv@v6",
@@ -12933,6 +12935,7 @@ class TestCli:
         assert "artifacts/eval-dataset.json" not in paths_ignore_block
         assert "agent_runtime_ref/" not in paths_ignore_block
         assert "tests/" not in paths_ignore_block
+        assert "docs/assets/badges/**" not in paths_ignore_block
 
     def test_deploy_workflow_uses_node24_action_releases(self) -> None:
         workflow_text = Path(".github/workflows/deploy.yml").read_text(
