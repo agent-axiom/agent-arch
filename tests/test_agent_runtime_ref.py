@@ -1937,6 +1937,37 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match=expected):
             main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_capability_allowed_egress_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for case, value, expected in (
+            ("not-list", "docs.internal", "'allowed_egress' must be a list"),
+            ("non-string", [7], "allowed_egress entries must be strings"),
+            ("empty", [" "], "allowed_egress entries must not be empty"),
+            (
+                "duplicate",
+                ["docs.internal", " docs.internal "],
+                "allowed_egress entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            capabilities = load_yaml_file(bad_config_dir / "capabilities.yaml")
+            cast(dict[str, object], cast(dict[str, object], capabilities["capabilities"])[
+                "search_docs"
+            ])["allowed_egress"] = value
+            (bad_config_dir / "capabilities.yaml").write_text(
+                json.dumps(capabilities),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["simulate-run", "--config-dir", str(bad_config_dir)])
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_agent_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
