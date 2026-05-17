@@ -12999,6 +12999,36 @@ class TestCli:
 
         assert unexpected_runners == []
 
+    def test_workflow_checkout_contracts_are_explicit(self) -> None:
+        expected_checkout_steps = {
+            ".github/workflows/coverage.yml": [
+                {
+                    "name": "Checkout",
+                    "uses": "actions/checkout@v6.0.2",
+                    "with": {"ref": "main"},
+                }
+            ],
+            ".github/workflows/deploy.yml": [
+                {
+                    "name": "Checkout",
+                    "uses": "actions/checkout@v6.0.2",
+                    "with": {"persist-credentials": False},
+                }
+            ],
+        }
+
+        actual_checkout_steps = {}
+        for workflow_path in self._workflow_paths():
+            workflow = load_yaml_file(workflow_path)
+            actual_checkout_steps[str(workflow_path)] = [
+                step
+                for job_config in workflow["jobs"].values()
+                for step in job_config.get("steps", [])
+                if step.get("uses") == "actions/checkout@v6.0.2"
+            ]
+
+        assert actual_checkout_steps == expected_checkout_steps
+
     def test_coverage_workflow_uploads_expected_artifacts(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
         upload_steps = [
