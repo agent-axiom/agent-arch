@@ -1920,6 +1920,9 @@ class TestFailurePaths:
                 ["not-a-mapping"],
                 "artifact bundle review_evidence config must be a mapping",
             ),
+            ("bundle_name", [], "bundle.bundle_name must be a string"),
+            ("provenance_required", "yes", "'bundle.provenance_required' must be a boolean"),
+            ("signed", "no", "'bundle.signed' must be a boolean"),
         ):
             bad_config_dir = tmp_path / field / "configs"
             shutil.copytree(config_dir, bad_config_dir)
