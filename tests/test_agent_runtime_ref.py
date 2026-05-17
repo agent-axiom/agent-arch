@@ -13409,7 +13409,7 @@ class TestCli:
         }
 
         actual_triggers = {
-            str(workflow_path): load_yaml_file(workflow_path)[True]
+            str(workflow_path): cast(dict[object, Any], load_yaml_file(workflow_path))[True]
             for workflow_path in self._workflow_paths()
         }
 
