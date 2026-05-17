@@ -1567,6 +1567,23 @@ class TestFailurePaths:
         ):
             main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_policy_root_config(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        (bad_config_dir / "policy.yaml").write_text(
+            "policy:\n  - not-a-mapping\n",
+            encoding="utf-8",
+        )
+
+        with pytest.raises(TypeError, match="'policy' must be a mapping"):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match="'policy' must be a mapping"):
+            main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
         from agent_runtime_ref.__main__ import _resolve_trace_id
         from agent_runtime_ref.telemetry import StructuredEvent
