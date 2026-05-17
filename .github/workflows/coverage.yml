@@ -63,6 +63,7 @@ jobs:
           path: |
             coverage.xml
             htmlcov/
+          if-no-files-found: error
           retention-days: 14
 
       - name: Ensure badge directory exists
