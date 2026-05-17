@@ -1627,6 +1627,24 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_policy_capability_entry_config(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        (bad_config_dir / "policy.yaml").write_text(
+            "policy:\n  capabilities:\n    search_docs:\n      - not-a-mapping\n",
+            encoding="utf-8",
+        )
+
+        expected = "Policy for capability 'search_docs' must be a mapping"
+        with pytest.raises(TypeError, match=expected):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match=expected):
+            main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_memory_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
