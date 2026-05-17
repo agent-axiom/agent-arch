@@ -12999,6 +12999,47 @@ class TestCli:
 
         assert unexpected_runners == []
 
+    def test_workflow_step_order_preserves_artifact_handoffs(self) -> None:
+        expected_step_names = {
+            ".github/workflows/coverage.yml": {
+                "coverage": [
+                    "Checkout",
+                    "Setup uv",
+                    "Setup Python",
+                    "Sync dependencies",
+                    "Run tests with coverage",
+                    "Add coverage summary to GitHub job",
+                    "Upload coverage artifacts",
+                    "Ensure badge directory exists",
+                    "Generate coverage badge",
+                    "Commit coverage badge",
+                ]
+            },
+            ".github/workflows/deploy.yml": {
+                "build": [
+                    "Checkout",
+                    "Configure Pages",
+                    "Enable and configure Pages",
+                    "Setup uv",
+                    "Setup Python",
+                    "Sync dependencies",
+                    "Build docs",
+                    "Upload artifact",
+                ],
+                "deploy": ["Deploy to GitHub Pages"],
+            },
+        }
+
+        actual_step_names = {
+            str(workflow_path): {
+                job_name: [step.get("name") for step in job_config.get("steps", [])]
+                for job_name, job_config in load_yaml_file(workflow_path)["jobs"].items()
+            }
+            for workflow_path in self._workflow_paths()
+        }
+
+        assert actual_step_names == expected_step_names
+
     def test_workflow_concurrency_groups_cancel_stale_runs(self) -> None:
         actual_concurrency = {
             str(workflow_path): load_yaml_file(workflow_path)["concurrency"]
