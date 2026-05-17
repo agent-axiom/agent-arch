@@ -13228,6 +13228,18 @@ class TestCli:
             "url": "${{ steps.deployment.outputs.page_url }}",
         }
 
+    def test_deploy_job_publishes_with_pages_action(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        deploy_steps = workflow["jobs"]["deploy"]["steps"]
+
+        assert deploy_steps == [
+            {
+                "name": "Deploy to GitHub Pages",
+                "id": "deployment",
+                "uses": "actions/deploy-pages@v5.0.0",
+            }
+        ]
+
     def test_deploy_pages_configuration_supports_pat_fallback(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
         configure_steps = [
