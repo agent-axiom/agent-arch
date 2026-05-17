@@ -1628,6 +1628,85 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_policy_allow_list_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for section, field, case, value, expected in (
+            (
+                "memory_write",
+                "allow_kinds",
+                "not-list",
+                "not-a-list",
+                "'allow_kinds' must be a list",
+            ),
+            (
+                "memory_write",
+                "allow_kinds",
+                "non-string",
+                [7],
+                "memory_write.allow_kinds entries must be strings",
+            ),
+            (
+                "memory_write",
+                "allow_kinds",
+                "empty",
+                [" "],
+                "memory_write.allow_kinds entries must not be empty",
+            ),
+            (
+                "memory_write",
+                "allow_kinds",
+                "duplicate",
+                ["validated_fact", " validated_fact "],
+                "memory_write.allow_kinds entries must be unique",
+            ),
+            (
+                "execution",
+                "allow_network_access",
+                "not-list",
+                "not-a-list",
+                "'allow_network_access' must be a list",
+            ),
+            (
+                "execution",
+                "allow_network_access",
+                "non-string",
+                [7],
+                "execution.allow_network_access entries must be strings",
+            ),
+            (
+                "execution",
+                "allow_network_access",
+                "empty",
+                [" "],
+                "execution.allow_network_access entries must not be empty",
+            ),
+            (
+                "execution",
+                "allow_network_access",
+                "duplicate",
+                ["restricted", " restricted "],
+                "execution.allow_network_access entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / section / field / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            policy = load_yaml_file(bad_config_dir / "policy.yaml")
+            cast(dict[str, object], cast(dict[str, object], policy["policy"])[section])[
+                field
+            ] = value
+            (bad_config_dir / "policy.yaml").write_text(
+                json.dumps(policy),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["simulate-run", "--config-dir", str(bad_config_dir)])
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_policy_capability_entry_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
