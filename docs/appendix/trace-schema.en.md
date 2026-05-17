@@ -162,11 +162,16 @@ If rollout or eval requires `sandbox_profile_review`, the trace should also be a
 
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
 
+- `verdict_id`
 - `verifier_id`
 - `verifier_contract_version`
+- `input_refs`
 - `process_score`
 - `outcome_score`
 - `failure_attribution`
+- `blocking_decision`
+- `comparison_baseline`
+- `reviewer_override`
 - `evidence_refs`
 
 And `memory_persisted` should usually include:
