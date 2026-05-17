@@ -1662,6 +1662,23 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="'memory' must be a mapping"):
             main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_memory_seed_records_config(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        (bad_config_dir / "memory.yaml").write_text(
+            "memory:\n  seed_records: not-a-list\n",
+            encoding="utf-8",
+        )
+
+        with pytest.raises(TypeError, match="'seed_records' must be a list"):
+            main(["simulate-run", "--config-dir", str(bad_config_dir)])
+        with pytest.raises(TypeError, match="'seed_records' must be a list"):
+            main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_approvals_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
