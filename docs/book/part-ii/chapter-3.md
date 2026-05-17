@@ -100,20 +100,20 @@ flowchart LR
 - недостаточная пригодность для аудита;
 - небезопасное поведение при откате.
 
-| Угроза | Где ловить в первую очередь | Что помогает |
-| --- | --- | --- |
-| Prompt injection | Сборка подсказки, retrieval, gateway модели | границы между trusted/untrusted content, policy checks, отказ от смешивания instructions и data |
-| Indirect injection | Retrieval, tool return values, memory write path | маркировка источников, sanitizer для tool output, запрет недоверенному контенту менять policy/tool-use logic |
-| RAG poisoning | Индексация, retrieval, provenance layer | source allowlist, document provenance, freshness/reputation signals, quarantine подозрительных источников |
-| Memory poisoning | Memory write/retrieval path | approval или confidence gate на запись, TTL, provenance, audit trail и rollback памяти |
-| Tool abuse | Tool gateway, approval flow | allowlist, argument validation, risk-tiering, human approval для side effects |
-| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation record, проверка caller/callee identity |
-| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation вместо бесконечной автономии |
-| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access |
-| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry |
-| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation |
-| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review |
-| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
+| Угроза | Где ловить в первую очередь | Что помогает | Evidence / telemetry |
+| --- | --- | --- | --- |
+| Prompt injection | Сборка подсказки, retrieval, gateway модели | границы между trusted/untrusted content, policy checks, отказ от смешивания instructions и data | `prompt_boundary_event`, source labels, rejected-instruction trace |
+| Indirect injection | Retrieval, tool return values, memory write path | маркировка источников, sanitizer для tool output, запрет недоверенному контенту менять policy/tool-use logic | `tool_output_sanitized`, untrusted-content marker, policy-decision trace |
+| RAG poisoning | Индексация, retrieval, provenance layer | source allowlist, document provenance, freshness/reputation signals, quarantine подозрительных источников | `retrieval_source_id`, freshness score, quarantine event |
+| Memory poisoning | Memory write/retrieval path | approval или confidence gate на запись, TTL, provenance, audit trail и rollback памяти | `memory_record_id`, validation state, rollback/replay evidence |
+| Tool abuse | Tool gateway, approval flow | allowlist, argument validation, risk-tiering, human approval для side effects | `tool_call_id`, approval record, argument validation result |
+| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation record, проверка caller/callee identity | `subject_id`, `delegation_trace_id`, caller/callee identity check |
+| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation вместо бесконечной автономии | step budget event, stop reason, escalation decision |
+| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access | `tenant_id`, egress decision, redaction/DLP result |
+| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry | `cost_budget_event`, rate-limit decision, circuit-breaker state |
+| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation | `handoff_id`, containment state, verifier verdict |
+| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review | artifact digest, registry decision, sandbox profile id |
+| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals | `decision_trace_id`, immutable log pointer, evidence completeness flag |
 
 ### 5.1. Внедрение инструкций, jailbreak и галлюцинация действия — не одно и то же
 

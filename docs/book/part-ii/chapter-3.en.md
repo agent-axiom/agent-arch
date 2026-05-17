@@ -100,20 +100,20 @@ There are many threats in agent systems, but a production system like the suppor
 - insufficient auditability;
 - unsafe fallback behavior.
 
-| Threat | First place to catch it | What helps |
-| --- | --- | --- |
-| Prompt injection | Prompt assembly, retrieval, model gateway | trusted/untrusted content boundaries, policy checks, keeping instructions separate from data |
-| Indirect injection | Retrieval, tool return values, memory write path | source labeling, tool-output sanitization, preventing untrusted content from changing policy/tool-use logic |
-| RAG poisoning | Indexing, retrieval, provenance layer | source allowlists, document provenance, freshness/reputation signals, quarantine for suspicious sources |
-| Memory poisoning | Memory write/retrieval path | approval or confidence gate on writes, TTL, provenance, audit trail, memory rollback |
-| Tool abuse | Tool gateway, approval flow | allowlists, argument validation, risk tiers, human approval for side effects |
-| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation records, caller/callee identity checks |
-| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation instead of open-ended autonomy |
-| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access |
-| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry |
-| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation |
-| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review |
-| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals |
+| Threat | First place to catch it | What helps | Evidence / telemetry |
+| --- | --- | --- | --- |
+| Prompt injection | Prompt assembly, retrieval, model gateway | trusted/untrusted content boundaries, policy checks, keeping instructions separate from data | `prompt_boundary_event`, source labels, rejected-instruction trace |
+| Indirect injection | Retrieval, tool return values, memory write path | source labeling, tool-output sanitization, preventing untrusted content from changing policy/tool-use logic | `tool_output_sanitized`, untrusted-content marker, policy-decision trace |
+| RAG poisoning | Indexing, retrieval, provenance layer | source allowlists, document provenance, freshness/reputation signals, quarantine for suspicious sources | `retrieval_source_id`, freshness score, quarantine event |
+| Memory poisoning | Memory write/retrieval path | approval or confidence gate on writes, TTL, provenance, audit trail, memory rollback | `memory_record_id`, validation state, rollback/replay evidence |
+| Tool abuse | Tool gateway, approval flow | allowlists, argument validation, risk tiers, human approval for side effects | `tool_call_id`, approval record, argument validation result |
+| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation records, caller/callee identity checks | `subject_id`, `delegation_trace_id`, caller/callee identity check |
+| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation instead of open-ended autonomy | step budget event, stop reason, escalation decision |
+| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access | `tenant_id`, egress decision, redaction/DLP result |
+| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry | `cost_budget_event`, rate-limit decision, circuit-breaker state |
+| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation | `handoff_id`, containment state, verifier verdict |
+| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review | artifact digest, registry decision, sandbox profile id |
+| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals | `decision_trace_id`, immutable log pointer, evidence completeness flag |
 
 ### 5.1. Prompt Injection, Jailbreaking, and Action Hallucination Are Not the Same
 
