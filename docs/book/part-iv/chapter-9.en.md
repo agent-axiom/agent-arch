@@ -1,5 +1,11 @@
 # Chapter 9. Sandbox Execution and MCP as an Integration Contract
 
+!!! info "Freshness note"
+    Last reviewed: **May 14, 2026**. Next scheduled review: **June 14, 2026**.
+
+    What changed since the previous review: MCP security boundaries, tool-poisoning surfaces, A2A trust model, and publisher-readiness concerns are now tracked as near-term editorial work.
+
+
 !!! info "How to read this chapter"
     It helps to keep one concrete transition in mind:
 
