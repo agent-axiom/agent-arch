@@ -5548,7 +5548,9 @@ class TestRuntimeControlPaths:
         )
         assert delegated_authorization["on_authorization_revoke"] == "cancel_or_reapprove"
 
-    def test_release_configs_bind_unsigned_bundle_to_review_evidence(self, config_dir: Path) -> None:
+    def test_release_configs_bind_unsigned_bundle_to_review_evidence(
+        self, config_dir: Path
+    ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -5829,7 +5831,11 @@ class TestRuntimeControlPaths:
             {"path": "task.md", "source": "inline_file", "read_only": True},
         ]
         assert {entry["path"] for entry in workspace_entries} == {"repo", "task.md"}
-        assert all(entry["read_only"] for entry in workspace_entries if entry["source"] == "inline_file")
+        assert all(
+            entry["read_only"]
+            for entry in workspace_entries
+            if entry["source"] == "inline_file"
+        )
 
     def test_release_configs_bind_sandbox_memory_access_to_memory_contract(
         self, config_dir: Path
