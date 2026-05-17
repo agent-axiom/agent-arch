@@ -93,6 +93,7 @@ Trace replay валидирует эти evidence до того, как они �
 | --- | --- | --- |
 | `run_start` | в начале запуска | фиксирует входные параметры и идентичность актора |
 | `policy_precheck` | сразу после допуска запуска | фиксирует policy precheck action, reason и policy ID |
+| `agent_threat_evidence` | когда threat-model control оставляет доказательство | связывает threat class с trace/evidence identifiers |
 | `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
@@ -130,6 +131,16 @@ Trace replay валидирует эти evidence до того, как они �
 - какие поля можно добавлять без поломки downstream tooling;
 - какие поля нужны для оценки;
 - какие поля нужны для аудита.
+
+Для `agent_threat_evidence` полезно сохранять evidence markers из unified agent threat model, чтобы threat rows можно было проверить по traces, а не только по prose:
+
+- `prompt_boundary_event`
+- `retrieval_source_id`
+- `memory_record_id`
+- `delegation_trace_id`
+- `tenant_id`
+- `cost_budget_event`
+- `decision_trace_id`
 
 Например, для `tool_policy_decision` минимальный `payload` обычно должен включать:
 
