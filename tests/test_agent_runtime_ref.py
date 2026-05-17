@@ -13296,6 +13296,12 @@ class TestCli:
             }
         ]
 
+    def test_deploy_build_job_exposes_pages_pat_only_to_configuration(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        build_job = workflow["jobs"]["build"]
+
+        assert build_job["env"] == {"PAGES_PAT": "${{ secrets.PAGES_PAT }}"}
+
     def test_deploy_pages_configuration_supports_pat_fallback(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
         configure_steps = [
