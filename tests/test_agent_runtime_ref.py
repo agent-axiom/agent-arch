@@ -12985,6 +12985,18 @@ class TestCli:
 
         assert unbounded_jobs == []
 
+    def test_workflow_jobs_run_on_github_hosted_ubuntu(self) -> None:
+        unexpected_runners: list[tuple[str, str, str]] = []
+        for workflow_path in self._workflow_paths():
+            jobs = load_yaml_file(workflow_path)["jobs"]
+            for job_name, job_config in jobs.items():
+                if job_config["runs-on"] != "ubuntu-latest":
+                    unexpected_runners.append(
+                        (str(workflow_path), job_name, job_config["runs-on"])
+                    )
+
+        assert unexpected_runners == []
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
