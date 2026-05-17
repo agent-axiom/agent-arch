@@ -2737,6 +2737,14 @@ def test_verifier_contract_fields_are_documented() -> None:
         "false_negative_budget",
         "calibration_dataset_id",
         "replay_protocol",
+        "verdict_id",
+        "verifier_id",
+        "verifier_contract_version",
+        "input_refs",
+        "evidence_refs",
+        "blocking_decision",
+        "comparison_baseline",
+        "reviewer_override",
     )
     checked_files = (
         "docs/book/part-v/chapter-13.md",
