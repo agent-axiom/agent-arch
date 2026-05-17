@@ -70,6 +70,19 @@ A minimal governance contract for A2A should record:
 
 The simple production test is this: if an incident review cannot reconstruct which agent delegated what to whom, under which policy, and with which scope, the A2A contour is not production-ready yet.
 
+
+The extended trust contract for A2A should be even more concrete:
+
+- `agent identity`: every handoff participant has a stable agent id, owner, and operational role;
+- `delegation chain`: the delegation record preserves the original initiator, intermediate agents, and final executor;
+- `allowed collaboration graph`: the platform explicitly defines which agent roles may call each other;
+- `inter-agent authorization`: the receiving agent checks not only the message, but also whether the caller is allowed to request that action;
+- `policy inheritance`: the downstream agent inherits the constraints of the original request instead of receiving broader freedom;
+- `non-repudiation`: the handoff is signed or otherwise tied to trace/evidence so a participant cannot deny the step later;
+- `failure attribution`: telemetry separates initiator error, executor error, policy denial, tool failure, and external-environment unavailability.
+
+That contract turns A2A from a transport between agents into a governed collaboration graph. Without it, a multi-agent system may look distributed, but it will still be investigated like a black box.
+
 ## 4. The Typical Mistake: Building Multi-Agent Too Early
 
 In practice, the confusion usually looks like this:

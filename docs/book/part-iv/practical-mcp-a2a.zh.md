@@ -70,6 +70,19 @@ A2A 的最小治理契约应该记录：
 
 一个简单的生产检查是：如果事故复盘时无法还原哪个智能体把什么任务委派给谁、依据哪条 policy、使用了哪个 scope，那么 A2A 轮廓还没有达到 production-ready。
 
+
+A2A 的扩展信任契约还应该更具体：
+
+- `agent identity`：每个 handoff 参与者都有稳定的 agent id、owner 和 operational role；
+- `delegation chain`：委派记录保留原始发起者、中间智能体和最终执行者；
+- `allowed collaboration graph`：平台明确规定哪些 agent roles 可以彼此调用；
+- `inter-agent authorization`：接收方智能体不仅检查消息，还要检查调用方是否有权请求这个动作；
+- `policy inheritance`：下游智能体继承原始请求的限制，而不是获得更宽的自由度；
+- `non-repudiation`：handoff 被签名，或以其他方式绑定到 trace/evidence，使参与者之后不能否认这个步骤；
+- `failure attribution`：telemetry 区分发起方错误、执行方错误、policy denial、tool failure 和外部环境不可用。
+
+这个契约把 A2A 从“智能体之间的传输”变成受治理的 collaboration graph。没有它，多智能体系统看起来是分布式的，但事故调查时仍然像黑箱。
+
 ## 4. 典型错误：过早做多智能体
 
 实践里最常见的混淆往往是这样：
