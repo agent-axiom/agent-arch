@@ -1736,6 +1736,67 @@ class TestFailurePaths:
             with pytest.raises((TypeError, ValueError), match=expected):
                 main(["dump-events", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_policy_capability_fields(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for case, capabilities, expected in (
+            (
+                "non-string-name",
+                {7: {"decision": "allow"}},
+                "Policy capability names must be strings",
+            ),
+            (
+                "empty-name",
+                {" ": {"decision": "allow"}},
+                "Policy capability name must not be empty",
+            ),
+            (
+                "non-string-decision",
+                {"search_docs": {"decision": 7}},
+                "Policy decision must be a string",
+            ),
+            (
+                "unsupported-decision",
+                {"search_docs": {"decision": "escalate"}},
+                "Policy decision is not supported: escalate",
+            ),
+            (
+                "empty-decision",
+                {"search_docs": {"decision": " "}},
+                "Policy decision is not supported:",
+            ),
+            (
+                "non-string-approver",
+                {"create_ticket": {"decision": "approval_required", "approver": 7}},
+                "Policy approver must be a string",
+            ),
+            (
+                "empty-approver",
+                {"create_ticket": {"decision": "approval_required", "approver": " "}},
+                "Policy approver must not be empty: create_ticket",
+            ),
+            (
+                "duplicate-name",
+                {"search_docs": {"decision": "allow"}, " search_docs ": {"decision": "deny"}},
+                "Policy capability names must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            policy = load_yaml_file(bad_config_dir / "policy.yaml")
+            cast(dict[str, object], policy["policy"])["capabilities"] = capabilities
+            (bad_config_dir / "policy.yaml").write_text(
+                yaml.safe_dump(policy, sort_keys=False),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["simulate-run", "--config-dir", str(bad_config_dir)])
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["dump-events", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_policy_capability_entry_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
