@@ -171,9 +171,14 @@ Export contract намеренно конкретный: default `dataset_name` 
 - `notes_for_review`
 - `verifier_outputs`
 - `failure_attribution`
+- `verdict_id`
 - `verifier_id`
 - `verifier_contract_version`
+- `input_refs`
 - `verifier_evidence_refs`
+- `blocking_decision`
+- `comparison_baseline`
+- `reviewer_override`
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
@@ -209,11 +214,19 @@ grading_rules:
       snapshot_policy: required_on_completion
     blocking: true
 verifier_outputs:
+  verdict_id: verdict_failed_run_timeout_2026_05
   verifier_id: fara-process-review
   verifier_contract_version: verifier-v2
+  input_refs:
+    - scenario:failed_run_timeout
+    - trace:trace_123
+    - policy_bundle:policy-bundle-v3
   process_score: 0.92
   outcome_score: 0.35
   failure_attribution: uncontrollable_environment
+  blocking_decision: warning_only
+  comparison_baseline: release-2026-05-previous
+  reviewer_override: none
   verifier_evidence_refs:
     - trace:trace_123
     - screenshot:step_7

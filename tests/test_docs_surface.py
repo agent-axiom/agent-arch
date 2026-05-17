@@ -1900,6 +1900,27 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_eval_schema_includes_verifier_verdict_record_fields() -> None:
+    required_markers = (
+        "verifier_outputs",
+        "verdict_id",
+        "verifier_id",
+        "verifier_contract_version",
+        "input_refs",
+        "blocking_decision",
+        "comparison_baseline",
+        "reviewer_override",
+        "verifier_evidence_refs",
+    )
+    checked_files = (
+        "docs/appendix/eval-schema.md",
+        "docs/appendix/eval-schema.en.md",
+        "docs/appendix/eval-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> None:
     required_markers = (
         "Canonical incident cases",
