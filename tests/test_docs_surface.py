@@ -2746,6 +2746,29 @@ def test_agent_threat_model_matrix_covers_required_classes() -> None:
         _assert_files_contain_all((path,), required_threats)
 
 
+def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
+    expected = {
+        "docs/book/part-iv/chapter-9.md": "MCP threat model matrix",
+        "docs/book/part-iv/chapter-9.en.md": "MCP Threat Model Matrix",
+        "docs/book/part-iv/chapter-9.zh.md": "MCP 威胁模型矩阵",
+    }
+    required_markers = (
+        "tool poisoning",
+        "rug pull attack",
+        "tool shadowing",
+        "confused deputy",
+        "over-scoped tokens",
+        "data exfiltration through legitimate channels",
+        "supply-chain attack",
+        "replay/tampering",
+        "sandbox escape",
+        "telemetry",
+    )
+
+    for path, heading in expected.items():
+        _assert_files_contain_all((path,), (heading, *required_markers))
+
+
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": (
