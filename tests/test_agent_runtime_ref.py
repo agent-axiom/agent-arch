@@ -13014,6 +13014,32 @@ class TestCli:
             },
         }
 
+    def test_workflow_dependency_setup_contracts_are_explicit(self) -> None:
+        expected_setup_steps = {
+            ".github/workflows/coverage.yml": [
+                {"name": "Setup uv", "uses": "astral-sh/setup-uv@v8.1.0"},
+                {"name": "Setup Python", "run": "uv python install 3.12"},
+                {"name": "Sync dependencies", "run": "uv sync --group dev"},
+            ],
+            ".github/workflows/deploy.yml": [
+                {"name": "Setup uv", "uses": "astral-sh/setup-uv@v8.1.0"},
+                {"name": "Setup Python", "run": "uv python install 3.12"},
+                {"name": "Sync dependencies", "run": "uv sync --group docs"},
+            ],
+        }
+
+        actual_setup_steps = {}
+        for workflow_path in self._workflow_paths():
+            workflow = load_yaml_file(workflow_path)
+            actual_setup_steps[str(workflow_path)] = [
+                step
+                for job_config in workflow["jobs"].values()
+                for step in job_config.get("steps", [])
+                if step.get("name") in {"Setup uv", "Setup Python", "Sync dependencies"}
+            ]
+
+        assert actual_setup_steps == expected_setup_steps
+
     def test_workflow_checkout_contracts_are_explicit(self) -> None:
         expected_checkout_steps = {
             ".github/workflows/coverage.yml": [
