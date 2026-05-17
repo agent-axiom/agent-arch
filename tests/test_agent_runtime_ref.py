@@ -2050,6 +2050,52 @@ class TestFailurePaths:
             with pytest.raises(TypeError, match=expected):
                 main(["check-retirement", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_retirement_list_entry_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, case, value, expected in (
+            ("triggers", "non-string", [7], "triggers entries must be strings"),
+            (
+                "required_steps",
+                "non-string",
+                [7],
+                "required_steps entries must be strings",
+            ),
+            (
+                "archive_targets",
+                "non-string",
+                [7],
+                "archive_targets entries must be strings",
+            ),
+            (
+                "archive_targets",
+                "empty",
+                [" "],
+                "archive_targets entries must not be empty",
+            ),
+            (
+                "archive_targets",
+                "duplicate",
+                ["telemetry_jsonl", " telemetry_jsonl "],
+                "archive_targets entries must be unique",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / case / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            retirement = load_yaml_file(bad_config_dir / "retirement.yaml")
+            cast(dict[str, object], retirement["retirement"])[field] = value
+            (bad_config_dir / "retirement.yaml").write_text(
+                json.dumps(retirement),
+                encoding="utf-8",
+            )
+
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises((TypeError, ValueError), match=expected):
+                main(["check-retirement", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_retirement_scalar_configs(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
