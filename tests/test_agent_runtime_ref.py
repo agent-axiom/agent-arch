@@ -1950,6 +1950,27 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="retirement config must be a mapping"):
             main(["check-retirement", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_retirement_list_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field in ("triggers", "required_steps", "archive_targets"):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            retirement = load_yaml_file(bad_config_dir / "retirement.yaml")
+            cast(dict[str, object], retirement["retirement"])[field] = "not-a-list"
+            (bad_config_dir / "retirement.yaml").write_text(
+                json.dumps(retirement),
+                encoding="utf-8",
+            )
+
+            expected = f"{field} must be a list"
+            with pytest.raises(TypeError, match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+            with pytest.raises(TypeError, match=expected):
+                main(["check-retirement", "--config-dir", str(bad_config_dir)])
+
     def test_resolve_trace_id_rejects_malformed_direct_request(self) -> None:
         from agent_runtime_ref.__main__ import _resolve_trace_id
         from agent_runtime_ref.telemetry import StructuredEvent
