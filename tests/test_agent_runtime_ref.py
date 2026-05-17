@@ -13020,6 +13020,27 @@ class TestCli:
             }
         ]
 
+    def test_coverage_badge_commit_is_scoped_to_badge_file(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        commit_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("uses") == "stefanzweifel/git-auto-commit-action@v7.1.0"
+        ]
+
+        assert commit_steps == [
+            {
+                "name": "Commit coverage badge",
+                "uses": "stefanzweifel/git-auto-commit-action@v7.1.0",
+                "with": {
+                    "branch": "main",
+                    "commit_message": "Update coverage badge",
+                    "file_pattern": "docs/assets/badges/coverage.svg",
+                    "skip_fetch": True,
+                },
+            }
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
