@@ -1834,6 +1834,27 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="'rollout' must be a mapping"):
             main(["check-rollout", "--config", str(rollout_config)])
 
+    def test_cli_rejects_malformed_rollout_section_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+        rollout_config = bad_config_dir / "rollout.yaml"
+
+        for section, expected in (
+            ("require", "'require' must be a list"),
+            ("block_if", "'block_if' must be a list"),
+            ("rollout_mode", "'rollout_mode' must be a mapping"),
+        ):
+            rollout_config.write_text(
+                f"rollout:\n  {section}: not-valid\n",
+                encoding="utf-8",
+            )
+            with pytest.raises(TypeError, match=expected):
+                main(["check-rollout", "--config", str(rollout_config)])
+
     def test_cli_rejects_malformed_change_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
