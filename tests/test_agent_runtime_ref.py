@@ -2159,6 +2159,25 @@ class TestFailurePaths:
                 [7],
                 "archive_targets entries must be strings",
             ),
+            ("triggers", "empty", [" "], "triggers entries must not be empty"),
+            (
+                "triggers",
+                "duplicate",
+                ["deprecated_runtime", " deprecated_runtime "],
+                "triggers entries must be unique",
+            ),
+            (
+                "required_steps",
+                "empty",
+                [" "],
+                "required_steps entries must not be empty",
+            ),
+            (
+                "required_steps",
+                "duplicate",
+                ["freeze_rollout", " freeze_rollout "],
+                "required_steps entries must be unique",
+            ),
             (
                 "archive_targets",
                 "empty",
