@@ -12943,6 +12943,11 @@ class TestCli:
         )
 
         assert "branches: [\"docs-prod\"]" in workflow_text
+        assert "contents: read" in workflow_text
+        assert "pages: write" in workflow_text
+        assert "id-token: write" in workflow_text
+        assert "group: pages" in workflow_text
+        assert "cancel-in-progress: true" in workflow_text
         assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
         assert "uv run mkdocs build --strict" in workflow_text
         assert "actions/checkout@v6.0.2" in workflow_text
