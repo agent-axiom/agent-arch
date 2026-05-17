@@ -13060,6 +13060,30 @@ class TestCli:
             }
         ]
 
+    def test_coverage_summary_step_reports_terminal_coverage(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        summary_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("name") == "Add coverage summary to GitHub job"
+        ]
+
+        assert summary_steps == [
+            {
+                "name": "Add coverage summary to GitHub job",
+                "run": (
+                    "{\n"
+                    "  echo \"## Coverage Summary\"\n"
+                    "  echo\n"
+                    "  echo '```'\n"
+                    "  uv run pytest --cov=agent_runtime_ref "
+                    "--cov-report=term-missing -q | tail -n 30\n"
+                    "  echo '```'\n"
+                    "} >> \"$GITHUB_STEP_SUMMARY\"\n"
+                ),
+            }
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
