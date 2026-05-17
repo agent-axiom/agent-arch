@@ -171,6 +171,22 @@ def test_public_book_canonical_redirects_add_trailing_slash_to_entrypoints() -> 
     ]
 
 
+def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
+    expected_pages = {
+        "docs/book.html": ("ru", "book/"),
+        "docs/en/book.html": ("en", "book/"),
+        "docs/zh/book.html": ("zh", "book/"),
+    }
+
+    for page_path, (language, target) in expected_pages.items():
+        page = _read(page_path)
+        assert f'<html lang="{language}">' in page
+        assert f'content="0; url={target}"' in page
+        assert f'<link rel="canonical" href="{target}">' in page
+        assert "window.location.replace" in page
+        assert "window.location.search + window.location.hash" in page
+
+
 def test_translated_navigation_has_no_known_russian_leaks() -> None:
     mkdocs_config = _load_mkdocs_config()
     locales = {}
