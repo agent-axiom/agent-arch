@@ -13100,6 +13100,16 @@ class TestCli:
             }
         ]
 
+    def test_deploy_job_depends_on_built_pages_artifact(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        deploy_job = workflow["jobs"]["deploy"]
+
+        assert deploy_job["needs"] == "build"
+        assert deploy_job["environment"] == {
+            "name": "github-pages",
+            "url": "${{ steps.deployment.outputs.page_url }}",
+        }
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
