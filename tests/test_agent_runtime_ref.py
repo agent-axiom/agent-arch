@@ -13147,6 +13147,21 @@ class TestCli:
             }
         ]
 
+    def test_coverage_workflow_creates_badge_directory(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        directory_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("name") == "Ensure badge directory exists"
+        ]
+
+        assert directory_steps == [
+            {
+                "name": "Ensure badge directory exists",
+                "run": "mkdir -p docs/assets/badges",
+            }
+        ]
+
     def test_coverage_badge_generation_targets_badge_file(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
         badge_steps = [
