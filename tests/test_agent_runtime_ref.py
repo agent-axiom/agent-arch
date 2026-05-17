@@ -12957,6 +12957,7 @@ class TestCli:
         assert 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"' in workflow_text
         assert "uv run mkdocs build --strict" in workflow_text
         assert "actions/checkout@v6.0.2" in workflow_text
+        assert "persist-credentials: false" in workflow_text
         assert "astral-sh/setup-uv@v8.1.0" in workflow_text
         assert "actions/configure-pages@v6.0.0" in workflow_text
         assert "actions/upload-pages-artifact@v5.0.0" in workflow_text
