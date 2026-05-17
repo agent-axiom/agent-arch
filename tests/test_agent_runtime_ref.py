@@ -1908,6 +1908,31 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="artifact bundle config must be a mapping"):
             main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_artifact_bundle_section_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        for field, value, expected in (
+            ("artifacts", "not-a-list", "artifacts must be a list"),
+            (
+                "review_evidence",
+                ["not-a-mapping"],
+                "artifact bundle review_evidence config must be a mapping",
+            ),
+        ):
+            bad_config_dir = tmp_path / field / "configs"
+            shutil.copytree(config_dir, bad_config_dir)
+            bundle = load_yaml_file(bad_config_dir / "artifacts.yaml")
+            cast(dict[str, object], bundle["bundle"])[field] = value
+            (bad_config_dir / "artifacts.yaml").write_text(
+                json.dumps(bundle),
+                encoding="utf-8",
+            )
+
+            with pytest.raises(TypeError, match=expected):
+                main(["inspect-lifecycle", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_retirement_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
