@@ -1919,12 +1919,38 @@ class TestFailurePaths:
                 [7],
                 "approval_roles entries must be strings",
             ),
+            ("artifacts", "empty", [" "], "artifacts entries must not be empty"),
+            (
+                "artifacts",
+                "duplicate",
+                ["agent.yaml", " agent.yaml "],
+                "artifacts entries must be unique",
+            ),
+            (
+                "affected_surfaces",
+                "empty",
+                [" "],
+                "affected_surfaces entries must not be empty",
+            ),
+            (
+                "affected_surfaces",
+                "duplicate",
+                ["capability_contract", " capability_contract "],
+                "affected_surfaces entries must be unique",
+            ),
             ("required_signals", "empty", [" "], "required_signals entries must not be empty"),
             (
                 "required_signals",
                 "duplicate",
                 ["offline_eval_passed", " offline_eval_passed "],
                 "required_signals entries must be unique",
+            ),
+            ("approval_roles", "empty", [" "], "approval_roles entries must not be empty"),
+            (
+                "approval_roles",
+                "duplicate",
+                ["platform-owner", " platform-owner "],
+                "approval_roles entries must be unique",
             ),
         ):
             bad_config_dir = tmp_path / field / case / "configs"
