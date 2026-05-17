@@ -232,6 +232,21 @@ Google 最近材料里一个很实用的提醒是：记忆应该被当成可治�
 
 这些字段看起来像额外负担，但一旦智能体在别的上下文里自信地重复了某个“事实”，团队马上就会想知道它到底从哪里来的。
 
+### 8.3. Memory poisoning 是安全场景，不只是数据质量问题
+
+最危险的记忆失败往往看起来不像工具漏洞，而像是一个有害或错误的事实被安静写入了可信层。比如，用户原话、未经验证的 retrieval 结果，或某次事故 summary 进入长期记忆，开始看起来像稳定知识，并在几次运行之后影响决策。
+
+最小 memory poisoning 场景应该检查：
+
+- `untrusted write`：未经验证的来源是否能进入 persistent memory；
+- `delayed activation`：这条记录是否会在之后的 run 或另一个 session 中才影响行为；
+- `cross-tenant contamination`：记录是否可能跨越 tenant boundary 或访问角色；
+- `policy influence`：未经验证的记忆是否会用于 policy decision、approval 或 tool selection；
+- `provenance check`：operator 是否能看到 source、writer identity、validation state 和写入时间；
+- `quarantine and rollback`：是否能禁用这条记录、重放 affected traces，并解释哪些回答被它改变。
+
+实用规则很简单：任何能活过当前运行的记忆，不只需要 data-quality review，也需要 threat-model review。否则系统就会得到一条长期攻击通道，而它表面上看起来只是普通个性化。
+
 ## 9. 记忆设计的实用规则
 
 如果要把最早期的设计决策压缩成一组规则，通常就是这样：

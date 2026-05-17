@@ -232,6 +232,21 @@ For every record that survives longer than one run, it is useful to store at lea
 
 That may feel like extra bureaucracy only until the first argument about where a "fact" came from after the agent confidently repeated it in another context.
 
+### 8.3. Memory Poisoning Is a Security Scenario, Not Only a Data-Quality Problem
+
+The most dangerous memory failure often does not look like a tool exploit. It looks like a quiet write of a harmful or wrong fact into a trusted layer. For example, user phrasing, an unverified retrieval result, or an incident summary enters long-term memory, starts looking like stable knowledge, and several runs later begins to influence decisions.
+
+A minimal memory poisoning scenario should test:
+
+- `untrusted write`: whether an unverified source can enter persistent memory;
+- `delayed activation`: whether the record affects behavior later, in a future run or another session;
+- `cross-tenant contamination`: whether the record can cross a tenant boundary or access role;
+- `policy influence`: whether unvalidated memory is used in a policy decision, approval, or tool selection;
+- `provenance check`: whether an operator can see source, writer identity, validation state, and write time;
+- `quarantine and rollback`: whether the record can be disabled, affected traces replayed, and changed answers explained.
+
+The practical rule is simple: memory that can outlive a run needs not only data-quality review, but also threat-model review. Otherwise the system gains a long-lived attack channel that looks like ordinary personalization.
+
 ## 9. Practical Rules for Memory Design
 
 If you need a short frame for the first design decisions, it usually looks like this:
