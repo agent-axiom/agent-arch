@@ -13041,6 +13041,25 @@ class TestCli:
             }
         ]
 
+    def test_coverage_badge_generation_targets_badge_file(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/coverage.yml"))
+        badge_steps = [
+            step
+            for step in workflow["jobs"]["coverage"]["steps"]
+            if step.get("uses") == "tj-actions/coverage-badge-py@v2.0.4"
+        ]
+
+        assert badge_steps == [
+            {
+                "name": "Generate coverage badge",
+                "uses": "tj-actions/coverage-badge-py@v2.0.4",
+                "with": {
+                    "output": "docs/assets/badges/coverage.svg",
+                    "overwrite": True,
+                },
+            }
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
