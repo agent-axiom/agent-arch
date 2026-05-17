@@ -13084,6 +13084,22 @@ class TestCli:
             }
         ]
 
+    def test_deploy_workflow_uploads_built_site_artifact(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        upload_steps = [
+            step
+            for step in workflow["jobs"]["build"]["steps"]
+            if step.get("uses") == "actions/upload-pages-artifact@v5.0.0"
+        ]
+
+        assert upload_steps == [
+            {
+                "name": "Upload artifact",
+                "uses": "actions/upload-pages-artifact@v5.0.0",
+                "with": {"path": "site"},
+            }
+        ]
+
     def test_workflow_permissions_are_minimal_expected_sets(self) -> None:
         expected_permissions = {
             ".github/workflows/coverage.yml": {"contents": "write"},
