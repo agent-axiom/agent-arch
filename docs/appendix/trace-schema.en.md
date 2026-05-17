@@ -186,6 +186,16 @@ For `governance_action`, record the fields that turn telemetry into a governance
 
 Keep `source_signal` on a constrained vocabulary aligned with governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
 
+For `memory_write_decision` in memory poisoning review, the trace should preserve the same review fields as the memory schema:
+
+- `write_trust_boundary`
+- `activation_policy`
+- `contamination_scope`
+- `policy_influence`
+- `provenance_check`
+- `quarantine_state`
+- `rollback_ref`
+
 And `memory_persisted` should usually include:
 
 - `memory_class`
