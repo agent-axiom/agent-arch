@@ -96,6 +96,7 @@ Below is the current minimal event catalog.
 | `retrieval` | when memory context is fetched | records the source and number of retrieved records |
 | `context_layers_built` | after context assembly | shows which context layers actually entered the run; internally `RunContext` keeps `retrieved_context` and `retrieved_records` before any `tool_request` is handled |
 | `tool_policy_decision` | before tool execution | records the policy gate and allow/deny/approval reason |
+| `mcp_tool_risk_review` | during MCP tool/server risk review | links threat class, registry evidence, scope review, and quarantine state |
 | `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
 | `a2a_handoff` | when one agent delegates work to another agent | records delegation chain, authorization, and failure-attribution context |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
@@ -137,6 +138,19 @@ For example, `tool_policy_decision` should usually include at least:
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+For `mcp_tool_risk_review`, production traces should record MCP threat-model evidence, not only the final allow/deny decision:
+
+- `threat_class`
+- `mcp_server_id`
+- `capability_name`
+- `tool_contract_version`
+- `registry_owner`
+- `scope_review`
+- `quarantine_state`
+- `evidence_refs`
+
+Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
 
 For `a2a_handoff`, the payload should preserve the trust contract, not only the delegated message text:
 

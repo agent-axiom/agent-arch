@@ -96,6 +96,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 | `retrieval` | 获取 memory context 时 | 记录 source 与 retrieved records 数量 |
 | `context_layers_built` | 上下文组装完成后 | 说明哪些上下文层真正进入了这次运行；internally `RunContext` 会在处理 `tool_request` 前保留 `retrieved_context` 与 `retrieved_records` |
 | `tool_policy_decision` | 工具执行前 | 记录策略门禁以及允许、拒绝或需要审批的原因 |
+| `mcp_tool_risk_review` | MCP tool/server risk review 期间 | 连接 threat class、registry evidence、scope review 与 quarantine state |
 | `tool_execution` | capability call 或 approval handoff 后 | 记录 capability status 与 tool-principal context |
 | `a2a_handoff` | 一个 agent 将工作委派给另一个 agent 时 | 记录 delegation chain、authorization 与 failure-attribution context |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
@@ -137,6 +138,19 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+对于 `mcp_tool_risk_review`，production trace 应记录 MCP threat-model evidence，而不只是最终 allow/deny decision：
+
+- `threat_class`
+- `mcp_server_id`
+- `capability_name`
+- `tool_contract_version`
+- `registry_owner`
+- `scope_review`
+- `quarantine_state`
+- `evidence_refs`
+
+`threat_class` 应保持在 MCP threat model 词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
 
 对于 `a2a_handoff`，payload 应保留 trust contract，而不只是委派消息文本：
 

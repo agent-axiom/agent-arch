@@ -96,6 +96,7 @@ Trace replay валидирует эти evidence до того, как они �
 | `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
+| `mcp_tool_risk_review` | при review MCP tool/server риска | связывает threat class, registry evidence, scope review и quarantine state |
 | `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
 | `a2a_handoff` | когда один agent делегирует работу другому agent | фиксирует delegation chain, authorization и failure-attribution context |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
@@ -137,6 +138,19 @@ Trace replay валидирует эти evidence до того, как они �
 - `reason`
 - `risk_tier`
 - `tool_principal`
+
+Для `mcp_tool_risk_review` production trace должен фиксировать MCP threat-model evidence, а не только итоговый allow/deny:
+
+- `threat_class`
+- `mcp_server_id`
+- `capability_name`
+- `tool_contract_version`
+- `registry_owner`
+- `scope_review`
+- `quarantine_state`
+- `evidence_refs`
+
+`threat_class` лучше держать в словаре из MCP threat model: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
 
 Для `a2a_handoff` payload должен сохранять trust contract, а не только текст делегированного сообщения:
 

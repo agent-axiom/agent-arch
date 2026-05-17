@@ -1893,6 +1893,35 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_trace_schema_includes_mcp_tool_risk_review_fields() -> None:
+    required_markers = (
+        "mcp_tool_risk_review",
+        "threat_class",
+        "mcp_server_id",
+        "tool_contract_version",
+        "registry_owner",
+        "scope_review",
+        "quarantine_state",
+        "evidence_refs",
+        "tool poisoning",
+        "rug pull attack",
+        "tool shadowing",
+        "confused deputy",
+        "over-scoped tokens",
+        "data exfiltration through legitimate channels",
+        "supply-chain attack",
+        "replay/tampering",
+        "sandbox escape",
+    )
+    checked_files = (
+        "docs/appendix/trace-schema.md",
+        "docs/appendix/trace-schema.en.md",
+        "docs/appendix/trace-schema.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_trace_schema_includes_a2a_handoff_trust_contract_fields() -> None:
     required_markers = (
         "a2a_handoff",
