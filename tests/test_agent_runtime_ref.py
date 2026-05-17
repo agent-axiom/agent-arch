@@ -1799,6 +1799,25 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="'controls' must be a mapping"):
             main(["check-controls", "--config-dir", str(bad_config_dir)])
 
+    def test_cli_rejects_malformed_controls_section_configs(
+        self, config_dir: Path, tmp_path: Path
+    ) -> None:
+        from agent_runtime_ref.__main__ import main
+
+        bad_config_dir = tmp_path / "configs"
+        shutil.copytree(config_dir, bad_config_dir)
+
+        for section, expected in (
+            ("require", "'controls.require' must be a list"),
+            ("block_if", "'controls.block_if' must be a list"),
+        ):
+            (bad_config_dir / "controls.yaml").write_text(
+                f"controls:\n  {section}: not-a-list\n",
+                encoding="utf-8",
+            )
+            with pytest.raises(TypeError, match=expected):
+                main(["check-controls", "--config-dir", str(bad_config_dir)])
+
     def test_cli_rejects_malformed_rollout_root_config(
         self, config_dir: Path, tmp_path: Path
     ) -> None:
