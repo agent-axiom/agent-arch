@@ -13190,6 +13190,18 @@ class TestCli:
             }
         ]
 
+    def test_deploy_workflow_builds_docs_strictly(self) -> None:
+        workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
+        build_steps = [
+            step
+            for step in workflow["jobs"]["build"]["steps"]
+            if step.get("name") == "Build docs"
+        ]
+
+        assert build_steps == [
+            {"name": "Build docs", "run": "uv run mkdocs build --strict"}
+        ]
+
     def test_deploy_workflow_uploads_built_site_artifact(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
         upload_steps = [
