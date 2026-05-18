@@ -3252,6 +3252,17 @@ def test_agent_threat_model_matrix_covers_required_classes() -> None:
         _assert_files_contain_all((path,), required_threats)
 
 
+def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-ii/chapter-3.md": "../../appendix/trace-schema.md",
+        "docs/book/part-ii/chapter-3.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-ii/chapter-3.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+
 def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": "MCP threat model matrix",
