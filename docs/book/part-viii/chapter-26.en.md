@@ -364,7 +364,7 @@ If most of those conditions are missing, the team may have observability tooling
 
 - Do you know how many agents actually exist in your production estate?
 - What percentage of them emits structured telemetry?
-- Can you link a high-risk action to `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, the active orchestration pattern, and verifier evidence?
+- Can you link a high-risk action to `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, the active orchestration pattern, and [verifier evidence](../../appendix/eval-schema.en.md)?
 - Do you have behavioral baselines rather than only raw dashboards?
 - Can you see paused-run age, approval backlog, and aging background runs before users complain?
 - Do you treat unobserved agents as a distinct risk class?
