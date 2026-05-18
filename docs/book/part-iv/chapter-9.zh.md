@@ -113,7 +113,7 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 ### 4.2. MCP 威胁模型矩阵
 
-对 MCP 来说，威胁模型不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。一个最小版本可以这样看：
+对 MCP 来说，MCP threat model 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。一个最小版本可以这样看：
 
 - **tool poisoning** — 工具描述或工具结果试图引导模型行为；控制方式是验证 tool descriptions，把 tool output 与指令分离，并只允许已知契约。
 - **rug pull attack** — 已获批准的 MCP server 在审查后改变 tools、scopes 或行为；控制方式是 version pinning、重新认证、diff review 和快速隔离路径。

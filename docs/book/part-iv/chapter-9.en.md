@@ -113,7 +113,7 @@ If those answers are missing, MCP does not stop being a risk. It becomes an impl
 
 ### 4.2. MCP Threat Model Matrix
 
-For MCP, the threat model should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. A minimal version looks like this:
+For MCP, the MCP threat model should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. A minimal version looks like this:
 
 - **tool poisoning** — a tool description or tool result tries to steer the model; control it by validating tool descriptions, separating tool output from instructions, and allowing only known contracts.
 - **rug pull attack** — a previously approved MCP server changes tools, scopes, or behavior after review; control it with version pinning, re-attestation, diff review, and a fast quarantine path.

@@ -3236,6 +3236,7 @@ def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
         "docs/book/part-iv/chapter-9.zh.md": "MCP 威胁模型矩阵",
     }
     required_markers = (
+        "MCP threat model",
         "tool poisoning",
         "rug pull attack",
         "tool shadowing",
