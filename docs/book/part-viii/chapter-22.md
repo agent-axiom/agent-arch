@@ -345,7 +345,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 Если хочешь быстро проверить свою дисциплину артефактов, пройди по вопросам:
 
 - У всех рабочих артефактов есть владелец?
-- У model-, prompt-, policy-, approval-, runtime-control-, eval- и verifier-артефактов есть версии?
+- У model-, prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)-, [eval- и verifier](../../appendix/eval-schema.md)-артефактов есть версии?
 - Можно ли быстро восстановить происхождение, verifier lineage и активные версии контрактов и схем для разбора инцидента?
 - Есть ли утвержденный реестр платформы?
 - Отличаете ли вы шаблон, разрешенный на уровне платформы, от артефакта, разрешенного к выпуску?
