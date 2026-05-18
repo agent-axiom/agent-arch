@@ -222,7 +222,7 @@ For `governance_action`, record the governance action record fields that turn te
 
 Keep `source_signal` on a constrained vocabulary aligned with governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
 
-For `memory_write_decision` in memory poisoning review, the trace should preserve the same review fields as the memory schema:
+For `memory_write_decision` in memory poisoning review, the trace should preserve the same memory poisoning review fields as the memory schema:
 
 - `write_trust_boundary`
 - `activation_policy`
