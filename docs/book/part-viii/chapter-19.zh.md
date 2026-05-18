@@ -98,7 +98,7 @@ flowchart LR
 !!! example "贯穿案例：把重复工单当作 ADLC 变更"
     在支持分诊系统里，修复重复工单事故并不会随着重试代码补丁结束。现在的发布承载工件还包括新的 [eval dataset](../../appendix/eval-schema.zh.md)、面向 `side_effect_unknown` 的策略包、`create_support_ticket` 的能力契约、金丝雀发布门，以及后续调查结果所需的 [trace schema](../../appendix/trace-schema.zh.md)。在 ADLC 里，这些变化应该作为一个可审阅的变更集一起移动；否则团队只是发布了代码，却把生命周期继续留在坏掉的状态。
 
-**ADLC case-spine note：**lifecycle state model 应该把三个 canonical cases 作为不同的 release-bearing surfaces 来跟踪。Support triage 连接 code change、policy bundle、write-capability contract、duplicate-ticket evals 和 rollout gate。Internal knowledge assistant 连接 retrieval corpus、source-grounding evals、memory-write rules、tenant filters 和 freshness review。Incident coordination 把 escalation policy、responder-role map、notification contract、incident-state schema 和 post-incident lessons 作为一个 governed change set 连接起来。
+**ADLC case-spine note：**lifecycle state model 应该把三个 canonical cases 作为不同的 release-bearing surfaces 来跟踪。Support triage 连接 code change、[policy bundle](../../appendix/policy-bundle-schema.zh.md)、write-capability contract、duplicate-ticket evals 和 [rollout gate](../../appendix/change-rollout-schema.zh.md)。Internal knowledge assistant 连接 [retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)、source-grounding evals、memory-write rules、tenant filters 和 freshness review。Incident coordination 把 escalation policy、responder-role map、notification contract、[incident-state schema](../../appendix/incident-record-schema.zh.md) 和 post-incident lessons 作为一个 governed change set 连接起来。
 
 这是最关键的运行转变之一。如果团队只把代码改动当成发布，它几乎一定会漏掉真正高风险的智能体变更。
 
