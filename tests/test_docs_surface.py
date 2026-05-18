@@ -987,6 +987,28 @@ def test_chapter_5_memory_poisoning_scenario_is_documented() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_5_memory_poisoning_schema_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-iii/chapter-5.md": (
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/trace-schema.md",
+        ),
+        "docs/book/part-iii/chapter-5.en.md": (
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+        ),
+        "docs/book/part-iii/chapter-5.zh.md": (
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",

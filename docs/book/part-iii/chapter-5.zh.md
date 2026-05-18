@@ -236,7 +236,7 @@ Google 最近材料里一个很实用的提醒是：记忆应该被当成可治�
 
 最危险的记忆失败往往看起来不像工具漏洞，而像是一个有害或错误的事实被安静写入了可信层。比如，用户原话、未经验证的 retrieval 结果，或某次事故 summary 进入长期记忆，开始看起来像稳定知识，并在几次运行之后影响决策。
 
-最小 memory poisoning 场景应该检查同一组 memory poisoning review fields，之后它们会进入 schema 和 trace：
+最小 memory poisoning 场景应该检查同一组 memory poisoning review fields，之后它们会进入 [memory/retrieval schema](../../appendix/memory-retrieval-schema.zh.md) 和 [trace schema](../../appendix/trace-schema.zh.md)：
 
 - `untrusted write`：未经验证的来源是否能进入 persistent memory；
 - `delayed activation`：这条记录是否会在之后的 run 或另一个 session 中才影响行为；
