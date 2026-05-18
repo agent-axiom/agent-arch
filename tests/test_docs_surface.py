@@ -843,6 +843,8 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
         "finding and response record",
         "containment paths",
         "duplicate-outcome detection",
+        "updated eval",
+        "traceable outcome",
         "approval-only containment",
         "retrieval-poisoning signal",
         "tenant-boundary containment",
@@ -856,6 +858,28 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_21_assurance_eval_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-21.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/trace-schema.md",
+        ),
+        "docs/book/part-viii/chapter-21.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-21.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
 
 
 def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
