@@ -207,7 +207,7 @@ A minimal closed-loop contract looks like this:
 - `incident_response_trigger`: which patterns create an investigation, escalation, or postmortem task;
 - `registry_update_signal`: which blind spots, stale owners, or shadow capabilities require inventory updates.
 
-To keep this from remaining a nice diagram, each such event should be persisted as a small governance action record:
+To keep this from remaining a nice diagram, each such event should be persisted as a small [governance action record](../../appendix/trace-schema.en.md):
 
 - `governance_action_id`: a stable identifier for the governance action;
 - `source_signal`: the telemetry signal or detection scenario that triggered the action;
