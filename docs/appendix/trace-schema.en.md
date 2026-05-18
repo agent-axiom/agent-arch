@@ -132,7 +132,7 @@ For each event type, decide up front:
 - which fields matter for grading;
 - which fields matter for audit.
 
-For `agent_threat_evidence`, preserve the evidence markers from the unified agent threat model so threat rows can be checked against traces, not prose only:
+For `agent_threat_evidence`, preserve the evidence markers from the unified agent threat evidence model so threat rows can be checked against traces, not prose only:
 
 - `prompt_boundary_event`
 - `retrieval_source_id`

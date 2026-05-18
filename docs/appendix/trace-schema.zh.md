@@ -132,7 +132,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - 哪些字段对分级重要；
 - 哪些字段对审计重要。
 
-对于 `agent_threat_evidence`，应保留 unified agent threat model 中的 evidence markers，让 threat rows 能通过 traces 检查，而不只停留在 prose：
+对于 `agent_threat_evidence`，应保留 unified agent threat evidence model 中的 evidence markers，让 threat rows 能通过 traces 检查，而不只停留在 prose：
 
 - `prompt_boundary_event`
 - `retrieval_source_id`

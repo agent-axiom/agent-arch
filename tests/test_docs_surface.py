@@ -1998,6 +1998,7 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
 def test_trace_schema_includes_agent_threat_evidence_markers() -> None:
     required_markers = (
         "agent_threat_evidence",
+        "unified agent threat evidence",
         "prompt_boundary_event",
         "retrieval_source_id",
         "memory_record_id",
