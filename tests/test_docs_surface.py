@@ -1095,6 +1095,23 @@ def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-26.md": (
+            "и [verifier evidence](../../appendix/eval-schema.md) о том"
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            "and [verifier evidence](../../appendix/eval-schema.en.md) for how"
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "[verifier evidence](../../appendix/eval-schema.zh.md)，那它也许"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
     required_markers = (
         "Architecture case-spine note",

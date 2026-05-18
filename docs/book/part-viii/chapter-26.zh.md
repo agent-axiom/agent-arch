@@ -165,7 +165,7 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 - retention policy；
 - traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、[verifier evidence](../../appendix/eval-schema.zh.md)、verifier contract identity 和 lifecycle artifacts 之间的链接。
 
-如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 verifier evidence，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
+如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 [verifier evidence](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
 Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应该衡量有多少比例的 AI systems 会发出 logs 和 traces，有多少比例的 releases 运行过标准 evaluation suite，以及有多少比例的 abuse/security scenarios 已经被 telemetry 覆盖。[^ms-observability] 这样，observability 就不再只是“我们有 dashboards”，而是变成可度量的 production obligation：inventory coverage、release-eval coverage 和 detection-scenario coverage。
 

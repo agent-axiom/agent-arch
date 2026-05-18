@@ -165,7 +165,7 @@ Practically, that means:
 - retention policy;
 - linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, [verifier evidence](../../appendix/eval-schema.en.md), verifier contract identity, and lifecycle artifacts.
 
-If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, and verifier evidence for how the run was judged, it may still be useful for debugging, but it is weak as an evidence layer.
+If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, and [verifier evidence](../../appendix/eval-schema.en.md) for how the run was judged, it may still be useful for debugging, but it is weak as an evidence layer.
 
 Microsoft's observability guidance makes the coverage question more concrete: teams should measure the proportion of AI systems that emit logs and traces, the proportion of releases that ran a standard evaluation suite, and the proportion of abuse or security scenarios covered by telemetry.[^ms-observability] That turns observability from “we have dashboards” into a measurable production obligation: inventory coverage, release-eval coverage, and detection-scenario coverage.
 
