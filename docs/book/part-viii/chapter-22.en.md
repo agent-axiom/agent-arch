@@ -57,7 +57,7 @@ In an agent platform, they often include:
 
 - an approved model route;
 - an approved prompt bundle;
-- an approved policy bundle;
+- an approved [policy bundle](../../appendix/policy-bundle-schema.en.md);
 - an approved capability contract;
 - an approved [approval schema](../../appendix/approval-schema.en.md);
 - an approved runtime-control schema;
@@ -75,7 +75,7 @@ You need to be able to answer:
 
 - where this model came from;
 - which prompt bundle is active now;
-- which policy config was active during the incident;
+- which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
 - which retrieval corpus was used;
 - which eval set validated the release;
 - which verifier contract, grading rubric, and evidence-linkage rules were active;

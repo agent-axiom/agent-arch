@@ -57,7 +57,7 @@
 
 - 已批准的模型路由；
 - 已批准的提示包；
-- 已批准的策略包；
+- 已批准的[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 已批准的能力契约；
 - 已批准的[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 已批准的运行时控制模式；
@@ -75,7 +75,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 - 这个模型从哪里来；
 - 现在激活的是哪一个提示包；
-- 事故发生时生效的是哪一个策略配置；
+- 事故发生时生效的是哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 当时使用的是哪一版检索语料；
 - 发布是被哪一个评测集验证的；
 - 当时生效的是哪一版验证器契约、评分规则与证据链接规则；

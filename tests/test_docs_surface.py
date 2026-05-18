@@ -1002,6 +1002,23 @@ def test_chapter_22_provenance_questions_link_approval_schema() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_22_provenance_questions_link_policy_bundle() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
