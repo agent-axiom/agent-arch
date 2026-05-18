@@ -1535,15 +1535,32 @@ def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -
             assert expected_snippet in text, (path, expected_snippet)
 
 
-def test_chapter_24_misalignment_trace_linkage_is_clickable() -> None:
+def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
-        "docs/book/part-viii/chapter-24.md": "../../appendix/trace-schema.md",
-        "docs/book/part-viii/chapter-24.en.md": "../../appendix/trace-schema.en.md",
-        "docs/book/part-viii/chapter-24.zh.md": "../../appendix/trace-schema.zh.md",
+        "docs/book/part-viii/chapter-24.md": (
+            "../../appendix/change-rollout-schema.md",
+            "../../appendix/trace-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/incident-record-schema.md",
+        ),
+        "docs/book/part-viii/chapter-24.en.md": (
+            "../../appendix/change-rollout-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "../../appendix/change-rollout-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
+        ),
     }
 
-    for path, expected_link in expected_links_by_file.items():
-        assert f"]({expected_link})" in _read(path), (path, expected_link)
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for expected_link in expected_links:
+            assert f"]({expected_link})" in text, (path, expected_link)
 
 
 def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
