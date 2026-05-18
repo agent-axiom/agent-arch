@@ -297,7 +297,9 @@ def test_book_improvement_blueprint_records_review_remediation_status() -> None:
         "P3:",
         "draft-localization status",
         "MCP threat model",
-        "trace/eval/memory schemas",
+        "trace schema",
+        "eval schema",
+        "memory/retrieval schema",
         "three canonical case spines",
         "publisher packet is drafted and internally gated",
         "Still blocked before external submission",
@@ -3035,10 +3037,24 @@ def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
         "verifier verdict record",
         "governance action record",
         "memory poisoning review fields",
-        "trace/eval/memory schemas",
+        "trace schema",
+        "eval schema",
+        "memory/retrieval schema",
     )
 
     _assert_files_contain_all(("docs/book-improvement-blueprint.md",), required_markers)
+
+
+def test_book_improvement_blueprint_schema_spine_links_are_clickable() -> None:
+    required_links = (
+        "appendix/trace-schema.md",
+        "appendix/eval-schema.md",
+        "appendix/memory-retrieval-schema.md",
+    )
+    text = _read("docs/book-improvement-blueprint.md")
+
+    for link in required_links:
+        assert f"]({link})" in text, link
 
 
 def test_editorial_artifacts_use_current_canonical_cases() -> None:
