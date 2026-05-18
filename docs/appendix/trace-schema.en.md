@@ -211,7 +211,7 @@ If the system relies on verifier-aware evals, it is also useful to define an eve
 - `reviewer_override`
 - `evidence_refs`
 
-For `governance_action`, record the fields that turn telemetry into a governance action rather than only a dashboard signal:
+For `governance_action`, record the governance action record fields that turn telemetry into a governance action rather than only a dashboard signal:
 
 - `governance_action_id`
 - `source_signal`

@@ -2091,6 +2091,7 @@ def test_trace_schema_includes_memory_poisoning_decision_fields() -> None:
 def test_trace_schema_includes_governance_action_event_fields() -> None:
     required_markers = (
         "governance_action",
+        "governance action record",
         "governance_action_id",
         "source_signal",
         "decision_owner",
