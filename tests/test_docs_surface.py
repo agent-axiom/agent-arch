@@ -1762,6 +1762,61 @@ def test_homepage_surfaces_safe_agent_schema_spine() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_public_entry_safe_agent_schema_spine_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "README.md": (
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/eval-schema.en.md",
+            "docs/appendix/memory-retrieval-schema.en.md",
+        ),
+        "README.ru.md": (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/eval-schema.md",
+            "docs/appendix/memory-retrieval-schema.md",
+        ),
+        "README.zh.md": (
+            "docs/appendix/trace-schema.zh.md",
+            "docs/appendix/eval-schema.zh.md",
+            "docs/appendix/memory-retrieval-schema.zh.md",
+        ),
+        "docs/index.md": (
+            "appendix/trace-schema.md",
+            "appendix/eval-schema.md",
+            "appendix/memory-retrieval-schema.md",
+        ),
+        "docs/index.en.md": (
+            "appendix/trace-schema.en.md",
+            "appendix/eval-schema.en.md",
+            "appendix/memory-retrieval-schema.en.md",
+        ),
+        "docs/index.zh.md": (
+            "appendix/trace-schema.zh.md",
+            "appendix/eval-schema.zh.md",
+            "appendix/memory-retrieval-schema.zh.md",
+        ),
+        "docs/start-here.md": (
+            "appendix/trace-schema.md",
+            "appendix/eval-schema.md",
+            "appendix/memory-retrieval-schema.md",
+        ),
+        "docs/start-here.en.md": (
+            "appendix/trace-schema.en.md",
+            "appendix/eval-schema.en.md",
+            "appendix/memory-retrieval-schema.en.md",
+        ),
+        "docs/start-here.zh.md": (
+            "appendix/trace-schema.zh.md",
+            "appendix/eval-schema.zh.md",
+            "appendix/memory-retrieval-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
+
+
 def test_reference_layer_surfaces_three_canonical_case_artifacts() -> None:
     required_markers = (
         "Canonical case artifacts",
