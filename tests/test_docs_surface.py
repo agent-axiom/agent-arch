@@ -2047,6 +2047,7 @@ def test_trace_schema_includes_mcp_tool_risk_review_fields() -> None:
 def test_trace_schema_includes_a2a_handoff_trust_contract_fields() -> None:
     required_markers = (
         "a2a_handoff",
+        "A2A handoff trust contract",
         "agent_identity",
         "delegation_chain",
         "allowed_collaboration_graph",

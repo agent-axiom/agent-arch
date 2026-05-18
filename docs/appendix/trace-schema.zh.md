@@ -163,7 +163,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 
 `threat_class` 应保持在 MCP threat model 词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
 
-对于 `a2a_handoff`，payload 应保留 trust contract，而不只是委派消息文本：
+对于 `a2a_handoff`，payload 应保留 A2A handoff trust contract，而不只是委派消息文本：
 
 - `agent_identity`
 - `delegation_chain`
