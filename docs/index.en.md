@@ -52,6 +52,9 @@ The shortest useful path through the book looks like this:
 !!! note "Canonical case map"
     Keep three canonical cases visible while you read that route. **Support triage** checks write capabilities, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval, memory, freshness, and knowledge provenance. **Incident coordination** checks traces, escalation, notification side effects, response ownership, and post-incident learning.
 
+!!! note "Safe-agent schema spine"
+    If you need the compact safe-agent architecture path, start with the [trace schema](appendix/trace-schema.en.md), [eval schema](appendix/eval-schema.en.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.en.md). This spine connects the MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence.
+
 ## What Already Exists Here
 
 - Published Russian core manuscript across eight book parts, from architectural foundations to lifecycle governance.

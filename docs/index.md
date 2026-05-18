@@ -52,6 +52,9 @@
 !!! note "Canonical case map"
     На этом маршруте держи в поле зрения три canonical cases. **Support triage** проверяет write capabilities, approvals и duplicate-ticket recovery. **Internal knowledge assistant** проверяет retrieval, memory, freshness и knowledge provenance. **Incident coordination** проверяет traces, escalation, notification side effects, response ownership и post-incident learning.
 
+!!! note "Safe-agent schema spine"
+    Если нужен краткий путь по safe-agent architecture, начни с [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md). Этот spine связывает MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+
 ## Что здесь уже есть
 
 - Опубликованная русская core-рукопись в восьми частях: от архитектурных оснований до lifecycle governance.
