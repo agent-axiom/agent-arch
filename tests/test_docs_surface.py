@@ -1208,15 +1208,21 @@ def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
         "docs/book/part-viii/chapter-22.md": (
             "какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался",
             "[approved retrieval corpus](../../appendix/memory-retrieval-schema.md)",
+            "[source-grounding rubric, tenant-filter config, memory-write policy "
+            "и freshness attestation](../../appendix/memory-retrieval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used",
             "[approved retrieval corpus](../../appendix/memory-retrieval-schema.en.md)",
+            "[source-grounding rubric, tenant-filter config, memory-write policy, "
+            "and freshness attestation](../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "哪一版[检索语料（retrieval corpus）]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
             "[approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
+            "[source-grounding rubric、tenant-filter config、memory-write policy "
+            "和 freshness attestation](../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
 
