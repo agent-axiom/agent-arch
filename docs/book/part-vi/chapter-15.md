@@ -44,7 +44,7 @@
 То есть золотой путь хорош тогда, когда команде выгодно оставаться на нем.
 
 !!! example "Сквозной кейс: шаблон вместо локального патча"
-    После инцидента с дублем тикета золотой путь для support-like агентов должен уже включать идемпотентный write tool, retry policy, trace/eval hooks и rollout gate для `side_effect_unknown`. Тогда следующая команда не копирует постмортем в wiki и не чинит это заново, а получает безопасный путь как стартовую форму.
+    После инцидента с дублем тикета золотой путь для support-like агентов должен уже включать идемпотентный write tool, retry policy, [trace](../../appendix/trace-schema.md)/[eval](../../appendix/eval-schema.md) hooks и rollout gate для `side_effect_unknown`. Тогда следующая команда не копирует постмортем в wiki и не чинит это заново, а получает безопасный путь как стартовую форму.
 
 **Golden-path case-spine note:** anti-zoo strategy должна давать готовые paths для всех трех canonical cases. Support triage получает workflow-agent template с approved write gateway, approval hooks, idempotency defaults и duplicate-ticket evals. Internal knowledge assistant получает knowledge-agent template с retrieval policy, source grounding, tenant filters и memory-write guardrails. Incident coordination получает incident-agent template с escalation gateway, notification defaults, responder-role checks и post-incident regression hooks.
 
