@@ -197,6 +197,8 @@ flowchart LR
 
 То же все больше верно и для [verifier contracts](../../appendix/eval-schema.md). Если выпуск или assurance зависят от process scores, outcome scores, failure attribution или связанной доказательной базы, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный управляемый промышленный артефакт.
 
+Это важно, потому что [verifier contract](../../appendix/eval-schema.md) не просто оценивает качество. Он также задает, что система считает приемлемым evidence, какие failures может точно назвать и какие release claims можно защитить позже. Как только verifier contract влияет на release judgment, incident attribution или assurance status, его lineage становится частью evidence backbone, а не опциональной eval-деталью.
+
 ## 8. Контракты возможностей и правила сетевого выхода тоже входят в цепочку поставки
 
 В агентных системах контракт инструмента — это не просто документация, а часть доверенной рабочей поверхности.
