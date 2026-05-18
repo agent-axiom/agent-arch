@@ -331,7 +331,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - prompt-, policy-, eval-, capability-, approval-, runtime-control- и verifier-артефакты считаются полноценными производственными артефактами;
 - происхождение можно быстро восстановить и для разбора инцидента, и для решений о раскатке;
-- release- и assurance-доказательства можно проследить до активного verifier contract и семейства контрактов;
+- release- и assurance-доказательства можно проследить до активного [verifier contract](../../appendix/eval-schema.md) и семейства контрактов;
 - approved inventory и approved artifacts существуют как разные уровни контроля;
 - deprecated patterns можно заблокировать до того, как они тихо закрепятся в промышленной среде;
 - доверие привязано к явным свойствам артефакта, а не передается социально.

@@ -336,7 +336,7 @@ A stronger bar is this:
 
 - prompt, policy, eval, capability, approval, runtime-control, and verifier artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
-- release and assurance evidence can be traced back to the active verifier contract and contract family;
+- release and assurance evidence can be traced back to the active [verifier contract](../../appendix/eval-schema.en.md) and contract family;
 - approved inventory and approved artifacts are kept as distinct control layers;
 - deprecated patterns can be blocked before they quietly persist in production;
 - trust is attached to explicit artifact properties, not inherited socially.
