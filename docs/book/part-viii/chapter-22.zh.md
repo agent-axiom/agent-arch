@@ -336,7 +336,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - 提示、策略、评测、能力、审批、runtime-control 和 verifier 工件都被当成生产工件；
 - 来源追踪能在事故评审和 rollout 决策中被快速恢复；
-- 发布和保障证据能回溯到当时生效的验证器契约与契约族；
+- 发布和保障证据能回溯到当时生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)与契约族；
 - 已批准清单和已批准工件被当成不同的控制层来管理；
 - 已废弃模式能在它们悄悄留在生产环境之前被阻断；
 - 信任绑定在显式工件属性上，而不是靠社会性继承。
