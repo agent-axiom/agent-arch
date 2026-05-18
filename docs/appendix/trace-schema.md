@@ -222,7 +222,7 @@ Trace replay валидирует эти evidence до того, как они �
 
 `source_signal` лучше держать в ограниченном словаре, согласованном с governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
 
-Для `memory_write_decision` в memory poisoning review трасса должна сохранять те же review fields, что и memory schema:
+Для `memory_write_decision` в memory poisoning review трасса должна сохранять те же memory poisoning review fields, что и memory schema:
 
 - `write_trust_boundary`
 - `activation_policy`
