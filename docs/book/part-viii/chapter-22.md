@@ -63,7 +63,7 @@
 - утвержденная [runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
 - утвержденный источник для извлечения;
 - утвержденный [eval dataset](../../appendix/eval-schema.md);
-- утвержденный шаблон раскатки.
+- утвержденный [rollout gate](../../appendix/change-rollout-schema.md).
 
 Если у команды нет такой категории, она очень быстро начинает жить в неявной системе доверия: «Кажется, это нормальный артефакт, потому что кто-то его уже использовал».
 
@@ -86,7 +86,7 @@ Google Research очень точно показывает, что подтве�
 - кто одобрил это изменение.
 
 !!! example "Сквозной кейс: provenance для duplicate-ticket fix"
-    После инцидента с дублем тикета последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии [eval dataset](../../appendix/eval-schema.md), policy bundle для `side_effect_unknown`, capability contract `create_support_ticket`, rollout gate, approval schema и [trace schema](../../appendix/trace-schema.md), которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в approved release bundle, команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
+    После инцидента с дублем тикета последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии [eval dataset](../../appendix/eval-schema.md), policy bundle для `side_effect_unknown`, capability contract `create_support_ticket`, [rollout gate](../../appendix/change-rollout-schema.md), approval schema и [trace schema](../../appendix/trace-schema.md), которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в approved release bundle, команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
 
 **Supply-chain case-spine note:** approved artifact bundle должен удерживать provenance для всех трех canonical cases. Support triage требует версии [eval dataset](../../appendix/eval-schema.md), [policy bundle](../../appendix/policy-bundle-schema.md), capability contract, [approval schema](../../appendix/approval-schema.md), [trace schema](../../appendix/trace-schema.md) и [rollout gate](../../appendix/change-rollout-schema.md) для write path. Internal knowledge assistant требует approved retrieval corpus, source-grounding rubric, tenant-filter config, memory-write policy и freshness attestation. Incident coordination требует escalation-policy bundle, notification contract, responder-role map, incident-state schema и post-incident artifact update.
 

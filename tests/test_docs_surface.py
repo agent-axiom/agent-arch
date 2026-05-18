@@ -1054,6 +1054,41 @@ def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "утвержденный [rollout gate](../../appendix/change-rollout-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "approved [rollout gate](../../appendix/change-rollout-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "已批准的[发布门禁（rollout gate）]"
+            "(../../appendix/change-rollout-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
+def test_chapter_22_duplicate_ticket_case_links_rollout_gate() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[rollout gate](../../appendix/change-rollout-schema.md), approval schema"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[rollout gate](../../appendix/change-rollout-schema.en.md), approval schema"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[rollout gate](../../appendix/change-rollout-schema.zh.md)、审批模式"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
