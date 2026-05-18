@@ -34,7 +34,7 @@
     Три canonical cases дают разные входы в справочный слой. **Support triage** опирается на approval record, policy bundle, trace schema и duplicate-ticket recovery evidence. **Internal knowledge assistant** требует memory/retrieval contract, freshness checks, access control и knowledge provenance. **Incident coordination** связывает incident record, escalation evidence, notification side effects, response ownership и post-incident learning.
 
 !!! note "Safe-agent schema spine"
-    Если нужен короткий маршрут по safe-agent architecture, держи рядом trace schema, eval schema и memory/retrieval schema. В них теперь связаны MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+    Если нужен короткий маршрут по safe-agent architecture, держи рядом [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md). В них теперь связаны MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
 
 ## Схемы и контрактные страницы
 
