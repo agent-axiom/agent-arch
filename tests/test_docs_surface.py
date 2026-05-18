@@ -985,6 +985,23 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
             assert f"]({link})" in text, (path, link)
 
 
+def test_chapter_22_provenance_questions_link_approval_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "contract version и [approval schema](../../appendix/approval-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "contract version and [approval schema](../../appendix/approval-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
