@@ -255,7 +255,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - paused approvals остались resumable после retirement;
 - expired capability sessions все еще можно re-initialize через stale control paths;
 - deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement;
-- deprecated verifier contracts или obligations по verifier evidence остаются неясными после retirement;
+- deprecated verifier contracts или obligations по [verifier evidence](../../appendix/eval-schema.md) остаются неясными после retirement;
 - background routes забыли выключить;
 - archived state никому не принадлежит;
 - deprecated schemas все еще принимаются gateways или runtime;

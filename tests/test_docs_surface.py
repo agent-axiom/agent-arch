@@ -1277,6 +1277,23 @@ def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> Non
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "obligations по [verifier evidence](../../appendix/eval-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[verifier evidence](../../appendix/eval-schema.en.md) obligations"
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[verifier evidence](../../appendix/eval-schema.zh.md) obligations"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
