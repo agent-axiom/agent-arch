@@ -60,7 +60,7 @@
 - утвержденный [policy bundle](../../appendix/policy-bundle-schema.md);
 - утвержденный контракт возможности;
 - утвержденная [approval schema](../../appendix/approval-schema.md);
-- утвержденная runtime-control schema;
+- утвержденная [runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
 - утвержденный источник для извлечения;
 - утвержденный набор для оценки;
 - утвержденный шаблон раскатки.

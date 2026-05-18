@@ -1019,6 +1019,24 @@ def test_chapter_22_provenance_questions_link_policy_bundle() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_22_artifact_inventory_links_runtime_control_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[运行时控制模式（runtime-control schema）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
