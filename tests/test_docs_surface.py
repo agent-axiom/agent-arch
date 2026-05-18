@@ -3287,6 +3287,17 @@ def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
         _assert_files_contain_all((path,), (heading, *required_markers))
 
 
+def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-iv/chapter-9.md": "../../appendix/trace-schema.md",
+        "docs/book/part-iv/chapter-9.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-iv/chapter-9.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": (
