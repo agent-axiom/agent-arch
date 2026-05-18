@@ -61,7 +61,7 @@
 - утвержденный контракт возможности;
 - утвержденная [approval schema](../../appendix/approval-schema.md);
 - утвержденная [runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
-- утвержденный источник для извлечения;
+- утвержденный [retrieval corpus](../../appendix/memory-retrieval-schema.md);
 - утвержденный [eval dataset](../../appendix/eval-schema.md);
 - утвержденный [rollout gate](../../appendix/change-rollout-schema.md).
 
@@ -76,7 +76,7 @@ Google Research очень точно показывает, что подтве�
 - откуда взялась эта модель;
 - какой набор prompt-правил сейчас активен;
 - какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
-- какой корпус для извлечения использовался;
+- какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался;
 - какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
 - какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
