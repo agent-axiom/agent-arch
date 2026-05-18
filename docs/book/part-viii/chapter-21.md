@@ -381,6 +381,7 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
 
 Эта глава замыкает контур, открытый в главах 17 и 18. Там policy, approval и runtime-control paths становятся явными, а здесь эти же пути превращаются в detection, containment и response surfaces.
 

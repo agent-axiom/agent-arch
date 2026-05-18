@@ -928,6 +928,26 @@ def test_chapter_21_assurance_eval_trace_links_are_clickable() -> None:
             assert f"]({link})" in text, (path, link)
 
 
+def test_chapter_21_useful_refs_include_change_rollout_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-21.md": (
+            "[Схема change review и rollout gate]"
+            "(../../appendix/change-rollout-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-21.en.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-21.zh.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     required_markers = (
         "Supply-chain case-spine note",

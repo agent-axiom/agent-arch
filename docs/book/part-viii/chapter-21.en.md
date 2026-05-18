@@ -383,6 +383,7 @@ After the assurance loop, it is natural to move to supply chain discipline and a
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 
 This chapter closes the loop opened in Chapters 17 and 18. Policy, approval, and runtime-control paths become explicit there, while here those same paths become detection, containment, and response surfaces.
 
