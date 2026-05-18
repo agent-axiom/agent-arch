@@ -36,7 +36,7 @@
 - корпуса для извлечения;
 - контракты возможностей;
 - наборы для оценки;
-- verifier contracts, rubric definitions и правила связывания доказательной базы;
+- verifier contracts, [rubric definitions и правила связывания доказательной базы](../../appendix/eval-schema.md);
 - правила и схемы approval;
 - схемы runtime-control;
 - governance-правила для orchestration pattern и определения worker-safe catalog;
@@ -78,7 +78,7 @@ Google Research очень точно показывает, что подтве�
 - какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
 - какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался;
 - какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
-- какой [verifier contract](../../appendix/eval-schema.md), grading rubric и правила связывания доказательной базы были активны;
+- какой [verifier contract](../../appendix/eval-schema.md), [grading rubric и правила связывания доказательной базы](../../appendix/eval-schema.md) были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
