@@ -322,6 +322,7 @@ def classify_change(change: ChangeRequest) -> str:
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)

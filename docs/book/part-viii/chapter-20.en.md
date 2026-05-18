@@ -322,6 +322,7 @@ After change management, the natural next step is the assurance loop: red teamin
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
