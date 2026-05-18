@@ -870,6 +870,17 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_26_governance_action_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-26.md": "../../appendix/trace-schema.md",
+        "docs/book/part-viii/chapter-26.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-viii/chapter-26.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
     required_markers = (
         "Architecture case-spine note",

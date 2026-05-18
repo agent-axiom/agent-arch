@@ -207,7 +207,7 @@ Microsoft отдельно подчеркивает полный произво�
 - `incident_response_trigger`: какие patterns создают investigation, escalation или postmortem task;
 - `registry_update_signal`: какие blind spots, stale owners или shadow capabilities требуют обновления inventory.
 
-Чтобы это не осталось красивой схемой, каждое такое событие полезно сохранять как маленький governance action record:
+Чтобы это не осталось красивой схемой, каждое такое событие полезно сохранять как маленький [governance action record](../../appendix/trace-schema.md):
 
 - `governance_action_id`: стабильный идентификатор управленческого действия;
 - `source_signal`: telemetry signal или detection scenario, который запустил действие;

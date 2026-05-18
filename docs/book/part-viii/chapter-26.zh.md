@@ -207,7 +207,7 @@ Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应
 - `incident_response_trigger`：哪些 patterns 会创建 investigation、escalation 或 postmortem task；
 - `registry_update_signal`：哪些 blind spots、stale owners 或 shadow capabilities 需要更新 inventory。
 
-为了避免这只停留在漂亮图示里，每一个这样的事件都应该保存成一个小的 governance action record：
+为了避免这只停留在漂亮图示里，每一个这样的事件都应该保存成一个小的 [governance action record](../../appendix/trace-schema.zh.md)：
 
 - `governance_action_id`：治理动作的稳定标识符；
 - `source_signal`：触发该动作的 telemetry signal 或 detection scenario；
