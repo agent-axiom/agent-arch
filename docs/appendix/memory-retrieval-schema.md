@@ -58,7 +58,7 @@ retention: long_term
 - `revision` нужен, чтобы не терять историю тихими перезаписями;
 - `trust_level` помогает не ставить все записи в один ряд.
 
-Для memory poisoning review запись или candidate write полезно дополнительно описывать как проверяемый security object, а не только как retrieval payload:
+Для memory poisoning review запись или candidate write полезно дополнительно описывать через memory poisoning review fields как проверяемый security object, а не только как retrieval payload:
 
 ```yaml
 write_trust_boundary: untrusted_write

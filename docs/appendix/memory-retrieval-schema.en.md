@@ -58,7 +58,7 @@ The key parts are:
 - `revision` keeps history from being silently overwritten;
 - `trust_level` stops all records from being treated as equal.
 
-For memory poisoning review, describe a record or candidate write as a reviewable security object, not only as retrieval payload:
+For memory poisoning review, describe a record or candidate write through memory poisoning review fields as a reviewable security object, not only as retrieval payload:
 
 ```yaml
 write_trust_boundary: untrusted_write

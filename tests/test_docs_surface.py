@@ -945,6 +945,7 @@ def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
 def test_memory_retrieval_schema_includes_poisoning_review_fields() -> None:
     required_markers = (
         "memory poisoning",
+        "memory poisoning review fields",
         "write_trust_boundary",
         "untrusted_write",
         "activation_policy",
