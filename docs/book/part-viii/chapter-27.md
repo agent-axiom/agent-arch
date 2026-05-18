@@ -395,6 +395,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема запроса на подтверждение и записи о решении](../../appendix/approval-schema.md)
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)

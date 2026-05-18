@@ -399,6 +399,8 @@ This chapter should be read as an accountability layer, not as an inventory spre
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
 - [Approval Request and Decision Schema](../../appendix/approval-schema.en.md)
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 - [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
