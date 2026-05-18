@@ -3210,6 +3210,7 @@ def test_agent_threat_model_matrix_covers_required_classes() -> None:
         "Supply-chain compromise",
         "Missing audit trail",
         "Evidence / telemetry",
+        "unified agent threat evidence model",
         "prompt_boundary_event",
         "retrieval_source_id",
         "memory_record_id",

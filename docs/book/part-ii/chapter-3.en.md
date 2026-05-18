@@ -100,6 +100,8 @@ There are many threats in agent systems, but a production system like the suppor
 - insufficient auditability;
 - unsafe fallback behavior.
 
+Read this table as a unified agent threat evidence model: each row links a threat class, a control, and reviewable evidence/telemetry markers.
+
 | Threat | First place to catch it | What helps | Evidence / telemetry |
 | --- | --- | --- | --- |
 | Prompt injection | Prompt assembly, retrieval, model gateway | trusted/untrusted content boundaries, policy checks, keeping instructions separate from data | `prompt_boundary_event`, source labels, rejected-instruction trace |
