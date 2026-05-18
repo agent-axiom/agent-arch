@@ -290,13 +290,14 @@ def test_part_viii_role_map_is_present_in_all_languages() -> None:
 
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
-        "Implementation status, 15 May 2026",
+        "Implementation status, 18 May 2026",
         "P0:",
         "P1:",
         "P2:",
         "P3:",
         "draft-localization status",
-        "MCP security boundary",
+        "MCP threat model",
+        "trace/eval/memory schemas",
         "three canonical case spines",
         "publisher packet is drafted and internally gated",
         "Still blocked before external submission",
@@ -2872,6 +2873,21 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
     for marker in required_markers[:4]:
         assert any(marker in _read(path) for path in checked_files), marker
     _assert_files_contain_all(checked_files, required_markers[4:])
+
+
+def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
+    required_markers = (
+        "Implementation status, 18 May 2026",
+        "MCP threat model",
+        "A2A handoff trust contract",
+        "unified agent threat evidence",
+        "verifier verdict record",
+        "governance action record",
+        "memory poisoning review fields",
+        "trace/eval/memory schemas",
+    )
+
+    _assert_files_contain_all(("docs/book-improvement-blueprint.md",), required_markers)
 
 
 def test_editorial_artifacts_use_current_canonical_cases() -> None:
