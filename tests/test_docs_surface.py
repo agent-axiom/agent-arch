@@ -829,6 +829,7 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
         "Internal knowledge assistant",
         "Incident coordination",
         "eval gate and verifier contract",
+        "eval schema",
         "behavioral and control eval surfaces",
         "payload-mutation check",
         "approval-path misuse check",
@@ -844,6 +845,17 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_25_control_eval_schema_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-25.md": "../../appendix/eval-schema.md",
+        "docs/book/part-viii/chapter-25.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-viii/chapter-25.zh.md": "../../appendix/eval-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_26_observability_threads_three_canonical_cases() -> None:
