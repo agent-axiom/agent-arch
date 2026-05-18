@@ -322,6 +322,7 @@ def classify_change(change: ChangeRequest) -> str:
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)

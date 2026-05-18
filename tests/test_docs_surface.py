@@ -1841,6 +1841,26 @@ def test_chapter_27_registry_verifier_evidence_eval_link_is_clickable() -> None:
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-20.md": (
+            "[Схема change review и rollout gate]"
+            "(../../appendix/change-rollout-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-20.en.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-20.zh.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
     required_markers = (
         "Change case-spine note",
