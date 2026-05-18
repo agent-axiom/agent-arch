@@ -62,7 +62,7 @@ In an agent platform, they often include:
 - an approved [approval schema](../../appendix/approval-schema.en.md);
 - an approved [runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md);
 - an approved retrieval source;
-- an approved eval set;
+- an approved [eval dataset](../../appendix/eval-schema.en.md);
 - an approved rollout template.
 
 If a team does not have this category, it quickly starts living in an implicit trust system: “this artifact is probably fine because somebody already used it.”
@@ -77,7 +77,7 @@ You need to be able to answer:
 - which prompt bundle is active now;
 - which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
 - which retrieval corpus was used;
-- which eval set validated the release;
+- which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
 - which verifier contract, grading rubric, and evidence-linkage rules were active;
 - which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;
 - which interruption or expiry policy governed the run;
