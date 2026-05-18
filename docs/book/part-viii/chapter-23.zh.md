@@ -21,7 +21,7 @@
 - capability-session state 与 interruption lineage；
 - orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
-- verifier-contract lineage 与 verifier evidence retention obligations；
+- verifier-contract lineage 与 [verifier evidence retention obligations](../../appendix/eval-schema.zh.md)；
 - 跨越 context reset 与角色交接边界的 handoff-artifact lineage；[^anthropic-harness]
 - 外部集成；
 - 用户预期；
@@ -130,7 +130,7 @@ flowchart LR
 - 归档状态的负责人是谁；
 - 替换后的系统是否可以复用旧数据集和记忆工件；
 - 是否需要保留 delegated authorization records，以说明旧动作到底在谁的 identity 下执行；
-- 是否需要保留 verifier evidence 与 verifier-contract history，以解释为何早先的 releases 会被判定为可接受。
+- 是否需要保留 [verifier evidence](../../appendix/eval-schema.zh.md) 与 verifier-contract history，以解释为何早先的 releases 会被判定为可接受。
 
 所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 
