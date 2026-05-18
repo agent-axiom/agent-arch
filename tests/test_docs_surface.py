@@ -639,6 +639,7 @@ def test_chapter_14_ownership_threads_three_canonical_cases() -> None:
         "platform/product split",
         "approval policy",
         "write-capability contract",
+        "trace schema",
         "corpus ownership",
         "retrieval policy",
         "memory-write rules",
@@ -652,6 +653,17 @@ def test_chapter_14_ownership_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_14_ownership_trace_schema_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-vi/chapter-14.md": "../../appendix/trace-schema.md",
+        "docs/book/part-vi/chapter-14.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-vi/chapter-14.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:

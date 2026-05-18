@@ -87,7 +87,7 @@ flowchart LR
 </div>
 
 !!! example "Сквозной кейс: кто чинит общий слой"
-    После инцидента с дублем тикета продуктовая команда должна владеть тем, как support workflow отвечает пользователю и когда эскалирует. Но platform team должна владеть политикой повторов рантайма, контрактом идемпотентности, схемой трасс и шлюзом раскатки, потому что эти решения нужны не одному агенту, а всем сценариям с write-capability. Если это не разделить заранее, следующий инцидент снова превратится в спор о владельце.
+    После инцидента с дублем тикета продуктовая команда должна владеть тем, как support workflow отвечает пользователю и когда эскалирует. Но platform team должна владеть политикой повторов рантайма, контрактом идемпотентности, [trace schema](../../appendix/trace-schema.md) и шлюзом раскатки, потому что эти решения нужны не одному агенту, а всем сценариям с write-capability. Если это не разделить заранее, следующий инцидент снова превратится в спор о владельце.
 
 **Ownership case-spine note:** platform/product split должен быть явным для всех трех canonical cases. Support triage делит ownership между product workflow, approval policy, write-capability contract и duplicate-ticket response. Internal knowledge assistant делит corpus ownership, retrieval policy, memory-write rules и access-control review. Incident coordination делит incident roles, escalation authority, notification ownership и post-incident change ownership, чтобы platform team не стала bottleneck, а product teams не построили три несовместимых control planes.
 
