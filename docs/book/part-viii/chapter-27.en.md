@@ -217,7 +217,7 @@ If the registry:
 - is not reconciled with real telemetry coverage;
 - is not checked against live principals;
 - is not matched against active capabilities;
-- is not reconciled with verifier evidence used in rollout or assurance;
+- is not reconciled with [verifier evidence](../../appendix/eval-schema.en.md) used in rollout or assurance;
 - does not participate in retirement hygiene,
 
 then it quickly becomes a tidy but partially fictional picture of the estate.

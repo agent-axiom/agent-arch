@@ -213,7 +213,7 @@ Microsoft прямо связывает это с security posture: неполн
 - не сверяется с реальным telemetry coverage;
 - не проверяется против живых principals;
 - не сопоставляется с active capabilities;
-- не сверяется с verifier evidence, на которое опираются rollout или assurance;
+- не сверяется с [verifier evidence](../../appendix/eval-schema.md), на которое опираются rollout или assurance;
 - не участвует в retirement hygiene,
 
 то он довольно быстро превращается в аккуратную, но частично вымышленную картину контура.

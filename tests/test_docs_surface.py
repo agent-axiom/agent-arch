@@ -1257,6 +1257,7 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
         "write-capability owners",
         "approval mode",
         "retirement plan",
+        "verifier evidence",
         "corpus owners",
         "freshness review",
         "incident-role owners",
@@ -1269,6 +1270,17 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_27_registry_verifier_evidence_eval_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-27.md": "../../appendix/eval-schema.md",
+        "docs/book/part-viii/chapter-27.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-viii/chapter-27.zh.md": "../../appendix/eval-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
