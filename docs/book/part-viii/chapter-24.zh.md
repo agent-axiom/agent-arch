@@ -265,6 +265,9 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - [审批请求与决策模式](../../appendix/approval-schema.zh.md)
 - [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
 - [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
+- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
 
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
 - [第 23 章：退役、替换与终止使用纪律](chapter-23.zh.md)

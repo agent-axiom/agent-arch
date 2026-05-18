@@ -1405,6 +1405,37 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-24.md": (
+            "[Схема трасс и каталог событий](../../appendix/trace-schema.md)",
+            "[Схема наборов для оценки и правил проверки]"
+            "(../../appendix/eval-schema.md)",
+            "[Схема памяти и извлечения]"
+            "(../../appendix/memory-retrieval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-24.en.md": (
+            "[Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)",
+            "[Eval Dataset Schema and Grading Contract]"
+            "(../../appendix/eval-schema.en.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "[Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)",
+            "[Eval Dataset Schema 与 Grading Contract]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_trace_linkage_is_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-24.md": "../../appendix/trace-schema.md",
