@@ -253,7 +253,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - paused approvals 在退役之后仍然可以恢复；
 - 已过期 capability sessions 仍可通过陈旧控制路径 re-initialize；
 - 已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用；
-- 已废弃的 verifier contracts 或 verifier evidence obligations 在退役后仍然不清楚；
+- 已废弃的 verifier contracts 或 [verifier evidence](../../appendix/eval-schema.zh.md) obligations 在退役后仍然不清楚；
 - background routes 被遗忘没有关闭；
 - 归档状态没有负责人；
 - 已废弃的 schemas 仍然被 gateways 或 runtimes 接受；

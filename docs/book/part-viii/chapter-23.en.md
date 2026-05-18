@@ -255,7 +255,7 @@ The problems are fairly repetitive:
 - paused approvals were left resumable after retirement;
 - expired capability sessions could still be re-initialized through stale control paths;
 - deprecated orchestration patterns or worker-boundary policies remained usable after retirement;
-- deprecated verifier contracts or verifier evidence obligations remained unclear after retirement;
+- deprecated verifier contracts or [verifier evidence](../../appendix/eval-schema.en.md) obligations remained unclear after retirement;
 - background routes were forgotten;
 - archived state belongs to nobody;
 - deprecated schemas still remain accepted by gateways or runtimes;
