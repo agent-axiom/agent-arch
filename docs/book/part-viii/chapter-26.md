@@ -165,7 +165,7 @@ Microsoft отдельно подчеркивает полный произво�
 - политику хранения;
 - связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, [verifier evidence](../../appendix/eval-schema.md), identity, verifier contract и артефактами жизненного цикла.
 
-Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и verifier evidence о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
+Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и [verifier evidence](../../appendix/eval-schema.md) о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 
 Рекомендации Microsoft по observability делают вопрос покрытия более конкретным: командам стоит измерять долю AI systems, которые вообще emit logs и traces, долю releases, прошедших стандартный evaluation suite, и долю abuse/security scenarios, покрытых telemetry.[^ms-observability] Так observability перестает быть фразой “у нас есть dashboards” и становится измеримой production obligation: inventory coverage, release-eval coverage и detection-scenario coverage.
 
