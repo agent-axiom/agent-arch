@@ -126,7 +126,7 @@ Structured events are especially useful for:
 - idempotency keys;
 - tenant and principal context;
 - memory writes;
-- verifier evidence for how the run was later graded.
+- [verifier evidence](../../appendix/eval-schema.en.md) for how the run was later graded.
 
 An event should answer not "what should I write in a log line?" but "what will we need later as machine-readable evidence?"
 

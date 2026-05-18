@@ -595,6 +595,7 @@ def test_chapter_11_traces_thread_three_canonical_cases() -> None:
         "source identifiers",
         "freshness markers",
         "memory-write events",
+        "verifier evidence",
         "incident-state events",
     )
     checked_files = (
@@ -604,6 +605,17 @@ def test_chapter_11_traces_thread_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_11_trace_verifier_evidence_eval_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-v/chapter-11.md": "../../appendix/eval-schema.md",
+        "docs/book/part-v/chapter-11.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-v/chapter-11.zh.md": "../../appendix/eval-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_12_slo_threads_three_canonical_cases() -> None:
