@@ -207,7 +207,7 @@ OpenAI Agents SDK 的 Sandbox Agents 做了一个很有用的区分，应该进�
 - 已物化的 workspace entries，或指向已审查 manifest 的链接；
 - 这个沙箱是否可以 resume、snapshot，还是必须重新创建。
 
-这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、trace evidence 放在一起管理。
+这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、[trace evidence](../../appendix/trace-schema.zh.md) 放在一起管理。
 
 ### 8.2. Stateful named agent instance 作为一种运行时拓扑
 

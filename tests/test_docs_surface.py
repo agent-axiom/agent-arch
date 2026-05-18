@@ -724,6 +724,7 @@ def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
         "approval hooks",
         "idempotency contract",
         "duplicate-ticket telemetry",
+        "trace evidence",
         "source grounding",
         "tenant filters",
         "guarded memory writes",
@@ -736,6 +737,17 @@ def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-vii/chapter-16.md": "../../appendix/trace-schema.md",
+        "docs/book/part-vii/chapter-16.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-vii/chapter-16.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
