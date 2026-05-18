@@ -363,9 +363,12 @@ After supply chain and artifact discipline, the natural final operational topic 
 ## 16. Useful Reference Pages
 
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Approval Schema](../../appendix/approval-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 - [Reference Package](../../appendix/reference-package.en.md)
 
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)

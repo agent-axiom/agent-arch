@@ -363,9 +363,12 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 ## 16. 值得配套阅读的参考页
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Approval Schema](../../appendix/approval-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
 - [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.zh.md)
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.zh.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
 - [参考包](../../appendix/reference-package.zh.md)
 
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)

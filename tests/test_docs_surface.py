@@ -1323,22 +1323,34 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
 def test_chapter_22_useful_refs_include_supply_chain_schema_pages() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
+            "[Схема approval](../../appendix/approval-schema.md)",
             "[Схема change review и rollout gate]"
             "(../../appendix/change-rollout-schema.md)",
             "[Схема наборов для оценки и правил проверки]"
             "(../../appendix/eval-schema.md)",
+            "[Схема трасс и каталог событий](../../appendix/trace-schema.md)",
+            "[Схема памяти и извлечения]"
+            "(../../appendix/memory-retrieval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
+            "[Approval Schema](../../appendix/approval-schema.en.md)",
             "[Change Review and Rollout Gate Schema]"
             "(../../appendix/change-rollout-schema.en.md)",
             "[Eval Dataset Schema and Grading Contract]"
             "(../../appendix/eval-schema.en.md)",
+            "[Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
+            "[Approval Schema](../../appendix/approval-schema.zh.md)",
             "[Change Review and Rollout Gate Schema]"
             "(../../appendix/change-rollout-schema.zh.md)",
             "[Eval Dataset Schema and Grading Contract]"
             "(../../appendix/eval-schema.zh.md)",
+            "[Trace Schema and Event Catalog](../../appendix/trace-schema.zh.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
 
