@@ -215,7 +215,7 @@ side_effect: created
 - `verifier_id`
 - `evidence_refs`
 
-这些字段也能帮助团队把运营遥测直接连到后续评分或 rollout 审查，而不是事后再手工重建验证器证据。
+这些字段也能帮助团队把运营遥测直接连到后续评分或 rollout 审查，而不是事后再手工重建[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)。
 
 正是这些字段，往往能帮你区分：
 
