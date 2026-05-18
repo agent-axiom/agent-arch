@@ -354,7 +354,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 更高的标准应该是：
 
 - inventory coverage 和 telemetry coverage 被当成同一个控制问题；
-- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 verifier evidence；
+- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 [verifier evidence](../../appendix/eval-schema.zh.md)；
 - 除了 raw telemetry 之外，还有 behavioral baselines；
 - paused-run age、approval backlog 与 background-run aging 都是一等信号；
 - unobserved agents 被当成治理风险，而不只是记账缺口；
