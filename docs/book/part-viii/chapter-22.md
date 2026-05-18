@@ -62,7 +62,7 @@
 - утвержденная [approval schema](../../appendix/approval-schema.md);
 - утвержденная [runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
 - утвержденный источник для извлечения;
-- утвержденный набор для оценки;
+- утвержденный [eval dataset](../../appendix/eval-schema.md);
 - утвержденный шаблон раскатки.
 
 Если у команды нет такой категории, она очень быстро начинает жить в неявной системе доверия: «Кажется, это нормальный артефакт, потому что кто-то его уже использовал».
@@ -77,7 +77,7 @@ Google Research очень точно показывает, что подтве�
 - какой набор prompt-правил сейчас активен;
 - какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
 - какой корпус для извлечения использовался;
-- какой набор для оценки подтвердил выпуск;
+- какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
 - какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
 - какая interruption или expiry policy управляла этим run;

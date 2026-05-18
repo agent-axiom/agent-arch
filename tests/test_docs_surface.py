@@ -1037,6 +1037,23 @@ def test_chapter_22_artifact_inventory_links_runtime_control_schema() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "which [eval dataset](../../appendix/eval-schema.en.md) validated the release"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
