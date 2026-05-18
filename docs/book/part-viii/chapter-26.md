@@ -352,7 +352,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 Более сильная планка такая:
 
 - inventory coverage и telemetry coverage считаются одной control problem;
-- high-risk actions можно связать с approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns и verifier evidence;
+- high-risk actions можно связать с approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns и [verifier evidence](../../appendix/eval-schema.md);
 - наряду с raw telemetry существуют behavioral baselines;
 - возраст paused runs, approval backlog и старение background runs видны как first-class signals;
 - unobserved agents считаются governance risk, а не просто пробелом в учете;

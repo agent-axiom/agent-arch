@@ -352,7 +352,7 @@ A team should not think it has production observability only because it has trac
 A stronger bar is this:
 
 - inventory coverage and telemetry coverage are treated as one control problem;
-- high-risk actions can be linked to approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns, and verifier evidence;
+- high-risk actions can be linked to approvals, principals, artifact bundles, contract versions, reviewed orchestration patterns, and [verifier evidence](../../appendix/eval-schema.en.md);
 - behavioral baselines exist alongside raw telemetry;
 - paused-run age, approval backlog, and background-run aging are observable as first-class signals;
 - unobserved agents are treated as a governance risk rather than an accounting gap;
