@@ -60,7 +60,7 @@
 - 已批准的[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 已批准的能力契约；
 - 已批准的[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
-- 已批准的运行时控制模式；
+- 已批准的[运行时控制模式（runtime-control schema）](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 已批准的检索来源；
 - 已批准的评测集；
 - 已批准的发布模板。

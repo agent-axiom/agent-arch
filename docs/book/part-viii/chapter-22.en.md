@@ -60,7 +60,7 @@ In an agent platform, they often include:
 - an approved [policy bundle](../../appendix/policy-bundle-schema.en.md);
 - an approved capability contract;
 - an approved [approval schema](../../appendix/approval-schema.en.md);
-- an approved runtime-control schema;
+- an approved [runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md);
 - an approved retrieval source;
 - an approved eval set;
 - an approved rollout template.
