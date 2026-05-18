@@ -1040,18 +1040,23 @@ def test_chapter_22_artifact_inventory_links_runtime_control_schema() -> None:
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск"
+            "какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск",
+            "считать [eval dataset](../../appendix/eval-schema.md) чем-то второстепенным",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
-            "which [eval dataset](../../appendix/eval-schema.en.md) validated the release"
+            "which [eval dataset](../../appendix/eval-schema.en.md) validated the release",
+            "treat an [eval dataset](../../appendix/eval-schema.en.md) as secondary",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证"
+            "哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证",
+            "把[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)看得太轻",
         ),
     }
 
-    for path, expected_snippet in expected_snippets_by_file.items():
-        assert expected_snippet in _read(path), (path, expected_snippet)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:

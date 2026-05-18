@@ -180,7 +180,7 @@ The same is true for:
 
 ## 7. Eval datasets should also be trusted artifacts
 
-It is easy to treat an eval dataset as secondary: “it is just a set of examples.”
+It is easy to treat an [eval dataset](../../appendix/eval-schema.en.md) as secondary: “it is just a set of examples.”
 
 In reality, it is a critical governance artifact.
 
@@ -193,7 +193,7 @@ If it is:
 
 then the team starts making release decisions on a shaky foundation.
 
-That is why a good ADLC should treat eval datasets as part of the approved artifact model.
+That is why a good ADLC should treat [eval datasets](../../appendix/eval-schema.en.md) as part of the approved artifact model.
 
 The same should increasingly be true for verifier contracts. If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
 
