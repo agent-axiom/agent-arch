@@ -71,7 +71,7 @@ A minimal governance contract for A2A should record:
 The simple production test is this: if an incident review cannot reconstruct which agent delegated what to whom, under which policy, and with which scope, the A2A contour is not production-ready yet.
 
 
-The extended A2A handoff trust contract should be even more concrete:
+The extended [A2A handoff trust contract](../../appendix/trace-schema.en.md) should be even more concrete:
 
 - `agent identity`: every handoff participant has a stable agent id, owner, and operational role;
 - `delegation chain`: the delegation record preserves the original initiator, intermediate agents, and final executor;
