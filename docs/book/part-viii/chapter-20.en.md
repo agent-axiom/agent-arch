@@ -36,7 +36,7 @@ That is the core promise of this chapter. It should help the reader see where re
 
 If you want the connective layer that shows how request, policy, approvals, traces, evals, incidents, and rollout judgment stay tied together, use the dedicated [Evidence Spine](../part-v/evidence-spine.en.md) page.
 
-**Change case-spine note:** the change packet should be able to classify all three canonical cases. Support triage makes approval rules, retries, and write capabilities release-bearing. Internal knowledge assistant makes retrieval corpus, freshness windows, memory write semantics, and access-control changes release-bearing. Incident coordination makes escalation policy, notification routing, ownership transfer, and incident state changes release-bearing.
+**Change case-spine note:** the change packet should be able to classify all three canonical cases. Support triage makes [approval rules](../../appendix/approval-schema.en.md), retries, and write capabilities release-bearing. Internal knowledge assistant makes [retrieval corpus](../../appendix/memory-retrieval-schema.en.md), freshness windows, [memory write semantics](../../appendix/memory-retrieval-schema.en.md), and access-control changes release-bearing. Incident coordination makes escalation policy, notification routing, ownership transfer, and [incident state](../../appendix/incident-record-schema.en.md) changes release-bearing.
 
 !!! info "Need change artifacts?"
     For the practical layer, open the [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md), the [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md), and the [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md).

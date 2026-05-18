@@ -39,7 +39,7 @@
 
 Если тебе нужен связующий слой, который показывает, как request, policy, approvals, traces, evals, incidents и rollout judgment остаются связаны вместе, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
 
-**Change case-spine note:** change packet должен уметь классифицировать все три canonical cases. Support triage делает release-bearing изменения approval rules, retries и write capabilities. Internal knowledge assistant делает release-bearing изменения retrieval corpus, freshness windows, memory write semantics и access control. Incident coordination делает release-bearing изменения escalation policy, notification routing, ownership transfer и incident state.
+**Change case-spine note:** change packet должен уметь классифицировать все три canonical cases. Support triage делает release-bearing изменения [approval rules](../../appendix/approval-schema.md), retries и write capabilities. Internal knowledge assistant делает release-bearing изменения [retrieval corpus](../../appendix/memory-retrieval-schema.md), freshness windows, [memory write semantics](../../appendix/memory-retrieval-schema.md) и access control. Incident coordination делает release-bearing изменения escalation policy, notification routing, ownership transfer и [incident state](../../appendix/incident-record-schema.md).
 
 ## 2. Что в агентной системе вообще считается изменением
 

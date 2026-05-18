@@ -2151,6 +2151,31 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_20_change_case_spine_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-20.md": (
+            "../../appendix/approval-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/incident-record-schema.md",
+        ),
+        "docs/book/part-viii/chapter-20.en.md": (
+            "../../appendix/approval-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-20.zh.md": (
+            "../../appendix/approval-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for expected_link in expected_links:
+            assert f"]({expected_link})" in text, (path, expected_link)
+
+
 def test_chapter_7_retrieval_threads_three_canonical_cases() -> None:
     required_markers = (
         "Retrieval case-spine note",
