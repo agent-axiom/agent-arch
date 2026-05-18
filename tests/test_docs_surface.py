@@ -950,14 +950,26 @@ def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
         "docs/book/part-viii/chapter-19.md": (
             "../../appendix/eval-schema.md",
             "../../appendix/trace-schema.md",
+            "../../appendix/policy-bundle-schema.md",
+            "../../appendix/change-rollout-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/incident-record-schema.md",
         ),
         "docs/book/part-viii/chapter-19.en.md": (
             "../../appendix/eval-schema.en.md",
             "../../appendix/trace-schema.en.md",
+            "../../appendix/policy-bundle-schema.en.md",
+            "../../appendix/change-rollout-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
         ),
         "docs/book/part-viii/chapter-19.zh.md": (
             "../../appendix/eval-schema.zh.md",
             "../../appendix/trace-schema.zh.md",
+            "../../appendix/policy-bundle-schema.zh.md",
+            "../../appendix/change-rollout-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
         ),
     }
 
