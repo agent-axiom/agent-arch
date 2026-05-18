@@ -61,7 +61,7 @@ In an agent platform, they often include:
 - an approved capability contract;
 - an approved [approval schema](../../appendix/approval-schema.en.md);
 - an approved [runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md);
-- an approved retrieval source;
+- an approved [retrieval corpus](../../appendix/memory-retrieval-schema.en.md);
 - an approved [eval dataset](../../appendix/eval-schema.en.md);
 - an approved [rollout gate](../../appendix/change-rollout-schema.en.md).
 
@@ -76,7 +76,7 @@ You need to be able to answer:
 - where this model came from;
 - which prompt bundle is active now;
 - which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
-- which retrieval corpus was used;
+- which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used;
 - which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
 - which verifier contract, grading rubric, and evidence-linkage rules were active;
 - which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;

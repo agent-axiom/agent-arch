@@ -61,7 +61,7 @@
 - 已批准的能力契约；
 - 已批准的[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 已批准的[运行时控制模式（runtime-control schema）](../../appendix/lifecycle-artifact-schema.zh.md)；
-- 已批准的检索来源；
+- 已批准的[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)；
 - 已批准的[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)；
 - 已批准的[发布门禁（rollout gate）](../../appendix/change-rollout-schema.zh.md)。
 
@@ -76,7 +76,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 这个模型从哪里来；
 - 现在激活的是哪一个提示包；
 - 事故发生时生效的是哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
-- 当时使用的是哪一版检索语料；
+- 当时使用的是哪一版[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)；
 - 发布是被哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证的；
 - 当时生效的是哪一版验证器契约、评分规则与证据链接规则；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
