@@ -378,7 +378,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 Эту главу стоит читать как слой evidence readiness, а не как чеклист логирования:
 
-- **Устойчивые утверждения:** агентной системой нельзя управлять, если high-risk actions, approvals, principals, artifacts и verifier evidence нельзя связать постфактум.
+- **Устойчивые утверждения:** агентной системой нельзя управлять, если high-risk actions, approvals, principals, artifacts и [verifier evidence](../../appendix/eval-schema.md) нельзя связать постфактум.
 - **Вендорская практика:** современные материалы по observability и infrastructure inventory всё чаще рассматривают telemetry coverage и asset coverage как production controls, а не только debugging aids.
 - **Runtime-практика:** structured events, inventory coverage checks, behavioral baselines и detection-ready fields делают traces пригодными для release review и incident response.
 - **Авторская интерпретация:** AI-native observability — мост между evals, assurance, registry и lifecycle governance.

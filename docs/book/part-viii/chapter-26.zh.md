@@ -380,7 +380,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 本章应该被读成一层 evidence readiness，而不是 logging checklist：
 
-- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 verifier evidence 事后无法关联，智能体系统就无法被治理。
+- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 [verifier evidence](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
 - **厂商实践：** 当前 observability 与 infrastructure inventory 指南越来越把 telemetry coverage 和 asset coverage 视为生产控制，而不只是 debugging aids。
 - **运行时实践：** structured events、inventory coverage checks、behavioral baselines 与 detection-ready fields 让 traces 可以用于 release review 和 incident response。
 - **作者解释：** AI-native observability 是 evals、assurance、registry 与 lifecycle governance 之间的桥梁。

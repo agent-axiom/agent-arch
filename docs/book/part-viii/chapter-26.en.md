@@ -378,7 +378,7 @@ That usually means the platform can still describe activity, but it cannot yet p
 
 This chapter should be read as an evidence-readiness layer, not as a logging checklist:
 
-- **Stable claims:** an agent system cannot be governed if high-risk actions, approvals, principals, artifacts, and verifier evidence cannot be connected after the fact.
+- **Stable claims:** an agent system cannot be governed if high-risk actions, approvals, principals, artifacts, and [verifier evidence](../../appendix/eval-schema.en.md) cannot be connected after the fact.
 - **Vendor practice:** current observability and infrastructure-inventory guidance increasingly treats telemetry coverage and asset coverage as production controls, not only debugging aids.
 - **Runtime practice:** structured events, inventory coverage checks, behavioral baselines, and detection-ready fields make traces usable for release review and incident response.
 - **Author interpretation:** AI-native observability is the bridge between evals, assurance, registry, and lifecycle governance.

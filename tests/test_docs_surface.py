@@ -1169,6 +1169,23 @@ def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-26.md": (
+            "artifacts и [verifier evidence](../../appendix/eval-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            "artifacts, and [verifier evidence](../../appendix/eval-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "artifacts 与 [verifier evidence](../../appendix/eval-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
     required_markers = (
         "Architecture case-spine note",
