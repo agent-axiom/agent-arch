@@ -8,7 +8,7 @@ _Current as of May 18, 2026._
     The major update from May 15, 2026 is the end-to-end map of the three canonical cases. **Support triage**, **Internal knowledge assistant**, and **Incident coordination** are now visible across book chapters, public entry points, reference pages, and appendix artifacts, while coverage guards protect chapters and appendix pages from losing those routes.
 
 !!! note "Safe-agent schema update"
-    The May 17-18, 2026 updates connected prose, appendices, and guards for safe-agent architecture: MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence are now reflected in trace/eval/memory schemas.
+    The May 17-18, 2026 updates connected prose, appendices, and guards for safe-agent architecture: MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence are now reflected in the [trace schema](appendix/trace-schema.en.md), [eval schema](appendix/eval-schema.en.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.en.md).
 
 ## Book
 

@@ -2903,7 +2903,9 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
         "governance action record",
         "memory poisoning review fields",
         "unified agent threat evidence",
-        "trace/eval/memory schemas",
+        "trace schema",
+        "eval schema",
+        "memory/retrieval schema",
     )
     checked_files = (
         "docs/whats-new.md",
@@ -2914,6 +2916,31 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     for marker in required_markers[:4]:
         assert any(marker in _read(path) for path in checked_files), marker
     _assert_files_contain_all(checked_files, required_markers[4:])
+
+
+def test_whats_new_safe_agent_schema_update_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/whats-new.md": (
+            "appendix/trace-schema.md",
+            "appendix/eval-schema.md",
+            "appendix/memory-retrieval-schema.md",
+        ),
+        "docs/whats-new.en.md": (
+            "appendix/trace-schema.en.md",
+            "appendix/eval-schema.en.md",
+            "appendix/memory-retrieval-schema.en.md",
+        ),
+        "docs/whats-new.zh.md": (
+            "appendix/trace-schema.zh.md",
+            "appendix/eval-schema.zh.md",
+            "appendix/memory-retrieval-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
 
 
 def test_whats_new_surfaces_canonical_case_update() -> None:
