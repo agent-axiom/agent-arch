@@ -1093,13 +1093,16 @@ def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
 def test_chapter_22_duplicate_ticket_case_links_rollout_gate() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[rollout gate](../../appendix/change-rollout-schema.md), approval schema"
+            "[rollout gate](../../appendix/change-rollout-schema.md), "
+            "[approval schema](../../appendix/approval-schema.md)"
         ),
         "docs/book/part-viii/chapter-22.en.md": (
-            "[rollout gate](../../appendix/change-rollout-schema.en.md), approval schema"
+            "[rollout gate](../../appendix/change-rollout-schema.en.md), "
+            "[approval schema](../../appendix/approval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[rollout gate](../../appendix/change-rollout-schema.zh.md)、审批模式"
+            "[rollout gate](../../appendix/change-rollout-schema.zh.md)、"
+            "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)"
         ),
     }
 
