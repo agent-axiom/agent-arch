@@ -207,7 +207,7 @@ LangGraph persistence показывает тот же принцип на ур�
 - список materialized workspace entries или ссылку на проверенный manifest;
 - признак, можно ли этот sandbox resume, snapshot или нужно пересоздать.
 
-Тогда длительная работа с файлами, shell и memory не превращается в непрозрачную папку на диске. Она становится частью того же runtime-control слоя, где уже живут approvals, background runs, capability sessions и trace evidence.
+Тогда длительная работа с файлами, shell и memory не превращается в непрозрачную папку на диске. Она становится частью того же runtime-control слоя, где уже живут approvals, background runs, capability sessions и [trace evidence](../../appendix/trace-schema.md).
 
 ### 8.2. Stateful named agent instance как отдельная runtime topology
 

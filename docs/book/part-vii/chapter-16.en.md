@@ -207,7 +207,7 @@ For a reference runtime, that means sandbox state should not disappear inside a 
 - materialized workspace entries, or a link to a reviewed manifest;
 - whether this sandbox can be resumed, snapshotted, or must be recreated.
 
-Then long-running work over files, shell, and memory does not become an opaque directory on disk. It becomes part of the same runtime-control layer that already holds approvals, background runs, capability sessions, and trace evidence.
+Then long-running work over files, shell, and memory does not become an opaque directory on disk. It becomes part of the same runtime-control layer that already holds approvals, background runs, capability sessions, and [trace evidence](../../appendix/trace-schema.en.md).
 
 ### 8.2. Stateful Named Agent Instance as a Runtime Topology
 
