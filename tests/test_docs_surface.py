@@ -958,15 +958,24 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "../../appendix/eval-schema.md",
+            "../../appendix/policy-bundle-schema.md",
+            "../../appendix/approval-schema.md",
             "../../appendix/trace-schema.md",
+            "../../appendix/change-rollout-schema.md",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "../../appendix/eval-schema.en.md",
+            "../../appendix/policy-bundle-schema.en.md",
+            "../../appendix/approval-schema.en.md",
             "../../appendix/trace-schema.en.md",
+            "../../appendix/change-rollout-schema.en.md",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "../../appendix/eval-schema.zh.md",
+            "../../appendix/policy-bundle-schema.zh.md",
+            "../../appendix/approval-schema.zh.md",
             "../../appendix/trace-schema.zh.md",
+            "../../appendix/change-rollout-schema.zh.md",
         ),
     }
 
