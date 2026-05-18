@@ -2777,6 +2777,28 @@ def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_reference_surfaces_safe_agent_schema_spine() -> None:
+    required_markers = (
+        "Safe-agent schema spine",
+        "trace schema",
+        "eval schema",
+        "memory/retrieval schema",
+        "MCP threat model",
+        "A2A handoff trust contract",
+        "verifier verdict record",
+        "governance action record",
+        "memory poisoning review fields",
+        "unified agent threat evidence",
+    )
+    checked_files = (
+        "docs/reference.md",
+        "docs/reference.en.md",
+        "docs/reference.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     required_markers = (
         "Safe-agent schema update",
