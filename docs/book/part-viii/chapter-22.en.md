@@ -197,7 +197,7 @@ That is why a good ADLC should treat [eval datasets](../../appendix/eval-schema.
 
 The same should increasingly be true for [verifier contracts](../../appendix/eval-schema.en.md). If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
 
-This matters because a verifier contract does not merely score quality. It also defines what the system will count as acceptable evidence, which failures it can name precisely, and which release claims can be defended later. Once a verifier contract influences release judgment, incident attribution, or assurance status, its lineage becomes part of the evidence backbone rather than an optional eval detail.
+This matters because a [verifier contract](../../appendix/eval-schema.en.md) does not merely score quality. It also defines what the system will count as acceptable evidence, which failures it can name precisely, and which release claims can be defended later. Once a verifier contract influences release judgment, incident attribution, or assurance status, its lineage becomes part of the evidence backbone rather than an optional eval detail.
 
 ## 8. Capability contracts and egress rules are part of the supply chain too
 

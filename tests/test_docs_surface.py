@@ -1064,16 +1064,19 @@ def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
         "docs/book/part-viii/chapter-22.md": (
             "какой [verifier contract](../../appendix/eval-schema.md)",
             "[verifier contracts](../../appendix/eval-schema.md)",
+            "[verifier contract](../../appendix/eval-schema.md) не просто оценивает качество",
             "активного [verifier contract](../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [verifier contract](../../appendix/eval-schema.en.md)",
             "[verifier contracts](../../appendix/eval-schema.en.md)",
+            "[verifier contract](../../appendix/eval-schema.en.md) does not merely score quality",
             "active [verifier contract](../../appendix/eval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
             "[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
+            "[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)不只是给质量打分",
             "生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
         ),
     }
