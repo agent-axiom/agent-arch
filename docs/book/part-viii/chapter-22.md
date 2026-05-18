@@ -59,7 +59,7 @@
 - утвержденный набор prompt-правил;
 - утвержденный набор политик;
 - утвержденный контракт возможности;
-- утвержденная approval schema;
+- утвержденная [approval schema](../../appendix/approval-schema.md);
 - утвержденная runtime-control schema;
 - утвержденный источник для извлечения;
 - утвержденный набор для оценки;
@@ -79,7 +79,7 @@ Google Research очень точно показывает, что подтве�
 - какой корпус для извлечения использовался;
 - какой набор для оценки подтвердил выпуск;
 - какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
-- какие contract version и approval schema были активны;
+- какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
 - какой delegated authorization mode, principal binding и revoke policy управляли этим run;

@@ -59,7 +59,7 @@ In an agent platform, they often include:
 - an approved prompt bundle;
 - an approved policy bundle;
 - an approved capability contract;
-- an approved approval schema;
+- an approved [approval schema](../../appendix/approval-schema.en.md);
 - an approved runtime-control schema;
 - an approved retrieval source;
 - an approved eval set;
@@ -79,7 +79,7 @@ You need to be able to answer:
 - which retrieval corpus was used;
 - which eval set validated the release;
 - which verifier contract, grading rubric, and evidence-linkage rules were active;
-- which contract version and approval schema were active;
+- which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;
 - which interruption or expiry policy governed the run;
 - which orchestration pattern and worker-boundary policy governed the run;
 - which delegated authorization mode, principal binding, and revoke policy governed the run;
