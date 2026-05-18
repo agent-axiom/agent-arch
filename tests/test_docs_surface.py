@@ -1472,6 +1472,37 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-25.md": (
+            "[Схема approval](../../appendix/approval-schema.md)",
+            "[Схема артефактов жизненного цикла]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[Схема памяти и извлечения]"
+            "(../../appendix/memory-retrieval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-25.en.md": (
+            "[Approval Schema](../../appendix/approval-schema.en.md)",
+            "[Lifecycle Artifact Schema]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-25.zh.md": (
+            "[Approval Schema](../../appendix/approval-schema.zh.md)",
+            "[Lifecycle Artifact Schema]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_25_control_eval_schema_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-25.md": "../../appendix/eval-schema.md",
