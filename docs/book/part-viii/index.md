@@ -42,13 +42,13 @@
 | Функция жизненного цикла | Главная работа | Главный артефакт | Чем она не является |
 | --- | --- | --- | --- |
 | Lifecycle frame | Удерживает переходы состояний от design до retirement | ADLC state model | Просто новым названием для SDLC |
-| Change management | Решает, какие изменения требуют review и rollout gates | Change packet | Обычным project management |
+| Change management | Решает, какие изменения требуют review и rollout gates | [Change packet](../../appendix/change-rollout-schema.md) | Обычным project management |
 | Assurance | Превращает findings в containment, remediation и ownership | Finding and response record | Observability или eval scoring |
 | Provenance | Сохраняет lineage доверенных артефактов и release identity | Approved artifact bundle | Общей папкой с evidence |
 | Retirement | Закрывает или заменяет системы без потери accountability | Retirement plan | Удалением старого агента |
 | Misalignment и insider risk | Называет adversarial или incentive-driven misuse paths | Risk scenario and control plan | Повтором prompt-injection guidance |
-| Behavioral/control evals | Дают release judgment о поведении и controls | Eval gate and verifier contract | Incident response |
-| Observability | Делает evidence substrate видимым и проверяемым | Trace and telemetry coverage record | Владельцем governance decisions |
+| Behavioral/control evals | Дают release judgment о поведении и controls | [Eval gate and verifier contract](../../appendix/eval-schema.md) | Incident response |
+| Observability | Делает evidence substrate видимым и проверяемым | [Trace and telemetry coverage record](../../appendix/trace-schema.md) | Владельцем governance decisions |
 | Inventory и registry | Делают estate accountable через owners и lifecycle state | Registry record | Свободной таблицей агентов |
 
 Читай главы как цепочку: lifecycle задает состояния, change management контролирует движение, evals выносят judgment о готовности, provenance фиксирует доверенные артефакты, observability сохраняет evidence, assurance реагирует, когда evidence превращается в risk, retirement закрывает старые пути, а registry удерживает accountability всего estate. Если две главы звучат как "governance", различай их по тому, какой артефакт они обязаны оставить после review.
