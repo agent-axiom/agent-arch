@@ -3354,6 +3354,17 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
         _assert_files_contain_all((path,), markers)
 
 
+def test_practical_a2a_handoff_trust_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-iv/practical-mcp-a2a.md": "../../appendix/trace-schema.md",
+        "docs/book/part-iv/practical-mcp-a2a.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-iv/practical-mcp-a2a.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+
 def test_chapter_1_decision_frame_is_extraction_safe() -> None:
     checked_files = (
         "docs/book/part-i/chapter-1.md",

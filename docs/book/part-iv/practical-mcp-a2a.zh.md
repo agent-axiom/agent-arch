@@ -71,7 +71,7 @@ A2A 的最小治理契约应该记录：
 一个简单的生产检查是：如果事故复盘时无法还原哪个智能体把什么任务委派给谁、依据哪条 policy、使用了哪个 scope，那么 A2A 轮廓还没有达到 production-ready。
 
 
-扩展版 A2A handoff trust contract 还应该更具体：
+扩展版 [A2A handoff trust contract](../../appendix/trace-schema.zh.md) 还应该更具体：
 
 - `agent identity`：每个 handoff 参与者都有稳定的 agent id、owner 和 operational role；
 - `delegation chain`：委派记录保留原始发起者、中间智能体和最终执行者；
