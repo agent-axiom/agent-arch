@@ -132,7 +132,7 @@ Trace replay валидирует эти evidence до того, как они �
 - какие поля нужны для оценки;
 - какие поля нужны для аудита.
 
-Для `agent_threat_evidence` полезно сохранять evidence markers из unified agent threat model, чтобы threat rows можно было проверить по traces, а не только по prose:
+Для `agent_threat_evidence` полезно сохранять evidence markers из unified agent threat evidence model, чтобы threat rows можно было проверить по traces, а не только по prose:
 
 - `prompt_boundary_event`
 - `retrieval_source_id`
