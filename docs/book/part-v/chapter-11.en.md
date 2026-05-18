@@ -215,7 +215,7 @@ If the goal is not only dashboards but real incident investigation, it is usuall
 - `verifier_id`
 - `evidence_refs`
 
-Those fields make it easier to connect operational telemetry to later grading or rollout review, instead of forcing teams to reconstruct verifier evidence from scratch.
+Those fields make it easier to connect operational telemetry to later grading or rollout review, instead of forcing teams to reconstruct [verifier evidence](../../appendix/eval-schema.en.md) from scratch.
 
 They also often make the difference between:
 

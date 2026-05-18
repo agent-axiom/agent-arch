@@ -635,6 +635,23 @@ def test_chapter_11_practical_rules_link_verifier_evidence() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_11_evidence_refs_link_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-v/chapter-11.md": (
+            "заново собирать [verifier evidence](../../appendix/eval-schema.md)"
+        ),
+        "docs/book/part-v/chapter-11.en.md": (
+            "reconstruct [verifier evidence](../../appendix/eval-schema.en.md)"
+        ),
+        "docs/book/part-v/chapter-11.zh.md": (
+            "重建[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_12_slo_threads_three_canonical_cases() -> None:
     required_markers = (
         "SLO case-spine note",
