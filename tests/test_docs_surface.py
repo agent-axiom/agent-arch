@@ -288,6 +288,34 @@ def test_part_viii_role_map_is_present_in_all_languages() -> None:
         assert not missing, f"{relative_path} missing role-map markers: {missing}"
 
 
+def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/index.md": (
+            "[Change packet](../../appendix/change-rollout-schema.md)",
+            "[Eval gate and verifier contract](../../appendix/eval-schema.md)",
+            "[Trace and telemetry coverage record]"
+            "(../../appendix/trace-schema.md)",
+        ),
+        "docs/book/part-viii/index.en.md": (
+            "[Change packet](../../appendix/change-rollout-schema.en.md)",
+            "[Eval gate and verifier contract](../../appendix/eval-schema.en.md)",
+            "[Trace and telemetry coverage record]"
+            "(../../appendix/trace-schema.en.md)",
+        ),
+        "docs/book/part-viii/index.zh.md": (
+            "[变更包](../../appendix/change-rollout-schema.zh.md)",
+            "[Eval gate 与 verifier contract](../../appendix/eval-schema.zh.md)",
+            "[Trace 与 telemetry 覆盖记录]"
+            "(../../appendix/trace-schema.zh.md)",
+        ),
+    }
+
+    for relative_path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(relative_path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (relative_path, expected_snippet)
+
+
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
         "Implementation status, 18 May 2026",
