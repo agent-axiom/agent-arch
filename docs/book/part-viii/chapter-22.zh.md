@@ -78,7 +78,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 当时使用的是哪一版[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)；
 - 发布是被哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证的；
-- 当时生效的是哪一版验证器契约、评分规则与证据链接规则；
+- 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、评分规则与证据链接规则；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 当时是哪一条中断或过期策略在治理这次运行；
 - 当时是哪一种编排模式与 worker 边界策略在治理这次运行；
@@ -195,7 +195,7 @@ flowchart LR
 
 所以成熟的 ADLC 应该把[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)纳入已批准工件模型。
 
-对验证器契约也越来越应该如此。如果发布或保障依赖过程分数、结果分数、失败归因或链接证据，那么验证器层就不再只是非正式的辅助逻辑，而是一个需要治理的生产工件。
+对[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)也越来越应该如此。如果发布或保障依赖过程分数、结果分数、失败归因或链接证据，那么验证器层就不再只是非正式的辅助逻辑，而是一个需要治理的生产工件。
 
 这很重要，因为验证器契约不只是给质量打分。它还在定义系统会把什么算作可接受证据、能够精确命名哪些失败，以及哪些发布声明在事后可以被辩护。一旦验证器契约会影响发布判断、事故归因或保障状态，它的血缘就进入了证据主干，而不再只是一个可有可无的评测细节。
 

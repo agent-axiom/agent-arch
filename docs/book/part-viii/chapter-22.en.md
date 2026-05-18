@@ -78,7 +78,7 @@ You need to be able to answer:
 - which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
 - which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used;
 - which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
-- which verifier contract, grading rubric, and evidence-linkage rules were active;
+- which [verifier contract](../../appendix/eval-schema.en.md), grading rubric, and evidence-linkage rules were active;
 - which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;
 - which interruption or expiry policy governed the run;
 - which orchestration pattern and worker-boundary policy governed the run;
@@ -195,7 +195,7 @@ then the team starts making release decisions on a shaky foundation.
 
 That is why a good ADLC should treat [eval datasets](../../appendix/eval-schema.en.md) as part of the approved artifact model.
 
-The same should increasingly be true for verifier contracts. If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
+The same should increasingly be true for [verifier contracts](../../appendix/eval-schema.en.md). If release or assurance depends on process scores, outcome scores, failure attribution, or linked evidence, then the verifier layer is no longer informal scaffolding. It becomes a governed production artifact.
 
 This matters because a verifier contract does not merely score quality. It also defines what the system will count as acceptable evidence, which failures it can name precisely, and which release claims can be defended later. Once a verifier contract influences release judgment, incident attribution, or assurance status, its lineage becomes part of the evidence backbone rather than an optional eval detail.
 

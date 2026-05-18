@@ -1059,6 +1059,28 @@ def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "какой [verifier contract](../../appendix/eval-schema.md)",
+            "[verifier contracts](../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "which [verifier contract](../../appendix/eval-schema.en.md)",
+            "[verifier contracts](../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
+            "[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
