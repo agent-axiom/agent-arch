@@ -364,6 +364,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
 - [参考包](../../appendix/reference-package.zh.md)
 
 - [第 21 章：保障闭环：红队测试、检测与响应](chapter-21.zh.md)
