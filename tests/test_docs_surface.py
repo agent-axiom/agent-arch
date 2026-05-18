@@ -618,6 +618,23 @@ def test_chapter_11_trace_verifier_evidence_eval_link_is_clickable() -> None:
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_11_practical_rules_link_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-v/chapter-11.md": (
+            "явную связь с [verifier evidence](../../appendix/eval-schema.md)"
+        ),
+        "docs/book/part-v/chapter-11.en.md": (
+            "explicit linkage to [verifier evidence](../../appendix/eval-schema.en.md)"
+        ),
+        "docs/book/part-v/chapter-11.zh.md": (
+            "指向[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)的显式链接"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_12_slo_threads_three_canonical_cases() -> None:
     required_markers = (
         "SLO case-spine note",
