@@ -1019,22 +1019,28 @@ def test_chapter_22_provenance_questions_link_policy_bundle() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
-def test_chapter_22_artifact_inventory_links_runtime_control_schema() -> None:
+def test_chapter_22_artifact_inventory_links_lifecycle_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)"
+            "[capability contract](../../appendix/lifecycle-artifact-schema.md)",
+            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
-            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md)"
+            "[capability contract](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
+            "[能力契约（capability contract）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[运行时控制模式（runtime-control schema）]"
-            "(../../appendix/lifecycle-artifact-schema.zh.md)"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
 
-    for path, expected_snippet in expected_snippets_by_file.items():
-        assert expected_snippet in _read(path), (path, expected_snippet)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
@@ -1132,17 +1138,23 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[policy bundle](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`",
+            "[capability contract](../../appendix/lifecycle-artifact-schema.md) "
+            "`create_support_ticket`",
             "[rollout gate](../../appendix/change-rollout-schema.md), "
             "[approval schema](../../appendix/approval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "`side_effect_unknown` [policy bundle](../../appendix/policy-bundle-schema.en.md)",
+            "`create_support_ticket` [capability contract]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
             "[rollout gate](../../appendix/change-rollout-schema.en.md), "
             "[approval schema](../../appendix/approval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "`side_effect_unknown` [策略包（policy bundle）]"
             "(../../appendix/policy-bundle-schema.zh.md)",
+            "`create_support_ticket` [能力契约（capability contract）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[rollout gate](../../appendix/change-rollout-schema.zh.md)、"
             "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
         ),
