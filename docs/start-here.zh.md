@@ -118,6 +118,15 @@
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理](book/part-viii/chapter-20.zh.md)
 
+### Safe-agent schema spine
+
+- [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
+- [评测数据集 Schema 与打分契约](appendix/eval-schema.zh.md)
+- [记忆记录与检索契约 Schema](appendix/memory-retrieval-schema.zh.md)
+- [参考页面](reference.zh.md)
+
+如果需要快速检查 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence，可以走这条路线。
+
 ## 读书时旁边还可以打开什么
 
 - [全书计划](book/plan.zh.md)
