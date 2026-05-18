@@ -362,6 +362,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Эталонный пакет](../../appendix/reference-package.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
