@@ -1075,19 +1075,24 @@ def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
 def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался"
+            "какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался",
+            "[approved retrieval corpus](../../appendix/memory-retrieval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
-            "which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used"
+            "which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used",
+            "[approved retrieval corpus](../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "哪一版[检索语料（retrieval corpus）]"
-            "(../../appendix/memory-retrieval-schema.zh.md)"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+            "[approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
 
-    for path, expected_snippet in expected_snippets_by_file.items():
-        assert expected_snippet in _read(path), (path, expected_snippet)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
