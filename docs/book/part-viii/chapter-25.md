@@ -330,6 +330,9 @@ Grading contract становится сильнее, если умеет хра
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема approval](../../appendix/approval-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)

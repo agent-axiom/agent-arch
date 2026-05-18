@@ -330,6 +330,9 @@ This chapter should be read as a control-evidence layer, not as a list of extra 
 - [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Approval Schema](../../appendix/approval-schema.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 - [Research Frontier: Memory, Observability, and Multi-Agent Reliability](../../appendix/research-frontier.en.md)
 
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)

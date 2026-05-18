@@ -330,6 +330,9 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
 - [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [Approval Schema](../../appendix/approval-schema.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
