@@ -85,7 +85,7 @@
 
 Такой контракт превращает verifier из свободного комментария в release-bearing artifact: его можно версионировать, сравнивать между релизами и использовать как основание для блокировки раскатки.
 
-На практике полезно сохранять не только текст verdict, но и маленький verifier verdict record:
+На практике полезно сохранять не только текст verdict, но и маленький [verifier verdict record](../../appendix/eval-schema.md), который также можно отразить в [trace schema](../../appendix/trace-schema.md):
 
 - `verdict_id`: стабильный идентификатор результата проверки;
 - `verifier_id`: какой verifier или judge выдал результат;

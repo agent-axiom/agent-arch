@@ -92,7 +92,7 @@ SLO 帮你定义什么叫系统健康。
 
 这样的契约会把 verifier 从自由文本评论变成 release-bearing artifact：它可以被版本化、跨发布比较，并作为阻止 rollout 的依据。
 
-实践中，最好不要只保存 verdict 文本，还要保存一个小的 verifier verdict record：
+实践中，最好不要只保存 verdict 文本，还要保存一个小的 [verifier verdict record](../../appendix/eval-schema.zh.md)，并且也可以映射进 [trace schema](../../appendix/trace-schema.zh.md)：
 
 - `verdict_id`：评审结果的稳定标识符；
 - `verifier_id`：是哪一个 verifier 或 judge 生成了结果；
