@@ -100,6 +100,8 @@ flowchart LR
 - 可审计性不足；
 - 不安全的降级行为。
 
+可以把这张表看成 unified agent threat evidence model：每一行都把 threat class、control 和可复查的 evidence/telemetry markers 连接起来。
+
 | 威胁 | 最先该在哪一层拦 | 有效手段 | Evidence / telemetry |
 | --- | --- | --- | --- |
 | Prompt injection | 提示组装、retrieval、模型网关 | trusted/untrusted content 边界、policy checks、把 instructions 和 data 分开 | `prompt_boundary_event`、source labels、rejected-instruction trace |

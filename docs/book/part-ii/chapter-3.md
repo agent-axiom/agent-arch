@@ -100,6 +100,8 @@ flowchart LR
 - недостаточная пригодность для аудита;
 - небезопасное поведение при откате.
 
+Эту таблицу удобно читать как unified agent threat evidence model: каждая строка связывает класс угрозы, контроль и проверяемые evidence/telemetry markers.
+
 | Угроза | Где ловить в первую очередь | Что помогает | Evidence / telemetry |
 | --- | --- | --- | --- |
 | Prompt injection | Сборка подсказки, retrieval, gateway модели | границы между trusted/untrusted content, policy checks, отказ от смешивания instructions и data | `prompt_boundary_event`, source labels, rejected-instruction trace |
