@@ -1292,6 +1292,34 @@ def test_chapter_22_incident_case_spine_links_incident_artifacts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[policy](../../appendix/policy-bundle-schema.md)-",
+            "[approval](../../appendix/approval-schema.md)-",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.md)-",
+            "[eval- и verifier](../../appendix/eval-schema.md)-артефактов",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[policy](../../appendix/policy-bundle-schema.en.md)",
+            "[approval-schema](../../appendix/approval-schema.en.md)",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[eval, and verifier](../../appendix/eval-schema.en.md) artifacts",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[策略](../../appendix/policy-bundle-schema.zh.md)",
+            "[approval-schema](../../appendix/approval-schema.zh.md)",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[评测和验证器](../../appendix/eval-schema.zh.md)工件",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
