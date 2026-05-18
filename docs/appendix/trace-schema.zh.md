@@ -197,7 +197,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `reviewed_by`
 - `review_evidence_refs`
 
-如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器证据，例如：
+如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载 verifier verdict record：
 
 - `verdict_id`
 - `verifier_id`

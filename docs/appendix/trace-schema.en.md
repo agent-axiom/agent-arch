@@ -197,7 +197,7 @@ If rollout or eval requires `sandbox_profile_review`, the trace should also be a
 - `reviewed_by`
 - `review_evidence_refs`
 
-If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for verifier evidence, for example:
+If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for a verifier verdict record:
 
 - `verdict_id`
 - `verifier_id`

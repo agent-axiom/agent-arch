@@ -161,7 +161,7 @@ Export contract 是有意保持具体的：默认 `dataset_name` 是 `agent-runt
 
 ## 生产级数据集模式还应该补什么
 
-随着系统变得更严肃，模式最好继续补充这些字段：
+随着系统变得更严肃，模式最好继续补充这些 verifier verdict record 字段：
 
 - `dataset_version`
 - `scenario_owner`

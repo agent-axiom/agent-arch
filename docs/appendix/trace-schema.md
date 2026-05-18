@@ -197,7 +197,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `reviewed_by`
 - `review_evidence_refs`
 
-Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract и для verifier evidence, например:
+Если система опирается на verifier-aware evals, полезно отдельно определить event или linked payload contract для verifier verdict record:
 
 - `verdict_id`
 - `verifier_id`
