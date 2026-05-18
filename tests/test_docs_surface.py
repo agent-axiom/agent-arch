@@ -807,6 +807,8 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "approved artifact bundle",
         "provenance",
         "capability contract",
+        "eval dataset",
+        "trace schema",
         "approval schema",
         "approved retrieval corpus",
         "source-grounding rubric",
@@ -820,6 +822,28 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/trace-schema.md",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
 
 
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
