@@ -182,7 +182,7 @@ flowchart LR
 3. 所有工具调用、审批等待和策略决策都应该留下机器可读事件。
 4. 不确定性要明确记录：`side_effect_unknown` 比假装成 `success` 更有价值。
 5. 脱敏和 schema 稳定性应该一开始就设计进去，而不是等第一次事故审查之后再补。
-6. 如果评估或 rollout 依赖验证器判断，追踪就应该保留指向验证器证据的显式链接。
+6. 如果评估或 rollout 依赖验证器判断，追踪就应该保留指向[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)的显式链接。
 
 ## 10. 一个工具执行的结构化事件示例
 

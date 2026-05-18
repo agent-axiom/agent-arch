@@ -182,7 +182,7 @@ If you need a short operational frame, rules like these are usually enough:
 3. All tool calls, approval waits, and policy decisions should emit machine-readable events.
 4. Uncertainty should be logged explicitly: `side_effect_unknown` is more useful than fake `success`.
 5. Redaction and schema stability should be designed up front, not after the first incident review.
-6. If eval or rollout depends on verifier judgments, traces should preserve explicit linkage to verifier evidence.
+6. If eval or rollout depends on verifier judgments, traces should preserve explicit linkage to [verifier evidence](../../appendix/eval-schema.en.md).
 
 ## 10. Example Structured Event for Tool Execution
 
