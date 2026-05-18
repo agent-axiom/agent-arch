@@ -46,6 +46,7 @@
 - 项目站点：<https://agent-axiom.github.io/agent-arch/>
 - 书籍首页：[docs/index.zh.md](docs/index.zh.md)
 - 导航入口页：[docs/start-here.zh.md](docs/start-here.zh.md)
+- Safe-agent schema spine：[trace schema](docs/appendix/trace-schema.zh.md)、[eval schema](docs/appendix/eval-schema.zh.md) 与 [memory/retrieval schema](docs/appendix/memory-retrieval-schema.zh.md) 连接 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
 - 参考包：[docs/appendix/reference-package.zh.md](docs/appendix/reference-package.zh.md)
 
 ## 本地开发

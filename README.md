@@ -46,6 +46,7 @@ This repository exists to document that full operating model.
 - Read the site: <https://agent-axiom.github.io/agent-arch/>
 - Start with the book homepage: [docs/index.en.md](docs/index.en.md)
 - Open the guided entry page: [docs/start-here.en.md](docs/start-here.en.md)
+- Safe-agent schema spine: follow the [trace schema](docs/appendix/trace-schema.en.md), [eval schema](docs/appendix/eval-schema.en.md), and [memory/retrieval schema](docs/appendix/memory-retrieval-schema.en.md) for the MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence.
 - Explore the reference runtime: [docs/appendix/reference-package.en.md](docs/appendix/reference-package.en.md)
 
 ## Local development

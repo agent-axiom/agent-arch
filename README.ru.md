@@ -46,6 +46,7 @@
 - Сайт проекта: <https://agent-axiom.github.io/agent-arch/>
 - Главная страница книги: [docs/index.md](docs/index.md)
 - Навигационная стартовая страница: [docs/start-here.md](docs/start-here.md)
+- Safe-agent schema spine: [trace schema](docs/appendix/trace-schema.md), [eval schema](docs/appendix/eval-schema.md) и [memory/retrieval schema](docs/appendix/memory-retrieval-schema.md) связывают MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
 - Эталонный runtime: [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
 
 ## Локальная разработка
