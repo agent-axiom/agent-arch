@@ -100,7 +100,7 @@ There are many threats in agent systems, but a production system like the suppor
 - insufficient auditability;
 - unsafe fallback behavior.
 
-Read this table as a unified agent threat evidence model: each row links a threat class, a control, and reviewable evidence/telemetry markers.
+Read this table as a unified agent threat evidence model for the [trace schema](../../appendix/trace-schema.en.md): each row links a threat class, a control, and reviewable evidence/telemetry markers.
 
 | Threat | First place to catch it | What helps | Evidence / telemetry |
 | --- | --- | --- | --- |
