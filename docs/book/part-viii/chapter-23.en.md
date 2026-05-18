@@ -21,7 +21,7 @@ This matters especially for agent systems because they usually leave behind a lo
 - capability-session state and interruption lineage;
 - orchestration-pattern lineage and worker-boundary decisions;
 - delegated authorization lineage and revoke state;
-- verifier-contract lineage and evidence-retention obligations;
+- verifier-contract lineage and [evidence-retention obligations](../../appendix/eval-schema.en.md);
 - handoff-artifact lineage across context resets and role handoffs;[^anthropic-harness]
 - external integrations;
 - user expectations;
@@ -130,7 +130,7 @@ The team usually needs to decide separately:
 - who remains the owner of archived state;
 - whether old datasets and memory artifacts may be reused by the replacement;
 - whether delegated authorization records must be retained to explain under whose identity old actions ran;
-- whether verifier evidence and verifier-contract history must be retained to explain why earlier releases were judged acceptable.
+- whether [verifier evidence](../../appendix/eval-schema.en.md) and verifier-contract history must be retained to explain why earlier releases were judged acceptable.
 
 So retirement affects not only the running system, but also the historical operational footprint.
 

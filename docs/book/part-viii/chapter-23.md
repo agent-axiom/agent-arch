@@ -21,7 +21,7 @@
 - состояние capability sessions и interruption lineage;
 - lineage для orchestration patterns и worker-boundary decisions;
 - delegated authorization lineage и revoke state;
-- verifier-contract lineage и obligations по retention для verifier evidence;
+- verifier-contract lineage и obligations по retention для [verifier evidence](../../appendix/eval-schema.md);
 - lineage handoff artifacts на границах context reset и role handoff;[^anthropic-harness]
 - external integrations;
 - user expectations;
@@ -130,7 +130,7 @@ flowchart LR
 - кто остается owner у archived state;
 - можно ли использовать старые datasets и memory artifacts в replacement;
 - нужно ли сохранять delegated authorization records, чтобы объяснять, под чьей identity исполнялись старые действия;
-- нужно ли сохранять verifier evidence и историю verifier contracts, чтобы объяснять, почему прежние релизы считались приемлемыми.
+- нужно ли сохранять [verifier evidence](../../appendix/eval-schema.md) и историю verifier contracts, чтобы объяснять, почему прежние релизы считались приемлемыми.
 
 То есть retirement затрагивает не только running system, но и накопленный рабочий след системы.
 

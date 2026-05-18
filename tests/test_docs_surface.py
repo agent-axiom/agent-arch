@@ -1218,6 +1218,7 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         "Incident coordination",
         "deprecated write paths",
         "paused approvals",
+        "verifier evidence",
         "stale corpora",
         "obsolete embeddings",
         "emergency-only capabilities",
@@ -1234,6 +1235,17 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         text = _read(path)
         assert "internal knowledge assistant" not in text, path
         assert "incident coordination" not in text, path
+
+
+def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-23.md": "../../appendix/eval-schema.md",
+        "docs/book/part-viii/chapter-23.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-viii/chapter-23.zh.md": "../../appendix/eval-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
