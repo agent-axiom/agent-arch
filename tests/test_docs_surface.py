@@ -1090,24 +1090,30 @@ def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
-def test_chapter_22_duplicate_ticket_case_links_rollout_gate() -> None:
+def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
+            "[policy bundle](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`",
             "[rollout gate](../../appendix/change-rollout-schema.md), "
-            "[approval schema](../../appendix/approval-schema.md)"
+            "[approval schema](../../appendix/approval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
+            "`side_effect_unknown` [policy bundle](../../appendix/policy-bundle-schema.en.md)",
             "[rollout gate](../../appendix/change-rollout-schema.en.md), "
-            "[approval schema](../../appendix/approval-schema.en.md)"
+            "[approval schema](../../appendix/approval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
+            "`side_effect_unknown` [策略包（policy bundle）]"
+            "(../../appendix/policy-bundle-schema.zh.md)",
             "[rollout gate](../../appendix/change-rollout-schema.zh.md)、"
-            "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)"
+            "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
         ),
     }
 
-    for path, expected_snippet in expected_snippets_by_file.items():
-        assert expected_snippet in _read(path), (path, expected_snippet)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
