@@ -163,7 +163,7 @@ Practically, that means:
 - stable schemas;
 - redaction rules;
 - retention policy;
-- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, verifier evidence, verifier contract identity, and lifecycle artifacts.
+- linkage between traces, approvals, policy decisions, runtime-control states, capability-session events, orchestration-pattern events, [verifier evidence](../../appendix/eval-schema.en.md), verifier contract identity, and lifecycle artifacts.
 
 If a trace cannot be linked to `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, and verifier evidence for how the run was judged, it may still be useful for debugging, but it is weak as an evidence layer.
 

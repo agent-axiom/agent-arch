@@ -1014,6 +1014,7 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
         "bypass blind spots",
         "retrieval provenance",
         "source-grounding verdicts",
+        "verifier evidence",
         "notification delivery",
         "post-incident control changes",
     )
@@ -1031,6 +1032,17 @@ def test_chapter_26_governance_action_trace_links_are_clickable() -> None:
         "docs/book/part-viii/chapter-26.md": "../../appendix/trace-schema.md",
         "docs/book/part-viii/chapter-26.en.md": "../../appendix/trace-schema.en.md",
         "docs/book/part-viii/chapter-26.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+
+def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-26.md": "../../appendix/eval-schema.md",
+        "docs/book/part-viii/chapter-26.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-viii/chapter-26.zh.md": "../../appendix/eval-schema.zh.md",
     }
 
     for path, expected_link in expected_links_by_file.items():

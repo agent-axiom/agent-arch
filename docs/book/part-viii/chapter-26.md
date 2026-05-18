@@ -163,7 +163,7 @@ Microsoft отдельно подчеркивает полный произво�
 - стабильные схемы;
 - правила маскирования;
 - политику хранения;
-- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, verifier evidence, identity, verifier contract и артефактами жизненного цикла.
+- связи между трассами, подтверждениями, решениями политик, runtime-control states, capability-session events, событиями orchestration pattern, [verifier evidence](../../appendix/eval-schema.md), identity, verifier contract и артефактами жизненного цикла.
 
 Если трассу нельзя связать с `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave` и verifier evidence о том, как именно run был оценен, то она может быть полезна для отладки, но все еще слаба как доказательный слой.
 

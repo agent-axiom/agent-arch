@@ -163,7 +163,7 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、verifier evidence、verifier contract identity 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、[verifier evidence](../../appendix/eval-schema.zh.md)、verifier contract identity 和 lifecycle artifacts 之间的链接。
 
 如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 verifier evidence，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
