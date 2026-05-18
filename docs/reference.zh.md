@@ -34,7 +34,7 @@
     三个 canonical cases 会从不同工件集合进入参考层。**Support triage** 依赖 approval record、policy bundle、trace schema 和 duplicate-ticket recovery evidence。**Internal knowledge assistant** 需要 memory/retrieval contract、freshness checks、access control 和 knowledge provenance。**Incident coordination** 连接 incident record、escalation evidence、notification side effects、response ownership 和 post-incident learning。
 
 !!! note "Safe-agent schema spine"
-    如果需要 safe-agent architecture 的短路线，可以把 trace schema、eval schema 与 memory/retrieval schema 放在一起看。它们现在连接了 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
+    如果需要 safe-agent architecture 的短路线，可以把 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 与 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 放在一起看。它们现在连接了 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
 
 ## 模式页与契约页
 

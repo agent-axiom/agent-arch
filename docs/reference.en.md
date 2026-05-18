@@ -34,7 +34,7 @@ For a short path in, start with:
     The three canonical cases enter the reference layer through different artifact sets. **Support triage** depends on the approval record, policy bundle, trace schema, and duplicate-ticket recovery evidence. **Internal knowledge assistant** needs the memory/retrieval contract, freshness checks, access control, and knowledge provenance. **Incident coordination** connects the incident record, escalation evidence, notification side effects, response ownership, and post-incident learning.
 
 !!! note "Safe-agent schema spine"
-    For a short route through safe-agent architecture, keep the trace schema, eval schema, and memory/retrieval schema together. They now connect the MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence.
+    For a short route through safe-agent architecture, keep the [trace schema](appendix/trace-schema.en.md), [eval schema](appendix/eval-schema.en.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.en.md) together. They now connect the MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence.
 
 ## Schemas and contract pages
 

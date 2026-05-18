@@ -2866,6 +2866,31 @@ def test_reference_surfaces_safe_agent_schema_spine() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_reference_safe_agent_schema_spine_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/reference.md": (
+            "appendix/trace-schema.md",
+            "appendix/eval-schema.md",
+            "appendix/memory-retrieval-schema.md",
+        ),
+        "docs/reference.en.md": (
+            "appendix/trace-schema.en.md",
+            "appendix/eval-schema.en.md",
+            "appendix/memory-retrieval-schema.en.md",
+        ),
+        "docs/reference.zh.md": (
+            "appendix/trace-schema.zh.md",
+            "appendix/eval-schema.zh.md",
+            "appendix/memory-retrieval-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
+
+
 def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     required_markers = (
         "Safe-agent schema update",
