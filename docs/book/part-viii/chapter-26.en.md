@@ -341,7 +341,7 @@ The point is not the exact numbers. The point is that observability readiness sh
 - telemetry covers the happy path but not the bypass path;
 - contract-version drift is noticed only after payloads stop matching expectations;
 - orchestration-pattern drift or worker-boundary crossings are not visible as first-class telemetry;
-- verifier evidence is detached from traces or screenshots;
+- [verifier evidence](../../appendix/eval-schema.en.md) is detached from traces or screenshots;
 - drift is noticed only through user complaints;
 - retention and redaction rules are not aligned with forensic needs.
 

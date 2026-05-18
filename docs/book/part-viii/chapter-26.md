@@ -341,7 +341,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - телеметрия покрывает штатный путь, но не обходной;
 - contract-version drift замечают только после того, как payloads перестают соответствовать ожиданиям;
 - orchestration-pattern drift или пересечения worker boundaries не видны как first-class telemetry;
-- verifier evidence оторван от traces или screenshots;
+- [verifier evidence](../../appendix/eval-schema.md) оторван от traces или screenshots;
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
 
