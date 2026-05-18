@@ -231,6 +231,10 @@ After this transition chapter, the natural next topics are change management, as
 
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../part-v/chapter-13.en.md)
 - [Chapter 18. Production Rollout Checklist](../part-vii/chapter-18.en.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
+- [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 - [Part VI. Organizational Model](../part-vi/index.en.md)
 - [Sources](../../appendix/sources.en.md)
 

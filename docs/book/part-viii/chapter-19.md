@@ -231,6 +231,10 @@ flowchart LR
 
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
+- [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Часть VI. Организационная модель](../part-vi/index.md)
 - [Источники](../../appendix/sources.md)
 
