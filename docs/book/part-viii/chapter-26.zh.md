@@ -391,7 +391,10 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
 - [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
 - [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Approval Schema](../../appendix/approval-schema.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
 - [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 11 章：追踪、跨度与结构化事件](../part-v/chapter-11.zh.md)
