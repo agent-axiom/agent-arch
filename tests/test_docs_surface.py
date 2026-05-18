@@ -1789,6 +1789,37 @@ def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> Non
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_23_retirement_useful_refs_include_retirement_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[Схема approval](../../appendix/approval-schema.md)",
+            "[Схема наборов для оценки и правил проверки]"
+            "(../../appendix/eval-schema.md)",
+            "[Схема памяти и извлечения]"
+            "(../../appendix/memory-retrieval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[Approval Schema](../../appendix/approval-schema.en.md)",
+            "[Eval Dataset Schema and Grading Contract]"
+            "(../../appendix/eval-schema.en.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[Approval Schema](../../appendix/approval-schema.zh.md)",
+            "[Eval Dataset Schema 与 Grading Contract]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (

@@ -308,6 +308,9 @@ That means this part can now serve not only as architecture explanation, but als
 
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
 - [Policy Bundle Schema and Approval Contract](../../appendix/policy-bundle-schema.en.md)
+- [Approval Schema](../../appendix/approval-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 - [Reference Package](../../appendix/reference-package.en.md)
 
 - [Chapter 19. From SDLC to ADLC](chapter-19.en.md)

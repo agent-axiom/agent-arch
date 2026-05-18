@@ -308,6 +308,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема approval](../../appendix/approval-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Эталонный пакет](../../appendix/reference-package.md)
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
