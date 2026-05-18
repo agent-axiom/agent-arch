@@ -3267,6 +3267,7 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
         ),
         "docs/book/part-iv/practical-mcp-a2a.md": (
             "A2A требует governance",
+            "A2A handoff trust contract",
             "delegated authority",
             "agent identity",
             "delegation chain",
@@ -3278,6 +3279,7 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
         ),
         "docs/book/part-iv/practical-mcp-a2a.en.md": (
             "A2A Needs Governance",
+            "A2A handoff trust contract",
             "delegated authority",
             "agent identity",
             "delegation chain",
@@ -3289,6 +3291,7 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
         ),
         "docs/book/part-iv/practical-mcp-a2a.zh.md": (
             "A2A 需要治理",
+            "A2A handoff trust contract",
             "delegated authority",
             "agent identity",
             "delegation chain",
