@@ -292,21 +292,40 @@ def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/index.md": (
             "[Change packet](../../appendix/change-rollout-schema.md)",
+            "[Finding and response record](../../appendix/incident-record-schema.md)",
+            "[Approved artifact bundle]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[Retirement plan](../../appendix/lifecycle-artifact-schema.md)",
             "[Eval gate and verifier contract](../../appendix/eval-schema.md)",
             "[Trace and telemetry coverage record]"
             "(../../appendix/trace-schema.md)",
+            "[Registry record](../../appendix/registry-operations-handbook.md)",
         ),
         "docs/book/part-viii/index.en.md": (
             "[Change packet](../../appendix/change-rollout-schema.en.md)",
+            "[Finding and response record]"
+            "(../../appendix/incident-record-schema.en.md)",
+            "[Approved artifact bundle]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[Retirement plan](../../appendix/lifecycle-artifact-schema.en.md)",
             "[Eval gate and verifier contract](../../appendix/eval-schema.en.md)",
             "[Trace and telemetry coverage record]"
             "(../../appendix/trace-schema.en.md)",
+            "[Registry record]"
+            "(../../appendix/registry-operations-handbook.en.md)",
         ),
         "docs/book/part-viii/index.zh.md": (
             "[变更包](../../appendix/change-rollout-schema.zh.md)",
+            "[Finding 与响应记录]"
+            "(../../appendix/incident-record-schema.zh.md)",
+            "[已批准工件包]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[退役计划](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[Eval gate 与 verifier contract](../../appendix/eval-schema.zh.md)",
             "[Trace 与 telemetry 覆盖记录]"
             "(../../appendix/trace-schema.zh.md)",
+            "[Registry record]"
+            "(../../appendix/registry-operations-handbook.zh.md)",
         ),
     }
 
