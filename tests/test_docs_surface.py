@@ -1267,14 +1267,20 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
 def test_chapter_22_incident_case_spine_links_incident_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
+            "[escalation-policy bundle, notification contract и responder-role map]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
             "[incident-state schema](../../appendix/incident-record-schema.md)",
             "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
+            "[escalation-policy bundle, notification contract, and responder-role map]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
             "[incident-state schema](../../appendix/incident-record-schema.en.md)",
             "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
+            "[escalation-policy bundle、notification contract、responder-role map]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[incident-state schema](../../appendix/incident-record-schema.zh.md)",
             "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
