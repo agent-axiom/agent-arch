@@ -940,6 +940,7 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         "insider-risk surfaces",
         "approval-tight replacement window",
         "separate tool principal",
+        "immutable trace linkage",
         "retrieval poisoning",
         "tenant-filter bypass",
         "notification suppression",
@@ -952,6 +953,17 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_24_misalignment_trace_linkage_is_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-24.md": "../../appendix/trace-schema.md",
+        "docs/book/part-viii/chapter-24.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-viii/chapter-24.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:

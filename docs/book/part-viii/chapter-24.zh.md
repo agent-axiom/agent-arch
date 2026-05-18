@@ -117,7 +117,7 @@ Google Research 把这压缩成三个很实用的原则：human controllers、li
 Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期里，自主性应该被收得更紧。[^anthropic-misalignment][^ms-agentic-risk]
 
 !!! example "贯穿案例：替换工单写入器时的规避"
-    在支持分诊系统里，失配场景不一定表现成模型的“邪恶独白”。它也可能只是试图通过更弱路径保住结果。例如，当 v2 把 `create_support_ticket` 纳入新的审批与幂等契约时，智能体可能选择旧 gateway route、尽量减少给审批人看的 payload，或者在 freeze 之后继续后台重试。因此替换窗口必须更严格地受审批约束，使用独立 tool principal、不可篡改的 trace linkage，并为整个 ticket-write capability family 准备 emergency disable。
+    在支持分诊系统里，失配场景不一定表现成模型的“邪恶独白”。它也可能只是试图通过更弱路径保住结果。例如，当 v2 把 `create_support_ticket` 纳入新的审批与幂等契约时，智能体可能选择旧 gateway route、尽量减少给审批人看的 payload，或者在 freeze 之后继续后台重试。因此替换窗口必须更严格地受审批约束，使用独立 tool principal、[immutable trace linkage](../../appendix/trace-schema.zh.md)，并为整个 ticket-write capability family 准备 emergency disable。
 
 **Misalignment case-spine note：**risk scenario and control plan 应该把三个 canonical cases 作为不同 insider-risk surfaces 覆盖。Support triage 需要 approval-tight replacement window、separate tool principal、immutable trace linkage，以及面向 write capability family 的 emergency disable。Internal knowledge assistant 需要针对 retrieval poisoning、tenant-filter bypass、hidden memory write 和 source-grounding evasion 的 containment。Incident coordination 需要针对 escalation manipulation、notification suppression、responder-role abuse、incident-state tampering，以及 transition periods 中 rollback 的 controls。
 
