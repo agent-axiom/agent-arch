@@ -40,7 +40,7 @@ The problem is that production behavior here depends on more than code. It also 
 - runtime-control schemas;
 - verifier contracts, [grading rules and evidence-linkage rules](../../appendix/eval-schema.en.md);
 - orchestration-pattern governance rules and worker-safe catalog definitions;
-- capability-session interruption and re-initialization rules;
+- [capability-session interruption and re-initialization rules](../../appendix/lifecycle-artifact-schema.en.md);
 - rollout bundles.
 
 In other words, the agent supply chain is wider because the system itself is wider.
@@ -80,9 +80,9 @@ You need to be able to answer:
 - which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
 - which [verifier contract](../../appendix/eval-schema.en.md), [grading rubric and evidence-linkage rules](../../appendix/eval-schema.en.md) were active;
 - which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;
-- which interruption or expiry policy governed the run;
+- which [interruption or expiry policy](../../appendix/lifecycle-artifact-schema.en.md) governed the run;
 - which orchestration pattern and worker-boundary policy governed the run;
-- which delegated authorization mode, principal binding, and revoke policy governed the run;
+- which [delegated authorization mode, principal binding, and revoke policy](../../appendix/lifecycle-artifact-schema.en.md) governed the run;
 - who approved the change.
 
 !!! example "Case thread: provenance for the duplicate-ticket fix"

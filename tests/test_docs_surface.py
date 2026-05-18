@@ -1024,15 +1024,21 @@ def test_chapter_22_artifact_inventory_links_lifecycle_artifacts() -> None:
         "docs/book/part-viii/chapter-22.md": (
             "[capability contract](../../appendix/lifecycle-artifact-schema.md)",
             "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
+            "[правила interruption и re-initialization для capability sessions]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[capability contract](../../appendix/lifecycle-artifact-schema.en.md)",
             "[runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[capability-session interruption and re-initialization rules]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[能力契约（capability contract）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[运行时控制模式（runtime-control schema）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[能力会话中断与重新初始化规则]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -1109,6 +1115,33 @@ def test_chapter_22_links_grading_and_evidence_rules_to_eval_schema() -> None:
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
+def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[interruption или expiry policy]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[delegated authorization mode, principal binding и revoke policy]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[interruption or expiry policy]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[delegated authorization mode, principal binding, and revoke policy]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[委派授权模式、principal 绑定与撤销策略]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
 

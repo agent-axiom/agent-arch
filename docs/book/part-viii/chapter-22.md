@@ -40,7 +40,7 @@
 - правила и схемы approval;
 - схемы runtime-control;
 - governance-правила для orchestration pattern и определения worker-safe catalog;
-- правила interruption и re-initialization для capability sessions;
+- [правила interruption и re-initialization для capability sessions](../../appendix/lifecycle-artifact-schema.md);
 - наборы для раскатки.
 
 То есть цепочка поставки у агента шире, потому что сама система шире.
@@ -80,9 +80,9 @@ Google Research очень точно показывает, что подтве�
 - какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
 - какой [verifier contract](../../appendix/eval-schema.md), [grading rubric и правила связывания доказательной базы](../../appendix/eval-schema.md) были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
-- какая interruption или expiry policy управляла этим run;
+- какая [interruption или expiry policy](../../appendix/lifecycle-artifact-schema.md) управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
-- какой delegated authorization mode, principal binding и revoke policy управляли этим run;
+- какой [delegated authorization mode, principal binding и revoke policy](../../appendix/lifecycle-artifact-schema.md) управляли этим run;
 - кто одобрил это изменение.
 
 !!! example "Сквозной кейс: provenance для duplicate-ticket fix"

@@ -40,7 +40,7 @@
 - 审批规则与模式；
 - 运行时控制模式；
 - 编排模式治理规则与 worker-safe 目录定义；
-- 能力会话中断与重新初始化规则；
+- [能力会话中断与重新初始化规则](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 发布工件包。
 
 也就是说，智能体的供应链更宽，是因为系统本身就更宽。
@@ -80,9 +80,9 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 发布是被哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证的；
 - 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
-- 当时是哪一条中断或过期策略在治理这次运行；
+- 当时是哪一条[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 当时是哪一种编排模式与 worker 边界策略在治理这次运行；
-- 当时是哪种委派授权模式、principal 绑定与撤销策略在治理这次运行；
+- 当时是哪种[委派授权模式、principal 绑定与撤销策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 这个变更是谁批准的。
 
 !!! example "贯穿案例：重复工单修复的 provenance"
