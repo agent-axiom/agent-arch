@@ -2,10 +2,13 @@
 
 这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 Git 历史的替代品，而是让读者快速看到项目是否持续演进。
 
-_更新于 2026 年 5 月 15 日。_
+_更新于 2026 年 5 月 18 日。_
 
 !!! note "Canonical case update"
     2026 年 5 月 15 日的主要更新，是贯穿全书的三个 canonical cases 地图。**Support triage**、**Internal knowledge assistant** 和 **Incident coordination** 现在已经出现在 book chapters、public entry points、reference pages 和 appendix artifacts 中，并且 coverage guards 会防止 chapters 与 appendix pages 丢失这些路线。
+
+!!! note "Safe-agent schema update"
+    2026 年 5 月 17-18 日的更新，把 safe-agent architecture 的 prose、appendices 和 guards 连接了起来：MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence 现在都反映在 trace/eval/memory schemas 中。
 
 ## 书籍
 

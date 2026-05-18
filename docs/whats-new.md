@@ -2,10 +2,13 @@
 
 Эта страница нужна как короткий журнал крупных улучшений книги и опорного пакета. Она не заменяет git history, а помогает читателю быстро увидеть, насколько проект живой и какие слои уже появились.
 
-_Актуально на 15 мая 2026 года._
+_Актуально на 18 мая 2026 года._
 
 !!! note "Canonical case update"
     Крупный слой обновлений от 15 мая 2026 года — сквозная карта трех canonical cases. **Support triage**, **Internal knowledge assistant** и **Incident coordination** теперь видны в book chapters, public entry points, reference pages и appendix artifacts, а coverage guards защищают chapters и appendix pages от потери этих маршрутов.
+
+!!! note "Safe-agent schema update"
+    Обновления 17-18 мая 2026 года связали prose, appendices и guards для safe-agent архитектуры: MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence теперь отражены в trace/eval/memory schemas.
 
 ## Book
 

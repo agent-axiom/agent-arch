@@ -2777,6 +2777,31 @@ def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_whats_new_surfaces_safe_agent_schema_update() -> None:
+    required_markers = (
+        "Safe-agent schema update",
+        "May 18, 2026",
+        "18 мая 2026 года",
+        "2026 年 5 月 18 日",
+        "MCP threat model",
+        "A2A handoff trust contract",
+        "verifier verdict record",
+        "governance action record",
+        "memory poisoning review fields",
+        "unified agent threat evidence",
+        "trace/eval/memory schemas",
+    )
+    checked_files = (
+        "docs/whats-new.md",
+        "docs/whats-new.en.md",
+        "docs/whats-new.zh.md",
+    )
+
+    for marker in required_markers[:4]:
+        assert any(marker in _read(path) for path in checked_files), marker
+    _assert_files_contain_all(checked_files, required_markers[4:])
+
+
 def test_whats_new_surfaces_canonical_case_update() -> None:
     required_markers = (
         "Canonical case update",
