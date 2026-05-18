@@ -211,7 +211,7 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 - `reviewer_override`
 - `evidence_refs`
 
-对于 `governance_action`，应该记录能把 telemetry 变成治理动作、而不只是 dashboard signal 的字段：
+对于 `governance_action`，应该记录 governance action record fields，让 telemetry 变成治理动作、而不只是 dashboard signal：
 
 - `governance_action_id`
 - `source_signal`

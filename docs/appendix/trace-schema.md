@@ -211,7 +211,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `reviewer_override`
 - `evidence_refs`
 
-А для `governance_action` полезно фиксировать поля, которые делают telemetry управленческим действием, а не просто dashboard-сигналом:
+А для `governance_action` полезно фиксировать поля governance action record, которые делают telemetry управленческим действием, а не просто dashboard-сигналом:
 
 - `governance_action_id`
 - `source_signal`
