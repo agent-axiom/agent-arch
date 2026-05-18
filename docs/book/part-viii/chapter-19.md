@@ -96,7 +96,7 @@ flowchart LR
 - rollout gates.
 
 !!! example "Сквозной кейс: дубли как ADLC-change"
-    В support-triage системе исправление инцидента с дублем тикета не заканчивается патчем retry-кода. Артефактами, несущими релизный риск, становятся новый eval dataset, policy bundle для `side_effect_unknown`, capability contract для `create_support_ticket`, rollout gate для canary и trace schema, по которой потом можно расследовать outcome. В ADLC все эти изменения должны идти как один проверяемый change set, иначе команда выпустит код, но оставит жизненный цикл сломанным.
+    В support-triage системе исправление инцидента с дублем тикета не заканчивается патчем retry-кода. Артефактами, несущими релизный риск, становятся новый [eval dataset](../../appendix/eval-schema.md), policy bundle для `side_effect_unknown`, capability contract для `create_support_ticket`, rollout gate для canary и [trace schema](../../appendix/trace-schema.md), по которой потом можно расследовать outcome. В ADLC все эти изменения должны идти как один проверяемый change set, иначе команда выпустит код, но оставит жизненный цикл сломанным.
 
 **ADLC case-spine note:** lifecycle state model должен отслеживать все три canonical cases как разные release-bearing surfaces. Support triage связывает code change, policy bundle, write-capability contract, duplicate-ticket evals и rollout gate. Internal knowledge assistant связывает retrieval corpus, source-grounding evals, memory-write rules, tenant filters и freshness review. Incident coordination связывает escalation policy, responder-role map, notification contract, incident-state schema и post-incident lessons как один governed change set.
 

@@ -735,6 +735,8 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
         "lifecycle state model",
         "release-bearing surfaces",
         "write-capability contract",
+        "eval dataset",
+        "trace schema",
         "duplicate-ticket evals",
         "retrieval corpus",
         "source-grounding evals",
@@ -748,6 +750,28 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-viii/chapter-19.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/trace-schema.md",
+        ),
+        "docs/book/part-viii/chapter-19.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-19.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
 
 
 def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
