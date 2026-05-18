@@ -231,6 +231,10 @@ flowchart LR
 
 - [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
 - [第 18 章：生产上线检查清单](../part-vii/chapter-18.zh.md)
+- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
 - [第六部分：组织模型](../part-vi/index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 

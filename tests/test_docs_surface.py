@@ -858,6 +858,46 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_19_read_next_links_lifecycle_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-19.md": (
+            "[Схема артефактов жизненного цикла]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[Схема change review и rollout gate]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[Схема набора политик и контракта подтверждения]"
+            "(../../appendix/policy-bundle-schema.md)",
+            "[Схема памяти и извлечения]"
+            "(../../appendix/memory-retrieval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-19.en.md": (
+            "[Lifecycle Artifact Schema]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.en.md)",
+            "[Policy Bundle Schema and Approval Contract]"
+            "(../../appendix/policy-bundle-schema.en.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-19.zh.md": (
+            "[Lifecycle Artifact Schema]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[Policy Bundle Schema 与 Approval Contract]"
+            "(../../appendix/policy-bundle-schema.zh.md)",
+            "[Memory and Retrieval Schema]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-19.md": (
