@@ -760,6 +760,7 @@ def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
         "duplicate-ticket regression gate",
         "approval coverage",
         "idempotency strategy",
+        "traces",
         "retrieval freshness gate",
         "source-grounding evals",
         "tenant-boundary checks",
@@ -772,6 +773,17 @@ def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_18_rollout_trace_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-vii/chapter-18.md": "../../appendix/trace-schema.md",
+        "docs/book/part-vii/chapter-18.en.md": "../../appendix/trace-schema.en.md",
+        "docs/book/part-vii/chapter-18.zh.md": "../../appendix/trace-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
 def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
