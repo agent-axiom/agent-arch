@@ -1198,6 +1198,28 @@ def test_chapter_13_eval_suite_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_13_verifier_verdict_schema_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-v/chapter-13.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/trace-schema.md",
+        ),
+        "docs/book/part-v/chapter-13.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/trace-schema.en.md",
+        ),
+        "docs/book/part-v/chapter-13.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/trace-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
+
+
 def test_evidence_spine_threads_three_canonical_cases() -> None:
     required_markers = (
         "Case-spine routing note",

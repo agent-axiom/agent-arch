@@ -92,7 +92,7 @@ That is why the practical `verifier contract` should be explicit rather than hid
 
 That contract turns the verifier from a free-form comment into a release-bearing artifact: it can be versioned, compared across releases, and used as a basis for blocking rollout.
 
-In practice, it is useful to persist not only the verdict text, but also a small verifier verdict record:
+In practice, it is useful to persist not only the verdict text, but also a small [verifier verdict record](../../appendix/eval-schema.en.md), which can also be mirrored in the [trace schema](../../appendix/trace-schema.en.md):
 
 - `verdict_id`: a stable identifier for the review result;
 - `verifier_id`: which verifier or judge produced the result;
