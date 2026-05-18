@@ -78,7 +78,7 @@ Google Research очень точно показывает, что подтве�
 - какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
 - какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался;
 - какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
-- какой verifier contract, grading rubric и правила связывания доказательной базы были активны;
+- какой [verifier contract](../../appendix/eval-schema.md), grading rubric и правила связывания доказательной базы были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
 - какая interruption или expiry policy управляла этим run;
 - какой orchestration pattern и какая worker-boundary policy управляли этим run;
@@ -195,7 +195,7 @@ flowchart LR
 
 Поэтому хороший ADLC должен относиться к [eval dataset](../../appendix/eval-schema.md) как к части модели доверенных артефактов.
 
-То же все больше верно и для verifier contracts. Если выпуск или assurance зависят от process scores, outcome scores, failure attribution или связанной доказательной базы, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный управляемый промышленный артефакт.
+То же все больше верно и для [verifier contracts](../../appendix/eval-schema.md). Если выпуск или assurance зависят от process scores, outcome scores, failure attribution или связанной доказательной базы, verifier layer уже нельзя считать неформальной вспомогательной логикой. Это полноценный управляемый промышленный артефакт.
 
 ## 8. Контракты возможностей и правила сетевого выхода тоже входят в цепочку поставки
 
