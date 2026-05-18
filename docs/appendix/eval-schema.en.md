@@ -161,7 +161,7 @@ It is not yet a full industrial eval framework, but it is already a reasonable s
 
 ## What a production dataset schema should add
 
-Once the system becomes more serious, it is useful to extend the dataset schema with:
+Once the system becomes more serious, it is useful to extend the dataset schema with verifier verdict record fields:
 
 - `dataset_version`
 - `scenario_owner`

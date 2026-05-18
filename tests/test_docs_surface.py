@@ -2114,6 +2114,7 @@ def test_trace_schema_includes_governance_action_event_fields() -> None:
 
 def test_trace_schema_includes_verifier_verdict_record_fields() -> None:
     required_markers = (
+        "verifier verdict record",
         "verdict_id",
         "verifier_id",
         "verifier_contract_version",
@@ -2167,6 +2168,7 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
 
 def test_eval_schema_includes_verifier_verdict_record_fields() -> None:
     required_markers = (
+        "verifier verdict record",
         "verifier_outputs",
         "verdict_id",
         "verifier_id",
