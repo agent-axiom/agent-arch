@@ -44,7 +44,7 @@ It usually includes:
 A golden path is good when a team benefits from staying on it.
 
 !!! example "Case thread: template instead of local patch"
-    After the duplicate-ticket incident, the golden path for support-like agents should already include an idempotent write tool, retry policy, trace/eval hooks, and a rollout gate for `side_effect_unknown`. Then the next team does not copy a postmortem into a wiki and fix the same flaw again; it receives the safer path as the starting shape.
+    After the duplicate-ticket incident, the golden path for support-like agents should already include an idempotent write tool, retry policy, [trace](../../appendix/trace-schema.en.md)/[eval](../../appendix/eval-schema.en.md) hooks, and a rollout gate for `side_effect_unknown`. Then the next team does not copy a postmortem into a wiki and fix the same flaw again; it receives the safer path as the starting shape.
 
 **Golden-path case-spine note:** the anti-zoo strategy should provide ready paths for all three canonical cases. Support triage gets a workflow-agent template with an approved write gateway, approval hooks, idempotency defaults, and duplicate-ticket evals. Internal knowledge assistant gets a knowledge-agent template with retrieval policy, source grounding, tenant filters, and memory-write guardrails. Incident coordination gets an incident-agent template with an escalation gateway, notification defaults, responder-role checks, and post-incident regression hooks.
 

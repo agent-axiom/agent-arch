@@ -675,6 +675,8 @@ def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:
         "anti-zoo strategy",
         "workflow-agent template",
         "approved write gateway",
+        "trace",
+        "eval",
         "duplicate-ticket evals",
         "knowledge-agent template",
         "source grounding",
@@ -688,6 +690,28 @@ def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_15_golden_path_trace_eval_links_are_clickable() -> None:
+    expected_links_by_file = {
+        "docs/book/part-vi/chapter-15.md": (
+            "../../appendix/trace-schema.md",
+            "../../appendix/eval-schema.md",
+        ),
+        "docs/book/part-vi/chapter-15.en.md": (
+            "../../appendix/trace-schema.en.md",
+            "../../appendix/eval-schema.en.md",
+        ),
+        "docs/book/part-vi/chapter-15.zh.md": (
+            "../../appendix/trace-schema.zh.md",
+            "../../appendix/eval-schema.zh.md",
+        ),
+    }
+
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for link in expected_links:
+            assert f"]({link})" in text, (path, link)
 
 
 def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
