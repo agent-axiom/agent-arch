@@ -163,7 +163,7 @@ For `mcp_tool_risk_review`, production traces should record MCP threat-model evi
 
 Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
 
-For `a2a_handoff`, the payload should preserve the trust contract, not only the delegated message text:
+For `a2a_handoff`, the payload should preserve the A2A handoff trust contract, not only the delegated message text:
 
 - `agent_identity`
 - `delegation_chain`

@@ -163,7 +163,7 @@ Trace replay валидирует эти evidence до того, как они �
 
 `threat_class` лучше держать в словаре из MCP threat model: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
 
-Для `a2a_handoff` payload должен сохранять trust contract, а не только текст делегированного сообщения:
+Для `a2a_handoff` payload должен сохранять A2A handoff trust contract, а не только текст делегированного сообщения:
 
 - `agent_identity`
 - `delegation_chain`
