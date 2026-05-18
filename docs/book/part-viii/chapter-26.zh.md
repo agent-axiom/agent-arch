@@ -343,7 +343,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - telemetry 覆盖了 happy path，却没覆盖 bypass path；
 - contract-version drift 只有在 payload 不再匹配预期时才被发现；
 - orchestration-pattern drift 或 worker-boundary crossings 没有成为一等遥测；
-- verifier evidence 与 traces 或 screenshots 脱节；
+- [verifier evidence](../../appendix/eval-schema.zh.md) 与 traces 或 screenshots 脱节；
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与取证需求不一致。
 
