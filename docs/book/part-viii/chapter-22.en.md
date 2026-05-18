@@ -38,7 +38,7 @@ The problem is that production behavior here depends on more than code. It also 
 - eval datasets;
 - approval rules and schemas;
 - runtime-control schemas;
-- verifier contracts, grading rules, and evidence-linkage rules;
+- verifier contracts, [grading rules and evidence-linkage rules](../../appendix/eval-schema.en.md);
 - orchestration-pattern governance rules and worker-safe catalog definitions;
 - capability-session interruption and re-initialization rules;
 - rollout bundles.
@@ -78,7 +78,7 @@ You need to be able to answer:
 - which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
 - which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used;
 - which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
-- which [verifier contract](../../appendix/eval-schema.en.md), grading rubric, and evidence-linkage rules were active;
+- which [verifier contract](../../appendix/eval-schema.en.md), [grading rubric and evidence-linkage rules](../../appendix/eval-schema.en.md) were active;
 - which contract version and [approval schema](../../appendix/approval-schema.en.md) were active;
 - which interruption or expiry policy governed the run;
 - which orchestration pattern and worker-boundary policy governed the run;

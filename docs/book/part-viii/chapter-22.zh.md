@@ -36,7 +36,7 @@
 - 检索语料；
 - 能力契约；
 - 评测数据集；
-- 验证器契约、评分规则与证据链接规则；
+- 验证器契约、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 审批规则与模式；
 - 运行时控制模式；
 - 编排模式治理规则与 worker-safe 目录定义；
@@ -78,7 +78,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 事故发生时生效的是哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 当时使用的是哪一版[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)；
 - 发布是被哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证的；
-- 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、评分规则与证据链接规则；
+- 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 当时是哪一条中断或过期策略在治理这次运行；
 - 当时是哪一种编排模式与 worker 边界策略在治理这次运行；

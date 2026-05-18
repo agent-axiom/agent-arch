@@ -1093,6 +1093,31 @@ def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_links_grading_and_evidence_rules_to_eval_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[rubric definitions и правила связывания доказательной базы]"
+            "(../../appendix/eval-schema.md)",
+            "[grading rubric и правила связывания доказательной базы]"
+            "(../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[grading rules and evidence-linkage rules]"
+            "(../../appendix/eval-schema.en.md)",
+            "[grading rubric and evidence-linkage rules]"
+            "(../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
