@@ -969,6 +969,7 @@ def test_memory_retrieval_schema_includes_poisoning_review_fields() -> None:
 def test_chapter_5_memory_poisoning_scenario_is_documented() -> None:
     required_markers = (
         "memory poisoning",
+        "memory poisoning review fields",
         "untrusted write",
         "delayed activation",
         "cross-tenant contamination",

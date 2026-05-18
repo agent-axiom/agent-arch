@@ -236,7 +236,7 @@ That may feel like extra bureaucracy only until the first argument about where a
 
 The most dangerous memory failure often does not look like a tool exploit. It looks like a quiet write of a harmful or wrong fact into a trusted layer. For example, user phrasing, an unverified retrieval result, or an incident summary enters long-term memory, starts looking like stable knowledge, and several runs later begins to influence decisions.
 
-A minimal memory poisoning scenario should test:
+A minimal memory poisoning scenario should test the same memory poisoning review fields that later land in the schema and trace:
 
 - `untrusted write`: whether an unverified source can enter persistent memory;
 - `delayed activation`: whether the record affects behavior later, in a future run or another session;
