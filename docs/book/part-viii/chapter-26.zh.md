@@ -366,7 +366,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - 你知道生产资产里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
-- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 verifier evidence 吗？
+- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 [verifier evidence](../../appendix/eval-schema.zh.md) 吗？
 - 你有没有 behavioral baselines，而不只是 raw dashboards？
 - 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
 - 你会不会把 unobserved agents 当成一个单独的风险类别？

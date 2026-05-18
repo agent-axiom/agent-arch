@@ -364,7 +364,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - Знаешь ли ты, сколько агентов реально живет в рабочей среде?
 - Какой процент из них вообще шлет структурированную телеметрию?
-- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, активным orchestration pattern и verifier evidence?
+- Можно ли связать high-risk action с `trace_id`, `approval_id`, `tool_principal`, `contract_version`, `bundle_id`, активным orchestration pattern и [verifier evidence](../../appendix/eval-schema.md)?
 - Есть ли поведенческие базовые линии, а не только сырые дашборды?
 - Видишь ли ты возраст paused runs, approval backlog и стареющие background runs до жалоб пользователей?
 - Видишь ли ты ненаблюдаемые агенты как отдельный класс риска?
