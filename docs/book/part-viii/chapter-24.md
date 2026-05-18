@@ -265,6 +265,9 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 - [Схема запроса на подтверждение и записи о решении](../../appendix/approval-schema.md)
 - [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
+- [Схема трасс и каталог событий](../../appendix/trace-schema.md)
+- [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 
 - [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
 - [Глава 23. Retirement, replacement и end-of-life discipline](chapter-23.md)

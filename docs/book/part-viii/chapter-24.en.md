@@ -265,6 +265,9 @@ The next logical step after this chapter is not just “more security,” but le
 - [Approval Request and Decision Schema](../../appendix/approval-schema.en.md)
 - [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.en.md)
 - [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.en.md)
+- [Trace Schema and Event Catalog](../../appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](../../appendix/eval-schema.en.md)
+- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.en.md)
 
 - [Chapter 21. Assurance Loop: Red Teaming, Detection, and Response](chapter-21.en.md)
 - [Chapter 23. Retirement, Replacement, and End-of-Life Discipline](chapter-23.en.md)
