@@ -389,7 +389,10 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
+- [Схема approval](../../appendix/approval-schema.md)
+- [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
+- [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
