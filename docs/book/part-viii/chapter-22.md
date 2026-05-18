@@ -39,7 +39,7 @@
 - verifier contracts, [rubric definitions и правила связывания доказательной базы](../../appendix/eval-schema.md);
 - правила и схемы approval;
 - схемы runtime-control;
-- governance-правила для orchestration pattern и определения worker-safe catalog;
+- [governance-правила для orchestration pattern и определения worker-safe catalog](../../appendix/change-rollout-schema.md);
 - [правила interruption и re-initialization для capability sessions](../../appendix/lifecycle-artifact-schema.md);
 - наборы для раскатки.
 
@@ -81,7 +81,7 @@ Google Research очень точно показывает, что подтве�
 - какой [verifier contract](../../appendix/eval-schema.md), [grading rubric и правила связывания доказательной базы](../../appendix/eval-schema.md) были активны;
 - какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
 - какая [interruption или expiry policy](../../appendix/lifecycle-artifact-schema.md) управляла этим run;
-- какой orchestration pattern и какая worker-boundary policy управляли этим run;
+- какой [orchestration pattern и какая worker-boundary policy](../../appendix/change-rollout-schema.md) управляли этим run;
 - какой [delegated authorization mode, principal binding и revoke policy](../../appendix/lifecycle-artifact-schema.md) управляли этим run;
 - кто одобрил это изменение.
 
@@ -221,7 +221,7 @@ flowchart LR
 - paused runs истекали или могли ждать бесконечно;
 - capability-session re-init была allowed, denied или approval-bound;
 - telemetry обязана была связывать исходную и reinitialized capability sessions или нет;
-- какой orchestration pattern был утвержден для этого path и действовали ли worker-safe catalog boundaries;
+- какой [orchestration pattern](../../appendix/change-rollout-schema.md) был утвержден для этого path и действовали ли worker-safe catalog boundaries;
 - approval и session-control logic еще управлялись одним contract version или уже начали расходиться;
 - delegated access была platform-owned или user-delegated;
 - какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
@@ -317,7 +317,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы для оценки тихо меняются;
 - контракты возможностей редактируются без следа проверки;
 - approval или runtime-control schemas меняются без дисциплины версий;
-- изменения в orchestration pattern не имеют прослеживаемого происхождения артефактов;
+- [изменения в orchestration pattern](../../appendix/change-rollout-schema.md) не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в доказательном слое отсутствует связь с версией контракта;
 - устаревшие шаблоны живут в промышленной среде слишком долго;

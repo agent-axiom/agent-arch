@@ -1151,6 +1151,40 @@ def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> 
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[governance-правила для orchestration pattern и определения worker-safe catalog]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[orchestration pattern и какая worker-boundary policy]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[изменения в orchestration pattern]"
+            "(../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[orchestration-pattern governance rules and worker-safe catalog definitions]"
+            "(../../appendix/change-rollout-schema.en.md)",
+            "[orchestration pattern and worker-boundary policy]"
+            "(../../appendix/change-rollout-schema.en.md)",
+            "[orchestration-pattern governance changes]"
+            "(../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[编排模式治理规则与 worker-safe 目录定义]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[编排模式与 worker 边界策略]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[编排模式治理变更]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
