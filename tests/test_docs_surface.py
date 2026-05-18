@@ -1121,6 +1121,23 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_incident_case_spine_links_incident_state_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[incident-state schema](../../appendix/incident-record-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[incident-state schema](../../appendix/incident-record-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[incident-state schema](../../appendix/incident-record-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
