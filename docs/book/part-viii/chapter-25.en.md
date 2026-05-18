@@ -190,7 +190,7 @@ It helps teams expand a set of scenario classes that rarely emerges fully from l
 
 But the engineering discipline still needs to stay strict:
 
-- the scenario class must appear in a reviewable eval schema;
+- the scenario class must appear in a [reviewable eval schema](../../appendix/eval-schema.en.md);
 - the finding must get an owner and a triage path;
 - the rollout gate must see operational evidence, not merely a paper citation.
 

@@ -190,7 +190,7 @@ Behavioral evals и control evals не заменяют их. Они добав�
 
 Но engineering discipline здесь должна оставаться жесткой:
 
-- scenario class должен быть отражен в reviewable eval schema;
+- scenario class должен быть отражен в [reviewable eval schema](../../appendix/eval-schema.md);
 - finding должен получать owner и triage path;
 - rollout gate должен видеть operational evidence, а не просто ссылку на paper.
 
