@@ -39,7 +39,7 @@
 - 验证器契约、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 审批规则与模式；
 - 运行时控制模式；
-- 编排模式治理规则与 worker-safe 目录定义；
+- [编排模式治理规则与 worker-safe 目录定义](../../appendix/change-rollout-schema.zh.md)；
 - [能力会话中断与重新初始化规则](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 发布工件包。
 
@@ -81,7 +81,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 当时是哪一条[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
-- 当时是哪一种编排模式与 worker 边界策略在治理这次运行；
+- 当时是哪一种[编排模式与 worker 边界策略](../../appendix/change-rollout-schema.zh.md)在治理这次运行；
 - 当时是哪种[委派授权模式、principal 绑定与撤销策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 这个变更是谁批准的。
 
@@ -221,7 +221,7 @@ flowchart LR
 - 暂停运行是会过期，还是可以无限等待；
 - 能力会话重新初始化是 allowed、denied，还是 approval-bound；
 - 遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来；
-- 当时这条路径批准的是哪一种编排模式，以及 worker-safe 目录边界是否生效；
+- 当时这条路径批准的是哪一种[编排模式](../../appendix/change-rollout-schema.zh.md)，以及 worker-safe 目录边界是否生效；
 - 审批与会话控制逻辑当时是受同一个契约版本治理，还是已经发生漂移；
 - 委派访问是平台拥有还是用户委派；
 - 哪一条 principal 绑定规则与撤销行为在治理进行中或暂停动作。
@@ -319,7 +319,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 评测数据集悄悄变化；
 - 能力契约被编辑却没有审查轨迹；
 - 审批或运行时控制模式发生变化，却没有版本纪律；
-- 编排模式治理变更没有工件血缘；
+- [编排模式治理变更](../../appendix/change-rollout-schema.zh.md)没有工件血缘；
 - 没有人知道事故发生时到底是哪一个精确工件在运行；
 - 事故证据中缺少契约版本链接；
 - 发布或保障 evidence 中缺少验证器契约血缘；
