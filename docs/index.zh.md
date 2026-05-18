@@ -55,6 +55,9 @@
 !!! note "Canonical case map"
     阅读这条路线时，要同时保留三个 canonical cases。**Support triage** 检查 write capabilities、approvals 和 duplicate-ticket recovery。**Internal knowledge assistant** 检查 retrieval、memory、freshness 和 knowledge provenance。**Incident coordination** 检查 traces、escalation、notification side effects、response ownership 和 post-incident learning。
 
+!!! note "Safe-agent schema spine"
+    如果需要一条简短的 safe-agent architecture 路线，可以从 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 和 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 开始。这个 spine 连接 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
+
 ## 这里已经有什么
 
 - 已发布的俄文核心原稿，覆盖从架构基础到生命周期治理的八个部分。
