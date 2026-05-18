@@ -1320,6 +1320,26 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_useful_refs_include_change_rollout_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[Схема change review и rollout gate]"
+            "(../../appendix/change-rollout-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[Change Review and Rollout Gate Schema]"
+            "(../../appendix/change-rollout-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     required_markers = (
         "Misalignment case-spine note",
