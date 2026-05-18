@@ -115,6 +115,15 @@ This is useful if you want a runtime skeleton, policy contracts, memory paths, t
 - [Chapter 18. Production Rollout Checklist](book/part-vii/chapter-18.en.md)
 - [Chapter 20. Change Management for Agent Systems](book/part-viii/chapter-20.en.md)
 
+### Safe-agent schema spine
+
+- [Trace Schema and Event Catalog](appendix/trace-schema.en.md)
+- [Eval Dataset Schema and Grading Contract](appendix/eval-schema.en.md)
+- [Memory Record and Retrieval Contract Schema](appendix/memory-retrieval-schema.en.md)
+- [Reference Pages](reference.en.md)
+
+Use this route when you need to check the MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence quickly.
+
 ## What To Keep Open Next to the Book
 
 - [Book Plan](book/plan.en.md)

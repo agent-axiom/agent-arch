@@ -115,6 +115,15 @@
 - [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
 - [Глава 20. Change management для агентных систем](book/part-viii/chapter-20.md)
 
+### Safe-agent schema spine
+
+- [Схема трасс и каталог событий](appendix/trace-schema.md)
+- [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
+- [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
+- [Справочный слой](reference.md)
+
+Этот маршрут полезен, если нужно быстро проверить MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+
 ## Что открыть рядом с книгой
 
 - [План книги](book/plan.md)
