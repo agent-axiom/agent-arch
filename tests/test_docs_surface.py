@@ -361,6 +361,21 @@ def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
             assert expected_snippet in text, (relative_path, expected_snippet)
 
 
+def test_part_viii_role_map_is_print_friendly() -> None:
+    role_map_markers = {
+        "docs/book/part-viii/index.md": "## В этой части",
+        "docs/book/part-viii/index.en.md": "## In This Part",
+        "docs/book/part-viii/index.zh.md": "## 本部分内容",
+    }
+
+    for relative_path, next_heading in role_map_markers.items():
+        text = _read(relative_path)
+        role_map = text.split("##", 2)[2].split(next_heading, 1)[0]
+        assert "|" not in role_map, relative_path
+        assert "print-friendly" in role_map.lower(), relative_path
+        assert role_map.count("- **") >= 9, relative_path
+
+
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
         "Implementation status, 18 May 2026",

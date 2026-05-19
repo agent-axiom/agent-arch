@@ -37,19 +37,17 @@ This part answers exactly those questions. It reads the agent system no longer a
 
 ## Role Map for This Part
 
-Use this map to keep the late-book chapters from sounding like the same governance idea repeated under different names:
+Use this map to keep the late-book chapters from sounding like the same governance idea repeated under different names. The print-friendly version is intentionally short:
 
-| Lifecycle function | Primary job | Main artifact | What it is not |
-| --- | --- | --- | --- |
-| Lifecycle frame | Holds state transitions from design to retirement | ADLC state model | A new name for SDLC only |
-| Change management | Decides which changes require review and rollout gates | [Change packet](../../appendix/change-rollout-schema.en.md) | General project management |
-| Assurance | Turns findings into containment, remediation, and ownership | [Finding and response record](../../appendix/incident-record-schema.en.md) | Observability or eval scoring |
-| Provenance | Preserves trusted artifact lineage and release identity | [Approved artifact bundle](../../appendix/lifecycle-artifact-schema.en.md) | A generic evidence folder |
-| Retirement | Closes or replaces systems without losing accountability | [Retirement plan](../../appendix/lifecycle-artifact-schema.en.md) | Deleting an old agent |
-| Misalignment and insider risk | Names adversarial or incentive-driven misuse paths | Risk scenario and control plan | A duplicate of prompt-injection guidance |
-| Behavioral/control evals | Produces release judgments about behavior and controls | [Eval gate and verifier contract](../../appendix/eval-schema.en.md) | Incident response |
-| Observability | Keeps the evidence substrate visible and queryable | [Trace and telemetry coverage record](../../appendix/trace-schema.en.md) | The owner of governance decisions |
-| Inventory and registry | Makes the estate answerable through owners and lifecycle state | [Registry record](../../appendix/registry-operations-handbook.en.md) | A loose spreadsheet of agents |
+- **Lifecycle frame** holds state transitions from design to retirement. Its artifact is the ADLC state model; it is not a new name for SDLC only.
+- **Change management** decides which changes require review and rollout gates. Its artifact is the [Change packet](../../appendix/change-rollout-schema.en.md); it is not general project management.
+- **Assurance** turns findings into containment, remediation, and ownership. Its artifact is the [Finding and response record](../../appendix/incident-record-schema.en.md); it is not observability or eval scoring.
+- **Provenance** preserves trusted artifact lineage and release identity. Its artifact is the [Approved artifact bundle](../../appendix/lifecycle-artifact-schema.en.md); it is not a generic evidence folder.
+- **Retirement** closes or replaces systems without losing accountability. Its artifact is the [Retirement plan](../../appendix/lifecycle-artifact-schema.en.md); it is not deleting an old agent.
+- **Misalignment and insider risk** names adversarial or incentive-driven misuse paths. Its artifact is the risk scenario and control plan; it is not a duplicate of prompt-injection guidance.
+- **Behavioral/control evals** produce release judgments about behavior and controls. Their artifact is the [Eval gate and verifier contract](../../appendix/eval-schema.en.md); they are not incident response.
+- **Observability** keeps the evidence substrate visible and queryable. Its artifact is the [Trace and telemetry coverage record](../../appendix/trace-schema.en.md); it is not the owner of governance decisions.
+- **Inventory and registry** make the estate answerable through owners and lifecycle state. Their artifact is the [Registry record](../../appendix/registry-operations-handbook.en.md); they are not a loose spreadsheet of agents.
 
 Read the chapters as a chain: lifecycle defines the states, change management controls movement, evals judge readiness, provenance records what was trusted, observability preserves evidence, assurance responds when evidence turns into risk, retirement closes old paths, and registry keeps the whole estate accountable. If two chapters sound like "governance," distinguish them by the artifact they are responsible for leaving after review.
 
