@@ -2,13 +2,13 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of May 18, 2026._
+_Current as of May 19, 2026._
 
 !!! note "Canonical case update"
     The major update from May 15, 2026 is the end-to-end map of the three canonical cases. **Support triage**, **Internal knowledge assistant**, and **Incident coordination** are now visible across book chapters, public entry points, reference pages, and appendix artifacts, while coverage guards protect chapters and appendix pages from losing those routes.
 
 !!! note "Safe-agent schema update"
-    The May 17-18, 2026 updates connected prose, appendices, and guards for safe-agent architecture: MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields, and unified agent threat evidence are now reflected in the [trace schema](appendix/trace-schema.en.md), [eval schema](appendix/eval-schema.en.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.en.md).
+    The May 17-19, 2026 updates connected prose, appendices, and guards for safe-agent architecture: MCP threat model and `mcp_server` contract, A2A handoff trust contract and trust-delegation artifact, defense-in-depth control map, verifier verdict record, governance action record, NIST AI RMF telemetry mapping, memory poisoning review fields, and unified agent threat evidence are now reflected in the [trace schema](appendix/trace-schema.en.md), [eval schema](appendix/eval-schema.en.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.en.md).
 
 ## Book
 
@@ -113,9 +113,11 @@ Closed so far:
 - OpenGraph/Twitter metadata and a social preview image were added;
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
 - basic navigation and canonical fallback redirects cover the main hand-copied entry points;
+- the public-link availability record was refreshed after all nine publisher-packet links returned HTTP 200;
+- the publisher packet blocker register and waiver/decision log are print-friendly, and the Part VIII role map is now print-friendly;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-Remaining before this can be called publisher-ready: deep EN/ZH cleanup, rendering/export QA, print readiness, sample-chapter polish, and manuscript/online-companion packaging.
+Remaining before this can be called publisher-ready: deep EN/ZH cleanup, independent rendering/export QA, sample-chapter polish, and target-specific manuscript/online-companion packaging.
 
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 
