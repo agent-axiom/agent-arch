@@ -37,8 +37,8 @@
 - контракты возможностей;
 - наборы для оценки;
 - verifier contracts, [rubric definitions и правила связывания доказательной базы](../../appendix/eval-schema.md);
-- правила и схемы approval;
-- схемы runtime-control;
+- [правила и схемы approval](../../appendix/approval-schema.md);
+- [схемы runtime-control](../../appendix/lifecycle-artifact-schema.md);
 - [governance-правила для orchestration pattern и определения worker-safe catalog](../../appendix/change-rollout-schema.md);
 - [правила interruption и re-initialization для capability sessions](../../appendix/lifecycle-artifact-schema.md);
 - наборы для раскатки.
