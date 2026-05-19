@@ -564,10 +564,12 @@ def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
         "Sample Chapter Export Manifest Draft",
         "Primary sample",
-        "docs/book/part-i/chapter-1.en.md",
+        "role: Chapter 1 as the first editorial sample",
+        "source path: `docs/book/part-i/chapter-1.en.md`",
         "https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/",
         "Secondary technical sample",
-        "docs/book/part-v/chapter-13.en.md",
+        "role: Chapter 13 as the technical credibility sample",
+        "source path: `docs/book/part-v/chapter-13.en.md`",
         "https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/",
         "publisher-packet-2026-05",
         "Export metadata to include",
@@ -576,6 +578,27 @@ def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_sample_export_manifest_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Sample Chapter Export Manifest Draft", 1)[1].split(
+        "## Sample Copy-Edit Handoff Brief Draft",
+        1,
+    )[0]
+
+    forbidden_inline_labels = (
+        "**Primary sample:** Chapter 1,",
+        "**Secondary technical sample:** Chapter 13,",
+        "**Export metadata to include:** title, subtitle",
+        "**Pre-export checks:** selected sample",
+        "**No-go signals:** stale public URL",
+    )
+
+    for marker in forbidden_inline_labels:
+        assert marker not in section
+    assert section.count("\n- ") >= 20
+    assert all(len(line) <= 130 for line in section.splitlines())
 
 
 def test_publisher_packet_has_print_pdf_readiness_gate() -> None:
