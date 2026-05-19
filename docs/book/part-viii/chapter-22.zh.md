@@ -88,7 +88,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 !!! example "贯穿案例：重复工单修复的 provenance"
     在重复工单事故之后，后续复盘需要能重建的不只是重试补丁对应的 commit。它还需要知道金丝雀期间生效的 [eval dataset](../../appendix/eval-schema.zh.md) 版本、`side_effect_unknown` [策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)、`create_support_ticket` [能力契约（capability contract）](../../appendix/lifecycle-artifact-schema.zh.md)、[rollout gate](../../appendix/change-rollout-schema.zh.md)、[审批模式（approval schema）](../../appendix/approval-schema.zh.md)和 [trace schema](../../appendix/trace-schema.zh.md)。如果其中任何一个工件只是“在聊天里某处”，而不是已批准发布包的一部分，团队就无法证明再次出现的重复工单到底发生在修复后的控制之下，还是旧规则集之下。
 
-**Supply-chain case-spine note：**approved artifact bundle 应该为三个 canonical cases 保留 provenance。Support triage 需要 write path 的 [eval dataset](../../appendix/eval-schema.zh.md)、[policy bundle](../../appendix/policy-bundle-schema.zh.md)、[capability contract](../../appendix/lifecycle-artifact-schema.zh.md)、[approval schema](../../appendix/approval-schema.zh.md)、[trace schema](../../appendix/trace-schema.zh.md) 和 [rollout gate](../../appendix/change-rollout-schema.zh.md) 版本。Internal knowledge assistant 需要 [approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)、[source-grounding rubric、tenant-filter config、memory-write policy 和 freshness attestation](../../appendix/memory-retrieval-schema.zh.md)。Incident coordination 需要 [escalation-policy bundle、notification contract、responder-role map](../../appendix/lifecycle-artifact-schema.zh.md)、[incident-state schema](../../appendix/incident-record-schema.zh.md) 和 [post-incident artifact update](../../appendix/lifecycle-artifact-schema.zh.md)。
+**Supply-chain case-spine note：**[approved artifact bundle](../../appendix/lifecycle-artifact-schema.zh.md) 应该为三个 canonical cases 保留 provenance。Support triage 需要 write path 的 [eval dataset](../../appendix/eval-schema.zh.md)、[policy bundle](../../appendix/policy-bundle-schema.zh.md)、[capability contract](../../appendix/lifecycle-artifact-schema.zh.md)、[approval schema](../../appendix/approval-schema.zh.md)、[trace schema](../../appendix/trace-schema.zh.md) 和 [rollout gate](../../appendix/change-rollout-schema.zh.md) 版本。Internal knowledge assistant 需要 [approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)、[source-grounding rubric、tenant-filter config、memory-write policy 和 freshness attestation](../../appendix/memory-retrieval-schema.zh.md)。Incident coordination 需要 [escalation-policy bundle、notification contract、responder-role map](../../appendix/lifecycle-artifact-schema.zh.md)、[incident-state schema](../../appendix/incident-record-schema.zh.md) 和 [post-incident artifact update](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 如果这些问题无法快速回答，变更管理和事故复盘很快就会失控。
 
@@ -96,7 +96,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 同样的规则也适用于失败运行。即使能力因为超时失败、审批路径以验证失败结束，或者上游依赖直接崩掉，后续复盘仍然需要知道，当时究竟是哪一组已批准工件与哪一个发布身份在支配这次失败，是哪一个导出字段，例如 `failure_reason`，保留了具体的失败条件，它是否还通过 `latest_failure_reason` 这样的面向操作员摘要字段保持可见，以及这次运行在会话评审中是否仍然计入 `traceable_failed_runs`。否则，组织就只会为顺畅路径保留来源追踪，而把退化行为当成无人负责的残留物。
 
-这也正是本章的核心承诺。它要帮助读者看见证据怎样从一般性的遥测变成受治理的主干：这一层保存着后续事故复盘或治理决策究竟建立在哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份之上。本章的主要工件是 approved artifact bundle：一组已评审的版本、契约和模式，而不是泛泛的 evidence 文件夹。
+这也正是本章的核心承诺。它要帮助读者看见证据怎样从一般性的遥测变成受治理的主干：这一层保存着后续事故复盘或治理决策究竟建立在哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份之上。本章的主要工件是 [approved artifact bundle](../../appendix/lifecycle-artifact-schema.zh.md)：一组已评审的版本、契约和模式，而不是泛泛的 evidence 文件夹。
 
 如果你想看一页专门展示这个受治理主干如何继续连回请求、策略、审批、追踪、评测、事故和 rollout 判断，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
 
