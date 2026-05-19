@@ -115,7 +115,7 @@ Google Research очень точно показывает, что подтве�
 - цепочкой approval и runtime-control;
 - цепочкой правил управления capability sessions;
 - цепочкой delegated authorization;
-- цепочкой данных и извлечения;
+- [цепочкой данных и извлечения](../../appendix/memory-retrieval-schema.md);
 - цепочкой оценки.
 
 <div class="diagram-card">

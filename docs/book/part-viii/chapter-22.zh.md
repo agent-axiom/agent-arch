@@ -117,7 +117,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 审批与运行时控制链；
 - 能力会话治理链；
 - 委派授权链；
-- 数据与检索链；
+- [数据与检索链](../../appendix/memory-retrieval-schema.zh.md)；
 - 评测链。
 
 <div class="diagram-card">
