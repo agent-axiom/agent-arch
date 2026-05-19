@@ -117,7 +117,7 @@ _更新于 2026 年 5 月 19 日。_
 - publisher packet blocker register、waiver/decision log 与 Part VIII role map 现在都适合打印导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的 fast-forward 发布检查清单。
 
-在称为 publisher-ready 之前，仍然需要完成深层 EN/ZH cleanup、独立 rendering/export QA、sample-chapter polish，以及面向具体出版社的 manuscript/online companion 包装。
+在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理、独立 HTML/PDF/export QA、样章打磨，以及面向具体出版社的纸质稿件/在线配套材料包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
