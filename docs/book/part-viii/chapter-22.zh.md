@@ -94,7 +94,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 这也是为什么本章里的来源追踪应该被狭义而具体地理解。它不是整个证据层。它是围绕已批准工件、发布身份与承载决策版本的受治理血缘层。
 
-同样的规则也适用于失败运行。即使能力因为超时失败、审批路径以验证失败结束，或者上游依赖直接崩掉，后续复盘仍然需要知道，当时究竟是[哪一组已批准工件与哪一个发布身份](../../appendix/lifecycle-artifact-schema.zh.md)在支配这次失败，是哪一个[导出字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)，保留了具体的失败条件，它是否还通过 `latest_failure_reason` 这样的面向操作员摘要字段保持可见，以及这次运行在会话评审中是否仍然计入 [`traceable_failed_runs`](../../appendix/eval-schema.zh.md)。否则，组织就只会为顺畅路径保留来源追踪，而把退化行为当成无人负责的残留物。
+同样的规则也适用于失败运行。即使能力因为超时失败、审批路径以验证失败结束，或者上游依赖直接崩掉，后续复盘仍然需要知道，当时究竟是[哪一组已批准工件与哪一个发布身份](../../appendix/lifecycle-artifact-schema.zh.md)在支配这次失败，是哪一个[导出字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)，保留了具体的失败条件，它是否还通过 [`latest_failure_reason`](../../appendix/eval-schema.zh.md) 这样的面向操作员摘要字段保持可见，以及这次运行在会话评审中是否仍然计入 [`traceable_failed_runs`](../../appendix/eval-schema.zh.md)。否则，组织就只会为顺畅路径保留来源追踪，而把退化行为当成无人负责的残留物。
 
 这也正是本章的核心承诺。它要帮助读者看见证据怎样从一般性的遥测变成受治理的主干：这一层保存着后续事故复盘或治理决策究竟建立在哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份之上。本章的主要工件是 [approved artifact bundle](../../appendix/lifecycle-artifact-schema.zh.md)：一组已评审的版本、契约和模式，而不是泛泛的 evidence 文件夹。
 

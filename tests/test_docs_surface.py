@@ -1954,6 +1954,7 @@ def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> No
             "(../../appendix/lifecycle-artifact-schema.md)",
             "[экспортируемое поле, например `failure_reason`]"
             "(../../appendix/eval-schema.md)",
+            "[`latest_failure_reason`](../../appendix/eval-schema.md)",
             "[`traceable_failed_runs`](../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -1961,12 +1962,14 @@ def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> No
             "(../../appendix/lifecycle-artifact-schema.en.md)",
             "[exported failure field such as `failure_reason`]"
             "(../../appendix/eval-schema.en.md)",
+            "[`latest_failure_reason`](../../appendix/eval-schema.en.md)",
             "[`traceable_failed_runs`](../../appendix/eval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[哪一组已批准工件与哪一个发布身份]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[导出字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)",
+            "[`latest_failure_reason`](../../appendix/eval-schema.zh.md)",
             "[`traceable_failed_runs`](../../appendix/eval-schema.zh.md)",
         ),
     }
