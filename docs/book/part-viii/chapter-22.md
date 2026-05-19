@@ -116,7 +116,7 @@ Google Research очень точно показывает, что подтве�
 - цепочкой правил управления capability sessions;
 - цепочкой delegated authorization;
 - [цепочкой данных и извлечения](../../appendix/memory-retrieval-schema.md);
-- цепочкой оценки.
+- [цепочкой оценки](../../appendix/eval-schema.md).
 
 <div class="diagram-card">
 <p>Полезно думать не об одной цепочке поставки, а о наборе связанных цепочек доверия</p>

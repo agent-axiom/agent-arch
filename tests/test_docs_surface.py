@@ -1327,6 +1327,25 @@ def test_chapter_22_trust_chain_links_data_retrieval_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_trust_chain_links_eval_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[цепочкой оценки](../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[eval chain](../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[评测链](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
