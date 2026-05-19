@@ -178,15 +178,45 @@ Use this manifest when assembling the first external packet so the sample is rep
 
 Use this brief when handing Chapter 1, and optionally Chapter 13, to an independent copy editor for print rhythm.
 
-**Copy-edit scope:** sentence flow, opening hook, paragraph cadence, transitions between failure story and architecture argument, consistency of `agent`, `workflow`, `runtime`, `policy`, `approval`, `trace`, `eval`, and `governance` terms, and whether the chapter can stand alone without site navigation.
+**Copy-edit scope:**
 
-**Do not rewrite:** technical claims, case-spine roles, source references, companion-link boundaries, code identifiers, schema names, or the workflow-first / governed-systems thesis.
+- sentence flow;
+- opening hook;
+- paragraph cadence;
+- transitions between failure story and architecture argument;
+- consistency of `agent`, `workflow`, `runtime`, `policy`, `approval`, `trace`, `eval`, and `governance` terms;
+- whether the chapter can stand alone without site navigation.
 
-**Questions for the editor:** where does the sample feel too dense, where does jargon appear before context, which paragraph should be shortened for print, and whether the ending template feels like a useful close rather than a checklist pasted onto the chapter.
+**Do not rewrite:**
 
-**Return format:** annotated sample, short summary of top 5 changes, unresolved questions, and any suggested cuts that would move material to the online companion.
+- technical claims;
+- case-spine roles;
+- source references;
+- companion-link boundaries;
+- code identifiers;
+- schema names;
+- the workflow-first / governed-systems thesis.
 
-**No-go signals:** copy edits that weaken safety claims, remove the Support triage through-line, blur print vs companion boundaries, or turn the chapter into a framework tutorial.
+**Questions for the editor:**
+
+- Where does the sample feel too dense?
+- Where does jargon appear before context?
+- Which paragraph should be shortened for print?
+- Does the ending template feel like a useful close rather than a checklist pasted onto the chapter?
+
+**Return format:**
+
+- annotated sample;
+- short summary of top 5 changes;
+- unresolved questions;
+- suggested cuts that would move material to the online companion.
+
+**No-go signals:**
+
+- copy edits that weaken safety claims;
+- edits that remove the Support triage through-line;
+- changes that blur print vs companion boundaries;
+- rewrites that turn the chapter into a framework tutorial.
 
 ## Editorial Compression Rules
 

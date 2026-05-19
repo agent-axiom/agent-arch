@@ -475,9 +475,9 @@ def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
     required_markers = (
         "Sample Copy-Edit Handoff Brief Draft",
         "Copy-edit scope",
-        "sentence flow",
-        "opening hook",
-        "paragraph cadence",
+        "- sentence flow;",
+        "- opening hook;",
+        "- paragraph cadence;",
         "Do not rewrite",
         "workflow-first / governed-systems thesis",
         "Questions for the editor",
@@ -487,6 +487,26 @@ def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_copy_edit_handoff_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Sample Copy-Edit Handoff Brief Draft", 1)[1].split(
+        "## Editorial Compression Rules",
+        1,
+    )[0]
+    forbidden_inline_labels = (
+        "**Copy-edit scope:** sentence flow",
+        "**Do not rewrite:** technical claims",
+        "**Questions for the editor:** where does",
+        "**Return format:** annotated sample",
+        "**No-go signals:** copy edits",
+    )
+
+    for marker in forbidden_inline_labels:
+        assert marker not in section
+    assert section.count("\n- ") >= 24
+    assert all(len(line) <= 130 for line in section.splitlines())
 
 
 def test_publisher_packet_has_public_link_availability_record() -> None:
