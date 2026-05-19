@@ -2150,15 +2150,35 @@ def test_chapter_27_useful_refs_include_registry_evidence_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
-def test_chapter_27_registry_verifier_evidence_eval_link_is_clickable() -> None:
+def test_chapter_27_registry_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
-        "docs/book/part-viii/chapter-27.md": "../../appendix/eval-schema.md",
-        "docs/book/part-viii/chapter-27.en.md": "../../appendix/eval-schema.en.md",
-        "docs/book/part-viii/chapter-27.zh.md": "../../appendix/eval-schema.zh.md",
+        "docs/book/part-viii/chapter-27.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/registry-operations-handbook.md",
+            "../../appendix/approval-schema.md",
+            "../../appendix/lifecycle-artifact-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+        ),
+        "docs/book/part-viii/chapter-27.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/registry-operations-handbook.en.md",
+            "../../appendix/approval-schema.en.md",
+            "../../appendix/lifecycle-artifact-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-27.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/registry-operations-handbook.zh.md",
+            "../../appendix/approval-schema.zh.md",
+            "../../appendix/lifecycle-artifact-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+        ),
     }
 
-    for path, expected_link in expected_links_by_file.items():
-        assert f"]({expected_link})" in _read(path), (path, expected_link)
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for expected_link in expected_links:
+            assert f"]({expected_link})" in text, (path, expected_link)
 
 
 def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
