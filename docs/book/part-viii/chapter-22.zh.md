@@ -226,7 +226,7 @@ flowchart LR
 - [委派访问是平台拥有还是用户委派](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 哪一条[principal 绑定规则与撤销行为](../../appendix/lifecycle-artifact-schema.zh.md)在治理进行中或暂停动作。
 
-Anthropic 后续关于 harness 设计的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖上下文重置、planner/generator/evaluator 的角色分离、sprint 契约与结构化交接工件，那么这些交接工件就不能再被视为一次性的协调便条。它们本身也变成了承载来源追踪的工件。之后的事故评审或 rollout 争议，可能都需要知道是哪一份交接工件传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化，而用户可见运行却没有改变。
+Anthropic 后续关于 harness 设计的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖上下文重置、planner/generator/evaluator 的角色分离、sprint 契约与[结构化交接工件](../../appendix/lifecycle-artifact-schema.zh.md)，那么这些交接工件就不能再被视为一次性的协调便条。它们本身也变成了承载来源追踪的工件。之后的事故评审或 rollout 争议，可能都需要知道[是哪一份交接工件传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化](../../appendix/lifecycle-artifact-schema.zh.md)，而用户可见运行却没有改变。
 
 这些之所以是来源追踪问题，正是因为它们定义的是行为的受治理身份，而不只是说明这些行为有没有在遥测里被看见。
 

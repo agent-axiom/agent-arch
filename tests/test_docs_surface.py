@@ -2084,6 +2084,36 @@ def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas()
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[структурированных handoff artifacts]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[какой handoff artifact перенес scope, какой evaluator critique "
+            "изменил следующий sprint и на какой reset boundary активный "
+            "контекст сменился](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[structured handoff artifacts]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[which handoff artifact carried scope, which evaluator critique "
+            "shaped the next sprint, and which reset boundary changed the "
+            "active context](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[结构化交接工件](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[是哪一份交接工件传递了 scope、哪一条 evaluator critique "
+            "改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
