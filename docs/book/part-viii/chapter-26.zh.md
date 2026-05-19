@@ -224,6 +224,17 @@ Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应
 
 它也应该和 provenance chapter 保持分离。可观测性关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和检测；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
 
+### 7.2. Mapping the Loop to NIST AI RMF
+
+这个 closed loop 也提供了一种务实方式，把 observability 映射到 NIST AI RMF，而不是把本章变成 compliance checklist。[^nist-ai-rmf]
+
+- **Govern**：`decision_owner`、`review_deadline` 和 registry coverage 说明谁拥有这个 signal，以及哪条 governance queue 必须关闭它。
+- **Map**：`source_signal`、inventory coverage 和 bypass-path telemetry 说明实际处于 risk 中的是哪个 agent、capability、tenant 或 rollout surface。
+- **Measure**：`evidence_refs`、verifier outputs、coverage ratios、drift signals 和 detection scenarios 把 risk 变成 observable evidence。
+- **Manage**：`policy_decision_feedback`、`containment_decision`、`rollout_gate_input` 和 `incident_response_trigger` 说明 evidence 之后触发了哪项 control action。
+
+这个 mapping 故意保持 operational。问题不是 dashboard 有没有写 Govern、Map、Measure、Manage，而是 reviewer 是否能把一个 telemetry signal 追踪到 owner、risk surface、measurement evidence 和最终 control action。
+
 ## 8. 研究前沿正在把可观测性推向哪里
 
 最新的智能体可观测性研究还在继续往前走：它们试图把 traces 从“方便阅读的事件日志”推进成“因果诊断层”。
@@ -405,3 +416,5 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
+
+[^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)

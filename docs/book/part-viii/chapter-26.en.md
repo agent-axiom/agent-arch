@@ -224,6 +224,17 @@ That framing also keeps this chapter separate from the assurance chapter and the
 
 It should also stay separate from the provenance chapter. Observability asks whether the system emitted enough evidence, coverage, and correlation to investigate or detect. Provenance asks which approved artifact set, contract version, or governed bundle later justified the decision.
 
+### 7.2. Mapping the Loop to NIST AI RMF
+
+This closed loop also gives a practical way to map observability to NIST AI RMF without turning the chapter into a compliance checklist.[^nist-ai-rmf]
+
+- **Govern**: `decision_owner`, `review_deadline`, and registry coverage show who owns the signal and which governance queue must close it.
+- **Map**: `source_signal`, inventory coverage, and bypass-path telemetry show which agent, capability, tenant, or rollout surface is actually at risk.
+- **Measure**: `evidence_refs`, verifier outputs, coverage ratios, drift signals, and detection scenarios turn risk into observable evidence.
+- **Manage**: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, and `incident_response_trigger` show which control action followed from the evidence.
+
+The mapping is intentionally operational. The question is not “does the dashboard mention Govern, Map, Measure, Manage?” The question is whether a reviewer can trace a telemetry signal through owner, risk surface, measurement evidence, and resulting control action.
+
 ## 8. Where the frontier is pushing observability next
 
 Recent research papers on observability for agents go further: they try to turn traces from a convenient event log into a causal diagnosis layer.
@@ -403,3 +414,5 @@ This chapter should be read as an evidence-readiness layer, not as a logging che
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
+
+[^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
