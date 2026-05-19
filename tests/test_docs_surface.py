@@ -5960,6 +5960,39 @@ def test_governance_aware_telemetry_contract_is_documented() -> None:
         _assert_files_contain_all((path,), required_fields)
 
 
+def test_chapter_26_governance_telemetry_maps_to_nist_ai_rmf() -> None:
+    required_fields = (
+        "Mapping the Loop to NIST AI RMF",
+        "Govern",
+        "Map",
+        "Measure",
+        "Manage",
+        "decision_owner",
+        "review_deadline",
+        "source_signal",
+        "inventory coverage",
+        "bypass-path telemetry",
+        "evidence_refs",
+        "verifier outputs",
+        "coverage ratios",
+        "drift signals",
+        "detection scenarios",
+        "policy_decision_feedback",
+        "containment_decision",
+        "rollout_gate_input",
+        "incident_response_trigger",
+        "control action",
+        "[^nist-ai-rmf]",
+    )
+    checked_files = (
+        "docs/book/part-viii/chapter-26.md",
+        "docs/book/part-viii/chapter-26.en.md",
+        "docs/book/part-viii/chapter-26.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_fields)
+
+
 def test_verifier_contract_fields_are_documented() -> None:
     required_fields = (
         "rubric_version",
