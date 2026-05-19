@@ -629,6 +629,18 @@ def test_chapter_10_reliability_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_10_recovery_branches_link_to_eval_schema() -> None:
+    expected_links_by_file = {
+        "docs/book/part-iv/chapter-10.md": "../../appendix/eval-schema.md",
+        "docs/book/part-iv/chapter-10.en.md": "../../appendix/eval-schema.en.md",
+        "docs/book/part-iv/chapter-10.zh.md": "../../appendix/eval-schema.zh.md",
+    }
+
+    for path, expected_link in expected_links_by_file.items():
+        text = _read(path)
+        assert f"]({expected_link})" in text, (path, expected_link)
+
+
 def test_chapter_11_traces_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trace case-spine note",
