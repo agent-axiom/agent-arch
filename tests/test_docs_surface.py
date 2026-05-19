@@ -548,18 +548,38 @@ def test_publisher_packet_has_target_editor_formatting_brief() -> None:
     required_markers = (
         "Target Editor / Imprint Formatting Brief Draft",
         "Inputs to collect",
-        "editor name",
-        "imprint",
-        "submission channel",
-        "attachment rules",
-        "sample-chapter policy",
+        "- editor name;",
+        "- imprint;",
+        "- submission channel;",
+        "- attachment rules;",
+        "- sample-chapter policy;",
         "Formatting decisions",
+        "publisher-packet-2026-05",
         "secure-ai-agent-architecture-proposal-publisher-packet-2026-05.pdf",
         "Tailoring rules",
         "No-go signals",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_target_editor_brief_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Target Editor / Imprint Formatting Brief Draft", 1)[1].split(
+        "## Recommended Submission Packet Order",
+        1,
+    )[0]
+    forbidden_inline_labels = (
+        "**Inputs to collect:** editor name",
+        "**Formatting decisions:** choose whether",
+        "**Tailoring rules:** keep the title",
+        "**No-go signals:** unknown editor name",
+    )
+
+    for marker in forbidden_inline_labels:
+        assert marker not in section
+    assert section.count("\n- ") >= 25
+    assert all(len(line) <= 130 for line in section.splitlines())
 
 
 def test_publisher_packet_has_author_bio_input_brief() -> None:
