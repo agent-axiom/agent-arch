@@ -397,7 +397,11 @@ Use these links in the final pitch packet after a fresh availability check:
 - **Runtime configs:** <https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref/configs>
 - **Runtime tests:** <https://github.com/agent-axiom/agent-arch/tree/main/tests>
 
-Pitch usage: send the public site and the two sample chapters first; keep the source/runtime/test links as proof points for editors who want to verify that the companion is concrete.
+Pitch usage:
+
+- send the public site and the two sample chapters first;
+- keep the source/runtime/test links as proof points;
+- use those proof points for editors who want to verify that the companion is concrete.
 
 ## Public Link Availability Record
 
