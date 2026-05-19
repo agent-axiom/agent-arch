@@ -3339,6 +3339,58 @@ def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[что архивировать](../../appendix/lifecycle-artifact-schema.md)",
+            "[что удалить](../../appendix/memory-retrieval-schema.md)",
+            "[что anonymize](../../appendix/memory-retrieval-schema.md)",
+            "[traces](../../appendix/trace-schema.md) и "
+            "[approvals](../../appendix/approval-schema.md)",
+            "[кто остается owner у archived state]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[datasets](../../appendix/eval-schema.md) и "
+            "[memory artifacts](../../appendix/memory-retrieval-schema.md)",
+            "[delegated authorization records]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[историю verifier contracts](../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[what to archive](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[what to delete](../../appendix/memory-retrieval-schema.en.md)",
+            "[what to anonymize](../../appendix/memory-retrieval-schema.en.md)",
+            "[traces](../../appendix/trace-schema.en.md) and "
+            "[approvals](../../appendix/approval-schema.en.md)",
+            "[who remains the owner of archived state]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[datasets](../../appendix/eval-schema.en.md) and "
+            "[memory artifacts](../../appendix/memory-retrieval-schema.en.md)",
+            "[delegated authorization records]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[verifier-contract history](../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[什么要归档](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[什么要删除](../../appendix/memory-retrieval-schema.zh.md)",
+            "[什么要匿名化](../../appendix/memory-retrieval-schema.zh.md)",
+            "[追踪](../../appendix/trace-schema.zh.md)和"
+            "[审批](../../appendix/approval-schema.zh.md)",
+            "[归档状态的负责人是谁]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[数据集](../../appendix/eval-schema.zh.md)和"
+            "[记忆工件](../../appendix/memory-retrieval-schema.zh.md)",
+            "[delegated authorization records]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[verifier-contract history](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
