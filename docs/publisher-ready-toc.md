@@ -391,7 +391,8 @@ Print manuscript:
 
 - carries the argument, chapter questions, decision frameworks, failure stories, and durable operating model;
 - keeps long field lists, exhaustive schemas, and fast-moving implementation details out of the main reading path;
-- uses Support triage as the primary through-line, with Internal knowledge assistant and Incident coordination as contrast cases.
+- uses Support triage as the primary through-line;
+- uses Internal knowledge assistant and Incident coordination as contrast cases.
 
 Online companion:
 
