@@ -1991,6 +1991,47 @@ def test_chapter_22_core_promise_links_reviewed_release_identity() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_capability_contract_checklist_links_control_schemas() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[кто владелец](../../appendix/lifecycle-artifact-schema.md)",
+            "[какой уровень риска](../../appendix/approval-schema.md)",
+            "[какой инструментальный principal]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[какой профиль сетевого доступа]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[какие направления выхода разрешены]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[как устроена семантика подтверждения]"
+            "(../../appendix/approval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[who the owner is](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[what the risk tier is](../../appendix/approval-schema.en.md)",
+            "[which tool principal is used]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[what the network access profile is]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[which egress destinations are allowed]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[which approval semantics apply](../../appendix/approval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[谁是负责人](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[风险等级是什么](../../appendix/approval-schema.zh.md)",
+            "[使用哪个工具 principal](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[网络访问配置是什么](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[允许哪些出口目标](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[采用什么审批语义](../../appendix/approval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
