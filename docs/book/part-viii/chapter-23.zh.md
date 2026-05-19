@@ -247,12 +247,12 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 这些问题非常常见：
 
-- 系统被认为已经退役，但主体还活着；
-- 后台任务没关；
-- 记忆写入路径仍然在工作；
-- paused approvals 在退役之后仍然可以恢复；
-- 已过期 capability sessions 仍可通过陈旧控制路径 re-initialize；
-- 已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用；
+- 系统被认为已经退役，但[主体还活着](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [后台任务没关](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [记忆写入路径仍然在工作](../../appendix/memory-retrieval-schema.zh.md)；
+- [paused approvals 在退役之后仍然可以恢复](../../appendix/approval-schema.zh.md)；
+- [已过期 capability sessions 仍可通过陈旧控制路径 re-initialize](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用](../../appendix/change-rollout-schema.zh.md)；
 - 已废弃的 verifier contracts 或 [verifier evidence](../../appendix/eval-schema.zh.md) obligations 在退役后仍然不清楚；
 - background routes 被遗忘没有关闭；
 - 归档状态没有负责人；

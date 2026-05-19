@@ -249,12 +249,12 @@ The point is simple: replacement should have a gate too, not just a mood-driven 
 
 The problems are fairly repetitive:
 
-- the system is considered retired, but principals are still active;
-- background jobs were forgotten;
-- the memory write path remained live;
-- paused approvals were left resumable after retirement;
-- expired capability sessions could still be re-initialized through stale control paths;
-- deprecated orchestration patterns or worker-boundary policies remained usable after retirement;
+- the system is considered retired, but [principals are still active](../../appendix/lifecycle-artifact-schema.en.md);
+- [background jobs were forgotten](../../appendix/lifecycle-artifact-schema.en.md);
+- the [memory write path remained live](../../appendix/memory-retrieval-schema.en.md);
+- [paused approvals were left resumable after retirement](../../appendix/approval-schema.en.md);
+- [expired capability sessions could still be re-initialized through stale control paths](../../appendix/lifecycle-artifact-schema.en.md);
+- [deprecated orchestration patterns or worker-boundary policies remained usable after retirement](../../appendix/change-rollout-schema.en.md);
 - deprecated verifier contracts or [verifier evidence](../../appendix/eval-schema.en.md) obligations remained unclear after retirement;
 - background routes were forgotten;
 - archived state belongs to nobody;

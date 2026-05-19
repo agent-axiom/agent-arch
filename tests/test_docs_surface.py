@@ -3430,6 +3430,57 @@ def test_chapter_23_staged_replacement_links_rollout_eval_lifecycle() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[principals еще живы](../../appendix/lifecycle-artifact-schema.md)",
+            "[background jobs забыли выключить]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[memory write path остался активным]"
+            "(../../appendix/memory-retrieval-schema.md)",
+            "[paused approvals остались resumable после retirement]"
+            "(../../appendix/approval-schema.md)",
+            "[expired capability sessions все еще можно re-initialize через "
+            "stale control paths](../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated orchestration patterns или worker-boundary policies "
+            "остаются рабочими после retirement]"
+            "(../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[principals are still active]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[background jobs were forgotten]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[memory write path remained live]"
+            "(../../appendix/memory-retrieval-schema.en.md)",
+            "[paused approvals were left resumable after retirement]"
+            "(../../appendix/approval-schema.en.md)",
+            "[expired capability sessions could still be re-initialized through "
+            "stale control paths](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated orchestration patterns or worker-boundary policies "
+            "remained usable after retirement]"
+            "(../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[主体还活着](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[后台任务没关](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[记忆写入路径仍然在工作]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+            "[paused approvals 在退役之后仍然可以恢复]"
+            "(../../appendix/approval-schema.zh.md)",
+            "[已过期 capability sessions 仍可通过陈旧控制路径 re-initialize]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
