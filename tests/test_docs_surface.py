@@ -121,7 +121,16 @@ def test_public_book_canonical_redirects_are_configured() -> None:
     assert "javascripts/canonical-redirects.js" in scripts
 
     redirect_script = _read("docs/javascripts/canonical-redirects.js")
-    for route in ('"/book"', '"/en/book"', '"/zh/book"'):
+    for route in (
+        '"/book"',
+        '"/en/book"',
+        '"/zh/book"',
+        '"/start-here"',
+        '"/reference"',
+        '"/appendix/sources"',
+        '"/book/part-i/chapter-1"',
+        '"/book/part-v/chapter-13"',
+    ):
         assert route in redirect_script
     assert 'projectPrefix = "/agent-arch"' in redirect_script
 
@@ -169,6 +178,18 @@ def test_public_book_canonical_redirects_add_trailing_slash_to_entrypoints() -> 
     assert _canonical_redirects_for("/agent-arch/book", "?tab=toc", "#intro") == [
         "https://agent-axiom.github.io/agent-arch/book/?tab=toc#intro"
     ]
+    assert _canonical_redirects_for("/agent-arch/reference", "?view=schemas", "#top") == [
+        "https://agent-axiom.github.io/agent-arch/reference/?view=schemas#top"
+    ]
+    assert _canonical_redirects_for("/agent-arch/appendix/sources") == [
+        "https://agent-axiom.github.io/agent-arch/appendix/sources/"
+    ]
+    assert _canonical_redirects_for("/agent-arch/book/part-i/chapter-1") == [
+        "https://agent-axiom.github.io/agent-arch/book/part-i/chapter-1/"
+    ]
+    assert _canonical_redirects_for("/agent-arch/book/part-v/chapter-13") == [
+        "https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/"
+    ]
 
 
 def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
@@ -176,6 +197,11 @@ def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
         "docs/book.html": ("ru", "book/"),
         "docs/en/book.html": ("en", "book/"),
         "docs/zh/book.html": ("zh", "book/"),
+        "docs/start-here.html": ("ru", "start-here/"),
+        "docs/reference.html": ("ru", "reference/"),
+        "docs/appendix/sources.html": ("ru", "sources/"),
+        "docs/book/part-i/chapter-1.html": ("ru", "chapter-1/"),
+        "docs/book/part-v/chapter-13.html": ("ru", "chapter-13/"),
     }
 
     for page_path, (language, target) in expected_pages.items():
