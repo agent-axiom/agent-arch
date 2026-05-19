@@ -9,6 +9,8 @@ This page is about the structure and status of the book. If you need a reading r
     - `EN translation layer`: readable draft in editorial cleanup.
     - `ZH translation layer`: readable draft localization preview in editorial cleanup.
     - `Reference layer`: active companion material with runtime, schemas, checklists, case studies, and operational contracts.
+    - `Runtime package`: runnable reference implementation and examples, not a production framework.
+    - `Publisher package`: in progress; the public site is an open manuscript and companion project, not a finished submission packet.
 
 !!! info "How to read the book by stability level"
     The book has two layers:
