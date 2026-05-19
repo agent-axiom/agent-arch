@@ -6127,6 +6127,40 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
         _assert_files_contain_all((path,), markers)
 
 
+def test_practical_a2a_trust_delegation_contract_covers_required_controls() -> None:
+    required_fields = (
+        "A2A trust and delegation artifact",
+        "a2a_trust_delegation:",
+        "remote_agent_id:",
+        "remote_agent_owner:",
+        "trust_tier:",
+        "allowed_tasks:",
+        "forbidden_tasks:",
+        "delegation_depth:",
+        "context_sharing_policy:",
+        "memory_sharing_policy:",
+        "tool_access_via_remote_agent:",
+        "approval_propagation:",
+        "audit_correlation_id:",
+        "failure_attribution:",
+        "revocation_policy:",
+        "delegation laundering",
+        "context over-sharing",
+        "remote-agent impersonation",
+        "unbounded delegation chains",
+        "conflicting actions",
+        "lost accountability",
+        "cross-agent prompt injection",
+    )
+    checked_files = (
+        "docs/book/part-iv/practical-mcp-a2a.md",
+        "docs/book/part-iv/practical-mcp-a2a.en.md",
+        "docs/book/part-iv/practical-mcp-a2a.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_fields)
+
+
 def test_practical_a2a_handoff_trust_trace_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-iv/practical-mcp-a2a.md": "../../appendix/trace-schema.md",

@@ -83,6 +83,31 @@ A2A 的最小治理契约应该记录：
 
 这个契约把 A2A 从“智能体之间的传输”变成受治理的 collaboration graph。没有它，多智能体系统看起来是分布式的，但事故调查时仍然像黑箱。
 
+可审查的 A2A trust and delegation artifact 可以这样写：
+
+```yaml
+a2a_trust_delegation:
+  remote_agent_id: incident.coordinator.v2
+  remote_agent_owner: sre-platform
+  trust_tier: constrained_internal
+  allowed_tasks:
+    - collect_incident_context
+    - draft_status_update
+  forbidden_tasks:
+    - customer_notification_without_approval
+    - production_change_without_gate
+  delegation_depth: 1
+  context_sharing_policy: minimal_relevant_context_only
+  memory_sharing_policy: no_profile_memory_write
+  tool_access_via_remote_agent: incident_read_tools_only
+  approval_propagation: original_approval_constraints_apply
+  audit_correlation_id: trace_id:a2a_handoff_id
+  failure_attribution: initiator_executor_policy_tool_external
+  revocation_policy: revoke_on_policy_drift_or_owner_change
+```
+
+这个 artifact 应该用具体的 A2A failure modes 来审查：delegation laundering、context over-sharing、remote-agent impersonation、unbounded delegation chains、conflicting actions、lost accountability 和 cross-agent prompt injection。
+
 ## 4. 典型错误：过早做多智能体
 
 实践里最常见的混淆往往是这样：
