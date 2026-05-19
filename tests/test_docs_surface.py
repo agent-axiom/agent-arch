@@ -3276,6 +3276,69 @@ def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[выключить deprecated orchestration patterns и отозвать worker-safe "
+            "catalog exposure](../../appendix/change-rollout-schema.md)",
+            "[отозвать delegated authorization paths]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[архивировать их final lineage](../../appendix/trace-schema.md)",
+            "[вывести из эксплуатации deprecated verifier contracts и сохранить "
+            "evidence, нужные для объяснения прежних rollout или assurance "
+            "decisions](../../appendix/eval-schema.md)",
+            "[`failure_reason`](../../appendix/eval-schema.md)",
+            "[архивировать handoff artifacts, которые несли scope спринта, "
+            "evaluator critique или решения на границе reset]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[отозвать egress access](../../appendix/lifecycle-artifact-schema.md)",
+            "[закрыть principals, secrets и connectors]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[зафиксировать final audit state](../../appendix/trace-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[disable deprecated orchestration patterns and revoke worker-safe "
+            "catalog exposure](../../appendix/change-rollout-schema.en.md)",
+            "[revoke delegated authorization paths]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[archive their final lineage](../../appendix/trace-schema.en.md)",
+            "[retire deprecated verifier contracts and preserve the evidence "
+            "needed to explain prior rollout or assurance decisions]"
+            "(../../appendix/eval-schema.en.md)",
+            "[`failure_reason`](../../appendix/eval-schema.en.md)",
+            "[archive handoff artifacts that carried sprint scope, evaluator "
+            "critique, or reset-boundary decisions]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[revoke egress access](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[close principals, secrets, and connectors]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[record the final audit state](../../appendix/trace-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[撤销 delegated authorization paths]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)",
+            "[退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[`failure_reason`](../../appendix/eval-schema.zh.md)",
+            "[归档那些承载 sprint scope、evaluator critique 或 reset-boundary "
+            "decisions 的 handoff artifacts]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[撤销出口访问](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[关闭主体、密钥和连接器]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[固化最终审计状态](../../appendix/trace-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",

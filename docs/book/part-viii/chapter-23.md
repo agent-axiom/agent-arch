@@ -95,13 +95,13 @@
 - [истечь или отменить paused runs](../../appendix/lifecycle-artifact-schema.md);
 - [отключить background jobs и background routes](../../appendix/lifecycle-artifact-schema.md);
 - [закрыть или архивировать capability-session state и запретить uncontrolled re-init](../../appendix/lifecycle-artifact-schema.md);
-- выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
-- отозвать delegated authorization paths и архивировать их final lineage;
-- вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions, включая экспортируемые поля failed run вроде `failure_reason`, если на них опиралось прежнее суждение;
-- архивировать handoff artifacts, которые несли scope спринта, evaluator critique или решения на границе reset для длинных работ, если именно эти артефакты влияли на то, что retiring system было разрешено делать;
-- отозвать egress access;
-- закрыть principals, secrets и connectors;
-- зафиксировать final audit state.
+- [выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure](../../appendix/change-rollout-schema.md);
+- [отозвать delegated authorization paths](../../appendix/lifecycle-artifact-schema.md) и [архивировать их final lineage](../../appendix/trace-schema.md);
+- [вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions](../../appendix/eval-schema.md), включая экспортируемые поля failed run вроде [`failure_reason`](../../appendix/eval-schema.md), если на них опиралось прежнее суждение;
+- [архивировать handoff artifacts, которые несли scope спринта, evaluator critique или решения на границе reset](../../appendix/lifecycle-artifact-schema.md) для длинных работ, если именно эти артефакты влияли на то, что retiring system было разрешено делать;
+- [отозвать egress access](../../appendix/lifecycle-artifact-schema.md);
+- [закрыть principals, secrets и connectors](../../appendix/lifecycle-artifact-schema.md);
+- [зафиксировать final audit state](../../appendix/trace-schema.md).
 
 <div class="diagram-card">
 <p>Retirement лучше делать как последовательное сужение рабочей поверхности системы</p>

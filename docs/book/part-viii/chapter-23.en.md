@@ -95,13 +95,13 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - [expire or cancel paused runs](../../appendix/lifecycle-artifact-schema.en.md);
 - [stop background jobs and background routes](../../appendix/lifecycle-artifact-schema.en.md);
 - [close or archive capability-session state and block uncontrolled re-init](../../appendix/lifecycle-artifact-schema.en.md);
-- disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
-- revoke delegated authorization paths and archive their final lineage;
-- retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions, including exported failed-run fields such as `failure_reason` when they justified earlier judgment;
-- archive handoff artifacts that carried sprint scope, evaluator critique, or reset-boundary decisions for long-running work, when those artifacts affected what the retired system was allowed to do;
-- revoke egress access;
-- close principals, secrets, and connectors;
-- record the final audit state.
+- [disable deprecated orchestration patterns and revoke worker-safe catalog exposure](../../appendix/change-rollout-schema.en.md);
+- [revoke delegated authorization paths](../../appendix/lifecycle-artifact-schema.en.md) and [archive their final lineage](../../appendix/trace-schema.en.md);
+- [retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions](../../appendix/eval-schema.en.md), including exported failed-run fields such as [`failure_reason`](../../appendix/eval-schema.en.md) when they justified earlier judgment;
+- [archive handoff artifacts that carried sprint scope, evaluator critique, or reset-boundary decisions](../../appendix/lifecycle-artifact-schema.en.md) for long-running work, when those artifacts affected what the retired system was allowed to do;
+- [revoke egress access](../../appendix/lifecycle-artifact-schema.en.md);
+- [close principals, secrets, and connectors](../../appendix/lifecycle-artifact-schema.en.md);
+- [record the final audit state](../../appendix/trace-schema.en.md).
 
 <div class="diagram-card">
 <p>Retirement works best as a stepwise narrowing of the operational surface</p>

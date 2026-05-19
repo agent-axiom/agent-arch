@@ -95,13 +95,13 @@
 - [让 paused runs 过期或直接取消](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [停止后台任务与 background routes](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [关闭或归档 capability-session state，并阻断不受控的 re-init](../../appendix/lifecycle-artifact-schema.zh.md)；
-- 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
-- 撤销 delegated authorization paths，并归档它们最终的 lineage；
-- 退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
-- 归档那些承载 sprint scope、evaluator critique 或 reset-boundary decisions 的 handoff artifacts，只要这些工件曾影响过即将退役的系统被允许执行什么；
-- 撤销出口访问；
-- 关闭主体、密钥和连接器；
-- 固化最终审计状态。
+- [停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure](../../appendix/change-rollout-schema.zh.md)；
+- [撤销 delegated authorization paths](../../appendix/lifecycle-artifact-schema.zh.md)，并[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)；
+- [退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据](../../appendix/eval-schema.zh.md)，包括像 [`failure_reason`](../../appendix/eval-schema.zh.md) 这样的 failed-run 导出字段，只要先前判断依赖过它们；
+- [归档那些承载 sprint scope、evaluator critique 或 reset-boundary decisions 的 handoff artifacts](../../appendix/lifecycle-artifact-schema.zh.md)，只要这些工件曾影响过即将退役的系统被允许执行什么；
+- [撤销出口访问](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [关闭主体、密钥和连接器](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [固化最终审计状态](../../appendix/trace-schema.zh.md)。
 
 <div class="diagram-card">
 <p>更稳妥的退役，更像是一步步缩小运行面</p>
