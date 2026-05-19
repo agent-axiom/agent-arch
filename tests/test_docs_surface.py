@@ -3148,6 +3148,46 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[active tool principal](../../appendix/lifecycle-artifact-schema.md)",
+            "[доступ к memory](../../appendix/memory-retrieval-schema.md)",
+            "[старый путь rollout](../../appendix/change-rollout-schema.md)",
+            "[resumable paused approval path](../../appendix/approval-schema.md)",
+            "[expired capability session, которую все еще можно re-initialize "
+            "через старый path](../../appendix/lifecycle-artifact-schema.md)",
+            "[старая runtime-control schema, которую gateways все еще принимают]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[active tool principal](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[memory access](../../appendix/memory-retrieval-schema.en.md)",
+            "[old rollout path](../../appendix/change-rollout-schema.en.md)",
+            "[resumable paused approval path](../../appendix/approval-schema.en.md)",
+            "[expired capability session that can still be re-initialized "
+            "through an old path](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[old runtime-control schema still accepted by gateways]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[活跃的工具主体](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[记忆访问权](../../appendix/memory-retrieval-schema.zh.md)",
+            "[旧的上线路径](../../appendix/change-rollout-schema.zh.md)",
+            "[可恢复的 paused approval path](../../appendix/approval-schema.zh.md)",
+            "[已过期但仍可通过旧路径 re-initialize 的 capability session]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[仍被 gateways 接受的旧 runtime-control schema]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",

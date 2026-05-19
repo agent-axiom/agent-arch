@@ -66,14 +66,14 @@ One of the ugliest operational mistakes looks like this:
 
 - the team believes the system is “basically off”;
 - but it still has:
-  - an active tool principal;
+  - an [active tool principal](../../appendix/lifecycle-artifact-schema.en.md);
   - a live connector;
-  - memory access;
-  - an old rollout path;
+  - [memory access](../../appendix/memory-retrieval-schema.en.md);
+  - an [old rollout path](../../appendix/change-rollout-schema.en.md);
   - a background job;
-  - a resumable paused approval path;
-  - an expired capability session that can still be re-initialized through an old path;
-  - an old runtime-control schema still accepted by gateways.
+  - a [resumable paused approval path](../../appendix/approval-schema.en.md);
+  - an [expired capability session that can still be re-initialized through an old path](../../appendix/lifecycle-artifact-schema.en.md);
+  - an [old runtime-control schema still accepted by gateways](../../appendix/lifecycle-artifact-schema.en.md).
 
 Formally the system is “dead,” but operationally it can still act.
 
