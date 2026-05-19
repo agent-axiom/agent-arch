@@ -423,6 +423,7 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
     required_markers = (
         "Blocker Waiver / Decision Log Draft",
+        "Print-friendly waiver log starter",
         "no waivers yet",
         "all four blockers remain open",
         "Waiver rules",
@@ -440,6 +441,7 @@ def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
 def test_publisher_packet_has_external_submission_blocker_register() -> None:
     required_markers = (
         "External Submission Blocker Register",
+        "Print-friendly blocker list",
         "not externally sendable",
         "Author bio and credential framing",
         "Independent sample copy-edit",
@@ -451,6 +453,20 @@ def test_publisher_packet_has_external_submission_blocker_register() -> None:
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_blocker_sections_are_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    blocker_section = text.split("## External Submission Blocker Register", 1)[1].split(
+        "## Blocker Waiver / Decision Log Draft",
+        1,
+    )[0]
+    waiver_section = text.split("## Blocker Waiver / Decision Log Draft", 1)[1]
+
+    assert "|" not in blocker_section
+    assert "|" not in waiver_section
+    assert blocker_section.count("- **") >= 4
+    assert waiver_section.count("- **") >= 1
 
 
 def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
