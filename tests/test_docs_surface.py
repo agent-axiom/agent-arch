@@ -623,6 +623,33 @@ def test_publisher_packet_copy_edit_handoff_is_print_friendly() -> None:
     assert all(len(line) <= 130 for line in section.splitlines())
 
 
+def test_publisher_packet_editorial_compression_rules_are_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Editorial Compression Rules", 1)[1].split(
+        "## Author / Platform Credibility Note Draft",
+        1,
+    )[0]
+    required_markers = (
+        "- Use Support triage as the primary running case.",
+        "- Use Internal knowledge assistant and Incident coordination as secondary contrast cases.",
+        (
+            "- End chapters with: what to remember, common failure modes, "
+            "design-review use, companion assets, and next chapter."
+        ),
+    )
+    forbidden_inline_markers = (
+        "Use Support triage as the primary running case; use Internal knowledge assistant",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 7
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_public_link_availability_record() -> None:
     required_markers = (
         "Public Link Availability Record",
@@ -784,6 +811,8 @@ def test_publisher_packet_author_platform_note_is_print_friendly() -> None:
 def test_publisher_packet_has_author_bio_input_brief() -> None:
     required_markers = (
         "Author Bio Input Brief Draft",
+        "Before this packet becomes external email copy, collect the human-authored facts.",
+        "Do not let the manuscript artifact invent those facts.",
         "Required inputs",
         "- preferred author name;",
         "production/engineering background",
@@ -806,6 +835,10 @@ def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
         1,
     )[0]
     forbidden_inline_labels = (
+        (
+            "Before this packet becomes external email copy, collect the "
+            "human-authored facts that should not be invented"
+        ),
         "**Required inputs:** preferred author name",
         "**Optional inputs:** prior books",
         "**Tone constraints:** avoid inflated",
