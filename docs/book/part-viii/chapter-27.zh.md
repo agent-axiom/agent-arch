@@ -196,7 +196,7 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 !!! example "贯穿案例：注册表里的 support-triage"
     经过所有修复后，support-triage 不应该只是“那个支持智能体”。它应该是一条注册表记录，包含负责人、生命周期状态、允许能力、`create_support_ticket` 工具主体、审批模式、可观测性状态、评测证据关联，以及旧工单写入器的退役计划。这样，重复工单信号就不只关联到 trace 或 artifact bundle，还能关联到一个命名的生产实体：谁拥有这条路径，谁扩大 canary，谁关闭写能力，谁对已废弃 route 负责。
 
-**Registry case-spine note：**每个 canonical case 都应该变成 named registry record，而不只是正文里的案例。Support triage 需要 write-capability owners、approval mode，以及 deprecated ticket paths 的 retirement plan。Internal knowledge assistant 需要 corpus owners、freshness review、tenant scope 和 retrieval-policy linkage。Incident coordination 需要 incident-role owners、escalation authority、notification channels，以及 emergency-only capabilities 的 lifecycle state。
+**Registry case-spine note：**每个 canonical case 都应该变成 [named registry record](../../appendix/registry-operations-handbook.zh.md)，而不只是正文里的案例。Support triage 需要 write-capability owners、[approval mode](../../appendix/approval-schema.zh.md)，以及 deprecated ticket paths 的 [retirement plan](../../appendix/lifecycle-artifact-schema.zh.md)。Internal knowledge assistant 需要 [corpus owners](../../appendix/memory-retrieval-schema.zh.md)、freshness review、tenant scope 和 [retrieval-policy linkage](../../appendix/memory-retrieval-schema.zh.md)。Incident coordination 需要 incident-role owners、escalation authority、notification channels，以及 emergency-only capabilities 的 [lifecycle state](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 ### 8.1. 没有持续校验的注册表会变得整洁，但不再准确
 
