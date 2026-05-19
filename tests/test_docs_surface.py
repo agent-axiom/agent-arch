@@ -566,18 +566,38 @@ def test_publisher_packet_has_author_bio_input_brief() -> None:
     required_markers = (
         "Author Bio Input Brief Draft",
         "Required inputs",
-        "preferred author name",
+        "- preferred author name;",
         "production/engineering background",
         "public project links",
         "Tone constraints",
-        "avoid inflated authority claims",
+        "- avoid inflated authority claims;",
         "Bio slots to prepare",
-        "50-word short bio",
-        "100-word proposal bio",
+        "- 50-word short bio;",
+        "- 100-word proposal bio;",
         "No-go signals",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Author Bio Input Brief Draft", 1)[1].split(
+        "## Comparable Books Draft",
+        1,
+    )[0]
+    forbidden_inline_labels = (
+        "**Required inputs:** preferred author name",
+        "**Optional inputs:** prior books",
+        "**Tone constraints:** avoid inflated",
+        "**Bio slots to prepare:** one-line byline",
+        "**No-go signals:** missing preferred name",
+    )
+
+    for marker in forbidden_inline_labels:
+        assert marker not in section
+    assert section.count("\n- ") >= 23
+    assert all(len(line) <= 140 for line in section.splitlines())
 
 
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
