@@ -6,8 +6,8 @@
 
 构建智能体很枯燥，但结果令人震撼：团队得到的不是一次性的炫技，而是一个可以约束、观察、发布并持续改进的系统，不必靠猜。
 
-!!! info "Draft localization preview"
-    中文层目前是可阅读的 draft localization preview，而不是面向出版社的 finished Chinese edition。它适合社区预览、结构审查和术语对齐；正式出版前仍需要完整中文编辑、术语统一、图表/导出 QA 和母语审校。
+!!! info "中文本地化预览"
+    中文层目前是可阅读的本地化预览，而不是面向出版社的最终中文版。它适合社区预览、结构审查和术语对齐；正式出版前仍需要完整中文编辑、术语统一、图表/导出 QA 和母语审校。
 
 <div class="hero-actions" markdown="1">
 
