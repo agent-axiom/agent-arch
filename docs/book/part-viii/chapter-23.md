@@ -66,14 +66,14 @@
 
 - команда считает систему “почти выключенной”;
 - но у нее все еще есть:
-  - active tool principal;
+  - [active tool principal](../../appendix/lifecycle-artifact-schema.md);
   - живой connector;
-  - доступ к memory;
-  - старый путь rollout;
+  - [доступ к memory](../../appendix/memory-retrieval-schema.md);
+  - [старый путь rollout](../../appendix/change-rollout-schema.md);
   - background job;
-  - resumable paused approval path;
-  - expired capability session, которую все еще можно re-initialize через старый path;
-  - старая runtime-control schema, которую gateways все еще принимают.
+  - [resumable paused approval path](../../appendix/approval-schema.md);
+  - [expired capability session, которую все еще можно re-initialize через старый path](../../appendix/lifecycle-artifact-schema.md);
+  - [старая runtime-control schema, которую gateways все еще принимают](../../appendix/lifecycle-artifact-schema.md).
 
 То есть формально система уже “мертвая”, а по факту она все еще может делать действия.
 

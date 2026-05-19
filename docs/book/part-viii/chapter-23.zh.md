@@ -66,14 +66,14 @@
 
 - 团队以为系统“基本已经关了”；
 - 但它仍然保留着：
-  - 活跃的工具主体；
+  - [活跃的工具主体](../../appendix/lifecycle-artifact-schema.zh.md)；
   - 仍然在线的连接器；
-  - 记忆访问权；
-  - 旧的上线路径；
+  - [记忆访问权](../../appendix/memory-retrieval-schema.zh.md)；
+  - [旧的上线路径](../../appendix/change-rollout-schema.zh.md)；
   - 后台任务；
-  - 可恢复的 paused approval path；
-  - 已过期但仍可通过旧路径 re-initialize 的 capability session；
-  - 仍被 gateways 接受的旧 runtime-control schema。
+  - [可恢复的 paused approval path](../../appendix/approval-schema.zh.md)；
+  - [已过期但仍可通过旧路径 re-initialize 的 capability session](../../appendix/lifecycle-artifact-schema.zh.md)；
+  - [仍被 gateways 接受的旧 runtime-control schema](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 形式上系统已经“死了”，但在运行上它仍然能行动。
 
