@@ -826,6 +826,8 @@ def test_publisher_packet_has_author_bio_input_brief() -> None:
         "public project links",
         "Tone constraints",
         "- avoid inflated authority claims;",
+        "- prefer concrete artifact-backed credibility;",
+        "useful credibility artifacts: public book site",
         "Bio slots to prepare",
         "- 50-word short bio;",
         "- 100-word proposal bio;",
@@ -848,6 +850,7 @@ def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
         ),
         "**Required inputs:** preferred author name",
         "**Optional inputs:** prior books",
+        "prefer concrete artifact-backed credibility: public book site",
         "**Tone constraints:** avoid inflated",
         "**Bio slots to prepare:** one-line byline",
         "**No-go signals:** missing preferred name",
@@ -855,8 +858,8 @@ def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
 
     for marker in forbidden_inline_labels:
         assert marker not in section
-    assert section.count("\n- ") >= 23
-    assert all(len(line) <= 140 for line in section.splitlines())
+    assert section.count("\n- ") >= 24
+    assert all(len(line) <= 125 for line in section.splitlines())
 
 
 def test_publisher_packet_comparable_books_are_print_friendly() -> None:

@@ -341,7 +341,8 @@ Do not let the manuscript artifact invent those facts.
 - avoid unverifiable employment claims;
 - avoid private client details;
 - avoid credentials that cannot be shown to an editor;
-- prefer concrete artifact-backed credibility: public book site, runnable reference runtime, tests, schemas, and companion material.
+- prefer concrete artifact-backed credibility;
+- useful credibility artifacts: public book site, runnable reference runtime, tests, schemas, and companion material.
 
 **Bio slots to prepare:**
 
