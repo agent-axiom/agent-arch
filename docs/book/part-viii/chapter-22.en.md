@@ -92,7 +92,7 @@ You need to be able to answer:
 
 If those questions cannot be answered quickly, change management and incident review start breaking almost immediately.
 
-That is why provenance in this chapter should be read narrowly and concretely. It is not the whole evidence layer. It is the governed lineage layer for approved artifacts, release identity, and decision-bearing versions.
+That is why provenance in this chapter should be read narrowly and concretely. It is not the whole evidence layer. It is the governed lineage layer for [approved artifacts, release identity, and decision-bearing versions](../../appendix/lifecycle-artifact-schema.en.md).
 
 That is the core promise of this chapter. It should help the reader see where evidence stops being generic telemetry and becomes a governed backbone: the layer that preserves which reviewed artifact set, trusted contract version, and approved release identity a later decision or incident review is actually standing on. The main artifact of this chapter is the [approved artifact bundle](../../appendix/lifecycle-artifact-schema.en.md): a reviewed set of versions, contracts, and schemas, not a generic evidence folder.
 
