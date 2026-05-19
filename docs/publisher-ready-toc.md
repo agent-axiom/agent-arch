@@ -229,18 +229,34 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 
 ## Author / Platform Credibility Note Draft
 
-Use this as a conservative draft until the final bio is written:
+Use this as a conservative draft until the final bio is written.
 
-The project already has more than a manuscript outline: it has a public multilingual book site, a runnable reference runtime, configuration examples, tests, and appendix material that demonstrate the operating model in concrete artifacts. That platform supports the book's central claim: production AI agents should be designed as governed systems, not as prompt demos.
+Project platform:
+
+- public multilingual book site;
+- runnable reference runtime;
+- configuration examples;
+- tests;
+- appendix material that demonstrates the operating model in concrete artifacts.
+
+Claim supported by those artifacts:
+
+- production AI agents should be designed as governed systems, not as prompt demos.
 
 Credibility points to emphasize:
 
-- the manuscript connects architecture, safety, observability, evals, rollout, and lifecycle ownership rather than treating them as separate topics;
+- the manuscript connects architecture, safety, observability, evals, rollout, and lifecycle ownership;
+- those topics are treated as one operating model rather than separate concerns;
 - the companion material includes runnable/reference artifacts, so readers can inspect the contracts behind the prose;
 - the book is written for practitioners who need to ship and operate agents, not only understand model behavior in the abstract;
 - the multilingual surface broadens reach without changing the technical promise.
 
-Bio gap to fill before submission: add a short human author bio with role, relevant production/engineering background, public writing or project links, and any constraints on how personal credentials should be presented.
+Bio gap to fill before submission:
+
+- add a short human author bio with role;
+- include relevant production/engineering background;
+- include public writing or project links;
+- record constraints on how personal credentials should be presented.
 
 ## Author Bio Input Brief Draft
 

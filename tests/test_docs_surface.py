@@ -597,6 +597,37 @@ def test_publisher_packet_target_editor_brief_is_print_friendly() -> None:
     assert all(len(line) <= 130 for line in section.splitlines())
 
 
+def test_publisher_packet_author_platform_note_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Author / Platform Credibility Note Draft", 1)[1].split(
+        "## Author Bio Input Brief Draft",
+        1,
+    )[0]
+    required_markers = (
+        "Project platform:",
+        "- public multilingual book site;",
+        "- runnable reference runtime;",
+        "- configuration examples;",
+        "Claim supported by those artifacts:",
+        "- production AI agents should be designed as governed systems, not as prompt demos.",
+        "Bio gap to fill before submission:",
+        "- add a short human author bio with role;",
+    )
+    forbidden_inline_markers = (
+        "Use this as a conservative draft until the final bio is written:",
+        "The project already has more than a manuscript outline:",
+        "Bio gap to fill before submission: add a short human author bio",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 11
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_author_bio_input_brief() -> None:
     required_markers = (
         "Author Bio Input Brief Draft",
