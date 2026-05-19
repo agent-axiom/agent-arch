@@ -113,7 +113,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 模型链；
 - 提示与例程链；
 - [策略链](../../appendix/policy-bundle-schema.zh.md)；
-- 能力链；
+- [能力链](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 审批与运行时控制链；
 - 能力会话治理链；
 - 委派授权链；
