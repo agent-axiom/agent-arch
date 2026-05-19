@@ -32,10 +32,10 @@
 
 - 模型工件；
 - 提示和例程包；
-- 策略配置；
-- 检索语料；
-- 能力契约；
-- 评测数据集；
+- [策略配置](../../appendix/policy-bundle-schema.zh.md)；
+- [检索语料](../../appendix/memory-retrieval-schema.zh.md)；
+- [能力契约](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [评测数据集](../../appendix/eval-schema.zh.md)；
 - 验证器契约、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - [审批规则与模式](../../appendix/approval-schema.zh.md)；
 - [运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)；

@@ -1215,6 +1215,34 @@ def test_chapter_22_supply_chain_surface_links_control_schemas() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_supply_chain_surface_links_artifact_families() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[конфигурации политик](../../appendix/policy-bundle-schema.md)",
+            "[корпуса для извлечения](../../appendix/memory-retrieval-schema.md)",
+            "[контракты возможностей](../../appendix/lifecycle-artifact-schema.md)",
+            "[наборы для оценки](../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[policy configs](../../appendix/policy-bundle-schema.en.md)",
+            "[retrieval corpora](../../appendix/memory-retrieval-schema.en.md)",
+            "[capability contracts](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[eval datasets](../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[策略配置](../../appendix/policy-bundle-schema.zh.md)",
+            "[检索语料](../../appendix/memory-retrieval-schema.zh.md)",
+            "[能力契约](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[评测数据集](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
