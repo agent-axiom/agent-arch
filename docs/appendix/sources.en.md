@@ -1,6 +1,6 @@
 # Sources
 
-Below is the main set of primary sources used by the current version of the book. Last editorial source review: **May 14, 2026**.
+Below is the main set of primary sources used by the current version of the book. Last editorial source review: **May 17, 2026**.
 
 !!! info "How to read this list"
     It is useful to separate these sources not only by topic, but also by the strength of support they provide:
@@ -17,7 +17,15 @@ Below is the main set of primary sources used by the current version of the book
 
 ## Normative Frameworks and Governance Contours
 
+### Agent-specific security
+
+- OWASP, [AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- OWASP, [MCP Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html)
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- OWASP, [RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
+
+### Governance and baseline controls
+
 - NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 - NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 - NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

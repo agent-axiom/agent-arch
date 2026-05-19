@@ -1,6 +1,6 @@
 # 参考来源
 
-下面收录的是本书当前版本依赖的主要一手来源。最近一次来源编辑审查：**2026 年 5 月 14 日**。
+下面收录的是本书当前版本依赖的主要一手来源。最近一次来源编辑审查：**2026 年 5 月 17 日**。
 
 !!! info "如何阅读这份列表"
     最好不仅按主题来读这些来源，也按它们提供的支撑强度来区分：
@@ -17,7 +17,15 @@
 
 ## 规范性框架与治理轮廓
 
+### Agent-specific security
+
+- OWASP, [AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- OWASP, [MCP Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html)
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- OWASP, [RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
+
+### Governance and baseline controls
+
 - NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 - NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 - NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)

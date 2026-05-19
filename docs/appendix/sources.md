@@ -1,6 +1,6 @@
 # Источники
 
-Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней редакционной проверки источников: **14 мая 2026 года**.
+Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней редакционной проверки источников: **17 мая 2026 года**.
 
 !!! info "Как читать этот список"
     Полезно разделять источники не только по теме, но и по силе опоры:
@@ -17,7 +17,15 @@
 
 ## Нормативные рамки и контуры управления
 
+### Agent-specific security
+
+- OWASP, [AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- OWASP, [MCP Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html)
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- OWASP, [RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
+
+### Governance and baseline controls
+
 - NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 - NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
 - NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
