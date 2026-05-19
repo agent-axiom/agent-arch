@@ -316,9 +316,9 @@ The point is simple: trusted artifacts should be defined by explicit properties,
 The usual problems look like this:
 
 - prompt bundles are not versioned;
-- eval datasets change quietly;
-- capability contracts are edited without review trail;
-- approval or runtime-control schemas change without version discipline;
+- [eval datasets](../../appendix/eval-schema.en.md) change quietly;
+- [capability contracts](../../appendix/lifecycle-artifact-schema.en.md) are edited without review trail;
+- [approval schemas](../../appendix/approval-schema.en.md) or [runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md) change without version discipline;
 - [orchestration-pattern governance changes](../../appendix/change-rollout-schema.en.md) have no artifact lineage;
 - nobody knows which exact artifact was active during an incident;
 - contract-version linkage is missing from incident evidence;
