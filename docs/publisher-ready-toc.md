@@ -493,25 +493,56 @@ Still needs human/editorial input before external submission:
 
 ## External Submission Blocker Register
 
-The packet is drafted, link-checked, and internally gated, but it should not be sent externally until these human/editorial blockers are closed.
+The packet is drafted, link-checked, and internally gated.
+It should not be sent externally until these human/editorial blockers are closed.
 
-Print-friendly blocker list. Each item keeps the original `Owner/input needed` and `Packet action when closed` fields inline:
+Print-friendly blocker list. Each item keeps the original fields as short sub-bullets:
 
-- **Author bio and credential framing** — current state: open; Owner/input needed: human author supplies preferred name, role, public links, and credential constraints; Packet action when closed: replace placeholder bio and cover-note credential sentence.
-- **Independent sample copy-edit** — current state: open; Owner/input needed: copy editor returns annotated Chapter 1 sample and top 5 changes; Packet action when closed: apply accepted edits and update sample export date.
-- **Sample selection** — current state: default chosen, not target-specific; Owner/input needed: editor/imprint policy or author decision confirms Chapter 1 only vs Chapter 1 plus Chapter 13; Packet action when closed: freeze attachment list and proposal order.
-- **Target editor / imprint formatting** — current state: open; Owner/input needed: target editor, imprint, submission channel, attachment rules, and page limits; Packet action when closed: tailor cover note, file names, and proposal format.
+- **Author bio and credential framing**
+  - Current state: open.
+  - Owner/input needed: human author supplies preferred name, role, public links, and credential constraints.
+  - Packet action when closed: replace placeholder bio and cover-note credential sentence.
+- **Independent sample copy-edit**
+  - Current state: open.
+  - Owner/input needed: copy editor returns annotated Chapter 1 sample and top 5 changes.
+  - Packet action when closed: apply accepted edits and update sample export date.
+- **Sample selection**
+  - Current state: default chosen, not target-specific.
+  - Owner/input needed: editor/imprint policy or author decision confirms Chapter 1 only vs Chapter 1 plus Chapter 13.
+  - Packet action when closed: freeze attachment list and proposal order.
+- **Target editor / imprint formatting**
+  - Current state: open.
+  - Owner/input needed: target editor, imprint, submission channel, attachment rules, and page limits.
+  - Packet action when closed: tailor cover note, file names, and proposal format.
 
 **Submission state:** not externally sendable until all four blockers are closed or explicitly waived by the author.
 
 ## Blocker Waiver / Decision Log Draft
 
-Use this log if the author decides to waive a blocker or make a target-specific packet decision. Do not remove the blocker register; record why the exception is safe enough for the chosen submission.
+Use this log if the author decides to waive a blocker or make a target-specific packet decision.
+Do not remove the blocker register; record why the exception is safe enough for the chosen submission.
 
 Print-friendly waiver log starter:
 
-- **Date:** TBD; **decision:** no waivers yet; **applies to blocker:** n/a; **decider:** n/a; **rationale:** all four blockers remain open; **follow-up:** collect author/editor inputs before external submission.
+- **Date:** TBD.
+- **Decision:** no waivers yet.
+- **Applies to blocker:** n/a.
+- **Decider:** n/a.
+- **Rationale:** all four blockers remain open.
+- **Follow-up:** collect author/editor inputs before external submission.
 
-**Waiver rules:** every waiver needs a named decider, date, scope, rationale, and follow-up owner. Waivers must not override factual constraints: no invented author credentials, no unverified links, no claim that the Chinese layer is a finished edition, and no promise that the companion runtime is a production framework.
+**Waiver rules:**
 
-**No-go signals:** anonymous waiver, global waiver without scope, waived link check after URLs changed, waived copy-edit after substantive sample edits, or waiver text that contradicts the packet's governed-systems positioning.
+- every waiver needs a named decider, date, scope, rationale, and follow-up owner;
+- no invented author credentials;
+- no unverified links;
+- no claim that the Chinese layer is a finished edition;
+- no promise that the companion runtime is a production framework.
+
+**No-go signals:**
+
+- anonymous waiver;
+- global waiver without scope;
+- waived link check after URLs changed;
+- waived copy-edit after substantive sample edits;
+- waiver text that contradicts the packet's governed-systems positioning.
