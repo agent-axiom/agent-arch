@@ -344,13 +344,28 @@ Before this packet becomes external email copy, collect the human-authored facts
 
 Use these as shelf-positioning references, not as direct substitutes:
 
-- **Designing Data-Intensive Applications** — comparable in systems-thinking discipline; this book applies that level of operational seriousness to agent behavior, policy, memory, evals, and lifecycle.
-- **Designing Machine Learning Systems** — comparable in production ML framing; this book narrows the lens to agent systems with tools, approvals, traces, rollout gates, and runtime control.
-- **AI Engineering** — comparable in practical LLM application building; this book goes deeper on governed side effects, evidence, registry, and production accountability.
-- **Building Secure & Reliable Systems** — comparable in security/reliability posture; this book translates those instincts into agent-specific trust boundaries, approvals, evals, and observability.
-- **Site Reliability Engineering** — comparable in operational culture; this book focuses on the agent-specific question of how autonomy, memory, tools, and lifecycle should be made observable and governable.
+- **Designing Data-Intensive Applications**
+  - Comparable angle: systems-thinking discipline.
+  - Difference: applies that operational seriousness to agent behavior, policy, memory, evals, and lifecycle.
+- **Designing Machine Learning Systems**
+  - Comparable angle: production ML framing.
+  - Difference: narrows the lens to agent systems with tools, approvals, traces, rollout gates, and runtime control.
+- **AI Engineering**
+  - Comparable angle: practical LLM application building.
+  - Difference: goes deeper on governed side effects, evidence, registry, and production accountability.
+- **Building Secure & Reliable Systems**
+  - Comparable angle: security/reliability posture.
+  - Difference: translates those instincts into agent-specific trust boundaries, approvals, evals, and observability.
+- **Site Reliability Engineering**
+  - Comparable angle: operational culture.
+  - Difference: focuses on how autonomy, memory, tools, and lifecycle should be observable and governable.
 
-Short differentiation: the book is not trying to be the broadest AI overview or the deepest ML training book. Its shelf claim is narrower: **how to architect production AI agents as governed systems with explicit rights, evidence, side-effect control, eval gates, and lifecycle ownership**.
+Short differentiation:
+
+- not trying to be the broadest AI overview;
+- not trying to be the deepest ML training book;
+- narrower shelf claim: architect production AI agents as governed systems;
+- key controls: explicit rights, evidence, side-effect control, eval gates, and lifecycle ownership.
 
 ## Print Manuscript vs Online Companion Draft
 
