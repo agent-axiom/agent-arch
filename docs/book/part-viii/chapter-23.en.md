@@ -88,13 +88,13 @@ That is especially dangerous for agents because autonomous and semi-autonomous e
 
 A good end-of-life process rarely looks like one action. It is usually better to break it down by layer:
 
-- stop new rollout waves;
-- disable risky capabilities;
-- move write actions to approval-only or disable them;
-- stop memory writes;
-- expire or cancel paused runs;
-- stop background jobs and background routes;
-- close or archive capability-session state and block uncontrolled re-init;
+- [stop new rollout waves](../../appendix/change-rollout-schema.en.md);
+- [disable risky capabilities](../../appendix/lifecycle-artifact-schema.en.md);
+- [move write actions to approval-only or disable them](../../appendix/approval-schema.en.md);
+- [stop memory writes](../../appendix/memory-retrieval-schema.en.md);
+- [expire or cancel paused runs](../../appendix/lifecycle-artifact-schema.en.md);
+- [stop background jobs and background routes](../../appendix/lifecycle-artifact-schema.en.md);
+- [close or archive capability-session state and block uncontrolled re-init](../../appendix/lifecycle-artifact-schema.en.md);
 - disable deprecated orchestration patterns and revoke worker-safe catalog exposure;
 - revoke delegated authorization paths and archive their final lineage;
 - retire deprecated verifier contracts and preserve the evidence needed to explain prior rollout or assurance decisions, including exported failed-run fields such as `failure_reason` when they justified earlier judgment;

@@ -88,13 +88,13 @@
 
 好的终止使用流程很少是一个动作完成的。通常更适合按层来做：
 
-- 停止新的上线波次；
-- 关闭高风险能力；
-- 把写入动作切到仅审批模式，或者直接停用；
-- 停止记忆写入；
-- 让 paused runs 过期或直接取消；
-- 停止后台任务与 background routes；
-- 关闭或归档 capability-session state，并阻断不受控的 re-init；
+- [停止新的上线波次](../../appendix/change-rollout-schema.zh.md)；
+- [关闭高风险能力](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [把写入动作切到仅审批模式，或者直接停用](../../appendix/approval-schema.zh.md)；
+- [停止记忆写入](../../appendix/memory-retrieval-schema.zh.md)；
+- [让 paused runs 过期或直接取消](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [停止后台任务与 background routes](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [关闭或归档 capability-session state，并阻断不受控的 re-init](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure；
 - 撤销 delegated authorization paths，并归档它们最终的 lineage；
 - 退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据，包括像 `failure_reason` 这样的 failed-run 导出字段，只要先前判断依赖过它们；
