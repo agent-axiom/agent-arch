@@ -2114,6 +2114,35 @@ def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_boundary_parity_links_telemetry_and_contract_family() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[Telemetry](../../appendix/trace-schema.md) может показать",
+            "pause, re-init или delegated action",
+            "[проверенная contract family](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[Telemetry](../../appendix/trace-schema.en.md) may show",
+            "[pause, re-init, or delegated action]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[reviewed contract family]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[遥测](../../appendix/trace-schema.zh.md)也许能告诉你",
+            "[暂停、重新初始化或委派动作]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[经过评审的契约族]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
