@@ -37,19 +37,17 @@
 
 ## Карта ролей этой части
 
-Эта карта нужна, чтобы поздние главы не читались как один и тот же governance-тезис под разными названиями:
+Эта карта нужна, чтобы поздние главы не читались как один и тот же governance-тезис под разными названиями. Print-friendly версия намеренно короткая:
 
-| Функция жизненного цикла | Главная работа | Главный артефакт | Чем она не является |
-| --- | --- | --- | --- |
-| Lifecycle frame | Удерживает переходы состояний от design до retirement | ADLC state model | Просто новым названием для SDLC |
-| Change management | Решает, какие изменения требуют review и rollout gates | [Change packet](../../appendix/change-rollout-schema.md) | Обычным project management |
-| Assurance | Превращает findings в containment, remediation и ownership | [Finding and response record](../../appendix/incident-record-schema.md) | Observability или eval scoring |
-| Provenance | Сохраняет lineage доверенных артефактов и release identity | [Approved artifact bundle](../../appendix/lifecycle-artifact-schema.md) | Общей папкой с evidence |
-| Retirement | Закрывает или заменяет системы без потери accountability | [Retirement plan](../../appendix/lifecycle-artifact-schema.md) | Удалением старого агента |
-| Misalignment и insider risk | Называет adversarial или incentive-driven misuse paths | Risk scenario and control plan | Повтором prompt-injection guidance |
-| Behavioral/control evals | Дают release judgment о поведении и controls | [Eval gate and verifier contract](../../appendix/eval-schema.md) | Incident response |
-| Observability | Делает evidence substrate видимым и проверяемым | [Trace and telemetry coverage record](../../appendix/trace-schema.md) | Владельцем governance decisions |
-| Inventory и registry | Делают estate accountable через owners и lifecycle state | [Registry record](../../appendix/registry-operations-handbook.md) | Свободной таблицей агентов |
+- **Lifecycle frame** удерживает переходы состояний от design до retirement. Его artifact — ADLC state model; это не просто новое название для SDLC.
+- **Change management** решает, какие changes требуют review и rollout gates. Его artifact — [Change packet](../../appendix/change-rollout-schema.md); это не обычный project management.
+- **Assurance** превращает findings в containment, remediation и ownership. Его artifact — [Finding and response record](../../appendix/incident-record-schema.md); это не observability и не eval scoring.
+- **Provenance** сохраняет lineage доверенных artifacts и release identity. Его artifact — [Approved artifact bundle](../../appendix/lifecycle-artifact-schema.md); это не общая папка с evidence.
+- **Retirement** закрывает или заменяет systems без потери accountability. Его artifact — [Retirement plan](../../appendix/lifecycle-artifact-schema.md); это не удаление старого agent.
+- **Misalignment и insider risk** называет adversarial или incentive-driven misuse paths. Его artifact — risk scenario and control plan; это не повтор prompt-injection guidance.
+- **Behavioral/control evals** дают release judgment о behavior и controls. Их artifact — [Eval gate and verifier contract](../../appendix/eval-schema.md); это не incident response.
+- **Observability** делает evidence substrate видимым и проверяемым. Его artifact — [Trace and telemetry coverage record](../../appendix/trace-schema.md); это не владелец governance decisions.
+- **Inventory и registry** делают estate accountable через owners и lifecycle state. Их artifact — [Registry record](../../appendix/registry-operations-handbook.md); это не свободная таблица agents.
 
 Читай главы как цепочку: lifecycle задает состояния, change management контролирует движение, evals выносят judgment о готовности, provenance фиксирует доверенные артефакты, observability сохраняет evidence, assurance реагирует, когда evidence превращается в risk, retirement закрывает старые пути, а registry удерживает accountability всего estate. Если две главы звучат как "governance", различай их по тому, какой артефакт они обязаны оставить после review.
 
