@@ -1969,6 +1969,28 @@ def test_chapter_22_governed_lineage_links_release_identity_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_core_promise_links_reviewed_release_identity() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[проверенный набор артефактов]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[reviewed artifact set, trusted contract version, and approved "
+            "release identity](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
