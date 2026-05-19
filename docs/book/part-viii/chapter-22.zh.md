@@ -337,7 +337,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[评测](../../appendix/eval-schema.zh.md)、[能力](../../appendix/lifecycle-artifact-schema.zh.md)、[审批](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md) 和 [verifier](../../appendix/eval-schema.zh.md) 工件都被当成生产工件；
 - 来源追踪能在事故评审和 rollout 决策中被快速恢复；
 - 发布和保障证据能回溯到当时生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)与契约族；
-- [已批准清单](../../appendix/registry-operations-handbook.zh.md)和已批准工件被当成不同的控制层来管理；
+- [已批准清单](../../appendix/registry-operations-handbook.zh.md)和[已批准工件](../../appendix/lifecycle-artifact-schema.zh.md)被当成不同的控制层来管理；
 - [已废弃模式](../../appendix/lifecycle-artifact-schema.zh.md)能在它们悄悄留在生产环境之前被阻断；
 - 信任绑定在显式工件属性上，而不是靠社会性继承。
 

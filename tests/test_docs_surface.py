@@ -1527,6 +1527,29 @@ def test_chapter_22_inventory_artifact_distinction_links_both_contracts() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_maturity_bar_links_inventory_and_artifacts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[approved inventory](../../appendix/registry-operations-handbook.md) "
+            "и [approved artifacts](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[approved inventory]"
+            "(../../appendix/registry-operations-handbook.en.md) and "
+            "[approved artifacts](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[已批准清单](../../appendix/registry-operations-handbook.zh.md)"
+            "和[已批准工件](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

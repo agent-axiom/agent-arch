@@ -334,7 +334,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [eval](../../appendix/eval-schema.md)-, [capability](../../appendix/lifecycle-artifact-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)- и [verifier](../../appendix/eval-schema.md)-артефакты считаются полноценными производственными артефактами;
 - происхождение можно быстро восстановить и для разбора инцидента, и для решений о раскатке;
 - release- и assurance-доказательства можно проследить до активного [verifier contract](../../appendix/eval-schema.md) и семейства контрактов;
-- [approved inventory](../../appendix/registry-operations-handbook.md) и approved artifacts существуют как разные уровни контроля;
+- [approved inventory](../../appendix/registry-operations-handbook.md) и [approved artifacts](../../appendix/lifecycle-artifact-schema.md) существуют как разные уровни контроля;
 - [deprecated patterns](../../appendix/lifecycle-artifact-schema.md) можно заблокировать до того, как они тихо закрепятся в промышленной среде;
 - доверие привязано к явным свойствам артефакта, а не передается социально.
 
