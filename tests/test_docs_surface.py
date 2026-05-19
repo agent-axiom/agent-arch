@@ -1214,6 +1214,29 @@ def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_runtime_control_schema_links_are_clickable() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[approval schema](../../appendix/approval-schema.md)",
+            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[approval schemas](../../appendix/approval-schema.en.md)",
+            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
+            "[运行时控制模式（runtime-control schema）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
