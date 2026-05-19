@@ -172,7 +172,7 @@ flowchart LR
 
 То же самое относится к:
 
-- routines;
+- [routines](../../appendix/lifecycle-artifact-schema.md);
 - [policy YAML](../../appendix/policy-bundle-schema.md);
 - [конфигурациям извлечения](../../appendix/memory-retrieval-schema.md);
 - [порогам подтверждения](../../appendix/approval-schema.md);
