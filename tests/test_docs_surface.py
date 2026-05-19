@@ -490,7 +490,7 @@ def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
 def test_publisher_packet_has_public_link_availability_record() -> None:
     required_markers = (
         "Public Link Availability Record",
-        "Last checked: **2026-05-17**",
+        "Last checked: **2026-05-19**",
         "publisher-packet-2026-05",
         "public book site",
         "Chapter 1 sample",
@@ -500,7 +500,8 @@ def test_publisher_packet_has_public_link_availability_record() -> None:
         "runtime configs",
         "runtime tests",
         "HTTP 200",
-        "2026-05-17",
+        "all nine checked public links",
+        "2026-05-19",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
