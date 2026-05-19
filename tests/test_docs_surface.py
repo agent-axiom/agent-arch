@@ -494,19 +494,34 @@ def test_publisher_packet_has_public_link_availability_record() -> None:
         "Public Link Availability Record",
         "Last checked: **2026-05-19**",
         "publisher-packet-2026-05",
-        "public book site",
-        "Chapter 1 sample",
-        "Chapter 13 technical sample",
-        "reference runtime source",
-        "runtime README",
-        "runtime configs",
-        "runtime tests",
+        "Checked links:",
+        "- public book site;",
+        "- English landing page;",
+        "- Chinese landing page;",
+        "- Chapter 1 sample;",
+        "- Chapter 13 technical sample;",
+        "- reference runtime source;",
+        "- runtime README;",
+        "- runtime configs;",
+        "- runtime tests.",
         "HTTP 200",
         "all nine checked public links",
         "2026-05-19",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_public_link_record_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Public Link Availability Record", 1)[1].split(
+        "## Pitch Packet Checklist",
+        1,
+    )[0]
+
+    assert "Checked links: public book site," not in section
+    assert section.count("\n- ") == 9
+    assert all(len(line) <= 120 for line in section.splitlines())
 
 
 def test_publisher_packet_has_target_editor_formatting_brief() -> None:

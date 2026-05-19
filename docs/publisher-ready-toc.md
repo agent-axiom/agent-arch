@@ -243,7 +243,17 @@ Pitch usage: send the public site and the two sample chapters first; keep the so
 
 Last checked: **2026-05-19** for packet version `publisher-packet-2026-05`.
 
-Checked links: public book site, English landing page, Chinese landing page, Chapter 1 sample, Chapter 13 technical sample, reference runtime source, runtime README, runtime configs, and runtime tests.
+Checked links:
+
+- public book site;
+- English landing page;
+- Chinese landing page;
+- Chapter 1 sample;
+- Chapter 13 technical sample;
+- reference runtime source;
+- runtime README;
+- runtime configs;
+- runtime tests.
 
 Result: all nine checked public links returned HTTP 200 during the packet-readiness pass on 2026-05-19.
 
