@@ -1631,15 +1631,32 @@ def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
-def test_chapter_25_control_eval_schema_links_are_clickable() -> None:
+def test_chapter_25_control_eval_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
-        "docs/book/part-viii/chapter-25.md": "../../appendix/eval-schema.md",
-        "docs/book/part-viii/chapter-25.en.md": "../../appendix/eval-schema.en.md",
-        "docs/book/part-viii/chapter-25.zh.md": "../../appendix/eval-schema.zh.md",
+        "docs/book/part-viii/chapter-25.md": (
+            "../../appendix/eval-schema.md",
+            "../../appendix/approval-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/incident-record-schema.md",
+        ),
+        "docs/book/part-viii/chapter-25.en.md": (
+            "../../appendix/eval-schema.en.md",
+            "../../appendix/approval-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-25.zh.md": (
+            "../../appendix/eval-schema.zh.md",
+            "../../appendix/approval-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
+        ),
     }
 
-    for path, expected_link in expected_links_by_file.items():
-        assert f"]({expected_link})" in _read(path), (path, expected_link)
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for expected_link in expected_links:
+            assert f"]({expected_link})" in text, (path, expected_link)
 
 
 def test_chapter_26_observability_threads_three_canonical_cases() -> None:
