@@ -136,7 +136,11 @@ Move or keep these primarily online:
 
 ### Chapter 1 — strongest publisher sample
 
-Why: it carries the thesis, starts from a failure story, and shows how the book differs from prompt-hype or framework documentation.
+Why:
+
+- carries the thesis;
+- starts from a failure story;
+- shows how the book differs from prompt-hype or framework documentation.
 
 Current strengths:
 
@@ -163,7 +167,8 @@ Why: evals, traces, failure attribution, regression gates, and release judgment 
 
 Current strengths:
 
-- includes a Support triage duplicate-ticket example from trace to verifier attribution, regression gate, rollout owner action, and release judgment;
+- includes a Support triage duplicate-ticket example;
+- follows it from trace to verifier attribution, regression gate, rollout owner action, and release judgment;
 - distinguishes behavioral evals, control evals, rollout gates, and verifier outputs;
 - includes calibrated judge/human-review guidance;
 - includes an evidence model;

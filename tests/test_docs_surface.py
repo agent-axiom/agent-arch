@@ -488,6 +488,39 @@ def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
 
 
 
+def test_publisher_packet_sample_candidates_are_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Sample Chapter Candidates", 1)[1].split(
+        "## Sample Chapter Export Manifest Draft",
+        1,
+    )[0]
+    required_markers = (
+        "### Chapter 1 — strongest publisher sample",
+        "Why:",
+        "- carries the thesis;",
+        "- starts from a failure story;",
+        "- shows how the book differs from prompt-hype or framework documentation.",
+        "### Chapter 13 — strongest technical credibility sample",
+        "- includes a Support triage duplicate-ticket example;",
+        (
+            "- follows it from trace to verifier attribution, regression gate, "
+            "rollout owner action, and release judgment;"
+        ),
+    )
+    forbidden_inline_markers = (
+        "Why: it carries the thesis, starts from a failure story",
+        "includes a Support triage duplicate-ticket example from trace to verifier attribution",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 19
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:
     required_markers = (
         "Blocker Waiver / Decision Log Draft",
