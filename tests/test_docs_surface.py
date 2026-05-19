@@ -694,6 +694,44 @@ def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
     assert all(len(line) <= 140 for line in section.splitlines())
 
 
+def test_publisher_packet_comparable_books_are_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Comparable Books Draft", 1)[1].split(
+        "## Print Manuscript vs Online Companion Draft",
+        1,
+    )[0]
+    required_markers = (
+        "**Designing Data-Intensive Applications**",
+        "Comparable angle: systems-thinking discipline.",
+        "Difference: applies that operational seriousness",
+        "**Designing Machine Learning Systems**",
+        "Comparable angle: production ML framing.",
+        "**AI Engineering**",
+        "**Building Secure & Reliable Systems**",
+        "**Site Reliability Engineering**",
+        "Short differentiation:",
+        "- narrower shelf claim: architect production AI agents as governed systems;",
+        (
+            "- key controls: explicit rights, evidence, side-effect control, "
+            "eval gates, and lifecycle ownership."
+        ),
+    )
+    forbidden_inline_markers = (
+        "— comparable in systems-thinking discipline;",
+        "— comparable in production ML framing;",
+        "Short differentiation: the book is not trying",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n  - Comparable angle:") == 5
+    assert section.count("\n  - Difference:") == 5
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
         "Sample Chapter Export Manifest Draft",
