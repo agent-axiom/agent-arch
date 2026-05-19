@@ -381,13 +381,46 @@ Before sending, replace the greeting, add the final author bio/credential senten
 
 When a real editor or imprint is chosen, adapt the packet without changing its technical claims.
 
-**Inputs to collect:** editor name, imprint, submission channel, requested proposal format, attachment rules, word/page limits, sample-chapter policy, comparable-title expectations, and whether links are allowed in the first email.
+**Inputs to collect:**
 
-**Formatting decisions:** choose whether the first contact sends only the cover note and links, a short proposal PDF, the Chapter 1 sample, or Chapter 1 plus Chapter 13. Match file names to the packet version, for example `secure-ai-agent-architecture-proposal-publisher-packet-2026-05.pdf`.
+- editor name;
+- imprint;
+- submission channel;
+- requested proposal format;
+- attachment rules;
+- word/page limits;
+- sample-chapter policy;
+- comparable-title expectations;
+- whether links are allowed in the first email.
 
-**Tailoring rules:** keep the title, reader, problem, unique promise, print/companion split, and governed-systems positioning stable. Tailor examples and comparable titles to the imprint, but do not overstate market size, author credentials, Chinese edition readiness, or framework maturity.
+**Formatting decisions:**
 
-**No-go signals:** unknown editor name, unknown attachment policy, ignored page limits, broken filename/version convention, or pitch language that turns the companion runtime into a promised production framework.
+- decide whether the first contact sends only the cover note and links;
+- decide whether to send a short proposal PDF;
+- decide whether to attach the Chapter 1 sample;
+- decide whether Chapter 13 should also be attached as a technical sample;
+- match file names to packet version `publisher-packet-2026-05`.
+
+Example filename:
+
+- `secure-ai-agent-architecture-proposal-publisher-packet-2026-05.pdf`.
+
+**Tailoring rules:**
+
+- keep title, reader, problem, unique promise, print/companion split, and governed-systems positioning stable;
+- tailor examples and comparable titles to the imprint;
+- do not overstate market size;
+- do not overstate author credentials;
+- do not overstate Chinese edition readiness;
+- do not overstate framework maturity.
+
+**No-go signals:**
+
+- unknown editor name;
+- unknown attachment policy;
+- ignored page limits;
+- broken filename/version convention;
+- pitch language that turns the companion runtime into a promised production framework.
 
 ## Recommended Submission Packet Order
 
