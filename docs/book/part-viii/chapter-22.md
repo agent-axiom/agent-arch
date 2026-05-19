@@ -30,8 +30,8 @@
 
 Проблема в том, что рабочее поведение здесь зависит не только от кода. На него влияют еще:
 
-- маршруты к моделям;
-- наборы prompt- и routine-правил;
+- [маршруты к моделям](../../appendix/lifecycle-artifact-schema.md);
+- [наборы prompt- и routine-правил](../../appendix/lifecycle-artifact-schema.md);
 - [конфигурации политик](../../appendix/policy-bundle-schema.md);
 - [корпуса для извлечения](../../appendix/memory-retrieval-schema.md);
 - [контракты возможностей](../../appendix/lifecycle-artifact-schema.md);

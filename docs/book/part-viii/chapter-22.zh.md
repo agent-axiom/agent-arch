@@ -30,8 +30,8 @@
 
 问题在于，这里的生产行为不只依赖代码。它还依赖：
 
-- 模型工件；
-- 提示和例程包；
+- [模型工件](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [提示和例程包](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [策略配置](../../appendix/policy-bundle-schema.zh.md)；
 - [检索语料](../../appendix/memory-retrieval-schema.zh.md)；
 - [能力契约](../../appendix/lifecycle-artifact-schema.zh.md)；
