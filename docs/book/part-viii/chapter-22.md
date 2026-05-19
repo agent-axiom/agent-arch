@@ -110,7 +110,7 @@ Google Research очень точно показывает, что подтве�
 - цепочкой кода и сборки;
 - цепочкой моделей;
 - цепочкой prompt- и routine-правил;
-- цепочкой политик;
+- [цепочкой политик](../../appendix/policy-bundle-schema.md);
 - цепочкой возможностей;
 - цепочкой approval и runtime-control;
 - цепочкой правил управления capability sessions;

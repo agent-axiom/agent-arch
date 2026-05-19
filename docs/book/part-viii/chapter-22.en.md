@@ -110,7 +110,7 @@ For agent systems, it is better to think in several linked chains:
 - code and build chain;
 - model chain;
 - prompt and routine chain;
-- policy chain;
+- [policy chain](../../appendix/policy-bundle-schema.en.md);
 - capability chain;
 - approval and runtime-control chain;
 - capability-session governance chain;
