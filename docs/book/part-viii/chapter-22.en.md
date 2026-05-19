@@ -214,7 +214,7 @@ For a capability, the team should know:
 
 If the contract changes quietly, without provenance or review trail, that change can be as dangerous as an unreviewed code deploy.
 
-The same is true for approval and runtime-control schemas. If a team changes timeout, pause/resume behavior, expiry semantics, re-initialization rules, or expected payload structure without governed artifact discipline, it is changing production behavior even if no model or source file moved.
+The same is true for [approval schemas](../../appendix/approval-schema.en.md) and [runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md). If a team changes timeout, pause/resume behavior, expiry semantics, re-initialization rules, or expected payload structure without governed artifact discipline, it is changing production behavior even if no model or source file moved.
 
 That means provenance should increasingly preserve not only that a runtime-control schema existed, but also which interruption-governance version was active:
 

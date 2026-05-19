@@ -214,7 +214,7 @@ flowchart LR
 
 Если контракт меняется тихо, без происхождения и без следа проверки, то такое изменение может быть не менее опасно, чем непроверенный деплой кода.
 
-То же самое верно и для approval и runtime-control schemas. Если команда меняет timeout, pause/resume behavior, expiry semantics, правила re-initialization или ожидаемую форму payloads без дисциплины управления артефактами, она меняет рабочее поведение системы, даже если ни модель, ни исходный код не сдвинулись.
+То же самое верно и для [approval schema](../../appendix/approval-schema.md) и [runtime-control schema](../../appendix/lifecycle-artifact-schema.md). Если команда меняет timeout, pause/resume behavior, expiry semantics, правила re-initialization или ожидаемую форму payloads без дисциплины управления артефактами, она меняет рабочее поведение системы, даже если ни модель, ни исходный код не сдвинулись.
 
 Это означает, что подтвержденное происхождение все чаще должно хранить не только сам факт существования runtime-control schema, но и то, какая версия interruption-governance реально была активна:
 
