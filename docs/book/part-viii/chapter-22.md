@@ -55,7 +55,7 @@
 
 В агентной платформе к ним часто относятся:
 
-- утвержденный маршрут к модели;
+- утвержденный [маршрут к модели](../../appendix/lifecycle-artifact-schema.md);
 - утвержденный набор prompt-правил;
 - утвержденный [policy bundle](../../appendix/policy-bundle-schema.md);
 - утвержденный [capability contract](../../appendix/lifecycle-artifact-schema.md);
