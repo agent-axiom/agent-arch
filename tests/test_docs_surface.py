@@ -6057,6 +6057,36 @@ def test_agent_threat_model_matrix_covers_required_classes() -> None:
         _assert_files_contain_all((path,), required_threats)
 
 
+def test_chapter_3_defense_in_depth_map_covers_control_layers() -> None:
+    required_markers = (
+        "defense_in_depth_map:",
+        "ingress_control:",
+        "content_policy_and_tenant_scope",
+        "context_boundary:",
+        "trusted_untrusted_content_labels",
+        "retrieval_memory_gate:",
+        "source_provenance_ttl_and_write_review",
+        "model_gateway_policy:",
+        "instruction_hierarchy_and_safety_policy",
+        "tool_gateway_approval:",
+        "risk_tier_arguments_and_human_gate",
+        "mcp_a2a_boundary:",
+        "server_contract_and_delegation_contract",
+        "egress_filter:",
+        "redaction_dlp_and_output_validation",
+        "trace_evidence:",
+        "agent_threat_evidence_and_governance_action",
+        "trace schema",
+    )
+    checked_files = (
+        "docs/book/part-ii/chapter-3.md",
+        "docs/book/part-ii/chapter-3.en.md",
+        "docs/book/part-ii/chapter-3.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-ii/chapter-3.md": "../../appendix/trace-schema.md",

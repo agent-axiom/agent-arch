@@ -149,6 +149,24 @@ flowchart LR
 
 Это важно по очень простой причине: одно защитное правило видит только один класс риска. Реальный инцидент почти всегда проходит через несколько слоев сразу.
 
+### 6.1. Defense-in-depth control map
+
+Полезная defense-in-depth map — это не стена controls, а короткая цепочка: где failure должен быть остановлен и какое evidence доказывает, что слой сработал.
+
+```yaml
+defense_in_depth_map:
+  ingress_control: content_policy_and_tenant_scope
+  context_boundary: trusted_untrusted_content_labels
+  retrieval_memory_gate: source_provenance_ttl_and_write_review
+  model_gateway_policy: instruction_hierarchy_and_safety_policy
+  tool_gateway_approval: risk_tier_arguments_and_human_gate
+  mcp_a2a_boundary: server_contract_and_delegation_contract
+  egress_filter: redaction_dlp_and_output_validation
+  trace_evidence: agent_threat_evidence_and_governance_action
+```
+
+Эта map намеренно компактная. `ingress_control` ловит unsafe или over-scoped input до того, как он станет context. `context_boundary` и `retrieval_memory_gate` не дают untrusted content превратиться в instructions или durable memory. `model_gateway_policy` и `tool_gateway_approval` удерживают right to act вне probabilistic text generation. `mcp_a2a_boundary` делает external capability и delegation risk проверяемыми. `egress_filter` ограничивает то, что выходит из системы. `trace_evidence` связывает эти controls с [trace schema](../../appendix/trace-schema.md), чтобы defense in depth можно было audit, а не просто декларировать.
+
 ## 7. Главное практическое правило: отделяй инструкции от данных
 
 Это один из самых важных принципов во всей книге.
