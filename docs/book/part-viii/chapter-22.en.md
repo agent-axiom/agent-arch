@@ -347,7 +347,7 @@ If most of those conditions are missing, the team may have some artifact hygiene
 
 If you want to test your artifact discipline quickly, ask:
 
-- Do all production artifacts have owners?
+- Do all [production artifacts](../../appendix/lifecycle-artifact-schema.en.md) have owners?
 - Do model, prompt, [policy](../../appendix/policy-bundle-schema.en.md), [approval-schema](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), [eval, and verifier](../../appendix/eval-schema.en.md) artifacts have versions?
 - Can provenance, [verifier lineage](../../appendix/eval-schema.en.md), and [active contract/schema versions](../../appendix/trace-schema.en.md) be restored quickly during incident review?
 - Does the platform have an [approved inventory](../../appendix/registry-operations-handbook.en.md)?

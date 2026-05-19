@@ -347,7 +347,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 如果你想快速检查工件纪律，可以问：
 
-- 所有生产工件都有 owner 吗？
+- 所有[生产工件](../../appendix/lifecycle-artifact-schema.zh.md)都有 owner 吗？
 - 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[approval-schema](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
 - 事故评审时能快速恢复来源追踪、[验证器血缘](../../appendix/eval-schema.zh.md)与[生效中的契约/模式版本](../../appendix/trace-schema.zh.md)吗？
 - 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
