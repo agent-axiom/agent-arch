@@ -56,7 +56,7 @@ That means approved artifacts are not only images or wheel files. They are the g
 In an agent platform, they often include:
 
 - an approved [model route](../../appendix/lifecycle-artifact-schema.en.md);
-- an approved prompt bundle;
+- an approved [prompt bundle](../../appendix/lifecycle-artifact-schema.en.md);
 - an approved [policy bundle](../../appendix/policy-bundle-schema.en.md);
 - an approved [capability contract](../../appendix/lifecycle-artifact-schema.en.md);
 - an approved [approval schema](../../appendix/approval-schema.en.md);
