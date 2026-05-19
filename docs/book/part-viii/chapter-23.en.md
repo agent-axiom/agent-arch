@@ -123,14 +123,14 @@ As soon as a system is retired, an uncomfortable question appears: what should h
 
 The team usually needs to decide separately:
 
-- what to archive;
-- what to delete;
-- what to anonymize;
-- how long traces and approvals should be kept;
-- who remains the owner of archived state;
-- whether old datasets and memory artifacts may be reused by the replacement;
-- whether delegated authorization records must be retained to explain under whose identity old actions ran;
-- whether [verifier evidence](../../appendix/eval-schema.en.md) and verifier-contract history must be retained to explain why earlier releases were judged acceptable.
+- [what to archive](../../appendix/lifecycle-artifact-schema.en.md);
+- [what to delete](../../appendix/memory-retrieval-schema.en.md);
+- [what to anonymize](../../appendix/memory-retrieval-schema.en.md);
+- how long [traces](../../appendix/trace-schema.en.md) and [approvals](../../appendix/approval-schema.en.md) should be kept;
+- [who remains the owner of archived state](../../appendix/lifecycle-artifact-schema.en.md);
+- whether old [datasets](../../appendix/eval-schema.en.md) and [memory artifacts](../../appendix/memory-retrieval-schema.en.md) may be reused by the replacement;
+- whether [delegated authorization records](../../appendix/lifecycle-artifact-schema.en.md) must be retained to explain under whose identity old actions ran;
+- whether [verifier evidence](../../appendix/eval-schema.en.md) and [verifier-contract history](../../appendix/eval-schema.en.md) must be retained to explain why earlier releases were judged acceptable.
 
 So retirement affects not only the running system, but also the historical operational footprint.
 

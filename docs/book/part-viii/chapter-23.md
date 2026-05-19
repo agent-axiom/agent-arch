@@ -123,14 +123,14 @@ flowchart LR
 
 Обычно здесь нужно отдельно решить:
 
-- что архивировать;
-- что удалить;
-- что anonymize;
-- как долго хранить traces и approvals;
-- кто остается owner у archived state;
-- можно ли использовать старые datasets и memory artifacts в replacement;
-- нужно ли сохранять delegated authorization records, чтобы объяснять, под чьей identity исполнялись старые действия;
-- нужно ли сохранять [verifier evidence](../../appendix/eval-schema.md) и историю verifier contracts, чтобы объяснять, почему прежние релизы считались приемлемыми.
+- [что архивировать](../../appendix/lifecycle-artifact-schema.md);
+- [что удалить](../../appendix/memory-retrieval-schema.md);
+- [что anonymize](../../appendix/memory-retrieval-schema.md);
+- как долго хранить [traces](../../appendix/trace-schema.md) и [approvals](../../appendix/approval-schema.md);
+- [кто остается owner у archived state](../../appendix/lifecycle-artifact-schema.md);
+- можно ли использовать старые [datasets](../../appendix/eval-schema.md) и [memory artifacts](../../appendix/memory-retrieval-schema.md) в replacement;
+- нужно ли сохранять [delegated authorization records](../../appendix/lifecycle-artifact-schema.md), чтобы объяснять, под чьей identity исполнялись старые действия;
+- нужно ли сохранять [verifier evidence](../../appendix/eval-schema.md) и [историю verifier contracts](../../appendix/eval-schema.md), чтобы объяснять, почему прежние релизы считались приемлемыми.
 
 То есть retirement затрагивает не только running system, но и накопленный рабочий след системы.
 

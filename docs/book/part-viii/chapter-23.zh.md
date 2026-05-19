@@ -123,14 +123,14 @@ flowchart LR
 
 团队通常需要分别决定：
 
-- 什么要归档；
-- 什么要删除；
-- 什么要匿名化；
-- 追踪和审批保留多久；
-- 归档状态的负责人是谁；
-- 替换后的系统是否可以复用旧数据集和记忆工件；
-- 是否需要保留 delegated authorization records，以说明旧动作到底在谁的 identity 下执行；
-- 是否需要保留 [verifier evidence](../../appendix/eval-schema.zh.md) 与 verifier-contract history，以解释为何早先的 releases 会被判定为可接受。
+- [什么要归档](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [什么要删除](../../appendix/memory-retrieval-schema.zh.md)；
+- [什么要匿名化](../../appendix/memory-retrieval-schema.zh.md)；
+- [追踪](../../appendix/trace-schema.zh.md)和[审批](../../appendix/approval-schema.zh.md)保留多久；
+- [归档状态的负责人是谁](../../appendix/lifecycle-artifact-schema.zh.md)；
+- 替换后的系统是否可以复用旧[数据集](../../appendix/eval-schema.zh.md)和[记忆工件](../../appendix/memory-retrieval-schema.zh.md)；
+- 是否需要保留 [delegated authorization records](../../appendix/lifecycle-artifact-schema.zh.md)，以说明旧动作到底在谁的 identity 下执行；
+- 是否需要保留 [verifier evidence](../../appendix/eval-schema.zh.md) 与 [verifier-contract history](../../appendix/eval-schema.zh.md)，以解释为何早先的 releases 会被判定为可接受。
 
 所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 
