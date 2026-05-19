@@ -133,15 +133,46 @@ Remaining before external submission:
 
 Use this manifest when assembling the first external packet so the sample is reproducible and the companion links do not drift.
 
-**Primary sample:** Chapter 1, `docs/book/part-i/chapter-1.en.md`, public URL <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>.
+**Primary sample:**
 
-**Secondary technical sample:** Chapter 13, `docs/book/part-v/chapter-13.en.md`, public URL <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>. Send it only when an editor asks for deeper eval, verifier, and rollout-gate proof.
+- role: Chapter 1 as the first editorial sample;
+- source path: `docs/book/part-i/chapter-1.en.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>.
 
-**Export metadata to include:** title, subtitle, author placeholder, packet version `publisher-packet-2026-05`, sample role, source path, public URL, export date, and companion-site URL.
+**Secondary technical sample:**
 
-**Pre-export checks:** selected sample has the current chapter-ending template, no unresolved TODO/editorial comments, no dependence on site navigation for context, no oversized runtime field lists, and all footnotes/links survive the export.
+- role: Chapter 13 as the technical credibility sample;
+- source path: `docs/book/part-v/chapter-13.en.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>;
+- send only when an editor asks for deeper eval, verifier, and rollout-gate proof.
 
-**No-go signals:** stale public URL, mismatched source path, missing export date, missing packet version, or sending Chapter 13 as the first sample without a specific technical-credibility reason.
+**Export metadata to include:**
+
+- title;
+- subtitle;
+- author placeholder;
+- packet version `publisher-packet-2026-05`;
+- sample role;
+- source path;
+- public URL;
+- export date;
+- companion-site URL.
+
+**Pre-export checks:**
+
+- selected sample has the current chapter-ending template;
+- no unresolved TODO/editorial comments;
+- no dependence on site navigation for context;
+- no oversized runtime field lists;
+- all footnotes and links survive the export.
+
+**No-go signals:**
+
+- stale public URL;
+- mismatched source path;
+- missing export date;
+- missing packet version;
+- sending Chapter 13 as the first sample without a specific technical-credibility reason.
 
 ## Sample Copy-Edit Handoff Brief Draft
 
