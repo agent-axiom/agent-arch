@@ -197,16 +197,14 @@ flowchart TB
 
 The important thing in this diagram is not the elegance of the layers. It is that each layer answers a failure question the prototype cannot answer on its own:
 
-| Layer | What it does | Why it hurts to skip it |
-| --- | --- | --- |
-| Interface layer | Chat, API, webhooks, events | Otherwise channels get mixed with execution logic |
-| Identity and session layer | User, service account, tenant, request scope | Otherwise IAM, audit, and isolation break down |
-| Agent control plane | Policies, approvals, limits, catalogs | Otherwise the system acts without real control |
-| Orchestration runtime | Workflow graph, planner, checkpoints | Otherwise execution falls apart as soon as it becomes complex |
-| Cognition plane | Model router, prompt assembly, validators | Otherwise the model becomes the center of the world |
-| Memory and knowledge plane | State, memory, retrieval | Otherwise context grows without discipline |
-| Tool execution plane | Gateway, sandbox, side-effect isolation | Otherwise blast radius gets too large |
-| Telemetry and eval plane | Traces, metrics, datasets, regression gates | Otherwise quality cannot be measured or investigated |
+- **Interface layer** accepts chat, API, webhooks, and events. Without it, channels get mixed with execution logic.
+- **Identity and session layer** binds the user, service account, tenant, and request scope. Without it, IAM, audit, and isolation break down.
+- **Agent control plane** owns policies, approvals, limits, and catalogs. Without it, the system acts without real control.
+- **Orchestration runtime** carries the workflow graph, planner, and checkpoints. Without it, execution falls apart as soon as it becomes complex.
+- **Cognition plane** handles model routing, prompt assembly, and validators. Without it, the model becomes the center of the world.
+- **Memory and knowledge plane** governs state, memory, and retrieval. Without it, context grows without discipline.
+- **Tool execution plane** provides the gateway, sandbox, and side-effect isolation. Without it, blast radius gets too large.
+- **Telemetry and eval plane** records traces, metrics, datasets, and regression gates. Without it, quality cannot be measured or investigated.
 
 In text-only form, the diagram reduces to one chain: ingress becomes an identity-bound execution context; the control plane decides what is allowed; the runtime chooses and preserves the execution path; cognition, memory, and tools operate only through their boundaries; telemetry and evals leave evidence for investigation and release decisions.
 
