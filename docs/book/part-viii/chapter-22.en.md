@@ -108,8 +108,8 @@ In a normal system, a team often thinks in one trust chain: “the code was buil
 For agent systems, it is better to think in several linked chains:
 
 - code and build chain;
-- model chain;
-- prompt and routine chain;
+- [model chain](../../appendix/lifecycle-artifact-schema.en.md);
+- [prompt and routine chain](../../appendix/lifecycle-artifact-schema.en.md);
 - [policy chain](../../appendix/policy-bundle-schema.en.md);
 - [capability chain](../../appendix/lifecycle-artifact-schema.en.md);
 - [approval](../../appendix/approval-schema.en.md) and [runtime-control](../../appendix/lifecycle-artifact-schema.en.md) chain;

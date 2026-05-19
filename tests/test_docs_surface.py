@@ -1432,6 +1432,30 @@ def test_chapter_22_trust_chain_links_session_authorization_schemas() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_trust_chain_links_model_prompt_schemas() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[цепочкой моделей](../../appendix/lifecycle-artifact-schema.md)",
+            "[цепочкой prompt- и routine-правил]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[model chain](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[prompt and routine chain]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[模型链](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[提示与例程链](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
