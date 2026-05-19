@@ -509,6 +509,7 @@ def test_publisher_packet_sample_candidates_are_print_friendly() -> None:
     )
     forbidden_inline_markers = (
         "Why: it carries the thesis, starts from a failure story",
+        "Why: evals, traces, failure attribution, regression gates",
         "includes a Support triage duplicate-ticket example from trace to verifier attribution",
     )
 
