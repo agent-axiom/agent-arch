@@ -273,7 +273,8 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 - Every print chapter needs one unique artifact or decision framework.
 - Avoid repeating governance language unless the chapter owns a distinct role.
 - Keep long field lists online.
-- Use Support triage as the primary running case; use Internal knowledge assistant and Incident coordination as secondary contrast cases.
+- Use Support triage as the primary running case.
+- Use Internal knowledge assistant and Incident coordination as secondary contrast cases.
 - End chapters with: what to remember, common failure modes, design-review use, companion assets, and next chapter.
 
 ## Author / Platform Credibility Note Draft
@@ -309,7 +310,8 @@ Bio gap to fill before submission:
 
 ## Author Bio Input Brief Draft
 
-Before this packet becomes external email copy, collect the human-authored facts that should not be invented by the manuscript artifact.
+Before this packet becomes external email copy, collect the human-authored facts.
+Do not let the manuscript artifact invent those facts.
 
 **Required inputs:**
 
