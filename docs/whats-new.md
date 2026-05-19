@@ -105,21 +105,21 @@ _Актуально на 19 мая 2026 года._
 
 ### Перед публикацией усилен сайт
 
-Publisher-facing проход качества идет, но еще не закрыт полностью.
+Издательский проход качества идет, но еще не закрыт полностью.
 
 Уже закрыто:
 
-- draft/planning страницы исключены из опубликованного сайта и sitemap;
-- добавлены OpenGraph/Twitter metadata и social preview image;
+- черновые и плановые страницы исключены из опубликованного сайта и sitemap;
+- добавлены OpenGraph/Twitter metadata и социальная preview-картинка;
 - проверены search index, sitemap, robots, локальные assets, anchors, alt text и внешние ссылки;
-- basic navigation и canonical fallback redirects покрывают основные entry points, которые люди копируют руками;
-- public-link availability record обновлен после того, как все девять publisher-packet links вернули HTTP 200;
-- publisher packet blocker register, waiver/decision log и Part VIII role map теперь print-friendly;
+- базовая навигация и canonical fallback redirects покрывают основные entry points, которые люди копируют руками;
+- запись о доступности публичных ссылок обновлена после того, как все девять publisher-packet links вернули HTTP 200;
+- blocker register, waiver/decision log и role map части VIII теперь устойчивы для печати;
 - README на трех языках теперь содержит fast-forward publish checklist для `main` и `docs-prod`.
 
-До статуса publisher-ready еще остаются глубокая EN/ZH-проверка, independent rendering/export QA, sample-chapter polish и target-specific упаковка manuscript/online companion.
+До статуса publisher-ready еще остаются глубокая EN/ZH-проверка, независимый rendering/export QA, sample-chapter polish и упаковка manuscript/online companion под конкретного издателя.
 
-Почему это важно: опубликованный сайт должен постепенно приближаться к аккуратному reader-facing продукту, а не выглядеть как сырая сборка из Markdown-файлов.
+Почему это важно: опубликованный сайт должен постепенно приближаться к аккуратному продукту для читателя, а не выглядеть как сырая сборка из Markdown-файлов.
 
 ## Что это дает читателю
 

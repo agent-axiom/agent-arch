@@ -3980,15 +3980,15 @@ def test_english_book_plan_matches_home_publication_status() -> None:
 def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
     expected_by_file = {
         "docs/whats-new.md": (
-            "Publisher-facing проход качества идет, но еще не закрыт полностью.",
+            "Издательский проход качества идет, но еще не закрыт полностью.",
             "canonical fallback redirects покрывают основные entry points",
-            "public-link availability record обновлен",
+            "запись о доступности публичных ссылок обновлена",
             "все девять publisher-packet links вернули HTTP 200",
-            "Part VIII role map теперь print-friendly",
+            "role map части VIII теперь устойчивы для печати",
             "До статуса publisher-ready еще остаются",
             "EN/ZH-проверка",
-            "independent rendering/export QA",
-            "sample-chapter polish",
+            "независимый rendering/export QA",
+            "упаковка manuscript/online companion под конкретного издателя",
         ),
         "docs/whats-new.en.md": (
             "The publisher-facing quality pass is in progress, not fully closed.",
@@ -4006,11 +4006,11 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
             "public-link availability record 已刷新",
             "九个 publisher-packet links 全部返回 HTTP 200",
-            "Part VIII role map 现在都是 print-friendly",
+            "Part VIII role map 现在都适合打印导出",
             "在称为 publisher-ready 之前",
             "EN/ZH cleanup",
             "独立 rendering/export QA",
-            "sample-chapter polish",
+            "面向具体出版社的 manuscript/online companion 包装",
         ),
     }
     forbidden = (
