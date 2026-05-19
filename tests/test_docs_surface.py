@@ -5663,7 +5663,7 @@ def test_fast_moving_chapter_review_notes_reflect_closed_editorial_work() -> Non
     )
     expected_by_suffix = {
         ".md": (
-            "теперь имеют конкретные contract coverage и docs-surface guards",
+            "теперь имеют конкретное покрытие контрактами и проверки поверхности документации",
             "ближайшие редакционные задачи",
         ),
         ".en.md": (
@@ -5671,7 +5671,7 @@ def test_fast_moving_chapter_review_notes_reflect_closed_editorial_work() -> Non
             "near-term editorial work",
         ),
         ".zh.md": (
-            "现在都有具体的 contract coverage 与 docs-surface guards",
+            "现在都有具体契约覆盖和文档表面检查",
             "近期编辑任务",
         ),
     }
