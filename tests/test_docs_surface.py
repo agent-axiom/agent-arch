@@ -411,7 +411,7 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
         "**Unique promise:**",
         "**Companion assets:**",
         (
-            "Keep schemas, runtime command details, long checklists, and source catalogs "
+            "keep schemas, runtime command details, long checklists, and source catalogs "
             "in the online companion."
         ),
         "runnable `agent_runtime_ref` package",
@@ -448,6 +448,44 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
     assert positioning_section.count("\n- ") >= 30
     assert all(len(line) <= 135 for line in opening_section.splitlines())
     assert all(len(line) <= 135 for line in positioning_section.splitlines())
+
+
+def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Print Manuscript Shape", 1)[1].split(
+        "## Sample Chapter Candidates",
+        1,
+    )[0]
+    required_markers = (
+        "Target:",
+        "- 6 parts;",
+        "- about 20 chapters;",
+        (
+            "- keep schemas, runtime command details, long checklists, "
+            "and source catalogs in the online companion."
+        ),
+        "Online Companion Boundary",
+        (
+            "- schema appendices for traces, eval datasets, approvals, memory, "
+            "and lifecycle artifacts;"
+        ),
+        "- schema appendices for incident records, rollout gates, and policy bundles;",
+    )
+    forbidden_inline_markers = (
+        "Target: 6 parts, about 20 chapters.",
+        (
+            "schema appendices for traces, eval datasets, approvals, memory, "
+            "lifecycle artifacts, incident records"
+        ),
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 9
+    assert all(len(line) <= 135 for line in section.splitlines())
+
 
 
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:

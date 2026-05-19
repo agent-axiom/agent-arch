@@ -75,7 +75,11 @@ Status: working editorial artifact, not a public navigation page and not final e
 
 ## Print Manuscript Shape
 
-Target: 6 parts, about 20 chapters. Keep schemas, runtime command details, long checklists, and source catalogs in the online companion.
+Target:
+
+- 6 parts;
+- about 20 chapters;
+- keep schemas, runtime command details, long checklists, and source catalogs in the online companion.
 
 ### Part I — Why Agents Need Platforms
 
@@ -120,7 +124,8 @@ Target: 6 parts, about 20 chapters. Keep schemas, runtime command details, long 
 Move or keep these primarily online:
 
 - runnable `agent_runtime_ref` package and CLI walkthrough;
-- schema appendices for traces, eval datasets, approvals, memory, lifecycle artifacts, incident records, rollout gates, and policy bundles;
+- schema appendices for traces, eval datasets, approvals, memory, and lifecycle artifacts;
+- schema appendices for incident records, rollout gates, and policy bundles;
 - command-output field lists and validation-error catalogs;
 - case-study worksheets and templates;
 - policy templates and checklists;
