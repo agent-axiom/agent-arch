@@ -165,8 +165,8 @@ flowchart LR
 
 - 谁改了提示；
 - 现在生产环境里是哪一个版本；
-- 哪些评测覆盖了它；
-- 它在哪个 rollout 波次上生效；
+- 哪些[评测](../../appendix/eval-schema.zh.md)覆盖了它；
+- 它在哪个[rollout 波次](../../appendix/change-rollout-schema.zh.md)上生效；
 
 那这个提示包在运营上并不比来源不明的构建工件更可靠。
 
