@@ -144,7 +144,7 @@ These concepts are related, but not identical.
 
 [approved artifacts](../../appendix/lifecycle-artifact-schema.en.md) answers:
 
-- which exact versions and bundles are approved to run right now.
+- which exact [versions and bundles](../../appendix/lifecycle-artifact-schema.en.md) are approved to run right now.
 
 For example:
 
