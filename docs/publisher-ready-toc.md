@@ -163,7 +163,9 @@ Remaining before external submission:
 
 ### Chapter 13 — strongest technical credibility sample
 
-Why: evals, traces, failure attribution, regression gates, and release judgment show production maturity.
+Why:
+
+- evals, traces, failure attribution, regression gates, and release judgment show production maturity.
 
 Current strengths:
 
