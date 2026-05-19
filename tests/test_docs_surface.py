@@ -1265,6 +1265,34 @@ def test_chapter_22_trusted_artifact_examples_link_schema_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_artifact_discipline_failures_link_schema_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[наборы для оценки](../../appendix/eval-schema.md)",
+            "[контракты возможностей](../../appendix/lifecycle-artifact-schema.md)",
+            "[approval schemas](../../appendix/approval-schema.md) или "
+            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[eval datasets](../../appendix/eval-schema.en.md)",
+            "[capability contracts](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[approval schemas](../../appendix/approval-schema.en.md) or "
+            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[评测数据集](../../appendix/eval-schema.zh.md)",
+            "[能力契约](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[审批模式](../../appendix/approval-schema.zh.md)或"
+            "[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

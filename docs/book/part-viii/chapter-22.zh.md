@@ -316,9 +316,9 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 常见的问题通常是这些：
 
 - 提示包没有版本；
-- 评测数据集悄悄变化；
-- 能力契约被编辑却没有审查轨迹；
-- 审批或运行时控制模式发生变化，却没有版本纪律；
+- [评测数据集](../../appendix/eval-schema.zh.md)悄悄变化；
+- [能力契约](../../appendix/lifecycle-artifact-schema.zh.md)被编辑却没有审查轨迹；
+- [审批模式](../../appendix/approval-schema.zh.md)或[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)发生变化，却没有版本纪律；
 - [编排模式治理变更](../../appendix/change-rollout-schema.zh.md)没有工件血缘；
 - 没有人知道事故发生时到底是哪一个精确工件在运行；
 - 事故证据中缺少契约版本链接；

@@ -314,9 +314,9 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 Обычно проблемы выглядят так:
 
 - наборы prompt-правил не версионируются;
-- наборы для оценки тихо меняются;
-- контракты возможностей редактируются без следа проверки;
-- approval или runtime-control schemas меняются без дисциплины версий;
+- [наборы для оценки](../../appendix/eval-schema.md) тихо меняются;
+- [контракты возможностей](../../appendix/lifecycle-artifact-schema.md) редактируются без следа проверки;
+- [approval schemas](../../appendix/approval-schema.md) или [runtime-control schemas](../../appendix/lifecycle-artifact-schema.md) меняются без дисциплины версий;
 - [изменения в orchestration pattern](../../appendix/change-rollout-schema.md) не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в доказательном слое отсутствует связь с версией контракта;
