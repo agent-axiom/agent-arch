@@ -3188,6 +3188,43 @@ def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[закрыть tool principal](../../appendix/lifecycle-artifact-schema.md)",
+            "[отозвать gateway exposure]"
+            "(../../appendix/registry-operations-handbook.md)",
+            "[истечь paused approvals](../../appendix/approval-schema.md)",
+            "[остановить background retries]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[сохранить audit trail](../../appendix/trace-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[close the tool principal]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[revoke gateway exposure]"
+            "(../../appendix/registry-operations-handbook.en.md)",
+            "[expire paused approvals](../../appendix/approval-schema.en.md)",
+            "[stop background retries]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[preserve the audit trail](../../appendix/trace-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[关闭工具主体](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[撤销 gateway exposure]"
+            "(../../appendix/registry-operations-handbook.zh.md)",
+            "[让 paused approvals 过期](../../appendix/approval-schema.zh.md)",
+            "[停止后台重试](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[保留审计轨迹](../../appendix/trace-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
