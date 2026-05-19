@@ -323,7 +323,7 @@ The usual problems look like this:
 - nobody knows which exact artifact was active during an incident;
 - contract-version linkage is missing from incident evidence;
 - verifier-contract lineage is missing from release or assurance evidence;
-- deprecated patterns remain in production too long;
+- [deprecated patterns](../../appendix/lifecycle-artifact-schema.en.md) remain in production too long;
 - [approved inventory](../../appendix/registry-operations-handbook.en.md) exists in a wiki, but not in operational tooling.
 
 When this happens, the platform loses controllability not because of one giant error, but because of hundreds of small untracked artifacts.
@@ -338,7 +338,7 @@ A stronger bar is this:
 - provenance can be restored quickly during incident review and rollout decisions;
 - release and assurance evidence can be traced back to the active [verifier contract](../../appendix/eval-schema.en.md) and contract family;
 - [approved inventory](../../appendix/registry-operations-handbook.en.md) and approved artifacts are kept as distinct control layers;
-- deprecated patterns can be blocked before they quietly persist in production;
+- [deprecated patterns](../../appendix/lifecycle-artifact-schema.en.md) can be blocked before they quietly persist in production;
 - trust is attached to explicit artifact properties, not inherited socially.
 
 If most of those conditions are missing, the team may have some artifact hygiene, but it still does not have real artifact governance.
@@ -352,7 +352,7 @@ If you want to test your artifact discipline quickly, ask:
 - Can provenance, verifier lineage, and active contract/schema versions be restored quickly during incident review?
 - Does the platform have an [approved inventory](../../appendix/registry-operations-handbook.en.md)?
 - Do you distinguish a [platform-approved pattern](../../appendix/change-rollout-schema.en.md) from a [release-approved artifact](../../appendix/lifecycle-artifact-schema.en.md)?
-- Can a deprecated artifact be blocked quickly?
+- Can a [deprecated artifact](../../appendix/lifecycle-artifact-schema.en.md) be blocked quickly?
 
 If the answer is “no” several times in a row, you do not yet have a real artifact governance layer.
 

@@ -323,7 +323,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 没有人知道事故发生时到底是哪一个精确工件在运行；
 - 事故证据中缺少契约版本链接；
 - 发布或保障 evidence 中缺少验证器契约血缘；
-- 已废弃模式在生产环境里活得太久；
+- [已废弃模式](../../appendix/lifecycle-artifact-schema.zh.md)在生产环境里活得太久；
 - [已批准清单](../../appendix/registry-operations-handbook.zh.md)只存在于 wiki，而不存在于运营工具。
 
 一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小工件都处于未跟踪状态。
@@ -338,7 +338,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 来源追踪能在事故评审和 rollout 决策中被快速恢复；
 - 发布和保障证据能回溯到当时生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)与契约族；
 - [已批准清单](../../appendix/registry-operations-handbook.zh.md)和已批准工件被当成不同的控制层来管理；
-- 已废弃模式能在它们悄悄留在生产环境之前被阻断；
+- [已废弃模式](../../appendix/lifecycle-artifact-schema.zh.md)能在它们悄悄留在生产环境之前被阻断；
 - 信任绑定在显式工件属性上，而不是靠社会性继承。
 
 如果这些条件大多不成立，那团队也许已经有一些工件卫生，但还没有真正的工件治理。
@@ -352,7 +352,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 事故评审时能快速恢复来源追踪、验证器血缘与生效中的契约/模式版本吗？
 - 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
 - 你们能区分[平台批准的模式](../../appendix/change-rollout-schema.zh.md)和[发布批准的工件](../../appendix/lifecycle-artifact-schema.zh.md)吗？
-- 已废弃工件能被快速阻断吗？
+- [已废弃工件](../../appendix/lifecycle-artifact-schema.zh.md)能被快速阻断吗？
 
 如果连续几个问题的答案都是“否”，那你们还没有真正的工件治理层。
 
