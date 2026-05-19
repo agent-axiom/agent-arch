@@ -254,11 +254,11 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [已过期 capability sessions 仍可通过陈旧控制路径 re-initialize](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用](../../appendix/change-rollout-schema.zh.md)；
 - 已废弃的 verifier contracts 或 [verifier evidence](../../appendix/eval-schema.zh.md) obligations 在退役后仍然不清楚；
-- background routes 被遗忘没有关闭；
-- 归档状态没有负责人；
-- 已废弃的 schemas 仍然被 gateways 或 runtimes 接受；
-- 已废弃模式存活太久；
-- 替换没有双运行或分阶段迁移。
+- [background routes 被遗忘没有关闭](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [归档状态没有负责人](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的 schemas 仍然被 gateways 或 runtimes 接受](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃模式存活太久](../../appendix/change-rollout-schema.zh.md)；
+- 替换没有[双运行](../../appendix/lifecycle-artifact-schema.zh.md)或[分阶段迁移](../../appendix/change-rollout-schema.zh.md)。
 
 正是这些小细节，会把一个“几乎完整”的生命周期重新变成事故来源。
 

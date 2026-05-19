@@ -256,11 +256,11 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [expired capability sessions все еще можно re-initialize через stale control paths](../../appendix/lifecycle-artifact-schema.md);
 - [deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement](../../appendix/change-rollout-schema.md);
 - deprecated verifier contracts или obligations по [verifier evidence](../../appendix/eval-schema.md) остаются неясными после retirement;
-- background routes забыли выключить;
-- archived state никому не принадлежит;
-- deprecated schemas все еще принимаются gateways или runtime;
-- deprecated patterns остаются рабочими слишком долго;
-- replacement делается без dual-run или staged migration.
+- [background routes забыли выключить](../../appendix/lifecycle-artifact-schema.md);
+- [archived state никому не принадлежит](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated schemas все еще принимаются gateways или runtime](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated patterns остаются рабочими слишком долго](../../appendix/change-rollout-schema.md);
+- replacement делается без [dual-run](../../appendix/lifecycle-artifact-schema.md) или [staged migration](../../appendix/change-rollout-schema.md).
 
 Именно такие мелочи превращают “почти завершенный” жизненный цикл в источник новых инцидентов.
 

@@ -256,11 +256,11 @@ The problems are fairly repetitive:
 - [expired capability sessions could still be re-initialized through stale control paths](../../appendix/lifecycle-artifact-schema.en.md);
 - [deprecated orchestration patterns or worker-boundary policies remained usable after retirement](../../appendix/change-rollout-schema.en.md);
 - deprecated verifier contracts or [verifier evidence](../../appendix/eval-schema.en.md) obligations remained unclear after retirement;
-- background routes were forgotten;
-- archived state belongs to nobody;
-- deprecated schemas still remain accepted by gateways or runtimes;
-- deprecated patterns remain usable too long;
-- replacement happens without dual-run or staged migration.
+- [background routes were forgotten](../../appendix/lifecycle-artifact-schema.en.md);
+- [archived state belongs to nobody](../../appendix/lifecycle-artifact-schema.en.md);
+- [deprecated schemas still remain accepted by gateways or runtimes](../../appendix/lifecycle-artifact-schema.en.md);
+- [deprecated patterns remain usable too long](../../appendix/change-rollout-schema.en.md);
+- replacement happens without [dual-run](../../appendix/lifecycle-artifact-schema.en.md) or [staged migration](../../appendix/change-rollout-schema.en.md).
 
 These small details are exactly what turns an “almost complete” lifecycle into a source of fresh incidents.
 
