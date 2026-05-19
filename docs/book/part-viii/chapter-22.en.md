@@ -115,7 +115,7 @@ For agent systems, it is better to think in several linked chains:
 - approval and runtime-control chain;
 - capability-session governance chain;
 - delegated authorization chain;
-- data and retrieval chain;
+- [data and retrieval chain](../../appendix/memory-retrieval-schema.en.md);
 - eval chain.
 
 <div class="diagram-card">
