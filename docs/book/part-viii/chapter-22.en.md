@@ -230,7 +230,7 @@ Anthropic's later harness work makes another supply-chain consequence explicit.[
 
 Those are provenance questions because they determine the governed identity of the behavior, not merely whether the behavior was visible in telemetry.
 
-That is exactly where this chapter's boundary matters. Telemetry may show that a pause, re-init, or delegated action happened. Provenance has to preserve which reviewed contract family made that behavior legitimate in the first place. Without that layer, incident review can see events but still fail to explain why the platform considered them valid.
+That is exactly where this chapter's boundary matters. [Telemetry](../../appendix/trace-schema.en.md) may show that a [pause, re-init, or delegated action](../../appendix/lifecycle-artifact-schema.en.md) happened. Provenance has to preserve which [reviewed contract family](../../appendix/lifecycle-artifact-schema.en.md) made that behavior legitimate in the first place. Without that layer, incident review can see events but still fail to explain why the platform considered them valid.
 
 ## 9. Example approved artifact policy
 
