@@ -331,7 +331,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 Более сильная планка такая:
 
-- prompt-, policy-, eval-, capability-, approval-, runtime-control- и verifier-артефакты считаются полноценными производственными артефактами;
+- prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [eval](../../appendix/eval-schema.md)-, [capability](../../appendix/lifecycle-artifact-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)- и [verifier](../../appendix/eval-schema.md)-артефакты считаются полноценными производственными артефактами;
 - происхождение можно быстро восстановить и для разбора инцидента, и для решений о раскатке;
 - release- и assurance-доказательства можно проследить до активного [verifier contract](../../appendix/eval-schema.md) и семейства контрактов;
 - approved inventory и approved artifacts существуют как разные уровни контроля;

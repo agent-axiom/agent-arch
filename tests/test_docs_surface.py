@@ -1293,6 +1293,40 @@ def test_chapter_22_artifact_discipline_failures_link_schema_contracts() -> None
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_maturity_bar_links_production_artifact_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[policy](../../appendix/policy-bundle-schema.md)-",
+            "[eval](../../appendix/eval-schema.md)-",
+            "[capability](../../appendix/lifecycle-artifact-schema.md)-",
+            "[approval](../../appendix/approval-schema.md)-",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.md)-",
+            "[verifier](../../appendix/eval-schema.md)-артефакты",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[policy](../../appendix/policy-bundle-schema.en.md)",
+            "[eval](../../appendix/eval-schema.en.md)",
+            "[capability](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[approval](../../appendix/approval-schema.en.md)",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[verifier](../../appendix/eval-schema.en.md) artifacts",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[策略](../../appendix/policy-bundle-schema.zh.md)",
+            "[评测](../../appendix/eval-schema.zh.md)",
+            "[能力](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[审批](../../appendix/approval-schema.zh.md)",
+            "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[verifier](../../appendix/eval-schema.zh.md) 工件",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
