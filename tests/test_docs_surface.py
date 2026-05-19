@@ -3391,6 +3391,45 @@ def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_staged_replacement_links_rollout_eval_lifecycle() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[shadow comparison](../../appendix/eval-schema.md)",
+            "[limited tenant migration](../../appendix/change-rollout-schema.md)",
+            "[dual-run for critical scenarios]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[side-by-side evals](../../appendix/eval-schema.md)",
+            "[staged traffic shift](../../appendix/change-rollout-schema.md)",
+            "[final cutover only after confidence is high]"
+            "(../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[shadow comparison](../../appendix/eval-schema.en.md)",
+            "[limited tenant migration](../../appendix/change-rollout-schema.en.md)",
+            "[dual-run for critical scenarios]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[side-by-side evals](../../appendix/eval-schema.en.md)",
+            "[staged traffic shift](../../appendix/change-rollout-schema.en.md)",
+            "[final cutover only after confidence is high]"
+            "(../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[影子对比](../../appendix/eval-schema.zh.md)",
+            "[小范围租户迁移](../../appendix/change-rollout-schema.zh.md)",
+            "[在关键场景里双运行](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[并行评测](../../appendix/eval-schema.zh.md)",
+            "[分阶段切流](../../appendix/change-rollout-schema.zh.md)",
+            "[只有在信心足够时才做最终切换]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
