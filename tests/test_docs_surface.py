@@ -5531,6 +5531,39 @@ def test_sources_include_agent_specific_owasp_security_sources() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_fast_moving_chapters_carry_may_17_review_dates() -> None:
+    chapter_bases = (
+        "docs/book/part-iv/chapter-9",
+        "docs/book/part-v/chapter-13",
+        "docs/book/part-viii/chapter-21",
+        "docs/book/part-viii/chapter-24",
+        "docs/book/part-viii/chapter-25",
+        "docs/book/part-viii/chapter-26",
+        "docs/book/part-viii/chapter-27",
+    )
+    expected_by_suffix = {
+        ".md": (
+            "Последняя редакционная проверка: **17 мая 2026 года**.",
+            "Предыдущая проверка: **14 мая 2026 года**.",
+            "Следующая плановая проверка: **17 июня 2026 года**.",
+        ),
+        ".en.md": (
+            "Last reviewed: **May 17, 2026**.",
+            "Previous review: **May 14, 2026**.",
+            "Next scheduled review: **June 17, 2026**.",
+        ),
+        ".zh.md": (
+            "最近一次编辑审查：**2026 年 5 月 17 日**。",
+            "上一次审查：**2026 年 5 月 14 日**。",
+            "下一次计划审查：**2026 年 6 月 17 日**。",
+        ),
+    }
+
+    for base in chapter_bases:
+        for suffix, expected_markers in expected_by_suffix.items():
+            _assert_files_contain_all((f"{base}{suffix}",), expected_markers)
+
+
 def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     required_markers = (
         "Canonical book cases",
