@@ -3867,6 +3867,23 @@ def test_chapter_1_decision_frame_is_print_friendly() -> None:
         assert "multi-agent" in section
 
 
+def test_chapter_2_layer_map_is_print_friendly() -> None:
+    chapter_sections = {
+        "docs/book/part-i/chapter-2.md": ("## 4.", "## 5.", "Входной слой"),
+        "docs/book/part-i/chapter-2.en.md": ("## 4.", "## 5.", "Interface layer"),
+        "docs/book/part-i/chapter-2.zh.md": ("## 4.", "## 5.", "接口层"),
+    }
+
+    for path, (start_marker, end_marker, title_marker) in chapter_sections.items():
+        text = _read(path)
+        section = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
+        assert title_marker in section
+        assert "|" not in section
+        assert "control" in section or "управления" in section or "控制" in section
+        assert "runtime" in section or "рантайм" in section or "运行时" in section
+        assert "Telemetry" in section or "Телеметрия" in section or "遥测" in section
+
+
 def test_reference_final_rule_stays_as_separate_bullet_list() -> None:
     expected = {
         "docs/reference.md": (
