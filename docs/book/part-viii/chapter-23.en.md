@@ -142,12 +142,12 @@ For agent systems, that is risky.
 
 Staged replacement is safer:
 
-- shadow comparison;
-- limited tenant migration;
-- dual-run for critical scenarios;
-- side-by-side evals;
-- staged traffic shift;
-- final cutover only after confidence is high.
+- [shadow comparison](../../appendix/eval-schema.en.md);
+- [limited tenant migration](../../appendix/change-rollout-schema.en.md);
+- [dual-run for critical scenarios](../../appendix/lifecycle-artifact-schema.en.md);
+- [side-by-side evals](../../appendix/eval-schema.en.md);
+- [staged traffic shift](../../appendix/change-rollout-schema.en.md);
+- [final cutover only after confidence is high](../../appendix/change-rollout-schema.en.md).
 
 This is where replacement resembles rollout discipline, but adds one more question: how to preserve continuity between the old and new systems.
 

@@ -142,12 +142,12 @@ flowchart LR
 
 更安全的是分阶段替换：
 
-- 影子对比；
-- 小范围租户迁移；
-- 在关键场景里双运行；
-- 并行评测；
-- 分阶段切流；
-- 只有在信心足够时才做最终切换。
+- [影子对比](../../appendix/eval-schema.zh.md)；
+- [小范围租户迁移](../../appendix/change-rollout-schema.zh.md)；
+- [在关键场景里双运行](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [并行评测](../../appendix/eval-schema.zh.md)；
+- [分阶段切流](../../appendix/change-rollout-schema.zh.md)；
+- [只有在信心足够时才做最终切换](../../appendix/change-rollout-schema.zh.md)。
 
 这也是替换和上线纪律最接近的地方，只不过替换还多了一个问题：如何在新旧系统之间保持连续性。
 

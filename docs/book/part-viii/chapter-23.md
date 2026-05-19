@@ -142,12 +142,12 @@ flowchart LR
 
 Полезнее staged replacement:
 
-- shadow comparison;
-- limited tenant migration;
-- dual-run for critical scenarios;
-- side-by-side evals;
-- staged traffic shift;
-- final cutover only after confidence is high.
+- [shadow comparison](../../appendix/eval-schema.md);
+- [limited tenant migration](../../appendix/change-rollout-schema.md);
+- [dual-run for critical scenarios](../../appendix/lifecycle-artifact-schema.md);
+- [side-by-side evals](../../appendix/eval-schema.md);
+- [staged traffic shift](../../appendix/change-rollout-schema.md);
+- [final cutover only after confidence is high](../../appendix/change-rollout-schema.md).
 
 Именно здесь replacement сближается с rollout discipline, но добавляет еще один вопрос: как не потерять continuity между старой и новой системой.
 
