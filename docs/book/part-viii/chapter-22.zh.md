@@ -37,8 +37,8 @@
 - 能力契约；
 - 评测数据集；
 - 验证器契约、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
-- 审批规则与模式；
-- 运行时控制模式；
+- [审批规则与模式](../../appendix/approval-schema.zh.md)；
+- [运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [编排模式治理规则与 worker-safe 目录定义](../../appendix/change-rollout-schema.zh.md)；
 - [能力会话中断与重新初始化规则](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 发布工件包。
