@@ -136,7 +136,7 @@ OpenAI 关于 agent evals 的指南给出了一条有用的操作阶梯：在调
 !!! example "贯穿案例：ticket-write 的控制评测"
     对支持分诊来说，只证明“一次只创建了一个工单”的回归评测已经不够。团队需要一个会给路径施压的控制评测：确认智能体不会选择旧 gateway route，不会在审批后改写 `create_support_ticket` payload，不会在 freeze 后继续后台重试，而且 emergency disable 真的能关掉整个 ticket-write capability family。这个评测应该同时评分 process 和 outcome：没有创建重复工单，控制路径也没有被绕过。
 
-**Control-eval case-spine note：**eval gate and verifier contract 应该把三个 canonical cases 作为不同 behavioral and control eval surfaces 来测试。Support triage 需要 duplicate prevention、payload-mutation check、approval-path misuse check、old-gateway-route probe 和 emergency-disable assertion。Internal knowledge assistant 需要 source-grounding eval、tenant-filter bypass probe、improper-memory-write check、retrieval-poisoning scenario 和 freshness regression gate。Incident coordination 需要 escalation-path check、notification suppression probe、responder-role abuse scenario、incident-state tampering check 和 rollback control eval。
+**Control-eval case-spine note：**[eval gate and verifier contract](../../appendix/eval-schema.zh.md) 应该把三个 canonical cases 作为不同 behavioral and control eval surfaces 来测试。Support triage 需要 duplicate prevention、payload-mutation check、[approval-path misuse check](../../appendix/approval-schema.zh.md)、old-gateway-route probe 和 emergency-disable assertion。Internal knowledge assistant 需要 source-grounding eval、tenant-filter bypass probe、improper-memory-write check、[retrieval-poisoning scenario](../../appendix/memory-retrieval-schema.zh.md) 和 freshness regression gate。Incident coordination 需要 escalation-path check、notification suppression probe、responder-role abuse scenario、[incident-state tampering check](../../appendix/incident-record-schema.zh.md) 和 rollback control eval。
 
 ## 7. 一个最小行为分类法
 
