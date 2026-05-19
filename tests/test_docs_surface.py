@@ -1715,15 +1715,38 @@ def test_chapter_26_useful_refs_include_observability_contracts() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
-def test_chapter_26_governance_action_trace_links_are_clickable() -> None:
+def test_chapter_26_observability_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
-        "docs/book/part-viii/chapter-26.md": "../../appendix/trace-schema.md",
-        "docs/book/part-viii/chapter-26.en.md": "../../appendix/trace-schema.en.md",
-        "docs/book/part-viii/chapter-26.zh.md": "../../appendix/trace-schema.zh.md",
+        "docs/book/part-viii/chapter-26.md": (
+            "../../appendix/trace-schema.md",
+            "../../appendix/approval-schema.md",
+            "../../appendix/policy-bundle-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/incident-record-schema.md",
+            "../../appendix/lifecycle-artifact-schema.md",
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            "../../appendix/trace-schema.en.md",
+            "../../appendix/approval-schema.en.md",
+            "../../appendix/policy-bundle-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
+            "../../appendix/lifecycle-artifact-schema.en.md",
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "../../appendix/trace-schema.zh.md",
+            "../../appendix/approval-schema.zh.md",
+            "../../appendix/policy-bundle-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
+            "../../appendix/lifecycle-artifact-schema.zh.md",
+        ),
     }
 
-    for path, expected_link in expected_links_by_file.items():
-        assert f"]({expected_link})" in _read(path), (path, expected_link)
+    for path, expected_links in expected_links_by_file.items():
+        text = _read(path)
+        for expected_link in expected_links:
+            assert f"]({expected_link})" in text, (path, expected_link)
 
 
 def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
