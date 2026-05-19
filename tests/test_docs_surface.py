@@ -416,7 +416,7 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
         ),
         "runnable `agent_runtime_ref` package",
         "command-output field lists and validation-error catalogs",
-        "any print sample that depends on live site navigation",
+        "print sample that depends on live site navigation",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
@@ -811,6 +811,33 @@ def test_publisher_packet_sample_export_manifest_is_print_friendly() -> None:
     assert all(len(line) <= 130 for line in section.splitlines())
 
 
+def test_publisher_packet_submission_order_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Recommended Submission Packet Order", 1)[1].split(
+        "## Print/PDF Readiness Gate Draft",
+        1,
+    )[0]
+    required_markers = (
+        "Default recommendation:",
+        "- lead with Chapter 1 only;",
+        "- use it because it carries the thesis and reads best as a first editorial sample;",
+        "- keep Chapter 13 ready as a second attachment or follow-up;",
+        "- send Chapter 13 when the conversation turns to technical credibility.",
+    )
+    forbidden_inline_markers = (
+        "Default recommendation: lead with Chapter 1 only.",
+        "Keep Chapter 13 ready as a second attachment or follow-up",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 4
+    assert all(len(line) <= 130 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_print_pdf_readiness_gate() -> None:
     required_markers = (
         "Print/PDF Readiness Gate Draft",
@@ -829,6 +856,25 @@ def test_publisher_packet_has_print_pdf_readiness_gate() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_publisher_packet_print_pdf_gate_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Print/PDF Readiness Gate Draft", 1)[1].split(
+        "## Submission Release Discipline Draft",
+        1,
+    )[0]
+    forbidden_inline_markers = (
+        "**No-go signals:** broken heading levels",
+        "or any print sample that depends on live site navigation",
+    )
+
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert "**No-go signals:**\n" in section
+    assert section.count("\n- ") >= 12
+    assert all(len(line) <= 130 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_submission_release_discipline() -> None:
     required_markers = (
         "Submission Release Discipline Draft",
@@ -841,6 +887,38 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Submission Release Discipline Draft", 1)[1].split(
+        "## External Submission Blocker Register",
+        1,
+    )[0]
+    required_markers = (
+        "**Freeze scope before sending:**",
+        "- cover note;",
+        "- one-page positioning memo;",
+        "- publisher-ready TOC;",
+        "- selected sample chapter;",
+        "- author/platform credibility note;",
+        "- comparable-books note;",
+        "- print/companion split;",
+        "- public links.",
+    )
+    forbidden_inline_markers = (
+        "**Freeze scope before sending:** cover note",
+        "author/platform credibility note, comparable-books note",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert "**No-go signals:**\n" in section
+    assert "**No-go signals:** missing author bio" not in section
+    assert all(len(line) <= 140 for line in section.splitlines())
+
 
 
 def test_chapter_17_policy_catalog_threads_three_canonical_cases() -> None:
