@@ -334,7 +334,7 @@ A team should not think it has supply-chain discipline only because builds are s
 
 A stronger bar is this:
 
-- prompt, policy, eval, capability, approval, runtime-control, and verifier artifacts are treated as production artifacts;
+- prompt, [policy](../../appendix/policy-bundle-schema.en.md), [eval](../../appendix/eval-schema.en.md), [capability](../../appendix/lifecycle-artifact-schema.en.md), [approval](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), and [verifier](../../appendix/eval-schema.en.md) artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
 - release and assurance evidence can be traced back to the active [verifier contract](../../appendix/eval-schema.en.md) and contract family;
 - approved inventory and approved artifacts are kept as distinct control layers;
