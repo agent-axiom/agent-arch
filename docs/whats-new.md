@@ -2,13 +2,13 @@
 
 Эта страница нужна как короткий журнал крупных улучшений книги и опорного пакета. Она не заменяет git history, а помогает читателю быстро увидеть, насколько проект живой и какие слои уже появились.
 
-_Актуально на 18 мая 2026 года._
+_Актуально на 19 мая 2026 года._
 
 !!! note "Canonical case update"
     Крупный слой обновлений от 15 мая 2026 года — сквозная карта трех canonical cases. **Support triage**, **Internal knowledge assistant** и **Incident coordination** теперь видны в book chapters, public entry points, reference pages и appendix artifacts, а coverage guards защищают chapters и appendix pages от потери этих маршрутов.
 
 !!! note "Safe-agent schema update"
-    Обновления 17-18 мая 2026 года связали prose, appendices и guards для safe-agent архитектуры: MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence теперь отражены в [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md).
+    Обновления 17-19 мая 2026 года связали prose, appendices и guards для safe-agent архитектуры: MCP threat model и `mcp_server` contract, A2A handoff trust contract и trust-delegation artifact, defense-in-depth control map, verifier verdict record, governance action record, NIST AI RMF telemetry mapping, memory poisoning review fields и unified agent threat evidence теперь отражены в [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md).
 
 ## Book
 
@@ -113,9 +113,11 @@ Publisher-facing проход качества идет, но еще не зак
 - добавлены OpenGraph/Twitter metadata и social preview image;
 - проверены search index, sitemap, robots, локальные assets, anchors, alt text и внешние ссылки;
 - basic navigation и canonical fallback redirects покрывают основные entry points, которые люди копируют руками;
+- public-link availability record обновлен после того, как все девять publisher-packet links вернули HTTP 200;
+- publisher packet blocker register, waiver/decision log и Part VIII role map теперь print-friendly;
 - README на трех языках теперь содержит fast-forward publish checklist для `main` и `docs-prod`.
 
-До статуса publisher-ready еще остаются глубокая EN/ZH-проверка, rendering/export QA, print readiness, sample-chapter polish и упаковка manuscript/online companion.
+До статуса publisher-ready еще остаются глубокая EN/ZH-проверка, independent rendering/export QA, sample-chapter polish и target-specific упаковка manuscript/online companion.
 
 Почему это важно: опубликованный сайт должен постепенно приближаться к аккуратному reader-facing продукту, а не выглядеть как сырая сборка из Markdown-файлов.
 

@@ -2,13 +2,13 @@
 
 这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 Git 历史的替代品，而是让读者快速看到项目是否持续演进。
 
-_更新于 2026 年 5 月 18 日。_
+_更新于 2026 年 5 月 19 日。_
 
 !!! note "Canonical case update"
     2026 年 5 月 15 日的主要更新，是贯穿全书的三个 canonical cases 地图。**Support triage**、**Internal knowledge assistant** 和 **Incident coordination** 现在已经出现在 book chapters、public entry points、reference pages 和 appendix artifacts 中，并且 coverage guards 会防止 chapters 与 appendix pages 丢失这些路线。
 
 !!! note "Safe-agent schema update"
-    2026 年 5 月 17-18 日的更新，把 safe-agent architecture 的 prose、appendices 和 guards 连接了起来：MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence 现在都反映在 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 与 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 中。
+    2026 年 5 月 17-19 日的更新，把 safe-agent architecture 的 prose、appendices 和 guards 连接了起来：MCP threat model 与 `mcp_server` contract、A2A handoff trust contract 与 trust-delegation artifact、defense-in-depth control map、verifier verdict record、governance action record、NIST AI RMF telemetry mapping、memory poisoning review fields 和 unified agent threat evidence 现在都反映在 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 与 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 中。
 
 ## 书籍
 
@@ -113,9 +113,11 @@ _更新于 2026 年 5 月 18 日。_
 - 添加了 OpenGraph/Twitter metadata 和社交预览图；
 - 检查了搜索索引、sitemap、robots、本地资源、锚点、图片 alt 文本和外部链接；
 - basic navigation 和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口；
+- public-link availability record 已刷新，九个 publisher-packet links 全部返回 HTTP 200；
+- publisher packet blocker register、waiver/decision log 与 Part VIII role map 现在都是 print-friendly；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的 fast-forward 发布检查清单。
 
-在称为 publisher-ready 之前，仍然需要完成深层 EN/ZH cleanup、rendering/export QA、print readiness、sample-chapter polish，以及 manuscript/online companion 包装。
+在称为 publisher-ready 之前，仍然需要完成深层 EN/ZH cleanup、独立 rendering/export QA、sample-chapter polish，以及 target-specific manuscript/online companion 包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
