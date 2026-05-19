@@ -172,7 +172,7 @@ then that prompt bundle is operationally no better than a build artifact of unkn
 
 The same is true for:
 
-- routines;
+- [routines](../../appendix/lifecycle-artifact-schema.en.md);
 - [policy YAML](../../appendix/policy-bundle-schema.en.md);
 - [retrieval configs](../../appendix/memory-retrieval-schema.en.md);
 - [approval thresholds](../../appendix/approval-schema.en.md);

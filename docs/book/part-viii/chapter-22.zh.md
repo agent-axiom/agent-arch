@@ -172,7 +172,7 @@ flowchart LR
 
 同样的逻辑也适用于：
 
-- 例程；
+- [例程](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [策略 YAML](../../appendix/policy-bundle-schema.zh.md)；
 - [检索配置](../../appendix/memory-retrieval-schema.zh.md)；
 - [审批阈值](../../appendix/approval-schema.zh.md)；
