@@ -2032,6 +2032,58 @@ def test_chapter_22_capability_contract_checklist_links_control_schemas() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[paused runs истекали или могли ждать бесконечно]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[capability-session re-init была allowed, denied или approval-bound]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[telemetry обязана была связывать исходную и reinitialized "
+            "capability sessions](../../appendix/trace-schema.md)",
+            "[approval](../../appendix/approval-schema.md) и "
+            "[session-control logic](../../appendix/lifecycle-artifact-schema.md)",
+            "[delegated access была platform-owned или user-delegated]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[principal-binding rule и revoke behavior]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[paused runs expired or waited indefinitely]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[capability-session re-init was allowed, denied, or approval-bound]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[telemetry was expected to link the original and reinitialized "
+            "capability sessions](../../appendix/trace-schema.en.md)",
+            "[approval](../../appendix/approval-schema.en.md) and "
+            "[session-control logic](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[delegated access was platform-owned or user-delegated]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[principal-binding rule and revoke behavior]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[暂停运行是会过期，还是可以无限等待]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[能力会话重新初始化是 allowed、denied，还是 approval-bound]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来]"
+            "(../../appendix/trace-schema.zh.md)",
+            "[审批](../../appendix/approval-schema.zh.md)与"
+            "[会话控制逻辑](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[委派访问是平台拥有还是用户委派]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[principal 绑定规则与撤销行为]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

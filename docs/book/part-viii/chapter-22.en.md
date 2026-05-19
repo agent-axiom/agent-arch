@@ -218,13 +218,13 @@ The same is true for [approval schemas](../../appendix/approval-schema.en.md) an
 
 That means provenance should increasingly preserve not only that a runtime-control schema existed, but also which interruption-governance version was active:
 
-- whether paused runs expired or waited indefinitely;
-- whether capability-session re-init was allowed, denied, or approval-bound;
-- whether telemetry was expected to link the original and reinitialized capability sessions;
+- whether [paused runs expired or waited indefinitely](../../appendix/lifecycle-artifact-schema.en.md);
+- whether [capability-session re-init was allowed, denied, or approval-bound](../../appendix/lifecycle-artifact-schema.en.md);
+- whether [telemetry was expected to link the original and reinitialized capability sessions](../../appendix/trace-schema.en.md);
 - which [orchestration pattern](../../appendix/change-rollout-schema.en.md) was approved for the path, and whether worker-safe catalog boundaries were in force;
-- whether approval and session-control logic were governed under one contract version or had already drifted apart;
-- whether delegated access was platform-owned or user-delegated;
-- which principal-binding rule and revoke behavior governed in-flight or paused actions.
+- whether [approval](../../appendix/approval-schema.en.md) and [session-control logic](../../appendix/lifecycle-artifact-schema.en.md) were governed under one contract version or had already drifted apart;
+- whether [delegated access was platform-owned or user-delegated](../../appendix/lifecycle-artifact-schema.en.md);
+- which [principal-binding rule and revoke behavior](../../appendix/lifecycle-artifact-schema.en.md) governed in-flight or paused actions.
 
 Anthropic's later harness work makes another supply-chain consequence explicit.[^anthropic-harness] If long-running work depends on context resets, planner/generator/evaluator separation, sprint contracts, and structured handoff artifacts, then those handoff artifacts are not disposable coordination notes. They become provenance-bearing artifacts too. A later incident review or rollout challenge may need to know which handoff artifact carried scope, which evaluator critique shaped the next sprint, and which reset boundary changed the active context without changing the user-visible run.
 

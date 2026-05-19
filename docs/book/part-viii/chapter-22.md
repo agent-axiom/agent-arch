@@ -218,13 +218,13 @@ flowchart LR
 
 Это означает, что подтвержденное происхождение все чаще должно хранить не только сам факт существования runtime-control schema, но и то, какая версия interruption-governance реально была активна:
 
-- paused runs истекали или могли ждать бесконечно;
-- capability-session re-init была allowed, denied или approval-bound;
-- telemetry обязана была связывать исходную и reinitialized capability sessions или нет;
+- [paused runs истекали или могли ждать бесконечно](../../appendix/lifecycle-artifact-schema.md);
+- [capability-session re-init была allowed, denied или approval-bound](../../appendix/lifecycle-artifact-schema.md);
+- [telemetry обязана была связывать исходную и reinitialized capability sessions](../../appendix/trace-schema.md) или нет;
 - какой [orchestration pattern](../../appendix/change-rollout-schema.md) был утвержден для этого path и действовали ли worker-safe catalog boundaries;
-- approval и session-control logic еще управлялись одним contract version или уже начали расходиться;
-- delegated access была platform-owned или user-delegated;
-- какое principal-binding rule и revoke behavior управляли in-flight или paused actions.
+- [approval](../../appendix/approval-schema.md) и [session-control logic](../../appendix/lifecycle-artifact-schema.md) еще управлялись одним contract version или уже начали расходиться;
+- [delegated access была platform-owned или user-delegated](../../appendix/lifecycle-artifact-schema.md);
+- какое [principal-binding rule и revoke behavior](../../appendix/lifecycle-artifact-schema.md) управляли in-flight или paused actions.
 
 Более поздняя работа Anthropic про harness design показывает еще одно следствие для цепочки происхождения.[^anthropic-harness] Если длинная работа зависит от context resets, разделения ролей planner/generator/evaluator, sprint contracts и структурированных handoff artifacts, то такие handoff artifacts уже нельзя считать одноразовыми координационными заметками. Они тоже становятся артефактами с управляемым происхождением. Поздний incident review или спор о rollout может потребовать выяснить, какой handoff artifact перенес scope, какой evaluator critique изменил следующий sprint и на какой reset boundary активный контекст сменился без смены user-visible run.
 

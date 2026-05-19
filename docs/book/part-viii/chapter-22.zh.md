@@ -218,13 +218,13 @@ flowchart LR
 
 这也意味着来源追踪不应只记录“存在某个运行时控制模式”，还应该逐步记录当时生效的是哪一个中断治理版本：
 
-- 暂停运行是会过期，还是可以无限等待；
-- 能力会话重新初始化是 allowed、denied，还是 approval-bound；
-- 遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来；
+- [暂停运行是会过期，还是可以无限等待](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [能力会话重新初始化是 allowed、denied，还是 approval-bound](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来](../../appendix/trace-schema.zh.md)；
 - 当时这条路径批准的是哪一种[编排模式](../../appendix/change-rollout-schema.zh.md)，以及 worker-safe 目录边界是否生效；
-- 审批与会话控制逻辑当时是受同一个契约版本治理，还是已经发生漂移；
-- 委派访问是平台拥有还是用户委派；
-- 哪一条 principal 绑定规则与撤销行为在治理进行中或暂停动作。
+- [审批](../../appendix/approval-schema.zh.md)与[会话控制逻辑](../../appendix/lifecycle-artifact-schema.zh.md)当时是受同一个契约版本治理，还是已经发生漂移；
+- [委派访问是平台拥有还是用户委派](../../appendix/lifecycle-artifact-schema.zh.md)；
+- 哪一条[principal 绑定规则与撤销行为](../../appendix/lifecycle-artifact-schema.zh.md)在治理进行中或暂停动作。
 
 Anthropic 后续关于 harness 设计的工作又补上了另一层供应链含义。[^anthropic-harness] 如果长时间运行的工作依赖上下文重置、planner/generator/evaluator 的角色分离、sprint 契约与结构化交接工件，那么这些交接工件就不能再被视为一次性的协调便条。它们本身也变成了承载来源追踪的工件。之后的事故评审或 rollout 争议，可能都需要知道是哪一份交接工件传递了 scope、哪一条 evaluator critique 改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化，而用户可见运行却没有改变。
 
