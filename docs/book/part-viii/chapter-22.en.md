@@ -30,8 +30,8 @@ That is not enough for agent systems.
 
 The problem is that production behavior here depends on more than code. It also depends on:
 
-- model artifacts;
-- prompt and routine bundles;
+- [model artifacts](../../appendix/lifecycle-artifact-schema.en.md);
+- [prompt and routine bundles](../../appendix/lifecycle-artifact-schema.en.md);
 - [policy configs](../../appendix/policy-bundle-schema.en.md);
 - [retrieval corpora](../../appendix/memory-retrieval-schema.en.md);
 - [capability contracts](../../appendix/lifecycle-artifact-schema.en.md);

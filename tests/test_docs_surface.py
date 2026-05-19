@@ -1368,6 +1368,30 @@ def test_chapter_22_prompt_bundle_related_routines_link_lifecycle_schema() -> No
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_supply_chain_surface_links_model_prompt_artifacts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[маршруты к моделям](../../appendix/lifecycle-artifact-schema.md)",
+            "[наборы prompt- и routine-правил]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[model artifacts](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[prompt and routine bundles]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[模型工件](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[提示和例程包](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_model_prompt_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
