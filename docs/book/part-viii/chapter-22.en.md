@@ -138,11 +138,11 @@ flowchart LR
 
 These concepts are related, but not identical.
 
-`approved inventory` answers:
+[approved inventory](../../appendix/registry-operations-handbook.en.md) answers:
 
 - which runtimes, gateways, capabilities, and patterns are allowed on the platform at all.
 
-`approved artifacts` answers:
+[approved artifacts](../../appendix/lifecycle-artifact-schema.en.md) answers:
 
 - which exact versions and bundles are approved to run right now.
 
