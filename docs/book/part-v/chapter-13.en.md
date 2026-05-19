@@ -3,7 +3,7 @@
 !!! info "Freshness note"
     Last reviewed: **May 17, 2026**. Previous review: **May 14, 2026**. Next scheduled review: **June 17, 2026**.
 
-    What changed since the previous review: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry, and publisher-readiness concerns are now tracked explicitly as near-term editorial work.
+    What changed since the previous review: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry, and publisher-readiness concerns now have concrete contract coverage and docs-surface guards.
 
     What changes fastest here:
 

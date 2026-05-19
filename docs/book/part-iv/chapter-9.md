@@ -3,7 +3,7 @@
 !!! info "Актуальность главы"
     Последняя редакционная проверка: **17 мая 2026 года**. Предыдущая проверка: **14 мая 2026 года**. Следующая плановая проверка: **17 июня 2026 года**.
 
-    Что изменилось после предыдущей проверки: MCP security boundary, tool-poisoning surfaces, A2A trust model и publisher-readiness замечания вынесены в ближайшие редакционные задачи.
+    Что изменилось после предыдущей проверки: MCP security boundary, tool-poisoning surfaces, A2A trust model и publisher-readiness замечания теперь имеют конкретные contract coverage и docs-surface guards.
 
 
 !!! info "Как читать эту главу"
