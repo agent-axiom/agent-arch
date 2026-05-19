@@ -49,7 +49,7 @@ In other words, the agent supply chain is wider because the system itself is wid
 
 It helps to define this very directly:
 
-an approved artifact is any artifact that is allowed in production because it has an owner, provenance, review status, a clear operational role, and an identifiable place in release identity.
+an [approved artifact](../../appendix/lifecycle-artifact-schema.en.md) is any artifact that is allowed in production because it has an owner, provenance, review status, a clear operational role, and an identifiable place in release identity.
 
 That means approved artifacts are not only images or wheel files. They are the governed objects a later rollout decision, assurance judgment, or incident review must be able to point back to precisely.
 
