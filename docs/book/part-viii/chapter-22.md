@@ -321,7 +321,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в доказательном слое отсутствует связь с версией контракта;
 - устаревшие шаблоны живут в промышленной среде слишком долго;
-- утвержденный реестр существует в wiki, но не в рабочих инструментах.
+- [утвержденный реестр](../../appendix/registry-operations-handbook.md) существует в wiki, но не в рабочих инструментах.
 
 Если это происходит, платформа теряет управляемость не из-за одной большой ошибки, а из-за сотни маленьких неучтенных артефактов.
 
@@ -334,7 +334,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [eval](../../appendix/eval-schema.md)-, [capability](../../appendix/lifecycle-artifact-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)- и [verifier](../../appendix/eval-schema.md)-артефакты считаются полноценными производственными артефактами;
 - происхождение можно быстро восстановить и для разбора инцидента, и для решений о раскатке;
 - release- и assurance-доказательства можно проследить до активного [verifier contract](../../appendix/eval-schema.md) и семейства контрактов;
-- approved inventory и approved artifacts существуют как разные уровни контроля;
+- [approved inventory](../../appendix/registry-operations-handbook.md) и approved artifacts существуют как разные уровни контроля;
 - deprecated patterns можно заблокировать до того, как они тихо закрепятся в промышленной среде;
 - доверие привязано к явным свойствам артефакта, а не передается социально.
 
@@ -347,7 +347,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - У всех рабочих артефактов есть владелец?
 - У model-, prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)-, [eval- и verifier](../../appendix/eval-schema.md)-артефактов есть версии?
 - Можно ли быстро восстановить происхождение, verifier lineage и активные версии контрактов и схем для разбора инцидента?
-- Есть ли утвержденный реестр платформы?
+- Есть ли [утвержденный реестр платформы](../../appendix/registry-operations-handbook.md)?
 - Отличаете ли вы шаблон, разрешенный на уровне платформы, от артефакта, разрешенного к выпуску?
 - Можно ли быстро заблокировать устаревший артефакт?
 

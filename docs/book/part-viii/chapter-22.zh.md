@@ -324,7 +324,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 事故证据中缺少契约版本链接；
 - 发布或保障 evidence 中缺少验证器契约血缘；
 - 已废弃模式在生产环境里活得太久；
-- 已批准清单只存在于 wiki，而不存在于运营工具。
+- [已批准清单](../../appendix/registry-operations-handbook.zh.md)只存在于 wiki，而不存在于运营工具。
 
 一旦出现这些问题，平台失去可控性往往不是因为一次大事故，而是因为几百个小工件都处于未跟踪状态。
 
@@ -337,7 +337,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[评测](../../appendix/eval-schema.zh.md)、[能力](../../appendix/lifecycle-artifact-schema.zh.md)、[审批](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md) 和 [verifier](../../appendix/eval-schema.zh.md) 工件都被当成生产工件；
 - 来源追踪能在事故评审和 rollout 决策中被快速恢复；
 - 发布和保障证据能回溯到当时生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)与契约族；
-- 已批准清单和已批准工件被当成不同的控制层来管理；
+- [已批准清单](../../appendix/registry-operations-handbook.zh.md)和已批准工件被当成不同的控制层来管理；
 - 已废弃模式能在它们悄悄留在生产环境之前被阻断；
 - 信任绑定在显式工件属性上，而不是靠社会性继承。
 
@@ -350,7 +350,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 所有生产工件都有 owner 吗？
 - 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[approval-schema](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
 - 事故评审时能快速恢复来源追踪、验证器血缘与生效中的契约/模式版本吗？
-- 平台是否有已批准清单？
+- 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
 - 你们能区分平台批准的模式和发布批准的工件吗？
 - 已废弃工件能被快速阻断吗？
 
