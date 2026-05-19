@@ -1283,6 +1283,29 @@ def test_chapter_22_approved_model_route_links_lifecycle_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_provenance_questions_link_model_prompt_artifacts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[откуда взялась эта модель](../../appendix/lifecycle-artifact-schema.md)",
+            "[набор prompt-правил](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[where this model came from]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[prompt bundle](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[这个模型从哪里来](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[提示包](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

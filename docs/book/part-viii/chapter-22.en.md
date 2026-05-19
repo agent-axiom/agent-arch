@@ -73,8 +73,8 @@ Google Research makes the point clearly: provenance for AI systems is not only a
 
 You need to be able to answer:
 
-- where this model came from;
-- which prompt bundle is active now;
+- [where this model came from](../../appendix/lifecycle-artifact-schema.en.md);
+- which [prompt bundle](../../appendix/lifecycle-artifact-schema.en.md) is active now;
 - which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active during the incident;
 - which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used;
 - which [eval dataset](../../appendix/eval-schema.en.md) validated the release;
