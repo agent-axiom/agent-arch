@@ -73,8 +73,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 你必须能快速回答：
 
-- 这个模型从哪里来；
-- 现在激活的是哪一个提示包；
+- [这个模型从哪里来](../../appendix/lifecycle-artifact-schema.zh.md)；
+- 现在激活的是哪一个[提示包](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 事故发生时生效的是哪一个[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 当时使用的是哪一版[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)；
 - 发布是被哪一个[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)验证的；

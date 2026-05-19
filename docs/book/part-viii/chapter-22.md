@@ -73,8 +73,8 @@ Google Research очень точно показывает, что подтве�
 
 Тебе нужно уметь отвечать:
 
-- откуда взялась эта модель;
-- какой набор prompt-правил сейчас активен;
+- [откуда взялась эта модель](../../appendix/lifecycle-artifact-schema.md);
+- какой [набор prompt-правил](../../appendix/lifecycle-artifact-schema.md) сейчас активен;
 - какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
 - какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался;
 - какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
