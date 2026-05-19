@@ -3481,6 +3481,52 @@ def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[background routes забыли выключить]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[archived state никому не принадлежит]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated schemas все еще принимаются gateways или runtime]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated patterns остаются рабочими слишком долго]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[dual-run](../../appendix/lifecycle-artifact-schema.md) или "
+            "[staged migration](../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[background routes were forgotten]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[archived state belongs to nobody]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated schemas still remain accepted by gateways or runtimes]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated patterns remain usable too long]"
+            "(../../appendix/change-rollout-schema.en.md)",
+            "[dual-run](../../appendix/lifecycle-artifact-schema.en.md) or "
+            "[staged migration](../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[background routes 被遗忘没有关闭]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[归档状态没有负责人]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃的 schemas 仍然被 gateways 或 runtimes 接受]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃模式存活太久]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[双运行](../../appendix/lifecycle-artifact-schema.zh.md)或"
+            "[分阶段迁移](../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
