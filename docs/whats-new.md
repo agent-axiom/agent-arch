@@ -105,14 +105,17 @@ _Актуально на 18 мая 2026 года._
 
 ### Перед публикацией усилен сайт
 
-Перед следующим деплоем начат и заметно продвинут publisher-facing проход качества:
+Publisher-facing проход качества идет, но еще не закрыт полностью.
+
+Уже закрыто:
 
 - draft/planning страницы исключены из опубликованного сайта и sitemap;
 - добавлены OpenGraph/Twitter metadata и social preview image;
 - проверены search index, sitemap, robots, локальные assets, anchors, alt text и внешние ссылки;
+- basic navigation и canonical fallback redirects покрывают основные entry points, которые люди копируют руками;
 - README на трех языках теперь содержит fast-forward publish checklist для `main` и `docs-prod`.
 
-Это не означает, что publisher-facing слой полностью закрыт: еще остаются глубокая EN/ZH-проверка, rendering/export QA, sample-chapter polish и упаковка manuscript/online companion.
+До статуса publisher-ready еще остаются глубокая EN/ZH-проверка, rendering/export QA, print readiness, sample-chapter polish и упаковка manuscript/online companion.
 
 Почему это важно: опубликованный сайт должен постепенно приближаться к аккуратному reader-facing продукту, а не выглядеть как сырая сборка из Markdown-файлов.
 

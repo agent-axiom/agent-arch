@@ -105,14 +105,17 @@ _更新于 2026 年 5 月 18 日。_
 
 ### 发布前站点更干净了
 
-在下一次部署之前，面向发布的质量检查已经启动，并向前推进了一步：
+面向出版的质量检查正在进行中，但还没有完全关闭。
+
+已经完成：
 
 - 草稿与规划页面已从发布站点和 sitemap 中排除；
 - 添加了 OpenGraph/Twitter metadata 和社交预览图；
 - 检查了搜索索引、sitemap、robots、本地资源、锚点、图片 alt 文本和外部链接；
+- basic navigation 和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的 fast-forward 发布检查清单。
 
-这并不意味着面向出版的质量层已经完全关闭：深层 EN/ZH QA、rendering/export QA、sample-chapter polish，以及 manuscript/online companion 的包装仍然需要继续推进。
+在称为 publisher-ready 之前，仍然需要完成深层 EN/ZH cleanup、rendering/export QA、print readiness、sample-chapter polish，以及 manuscript/online companion 包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 

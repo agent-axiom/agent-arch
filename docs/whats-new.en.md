@@ -105,14 +105,17 @@ Why it matters: the new topics are now visible not only inside individual chapte
 
 ### A cleaner site before publication
 
-Before the next deploy, a publisher-facing quality pass was started and moved forward:
+The publisher-facing quality pass is in progress, not fully closed.
+
+Closed so far:
 
 - draft and planning pages are excluded from the published site and sitemap;
 - OpenGraph/Twitter metadata and a social preview image were added;
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
+- basic navigation and canonical fallback redirects cover the main hand-copied entry points;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-This does not mean the publisher-facing layer is fully closed: deep EN/ZH QA, rendering/export QA, sample-chapter polish, and manuscript/online-companion packaging still remain.
+Remaining before this can be called publisher-ready: deep EN/ZH cleanup, rendering/export QA, print readiness, sample-chapter polish, and manuscript/online-companion packaging.
 
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 

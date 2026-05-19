@@ -3926,6 +3926,50 @@ def test_english_book_plan_matches_home_publication_status() -> None:
         assert marker not in plan
 
 
+def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
+    expected_by_file = {
+        "docs/whats-new.md": (
+            "Publisher-facing проход качества идет, но еще не закрыт полностью.",
+            "canonical fallback redirects покрывают основные entry points",
+            "До статуса publisher-ready еще остаются",
+            "EN/ZH-проверка",
+            "rendering/export QA",
+            "print readiness",
+            "sample-chapter polish",
+        ),
+        "docs/whats-new.en.md": (
+            "The publisher-facing quality pass is in progress, not fully closed.",
+            "canonical fallback redirects cover the main hand-copied entry points",
+            "Remaining before this can be called publisher-ready",
+            "deep EN/ZH cleanup",
+            "rendering/export QA",
+            "print readiness",
+            "sample-chapter polish",
+        ),
+        "docs/whats-new.zh.md": (
+            "面向出版的质量检查正在进行中，但还没有完全关闭。",
+            "canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
+            "在称为 publisher-ready 之前",
+            "EN/ZH cleanup",
+            "rendering/export QA",
+            "print readiness",
+            "sample-chapter polish",
+        ),
+    }
+    forbidden = (
+        "publisher-facing layer is fully closed",
+        "publisher-facing слой полностью закрыт",
+        "面向出版的质量层已经完全关闭",
+    )
+
+    for path, expected_markers in expected_by_file.items():
+        text = _read(path)
+        for marker in expected_markers:
+            assert marker in text, (path, marker)
+        for marker in forbidden:
+            assert marker not in text, (path, marker)
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
