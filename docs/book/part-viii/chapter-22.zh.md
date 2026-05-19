@@ -110,8 +110,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 对智能体系统来说，更好的思路是维护多条相互连接的信任链：
 
 - 代码与构建链；
-- 模型链；
-- 提示与例程链；
+- [模型链](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [提示与例程链](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [策略链](../../appendix/policy-bundle-schema.zh.md)；
 - [能力链](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [审批](../../appendix/approval-schema.zh.md)与[运行时控制](../../appendix/lifecycle-artifact-schema.zh.md)链；

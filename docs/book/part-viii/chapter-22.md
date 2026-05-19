@@ -108,8 +108,8 @@ Google Research очень точно показывает, что подтве�
 В агентных системах лучше мыслить несколькими связанными цепочками:
 
 - цепочкой кода и сборки;
-- цепочкой моделей;
-- цепочкой prompt- и routine-правил;
+- [цепочкой моделей](../../appendix/lifecycle-artifact-schema.md);
+- [цепочкой prompt- и routine-правил](../../appendix/lifecycle-artifact-schema.md);
 - [цепочкой политик](../../appendix/policy-bundle-schema.md);
 - [цепочкой возможностей](../../appendix/lifecycle-artifact-schema.md);
 - цепочкой [approval](../../appendix/approval-schema.md) и [runtime-control](../../appendix/lifecycle-artifact-schema.md);
