@@ -153,7 +153,7 @@ flowchart LR
 
 ## 8. Старые capabilities и patterns нужно уметь официально депрекейтить
 
-Полезно иметь не только `approved inventory`, но и `deprecated inventory`.
+Полезно иметь не только [approved inventory](../../appendix/registry-operations-handbook.md), но и [deprecated inventory](../../appendix/registry-operations-handbook.md).
 
 Например:
 
@@ -161,12 +161,12 @@ flowchart LR
 - deprecated prompt bundle family;
 - deprecated gateway pattern;
 - deprecated memory strategy;
-- deprecated capability contract;
-- deprecated approval schema;
-- deprecated runtime-control schema;
-- deprecated orchestration pattern или worker-boundary policy;
-- deprecated capability-session contract;
-- deprecated verifier contract.
+- [deprecated capability contract](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated approval schema](../../appendix/approval-schema.md);
+- [deprecated runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated orchestration pattern или worker-boundary policy](../../appendix/change-rollout-schema.md);
+- [deprecated capability-session contract](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated verifier contract](../../appendix/eval-schema.md).
 
 Это важно, потому что retirement почти всегда начинается не с выключения, а с ясного сигнала:
 

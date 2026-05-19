@@ -153,7 +153,7 @@ This is where replacement resembles rollout discipline, but adds one more questi
 
 ## 8. Old capabilities and patterns should be formally deprecated
 
-It is useful to maintain not only an `approved inventory`, but also a `deprecated inventory`.
+It is useful to maintain not only an [approved inventory](../../appendix/registry-operations-handbook.en.md), but also a [deprecated inventory](../../appendix/registry-operations-handbook.en.md).
 
 For example:
 
@@ -161,12 +161,12 @@ For example:
 - a deprecated prompt-bundle family;
 - a deprecated gateway pattern;
 - a deprecated memory strategy;
-- a deprecated capability contract;
-- a deprecated approval schema;
-- a deprecated runtime-control schema;
-- a deprecated orchestration pattern or worker-boundary policy;
-- a deprecated capability-session contract;
-- a deprecated verifier contract.
+- a [deprecated capability contract](../../appendix/lifecycle-artifact-schema.en.md);
+- a [deprecated approval schema](../../appendix/approval-schema.en.md);
+- a [deprecated runtime-control schema](../../appendix/lifecycle-artifact-schema.en.md);
+- a [deprecated orchestration pattern or worker-boundary policy](../../appendix/change-rollout-schema.en.md);
+- a [deprecated capability-session contract](../../appendix/lifecycle-artifact-schema.en.md);
+- a [deprecated verifier contract](../../appendix/eval-schema.en.md).
 
 This matters because retirement almost always starts not with a shutdown, but with a clear signal:
 

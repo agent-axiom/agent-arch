@@ -153,7 +153,7 @@ flowchart LR
 
 ## 8. 老的能力和模式应该被正式废弃
 
-最好不仅有 `approved inventory`，还要有 `deprecated inventory`。
+最好不仅有[已批准清单（approved inventory）](../../appendix/registry-operations-handbook.zh.md)，还要有[已废弃清单（deprecated inventory）](../../appendix/registry-operations-handbook.zh.md)。
 
 例如：
 
@@ -161,12 +161,12 @@ flowchart LR
 - 已废弃的提示包族；
 - 已废弃的网关模式；
 - 已废弃的记忆策略；
-- 已废弃的能力契约；
-- 已废弃的 approval schema；
-- 已废弃的 runtime-control schema；
-- 已废弃的 orchestration pattern 或 worker-boundary policy；
-- 已废弃的 capability-session contract；
-- 已废弃的 verifier contract。
+- [已废弃的能力契约](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的 approval schema](../../appendix/approval-schema.zh.md)；
+- [已废弃的 runtime-control schema](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的 orchestration pattern 或 worker-boundary policy](../../appendix/change-rollout-schema.zh.md)；
+- [已废弃的 capability-session contract](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的 verifier contract](../../appendix/eval-schema.zh.md)。
 
 这很重要，因为退役几乎总是从“明确宣布这条路不再是正常路径”开始，而不是从突然关机开始。
 
