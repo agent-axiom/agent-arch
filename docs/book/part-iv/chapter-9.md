@@ -127,7 +127,33 @@ MCP удобен не потому, что это модное слово, а п
 
 Эта матрица нужна не для того, чтобы запретить MCP. Она нужна, чтобы у каждого MCP endpoint был понятный ответ: какой класс угрозы он добавляет, какой контроль его ограничивает и какой след останется в telemetry после инцидента.
 
-### 4.3. Полезно не путать MCP host, client и server
+### 4.3. Минимальный контракт MCP server
+
+Threat model становится полезной только тогда, когда превращается в проверяемый server artifact. Минимальная запись MCP server должна сопровождать каждый approved endpoint:
+
+```yaml
+mcp_server:
+  owner: platform-integrations
+  approved_registry_id: mcp.support.ticketing.v3
+  schema_hash: sha256:...
+  tool_definition_hash: sha256:...
+  allowed_origins:
+    - agent-runtime-prod
+  auth_mode: delegated_oauth
+  token_scope:
+    - ticket.read
+    - ticket.write_limited
+  token_ttl: 15m
+  user_delegation_required: true
+  server_isolation_profile: remote_ephemeral_sandbox
+  return_value_filtering: strip_instructions_and_classify_data
+  replay_protection: nonce_and_trace_bound_signature
+  schema_change_requires_review: true
+```
+
+Эти поля нужны не ради бюрократии. `schema_hash` и `tool_definition_hash` ловят tool schema injection и post-approval rug pulls. `token_scope`, `token_ttl` и `user_delegation_required` ограничивают confused-deputy paths. `return_value_filtering` считает tool results недоверенным содержимым, включая prompt injection через tool return values. `server_isolation_profile` и `replay_protection` делают sandbox escapes, replay и tampering достаточно видимыми для containment.
+
+### 4.4. Полезно не путать MCP host, client и server
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 

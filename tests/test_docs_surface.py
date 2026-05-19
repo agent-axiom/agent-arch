@@ -6031,6 +6031,35 @@ def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
         _assert_files_contain_all((path,), (heading, *required_markers))
 
 
+def test_chapter_9_mcp_server_contract_covers_required_controls() -> None:
+    expected_headings = {
+        "docs/book/part-iv/chapter-9.md": "Минимальный контракт MCP server",
+        "docs/book/part-iv/chapter-9.en.md": "Minimal MCP Server Contract",
+        "docs/book/part-iv/chapter-9.zh.md": "最小 MCP server contract",
+    }
+    required_fields = (
+        "mcp_server:",
+        "owner:",
+        "approved_registry_id:",
+        "schema_hash:",
+        "tool_definition_hash:",
+        "allowed_origins:",
+        "auth_mode:",
+        "token_scope:",
+        "token_ttl:",
+        "user_delegation_required:",
+        "server_isolation_profile:",
+        "return_value_filtering:",
+        "replay_protection:",
+        "schema_change_requires_review:",
+        "tool schema injection",
+        "prompt injection",
+    )
+
+    for path, heading in expected_headings.items():
+        _assert_files_contain_all((path,), (heading, *required_fields))
+
+
 def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-iv/chapter-9.md": "../../appendix/trace-schema.md",

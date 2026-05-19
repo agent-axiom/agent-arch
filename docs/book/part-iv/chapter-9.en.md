@@ -127,7 +127,33 @@ For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not st
 
 The matrix is not there to forbid MCP. It is there so every MCP endpoint has an explicit answer to three questions: which threat class it adds, which control limits it, and which telemetry will still be available after an incident.
 
-### 4.3. It Helps Not to Confuse the MCP Host, Client, and Server
+### 4.3. Minimal MCP Server Contract
+
+A threat model becomes useful only when it turns into a reviewable server artifact. A minimal MCP server record should travel with every approved endpoint:
+
+```yaml
+mcp_server:
+  owner: platform-integrations
+  approved_registry_id: mcp.support.ticketing.v3
+  schema_hash: sha256:...
+  tool_definition_hash: sha256:...
+  allowed_origins:
+    - agent-runtime-prod
+  auth_mode: delegated_oauth
+  token_scope:
+    - ticket.read
+    - ticket.write_limited
+  token_ttl: 15m
+  user_delegation_required: true
+  server_isolation_profile: remote_ephemeral_sandbox
+  return_value_filtering: strip_instructions_and_classify_data
+  replay_protection: nonce_and_trace_bound_signature
+  schema_change_requires_review: true
+```
+
+The important fields are not bureaucracy. `schema_hash` and `tool_definition_hash` catch tool schema injection and post-approval rug pulls. `token_scope`, `token_ttl`, and `user_delegation_required` limit confused-deputy paths. `return_value_filtering` treats tool results as untrusted content, including prompt injection via tool return values. `server_isolation_profile` and `replay_protection` make sandbox escapes, replay, and tampering visible enough to contain.
+
+### 4.4. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 
