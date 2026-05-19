@@ -379,9 +379,13 @@ Online companion:
 
 - hosts the multilingual public site;
 - keeps runnable reference-runtime material, schemas, configs, and tests close to the text;
-- can evolve with tooling, eval practice, and implementation details without forcing the print manuscript to chase every framework change.
+- can evolve with tooling, eval practice, and implementation details;
+- avoids forcing the print manuscript to chase every framework change.
 
-Practical pitch line: the book should read cleanly in print, while the companion site proves that the architecture is concrete enough to run, test, and inspect.
+Practical pitch line:
+
+- the book should read cleanly in print;
+- the companion site proves that the architecture is concrete enough to run, test, and inspect.
 
 ## Public Links Draft
 

@@ -786,6 +786,36 @@ def test_publisher_packet_comparable_books_are_print_friendly() -> None:
 
 
 
+def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Print Manuscript vs Online Companion Draft", 1)[1].split(
+        "## Public Links Draft",
+        1,
+    )[0]
+    required_markers = (
+        "Print manuscript:",
+        "Online companion:",
+        "Practical pitch line:",
+        "- the book should read cleanly in print;",
+        (
+            "- the companion site proves that the architecture is concrete enough "
+            "to run, test, and inspect."
+        ),
+    )
+    forbidden_inline_markers = (
+        "Practical pitch line: the book should read cleanly in print",
+        "while the companion site proves",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n- ") >= 8
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
         "Sample Chapter Export Manifest Draft",
