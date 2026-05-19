@@ -3,7 +3,7 @@
 !!! info "Актуальность главы"
     Последняя редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка: **14 июня 2026 года**.
 
-    Что изменилось после предыдущей проверки: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry и publisher-readiness замечания теперь имеют конкретные contract coverage и docs-surface guards.
+    Что изменилось после предыдущей проверки: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry и замечания по готовности к публикации теперь имеют конкретное покрытие контрактами и проверки поверхности документации.
 
     Быстрее всего здесь меняются:
 
