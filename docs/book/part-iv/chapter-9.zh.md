@@ -127,7 +127,33 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 这张矩阵不是为了禁止 MCP，而是为了让每个 MCP endpoint 都能回答三个问题：它增加了哪类威胁，哪项控制在限制它，事故之后 telemetry 里还能留下什么证据。
 
-### 4.3. 最好不要把 MCP host、client 和 server 搞混
+### 4.3. 最小 MCP server contract
+
+Threat model 只有变成可审查的 server artifact 才真正有用。每个 approved endpoint 都应该携带一份最小 MCP server 记录：
+
+```yaml
+mcp_server:
+  owner: platform-integrations
+  approved_registry_id: mcp.support.ticketing.v3
+  schema_hash: sha256:...
+  tool_definition_hash: sha256:...
+  allowed_origins:
+    - agent-runtime-prod
+  auth_mode: delegated_oauth
+  token_scope:
+    - ticket.read
+    - ticket.write_limited
+  token_ttl: 15m
+  user_delegation_required: true
+  server_isolation_profile: remote_ephemeral_sandbox
+  return_value_filtering: strip_instructions_and_classify_data
+  replay_protection: nonce_and_trace_bound_signature
+  schema_change_requires_review: true
+```
+
+这些字段不是为了官僚化。`schema_hash` 和 `tool_definition_hash` 用来发现 tool schema injection 和 approval 之后的 rug pull。`token_scope`、`token_ttl` 和 `user_delegation_required` 限制 confused-deputy paths。`return_value_filtering` 把 tool results 当作不可信内容处理，包括 prompt injection via tool return values。`server_isolation_profile` 和 `replay_protection` 让 sandbox escapes、replay 和 tampering 足够可见，便于 containment。
+
+### 4.4. 最好不要把 MCP host、client 和 server 搞混
 
 MCP 周围常常会出现一些没必要的混乱，因为这些词听起来都很熟，但它们在系统里的角色其实很具体。
 
