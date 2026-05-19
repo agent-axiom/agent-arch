@@ -138,11 +138,11 @@ flowchart LR
 
 Это близкие, но разные понятия.
 
-`approved inventory` отвечает на вопрос:
+[approved inventory](../../appendix/registry-operations-handbook.md) отвечает на вопрос:
 
 - какие рантаймы, шлюзы, возможности и шаблоны вообще разрешены на платформе.
 
-`approved artifacts` отвечает на вопрос:
+[approved artifacts](../../appendix/lifecycle-artifact-schema.md) отвечает на вопрос:
 
 - какие конкретные версии и наборы разрешены к запуску прямо сейчас.
 

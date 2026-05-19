@@ -140,11 +140,11 @@ flowchart LR
 
 这两个概念很接近，但并不相同。
 
-`已批准清单` 回答的是：
+[已批准清单](../../appendix/registry-operations-handbook.zh.md)回答的是：
 
 - 平台上哪些运行时、网关、能力和模式本身就是允许的。
 
-`已批准工件` 回答的是：
+[已批准工件](../../appendix/lifecycle-artifact-schema.zh.md)回答的是：
 
 - 当前到底有哪些具体版本和工件包被批准运行。
 
