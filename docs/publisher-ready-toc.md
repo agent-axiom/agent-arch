@@ -519,11 +519,17 @@ Default packet order:
 7. comparable-books note;
 8. public site, runtime, config, and test links as companion proof points.
 
-Default recommendation: lead with Chapter 1 only. It carries the thesis and reads best as a first editorial sample. Keep Chapter 13 ready as a second attachment or follow-up when the conversation turns to technical credibility.
+Default recommendation:
+
+- lead with Chapter 1 only;
+- use it because it carries the thesis and reads best as a first editorial sample;
+- keep Chapter 13 ready as a second attachment or follow-up;
+- send Chapter 13 when the conversation turns to technical credibility.
 
 ## Print/PDF Readiness Gate Draft
 
-Before any print-style PDF or sample-chapter export is sent externally, run a separate pass for print friction rather than assuming the web page will translate cleanly.
+Before any print-style PDF or sample-chapter export is sent externally, run a separate pass for print friction.
+Do not assume the web page will translate cleanly.
 
 **Print/PDF checks:**
 
@@ -534,7 +540,14 @@ Before any print-style PDF or sample-chapter export is sent externally, run a se
 - screenshots or generated figures, if added later, have source files and alt-text notes;
 - the export includes title, subtitle, author placeholder, packet version, and sample-chapter date.
 
-**No-go signals:** broken heading levels, clipped code blocks, unreadable diagrams, orphaned footnotes, missing packet version, or any print sample that depends on live site navigation to make sense.
+**No-go signals:**
+
+- broken heading levels;
+- clipped code blocks;
+- unreadable diagrams;
+- orphaned footnotes;
+- missing packet version;
+- print sample that depends on live site navigation to make sense.
 
 ## Submission Release Discipline Draft
 
@@ -542,7 +555,16 @@ Treat the publisher packet as a small release, not as a loose collection of note
 
 **Packet version:** `publisher-packet-2026-05` until a target editor or imprint requires a different format.
 
-**Freeze scope before sending:** cover note, one-page positioning memo, publisher-ready TOC, selected sample chapter, author/platform credibility note, comparable-books note, print/companion split, and public links.
+**Freeze scope before sending:**
+
+- cover note;
+- one-page positioning memo;
+- publisher-ready TOC;
+- selected sample chapter;
+- author/platform credibility note;
+- comparable-books note;
+- print/companion split;
+- public links.
 
 **Pre-send gates:**
 
@@ -553,7 +575,13 @@ Treat the publisher packet as a small release, not as a loose collection of note
 - packet attachments match the order in “Recommended Submission Packet Order”;
 - no runtime internals, validation-error catalogs, or long schema tables are moved into the print manuscript packet by accident.
 
-**No-go signals:** missing author bio, unverified links, unclear sample selection, publisher-specific format not applied, or any claim that implies the Chinese layer is a finished edition.
+**No-go signals:**
+
+- missing author bio;
+- unverified links;
+- unclear sample selection;
+- publisher-specific format not applied;
+- claim that implies the Chinese layer is a finished edition.
 
 ## Pitch Packet Status
 
