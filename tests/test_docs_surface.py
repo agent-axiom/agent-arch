@@ -6012,13 +6012,22 @@ def test_chinese_entry_surfaces_disclose_draft_localization_status() -> None:
         "docs/book/plan.zh.md",
     )
     required_markers = (
-        "Draft localization preview",
-        "finished Chinese edition",
+        "中文本地化预览",
+        "最终中文版",
         "正式出版前",
+    )
+    forbidden_markers = (
+        "Draft localization preview",
+        "draft localization preview",
+        "finished Chinese edition",
     )
 
     for path in checked_files:
-        _assert_files_contain_all((path,), required_markers)
+        text = _read(path)
+        for marker in required_markers:
+            assert marker in text, (path, marker)
+        for marker in forbidden_markers:
+            assert marker not in text, (path, marker)
 
 
 def test_governance_aware_telemetry_contract_is_documented() -> None:
