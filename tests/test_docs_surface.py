@@ -5509,6 +5509,28 @@ def test_sources_surface_three_canonical_source_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_sources_include_agent_specific_owasp_security_sources() -> None:
+    required_markers = (
+        "Agent-specific security",
+        "AI Agent Security Cheat Sheet",
+        "AI_Agent_Security_Cheat_Sheet.html",
+        "MCP Security Cheat Sheet",
+        "MCP_Security_Cheat_Sheet.html",
+        "LLM Prompt Injection Prevention Cheat Sheet",
+        "LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+        "RAG Security Cheat Sheet",
+        "RAG_Security_Cheat_Sheet.html",
+        "Governance and baseline controls",
+    )
+    checked_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(checked_files, required_markers)
+
+
 def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     required_markers = (
         "Canonical book cases",
