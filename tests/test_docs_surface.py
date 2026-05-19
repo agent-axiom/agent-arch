@@ -1326,6 +1326,29 @@ def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_prompt_bundle_provenance_links_owner_version_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[кто менял prompt](../../appendix/lifecycle-artifact-schema.md)",
+            "[какая версия](../../appendix/lifecycle-artifact-schema.md) сейчас в проде",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[who changed the prompt](../../appendix/lifecycle-artifact-schema.en.md)",
+            "[which version](../../appendix/lifecycle-artifact-schema.en.md) "
+            "is in production",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[谁改了提示](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "生产环境里是[哪一个版本](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_model_prompt_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

@@ -163,8 +163,8 @@ flowchart LR
 
 Но если ты не знаешь:
 
-- кто менял prompt;
-- какая версия сейчас в проде;
+- [кто менял prompt](../../appendix/lifecycle-artifact-schema.md);
+- [какая версия](../../appendix/lifecycle-artifact-schema.md) сейчас в проде;
 - какие [оценки](../../appendix/eval-schema.md) ее покрыли;
 - на какой [волне раскатки](../../appendix/change-rollout-schema.md) она активна;
 

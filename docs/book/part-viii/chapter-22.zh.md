@@ -163,8 +163,8 @@ flowchart LR
 
 但如果你不知道：
 
-- 谁改了提示；
-- 现在生产环境里是哪一个版本；
+- [谁改了提示](../../appendix/lifecycle-artifact-schema.zh.md)；
+- 现在生产环境里是[哪一个版本](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 哪些[评测](../../appendix/eval-schema.zh.md)覆盖了它；
 - 它在哪个[rollout 波次](../../appendix/change-rollout-schema.zh.md)上生效；
 
