@@ -5649,6 +5649,40 @@ def test_fast_moving_chapters_carry_may_17_review_dates() -> None:
             _assert_files_contain_all((f"{base}{suffix}",), expected_markers)
 
 
+def test_fast_moving_chapter_review_notes_reflect_closed_editorial_work() -> None:
+    chapter_bases = (
+        "docs/book/part-iv/chapter-9",
+        "docs/book/part-v/chapter-13",
+        "docs/book/part-viii/chapter-20",
+        "docs/book/part-viii/chapter-21",
+        "docs/book/part-viii/chapter-22",
+        "docs/book/part-viii/chapter-24",
+        "docs/book/part-viii/chapter-25",
+        "docs/book/part-viii/chapter-26",
+        "docs/book/part-viii/chapter-27",
+    )
+    expected_by_suffix = {
+        ".md": (
+            "теперь имеют конкретные contract coverage и docs-surface guards",
+            "ближайшие редакционные задачи",
+        ),
+        ".en.md": (
+            "now have concrete contract coverage and docs-surface guards",
+            "near-term editorial work",
+        ),
+        ".zh.md": (
+            "现在都有具体的 contract coverage 与 docs-surface guards",
+            "近期编辑任务",
+        ),
+    }
+
+    for base in chapter_bases:
+        for suffix, (required, forbidden) in expected_by_suffix.items():
+            text = _read(f"{base}{suffix}")
+            assert required in text, (base, suffix)
+            assert forbidden not in text, (base, suffix)
+
+
 def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     required_markers = (
         "Canonical book cases",
