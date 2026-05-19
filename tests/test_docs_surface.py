@@ -587,6 +587,44 @@ def test_publisher_packet_public_link_record_is_print_friendly() -> None:
     assert all(len(line) <= 120 for line in section.splitlines())
 
 
+def test_publisher_packet_cover_note_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Cover Note Draft", 1)[1].split(
+        "## Target Editor / Imprint Formatting Brief Draft",
+        1,
+    )[0]
+    required_markers = (
+        "Dear [Editor]",
+        "I am preparing **Secure AI Agent Architecture**",
+        "The book is for teams that need to ship AI agents",
+        "The premise is that production agents should be treated as governed systems",
+        "Identity, policy, tools, memory, traces, eval gates, rollout, and retirement",
+        "Chapter 13 is available as a secondary technical sample",
+        "Before sending:",
+        "- replace the greeting;",
+        "- add the final author bio/credential sentence;",
+        "- tailor the final paragraph to the target editor or imprint.",
+    )
+    forbidden_inline_markers = (
+        "who need to ship AI agents with real tool access, memory, approvals",
+        "The book's premise is that production agents should be treated",
+        (
+            "The manuscript is paired with a public multilingual companion site "
+            "and runnable reference material, so"
+        ),
+        "Before sending, replace the greeting",
+    )
+
+    for marker in required_markers:
+        assert marker in section
+    for marker in forbidden_inline_markers:
+        assert marker not in section
+    assert section.count("\n> ") >= 12
+    assert section.count("\n- ") == 3
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
+
 def test_publisher_packet_has_target_editor_formatting_brief() -> None:
     required_markers = (
         "Target Editor / Imprint Formatting Brief Draft",
