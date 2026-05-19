@@ -300,8 +300,10 @@ Credibility points to emphasize:
 
 - the manuscript connects architecture, safety, observability, evals, rollout, and lifecycle ownership;
 - those topics are treated as one operating model rather than separate concerns;
-- the companion material includes runnable/reference artifacts, so readers can inspect the contracts behind the prose;
-- the book is written for practitioners who need to ship and operate agents, not only understand model behavior in the abstract;
+- the companion material includes runnable/reference artifacts;
+- readers can inspect the contracts behind the prose;
+- the book is written for practitioners who need to ship and operate agents;
+- it is not only for readers who want to understand model behavior in the abstract;
 - the multilingual surface broadens reach without changing the technical promise.
 
 Bio gap to fill before submission:
