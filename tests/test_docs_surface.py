@@ -3900,6 +3900,11 @@ def test_english_book_plan_matches_home_publication_status() -> None:
         "readable draft localization preview in editorial cleanup",
         "Reference layer",
         "active companion material",
+        "Runtime package",
+        "runnable reference implementation and examples, not a production framework",
+        "Publisher package",
+        "in progress",
+        "not a finished submission packet",
     )
     deprecated_markers = (
         "first chapter is published",
