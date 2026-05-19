@@ -135,12 +135,40 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 对于 `agent_threat_evidence`，应保留 unified agent threat evidence model 中的 evidence markers，让 threat rows 能通过 traces 检查，而不只停留在 prose：
 
 - `prompt_boundary_event`
+- `rejected_instruction_trace`
+- `tool_output_sanitized`
+- `untrusted_content_marker`
+- `policy_decision_trace`
 - `retrieval_source_id`
+- `freshness_score`
+- `quarantine_event`
 - `memory_record_id`
+- `validation_state`
+- `rollback_replay_evidence`
+- `tool_call_id`
+- `approval_record`
+- `argument_validation_result`
+- `subject_id`
 - `delegation_trace_id`
+- `caller_callee_identity_check`
+- `step_budget_event`
+- `stop_reason`
+- `escalation_decision`
 - `tenant_id`
+- `egress_decision`
+- `redaction_dlp_result`
 - `cost_budget_event`
+- `rate_limit_decision`
+- `circuit_breaker_state`
+- `handoff_id`
+- `containment_state`
+- `verifier_verdict`
+- `artifact_digest`
+- `registry_decision`
+- `sandbox_profile_id`
 - `decision_trace_id`
+- `immutable_log_pointer`
+- `evidence_completeness_flag`
 
 例如，`tool_policy_decision` 至少通常应该包含：
 
