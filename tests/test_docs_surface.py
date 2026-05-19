@@ -1483,6 +1483,26 @@ def test_chapter_22_approved_artifact_bundle_links_lifecycle_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_duplicate_ticket_release_bundle_links_lifecycle_schema() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[approved release bundle](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[approved release bundle]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[已批准发布包](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
