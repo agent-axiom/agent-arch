@@ -562,8 +562,10 @@ Do not assume the web page will translate cleanly.
 
 - exported sample chapter has stable heading hierarchy, page breaks, footnotes, and code-block wrapping;
 - diagrams, tables, admonitions, and callout boxes remain readable in grayscale and on narrow pages;
-- URLs are visible enough for print readers, while companion-only links are grouped instead of scattered through the prose;
-- long schema tables, command-output field lists, validation-error catalogs, and runtime internals stay in the online companion;
+- URLs are visible enough for print readers;
+- companion-only links are grouped instead of scattered through the prose;
+- long schema tables and command-output field lists stay in the online companion;
+- validation-error catalogs and runtime internals stay in the online companion;
 - screenshots or generated figures, if added later, have source files and alt-text notes;
 - the export includes title, subtitle, author placeholder, packet version, and sample-chapter date.
 
@@ -597,10 +599,11 @@ Treat the publisher packet as a small release, not as a loose collection of note
 
 - author bio and credential framing are final enough for the chosen editor;
 - selected sample chapter has had an independent print-rhythm copy-edit;
-- public site, sample-chapter links, repository links, runtime links, and test links have passed a fresh availability check;
-- Chinese surfaces remain labeled as draft localization preview unless a finished Chinese edition is actually prepared;
+- public site, sample-chapter links, repository links, runtime links, and test links have passed fresh checks;
+- Chinese surfaces remain labeled as draft localization preview unless a finished Chinese edition is prepared;
 - packet attachments match the order in “Recommended Submission Packet Order”;
-- no runtime internals, validation-error catalogs, or long schema tables are moved into the print manuscript packet by accident.
+- no runtime internals or validation-error catalogs are moved into the print manuscript packet by accident;
+- no long schema tables are moved into the print manuscript packet by accident.
 
 **No-go signals:**
 
