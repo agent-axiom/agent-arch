@@ -149,6 +149,24 @@ For a support scenario, that usually means several independent layers:
 
 This matters for a very simple reason: one guardrail sees one class of risk. A real incident usually moves across several layers.
 
+### 6.1. Defense-in-Depth Control Map
+
+A useful defense-in-depth map is not a wall of controls. It is a short chain that names where a failure should be stopped and which evidence proves the layer worked:
+
+```yaml
+defense_in_depth_map:
+  ingress_control: content_policy_and_tenant_scope
+  context_boundary: trusted_untrusted_content_labels
+  retrieval_memory_gate: source_provenance_ttl_and_write_review
+  model_gateway_policy: instruction_hierarchy_and_safety_policy
+  tool_gateway_approval: risk_tier_arguments_and_human_gate
+  mcp_a2a_boundary: server_contract_and_delegation_contract
+  egress_filter: redaction_dlp_and_output_validation
+  trace_evidence: agent_threat_evidence_and_governance_action
+```
+
+The map is deliberately compact. `ingress_control` catches unsafe or over-scoped input before it becomes context. `context_boundary` and `retrieval_memory_gate` prevent untrusted content from becoming instructions or durable memory. `model_gateway_policy` and `tool_gateway_approval` keep the right to act outside probabilistic text generation. `mcp_a2a_boundary` makes external capability and delegation risk reviewable. `egress_filter` limits what leaves the system. `trace_evidence` connects those controls back to the [trace schema](../../appendix/trace-schema.en.md), so defense in depth can be audited rather than merely asserted.
+
 ## 7. The Main Practical Rule: Separate Instructions from Data
 
 This is one of the most important principles in the whole book.

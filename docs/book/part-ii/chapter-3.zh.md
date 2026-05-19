@@ -149,6 +149,24 @@ OpenAI 的实用指南在这里非常贴近现实：防护栏更适合设计成�
 
 这件事重要，是因为一个防护栏只看得见一种风险，而真实事故往往会穿过多个层。
 
+### 6.1. Defense-in-depth control map
+
+有用的 defense-in-depth map 不是一堵 controls 墙，而是一条短链：failure 应该在哪一层被拦住，以及哪些 evidence 证明这一层确实工作了。
+
+```yaml
+defense_in_depth_map:
+  ingress_control: content_policy_and_tenant_scope
+  context_boundary: trusted_untrusted_content_labels
+  retrieval_memory_gate: source_provenance_ttl_and_write_review
+  model_gateway_policy: instruction_hierarchy_and_safety_policy
+  tool_gateway_approval: risk_tier_arguments_and_human_gate
+  mcp_a2a_boundary: server_contract_and_delegation_contract
+  egress_filter: redaction_dlp_and_output_validation
+  trace_evidence: agent_threat_evidence_and_governance_action
+```
+
+这张 map 故意保持紧凑。`ingress_control` 在 input 变成 context 之前拦住 unsafe 或 over-scoped input。`context_boundary` 和 `retrieval_memory_gate` 防止 untrusted content 变成 instructions 或 durable memory。`model_gateway_policy` 和 `tool_gateway_approval` 把 right to act 留在 probabilistic text generation 之外。`mcp_a2a_boundary` 让 external capability 和 delegation risk 可审查。`egress_filter` 限制离开系统的内容。`trace_evidence` 把这些 controls 连接回 [trace schema](../../appendix/trace-schema.zh.md)，这样 defense in depth 可以被 audit，而不是只停留在声明。
+
 ## 7. 最重要的实践规则：把指令和数据分开
 
 这是整本书里最关键的原则之一。
