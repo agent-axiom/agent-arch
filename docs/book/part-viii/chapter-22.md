@@ -32,10 +32,10 @@
 
 - маршруты к моделям;
 - наборы prompt- и routine-правил;
-- конфигурации политик;
-- корпуса для извлечения;
-- контракты возможностей;
-- наборы для оценки;
+- [конфигурации политик](../../appendix/policy-bundle-schema.md);
+- [корпуса для извлечения](../../appendix/memory-retrieval-schema.md);
+- [контракты возможностей](../../appendix/lifecycle-artifact-schema.md);
+- [наборы для оценки](../../appendix/eval-schema.md);
 - verifier contracts, [rubric definitions и правила связывания доказательной базы](../../appendix/eval-schema.md);
 - [правила и схемы approval](../../appendix/approval-schema.md);
 - [схемы runtime-control](../../appendix/lifecycle-artifact-schema.md);

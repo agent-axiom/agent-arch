@@ -32,10 +32,10 @@ The problem is that production behavior here depends on more than code. It also 
 
 - model artifacts;
 - prompt and routine bundles;
-- policy configs;
-- retrieval corpora;
-- capability contracts;
-- eval datasets;
+- [policy configs](../../appendix/policy-bundle-schema.en.md);
+- [retrieval corpora](../../appendix/memory-retrieval-schema.en.md);
+- [capability contracts](../../appendix/lifecycle-artifact-schema.en.md);
+- [eval datasets](../../appendix/eval-schema.en.md);
 - [approval rules and schemas](../../appendix/approval-schema.en.md);
 - [runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md);
 - verifier contracts, [grading rules and evidence-linkage rules](../../appendix/eval-schema.en.md);
