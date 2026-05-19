@@ -1033,14 +1033,26 @@ def test_publisher_packet_print_pdf_gate_is_print_friendly() -> None:
     )[0]
     forbidden_inline_markers = (
         "**No-go signals:** broken heading levels",
+        "URLs are visible enough for print readers, while companion-only links",
+        "long schema tables, command-output field lists, validation-error catalogs",
         "or any print sample that depends on live site navigation",
     )
 
     for marker in forbidden_inline_markers:
         assert marker not in section
     assert "**No-go signals:**\n" in section
-    assert section.count("\n- ") >= 12
-    assert all(len(line) <= 130 for line in section.splitlines())
+    assert "- URLs are visible enough for print readers;" in section
+    assert "- companion-only links are grouped instead of scattered through the prose;" in section
+    assert (
+        "- long schema tables and command-output field lists stay in the online companion;"
+        in section
+    )
+    assert (
+        "- validation-error catalogs and runtime internals stay in the online companion;"
+        in section
+    )
+    assert section.count("\n- ") >= 14
+    assert all(len(line) <= 125 for line in section.splitlines())
 
 
 
@@ -1050,7 +1062,7 @@ def test_publisher_packet_has_submission_release_discipline() -> None:
         "publisher-packet-2026-05",
         "Freeze scope before sending",
         "Pre-send gates",
-        "fresh availability check",
+        "fresh checks",
         "draft localization preview",
         "No-go signals",
     )
@@ -1078,6 +1090,11 @@ def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
     forbidden_inline_markers = (
         "**Freeze scope before sending:** cover note",
         "author/platform credibility note, comparable-books note",
+        (
+            "public site, sample-chapter links, repository links, runtime links, "
+            "and test links have passed a fresh availability check"
+        ),
+        "no runtime internals, validation-error catalogs, or long schema tables are moved",
     )
 
     for marker in required_markers:
@@ -1086,7 +1103,15 @@ def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
         assert marker not in section
     assert "**No-go signals:**\n" in section
     assert "**No-go signals:** missing author bio" not in section
-    assert all(len(line) <= 140 for line in section.splitlines())
+    assert (
+        "- no runtime internals or validation-error catalogs are moved into "
+        "the print manuscript packet"
+    ) in section
+    assert (
+        "- no long schema tables are moved into the print manuscript packet by accident."
+        in section
+    )
+    assert all(len(line) <= 125 for line in section.splitlines())
 
 
 
