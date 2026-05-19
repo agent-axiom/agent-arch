@@ -205,12 +205,12 @@ flowchart LR
 
 对于一个能力，团队最好明确知道：
 
-- 谁是负责人；
-- 风险等级是什么；
-- 使用哪个工具 principal；
-- 网络访问配置是什么；
-- 允许哪些出口目标；
-- 采用什么审批语义。
+- [谁是负责人](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [风险等级是什么](../../appendix/approval-schema.zh.md)；
+- [使用哪个工具 principal](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [网络访问配置是什么](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [允许哪些出口目标](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [采用什么审批语义](../../appendix/approval-schema.zh.md)。
 
 如果这些契约被悄悄改动，没有来源追踪，也没有审查轨迹，那么这种变更可能和未审查代码发布一样危险。
 

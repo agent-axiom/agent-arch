@@ -205,12 +205,12 @@ In an agent system, a tool contract is not just documentation. It is part of the
 
 For a capability, the team should know:
 
-- who the owner is;
-- what the risk tier is;
-- which tool principal is used;
-- what the network access profile is;
-- which egress destinations are allowed;
-- which approval semantics apply.
+- [who the owner is](../../appendix/lifecycle-artifact-schema.en.md);
+- [what the risk tier is](../../appendix/approval-schema.en.md);
+- [which tool principal is used](../../appendix/lifecycle-artifact-schema.en.md);
+- [what the network access profile is](../../appendix/lifecycle-artifact-schema.en.md);
+- [which egress destinations are allowed](../../appendix/lifecycle-artifact-schema.en.md);
+- [which approval semantics apply](../../appendix/approval-schema.en.md).
 
 If the contract changes quietly, without provenance or review trail, that change can be as dangerous as an unreviewed code deploy.
 
