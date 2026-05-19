@@ -791,12 +791,18 @@ def test_publisher_packet_author_platform_note_is_print_friendly() -> None:
         "- configuration examples;",
         "Claim supported by those artifacts:",
         "- production AI agents should be designed as governed systems, not as prompt demos.",
+        "- the companion material includes runnable/reference artifacts;",
+        "- readers can inspect the contracts behind the prose;",
+        "- the book is written for practitioners who need to ship and operate agents;",
+        "- it is not only for readers who want to understand model behavior in the abstract;",
         "Bio gap to fill before submission:",
         "- add a short human author bio with role;",
     )
     forbidden_inline_markers = (
         "Use this as a conservative draft until the final bio is written:",
         "The project already has more than a manuscript outline:",
+        "the companion material includes runnable/reference artifacts, so readers can inspect",
+        "not only understand model behavior in the abstract",
         "Bio gap to fill before submission: add a short human author bio",
     )
 
