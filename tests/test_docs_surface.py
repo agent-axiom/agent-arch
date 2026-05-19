@@ -464,11 +464,26 @@ def test_publisher_packet_blocker_sections_are_print_friendly() -> None:
         1,
     )[0]
     waiver_section = text.split("## Blocker Waiver / Decision Log Draft", 1)[1]
+    forbidden_inline_labels = (
+        "current state: open; Owner/input needed:",
+        "current state: default chosen, not target-specific; Owner/input needed:",
+        "**Date:** TBD; **decision:** no waivers yet;",
+        "**Waiver rules:** every waiver needs",
+        "**No-go signals:** anonymous waiver",
+    )
 
     assert "|" not in blocker_section
     assert "|" not in waiver_section
     assert blocker_section.count("- **") >= 4
-    assert waiver_section.count("- **") >= 1
+    assert blocker_section.count("  - Current state:") == 4
+    assert blocker_section.count("  - Owner/input needed:") == 4
+    assert blocker_section.count("  - Packet action when closed:") == 4
+    assert waiver_section.count("- **") >= 6
+    for marker in forbidden_inline_labels:
+        assert marker not in blocker_section
+        assert marker not in waiver_section
+    assert all(len(line) <= 135 for line in blocker_section.splitlines())
+    assert all(len(line) <= 135 for line in waiver_section.splitlines())
 
 
 def test_publisher_packet_has_sample_copy_edit_handoff_brief() -> None:
