@@ -41,7 +41,7 @@ The problem is that production behavior here depends on more than code. It also 
 - verifier contracts, [grading rules and evidence-linkage rules](../../appendix/eval-schema.en.md);
 - [orchestration-pattern governance rules and worker-safe catalog definitions](../../appendix/change-rollout-schema.en.md);
 - [capability-session interruption and re-initialization rules](../../appendix/lifecycle-artifact-schema.en.md);
-- rollout bundles.
+- [rollout bundles](../../appendix/change-rollout-schema.en.md).
 
 In other words, the agent supply chain is wider because the system itself is wider.
 

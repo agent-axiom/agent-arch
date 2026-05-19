@@ -41,7 +41,7 @@
 - [схемы runtime-control](../../appendix/lifecycle-artifact-schema.md);
 - [governance-правила для orchestration pattern и определения worker-safe catalog](../../appendix/change-rollout-schema.md);
 - [правила interruption и re-initialization для capability sessions](../../appendix/lifecycle-artifact-schema.md);
-- наборы для раскатки.
+- [наборы для раскатки](../../appendix/change-rollout-schema.md).
 
 То есть цепочка поставки у агента шире, потому что сама система шире.
 

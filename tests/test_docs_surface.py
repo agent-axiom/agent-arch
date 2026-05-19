@@ -1243,6 +1243,25 @@ def test_chapter_22_supply_chain_surface_links_artifact_families() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_supply_chain_surface_links_rollout_bundles() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[наборы для раскатки](../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[rollout bundles](../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[发布工件包](../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

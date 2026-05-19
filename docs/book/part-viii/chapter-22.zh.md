@@ -41,7 +41,7 @@
 - [运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [编排模式治理规则与 worker-safe 目录定义](../../appendix/change-rollout-schema.zh.md)；
 - [能力会话中断与重新初始化规则](../../appendix/lifecycle-artifact-schema.zh.md)；
-- 发布工件包。
+- [发布工件包](../../appendix/change-rollout-schema.zh.md)。
 
 也就是说，智能体的供应链更宽，是因为系统本身就更宽。
 
