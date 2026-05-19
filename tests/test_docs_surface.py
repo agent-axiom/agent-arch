@@ -3095,6 +3095,59 @@ def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[approved inventory](../../appendix/registry-operations-handbook.md)",
+            "[deprecated inventory](../../appendix/registry-operations-handbook.md)",
+            "[deprecated capability contract]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated approval schema](../../appendix/approval-schema.md)",
+            "[deprecated runtime-control schema]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated orchestration pattern или worker-boundary policy]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[deprecated capability-session contract]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[deprecated verifier contract](../../appendix/eval-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[approved inventory](../../appendix/registry-operations-handbook.en.md)",
+            "[deprecated inventory](../../appendix/registry-operations-handbook.en.md)",
+            "[deprecated capability contract]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated approval schema](../../appendix/approval-schema.en.md)",
+            "[deprecated runtime-control schema]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated orchestration pattern or worker-boundary policy]"
+            "(../../appendix/change-rollout-schema.en.md)",
+            "[deprecated capability-session contract]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[deprecated verifier contract](../../appendix/eval-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[已批准清单（approved inventory）]"
+            "(../../appendix/registry-operations-handbook.zh.md)",
+            "[已废弃清单（deprecated inventory）]"
+            "(../../appendix/registry-operations-handbook.zh.md)",
+            "[已废弃的能力契约](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃的 approval schema](../../appendix/approval-schema.zh.md)",
+            "[已废弃的 runtime-control schema]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃的 orchestration pattern 或 worker-boundary policy]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+            "[已废弃的 capability-session contract]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[已废弃的 verifier contract](../../appendix/eval-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",
