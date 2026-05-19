@@ -113,8 +113,8 @@ Google Research очень точно показывает, что подтве�
 - [цепочкой политик](../../appendix/policy-bundle-schema.md);
 - [цепочкой возможностей](../../appendix/lifecycle-artifact-schema.md);
 - цепочкой [approval](../../appendix/approval-schema.md) и [runtime-control](../../appendix/lifecycle-artifact-schema.md);
-- цепочкой правил управления capability sessions;
-- цепочкой delegated authorization;
+- [цепочкой правил управления capability sessions](../../appendix/lifecycle-artifact-schema.md);
+- [цепочкой delegated authorization](../../appendix/lifecycle-artifact-schema.md);
 - [цепочкой данных и извлечения](../../appendix/memory-retrieval-schema.md);
 - [цепочкой оценки](../../appendix/eval-schema.md).
 
