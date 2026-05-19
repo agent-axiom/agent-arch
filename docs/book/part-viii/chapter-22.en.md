@@ -163,8 +163,8 @@ Teams often treat prompt changes like living text, not like release artifacts.
 
 But if you do not know:
 
-- who changed the prompt;
-- which version is in production;
+- [who changed the prompt](../../appendix/lifecycle-artifact-schema.en.md);
+- [which version](../../appendix/lifecycle-artifact-schema.en.md) is in production;
 - which [evals](../../appendix/eval-schema.en.md) covered it;
 - which [rollout wave](../../appendix/change-rollout-schema.en.md) it is active on;
 
