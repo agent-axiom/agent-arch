@@ -1304,6 +1304,28 @@ def test_chapter_22_approved_prompt_bundle_links_lifecycle_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[оценки](../../appendix/eval-schema.md) ее покрыли",
+            "[волне раскатки](../../appendix/change-rollout-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[evals](../../appendix/eval-schema.en.md) covered it",
+            "[rollout wave](../../appendix/change-rollout-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[评测](../../appendix/eval-schema.zh.md)覆盖了它",
+            "[rollout 波次](../../appendix/change-rollout-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_model_prompt_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

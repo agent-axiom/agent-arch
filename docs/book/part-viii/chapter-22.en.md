@@ -165,8 +165,8 @@ But if you do not know:
 
 - who changed the prompt;
 - which version is in production;
-- which evals covered it;
-- which rollout wave it is active on;
+- which [evals](../../appendix/eval-schema.en.md) covered it;
+- which [rollout wave](../../appendix/change-rollout-schema.en.md) it is active on;
 
 then that prompt bundle is operationally no better than a build artifact of unknown origin.
 
