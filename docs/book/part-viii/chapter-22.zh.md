@@ -351,7 +351,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[approval-schema](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
 - 事故评审时能快速恢复来源追踪、验证器血缘与生效中的契约/模式版本吗？
 - 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
-- 你们能区分平台批准的模式和发布批准的工件吗？
+- 你们能区分[平台批准的模式](../../appendix/change-rollout-schema.zh.md)和[发布批准的工件](../../appendix/lifecycle-artifact-schema.zh.md)吗？
 - 已废弃工件能被快速阻断吗？
 
 如果连续几个问题的答案都是“否”，那你们还没有真正的工件治理层。

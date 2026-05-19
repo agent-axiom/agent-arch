@@ -351,7 +351,7 @@ If you want to test your artifact discipline quickly, ask:
 - Do model, prompt, [policy](../../appendix/policy-bundle-schema.en.md), [approval-schema](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), [eval, and verifier](../../appendix/eval-schema.en.md) artifacts have versions?
 - Can provenance, verifier lineage, and active contract/schema versions be restored quickly during incident review?
 - Does the platform have an [approved inventory](../../appendix/registry-operations-handbook.en.md)?
-- Do you distinguish a platform-approved pattern from a release-approved artifact?
+- Do you distinguish a [platform-approved pattern](../../appendix/change-rollout-schema.en.md) from a [release-approved artifact](../../appendix/lifecycle-artifact-schema.en.md)?
 - Can a deprecated artifact be blocked quickly?
 
 If the answer is “no” several times in a row, you do not yet have a real artifact governance layer.

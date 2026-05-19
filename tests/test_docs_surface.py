@@ -1349,6 +1349,31 @@ def test_chapter_22_approved_inventory_links_registry_handbook() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_checklist_links_platform_and_release_artifacts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[шаблон, разрешенный на уровне платформы]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[артефакта, разрешенного к выпуску]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[platform-approved pattern](../../appendix/change-rollout-schema.en.md)",
+            "[release-approved artifact]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[平台批准的模式](../../appendix/change-rollout-schema.zh.md)",
+            "[发布批准的工件](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

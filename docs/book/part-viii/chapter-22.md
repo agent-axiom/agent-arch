@@ -348,7 +348,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - У model-, prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)-, [eval- и verifier](../../appendix/eval-schema.md)-артефактов есть версии?
 - Можно ли быстро восстановить происхождение, verifier lineage и активные версии контрактов и схем для разбора инцидента?
 - Есть ли [утвержденный реестр платформы](../../appendix/registry-operations-handbook.md)?
-- Отличаете ли вы шаблон, разрешенный на уровне платформы, от артефакта, разрешенного к выпуску?
+- Отличаете ли вы [шаблон, разрешенный на уровне платформы](../../appendix/change-rollout-schema.md), от [артефакта, разрешенного к выпуску](../../appendix/lifecycle-artifact-schema.md)?
 - Можно ли быстро заблокировать устаревший артефакт?
 
 Если на несколько вопросов подряд ответ «нет», у тебя пока еще нет полноценного слоя управления артефактами.
