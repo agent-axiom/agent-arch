@@ -378,7 +378,7 @@ def test_part_viii_role_map_is_print_friendly() -> None:
 
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
-        "Implementation status, 18 May 2026",
+        "Implementation status, 19 May 2026",
         "P0:",
         "P1:",
         "P2:",
@@ -389,7 +389,9 @@ def test_book_improvement_blueprint_records_review_remediation_status() -> None:
         "eval schema",
         "memory/retrieval schema",
         "three canonical case spines",
+        "print-friendly",
         "publisher packet is drafted and internally gated",
+        "refreshed public-link record",
         "Still blocked before external submission",
     )
 
@@ -5863,12 +5865,16 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
 
 def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
     required_markers = (
-        "Implementation status, 18 May 2026",
+        "Implementation status, 19 May 2026",
         "MCP threat model",
+        "mcp_server",
         "A2A handoff trust contract",
+        "trust-delegation artifact",
         "unified agent threat evidence",
+        "defense-in-depth control map",
         "verifier verdict record",
         "governance action record",
+        "NIST AI RMF telemetry mapping",
         "memory poisoning review fields",
         "trace schema",
         "eval schema",
