@@ -173,10 +173,10 @@ flowchart LR
 同样的逻辑也适用于：
 
 - 例程；
-- 策略 YAML；
-- 检索配置；
-- 审批阈值；
-- 用来定义暂停/后台行为的运行时控制模式。
+- [策略 YAML](../../appendix/policy-bundle-schema.zh.md)；
+- [检索配置](../../appendix/memory-retrieval-schema.zh.md)；
+- [审批阈值](../../appendix/approval-schema.zh.md)；
+- 用来定义暂停/后台行为的[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 ## 7. 评测数据集也应该被当成可信工件
 

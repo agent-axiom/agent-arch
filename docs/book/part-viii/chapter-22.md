@@ -173,10 +173,10 @@ flowchart LR
 То же самое относится к:
 
 - routines;
-- policy YAML;
-- конфигурациям извлечения;
-- порогам подтверждения;
-- runtime-control schemas, которые определяют paused/background behavior.
+- [policy YAML](../../appendix/policy-bundle-schema.md);
+- [конфигурациям извлечения](../../appendix/memory-retrieval-schema.md);
+- [порогам подтверждения](../../appendix/approval-schema.md);
+- [runtime-control schemas](../../appendix/lifecycle-artifact-schema.md), которые определяют paused/background behavior.
 
 ## 7. Наборы для оценки тоже должны быть доверенными артефактами
 

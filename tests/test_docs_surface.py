@@ -1237,6 +1237,34 @@ def test_chapter_22_runtime_control_schema_links_are_clickable() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_trusted_artifact_examples_link_schema_contracts() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[policy YAML](../../appendix/policy-bundle-schema.md)",
+            "[конфигурациям извлечения](../../appendix/memory-retrieval-schema.md)",
+            "[порогам подтверждения](../../appendix/approval-schema.md)",
+            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[policy YAML](../../appendix/policy-bundle-schema.en.md)",
+            "[retrieval configs](../../appendix/memory-retrieval-schema.en.md)",
+            "[approval thresholds](../../appendix/approval-schema.en.md)",
+            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[策略 YAML](../../appendix/policy-bundle-schema.zh.md)",
+            "[检索配置](../../appendix/memory-retrieval-schema.zh.md)",
+            "[审批阈值](../../appendix/approval-schema.zh.md)",
+            "[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

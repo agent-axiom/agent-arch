@@ -173,10 +173,10 @@ then that prompt bundle is operationally no better than a build artifact of unkn
 The same is true for:
 
 - routines;
-- policy YAML;
-- retrieval configs;
-- approval thresholds;
-- runtime-control schemas that define paused/background behavior.
+- [policy YAML](../../appendix/policy-bundle-schema.en.md);
+- [retrieval configs](../../appendix/memory-retrieval-schema.en.md);
+- [approval thresholds](../../appendix/approval-schema.en.md);
+- [runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md) that define paused/background behavior.
 
 ## 7. Eval datasets should also be trusted artifacts
 
