@@ -56,7 +56,7 @@
 在智能体平台里，它们往往包括：
 
 - 已批准的[模型路由](../../appendix/lifecycle-artifact-schema.zh.md)；
-- 已批准的提示包；
+- 已批准的[提示包](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 已批准的[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)；
 - 已批准的[能力契约（capability contract）](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 已批准的[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
