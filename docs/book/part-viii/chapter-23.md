@@ -249,12 +249,12 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 Проблемы здесь довольно повторяемые:
 
-- система считается retired, но principals еще живы;
-- background jobs забыли выключить;
-- memory write path остался активным;
-- paused approvals остались resumable после retirement;
-- expired capability sessions все еще можно re-initialize через stale control paths;
-- deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement;
+- система считается retired, но [principals еще живы](../../appendix/lifecycle-artifact-schema.md);
+- [background jobs забыли выключить](../../appendix/lifecycle-artifact-schema.md);
+- [memory write path остался активным](../../appendix/memory-retrieval-schema.md);
+- [paused approvals остались resumable после retirement](../../appendix/approval-schema.md);
+- [expired capability sessions все еще можно re-initialize через stale control paths](../../appendix/lifecycle-artifact-schema.md);
+- [deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement](../../appendix/change-rollout-schema.md);
 - deprecated verifier contracts или obligations по [verifier evidence](../../appendix/eval-schema.md) остаются неясными после retirement;
 - background routes забыли выключить;
 - archived state никому не принадлежит;
