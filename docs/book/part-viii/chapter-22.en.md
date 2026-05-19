@@ -337,7 +337,7 @@ A stronger bar is this:
 - prompt, [policy](../../appendix/policy-bundle-schema.en.md), [eval](../../appendix/eval-schema.en.md), [capability](../../appendix/lifecycle-artifact-schema.en.md), [approval](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), and [verifier](../../appendix/eval-schema.en.md) artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
 - release and assurance evidence can be traced back to the active [verifier contract](../../appendix/eval-schema.en.md) and contract family;
-- [approved inventory](../../appendix/registry-operations-handbook.en.md) and approved artifacts are kept as distinct control layers;
+- [approved inventory](../../appendix/registry-operations-handbook.en.md) and [approved artifacts](../../appendix/lifecycle-artifact-schema.en.md) are kept as distinct control layers;
 - [deprecated patterns](../../appendix/lifecycle-artifact-schema.en.md) can be blocked before they quietly persist in production;
 - trust is attached to explicit artifact properties, not inherited socially.
 
