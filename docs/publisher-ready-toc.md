@@ -246,15 +246,44 @@ Bio gap to fill before submission: add a short human author bio with role, relev
 
 Before this packet becomes external email copy, collect the human-authored facts that should not be invented by the manuscript artifact.
 
-**Required inputs:** preferred author name, current role or independent label, 2-3 sentence production/engineering background, relevant public project links, public writing/talk links if any, and geographic/language framing if the author wants it included.
+**Required inputs:**
 
-**Optional inputs:** prior books or publications, notable systems shipped, open-source maintainership, security/reliability/AI platform experience, and communities or companies that can be named publicly.
+- preferred author name;
+- current role or independent label;
+- 2-3 sentence production/engineering background;
+- relevant public project links;
+- public writing/talk links, if any;
+- geographic/language framing, if the author wants it included.
 
-**Tone constraints:** avoid inflated authority claims, unverifiable employment claims, private client details, or credentials that cannot be shown to an editor. Prefer concrete artifact-backed credibility: public book site, runnable reference runtime, tests, schemas, and maintained companion material.
+**Optional inputs:**
 
-**Bio slots to prepare:** one-line byline, 50-word short bio, 100-word proposal bio, and one credential sentence for the cover note.
+- prior books or publications;
+- notable systems shipped;
+- open-source maintainership;
+- security/reliability/AI platform experience;
+- communities or companies that can be named publicly.
 
-**No-go signals:** missing preferred name, unverifiable claims, private employer/client details, or a bio that makes the project sound like a vendor framework rather than a systems architecture book.
+**Tone constraints:**
+
+- avoid inflated authority claims;
+- avoid unverifiable employment claims;
+- avoid private client details;
+- avoid credentials that cannot be shown to an editor;
+- prefer concrete artifact-backed credibility: public book site, runnable reference runtime, tests, schemas, and companion material.
+
+**Bio slots to prepare:**
+
+- one-line byline;
+- 50-word short bio;
+- 100-word proposal bio;
+- one credential sentence for the cover note.
+
+**No-go signals:**
+
+- missing preferred name;
+- unverifiable claims;
+- private employer/client details;
+- bio text that makes the project sound like a vendor framework rather than a systems architecture book.
 
 ## Comparable Books Draft
 
