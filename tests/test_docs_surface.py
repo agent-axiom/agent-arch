@@ -405,11 +405,11 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
         "One-Page Positioning Memo Draft",
         "Print Manuscript Shape",
         "Online Companion Boundary",
-        "Working title: **Secure AI Agent Architecture**",
-        "Subtitle:** From prompt demos to governed production systems.",
-        "Primary reader",
-        "Unique promise",
-        "Companion assets",
+        "- **Working title:** Secure AI Agent Architecture.",
+        "**Subtitle:** From prompt demos to governed production systems.",
+        "**Primary reader:**",
+        "**Unique promise:**",
+        "**Companion assets:**",
         (
             "Keep schemas, runtime command details, long checklists, and source catalogs "
             "in the online companion."
@@ -420,6 +420,34 @@ def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
+
+
+def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    opening_section = text.split("## Positioning", 1)[0]
+    positioning_section = text.split("## Positioning", 1)[1].split(
+        "## Print Manuscript Shape",
+        1,
+    )[0]
+    forbidden_inline_markers = (
+        "Purpose: keep publisher-facing packet notes separate",
+        "Reader: senior product engineers",
+        "Promise: explain how to move from prompt demos",
+        "**Primary reader:** platform and product architects",
+        "**Problem:** most teams can build",
+        "**Unique promise:** the book treats agents as production systems:",
+        "**Competing shelf:** cloud architecture",
+        "**Manuscript status:** public open manuscript",
+        "**Companion assets:** reference runtime",
+    )
+
+    for marker in forbidden_inline_markers:
+        assert marker not in opening_section
+        assert marker not in positioning_section
+    assert opening_section.count("\n- ") >= 3
+    assert positioning_section.count("\n- ") >= 30
+    assert all(len(line) <= 135 for line in opening_section.splitlines())
+    assert all(len(line) <= 135 for line in positioning_section.splitlines())
 
 
 def test_publisher_packet_has_blocker_waiver_decision_log() -> None:

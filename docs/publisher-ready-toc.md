@@ -1,18 +1,22 @@
 # Publisher Packet Draft
 
-Purpose: keep publisher-facing packet notes separate from the MkDocs site tree. The web site can stay broad; this draft keeps the tighter book-shaped manuscript, sample strategy, positioning, cover note, comparable shelf, and companion links in one editorial artifact.
+Purpose:
+
+- keep publisher-facing packet notes separate from the MkDocs site tree;
+- keep the web site broad;
+- keep the book-shaped manuscript, sample strategy, positioning, cover note, comparable shelf, and companion links together.
 
 Status: working editorial artifact, not a public navigation page and not final email copy.
 
 ## Positioning
 
-Working title: **Secure AI Agent Architecture**.
-
-Reader: senior product engineers, platform engineers, security engineers, staff engineers, and technical leads who need to ship AI agents with tool access, memory, approvals, observability, evals, rollout discipline, and lifecycle ownership.
-
-Promise: explain how to move from prompt demos to governed agent systems where identity, policy, tools, memory, traces, evals, rollout, and retirement are explicit engineering contracts.
-
-Non-goal: this is not a framework manual, not a prompt-trick book, and not a survey of vendor products.
+- **Working title:** Secure AI Agent Architecture.
+- **Reader:** senior product engineers, platform engineers, security engineers, staff engineers, and technical leads.
+- **Reader need:** ship AI agents with tool access, memory, approvals, observability, and evals.
+- **Operating need:** preserve rollout discipline and lifecycle ownership.
+- **Promise:** move from prompt demos to governed agent systems with explicit engineering contracts.
+- **Contract examples:** identity, policy, tools, memory, traces, evals, rollout, and retirement.
+- **Non-goal:** not a framework manual, not a prompt-trick book, and not a survey of vendor products.
 
 ## One-Page Positioning Memo Draft
 
@@ -20,19 +24,54 @@ Non-goal: this is not a framework manual, not a prompt-trick book, and not a sur
 
 **Subtitle:** From prompt demos to governed production systems.
 
-**Primary reader:** platform and product architects responsible for agent systems that can read private context, call tools, request approvals, write to external systems, and survive incidents.
+**Primary reader:**
 
-**Problem:** most teams can build an impressive demo before they can explain identity, policy, side effects, memory provenance, eval gates, trace evidence, rollout ownership, or retirement.
+- platform and product architects responsible for agent systems;
+- systems that can read private context, call tools, request approvals, write to external systems, and survive incidents.
 
-**Why now:** agent systems are moving from isolated assistants into production workflows with real permissions, long-running state, delegated work, and regulated evidence needs.
+**Problem:**
 
-**Unique promise:** the book treats agents as production systems: architecture first, workflow-first by default, explicit control boundaries, evals tied to release judgment, and lifecycle governance through registry, provenance, observability, and retirement.
+- most teams can build an impressive demo before they can explain the production control model;
+- the missing model covers identity, policy, side effects, memory provenance, and eval gates;
+- it also covers trace evidence, rollout ownership, and retirement.
 
-**Competing shelf:** cloud architecture, secure software design, MLOps/LLMOps, and practical AI engineering books. The distinction is the focus on governed agent behavior rather than only model quality, prompts, or generic platform operations.
+**Why now:**
 
-**Manuscript status:** public open manuscript with runnable reference package; core argument and sample-chapter structure are strong. The publisher packet is drafted for editorial assembly; remaining pre-submission work is human author-bio framing, independent sample-chapter copy-edit, sample-selection decision, and publisher-specific formatting.
+- agent systems are moving from isolated assistants into production workflows;
+- those workflows now carry real permissions, long-running state, delegated work, and regulated evidence needs.
 
-**Companion assets:** reference runtime, schemas, checklists, case studies, source catalog, and public documentation site.
+**Unique promise:**
+
+- the book treats agents as production systems;
+- it leads with architecture and workflow-first design;
+- it makes control boundaries explicit;
+- it ties evals to release judgment;
+- it treats registry, provenance, observability, and retirement as lifecycle governance.
+
+**Competing shelf:**
+
+- cloud architecture;
+- secure software design;
+- MLOps/LLMOps;
+- practical AI engineering books;
+- distinction: governed agent behavior, not only model quality, prompts, or generic platform operations.
+
+**Manuscript status:**
+
+- public open manuscript with runnable reference package;
+- core argument and sample-chapter structure are strong;
+- publisher packet is drafted for editorial assembly;
+- remaining pre-submission work: human author-bio framing and independent sample-chapter copy-edit;
+- remaining packet decisions: sample selection and publisher-specific formatting.
+
+**Companion assets:**
+
+- reference runtime;
+- schemas;
+- checklists;
+- case studies;
+- source catalog;
+- public documentation site.
 
 ## Print Manuscript Shape
 
