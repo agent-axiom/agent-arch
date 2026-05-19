@@ -1005,19 +1005,31 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
-def test_chapter_21_assurance_eval_trace_links_are_clickable() -> None:
+def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-21.md": (
             "../../appendix/eval-schema.md",
             "../../appendix/trace-schema.md",
+            "../../appendix/incident-record-schema.md",
+            "../../appendix/approval-schema.md",
+            "../../appendix/memory-retrieval-schema.md",
+            "../../appendix/lifecycle-artifact-schema.md",
         ),
         "docs/book/part-viii/chapter-21.en.md": (
             "../../appendix/eval-schema.en.md",
             "../../appendix/trace-schema.en.md",
+            "../../appendix/incident-record-schema.en.md",
+            "../../appendix/approval-schema.en.md",
+            "../../appendix/memory-retrieval-schema.en.md",
+            "../../appendix/lifecycle-artifact-schema.en.md",
         ),
         "docs/book/part-viii/chapter-21.zh.md": (
             "../../appendix/eval-schema.zh.md",
             "../../appendix/trace-schema.zh.md",
+            "../../appendix/incident-record-schema.zh.md",
+            "../../appendix/approval-schema.zh.md",
+            "../../appendix/memory-retrieval-schema.zh.md",
+            "../../appendix/lifecycle-artifact-schema.zh.md",
         ),
     }
 
