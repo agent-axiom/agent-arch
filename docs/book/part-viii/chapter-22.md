@@ -111,7 +111,7 @@ Google Research очень точно показывает, что подтве�
 - цепочкой моделей;
 - цепочкой prompt- и routine-правил;
 - [цепочкой политик](../../appendix/policy-bundle-schema.md);
-- цепочкой возможностей;
+- [цепочкой возможностей](../../appendix/lifecycle-artifact-schema.md);
 - цепочкой approval и runtime-control;
 - цепочкой правил управления capability sessions;
 - цепочкой delegated authorization;
