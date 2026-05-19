@@ -324,7 +324,7 @@ The usual problems look like this:
 - contract-version linkage is missing from incident evidence;
 - verifier-contract lineage is missing from release or assurance evidence;
 - deprecated patterns remain in production too long;
-- approved inventory exists in a wiki, but not in operational tooling.
+- [approved inventory](../../appendix/registry-operations-handbook.en.md) exists in a wiki, but not in operational tooling.
 
 When this happens, the platform loses controllability not because of one giant error, but because of hundreds of small untracked artifacts.
 
@@ -337,7 +337,7 @@ A stronger bar is this:
 - prompt, [policy](../../appendix/policy-bundle-schema.en.md), [eval](../../appendix/eval-schema.en.md), [capability](../../appendix/lifecycle-artifact-schema.en.md), [approval](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), and [verifier](../../appendix/eval-schema.en.md) artifacts are treated as production artifacts;
 - provenance can be restored quickly during incident review and rollout decisions;
 - release and assurance evidence can be traced back to the active [verifier contract](../../appendix/eval-schema.en.md) and contract family;
-- approved inventory and approved artifacts are kept as distinct control layers;
+- [approved inventory](../../appendix/registry-operations-handbook.en.md) and approved artifacts are kept as distinct control layers;
 - deprecated patterns can be blocked before they quietly persist in production;
 - trust is attached to explicit artifact properties, not inherited socially.
 
@@ -350,7 +350,7 @@ If you want to test your artifact discipline quickly, ask:
 - Do all production artifacts have owners?
 - Do model, prompt, [policy](../../appendix/policy-bundle-schema.en.md), [approval-schema](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), [eval, and verifier](../../appendix/eval-schema.en.md) artifacts have versions?
 - Can provenance, verifier lineage, and active contract/schema versions be restored quickly during incident review?
-- Does the platform have an approved inventory?
+- Does the platform have an [approved inventory](../../appendix/registry-operations-handbook.en.md)?
 - Do you distinguish a platform-approved pattern from a release-approved artifact?
 - Can a deprecated artifact be blocked quickly?
 
