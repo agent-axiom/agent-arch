@@ -910,6 +910,8 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
         "Print manuscript:",
         "Online companion:",
         "Practical pitch line:",
+        "- uses Support triage as the primary through-line;",
+        "- uses Internal knowledge assistant and Incident coordination as contrast cases.",
         "- the book should read cleanly in print;",
         (
             "- the companion site proves that the architecture is concrete enough "
@@ -918,6 +920,7 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
     )
     forbidden_inline_markers = (
         "Practical pitch line: the book should read cleanly in print",
+        "uses Support triage as the primary through-line, with Internal knowledge assistant",
         "while the companion site proves",
     )
 
@@ -925,8 +928,8 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
         assert marker in section
     for marker in forbidden_inline_markers:
         assert marker not in section
-    assert section.count("\n- ") >= 8
-    assert all(len(line) <= 135 for line in section.splitlines())
+    assert section.count("\n- ") >= 9
+    assert all(len(line) <= 125 for line in section.splitlines())
 
 
 
