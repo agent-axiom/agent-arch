@@ -77,7 +77,7 @@ It is useful to define in advance:
 - which outcome classes require reconcile rather than retry;
 - where partial success should create a follow-up task;
 - when recovery itself requires approval;
-- which branches must appear in the eval dataset;
+- which branches must appear in the [eval schema](../../appendix/eval-schema.en.md);
 - where a dangerous recovery path should stop instead of “trying one more time”.
 
 Many severe incidents happen not on the happy path, but in a poorly designed recovery branch.
