@@ -3225,6 +3225,57 @@ def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[остановить новые rollout waves](../../appendix/change-rollout-schema.md)",
+            "[запретить risky capabilities]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[перевести write actions в approval-only или disable]"
+            "(../../appendix/approval-schema.md)",
+            "[остановить memory writes](../../appendix/memory-retrieval-schema.md)",
+            "[истечь или отменить paused runs]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[отключить background jobs и background routes]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[закрыть или архивировать capability-session state и запретить "
+            "uncontrolled re-init](../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[stop new rollout waves](../../appendix/change-rollout-schema.en.md)",
+            "[disable risky capabilities]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[move write actions to approval-only or disable them]"
+            "(../../appendix/approval-schema.en.md)",
+            "[stop memory writes](../../appendix/memory-retrieval-schema.en.md)",
+            "[expire or cancel paused runs]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[stop background jobs and background routes]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[close or archive capability-session state and block uncontrolled "
+            "re-init](../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[停止新的上线波次](../../appendix/change-rollout-schema.zh.md)",
+            "[关闭高风险能力](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[把写入动作切到仅审批模式，或者直接停用]"
+            "(../../appendix/approval-schema.zh.md)",
+            "[停止记忆写入](../../appendix/memory-retrieval-schema.zh.md)",
+            "[让 paused runs 过期或直接取消]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[停止后台任务与 background routes]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[关闭或归档 capability-session state，并阻断不受控的 re-init]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     required_markers = (
         "Registry case-spine note",

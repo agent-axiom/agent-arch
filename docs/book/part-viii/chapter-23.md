@@ -88,13 +88,13 @@
 
 Хороший end-of-life process редко сводится к одному действию. Обычно его стоит раскладывать по слоям:
 
-- остановить новые rollout waves;
-- запретить risky capabilities;
-- перевести write actions в approval-only или disable;
-- остановить memory writes;
-- истечь или отменить paused runs;
-- отключить background jobs и background routes;
-- закрыть или архивировать capability-session state и запретить uncontrolled re-init;
+- [остановить новые rollout waves](../../appendix/change-rollout-schema.md);
+- [запретить risky capabilities](../../appendix/lifecycle-artifact-schema.md);
+- [перевести write actions в approval-only или disable](../../appendix/approval-schema.md);
+- [остановить memory writes](../../appendix/memory-retrieval-schema.md);
+- [истечь или отменить paused runs](../../appendix/lifecycle-artifact-schema.md);
+- [отключить background jobs и background routes](../../appendix/lifecycle-artifact-schema.md);
+- [закрыть или архивировать capability-session state и запретить uncontrolled re-init](../../appendix/lifecycle-artifact-schema.md);
 - выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure;
 - отозвать delegated authorization paths и архивировать их final lineage;
 - вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions, включая экспортируемые поля failed run вроде `failure_reason`, если на них опиралось прежнее суждение;
