@@ -321,8 +321,8 @@ The usual problems look like this:
 - [approval schemas](../../appendix/approval-schema.en.md) or [runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md) change without version discipline;
 - [orchestration-pattern governance changes](../../appendix/change-rollout-schema.en.md) have no artifact lineage;
 - nobody knows which exact artifact was active during an incident;
-- contract-version linkage is missing from incident evidence;
-- verifier-contract lineage is missing from release or assurance evidence;
+- [contract-version linkage](../../appendix/trace-schema.en.md) is missing from [incident evidence](../../appendix/incident-record-schema.en.md);
+- [verifier-contract lineage](../../appendix/eval-schema.en.md) is missing from release or assurance evidence;
 - [deprecated patterns](../../appendix/lifecycle-artifact-schema.en.md) remain in production too long;
 - [approved inventory](../../appendix/registry-operations-handbook.en.md) exists in a wiki, but not in operational tooling.
 
@@ -349,7 +349,7 @@ If you want to test your artifact discipline quickly, ask:
 
 - Do all production artifacts have owners?
 - Do model, prompt, [policy](../../appendix/policy-bundle-schema.en.md), [approval-schema](../../appendix/approval-schema.en.md), [runtime-control](../../appendix/lifecycle-artifact-schema.en.md), [eval, and verifier](../../appendix/eval-schema.en.md) artifacts have versions?
-- Can provenance, verifier lineage, and active contract/schema versions be restored quickly during incident review?
+- Can provenance, [verifier lineage](../../appendix/eval-schema.en.md), and [active contract/schema versions](../../appendix/trace-schema.en.md) be restored quickly during incident review?
 - Does the platform have an [approved inventory](../../appendix/registry-operations-handbook.en.md)?
 - Do you distinguish a [platform-approved pattern](../../appendix/change-rollout-schema.en.md) from a [release-approved artifact](../../appendix/lifecycle-artifact-schema.en.md)?
 - Can a [deprecated artifact](../../appendix/lifecycle-artifact-schema.en.md) be blocked quickly?

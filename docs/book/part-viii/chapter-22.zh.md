@@ -321,8 +321,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [审批模式](../../appendix/approval-schema.zh.md)或[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)发生变化，却没有版本纪律；
 - [编排模式治理变更](../../appendix/change-rollout-schema.zh.md)没有工件血缘；
 - 没有人知道事故发生时到底是哪一个精确工件在运行；
-- 事故证据中缺少契约版本链接；
-- 发布或保障 evidence 中缺少验证器契约血缘；
+- [事故证据](../../appendix/incident-record-schema.zh.md)中缺少[契约版本链接](../../appendix/trace-schema.zh.md)；
+- 发布或保障 evidence 中缺少[验证器契约血缘](../../appendix/eval-schema.zh.md)；
 - [已废弃模式](../../appendix/lifecycle-artifact-schema.zh.md)在生产环境里活得太久；
 - [已批准清单](../../appendix/registry-operations-handbook.zh.md)只存在于 wiki，而不存在于运营工具。
 
@@ -349,7 +349,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - 所有生产工件都有 owner 吗？
 - 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[approval-schema](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
-- 事故评审时能快速恢复来源追踪、验证器血缘与生效中的契约/模式版本吗？
+- 事故评审时能快速恢复来源追踪、[验证器血缘](../../appendix/eval-schema.zh.md)与[生效中的契约/模式版本](../../appendix/trace-schema.zh.md)吗？
 - 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
 - 你们能区分[平台批准的模式](../../appendix/change-rollout-schema.zh.md)和[发布批准的工件](../../appendix/lifecycle-artifact-schema.zh.md)吗？
 - [已废弃工件](../../appendix/lifecycle-artifact-schema.zh.md)能被快速阻断吗？

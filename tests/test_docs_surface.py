@@ -1397,6 +1397,33 @@ def test_chapter_22_deprecated_artifacts_link_lifecycle_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_incident_evidence_links_schema_lineage() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[доказательном слое](../../appendix/trace-schema.md)",
+            "[verifier lineage](../../appendix/eval-schema.md)",
+            "[активные версии контрактов и схем](../../appendix/trace-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[contract-version linkage](../../appendix/trace-schema.en.md)",
+            "[incident evidence](../../appendix/incident-record-schema.en.md)",
+            "[verifier-contract lineage](../../appendix/eval-schema.en.md)",
+            "[active contract/schema versions](../../appendix/trace-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[事故证据](../../appendix/incident-record-schema.zh.md)",
+            "[契约版本链接](../../appendix/trace-schema.zh.md)",
+            "[验证器契约血缘](../../appendix/eval-schema.zh.md)",
+            "[生效中的契约/模式版本](../../appendix/trace-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (

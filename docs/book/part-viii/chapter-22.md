@@ -319,7 +319,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [approval schemas](../../appendix/approval-schema.md) или [runtime-control schemas](../../appendix/lifecycle-artifact-schema.md) меняются без дисциплины версий;
 - [изменения в orchestration pattern](../../appendix/change-rollout-schema.md) не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
-- в доказательном слое отсутствует связь с версией контракта;
+- в [доказательном слое](../../appendix/trace-schema.md) отсутствует связь с версией контракта;
 - [устаревшие шаблоны](../../appendix/lifecycle-artifact-schema.md) живут в промышленной среде слишком долго;
 - [утвержденный реестр](../../appendix/registry-operations-handbook.md) существует в wiki, но не в рабочих инструментах.
 
@@ -346,7 +346,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 - У всех рабочих артефактов есть владелец?
 - У model-, prompt-, [policy](../../appendix/policy-bundle-schema.md)-, [approval](../../appendix/approval-schema.md)-, [runtime-control](../../appendix/lifecycle-artifact-schema.md)-, [eval- и verifier](../../appendix/eval-schema.md)-артефактов есть версии?
-- Можно ли быстро восстановить происхождение, verifier lineage и активные версии контрактов и схем для разбора инцидента?
+- Можно ли быстро восстановить происхождение, [verifier lineage](../../appendix/eval-schema.md) и [активные версии контрактов и схем](../../appendix/trace-schema.md) для разбора инцидента?
 - Есть ли [утвержденный реестр платформы](../../appendix/registry-operations-handbook.md)?
 - Отличаете ли вы [шаблон, разрешенный на уровне платформы](../../appendix/change-rollout-schema.md), от [артефакта, разрешенного к выпуску](../../appendix/lifecycle-artifact-schema.md)?
 - Можно ли быстро заблокировать [устаревший артефакт](../../appendix/lifecycle-artifact-schema.md)?
