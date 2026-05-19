@@ -182,7 +182,8 @@ Remaining before external submission:
 
 ## Sample Chapter Export Manifest Draft
 
-Use this manifest when assembling the first external packet so the sample is reproducible and the companion links do not drift.
+Use this manifest when assembling the first external packet.
+It keeps the sample reproducible and prevents companion-link drift.
 
 **Primary sample:**
 

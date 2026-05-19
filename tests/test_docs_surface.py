@@ -924,6 +924,8 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
         "Sample Chapter Export Manifest Draft",
+        "Use this manifest when assembling the first external packet.",
+        "It keeps the sample reproducible and prevents companion-link drift.",
         "Primary sample",
         "role: Chapter 1 as the first editorial sample",
         "source path: `docs/book/part-i/chapter-1.en.md`",
@@ -949,7 +951,11 @@ def test_publisher_packet_sample_export_manifest_is_print_friendly() -> None:
     )[0]
 
     forbidden_inline_labels = (
-        "**Primary sample:** Chapter 1,",
+        (
+            "Use this manifest when assembling the first external packet so "
+            "the sample is reproducible"
+        ),
+        "**Primary sample:** Chapter 1",
         "**Secondary technical sample:** Chapter 13,",
         "**Export metadata to include:** title, subtitle",
         "**Pre-export checks:** selected sample",
