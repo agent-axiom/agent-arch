@@ -575,6 +575,22 @@ def test_publisher_packet_has_public_link_availability_record() -> None:
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
 
 
+def test_publisher_packet_public_links_are_print_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Public Links Draft", 1)[1].split(
+        "## Public Link Availability Record",
+        1,
+    )[0]
+
+    assert "Pitch usage:" in section
+    assert "Pitch usage: send the public site" not in section
+    assert "- send the public site and the two sample chapters first;" in section
+    assert "- keep the source/runtime/test links as proof points;" in section
+    assert "- use those proof points for editors who want to verify" in section
+    assert section.count("\n- ") >= 12
+    assert all(len(line) <= 135 for line in section.splitlines())
+
+
 def test_publisher_packet_public_link_record_is_print_friendly() -> None:
     text = _read("docs/publisher-ready-toc.md")
     section = text.split("## Public Link Availability Record", 1)[1].split(
