@@ -115,8 +115,8 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - [策略链](../../appendix/policy-bundle-schema.zh.md)；
 - [能力链](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [审批](../../appendix/approval-schema.zh.md)与[运行时控制](../../appendix/lifecycle-artifact-schema.zh.md)链；
-- 能力会话治理链；
-- 委派授权链；
+- [能力会话治理链](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [委派授权链](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [数据与检索链](../../appendix/memory-retrieval-schema.zh.md)；
 - [评测链](../../appendix/eval-schema.zh.md)。
 

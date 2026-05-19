@@ -113,8 +113,8 @@ For agent systems, it is better to think in several linked chains:
 - [policy chain](../../appendix/policy-bundle-schema.en.md);
 - [capability chain](../../appendix/lifecycle-artifact-schema.en.md);
 - [approval](../../appendix/approval-schema.en.md) and [runtime-control](../../appendix/lifecycle-artifact-schema.en.md) chain;
-- capability-session governance chain;
-- delegated authorization chain;
+- [capability-session governance chain](../../appendix/lifecycle-artifact-schema.en.md);
+- [delegated authorization chain](../../appendix/lifecycle-artifact-schema.en.md);
 - [data and retrieval chain](../../appendix/memory-retrieval-schema.en.md);
 - [eval chain](../../appendix/eval-schema.en.md).
 

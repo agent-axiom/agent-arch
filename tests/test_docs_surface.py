@@ -1406,6 +1406,32 @@ def test_chapter_22_trust_chain_links_approval_runtime_control_schemas() -> None
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_trust_chain_links_session_authorization_schemas() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            "[цепочкой правил управления capability sessions]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[цепочкой delegated authorization]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            "[capability-session governance chain]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+            "[delegated authorization chain]"
+            "(../../appendix/lifecycle-artifact-schema.en.md)",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            "[能力会话治理链](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[委派授权链](../../appendix/lifecycle-artifact-schema.zh.md)",
+        ),
+    }
+
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
+
+
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
