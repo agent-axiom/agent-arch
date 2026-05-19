@@ -146,7 +146,7 @@ flowchart LR
 
 [已批准工件](../../appendix/lifecycle-artifact-schema.zh.md)回答的是：
 
-- 当前到底有哪些具体版本和工件包被批准运行。
+- 当前到底有哪些[具体版本和工件包](../../appendix/lifecycle-artifact-schema.zh.md)被批准运行。
 
 例如：
 

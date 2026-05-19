@@ -144,7 +144,7 @@ flowchart LR
 
 [approved artifacts](../../appendix/lifecycle-artifact-schema.md) отвечает на вопрос:
 
-- какие конкретные версии и наборы разрешены к запуску прямо сейчас.
+- какие конкретные [версии и наборы](../../appendix/lifecycle-artifact-schema.md) разрешены к запуску прямо сейчас.
 
 Например:
 
