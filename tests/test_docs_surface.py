@@ -4786,6 +4786,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "training-слой и продуктовая поверхность" in text
     assert "более четкая таксономия для `prompt injection`" in text
     assert "усилен retrieval-контур" in text
+    assert "различие между дообучением (continued pretraining) и `SFT`" in text
     assert "добавлены практические правила для больших каталогов инструментов" in text
     assert "семантическая фильтрация инструментов" in text
     assert "практическая рамка для `LLM-as-a-judge`" in text
@@ -4798,6 +4799,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "training layer и продуктовая поверхность" not in text
     assert "более четкая taxonomy для `prompt injection`" not in text
     assert "усилен retrieval contour" not in text
+    assert "различие между continued pretraining и `SFT`" not in text
     assert "добавлены practical rules для больших tool catalogs" not in text
     assert "практические правила для больших tool catalogs" not in text
     assert "каталогов инструментов, `semantic tool filtering`" not in text
