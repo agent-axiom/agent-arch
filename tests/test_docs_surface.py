@@ -4784,9 +4784,11 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "Усилен production-контур" in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" in text
     assert "training layer и продуктовая поверхность" in text
+    assert "более четкая таксономия для `prompt injection`" in text
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "training layer и product surface" not in text
+    assert "более четкая taxonomy для `prompt injection`" not in text
 
 
 def test_russian_whats_new_runtime_note_is_localized() -> None:

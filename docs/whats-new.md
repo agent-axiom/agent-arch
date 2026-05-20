@@ -29,7 +29,7 @@ _Актуально на 20 мая 2026 года._
 В книгу добавлены более точные мосты между архитектурой, retrieval, execution и eval-дисциплиной:
 
 - в части I теперь явнее отделены runtime-архитектура, training layer и продуктовая поверхность;
-- в части II добавлена более четкая taxonomy для `prompt injection`, `jailbreak` и `action hallucination`;
+- в части II добавлена более четкая таксономия для `prompt injection`, `jailbreak` и `action hallucination`;
 - в части III усилен retrieval contour: `semantic gap`, `HyDE`, `RAG first`, различие между continued pretraining и `SFT`;
 - в части IV добавлены practical rules для больших tool catalogs, `semantic tool filtering` и явные роли `MCP host / client / server`;
 - в части V усилены продуктовый взгляд на `latency budget` и practical framing для `LLM-as-a-judge`.
