@@ -4763,6 +4763,21 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         assert marker not in text, marker
 
 
+def test_russian_whats_new_reference_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "Справочный слой с переиспользуемыми схемами" in text
+    assert "отдельные справочные страницы" in text
+
+    forbidden_markers = (
+        "Справочный слой с reusable schemas",
+        "reference pages для",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
