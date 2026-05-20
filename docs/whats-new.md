@@ -73,7 +73,7 @@ _Актуально на 20 мая 2026 года._
 Сайт уже включает:
 
 - глоссарий;
-- cheat sheets;
+- шпаргалки;
 - case studies;
 - policy templates;
 - research frontier;
