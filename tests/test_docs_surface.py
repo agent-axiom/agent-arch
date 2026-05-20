@@ -4761,7 +4761,9 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert '!!! note "Обновление safe-agent схем"' in text
+    assert "связали прозу, приложения и guards" in text
     assert '!!! note "Safe-agent schema update"' not in text
+    assert "связали prose, appendices и guards" not in text
 
 
 def test_russian_whats_new_book_note_is_localized() -> None:
