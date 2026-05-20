@@ -442,6 +442,10 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         "Reader: senior product engineers",
         "Promise: explain how to move from prompt demos",
         "**Primary reader:** platform and product architects",
+        (
+            "systems that can read private context, call tools, request approvals, "
+            "write to external systems"
+        ),
         "**Problem:** most teams can build",
         "**Unique promise:** the book treats agents as production systems:",
         "**Competing shelf:** cloud architecture",
@@ -455,9 +459,17 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         assert marker not in opening_section
         assert marker not in positioning_section
     assert opening_section.count("\n- ") >= 4
-    assert positioning_section.count("\n- ") >= 30
+    assert (
+        "- systems that can read private context, call tools, and request approvals;"
+        in positioning_section
+    )
+    assert (
+        "- systems that can write to external systems and survive incidents."
+        in positioning_section
+    )
+    assert positioning_section.count("\n- ") >= 31
     assert all(len(line) <= 120 for line in opening_section.splitlines())
-    assert all(len(line) <= 135 for line in positioning_section.splitlines())
+    assert all(len(line) <= 120 for line in positioning_section.splitlines())
 
 
 def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
