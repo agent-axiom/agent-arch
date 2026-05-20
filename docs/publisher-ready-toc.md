@@ -232,7 +232,8 @@ It keeps the sample reproducible and prevents companion-link drift.
 
 ## Sample Copy-Edit Handoff Brief Draft
 
-Use this brief when handing Chapter 1, and optionally Chapter 13, to an independent copy editor for print rhythm.
+Use this brief when handing Chapter 1 to an independent copy editor for print rhythm.
+Include Chapter 13 only if the packet needs a second technical sample.
 
 **Copy-edit scope:**
 
@@ -240,7 +241,8 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 - opening hook;
 - paragraph cadence;
 - transitions between failure story and architecture argument;
-- consistency of `agent`, `workflow`, `runtime`, `policy`, `approval`, `trace`, `eval`, and `governance` terms;
+- consistency of `agent`, `workflow`, `runtime`, `policy`, and `approval` terms;
+- consistency of `trace`, `eval`, and `governance` terms;
 - whether the chapter can stand alone without site navigation.
 
 **Do not rewrite:**
@@ -282,7 +284,8 @@ Use this brief when handing Chapter 1, and optionally Chapter 13, to an independ
 - Keep long field lists online.
 - Use Support triage as the primary running case.
 - Use Internal knowledge assistant and Incident coordination as secondary contrast cases.
-- End chapters with: what to remember, common failure modes, design-review use, companion assets, and next chapter.
+- End chapters with what to remember and common failure modes.
+- Also end with design-review use, companion assets, and the next chapter.
 
 ## Author / Platform Credibility Note Draft
 

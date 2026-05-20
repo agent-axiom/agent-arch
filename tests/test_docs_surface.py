@@ -661,8 +661,21 @@ def test_publisher_packet_copy_edit_handoff_is_print_friendly() -> None:
 
     for marker in forbidden_inline_labels:
         assert marker not in section
-    assert section.count("\n- ") >= 24
-    assert all(len(line) <= 130 for line in section.splitlines())
+    assert "Use this brief when handing Chapter 1 to an independent copy editor" in section
+    assert "Include Chapter 13 only if the packet needs a second technical sample." in section
+    assert (
+        "Use this brief when handing Chapter 1, and optionally Chapter 13, "
+        "to an independent copy editor"
+        not in section
+    )
+    assert (
+        "- consistency of `agent`, `workflow`, `runtime`, `policy`, and `approval` terms;"
+        in section
+    )
+    assert "- consistency of `trace`, `eval`, and `governance` terms;" in section
+    assert "`approval`, `trace`, `eval`, and `governance` terms" not in section
+    assert section.count("\n- ") >= 25
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 def test_publisher_packet_editorial_compression_rules_are_print_friendly() -> None:
@@ -674,13 +687,15 @@ def test_publisher_packet_editorial_compression_rules_are_print_friendly() -> No
     required_markers = (
         "- Use Support triage as the primary running case.",
         "- Use Internal knowledge assistant and Incident coordination as secondary contrast cases.",
+        "- End chapters with what to remember and common failure modes.",
+        "- Also end with design-review use, companion assets, and the next chapter.",
+    )
+    forbidden_inline_markers = (
+        "Use Support triage as the primary running case; use Internal knowledge assistant",
         (
             "- End chapters with: what to remember, common failure modes, "
             "design-review use, companion assets, and next chapter."
         ),
-    )
-    forbidden_inline_markers = (
-        "Use Support triage as the primary running case; use Internal knowledge assistant",
     )
 
     for marker in required_markers:
