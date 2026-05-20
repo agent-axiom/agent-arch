@@ -46,7 +46,7 @@ _Актуально на 20 мая 2026 года._
 - eval datasets и grading contract;
 - policy bundles и approvals;
 - change review и rollout gates;
-- lifecycle artifacts;
+- lifecycle-артефакты;
 - memory retrieval contracts.
 
 Почему это важно: теперь из объясняющих глав можно быстро переходить к reviewable схемам и артефактам.
@@ -59,7 +59,7 @@ _Актуально на 20 мая 2026 года._
 
 - approvals и контекст делегированной авторизации;
 - controls и проверку runtime-control в lifecycle;
-- lifecycle artifacts;
+- lifecycle-артефакты;
 - экспорт сессий и replay-сводки;
 - экспорт eval-наборов данных;
 - экспорт trace с redaction, редактированными сводками, сохранением replay и версионированием схем.
