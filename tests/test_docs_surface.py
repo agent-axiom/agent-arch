@@ -4643,7 +4643,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "резервные canonical redirects покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из publisher packet вернули HTTP 200",
-            "ограничение длины строк и названия publisher packet устойчивы для печати и экспорта",
+            "реестр блокеров, waiver/decision log, ограничение длины строк",
+            "названия publisher packet устойчивы для печати и экспорта",
             "карта ролей части VIII теперь устойчива для печати",
             "чек-лист быстрой синхронизации публикации",
             "До статуса готовности к публикации еще остаются",
@@ -4677,7 +4678,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "基础导航和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
             "九个 publisher packet 链接全部返回 HTTP 200",
-            "行长限制与 packet 标签现在都适合打印/导出",
+            "publisher packet 阻塞项登记表、waiver/decision log、行长限制",
+            "packet 标签现在都适合打印/导出",
             "第 VIII 部分角色图现在适合打印导出",
             "快速同步发布检查清单",
             "在称为出版就绪之前",
@@ -4707,6 +4709,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "локальные ресурсы, anchors, alt text",
         "EN/ZH-проверка",
         "независимый HTML/PDF/export QA",
+        "blocker register, waiver/decision log, ограничение длины строк",
+        "publisher packet blocker register、waiver/decision log",
     )
 
     for path, expected_markers in expected_by_file.items():
