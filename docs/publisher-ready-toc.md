@@ -440,7 +440,7 @@ Pitch usage:
 
 ## Public Link Availability Record
 
-Last checked: **2026-05-19** for packet version `publisher-packet-2026-05`.
+Last checked: **2026-05-20** for packet version `publisher-packet-2026-05`.
 
 Checked links:
 
@@ -454,7 +454,7 @@ Checked links:
 - runtime configs;
 - runtime tests.
 
-Result: all nine checked public links returned HTTP 200 during the packet-readiness pass on 2026-05-19.
+Result: all nine checked public links returned HTTP 200 during the packet-readiness pass on 2026-05-20.
 
 Before external submission, rerun the check.
 Update this record if any URL, branch, or packet version changes.
