@@ -757,8 +757,11 @@ def test_publisher_packet_public_link_record_is_print_friendly() -> None:
     )[0]
 
     assert "Checked links: public book site," not in section
+    assert "Before external submission, rerun the check." in section
+    assert "Update this record if any URL, branch, or packet version changes." in section
+    assert "rerun the check and update this record" not in section
     assert section.count("\n- ") == 9
-    assert all(len(line) <= 120 for line in section.splitlines())
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 def test_publisher_packet_cover_note_is_print_friendly() -> None:
@@ -772,8 +775,10 @@ def test_publisher_packet_cover_note_is_print_friendly() -> None:
         "I am preparing **Secure AI Agent Architecture**",
         "The book is for teams that need to ship AI agents",
         "The premise is that production agents should be treated as governed systems",
-        "Identity, policy, tools, memory, traces, eval gates, rollout, and retirement",
+        "Identity, policy, tools, memory, and traces become explicit engineering contracts.",
+        "So do eval gates, rollout, and retirement.",
         "Chapter 13 is available as a secondary technical sample",
+        "It shows the eval and release-gate treatment.",
         "Before sending:",
         "- replace the greeting;",
         "- add the final author bio/credential sentence;",
@@ -787,15 +792,20 @@ def test_publisher_packet_cover_note_is_print_friendly() -> None:
             "and runnable reference material, so"
         ),
         "Before sending, replace the greeting",
+        "platform engineers, product engineers,",
+        "approvals, observability, evals,",
+        "traces, eval gates, rollout, and retirement become explicit engineering contracts",
+        "if you would like to see the eval and release-gate treatment",
+        "sample chapter, and companion links",
     )
 
     for marker in required_markers:
         assert marker in section
     for marker in forbidden_inline_markers:
         assert marker not in section
-    assert section.count("\n> ") >= 12
+    assert section.count("\n> ") >= 16
     assert section.count("\n- ") == 3
-    assert all(len(line) <= 135 for line in section.splitlines())
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 
