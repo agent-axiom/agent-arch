@@ -72,7 +72,7 @@ _Актуально на 20 мая 2026 года._
 
 Сайт уже включает:
 
-- glossary;
+- глоссарий;
 - cheat sheets;
 - case studies;
 - policy templates;
