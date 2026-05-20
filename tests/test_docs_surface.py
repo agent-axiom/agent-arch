@@ -4785,11 +4785,13 @@ def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
 
     assert "Практическое приложение" in text
     assert "- глоссарий;" in text
+    assert "- шпаргалки;" in text
     assert "глоссарий и практические материалы" in text
 
     forbidden_markers = (
         "Практический appendix",
         "- glossary;",
+        "- cheat sheets;",
         "glossary и practical assets",
     )
 
