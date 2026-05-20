@@ -473,9 +473,22 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         "- systems that can write to external systems and survive incidents."
         in positioning_section
     )
-    assert positioning_section.count("\n- ") >= 32
+    assert (
+        "- those workflows now carry real permissions and long-running state;"
+        in positioning_section
+    )
+    assert (
+        "- they also carry delegated work and regulated evidence needs."
+        in positioning_section
+    )
+    assert (
+        "- those workflows now carry real permissions, long-running state, delegated work, "
+        "and regulated evidence needs."
+        not in positioning_section
+    )
+    assert positioning_section.count("\n- ") >= 33
     assert all(len(line) <= 120 for line in opening_section.splitlines())
-    assert all(len(line) <= 120 for line in positioning_section.splitlines())
+    assert all(len(line) <= 110 for line in positioning_section.splitlines())
 
 
 def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
