@@ -62,7 +62,7 @@ _Актуально на 20 мая 2026 года._
 - lifecycle artifacts;
 - экспорт сессий и replay-сводки;
 - экспорт eval-наборов данных;
-- trace export с redaction, redacted summaries, replay preservation и schema versioning.
+- экспорт trace с redaction, redacted summaries, replay preservation и schema versioning.
 
 Почему это важно: книга теперь опирается не только на описательные главы, но и на работающую эталонную реализацию.
 
