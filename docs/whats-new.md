@@ -113,7 +113,7 @@ _Актуально на 20 мая 2026 года._
 - добавлены OpenGraph/Twitter metadata и социальная preview-картинка;
 - проверены search index, sitemap, robots, локальные assets, anchors, alt text и внешние ссылки;
 - базовая навигация и canonical fallback redirects покрывают основные entry points, которые люди копируют руками;
-- запись о доступности публичных ссылок обновлена 20 мая 2026 года после того, как все девять publisher-packet links вернули HTTP 200;
+- запись о доступности публичных ссылок обновлена 20 мая 2026 года после того, как все девять ссылок из publisher packet вернули HTTP 200;
 - blocker register, waiver/decision log, ограничение длины строк и названия publisher packet устойчивы для печати/export;
 - role map части VIII теперь устойчив для печати;
 - README на трех языках теперь содержит checklist быстрой синхронизации публикации для `main` и `docs-prod`.
