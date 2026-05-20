@@ -887,6 +887,7 @@ def test_publisher_packet_has_author_bio_input_brief() -> None:
         "- avoid inflated authority claims;",
         "- prefer concrete artifact-backed credibility;",
         "useful credibility artifacts: public book site",
+        "useful supporting artifacts: tests, schemas, and companion material.",
         "Bio slots to prepare",
         "- 50-word short bio;",
         "- 100-word proposal bio;",
@@ -917,8 +918,9 @@ def test_publisher_packet_author_bio_brief_is_print_friendly() -> None:
 
     for marker in forbidden_inline_labels:
         assert marker not in section
-    assert section.count("\n- ") >= 24
-    assert all(len(line) <= 125 for line in section.splitlines())
+    assert "runnable reference runtime, tests, schemas" not in section
+    assert section.count("\n- ") >= 25
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 def test_publisher_packet_comparable_books_are_print_friendly() -> None:
@@ -953,9 +955,13 @@ def test_publisher_packet_comparable_books_are_print_friendly() -> None:
         assert marker in section
     for marker in forbidden_inline_markers:
         assert marker not in section
+    assert "runtime control." in section
+    assert "approvals, evals, and observability." in section
+    assert "rollout gates, and runtime control" not in section
+    assert "trust boundaries, approvals, evals, and observability" not in section
     assert section.count("\n  - Comparable angle:") == 5
-    assert section.count("\n  - Difference:") == 5
-    assert all(len(line) <= 135 for line in section.splitlines())
+    assert section.count("\n  - Difference:") == 7
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 
@@ -969,6 +975,8 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
         "Print manuscript:",
         "Online companion:",
         "Practical pitch line:",
+        "- keeps long field lists and exhaustive schemas out of the main reading path;",
+        "- keeps fast-moving implementation details in the companion;",
         "- uses Support triage as the primary through-line;",
         "- uses Internal knowledge assistant and Incident coordination as contrast cases.",
         "- the book should read cleanly in print;",
@@ -980,6 +988,7 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
     forbidden_inline_markers = (
         "Practical pitch line: the book should read cleanly in print",
         "uses Support triage as the primary through-line, with Internal knowledge assistant",
+        "long field lists, exhaustive schemas, and fast-moving implementation details",
         "while the companion site proves",
     )
 
@@ -987,8 +996,8 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
         assert marker in section
     for marker in forbidden_inline_markers:
         assert marker not in section
-    assert section.count("\n- ") >= 9
-    assert all(len(line) <= 125 for line in section.splitlines())
+    assert section.count("\n- ") >= 10
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 

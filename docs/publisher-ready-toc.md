@@ -349,7 +349,8 @@ Do not let the manuscript artifact invent those facts.
 - avoid private client details;
 - avoid credentials that cannot be shown to an editor;
 - prefer concrete artifact-backed credibility;
-- useful credibility artifacts: public book site, runnable reference runtime, tests, schemas, and companion material.
+- useful credibility artifacts: public book site and runnable reference runtime;
+- useful supporting artifacts: tests, schemas, and companion material.
 
 **Bio slots to prepare:**
 
@@ -374,13 +375,15 @@ Use these as shelf-positioning references, not as direct substitutes:
   - Difference: applies that operational seriousness to agent behavior, policy, memory, evals, and lifecycle.
 - **Designing Machine Learning Systems**
   - Comparable angle: production ML framing.
-  - Difference: narrows the lens to agent systems with tools, approvals, traces, rollout gates, and runtime control.
+  - Difference: narrows the lens to agent systems with tools, approvals, and traces.
+  - Difference: also covers rollout gates and runtime control.
 - **AI Engineering**
   - Comparable angle: practical LLM application building.
   - Difference: goes deeper on governed side effects, evidence, registry, and production accountability.
 - **Building Secure & Reliable Systems**
   - Comparable angle: security/reliability posture.
-  - Difference: translates those instincts into agent-specific trust boundaries, approvals, evals, and observability.
+  - Difference: translates those instincts into agent-specific trust boundaries.
+  - Difference: also covers approvals, evals, and observability.
 - **Site Reliability Engineering**
   - Comparable angle: operational culture.
   - Difference: focuses on how autonomy, memory, tools, and lifecycle should be observable and governable.
@@ -397,7 +400,8 @@ Short differentiation:
 Print manuscript:
 
 - carries the argument, chapter questions, decision frameworks, failure stories, and durable operating model;
-- keeps long field lists, exhaustive schemas, and fast-moving implementation details out of the main reading path;
+- keeps long field lists and exhaustive schemas out of the main reading path;
+- keeps fast-moving implementation details in the companion;
 - uses Support triage as the primary through-line;
 - uses Internal knowledge assistant and Incident coordination as contrast cases.
 
