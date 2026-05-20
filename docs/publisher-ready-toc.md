@@ -4,7 +4,8 @@ Purpose:
 
 - keep publisher-facing packet notes separate from the MkDocs site tree;
 - keep the web site broad;
-- keep the book-shaped manuscript, sample strategy, positioning, cover note, comparable shelf, and companion links together.
+- keep the book-shaped manuscript, sample strategy, positioning, and cover note together;
+- keep the comparable shelf and companion links in the same packet artifact.
 
 Status: working editorial artifact, not a public navigation page and not final email copy.
 

@@ -429,8 +429,16 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         "## Print Manuscript Shape",
         1,
     )[0]
+    required_opening_markers = (
+        "- keep the book-shaped manuscript, sample strategy, positioning, and cover note together;",
+        "- keep the comparable shelf and companion links in the same packet artifact.",
+    )
     forbidden_inline_markers = (
         "Purpose: keep publisher-facing packet notes separate",
+        (
+            "keep the book-shaped manuscript, sample strategy, positioning, "
+            "cover note, comparable shelf"
+        ),
         "Reader: senior product engineers",
         "Promise: explain how to move from prompt demos",
         "**Primary reader:** platform and product architects",
@@ -441,12 +449,14 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         "**Companion assets:** reference runtime",
     )
 
+    for marker in required_opening_markers:
+        assert marker in opening_section
     for marker in forbidden_inline_markers:
         assert marker not in opening_section
         assert marker not in positioning_section
-    assert opening_section.count("\n- ") >= 3
+    assert opening_section.count("\n- ") >= 4
     assert positioning_section.count("\n- ") >= 30
-    assert all(len(line) <= 135 for line in opening_section.splitlines())
+    assert all(len(line) <= 120 for line in opening_section.splitlines())
     assert all(len(line) <= 135 for line in positioning_section.splitlines())
 
 
