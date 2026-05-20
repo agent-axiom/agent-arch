@@ -4637,6 +4637,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.md": (
             "Актуально на 20 мая 2026 года",
             "Издательский проход качества идет, но еще не закрыт полностью.",
+            "черновые и плановые страницы исключены из опубликованного сайта",
+            "OpenGraph/Twitter metadata",
+            "проверены search index, sitemap, robots",
             "резервные canonical redirects покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из publisher packet вернули HTTP 200",
@@ -4652,6 +4655,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.en.md": (
             "Current as of May 20, 2026",
             "The publisher-facing quality pass is in progress, not fully closed.",
+            "draft and planning pages are excluded from the published site",
+            "OpenGraph/Twitter metadata and a social preview image",
+            "search index, sitemap, robots file",
             "canonical fallback redirects cover the main hand-copied entry points",
             "public-link availability record was refreshed on May 20, 2026",
             "all nine publisher-packet links returned HTTP 200",
@@ -4665,6 +4671,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.zh.md": (
             "更新于 2026 年 5 月 20 日",
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
+            "草稿与规划页面已从发布站点和 sitemap 中排除",
+            "OpenGraph/Twitter metadata 和社交预览图",
+            "检查了搜索索引、sitemap、robots",
             "基础导航和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
             "九个 publisher packet 链接全部返回 HTTP 200",
