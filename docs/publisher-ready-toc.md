@@ -464,7 +464,7 @@ Update this record if any URL, branch, or packet version changes.
 Before sending to a publisher:
 
 - one-page positioning memo;
-- this publisher-ready TOC;
+- this publisher packet;
 - one polished sample chapter;
 - author/platform credibility note;
 - print manuscript vs online companion note;
@@ -495,7 +495,7 @@ Use this as a short editable note, not as final email copy:
 > Chapter 13 is available as a secondary technical sample.
 > It shows the eval and release-gate treatment.
 >
-> I would be glad to share the positioning memo, publisher-ready table of contents, and sample chapter.
+> I would be glad to share the positioning memo, publisher packet, and sample chapter.
 > I can also include the companion links for review.
 
 Before sending:
@@ -555,7 +555,7 @@ Default packet order:
 
 1. short cover note with title, reader, problem, and unique promise;
 2. one-page positioning memo;
-3. publisher-ready table of contents;
+3. publisher packet table-of-contents section;
 4. Chapter 1 as the primary sample chapter;
 5. optional Chapter 13 technical sample if the editor asks for proof of production depth;
 6. author/platform credibility note;
@@ -604,7 +604,7 @@ Treat the publisher packet as a small release, not as a loose collection of note
 
 - cover note;
 - one-page positioning memo;
-- publisher-ready TOC;
+- publisher packet TOC section;
 - selected sample chapter;
 - author/platform credibility note;
 - comparable-books note;
@@ -634,7 +634,7 @@ Treat the publisher packet as a small release, not as a loose collection of note
 Drafted and ready for editorial assembly:
 
 - positioning memo;
-- publisher-ready TOC shape;
+- publisher packet TOC shape;
 - Chapter 1 as primary sample-chapter candidate;
 - Chapter 13 as technical credibility sample;
 - platform credibility note;
