@@ -4694,6 +4694,15 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "Current as of May 19, 2026",
         "Актуально на 19 мая 2026 года",
         "更新于 2026 年 5 月 19 日",
+        "canonical fallback redirects покрывают основные entry points",
+        "basic navigation 和 canonical fallback redirects",
+        "publisher-packet links вернули HTTP 200",
+        "九个 publisher-packet links 全部返回 HTTP 200",
+        "печати/export",
+        "打印/export",
+        "role map части VIII",
+        "Part VIII 角色图",
+        "checklist быстрой синхронизации публикации",
     )
 
     for path, expected_markers in expected_by_file.items():
