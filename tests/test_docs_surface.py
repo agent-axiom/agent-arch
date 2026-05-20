@@ -4731,6 +4731,21 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_russian_whats_new_runtime_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "описательные главы" in text
+    assert "работающую эталонную реализацию" in text
+
+    forbidden_markers = (
+        "narrative chapters",
+        "runnable reference implementation",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",

@@ -64,7 +64,7 @@ _Актуально на 20 мая 2026 года._
 - eval dataset export;
 - trace export с redaction, redacted summaries, replay preservation и schema versioning.
 
-Почему это важно: книга теперь опирается не только на narrative chapters, но и на runnable reference implementation.
+Почему это важно: книга теперь опирается не только на описательные главы, но и на работающую эталонную реализацию.
 
 ## Practical Appendix
 
