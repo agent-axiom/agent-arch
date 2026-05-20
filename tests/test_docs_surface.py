@@ -440,6 +440,7 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
             "cover note, comparable shelf"
         ),
         "Reader: senior product engineers",
+        "senior product engineers, platform engineers, security engineers, staff engineers",
         "Promise: explain how to move from prompt demos",
         "**Primary reader:** platform and product architects",
         (
@@ -460,6 +461,11 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         assert marker not in positioning_section
     assert opening_section.count("\n- ") >= 4
     assert (
+        "- **Reader:** senior product engineers, platform engineers, and security engineers."
+        in positioning_section
+    )
+    assert "- **Reader extension:** staff engineers and technical leads." in positioning_section
+    assert (
         "- systems that can read private context, call tools, and request approvals;"
         in positioning_section
     )
@@ -467,7 +473,7 @@ def test_publisher_packet_positioning_memo_is_print_friendly() -> None:
         "- systems that can write to external systems and survive incidents."
         in positioning_section
     )
-    assert positioning_section.count("\n- ") >= 31
+    assert positioning_section.count("\n- ") >= 32
     assert all(len(line) <= 120 for line in opening_section.splitlines())
     assert all(len(line) <= 120 for line in positioning_section.splitlines())
 

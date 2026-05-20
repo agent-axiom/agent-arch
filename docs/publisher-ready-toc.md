@@ -12,7 +12,8 @@ Status: working editorial artifact, not a public navigation page and not final e
 ## Positioning
 
 - **Working title:** Secure AI Agent Architecture.
-- **Reader:** senior product engineers, platform engineers, security engineers, staff engineers, and technical leads.
+- **Reader:** senior product engineers, platform engineers, and security engineers.
+- **Reader extension:** staff engineers and technical leads.
 - **Reader need:** ship AI agents with tool access, memory, approvals, observability, and evals.
 - **Operating need:** preserve rollout discipline and lifecycle ownership.
 - **Promise:** move from prompt demos to governed agent systems with explicit engineering contracts.
