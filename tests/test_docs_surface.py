@@ -4780,6 +4780,17 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         assert marker not in text, marker
 
 
+def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "Практическое приложение" in text
+
+    forbidden_markers = ("Практический appendix",)
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_book_plan_defines_three_case_spines() -> None:
     required_markers = (
         "Case-spine map",
