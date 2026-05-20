@@ -114,6 +114,27 @@ def test_public_markdown_do_not_use_deprecated_canonical_case_labels() -> None:
     assert hits == []
 
 
+def test_public_markdown_do_not_use_stale_publisher_packet_labels() -> None:
+    doc_paths = sorted(Path("docs").glob("**/*.md")) + sorted(Path(".").glob("README*.md"))
+    deprecated_markers = (
+        "publisher-ready TOC",
+        "Publisher-Ready TOC",
+        "publisher-ready table of contents",
+        "publisher-ready table-of-contents",
+    )
+
+    assert doc_paths
+
+    hits = []
+    for path in doc_paths:
+        text = _read(str(path))
+        found = [marker for marker in deprecated_markers if marker in text]
+        if found:
+            hits.append((str(path), found))
+
+    assert hits == []
+
+
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
