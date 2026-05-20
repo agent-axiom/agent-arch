@@ -41,7 +41,8 @@ Status: working editorial artifact, not a public navigation page and not final e
 **Why now:**
 
 - agent systems are moving from isolated assistants into production workflows;
-- those workflows now carry real permissions, long-running state, delegated work, and regulated evidence needs.
+- those workflows now carry real permissions and long-running state;
+- they also carry delegated work and regulated evidence needs.
 
 **Unique promise:**
 
