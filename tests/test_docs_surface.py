@@ -4742,7 +4742,9 @@ def test_russian_whats_new_reader_value_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "Можно читать книгу как практическое руководство." in text
+    assert "Можно использовать справочные страницы как инженерные заготовки." in text
     assert "Можно читать книгу как handbook." not in text
+    assert "Можно использовать reference pages как инженерные заготовки." not in text
 
 
 def test_russian_whats_new_canonical_case_note_is_localized() -> None:
