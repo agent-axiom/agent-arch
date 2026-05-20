@@ -4790,6 +4790,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "практическая рамка для `LLM-as-a-judge`" in text
     assert "базовые платформенные слои" in text
     assert "между дизайн-ревью, eval-циклом и раскаткой" in text
+    assert "повседневные вопросы эксплуатационной команды" in text
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "training layer и product surface" not in text
@@ -4802,6 +4803,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между design review, eval loop и rollout" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
     assert "между дизайн-ревью, eval-циклом и rollout" not in text
+    assert "повседневные вопросы production-команды" not in text
 
 
 def test_russian_whats_new_runtime_note_is_localized() -> None:
