@@ -114,7 +114,7 @@ _更新于 2026 年 5 月 20 日。_
 - 检查了搜索索引、sitemap、robots、本地资源、锚点、图片 alt 文本和外部链接；
 - 基础导航和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口；
 - 公共链接可用性记录已在 2026 年 5 月 20 日刷新，九个 publisher packet 链接全部返回 HTTP 200；
-- publisher packet blocker register、waiver/decision log、行长限制与 packet 标签现在都适合打印/导出；
+- publisher packet 阻塞项登记表、waiver/decision log、行长限制与 packet 标签现在都适合打印/导出；
 - 第 VIII 部分角色图现在适合打印导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单。
 
