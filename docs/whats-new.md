@@ -26,7 +26,7 @@ _Актуально на 20 мая 2026 года._
 
 ### Усилен production-контур в частях I-V
 
-В книгу добавлены более точные мосты между архитектурой, retrieval, execution и eval discipline:
+В книгу добавлены более точные мосты между архитектурой, retrieval, execution и eval-дисциплиной:
 
 - в части I теперь явнее отделены runtime-архитектура, training layer и product surface;
 - в части II добавлена более четкая taxonomy для `prompt injection`, `jailbreak` и `action hallucination`;
