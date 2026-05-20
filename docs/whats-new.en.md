@@ -114,7 +114,7 @@ Closed so far:
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
 - basic navigation and canonical fallback redirects cover the main hand-copied entry points;
 - the public-link availability record was refreshed after all nine publisher-packet links returned HTTP 200;
-- the publisher packet blocker register, waiver/decision log, line-length guard, and labels are print/export-friendly;
+- the publisher packet blocker register, waiver/decision log, line-length guard, and packet labels are print/export-friendly;
 - the Part VIII role map is now print-friendly;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
