@@ -4764,6 +4764,13 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert '!!! note "Safe-agent schema update"' not in text
 
 
+def test_russian_whats_new_book_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "рамка принятия решений в Главе 1" in text
+    assert "decision frame в Главе 1" not in text
+
+
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
