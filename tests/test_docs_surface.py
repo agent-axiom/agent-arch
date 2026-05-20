@@ -4734,10 +4734,12 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
+    assert "approvals и контекст делегированной авторизации" in text
     assert "описательные главы" in text
     assert "работающую эталонную реализацию" in text
 
     forbidden_markers = (
+        "approvals и delegated authorization context",
         "narrative chapters",
         "runnable reference implementation",
     )
