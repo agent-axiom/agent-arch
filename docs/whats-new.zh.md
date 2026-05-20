@@ -112,7 +112,7 @@ _更新于 2026 年 5 月 20 日。_
 - 草稿与规划页面已从发布站点和 sitemap 中排除；
 - 添加了 OpenGraph/Twitter 元数据和社交预览图；
 - 检查了搜索索引、sitemap、robots、本地资源、锚点、图片 alt 文本和外部链接；
-- 基础导航和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口；
+- 基础导航和 canonical 备用重定向已覆盖人们最容易手动复制的主要入口；
 - 公共链接可用性记录已在 2026 年 5 月 20 日刷新，九个 publisher packet 链接全部返回 HTTP 200；
 - publisher packet 阻塞项登记表、豁免/决策日志、行长限制与 packet 标签现在都适合打印/导出；
 - 第 VIII 部分角色图现在适合打印导出；
