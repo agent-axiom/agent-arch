@@ -43,7 +43,7 @@ _Актуально на 20 мая 2026 года._
 Книга теперь включает отдельные справочные страницы для:
 
 - traces и каталог событий;
-- eval datasets и grading contract;
+- eval-наборы данных и контракт оценивания;
 - policy bundles и approvals;
 - change review и rollout gates;
 - lifecycle-артефакты;
