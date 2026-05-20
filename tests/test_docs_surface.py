@@ -708,8 +708,11 @@ def test_publisher_packet_public_links_are_print_friendly() -> None:
     assert "- send the public site and the two sample chapters first;" in section
     assert "- keep the source/runtime/test links as proof points;" in section
     assert "- use those proof points for editors who want to verify" in section
+    assert "- **Runnable reference package README:**\n" in section
+    assert "**Runnable reference package README:** <https://" not in section
     assert section.count("\n- ") >= 12
-    assert all(len(line) <= 135 for line in section.splitlines())
+    assert section.count("\n  - ") >= 1
+    assert all(len(line) <= 120 for line in section.splitlines())
 
 
 def test_publisher_packet_public_link_record_is_print_friendly() -> None:

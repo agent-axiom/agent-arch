@@ -418,7 +418,8 @@ Use these links in the final pitch packet after a fresh availability check:
 - **Sample chapter candidate:** <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>
 - **Technical credibility sample:** <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>
 - **Reference runtime source:** <https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref>
-- **Runnable reference package README:** <https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/README.md>
+- **Runnable reference package README:**
+  - <https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/README.md>
 - **Runtime configs:** <https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref/configs>
 - **Runtime tests:** <https://github.com/agent-axiom/agent-arch/tree/main/tests>
 
