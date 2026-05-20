@@ -4769,12 +4769,14 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "Справочный слой с переиспользуемыми схемами" in text
     assert "отдельные справочные страницы" in text
     assert "- traces и каталог событий;" in text
+    assert "- eval-наборы данных и контракт оценивания;" in text
     assert "проверяемым схемам и артефактам" in text
 
     forbidden_markers = (
         "Справочный слой с reusable schemas",
         "reference pages для",
         "- traces и event catalog;",
+        "- eval datasets и grading contract;",
         "reviewable схемам",
     )
 
