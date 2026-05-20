@@ -1199,7 +1199,18 @@ def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
         "- no long schema tables are moved into the print manuscript packet by accident."
         in section
     )
-    assert all(len(line) <= 125 for line in section.splitlines())
+    assert all(len(line) <= 110 for line in section.splitlines())
+
+
+def test_publisher_packet_all_lines_are_print_export_friendly() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    overlong_lines = [
+        (line_number, len(line), line)
+        for line_number, line in enumerate(text.splitlines(), start=1)
+        if len(line) > 110
+    ]
+
+    assert overlong_lines == []
 
 
 
