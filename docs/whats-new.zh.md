@@ -115,7 +115,7 @@ _更新于 2026 年 5 月 20 日。_
 - basic navigation 和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口；
 - 公共链接可用性记录已在 2026 年 5 月 20 日刷新，九个 publisher packet 链接全部返回 HTTP 200；
 - publisher packet blocker register、waiver/decision log、行长限制与 packet 标签现在都适合打印/导出；
-- Part VIII 角色图现在适合打印导出；
+- 第 VIII 部分角色图现在适合打印导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单。
 
 在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理、独立 HTML/PDF/export QA、样章打磨，以及面向具体出版社的纸质稿件/在线配套材料包装。
