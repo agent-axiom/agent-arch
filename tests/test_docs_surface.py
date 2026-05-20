@@ -4705,6 +4705,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "role map части VIII",
         "Part VIII 角色图",
         "checklist быстрой синхронизации публикации",
+        "OpenGraph/Twitter metadata и социальная preview-картинка",
+        "проверены search index, sitemap, robots",
         "локальные assets",
         "локальные ресурсы, anchors, alt text",
         "EN/ZH-проверка",
