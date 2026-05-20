@@ -378,7 +378,7 @@ def test_part_viii_role_map_is_print_friendly() -> None:
 
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
-        "Implementation status, 19 May 2026",
+        "Implementation status, 20 May 2026",
         "P0:",
         "P1:",
         "P2:",
@@ -392,7 +392,7 @@ def test_book_improvement_blueprint_records_review_remediation_status() -> None:
         "print-friendly",
         "publisher packet is drafted and internally gated",
         "packet TOC section",
-        "refreshed public-link record",
+        "20 May 2026 public-link record",
         "Still blocked before external submission",
     )
 
@@ -6556,7 +6556,7 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
 
 def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
     required_markers = (
-        "Implementation status, 19 May 2026",
+        "Implementation status, 20 May 2026",
         "MCP threat model",
         "mcp_server",
         "A2A handoff trust contract",

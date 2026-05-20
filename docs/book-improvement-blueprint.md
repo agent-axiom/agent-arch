@@ -181,13 +181,13 @@ First implementation slice: Chapter 1 decision frame, freshness metadata for Cha
 4. Run print/PDF readiness: figures, captions, Mermaid fallbacks, tables, code blocks, long lines, anchors, glossary, and cross-references.
 5. Establish book release discipline: community edition, Russian manuscript, EN editorial draft, and publisher proposal package.
 
-### Implementation status, 19 May 2026
+### Implementation status, 20 May 2026
 
 - **P0:** closed for the known review defects. Canonical book redirects are configured and tested; known EN/ZH Russian leak strings are guarded; ZH entry surfaces disclose draft-localization status; Chapter 1/2 extraction safety and fast-moving freshness metadata are tested.
 - **P1:** closed for the named safe-agent upgrades and their schema spine. MCP threat model and `mcp_server` contract, A2A handoff trust contract and trust-delegation artifact, unified agent threat evidence, defense-in-depth control map, verifier verdict record, governance action record, NIST AI RMF telemetry mapping, and memory poisoning review fields are documented across RU/EN/ZH and reflected in [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md), and [memory/retrieval schema](appendix/memory-retrieval-schema.md) with docs-surface tests.
 - **P2:** mostly closed for the reviewed book-shape items. Chapter 1 now has a sample-chapter ending template; the plan defines the three canonical case spines; Part VIII role-map material is print-friendly; the Reference Package has a reader-route contract. Remaining P2 work should be evidence-backed polish only, not another broad restructuring pass.
 - **P3:** publisher packet is drafted and internally gated. It now includes:
-  - packet TOC section, print/companion split, positioning memo, and refreshed public-link record;
+  - packet TOC section, print/companion split, positioning memo, and 20 May 2026 public-link record;
   - sample export manifest, print/PDF readiness gate, release discipline, and author-bio input brief;
   - target-editor formatting brief, copy-edit handoff, print-friendly blocker register, and waiver/decision log.
 - **Still blocked before external submission:** author bio/credential framing, independent sample copy-edit, target-specific sample decision, and target editor/imprint formatting. These require human/editorial input or explicit author waiver.
