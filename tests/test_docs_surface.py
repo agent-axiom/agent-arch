@@ -4787,6 +4787,7 @@ def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
     assert "- глоссарий;" in text
     assert "- шпаргалки;" in text
     assert "- кейсы;" in text
+    assert "- шаблоны политик;" in text
     assert "глоссарий и практические материалы" in text
 
     forbidden_markers = (
@@ -4794,6 +4795,7 @@ def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
         "- glossary;",
         "- cheat sheets;",
         "- case studies;",
+        "- policy templates;",
         "glossary и practical assets",
     )
 
