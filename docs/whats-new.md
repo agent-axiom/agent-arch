@@ -31,7 +31,7 @@ _Актуально на 20 мая 2026 года._
 - в части I теперь явнее отделены runtime-архитектура, training layer и продуктовая поверхность;
 - в части II добавлена более четкая таксономия для `prompt injection`, `jailbreak` и `action hallucination`;
 - в части III усилен retrieval-контур: `semantic gap`, `HyDE`, `RAG first`, различие между continued pretraining и `SFT`;
-- в части IV добавлены practical rules для больших tool catalogs, `semantic tool filtering` и явные роли `MCP host / client / server`;
+- в части IV добавлены практические правила для больших tool catalogs, `semantic tool filtering` и явные роли `MCP host / client / server`;
 - в части V усилены продуктовый взгляд на `latency budget` и practical framing для `LLM-as-a-judge`.
 
 Почему это важно: книга стала лучше закрывать не только базовые platform layers, но и повседневные вопросы production-команды, которые обычно всплывают между design review, eval loop и rollout.
