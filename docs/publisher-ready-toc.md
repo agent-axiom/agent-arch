@@ -456,7 +456,8 @@ Checked links:
 
 Result: all nine checked public links returned HTTP 200 during the packet-readiness pass on 2026-05-19.
 
-Before external submission, rerun the check and update this record if any URL, branch, or packet version changes.
+Before external submission, rerun the check.
+Update this record if any URL, branch, or packet version changes.
 
 ## Pitch Packet Checklist
 
@@ -476,23 +477,26 @@ Use this as a short editable note, not as final email copy:
 
 > Dear [Editor],
 >
-> I am preparing **Secure AI Agent Architecture**, a practical systems book for platform engineers, product engineers,
-> security engineers, staff engineers, and technical leads.
+> I am preparing **Secure AI Agent Architecture**, a practical systems book for platform engineers,
+> product engineers, security engineers, staff engineers, and technical leads.
 >
-> The book is for teams that need to ship AI agents with real tool access, memory, approvals, observability, evals,
-> rollout discipline, and lifecycle ownership.
+> The book is for teams that need to ship AI agents with real tool access and memory.
+> It also covers approvals, observability, and evals.
+> Rollout discipline and lifecycle ownership are part of the same system.
 >
 > The premise is that production agents should be treated as governed systems, not prompt demos.
-> Identity, policy, tools, memory, traces, eval gates, rollout, and retirement become explicit engineering contracts.
+> Identity, policy, tools, memory, and traces become explicit engineering contracts.
+> So do eval gates, rollout, and retirement.
 >
 > The manuscript is paired with a public multilingual companion site and runnable reference material.
 > The architecture is therefore not only described, but inspectable.
 >
 > I would lead with Chapter 1 as the sample chapter.
-> Chapter 13 is available as a secondary technical sample if you would like to see the eval and release-gate treatment.
+> Chapter 13 is available as a secondary technical sample.
+> It shows the eval and release-gate treatment.
 >
-> I would be glad to share the positioning memo, publisher-ready table of contents, sample chapter, and companion links
-> for review.
+> I would be glad to share the positioning memo, publisher-ready table of contents, and sample chapter.
+> I can also include the companion links for review.
 
 Before sending:
 
