@@ -805,8 +805,10 @@ def test_publisher_packet_cover_note_is_print_friendly() -> None:
         "traces, eval gates, rollout, and retirement become explicit engineering contracts",
         "if you would like to see the eval and release-gate treatment",
         "sample chapter, and companion links",
+        "publisher-ready table of contents",
     )
 
+    assert "positioning memo, publisher packet, and sample chapter" in section
     for marker in required_markers:
         assert marker in section
     for marker in forbidden_inline_markers:
@@ -1074,6 +1076,7 @@ def test_publisher_packet_submission_order_is_print_friendly() -> None:
     )[0]
     required_markers = (
         "Default recommendation:",
+        "3. publisher packet table-of-contents section;",
         "- lead with Chapter 1 only;",
         "- use it because it carries the thesis and reads best as a first editorial sample;",
         "- keep Chapter 13 ready as a second attachment or follow-up;",
@@ -1082,6 +1085,7 @@ def test_publisher_packet_submission_order_is_print_friendly() -> None:
     forbidden_inline_markers = (
         "Default recommendation: lead with Chapter 1 only.",
         "Keep Chapter 13 ready as a second attachment or follow-up",
+        "publisher-ready table of contents",
     )
 
     for marker in required_markers:
@@ -1089,7 +1093,7 @@ def test_publisher_packet_submission_order_is_print_friendly() -> None:
     for marker in forbidden_inline_markers:
         assert marker not in section
     assert section.count("\n- ") >= 4
-    assert all(len(line) <= 130 for line in section.splitlines())
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 
@@ -1168,7 +1172,7 @@ def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
         "**Freeze scope before sending:**",
         "- cover note;",
         "- one-page positioning memo;",
-        "- publisher-ready TOC;",
+        "- publisher packet TOC section;",
         "- selected sample chapter;",
         "- author/platform credibility note;",
         "- comparable-books note;",
@@ -1177,6 +1181,8 @@ def test_publisher_packet_submission_release_scope_is_print_friendly() -> None:
     )
     forbidden_inline_markers = (
         "**Freeze scope before sending:** cover note",
+        "- publisher-ready TOC;",
+        "publisher-ready table of contents",
         "author/platform credibility note, comparable-books note",
         (
             "public site, sample-chapter links, repository links, runtime links, "
@@ -1210,6 +1216,11 @@ def test_publisher_packet_all_lines_are_print_export_friendly() -> None:
         if len(line) > 110
     ]
 
+    assert "- this publisher packet;" in text
+    assert "publisher packet table-of-contents section" in text
+    assert "publisher packet TOC section" in text
+    assert "publisher-ready table of contents" not in text
+    assert "publisher-ready TOC" not in text
     assert overlong_lines == []
 
 
