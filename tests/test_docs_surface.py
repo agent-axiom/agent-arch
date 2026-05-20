@@ -4783,7 +4783,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
 
     assert "Усилен production-контур" in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" in text
-    assert "training layer и продуктовая поверхность" in text
+    assert "training-слой и продуктовая поверхность" in text
     assert "более четкая таксономия для `prompt injection`" in text
     assert "усилен retrieval-контур" in text
     assert "добавлены практические правила для больших каталогов инструментов" in text
@@ -4795,6 +4795,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "training layer и product surface" not in text
+    assert "training layer и продуктовая поверхность" not in text
     assert "более четкая taxonomy для `prompt injection`" not in text
     assert "усилен retrieval contour" not in text
     assert "добавлены practical rules для больших tool catalogs" not in text
