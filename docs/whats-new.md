@@ -75,7 +75,7 @@ _Актуально на 20 мая 2026 года._
 - глоссарий;
 - шпаргалки;
 - кейсы;
-- policy templates;
+- шаблоны политик;
 - research frontier;
 - community roadmap.
 
