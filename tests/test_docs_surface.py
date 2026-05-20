@@ -391,11 +391,15 @@ def test_book_improvement_blueprint_records_review_remediation_status() -> None:
         "three canonical case spines",
         "print-friendly",
         "publisher packet is drafted and internally gated",
+        "packet TOC section",
         "refreshed public-link record",
         "Still blocked before external submission",
     )
 
     _assert_files_contain_all(("docs/book-improvement-blueprint.md",), required_markers)
+    text = _read("docs/book-improvement-blueprint.md")
+    assert "publisher-ready TOC" not in text
+    assert "publisher-ready table of contents" not in text
 
 
 def test_publisher_packet_has_core_positioning_and_companion_boundary() -> None:
