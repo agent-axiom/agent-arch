@@ -571,7 +571,7 @@ Default recommendation:
 
 ## Print/PDF Readiness Gate Draft
 
-Before any print-style PDF or sample-chapter export is sent externally, run a separate pass for print friction.
+Before any print-style PDF or sample-chapter export is sent externally, run a print-friction pass.
 Do not assume the web page will translate cleanly.
 
 **Print/PDF checks:**
@@ -666,14 +666,16 @@ Print-friendly blocker list. Each item keeps the original fields as short sub-bu
   - Packet action when closed: apply accepted edits and update sample export date.
 - **Sample selection**
   - Current state: default chosen, not target-specific.
-  - Owner/input needed: editor/imprint policy or author decision confirms Chapter 1 only vs Chapter 1 plus Chapter 13.
+  - Owner/input needed: editor/imprint policy or author decision confirms sample scope.
+  - Scope options: Chapter 1 only, or Chapter 1 plus Chapter 13.
   - Packet action when closed: freeze attachment list and proposal order.
 - **Target editor / imprint formatting**
   - Current state: open.
   - Owner/input needed: target editor, imprint, submission channel, attachment rules, and page limits.
   - Packet action when closed: tailor cover note, file names, and proposal format.
 
-**Submission state:** not externally sendable until all four blockers are closed or explicitly waived by the author.
+**Submission state:** not externally sendable until all four blockers are closed.
+It is also sendable if the author explicitly waives the remaining blockers.
 
 ## Blocker Waiver / Decision Log Draft
 
