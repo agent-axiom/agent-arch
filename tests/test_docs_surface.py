@@ -4770,6 +4770,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "отдельные справочные страницы" in text
     assert "- traces и каталог событий;" in text
     assert "- eval-наборы данных и контракт оценивания;" in text
+    assert "- пакеты политик и approvals-контуры;" in text
     assert "проверяемым схемам и артефактам" in text
 
     forbidden_markers = (
@@ -4777,6 +4778,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "reference pages для",
         "- traces и event catalog;",
         "- eval datasets и grading contract;",
+        "- policy bundles и approvals;",
         "reviewable схемам",
     )
 
