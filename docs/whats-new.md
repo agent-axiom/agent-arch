@@ -61,7 +61,7 @@ _Актуально на 20 мая 2026 года._
 - controls и проверку runtime-control в lifecycle;
 - lifecycle artifacts;
 - экспорт сессий и replay-сводки;
-- eval dataset export;
+- экспорт eval-наборов данных;
 - trace export с redaction, redacted summaries, replay preservation и schema versioning.
 
 Почему это важно: книга теперь опирается не только на описательные главы, но и на работающую эталонную реализацию.
