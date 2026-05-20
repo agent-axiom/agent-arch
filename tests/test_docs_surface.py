@@ -4768,7 +4768,9 @@ def test_russian_whats_new_book_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "рамка принятия решений в Главе 1" in text
+    assert "для HTML/PDF и извлечения в plain text" in text
     assert "decision frame в Главе 1" not in text
+    assert "для HTML/PDF/plain-text extraction" not in text
 
 
 def test_russian_whats_new_runtime_note_is_localized() -> None:
