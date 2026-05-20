@@ -60,7 +60,7 @@ _Актуально на 20 мая 2026 года._
 - approvals и контекст делегированной авторизации;
 - controls и проверку runtime-control в lifecycle;
 - lifecycle artifacts;
-- session export и replay summaries;
+- экспорт сессий и replay-сводки;
 - eval dataset export;
 - trace export с redaction, redacted summaries, replay preservation и schema versioning.
 
