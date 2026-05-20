@@ -4637,7 +4637,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.md": (
             "Актуально на 20 мая 2026 года",
             "Издательский проход качества идет, но еще не закрыт полностью.",
-            "canonical fallback redirects покрывают основные entry points",
+            "резервные canonical redirects покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из publisher packet вернули HTTP 200",
             "ограничение длины строк и названия publisher packet устойчивы для печати и экспорта",
@@ -4665,7 +4665,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.zh.md": (
             "更新于 2026 年 5 月 20 日",
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
-            "canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
+            "基础导航和 canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
             "九个 publisher packet 链接全部返回 HTTP 200",
             "行长限制与 packet 标签现在都适合打印/导出",
