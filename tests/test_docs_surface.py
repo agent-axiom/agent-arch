@@ -4738,6 +4738,13 @@ def test_russian_whats_new_intro_note_is_localized() -> None:
     assert "не заменяет git history" not in text
 
 
+def test_russian_whats_new_canonical_case_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert '!!! note "Обновление canonical cases"' in text
+    assert '!!! note "Canonical case update"' not in text
+
+
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 

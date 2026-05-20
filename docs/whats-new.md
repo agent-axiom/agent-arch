@@ -4,7 +4,7 @@
 
 _Актуально на 20 мая 2026 года._
 
-!!! note "Canonical case update"
+!!! note "Обновление canonical cases"
     Крупный слой обновлений от 15 мая 2026 года — сквозная карта трех canonical cases. **Support triage**, **Internal knowledge assistant** и **Incident coordination** теперь видны в book chapters, public entry points, reference pages и appendix artifacts, а coverage guards защищают chapters и appendix pages от потери этих маршрутов.
 
 !!! note "Safe-agent schema update"
