@@ -4787,6 +4787,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "более четкая таксономия для `prompt injection`" in text
     assert "усилен retrieval-контур" in text
     assert "добавлены практические правила для больших каталогов инструментов" in text
+    assert "практическая рамка для `LLM-as-a-judge`" in text
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "training layer и product surface" not in text
@@ -4794,6 +4795,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "усилен retrieval contour" not in text
     assert "добавлены practical rules для больших tool catalogs" not in text
     assert "практические правила для больших tool catalogs" not in text
+    assert "practical framing для `LLM-as-a-judge`" not in text
 
 
 def test_russian_whats_new_runtime_note_is_localized() -> None:
