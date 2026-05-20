@@ -4738,7 +4738,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "controls и проверку runtime-control в lifecycle" in text
     assert "экспорт сессий и replay-сводки" in text
     assert "экспорт eval-наборов данных" in text
-    assert "экспорт trace с redaction" in text
+    assert "экспорт trace с redaction, редактированными сводками" in text
     assert "описательные главы" in text
     assert "работающую эталонную реализацию" in text
 
@@ -4748,6 +4748,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "session export и replay summaries",
         "eval dataset export",
         "trace export с redaction",
+        "redacted summaries",
         "narrative chapters",
         "runnable reference implementation",
     )
