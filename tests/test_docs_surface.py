@@ -4771,6 +4771,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "- traces и каталог событий;" in text
     assert "- eval-наборы данных и контракт оценивания;" in text
     assert "- пакеты политик и approvals-контуры;" in text
+    assert "- ревью изменений и rollout gates;" in text
     assert "проверяемым схемам и артефактам" in text
 
     forbidden_markers = (
@@ -4779,6 +4780,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "- traces и event catalog;",
         "- eval datasets и grading contract;",
         "- policy bundles и approvals;",
+        "- change review и rollout gates;",
         "reviewable схемам",
     )
 
