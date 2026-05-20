@@ -4731,6 +4731,13 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_russian_whats_new_intro_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "не заменяет историю Git" in text
+    assert "не заменяет git history" not in text
+
+
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
