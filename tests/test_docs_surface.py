@@ -4789,6 +4789,7 @@ def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
     assert "- кейсы;" in text
     assert "- шаблоны политик;" in text
     assert "- исследовательский фронтир;" in text
+    assert "- дорожная карта сообщества." in text
     assert "глоссарий и практические материалы" in text
 
     forbidden_markers = (
@@ -4798,6 +4799,7 @@ def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
         "- case studies;",
         "- policy templates;",
         "- research frontier;",
+        "- community roadmap.",
         "glossary и practical assets",
     )
 
