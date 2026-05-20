@@ -4684,7 +4684,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "快速同步发布检查清单",
             "在称为出版就绪之前",
             "EN/ZH 清理",
-            "独立 HTML/PDF/export QA",
+            "独立 HTML/PDF/导出 QA",
             "样章打磨",
             "面向具体出版社的纸质稿件/在线配套材料包装",
         ),
@@ -4716,6 +4716,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "реестр блокеров, waiver/decision log",
         "publisher packet 阻塞项登记表、waiver/decision log",
         "OpenGraph/Twitter metadata 和社交预览图",
+        "独立 HTML/PDF/export QA",
     )
 
     for path, expected_markers in expected_by_file.items():
