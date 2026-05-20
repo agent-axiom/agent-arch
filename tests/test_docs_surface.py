@@ -4639,7 +4639,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "Издательский проход качества идет, но еще не закрыт полностью.",
             "черновые и плановые страницы исключены из опубликованного сайта",
             "метаданные OpenGraph/Twitter и социальная превью-картинка",
-            "проверены поисковый индекс, sitemap, robots, локальные ресурсы",
+            "проверены поисковый индекс, sitemap, robots, локальные ресурсы, якоря, alt-тексты",
             "резервные canonical redirects покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из publisher packet вернули HTTP 200",
@@ -4704,6 +4704,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "Part VIII 角色图",
         "checklist быстрой синхронизации публикации",
         "локальные assets",
+        "локальные ресурсы, anchors, alt text",
     )
 
     for path, expected_markers in expected_by_file.items():
