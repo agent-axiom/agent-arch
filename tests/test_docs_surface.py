@@ -4740,6 +4740,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "экспорт eval-наборов данных" in text
     assert "экспорт trace с redaction, редактированными сводками" in text
     assert "сохранением replay" in text
+    assert "версионированием схем" in text
     assert "описательные главы" in text
     assert "работающую эталонную реализацию" in text
 
@@ -4751,6 +4752,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "trace export с redaction",
         "redacted summaries",
         "replay preservation",
+        "schema versioning",
         "narrative chapters",
         "runnable reference implementation",
     )
