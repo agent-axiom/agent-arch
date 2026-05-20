@@ -28,7 +28,8 @@ Status: working editorial artifact, not a public navigation page and not final e
 **Primary reader:**
 
 - platform and product architects responsible for agent systems;
-- systems that can read private context, call tools, request approvals, write to external systems, and survive incidents.
+- systems that can read private context, call tools, and request approvals;
+- systems that can write to external systems and survive incidents.
 
 **Problem:**
 
