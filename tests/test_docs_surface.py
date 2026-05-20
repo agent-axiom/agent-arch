@@ -4647,8 +4647,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "карта ролей части VIII теперь устойчива для печати",
             "чек-лист быстрой синхронизации публикации",
             "До статуса готовности к публикации еще остаются",
-            "EN/ZH-проверка",
-            "независимый HTML/PDF/export QA",
+            "проверка EN/ZH-слоев",
+            "независимый QA HTML/PDF/экспорта",
             "редакционная полировка глав-образцов",
             "упаковка печатной рукописи/онлайн-компаньона под конкретного издателя",
         ),
@@ -4705,6 +4705,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "checklist быстрой синхронизации публикации",
         "локальные assets",
         "локальные ресурсы, anchors, alt text",
+        "EN/ZH-проверка",
+        "независимый HTML/PDF/export QA",
     )
 
     for path, expected_markers in expected_by_file.items():
