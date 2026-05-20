@@ -4771,7 +4771,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "- traces и каталог событий;" in text
     assert "- eval-наборы данных и контракт оценивания;" in text
     assert "- пакеты политик и approvals-контуры;" in text
-    assert "- ревью изменений и rollout gates;" in text
+    assert "- ревью изменений и rollout-гейты;" in text
     assert "- контракты извлечения из памяти." in text
     assert "проверяемым схемам и артефактам" in text
 
@@ -4782,6 +4782,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "- eval datasets и grading contract;",
         "- policy bundles и approvals;",
         "- change review и rollout gates;",
+        "- ревью изменений и rollout gates;",
         "- memory retrieval contracts.",
         "reviewable схемам",
     )
