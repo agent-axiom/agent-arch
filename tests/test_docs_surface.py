@@ -4736,6 +4736,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
 
     assert "approvals и контекст делегированной авторизации" in text
     assert "controls и проверку runtime-control в lifecycle" in text
+    assert "lifecycle-артефакты" in text
     assert "экспорт сессий и replay-сводки" in text
     assert "экспорт eval-наборов данных" in text
     assert "экспорт trace с redaction, редактированными сводками" in text
@@ -4747,6 +4748,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     forbidden_markers = (
         "approvals и delegated authorization context",
         "controls и lifecycle runtime-control inspection",
+        "lifecycle artifacts",
         "session export и replay summaries",
         "eval dataset export",
         "trace export с redaction",
