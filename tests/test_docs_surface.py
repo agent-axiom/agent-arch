@@ -4614,6 +4614,7 @@ def test_english_book_plan_matches_home_publication_status() -> None:
 def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
     expected_by_file = {
         "docs/whats-new.md": (
+            "Актуально на 20 мая 2026 года",
             "Издательский проход качества идет, но еще не закрыт полностью.",
             "canonical fallback redirects покрывают основные entry points",
             "запись о доступности публичных ссылок обновлена",
@@ -4628,6 +4629,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "упаковка печатной рукописи/онлайн-компаньона под конкретного издателя",
         ),
         "docs/whats-new.en.md": (
+            "Current as of May 20, 2026",
             "The publisher-facing quality pass is in progress, not fully closed.",
             "canonical fallback redirects cover the main hand-copied entry points",
             "public-link availability record was refreshed",
@@ -4640,6 +4642,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "sample-chapter polish",
         ),
         "docs/whats-new.zh.md": (
+            "更新于 2026 年 5 月 20 日",
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
             "canonical fallback redirects 已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已刷新",
@@ -4658,6 +4661,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "publisher-facing layer is fully closed",
         "publisher-facing слой полностью закрыт",
         "面向出版的质量层已经完全关闭",
+        "Current as of May 19, 2026",
+        "Актуально на 19 мая 2026 года",
+        "更新于 2026 年 5 月 19 日",
     )
 
     for path, expected_markers in expected_by_file.items():
