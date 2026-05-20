@@ -592,7 +592,7 @@ def test_publisher_packet_has_external_submission_blocker_register() -> None:
         "Target editor / imprint formatting",
         "Owner/input needed",
         "Packet action when closed",
-        "explicitly waived by the author",
+        "author explicitly waives",
     )
 
     _assert_files_contain_all(("docs/publisher-ready-toc.md",), required_markers)
@@ -619,11 +619,19 @@ def test_publisher_packet_blocker_sections_are_print_friendly() -> None:
     assert blocker_section.count("  - Current state:") == 4
     assert blocker_section.count("  - Owner/input needed:") == 4
     assert blocker_section.count("  - Packet action when closed:") == 4
+    assert "  - Scope options: Chapter 1 only, or Chapter 1 plus Chapter 13." in blocker_section
+    assert "confirms Chapter 1 only vs Chapter 1 plus Chapter 13" not in blocker_section
+    assert (
+        "**Submission state:** not externally sendable until all four blockers are closed."
+        in blocker_section
+    )
+    assert "author explicitly waives the remaining blockers." in blocker_section
+    assert "until all four blockers are closed or explicitly waived" not in blocker_section
     assert waiver_section.count("- **") >= 6
     for marker in forbidden_inline_labels:
         assert marker not in blocker_section
         assert marker not in waiver_section
-    assert all(len(line) <= 135 for line in blocker_section.splitlines())
+    assert all(len(line) <= 110 for line in blocker_section.splitlines())
     assert all(len(line) <= 135 for line in waiver_section.splitlines())
 
 
@@ -1118,6 +1126,8 @@ def test_publisher_packet_print_pdf_gate_is_print_friendly() -> None:
 
     for marker in forbidden_inline_markers:
         assert marker not in section
+    assert "run a print-friction pass." in section
+    assert "run a separate pass for print friction" not in section
     assert "**No-go signals:**\n" in section
     assert "- URLs are visible enough for print readers;" in section
     assert "- companion-only links are grouped instead of scattered through the prose;" in section
@@ -1130,7 +1140,7 @@ def test_publisher_packet_print_pdf_gate_is_print_friendly() -> None:
         in section
     )
     assert section.count("\n- ") >= 14
-    assert all(len(line) <= 125 for line in section.splitlines())
+    assert all(len(line) <= 110 for line in section.splitlines())
 
 
 
