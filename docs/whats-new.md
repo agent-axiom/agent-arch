@@ -45,7 +45,7 @@ _Актуально на 20 мая 2026 года._
 - traces и каталог событий;
 - eval-наборы данных и контракт оценивания;
 - пакеты политик и approvals-контуры;
-- change review и rollout gates;
+- ревью изменений и rollout gates;
 - lifecycle-артефакты;
 - memory retrieval contracts.
 
