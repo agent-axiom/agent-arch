@@ -4891,7 +4891,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "контрольные механизмы и проверку runtime-control в lifecycle" in text
     assert "артефакты жизненного цикла (lifecycle)" in text
     assert "экспорт сессий и сводки воспроизведения (replay)" in text
-    assert "экспорт eval-наборов данных" in text
+    assert "экспорт наборов данных eval" in text
     assert "экспорт trace с редактированием (redaction), редактированными сводками" in text
     assert "сохранением воспроизведения (replay)" in text
     assert "версионированием схем" in text
@@ -4908,6 +4908,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "session export и replay summaries",
         "экспорт сессий и replay-сводки",
         "eval dataset export",
+        "экспорт eval-наборов данных",
         "trace export с redaction",
         "экспорт trace с redaction",
         "redacted summaries",
@@ -4928,7 +4929,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "Справочный слой с переиспользуемыми схемами" in text
     assert "отдельные справочные страницы" in text
     assert "- трассы (traces) и каталог событий;" in text
-    assert "- eval-наборы данных и контракт оценивания;" in text
+    assert "- наборы данных eval и контракт оценивания;" in text
     assert "- пакеты политик и контуры согласований (approvals);" in text
     assert "- ревью изменений и гейты раскатки;" in text
     assert "- артефакты жизненного цикла (lifecycle);" in text
@@ -4941,6 +4942,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "- traces и event catalog;",
         "- traces и каталог событий;",
         "- eval datasets и grading contract;",
+        "- eval-наборы данных и контракт оценивания;",
         "- policy bundles и approvals;",
         "- пакеты политик и approvals-контуры;",
         "- change review и rollout gates;",
