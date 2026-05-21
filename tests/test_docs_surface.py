@@ -4835,7 +4835,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
 
     assert "Усилен production-контур" in text
     assert "между архитектурой, retrieval-поиском, исполнением и eval-дисциплиной" in text
-    assert "архитектура исполнения (runtime), training-слой и продуктовая поверхность" in text
+    assert "архитектура исполнения (runtime), слой обучения и продуктовая поверхность" in text
     assert "более четкая таксономия для `prompt injection`" in text
     assert "усилен retrieval-контур" in text
     assert "различие между дообучением (continued pretraining) и `SFT`" in text
@@ -4854,6 +4854,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "training layer и product surface" not in text
     assert "training layer и продуктовая поверхность" not in text
     assert "runtime-архитектура, training-слой" not in text
+    assert "training-слой" not in text
     assert "более четкая taxonomy для `prompt injection`" not in text
     assert "усилен retrieval contour" not in text
     assert "различие между continued pretraining и `SFT`" not in text
