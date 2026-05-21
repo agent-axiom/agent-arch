@@ -96,7 +96,7 @@ _Актуально на 20 мая 2026 года._
 - `semantic tool filtering`;
 - `HyDE` и `RAG vs training`;
 - `latency budget` и маршрутизированные конвейеры;
-- `LLM-as-a-judge` и judge calibration;
+- `LLM-as-a-judge` и калибровку судьи (judge calibration);
 - различие между `prompt injection`, `jailbreak` и `action hallucination`.
 
 Почему это важно: новые темы стали заметны не только внутри отдельных глав, но и на уровне читательских точек входа.
