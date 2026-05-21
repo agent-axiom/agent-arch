@@ -53,7 +53,7 @@ _Актуально на 20 мая 2026 года._
 
 ## Runtime
 
-### Исполняемый эталонный runtime
+### Исполняемая эталонная среда исполнения (runtime)
 
 В репозитории есть [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) — небольшой исполняемый пакет, который поддерживает:
 
