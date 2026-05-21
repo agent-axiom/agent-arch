@@ -4871,6 +4871,7 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "Часть VIII про жизненный цикл агентной системы" in text
+    assert "переход от `SDLC` к `ADLC`" in text
     assert "управление изменениями" in text
     assert "контур обеспечения доверия (assurance)" in text
     assert "цепочку поставки" in text
@@ -4880,6 +4881,7 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "наблюдаемость AI-native-систем (observability)" in text
     assert "контроль инвентаризации (inventory)" in text
     assert "change management" not in text
+    assert "блок про `SDLC -> ADLC`" not in text
     assert "assurance loop" not in text
     assert "контур assurance" not in text
     assert "supply chain" not in text
