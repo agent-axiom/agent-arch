@@ -4853,13 +4853,14 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
 
     assert "Часть VIII про жизненный цикл агентной системы" in text
     assert "управление изменениями" in text
-    assert "контур assurance" in text
+    assert "контур обеспечения доверия (assurance)" in text
     assert "цепочку поставки" in text
     assert "вывод из эксплуатации" in text
     assert "поведенческие оценки (evals)" in text
     assert "контроль инвентаря (inventory)" in text
     assert "change management" not in text
     assert "assurance loop" not in text
+    assert "контур assurance" not in text
     assert "supply chain" not in text
     assert "retirement" not in text
     assert "behavioral evals" not in text
