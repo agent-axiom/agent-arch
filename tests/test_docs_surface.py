@@ -4809,7 +4809,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert '!!! note "Обновление схем safe-agent"' in text
     assert "связали прозу, приложения и защитные проверки для архитектуры safe-agent" in text
     assert "модель угроз MCP и контракт `mcp_server`" in text
-    assert "контракт доверия для передачи A2A (handoff)" in text
+    assert "контракт доверия для передачи управления A2A (handoff)" in text
     assert "артефакт делегирования доверия (trust-delegation)" in text
     assert "карта эшелонированной защиты (defense-in-depth)" in text
     assert "запись вердикта проверяющего (verifier verdict)" in text
@@ -4828,6 +4828,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "MCP threat model и `mcp_server` contract" not in text
     assert "A2A handoff trust contract" not in text
     assert "контракт доверия для A2A handoff" not in text
+    assert "контракт доверия для передачи A2A (handoff)" not in text
     assert "trust-delegation artifact" not in text
     assert "артефакт trust-delegation" not in text
     assert "defense-in-depth control map" not in text
@@ -6895,8 +6896,9 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     _assert_files_contain_all(checked_files[1:], required_markers[4:])
     ru_text = _read("docs/whats-new.md")
     assert "модель угроз MCP" in ru_text
-    assert "контракт доверия для передачи A2A (handoff)" in ru_text
+    assert "контракт доверия для передачи управления A2A (handoff)" in ru_text
     assert "контракт доверия для A2A handoff" not in ru_text
+    assert "контракт доверия для передачи A2A (handoff)" not in ru_text
     assert "артефакт делегирования доверия (trust-delegation)" in ru_text
     assert "артефакт trust-delegation" not in ru_text
     assert "карта эшелонированной защиты (defense-in-depth)" in ru_text
