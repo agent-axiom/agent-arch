@@ -4922,7 +4922,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "продуктовый разбор бюджета задержки (`latency budget`)" in text
     assert "практическая рамка для оценки через `LLM-as-a-judge`" in text
     assert "базовые платформенные слои" in text
-    assert "между дизайн-ревью, циклом оценивания (eval) и раскаткой" in text
+    assert "между обсуждением дизайна, циклом оценивания (eval) и раскаткой" in text
     assert "повседневные вопросы эксплуатационной команды" in text
     assert "читательских точек входа" in text
     assert "семантическая фильтрация инструментов (`semantic tool filtering`)" in text
@@ -4973,6 +4973,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "`LLM-as-a-judge` и judge calibration" not in text
     assert "- `LLM-as-a-judge` и калибровку судьи" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
+    assert "между дизайн-ревью, циклом оценивания (eval) и раскаткой" not in text
     assert "между дизайн-ревью, eval-циклом" not in text
     assert "между дизайн-ревью, eval-циклом и rollout" not in text
     assert "повседневные вопросы production-команды" not in text
