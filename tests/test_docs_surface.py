@@ -4883,7 +4883,10 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "Усилен эксплуатационный контур (production) в частях I-V" in text
-    assert "между архитектурой, retrieval-поиском, исполнением и eval-дисциплиной" in text
+    assert (
+        "между архитектурой, поиском по знаниям (retrieval), исполнением и eval-дисциплиной"
+        in text
+    )
     assert "архитектура исполнения (runtime), слой обучения и продуктовая поверхность" in text
     assert "более четкая таксономия для инъекций промптов (`prompt injection`)" in text
     assert "джейлбрейка (`jailbreak`)" in text
@@ -4913,6 +4916,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" not in text
     assert "между архитектурой, retrieval, исполнением и eval-дисциплиной" not in text
+    assert "между архитектурой, retrieval-поиском" not in text
     assert "training layer и product surface" not in text
     assert "training layer и продуктовая поверхность" not in text
     assert "runtime-архитектура, training-слой" not in text
