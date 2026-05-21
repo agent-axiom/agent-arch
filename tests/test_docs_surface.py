@@ -4802,7 +4802,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "модель угроз MCP и контракт `mcp_server`" in text
     assert "контракт доверия для передачи A2A (handoff)" in text
     assert "артефакт делегирования доверия (trust-delegation)" in text
-    assert "карта defense-in-depth-контролей" in text
+    assert "карта эшелонированной защиты (defense-in-depth)" in text
     assert "запись вердикта проверяющего (verifier verdict)" in text
     assert "запись управленческого действия (governance action)" in text
     assert "сопоставление телеметрии NIST AI RMF" in text
@@ -4823,6 +4823,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "артефакт trust-delegation" not in text
     assert "defense-in-depth control map" not in text
     assert "карта defense-in-depth controls" not in text
+    assert "карта defense-in-depth-контролей" not in text
     assert "verifier verdict record" not in text
     assert "запись verifier verdict" not in text
     assert "governance action record" not in text
@@ -6885,7 +6886,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "контракт доверия для A2A handoff" not in ru_text
     assert "артефакт делегирования доверия (trust-delegation)" in ru_text
     assert "артефакт trust-delegation" not in ru_text
-    assert "карта defense-in-depth-контролей" in ru_text
+    assert "карта эшелонированной защиты (defense-in-depth)" in ru_text
     assert "запись вердикта проверяющего (verifier verdict)" in ru_text
     assert "запись управленческого действия (governance action)" in ru_text
     assert "сопоставление телеметрии NIST AI RMF" in ru_text
@@ -6895,6 +6896,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "[схеме eval](appendix/eval-schema.md)" in ru_text
     assert "[схеме memory/retrieval](appendix/memory-retrieval-schema.md)" in ru_text
     assert "карта defense-in-depth controls" not in ru_text
+    assert "карта defense-in-depth-контролей" not in ru_text
     assert "verifier verdict record" not in ru_text
     assert "запись verifier verdict" not in ru_text
     assert "governance action record" not in ru_text
