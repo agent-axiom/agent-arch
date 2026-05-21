@@ -4798,11 +4798,12 @@ def test_russian_whats_new_book_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "рамка принятия решений в Главе 1" in text
-    assert "для HTML/PDF и извлечения в plain text" in text
+    assert "для HTML/PDF и извлечения в простой текст" in text
     assert "быстро меняющиеся главы, «Источники» и «Что нового»" in text
     assert "подвижные разделы по безопасности агентов" in text
     assert "decision frame в Главе 1" not in text
     assert "для HTML/PDF/plain-text extraction" not in text
+    assert "извлечения в plain text" not in text
     assert "fast-moving главы" not in text
     assert "Sources и What’s New" not in text
     assert "agent-security разделы" not in text
