@@ -4919,7 +4919,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "повседневные вопросы эксплуатационной команды" in text
     assert "читательских точек входа" in text
     assert "семантическая фильтрация инструментов (`semantic tool filtering`)" in text
-    assert "`HyDE` и выбор между RAG и обучением (`RAG vs training`)" in text
+    assert "`HyDE` и выбор между RAG и обучением модели (`RAG vs training`)" in text
     assert "бюджет задержки (`latency budget`) и маршрутизированные конвейеры" in text
     assert "оценку через `LLM-as-a-judge` и калибровку судьи (judge calibration)" in text
     assert "инъекцией промптов (`prompt injection`)" in text
@@ -4961,6 +4961,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "`latency budget` и маршрутизированные конвейеры" not in text
     assert "- `semantic tool filtering`;" not in text
     assert "- `HyDE` и `RAG vs training`;" not in text
+    assert "`HyDE` и выбор между RAG и обучением (`RAG vs training`)" not in text
     assert "`LLM-as-a-judge` и judge calibration" not in text
     assert "- `LLM-as-a-judge` и калибровку судьи" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
