@@ -4910,7 +4910,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "семантическая фильтрация инструментов" in text
     assert "явные роли MCP: `host`, `client` и `server`" in text
     assert "бюджет задержки (`latency budget`)" in text
-    assert "практическая рамка для `LLM-as-a-judge`" in text
+    assert "практическая рамка для оценки через `LLM-as-a-judge`" in text
     assert "базовые платформенные слои" in text
     assert "между дизайн-ревью, циклом оценивания (eval) и раскаткой" in text
     assert "повседневные вопросы эксплуатационной команды" in text
@@ -4949,6 +4949,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "явные роли `MCP host / client / server`" not in text
     assert "продуктовый взгляд на `latency budget`" not in text
     assert "practical framing для `LLM-as-a-judge`" not in text
+    assert "практическая рамка для `LLM-as-a-judge`" not in text
     assert "базовые platform layers" not in text
     assert "между design review, eval loop и rollout" not in text
     assert "reader entry points" not in text
