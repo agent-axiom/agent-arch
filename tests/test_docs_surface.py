@@ -4886,6 +4886,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между архитектурой, retrieval-поиском, исполнением и eval-дисциплиной" in text
     assert "архитектура исполнения (runtime), слой обучения и продуктовая поверхность" in text
     assert "более четкая таксономия для `prompt injection`" in text
+    assert "галлюцинаций действий (`action hallucination`)" in text
     assert "усилен retrieval-контур" in text
     assert "семантический разрыв (`semantic gap`)" in text
     assert "подход RAG-first (`RAG first`)" in text
@@ -4902,6 +4903,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "`HyDE` и выбор между RAG и обучением (`RAG vs training`)" in text
     assert "`latency budget` и маршрутизированные конвейеры" in text
     assert "`LLM-as-a-judge` и калибровку судьи (judge calibration)" in text
+    assert "галлюцинациями действий (`action hallucination`)" in text
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" not in text
@@ -4911,6 +4913,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "runtime-архитектура, training-слой" not in text
     assert "training-слой" not in text
     assert "более четкая taxonomy для `prompt injection`" not in text
+    assert "`jailbreak` и `action hallucination`" not in text
     assert "усилен retrieval contour" not in text
     assert "retrieval-контур: `semantic gap`" not in text
     assert "`HyDE`, `RAG first`, различие" not in text
