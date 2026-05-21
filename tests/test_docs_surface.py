@@ -4652,6 +4652,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "независимый QA HTML/PDF/экспорта",
             "редакционная полировка глав-образцов",
             "упаковка печатной рукописи/онлайн-компаньона под конкретного издателя",
+            "не выглядеть как сырая сборка из файлов Markdown",
         ),
         "docs/whats-new.en.md": (
             "Current as of May 20, 2026",
@@ -4697,6 +4698,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "Актуально на 19 мая 2026 года",
         "更新于 2026 年 5 月 19 日",
         "canonical fallback redirects покрывают основные entry points",
+        "сырая сборка из Markdown-файлов",
         "резервные canonical redirects покрывают основные точки входа",
         "basic navigation 和 canonical fallback redirects",
         "publisher-packet links вернули HTTP 200",
@@ -4754,11 +4756,15 @@ def test_russian_whats_new_reader_value_note_is_localized() -> None:
 
     assert "Можно читать книгу как практическое руководство." in text
     assert "Можно использовать справочные страницы как инженерные заготовки." in text
-    assert "Можно запускать примерный исполняемый пакет, а не только читать Markdown-файлы." in text
+    assert "Можно запускать примерный исполняемый пакет, а не только читать файлы Markdown." in text
     assert "Можно читать книгу как handbook." not in text
     assert "Можно использовать reference pages как инженерные заготовки." not in text
     assert "Можно запускать примерный runtime, а не только читать Markdown." not in text
     assert "Можно запускать примерный исполняемый пакет, а не только читать Markdown." not in text
+    assert (
+        "Можно запускать примерный исполняемый пакет, а не только читать Markdown-файлы."
+        not in text
+    )
 
 
 def test_russian_whats_new_canonical_case_note_is_localized() -> None:
