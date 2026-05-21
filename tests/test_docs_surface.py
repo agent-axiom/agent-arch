@@ -5029,7 +5029,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
 
     assert "Справочный слой с переиспользуемыми схемами" in text
     assert "отдельные справочные страницы" in text
-    assert "- трассы (traces) и каталог событий;" in text
+    assert "- трассировки (traces) и каталог событий;" in text
     assert "- оценочные наборы данных (eval) и контракт оценивания;" in text
     assert "- наборы данных eval и контракт оценивания;" not in text
     assert "- пакеты политик и контуры согласований (approvals);" in text
@@ -5043,6 +5043,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "reference pages для",
         "- traces и event catalog;",
         "- traces и каталог событий;",
+        "- трассы (traces) и каталог событий;",
         "- eval datasets и grading contract;",
         "- eval-наборы данных и контракт оценивания;",
         "- policy bundles и approvals;",
