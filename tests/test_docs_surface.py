@@ -4812,6 +4812,24 @@ def test_russian_whats_new_book_note_is_localized() -> None:
     assert "agent-security разделы" not in text
 
 
+def test_russian_whats_new_lifecycle_note_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "Часть VIII про жизненный цикл агентной системы" in text
+    assert "управление изменениями" in text
+    assert "контур assurance" in text
+    assert "цепочку поставки" in text
+    assert "вывод из эксплуатации" in text
+    assert "поведенческие evals" in text
+    assert "контроль inventory" in text
+    assert "change management" not in text
+    assert "assurance loop" not in text
+    assert "supply chain" not in text
+    assert "retirement" not in text
+    assert "behavioral evals" not in text
+    assert "inventory control" not in text
+
+
 def test_russian_whats_new_production_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 

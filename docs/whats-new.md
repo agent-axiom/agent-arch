@@ -20,7 +20,7 @@ _Актуально на 20 мая 2026 года._
 
 ### Часть VIII про жизненный цикл агентной системы
 
-Теперь в книге есть цельный блок про `SDLC -> ADLC`, change management, assurance loop, supply chain, retirement, misalignment, behavioral evals, AI-native observability и inventory control.
+Теперь в книге есть цельный блок про `SDLC -> ADLC`, управление изменениями, контур assurance, цепочку поставки, вывод из эксплуатации, misalignment, поведенческие evals, AI-native observability и контроль inventory.
 
 Почему это важно: теперь книга закрывает не только архитектуру и запуск, но и жизнь системы после релиза.
 
