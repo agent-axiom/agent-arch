@@ -95,7 +95,7 @@ _Актуально на 20 мая 2026 года._
 
 - `semantic tool filtering`;
 - `HyDE` и `RAG vs training`;
-- `latency budget` и routed pipelines;
+- `latency budget` и маршрутизированные конвейеры;
 - `LLM-as-a-judge` и judge calibration;
 - различие между `prompt injection`, `jailbreak` и `action hallucination`.
 

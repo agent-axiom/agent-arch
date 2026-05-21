@@ -4847,6 +4847,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между дизайн-ревью, eval-циклом и раскаткой" in text
     assert "повседневные вопросы эксплуатационной команды" in text
     assert "читательских точек входа" in text
+    assert "`latency budget` и маршрутизированные конвейеры" in text
     assert "Усилен production contour" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" not in text
@@ -4866,6 +4867,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "базовые platform layers" not in text
     assert "между design review, eval loop и rollout" not in text
     assert "reader entry points" not in text
+    assert "latency budget` и routed pipelines" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
     assert "между дизайн-ревью, eval-циклом и rollout" not in text
     assert "повседневные вопросы production-команды" not in text
