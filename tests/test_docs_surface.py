@@ -4983,7 +4983,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "экспорт сессий и сводки воспроизведения (replay)" in text
     assert "экспорт оценочных наборов данных (eval)" in text
     assert "экспорт наборов данных eval" not in text
-    assert "экспорт трасс (trace) с редактированием (redaction), редактированными сводками" in text
+    assert "экспорт трасс (trace) с маскированием данных (redaction), очищенными сводками" in text
     assert "сохранением воспроизведения (replay)" in text
     assert "версионированием схем" in text
     assert "описательные главы" in text
@@ -5004,6 +5004,8 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "trace export с redaction",
         "экспорт trace с redaction",
         "экспорт trace с редактированием (redaction)",
+        "экспорт трасс (trace) с редактированием (redaction)",
+        "редактированными сводками",
         "redacted summaries",
         "replay preservation",
         "сохранением replay",
