@@ -4857,7 +4857,7 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "цепочку поставки" in text
     assert "вывод из эксплуатации" in text
     assert "поведенческие оценки (evals)" in text
-    assert "контроль inventory" in text
+    assert "контроль инвентаря (inventory)" in text
     assert "change management" not in text
     assert "assurance loop" not in text
     assert "supply chain" not in text
@@ -4865,6 +4865,7 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "behavioral evals" not in text
     assert "поведенческие evals" not in text
     assert "inventory control" not in text
+    assert "контроль inventory" not in text
 
 
 def test_russian_whats_new_production_note_is_localized() -> None:
