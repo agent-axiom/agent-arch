@@ -4769,13 +4769,14 @@ def test_russian_whats_new_canonical_case_note_is_localized() -> None:
     assert "публичных точках входа" in text
     assert "справочных страницах" in text
     assert "артефактах приложений" in text
-    assert "защищают главы и страницы приложений" in text
+    assert "проверки покрытия защищают главы и страницы приложений" in text
     assert '!!! note "Canonical case update"' not in text
     assert "book chapters" not in text
     assert "public entry points" not in text
     assert "reference pages" not in text
     assert "appendix artifacts" not in text
     assert "chapters и appendix pages" not in text
+    assert "coverage guards" not in text
 
 
 def test_russian_whats_new_safe_agent_note_is_localized() -> None:
@@ -6868,12 +6869,13 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
     assert "публичных точках входа" in ru_text
     assert "справочных страницах" in ru_text
     assert "артефактах приложений" in ru_text
-    assert "защищают главы и страницы приложений" in ru_text
+    assert "проверки покрытия защищают главы и страницы приложений" in ru_text
     assert "book chapters" not in ru_text
     assert "public entry points" not in ru_text
     assert "reference pages" not in ru_text
     assert "appendix artifacts" not in ru_text
     assert "chapters и appendix pages" not in ru_text
+    assert "coverage guards" not in ru_text
 
 
 def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
