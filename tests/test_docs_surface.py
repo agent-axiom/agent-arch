@@ -4892,7 +4892,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "более четкая таксономия для инъекций промптов (`prompt injection`)" in text
     assert "джейлбрейка (`jailbreak`)" in text
     assert "галлюцинаций действий (`action hallucination`)" in text
-    assert "усилен retrieval-контур" in text
+    assert "усилен контур поиска по знаниям (retrieval)" in text
     assert "семантический разрыв (`semantic gap`)" in text
     assert "подход RAG-first (`RAG first`)" in text
     assert "различие между дообучением (continued pretraining) и `SFT`" in text
@@ -4929,6 +4929,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "`prompt injection`, `jailbreak`" not in text
     assert "усилен retrieval contour" not in text
     assert "retrieval-контур: `semantic gap`" not in text
+    assert "усилен retrieval-контур" not in text
     assert "`HyDE`, `RAG first`, различие" not in text
     assert "различие между continued pretraining и `SFT`" not in text
     assert "добавлены practical rules для больших tool catalogs" not in text
