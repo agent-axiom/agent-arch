@@ -4763,9 +4763,11 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert '!!! note "Обновление safe-agent схем"' in text
     assert "связали прозу, приложения и guards" in text
     assert "модель угроз MCP и контракт `mcp_server`" in text
+    assert "контракт доверия для A2A handoff" in text
     assert '!!! note "Safe-agent schema update"' not in text
     assert "связали prose, appendices и guards" not in text
     assert "MCP threat model и `mcp_server` contract" not in text
+    assert "A2A handoff trust contract" not in text
 
 
 def test_russian_whats_new_book_note_is_localized() -> None:
@@ -6734,7 +6736,8 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     _assert_files_contain_all(checked_files[1:], required_markers[4:])
     ru_text = _read("docs/whats-new.md")
     assert "модель угроз MCP" in ru_text
-    _assert_files_contain_all(("docs/whats-new.md",), required_markers[5:])
+    assert "контракт доверия для A2A handoff" in ru_text
+    _assert_files_contain_all(("docs/whats-new.md",), required_markers[5:6] + required_markers[7:])
 
 
 def test_whats_new_safe_agent_schema_update_links_are_clickable() -> None:
