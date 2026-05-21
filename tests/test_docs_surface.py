@@ -4894,6 +4894,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "различие между дообучением (continued pretraining) и `SFT`" in text
     assert "добавлены практические правила для больших каталогов инструментов" in text
     assert "семантическая фильтрация инструментов" in text
+    assert "явные роли MCP: `host`, `client` и `server`" in text
     assert "бюджет задержки (`latency budget`)" in text
     assert "практическая рамка для `LLM-as-a-judge`" in text
     assert "базовые платформенные слои" in text
@@ -4926,6 +4927,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "добавлены practical rules для больших tool catalogs" not in text
     assert "практические правила для больших tool catalogs" not in text
     assert "каталогов инструментов, `semantic tool filtering`" not in text
+    assert "явные роли `MCP host / client / server`" not in text
     assert "продуктовый взгляд на `latency budget`" not in text
     assert "practical framing для `LLM-as-a-judge`" not in text
     assert "базовые platform layers" not in text
