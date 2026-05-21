@@ -4886,6 +4886,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между дизайн-ревью, eval-циклом и раскаткой" in text
     assert "повседневные вопросы эксплуатационной команды" in text
     assert "читательских точек входа" in text
+    assert "семантическая фильтрация инструментов (`semantic tool filtering`)" in text
     assert "`latency budget` и маршрутизированные конвейеры" in text
     assert "`LLM-as-a-judge` и калибровку судьи (judge calibration)" in text
     assert "Усилен production contour" not in text
@@ -4908,6 +4909,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "между design review, eval loop и rollout" not in text
     assert "reader entry points" not in text
     assert "latency budget` и routed pipelines" not in text
+    assert "- `semantic tool filtering`;" not in text
     assert "`LLM-as-a-judge` и judge calibration" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
     assert "между дизайн-ревью, eval-циклом и rollout" not in text
