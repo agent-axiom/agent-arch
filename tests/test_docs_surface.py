@@ -4794,7 +4794,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "запись вердикта проверяющего (verifier verdict)" in text
     assert "запись управленческого действия (governance action)" in text
     assert "сопоставление телеметрии NIST AI RMF" in text
-    assert "поля проверки memory poisoning" in text
+    assert "поля проверки отравления памяти (memory poisoning)" in text
     assert "единая evidence-модель угроз агентам" in text
     assert '!!! note "Safe-agent schema update"' not in text
     assert '!!! note "Обновление safe-agent схем"' not in text
@@ -4814,6 +4814,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "запись governance action" not in text
     assert "NIST AI RMF telemetry mapping" not in text
     assert "memory poisoning review fields" not in text
+    assert "поля проверки memory poisoning" not in text
     assert "unified agent threat evidence" not in text
 
 
@@ -6828,7 +6829,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "запись вердикта проверяющего (verifier verdict)" in ru_text
     assert "запись управленческого действия (governance action)" in ru_text
     assert "сопоставление телеметрии NIST AI RMF" in ru_text
-    assert "поля проверки memory poisoning" in ru_text
+    assert "поля проверки отравления памяти (memory poisoning)" in ru_text
     assert "единая evidence-модель угроз агентам" in ru_text
     assert "карта defense-in-depth controls" not in ru_text
     assert "verifier verdict record" not in ru_text
@@ -6837,6 +6838,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "запись governance action" not in ru_text
     assert "NIST AI RMF telemetry mapping" not in ru_text
     assert "memory poisoning review fields" not in ru_text
+    assert "поля проверки memory poisoning" not in ru_text
     assert "unified agent threat evidence" not in ru_text
     _assert_files_contain_all(("docs/whats-new.md",), required_markers[5:6] + required_markers[14:])
 
