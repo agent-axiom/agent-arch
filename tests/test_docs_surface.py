@@ -4643,7 +4643,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "проверены поисковый индекс, карта сайта (sitemap), файл robots, "
             "локальные ресурсы, якоря",
             "альтернативные тексты (alt text) и внешние ссылки",
-            "резервные canonical-редиректы покрывают основные точки входа",
+            "резервные канонические редиректы (canonical) покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из издательского пакета вернули HTTP 200",
             "реестр блокеров, журнал решений/исключений, ограничение длины строк",
@@ -4704,6 +4704,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "canonical fallback redirects покрывают основные entry points",
         "сырая сборка из Markdown-файлов",
         "резервные canonical redirects покрывают основные точки входа",
+        "резервные canonical-редиректы покрывают основные точки входа",
         "basic navigation 和 canonical fallback redirects",
         "publisher-packet links вернули HTTP 200",
         "publisher packet вернули HTTP 200",
