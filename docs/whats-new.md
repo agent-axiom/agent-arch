@@ -58,7 +58,7 @@ _Актуально на 20 мая 2026 года._
 В репозитории есть [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) — небольшой исполняемый пакет, который поддерживает:
 
 - согласования (approvals) и контекст делегированной авторизации;
-- controls и проверку runtime-control в lifecycle;
+- контрольные механизмы и проверку runtime-control в lifecycle;
 - lifecycle-артефакты;
 - экспорт сессий и replay-сводки;
 - экспорт eval-наборов данных;
