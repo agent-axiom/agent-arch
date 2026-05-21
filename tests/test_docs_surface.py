@@ -4783,7 +4783,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert '!!! note "Обновление safe-agent схем"' in text
-    assert "связали прозу, приложения и guards" in text
+    assert "связали прозу, приложения и защитные проверки" in text
     assert "модель угроз MCP и контракт `mcp_server`" in text
     assert "контракт доверия для A2A handoff" in text
     assert "артефакт trust-delegation" in text
@@ -4795,6 +4795,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "единая evidence-модель угроз агентам" in text
     assert '!!! note "Safe-agent schema update"' not in text
     assert "связали prose, appendices и guards" not in text
+    assert "связали прозу, приложения и guards" not in text
     assert "MCP threat model и `mcp_server` contract" not in text
     assert "A2A handoff trust contract" not in text
     assert "trust-delegation artifact" not in text
