@@ -4741,6 +4741,13 @@ def test_russian_whats_new_intro_note_is_localized() -> None:
     assert "не заменяет git history" not in text
 
 
+def test_russian_whats_new_runtime_heading_is_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    assert "### Исполняемый эталонный runtime" in text
+    assert "### Runnable reference runtime" not in text
+
+
 def test_russian_whats_new_reader_value_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
