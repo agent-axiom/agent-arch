@@ -4884,7 +4884,8 @@ def test_russian_whats_new_production_note_is_localized() -> None:
 
     assert "Усилен эксплуатационный контур (production) в частях I-V" in text
     assert (
-        "между архитектурой, поиском по знаниям (retrieval), исполнением и eval-дисциплиной"
+        "между архитектурой, поиском по знаниям (retrieval), исполнением "
+        "и дисциплиной оценивания (eval)"
         in text
     )
     assert "архитектура исполнения (runtime), слой обучения и продуктовая поверхность" in text
@@ -4901,7 +4902,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "бюджет задержки (`latency budget`)" in text
     assert "практическая рамка для `LLM-as-a-judge`" in text
     assert "базовые платформенные слои" in text
-    assert "между дизайн-ревью, eval-циклом и раскаткой" in text
+    assert "между дизайн-ревью, циклом оценивания (eval) и раскаткой" in text
     assert "повседневные вопросы эксплуатационной команды" in text
     assert "читательских точек входа" in text
     assert "семантическая фильтрация инструментов (`semantic tool filtering`)" in text
@@ -4915,6 +4916,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "Усилен production-контур" not in text
     assert "между архитектурой, retrieval, execution и eval discipline" not in text
     assert "между архитектурой, retrieval, execution и eval-дисциплиной" not in text
+    assert "исполнением и eval-дисциплиной" not in text
     assert "между архитектурой, retrieval, исполнением и eval-дисциплиной" not in text
     assert "между архитектурой, retrieval-поиском" not in text
     assert "training layer и product surface" not in text
@@ -4944,6 +4946,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "- `HyDE` и `RAG vs training`;" not in text
     assert "`LLM-as-a-judge` и judge calibration" not in text
     assert "между дизайн-ревью, eval loop и rollout" not in text
+    assert "между дизайн-ревью, eval-циклом" not in text
     assert "между дизайн-ревью, eval-циклом и rollout" not in text
     assert "повседневные вопросы production-команды" not in text
 
