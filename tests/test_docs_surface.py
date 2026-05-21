@@ -4969,7 +4969,8 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "контрольные механизмы и проверку runtime-control в жизненном цикле (lifecycle)" in text
     assert "артефакты жизненного цикла (lifecycle)" in text
     assert "экспорт сессий и сводки воспроизведения (replay)" in text
-    assert "экспорт наборов данных eval" in text
+    assert "экспорт оценочных наборов данных (eval)" in text
+    assert "экспорт наборов данных eval" not in text
     assert "экспорт трасс (trace) с редактированием (redaction), редактированными сводками" in text
     assert "сохранением воспроизведения (replay)" in text
     assert "версионированием схем" in text
@@ -5009,7 +5010,8 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "Справочный слой с переиспользуемыми схемами" in text
     assert "отдельные справочные страницы" in text
     assert "- трассы (traces) и каталог событий;" in text
-    assert "- наборы данных eval и контракт оценивания;" in text
+    assert "- оценочные наборы данных (eval) и контракт оценивания;" in text
+    assert "- наборы данных eval и контракт оценивания;" not in text
     assert "- пакеты политик и контуры согласований (approvals);" in text
     assert "- ревью изменений и гейты раскатки;" in text
     assert "- артефакты жизненного цикла (lifecycle);" in text
