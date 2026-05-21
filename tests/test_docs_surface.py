@@ -4814,7 +4814,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "карта эшелонированной защиты (defense-in-depth)" in text
     assert "запись вердикта проверяющего (verifier verdict)" in text
     assert "запись управленческого действия (governance action)" in text
-    assert "сопоставление телеметрии NIST AI RMF" in text
+    assert "сопоставление телеметрии с NIST AI RMF" in text
     assert "поля проверки отравления памяти (memory poisoning)" in text
     assert "единая модель доказательств угроз агентам (evidence)" in text
     assert "[схеме trace](appendix/trace-schema.md)" in text
@@ -4839,6 +4839,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "governance action record" not in text
     assert "запись governance action" not in text
     assert "NIST AI RMF telemetry mapping" not in text
+    assert "сопоставление телеметрии NIST AI RMF" not in text
     assert "memory poisoning review fields" not in text
     assert "поля проверки memory poisoning" not in text
     assert "unified agent threat evidence" not in text
@@ -6909,7 +6910,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "карта эшелонированной защиты (defense-in-depth)" in ru_text
     assert "запись вердикта проверяющего (verifier verdict)" in ru_text
     assert "запись управленческого действия (governance action)" in ru_text
-    assert "сопоставление телеметрии NIST AI RMF" in ru_text
+    assert "сопоставление телеметрии с NIST AI RMF" in ru_text
     assert "поля проверки отравления памяти (memory poisoning)" in ru_text
     assert "единая модель доказательств угроз агентам (evidence)" in ru_text
     assert "[схеме trace](appendix/trace-schema.md)" in ru_text
@@ -6922,6 +6923,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "governance action record" not in ru_text
     assert "запись governance action" not in ru_text
     assert "NIST AI RMF telemetry mapping" not in ru_text
+    assert "сопоставление телеметрии NIST AI RMF" not in ru_text
     assert "memory poisoning review fields" not in ru_text
     assert "поля проверки memory poisoning" not in ru_text
     assert "unified agent threat evidence" not in ru_text
