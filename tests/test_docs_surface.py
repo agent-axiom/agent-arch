@@ -4905,7 +4905,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
     assert "согласования (approvals) и контекст делегированной авторизации" in text
-    assert "контрольные механизмы и проверку runtime-control в lifecycle" in text
+    assert "контрольные механизмы и проверку runtime-control в жизненном цикле (lifecycle)" in text
     assert "артефакты жизненного цикла (lifecycle)" in text
     assert "экспорт сессий и сводки воспроизведения (replay)" in text
     assert "экспорт наборов данных eval" in text
@@ -4920,6 +4920,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "approvals и контекст делегированной авторизации",
         "controls и lifecycle runtime-control inspection",
         "controls и проверку runtime-control в lifecycle",
+        "контрольные механизмы и проверку runtime-control в lifecycle",
         "lifecycle artifacts",
         "lifecycle-артефакты",
         "session export и replay summaries",
