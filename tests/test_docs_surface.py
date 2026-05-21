@@ -4907,7 +4907,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "галлюцинаций действий (`action hallucination`)" in text
     assert "усилен контур поиска по знаниям (retrieval)" in text
     assert "семантический разрыв (`semantic gap`)" in text
-    assert "подход RAG-first (`RAG first`)" in text
+    assert "подход «сначала RAG» (`RAG first`)" in text
     assert "различие между продолженным предобучением (continued pretraining) и `SFT`" in text
     assert "добавлены практические правила для больших каталогов инструментов" in text
     assert "семантическая фильтрация инструментов" in text
@@ -4944,6 +4944,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "retrieval-контур: `semantic gap`" not in text
     assert "усилен retrieval-контур" not in text
     assert "`HyDE`, `RAG first`, различие" not in text
+    assert "подход RAG-first (`RAG first`)" not in text
     assert "различие между continued pretraining и `SFT`" not in text
     assert "различие между дообучением (continued pretraining)" not in text
     assert "добавлены practical rules для больших tool catalogs" not in text
