@@ -8,7 +8,7 @@ _Актуально на 20 мая 2026 года._
     Крупный слой обновлений от 15 мая 2026 года — сквозная карта трех canonical cases. **Support triage**, **Internal knowledge assistant** и **Incident coordination** теперь видны в главах книги, публичных точках входа, справочных страницах и артефактах приложений, а проверки покрытия защищают главы и страницы приложений от потери этих маршрутов.
 
 !!! note "Обновление safe-agent схем"
-    Обновления 17-19 мая 2026 года связали прозу, приложения и guards для safe-agent архитектуры: модель угроз MCP и контракт `mcp_server`, контракт доверия для A2A handoff и артефакт trust-delegation, карта defense-in-depth controls, запись verifier verdict, запись governance action, сопоставление телеметрии NIST AI RMF, поля проверки memory poisoning и единая evidence-модель угроз агентам теперь отражены в [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md).
+    Обновления 17-19 мая 2026 года связали прозу, приложения и защитные проверки для safe-agent архитектуры: модель угроз MCP и контракт `mcp_server`, контракт доверия для A2A handoff и артефакт trust-delegation, карта defense-in-depth controls, запись verifier verdict, запись governance action, сопоставление телеметрии NIST AI RMF, поля проверки memory poisoning и единая evidence-модель угроз агентам теперь отражены в [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md).
 
 ## Book
 
