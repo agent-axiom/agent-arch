@@ -4789,7 +4789,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "связали прозу, приложения и защитные проверки для архитектуры safe-agent" in text
     assert "модель угроз MCP и контракт `mcp_server`" in text
     assert "контракт доверия для передачи A2A (handoff)" in text
-    assert "артефакт trust-delegation" in text
+    assert "артефакт делегирования доверия (trust-delegation)" in text
     assert "карта defense-in-depth-контролей" in text
     assert "запись verifier verdict" in text
     assert "запись governance action" in text
@@ -4805,6 +4805,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "A2A handoff trust contract" not in text
     assert "контракт доверия для A2A handoff" not in text
     assert "trust-delegation artifact" not in text
+    assert "артефакт trust-delegation" not in text
     assert "defense-in-depth control map" not in text
     assert "карта defense-in-depth controls" not in text
     assert "verifier verdict record" not in text
@@ -6819,7 +6820,8 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "модель угроз MCP" in ru_text
     assert "контракт доверия для передачи A2A (handoff)" in ru_text
     assert "контракт доверия для A2A handoff" not in ru_text
-    assert "артефакт trust-delegation" in ru_text
+    assert "артефакт делегирования доверия (trust-delegation)" in ru_text
+    assert "артефакт trust-delegation" not in ru_text
     assert "карта defense-in-depth-контролей" in ru_text
     assert "запись verifier verdict" in ru_text
     assert "запись governance action" in ru_text
