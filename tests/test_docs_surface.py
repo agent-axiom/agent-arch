@@ -4909,7 +4909,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     assert "артефакты жизненного цикла (lifecycle)" in text
     assert "экспорт сессий и сводки воспроизведения (replay)" in text
     assert "экспорт наборов данных eval" in text
-    assert "экспорт trace с редактированием (redaction), редактированными сводками" in text
+    assert "экспорт трасс (trace) с редактированием (redaction), редактированными сводками" in text
     assert "сохранением воспроизведения (replay)" in text
     assert "версионированием схем" in text
     assert "описательные главы" in text
@@ -4929,6 +4929,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "экспорт eval-наборов данных",
         "trace export с redaction",
         "экспорт trace с redaction",
+        "экспорт trace с редактированием (redaction)",
         "redacted summaries",
         "replay preservation",
         "сохранением replay",
