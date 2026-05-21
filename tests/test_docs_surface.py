@@ -4769,6 +4769,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "запись verifier verdict" in text
     assert "запись governance action" in text
     assert "сопоставление телеметрии NIST AI RMF" in text
+    assert "поля проверки memory poisoning" in text
     assert '!!! note "Safe-agent schema update"' not in text
     assert "связали prose, appendices и guards" not in text
     assert "MCP threat model и `mcp_server` contract" not in text
@@ -4778,6 +4779,7 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "verifier verdict record" not in text
     assert "governance action record" not in text
     assert "NIST AI RMF telemetry mapping" not in text
+    assert "memory poisoning review fields" not in text
 
 
 def test_russian_whats_new_book_note_is_localized() -> None:
@@ -6752,10 +6754,12 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "запись verifier verdict" in ru_text
     assert "запись governance action" in ru_text
     assert "сопоставление телеметрии NIST AI RMF" in ru_text
+    assert "поля проверки memory poisoning" in ru_text
     assert "verifier verdict record" not in ru_text
     assert "governance action record" not in ru_text
     assert "NIST AI RMF telemetry mapping" not in ru_text
-    _assert_files_contain_all(("docs/whats-new.md",), required_markers[5:6] + required_markers[12:])
+    assert "memory poisoning review fields" not in ru_text
+    _assert_files_contain_all(("docs/whats-new.md",), required_markers[5:6] + required_markers[13:])
 
 
 def test_whats_new_safe_agent_schema_update_links_are_clickable() -> None:
