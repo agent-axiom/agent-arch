@@ -4980,7 +4980,7 @@ def test_russian_whats_new_production_note_is_localized() -> None:
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert "согласования (approvals) и контекст делегированной авторизации" in text
+    assert "согласования (approvals) и контекст делегирования авторизации" in text
     assert "контрольные механизмы и проверку управления исполнением (`runtime-control`)" in text
     assert "в жизненном цикле (lifecycle)" in text
     assert "артефакты жизненного цикла (lifecycle)" in text
@@ -4996,6 +4996,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
     forbidden_markers = (
         "approvals и delegated authorization context",
         "approvals и контекст делегированной авторизации",
+        "согласования (approvals) и контекст делегированной авторизации",
         "controls и lifecycle runtime-control inspection",
         "controls и проверку runtime-control в lifecycle",
         "контрольные механизмы и проверку runtime-control в lifecycle",
