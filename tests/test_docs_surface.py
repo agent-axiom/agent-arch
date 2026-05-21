@@ -4889,7 +4889,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
 
     assert "согласования (approvals) и контекст делегированной авторизации" in text
     assert "контрольные механизмы и проверку runtime-control в lifecycle" in text
-    assert "lifecycle-артефакты" in text
+    assert "артефакты жизненного цикла (lifecycle)" in text
     assert "экспорт сессий и replay-сводки" in text
     assert "экспорт eval-наборов данных" in text
     assert "экспорт trace с redaction, редактированными сводками" in text
@@ -4904,6 +4904,7 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
         "controls и lifecycle runtime-control inspection",
         "controls и проверку runtime-control в lifecycle",
         "lifecycle artifacts",
+        "lifecycle-артефакты",
         "session export и replay summaries",
         "eval dataset export",
         "trace export с redaction",
@@ -4927,6 +4928,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "- eval-наборы данных и контракт оценивания;" in text
     assert "- пакеты политик и контуры согласований (approvals);" in text
     assert "- ревью изменений и гейты раскатки;" in text
+    assert "- артефакты жизненного цикла (lifecycle);" in text
     assert "- контракты извлечения из памяти." in text
     assert "проверяемым схемам и артефактам" in text
 
@@ -4940,6 +4942,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "- change review и rollout gates;",
         "- ревью изменений и rollout gates;",
         "- ревью изменений и rollout-гейты;",
+        "- lifecycle-артефакты;",
         "- memory retrieval contracts.",
         "reviewable схемам",
     )
