@@ -5036,7 +5036,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
     assert "- пакеты политик и контуры согласований (approvals);" in text
     assert "- ревью изменений и контрольные этапы раскатки;" in text
     assert "- артефакты жизненного цикла (lifecycle);" in text
-    assert "- контракты извлечения из памяти." in text
+    assert "- контракты поиска и извлечения из памяти." in text
     assert "проверяемым схемам и артефактам" in text
 
     forbidden_markers = (
@@ -5055,6 +5055,7 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
         "- ревью изменений и гейты раскатки;",
         "- lifecycle-артефакты;",
         "- memory retrieval contracts.",
+        "- контракты извлечения из памяти.",
         "reviewable схемам",
     )
 
