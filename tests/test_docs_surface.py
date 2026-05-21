@@ -4764,13 +4764,16 @@ def test_russian_whats_new_reader_value_note_is_localized() -> None:
 def test_russian_whats_new_canonical_case_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert '!!! note "Обновление canonical cases"' in text
+    assert '!!! note "Обновление канонических сценариев"' in text
+    assert "сквозная карта трех канонических сценариев (canonical cases)" in text
     assert "главах книги" in text
     assert "публичных точках входа" in text
     assert "справочных страницах" in text
     assert "артефактах приложений" in text
     assert "проверки покрытия защищают главы и страницы приложений" in text
     assert '!!! note "Canonical case update"' not in text
+    assert '!!! note "Обновление canonical cases"' not in text
+    assert "сквозная карта трех canonical cases" not in text
     assert "book chapters" not in text
     assert "public entry points" not in text
     assert "reference pages" not in text
