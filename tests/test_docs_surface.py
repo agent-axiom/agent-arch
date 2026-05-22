@@ -4927,7 +4927,11 @@ def test_russian_whats_new_book_note_is_localized() -> None:
 def test_chinese_whats_new_book_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
+    assert "### 2026 年 5 月 14 日编辑质量检查（QA）" in text
+    assert "第一组出版就绪质量检查（QA）问题已经关闭" in text
     assert "快速变化的智能体安全（agent-security）章节" in text
+    assert "### 2026 年 5 月 14 日编辑 QA" not in text
+    assert "第一组出版就绪 QA 问题已经关闭" not in text
     assert "快速变化的 agent-security 章节" not in text
 
 
