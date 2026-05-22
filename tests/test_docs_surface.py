@@ -4680,7 +4680,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "OpenGraph/Twitter 元数据和社交预览图",
             "检查了搜索索引、站点地图（sitemap）、robots 文件",
             "图片替代文本（alt text）和外部链接",
-            "基础导航和 canonical 备用重定向已覆盖人们最容易手动复制的主要入口",
+            "基础导航和规范备用重定向（canonical fallback redirects）"
+            "已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
             "出版材料包（publisher packet）中的九个链接全部返回 HTTP 200",
             "出版材料包（publisher packet）的阻塞项登记表、豁免/决策日志、行长限制",
@@ -4751,6 +4752,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "图片 alt 文本和外部链接",
         "独立 HTML/PDF/export QA",
         "基础导航和 canonical fallback redirects 已覆盖",
+        "基础导航和 canonical 备用重定向已覆盖",
     )
 
     for path, expected_markers in expected_by_file.items():
