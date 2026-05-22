@@ -7107,6 +7107,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "安全智能体架构（safe-agent architecture）" in zh_text
     assert "正文（prose）、附录（appendices）和防护检查（guards）" in zh_text
     assert "MCP 威胁模型（MCP threat model）" in zh_text
+    assert "`mcp_server` 合约（contract）" in zh_text
     assert "A2A 交接信任合同（A2A handoff trust contract）" in zh_text
     assert "信任委派工件（trust-delegation artifact）" in zh_text
     assert "纵深防御控制图（defense-in-depth control map）" in zh_text
@@ -7125,6 +7126,7 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert '!!! note "Safe-agent schema update"' not in zh_text
     assert "safe-agent architecture 的 prose、appendices 和 guards" not in zh_text
     assert "MCP threat model 与 `mcp_server` contract" not in zh_text
+    assert "`mcp_server` 合同（contract）" not in zh_text
     assert "A2A handoff trust contract 与 trust-delegation artifact" not in zh_text
     assert "defense-in-depth control map、verifier verdict record" not in zh_text
     assert "memory poisoning review fields 和 unified agent threat evidence" not in zh_text
