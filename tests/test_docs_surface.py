@@ -5250,7 +5250,9 @@ def test_chinese_whats_new_practical_appendix_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
     assert "### 检查清单与实践工件" in text
+    assert "术语表（glossary）" in text
     assert "### 更强的实践附录" not in text
+    assert "- 术语表；" not in text
 
 
 def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
