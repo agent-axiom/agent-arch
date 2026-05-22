@@ -4946,7 +4946,9 @@ def test_chinese_whats_new_lifecycle_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
     assert "从软件开发生命周期到智能体开发生命周期（`SDLC→ADLC`）的迁移" in text
+    assert "AI 原生（`AI-native`）可观测性" in text
     assert "现在全书已经包含 `SDLC→ADLC`、变更管理" not in text
+    assert "AI 原生可观测性" not in text
 
 
 def test_russian_whats_new_lifecycle_note_is_localized() -> None:
