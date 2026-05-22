@@ -5,7 +5,7 @@
 _更新于 2026 年 5 月 20 日。_
 
 !!! note "规范案例更新"
-    2026 年 5 月 15 日的主要更新，是贯穿全书的三个规范案例（canonical cases）路线图。**支持分流（Support triage）**、**内部知识助手（Internal knowledge assistant）** 和 **事件协调（Incident coordination）** 现在已经出现在章节（book chapters）、公共入口（public entry points）、参考页（reference pages）和附录工件（appendix artifacts）中，并且覆盖率守卫（coverage guards）会防止章节（chapters）与附录页面（appendix pages）丢失这些路线。
+    2026 年 5 月 15 日的主要更新，是贯穿全书的三个规范案例（canonical cases）路线图。**支持分流（Support triage）**、**内部知识助手（Internal knowledge assistant）** 和 **事件协调（Incident coordination）** 现在已经出现在章节（book chapters）、公共入口（public entry points）、参考页（reference pages）和附录工件（appendix artifacts）中，并且覆盖率守卫（coverage guards）会防止章节与附录页面（appendix pages）丢失这些路线。
 
 !!! note "安全智能体架构（safe-agent）模式更新"
     2026 年 5 月 17 日到 2026 年 5 月 19 日的更新，把安全智能体架构（safe-agent architecture）的正文（prose）、附录（appendices）和防护检查（guards）连接了起来：MCP 威胁模型（MCP threat model）与 `mcp_server` 合约（contract）、A2A 交接信任合约（A2A handoff trust contract）与信任委派工件（trust-delegation artifact）、纵深防御控制图（defense-in-depth control map）、验证者裁决记录（verifier verdict record）、治理动作记录（governance action record）、NIST AI RMF 遥测映射（NIST AI RMF telemetry mapping）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）现在都反映在 [跟踪模式（trace schema）](appendix/trace-schema.zh.md)、[评测模式（eval schema）](appendix/eval-schema.zh.md) 与 [记忆/检索模式（memory/retrieval schema）](appendix/memory-retrieval-schema.zh.md) 中。
