@@ -5093,6 +5093,8 @@ def test_russian_whats_new_production_note_is_localized() -> None:
 def test_chinese_whats_new_navigation_topics_are_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
+    assert "### 读者入口页更清晰" in text
+    assert "### 入口页更强了" not in text
     assert "语义工具过滤（`semantic tool filtering`）" in text
     assert "`HyDE` 与 RAG 和训练之间的取舍（`RAG vs training`）" in text
     assert "延迟预算（`latency budget`）与路由管线" in text
