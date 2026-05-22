@@ -4794,9 +4794,10 @@ def test_russian_whats_new_section_headings_are_localized() -> None:
 def test_russian_whats_new_runtime_heading_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert "### Исполняемая эталонная среда исполнения (runtime)" in text
+    assert "### Возможности эталонной среды исполнения (runtime)" in text
     assert "### Runnable reference runtime" not in text
     assert "### Исполняемый эталонный runtime" not in text
+    assert "### Исполняемая эталонная среда исполнения (runtime)" not in text
 
 
 def test_russian_whats_new_reader_value_note_is_localized() -> None:
@@ -5077,7 +5078,8 @@ def test_russian_whats_new_runtime_note_is_localized() -> None:
 def test_russian_whats_new_reference_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert "Справочный слой с переиспользуемыми схемами" in text
+    assert "### Переиспользуемые схемы и артефакты" in text
+    assert "### Справочный слой с переиспользуемыми схемами" not in text
     assert "отдельные справочные страницы" in text
     assert "- трассировки (traces) и каталог событий;" in text
     assert "- оценочные наборы данных (eval) и контракт оценивания;" in text
