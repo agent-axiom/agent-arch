@@ -7072,6 +7072,23 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
     assert "chapters и appendix pages" not in ru_text
     assert "coverage guards" not in ru_text
 
+    zh_text = _read("docs/whats-new.zh.md")
+    assert '!!! note "规范案例更新"' in zh_text
+    assert "三个规范案例（canonical cases）地图" in zh_text
+    assert "支持分流（Support triage）" in zh_text
+    assert "内部知识助手（Internal knowledge assistant）" in zh_text
+    assert "事件协调（Incident coordination）" in zh_text
+    assert "章节（book chapters）" in zh_text
+    assert "公共入口（public entry points）" in zh_text
+    assert "参考页（reference pages）" in zh_text
+    assert "附录工件（appendix artifacts）" in zh_text
+    assert "覆盖率守卫（coverage guards）" in zh_text
+    assert '!!! note "Canonical case update"' not in zh_text
+    assert "三个 canonical cases 地图" not in zh_text
+    assert "**Support triage**、**Internal knowledge assistant**" not in zh_text
+    assert "出现在 book chapters" not in zh_text
+    assert "coverage guards 会防止 chapters" not in zh_text
+
 
 def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
     required_markers = (

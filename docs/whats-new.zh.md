@@ -4,8 +4,8 @@
 
 _更新于 2026 年 5 月 20 日。_
 
-!!! note "Canonical case update"
-    2026 年 5 月 15 日的主要更新，是贯穿全书的三个 canonical cases 地图。**Support triage**、**Internal knowledge assistant** 和 **Incident coordination** 现在已经出现在 book chapters、public entry points、reference pages 和 appendix artifacts 中，并且 coverage guards 会防止 chapters 与 appendix pages 丢失这些路线。
+!!! note "规范案例更新"
+    2026 年 5 月 15 日的主要更新，是贯穿全书的三个规范案例（canonical cases）地图。**支持分流（Support triage）**、**内部知识助手（Internal knowledge assistant）** 和 **事件协调（Incident coordination）** 现在已经出现在章节（book chapters）、公共入口（public entry points）、参考页（reference pages）和附录工件（appendix artifacts）中，并且覆盖率守卫（coverage guards）会防止章节（chapters）与附录页面（appendix pages）丢失这些路线。
 
 !!! note "Safe-agent schema update"
     2026 年 5 月 17 日到 2026 年 5 月 19 日的更新，把 safe-agent architecture 的 prose、appendices 和 guards 连接了起来：MCP threat model 与 `mcp_server` contract、A2A handoff trust contract 与 trust-delegation artifact、defense-in-depth control map、verifier verdict record、governance action record、NIST AI RMF telemetry mapping、memory poisoning review fields 和 unified agent threat evidence 现在都反映在 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 与 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 中。
