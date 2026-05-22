@@ -4680,7 +4680,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "已完成的站点工作：",
             "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
             "OpenGraph/Twitter 元数据和社交预览图（social preview image）",
-            "检查了搜索索引（search index）、站点地图（sitemap）、robots 文件",
+            "检查了搜索索引（search index）、站点地图（sitemap）、robots 文件（robots file）",
             "本地资源（local assets）、锚点（anchors）",
             "图片替代文本（alt text）和外部链接",
             "基础导航和规范备用重定向（canonical fallback redirects）"
@@ -4755,6 +4755,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "OpenGraph/Twitter metadata 和社交预览图",
         "OpenGraph/Twitter 元数据和社交预览图；",
         "robots 文件、本地资源、锚点",
+        "robots 文件、本地资源（local assets）",
         "草稿与规划页面已从发布站点和 sitemap 中排除",
         "检查了搜索索引、sitemap、robots",
         "检查了搜索索引、站点地图（sitemap）",
