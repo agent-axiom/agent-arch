@@ -4692,7 +4692,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "EN/ZH 清理",
             "独立 HTML/PDF/导出质量检查（QA）",
             "样章打磨",
-            "面向具体出版社的纸质稿件/在线配套材料包装",
+            "面向具体出版社的纸质稿件与在线配套材料包装",
         ),
     }
     forbidden = (
@@ -4755,6 +4755,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "独立 HTML/PDF/导出 QA",
         "基础导航和 canonical fallback redirects 已覆盖",
         "基础导航和 canonical 备用重定向已覆盖",
+        "面向具体出版社的纸质稿件/在线配套材料包装",
     )
 
     for path, expected_markers in expected_by_file.items():
