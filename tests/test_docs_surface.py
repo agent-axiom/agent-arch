@@ -4765,6 +4765,32 @@ def test_russian_whats_new_intro_note_is_localized() -> None:
     assert "не заменяет git history" not in text
 
 
+def test_russian_whats_new_section_headings_are_localized() -> None:
+    text = _read("docs/whats-new.md")
+
+    expected_headings = (
+        "## Книга",
+        "## Справочный слой",
+        "## Эталонная среда исполнения",
+        "## Практическое приложение",
+        "## Навигация",
+        "## Готовность к публикации",
+    )
+    stale_headings = (
+        "## Book",
+        "## Reference",
+        "## Runtime",
+        "## Practical Appendix",
+        "## Navigation",
+        "## Publish readiness",
+    )
+
+    for heading in expected_headings:
+        assert heading in text
+    for heading in stale_headings:
+        assert heading not in text
+
+
 def test_russian_whats_new_runtime_heading_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
