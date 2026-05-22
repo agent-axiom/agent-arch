@@ -4958,6 +4958,14 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "контроль инвентаря (inventory)" not in text
 
 
+def test_chinese_whats_new_production_note_is_localized() -> None:
+    text = _read("docs/whats-new.zh.md")
+
+    assert "语义鸿沟（`semantic gap`）" in text
+    assert "RAG 优先（`RAG first`）" in text
+    assert "检索轮廓：`semantic gap`、`HyDE`、`RAG first`" not in text
+
+
 def test_russian_whats_new_production_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
