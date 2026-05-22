@@ -4814,8 +4814,12 @@ def test_russian_whats_new_canonical_case_note_is_localized() -> None:
 def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert '!!! note "Обновление схем safe-agent"' in text
-    assert "связали прозу, приложения и защитные проверки для архитектуры safe-agent" in text
+    assert '!!! note "Обновление схем безопасного агента (safe-agent)"' in text
+    assert (
+        "связали прозу, приложения и защитные проверки для архитектуры "
+        "безопасного агента (`safe-agent`)"
+        in text
+    )
     assert "модель угроз для MCP и контракт `mcp_server`" in text
     assert "контракт доверия для передачи управления A2A (handoff)" in text
     assert "артефакт делегирования доверия (trust-delegation)" in text
@@ -4830,7 +4834,9 @@ def test_russian_whats_new_safe_agent_note_is_localized() -> None:
     assert "[схеме memory/retrieval](appendix/memory-retrieval-schema.md)" in text
     assert '!!! note "Safe-agent schema update"' not in text
     assert '!!! note "Обновление safe-agent схем"' not in text
+    assert '!!! note "Обновление схем safe-agent"' not in text
     assert "защитные проверки для safe-agent архитектуры" not in text
+    assert "защитные проверки для архитектуры safe-agent" not in text
     assert "связали prose, appendices и guards" not in text
     assert "связали прозу, приложения и guards" not in text
     assert "MCP threat model и `mcp_server` contract" not in text
