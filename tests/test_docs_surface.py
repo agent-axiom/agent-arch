@@ -5028,6 +5028,27 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "повседневные вопросы production-команды" not in text
 
 
+def test_chinese_whats_new_runtime_note_is_localized() -> None:
+    text = _read("docs/whats-new.zh.md")
+
+    assert "委派授权上下文（delegated authorization context）" in text
+    assert "生命周期内的运行时控制检查（runtime-control inspection）" in text
+    assert "会话导出与回放摘要（replay summaries）" in text
+    assert "带数据遮蔽（redaction）、遮蔽后摘要（redacted summaries）" in text
+    assert "回放保留（replay preservation）" in text
+    assert "模式版本控制（schema versioning）" in text
+
+    forbidden_markers = (
+        "审批与 delegated authorization context",
+        "控制项与 lifecycle runtime-control inspection",
+        "会话导出与 replay summaries",
+        "带 redaction、redacted summaries、replay preservation 与 schema versioning",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_russian_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
