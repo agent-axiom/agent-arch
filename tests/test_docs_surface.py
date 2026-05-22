@@ -4681,6 +4681,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
             "OpenGraph/Twitter 元数据和社交预览图（social preview image）",
             "检查了搜索索引、站点地图（sitemap）、robots 文件",
+            "本地资源（local assets）、锚点（anchors）",
             "图片替代文本（alt text）和外部链接",
             "基础导航和规范备用重定向（canonical fallback redirects）"
             "已覆盖人们最容易手动复制的主要入口",
@@ -4753,6 +4754,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "packet 标签现在都适合打印和导出",
         "OpenGraph/Twitter metadata 和社交预览图",
         "OpenGraph/Twitter 元数据和社交预览图；",
+        "robots 文件、本地资源、锚点",
         "草稿与规划页面已从发布站点和 sitemap 中排除",
         "检查了搜索索引、sitemap、robots",
         "图片 alt 文本和外部链接",
