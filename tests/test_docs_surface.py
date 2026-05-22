@@ -4679,7 +4679,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
             "已完成的站点工作：",
             "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
-            "OpenGraph/Twitter 元数据和社交预览图",
+            "OpenGraph/Twitter 元数据和社交预览图（social preview image）",
             "检查了搜索索引、站点地图（sitemap）、robots 文件",
             "图片替代文本（alt text）和外部链接",
             "基础导航和规范备用重定向（canonical fallback redirects）"
@@ -4752,6 +4752,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "出版材料包（publisher packet）的阻塞项登记表、豁免/决策日志、行长限制",
         "packet 标签现在都适合打印和导出",
         "OpenGraph/Twitter metadata 和社交预览图",
+        "OpenGraph/Twitter 元数据和社交预览图；",
         "草稿与规划页面已从发布站点和 sitemap 中排除",
         "检查了搜索索引、sitemap、robots",
         "图片 alt 文本和外部链接",
