@@ -5117,7 +5117,7 @@ def test_chinese_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
     assert "委派授权上下文（delegated authorization context）" in text
-    assert "生命周期内的运行时控制检查（runtime-control inspection）" in text
+    assert "控制机制与生命周期内的运行时控制检查（runtime-control inspection）" in text
     assert "会话导出与回放摘要（replay summaries）" in text
     assert "带数据遮蔽（redaction）、遮蔽后摘要（redacted summaries）" in text
     assert "回放保留（replay preservation）" in text
@@ -5126,6 +5126,7 @@ def test_chinese_whats_new_runtime_note_is_localized() -> None:
     forbidden_markers = (
         "审批与 delegated authorization context",
         "控制项与 lifecycle runtime-control inspection",
+        "控制项与生命周期内的运行时控制检查",
         "会话导出与 replay summaries",
         "带 redaction、redacted summaries、replay preservation 与 schema versioning",
     )

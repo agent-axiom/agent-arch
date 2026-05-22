@@ -58,7 +58,7 @@ _更新于 2026 年 5 月 20 日。_
 仓库中的 [`agent_runtime_ref`](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) 现在支持：
 
 - 审批与委派授权上下文（delegated authorization context）；
-- 控制项与生命周期内的运行时控制检查（runtime-control inspection）；
+- 控制机制与生命周期内的运行时控制检查（runtime-control inspection）；
 - 生命周期工件；
 - 会话导出与回放摘要（replay summaries）；
 - 评测数据集导出；
