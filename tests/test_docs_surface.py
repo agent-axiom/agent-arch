@@ -7220,12 +7220,14 @@ def test_whats_new_surfaces_canonical_case_update() -> None:
     assert "参考页（reference pages）" in zh_text
     assert "附录工件（appendix artifacts）" in zh_text
     assert "覆盖率守卫（coverage guards）" in zh_text
+    assert "章节与附录页面（appendix pages）丢失这些路线" in zh_text
     assert '!!! note "Canonical case update"' not in zh_text
     assert "三个 canonical cases 地图" not in zh_text
     assert "三个规范案例（canonical cases）地图" not in zh_text
     assert "**Support triage**、**Internal knowledge assistant**" not in zh_text
     assert "出现在 book chapters" not in zh_text
     assert "coverage guards 会防止 chapters" not in zh_text
+    assert "章节（chapters）与附录页面" not in zh_text
 
 
 def test_book_improvement_blueprint_reflects_safe_agent_schema_spine() -> None:
