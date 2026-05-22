@@ -77,7 +77,7 @@ _更新于 2026 年 5 月 20 日。_
 - 案例研究（case studies）；
 - 策略模板（policy templates）；
 - 研究前沿页面（research frontier page）；
-- 社区路线图。
+- 社区路线图（community roadmap）。
 
 为什么这很重要：读者现在可以不按线性顺序通读全书，也能直接进入检查清单、案例研究、术语表与实践工件。
 
