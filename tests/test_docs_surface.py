@@ -4655,7 +4655,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "независимая проверка качества (QA) HTML/PDF/экспорта",
             "редакционная полировка глав-образцов",
             "упаковка печатной рукописи/онлайн-компаньона под конкретного издателя",
-            "не выглядеть как сырая сборка из файлов Markdown",
+            "не выглядеть как черновая сборка из файлов Markdown",
         ),
         "docs/whats-new.en.md": (
             "Current as of May 20, 2026",
@@ -4703,6 +4703,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "更新于 2026 年 5 月 19 日",
         "canonical fallback redirects покрывают основные entry points",
         "сырая сборка из Markdown-файлов",
+        "сырая сборка из файлов Markdown",
         "резервные canonical redirects покрывают основные точки входа",
         "резервные canonical-редиректы покрывают основные точки входа",
         "basic navigation 和 canonical fallback redirects",
