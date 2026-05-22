@@ -4754,7 +4754,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
 def test_russian_whats_new_intro_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
+    assert "крупных улучшений книги и эталонного пакета" in text
     assert "не заменяет историю Git" in text
+    assert "крупных улучшений книги и опорного пакета" not in text
     assert "не заменяет git history" not in text
 
 
