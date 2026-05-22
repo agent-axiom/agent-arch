@@ -4690,7 +4690,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "快速同步发布检查清单",
             "在称为出版就绪之前",
             "EN/ZH 清理",
-            "独立 HTML/PDF/导出 QA",
+            "独立 HTML/PDF/导出质量检查（QA）",
             "样章打磨",
             "面向具体出版社的纸质稿件/在线配套材料包装",
         ),
@@ -4751,6 +4751,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "检查了搜索索引、sitemap、robots",
         "图片 alt 文本和外部链接",
         "独立 HTML/PDF/export QA",
+        "独立 HTML/PDF/导出 QA",
         "基础导航和 canonical fallback redirects 已覆盖",
         "基础导航和 canonical 备用重定向已覆盖",
     )
