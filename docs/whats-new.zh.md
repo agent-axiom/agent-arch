@@ -75,7 +75,7 @@ _更新于 2026 年 5 月 20 日。_
 - 术语表（glossary）；
 - 速查清单（cheat sheets）；
 - 案例研究（case studies）；
-- 策略模板；
+- 策略模板（policy templates）；
 - 研究前沿页面；
 - 社区路线图。
 
