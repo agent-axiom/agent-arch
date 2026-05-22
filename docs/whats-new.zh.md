@@ -115,7 +115,7 @@ _更新于 2026 年 5 月 20 日。_
 - 基础导航和规范备用重定向（canonical fallback redirects）已覆盖人们最容易手动复制的主要入口；
 - 公共链接可用性记录（public-link availability record）已在 2026 年 5 月 20 日刷新，出版材料包（publisher packet）中的九个链接全部返回 HTTP 200；
 - 出版材料包（publisher packet）的阻塞项登记表（blocker register）、豁免与决策日志（waiver/decision log）、行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出；
-- 第 VIII 部分角色图现在适合打印和导出；
+- 第 VIII 部分角色图（role map）现在适合打印和导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单。
 
 在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理、独立 HTML/PDF/导出质量检查（QA）、样章打磨，以及面向具体出版社的纸质稿件与在线配套材料包装。
