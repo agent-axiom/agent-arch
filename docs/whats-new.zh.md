@@ -110,7 +110,7 @@ _更新于 2026 年 5 月 20 日。_
 已完成的站点工作：
 
 - 草稿与规划页面已从发布站点和站点地图（sitemap）中排除；
-- 添加了 OpenGraph/Twitter 元数据和社交预览图；
+- 添加了 OpenGraph/Twitter 元数据和社交预览图（social preview image）；
 - 检查了搜索索引、站点地图（sitemap）、robots 文件、本地资源、锚点、图片替代文本（alt text）和外部链接；
 - 基础导航和规范备用重定向（canonical fallback redirects）已覆盖人们最容易手动复制的主要入口；
 - 公共链接可用性记录已在 2026 年 5 月 20 日刷新，出版材料包（publisher packet）中的九个链接全部返回 HTTP 200；
