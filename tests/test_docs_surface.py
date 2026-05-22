@@ -4756,7 +4756,9 @@ def test_russian_whats_new_intro_note_is_localized() -> None:
 
     assert "крупных улучшений книги и эталонного пакета" in text
     assert "не заменяет историю Git" in text
+    assert "как развивается проект и какие слои уже появились" in text
     assert "крупных улучшений книги и опорного пакета" not in text
+    assert "насколько проект живой и какие слои уже появились" not in text
     assert "не заменяет git history" not in text
 
 
