@@ -4675,6 +4675,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         ),
         "docs/whats-new.zh.md": (
             "更新于 2026 年 5 月 20 日",
+            "### 发布前站点表面更干净",
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
             "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
             "OpenGraph/Twitter 元数据和社交预览图",
@@ -4699,6 +4700,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "publisher-facing layer is fully closed",
         "publisher-facing слой полностью закрыт",
         "面向出版的质量层已经完全关闭",
+        "### 发布前站点更干净了",
         "Current as of May 19, 2026",
         "исключены из опубликованного сайта и sitemap",
         "Актуально на 19 мая 2026 года",
