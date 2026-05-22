@@ -61,7 +61,7 @@ _更新于 2026 年 5 月 20 日。_
 - 控制机制与生命周期内的运行时控制检查（runtime-control inspection）；
 - 生命周期工件（lifecycle artifacts）；
 - 会话导出与回放摘要（replay summaries）；
-- 评测数据集导出；
+- 评测数据集导出（eval dataset export）；
 - 带数据遮蔽（redaction）、遮蔽后摘要（redacted summaries）、回放保留（replay preservation）与模式版本控制（schema versioning）的追踪导出。
 
 为什么这很重要：这本书现在不只依赖叙述性章节，也有可运行的参考实现作为支撑。
