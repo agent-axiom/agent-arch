@@ -7093,12 +7093,22 @@ def test_whats_new_surfaces_safe_agent_schema_update() -> None:
     assert "NIST AI RMF 遥测映射（NIST AI RMF telemetry mapping）" in zh_text
     assert "记忆投毒审查字段（memory poisoning review fields）" in zh_text
     assert "统一智能体威胁证据（unified agent threat evidence）" in zh_text
+    assert "[跟踪模式（trace schema）](appendix/trace-schema.zh.md)" in zh_text
+    assert "[评测模式（eval schema）](appendix/eval-schema.zh.md)" in zh_text
+    assert (
+        "[记忆/检索模式（memory/retrieval schema）]"
+        "(appendix/memory-retrieval-schema.zh.md)"
+        in zh_text
+    )
     assert '!!! note "Safe-agent schema update"' not in zh_text
     assert "safe-agent architecture 的 prose、appendices 和 guards" not in zh_text
     assert "MCP threat model 与 `mcp_server` contract" not in zh_text
     assert "A2A handoff trust contract 与 trust-delegation artifact" not in zh_text
     assert "defense-in-depth control map、verifier verdict record" not in zh_text
     assert "memory poisoning review fields 和 unified agent threat evidence" not in zh_text
+    assert "[trace schema](appendix/trace-schema.zh.md)" not in zh_text
+    assert "[eval schema](appendix/eval-schema.zh.md)" not in zh_text
+    assert "[memory/retrieval schema](appendix/memory-retrieval-schema.zh.md)" not in zh_text
 
 
 def test_whats_new_safe_agent_schema_update_links_are_clickable() -> None:
