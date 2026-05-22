@@ -5254,11 +5254,13 @@ def test_chinese_whats_new_practical_appendix_note_is_localized() -> None:
     assert "速查清单（cheat sheets）" in text
     assert "案例研究（case studies）" in text
     assert "策略模板（policy templates）" in text
+    assert "研究前沿页面（research frontier page）" in text
     assert "### 更强的实践附录" not in text
     assert "- 术语表；" not in text
     assert "- 速查清单；" not in text
     assert "- 案例研究；" not in text
     assert "- 策略模板；" not in text
+    assert "- 研究前沿页面；" not in text
 
 
 def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
