@@ -4682,7 +4682,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "OpenGraph/Twitter 元数据和社交预览图（social preview image）",
             "检查了搜索索引（search index）、站点地图（sitemap）、robots 文件（robots file）",
             "本地资源（local assets）、锚点（anchors）",
-            "图片替代文本（alt text）和外部链接",
+            "图片替代文本（alt text）和外部链接（external links）",
             "基础导航和规范备用重定向（canonical fallback redirects）"
             "已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
@@ -4760,6 +4760,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "检查了搜索索引、sitemap、robots",
         "检查了搜索索引、站点地图（sitemap）",
         "图片 alt 文本和外部链接",
+        "图片替代文本（alt text）和外部链接；",
         "独立 HTML/PDF/export QA",
         "独立 HTML/PDF/导出 QA",
         "基础导航和 canonical fallback redirects 已覆盖",
