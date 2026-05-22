@@ -31,7 +31,7 @@ _更新于 2026 年 5 月 20 日。_
 - 第一部分更明确地区分了运行时架构、训练层和产品表面；
 - 第二部分加入了更清晰的 `prompt injection`、`jailbreaking` 与 `action hallucination` 分类法；
 - 第三部分加强了检索轮廓：语义鸿沟（`semantic gap`）、`HyDE`、RAG 优先（`RAG first`），以及持续预训练与 `SFT` 的区别；
-- 第四部分补上了大工具目录、`semantic tool filtering` 和 `MCP host/client/server` 角色的实践指导；
+- 第四部分补上了大工具目录、语义工具过滤（`semantic tool filtering`）和 MCP 主机/客户端/服务器（`MCP host/client/server`）角色的实践指导；
 - 第五部分补强了 `latency budget` 的产品视角，以及更实用的 `LLM-as-a-judge` 表述。
 
 为什么这很重要：这本书现在覆盖的不只是基础平台层，也更贴近日常生产团队在设计评审、评测回路和发布之间反复遇到的问题。
