@@ -94,7 +94,7 @@ _更新于 2026 年 5 月 20 日。_
 这些页面现在更容易把读者带到下面这些主题：
 
 - 语义工具过滤（`semantic tool filtering`）；
-- `HyDE` 与 RAG 和训练取舍（`RAG vs training`）；
+- `HyDE` 与 RAG 和训练之间的取舍（`RAG vs training`）；
 - 延迟预算（`latency budget`）与路由管线；
 - 以 LLM 作为评审器（`LLM-as-a-judge`）与评审器校准；
 - 提示注入（`prompt injection`）、越狱（`jailbreaking`）与动作幻觉（`action hallucination`）的区别。
