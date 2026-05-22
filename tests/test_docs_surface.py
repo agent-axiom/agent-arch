@@ -5053,6 +5053,28 @@ def test_russian_whats_new_production_note_is_localized() -> None:
     assert "повседневные вопросы production-команды" not in text
 
 
+def test_chinese_whats_new_navigation_topics_are_localized() -> None:
+    text = _read("docs/whats-new.zh.md")
+
+    assert "语义工具过滤（`semantic tool filtering`）" in text
+    assert "`HyDE` 与 RAG 和训练取舍（`RAG vs training`）" in text
+    assert "延迟预算（`latency budget`）与路由管线" in text
+    assert "以 LLM 作为评审器（`LLM-as-a-judge`）与评审器校准" in text
+    assert "提示注入（`prompt injection`）、越狱（`jailbreaking`）" in text
+    assert "动作幻觉（`action hallucination`）的区别" in text
+
+    forbidden_markers = (
+        "- `semantic tool filtering`；",
+        "- `HyDE` 与 `RAG vs training`；",
+        "- `latency budget` 与路由管线；",
+        "- `LLM-as-a-judge` 与评审器校准；",
+        "- `prompt injection`、`jailbreaking` 与 `action hallucination` 的区别。",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_chinese_whats_new_runtime_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
