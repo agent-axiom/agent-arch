@@ -4676,9 +4676,10 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.zh.md": (
             "更新于 2026 年 5 月 20 日",
             "面向出版的质量检查正在进行中，但还没有完全关闭。",
-            "草稿与规划页面已从发布站点和 sitemap 中排除",
+            "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
             "OpenGraph/Twitter 元数据和社交预览图",
-            "检查了搜索索引、sitemap、robots",
+            "检查了搜索索引、站点地图（sitemap）、robots 文件",
+            "图片替代文本（alt text）和外部链接",
             "基础导航和 canonical 备用重定向已覆盖人们最容易手动复制的主要入口",
             "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
             "出版材料包（publisher packet）中的九个链接全部返回 HTTP 200",
@@ -4745,6 +4746,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "publisher packet 阻塞项登记表、豁免/决策日志、行长限制",
         "packet 标签现在都适合打印和导出",
         "OpenGraph/Twitter metadata 和社交预览图",
+        "草稿与规划页面已从发布站点和 sitemap 中排除",
+        "检查了搜索索引、sitemap、robots",
+        "图片 alt 文本和外部链接",
         "独立 HTML/PDF/export QA",
         "基础导航和 canonical fallback redirects 已覆盖",
     )
