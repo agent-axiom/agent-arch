@@ -4895,7 +4895,11 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "вывод из эксплуатации" in text
     assert "расхождение целей (misalignment)" in text
     assert "поведенческие оценки (evals)" in text
-    assert "наблюдаемость AI-native-систем (observability)" in text
+    assert (
+        "наблюдаемость систем, изначально ориентированных на AI "
+        "(`AI-native`, observability)"
+        in text
+    )
     assert "контроль инвентаризации (inventory)" in text
     assert "change management" not in text
     assert "блок про `SDLC -> ADLC`" not in text
@@ -4908,6 +4912,7 @@ def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     assert "поведенческие evals" not in text
     assert "AI-native observability" not in text
     assert "AI-native-наблюдаемость (observability)" not in text
+    assert "наблюдаемость AI-native-систем (observability)" not in text
     assert "inventory control" not in text
     assert "контроль inventory" not in text
     assert "контроль инвентаря (inventory)" not in text
