@@ -4997,7 +4997,7 @@ def test_chinese_whats_new_production_note_is_localized() -> None:
     assert "语义鸿沟（`semantic gap`）" in text
     assert "RAG 优先（`RAG first`）" in text
     assert "持续预训练（continued pretraining）与 `SFT` 的区别" in text
-    assert "语义工具过滤（`semantic tool filtering`）" in text
+    assert "大型工具目录、语义工具过滤（`semantic tool filtering`）" in text
     assert "MCP 主机/客户端/服务器（`MCP host/client/server`）角色" in text
     assert "延迟预算（`latency budget`）" in text
     assert "以 LLM 作为评审器（`LLM-as-a-judge`）" in text
@@ -5005,6 +5005,7 @@ def test_chinese_whats_new_production_note_is_localized() -> None:
     assert "检索轮廓：`semantic gap`、`HyDE`、`RAG first`" not in text
     assert "持续预训练与 `SFT` 的区别" not in text
     assert "大工具目录、`semantic tool filtering` 和 `MCP host/client/server` 角色" not in text
+    assert "补上了大工具目录、语义工具过滤" not in text
     assert "`latency budget` 的产品视角" not in text
     assert "实用的 `LLM-as-a-judge` 表述" not in text
 
