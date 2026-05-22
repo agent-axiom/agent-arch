@@ -5230,6 +5230,8 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
 def test_chinese_whats_new_reference_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
+    assert "### 可复用的模式与契约" in text
+    assert "### 可复用的参考层" not in text
     assert "追踪与事件目录（traces and event catalog）" in text
     assert "评测数据集与评分契约（eval datasets and grading contracts）" in text
     assert "策略包与审批（policy bundles and approvals）" in text
