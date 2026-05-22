@@ -118,7 +118,7 @@ _更新于 2026 年 5 月 20 日。_
 - 第 VIII 部分角色图（role map）现在适合打印和导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单（quick sync publish checklist）。
 
-在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、样章打磨，以及面向具体出版社的纸质稿件与在线配套材料包装。
+在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、样章打磨（sample-chapter polish），以及面向具体出版社的纸质稿件与在线配套材料包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
