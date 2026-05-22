@@ -5115,7 +5115,9 @@ def test_russian_whats_new_reference_note_is_localized() -> None:
 def test_russian_whats_new_practical_appendix_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
-    assert "Практическое приложение" in text
+    assert "## Практическое приложение" in text
+    assert "### Практические материалы приложения" in text
+    assert "### Практическое приложение" not in text
     assert "- глоссарий;" in text
     assert "- шпаргалки;" in text
     assert "- кейсы;" in text
