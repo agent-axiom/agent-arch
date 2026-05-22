@@ -4775,6 +4775,13 @@ def test_russian_whats_new_intro_note_is_localized() -> None:
     assert "не заменяет git history" not in text
 
 
+def test_chinese_whats_new_intro_note_is_localized() -> None:
+    text = _read("docs/whats-new.zh.md")
+
+    assert "Git 历史记录（Git history）的替代品" in text
+    assert "不是 Git 历史的替代品" not in text
+
+
 def test_russian_whats_new_section_headings_are_localized() -> None:
     text = _read("docs/whats-new.md")
 
