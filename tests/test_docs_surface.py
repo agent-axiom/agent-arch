@@ -4917,6 +4917,13 @@ def test_russian_whats_new_book_note_is_localized() -> None:
     assert "особенностей рендера таблиц" not in text
 
 
+def test_chinese_whats_new_book_note_is_localized() -> None:
+    text = _read("docs/whats-new.zh.md")
+
+    assert "快速变化的智能体安全（agent-security）章节" in text
+    assert "快速变化的 agent-security 章节" not in text
+
+
 def test_russian_whats_new_lifecycle_note_is_localized() -> None:
     text = _read("docs/whats-new.md")
 
