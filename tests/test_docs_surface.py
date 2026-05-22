@@ -4685,7 +4685,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "图片替代文本（alt text）和外部链接（external links）",
             "基础导航和规范备用重定向（canonical fallback redirects）"
             "已覆盖人们最容易手动复制的主要入口",
-            "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
+            "公共链接可用性记录（public-link availability record）已在 2026 年 5 月 20 日刷新",
             "出版材料包（publisher packet）中的九个链接全部返回 HTTP 200",
             "出版材料包（publisher packet）的阻塞项登记表、豁免与决策日志、行长限制",
             "材料包标签（packet labels）现在都适合打印和导出",
@@ -4719,6 +4719,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "названия publisher packet устойчивы",
         "九个 publisher-packet links 全部返回 HTTP 200",
         "九个 publisher packet 链接全部返回 HTTP 200",
+        "公共链接可用性记录已在 2026 年 5 月 20 日刷新",
         "печати/export",
         "打印/export",
         "打印/导出",
