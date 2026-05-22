@@ -5231,9 +5231,11 @@ def test_chinese_whats_new_reference_note_is_localized() -> None:
     text = _read("docs/whats-new.zh.md")
 
     assert "追踪与事件目录（traces and event catalog）" in text
+    assert "评测数据集与评分契约（eval datasets and grading contracts）" in text
     assert "生命周期工件（lifecycle artifacts）" in text
     assert "记忆检索契约（memory retrieval contracts）" in text
     assert "- 追踪与事件目录；" not in text
+    assert "- 评测数据集与评分契约；" not in text
     assert "- 生命周期工件；\n- 记忆检索契约" not in text
     assert "- 记忆检索契约。" not in text
 

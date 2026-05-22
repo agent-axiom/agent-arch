@@ -43,7 +43,7 @@ _更新于 2026 年 5 月 20 日。_
 站点现在已经包含以下参考页：
 
 - 追踪与事件目录（traces and event catalog）；
-- 评测数据集与评分契约；
+- 评测数据集与评分契约（eval datasets and grading contracts）；
 - 策略包与审批；
 - 变更评审与发布门禁；
 - 生命周期工件（lifecycle artifacts）；
