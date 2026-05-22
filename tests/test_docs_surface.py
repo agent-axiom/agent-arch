@@ -5124,6 +5124,7 @@ def test_chinese_whats_new_runtime_note_is_localized() -> None:
     assert "带数据遮蔽（redaction）、遮蔽后摘要（redacted summaries）" in text
     assert "回放保留（replay preservation）" in text
     assert "模式版本控制（schema versioning）" in text
+    assert "追踪导出（trace export）" in text
 
     forbidden_markers = (
         "审批与 delegated authorization context",
@@ -5133,6 +5134,7 @@ def test_chinese_whats_new_runtime_note_is_localized() -> None:
         "会话导出与 replay summaries",
         "- 评测数据集导出；",
         "带 redaction、redacted summaries、replay preservation 与 schema versioning",
+        "schema versioning）的追踪导出。",
     )
 
     for marker in forbidden_markers:
