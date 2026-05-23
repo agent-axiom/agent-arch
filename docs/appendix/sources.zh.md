@@ -12,8 +12,8 @@
 
     如果你要给第一、第五和第八部分建立最稳的基础，先从规范性框架和 HCI/HITL 层开始。如果你要看当前工程实践，就读平台文档和近期研究，但始终要留意发布日期。
 
-!!! note "Canonical source routes"
-    Use the sources 作为三个 canonical cases 的 fast route。**Support triage** 从 OWASP、OpenAI agent guides、HITL sources、policy/approval material、trace grading 和 incident cases 开始。**Internal knowledge assistant** 从 LangGraph memory、OpenAI Agent memory、retrieval/eval sources、provenance-oriented governance 和 memory research frontier 开始。**Incident coordination** 从 NIST/AI RMF、Google/Microsoft governance、observability sources、multi-agent reliability research、incident review 和 rollout/control-plane material 开始。
+!!! note "规范来源路线（Canonical source routes）"
+    把这些来源（sources）作为三个规范案例（canonical cases）的快速路线（fast route）。**支持分流（Support triage）** 从 OWASP、OpenAI 智能体指南（OpenAI agent guides）、人在回路来源（HITL sources）、策略/审批材料（policy/approval material）、追踪评分（trace grading）和事件案例（incident cases）开始。**内部知识助手（Internal knowledge assistant）** 从 LangGraph 记忆（LangGraph memory）、OpenAI Agent 记忆（OpenAI Agent memory）、检索/评测来源（retrieval/eval sources）、面向来源证明的治理（provenance-oriented governance）和记忆研究前沿（memory research frontier）开始。**事件协调（Incident coordination）** 从 NIST/AI RMF、Google/Microsoft 治理（Google/Microsoft governance）、可观测性来源（observability sources）、多智能体可靠性研究（multi-agent reliability research）、事件复盘（incident review）和发布/控制平面材料（rollout/control-plane material）开始。
 
 ## 规范性框架与治理轮廓
 
