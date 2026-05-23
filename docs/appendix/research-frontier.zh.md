@@ -23,8 +23,8 @@
 
 简而言之：前沿研究更适合作为方向来源，而不是现成的平台标准。
 
-!!! note "Canonical frontier cases"
-    需要通过三个 canonical cases 过滤 research frontier，避免 promising pattern 过早变成 production default。**Support triage** 检查 agent memory、trace-linked evals、approval gates、duplicate-ticket recovery 和 rollback cost。**Internal knowledge assistant** 检查 hierarchical memory、source provenance、retrieval freshness、tenant-aware access 和 auditability。**Incident coordination** 检查 causal tracing、multi-agent reliability、handoff contracts、incident review 和 diagnosable system boundaries。
+!!! note "规范前沿案例（Canonical frontier cases）"
+    需要通过三个规范案例（canonical cases）过滤研究前沿（research frontier），避免有前景的模式（promising pattern）过早变成生产默认方案（production default）。**支持分流（Support triage）** 检查智能体记忆（agent memory）、与追踪关联的评测（trace-linked evals）、审批门禁（approval gates）、重复工单恢复（duplicate-ticket recovery）和回滚成本（rollback cost）。**内部知识助手（Internal knowledge assistant）** 检查分层记忆（hierarchical memory）、来源证明（source provenance）、检索新鲜度（retrieval freshness）、租户感知访问（tenant-aware access）和可审计性（auditability）。**事件协调（Incident coordination）** 检查因果追踪（causal tracing）、多智能体可靠性（multi-agent reliability）、交接契约（handoff contracts）、事件复盘（incident review）和可诊断系统边界（diagnosable system boundaries）。
 
 ## 记忆方向的前沿
 

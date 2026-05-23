@@ -7447,6 +7447,43 @@ def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_research_frontier_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/research-frontier.md")
+    chinese_text = _read("docs/appendix/research-frontier.zh.md")
+
+    assert "Канонические сценарии исследовательского фронтира" in russian_text
+    assert "Исследовательский фронтир (research frontier)" in russian_text
+    assert "многообещающий паттерн (promising pattern)" in russian_text
+    assert "память агента (agent memory)" in russian_text
+    assert "иерархическую память (hierarchical memory)" in russian_text
+    assert "причинную трассировку (causal tracing)" in russian_text
+
+    assert "规范前沿案例" in chinese_text
+    assert "研究前沿（research frontier）" in chinese_text
+    assert "有前景的模式（promising pattern）" in chinese_text
+    assert "智能体记忆（agent memory）" in chinese_text
+    assert "分层记忆（hierarchical memory）" in chinese_text
+    assert "因果追踪（causal tracing）" in chinese_text
+
+    forbidden_markers = (
+        "Research frontier стоит фильтровать",
+        "через три canonical cases",
+        "promising pattern не стал production default",
+        "проверяет agent memory",
+        "проверяет hierarchical memory",
+        "проверяет causal tracing",
+        "通过三个 canonical cases 过滤 research frontier",
+        "避免 promising pattern 过早变成 production default",
+        "检查 agent memory",
+        "检查 hierarchical memory",
+        "检查 causal tracing",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_language_stack_surfaces_three_canonical_language_cases() -> None:
     required_markers = (
         "Canonical language cases",

@@ -23,8 +23,8 @@
 
 Если коротко: research frontier полезен как источник направлений, а не как готовый стандарт платформы.
 
-!!! note "Canonical frontier cases"
-    Research frontier стоит фильтровать через три canonical cases, чтобы promising pattern не стал production default слишком рано. **Support triage** проверяет agent memory, trace-linked evals, approval gates, duplicate-ticket recovery и rollback cost. **Internal knowledge assistant** проверяет hierarchical memory, source provenance, retrieval freshness, tenant-aware access и auditability. **Incident coordination** проверяет causal tracing, multi-agent reliability, handoff contracts, incident review и diagnosable system boundaries.
+!!! note "Канонические сценарии исследовательского фронтира (Canonical frontier cases)"
+    Исследовательский фронтир (research frontier) стоит фильтровать через три канонических сценария (canonical cases), чтобы многообещающий паттерн (promising pattern) не стал производственным стандартом по умолчанию (production default) слишком рано. **Триаж обращений поддержки (Support triage)** проверяет память агента (agent memory), оценки, связанные с трассами (trace-linked evals), шлюзы подтверждений (approval gates), восстановление после дубля тикета (duplicate-ticket recovery) и стоимость отката (rollback cost). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет иерархическую память (hierarchical memory), происхождение источников (source provenance), свежесть поиска (retrieval freshness), доступ с учетом арендатора (tenant-aware access) и аудитируемость (auditability). **Координация инцидентов (Incident coordination)** проверяет причинную трассировку (causal tracing), надежность многоагентных систем (multi-agent reliability), контракты передачи управления (handoff contracts), разбор инцидента (incident review) и диагностируемые границы системы (diagnosable system boundaries).
 
 ## Frontier по памяти
 
