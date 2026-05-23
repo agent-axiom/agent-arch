@@ -21,8 +21,8 @@
 - он полезен не только автору книги, но и внешнему сообществу;
 - он повышает международную читаемость проекта, а не только глубину текста.
 
-!!! note "Canonical roadmap cases"
-    Roadmap должен измерять next layer of value через три canonical cases. **Support triage** задает приоритет для richer trace examples, approval policy templates, duplicate-ticket evals и runnable high-risk scenario. **Internal knowledge assistant** задает приоритет для knowledge scenario, retrieval policy template, memory eval patterns и source-grounding QA. **Incident coordination** задает приоритет для incident trace examples, escalation/notification templates, response ownership checks и post-incident learning assets.
+!!! note "Канонические сценарии дорожной карты (Canonical roadmap cases)"
+    Дорожная карта (roadmap) должна измерять следующий слой пользы (next layer of value) через три канонических сценария (canonical cases). **Триаж обращений поддержки (Support triage)** отдает приоритет более богатым примерам трасс (richer trace examples), шаблонам политик подтверждения (approval policy templates), оценкам дублей тикетов (duplicate-ticket evals) и исполняемому высокорисковому сценарию (runnable high-risk scenario). **Внутренний ассистент знаний (Internal knowledge assistant)** отдает приоритет сценарию знаний (knowledge scenario), шаблону политики поиска (retrieval policy template), паттернам оценки памяти (memory eval patterns) и проверке привязки к источникам (source-grounding QA). **Координация инцидентов (Incident coordination)** отдает приоритет примерам трасс инцидентов (incident trace examples), шаблонам эскалации и уведомлений (escalation/notification templates), проверкам владения ответом (response ownership checks) и артефактам обучения после инцидента (post-incident learning assets).
 
 ## Следующие 10 улучшений
 
