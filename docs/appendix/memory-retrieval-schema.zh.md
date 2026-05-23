@@ -4,8 +4,8 @@
 
 如果 [追踪 Schema 与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索 Schema 回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
 
-!!! note "Canonical memory cases"
-    Memory and retrieval contract 应为三个 canonical cases 区分不同 memory boundaries。**Support triage** 保存 requester context、ticket state、`idempotency_key` evidence 和 short-lived working notes。**Internal knowledge assistant** 需要 retrieval freshness、source attribution、tenant filters、memory provenance 和 access control。**Incident coordination** 保存 incident timeline、response ownership、handoff summaries、escalation status 和 post-incident lessons，但不能把 transient incident noise 变成 durable truth。
+!!! note "规范记忆案例（Canonical memory cases）"
+    记忆与检索契约（memory and retrieval contract）应该为三个规范案例（canonical cases）区分不同的记忆边界（memory boundaries）。**支持分流（Support triage）** 保存请求者上下文（requester context）、工单状态（ticket state）、`idempotency_key` 证据（`idempotency_key` evidence）和短期工作笔记（short-lived working notes）。**内部知识助手（Internal knowledge assistant）** 需要检索新鲜度（retrieval freshness）、来源归因（source attribution）、租户过滤器（tenant filters）、记忆来源（memory provenance）和访问控制（access control）。**事件协调（Incident coordination）** 保存事件时间线（incident timeline）、响应归属（response ownership）、交接摘要（handoff summaries）、升级状态（escalation status）和事件后经验（post-incident lessons），但不能把临时事件噪声（transient incident noise）变成持久真相（durable truth）。
 
 ## 1. 为什么需要单独的模式层
 

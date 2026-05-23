@@ -4,8 +4,8 @@
 
 Если [схема трасс и каталог событий](trace-schema.md) отвечает на вопрос «как это видно в телеметрии», а [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос «что считается управляемым рабочим артефактом», то эта схема отвечает на вопрос «какие именно записи и фильтры вообще допустимы в слое памяти».
 
-!!! note "Canonical memory cases"
-    Memory and retrieval contract должен отделять разные memory boundaries для трех canonical cases. **Support triage** хранит requester context, ticket state, `idempotency_key` evidence и short-lived working notes. **Internal knowledge assistant** требует retrieval freshness, source attribution, tenant filters, memory provenance и access control. **Incident coordination** хранит incident timeline, response ownership, handoff summaries, escalation status и post-incident lessons без превращения transient incident noise в durable truth.
+!!! note "Канонические сценарии памяти (Canonical memory cases)"
+    Контракт памяти и поиска (memory and retrieval contract) должен отделять разные границы памяти (memory boundaries) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** хранит контекст запрашивающего (requester context), состояние тикета (ticket state), доказательства `idempotency_key` (`idempotency_key` evidence) и короткоживущие рабочие заметки (short-lived working notes). **Внутренний ассистент знаний (Internal knowledge assistant)** требует свежести поиска (retrieval freshness), привязки к источникам (source attribution), фильтров арендатора (tenant filters), происхождения памяти (memory provenance) и контроля доступа (access control). **Координация инцидентов (Incident coordination)** хранит таймлайн инцидента (incident timeline), владение ответом (response ownership), сводки передачи управления (handoff summaries), статус эскалации (escalation status) и уроки после инцидента (post-incident lessons), не превращая временный шум инцидента (transient incident noise) в долговечную истину (durable truth).
 
 ## 1. Зачем нужен отдельный слой схем
 

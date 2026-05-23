@@ -6587,6 +6587,42 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/memory-retrieval-schema.md")
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+
+    assert "Канонические сценарии памяти" in russian_text
+    assert "Контракт памяти и поиска (memory and retrieval contract)" in russian_text
+    assert "границы памяти (memory boundaries)" in russian_text
+    assert "контекст запрашивающего (requester context)" in russian_text
+    assert "свежести поиска (retrieval freshness)" in russian_text
+    assert "временный шум инцидента (transient incident noise)" in russian_text
+
+    assert "规范记忆案例" in chinese_text
+    assert "记忆与检索契约（memory and retrieval contract）" in chinese_text
+    assert "记忆边界（memory boundaries）" in chinese_text
+    assert "请求者上下文（requester context）" in chinese_text
+    assert "检索新鲜度（retrieval freshness）" in chinese_text
+    assert "临时事件噪声（transient incident noise）" in chinese_text
+
+    forbidden_markers = (
+        "Memory and retrieval contract должен",
+        "разные memory boundaries",
+        "хранит requester context",
+        "требует retrieval freshness",
+        "transient incident noise в durable truth",
+        "Memory and retrieval contract 应为三个 canonical cases",
+        "不同 memory boundaries",
+        "保存 requester context",
+        "需要 retrieval freshness",
+        "transient incident noise 变成 durable truth",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_postmortem_template_surfaces_three_canonical_postmortem_cases() -> None:
     required_markers = (
         "Canonical postmortem cases",
