@@ -9,8 +9,8 @@
 !!! example "现在如何阅读这个案例"
     support triage 案例已经成为本书的贯穿线索：从这里开始，然后看同一个重复工单故障如何穿过 trust boundaries、tool gateway、memory/retrieval、idempotency、traces、SLO、eval gates、ownership、runtime、policy、rollout、ADLC、assurance、provenance、retirement、misalignment controls、telemetry 和 registry。
 
-!!! note "Canonical case alignment"
-    这些场景对应书籍计划里的三个 canonical cases。**Support triage** 是案例 1，用来承载 write capability、approvals 和 duplicate-ticket recovery。**Internal knowledge assistant** 是案例 2，用来承载 retrieval、memory、access control、freshness 和 knowledge provenance。**Incident coordination** 是案例 3，用来承载 traces、SLO、escalation、notification side effects、response ownership 和 post-incident learning。
+!!! note "规范案例对齐（Canonical case alignment）"
+    这些场景对应书籍计划里的三个规范案例（canonical cases）。**支持分流（Support triage）** 是案例 1，用来承载写入能力（write capability）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 是案例 2，用来承载检索（retrieval）、记忆（memory）、访问控制（access control）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 是案例 3，用来承载追踪（traces）、SLO、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
 ## 案例 1：支持分诊智能体
 

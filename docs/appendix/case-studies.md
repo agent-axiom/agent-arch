@@ -9,8 +9,8 @@
 !!! example "Как этот кейс теперь читать"
     Кейс support triage стал сквозной нитью книги: начни здесь, затем смотри, как та же duplicate-ticket failure проходит через trust boundaries, tool gateway, memory/retrieval, idempotency, traces, SLO, eval gates, ownership, runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry.
 
-!!! note "Canonical case alignment"
-    Эти сценарии соответствуют трем canonical cases из плана книги. **Support triage** — это кейс 1 про write capability, approvals и duplicate-ticket recovery. **Internal knowledge assistant** — это кейс 2 про retrieval, memory, access control, freshness и knowledge provenance. **Incident coordination** — это кейс 3 про traces, SLO, escalation, notification side effects, response ownership и post-incident learning.
+!!! note "Выравнивание канонических сценариев (Canonical case alignment)"
+    Эти сценарии соответствуют трем каноническим сценариям (canonical cases) из плана книги. **Триаж обращений поддержки (Support triage)** — это кейс 1 про записывающую возможность (write capability), подтверждения (approvals) и восстановление после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** — это кейс 2 про поиск (retrieval), память (memory), контроль доступа (access control), свежесть (freshness) и происхождение знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** — это кейс 3 про трассы (traces), SLO, эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership) и обучение после инцидента (post-incident learning).
 
 ## Кейс 1. Агент разбора обращений поддержки
 

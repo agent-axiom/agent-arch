@@ -5725,6 +5725,38 @@ def test_case_studies_align_with_three_canonical_cases() -> None:
             assert marker not in text, (path, marker)
 
 
+def test_multilingual_case_studies_alignment_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/case-studies.md")
+    chinese_text = _read("docs/appendix/case-studies.zh.md")
+
+    assert "Выравнивание канонических сценариев" in russian_text
+    assert "каноническим сценариям (canonical cases)" in russian_text
+    assert "записывающую возможность (write capability)" in russian_text
+    assert "контроль доступа (access control)" in russian_text
+    assert "побочные эффекты уведомлений (notification side effects)" in russian_text
+
+    assert "规范案例对齐" in chinese_text
+    assert "规范案例（canonical cases）" in chinese_text
+    assert "写入能力（write capability）" in chinese_text
+    assert "访问控制（access control）" in chinese_text
+    assert "通知副作用（notification side effects）" in chinese_text
+
+    forbidden_markers = (
+        "трем canonical cases",
+        "про write capability",
+        "про retrieval",
+        "про traces",
+        "三个 canonical cases",
+        "承载 write capability",
+        "承载 retrieval",
+        "承载 traces",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_readmes_surface_three_canonical_cases() -> None:
     required_markers = (
         "canonical cases",
