@@ -38,8 +38,8 @@
 
 这是最危险的一类失败。
 
-!!! note "Canonical recovery cases"
-    Recovery branch 应区分三个 canonical cases 的 failure surfaces。**Support triage** 关注 `side_effect_unknown`、idempotency lookup、duplicate-ticket prevention、manual reconciliation 和 eval/rollout regression。**Internal knowledge assistant** 关注 stale retrieval、source lookup failure、access-denied recovery、memory write rollback 和 grounded-answer recheck。**Incident coordination** 关注 notification partial delivery、escalation retry、owner handoff repair、emergency rollback decision 和 post-incident learning capture。
+!!! note "规范恢复案例（Canonical recovery cases）"
+    恢复分支（recovery branch）应该区分三个规范案例（canonical cases）的失败表面（failure surfaces）。**支持分流（Support triage）** 关注 `side_effect_unknown`、幂等性查找（idempotency lookup）、重复工单预防（duplicate-ticket prevention）、人工核对（manual reconciliation）和评测/发布回归（eval/rollout regression）。**内部知识助手（Internal knowledge assistant）** 关注陈旧检索（stale retrieval）、来源查找失败（source lookup failure）、拒绝访问恢复（access-denied recovery）、记忆写入回滚（memory write rollback）和有依据回答复查（grounded-answer recheck）。**事件协调（Incident coordination）** 关注通知部分送达（notification partial delivery）、升级重试（escalation retry）、负责人交接修复（owner handoff repair）、紧急回滚决策（emergency rollback decision）和事件后学习捕获（post-incident learning capture）。
 
 比起天真重试，通常更合理的是：
 

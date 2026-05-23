@@ -7040,6 +7040,41 @@ def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/tool-failure-recovery.md")
+    chinese_text = _read("docs/appendix/tool-failure-recovery.zh.md")
+
+    assert "Канонические сценарии восстановления" in russian_text
+    assert "Ветка восстановления (recovery branch)" in russian_text
+    assert "поверхности отказа (failure surfaces)" in russian_text
+    assert "поиске по идемпотентности (idempotency lookup)" in russian_text
+    assert "устаревшем поиске (stale retrieval)" in russian_text
+    assert "частичной доставке уведомлений (notification partial delivery)" in russian_text
+
+    assert "规范恢复案例" in chinese_text
+    assert "恢复分支（recovery branch）" in chinese_text
+    assert "失败表面（failure surfaces）" in chinese_text
+    assert "幂等性查找（idempotency lookup）" in chinese_text
+    assert "陈旧检索（stale retrieval）" in chinese_text
+    assert "通知部分送达（notification partial delivery）" in chinese_text
+
+    forbidden_markers = (
+        "Recovery branch должен",
+        "failure surfaces для трех canonical cases",
+        "idempotency lookup, duplicate-ticket prevention",
+        "stale retrieval, source lookup failure",
+        "notification partial delivery, escalation retry",
+        "Recovery branch 应区分三个 canonical cases",
+        "idempotency lookup、duplicate-ticket prevention",
+        "stale retrieval、source lookup failure",
+        "notification partial delivery、escalation retry",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> None:
     required_markers = (
         "Canonical memory eval cases",
