@@ -4,8 +4,8 @@
 
 普通日志回答的是“发生了什么”。因果调试回答的是“哪个步骤、哪条边、哪种隐藏依赖真正把系统带到了坏结果”。
 
-!!! note "Canonical causal cases"
-    Causal debugging 应在三个 canonical cases 中寻找不同 decisive edges。**Support triage** 区分 retrieved context、approval decision、`idempotency_key`、tool execution 和 duplicate-ticket cascade。**Internal knowledge assistant** 区分 stale source、retrieval filtering、source attribution、memory write 和 access-control decision。**Incident coordination** 区分 escalation trigger、notification side effects、handoff edge、response ownership 和 post-incident learning update。
+!!! note "规范因果案例（Canonical causal cases）"
+    因果调试（causal debugging）应该在三个规范案例（canonical cases）中寻找不同的决定性边（decisive edges）。**支持分流（Support triage）** 区分检索到的上下文（retrieved context）、审批决策（approval decision）、`idempotency_key`、工具执行（tool execution）和重复工单级联（duplicate-ticket cascade）。**内部知识助手（Internal knowledge assistant）** 区分陈旧来源（stale source）、检索过滤（retrieval filtering）、来源归因（source attribution）、记忆写入（memory write）和访问控制决策（access-control decision）。**事件协调（Incident coordination）** 区分升级触发器（escalation trigger）、通知副作用（notification side effects）、交接边（handoff edge）、响应归属（response ownership）和事件后学习更新（post-incident learning update）。
 
 ## 1. 为什么普通追踪还不够
 

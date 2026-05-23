@@ -6790,6 +6790,42 @@ def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_causal_debugging_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/causal-debugging.md")
+    chinese_text = _read("docs/appendix/causal-debugging.zh.md")
+
+    assert "Канонические причинные сценарии" in russian_text
+    assert "Причинная отладка (causal debugging)" in russian_text
+    assert "решающие связи (decisive edges)" in russian_text
+    assert "найденный контекст (retrieved context)" in russian_text
+    assert "устаревший источник (stale source)" in russian_text
+    assert "триггер эскалации (escalation trigger)" in russian_text
+
+    assert "规范因果案例" in chinese_text
+    assert "因果调试（causal debugging）" in chinese_text
+    assert "决定性边（decisive edges）" in chinese_text
+    assert "检索到的上下文（retrieved context）" in chinese_text
+    assert "陈旧来源（stale source）" in chinese_text
+    assert "升级触发器（escalation trigger）" in chinese_text
+
+    forbidden_markers = (
+        "Causal debugging должен искать",
+        "разные decisive edges",
+        "отделяет retrieved context",
+        "отделяет stale source",
+        "отделяет escalation trigger",
+        "Causal debugging 应在三个 canonical cases",
+        "不同 decisive edges",
+        "区分 retrieved context",
+        "区分 stale source",
+        "区分 escalation trigger",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_cheat_sheets_surface_three_canonical_checklist_cases() -> None:
     required_markers = (
         "Canonical checklist cases",
