@@ -2,8 +2,8 @@
 
 这页是给实际工作快速使用的。如果你不想在设计评审、上线前检查或团队讨论前重读整整一部分内容，就先看这里。
 
-!!! note "Canonical checklist cases"
-    Use these checklist blocks 作为三个 canonical cases 的 fast route。**Support triage** 从 safety、tool gateway、approval、idempotency 和 rollout checks 开始。**Internal knowledge assistant** 从 memory、retrieval、source grounding、tenant boundary 和 observability checks 开始。**Incident coordination** 从 rollout、observability、incident review、response ownership 和 post-incident learning checks 开始。
+!!! note "规范检查清单案例（Canonical checklist cases）"
+    把这些检查清单块作为三个规范案例（canonical cases）的快速路线（fast route）。**支持分流（Support triage）** 从安全（safety）、工具网关（tool gateway）、审批（approval）、幂等性（idempotency）和上线检查（rollout checks）开始。**内部知识助手（Internal knowledge assistant）** 从记忆（memory）、检索（retrieval）、来源锚定（source grounding）、租户边界（tenant boundary）和可观测性检查（observability checks）开始。**事件协调（Incident coordination）** 从上线、可观测性、事故复盘（incident review）、响应归属（response ownership）和事故后学习检查（post-incident learning checks）开始。
 
 ## 安全检查清单
 

@@ -6680,6 +6680,44 @@ def test_cheat_sheets_surface_three_canonical_checklist_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_cheat_sheet_canonical_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/cheat-sheets.md")
+    chinese_text = _read("docs/appendix/cheat-sheets.zh.md")
+
+    assert "Канонические сценарии для проверочных списков" in russian_text
+    assert "блоки проверок как быстрый маршрут (fast route)" in russian_text
+    assert "Триаж обращений поддержки (Support triage)" in russian_text
+    assert "Внутренний ассистент знаний (Internal knowledge assistant)" in russian_text
+    assert "Координация инцидентов (Incident coordination)" in russian_text
+    assert "безопасности (safety), шлюза инструментов (tool gateway)" in russian_text
+    assert "памяти (memory), поиска (retrieval)" in russian_text
+    assert "разбора инцидента (incident review)" in russian_text
+
+    assert "规范检查清单案例" in chinese_text
+    assert "快速路线（fast route）" in chinese_text
+    assert "支持分流（Support triage）" in chinese_text
+    assert "内部知识助手（Internal knowledge assistant）" in chinese_text
+    assert "事件协调（Incident coordination）" in chinese_text
+    assert "安全（safety）、工具网关（tool gateway）" in chinese_text
+    assert "记忆（memory）、检索（retrieval）" in chinese_text
+    assert "事故复盘（incident review）" in chinese_text
+
+    forbidden_markers = (
+        "Используй эти checklist blocks как fast route",
+        "начинается с safety, tool gateway, approval",
+        "начинается с memory, retrieval, source grounding",
+        "начинается с rollout, observability, incident review",
+        "Use these checklist blocks 作为三个 canonical cases 的 fast route",
+        "从 safety、tool gateway、approval",
+        "从 memory、retrieval、source grounding",
+        "从 rollout、observability、incident review",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_community_roadmap_surfaces_three_canonical_roadmap_cases() -> None:
     required_markers = (
         "Canonical roadmap cases",
