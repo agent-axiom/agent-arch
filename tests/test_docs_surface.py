@@ -7520,6 +7520,43 @@ def test_language_stack_surfaces_three_canonical_language_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_language_stack_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/rust-vs-python-typescript.md")
+    chinese_text = _read("docs/appendix/rust-vs-python-typescript.zh.md")
+
+    assert "Канонические сценарии выбора языка" in russian_text
+    assert "Выбор языка (Language choice)" in russian_text
+    assert "итераций поведения (behavior iteration)" in russian_text
+    assert "шлюз инструментов (tool gateway)" in russian_text
+    assert "эксперименты поиска (retrieval experiments)" in russian_text
+    assert "надежность рантайма (runtime reliability)" in russian_text
+
+    assert "规范语言案例" in chinese_text
+    assert "语言选择（Language choice）" in chinese_text
+    assert "行为迭代（behavior iteration）" in chinese_text
+    assert "工具网关（tool gateway）" in chinese_text
+    assert "检索实验（retrieval experiments）" in chinese_text
+    assert "运行时可靠性（runtime reliability）" in chinese_text
+
+    forbidden_markers = (
+        "Language choice должен",
+        "через три canonical cases",
+        "для behavior iteration",
+        "выносит tool gateway",
+        "держит retrieval experiments",
+        "runtime reliability, trace ingestion pipeline",
+        "Language choice 应该通过三个 canonical cases",
+        "做 behavior iteration",
+        "把 tool gateway",
+        "把 retrieval experiments",
+        "runtime reliability、trace ingestion pipeline",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
     required_markers = (
         "Canonical Rust platform cases",
