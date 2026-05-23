@@ -63,11 +63,11 @@
 
 Если тебе нужен не весь reference layer, а короткий вход в конкретный вопрос, начни так:
 
-- Tool catalog, semantic tool filtering, read/write taxonomy: [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
-- MCP host/client/server, capability transport, sandbox boundary: [Глава 9. Песочница выполнения и MCP как интеграционный контракт](book/part-iv/chapter-9.md)
-- Semantic gap, HyDE, RAG vs training: [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](book/part-iii/chapter-7.md)
-- Latency budget, fast path / slow path, routed pipeline: [Глава 12. SLO для агентных систем](book/part-v/chapter-12.md)
-- LLM-as-a-judge, calibration и judge-human agreement: [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
+- Каталог инструментов, семантическая фильтрация инструментов (`semantic tool filtering`) и классификация чтения/записи: [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
+- Роли MCP: `host`, `client` и `server`, передача возможностей и границы песочницы: [Глава 9. Песочница выполнения и MCP как интеграционный контракт](book/part-iv/chapter-9.md)
+- Семантический разрыв (`semantic gap`), `HyDE` и выбор между RAG и обучением модели (`RAG vs training`): [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](book/part-iii/chapter-7.md)
+- Бюджет задержки (`latency budget`), быстрый/медленный путь и маршрутизированные конвейеры: [Глава 12. SLO для агентных систем](book/part-v/chapter-12.md)
+- Оценка через `LLM-as-a-judge`, калибровка и согласие судьи с человеком (`judge-human agreement`): [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
 
 ## Для дальнейшего чтения
 

@@ -4595,6 +4595,31 @@ def test_reference_final_rule_stays_as_separate_bullet_list() -> None:
             assert marker in text, (path, marker)
 
 
+def test_russian_reference_fast_topic_routes_are_localized() -> None:
+    text = _read("docs/reference.md")
+
+    assert "Каталог инструментов, семантическая фильтрация инструментов" in text
+    assert "классификация чтения/записи" in text
+    assert "Роли MCP: `host`, `client` и `server`" in text
+    assert "Семантический разрыв (`semantic gap`), `HyDE`" in text
+    assert "выбор между RAG и обучением модели (`RAG vs training`)" in text
+    assert "Бюджет задержки (`latency budget`)" in text
+    assert "быстрый/медленный путь и маршрутизированные конвейеры" in text
+    assert "Оценка через `LLM-as-a-judge`, калибровка" in text
+    assert "согласие судьи с человеком (`judge-human agreement`)" in text
+
+    forbidden_markers = (
+        "- Tool catalog, semantic tool filtering, read/write taxonomy:",
+        "- MCP host/client/server, capability transport, sandbox boundary:",
+        "- Semantic gap, HyDE, RAG vs training:",
+        "- Latency budget, fast path / slow path, routed pipeline:",
+        "- LLM-as-a-judge, calibration и judge-human agreement:",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_english_book_plan_matches_home_publication_status() -> None:
     required_markers = (
         "Current publication status",
