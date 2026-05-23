@@ -14,8 +14,8 @@
 
 同时，生态确实处于过渡期。这个仓库故意固定 `mkdocs<2`，以保持当前插件和主题栈的兼容性，并避免在第一版公开发布时引入不必要的迁移风险。
 
-!!! note "Canonical publishing cases"
-    Publishing stack 应该把三个 canonical cases 支撑成 reader routes，而不只是 build pages。**Support triage** 需要 fast build、GitHub Pages deployment、search/navigation、readable policy/approval examples，以及指向 trace/eval artifacts 的 stable links。**Internal knowledge assistant** 需要 Markdown-first authoring、multilingual pages、glossary/search surface、source links，以及低摩擦更新 memory/retrieval material。**Incident coordination** 需要 strict build gate、reproducible docs commands、指向 incident/rollout pages 的 stable navigation、visible changelog-style diffs 和 migration-risk discipline。
+!!! note "规范发布案例（Canonical publishing cases）"
+    发布栈（Publishing stack）应该把三个规范案例（canonical cases）支撑成阅读路线（reader routes），而不只是构建页面（build pages）。**支持分流（Support triage）** 需要快速构建（fast build）、GitHub Pages 部署（GitHub Pages deployment）、搜索/导航（search/navigation）、可读的策略/审批示例（policy/approval examples），以及指向追踪/评测工件（trace/eval artifacts）的稳定链接（stable links）。**内部知识助手（Internal knowledge assistant）** 需要 Markdown 优先创作（Markdown-first authoring）、多语言页面（multilingual pages）、术语表/搜索表面（glossary/search surface）、来源链接（source links），以及对记忆/检索材料的低摩擦更新（low-friction updates for memory/retrieval material）。**事件协调（Incident coordination）** 需要严格构建门禁（strict build gate）、可复现文档命令（reproducible docs commands）、指向事件/发布页面的稳定导航（stable navigation to incident/rollout pages）、可见的变更日志式差异（visible changelog-style diffs）和迁移风险纪律（migration-risk discipline）。
 
 ## 为什么没有立刻切到 Astro Starlight
 

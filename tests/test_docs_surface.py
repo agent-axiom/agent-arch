@@ -7958,6 +7958,44 @@ def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_publishing_stack_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/stack.md")
+    chinese_text = _read("docs/appendix/stack.zh.md")
+
+    assert "Канонические сценарии публикации" in russian_text
+    assert "Стек публикации (Publishing stack)" in russian_text
+    assert "маршруты чтения (reader routes)" in russian_text
+    assert "быстрой сборки (fast build)" in russian_text
+    assert "многоязычных страниц (multilingual pages)" in russian_text
+    assert "строгого шлюза сборки (strict build gate)" in russian_text
+
+    assert "规范发布案例" in chinese_text
+    assert "发布栈（Publishing stack）" in chinese_text
+    assert "阅读路线（reader routes）" in chinese_text
+    assert "快速构建（fast build）" in chinese_text
+    assert "多语言页面（multilingual pages）" in chinese_text
+    assert "严格构建门禁（strict build gate）" in chinese_text
+
+    forbidden_markers = (
+        "Publishing stack должен",
+        "три canonical cases как reader routes",
+        "только build pages",
+        "требует fast build",
+        "требует Markdown-first authoring",
+        "требует strict build gate",
+        "Publishing stack 应该把三个 canonical cases",
+        "支撑成 reader routes",
+        "只是 build pages",
+        "需要 fast build",
+        "需要 Markdown-first authoring",
+        "需要 strict build gate",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
