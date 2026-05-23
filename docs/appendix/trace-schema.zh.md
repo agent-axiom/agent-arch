@@ -204,8 +204,8 @@ Trace replay 会先校验这些 evidence，然后才允许它们作为新 run �
 !!! example "重复工单线索的 trace"
     在 support-triage 案例里，`tool_policy_decision`、`approval_requested`、`tool_execution` 和最终 outcome 应该由同一个 `trace_id`、`session_id`、`approval_id`、`tool_principal` 与 `idempotency_key` 连接起来。如果 `create_ticket` 超时且副作用状态未知，trace 应显示 `side_effect_unknown`，而不是把运行伪装成成功，或在没有 reconciliation 的情况下重复写入。
 
-!!! note "Canonical trace cases"
-    三个 canonical cases 需要不同的 trace emphases。**Support triage** 要把 approval events、`idempotency_key`、tool side effects 和 duplicate-ticket recovery evidence 连起来。**Internal knowledge assistant** 应保留 retrieval spans、memory access、source attribution、freshness checks 和 access control decisions。**Incident coordination** 应展示 escalation timeline、notification side effects、response ownership、handoff events 和 post-incident learning。
+!!! note "规范追踪案例（Canonical trace cases）"
+    三个规范案例（canonical cases）需要不同的追踪重点（trace emphases）。**支持分流（Support triage）** 要把审批事件（approval events）、`idempotency_key`、工具副作用（tool side effects）和重复工单恢复证据（duplicate-ticket recovery evidence）连起来。**内部知识助手（Internal knowledge assistant）** 应保留检索跨度（retrieval spans）、记忆访问（memory access）、来源归因（source attribution）、新鲜度检查（freshness checks）和访问控制决策（access control decisions）。**事件协调（Incident coordination）** 应展示升级时间线（escalation timeline）、通知副作用（notification side effects）、响应归属（response ownership）、交接事件（handoff events）和事件后学习（post-incident learning）。
 
 对于由 sandbox 支撑的运行，也应该预留把追踪和执行边界关联起来的字段：
 
