@@ -6727,6 +6727,44 @@ def test_postmortem_template_surfaces_three_canonical_postmortem_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_postmortem_template_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/postmortem-template.md")
+    chinese_text = _read("docs/appendix/postmortem-template.zh.md")
+
+    assert "Канонические сценарии разбора инцидентов" in russian_text
+    assert "Разбор инцидента (postmortem)" in russian_text
+    assert "классы отказов (failure classes)" in russian_text
+    assert "контур управления (control loop)" in russian_text
+    assert "корневую причину дубля тикета (duplicate-ticket root cause)" in russian_text
+    assert "задержку эскалации (escalation delay)" in russian_text
+
+    assert "规范事后复盘案例" in chinese_text
+    assert "事后复盘（postmortem）" in chinese_text
+    assert "失败类别（failure classes）" in chinese_text
+    assert "控制循环（control loop）" in chinese_text
+    assert "重复工单根因（duplicate-ticket root cause）" in chinese_text
+    assert "升级延迟（escalation delay）" in chinese_text
+
+    forbidden_markers = (
+        "Postmortem должен возвращать",
+        "разные failure classes",
+        "в control loop",
+        "проверяет duplicate-ticket root cause",
+        "проверяет stale source",
+        "проверяет escalation delay",
+        "Postmortem 应把三个 canonical cases",
+        "不同 failure classes",
+        "回流到 control loop",
+        "检查 duplicate-ticket root cause",
+        "检查 stale source",
+        "检查 escalation delay",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_incident_response_playbook_surfaces_three_canonical_response_cases() -> None:
     required_markers = (
         "Canonical response cases",
