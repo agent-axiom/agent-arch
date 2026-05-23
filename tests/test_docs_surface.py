@@ -6953,6 +6953,42 @@ def test_glossary_surfaces_three_canonical_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_glossary_routes_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/glossary.md")
+    chinese_text = _read("docs/appendix/glossary.zh.md")
+
+    assert "Канонические маршруты глоссария" in russian_text
+    assert "глоссарий (glossary) как быстрый маршрут (fast route)" in russian_text
+    assert "шлюза инструментов (Tool gateway)" in russian_text
+    assert "долгосрочной памяти (Long-term memory)" in russian_text
+    assert "контура управления (Control plane)" in russian_text
+    assert "утвержденного реестра (Approved inventory)" in russian_text
+
+    assert "规范术语表路线" in chinese_text
+    assert "术语表（glossary）" in chinese_text
+    assert "快速路线（fast route）" in chinese_text
+    assert "工具网关（Tool gateway）" in chinese_text
+    assert "长期记忆（Long-term memory）" in chinese_text
+    assert "控制平面（Control plane）" in chinese_text
+    assert "已批准清单（Approved inventory）" in chinese_text
+
+    forbidden_markers = (
+        "Используй glossary как fast route",
+        "по трем canonical cases",
+        "начинается с Tool gateway",
+        "начинается с Retrieval",
+        "начинается с Agent runtime",
+        "Use the glossary 作为三个 canonical cases 的 fast route",
+        "从 Tool gateway、Approval gate",
+        "从 Retrieval、Long-term memory",
+        "从 Agent runtime、Control plane",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_sources_surface_three_canonical_source_routes() -> None:
     required_markers = (
         "Canonical source routes",

@@ -2,8 +2,8 @@
 
 Эта страница нужна как быстрый словарь ключевых терминов книги. Она не заменяет главы, а помогает быстро вспомнить смысл слова и понять, куда читать дальше.
 
-!!! note "Canonical glossary routes"
-    Используй glossary как fast route по трем canonical cases. **Support triage** начинается с Tool gateway, Approval gate, Policy gate, Capability catalog, Trace и Eval dataset. **Internal knowledge assistant** начинается с Retrieval, Long-term memory, Profile memory, Provenance, Trust boundary и Egress policy. **Incident coordination** начинается с Agent runtime, Control plane, Rollout gate, Trace, Span и Approved inventory.
+!!! note "Канонические маршруты глоссария (Canonical glossary routes)"
+    Используй глоссарий (glossary) как быстрый маршрут (fast route) по трем каноническим сценариям (canonical cases). **Триаж обращений поддержки (Support triage)** начинается с шлюза инструментов (Tool gateway), шлюза подтверждения (Approval gate), шлюза политик (Policy gate), каталога возможностей (Capability catalog), трассы (Trace) и набора оценок (Eval dataset). **Внутренний ассистент знаний (Internal knowledge assistant)** начинается с поиска (Retrieval), долгосрочной памяти (Long-term memory), профильной памяти (Profile memory), происхождения данных (Provenance), границы доверия (Trust boundary) и политики исходящих соединений (Egress policy). **Координация инцидентов (Incident coordination)** начинается со среды исполнения агента (Agent runtime), контура управления (Control plane), шлюза раскатки (Rollout gate), трассы (Trace), спана (Span) и утвержденного реестра (Approved inventory).
 
 ## Agent runtime
 
