@@ -6100,6 +6100,38 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_trace_schema_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/trace-schema.md")
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+
+    assert "Канонические сценарии трассировки" in russian_text
+    assert "акцентов трассировки (trace emphases)" in russian_text
+    assert "события подтверждений (approval events)" in russian_text
+    assert "спаны поиска (retrieval spans)" in russian_text
+    assert "таймлайн эскалации (escalation timeline)" in russian_text
+
+    assert "规范追踪案例" in chinese_text
+    assert "追踪重点（trace emphases）" in chinese_text
+    assert "审批事件（approval events）" in chinese_text
+    assert "检索跨度（retrieval spans）" in chinese_text
+    assert "升级时间线（escalation timeline）" in chinese_text
+
+    forbidden_markers = (
+        "Три canonical cases требуют разных trace emphases",
+        "связывает approval events",
+        "сохранять retrieval spans",
+        "показывать escalation timeline",
+        "三个 canonical cases 需要不同的 trace emphases",
+        "把 approval events",
+        "保留 retrieval spans",
+        "展示 escalation timeline",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_trace_schema_includes_agent_threat_evidence_markers() -> None:
     required_markers = (
         "agent_threat_evidence",

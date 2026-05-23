@@ -204,8 +204,8 @@ Trace replay валидирует эти evidence до того, как они �
 !!! example "Trace для duplicate-ticket thread"
     В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.
 
-!!! note "Canonical trace cases"
-    Три canonical cases требуют разных trace emphases. **Support triage** связывает approval events, `idempotency_key`, tool side effects и duplicate-ticket recovery evidence. **Internal knowledge assistant** должен сохранять retrieval spans, memory access, source attribution, freshness checks и access control decisions. **Incident coordination** должен показывать escalation timeline, notification side effects, response ownership, handoff events и post-incident learning.
+!!! note "Канонические сценарии трассировки (Canonical trace cases)"
+    Три канонических сценария (canonical cases) требуют разных акцентов трассировки (trace emphases). **Триаж обращений поддержки (Support triage)** связывает события подтверждений (approval events), `idempotency_key`, побочные эффекты инструментов (tool side effects) и доказательства восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** должен сохранять спаны поиска (retrieval spans), доступ к памяти (memory access), привязку к источникам (source attribution), проверки свежести (freshness checks) и решения контроля доступа (access control decisions). **Координация инцидентов (Incident coordination)** должна показывать таймлайн эскалации (escalation timeline), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership), события передачи управления (handoff events) и обучение после инцидента (post-incident learning).
 
 А для sandbox-backed run полезно заранее зарезервировать поля, которые связывают трассу с execution boundary:
 
