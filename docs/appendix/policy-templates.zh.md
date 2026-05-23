@@ -19,8 +19,8 @@
 !!! example "重复工单线索的策略"
     对于贯穿的 support-triage 案例，`create_ticket` 不能只是一个写工具：它需要受治理的能力边界、强制 idempotency key、可追踪的写入意图、针对 `side_effect_unknown` 的停止条件，以及能在变更发布前捕获重复建单的 rollout/eval gate。
 
-!!! note "Canonical policy template cases"
-    这些模板是三个 canonical cases 的 operational starters。**Support triage** 从 governed write capability、approval boundary、idempotency key、traceable write intent 和 duplicate-ticket guard 开始。**Internal knowledge assistant** 从 role-scoped retrieval、source references、grounding checks、tenant boundaries 和 access-denied behavior 开始。**Incident coordination** 从 controlled handoffs、current owner、notification approval、risky remediation disabled by default 和 incident trace coverage 开始。
+!!! note "规范策略模板案例（Canonical policy template cases）"
+    这些模板是三个规范案例（canonical cases）的运营起点（operational starters）。**支持分流（Support triage）** 从受治理的写入能力（governed write capability）、审批边界（approval boundary）、幂等键（idempotency key）、可追踪写入意图（traceable write intent）和重复工单防护（duplicate-ticket guard）开始。**内部知识助手（Internal knowledge assistant）** 从按角色限定的检索（role-scoped retrieval）、来源引用（source references）、锚定检查（grounding checks）、租户边界（tenant boundaries）和拒绝访问行为（access-denied behavior）开始。**事件协调（Incident coordination）** 从受控交接（controlled handoffs）、当前负责人（current owner）、通知审批（notification approval）、默认禁用的高风险修复（risky remediation disabled by default）和事件追踪覆盖（incident trace coverage）开始。
 
 ## 模板 1：支持分诊智能体
 

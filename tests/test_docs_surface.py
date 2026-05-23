@@ -6907,6 +6907,39 @@ def test_policy_templates_surface_three_canonical_policy_template_cases() -> Non
             assert marker not in text, (path, marker)
 
 
+def test_multilingual_policy_templates_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/policy-templates.md")
+    chinese_text = _read("docs/appendix/policy-templates.zh.md")
+
+    assert "Канонические сценарии шаблонов политик" in russian_text
+    assert "операционными заготовками (operational starters)" in russian_text
+    assert "управляемой записывающей возможности (governed write capability)" in russian_text
+    assert "поиска по ролям (role-scoped retrieval)" in russian_text
+    assert "управляемых передач (controlled handoffs)" in russian_text
+
+    assert "规范策略模板案例" in chinese_text
+    assert "运营起点（operational starters）" in chinese_text
+    assert "受治理的写入能力（governed write capability）" in chinese_text
+    assert "按角色限定的检索（role-scoped retrieval）" in chinese_text
+    assert "受控交接（controlled handoffs）" in chinese_text
+
+    forbidden_markers = (
+        "являются operational starters",
+        "трех canonical cases",
+        "governed write capability, approval boundary",
+        "role-scoped retrieval, source references",
+        "controlled handoffs, current owner",
+        "三个 canonical cases 的 operational starters",
+        "从 governed write capability",
+        "从 role-scoped retrieval",
+        "从 controlled handoffs",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() -> None:
     required_markers = (
         "Canonical registry cases",
