@@ -19,8 +19,8 @@
 !!! example "Политика для duplicate-ticket thread"
     Для сквозного кейса support-triage `create_ticket` должен быть не просто write tool, а governed capability: approval boundary, обязательный idempotency key, traceable write intent, stop condition при `side_effect_unknown` и rollout/eval gate, который ловит повторное создание тикета до публикации изменения.
 
-!!! note "Canonical policy template cases"
-    Эти шаблоны являются operational starters для трех canonical cases. **Support triage** начинает с governed write capability, approval boundary, idempotency key, traceable write intent и duplicate-ticket guard. **Internal knowledge assistant** начинает с role-scoped retrieval, source references, grounding checks, tenant boundaries и access-denied behavior. **Incident coordination** начинает с controlled handoffs, current owner, notification approval, risky remediation disabled by default и incident trace coverage.
+!!! note "Канонические сценарии шаблонов политик (Canonical policy template cases)"
+    Эти шаблоны являются операционными заготовками (operational starters) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** начинает с управляемой записывающей возможности (governed write capability), границы подтверждения (approval boundary), ключа идемпотентности (idempotency key), отслеживаемого намерения записи (traceable write intent) и защиты от дубля тикета (duplicate-ticket guard). **Внутренний ассистент знаний (Internal knowledge assistant)** начинает с поиска по ролям (role-scoped retrieval), ссылок на источники (source references), проверок привязки (grounding checks), границ арендатора (tenant boundaries) и поведения при отказе доступа (access-denied behavior). **Координация инцидентов (Incident coordination)** начинает с управляемых передач (controlled handoffs), текущего владельца (current owner), подтверждения уведомлений (notification approval), опасной коррекции, выключенной по умолчанию (risky remediation disabled by default), и покрытия трасс инцидента (incident trace coverage).
 
 ## Шаблон 1. Агент разбора обращений поддержки
 
