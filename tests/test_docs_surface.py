@@ -6586,6 +6586,42 @@ def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() 
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_registry_operations_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/registry-operations-handbook.md")
+    chinese_text = _read("docs/appendix/registry-operations-handbook.zh.md")
+
+    assert "Канонические сценарии реестра" in russian_text
+    assert "Запись реестра (registry record)" in russian_text
+    assert "якоря ответственности (accountability anchors)" in russian_text
+    assert "возможности записи (write capability)" in russian_text
+    assert "владельца корпуса (corpus owner)" in russian_text
+    assert "владельца экстренного отката (emergency rollback owner)" in russian_text
+
+    assert "规范注册表案例" in chinese_text
+    assert "注册表记录（registry record）" in chinese_text
+    assert "责任锚点（accountability anchors）" in chinese_text
+    assert "写入能力（write capability）" in chinese_text
+    assert "语料负责人（corpus owner）" in chinese_text
+    assert "紧急回滚负责人（emergency rollback owner）" in chinese_text
+
+    forbidden_markers = (
+        "Registry record должен фиксировать",
+        "разные accountability anchors",
+        "требует owner для write capability",
+        "требует corpus owner",
+        "требует incident role owner",
+        "Registry record 应为三个 canonical cases",
+        "不同 accountability anchors",
+        "需要 write capability",
+        "需要 corpus owner",
+        "需要 incident role owner",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None:
     required_markers = (
         "Canonical recovery cases",
