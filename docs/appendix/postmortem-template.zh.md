@@ -114,8 +114,8 @@
 !!! example "重复工单线索的事后复盘"
     对于 support-triage 事故，事后复盘需要明确回答：是哪一次 `create_ticket` 调用产生了副作用，是否存在 `idempotency_key`，哪个 `policy_bundle` 和 `rollout_wave` 放行了它，为什么 `side_effect_unknown` 没能阻止重复写入，以及哪些纠正动作会更新评测数据集、发布门禁、审批策略、注册表记录和旧 ticket writer 的退役计划。
 
-!!! note "Canonical postmortem cases"
-    Postmortem 应把三个 canonical cases 的不同 failure classes 回流到 control loop。**Support triage** 检查 duplicate-ticket root cause、approval scope、`idempotency_key`、side-effect containment 和 eval/rollout correction。**Internal knowledge assistant** 检查 stale source、retrieval freshness、memory provenance、access-control gap 和 knowledge-base correction。**Incident coordination** 检查 escalation delay、notification side effects、response ownership gap、handoff breakdown 和 post-incident learning update。
+!!! note "规范事后复盘案例（Canonical postmortem cases）"
+    事后复盘（postmortem）应该把三个规范案例（canonical cases）的不同失败类别（failure classes）回流到控制循环（control loop）。**支持分流（Support triage）** 检查重复工单根因（duplicate-ticket root cause）、审批范围（approval scope）、`idempotency_key`、副作用遏制（side-effect containment）和评测/发布修正（eval/rollout correction）。**内部知识助手（Internal knowledge assistant）** 检查陈旧来源（stale source）、检索新鲜度（retrieval freshness）、记忆来源（memory provenance）、访问控制缺口（access-control gap）和知识库修正（knowledge-base correction）。**事件协调（Incident coordination）** 检查升级延迟（escalation delay）、通知副作用（notification side effects）、响应归属缺口（response ownership gap）、交接崩溃（handoff breakdown）和事件后学习更新（post-incident learning update）。
 
 ## 11. YAML 简版模板
 
