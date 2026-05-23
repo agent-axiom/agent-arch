@@ -6747,6 +6747,41 @@ def test_community_roadmap_surfaces_three_canonical_roadmap_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_community_roadmap_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/community-roadmap.md")
+    chinese_text = _read("docs/appendix/community-roadmap.zh.md")
+
+    assert "Канонические сценарии дорожной карты" in russian_text
+    assert "Дорожная карта (roadmap)" in russian_text
+    assert "следующий слой пользы (next layer of value)" in russian_text
+    assert "Триаж обращений поддержки (Support triage)" in russian_text
+    assert "примерам трасс инцидентов (incident trace examples)" in russian_text
+    assert "артефактам обучения после инцидента (post-incident learning assets)" in russian_text
+
+    assert "规范路线图案例" in chinese_text
+    assert "路线图（roadmap）" in chinese_text
+    assert "下一层价值（next layer of value）" in chinese_text
+    assert "支持分流（Support triage）" in chinese_text
+    assert "事件追踪示例（incident trace examples）" in chinese_text
+    assert "事件后学习资产（post-incident learning assets）" in chinese_text
+
+    forbidden_markers = (
+        "Roadmap должен измерять next layer of value",
+        "через три canonical cases",
+        "задает приоритет для richer trace examples",
+        "задает приоритет для knowledge scenario",
+        "задает приоритет для incident trace examples",
+        "Roadmap 应通过三个 canonical cases 衡量 next layer of value",
+        "优先推动 richer trace examples",
+        "优先推动 knowledge scenario",
+        "优先推动 incident trace examples",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_google_integration_roadmap_surfaces_three_canonical_platform_cases() -> None:
     required_markers = (
         "Canonical Google integration cases",

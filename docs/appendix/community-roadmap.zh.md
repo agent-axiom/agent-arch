@@ -21,8 +21,8 @@
 - 帮助的是整个社区，而不只是作者本人；
 - 提升的是国际可读性，而不只是技术深度。
 
-!!! note "Canonical roadmap cases"
-    Roadmap 应通过三个 canonical cases 衡量 next layer of value。**Support triage** 优先推动 richer trace examples、approval policy templates、duplicate-ticket evals 和 runnable high-risk scenario。**Internal knowledge assistant** 优先推动 knowledge scenario、retrieval policy template、memory eval patterns 和 source-grounding QA。**Incident coordination** 优先推动 incident trace examples、escalation/notification templates、response ownership checks 和 post-incident learning assets。
+!!! note "规范路线图案例（Canonical roadmap cases）"
+    路线图（roadmap）应该通过三个规范案例（canonical cases）衡量下一层价值（next layer of value）。**支持分流（Support triage）** 优先推动更丰富的追踪示例（richer trace examples）、审批策略模板（approval policy templates）、重复工单评测（duplicate-ticket evals）和可运行的高风险场景（runnable high-risk scenario）。**内部知识助手（Internal knowledge assistant）** 优先推动知识场景（knowledge scenario）、检索策略模板（retrieval policy template）、记忆评测模式（memory eval patterns）和来源锚定质检（source-grounding QA）。**事件协调（Incident coordination）** 优先推动事件追踪示例（incident trace examples）、升级/通知模板（escalation/notification templates）、响应归属检查（response ownership checks）和事件后学习资产（post-incident learning assets）。
 
 ## 接下来的 10 个改进
 
