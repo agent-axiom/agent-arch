@@ -6352,6 +6352,42 @@ def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> Non
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_incident_record_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/incident-record-schema.md")
+    chinese_text = _read("docs/appendix/incident-record-schema.zh.md")
+
+    assert "Канонические сценарии инцидентов" in russian_text
+    assert "Запись инцидента (incident record)" in russian_text
+    assert "пути исправления (corrective paths)" in russian_text
+    assert "запись с неизвестным исходом (unknown write)" in russian_text
+    assert "устаревший поиск (stale retrieval)" in russian_text
+    assert "задержку эскалации (escalation delay)" in russian_text
+
+    assert "规范事故案例" in chinese_text
+    assert "事故记录（incident record）" in chinese_text
+    assert "纠正路径（corrective paths）" in chinese_text
+    assert "结果未知的写入（unknown write）" in chinese_text
+    assert "陈旧检索（stale retrieval）" in chinese_text
+    assert "升级延迟（escalation delay）" in chinese_text
+
+    forbidden_markers = (
+        "Incident record должен оставлять",
+        "разные corrective paths",
+        "фиксирует unknown write",
+        "фиксирует stale retrieval",
+        "фиксирует escalation delay",
+        "Incident record 应为三个 canonical cases",
+        "不同 corrective paths",
+        "记录 unknown write",
+        "记录 stale retrieval",
+        "记录 escalation delay",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     required_markers = (
         "Canonical rollout cases",
