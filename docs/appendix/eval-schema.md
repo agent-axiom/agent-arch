@@ -149,8 +149,8 @@ Export contract намеренно конкретный: default `dataset_name` 
 !!! example "Eval gate для duplicate-ticket thread"
     Для сквозного support-triage кейса отдельный eval должен воспроизводить timeout после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один ticket side effect или `side_effect_unknown` stop, и блокировать rollout, если новая prompt/model/adapter версия снова делает blind retry и создает второй тикет.
 
-!!! note "Canonical eval cases"
-    Eval dataset должен покрывать не только duplicate-ticket regression. **Support triage** проверяет approval gates, idempotency evidence, retry behavior и duplicate-ticket recovery. **Internal knowledge assistant** проверяет retrieval freshness, source attribution, memory provenance, access control и grounded answer quality. **Incident coordination** проверяет escalation timing, notification side effects, response ownership, handoff quality и post-incident learning regressions.
+!!! note "Канонические сценарии оценок (Canonical eval cases)"
+    Набор оценок (eval dataset) должен покрывать не только регрессию дублей тикетов (duplicate-ticket regression). **Триаж обращений поддержки (Support triage)** проверяет шлюзы подтверждения (approval gates), доказательства идемпотентности (idempotency evidence), поведение повторов (retry behavior) и восстановление после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет свежесть поиска (retrieval freshness), привязку к источникам (source attribution), происхождение памяти (memory provenance), контроль доступа (access control) и качество ответа с опорой на источники (grounded answer quality). **Координация инцидентов (Incident coordination)** проверяет сроки эскалации (escalation timing), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership), качество передачи управления (handoff quality) и регрессии обучения после инцидента (post-incident learning regressions).
 
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 

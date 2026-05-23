@@ -6299,6 +6299,41 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_eval_schema_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/eval-schema.md")
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+
+    assert "Канонические сценарии оценок" in russian_text
+    assert "Набор оценок (eval dataset)" in russian_text
+    assert "регрессию дублей тикетов (duplicate-ticket regression)" in russian_text
+    assert "шлюзы подтверждения (approval gates)" in russian_text
+    assert "свежесть поиска (retrieval freshness)" in russian_text
+    assert "сроки эскалации (escalation timing)" in russian_text
+
+    assert "规范评测案例" in chinese_text
+    assert "评测数据集（eval dataset）" in chinese_text
+    assert "重复工单回归（duplicate-ticket regression）" in chinese_text
+    assert "审批门禁（approval gates）" in chinese_text
+    assert "检索新鲜度（retrieval freshness）" in chinese_text
+    assert "升级时序（escalation timing）" in chinese_text
+
+    forbidden_markers = (
+        "Eval dataset должен покрывать",
+        "только duplicate-ticket regression",
+        "проверяет approval gates",
+        "проверяет retrieval freshness",
+        "проверяет escalation timing",
+        "Eval dataset 不应该只覆盖 duplicate-ticket regression",
+        "检查 approval gates",
+        "检查 retrieval freshness",
+        "检查 escalation timing",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_eval_schema_includes_verifier_verdict_record_fields() -> None:
     required_markers = (
         "verifier verdict record",
