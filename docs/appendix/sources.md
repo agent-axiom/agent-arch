@@ -12,8 +12,8 @@
 
     Если нужна самая надежная база для Parts I, V и VIII, начинай с нормативного каркаса и слоя HCI/HITL. Если нужна текущая инженерная практика, смотри платформенные документы и свежие исследования, но всегда учитывай дату публикации.
 
-!!! note "Canonical source routes"
-    Используй sources как fast route для трех canonical cases. **Support triage** начинается с OWASP, OpenAI agent guides, HITL sources, policy/approval material, trace grading и incident cases. **Internal knowledge assistant** начинается с LangGraph memory, OpenAI Agent memory, retrieval/eval sources, provenance-oriented governance и memory research frontier. **Incident coordination** начинается с NIST/AI RMF, Google/Microsoft governance, observability sources, multi-agent reliability research, incident review и rollout/control-plane material.
+!!! note "Канонические маршруты источников (Canonical source routes)"
+    Используй источники (sources) как быстрый маршрут (fast route) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** начинается с OWASP, руководств OpenAI по агентам (OpenAI agent guides), источников HITL (HITL sources), материалов по политикам/подтверждениям (policy/approval material), оценки трасс (trace grading) и кейсов инцидентов (incident cases). **Внутренний ассистент знаний (Internal knowledge assistant)** начинается с памяти LangGraph (LangGraph memory), памяти OpenAI Agent (OpenAI Agent memory), источников по поиску/оценке (retrieval/eval sources), управления с акцентом на происхождение (provenance-oriented governance) и исследовательского фронтира памяти (memory research frontier). **Координация инцидентов (Incident coordination)** начинается с NIST/AI RMF, управления Google/Microsoft (Google/Microsoft governance), источников наблюдаемости (observability sources), исследований надежности многоагентных систем (multi-agent reliability research), разбора инцидентов (incident review) и материалов по раскатке/контрольной плоскости (rollout/control-plane material).
 
 ## Нормативные рамки и контуры управления
 

@@ -7584,6 +7584,41 @@ def test_sources_surface_three_canonical_source_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_sources_canonical_routes_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/sources.md")
+    chinese_text = _read("docs/appendix/sources.zh.md")
+
+    assert "Канонические маршруты источников" in russian_text
+    assert "источники (sources)" in russian_text
+    assert "быстрый маршрут (fast route)" in russian_text
+    assert "руководств OpenAI по агентам (OpenAI agent guides)" in russian_text
+    assert "памяти LangGraph (LangGraph memory)" in russian_text
+    assert "источников наблюдаемости (observability sources)" in russian_text
+
+    assert "规范来源路线" in chinese_text
+    assert "来源（sources）" in chinese_text
+    assert "快速路线（fast route）" in chinese_text
+    assert "OpenAI 智能体指南（OpenAI agent guides）" in chinese_text
+    assert "LangGraph 记忆（LangGraph memory）" in chinese_text
+    assert "可观测性来源（observability sources）" in chinese_text
+
+    forbidden_markers = (
+        "Используй sources как fast route",
+        "трех canonical cases",
+        "OpenAI agent guides, HITL sources",
+        "LangGraph memory, OpenAI Agent memory",
+        "observability sources, multi-agent reliability research",
+        "Use the sources 作为三个 canonical cases 的 fast route",
+        "OpenAI agent guides、HITL sources",
+        "LangGraph memory、OpenAI Agent memory",
+        "observability sources、multi-agent reliability research",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_sources_include_agent_specific_owasp_security_sources() -> None:
     required_markers = (
         "Agent-specific security",
