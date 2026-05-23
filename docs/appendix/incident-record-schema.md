@@ -69,8 +69,8 @@ owner: platform-operations
 !!! example "Incident record для duplicate-ticket thread"
     В support-triage инциденте запись должна явно хранить `idempotency_key` рядом с `trace_id`, `session_id`, `approval_id`, `tool_principal`, `bundle_id` и `rollout_wave`. Без этого review не сможет надежно отличить один unknown write от второго реального `create_ticket` side effect и превратить incident в eval/update gate.
 
-!!! note "Canonical incident cases"
-    Incident record должен оставлять разные corrective paths для трех canonical cases. **Support triage** фиксирует unknown write, `idempotency_key`, duplicate-ticket recovery и eval/update gate. **Internal knowledge assistant** фиксирует stale retrieval, source attribution gaps, memory contamination, access control breach и knowledge provenance repair. **Incident coordination** фиксирует escalation delay, notification side effects, response ownership gap, handoff failure и post-incident learning update.
+!!! note "Канонические сценарии инцидентов (Canonical incident cases)"
+    Запись инцидента (incident record) должна оставлять разные пути исправления (corrective paths) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** фиксирует запись с неизвестным исходом (unknown write), `idempotency_key`, восстановление после дубля тикета (duplicate-ticket recovery) и шлюз оценки/обновления (eval/update gate). **Внутренний ассистент знаний (Internal knowledge assistant)** фиксирует устаревший поиск (stale retrieval), разрывы привязки к источникам (source attribution gaps), загрязнение памяти (memory contamination), нарушение контроля доступа (access control breach) и восстановление происхождения знаний (knowledge provenance repair). **Координация инцидентов (Incident coordination)** фиксирует задержку эскалации (escalation delay), побочные эффекты уведомлений (notification side effects), разрыв владения ответом (response ownership gap), сбой передачи управления (handoff failure) и обновление обучения после инцидента (post-incident learning update).
 
 ## 4. Incident postmortem link
 
