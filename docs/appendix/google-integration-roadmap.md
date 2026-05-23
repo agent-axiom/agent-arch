@@ -13,8 +13,8 @@
 
 Это хорошо дополняет уже встроенные в книгу материалы OpenAI, Anthropic и LangGraph.
 
-!!! note "Canonical Google integration cases"
-    Google integration roadmap полезнее, если проверять platform-grade ideas на трех canonical cases. **Support triage** проверяет agent identity, least privilege, approval/audit linkage, sandbox profile, high-risk tools и duplicate-ticket controls. **Internal knowledge assistant** проверяет context layers, memory governance, retrieval policy, source provenance и tenant-aware access. **Incident coordination** проверяет registry governance, A2A boundaries, continuous controls, rollout gates, escalation traces и response ownership.
+!!! note "Канонические сценарии Google-интеграции (Canonical Google integration cases)"
+    Дорожная карта Google-интеграции (Google integration roadmap) полезнее, если проверять идеи платформенного уровня (platform-grade ideas) на трех канонических сценариях (canonical cases). **Триаж обращений поддержки (Support triage)** проверяет идентичность агента (agent identity), минимальные привилегии (least privilege), связь подтверждений и аудита (approval/audit linkage), профиль песочницы (sandbox profile), инструменты высокого риска (high-risk tools) и контроль дублей тикетов (duplicate-ticket controls). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет слои контекста (context layers), управление памятью (memory governance), политику поиска (retrieval policy), происхождение источников (source provenance) и доступ с учетом арендатора (tenant-aware access). **Координация инцидентов (Incident coordination)** проверяет управление реестром (registry governance), границы A2A (A2A boundaries), непрерывные контроли (continuous controls), шлюзы раскатки (rollout gates), трассы эскалации (escalation traces) и владение ответом (response ownership).
 
 ## План по шагам
 
