@@ -74,8 +74,8 @@
 !!! example "重复工单响应路径"
     对于贯穿的 support-triage 事故，先冻结 `create_ticket`，或把它切到强制审批模式；立即保留 `trace_id`、`session_id`、`approval_id`、`tool_principal`、`idempotency_key`、`bundle_id` 和 `rollout_wave`；然后确认副作用是否已经发生。如果状态未知，把这次运行标记为 `side_effect_unknown`，不要盲目重复写入，并在下次发布前把复盘结果转成 eval/rollout gate。
 
-!!! note "Canonical response cases"
-    Incident response 应为三个 canonical cases 选择不同 containment paths。**Support triage** 首先冻结 write capability，保留 approval evidence、`idempotency_key`、side-effect status 和 rollout wave。**Internal knowledge assistant** 首先收窄 retrieval scope、pauses memory writes，并保留 source provenance、tenant boundary evidence 和 access-control decision。**Incident coordination** 首先记录 escalation status、notification side effects、response ownership、handoff state 和 emergency rollback owner。
+!!! note "规范响应案例（Canonical response cases）"
+    事件响应（incident response）应该为三个规范案例（canonical cases）选择不同的遏制路径（containment paths）。**支持分流（Support triage）** 首先冻结写入能力（write capability），保留审批证据（approval evidence）、`idempotency_key`、副作用状态（side-effect status）和发布波次（rollout wave）。**内部知识助手（Internal knowledge assistant）** 首先收窄检索范围（retrieval scope）、暂停记忆写入（pauses memory writes），并保留来源证明（source provenance）、租户边界证据（tenant boundary evidence）和访问控制决策（access-control decision）。**事件协调（Incident coordination）** 首先记录升级状态（escalation status）、通知副作用（notification side effects）、响应归属（response ownership）、交接状态（handoff state）和紧急回滚负责人（emergency rollback owner）。
 
 ## 6. 在追踪与事件里先查什么
 

@@ -6797,6 +6797,43 @@ def test_incident_response_playbook_surfaces_three_canonical_response_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_incident_response_playbook_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/incident-response-playbook.md")
+    chinese_text = _read("docs/appendix/incident-response-playbook.zh.md")
+
+    assert "Канонические сценарии реагирования" in russian_text
+    assert "Реагирование на инцидент (incident response)" in russian_text
+    assert "пути сдерживания (containment paths)" in russian_text
+    assert "записывающую возможность (write capability)" in russian_text
+    assert "область поиска (retrieval scope)" in russian_text
+    assert "статус эскалации (escalation status)" in russian_text
+
+    assert "规范响应案例" in chinese_text
+    assert "事件响应（incident response）" in chinese_text
+    assert "遏制路径（containment paths）" in chinese_text
+    assert "写入能力（write capability）" in chinese_text
+    assert "检索范围（retrieval scope）" in chinese_text
+    assert "升级状态（escalation status）" in chinese_text
+
+    forbidden_markers = (
+        "Incident response должен выбирать",
+        "разные containment paths",
+        "трех canonical cases",
+        "замораживает write capability",
+        "ограничивает retrieval scope",
+        "фиксирует escalation status",
+        "Incident response 应为三个 canonical cases",
+        "选择不同 containment paths",
+        "冻结 write capability",
+        "收窄 retrieval scope",
+        "记录 escalation status",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_policy_templates_surface_three_canonical_policy_template_cases() -> None:
     required_markers = (
         "Canonical policy template cases",
