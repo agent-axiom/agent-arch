@@ -138,8 +138,8 @@ Approval schema живет не отдельно, а рядом с trace schema:
 !!! example "Approval record для duplicate-ticket thread"
     В support-triage кейсе approver должен видеть `idempotency_key` вместе с payload до нажатия approve. Если `create_ticket` затем timeout-ится, audit record сохраняет тот же key рядом с `approval_id`, `trace_id` и `tool_principal`, чтобы review отличал один approved write intent от повторного side effect после blind retry.
 
-!!! note "Canonical approval cases"
-    Approval record нужен не только для write path. **Support triage** требует explicit human approval, `idempotency_key` и duplicate-ticket recovery evidence. **Internal knowledge assistant** чаще требует approval или review для memory writes, access-control exceptions и source visibility decisions. **Incident coordination** требует approval trail для escalation authority, notification side effects, response ownership transfer и post-incident learning updates.
+!!! note "Канонические сценарии подтверждений (Canonical approval cases)"
+    Запись подтверждения (approval record) нужна не только для пути записи (write path). **Триаж обращений поддержки (Support triage)** требует явного подтверждения человеком (explicit human approval), `idempotency_key` и доказательств восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** чаще требует подтверждения (approval) или проверки (review) для записей в память (memory writes), исключений контроля доступа (access-control exceptions) и решений о видимости источников (source visibility decisions). **Координация инцидентов (Incident coordination)** требует следа подтверждений (approval trail) для полномочий эскалации (escalation authority), побочных эффектов уведомлений (notification side effects), передачи владения ответом (response ownership transfer) и обновлений обучения после инцидента (post-incident learning updates).
 
 ## 7. Как это связано с policy bundle
 

@@ -6038,6 +6038,38 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_approval_schema_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/approval-schema.md")
+    chinese_text = _read("docs/appendix/approval-schema.zh.md")
+
+    assert "Канонические сценарии подтверждений" in russian_text
+    assert "Запись подтверждения (approval record)" in russian_text
+    assert "пути записи (write path)" in russian_text
+    assert "явного подтверждения человеком (explicit human approval)" in russian_text
+    assert "исключений контроля доступа (access-control exceptions)" in russian_text
+    assert "следа подтверждений (approval trail)" in russian_text
+
+    assert "规范审批案例" in chinese_text
+    assert "审批记录（approval record）" in chinese_text
+    assert "写入路径（write path）" in chinese_text
+    assert "明确的人工审批（explicit human approval）" in chinese_text
+    assert "访问控制例外（access-control exceptions）" in chinese_text
+    assert "审批轨迹（approval trail）" in chinese_text
+
+    forbidden_markers = (
+        "Approval record нужен не только для write path",
+        "требует explicit human approval",
+        "требует approval trail для escalation authority",
+        "Approval record 不只服务于 write path",
+        "需要 explicit human approval",
+        "需要一条 approval trail",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     required_markers = (
         "Canonical trace cases",

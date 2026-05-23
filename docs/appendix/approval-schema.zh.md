@@ -138,8 +138,8 @@ linked_events:
 !!! example "重复工单线索的 approval record"
     在 support-triage 案例中，approver 按下 approve 之前就应该在 payload 旁看到 `idempotency_key`。如果之后 `create_ticket` 超时，audit record 会把同一个 key 保存在 `approval_id`、`trace_id` 和 `tool_principal` 旁边，让 review 能区分一次已审批的写入意图和 blind retry 之后重复发生的副作用。
 
-!!! note "Canonical approval cases"
-    Approval record 不只服务于 write path。**Support triage** 需要 explicit human approval、`idempotency_key` 和 duplicate-ticket recovery evidence。**Internal knowledge assistant** 更常需要针对 memory writes、access-control exceptions 和 source visibility decisions 的 approval 或 review。**Incident coordination** 需要一条 approval trail，用来覆盖 escalation authority、notification side effects、response ownership transfer 和 post-incident learning updates。
+!!! note "规范审批案例（Canonical approval cases）"
+    审批记录（approval record）不只服务于写入路径（write path）。**支持分流（Support triage）** 需要明确的人工审批（explicit human approval）、`idempotency_key` 和重复工单恢复证据（duplicate-ticket recovery evidence）。**内部知识助手（Internal knowledge assistant）** 更常需要针对记忆写入（memory writes）、访问控制例外（access-control exceptions）和来源可见性决策（source visibility decisions）的审批（approval）或复核（review）。**事件协调（Incident coordination）** 需要审批轨迹（approval trail），用来覆盖升级权限（escalation authority）、通知副作用（notification side effects）、响应归属转移（response ownership transfer）和事件后学习更新（post-incident learning updates）。
 
 ## 7. 它和策略包的关系
 
