@@ -38,8 +38,8 @@
 
 Это самый неприятный класс отказов.
 
-!!! note "Canonical recovery cases"
-    Recovery branch должен отличать failure surfaces для трех canonical cases. **Support triage** фокусируется на `side_effect_unknown`, idempotency lookup, duplicate-ticket prevention, manual reconciliation и eval/rollout regression. **Internal knowledge assistant** фокусируется на stale retrieval, source lookup failure, access-denied recovery, memory write rollback и grounded-answer recheck. **Incident coordination** фокусируется на notification partial delivery, escalation retry, owner handoff repair, emergency rollback decision и post-incident learning capture.
+!!! note "Канонические сценарии восстановления (Canonical recovery cases)"
+    Ветка восстановления (recovery branch) должна различать поверхности отказа (failure surfaces) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** фокусируется на `side_effect_unknown`, поиске по идемпотентности (idempotency lookup), предотвращении дубля тикета (duplicate-ticket prevention), ручной сверке (manual reconciliation) и регрессии оценки/раскатки (eval/rollout regression). **Внутренний ассистент знаний (Internal knowledge assistant)** фокусируется на устаревшем поиске (stale retrieval), сбое поиска источника (source lookup failure), восстановлении после отказа доступа (access-denied recovery), откате записи в память (memory write rollback) и повторной проверке обоснованного ответа (grounded-answer recheck). **Координация инцидентов (Incident coordination)** фокусируется на частичной доставке уведомлений (notification partial delivery), повторе эскалации (escalation retry), исправлении передачи владельца (owner handoff repair), решении об экстренном откате (emergency rollback decision) и фиксации обучения после инцидента (post-incident learning capture).
 
 Вместо naïve retry обычно полезнее:
 
