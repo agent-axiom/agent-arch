@@ -7072,6 +7072,42 @@ def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> Non
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/memory-eval-patterns.md")
+    chinese_text = _read("docs/appendix/memory-eval-patterns.zh.md")
+
+    assert "Канонические сценарии оценки памяти" in russian_text
+    assert "Набор оценок памяти (memory eval suite)" in russian_text
+    assert "качество состояния (state quality)" in russian_text
+    assert "перенос контекста заявителя (requester context carryover)" in russian_text
+    assert "свежесть поиска (retrieval freshness)" in russian_text
+    assert "восстановление хронологии инцидента (incident timeline recall)" in russian_text
+
+    assert "规范记忆评测案例" in chinese_text
+    assert "记忆评测套件（memory eval suite）" in chinese_text
+    assert "状态质量（state quality）" in chinese_text
+    assert "请求者上下文延续（requester context carryover）" in chinese_text
+    assert "检索新鲜度（retrieval freshness）" in chinese_text
+    assert "事件时间线回忆（incident timeline recall）" in chinese_text
+
+    forbidden_markers = (
+        "Memory eval suite должен",
+        "state quality для трех canonical cases",
+        "проверяет requester context carryover",
+        "проверяет retrieval freshness",
+        "проверяет incident timeline recall",
+        "Memory eval suite 应为三个 canonical cases",
+        "分别检查 state quality",
+        "检查 requester context carryover",
+        "检查 retrieval freshness",
+        "检查 incident timeline recall",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
     required_markers = (
         "Canonical causal cases",
