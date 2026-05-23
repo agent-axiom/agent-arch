@@ -6015,6 +6015,42 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_reference_package_runtime_scope_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/reference-package.md")
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+
+    assert "Канонический runtime-scope сценариев" in russian_text
+    assert "исполняемую базовую линию (runnable baseline)" in russian_text
+    assert "записывающих возможностей (write capabilities)" in russian_text
+    assert "линзами покрытия (coverage lenses)" in russian_text
+    assert "поиск (retrieval)" in russian_text
+    assert "трассы (traces)" in russian_text
+
+    assert "规范案例运行时范围" in chinese_text
+    assert "可运行基线（runnable baseline）" in chinese_text
+    assert "写入能力（write capabilities）" in chinese_text
+    assert "覆盖视角（coverage lenses）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "追踪（traces）" in chinese_text
+
+    forbidden_markers = (
+        "как runnable baseline для write capabilities",
+        "остаются coverage lenses",
+        "проверяет retrieval, memory",
+        "traces, escalation, notification side effects",
+        "как runnable configs",
+        "作为 runnable baseline，用来承载 write capabilities",
+        "仍是同一架构的 coverage lenses",
+        "检查 retrieval、memory",
+        "检查 traces、escalation",
+        "做成 runnable configs",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     required_markers = (
         "Canonical policy cases",
