@@ -6011,6 +6011,41 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_policy_bundle_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/policy-bundle-schema.md")
+    chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
+
+    assert "Канонические сценарии политик" in russian_text
+    assert "Пакет политик (policy bundle)" in russian_text
+    assert "политики подтверждения для записывающей возможности" in russian_text
+    assert "доказательств идемпотентности (idempotency evidence)" in russian_text
+    assert "политики поиска (retrieval policy)" in russian_text
+    assert "правил эскалации (escalation rules)" in russian_text
+
+    assert "规范策略案例" in chinese_text
+    assert "策略包（policy bundle）" in chinese_text
+    assert "写入能力审批策略（write-capability approval policy）" in chinese_text
+    assert "幂等证据（idempotency evidence）" in chinese_text
+    assert "检索策略（retrieval policy）" in chinese_text
+    assert "升级规则（escalation rules）" in chinese_text
+
+    forbidden_markers = (
+        "Policy bundle не должен выглядеть",
+        "во всех трех canonical cases",
+        "требует write-capability approval policy",
+        "требует retrieval policy",
+        "требует escalation rules",
+        "三个 canonical cases 的 policy bundle",
+        "需要 write-capability approval policy",
+        "需要 retrieval policy",
+        "需要 escalation rules",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     required_markers = (
         "Canonical approval cases",

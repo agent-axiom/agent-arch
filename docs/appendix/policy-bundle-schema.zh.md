@@ -53,8 +53,8 @@
 - 可追溯；
 - 可发布。
 
-!!! note "Canonical policy cases"
-    三个 canonical cases 的 policy bundle 不应该长得完全一样。**Support triage** 需要 write-capability approval policy、idempotency evidence 和 duplicate-ticket recovery controls。**Internal knowledge assistant** 需要 retrieval policy、memory write rules、freshness checks、access control 和 knowledge provenance。**Incident coordination** 需要 escalation rules、notification side effects、response ownership 和 post-incident learning gates。
+!!! note "规范策略案例（Canonical policy cases）"
+    策略包（policy bundle）不应该在三个规范案例（canonical cases）中长得完全一样。**支持分流（Support triage）** 需要写入能力审批策略（write-capability approval policy）、幂等证据（idempotency evidence）和重复工单恢复控制（duplicate-ticket recovery controls）。**内部知识助手（Internal knowledge assistant）** 需要检索策略（retrieval policy）、记忆写入规则（memory write rules）、新鲜度检查（freshness checks）、访问控制（access control）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 需要升级规则（escalation rules）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习门禁（post-incident learning gates）。
 
 ## 最小策略包结构
 
