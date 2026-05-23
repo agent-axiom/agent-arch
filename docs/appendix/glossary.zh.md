@@ -2,8 +2,8 @@
 
 这页是整本书的快速术语参考。它不替代正文，但可以帮助你快速回忆一个词的含义，并跳到相关章节继续读。
 
-!!! note "Canonical glossary routes"
-    Use the glossary 作为三个 canonical cases 的 fast route。**Support triage** 从 Tool gateway、Approval gate、Policy gate、Capability catalog、Trace 和 Eval dataset 开始。**Internal knowledge assistant** 从 Retrieval、Long-term memory、Profile memory、Provenance、Trust boundary 和 Egress policy 开始。**Incident coordination** 从 Agent runtime、Control plane、Rollout gate、Trace、Span 和 Approved inventory 开始。
+!!! note "规范术语表路线（Canonical glossary routes）"
+    把术语表（glossary）作为三个规范案例（canonical cases）的快速路线（fast route）。**支持分流（Support triage）** 从工具网关（Tool gateway）、审批门禁（Approval gate）、策略门禁（Policy gate）、能力目录（Capability catalog）、追踪（Trace）和评测数据集（Eval dataset）开始。**内部知识助手（Internal knowledge assistant）** 从检索（Retrieval）、长期记忆（Long-term memory）、画像记忆（Profile memory）、来源证明（Provenance）、信任边界（Trust boundary）和出口策略（Egress policy）开始。**事件协调（Incident coordination）** 从智能体运行时（Agent runtime）、控制平面（Control plane）、发布门禁（Rollout gate）、追踪（Trace）、跨度（Span）和已批准清单（Approved inventory）开始。
 
 ## 智能体运行时
 
