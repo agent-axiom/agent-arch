@@ -7377,6 +7377,42 @@ def test_google_integration_roadmap_surfaces_three_canonical_platform_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_google_integration_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/google-integration-roadmap.md")
+    chinese_text = _read("docs/appendix/google-integration-roadmap.zh.md")
+
+    assert "Канонические сценарии Google-интеграции" in russian_text
+    assert "Дорожная карта Google-интеграции (Google integration roadmap)" in russian_text
+    assert "идеи платформенного уровня (platform-grade ideas)" in russian_text
+    assert "идентичность агента (agent identity)" in russian_text
+    assert "слои контекста (context layers)" in russian_text
+    assert "управление реестром (registry governance)" in russian_text
+
+    assert "规范 Google 集成案例" in chinese_text
+    assert "Google 集成路线图（Google integration roadmap）" in chinese_text
+    assert "平台级想法（platform-grade ideas）" in chinese_text
+    assert "智能体身份（agent identity）" in chinese_text
+    assert "上下文层（context layers）" in chinese_text
+    assert "注册表治理（registry governance）" in chinese_text
+
+    forbidden_markers = (
+        "Google integration roadmap полезнее",
+        "platform-grade ideas на трех canonical cases",
+        "проверяет agent identity",
+        "проверяет context layers",
+        "проверяет registry governance",
+        "Google integration roadmap 在用三个 canonical cases",
+        "检查 platform-grade ideas",
+        "检查 agent identity",
+        "检查 context layers",
+        "检查 registry governance",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
     required_markers = (
         "Canonical frontier cases",

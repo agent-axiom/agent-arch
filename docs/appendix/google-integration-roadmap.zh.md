@@ -13,8 +13,8 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 
 这些内容和书里已经使用的 OpenAI、Anthropic、LangGraph 材料正好互补。
 
-!!! note "Canonical Google integration cases"
-    Google integration roadmap 在用三个 canonical cases 检查 platform-grade ideas 时更有用。**Support triage** 检查 agent identity、least privilege、approval/audit linkage、sandbox profile、high-risk tools 和 duplicate-ticket controls。**Internal knowledge assistant** 检查 context layers、memory governance、retrieval policy、source provenance 和 tenant-aware access。**Incident coordination** 检查 registry governance、A2A boundaries、continuous controls、rollout gates、escalation traces 和 response ownership。
+!!! note "规范 Google 集成案例（Canonical Google integration cases）"
+    Google 集成路线图（Google integration roadmap）在用三个规范案例（canonical cases）检查平台级想法（platform-grade ideas）时更有用。**支持分流（Support triage）** 检查智能体身份（agent identity）、最小权限（least privilege）、审批/审计链接（approval/audit linkage）、沙箱配置（sandbox profile）、高风险工具（high-risk tools）和重复工单控制（duplicate-ticket controls）。**内部知识助手（Internal knowledge assistant）** 检查上下文层（context layers）、记忆治理（memory governance）、检索策略（retrieval policy）、来源证明（source provenance）和租户感知访问（tenant-aware access）。**事件协调（Incident coordination）** 检查注册表治理（registry governance）、A2A 边界（A2A boundaries）、持续控制（continuous controls）、发布门禁（rollout gates）、升级追踪（escalation traces）和响应归属（response ownership）。
 
 ## 分步计划
 
