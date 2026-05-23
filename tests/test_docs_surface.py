@@ -6381,6 +6381,42 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_change_rollout_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/change-rollout-schema.md")
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+
+    assert "Канонические сценарии раскатки" in russian_text
+    assert "Шлюз раскатки (rollout gate)" in russian_text
+    assert "сигналы готовности (readiness signals)" in russian_text
+    assert "плана отката (rollback plan)" in russian_text
+    assert "окна свежести поиска (retrieval freshness window)" in russian_text
+    assert "тренировки эскалации (escalation drill)" in russian_text
+
+    assert "规范发布案例" in chinese_text
+    assert "发布门禁（rollout gate）" in chinese_text
+    assert "就绪信号（readiness signals）" in chinese_text
+    assert "回滚计划（rollback plan）" in chinese_text
+    assert "检索新鲜度窗口（retrieval freshness window）" in chinese_text
+    assert "升级演练（escalation drill）" in chinese_text
+
+    forbidden_markers = (
+        "Rollout gate должен проверять",
+        "разные readiness signals",
+        "требует duplicate-ticket eval pass",
+        "требует retrieval freshness window",
+        "требует escalation drill",
+        "Rollout gate 应为三个 canonical cases",
+        "检查不同 readiness signals",
+        "需要 duplicate-ticket eval pass",
+        "需要 retrieval freshness window",
+        "需要 escalation drill",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() -> None:
     required_markers = (
         "Canonical lifecycle cases",
