@@ -5,8 +5,8 @@
 !!! example "重复工单线索的 lifecycle artifact"
     对 support-triage 来说，bundle 不只应该把 `policy_bundle` 和 `eval_dataset` 放在一起，还应该保留 duplicate-ticket guard 的 evidence：`idempotency_key` 要求、approval record、带有 `side_effect_unknown` 的 trace、`duplicate_ticket_eval_passed` 和 rollout gate。这样 incident review 可以重建一条 `change -> bundle -> approval -> trace -> eval -> rollout` 链，而不是在不同页面里寻找证据。
 
-!!! note "Canonical lifecycle cases"
-    Lifecycle artifacts 应为三个 canonical cases 保留不同 artifact chains。**Support triage** 把 change record、approved artifact bundle、approval record、trace、eval dataset、rollout gate 和 retirement plan 连接到 duplicate-ticket guard。**Internal knowledge assistant** 连接 retrieval policy、memory policy、source provenance、access-control review 和 knowledge-base replacement plan。**Incident coordination** 连接 escalation policy、notification capability、response ownership map、handoff artifact 和 post-incident learning retirement or replacement plan。
+!!! note "规范生命周期案例（Canonical lifecycle cases）"
+    生命周期工件（lifecycle artifacts）应该为三个规范案例（canonical cases）保留不同的工件链（artifact chains）。**支持分流（Support triage）** 把变更记录（change record）、已批准工件包（approved artifact bundle）、审批记录（approval record）、追踪（trace）、评测数据集（eval dataset）、发布门禁（rollout gate）和退役计划（retirement plan）连接到重复工单防护（duplicate-ticket guard）。**内部知识助手（Internal knowledge assistant）** 连接检索策略（retrieval policy）、记忆策略（memory policy）、来源证明（source provenance）、访问控制复核（access-control review）和知识库替换计划（knowledge-base replacement plan）。**事件协调（Incident coordination）** 连接升级策略（escalation policy）、通知能力（notification capability）、响应归属图（response ownership map）、交接工件（handoff artifact）和事件后学习退役或替换计划（post-incident learning retirement or replacement plan）。
 
 它也直接连接到书里的 [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)，因为生命周期工件本身就是后续判断和事故评审所依赖的那条受治理记录的一部分。
 
