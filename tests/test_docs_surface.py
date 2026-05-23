@@ -6589,6 +6589,42 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+
+    assert "Канонические сценарии жизненного цикла" in russian_text
+    assert "Артефакты жизненного цикла (lifecycle artifacts)" in russian_text
+    assert "цепочки артефактов (artifact chains)" in russian_text
+    assert "запись изменения (change record)" in russian_text
+    assert "политику поиска (retrieval policy)" in russian_text
+    assert "политику эскалации (escalation policy)" in russian_text
+
+    assert "规范生命周期案例" in chinese_text
+    assert "生命周期工件（lifecycle artifacts）" in chinese_text
+    assert "工件链（artifact chains）" in chinese_text
+    assert "变更记录（change record）" in chinese_text
+    assert "检索策略（retrieval policy）" in chinese_text
+    assert "升级策略（escalation policy）" in chinese_text
+
+    forbidden_markers = (
+        "Lifecycle artifacts должны удерживать",
+        "разные artifact chains",
+        "связывает change record",
+        "связывает retrieval policy",
+        "связывает escalation policy",
+        "Lifecycle artifacts 应为三个 canonical cases",
+        "不同 artifact chains",
+        "把 change record",
+        "连接 retrieval policy",
+        "连接 escalation policy",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     required_markers = (
         "Canonical memory cases",
