@@ -7590,6 +7590,39 @@ def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_rust_agent_platforms_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/rust-agent-platforms.md")
+    chinese_text = _read("docs/appendix/rust-agent-platforms.zh.md")
+
+    assert "Канонические сценарии Rust-платформы" in russian_text
+    assert "Rust-инфраструктура (Rust infrastructure)" in russian_text
+    assert "шлюз инструментов (tool gateway)" in russian_text
+    assert "слои памяти/индекса (memory/index layers)" in russian_text
+    assert "долгоживущий рантайм (long-lived runtime)" in russian_text
+
+    assert "规范 Rust 平台案例" in chinese_text
+    assert "Rust 基础设施（Rust infrastructure）" in chinese_text
+    assert "工具网关（tool gateway）" in chinese_text
+    assert "记忆/索引层（memory/index layers）" in chinese_text
+    assert "长期运行时（long-lived runtime）" in chinese_text
+
+    forbidden_markers = (
+        "Rust infrastructure должен",
+        "трех canonical cases",
+        "проверяет tool gateway",
+        "проверяет memory/index layers",
+        "проверяет long-lived runtime",
+        "Rust infrastructure 应该通过三个 canonical cases",
+        "检查 tool gateway",
+        "检查 memory/index layers",
+        "检查 long-lived runtime",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_glossary_surfaces_three_canonical_routes() -> None:
     required_markers = (
         "Canonical glossary routes",
