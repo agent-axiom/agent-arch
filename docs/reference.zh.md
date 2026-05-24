@@ -16,8 +16,8 @@
 这一层**不**承诺的事情是：
 
 - 它不会取代本书本身的阅读路径；
-- 它不会按章节去解释主要的因果论证；
-- 它也不应该成为读者学习取舍与层间边界的主要地方。
+- 它不会逐章解释主要因果论证（causal argument / chapter by chapter）；
+- 它也不应该成为读者学习取舍（tradeoffs）与层间边界（layer boundaries）的主要地方。
 
 ## 从这里开始
 
@@ -78,5 +78,5 @@
 
 最简单的规则是：
 
-- 用本书理解论证与章节顺序；
-- 用参考层查看支撑工件与面向实现的细节。
+- 用本书理解论证（argument）与顺序（sequence）；
+- 用参考层查看支撑工件（supporting artifacts）与实现细节（implementation details）。
