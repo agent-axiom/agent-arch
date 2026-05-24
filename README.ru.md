@@ -139,20 +139,20 @@ git push origin HEAD:docs-prod
 
 Не делайте force-push в `docs-prod`; это намеренно только ветка-триггер (trigger branch) для GitHub Pages.
 
-## Первый запуск GitHub Pages
+## Первый запуск GitHub Pages (first GitHub Pages setup)
 
-У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать сайт Pages.
+У `actions/configure-pages@v5` есть важное ограничение (important limitation): если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать сайт Pages (Pages site).
 
-Есть два корректных варианта:
+Есть два корректных варианта (correct options):
 
-1. Один раз вручную включить Pages в `Settings -> Pages` и выбрать `GitHub Actions`.
-2. Добавить секрет `PAGES_PAT` с нужными правами, и рабочий процесс сможет включить Pages автоматически.
+1. Один раз вручную включить Pages (manually enable Pages) в `Settings -> Pages` и выбрать `GitHub Actions`.
+2. Добавить секрет `PAGES_PAT` с нужными правами, и рабочий процесс (workflow) сможет включить Pages автоматически.
 
-Если для окружения `github-pages` заданы ограничения по веткам, нужно явно разрешить деплой из `docs-prod`.
+Если для окружения `github-pages` заданы ограничения по веткам (branch restrictions), нужно явно разрешить деплой (deployment) из `docs-prod`.
 
-Для `PAGES_PAT` нужен отдельный токен, а не `GITHUB_TOKEN`:
+Для `PAGES_PAT` нужен отдельный токен (separate token), а не `GITHUB_TOKEN`:
 
-- для Personal Access Token: `repo` или Pages write permission
+- для Personal Access Token: `repo` или право записи Pages (Pages write permission)
 - для GitHub App: `administration:write` и `pages:write`
 
 ## Модель веток

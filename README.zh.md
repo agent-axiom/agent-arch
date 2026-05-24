@@ -139,20 +139,20 @@ git push origin HEAD:docs-prod
 
 不要 force-push 到 `docs-prod`；它刻意只是 GitHub Pages 的触发分支（trigger branch）。
 
-## GitHub Pages 首次设置
+## GitHub Pages 首次设置（first GitHub Pages setup）
 
-`actions/configure-pages@v5` 有一个重要限制：如果仓库此前从未启用过 Pages，默认的 `GITHUB_TOKEN` 可能无法自动完成站点初始化。
+`actions/configure-pages@v5` 有一个重要限制（important limitation）：如果仓库此前从未启用过 Pages，默认的 `GITHUB_TOKEN` 可能无法自动创建 Pages 站点（Pages site）。
 
-有两种正确处理方式：
+有两种正确选项（correct options）：
 
-1. 在 `Settings -> Pages` 中手动启用一次，并选择 `GitHub Actions`。
-2. 添加一个具有足够权限的 `PAGES_PAT` secret，让 workflow 自动启用 Pages。
+1. 在 `Settings -> Pages` 中手动启用 Pages（manually enable Pages）一次，并选择 `GitHub Actions`。
+2. 添加一个具有足够权限的 `PAGES_PAT` secret，让工作流（workflow）自动启用 Pages。
 
-如果 `github-pages` environment 配置了部署分支限制，请确保显式允许来自 `docs-prod` 的部署。
+如果 `github-pages` environment 配置了分支限制（branch restrictions），请确保显式允许来自 `docs-prod` 的部署（deployment）。
 
-`PAGES_PAT` 必须是真实 token，而不是 `GITHUB_TOKEN`：
+`PAGES_PAT` 必须是单独的 token（separate token），而不是 `GITHUB_TOKEN`：
 
-- Personal Access Token: `repo` 或 Pages 写权限
+- Personal Access Token: `repo` 或 Pages 写权限（Pages write permission）
 - GitHub App: `administration:write` 和 `pages:write`
 
 ## 分支模型

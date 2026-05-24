@@ -6305,6 +6305,60 @@ def test_multilingual_readme_publishing_terms_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Первый запуск GitHub Pages (first GitHub Pages setup)" in russian_text
+    assert "важное ограничение (important limitation)" in russian_text
+    assert "создать сайт Pages (Pages site)" in russian_text
+    assert "корректных варианта (correct options)" in russian_text
+    assert "вручную включить Pages (manually enable Pages)" in russian_text
+    assert "рабочий процесс (workflow)" in russian_text
+    assert "ограничения по веткам (branch restrictions)" in russian_text
+    assert "деплой (deployment)" in russian_text
+    assert "отдельный токен (separate token)" in russian_text
+    assert "право записи Pages (Pages write permission)" in russian_text
+
+    assert "GitHub Pages 首次设置（first GitHub Pages setup）" in chinese_text
+    assert "重要限制（important limitation）" in chinese_text
+    assert "Pages 站点（Pages site）" in chinese_text
+    assert "正确选项（correct options）" in chinese_text
+    assert "手动启用 Pages（manually enable Pages）" in chinese_text
+    assert "工作流（workflow）" in chinese_text
+    assert "分支限制（branch restrictions）" in chinese_text
+    assert "部署（deployment）" in chinese_text
+    assert "单独的 token（separate token）" in chinese_text
+    assert "Pages 写权限（Pages write permission）" in chinese_text
+
+    forbidden_markers = (
+        "## Первый запуск GitHub Pages\n",
+        "важное ограничение: если Pages",
+        "создать сайт Pages.",
+        "Есть два корректных варианта:",
+        "вручную включить Pages в",
+        "рабочий процесс сможет",
+        "ограничения по веткам, нужно",
+        "явно разрешить деплой из",
+        "нужен отдельный токен, а не",
+        "Pages write permission\n",
+        "## GitHub Pages 首次设置\n",
+        "有一个重要限制：",
+        "完成站点初始化",
+        "有两种正确处理方式：",
+        "手动启用一次",
+        "让 workflow 自动",
+        "部署分支限制",
+        "来自 `docs-prod` 的部署。",
+        "必须是真实 token",
+        "Pages 写权限\n",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_three_canonical_case_routes() -> None:
     required_markers = (
         "Canonical case routes",
