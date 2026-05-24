@@ -155,19 +155,19 @@ git push origin HEAD:docs-prod
 - Personal Access Token: `repo` 或 Pages 写权限（Pages write permission）
 - GitHub App: `administration:write` 和 `pages:write`
 
-## 分支模型
+## 分支模型（branch model）
 
-- `main` 是事实来源开发分支
-- `docs-prod` 是 GitHub Pages 使用的发布分支
+- `main` 是开发分支（development branch）和事实来源（source of truth）
+- `docs-prod` 承载 GitHub Pages 的发布分支（publishing branch）
 
-## 技术栈
+## 技术栈（stack）
 
-- `uv` 用于环境和依赖管理
-- `ruff` 用于 lint
-- `ty` 用于类型检查
-- `MkDocs + Material for MkDocs` 用于发布
-- `Mermaid` 和 `Observable Plot` 用于可视化内容
+- `uv` 用于环境（environment）和依赖管理（dependencies）
+- `ruff` 用于代码检查（linting）
+- `ty` 执行类型检查（type checking）
+- `MkDocs + Material for MkDocs` 用于发布（publishing）
+- `Mermaid` 和 `Observable Plot` 生成可视化内容（visualizations）
 
-## 许可证
+## 许可证（license）
 
-本仓库基于 [CC BY-SA 4.0](LICENSE) 发布。
+本仓库基于 [CC BY-SA 4.0](LICENSE) 授权发布（licensed under）。
