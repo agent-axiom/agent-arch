@@ -49,7 +49,7 @@
 - 安全智能体模式主线（Safe-agent schema spine）：[追踪模式（trace schema）](docs/appendix/trace-schema.zh.md)、[评测模式（eval schema）](docs/appendix/eval-schema.zh.md) 与 [记忆/检索模式（memory/retrieval schema）](docs/appendix/memory-retrieval-schema.zh.md) 连接 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）。
 - 参考运行时包（reference package）：[docs/appendix/reference-package.zh.md](docs/appendix/reference-package.zh.md)
 
-## 本地开发
+## 本地开发（local development）
 
 ```bash
 uv sync --group docs --group dev
@@ -58,7 +58,7 @@ uv run mkdocs serve
 
 本地站点会运行在 `http://127.0.0.1:8000/`。
 
-## 检查
+## 检查（checks）
 
 ```bash
 uv run ruff check .
@@ -67,7 +67,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-## 参考包
+## 参考包（reference package）
 
 仓库中包含一个可运行的最小参考骨架包：
 

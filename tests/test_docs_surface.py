@@ -6227,6 +6227,9 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
+    assert "Локальная разработка (local development)" in russian_text
+    assert "Проверки (checks)" in russian_text
+    assert "Эталонный пакет (reference package)" in russian_text
     assert "компактная кодовая опора (compact code support)" in russian_text
     assert "эталонная среда исполнения (runtime)" in russian_text
     assert "слой политик (policy layer)" in russian_text
@@ -6261,6 +6264,9 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "инструменты анализа данных (data analysis tools)" in russian_text
     assert "исследовательскую группу (research group)" in russian_text
 
+    assert "本地开发（local development）" in chinese_text
+    assert "检查（checks）" in chinese_text
+    assert "参考包（reference package）" in chinese_text
     assert "紧凑的代码支撑（compact code support）" in chinese_text
     assert "参考运行时（runtime）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
@@ -6294,10 +6300,16 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
 
     forbidden_markers = (
         "эталонный runtime",
+        "## Локальная разработка\n",
+        "## Проверки\n",
+        "## Эталонный пакет\n",
         "Эталонный runtime",
         "компактная кодовая опора для книги",
         "эталонная среда исполнения (runtime) и слой политик\n",
         "参考运行时（runtime）与策略层\n",
+        "## 本地开发\n",
+        "## 检查\n",
+        "## 参考包\n",
         "- [Эталонный пакет]",
         "- 参考包：[docs/appendix/reference-package",
         "完整 CLI 列表",
