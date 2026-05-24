@@ -6715,6 +6715,17 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "руководитель или архитектор (leader or architect)" in russian_text
     assert "демо (demo)" in russian_text
     assert "эксплуатационной дисциплине (operating discipline)" in russian_text
+    assert "код и артефакты (code and artifacts)" in russian_text
+    assert "линейное чтение (linear reading)" in russian_text
+    assert "исполняемые опоры (executable supports)" in russian_text
+    assert "конкретную задачу (specific task)" in russian_text
+    assert "Безопасное выполнение инструментов (safe tool execution)" in russian_text
+    assert "Память и извлечение (memory and retrieval)" in russian_text
+    assert "раскатка (observability, evals, and rollout)" in russian_text
+    assert "Главная линия схем безопасного агента (Safe-agent schema spine)" in russian_text
+    assert "рядом с книгой (companion references)" in russian_text
+    assert "реальной инженерии (real engineering)" in russian_text
+    assert "AI-лендинг (AI landing page)" in russian_text
 
     assert "按角色阅读（role-based routes）" in chinese_text
     assert "产品工程师（product engineer）" in chinese_text
@@ -6729,6 +6740,17 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "负责人或架构师（leader or architect）" in chinese_text
     assert "演示（demo）" in chinese_text
     assert "运营纪律（operating discipline）" in chinese_text
+    assert "代码和工件（code and artifacts）" in chinese_text
+    assert "可执行支撑（executable supports）" in chinese_text
+    assert "线性阅读（linear reading）" in chinese_text
+    assert "具体问题（specific task）" in chinese_text
+    assert "安全工具执行（safe tool execution）" in chinese_text
+    assert "记忆与检索（memory and retrieval）" in chinese_text
+    assert "可观测性、评测与发布（observability, evals, and rollout）" in chinese_text
+    assert "安全智能体 Schema 主线（Safe-agent schema spine）" in chinese_text
+    assert "旁边还可以打开什么（companion references）" in chinese_text
+    assert "AI 落地页（AI landing page）" in chinese_text
+    assert "真实工程（real engineering）" in chinese_text
 
     assert "скелет среды исполнения (runtime skeleton)" in russian_text
     assert "контракты политик (policy contracts)" in russian_text
@@ -6754,6 +6776,15 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         "### Если ты руководитель или архитектор\n",
         "не собрать демо, а удержать инициативу",
         "эксплуатационной дисциплине.",
+        "## Если хочешь сразу код и артефакты\n",
+        "не линейное чтение, а исполняемые опоры",
+        "## Если нужно быстро решить конкретную задачу\n",
+        "### Безопасное выполнение инструментов\n",
+        "### Память и извлечение\n",
+        "### Наблюдаемость, оценки и раскатка (rollout)",
+        "### Safe-agent schema spine\n",
+        "## Что открыть рядом с книгой\n",
+        "AI-лендинг про",
         "скелет runtime (runtime skeleton)",
         "нужны runtime skeleton",
         "policy contracts, memory path",
@@ -6768,6 +6799,15 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         "### 如果你是负责人或架构师\n",
         "不想只交付演示，而是要",
         "真实运营纪律的人。",
+        "## 如果你想先看代码和工件\n",
+        "可执行支撑比线性阅读更重要",
+        "## 如果你要快速解决一个具体问题\n",
+        "### 安全工具执行\n",
+        "### 记忆与检索\n",
+        "### 可观测性、评测与发布（rollout）",
+        "### Safe-agent schema spine\n",
+        "## 读书时旁边还可以打开什么\n",
+        "AI 落地页更接近真实工程",
         "需要运行时骨架、策略契约",
         "记忆路径、遥测和发布工件",
     )
@@ -6798,11 +6838,16 @@ def test_multilingual_start_here_observability_heading_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
-    assert "### Наблюдаемость, оценки и раскатка (rollout)" in russian_text
-    assert "### 可观测性、评测与发布（rollout）" in chinese_text
+    assert (
+        "### Наблюдаемость, оценки и раскатка (observability, evals, and rollout)"
+        in russian_text
+    )
+    assert "### 可观测性、评测与发布（observability, evals, and rollout）" in chinese_text
 
     forbidden_markers = (
         "### Наблюдаемость, оценки и rollout",
+        "### Наблюдаемость, оценки и раскатка (rollout)",
+        "### 可观测性、评测与发布（rollout）",
         "### 可观测性、评测与发布\n",
     )
 

@@ -84,9 +84,9 @@
 
 这条路线适合那些不想只交付演示（demo），而是要把项目放进真实运营纪律（operating discipline）的人。
 
-## 如果你想先看代码和工件
+## 如果你想先看代码和工件（code and artifacts）
 
-如果可执行支撑比线性阅读更重要，就先看这里：
+如果可执行支撑（executable supports）比线性阅读（linear reading）更重要，就先看这里：
 
 - [参考包](appendix/reference-package.zh.md)
 - [第 16 章：基础运行时蓝图](book/part-vii/chapter-16.zh.md)
@@ -95,30 +95,30 @@
 
 如果你现在就需要运行时骨架（runtime skeleton）、策略契约（policy contracts）、记忆路径（memory path）、遥测（telemetry）和发布工件（rollout artifacts），这条路线会更合适。
 
-## 如果你要快速解决一个具体问题
+## 如果你要快速解决一个具体问题（specific task）
 
-### 安全工具执行
+### 安全工具执行（safe tool execution）
 
 - [第 4 章：工具网关、审批与审计轨迹](book/part-ii/chapter-4.zh.md)
 - [第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 - [第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 - [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 
-### 记忆与检索
+### 记忆与检索（memory and retrieval）
 
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](book/part-iii/chapter-6.zh.md)
 - [第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - [记忆记录与检索契约模式](appendix/memory-retrieval-schema.zh.md)
 
-### 可观测性、评测与发布（rollout）
+### 可观测性、评测与发布（observability, evals, and rollout）
 
 - [第 11 章：追踪、跨度与结构化事件](book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理（Change management）](book/part-viii/chapter-20.zh.md)
 
-### Safe-agent schema spine
+### 安全智能体 Schema 主线（Safe-agent schema spine）
 
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
 - [评测数据集 Schema 与打分契约](appendix/eval-schema.zh.md)
@@ -127,7 +127,7 @@
 
 如果需要快速检查 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence），可以走这条路线。
 
-## 读书时旁边还可以打开什么
+## 读书时旁边还可以打开什么（companion references）
 
 - [全书计划](book/plan.zh.md)
 - [为什么会有这本书](appendix/why-this-book.zh.md)
@@ -135,4 +135,4 @@
 - [速查表](appendix/cheat-sheets.zh.md)
 - [参考来源](appendix/sources.zh.md)
 
-如果这本书对你来说，比另一页关于“自主性”的 AI 落地页更接近真实工程，那你来对地方了。
+如果这本书对你来说，比另一页关于“自主性”的 AI 落地页（AI landing page）更接近真实工程（real engineering），那你来对地方了。
