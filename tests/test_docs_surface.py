@@ -6501,6 +6501,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
+    assert "# С чего начать (Start Here)" in russian_text
     assert "впечатляющий демо-агент (impressive demo agent)" in russian_text
     assert "производственную реальность (production reality)" in russian_text
     assert "один аргумент (single argument)" in russian_text
@@ -6514,6 +6515,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "Если читать только одно (read only one)" in russian_text
     assert "самый короткий вход (shortest entry point)" in russian_text
     assert "Маршрут на 30 минут (30-minute route)" in russian_text
+    assert "Что это за книга (what kind of book)" in russian_text
     assert "этот путь (path)" in russian_text
     assert "рабочая рамка (working frame)" in russian_text
     assert "фреймворку (framework)" in russian_text
@@ -6529,6 +6531,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "трасс (traces), SLO и оценок (evals)" in russian_text
     assert "первой серьезной раскатки (first serious rollout)" in russian_text
 
+    assert "# 从这里开始（Start Here）" in chinese_text
     assert "惊艳的演示智能体（impressive demo agent）" in chinese_text
     assert "生产现实（production reality）" in chinese_text
     assert "完整论证（single argument）" in chinese_text
@@ -6542,6 +6545,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "如果你只读一章（read only one）" in chinese_text
     assert "最短入口（shortest entry point）" in chinese_text
     assert "30 分钟路线（30-minute route）" in chinese_text
+    assert "这是什么样的书（what kind of book）" in chinese_text
     assert "这条路径（path）" in chinese_text
     assert "工作框架（working frame）" in chinese_text
     assert "框架（framework）的指南" in chinese_text
@@ -6568,7 +6572,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "безопасно улучшать.",
         "быстро выбрать маршрут чтения.",
         "## Если читать только одно\n",
+        "# С чего начать\n",
         "самый короткий вход в идею книги",
+        "## Что это за книга\n",
         "## Маршрут на 30 минут\n",
         "пройди этот путь:",
         "сложиться рабочая рамка:",
@@ -6593,7 +6599,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "安全改进的系统。",
         "阅读路线。",
         "## 如果你只读一章\n",
+        "# 从这里开始\n",
         "最短时间进入",
+        "## 这是什么样的书\n",
         "## 30 分钟路线\n",
         "先读这条路径：",
         "形成一个工作框架",
