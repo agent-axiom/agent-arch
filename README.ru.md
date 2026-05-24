@@ -1,4 +1,4 @@
-# Agent Architecture Book
+# Книга об архитектуре агентов (Agent Architecture Book)
 
 ![Coverage](docs/assets/badges/coverage.svg)
 

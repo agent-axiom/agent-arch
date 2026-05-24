@@ -1,4 +1,4 @@
-# Agent Architecture Book
+# 智能体架构之书（Agent Architecture Book）
 
 ![Coverage](docs/assets/badges/coverage.svg)
 

@@ -6055,6 +6055,7 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
+    assert "Книга об архитектуре агентов (Agent Architecture Book)" in russian_text
     assert "Английская версия (English version)" in russian_text
     assert "Китайская версия (Chinese version)" in russian_text
     assert "Руководство для вкладов (Contributing guide)" in russian_text
@@ -6080,6 +6081,7 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "наблюдаемость (observability) и оценки (evals)" in russian_text
     assert "контроль раскатки (rollout control)" in russian_text
     assert "управление жизненным циклом (lifecycle governance)" in russian_text
+    assert "智能体架构之书（Agent Architecture Book）" in chinese_text
     assert "英文版（English version）" in chinese_text
     assert "俄文版（Russian version）" in chinese_text
     assert "贡献指南（Contributing guide）" in chinese_text
@@ -6104,6 +6106,7 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "生命周期治理（lifecycle governance）" in chinese_text
 
     forbidden_markers = (
+        "# Agent Architecture Book\n",
         "готовой к production архитектуре AI-агентов",
         "[English version](README.md)",
         "[中文版](README.zh.md)",
