@@ -7,7 +7,7 @@
 [Contributing guide](CONTRIBUTING.md)
 [Code of Conduct](CODE_OF_CONDUCT.md)
 
-一本关于安全、可治理、可用于生产环境的 AI 智能体架构的实用书籍与文档站点。
+一本关于安全、可治理、生产就绪架构（production-ready architecture）的 AI 智能体实用书籍与文档站点。
 
 这个项目面向那些不想只做演示型“智能体魔法”，而是想构建在真实用户、真实工具和真实运维条件下依然可控、安全、稳定运行的智能体系统的人。
 

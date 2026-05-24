@@ -5978,11 +5978,15 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
+    assert "готовой к production архитектуре (production-ready architecture)" in russian_text
     assert "промптинг (prompting)" in russian_text
+    assert "生产就绪架构（production-ready architecture）" in chinese_text
     assert "提示词技巧（prompting）" in chinese_text
 
     forbidden_markers = (
+        "готовой к production архитектуре AI-агентов",
         "удачный prompting",
+        "可用于生产环境的 AI 智能体架构",
         "提示词技巧和工具调用",
     )
 
