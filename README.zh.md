@@ -15,7 +15,7 @@
 
 ## 为什么这个仓库存在
 
-大多数智能体教程都在优化“快速做出演示”。但真实系统需要的不只是提示词技巧（prompting）和工具调用。它们还需要：
+大多数智能体教程都在优化“快速演示（quick demo）”。但真实系统需要的不只是提示词技巧（prompting）和工具调用（tool calls）。它们还需要：
 
 - 明确的信任边界（trust boundaries）
 - 策略执行（policy enforcement）与审批机制（approvals）
