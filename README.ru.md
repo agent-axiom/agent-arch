@@ -47,7 +47,7 @@
 - Главная страница книги: [docs/index.md](docs/index.md)
 - Навигационная стартовая страница: [docs/start-here.md](docs/start-here.md)
 - Сквозная цепочка схем безопасного агента (Safe-agent schema spine): [схема трасс (trace schema)](docs/appendix/trace-schema.md), [схема оценок (eval schema)](docs/appendix/eval-schema.md) и [схема памяти/поиска (memory/retrieval schema)](docs/appendix/memory-retrieval-schema.md) связывают модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
-- Эталонный runtime: [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
+- Эталонная среда исполнения (runtime): [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
 
 ## Локальная разработка
 

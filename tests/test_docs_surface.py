@@ -5990,6 +5990,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     chinese_text = _read("README.zh.md")
 
     assert "эталонная среда исполнения (runtime)" in russian_text
+    assert "Эталонная среда исполнения (runtime):" in russian_text
     assert "утвержденный инвентарь (approved inventory)" in russian_text
     assert "подтверждения (approvals)" in russian_text
     assert "проверки раскатки (rollout checks)" in russian_text
@@ -5997,6 +5998,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "операционного скелета (operational skeleton)" in russian_text
 
     assert "参考运行时（runtime）" in chinese_text
+    assert "参考运行时包（reference package）" in chinese_text
     assert "已批准清单（approved inventory）" in chinese_text
     assert "审批（approvals）" in chinese_text
     assert "发布检查（rollout checks）" in chinese_text
@@ -6005,6 +6007,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
 
     forbidden_markers = (
         "эталонный runtime",
+        "Эталонный runtime",
+        "- 参考包：[docs/appendix/reference-package",
         "каталог возможностей и approved inventory",
         "approvals и rollout checks",
         "lifecycle-артефакты для change records",
