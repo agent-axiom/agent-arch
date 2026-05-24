@@ -6059,6 +6059,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "Китайская версия (Chinese version)" in russian_text
     assert "Руководство для вкладов (Contributing guide)" in russian_text
     assert "Кодекс поведения (Code of Conduct)" in russian_text
+    assert "Зачем существует этот репозиторий (why this repository exists)" in russian_text
+    assert "Что есть в этом репозитории (what is in this repository)" in russian_text
+    assert "Почему это стоит читать (why read this)" in russian_text
+    assert "С чего начать (Start Here)" in russian_text
     assert "готовой к production архитектуре (production-ready architecture)" in russian_text
     assert (
         "контролируемые и безопасные агентные системы "
@@ -6080,6 +6084,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "俄文版（Russian version）" in chinese_text
     assert "贡献指南（Contributing guide）" in chinese_text
     assert "行为准则（Code of Conduct）" in chinese_text
+    assert "为什么这个仓库存在（why this repository exists）" in chinese_text
+    assert "这个仓库包含什么（what is in this repository）" in chinese_text
+    assert "为什么值得读（why read this）" in chinese_text
+    assert "从这里开始（Start Here）" in chinese_text
     assert "生产就绪架构（production-ready architecture）" in chinese_text
     assert "真实用户（real users）" in chinese_text
     assert "真实工具（real tools）" in chinese_text
@@ -6101,6 +6109,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "[中文版](README.zh.md)",
         "[Contributing guide](CONTRIBUTING.md)",
         "[Code of Conduct](CODE_OF_CONDUCT.md)",
+        "## Зачем существует этот репозиторий\n",
+        "## Что есть в этом репозитории\n",
+        "## Почему это стоит читать\n",
+        "## С чего начать\n",
         "контролируемые и безопасные агентные системы, которые выдерживают контакт",
         "реальными пользователями, реальными инструментами",
         "реальной эксплуатацией.",
@@ -6114,6 +6126,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "контроль раскатки и управление жизненным циклом",
         "可用于生产环境的 AI 智能体架构",
         "[Русская версия](README.ru.md)",
+        "## 为什么这个仓库存在\n",
+        "## 这个仓库包含什么\n",
+        "## 为什么值得读\n",
+        "## 从这里开始\n",
         "真实用户、真实工具和真实运维条件",
         "可控、安全、稳定运行的智能体系统",
         "快速做出演示",
