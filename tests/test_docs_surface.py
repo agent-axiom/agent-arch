@@ -6055,6 +6055,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
+    assert "Английская версия (English version)" in russian_text
+    assert "Китайская версия (Chinese version)" in russian_text
+    assert "Руководство для вкладов (Contributing guide)" in russian_text
+    assert "Кодекс поведения (Code of Conduct)" in russian_text
     assert "готовой к production архитектуре (production-ready architecture)" in russian_text
     assert (
         "контролируемые и безопасные агентные системы "
@@ -6072,6 +6076,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "наблюдаемость (observability) и оценки (evals)" in russian_text
     assert "контроль раскатки (rollout control)" in russian_text
     assert "управление жизненным циклом (lifecycle governance)" in russian_text
+    assert "英文版（English version）" in chinese_text
+    assert "俄文版（Russian version）" in chinese_text
+    assert "贡献指南（Contributing guide）" in chinese_text
+    assert "行为准则（Code of Conduct）" in chinese_text
     assert "生产就绪架构（production-ready architecture）" in chinese_text
     assert "真实用户（real users）" in chinese_text
     assert "真实工具（real tools）" in chinese_text
@@ -6089,6 +6097,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
 
     forbidden_markers = (
         "готовой к production архитектуре AI-агентов",
+        "[English version](README.md)",
+        "[中文版](README.zh.md)",
+        "[Contributing guide](CONTRIBUTING.md)",
+        "[Code of Conduct](CODE_OF_CONDUCT.md)",
         "контролируемые и безопасные агентные системы, которые выдерживают контакт",
         "реальными пользователями, реальными инструментами",
         "реальной эксплуатацией.",
@@ -6101,6 +6113,7 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "наблюдаемость и оценки",
         "контроль раскатки и управление жизненным циклом",
         "可用于生产环境的 AI 智能体架构",
+        "[Русская версия](README.ru.md)",
         "真实用户、真实工具和真实运维条件",
         "可控、安全、稳定运行的智能体系统",
         "快速做出演示",

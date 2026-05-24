@@ -2,10 +2,10 @@
 
 ![Coverage](docs/assets/badges/coverage.svg)
 
-[English version](README.md)
-[Русская версия](README.ru.md)
-[Contributing guide](CONTRIBUTING.md)
-[Code of Conduct](CODE_OF_CONDUCT.md)
+[英文版（English version）](README.md)
+[俄文版（Russian version）](README.ru.md)
+[贡献指南（Contributing guide）](CONTRIBUTING.md)
+[行为准则（Code of Conduct）](CODE_OF_CONDUCT.md)
 
 一本关于安全、可治理、生产就绪架构（production-ready architecture）的 AI 智能体实用书籍与文档站点。
 
