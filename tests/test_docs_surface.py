@@ -7366,6 +7366,8 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
+    assert "# Справочный слой (reference layer)" in russian_text
+    assert "С чего начать (Start Here)" in russian_text
     assert "Канонические артефакты сценариев" in russian_text
     assert "почему (why)" in russian_text
     assert "безопасная агентная система (safe agent system)" in russian_text
@@ -7394,6 +7396,8 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "вспомогательных артефактов (supporting artifacts)" in russian_text
     assert "деталей реализации (implementation details)" in russian_text
 
+    assert "# 参考层（reference layer）" in chinese_text
+    assert "从这里开始（Start Here）" in chinese_text
     assert "规范案例工件" in chinese_text
     assert "为什么（why）" in chinese_text
     assert "安全智能体系统（safe agent system）" in chinese_text
@@ -7423,6 +7427,8 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
 
     forbidden_markers = (
         "Три canonical cases",
+        "# Справочный слой\n",
+        "## С чего начать\n",
         "**почему** безопасная агентная система",
         "какие артефакты, схемы и правила",
         "нужную контрактную страницу;",
@@ -7440,6 +7446,8 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "для аргумента и последовательности",
         "вспомогательных артефактов и прикладных деталей реализации",
         "三个 canonical cases",
+        "# 参考层\n",
+        "## 从这里开始\n",
         "**为什么**安全智能体系统",
         "哪些工件、模式页与契约页",
         "合适的契约页；",
