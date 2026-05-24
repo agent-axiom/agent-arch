@@ -6044,6 +6044,35 @@ def test_multilingual_start_here_support_case_example_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "скелет runtime (runtime skeleton)" in russian_text
+    assert "контракты политик (policy contracts)" in russian_text
+    assert "путь памяти (memory path)" in russian_text
+    assert "телеметрия (telemetry)" in russian_text
+    assert "артефакты раскатки (rollout artifacts)" in russian_text
+
+    assert "运行时骨架（runtime skeleton）" in chinese_text
+    assert "策略契约（policy contracts）" in chinese_text
+    assert "记忆路径（memory path）" in chinese_text
+    assert "遥测（telemetry）" in chinese_text
+    assert "发布工件（rollout artifacts）" in chinese_text
+
+    forbidden_markers = (
+        "нужны runtime skeleton",
+        "policy contracts, memory path",
+        "telemetry и rollout-артефакты",
+        "需要运行时骨架、策略契约",
+        "记忆路径、遥测和发布工件",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",

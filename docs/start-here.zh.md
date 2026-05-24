@@ -93,7 +93,7 @@
 - [第 17 章：策略层与能力目录](book/part-vii/chapter-17.zh.md)
 - [参考页面](reference.zh.md)
 
-如果你现在就需要运行时骨架、策略契约、记忆路径、遥测和发布工件，这条路线会更合适。
+如果你现在就需要运行时骨架（runtime skeleton）、策略契约（policy contracts）、记忆路径（memory path）、遥测（telemetry）和发布工件（rollout artifacts），这条路线会更合适。
 
 ## 如果你要快速解决一个具体问题
 
