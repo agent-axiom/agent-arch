@@ -6131,6 +6131,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "проверки раскатки (rollout checks)" in russian_text
     assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
     assert "операционного скелета (operational skeleton)" in russian_text
+    assert "концептуальный текст (conceptual prose)" in russian_text
+    assert "исполняемые эталонные артефакты (reference assets)" in russian_text
 
     assert "参考运行时（runtime）" in chinese_text
     assert "参考运行时包（reference package）" in chinese_text
@@ -6142,6 +6144,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "发布检查（rollout checks）" in chinese_text
     assert "沙箱配置契约（sandbox profile contract）" in chinese_text
     assert "运行骨架（operational skeleton）" in chinese_text
+    assert "概念性说明（conceptual prose）" in chinese_text
+    assert "可执行的参考资产（reference assets）" in chinese_text
 
     forbidden_markers = (
         "эталонный runtime",
@@ -6156,8 +6160,11 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "lifecycle-артефакты для change records",
         "sandbox profile contract и sandbox review evidence",
         "для operational skeleton",
+        "рабочие эталонные артефакты (assets)",
         "lifecycle inspection 中可见",
         "用于 operational skeleton",
+        "参考资产（assets）",
+        "不只是概念说明",
     )
 
     for marker in forbidden_markers:
