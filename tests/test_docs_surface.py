@@ -5758,6 +5758,38 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_book_index_promise_bullets_are_localized() -> None:
+    russian_text = _read("docs/book/index.md")
+    chinese_text = _read("docs/book/index.zh.md")
+
+    assert "рабочего процесса (workflow)" in russian_text
+    assert "управляемый запуск (run)" in russian_text
+    assert "политику (policy)" in russian_text
+    assert "доказательства (evidence)" in russian_text
+    assert "ответственность оператора (operator accountability)" in russian_text
+
+    assert "工作流（workflow）" in chinese_text
+    assert "运行（run）" in chinese_text
+    assert "策略（policy）" in chinese_text
+    assert "证据（evidence）" in chinese_text
+    assert "操作员问责（operator accountability）" in chinese_text
+
+    forbidden_markers = (
+        "достаточно обычного workflow",
+        "управляемый run через policy",
+        "execution, evidence, approval",
+        "рассматривать memory, evals",
+        "operator accountability как",
+        "普通工作流就够了",
+        "策略、执行、证据、审批、发布",
+        "记忆、评测、来源谱系、退役",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_case_studies_align_with_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case alignment",
