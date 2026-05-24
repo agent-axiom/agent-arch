@@ -155,19 +155,19 @@ git push origin HEAD:docs-prod
 - для Personal Access Token: `repo` или право записи Pages (Pages write permission)
 - для GitHub App: `administration:write` и `pages:write`
 
-## Модель веток
+## Модель веток (branch model)
 
-- `main` — основная ветка разработки и источник правды
-- `docs-prod` — ветка публикации для GitHub Pages
+- `main` — основная ветка разработки (development branch) и источник правды (source of truth)
+- `docs-prod` — ветка публикации (publishing branch) для GitHub Pages
 
-## Стек
+## Стек (stack)
 
-- `uv` для окружения и зависимостей
-- `ruff` для линтинга
-- `ty` для проверки типов
-- `MkDocs + Material for MkDocs` для публикации
-- `Mermaid` и `Observable Plot` для визуализаций
+- `uv` для окружения (environment) и зависимостей (dependencies)
+- `ruff` для статического анализа (linting)
+- `ty` для типовой проверки (type checking)
+- `MkDocs + Material for MkDocs` для публикации (publishing)
+- `Mermaid` и `Observable Plot` для визуальных материалов (visualizations)
 
-## Лицензия
+## Лицензия (license)
 
-Репозиторий опубликован под лицензией [CC BY-SA 4.0](LICENSE).
+Репозиторий опубликован под лицензией (licensed under) [CC BY-SA 4.0](LICENSE).

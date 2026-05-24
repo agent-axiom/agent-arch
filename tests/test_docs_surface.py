@@ -6359,6 +6359,64 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Модель веток (branch model)" in russian_text
+    assert "ветка разработки (development branch)" in russian_text
+    assert "источник правды (source of truth)" in russian_text
+    assert "ветка публикации (publishing branch)" in russian_text
+    assert "Стек (stack)" in russian_text
+    assert "окружения (environment)" in russian_text
+    assert "зависимостей (dependencies)" in russian_text
+    assert "статического анализа (linting)" in russian_text
+    assert "типовой проверки (type checking)" in russian_text
+    assert "визуальных материалов (visualizations)" in russian_text
+    assert "Лицензия (license)" in russian_text
+    assert "под лицензией (licensed under)" in russian_text
+
+    assert "分支模型（branch model）" in chinese_text
+    assert "开发分支（development branch）" in chinese_text
+    assert "事实来源（source of truth）" in chinese_text
+    assert "发布分支（publishing branch）" in chinese_text
+    assert "技术栈（stack）" in chinese_text
+    assert "环境（environment）" in chinese_text
+    assert "依赖管理（dependencies）" in chinese_text
+    assert "代码检查（linting）" in chinese_text
+    assert "类型检查（type checking）" in chinese_text
+    assert "可视化内容（visualizations）" in chinese_text
+    assert "许可证（license）" in chinese_text
+    assert "授权发布（licensed under）" in chinese_text
+
+    forbidden_markers = (
+        "## Модель веток\n",
+        "основная ветка разработки и источник правды",
+        "ветка публикации для GitHub Pages",
+        "## Стек\n",
+        "для окружения и зависимостей",
+        "для линтинга",
+        "для проверки типов",
+        "для визуализаций",
+        "## Лицензия\n",
+        "опубликован под лицензией [CC BY-SA",
+        "## 分支模型\n",
+        "事实来源开发分支",
+        "使用的发布分支",
+        "## 技术栈\n",
+        "用于环境和依赖管理",
+        "用于 lint",
+        "用于类型检查\n",
+        "用于可视化内容",
+        "## 许可证\n",
+        "基于 [CC BY-SA 4.0](LICENSE) 发布",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_three_canonical_case_routes() -> None:
     required_markers = (
         "Canonical case routes",
