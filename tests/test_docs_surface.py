@@ -6141,6 +6141,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
+    assert "компактная кодовая опора (compact code support)" in russian_text
     assert "эталонная среда исполнения (runtime)" in russian_text
     assert "слой политик (policy layer)" in russian_text
     assert "Эталонная среда исполнения (runtime):" in russian_text
@@ -6160,10 +6161,12 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
     assert "доказательства ревью песочницы (sandbox review evidence)" in russian_text
     assert "инспекции жизненного цикла (lifecycle inspection)" in russian_text
+    assert "YAML-конфиги (YAML configs)" in russian_text
     assert "операционного скелета (operational skeleton)" in russian_text
     assert "концептуальный текст (conceptual prose)" in russian_text
     assert "исполняемые эталонные артефакты (reference assets)" in russian_text
 
+    assert "紧凑的代码支撑（compact code support）" in chinese_text
     assert "参考运行时（runtime）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
     assert "参考运行时包（reference package）" in chinese_text
@@ -6184,17 +6187,20 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "沙箱审查证据（sandbox review evidence）" in chinese_text
     assert "生命周期检查（lifecycle inspection）" in chinese_text
     assert "运行骨架（operational skeleton）" in chinese_text
+    assert "YAML 配置（YAML configs）" in chinese_text
     assert "概念性说明（conceptual prose）" in chinese_text
     assert "可执行的参考资产（reference assets）" in chinese_text
 
     forbidden_markers = (
         "эталонный runtime",
         "Эталонный runtime",
+        "компактная кодовая опора для книги",
         "эталонная среда исполнения (runtime) и слой политик\n",
         "参考运行时（runtime）与策略层\n",
         "- [Эталонный пакет]",
         "- 参考包：[docs/appendix/reference-package",
         "完整 CLI 列表",
+        "紧凑的参考运行时，包含",
         "обзор конфигов",
         "配置概览可见",
         "каталог возможностей и approved inventory",
@@ -6210,9 +6216,11 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "контракт профиля песочницы и доказательства ревью песочницы",
         "沙箱配置契约与沙箱审查证据",
         "для operational skeleton",
+        "YAML-конфиги для операционного скелета",
         "рабочие эталонные артефакты (assets)",
         "lifecycle inspection 中可见",
         "用于 operational skeleton",
+        "YAML 配置\n",
         "参考资产（assets）",
         "不只是概念说明",
     )

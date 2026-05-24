@@ -75,14 +75,14 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-它为本书提供一个紧凑的参考运行时，包含：
+它为本书提供紧凑的代码支撑（compact code support），包含：
 
 - 参考运行时（runtime）与策略层（policy layer）
 - 能力目录（capability catalog）与已批准清单（approved inventory）
 - 记忆路径（memory path）、遥测（telemetry）、审批（approvals）与发布检查（rollout checks）
 - 生命周期工件（lifecycle artifacts），用于变更记录（change records）、工件包（artifact bundles）与退役计划（retirement plans）
 - 生命周期检查（lifecycle inspection）中可见的沙箱配置契约（sandbox profile contract）与沙箱审查证据（sandbox review evidence）
-- 用于运行骨架（operational skeleton）的 YAML 配置
+- 用于运行骨架（operational skeleton）的 YAML 配置（YAML configs）
 
 快速示例：
 
