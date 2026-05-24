@@ -1,4 +1,4 @@
-# 从这里开始
+# 从这里开始（Start Here）
 
 如果你第一次来到这本书，先问自己一个问题：你需要的是一个惊艳的演示智能体（impressive demo agent），还是一个能承受生产现实（production reality）的系统？
 
@@ -17,7 +17,7 @@
 
 那一章把主张说得很直接：生产级智能体系统（production agent system）不能被建成“模型加几个工具（tools）”，它必须被设计成一个受治理的运行系统。
 
-## 这是什么样的书
+## 这是什么样的书（what kind of book）
 
 这不是某个框架（framework）的指南，也不是 AI 功能目录（AI feature catalog）。这是一本实践型架构书，写给那些需要在真实环境里运行智能体的团队：那里有写入路径（write paths）、人工审批（human approvals）、访问边界（access boundaries）、遥测（telemetry）、评测（evals），以及明确的运维负责人机制（operational ownership）。
 
