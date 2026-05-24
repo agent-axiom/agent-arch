@@ -6425,6 +6425,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
 
     assert "производственную реальность (production reality)" in russian_text
     assert "рискованные действия (risky actions)" in russian_text
+    assert "память (memory), подтверждения (approvals)" in russian_text
+    assert "долгий эксплуатационный след (long operational tail)" in russian_text
     assert "инструментов (tools)" in russian_text
     assert "слой политик (policy layer)" in russian_text
     assert "управляемое исполнение (controlled execution)" in russian_text
@@ -6444,6 +6446,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
 
     assert "生产现实（production reality）" in chinese_text
     assert "高风险动作（risky actions）" in chinese_text
+    assert "记忆（memory）、审批（approvals）" in chinese_text
+    assert "长期运维尾部（long operational tail）" in chinese_text
     assert "工具（tools）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
     assert "受控执行（controlled execution）" in chinese_text
@@ -6464,6 +6468,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     forbidden_markers = (
         "реальность production",
         "появляются risky actions",
+        "память, подтверждения, раскатка",
+        "долгий эксплуатационный след,",
         "нескольких tools",
         "Нужны явные границы доверия, policy layer",
         "управляемое исполнение, наблюдаемость, оценка качества",
@@ -6480,6 +6486,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "rollout discipline, ownership и lifecycle governance",
         "承受生产现实的智能体系统",
         "高风险动作、记忆",
+        "记忆、审批、发布",
+        "长期运维尾部，",
         "几个工具就不够",
         "受控执行、可观测性、质量判断",
         "一次性的炫技",
