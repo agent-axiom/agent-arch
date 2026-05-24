@@ -6357,6 +6357,62 @@ def test_multilingual_homepage_safe_agent_schema_spine_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
+    russian_text = _read("docs/index.md")
+    chinese_text = _read("docs/index.zh.md")
+
+    assert "основная рукопись (core manuscript)" in russian_text
+    assert "управления жизненным циклом (lifecycle governance)" in russian_text
+    assert "редакторскую очистку (editorial cleanup)" in russian_text
+    assert "схемами трасс (traces)" in russian_text
+    assert "оценок (evals)" in russian_text
+    assert "пакетов политик (policy bundles)" in russian_text
+    assert "подтверждений (approvals)" in russian_text
+    assert "артефактов жизненного цикла (lifecycle artifacts)" in russian_text
+    assert "редакторский проход (editorial pass)" in russian_text
+    assert "трюков с промптами (prompt tricks)" in russian_text
+    assert "платформенной документацией (platform docs)" in russian_text
+    assert "путь записи (write path)" in russian_text
+
+    assert "核心原稿（core manuscript）" in chinese_text
+    assert "生命周期治理（lifecycle governance）" in chinese_text
+    assert "编辑清理（editorial cleanup）" in chinese_text
+    assert "追踪（traces）" in chinese_text
+    assert "评测（evals）" in chinese_text
+    assert "策略包（policy bundles）" in chinese_text
+    assert "审批（approvals）" in chinese_text
+    assert "生命周期工件（lifecycle artifacts）" in chinese_text
+    assert "编辑打磨（editorial pass）" in chinese_text
+    assert "提示技巧合集（prompt tricks）" in chinese_text
+    assert "平台文档（platform docs）" in chinese_text
+    assert "写入路径（write path）" in chinese_text
+
+    forbidden_markers = (
+        "core-рукопись",
+        "до lifecycle governance",
+        "проходящие editorial cleanup",
+        "схемами traces, evals",
+        "policy bundles, approvals",
+        "lifecycle-артефактов",
+        "Активный editorial pass",
+        "сборник prompt tricks",
+        "SDK и platform docs",
+        "ограничивать write path",
+        "生命周期治理的八个部分",
+        "编辑清理的 `en`",
+        "覆盖追踪、评测、策略包、审批",
+        "生命周期工件的参考页面",
+        "公开站点表面编辑打磨。",
+        "提示技巧合集，也不是",
+        "平台文档之上",
+        "写入路径应该怎样受限",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_public_entry_safe_agent_schema_spine_links_are_clickable() -> None:
     expected_links_by_file = {
         "README.md": (
