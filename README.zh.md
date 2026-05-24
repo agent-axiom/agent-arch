@@ -152,8 +152,8 @@ git push origin HEAD:docs-prod
 
 `PAGES_PAT` 必须是单独的 token（separate token），而不是 `GITHUB_TOKEN`：
 
-- Personal Access Token: `repo` 或 Pages 写权限（Pages write permission）
-- GitHub App: `administration:write` 和 `pages:write`
+- 个人访问令牌（Personal Access Token）：`repo` 或 Pages 写权限（Pages write permission）
+- GitHub 应用（GitHub App）：`administration:write` 和 `pages:write`
 
 ## 分支模型（branch model）
 
