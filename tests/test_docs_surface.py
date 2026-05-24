@@ -5932,6 +5932,23 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "промптинг (prompting)" in russian_text
+    assert "提示词技巧（prompting）" in chinese_text
+
+    forbidden_markers = (
+        "удачный prompting",
+        "提示词技巧和工具调用",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_readmes_surface_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
