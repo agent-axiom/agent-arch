@@ -18,8 +18,8 @@
 !!! example "Сквозной кейс поддержки"
     Один из способов читать книгу — следить за кейсом support-triage: от retrieval и tool execution до duplicate-ticket recovery, traces, SLO, eval gates, ownership, reference runtime, policy, rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это превращает главы из набора тем в одну проверяемую историю о том, как инцидент становится платформенным контрактом.
 
-!!! note "Canonical case map"
-    Support triage остается основной нитью для write capabilities, approvals и duplicate-ticket recovery. Internal knowledge assistant проверяет, что retrieval, memory, tenant boundaries, freshness и source grounding не потерялись в архитектуре. Incident coordination проверяет traces, SLO, escalation, notification side effects, response ownership и post-incident learning. Вместе эти три canonical cases делают книгу не одной историей про поддержку, а картой разных control surfaces.
+!!! note "Каноническая карта сценариев (Canonical case map)"
+    **Триаж обращений поддержки (Support triage)** остается основной нитью для записывающих возможностей (write capabilities), подтверждений (approvals) и восстановления после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет, что поиск (retrieval), память (memory), границы арендатора (tenant boundaries), свежесть (freshness) и привязка к источникам (source grounding) не потерялись в архитектуре. **Координация инцидентов (Incident coordination)** проверяет трассы (traces), SLO, эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владельца реагирования (response ownership) и обучение после инцидента (post-incident learning). Вместе эти три канонических сценария (canonical cases) делают книгу не одной историей про поддержку, а картой разных поверхностей управления (control surfaces).
 
 ## Рекомендуемый маршрут чтения
 
