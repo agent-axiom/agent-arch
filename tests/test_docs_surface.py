@@ -6983,6 +6983,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     russian_text = _read("docs/index.md")
     chinese_text = _read("docs/index.zh.md")
 
+    assert "Архитектура безопасных AI-агентов (Secure AI Agent Architecture)" in russian_text
     assert "производственную реальность (production reality)" in russian_text
     assert "рискованные действия (risky actions)" in russian_text
     assert "память (memory), подтверждения (approvals)" in russian_text
@@ -7014,6 +7015,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "владением (ownership)" in russian_text
     assert "управлением жизненным циклом (lifecycle governance)" in russian_text
 
+    assert "安全 AI 智能体架构（Secure AI Agent Architecture）" in chinese_text
     assert "生产现实（production reality）" in chinese_text
     assert "高风险动作（risky actions）" in chinese_text
     assert "记忆（memory）、审批（approvals）" in chinese_text
@@ -7047,6 +7049,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
 
     forbidden_markers = (
         "реальность production",
+        "# Архитектура Безопасных AI-Агентов\n",
         "появляются risky actions",
         "память, подтверждения, раскатка",
         "долгий эксплуатационный след,",
@@ -7071,6 +7074,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "run-level observability и evidence",
         "rollout discipline, ownership и lifecycle governance",
         "承受生产现实的智能体系统",
+        "# 安全 AI 智能体架构\n",
         "高风险动作、记忆",
         "记忆、审批、发布",
         "长期运维尾部，",
