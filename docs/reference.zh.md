@@ -11,7 +11,7 @@
 - 为团队抽取可复用的工程工件；
 - 从概念章节切换到更落地的工程材料。
 
-如果你刚进入这个项目，最好先读本书本体。等你需要支撑性的 Schema、检查清单和契约表面来支撑主要论证时，再来到这里。
+如果你刚进入这个项目，最好先读本书本体。等你需要支撑性模式（supporting schemas）、检查清单（checklists）和契约表面（contract surfaces）来支撑主要论证时，再来到这里。
 
 这一层**不**承诺的事情是：
 
@@ -61,7 +61,7 @@
 
 ## 按主题快速进入
 
-如果你不需要整个参考层，只想快速进入一个具体问题，可以直接走这些短路线：
+如果你不需要整个参考层（reference layer），只想快速进入一个具体问题，可以直接走这些短路线：
 
 - 工具目录设计、语义化工具过滤（semantic tool filtering）、读/写分类法（read/write taxonomy）：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 - MCP 主机/客户端/服务器角色（MCP host/client/server）、能力传输（capability transport）、沙箱边界（sandbox boundary）：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
