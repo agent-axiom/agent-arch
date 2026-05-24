@@ -6526,6 +6526,52 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_reference_support_triage_artifact_route_is_localized() -> None:
+    russian_text = _read("docs/reference.md")
+    chinese_text = _read("docs/reference.zh.md")
+
+    assert "Артефактный маршрут триажа поддержки (support-triage)" in russian_text
+    assert "трассы (traces)" in russian_text
+    assert "набор данных оценок (eval dataset)" in russian_text
+    assert "пакет политик (policy bundle)" in russian_text
+    assert "запись подтверждения (approval record)" in russian_text
+    assert "запись инцидента (incident record)" in russian_text
+    assert "раскатку изменений (change rollout)" in russian_text
+    assert "артефакты жизненного цикла (lifecycle artifacts)" in russian_text
+    assert "операции реестра (registry operations)" in russian_text
+    assert "инцидент с дублем тикета (duplicate-ticket incident)" in russian_text
+
+    assert "支持分诊工件路线（support-triage）" in chinese_text
+    assert "追踪（traces）" in chinese_text
+    assert "评测数据集（eval dataset）" in chinese_text
+    assert "策略包（policy bundle）" in chinese_text
+    assert "审批记录（approval record）" in chinese_text
+    assert "事故记录（incident record）" in chinese_text
+    assert "变更发布（change rollout）" in chinese_text
+    assert "生命周期工件（lifecycle artifacts）" in chinese_text
+    assert "注册表运维（registry operations）" in chinese_text
+    assert "重复工单事故（duplicate-ticket incident）" in chinese_text
+
+    forbidden_markers = (
+        'example "Артефактный маршрут support-triage"',
+        "кейс support-triage",
+        "страницы про traces, eval dataset",
+        "policy bundle, approval record",
+        "incident record, change rollout",
+        "lifecycle artifacts и registry operations",
+        "duplicate-ticket incident из рассказа",
+        'example "support-triage 工件路线"',
+        "按 support-triage 案例",
+        "把 traces、评测数据集",
+        "policy bundle、审批记录",
+        "registry operations 这些页面",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_multilingual_reference_safe_agent_schema_spine_is_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")

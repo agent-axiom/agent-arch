@@ -27,8 +27,8 @@
 2. [Шпаргалки](appendix/cheat-sheets.md)
 3. [Эталонный пакет](appendix/reference-package.md)
 
-!!! example "Артефактный маршрут support-triage"
-    Если читаешь книгу через кейс support-triage, в справочном слое держи рядом страницы про traces, eval dataset, policy bundle, approval record, incident record, change rollout, lifecycle artifacts и registry operations. Именно эти контракты превращают duplicate-ticket incident из рассказа в проверяемый набор артефактов.
+!!! example "Артефактный маршрут триажа поддержки (support-triage)"
+    Если читаешь книгу через кейс триажа поддержки (support-triage), в справочном слое держи рядом страницы про трассы (traces), набор данных оценок (eval dataset), пакет политик (policy bundle), запись подтверждения (approval record), запись инцидента (incident record), раскатку изменений (change rollout), артефакты жизненного цикла (lifecycle artifacts) и операции реестра (registry operations). Именно эти контракты превращают инцидент с дублем тикета (duplicate-ticket incident) из рассказа в проверяемый набор артефактов.
 
 !!! note "Канонические артефакты сценариев (Canonical case artifacts)"
     Три канонических сценария (canonical cases) дают разные входы в справочный слой. **Триаж обращений поддержки (Support triage)** опирается на запись подтверждения (approval record), пакет политик (policy bundle), схему трасс (trace schema) и доказательства восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** требует контракт памяти/поиска (memory/retrieval contract), проверки свежести (freshness checks), контроль доступа (access control) и происхождение знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** связывает запись инцидента (incident record), доказательства эскалации (escalation evidence), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership) и обучение после инцидента (post-incident learning).
