@@ -6726,11 +6726,13 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "код и артефакты (code and artifacts)" in russian_text
     assert "линейное чтение (linear reading)" in russian_text
     assert "исполняемые опоры (executable supports)" in russian_text
+    assert "Справочные страницы (reference pages)" in russian_text
     assert "конкретную задачу (specific task)" in russian_text
     assert "Безопасное выполнение инструментов (safe tool execution)" in russian_text
     assert "Память и извлечение (memory and retrieval)" in russian_text
     assert "раскатка (observability, evals, and rollout)" in russian_text
     assert "Главная линия схем безопасного агента (Safe-agent schema spine)" in russian_text
+    assert "Справочный слой (reference layer)" in russian_text
     assert "рядом с книгой (companion references)" in russian_text
     assert "реальной инженерии (real engineering)" in russian_text
     assert "AI-лендинг (AI landing page)" in russian_text
@@ -6751,11 +6753,13 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "代码和工件（code and artifacts）" in chinese_text
     assert "可执行支撑（executable supports）" in chinese_text
     assert "线性阅读（linear reading）" in chinese_text
+    assert "参考页面（reference pages）" in chinese_text
     assert "具体问题（specific task）" in chinese_text
     assert "安全工具执行（safe tool execution）" in chinese_text
     assert "记忆与检索（memory and retrieval）" in chinese_text
     assert "可观测性、评测与发布（observability, evals, and rollout）" in chinese_text
     assert "安全智能体 Schema 主线（Safe-agent schema spine）" in chinese_text
+    assert "参考层（reference layer）" in chinese_text
     assert "旁边还可以打开什么（companion references）" in chinese_text
     assert "AI 落地页（AI landing page）" in chinese_text
     assert "真实工程（real engineering）" in chinese_text
@@ -6787,10 +6791,12 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         "## Если хочешь сразу код и артефакты\n",
         "не линейное чтение, а исполняемые опоры",
         "## Если нужно быстро решить конкретную задачу\n",
+        "[Справочные страницы](reference.md)",
         "### Безопасное выполнение инструментов\n",
         "### Память и извлечение\n",
         "### Наблюдаемость, оценки и раскатка (rollout)",
         "### Safe-agent schema spine\n",
+        "[Справочный слой](reference.md)",
         "## Что открыть рядом с книгой\n",
         "AI-лендинг про",
         "скелет runtime (runtime skeleton)",
@@ -6810,6 +6816,7 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         "## 如果你想先看代码和工件\n",
         "可执行支撑比线性阅读更重要",
         "## 如果你要快速解决一个具体问题\n",
+        "[参考页面](reference.zh.md)",
         "### 安全工具执行\n",
         "### 记忆与检索\n",
         "### 可观测性、评测与发布（rollout）",

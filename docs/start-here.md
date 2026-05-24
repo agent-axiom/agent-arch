@@ -88,7 +88,7 @@
 - [Эталонный пакет](appendix/reference-package.md)
 - [Глава 16. Базовая схема рантайма](book/part-vii/chapter-16.md)
 - [Глава 17. Слой политик и каталог возможностей](book/part-vii/chapter-17.md)
-- [Справочные страницы](reference.md)
+- [Справочные страницы (reference pages)](reference.md)
 
 Это полезно, если тебе сразу нужны скелет среды исполнения (runtime skeleton), контракты политик (policy contracts), путь памяти (memory path), телеметрия (telemetry) и артефакты раскатки (rollout artifacts).
 
@@ -120,7 +120,7 @@
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
 - [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
-- [Справочный слой](reference.md)
+- [Справочный слой (reference layer)](reference.md)
 
 Этот маршрут полезен, если нужно быстро проверить модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
