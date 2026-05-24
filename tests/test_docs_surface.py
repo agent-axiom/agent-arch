@@ -6232,6 +6232,23 @@ def test_multilingual_start_here_change_management_link_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_start_here_observability_heading_is_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "### Наблюдаемость, оценки и раскатка (rollout)" in russian_text
+    assert "### 可观测性、评测与发布（rollout）" in chinese_text
+
+    forbidden_markers = (
+        "### Наблюдаемость, оценки и rollout",
+        "### 可观测性、评测与发布\n",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",

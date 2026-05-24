@@ -111,7 +111,7 @@
 - [第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - [记忆记录与检索契约模式](appendix/memory-retrieval-schema.zh.md)
 
-### 可观测性、评测与发布
+### 可观测性、评测与发布（rollout）
 
 - [第 11 章：追踪、跨度与结构化事件](book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
