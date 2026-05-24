@@ -13,7 +13,7 @@
 
 ![Agent Architecture Book Preview](docs/assets/images/readme.png)
 
-## 为什么这个仓库存在
+## 为什么这个仓库存在（why this repository exists）
 
 大多数智能体教程都在优化“快速演示（quick demo）”。但真实系统需要的不只是提示词技巧（prompting）和工具调用（tool calls）。它们还需要：
 
@@ -25,7 +25,7 @@
 
 这个仓库的目标，是把这一整套运行模型完整地讲清楚。
 
-## 这个仓库包含什么
+## 这个仓库包含什么（what is in this repository）
 
 - 一本关于安全 AI 智能体架构的多语言书籍
 - 一个基于 `MkDocs` 和 `Material for MkDocs` 的 GitHub Pages 文档站点
@@ -33,7 +33,7 @@
 - 一组实用的模式、检查清单与运维工件
 - 一个基于 `uv` 的现代 Python-first 工具链
 
-## 为什么值得读
+## 为什么值得读（why read this）
 
 - **面向原则的厂商中立架构（vendor-neutral architecture）。** 这本书关注的是能跨越具体框架（framework）和模型厂商（model provider）长期成立的架构原则与运行模型。
 - **关注生产现实（production reality），而不是智能体表演（agent theater）。** 它强调策略、审批、可观测性、评测（evals）与生命周期纪律。
@@ -41,7 +41,7 @@
 - **一条贯穿全栈的案例线（full-stack case）。** 支持分诊 / 重复工单线索（support-triage / duplicate-ticket thread）把书籍、参考模式（reference schemas）和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索（retrieval）与工具执行（tool execution）一路看到遥测（telemetry）、评测（evals）、发布（rollout）、生命周期（lifecycle）和注册表控制（registry control）。
 - **三个规范案例（canonical cases）用于覆盖检查（coverage check）。** 支持分诊（Support triage）覆盖写入能力（write capabilities）和审批（approvals），内部知识助手（Internal knowledge assistant）覆盖检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），事件协调（Incident coordination）覆盖追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事后学习（post-incident learning）。
 
-## 从这里开始
+## 从这里开始（Start Here）
 
 - 项目站点：<https://agent-axiom.github.io/agent-arch/>
 - 书籍首页：[docs/index.zh.md](docs/index.zh.md)
