@@ -8367,6 +8367,38 @@ def test_start_here_surfaces_safe_agent_schema_spine() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_start_here_safe_agent_schema_route_is_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "модель угроз MCP (MCP threat model)" in russian_text
+    assert "контракт доверия передачи A2A (A2A handoff trust contract)" in russian_text
+    assert "запись вердикта проверяющего (verifier verdict record)" in russian_text
+    assert "запись действия управления (governance action record)" in russian_text
+    assert "поля ревью отравления памяти (memory poisoning review fields)" in russian_text
+    assert "единые доказательства угроз агенту (unified agent threat evidence)" in russian_text
+
+    assert "MCP 威胁模型（MCP threat model）" in chinese_text
+    assert "A2A 移交信任契约（A2A handoff trust contract）" in chinese_text
+    assert "验证器裁决记录（verifier verdict record）" in chinese_text
+    assert "治理动作记录（governance action record）" in chinese_text
+    assert "记忆投毒审查字段（memory poisoning review fields）" in chinese_text
+    assert "统一智能体威胁证据（unified agent threat evidence）" in chinese_text
+
+    forbidden_markers = (
+        "проверить MCP threat model",
+        "A2A handoff trust contract, verifier verdict record",
+        "governance action record, memory poisoning review fields",
+        "检查 MCP threat model",
+        "A2A handoff trust contract、verifier verdict record",
+        "governance action record、memory poisoning review fields",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_reference_surfaces_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",

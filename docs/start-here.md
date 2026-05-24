@@ -122,7 +122,7 @@
 - [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
 - [Справочный слой](reference.md)
 
-Этот маршрут полезен, если нужно быстро проверить MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+Этот маршрут полезен, если нужно быстро проверить модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
 ## Что открыть рядом с книгой
 
