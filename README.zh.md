@@ -95,7 +95,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-规范说明、完整 CLI 命令列表（CLI commands）和配置概览可见：
+规范说明、完整 CLI 命令列表（CLI commands）和配置概览（config overview）可见：
 
 - [参考运行时包（runtime reference package）](docs/appendix/reference-package.zh.md)
 
