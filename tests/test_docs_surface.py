@@ -5940,6 +5940,45 @@ def test_start_here_surfaces_three_canonical_case_routes() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_start_here_intro_terms_are_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "производственную реальность (production reality)" in russian_text
+    assert "перегруженных промптами (prompt-heavy prototypes)" in russian_text
+    assert "границами доверия (trust boundaries)" in russian_text
+    assert "слоем политик (policy layer)" in russian_text
+    assert "производственную агентную систему (production agent system)" in russian_text
+    assert "пути записи (write paths)" in russian_text
+
+    assert "生产现实（production reality）" in chinese_text
+    assert "提示堆出来的原型（prompt-heavy prototypes）" in chinese_text
+    assert "信任边界（trust boundaries）" in chinese_text
+    assert "策略层（policy layer）" in chinese_text
+    assert "生产级智能体系统（production agent system）" in chinese_text
+    assert "写入路径（write paths）" in chinese_text
+
+    forbidden_markers = (
+        "реальность production",
+        "от prompt-heavy прототипов",
+        "границами доверия, policy layer",
+        "дисциплина вокруг trust boundaries",
+        "production agent system нельзя",
+        "набор tools",
+        "есть write paths",
+        "生产现实的系统",
+        "提示堆出来的原型，",
+        "信任边界、策略层、审批",
+        "生产级智能体系统不能",
+        "几个工具”，",
+        "有写入路径、人工审批",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_multilingual_start_here_canonical_routes_note_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
