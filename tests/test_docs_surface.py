@@ -6788,22 +6788,34 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "запись подтверждения (approval record)" in russian_text
     assert "контракт памяти/поиска (memory/retrieval contract)" in russian_text
     assert "запись инцидента (incident record)" in russian_text
+    assert "поддерживающие схемы (supporting schemas)" in russian_text
+    assert "чеклисты (checklists)" in russian_text
+    assert "контрактные поверхности (contract surfaces)" in russian_text
+    assert "справочный слой (reference layer)" in russian_text
 
     assert "规范案例工件" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
     assert "审批记录（approval record）" in chinese_text
     assert "记忆/检索契约（memory/retrieval contract）" in chinese_text
     assert "事件记录（incident record）" in chinese_text
+    assert "支撑性模式（supporting schemas）" in chinese_text
+    assert "检查清单（checklists）" in chinese_text
+    assert "契约表面（contract surfaces）" in chinese_text
+    assert "参考层（reference layer）" in chinese_text
 
     forbidden_markers = (
         "Три canonical cases",
         "опирается на approval record",
         "требует memory/retrieval contract",
         "связывает incident record",
+        "поддерживающие схемы, чеклисты и контрактные страницы",
+        "не весь reference layer",
         "三个 canonical cases",
         "依赖 approval record",
         "需要 memory/retrieval contract",
         "连接 incident record",
+        "支撑性的 Schema、检查清单和契约表面",
+        "不需要整个参考层，",
     )
 
     for marker in forbidden_markers:
