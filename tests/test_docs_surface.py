@@ -6996,6 +6996,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "разового трюка (one-off trick)" in russian_text
     assert "ограничивать (constrain), наблюдать (observe), выпускать (ship)" in russian_text
     assert "улучшать без гадания (improve without guessing)" in russian_text
+    assert "Для кого эта книга (who this book is for)" in russian_text
+    assert "Что она должна изменить в мышлении читателя (reader mindset shift)" in russian_text
     assert "LLM плюс немного оркестрации (orchestration)" in russian_text
     assert "управляемую производственную систему (governed production system)" in russian_text
     assert "исполнением, ограниченным политиками (policy-constrained execution)" in russian_text
@@ -7025,6 +7027,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "一次性炫技（one-off trick）" in chinese_text
     assert "约束（constrain）、观察（observe）、发布（ship）" in chinese_text
     assert "无需猜测地持续改进（improve without guessing）" in chinese_text
+    assert "这本书适合谁（who this book is for）" in chinese_text
+    assert "它应该改变读者什么思维（reader mindset shift）" in chinese_text
     assert "LLM 加一点编排（orchestration）" in chinese_text
     assert "受治理的生产系统（governed production system）" in chinese_text
     assert "策略约束的执行（policy-constrained execution）" in chinese_text
@@ -7052,6 +7056,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "эффектного разового трюка команда получает систему",
         "ограничивать, наблюдать, выпускать",
         "улучшать без гадания.",
+        "## Для кого эта книга\n",
+        "## Что она должна изменить в мышлении читателя\n",
         "LLM плюс немного оркестрации”",
         "управляемую production-систему",
         "с исполнением (execution) под контролем политик",
@@ -7073,6 +7079,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "一次性的炫技",
         "约束、观察、发布并持续改进",
         "不必靠猜",
+        "## 这本书适合谁\n",
+        "## 它应该改变读者什么思维\n",
         "LLM 加一点编排”，",
         "受治理的生产系统：",
         "执行（execution）受策略约束",
