@@ -35,7 +35,7 @@
 读完这本书，读者应该停止把智能体想成“LLM 加一点编排（orchestration）”，而开始把它想成一个受治理的生产系统（governed production system）：
 
 - 有明确的信任边界（trust boundaries）与动作边界（action boundaries）；
-- 执行（execution）受策略约束；
+- 策略约束的执行（policy-constrained execution）；
 - 高风险路径（risky paths）有审批（approvals）；
 - 具备运行级可观测性（run-level observability）与证据（evidence）；
 - 拥有发布纪律（rollout discipline）、负责人机制（ownership）与生命周期治理（lifecycle governance）。
