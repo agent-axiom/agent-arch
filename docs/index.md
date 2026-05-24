@@ -37,7 +37,7 @@
 - с наблюдаемостью уровня запуска (run-level observability) и доказательствами (evidence);
 - с дисциплиной раскатки (rollout discipline), владением (ownership) и управлением жизненным циклом (lifecycle governance).
 
-## Как читать книгу
+## Как читать книгу (how to read the book)
 
 Если нужен короткий вход (short entry), начни с [главы 1](book/part-i/chapter-1.md). Если нужен маршрут под задачу и роль (task and role route), открой [страницу старта (Start Here)](start-here.md). Если важнее структура и статус разделов (structure and section status), смотри [план книги (book plan)](book/plan.md). Если нужны переиспользуемые артефакты (reusable artifacts), схемы (schemas) и контракты (contracts), переходи в [справочный слой (reference layer)](reference.md).
 

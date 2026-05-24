@@ -7191,6 +7191,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "Открыть план книги (book plan)" in russian_text
     assert "Перейти к первой части (Part I)" in russian_text
     assert "Открыть эталонный пакет (reference package)" in russian_text
+    assert "Как читать книгу (how to read the book)" in russian_text
     assert "короткий вход (short entry)" in russian_text
     assert "маршрут под задачу и роль (task and role route)" in russian_text
     assert "страницу старта (Start Here)" in russian_text
@@ -7225,6 +7226,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "打开全书计划（book plan）" in chinese_text
     assert "进入第一部分（Part I）" in chinese_text
     assert "打开参考包（reference package）" in chinese_text
+    assert "这本书怎么读（how to read the book）" in chinese_text
     assert "短入口（short entry）" in chinese_text
     assert "任务和角色路线（task and role route）" in chinese_text
     assert "从这里开始（Start Here）" in chinese_text
@@ -7258,6 +7260,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "[Открыть план книги](book/plan.md)",
         "[Перейти к первой части](book/part-i/index.md)",
         "[Открыть эталонный пакет](appendix/reference-package.md)",
+        "## Как читать книгу\n",
         "Если нужен короткий вход, начни",
         "маршрут под задачу и роль, открой",
         "важнее структура и статус разделов, смотри",
@@ -7280,6 +7283,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "[打开全书计划](book/plan.zh.md)",
         "[进入第一部分](book/part-i/index.zh.md)",
         "[打开参考包](appendix/reference-package.zh.md)",
+        "## 这本书怎么读\n",
         "如果你只想要最短入口",
         "按角色或任务选择路线",
         "更关心结构与状态",

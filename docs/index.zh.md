@@ -40,7 +40,7 @@
 - 具备运行级可观测性（run-level observability）与证据（evidence）；
 - 拥有发布纪律（rollout discipline）、负责人机制（ownership）与生命周期治理（lifecycle governance）。
 
-## 这本书怎么读
+## 这本书怎么读（how to read the book）
 
 如果你只想要短入口（short entry），就从 [第 1 章](book/part-i/chapter-1.zh.md) 开始。如果你需要按任务和角色路线（task and role route）选择，就打开[从这里开始（Start Here）](start-here.zh.md)。如果你更关心结构与章节状态（structure and section status），就看[全书计划（book plan）](book/plan.zh.md)。如果你需要可复用工件（reusable artifacts）、模式（schemas）和契约（contracts），就进入[参考层（reference layer）](reference.zh.md)。
 
