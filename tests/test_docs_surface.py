@@ -6513,6 +6513,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "маршрут чтения (reading route)" in russian_text
     assert "Если читать только одно (read only one)" in russian_text
     assert "самый короткий вход (shortest entry point)" in russian_text
+    assert "Маршрут на 30 минут (30-minute route)" in russian_text
+    assert "этот путь (path)" in russian_text
+    assert "рабочая рамка (working frame)" in russian_text
     assert "фреймворку (framework)" in russian_text
     assert "каталог AI-возможностей (AI feature catalog)" in russian_text
     assert "пути записи (write paths)" in russian_text
@@ -6521,8 +6524,10 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "телеметрия (telemetry), оценки (evals)" in russian_text
     assert "эксплуатационная ответственность (operational ownership)" in russian_text
     assert "реальные границы доверия (trust boundaries)" in russian_text
+    assert "безопасное исполнение инструментов (safe tool execution)" in russian_text
+    assert "“умной модели” (smart model)" in russian_text
     assert "трасс (traces), SLO и оценок (evals)" in russian_text
-    assert "серьезной раскатки (rollout)" in russian_text
+    assert "первой серьезной раскатки (first serious rollout)" in russian_text
 
     assert "惊艳的演示智能体（impressive demo agent）" in chinese_text
     assert "生产现实（production reality）" in chinese_text
@@ -6536,6 +6541,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "阅读路线（reading route）" in chinese_text
     assert "如果你只读一章（read only one）" in chinese_text
     assert "最短入口（shortest entry point）" in chinese_text
+    assert "30 分钟路线（30-minute route）" in chinese_text
+    assert "这条路径（path）" in chinese_text
+    assert "工作框架（working frame）" in chinese_text
     assert "框架（framework）的指南" in chinese_text
     assert "AI 功能目录（AI feature catalog）" in chinese_text
     assert "写入路径（write paths）" in chinese_text
@@ -6544,8 +6552,10 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "遥测（telemetry）、评测（evals）" in chinese_text
     assert "运维负责人机制（operational ownership）" in chinese_text
     assert "真实信任边界（trust boundaries）" in chinese_text
+    assert "安全工具执行（safe tool execution）" in chinese_text
+    assert "“聪明模型”（smart model）" in chinese_text
     assert "追踪（traces）、SLO 和评测（evals）" in chinese_text
-    assert "认真发布（rollout）之前" in chinese_text
+    assert "认真发布（first serious rollout）之前" in chinese_text
 
     forbidden_markers = (
         "реальность production",
@@ -6559,6 +6569,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "быстро выбрать маршрут чтения.",
         "## Если читать только одно\n",
         "самый короткий вход в идею книги",
+        "## Маршрут на 30 минут\n",
+        "пройди этот путь:",
+        "сложиться рабочая рамка:",
         "production agent system нельзя",
         "по одному фреймворку и не каталог AI-возможностей",
         "человеческие подтверждения, границы доступа",
@@ -6567,8 +6580,11 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "набор tools",
         "есть write paths",
         "реальные trust boundaries",
+        "безопасное исполнение инструментов;",
+        "“умной модели” мало",
         "без traces, SLO и evals",
         "серьезного rollout",
+        "серьезной раскатки (rollout)",
         "生产现实的系统",
         "看起来厉害的演示智能体",
         "读成一个完整论证：",
@@ -6578,6 +6594,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "阅读路线。",
         "## 如果你只读一章\n",
         "最短时间进入",
+        "## 30 分钟路线\n",
+        "先读这条路径：",
+        "形成一个工作框架",
         "信任边界、策略层、审批",
         "生产级智能体系统不能",
         "某个框架的指南，也不是 AI 功能目录",
@@ -6587,6 +6606,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "几个工具”，",
         "有写入路径、人工审批",
         "真实信任边界在哪里",
+        "安全工具执行应该",
+        "单靠“聪明模型”不够",
         "没有追踪、SLO 和评测",
         "认真发布之前",
     )
