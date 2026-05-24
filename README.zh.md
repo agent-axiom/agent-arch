@@ -109,15 +109,15 @@ uv sync --group research
 
 研究组（research group）已包含 `marimo` 与 `polars`。
 
-## 发布
+## 发布（publishing）
 
-仓库内包含用于 GitHub Pages 的 GitHub Actions 工作流：
+仓库内包含用于 GitHub Pages 的 GitHub Actions 工作流（GitHub Actions workflow）：
 
-- 使用 `uv` 构建
-- 严格执行 `mkdocs build --strict`
-- 从 `docs-prod` 分支部署到 Pages
+- 通过 `uv` 执行构建（build）
+- 严格检查（strict check）`mkdocs build --strict`
+- 从发布分支（publishing branch）`docs-prod` 部署（deploy）到 Pages
 
-发布前，先运行本地检查，并确认 `main` 可以以 fast-forward 方式更新两个远端分支：
+发布前，先运行本地检查（local checks），并确认 `main` 可以以 fast-forward 方式更新两个远端分支：
 
 ```bash
 .venv/bin/ruff check .
@@ -130,14 +130,14 @@ git rev-list --left-right --count origin/main...HEAD
 git rev-list --left-right --count origin/docs-prod...HEAD
 ```
 
-配置好写入凭据后，只用 fast-forward push 发布：
+配置好写入凭据（write credentials）后，只用 fast-forward push 命令（fast-forward push commands）发布：
 
 ```bash
 git push origin main
 git push origin HEAD:docs-prod
 ```
 
-不要 force-push 到 `docs-prod`；它刻意只是 GitHub Pages 的触发分支。
+不要 force-push 到 `docs-prod`；它刻意只是 GitHub Pages 的触发分支（trigger branch）。
 
 ## GitHub Pages 首次设置
 
