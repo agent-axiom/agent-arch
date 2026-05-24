@@ -5800,12 +5800,26 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
+    assert "главный тезис (main thesis)" in russian_text
+    assert "платформа (platform)" in russian_text
+    assert "разового трюка (one-off trick)" in russian_text
+    assert "ограничивать (constrain), наблюдать (observe), выпускать (ship)" in russian_text
+    assert "улучшать без гадания (improve without guessing)" in russian_text
+    assert "платформенных слоев (minimum platform layers)" in russian_text
+    assert "рискованным действиям (risky actions)" in russian_text
     assert "рабочего процесса (workflow)" in russian_text
     assert "управляемый запуск (run)" in russian_text
     assert "политику (policy)" in russian_text
     assert "доказательства (evidence)" in russian_text
     assert "ответственность оператора (operator accountability)" in russian_text
 
+    assert "核心判断（main thesis）" in chinese_text
+    assert "平台（platform）" in chinese_text
+    assert "一次性炫技（one-off trick）" in chinese_text
+    assert "约束（constrain）、观察（observe）、发布（ship）" in chinese_text
+    assert "无需猜测地持续改进（improve without guessing）" in chinese_text
+    assert "高风险动作（risky actions）" in chinese_text
+    assert "最小平台层集合（minimum platform layers）" in chinese_text
     assert "工作流（workflow）" in chinese_text
     assert "运行（run）" in chinese_text
     assert "策略（policy）" in chinese_text
@@ -5814,11 +5828,21 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
 
     forbidden_markers = (
         "достаточно обычного workflow",
+        "У книги один главный тезис: агенту нужна платформа",
+        "вместо эффектного разового трюка появляется система",
+        "ограничивать, наблюдать, выпускать",
+        "улучшать без гадания.",
+        "минимальный набор платформенных слоев, без которых",
         "управляемый run через policy",
         "execution, evidence, approval",
         "рассматривать memory, evals",
         "operator accountability как",
         "普通工作流就够了",
+        "核心判断：智能体需要平台",
+        "一次性的炫技",
+        "约束、观察、发布并持续改进",
+        "不必靠猜",
+        "最少需要哪些平台层",
         "策略、执行、证据、审批、发布",
         "记忆、评测、来源谱系、退役",
     )

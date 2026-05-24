@@ -4,14 +4,14 @@
 
 ## 这本书的承诺
 
-这本书有一个核心判断：智能体需要平台，而不是魔法。
+这本书有一个核心判断（main thesis）：智能体需要平台（platform），而不是魔法。
 
-构建智能体很枯燥，但结果令人震撼：你得到的不是一次性的炫技，而是一个可以约束、观察、发布并持续改进的系统，不必靠猜。
+构建智能体很枯燥，但结果令人震撼：你得到的不是一次性炫技（one-off trick），而是一个可以约束（constrain）、观察（observe）、发布（ship）并无需猜测地持续改进（improve without guessing）的系统。
 
 读完后，你应该能够：
 
 - 判断什么时候真的需要智能体，什么时候普通工作流（workflow）就够了；
-- 看清在允许高风险动作之前，系统最少需要哪些平台层；
+- 看清在允许高风险动作（risky actions）之前，系统需要的最小平台层集合（minimum platform layers）；
 - 追踪一次受治理的运行（run）如何穿过策略（policy）、执行（execution）、证据（evidence）、审批（approval）、发布（rollout）与生命周期控制（lifecycle control）；
 - 把记忆（memory）、评测（evals）、来源谱系（provenance）、退役（retirement）与操作员问责（operator accountability）看成同一个运行模型的一部分。
 
