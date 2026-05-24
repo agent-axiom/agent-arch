@@ -1,19 +1,19 @@
 # 从这里开始
 
-如果你第一次来到这本书，先问自己一个问题：你需要的是一个看起来厉害的演示智能体，还是一个能承受生产现实（production reality）的系统？
+如果你第一次来到这本书，先问自己一个问题：你需要的是一个惊艳的演示智能体（impressive demo agent），还是一个能承受生产现实（production reality）的系统？
 
-这本书是写给第二种情况的。最适合把它读成一个完整论证：智能体系统怎样从提示堆出来的原型（prompt-heavy prototypes），长成带有信任边界（trust boundaries）、策略层（policy layer）、审批（approvals）、可观测性（observability）、评测（evals）和生命周期纪律的受治理系统。
+这本书是写给第二种情况的。最适合把它读成一个完整论证（single argument）：智能体系统怎样从提示堆出来的原型（prompt-heavy prototypes），长成带有信任边界（trust boundaries）、策略层（policy layer）、审批（approvals）、可观测性（observability）、评测（evals）和生命周期纪律的受治理系统（governed systems）。
 
-构建智能体很枯燥，但结果令人震撼：围绕信任边界（trust boundaries）、追踪（traces）、审批（approvals）和发布（rollout）建立纪律，才能把演示变成可以安全改进的系统。
+构建智能体很枯燥，但结果令人震撼：围绕信任边界（trust boundaries）、追踪（traces）、审批（approvals）和发布（rollout）建立纪律，才能把演示变成可以安全改进的系统（safely improve）。
 
 !!! info "中文本地化预览"
     这份中文版本当前定位为本地化预览：内容可用于阅读和评审，但还不是最终中文版。请优先把它看作社区预览；正式出版前还需要统一术语、母语编辑和 print/PDF 导出检查。
 
-这页只做一件事：帮你尽快选出阅读路线。
+这页只做一件事：帮你尽快选出阅读路线（reading route）。
 
-## 如果你只读一章
+## 如果你只读一章（read only one）
 
-如果你想用最短时间进入本书的核心论点，请先读[第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)。
+如果你想用最短入口（shortest entry point）进入本书的核心论点，请先读[第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)。
 
 那一章把主张说得很直接：生产级智能体系统（production agent system）不能被建成“模型加几个工具（tools）”，它必须被设计成一个受治理的运行系统。
 

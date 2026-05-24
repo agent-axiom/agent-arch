@@ -6501,11 +6501,18 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
+    assert "впечатляющий демо-агент (impressive demo agent)" in russian_text
     assert "производственную реальность (production reality)" in russian_text
+    assert "один аргумент (single argument)" in russian_text
     assert "перегруженных промптами (prompt-heavy prototypes)" in russian_text
+    assert "управляемым системам (governed systems)" in russian_text
     assert "границами доверия (trust boundaries)" in russian_text
     assert "слоем политик (policy layer)" in russian_text
     assert "производственную агентную систему (production agent system)" in russian_text
+    assert "безопасно улучшать (safely improve)" in russian_text
+    assert "маршрут чтения (reading route)" in russian_text
+    assert "Если читать только одно (read only one)" in russian_text
+    assert "самый короткий вход (shortest entry point)" in russian_text
     assert "фреймворку (framework)" in russian_text
     assert "каталог AI-возможностей (AI feature catalog)" in russian_text
     assert "пути записи (write paths)" in russian_text
@@ -6517,11 +6524,18 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "трасс (traces), SLO и оценок (evals)" in russian_text
     assert "серьезной раскатки (rollout)" in russian_text
 
+    assert "惊艳的演示智能体（impressive demo agent）" in chinese_text
     assert "生产现实（production reality）" in chinese_text
+    assert "完整论证（single argument）" in chinese_text
     assert "提示堆出来的原型（prompt-heavy prototypes）" in chinese_text
+    assert "受治理系统（governed systems）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
     assert "生产级智能体系统（production agent system）" in chinese_text
+    assert "安全改进的系统（safely improve）" in chinese_text
+    assert "阅读路线（reading route）" in chinese_text
+    assert "如果你只读一章（read only one）" in chinese_text
+    assert "最短入口（shortest entry point）" in chinese_text
     assert "框架（framework）的指南" in chinese_text
     assert "AI 功能目录（AI feature catalog）" in chinese_text
     assert "写入路径（write paths）" in chinese_text
@@ -6535,9 +6549,16 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
 
     forbidden_markers = (
         "реальность production",
+        "впечатляющий демо-агент или система",
+        "читать как один аргумент о том",
         "от prompt-heavy прототипов",
+        "к управляемым системам с границами",
         "границами доверия, policy layer",
         "дисциплина вокруг trust boundaries",
+        "безопасно улучшать.",
+        "быстро выбрать маршрут чтения.",
+        "## Если читать только одно\n",
+        "самый короткий вход в идею книги",
         "production agent system нельзя",
         "по одному фреймворку и не каталог AI-возможностей",
         "человеческие подтверждения, границы доступа",
@@ -6549,7 +6570,14 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "без traces, SLO и evals",
         "серьезного rollout",
         "生产现实的系统",
+        "看起来厉害的演示智能体",
+        "读成一个完整论证：",
         "提示堆出来的原型，",
+        "生命周期纪律的受治理系统。",
+        "安全改进的系统。",
+        "阅读路线。",
+        "## 如果你只读一章\n",
+        "最短时间进入",
         "信任边界、策略层、审批",
         "生产级智能体系统不能",
         "某个框架的指南，也不是 AI 功能目录",
