@@ -4,7 +4,7 @@
 
 它的中心论点很简单：**智能体需要平台，而不是魔法**。一旦系统拥有高风险动作（risky actions）、记忆、审批、发布（rollout）和长期运维尾部，单靠模型加几个工具（tools）就不够了。你需要明确的信任边界、策略层（policy layer）、受控执行（controlled execution）、可观测性（observability）、质量评估（quality assessment）与生命周期纪律（lifecycle discipline）。
 
-构建智能体很枯燥，但结果令人震撼：团队得到的不是一次性的炫技，而是一个可以约束、观察、发布并持续改进的系统，不必靠猜。
+构建智能体很枯燥，但结果令人震撼：团队得到的不是一次性炫技（one-off trick），而是一个可以约束（constrain）、观察（observe）、发布（ship）并无需猜测地持续改进（improve without guessing）的系统。
 
 !!! info "中文本地化预览"
     中文层目前是可阅读的本地化预览，而不是面向出版社的最终中文版。它适合社区预览、结构审查和术语对齐；正式出版前仍需要完整中文编辑、术语统一、图表/导出 QA 和母语审校。
