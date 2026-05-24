@@ -1,4 +1,4 @@
-# 安全 AI 智能体架构
+# 安全 AI 智能体架构（Secure AI Agent Architecture）
 
 这本书写给那些需要的不是炫目的演示，而是能够承受生产现实（production reality）的智能体系统团队。
 
