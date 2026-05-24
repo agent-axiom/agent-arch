@@ -91,7 +91,7 @@
 - [参考包](appendix/reference-package.zh.md)
 - [第 16 章：基础运行时蓝图](book/part-vii/chapter-16.zh.md)
 - [第 17 章：策略层与能力目录](book/part-vii/chapter-17.zh.md)
-- [参考页面](reference.zh.md)
+- [参考页面（reference pages）](reference.zh.md)
 
 如果你现在就需要运行时骨架（runtime skeleton）、策略契约（policy contracts）、记忆路径（memory path）、遥测（telemetry）和发布工件（rollout artifacts），这条路线会更合适。
 
@@ -123,7 +123,7 @@
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
 - [评测数据集 Schema 与打分契约](appendix/eval-schema.zh.md)
 - [记忆记录与检索契约 Schema](appendix/memory-retrieval-schema.zh.md)
-- [参考页面](reference.zh.md)
+- [参考层（reference layer）](reference.zh.md)
 
 如果需要快速检查 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence），可以走这条路线。
 
