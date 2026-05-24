@@ -78,7 +78,7 @@ uv run mkdocs build --strict
 Это компактная кодовая опора для книги:
 
 - эталонная среда исполнения (runtime) и слой политик
-- каталог возможностей и утвержденный инвентарь (approved inventory)
+- каталог возможностей (capability catalog) и утвержденный инвентарь (approved inventory)
 - путь памяти (memory path), телеметрия (telemetry), подтверждения (approvals) и проверки раскатки (rollout checks)
 - артефакты жизненного цикла (lifecycle artifacts) для записей изменений (change records), пакетов артефактов (artifact bundles) и планов вывода из эксплуатации (retirement plans)
 - видимый контракт профиля песочницы (sandbox profile contract) и доказательства ревью песочницы (sandbox review evidence) в инспекции жизненного цикла (lifecycle inspection)
