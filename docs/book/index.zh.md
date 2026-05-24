@@ -18,8 +18,8 @@
 !!! example "贯穿的支持案例"
     读这本书的一种方式，是一路跟随 support-triage 案例：从检索与工具执行，到重复工单恢复、traces、SLO、评测门、ownership、参考运行时、策略、rollout、ADLC、保障、来源谱系、退役、失配控制、telemetry 和 registry。这样，各章就不再只是主题集合，而是一条可审阅的故事线：一个事故如何变成平台契约。
 
-!!! note "Canonical case map"
-    Support triage 仍然是 write capabilities、approvals 和 duplicate-ticket recovery 的主线。Internal knowledge assistant 用来检查 retrieval、memory、tenant boundaries、freshness 和 source grounding 没有在架构里消失。Incident coordination 用来检查 traces、SLO、escalation、notification side effects、response ownership 和 post-incident learning。三个 canonical cases 合在一起，让本书不只是一条支持案例故事，而是一张不同 control surfaces 的地图。
+!!! note "规范案例地图（Canonical case map）"
+    **支持分诊（Support triage）**仍然是写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）的主线。**内部知识助手（Internal knowledge assistant）**用来检查检索（retrieval）、记忆（memory）、租户边界（tenant boundaries）、新鲜度（freshness）和来源锚定（source grounding）没有在架构里消失。**事件协调（Incident coordination）**用来检查追踪（traces）、SLO、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事后学习（post-incident learning）。三个规范案例（canonical cases）合在一起，让本书不只是一条支持案例故事，而是一张不同控制表面（control surfaces）的地图。
 
 ## 推荐阅读路径
 

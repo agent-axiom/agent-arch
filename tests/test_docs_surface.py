@@ -5693,6 +5693,40 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
+    russian_text = _read("docs/book/index.md")
+    chinese_text = _read("docs/book/index.zh.md")
+
+    assert "Каноническая карта сценариев" in russian_text
+    assert "канонических сценария (canonical cases)" in russian_text
+    assert "записывающих возможностей (write capabilities)" in russian_text
+    assert "поиск (retrieval)" in russian_text
+    assert "поверхностей управления (control surfaces)" in russian_text
+
+    assert "规范案例地图" in chinese_text
+    assert "规范案例（canonical cases）" in chinese_text
+    assert "写入能力（write capabilities）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "控制表面（control surfaces）" in chinese_text
+
+    forbidden_markers = (
+        "Support triage остается",
+        "для write capabilities",
+        "что retrieval, memory",
+        "проверяет traces",
+        "три canonical cases",
+        "Support triage 仍然是",
+        "是 write capabilities",
+        "检查 retrieval、memory",
+        "检查 traces、SLO",
+        "三个 canonical cases",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_case_studies_align_with_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case alignment",
