@@ -6635,6 +6635,10 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "обзор AI-рынка (AI market overview)" in russian_text
     assert "платформенной документацией (platform docs)" in russian_text
     assert "путь записи (write path)" in russian_text
+    assert "переиспользуемые артефакты (reusable artifacts)" in russian_text
+    assert "схемы (schemas)" in russian_text
+    assert "контракты (contracts)" in russian_text
+    assert "справочный слой (reference layer)" in russian_text
 
     assert "核心原稿（core manuscript）" in chinese_text
     assert "生命周期治理（lifecycle governance）" in chinese_text
@@ -6650,6 +6654,10 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "AI 市场巡礼（AI market overview）" in chinese_text
     assert "平台文档（platform docs）" in chinese_text
     assert "写入路径（write path）" in chinese_text
+    assert "可复用工件（reusable artifacts）" in chinese_text
+    assert "模式（schemas）" in chinese_text
+    assert "契约（contracts）" in chinese_text
+    assert "参考层（reference layer）" in chinese_text
 
     forbidden_markers = (
         "core-рукопись",
@@ -6674,6 +6682,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "AI 市场巡礼。本书",
         "平台文档之上",
         "写入路径应该怎样受限",
+        "可复用工件、Schema 和契约",
+        "进入[参考层](reference.zh.md)",
     )
 
     for marker in forbidden_markers:
