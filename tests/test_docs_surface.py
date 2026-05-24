@@ -5972,6 +5972,39 @@ def test_multilingual_start_here_canonical_routes_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_start_here_support_case_example_is_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "триажа поддержки (support-triage)" in russian_text
+    assert "поиска (retrieval)" in russian_text
+    assert "безопасного выполнения инструментов (safe tool execution)" in russian_text
+    assert "восстановление после дубля тикета (duplicate-ticket recovery)" in russian_text
+    assert "платформенному контракту (incident-to-platform-contract path)" in russian_text
+
+    assert "支持分诊（support-triage）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "安全工具执行（safe tool execution）" in chinese_text
+    assert "重复工单恢复（duplicate-ticket recovery）" in chinese_text
+    assert "从事故到平台契约的路径（incident-to-platform-contract path）" in chinese_text
+
+    forbidden_markers = (
+        "историей support-triage",
+        "начинается с retrieval",
+        "проходит через duplicate-ticket recovery",
+        "misalignment controls, telemetry",
+        "incident-to-platform-contract путь",
+        "跟着 support-triage 故事",
+        "重复工单恢复、traces",
+        "进入 rollout、ADLC",
+        "失配控制、telemetry",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",
