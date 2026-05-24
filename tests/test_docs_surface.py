@@ -4601,7 +4601,9 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
     assert "Каталог инструментов, семантическая фильтрация инструментов" in text
     assert "семантическая фильтрация инструментов (semantic tool filtering)" in text
     assert "классификация чтения/записи (read/write taxonomy)" in text
-    assert "Роли MCP: `host`, `client` и `server`" in text
+    assert "Роли MCP: хост, клиент и сервер (MCP host/client/server)" in text
+    assert "передача возможностей (capability transport)" in text
+    assert "границы песочницы (sandbox boundary)" in text
     assert "Семантический разрыв (semantic gap), HyDE" in text
     assert "выбор между RAG и обучением модели (RAG vs training)" in text
     assert "Бюджет задержки (latency budget)" in text
@@ -4614,6 +4616,8 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
         "семантическая фильтрация инструментов (`semantic tool filtering`)",
         "классификация чтения/записи:",
         "- MCP host/client/server, capability transport, sandbox boundary:",
+        "Роли MCP: `host`, `client` и `server`",
+        "передача возможностей и границы песочницы:",
         "- Semantic gap, HyDE, RAG vs training:",
         "Семантический разрыв (`semantic gap`), `HyDE`",
         "выбор между RAG и обучением модели (`RAG vs training`)",
@@ -4633,7 +4637,9 @@ def test_chinese_reference_fast_topic_routes_are_localized() -> None:
 
     assert "工具目录设计、语义化工具过滤（semantic tool filtering）" in text
     assert "读/写分类法（read/write taxonomy）" in text
-    assert "MCP 主机/客户端/服务器角色、能力传输、沙箱边界" in text
+    assert "MCP 主机/客户端/服务器角色（MCP host/client/server）" in text
+    assert "能力传输（capability transport）" in text
+    assert "沙箱边界（sandbox boundary）" in text
     assert "语义鸿沟（semantic gap）、HyDE、RAG 与训练的取舍（RAG vs training）" in text
     assert "延迟预算（latency budget）、快路径/慢路径、路由管线" in text
     assert "以 LLM 作为评审器（LLM-as-a-judge）、校准" in text
@@ -4641,6 +4647,7 @@ def test_chinese_reference_fast_topic_routes_are_localized() -> None:
 
     forbidden_markers = (
         "工具目录设计、语义化工具过滤、读/写分类法",
+        "MCP 主机/客户端/服务器角色、能力传输、沙箱边界",
         "延迟预算、快路径/慢路径、路由管线",
         "Latency budget, fast path / slow path, routed pipeline",
         "语义鸿沟、HyDE、RAG 与训练的取舍",
