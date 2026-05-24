@@ -2,10 +2,10 @@
 
 ![Coverage](docs/assets/badges/coverage.svg)
 
-[English version](README.md)
-[中文版](README.zh.md)
-[Contributing guide](CONTRIBUTING.md)
-[Code of Conduct](CODE_OF_CONDUCT.md)
+[Английская версия (English version)](README.md)
+[Китайская версия (Chinese version)](README.zh.md)
+[Руководство для вкладов (Contributing guide)](CONTRIBUTING.md)
+[Кодекс поведения (Code of Conduct)](CODE_OF_CONDUCT.md)
 
 Практическая книга и документационный сайт о безопасной, управляемой и готовой к production архитектуре (production-ready architecture) AI-агентов.
 
