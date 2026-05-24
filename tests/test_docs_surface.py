@@ -5939,6 +5939,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
 
     assert "Производственная реальность (production reality)" in russian_text
     assert "театра агентов (agent theater)" in russian_text
+    assert "эталонные схемы (reference schemas)" in russian_text
     assert "Триаж поддержки (Support triage)" in russian_text
     assert "записывающие возможности (write capabilities)" in russian_text
     assert "происхождение знаний (knowledge provenance)" in russian_text
@@ -5946,6 +5947,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
 
     assert "生产现实（production reality）" in chinese_text
     assert "智能体表演（agent theater）" in chinese_text
+    assert "参考模式（reference schemas）" in chinese_text
     assert "支持分诊（Support triage）" in chinese_text
     assert "写入能力（write capabilities）" in chinese_text
     assert "知识来源（knowledge provenance）" in chinese_text
@@ -5954,11 +5956,13 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
     forbidden_markers = (
         "Production reality вместо agent theater",
         "Support-triage / duplicate-ticket thread",
+        "эталонные схемы и `agent_runtime_ref`",
         "Три canonical cases",
         "Support triage покрывает write capabilities",
         "Internal knowledge assistant — retrieval",
         "Incident coordination — traces",
         "support-triage / duplicate-ticket thread 把",
+        "参考 Schema 和 `agent_runtime_ref`",
         "三个 canonical cases",
         "Support triage 覆盖 write capabilities",
         "Internal knowledge assistant 覆盖 retrieval",
