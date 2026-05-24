@@ -21,9 +21,9 @@
 
 这不是某个框架（framework）的指南，也不是 AI 功能目录（AI feature catalog）。这是一本实践型架构书，写给那些需要在真实环境里运行智能体的团队：那里有写入路径（write paths）、人工审批（human approvals）、访问边界（access boundaries）、遥测（telemetry）、评测（evals），以及明确的运维负责人机制（operational ownership）。
 
-## 30 分钟路线
+## 30 分钟路线（30-minute route）
 
-如果时间很少，就先读这条路径：
+如果时间很少，就先读这条路径（path）：
 
 1. [第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第 3 章：安全边界与信任边界](book/part-ii/chapter-3.zh.md)
@@ -31,12 +31,12 @@
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-走完这条路径后，你至少应该已经形成一个工作框架，能回答：
+走完这条路径后，你至少应该已经获得一个工作框架（working frame），能回答：
 
 - 智能体的真实信任边界（trust boundaries）在哪里；
-- 安全工具执行应该长什么样；
-- 为什么没有追踪（traces）、SLO 和评测（evals）时，单靠“聪明模型”不够；
-- 第一次认真发布（rollout）之前到底需要什么。
+- 安全工具执行（safe tool execution）应该长什么样；
+- 为什么没有追踪（traces）、SLO 和评测（evals）时，单靠“聪明模型”（smart model）不够；
+- 第一次认真发布（first serious rollout）之前到底需要什么。
 
 !!! example "如果你想跟随贯穿案例"
     可以一路跟着支持分诊（support-triage）故事走：它从检索（retrieval）和安全工具执行（safe tool execution）开始，经过重复工单恢复（duplicate-ticket recovery）、追踪（traces）、SLO 和评测门（eval gates），然后继续进入发布（rollout）、ADLC、保障（assurance）、来源谱系（provenance）、退役（retirement）、失配控制（misalignment controls）、遥测（telemetry）和注册表（registry）。如果你想看到的是一条从事故到平台契约的路径（incident-to-platform-contract path），而不是一组抽象层，这是最好的路线。
