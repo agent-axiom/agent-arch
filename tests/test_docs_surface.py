@@ -6014,6 +6014,38 @@ def test_reference_layer_surfaces_three_canonical_case_artifacts() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
+    russian_text = _read("docs/reference.md")
+    chinese_text = _read("docs/reference.zh.md")
+
+    assert "Канонические артефакты сценариев" in russian_text
+    assert "канонических сценария (canonical cases)" in russian_text
+    assert "запись подтверждения (approval record)" in russian_text
+    assert "контракт памяти/поиска (memory/retrieval contract)" in russian_text
+    assert "запись инцидента (incident record)" in russian_text
+
+    assert "规范案例工件" in chinese_text
+    assert "规范案例（canonical cases）" in chinese_text
+    assert "审批记录（approval record）" in chinese_text
+    assert "记忆/检索契约（memory/retrieval contract）" in chinese_text
+    assert "事件记录（incident record）" in chinese_text
+
+    forbidden_markers = (
+        "Три canonical cases",
+        "опирается на approval record",
+        "требует memory/retrieval contract",
+        "связывает incident record",
+        "三个 canonical cases",
+        "依赖 approval record",
+        "需要 memory/retrieval contract",
+        "连接 incident record",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
     required_markers = (
         "Canonical lifecycle cases",
