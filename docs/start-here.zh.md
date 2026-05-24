@@ -44,18 +44,18 @@
 !!! note "规范案例路线（Canonical case routes）"
     阅读路线旁边要同时保留三个规范案例（canonical cases）作为覆盖检查。**支持分流（Support triage）** 承载写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 突出检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
-## 按角色阅读
+## 按角色阅读（role-based routes）
 
-### 如果你是产品工程师
+### 如果你是产品工程师（product engineer）
 
 1. [第一部分：基础](book/part-i/index.zh.md)
 2. [第二部分：安全边界](book/part-ii/index.zh.md)
 3. [第四部分：工具与执行](book/part-iv/index.zh.md)
 4. [第七部分：参考实现](book/part-vii/index.zh.md)
 
-这条路线适合从智能体想法快速走到可运行架构。
+这条路线适合从智能体想法（agent idea）快速走到可运行架构（working architecture）。
 
-### 如果你是平台工程师
+### 如果你是平台工程师（platform engineer）
 
 1. [第 2 章：安全智能体的参考架构](book/part-i/chapter-2.zh.md)
 2. [第三部分：记忆与知识](book/part-iii/index.zh.md)
@@ -63,9 +63,9 @@
 4. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 5. [第七部分：参考实现](book/part-vii/index.zh.md)
 
-这条路线适合那些在搭平台骨架、而不只是给一个模型包壳的团队。
+这条路线适合那些在搭平台骨架（platform skeleton）、而不只是给一个模型包壳（model wrapper）的团队。
 
-### 如果你是安全工程师
+### 如果你是安全工程师（security engineer）
 
 1. [第二部分：安全边界](book/part-ii/index.zh.md)
 2. [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](book/part-iii/chapter-5.zh.md)
@@ -73,16 +73,16 @@
 4. [第 10 章：幂等性、重试、速率限制与回滚边界](book/part-iv/chapter-10.zh.md)
 5. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-这条路线适合那些不仅要看模型风险，还要看真实执行风险的人。
+这条路线适合那些不仅要看模型风险（model risk），还要看真实执行风险（real execution risk）的人。
 
-### 如果你是负责人或架构师
+### 如果你是负责人或架构师（leader or architect）
 
 1. [第 1 章：为什么智能体需要的是平台，而不是魔法](book/part-i/chapter-1.zh.md)
 2. [第五部分：可靠性与可观测性](book/part-v/index.zh.md)
 3. [第六部分：组织模型](book/part-vi/index.zh.md)
 4. [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 
-这条路线适合那些不想只交付演示，而是要把项目放进真实运营纪律的人。
+这条路线适合那些不想只交付演示（demo），而是要把项目放进真实运营纪律（operating discipline）的人。
 
 ## 如果你想先看代码和工件
 
