@@ -6796,6 +6796,14 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "читательский путь (reading path)" in russian_text
     assert "готовые артефакты (ready-to-use artifacts)" in russian_text
     assert "прикладной инженерной форме (applied engineering form)" in russian_text
+    assert "причинно-следственный аргумент (causal argument)" in russian_text
+    assert "главу за главой (chapter by chapter)" in russian_text
+    assert "компромиссы (tradeoffs)" in russian_text
+    assert "границы между слоями (layer boundaries)" in russian_text
+    assert "аргумента (argument)" in russian_text
+    assert "последовательности (sequence)" in russian_text
+    assert "вспомогательных артефактов (supporting artifacts)" in russian_text
+    assert "деталей реализации (implementation details)" in russian_text
 
     assert "规范案例工件" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
@@ -6810,6 +6818,13 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "阅读路径（reading path）" in chinese_text
     assert "即用工件（ready-to-use artifacts）" in chinese_text
     assert "工程形式（applied engineering form）" in chinese_text
+    assert "因果论证（causal argument / chapter by chapter）" in chinese_text
+    assert "取舍（tradeoffs）" in chinese_text
+    assert "层间边界（layer boundaries）" in chinese_text
+    assert "论证（argument）" in chinese_text
+    assert "顺序（sequence）" in chinese_text
+    assert "支撑工件（supporting artifacts）" in chinese_text
+    assert "实现细节（implementation details）" in chinese_text
 
     forbidden_markers = (
         "Три canonical cases",
@@ -6821,6 +6836,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "переиспользуемых инженерных материалов,",
         "готовые артефакты для своей команды",
         "прикладной инженерной форме.",
+        "причинно-следственный аргумент главу за главой",
+        "компромиссы и границы между слоями",
+        "для аргумента и последовательности",
+        "вспомогательных артефактов и прикладных деталей реализации",
         "三个 canonical cases",
         "依赖 approval record",
         "需要 memory/retrieval contract",
@@ -6830,6 +6849,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "可复用的工程材料来支撑",
         "可复用的工程工件",
         "更落地的工程材料",
+        "按章节去解释主要的因果论证",
+        "取舍与层间边界",
+        "理解论证与章节顺序",
+        "支撑工件与面向实现的细节",
     )
 
     for marker in forbidden_markers:
