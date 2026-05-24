@@ -38,8 +38,8 @@
 !!! example "Если хочешь идти по сквозному кейсу"
     Следи за историей support-triage: она начинается с retrieval и safe tool execution, проходит через duplicate-ticket recovery, traces, SLO и eval gates, а затем доводится до rollout, ADLC, assurance, provenance, retirement, misalignment controls, telemetry и registry. Это хороший маршрут, если хочется увидеть не абстрактные слои, а один incident-to-platform-contract путь.
 
-!!! note "Canonical case routes"
-    Для проверки покрытия держи рядом три canonical cases. **Support triage** ведет через write capabilities, approvals и duplicate-ticket recovery. **Internal knowledge assistant** подсвечивает retrieval, memory, freshness и knowledge provenance. **Incident coordination** проверяет traces, escalation, notification side effects, response ownership и post-incident learning.
+!!! note "Канонические маршруты сценариев (Canonical case routes)"
+    Для проверки покрытия держи рядом три канонических сценария (canonical cases). **Триаж обращений поддержки (Support triage)** ведет через записывающие возможности (write capabilities), подтверждения (approvals) и восстановление после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** подсвечивает поиск (retrieval), память (memory), свежесть (freshness) и происхождение знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** проверяет трассы (traces), эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership) и обучение после инцидента (post-incident learning).
 
 ## Маршруты по ролям
 

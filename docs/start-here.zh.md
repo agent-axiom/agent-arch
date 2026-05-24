@@ -41,8 +41,8 @@
 !!! example "如果你想跟随贯穿案例"
     可以一路跟着 support-triage 故事走：它从检索和安全工具执行开始，经过重复工单恢复、traces、SLO 和评测门，然后继续进入 rollout、ADLC、保障、来源谱系、退役、失配控制、telemetry 和 registry。如果你想看到的是一条从事故到平台契约的路径，而不是一组抽象层，这是最好的路线。
 
-!!! note "Canonical case routes"
-    阅读路线旁边要同时保留三个 canonical cases 作为覆盖检查。**Support triage** 承载 write capabilities、approvals 和 duplicate-ticket recovery。**Internal knowledge assistant** 突出 retrieval、memory、freshness 和 knowledge provenance。**Incident coordination** 检查 traces、escalation、notification side effects、response ownership 和 post-incident learning。
+!!! note "规范案例路线（Canonical case routes）"
+    阅读路线旁边要同时保留三个规范案例（canonical cases）作为覆盖检查。**支持分流（Support triage）** 承载写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 突出检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
 ## 按角色阅读
 
