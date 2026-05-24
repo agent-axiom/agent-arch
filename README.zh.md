@@ -79,7 +79,7 @@ uv run mkdocs build --strict
 
 - 参考运行时（runtime）与策略层
 - 能力目录与已批准清单（approved inventory）
-- 记忆路径、遥测、审批（approvals）与发布检查（rollout checks）
+- 记忆路径（memory path）、遥测（telemetry）、审批（approvals）与发布检查（rollout checks）
 - 生命周期工件（lifecycle artifacts），用于变更记录（change records）、工件包（artifact bundles）与退役计划（retirement plans）
 - 生命周期检查（lifecycle inspection）中可见的沙箱配置契约（sandbox profile contract）与沙箱审查证据（sandbox review evidence）
 - 用于运行骨架（operational skeleton）的 YAML 配置

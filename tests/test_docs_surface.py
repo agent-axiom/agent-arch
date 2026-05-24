@@ -6147,6 +6147,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "обзор конфигурации (config overview)" in russian_text
     assert "Эталонная среда исполнения (runtime reference package)" in russian_text
     assert "утвержденный инвентарь (approved inventory)" in russian_text
+    assert "путь памяти (memory path)" in russian_text
+    assert "телеметрия (telemetry)" in russian_text
     assert "подтверждения (approvals)" in russian_text
     assert "проверки раскатки (rollout checks)" in russian_text
     assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
@@ -6160,6 +6162,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "配置概览（config overview）" in chinese_text
     assert "参考运行时包（runtime reference package）" in chinese_text
     assert "已批准清单（approved inventory）" in chinese_text
+    assert "记忆路径（memory path）" in chinese_text
+    assert "遥测（telemetry）" in chinese_text
     assert "审批（approvals）" in chinese_text
     assert "发布检查（rollout checks）" in chinese_text
     assert "沙箱配置契约（sandbox profile contract）" in chinese_text
@@ -6176,6 +6180,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "обзор конфигов",
         "配置概览可见",
         "каталог возможностей и approved inventory",
+        "память, телеметрия, подтверждения",
+        "记忆路径、遥测、审批",
         "approvals и rollout checks",
         "lifecycle-артефакты для change records",
         "sandbox profile contract и sandbox review evidence",
