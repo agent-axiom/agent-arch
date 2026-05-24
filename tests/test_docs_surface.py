@@ -7106,6 +7106,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "путь записи (write path)" in russian_text
     assert "Что не является целью книги (what the book is not)" in russian_text
     assert "Куда идти дальше (where to go next)" in russian_text
+    assert "С чего начать (Start Here)" in russian_text
+    assert "Прочитать главу 1 (chapter 1)" in russian_text
+    assert "Открыть план книги (book plan)" in russian_text
+    assert "Перейти к первой части (Part I)" in russian_text
+    assert "Открыть эталонный пакет (reference package)" in russian_text
     assert "короткий вход (short entry)" in russian_text
     assert "маршрут под задачу и роль (task and role route)" in russian_text
     assert "страницу старта (Start Here)" in russian_text
@@ -7135,6 +7140,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "写入路径（write path）" in chinese_text
     assert "这本书不打算成为什么（what the book is not）" in chinese_text
     assert "接下来去哪里（where to go next）" in chinese_text
+    assert "从这里开始（Start Here）" in chinese_text
+    assert "阅读第 1 章（chapter 1）" in chinese_text
+    assert "打开全书计划（book plan）" in chinese_text
+    assert "进入第一部分（Part I）" in chinese_text
+    assert "打开参考包（reference package）" in chinese_text
     assert "短入口（short entry）" in chinese_text
     assert "任务和角色路线（task and role route）" in chinese_text
     assert "从这里开始（Start Here）" in chinese_text
@@ -7163,6 +7173,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "ограничивать write path",
         "## Что не является целью книги\n",
         "## Куда идти дальше\n",
+        "[С чего начать](start-here.md)",
+        "[Прочитать главу 1](book/part-i/chapter-1.md)",
+        "[Открыть план книги](book/plan.md)",
+        "[Перейти к первой части](book/part-i/index.md)",
+        "[Открыть эталонный пакет](appendix/reference-package.md)",
         "Если нужен короткий вход, начни",
         "маршрут под задачу и роль, открой",
         "важнее структура и статус разделов, смотри",
@@ -7180,6 +7195,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "写入路径应该怎样受限",
         "## 这本书不打算成为什么\n",
         "## 接下来去哪里\n",
+        "[从这里开始](start-here.zh.md)",
+        "[阅读第 1 章](book/part-i/chapter-1.zh.md)",
+        "[打开全书计划](book/plan.zh.md)",
+        "[进入第一部分](book/part-i/index.zh.md)",
+        "[打开参考包](appendix/reference-package.zh.md)",
         "如果你只想要最短入口",
         "按角色或任务选择路线",
         "更关心结构与状态",

@@ -8,9 +8,9 @@
 
 <div class="hero-actions" markdown="1">
 
-[С чего начать](start-here.md){ .md-button .md-button--primary }
-[Прочитать главу 1](book/part-i/chapter-1.md){ .md-button }
-[Открыть план книги](book/plan.md){ .md-button }
+[С чего начать (Start Here)](start-here.md){ .md-button .md-button--primary }
+[Прочитать главу 1 (chapter 1)](book/part-i/chapter-1.md){ .md-button }
+[Открыть план книги (book plan)](book/plan.md){ .md-button }
 
 </div>
 
@@ -72,8 +72,8 @@
 
 <div class="button-stack" markdown="1">
 
-[С чего начать](start-here.md){ .md-button .md-button--primary }
-[Перейти к первой части](book/part-i/index.md){ .md-button }
-[Открыть эталонный пакет](appendix/reference-package.md){ .md-button }
+[С чего начать (Start Here)](start-here.md){ .md-button .md-button--primary }
+[Перейти к первой части (Part I)](book/part-i/index.md){ .md-button }
+[Открыть эталонный пакет (reference package)](appendix/reference-package.md){ .md-button }
 
 </div>

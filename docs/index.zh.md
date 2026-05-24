@@ -11,9 +11,9 @@
 
 <div class="hero-actions" markdown="1">
 
-[从这里开始](start-here.zh.md){ .md-button .md-button--primary }
-[阅读第 1 章](book/part-i/chapter-1.zh.md){ .md-button }
-[打开全书计划](book/plan.zh.md){ .md-button }
+[从这里开始（Start Here）](start-here.zh.md){ .md-button .md-button--primary }
+[阅读第 1 章（chapter 1）](book/part-i/chapter-1.zh.md){ .md-button }
+[打开全书计划（book plan）](book/plan.zh.md){ .md-button }
 
 </div>
 
@@ -75,8 +75,8 @@
 
 <div class="button-stack" markdown="1">
 
-[从这里开始](start-here.zh.md){ .md-button .md-button--primary }
-[进入第一部分](book/part-i/index.zh.md){ .md-button }
-[打开参考包](appendix/reference-package.zh.md){ .md-button }
+[从这里开始（Start Here）](start-here.zh.md){ .md-button .md-button--primary }
+[进入第一部分（Part I）](book/part-i/index.zh.md){ .md-button }
+[打开参考包（reference package）](appendix/reference-package.zh.md){ .md-button }
 
 </div>
