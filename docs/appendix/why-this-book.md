@@ -4,8 +4,8 @@
 
 Эта книга нужна, чтобы закрыть именно этот разрыв.
 
-!!! note "Canonical book cases"
-    Разрыв, который закрывает книга, лучше всего виден на трех canonical cases. **Support triage** показывает, почему write actions, approvals, policy gates, duplicate-ticket recovery и audit trail важнее polished demo. **Internal knowledge assistant** показывает, почему retrieval, memory boundaries, source grounding, provenance и tenant-aware access должны быть архитектурными решениями, а не prompt tricks. **Incident coordination** показывает, почему traces, SLOs, escalation, response ownership, rollout control и post-incident learning нужны до production incident, а не после него.
+!!! note "Канонические сценарии книги (Canonical book cases)"
+    Разрыв, который закрывает книга, лучше всего виден на трех канонических сценариях (canonical cases). **Триаж обращений поддержки (Support triage)** показывает, почему записывающие действия (write actions), подтверждения (approvals), шлюзы политик (policy gates), восстановление после дубля тикета (duplicate-ticket recovery) и аудиторский след (audit trail) важнее отполированного демо (polished demo). **Внутренний ассистент знаний (Internal knowledge assistant)** показывает, почему поиск (retrieval), границы памяти (memory boundaries), привязка к источникам (source grounding), происхождение (provenance) и доступ с учетом арендатора (tenant-aware access) должны быть архитектурными решениями, а не prompt tricks. **Координация инцидентов (Incident coordination)** показывает, почему трассы (traces), SLOs, эскалация (escalation), владение ответом (response ownership), контроль раскатки (rollout control) и обучение после инцидента (post-incident learning) нужны до production incident, а не после него.
 
 ## Чем она не является
 
