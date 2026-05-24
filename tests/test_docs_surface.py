@@ -5980,14 +5980,36 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
 
     assert "готовой к production архитектуре (production-ready architecture)" in russian_text
     assert "промптинг (prompting)" in russian_text
+    assert "границы доверия (trust boundaries)" in russian_text
+    assert "слой политик (policy layer)" in russian_text
+    assert "дисциплина памяти (memory discipline)" in russian_text
+    assert "наблюдаемость (observability) и оценки (evals)" in russian_text
+    assert "контроль раскатки (rollout control)" in russian_text
+    assert "управление жизненным циклом (lifecycle governance)" in russian_text
     assert "生产就绪架构（production-ready architecture）" in chinese_text
     assert "提示词技巧（prompting）" in chinese_text
+    assert "信任边界（trust boundaries）" in chinese_text
+    assert "策略执行（policy enforcement）" in chinese_text
+    assert "记忆治理与约束（memory governance）" in chinese_text
+    assert "可观测性（observability）与评测体系（evals）" in chinese_text
+    assert "发布控制（rollout control）" in chinese_text
+    assert "生命周期治理（lifecycle governance）" in chinese_text
 
     forbidden_markers = (
         "готовой к production архитектуре AI-агентов",
         "удачный prompting",
+        "явные границы доверия\n",
+        "слой политик и подтверждений",
+        "дисциплина памяти\n",
+        "наблюдаемость и оценки",
+        "контроль раскатки и управление жизненным циклом",
         "可用于生产环境的 AI 智能体架构",
         "提示词技巧和工具调用",
+        "明确的信任边界\n",
+        "策略执行与审批机制",
+        "记忆治理与约束\n",
+        "可观测性与评测体系\n",
+        "发布控制与生命周期管理",
     )
 
     for marker in forbidden_markers:
