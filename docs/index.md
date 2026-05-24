@@ -52,8 +52,8 @@
 !!! note "Каноническая карта сценариев (Canonical case map)"
     На этом маршруте держи в поле зрения три канонических сценария (canonical cases). **Триаж обращений поддержки (Support triage)** проверяет записывающие возможности (write capabilities), подтверждения (approvals) и восстановление после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет поиск (retrieval), память (memory), свежесть (freshness) и происхождение знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** проверяет трассы (traces), эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership) и обучение после инцидента (post-incident learning).
 
-!!! note "Safe-agent schema spine"
-    Если нужен краткий путь по safe-agent architecture, начни с [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md). Этот spine связывает MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+!!! note "Цепочка схем безопасного агента (Safe-agent schema spine)"
+    Если нужен краткий путь по архитектуре безопасного агента (safe-agent architecture), начни со [схемы трасс (trace schema)](appendix/trace-schema.md), [схемы оценок (eval schema)](appendix/eval-schema.md) и [схемы памяти/поиска (memory/retrieval schema)](appendix/memory-retrieval-schema.md). Эта цепочка (spine) связывает модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
 ## Что здесь уже есть
 
