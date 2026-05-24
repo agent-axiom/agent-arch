@@ -7245,6 +7245,12 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     chinese_text = _read("docs/reference.zh.md")
 
     assert "Канонические артефакты сценариев" in russian_text
+    assert "почему (why)" in russian_text
+    assert "безопасная агентная система (safe agent system)" in russian_text
+    assert "артефакты (artifacts), схемы (schemas) и правила (rules)" in russian_text
+    assert "контрактную страницу (contract page)" in russian_text
+    assert "архитектурное ревью (architecture review)" in russian_text
+    assert "ревью раскатки (rollout review)" in russian_text
     assert "канонических сценария (canonical cases)" in russian_text
     assert "запись подтверждения (approval record)" in russian_text
     assert "контракт памяти/поиска (memory/retrieval contract)" in russian_text
@@ -7267,6 +7273,12 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "деталей реализации (implementation details)" in russian_text
 
     assert "规范案例工件" in chinese_text
+    assert "为什么（why）" in chinese_text
+    assert "安全智能体系统（safe agent system）" in chinese_text
+    assert "工件（artifacts）、模式页（schemas）与规则（rules）" in chinese_text
+    assert "契约页（contract page）" in chinese_text
+    assert "架构评审（architecture review）" in chinese_text
+    assert "发布评审（rollout review）" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
     assert "审批记录（approval record）" in chinese_text
     assert "记忆/检索契约（memory/retrieval contract）" in chinese_text
@@ -7289,6 +7301,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
 
     forbidden_markers = (
         "Три canonical cases",
+        "**почему** безопасная агентная система",
+        "какие артефакты, схемы и правила",
+        "нужную контрактную страницу;",
+        "архитектурное ревью или ревью раскатки",
         "опирается на approval record",
         "требует memory/retrieval contract",
         "связывает incident record",
@@ -7302,6 +7318,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "для аргумента и последовательности",
         "вспомогательных артефактов и прикладных деталей реализации",
         "三个 canonical cases",
+        "**为什么**安全智能体系统",
+        "哪些工件、模式页与契约页",
+        "合适的契约页；",
+        "设计评审或发布评审",
         "依赖 approval record",
         "需要 memory/retrieval contract",
         "连接 incident record",

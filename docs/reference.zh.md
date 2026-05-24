@@ -1,13 +1,13 @@
 # 参考层
 
-如果这本书回答的是**为什么**安全智能体系统应该这样构建，那么参考层回答的就是：**哪些工件、模式页与契约页应该被明确固定下来**。
+如果这本书回答的是**为什么（why）**安全智能体系统（safe agent system）应该这样构建，那么参考层回答的就是：**哪些工件（artifacts）、模式页（schemas）与规则（rules）应该被明确固定下来**。
 
 这一层是有意作为支持层存在的，而不是主要阅读入口。它的作用是用可复用工程材料（reusable engineering materials）来支撑本书的论证，而不是替代本书本身的阅读路径（reading path）。
 
 当你需要下面这些东西时，这一节最有用：
 
-- 快速找到合适的契约页；
-- 准备设计评审或发布评审；
+- 快速找到合适的契约页（contract page）；
+- 准备架构评审（architecture review）或发布评审（rollout review）；
 - 为团队抽取即用工件（ready-to-use artifacts）；
 - 从概念章节切换到更落地的工程形式（applied engineering form）。
 
