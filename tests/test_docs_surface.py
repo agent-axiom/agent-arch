@@ -6165,6 +6165,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "операционного скелета (operational skeleton)" in russian_text
     assert "концептуальный текст (conceptual prose)" in russian_text
     assert "исполняемые эталонные артефакты (reference assets)" in russian_text
+    assert "Быстрые примеры (quick examples):" in russian_text
+    assert "Каноническое описание пакета (canonical package description)" in russian_text
 
     assert "紧凑的代码支撑（compact code support）" in chinese_text
     assert "参考运行时（runtime）" in chinese_text
@@ -6190,6 +6192,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "YAML 配置（YAML configs）" in chinese_text
     assert "概念性说明（conceptual prose）" in chinese_text
     assert "可执行的参考资产（reference assets）" in chinese_text
+    assert "快速示例（quick examples）：" in chinese_text
+    assert "规范包说明（canonical package description）" in chinese_text
 
     forbidden_markers = (
         "эталонный runtime",
@@ -6217,10 +6221,14 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "沙箱配置契约与沙箱审查证据",
         "для operational skeleton",
         "YAML-конфиги для операционного скелета",
+        "Быстрые примеры:",
+        "Каноническое описание пакета, полный список",
         "рабочие эталонные артефакты (assets)",
         "lifecycle inspection 中可见",
         "用于 operational skeleton",
         "YAML 配置\n",
+        "快速示例：",
+        "规范说明、完整 CLI 命令列表",
         "参考资产（assets）",
         "不只是概念说明",
     )

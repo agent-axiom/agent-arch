@@ -84,7 +84,7 @@ uv run mkdocs build --strict
 - видимый контракт профиля песочницы (sandbox profile contract) и доказательства ревью песочницы (sandbox review evidence) в инспекции жизненного цикла (lifecycle inspection)
 - YAML-конфиги (YAML configs) для операционного скелета (operational skeleton)
 
-Быстрые примеры:
+Быстрые примеры (quick examples):
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
@@ -95,7 +95,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-Каноническое описание пакета, полный список команд CLI (CLI commands) и обзор конфигурации (config overview) вынесены на отдельную страницу:
+Каноническое описание пакета (canonical package description), полный список команд CLI (CLI commands) и обзор конфигурации (config overview) вынесены на отдельную страницу:
 
 - [Эталонная среда исполнения (runtime reference package)](docs/appendix/reference-package.md)
 
