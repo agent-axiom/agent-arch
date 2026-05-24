@@ -109,15 +109,15 @@ uv sync --group research
 
 В исследовательскую группу (research group) уже включены `marimo` и `polars`.
 
-## Публикация
+## Публикация (publishing)
 
-В репозитории настроен рабочий процесс GitHub Actions для GitHub Pages:
+В репозитории настроен рабочий процесс GitHub Actions (GitHub Actions workflow) для GitHub Pages:
 
-- сборка через `uv`
-- строгая проверка `mkdocs build --strict`
-- деплой в Pages из ветки `docs-prod`
+- сборка (build) через `uv`
+- строгая проверка (strict check) `mkdocs build --strict`
+- деплой (deploy) в Pages из ветки публикации (publishing branch) `docs-prod`
 
-Перед публикацией прогоните локальные проверки и убедитесь, что `main` может обновить обе удалённые ветки fast-forward способом:
+Перед публикацией прогоните локальные проверки (local checks) и убедитесь, что `main` может обновить обе удалённые ветки fast-forward способом:
 
 ```bash
 .venv/bin/ruff check .
@@ -130,14 +130,14 @@ git rev-list --left-right --count origin/main...HEAD
 git rev-list --left-right --count origin/docs-prod...HEAD
 ```
 
-Когда write credentials настроены, публикуйте только fast-forward push-командами:
+Когда учётные данные на запись (write credentials) настроены, публикуйте только fast-forward push-командами (fast-forward push commands):
 
 ```bash
 git push origin main
 git push origin HEAD:docs-prod
 ```
 
-Не делайте force-push в `docs-prod`; это намеренно только ветка-триггер для GitHub Pages.
+Не делайте force-push в `docs-prod`; это намеренно только ветка-триггер (trigger branch) для GitHub Pages.
 
 ## Первый запуск GitHub Pages
 

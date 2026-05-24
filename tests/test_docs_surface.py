@@ -6255,6 +6255,56 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_publishing_terms_are_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Публикация (publishing)" in russian_text
+    assert "рабочий процесс GitHub Actions (GitHub Actions workflow)" in russian_text
+    assert "сборка (build)" in russian_text
+    assert "строгая проверка (strict check)" in russian_text
+    assert "деплой (deploy)" in russian_text
+    assert "ветки публикации (publishing branch)" in russian_text
+    assert "локальные проверки (local checks)" in russian_text
+    assert "учётные данные на запись (write credentials)" in russian_text
+    assert "fast-forward push-командами (fast-forward push commands)" in russian_text
+    assert "ветка-триггер (trigger branch)" in russian_text
+
+    assert "发布（publishing）" in chinese_text
+    assert "GitHub Actions 工作流（GitHub Actions workflow）" in chinese_text
+    assert "构建（build）" in chinese_text
+    assert "严格检查（strict check）" in chinese_text
+    assert "部署（deploy）" in chinese_text
+    assert "发布分支（publishing branch）" in chinese_text
+    assert "本地检查（local checks）" in chinese_text
+    assert "写入凭据（write credentials）" in chinese_text
+    assert "fast-forward push 命令（fast-forward push commands）" in chinese_text
+    assert "触发分支（trigger branch）" in chinese_text
+
+    forbidden_markers = (
+        "## Публикация\n",
+        "рабочий процесс GitHub Actions для GitHub Pages",
+        "- сборка через `uv`",
+        "строгая проверка `mkdocs build --strict`",
+        "деплой в Pages из ветки",
+        "локальные проверки и убедитесь",
+        "Когда write credentials настроены",
+        "ветка-триггер для GitHub Pages",
+        "## 发布\n",
+        "GitHub Actions 工作流：",
+        "使用 `uv` 构建",
+        "严格执行 `mkdocs build --strict`",
+        "分支部署到 Pages",
+        "运行本地检查，并确认",
+        "配置好写入凭据后",
+        "触发分支。",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_three_canonical_case_routes() -> None:
     required_markers = (
         "Canonical case routes",
