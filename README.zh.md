@@ -158,7 +158,7 @@ git push origin HEAD:docs-prod
 ## 分支模型（branch model）
 
 - `main` 是开发分支（development branch）和事实来源（source of truth）
-- `docs-prod` 承载 GitHub Pages 的发布分支（publishing branch）
+- `docs-prod` 承载 GitHub Pages 站点（GitHub Pages site）的发布分支（publishing branch）
 
 ## 技术栈（stack）
 
