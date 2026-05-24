@@ -6572,6 +6572,36 @@ def test_multilingual_reference_support_triage_artifact_route_is_localized() -> 
         assert marker not in chinese_text
 
 
+def test_multilingual_reference_practice_links_are_localized() -> None:
+    russian_text = _read("docs/reference.md")
+    chinese_text = _read("docs/reference.zh.md")
+
+    assert "постмортемом (postmortem)" in russian_text
+    assert "реестру агентов (agent registry)" in russian_text
+    assert "операциям инвентаря (inventory operations)" in russian_text
+    assert "Шаблон постмортема (postmortem)" in russian_text
+    assert "многоагентных систем (multi-agent systems)" in russian_text
+
+    assert "智能体注册表（agent registry）" in chinese_text
+    assert "清单运维（inventory operations）" in chinese_text
+    assert "事后复盘（postmortem）模板" in chinese_text
+    assert "多智能体（multi-agent）可靠性" in chinese_text
+
+    forbidden_markers = (
+        "связи с postmortem",
+        "по registry агентов и inventory operations",
+        "Шаблон postmortem",
+        "multi-agent систем",
+        "智能体注册表与清单运维手册",
+        "智能体系统事后复盘模板",
+        "多智能体可靠性",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_multilingual_reference_safe_agent_schema_spine_is_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
