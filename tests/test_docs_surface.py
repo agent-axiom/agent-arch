@@ -6427,6 +6427,10 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "рискованные действия (risky actions)" in russian_text
     assert "инструментов (tools)" in russian_text
     assert "слой политик (policy layer)" in russian_text
+    assert "управляемое исполнение (controlled execution)" in russian_text
+    assert "наблюдаемость (observability)" in russian_text
+    assert "оценка качества (quality assessment)" in russian_text
+    assert "дисциплина жизненного цикла (lifecycle discipline)" in russian_text
     assert "агентные функции (agent features)" in russian_text
     assert "общая среда исполнения (runtime)" in russian_text
     assert "границы доверия (trust boundaries)" in russian_text
@@ -6439,6 +6443,10 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "高风险动作（risky actions）" in chinese_text
     assert "工具（tools）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
+    assert "受控执行（controlled execution）" in chinese_text
+    assert "可观测性（observability）" in chinese_text
+    assert "质量评估（quality assessment）" in chinese_text
+    assert "生命周期纪律（lifecycle discipline）" in chinese_text
     assert "智能体功能（agent features）" in chinese_text
     assert "共享运行时（runtime）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
@@ -6452,6 +6460,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "появляются risky actions",
         "нескольких tools",
         "Нужны явные границы доверия, policy layer",
+        "управляемое исполнение, наблюдаемость, оценка качества",
         "строить agent features",
         "общий runtime, policy layer, approvals",
         "важны trust boundaries, risky execution paths",
@@ -6463,6 +6472,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "承受生产现实的智能体系统",
         "高风险动作、记忆",
         "几个工具就不够",
+        "受控执行、可观测性、质量判断",
         "共享运行时、策略层、审批",
         "信任边界、高风险执行路径",
         "运行级可观测性与证据",
