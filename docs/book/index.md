@@ -15,7 +15,7 @@
 - прослеживать один управляемый запуск (run) через политику (policy), выполнение (execution), доказательства (evidence), подтверждение (approval), раскатку (rollout) и управление жизненным циклом (lifecycle control);
 - рассматривать память (memory), оценки (evals), происхождение данных (provenance), вывод из эксплуатации (retirement) и ответственность оператора (operator accountability) как единую рабочую модель.
 
-!!! example "Сквозной кейс поддержки"
+!!! example "Сквозной кейс поддержки (support case throughline)"
     Один из способов читать книгу — следить за кейсом триажа поддержки (support-triage): от поиска (retrieval) и выполнения инструментов (tool execution) до восстановления после дубля тикета (duplicate-ticket recovery), трасс (traces), SLO, шлюзов оценок (eval gates), владения (ownership), эталонного runtime (reference runtime), политик (policy), раскатки (rollout), ADLC, заверения (assurance), происхождения данных (provenance), вывода из эксплуатации (retirement), контролей несоответствия (misalignment controls), телеметрии (telemetry) и реестра (registry). Это превращает главы из набора тем в одну проверяемую историю о том, как инцидент становится платформенным контрактом.
 
 !!! note "Каноническая карта сценариев (Canonical case map)"

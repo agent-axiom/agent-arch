@@ -5769,12 +5769,14 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
+    assert "Сквозной кейс поддержки (support case throughline)" in russian_text
     assert "триажа поддержки (support-triage)" in russian_text
     assert "поиска (retrieval)" in russian_text
     assert "выполнения инструментов (tool execution)" in russian_text
     assert "восстановления после дубля тикета (duplicate-ticket recovery)" in russian_text
     assert "контролей несоответствия (misalignment controls)" in russian_text
 
+    assert "贯穿的支持案例（support case throughline）" in chinese_text
     assert "支持分诊（support-triage）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "工具执行（tool execution）" in chinese_text
@@ -5782,10 +5784,12 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
     assert "失配控制（misalignment controls）" in chinese_text
 
     forbidden_markers = (
+        'example "Сквозной кейс поддержки"',
         "следить за кейсом support-triage",
         "от retrieval и tool execution",
         "duplicate-ticket recovery, traces",
         "misalignment controls, telemetry",
+        'example "贯穿的支持案例"',
         "跟随 support-triage 案例",
         "重复工单恢复、traces",
         "失配控制、telemetry",
