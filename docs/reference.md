@@ -42,7 +42,7 @@
 - [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
 - [Схема набора политик и контракта подтверждения](appendix/policy-bundle-schema.md)
 - [Схема запроса на подтверждение и записи о решении](appendix/approval-schema.md)
-- [Схема записи об инциденте и связи с postmortem](appendix/incident-record-schema.md)
+- [Схема записи об инциденте и связи с постмортемом (postmortem)](appendix/incident-record-schema.md)
 - [Схема проверки изменений и шлюза раскатки](appendix/change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](appendix/lifecycle-artifact-schema.md)
 - [Схема записей памяти и контракта извлечения](appendix/memory-retrieval-schema.md)
@@ -56,8 +56,8 @@
 - [Практические кейсы](appendix/case-studies.md)
 - [Шаблоны политик и проверочные списки по кейсам](appendix/policy-templates.md)
 - [Плейбук реагирования на инциденты в агентных системах](appendix/incident-response-playbook.md)
-- [Практическое руководство по registry агентов и inventory operations](appendix/registry-operations-handbook.md)
-- [Шаблон postmortem для агентных систем](appendix/postmortem-template.md)
+- [Практическое руководство по реестру агентов (agent registry) и операциям инвентаря (inventory operations)](appendix/registry-operations-handbook.md)
+- [Шаблон постмортема (postmortem) для агентных систем](appendix/postmortem-template.md)
 
 ## Быстрые маршруты по темам
 
@@ -73,7 +73,7 @@
 
 - [С чего начать](start-here.md)
 - [План книги](book/plan.md)
-- [Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем](appendix/research-frontier.md)
+- [Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем (multi-agent systems)](appendix/research-frontier.md)
 - [Источники](appendix/sources.md)
 
 Самое простое правило такое:
