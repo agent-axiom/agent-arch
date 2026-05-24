@@ -6153,7 +6153,13 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "телеметрия (telemetry)" in russian_text
     assert "подтверждения (approvals)" in russian_text
     assert "проверки раскатки (rollout checks)" in russian_text
+    assert "артефакты жизненного цикла (lifecycle artifacts)" in russian_text
+    assert "записей изменений (change records)" in russian_text
+    assert "пакетов артефактов (artifact bundles)" in russian_text
+    assert "планов вывода из эксплуатации (retirement plans)" in russian_text
     assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
+    assert "доказательства ревью песочницы (sandbox review evidence)" in russian_text
+    assert "инспекции жизненного цикла (lifecycle inspection)" in russian_text
     assert "операционного скелета (operational skeleton)" in russian_text
     assert "концептуальный текст (conceptual prose)" in russian_text
     assert "исполняемые эталонные артефакты (reference assets)" in russian_text
@@ -6170,7 +6176,13 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "遥测（telemetry）" in chinese_text
     assert "审批（approvals）" in chinese_text
     assert "发布检查（rollout checks）" in chinese_text
+    assert "生命周期工件（lifecycle artifacts）" in chinese_text
+    assert "变更记录（change records）" in chinese_text
+    assert "工件包（artifact bundles）" in chinese_text
+    assert "退役计划（retirement plans）" in chinese_text
     assert "沙箱配置契约（sandbox profile contract）" in chinese_text
+    assert "沙箱审查证据（sandbox review evidence）" in chinese_text
+    assert "生命周期检查（lifecycle inspection）" in chinese_text
     assert "运行骨架（operational skeleton）" in chinese_text
     assert "概念性说明（conceptual prose）" in chinese_text
     assert "可执行的参考资产（reference assets）" in chinese_text
@@ -6192,7 +6204,11 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "记忆路径、遥测、审批",
         "approvals и rollout checks",
         "lifecycle-артефакты для change records",
+        "артефакты жизненного цикла для записей изменений",
+        "生命周期工件，用于变更记录",
         "sandbox profile contract и sandbox review evidence",
+        "контракт профиля песочницы и доказательства ревью песочницы",
+        "沙箱配置契约与沙箱审查证据",
         "для operational skeleton",
         "рабочие эталонные артефакты (assets)",
         "lifecycle inspection 中可见",
