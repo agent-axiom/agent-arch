@@ -5996,11 +5996,17 @@ def test_multilingual_readme_vendor_neutral_term_is_localized() -> None:
     chinese_text = _read("README.zh.md")
 
     assert "Нейтральная к поставщикам архитектура (vendor-neutral architecture)" in russian_text
+    assert "фреймворк (framework)" in russian_text
+    assert "провайдера моделей (model provider)" in russian_text
     assert "厂商中立架构（vendor-neutral architecture）" in chinese_text
+    assert "框架（framework）" in chinese_text
+    assert "模型厂商（model provider）" in chinese_text
 
     forbidden_markers = (
         "Vendor-neutral архитектура",
+        "любой конкретный фреймворк или провайдера моделей",
         "面向原则，而非单一厂商",
+        "具体框架和模型厂商",
     )
 
     for marker in forbidden_markers:

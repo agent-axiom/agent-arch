@@ -35,7 +35,7 @@
 
 ## 为什么值得读
 
-- **面向原则的厂商中立架构（vendor-neutral architecture）。** 这本书关注的是能跨越具体框架和模型厂商长期成立的架构原则与运行模型。
+- **面向原则的厂商中立架构（vendor-neutral architecture）。** 这本书关注的是能跨越具体框架（framework）和模型厂商（model provider）长期成立的架构原则与运行模型。
 - **关注生产现实（production reality），而不是智能体表演（agent theater）。** 它强调策略、审批、可观测性、评测（evals）与生命周期纪律。
 - **不仅有文字，也有可运行参考层。** 仓库里包含可执行的参考资产（assets），而不只是概念说明。
 - **一条贯穿全栈的案例线。** 支持分诊 / 重复工单线索（support-triage / duplicate-ticket thread）把书籍、参考模式（reference schemas）和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索（retrieval）与工具执行（tool execution）一路看到遥测（telemetry）、评测（evals）、发布（rollout）、生命周期（lifecycle）和注册表控制（registry control）。
