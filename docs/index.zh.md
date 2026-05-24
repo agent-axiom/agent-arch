@@ -2,7 +2,7 @@
 
 这本书写给那些需要的不是炫目的演示，而是能够承受生产现实（production reality）的智能体系统团队。
 
-它的中心论点很简单：**智能体需要平台，而不是魔法**。一旦系统拥有高风险动作（risky actions）、记忆、审批、发布（rollout）和长期运维尾部，单靠模型加几个工具（tools）就不够了。你需要明确的信任边界、策略层（policy layer）、受控执行、可观测性、质量判断与生命周期纪律。
+它的中心论点很简单：**智能体需要平台，而不是魔法**。一旦系统拥有高风险动作（risky actions）、记忆、审批、发布（rollout）和长期运维尾部，单靠模型加几个工具（tools）就不够了。你需要明确的信任边界、策略层（policy layer）、受控执行（controlled execution）、可观测性（observability）、质量评估（quality assessment）与生命周期纪律（lifecycle discipline）。
 
 构建智能体很枯燥，但结果令人震撼：团队得到的不是一次性的炫技，而是一个可以约束、观察、发布并持续改进的系统，不必靠猜。
 
