@@ -9,7 +9,7 @@
 
 一本关于安全、可治理、生产就绪架构（production-ready architecture）的 AI 智能体实用书籍与文档站点。
 
-这个项目面向那些不想只做演示型“智能体魔法”，而是想构建在真实用户、真实工具和真实运维条件下依然可控、安全、稳定运行的智能体系统的人。
+这个项目面向那些不想只做演示型“智能体魔法”，而是想构建在真实用户（real users）、真实工具（real tools）和真实运维（real operations）条件下依然可控且安全的智能体系统（controlled and safe agent systems）的人。
 
 ![Agent Architecture Book Preview](docs/assets/images/readme.png)
 

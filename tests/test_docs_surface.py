@@ -5979,6 +5979,13 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     chinese_text = _read("README.zh.md")
 
     assert "готовой к production архитектуре (production-ready architecture)" in russian_text
+    assert (
+        "контролируемые и безопасные агентные системы "
+        "(controlled and safe agent systems)"
+    ) in russian_text
+    assert "реальными пользователями (real users)" in russian_text
+    assert "реальными инструментами (real tools)" in russian_text
+    assert "реальной эксплуатацией (real operations)" in russian_text
     assert "промптинг (prompting)" in russian_text
     assert "границы доверия (trust boundaries)" in russian_text
     assert "слой политик (policy layer)" in russian_text
@@ -5987,6 +5994,10 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "контроль раскатки (rollout control)" in russian_text
     assert "управление жизненным циклом (lifecycle governance)" in russian_text
     assert "生产就绪架构（production-ready architecture）" in chinese_text
+    assert "真实用户（real users）" in chinese_text
+    assert "真实工具（real tools）" in chinese_text
+    assert "真实运维（real operations）" in chinese_text
+    assert "可控且安全的智能体系统（controlled and safe agent systems）" in chinese_text
     assert "提示词技巧（prompting）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
     assert "策略执行（policy enforcement）" in chinese_text
@@ -5997,6 +6008,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
 
     forbidden_markers = (
         "готовой к production архитектуре AI-агентов",
+        "контролируемые и безопасные агентные системы, которые выдерживают контакт",
+        "реальными пользователями, реальными инструментами",
+        "реальной эксплуатацией.",
         "удачный prompting",
         "явные границы доверия\n",
         "слой политик и подтверждений",
@@ -6004,6 +6018,8 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "наблюдаемость и оценки",
         "контроль раскатки и управление жизненным циклом",
         "可用于生产环境的 AI 智能体架构",
+        "真实用户、真实工具和真实运维条件",
+        "可控、安全、稳定运行的智能体系统",
         "提示词技巧和工具调用",
         "明确的信任边界\n",
         "策略执行与审批机制",
