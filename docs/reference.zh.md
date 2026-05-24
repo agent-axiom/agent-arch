@@ -36,7 +36,7 @@
 !!! note "安全智能体模式主线（Safe-agent schema spine）"
     如果需要安全智能体架构（safe-agent architecture）的短路线，可以把 [追踪模式（trace schema）](appendix/trace-schema.zh.md)、[评测模式（eval schema）](appendix/eval-schema.zh.md) 与 [记忆/检索模式（memory/retrieval schema）](appendix/memory-retrieval-schema.zh.md) 放在一起看。它们现在连接了 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）。
 
-## 模式页与契约页
+## 模式页与契约页（schemas and contract pages）
 
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
 - [评测数据集 Schema 与打分契约](appendix/eval-schema.zh.md)
@@ -50,7 +50,7 @@
 - [智能体系统的记忆评测模式](appendix/memory-eval-patterns.zh.md)
 - [智能体系统的工具失败恢复模式](appendix/tool-failure-recovery.zh.md)
 
-## 实践页面
+## 实践页面（practice pages）
 
 - [参考包](appendix/reference-package.zh.md)
 - [案例研究](appendix/case-studies.zh.md)
@@ -59,9 +59,9 @@
 - [智能体注册表（agent registry）与清单运维（inventory operations）手册](appendix/registry-operations-handbook.zh.md)
 - [智能体系统事后复盘（postmortem）模板](appendix/postmortem-template.zh.md)
 
-## 按主题快速进入
+## 按主题快速进入（quick topic routes）
 
-如果你不需要整个参考层（reference layer），只想快速进入一个具体问题，可以直接走这些短路线：
+如果你不需要整个参考层（reference layer），只想通过短入口（short entry）进入一个具体问题（specific question），可以直接走这些短路线：
 
 - 工具目录设计、语义化工具过滤（semantic tool filtering）、读/写分类法（read/write taxonomy）：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 - MCP 主机/客户端/服务器角色（MCP host/client/server）、能力传输（capability transport）、沙箱边界（sandbox boundary）：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
@@ -69,7 +69,7 @@
 - 延迟预算（latency budget）、快路径/慢路径、路由管线：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
 - 以 LLM 作为评审器（LLM-as-a-judge）、校准与评审器/人类一致性（judge-human agreement）：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 
-## 继续阅读
+## 继续阅读（further reading）
 
 - [从这里开始](start-here.zh.md)
 - [全书计划](book/plan.zh.md)
