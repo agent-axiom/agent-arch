@@ -99,15 +99,15 @@ uv run mkdocs build --strict
 
 - [参考运行时包（runtime reference package）](docs/appendix/reference-package.zh.md)
 
-## 可选研究依赖
+## 可选研究依赖（optional research dependencies）
 
-如果你需要 notebook 或数据分析工具：
+如果你需要笔记本（notebooks）或数据分析工具（data analysis tools）：
 
 ```bash
 uv sync --group research
 ```
 
-`research` 组已包含 `marimo` 与 `polars`。
+研究组（research group）已包含 `marimo` 与 `polars`。
 
 ## 发布
 
