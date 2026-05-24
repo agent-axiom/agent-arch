@@ -5954,6 +5954,37 @@ def test_readmes_surface_safe_agent_schema_spine() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_readme_safe_agent_schema_spine_is_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Сквозная цепочка схем безопасного агента (Safe-agent schema spine)" in russian_text
+    assert "схема трасс (trace schema)" in russian_text
+    assert "схема оценок (eval schema)" in russian_text
+    assert "модель угроз MCP (MCP threat model)" in russian_text
+    assert "единые доказательства угроз агенту (unified agent threat evidence)" in russian_text
+
+    assert "安全智能体模式主线（Safe-agent schema spine）" in chinese_text
+    assert "追踪模式（trace schema）" in chinese_text
+    assert "评测模式（eval schema）" in chinese_text
+    assert "MCP 威胁模型（MCP threat model）" in chinese_text
+    assert "统一智能体威胁证据（unified agent threat evidence）" in chinese_text
+
+    forbidden_markers = (
+        "- Safe-agent schema spine:",
+        "trace schema](docs/appendix/trace-schema.md), [eval schema",
+        "связывают MCP threat model",
+        "verifier verdict record, governance action record",
+        "- Safe-agent schema spine：",
+        "连接 MCP threat model",
+        "verifier verdict record、governance action record",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_three_canonical_case_routes() -> None:
     required_markers = (
         "Canonical case routes",
