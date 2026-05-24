@@ -5847,6 +5847,38 @@ def test_homepage_surfaces_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_homepage_canonical_case_map_is_localized() -> None:
+    russian_text = _read("docs/index.md")
+    chinese_text = _read("docs/index.zh.md")
+
+    assert "Каноническая карта сценариев" in russian_text
+    assert "канонических сценария (canonical cases)" in russian_text
+    assert "записывающие возможности (write capabilities)" in russian_text
+    assert "поиск (retrieval)" in russian_text
+    assert "трассы (traces)" in russian_text
+
+    assert "规范案例地图" in chinese_text
+    assert "规范案例（canonical cases）" in chinese_text
+    assert "写入能力（write capabilities）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "追踪（traces）" in chinese_text
+
+    forbidden_markers = (
+        "три canonical cases",
+        "проверяет write capabilities",
+        "проверяет retrieval, memory",
+        "проверяет traces, escalation",
+        "三个 canonical cases",
+        "检查 write capabilities",
+        "检查 retrieval、memory",
+        "检查 traces、escalation",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
