@@ -5947,6 +5947,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
     assert "раскатки (rollout)" in russian_text
     assert "жизненного цикла (lifecycle)" in russian_text
     assert "управления реестром (registry control)" in russian_text
+    assert "проверки покрытия (coverage check)" in russian_text
     assert "Триаж поддержки (Support triage)" in russian_text
     assert "записывающие возможности (write capabilities)" in russian_text
     assert "происхождение знаний (knowledge provenance)" in russian_text
@@ -5962,6 +5963,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
     assert "发布（rollout）" in chinese_text
     assert "生命周期（lifecycle）" in chinese_text
     assert "注册表控制（registry control）" in chinese_text
+    assert "覆盖检查（coverage check）" in chinese_text
     assert "支持分诊（Support triage）" in chinese_text
     assert "写入能力（write capabilities）" in chinese_text
     assert "知识来源（knowledge provenance）" in chinese_text
@@ -5972,6 +5974,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
         "Один сквозной кейс по всему стеку.",
         "Support-triage / duplicate-ticket thread",
         "эталонные схемы и `agent_runtime_ref`",
+        "Три канонических сценария (canonical cases) для покрытия",
         "Три canonical cases",
         "Support triage покрывает write capabilities",
         "Internal knowledge assistant — retrieval",
@@ -5979,6 +5982,7 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
         "一条贯穿全栈的案例线。",
         "support-triage / duplicate-ticket thread 把",
         "参考 Schema 和 `agent_runtime_ref`",
+        "三个规范案例（canonical cases）用来检查覆盖面",
         "三个 canonical cases",
         "Support triage 覆盖 write capabilities",
         "Internal knowledge assistant 覆盖 retrieval",
