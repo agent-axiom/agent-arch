@@ -6401,6 +6401,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     russian_text = _read("docs/index.md")
     chinese_text = _read("docs/index.zh.md")
 
+    assert "производственную реальность (production reality)" in russian_text
     assert "рискованные действия (risky actions)" in russian_text
     assert "инструментов (tools)" in russian_text
     assert "слой политик (policy layer)" in russian_text
@@ -6412,6 +6413,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "наблюдаемостью уровня запуска (run-level observability)" in russian_text
     assert "управлением жизненным циклом (lifecycle governance)" in russian_text
 
+    assert "生产现实（production reality）" in chinese_text
     assert "高风险动作（risky actions）" in chinese_text
     assert "工具（tools）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
@@ -6424,6 +6426,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "生命周期治理（lifecycle governance）" in chinese_text
 
     forbidden_markers = (
+        "реальность production",
         "появляются risky actions",
         "нескольких tools",
         "Нужны явные границы доверия, policy layer",
@@ -6435,6 +6438,7 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "с approvals для рискованных путей",
         "run-level observability и evidence",
         "rollout discipline, ownership и lifecycle governance",
+        "承受生产现实的智能体系统",
         "高风险动作、记忆",
         "几个工具就不够",
         "共享运行时、策略层、审批",
