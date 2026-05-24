@@ -6473,6 +6473,7 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
     assert "ветка разработки (development branch)" in russian_text
     assert "источник правды (source of truth)" in russian_text
     assert "ветка публикации (publishing branch)" in russian_text
+    assert "GitHub Pages (GitHub Pages site)" in russian_text
     assert "Стек (stack)" in russian_text
     assert "окружения (environment)" in russian_text
     assert "зависимостей (dependencies)" in russian_text
@@ -6486,6 +6487,7 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
     assert "开发分支（development branch）" in chinese_text
     assert "事实来源（source of truth）" in chinese_text
     assert "发布分支（publishing branch）" in chinese_text
+    assert "GitHub Pages 站点（GitHub Pages site）" in chinese_text
     assert "技术栈（stack）" in chinese_text
     assert "环境（environment）" in chinese_text
     assert "依赖管理（dependencies）" in chinese_text
@@ -6499,6 +6501,7 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
         "## Модель веток\n",
         "основная ветка разработки и источник правды",
         "ветка публикации для GitHub Pages",
+        "GitHub Pages\n",
         "## Стек\n",
         "для окружения и зависимостей",
         "для линтинга",
@@ -6509,6 +6512,7 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
         "## 分支模型\n",
         "事实来源开发分支",
         "使用的发布分支",
+        "承载 GitHub Pages 的发布分支",
         "## 技术栈\n",
         "用于环境和依赖管理",
         "用于 lint",

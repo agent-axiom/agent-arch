@@ -158,7 +158,7 @@ git push origin HEAD:docs-prod
 ## Модель веток (branch model)
 
 - `main` — основная ветка разработки (development branch) и источник правды (source of truth)
-- `docs-prod` — ветка публикации (publishing branch) для GitHub Pages
+- `docs-prod` — ветка публикации (publishing branch) для GitHub Pages (GitHub Pages site)
 
 ## Стек (stack)
 
