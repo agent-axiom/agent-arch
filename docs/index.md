@@ -41,7 +41,7 @@
 
 Если нужен короткий вход (short entry), начни с [главы 1](book/part-i/chapter-1.md). Если нужен маршрут под задачу и роль (task and role route), открой [страницу старта (Start Here)](start-here.md). Если важнее структура и статус разделов (structure and section status), смотри [план книги (book plan)](book/plan.md). Если нужны переиспользуемые артефакты (reusable artifacts), схемы (schemas) и контракты (contracts), переходи в [справочный слой (reference layer)](reference.md).
 
-Самый короткий путь через книгу выглядит так:
+Самый короткий путь (shortest path) через книгу (through the book) выглядит так:
 
 1. [Глава 1. Почему агенту нужна платформа, а не магия](book/part-i/chapter-1.md)
 2. [Глава 3. Контур безопасности и границы доверия](book/part-ii/chapter-3.md)

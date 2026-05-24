@@ -7108,6 +7108,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "страницу старта (Start Here)" in russian_text
     assert "структура и статус разделов (structure and section status)" in russian_text
     assert "план книги (book plan)" in russian_text
+    assert "Самый короткий путь (shortest path)" in russian_text
+    assert "через книгу (through the book)" in russian_text
     assert "переиспользуемые артефакты (reusable artifacts)" in russian_text
     assert "схемы (schemas)" in russian_text
     assert "контракты (contracts)" in russian_text
@@ -7132,6 +7134,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "从这里开始（Start Here）" in chinese_text
     assert "结构与章节状态（structure and section status）" in chinese_text
     assert "全书计划（book plan）" in chinese_text
+    assert "穿过全书（through the book）" in chinese_text
+    assert "最短路径（shortest path）" in chinese_text
     assert "可复用工件（reusable artifacts）" in chinese_text
     assert "模式（schemas）" in chinese_text
     assert "契约（contracts）" in chinese_text
@@ -7153,6 +7157,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "Если нужен короткий вход, начни",
         "маршрут под задачу и роль, открой",
         "важнее структура и статус разделов, смотри",
+        "Самый короткий путь через книгу выглядит так",
         "生命周期治理的八个部分",
         "编辑清理的 `en`",
         "覆盖追踪、评测、策略包、审批",
@@ -7166,6 +7171,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "如果你只想要最短入口",
         "按角色或任务选择路线",
         "更关心结构与状态",
+        "穿过全书的最短实用途径",
         "可复用工件、Schema 和契约",
         "进入[参考层](reference.zh.md)",
     )
