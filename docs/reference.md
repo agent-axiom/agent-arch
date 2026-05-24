@@ -33,8 +33,8 @@
 !!! note "Канонические артефакты сценариев (Canonical case artifacts)"
     Три канонических сценария (canonical cases) дают разные входы в справочный слой. **Триаж обращений поддержки (Support triage)** опирается на запись подтверждения (approval record), пакет политик (policy bundle), схему трасс (trace schema) и доказательства восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** требует контракт памяти/поиска (memory/retrieval contract), проверки свежести (freshness checks), контроль доступа (access control) и происхождение знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** связывает запись инцидента (incident record), доказательства эскалации (escalation evidence), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership) и обучение после инцидента (post-incident learning).
 
-!!! note "Safe-agent schema spine"
-    Если нужен короткий маршрут по safe-agent architecture, держи рядом [trace schema](appendix/trace-schema.md), [eval schema](appendix/eval-schema.md) и [memory/retrieval schema](appendix/memory-retrieval-schema.md). В них теперь связаны MCP threat model, A2A handoff trust contract, verifier verdict record, governance action record, memory poisoning review fields и unified agent threat evidence.
+!!! note "Цепочка схем безопасного агента (Safe-agent schema spine)"
+    Если нужен короткий маршрут по архитектуре безопасного агента (safe-agent architecture), держи рядом [схему трасс (trace schema)](appendix/trace-schema.md), [схему оценок (eval schema)](appendix/eval-schema.md) и [схему памяти/поиска (memory/retrieval schema)](appendix/memory-retrieval-schema.md). В них теперь связаны модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
 ## Схемы и контрактные страницы
 

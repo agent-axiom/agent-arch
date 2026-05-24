@@ -33,8 +33,8 @@
 !!! note "规范案例工件（Canonical case artifacts）"
     三个规范案例（canonical cases）会从不同工件集合进入参考层。**支持分流（Support triage）** 依赖审批记录（approval record）、策略包（policy bundle）、追踪模式（trace schema）和重复工单恢复证据（duplicate-ticket recovery evidence）。**内部知识助手（Internal knowledge assistant）** 需要记忆/检索契约（memory/retrieval contract）、新鲜度检查（freshness checks）、访问控制（access control）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 连接事件记录（incident record）、升级证据（escalation evidence）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
-!!! note "Safe-agent schema spine"
-    如果需要 safe-agent architecture 的短路线，可以把 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 与 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 放在一起看。它们现在连接了 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
+!!! note "安全智能体模式主线（Safe-agent schema spine）"
+    如果需要安全智能体架构（safe-agent architecture）的短路线，可以把 [追踪模式（trace schema）](appendix/trace-schema.zh.md)、[评测模式（eval schema）](appendix/eval-schema.zh.md) 与 [记忆/检索模式（memory/retrieval schema）](appendix/memory-retrieval-schema.zh.md) 放在一起看。它们现在连接了 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）。
 
 ## 模式页与契约页
 
