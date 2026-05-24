@@ -17,11 +17,11 @@
 
 大多数智能体教程都在优化“快速做出演示”。但真实系统需要的不只是提示词技巧（prompting）和工具调用。它们还需要：
 
-- 明确的信任边界
-- 策略执行与审批机制
-- 记忆治理与约束
-- 可观测性与评测体系
-- 发布控制与生命周期管理
+- 明确的信任边界（trust boundaries）
+- 策略执行（policy enforcement）与审批机制（approvals）
+- 记忆治理与约束（memory governance）
+- 可观测性（observability）与评测体系（evals）
+- 发布控制（rollout control）与生命周期治理（lifecycle governance）
 
 这个仓库的目标，是把这一整套运行模型完整地讲清楚。
 
