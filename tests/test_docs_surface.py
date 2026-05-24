@@ -6241,6 +6241,57 @@ def test_multilingual_homepage_canonical_case_map_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_homepage_platform_terms_are_localized() -> None:
+    russian_text = _read("docs/index.md")
+    chinese_text = _read("docs/index.zh.md")
+
+    assert "рискованные действия (risky actions)" in russian_text
+    assert "инструментов (tools)" in russian_text
+    assert "слой политик (policy layer)" in russian_text
+    assert "агентные функции (agent features)" in russian_text
+    assert "общая среда исполнения (runtime)" in russian_text
+    assert "границы доверия (trust boundaries)" in russian_text
+    assert "рискованные пути исполнения (risky execution paths)" in russian_text
+    assert "поверхности злоупотреблений (abuse surfaces)" in russian_text
+    assert "наблюдаемостью уровня запуска (run-level observability)" in russian_text
+    assert "управлением жизненным циклом (lifecycle governance)" in russian_text
+
+    assert "高风险动作（risky actions）" in chinese_text
+    assert "工具（tools）" in chinese_text
+    assert "策略层（policy layer）" in chinese_text
+    assert "智能体功能（agent features）" in chinese_text
+    assert "共享运行时（runtime）" in chinese_text
+    assert "信任边界（trust boundaries）" in chinese_text
+    assert "高风险执行路径（risky execution paths）" in chinese_text
+    assert "滥用表面（abuse surfaces）" in chinese_text
+    assert "运行级可观测性（run-level observability）" in chinese_text
+    assert "生命周期治理（lifecycle governance）" in chinese_text
+
+    forbidden_markers = (
+        "появляются risky actions",
+        "нескольких tools",
+        "Нужны явные границы доверия, policy layer",
+        "строить agent features",
+        "общий runtime, policy layer, approvals",
+        "важны trust boundaries, risky execution paths",
+        "явными trust и action boundaries",
+        "с execution под контролем",
+        "с approvals для рискованных путей",
+        "run-level observability и evidence",
+        "rollout discipline, ownership и lifecycle governance",
+        "高风险动作、记忆",
+        "几个工具就不够",
+        "共享运行时、策略层、审批",
+        "信任边界、高风险执行路径",
+        "运行级可观测性与证据",
+        "发布纪律、负责人机制",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
