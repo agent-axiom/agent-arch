@@ -63,7 +63,7 @@
 
 如果你不需要整个参考层，只想快速进入一个具体问题，可以直接走这些短路线：
 
-- 工具目录设计、语义化工具过滤、读/写分类法：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
+- 工具目录设计、语义化工具过滤（semantic tool filtering）、读/写分类法（read/write taxonomy）：[第 8 章：执行模型与工具目录](book/part-iv/chapter-8.zh.md)
 - MCP 主机/客户端/服务器角色、能力传输、沙箱边界：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 - 语义鸿沟（semantic gap）、HyDE、RAG 与训练的取舍（RAG vs training）：[第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - 延迟预算（latency budget）、快路径/慢路径、路由管线：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
