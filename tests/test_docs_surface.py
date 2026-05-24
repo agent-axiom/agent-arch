@@ -6306,12 +6306,28 @@ def test_multilingual_start_here_support_case_example_is_localized() -> None:
     assert "поиска (retrieval)" in russian_text
     assert "безопасного выполнения инструментов (safe tool execution)" in russian_text
     assert "восстановление после дубля тикета (duplicate-ticket recovery)" in russian_text
+    assert "шлюзы оценок (eval gates)" in russian_text
+    assert "раскатки (rollout)" in russian_text
+    assert "заверения (assurance)" in russian_text
+    assert "происхождения данных (provenance)" in russian_text
+    assert "вывода из эксплуатации (retirement)" in russian_text
+    assert "контролей несоответствия (misalignment controls)" in russian_text
+    assert "телеметрии (telemetry)" in russian_text
+    assert "реестра (registry)" in russian_text
     assert "платформенному контракту (incident-to-platform-contract path)" in russian_text
 
     assert "支持分诊（support-triage）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "安全工具执行（safe tool execution）" in chinese_text
     assert "重复工单恢复（duplicate-ticket recovery）" in chinese_text
+    assert "评测门（eval gates）" in chinese_text
+    assert "发布（rollout）" in chinese_text
+    assert "保障（assurance）" in chinese_text
+    assert "来源谱系（provenance）" in chinese_text
+    assert "退役（retirement）" in chinese_text
+    assert "失配控制（misalignment controls）" in chinese_text
+    assert "遥测（telemetry）" in chinese_text
+    assert "注册表（registry）" in chinese_text
     assert "从事故到平台契约的路径（incident-to-platform-contract path）" in chinese_text
 
     forbidden_markers = (
