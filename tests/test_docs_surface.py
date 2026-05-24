@@ -6792,6 +6792,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "чеклисты (checklists)" in russian_text
     assert "контрактные поверхности (contract surfaces)" in russian_text
     assert "справочный слой (reference layer)" in russian_text
+    assert "переиспользуемых инженерных материалов (reusable engineering materials)" in russian_text
+    assert "читательский путь (reading path)" in russian_text
+    assert "готовые артефакты (ready-to-use artifacts)" in russian_text
+    assert "прикладной инженерной форме (applied engineering form)" in russian_text
 
     assert "规范案例工件" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
@@ -6802,6 +6806,10 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "检查清单（checklists）" in chinese_text
     assert "契约表面（contract surfaces）" in chinese_text
     assert "参考层（reference layer）" in chinese_text
+    assert "可复用工程材料（reusable engineering materials）" in chinese_text
+    assert "阅读路径（reading path）" in chinese_text
+    assert "即用工件（ready-to-use artifacts）" in chinese_text
+    assert "工程形式（applied engineering form）" in chinese_text
 
     forbidden_markers = (
         "Три canonical cases",
@@ -6810,12 +6818,18 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "связывает incident record",
         "поддерживающие схемы, чеклисты и контрактные страницы",
         "не весь reference layer",
+        "переиспользуемых инженерных материалов,",
+        "готовые артефакты для своей команды",
+        "прикладной инженерной форме.",
         "三个 canonical cases",
         "依赖 approval record",
         "需要 memory/retrieval contract",
         "连接 incident record",
         "支撑性的 Schema、检查清单和契约表面",
         "不需要整个参考层，",
+        "可复用的工程材料来支撑",
+        "可复用的工程工件",
+        "更落地的工程材料",
     )
 
     for marker in forbidden_markers:
