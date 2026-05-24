@@ -58,7 +58,7 @@
 !!! note "安全智能体模式主线（Safe-agent schema spine）"
     如果需要一条简短的安全智能体架构（safe-agent architecture）路线，可以从 [追踪模式（trace schema）](appendix/trace-schema.zh.md)、[评测模式（eval schema）](appendix/eval-schema.zh.md) 和 [记忆/检索模式（memory/retrieval schema）](appendix/memory-retrieval-schema.zh.md) 开始。这条主线（spine）连接 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）。
 
-## 这里已经有什么
+## 这里已经有什么（what already exists）
 
 - 已发布的俄文核心原稿（core manuscript），覆盖从架构基础到生命周期治理（lifecycle governance）的八个部分。
 - 可用于阅读、但仍在进行编辑清理（editorial cleanup）的 `en` 与 `zh` 翻译层。
@@ -67,11 +67,11 @@
 - 实战案例、检查清单、策略模板与术语表。
 - 正在推进的书稿与公开站点表面编辑打磨（editorial pass）。
 
-## 这本书不打算成为什么
+## 这本书不打算成为什么（what the book is not）
 
 它不是某个框架（framework）的手册，不是提示技巧合集（prompt tricks），也不是 AI 市场巡礼（AI market overview）。本书站在具体 SDK 和平台文档（platform docs）之上，去回答更棘手的问题：智能体到底该被允许做什么，写入路径（write path）应该怎样受限，应该观察什么，变更应该怎样发布，系统上线后到底谁负责。
 
-## 接下来去哪里
+## 接下来去哪里（where to go next）
 
 <div class="button-stack" markdown="1">
 
