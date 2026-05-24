@@ -55,8 +55,8 @@
 !!! note "规范案例地图（Canonical case map）"
     阅读这条路线时，要同时保留三个规范案例（canonical cases）。**支持分流（Support triage）** 检查写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 检查检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
-!!! note "Safe-agent schema spine"
-    如果需要一条简短的 safe-agent architecture 路线，可以从 [trace schema](appendix/trace-schema.zh.md)、[eval schema](appendix/eval-schema.zh.md) 和 [memory/retrieval schema](appendix/memory-retrieval-schema.zh.md) 开始。这个 spine 连接 MCP threat model、A2A handoff trust contract、verifier verdict record、governance action record、memory poisoning review fields 和 unified agent threat evidence。
+!!! note "安全智能体模式主线（Safe-agent schema spine）"
+    如果需要一条简短的安全智能体架构（safe-agent architecture）路线，可以从 [追踪模式（trace schema）](appendix/trace-schema.zh.md)、[评测模式（eval schema）](appendix/eval-schema.zh.md) 和 [记忆/检索模式（memory/retrieval schema）](appendix/memory-retrieval-schema.zh.md) 开始。这条主线（spine）连接 MCP 威胁模型（MCP threat model）、A2A 移交信任契约（A2A handoff trust contract）、验证器裁决记录（verifier verdict record）、治理动作记录（governance action record）、记忆投毒审查字段（memory poisoning review fields）和统一智能体威胁证据（unified agent threat evidence）。
 
 ## 这里已经有什么
 

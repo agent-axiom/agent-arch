@@ -6314,6 +6314,49 @@ def test_homepage_surfaces_safe_agent_schema_spine() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_homepage_safe_agent_schema_spine_is_localized() -> None:
+    russian_text = _read("docs/index.md")
+    chinese_text = _read("docs/index.zh.md")
+
+    assert "Цепочка схем безопасного агента (Safe-agent schema spine)" in russian_text
+    assert "архитектуре безопасного агента (safe-agent architecture)" in russian_text
+    assert "схемы трасс (trace schema)" in russian_text
+    assert "схемы оценок (eval schema)" in russian_text
+    assert "схемы памяти/поиска (memory/retrieval schema)" in russian_text
+    assert "модель угроз MCP (MCP threat model)" in russian_text
+    assert "контракт доверия передачи A2A (A2A handoff trust contract)" in russian_text
+    assert "запись вердикта проверяющего (verifier verdict record)" in russian_text
+    assert "единые доказательства угроз агенту (unified agent threat evidence)" in russian_text
+
+    assert "安全智能体模式主线（Safe-agent schema spine）" in chinese_text
+    assert "安全智能体架构（safe-agent architecture）" in chinese_text
+    assert "追踪模式（trace schema）" in chinese_text
+    assert "评测模式（eval schema）" in chinese_text
+    assert "记忆/检索模式（memory/retrieval schema）" in chinese_text
+    assert "MCP 威胁模型（MCP threat model）" in chinese_text
+    assert "A2A 移交信任契约（A2A handoff trust contract）" in chinese_text
+    assert "验证器裁决记录（verifier verdict record）" in chinese_text
+    assert "统一智能体威胁证据（unified agent threat evidence）" in chinese_text
+
+    forbidden_markers = (
+        '!!! note "Safe-agent schema spine"',
+        "путь по safe-agent architecture",
+        "начни с [trace schema]",
+        "Этот spine связывает MCP threat model",
+        "A2A handoff trust contract, verifier verdict record",
+        "memory poisoning review fields и unified agent threat evidence",
+        "safe-agent architecture 路线",
+        "从 [trace schema]",
+        "这个 spine 连接 MCP threat model",
+        "A2A handoff trust contract、verifier verdict record",
+        "memory poisoning review fields 和 unified agent threat evidence",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_public_entry_safe_agent_schema_spine_links_are_clickable() -> None:
     expected_links_by_file = {
         "README.md": (
