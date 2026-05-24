@@ -5985,6 +5985,40 @@ def test_multilingual_readme_safe_agent_schema_spine_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "эталонная среда исполнения (runtime)" in russian_text
+    assert "утвержденный инвентарь (approved inventory)" in russian_text
+    assert "подтверждения (approvals)" in russian_text
+    assert "проверки раскатки (rollout checks)" in russian_text
+    assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
+    assert "операционного скелета (operational skeleton)" in russian_text
+
+    assert "参考运行时（runtime）" in chinese_text
+    assert "已批准清单（approved inventory）" in chinese_text
+    assert "审批（approvals）" in chinese_text
+    assert "发布检查（rollout checks）" in chinese_text
+    assert "沙箱配置契约（sandbox profile contract）" in chinese_text
+    assert "运行骨架（operational skeleton）" in chinese_text
+
+    forbidden_markers = (
+        "эталонный runtime",
+        "каталог возможностей и approved inventory",
+        "approvals и rollout checks",
+        "lifecycle-артефакты для change records",
+        "sandbox profile contract и sandbox review evidence",
+        "для operational skeleton",
+        "lifecycle inspection 中可见",
+        "用于 operational skeleton",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_start_here_surfaces_three_canonical_case_routes() -> None:
     required_markers = (
         "Canonical case routes",

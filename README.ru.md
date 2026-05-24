@@ -29,7 +29,7 @@
 
 - многоязычная книга по архитектуре безопасных AI-агентов
 - документационный сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
-- исполняемый эталонный runtime в `agent_runtime_ref/`
+- исполняемая эталонная среда исполнения (runtime) в `agent_runtime_ref/`
 - практические схемы, чеклисты и операционные артефакты
 - современный Python-first стек на базе `uv`
 
@@ -77,12 +77,12 @@ uv run mkdocs build --strict
 
 Это компактная кодовая опора для книги:
 
-- эталонный runtime и слой политик
-- каталог возможностей и approved inventory
-- память, телеметрия, approvals и rollout checks
-- lifecycle-артефакты для change records, artifact bundles и retirement plans
-- видимый sandbox profile contract и sandbox review evidence в lifecycle inspection
-- YAML-конфиги для operational skeleton
+- эталонная среда исполнения (runtime) и слой политик
+- каталог возможностей и утвержденный инвентарь (approved inventory)
+- память, телеметрия, подтверждения (approvals) и проверки раскатки (rollout checks)
+- артефакты жизненного цикла (lifecycle artifacts) для записей изменений (change records), пакетов артефактов (artifact bundles) и планов вывода из эксплуатации (retirement plans)
+- видимый контракт профиля песочницы (sandbox profile contract) и доказательства ревью песочницы (sandbox review evidence) в инспекции жизненного цикла (lifecycle inspection)
+- YAML-конфиги для операционного скелета (operational skeleton)
 
 Быстрые примеры:
 
