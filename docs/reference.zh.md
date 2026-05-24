@@ -27,8 +27,8 @@
 2. [速查表](appendix/cheat-sheets.zh.md)
 3. [参考包](appendix/reference-package.zh.md)
 
-!!! example "support-triage 工件路线"
-    如果你按 support-triage 案例来读这本书，可以把 traces、评测数据集、policy bundle、审批记录、事故记录、变更发布、生命周期工件和 registry operations 这些页面放在旁边。正是这些契约把重复工单事故从故事变成可审阅的工件集合。
+!!! example "支持分诊工件路线（support-triage）"
+    如果你按支持分诊（support-triage）案例来读这本书，可以把追踪（traces）、评测数据集（eval dataset）、策略包（policy bundle）、审批记录（approval record）、事故记录（incident record）、变更发布（change rollout）、生命周期工件（lifecycle artifacts）和注册表运维（registry operations）这些页面放在旁边。正是这些契约把重复工单事故（duplicate-ticket incident）从故事变成可审阅的工件集合。
 
 !!! note "规范案例工件（Canonical case artifacts）"
     三个规范案例（canonical cases）会从不同工件集合进入参考层。**支持分流（Support triage）** 依赖审批记录（approval record）、策略包（policy bundle）、追踪模式（trace schema）和重复工单恢复证据（duplicate-ticket recovery evidence）。**内部知识助手（Internal knowledge assistant）** 需要记忆/检索契约（memory/retrieval contract）、新鲜度检查（freshness checks）、访问控制（access control）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 连接事件记录（incident record）、升级证据（escalation evidence）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
