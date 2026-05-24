@@ -5727,6 +5727,37 @@ def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_book_index_support_case_example_is_localized() -> None:
+    russian_text = _read("docs/book/index.md")
+    chinese_text = _read("docs/book/index.zh.md")
+
+    assert "триажа поддержки (support-triage)" in russian_text
+    assert "поиска (retrieval)" in russian_text
+    assert "выполнения инструментов (tool execution)" in russian_text
+    assert "восстановления после дубля тикета (duplicate-ticket recovery)" in russian_text
+    assert "контролей несоответствия (misalignment controls)" in russian_text
+
+    assert "支持分诊（support-triage）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "工具执行（tool execution）" in chinese_text
+    assert "重复工单恢复（duplicate-ticket recovery）" in chinese_text
+    assert "失配控制（misalignment controls）" in chinese_text
+
+    forbidden_markers = (
+        "следить за кейсом support-triage",
+        "от retrieval и tool execution",
+        "duplicate-ticket recovery, traces",
+        "misalignment controls, telemetry",
+        "跟随 support-triage 案例",
+        "重复工单恢复、traces",
+        "失配控制、telemetry",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_case_studies_align_with_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case alignment",
