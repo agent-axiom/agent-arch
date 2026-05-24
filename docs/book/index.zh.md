@@ -21,9 +21,9 @@
 !!! note "规范案例地图（Canonical case map）"
     **支持分诊（Support triage）**仍然是写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）的主线。**内部知识助手（Internal knowledge assistant）**用来检查检索（retrieval）、记忆（memory）、租户边界（tenant boundaries）、新鲜度（freshness）和来源锚定（source grounding）没有在架构里消失。**事件协调（Incident coordination）**用来检查追踪（traces）、SLO、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事后学习（post-incident learning）。三个规范案例（canonical cases）合在一起，让本书不只是一条支持案例故事，而是一张不同控制表面（control surfaces）的地图。
 
-## 推荐阅读路径
+## 推荐阅读路径（recommended reading path）
 
-如果你想走一条最短但有效的路线，可以按这个顺序读：
+如果你想走最短有效路径（shortest useful path），可以按这个顺序读：
 
 1. [第一部分：基础](part-i/index.zh.md)
 2. [第二部分：安全边界](part-ii/index.zh.md)
@@ -34,16 +34,16 @@
 7. [第七部分：参考实现](part-vii/index.zh.md)
 8. [第八部分：智能体系统生命周期](part-viii/index.zh.md)
 
-## 稳定性捷径
+## 稳定性指南（stability guide）
 
-这本书可以粗分为两层：
+这本书可以粗分为两个实践层（practical layers）：
 
-- `稳定核心`：第一到第七部分，尤其是第 1 到 12 章以及第 18 章；
-- `快速变化层`：第 13 章、第八部分，以及偏研究型的附录页面。
+- `稳定核心`（stable core）：第一到第七部分，尤其是第 1 到 12 章以及第 18 章；
+- `快速变化层`（fast-moving layer）：第 13 章、第八部分，以及研究型附录页面（research appendix pages）。
 
-如果你是第一次阅读，建议先读稳定核心，再回来看变化更快的部分。
+如果你是第一次阅读，建议先读稳定核心（stable core），再回来看变化更快的层（fast-moving layer）。
 
-## 直接入口
+## 直接入口（direct entry points）
 
 - [从第一部分开始](part-i/index.zh.md)
 - [打开全书计划](plan.zh.md)
