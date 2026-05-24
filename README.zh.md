@@ -29,7 +29,7 @@
 
 - 一本关于安全 AI 智能体架构的多语言书籍
 - 一个基于 `MkDocs` 和 `Material for MkDocs` 的 GitHub Pages 文档站点
-- 位于 `agent_runtime_ref/` 的可运行参考运行时
+- 位于 `agent_runtime_ref/` 的可运行参考运行时（runtime）
 - 一组实用的模式、检查清单与运维工件
 - 一个基于 `uv` 的现代 Python-first 工具链
 
@@ -77,12 +77,12 @@ uv run mkdocs build --strict
 
 它为本书提供一个紧凑的参考运行时，包含：
 
-- 运行时与策略层
-- 能力目录与批准清单
-- 记忆路径、遥测、审批与发布检查
-- 面向生命周期的变更记录、工件包与退役计划
-- lifecycle inspection 中可见的 sandbox profile contract 与 sandbox review evidence
-- 用于 operational skeleton 的 YAML 配置
+- 参考运行时（runtime）与策略层
+- 能力目录与已批准清单（approved inventory）
+- 记忆路径、遥测、审批（approvals）与发布检查（rollout checks）
+- 生命周期工件（lifecycle artifacts），用于变更记录（change records）、工件包（artifact bundles）与退役计划（retirement plans）
+- 生命周期检查（lifecycle inspection）中可见的沙箱配置契约（sandbox profile contract）与沙箱审查证据（sandbox review evidence）
+- 用于运行骨架（operational skeleton）的 YAML 配置
 
 快速示例：
 
