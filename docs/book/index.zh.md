@@ -15,7 +15,7 @@
 - 追踪一次受治理的运行（run）如何穿过策略（policy）、执行（execution）、证据（evidence）、审批（approval）、发布（rollout）与生命周期控制（lifecycle control）；
 - 把记忆（memory）、评测（evals）、来源谱系（provenance）、退役（retirement）与操作员问责（operator accountability）看成同一个运行模型的一部分。
 
-!!! example "贯穿的支持案例"
+!!! example "贯穿的支持案例（support case throughline）"
     读这本书的一种方式，是一路跟随支持分诊（support-triage）案例：从检索（retrieval）与工具执行（tool execution），到重复工单恢复（duplicate-ticket recovery）、追踪（traces）、SLO、评测门（eval gates）、归属（ownership）、参考运行时（reference runtime）、策略（policy）、发布（rollout）、ADLC、保障（assurance）、来源谱系（provenance）、退役（retirement）、失配控制（misalignment controls）、遥测（telemetry）和注册表（registry）。这样，各章就不再只是主题集合，而是一条可审阅的故事线：一个事故如何变成平台契约。
 
 !!! note "规范案例地图（Canonical case map）"
