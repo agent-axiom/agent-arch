@@ -7922,6 +7922,42 @@ def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_why_this_book_case_note_is_localized() -> None:
+    russian_text = _read("docs/appendix/why-this-book.md")
+    chinese_text = _read("docs/appendix/why-this-book.zh.md")
+
+    assert "Канонические сценарии книги" in russian_text
+    assert "канонических сценариях (canonical cases)" in russian_text
+    assert "записывающие действия (write actions)" in russian_text
+    assert "поиск (retrieval)" in russian_text
+    assert "трассы (traces)" in russian_text
+    assert "до production incident" in russian_text
+
+    assert "规范书籍案例" in chinese_text
+    assert "规范案例（canonical cases）" in chinese_text
+    assert "写入动作（write actions）" in chinese_text
+    assert "检索（retrieval）" in chinese_text
+    assert "追踪（traces）" in chinese_text
+    assert "production incident 之前" in chinese_text
+
+    forbidden_markers = (
+        "трех canonical cases",
+        "почему write actions",
+        "важнее polished demo",
+        "почему retrieval, memory boundaries",
+        "почему traces, SLOs",
+        "三个 canonical cases",
+        "为什么 write actions",
+        "比 polished demo",
+        "为什么 retrieval、memory boundaries",
+        "为什么 traces、SLOs",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
     required_markers = (
         "Canonical publishing cases",
