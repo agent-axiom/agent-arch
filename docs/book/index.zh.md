@@ -8,7 +8,7 @@
 
 构建智能体很枯燥，但结果令人震撼：你得到的不是一次性炫技（one-off trick），而是一个可以约束（constrain）、观察（observe）、发布（ship）并无需猜测地持续改进（improve without guessing）的系统。
 
-读完后，你应该能够：
+读完后，你应该能够做到（learning outcomes）：
 
 - 判断什么时候真的需要智能体，什么时候普通工作流（workflow）就够了；
 - 看清在允许高风险动作（risky actions）之前，系统需要的最小平台层集合（minimum platform layers）；
