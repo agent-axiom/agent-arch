@@ -6079,6 +6079,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "слоем политик (policy layer)" in russian_text
     assert "производственную агентную систему (production agent system)" in russian_text
     assert "пути записи (write paths)" in russian_text
+    assert "трасс (traces), SLO и оценок (evals)" in russian_text
+    assert "серьезной раскатки (rollout)" in russian_text
 
     assert "生产现实（production reality）" in chinese_text
     assert "提示堆出来的原型（prompt-heavy prototypes）" in chinese_text
@@ -6086,6 +6088,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "策略层（policy layer）" in chinese_text
     assert "生产级智能体系统（production agent system）" in chinese_text
     assert "写入路径（write paths）" in chinese_text
+    assert "追踪（traces）、SLO 和评测（evals）" in chinese_text
+    assert "认真发布（rollout）之前" in chinese_text
 
     forbidden_markers = (
         "реальность production",
@@ -6095,12 +6099,16 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "production agent system нельзя",
         "набор tools",
         "есть write paths",
+        "без traces, SLO и evals",
+        "серьезного rollout",
         "生产现实的系统",
         "提示堆出来的原型，",
         "信任边界、策略层、审批",
         "生产级智能体系统不能",
         "几个工具”，",
         "有写入路径、人工审批",
+        "没有追踪、SLO 和评测",
+        "认真发布之前",
     )
 
     for marker in forbidden_markers:
