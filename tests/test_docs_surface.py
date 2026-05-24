@@ -5801,6 +5801,11 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     chinese_text = _read("docs/book/index.zh.md")
 
     assert "# Книга (book)" in russian_text
+    assert "главная входная страница (main entry page)" in russian_text
+    assert "самый короткий путь (shortest path)" in russian_text
+    assert "основной текст (main text)" in russian_text
+    assert "статус публикации (structure and publication status)" in russian_text
+    assert "План книги (Book Plan)" in russian_text
     assert "Что обещает эта книга (book promise)" in russian_text
     assert "главный тезис (main thesis)" in russian_text
     assert "платформа (platform)" in russian_text
@@ -5816,6 +5821,11 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "ответственность оператора (operator accountability)" in russian_text
 
     assert "# 书籍（book）" in chinese_text
+    assert "主入口页（main entry page）" in chinese_text
+    assert "最短路径（shortest path）" in chinese_text
+    assert "正文（main text）" in chinese_text
+    assert "结构与发布状态（structure and publication status）" in chinese_text
+    assert "全书计划（Book Plan）" in chinese_text
     assert "这本书的承诺（book promise）" in chinese_text
     assert "核心判断（main thesis）" in chinese_text
     assert "平台（platform）" in chinese_text
@@ -5832,6 +5842,10 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
 
     forbidden_markers = (
         "# Книга\n",
+        "главная входная страница самой книги",
+        "самый короткий путь в основной текст",
+        "увидеть структуру и статус публикации, открой [План книги](plan.md)",
+        "[План книги](plan.md)",
         "## Что обещает эта книга\n",
         "достаточно обычного workflow",
         "У книги один главный тезис: агенту нужна платформа",
@@ -5844,6 +5858,10 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "рассматривать memory, evals",
         "operator accountability как",
         "# 书籍\n",
+        "这是整本书的主入口页。",
+        "最短路径进入正文",
+        "结构和发布状态",
+        "[全书计划](plan.zh.md)",
         "## 这本书的承诺\n",
         "普通工作流就够了",
         "核心判断：智能体需要平台",

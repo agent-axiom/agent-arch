@@ -1,6 +1,6 @@
 # 书籍（book）
 
-这是整本书的主入口页。如果你想用最短路径进入正文，请从[第一部分：基础](part-i/index.zh.md)开始。如果你想先看结构和发布状态，请打开[全书计划](plan.zh.md)。
+这是整本书的主入口页（main entry page）。如果你想用最短路径（shortest path）进入正文（main text），请从[第一部分：基础](part-i/index.zh.md)开始。如果你想先看结构与发布状态（structure and publication status），请打开[全书计划（Book Plan）](plan.zh.md)。
 
 ## 这本书的承诺（book promise）
 
