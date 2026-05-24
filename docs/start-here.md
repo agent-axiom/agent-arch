@@ -113,7 +113,7 @@
 - [Глава 11. Трассы, спаны и структурированные события](book/part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
 - [Глава 18. Чеклист промышленного запуска](book/part-vii/chapter-18.md)
-- [Глава 20. Change management для агентных систем](book/part-viii/chapter-20.md)
+- [Глава 20. Управление изменениями (Change management) для агентных систем](book/part-viii/chapter-20.md)
 
 ### Safe-agent schema spine
 
