@@ -5800,6 +5800,8 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
+    assert "# Книга (book)" in russian_text
+    assert "Что обещает эта книга (book promise)" in russian_text
     assert "главный тезис (main thesis)" in russian_text
     assert "платформа (platform)" in russian_text
     assert "разового трюка (one-off trick)" in russian_text
@@ -5813,6 +5815,8 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "доказательства (evidence)" in russian_text
     assert "ответственность оператора (operator accountability)" in russian_text
 
+    assert "# 书籍（book）" in chinese_text
+    assert "这本书的承诺（book promise）" in chinese_text
     assert "核心判断（main thesis）" in chinese_text
     assert "平台（platform）" in chinese_text
     assert "一次性炫技（one-off trick）" in chinese_text
@@ -5827,6 +5831,8 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "操作员问责（operator accountability）" in chinese_text
 
     forbidden_markers = (
+        "# Книга\n",
+        "## Что обещает эта книга\n",
         "достаточно обычного workflow",
         "У книги один главный тезис: агенту нужна платформа",
         "вместо эффектного разового трюка появляется система",
@@ -5837,6 +5843,8 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "execution, evidence, approval",
         "рассматривать memory, evals",
         "operator accountability как",
+        "# 书籍\n",
+        "## 这本书的承诺\n",
         "普通工作流就够了",
         "核心判断：智能体需要平台",
         "一次性的炫技",
