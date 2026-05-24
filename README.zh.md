@@ -38,7 +38,7 @@
 - **面向原则的厂商中立架构（vendor-neutral architecture）。** 这本书关注的是能跨越具体框架（framework）和模型厂商（model provider）长期成立的架构原则与运行模型。
 - **关注生产现实（production reality），而不是智能体表演（agent theater）。** 它强调策略、审批、可观测性、评测（evals）与生命周期纪律。
 - **不仅有文字，也有可运行参考层。** 仓库里不仅有概念性说明（conceptual prose），还包含可执行的参考资产（reference assets）。
-- **一条贯穿全栈的案例线。** 支持分诊 / 重复工单线索（support-triage / duplicate-ticket thread）把书籍、参考模式（reference schemas）和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索（retrieval）与工具执行（tool execution）一路看到遥测（telemetry）、评测（evals）、发布（rollout）、生命周期（lifecycle）和注册表控制（registry control）。
+- **一条贯穿全栈的案例线（full-stack case）。** 支持分诊 / 重复工单线索（support-triage / duplicate-ticket thread）把书籍、参考模式（reference schemas）和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索（retrieval）与工具执行（tool execution）一路看到遥测（telemetry）、评测（evals）、发布（rollout）、生命周期（lifecycle）和注册表控制（registry control）。
 - **三个规范案例（canonical cases）用来检查覆盖面。** 支持分诊（Support triage）覆盖写入能力（write capabilities）和审批（approvals），内部知识助手（Internal knowledge assistant）覆盖检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），事件协调（Incident coordination）覆盖追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事后学习（post-incident learning）。
 
 ## 从这里开始

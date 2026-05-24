@@ -5939,7 +5939,14 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
 
     assert "Производственная реальность (production reality)" in russian_text
     assert "театра агентов (agent theater)" in russian_text
+    assert "сквозной кейс по всему стеку (full-stack case)" in russian_text
+    assert "ветка дубля тикета (support-triage / duplicate-ticket thread)" in russian_text
     assert "эталонные схемы (reference schemas)" in russian_text
+    assert "телеметрии (telemetry)" in russian_text
+    assert "оценок (evals)" in russian_text
+    assert "раскатки (rollout)" in russian_text
+    assert "жизненного цикла (lifecycle)" in russian_text
+    assert "управления реестром (registry control)" in russian_text
     assert "Триаж поддержки (Support triage)" in russian_text
     assert "записывающие возможности (write capabilities)" in russian_text
     assert "происхождение знаний (knowledge provenance)" in russian_text
@@ -5947,7 +5954,14 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
 
     assert "生产现实（production reality）" in chinese_text
     assert "智能体表演（agent theater）" in chinese_text
+    assert "贯穿全栈的案例线（full-stack case）" in chinese_text
+    assert "重复工单线索（support-triage / duplicate-ticket thread）" in chinese_text
     assert "参考模式（reference schemas）" in chinese_text
+    assert "遥测（telemetry）" in chinese_text
+    assert "评测（evals）" in chinese_text
+    assert "发布（rollout）" in chinese_text
+    assert "生命周期（lifecycle）" in chinese_text
+    assert "注册表控制（registry control）" in chinese_text
     assert "支持分诊（Support triage）" in chinese_text
     assert "写入能力（write capabilities）" in chinese_text
     assert "知识来源（knowledge provenance）" in chinese_text
@@ -5955,12 +5969,14 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
 
     forbidden_markers = (
         "Production reality вместо agent theater",
+        "Один сквозной кейс по всему стеку.",
         "Support-triage / duplicate-ticket thread",
         "эталонные схемы и `agent_runtime_ref`",
         "Три canonical cases",
         "Support triage покрывает write capabilities",
         "Internal knowledge assistant — retrieval",
         "Incident coordination — traces",
+        "一条贯穿全栈的案例线。",
         "support-triage / duplicate-ticket thread 把",
         "参考 Schema 和 `agent_runtime_ref`",
         "三个 canonical cases",
