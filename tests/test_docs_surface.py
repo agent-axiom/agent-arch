@@ -6167,6 +6167,13 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "исполняемые эталонные артефакты (reference assets)" in russian_text
     assert "Быстрые примеры (quick examples):" in russian_text
     assert "Каноническое описание пакета (canonical package description)" in russian_text
+    assert (
+        "Опциональные исследовательские зависимости (optional research dependencies)"
+        in russian_text
+    )
+    assert "ноутбуки (notebooks)" in russian_text
+    assert "инструменты анализа данных (data analysis tools)" in russian_text
+    assert "исследовательскую группу (research group)" in russian_text
 
     assert "紧凑的代码支撑（compact code support）" in chinese_text
     assert "参考运行时（runtime）" in chinese_text
@@ -6194,6 +6201,10 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "可执行的参考资产（reference assets）" in chinese_text
     assert "快速示例（quick examples）：" in chinese_text
     assert "规范包说明（canonical package description）" in chinese_text
+    assert "可选研究依赖（optional research dependencies）" in chinese_text
+    assert "笔记本（notebooks）" in chinese_text
+    assert "数据分析工具（data analysis tools）" in chinese_text
+    assert "研究组（research group）" in chinese_text
 
     forbidden_markers = (
         "эталонный runtime",
@@ -6223,12 +6234,18 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "YAML-конфиги для операционного скелета",
         "Быстрые примеры:",
         "Каноническое описание пакета, полный список",
+        "Опциональные исследовательские зависимости\n",
+        "ноутбуки или инструменты для анализа данных",
+        "В группу `research`",
         "рабочие эталонные артефакты (assets)",
         "lifecycle inspection 中可见",
         "用于 operational skeleton",
         "YAML 配置\n",
         "快速示例：",
         "规范说明、完整 CLI 命令列表",
+        "可选研究依赖\n",
+        "notebook 或数据分析工具",
+        "`research` 组已包含",
         "参考资产（assets）",
         "不只是概念说明",
     )

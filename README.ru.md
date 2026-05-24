@@ -99,15 +99,15 @@ uv run mkdocs build --strict
 
 - [Эталонная среда исполнения (runtime reference package)](docs/appendix/reference-package.md)
 
-## Опциональные исследовательские зависимости
+## Опциональные исследовательские зависимости (optional research dependencies)
 
-Если тебе нужны ноутбуки или инструменты для анализа данных:
+Если тебе нужны ноутбуки (notebooks) или инструменты анализа данных (data analysis tools):
 
 ```bash
 uv sync --group research
 ```
 
-В группу `research` уже включены `marimo` и `polars`.
+В исследовательскую группу (research group) уже включены `marimo` и `polars`.
 
 ## Публикация
 
