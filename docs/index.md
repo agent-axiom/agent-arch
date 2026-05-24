@@ -33,7 +33,7 @@
 
 - с явными границами доверия (trust boundaries) и границами действий (action boundaries);
 - с исполнением (execution) под контролем политик;
-- с подтверждениями (approvals) для рискованных путей;
+- с подтверждениями (approvals) для рискованных путей (risky paths);
 - с наблюдаемостью уровня запуска (run-level observability) и доказательствами (evidence);
 - с дисциплиной раскатки (rollout discipline), владением (ownership) и управлением жизненным циклом (lifecycle governance).
 

@@ -36,7 +36,7 @@
 
 - 有明确的信任边界（trust boundaries）与动作边界（action boundaries）；
 - 执行（execution）受策略约束；
-- 高风险路径有审批（approvals）；
+- 高风险路径（risky paths）有审批（approvals）；
 - 具备运行级可观测性（run-level observability）与证据（evidence）；
 - 拥有发布纪律（rollout discipline）、负责人机制（ownership）与生命周期治理（lifecycle governance）。
 
