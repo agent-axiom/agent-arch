@@ -6151,6 +6151,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "каталог AI-возможностей (AI feature catalog)" in russian_text
     assert "пути записи (write paths)" in russian_text
     assert "человеческие подтверждения (human approvals)" in russian_text
+    assert "границы доступа (access boundaries)" in russian_text
+    assert "телеметрия (telemetry), оценки (evals)" in russian_text
     assert "эксплуатационная ответственность (operational ownership)" in russian_text
     assert "реальные границы доверия (trust boundaries)" in russian_text
     assert "трасс (traces), SLO и оценок (evals)" in russian_text
@@ -6165,6 +6167,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "AI 功能目录（AI feature catalog）" in chinese_text
     assert "写入路径（write paths）" in chinese_text
     assert "人工审批（human approvals）" in chinese_text
+    assert "访问边界（access boundaries）" in chinese_text
+    assert "遥测（telemetry）、评测（evals）" in chinese_text
     assert "运维负责人机制（operational ownership）" in chinese_text
     assert "真实信任边界（trust boundaries）" in chinese_text
     assert "追踪（traces）、SLO 和评测（evals）" in chinese_text
@@ -6178,6 +6182,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "production agent system нельзя",
         "по одному фреймворку и не каталог AI-возможностей",
         "человеческие подтверждения, границы доступа",
+        "границы доступа, телеметрия, оценки",
         "явная эксплуатационная ответственность.",
         "набор tools",
         "есть write paths",
@@ -6190,6 +6195,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "生产级智能体系统不能",
         "某个框架的指南，也不是 AI 功能目录",
         "人工审批、访问边界",
+        "访问边界、遥测、评测",
         "明确的运维负责人机制。",
         "几个工具”，",
         "有写入路径、人工审批",
