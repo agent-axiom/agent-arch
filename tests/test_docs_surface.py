@@ -6504,7 +6504,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "подтверждений (approvals)" in russian_text
     assert "артефактов жизненного цикла (lifecycle artifacts)" in russian_text
     assert "редакторский проход (editorial pass)" in russian_text
+    assert "фреймворку (framework)" in russian_text
     assert "трюков с промптами (prompt tricks)" in russian_text
+    assert "обзор AI-рынка (AI market overview)" in russian_text
     assert "платформенной документацией (platform docs)" in russian_text
     assert "путь записи (write path)" in russian_text
 
@@ -6517,7 +6519,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "审批（approvals）" in chinese_text
     assert "生命周期工件（lifecycle artifacts）" in chinese_text
     assert "编辑打磨（editorial pass）" in chinese_text
+    assert "框架（framework）的手册" in chinese_text
     assert "提示技巧合集（prompt tricks）" in chinese_text
+    assert "AI 市场巡礼（AI market overview）" in chinese_text
     assert "平台文档（platform docs）" in chinese_text
     assert "写入路径（write path）" in chinese_text
 
@@ -6529,7 +6533,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "policy bundles, approvals",
         "lifecycle-артефактов",
         "Активный editorial pass",
+        "по одному фреймворку, не сборник",
         "сборник prompt tricks",
+        "не обзор AI-рынка.",
         "SDK и platform docs",
         "ограничивать write path",
         "生命周期治理的八个部分",
@@ -6537,7 +6543,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "覆盖追踪、评测、策略包、审批",
         "生命周期工件的参考页面",
         "公开站点表面编辑打磨。",
+        "某个框架的手册",
         "提示技巧合集，也不是",
+        "AI 市场巡礼。本书",
         "平台文档之上",
         "写入路径应该怎样受限",
     )
