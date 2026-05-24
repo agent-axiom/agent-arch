@@ -7103,6 +7103,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "обзор AI-рынка (AI market overview)" in russian_text
     assert "платформенной документацией (platform docs)" in russian_text
     assert "путь записи (write path)" in russian_text
+    assert "короткий вход (short entry)" in russian_text
+    assert "маршрут под задачу и роль (task and role route)" in russian_text
+    assert "страницу старта (Start Here)" in russian_text
+    assert "структура и статус разделов (structure and section status)" in russian_text
+    assert "план книги (book plan)" in russian_text
     assert "переиспользуемые артефакты (reusable artifacts)" in russian_text
     assert "схемы (schemas)" in russian_text
     assert "контракты (contracts)" in russian_text
@@ -7122,6 +7127,11 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "AI 市场巡礼（AI market overview）" in chinese_text
     assert "平台文档（platform docs）" in chinese_text
     assert "写入路径（write path）" in chinese_text
+    assert "短入口（short entry）" in chinese_text
+    assert "任务和角色路线（task and role route）" in chinese_text
+    assert "从这里开始（Start Here）" in chinese_text
+    assert "结构与章节状态（structure and section status）" in chinese_text
+    assert "全书计划（book plan）" in chinese_text
     assert "可复用工件（reusable artifacts）" in chinese_text
     assert "模式（schemas）" in chinese_text
     assert "契约（contracts）" in chinese_text
@@ -7140,6 +7150,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "не обзор AI-рынка.",
         "SDK и platform docs",
         "ограничивать write path",
+        "Если нужен короткий вход, начни",
+        "маршрут под задачу и роль, открой",
+        "важнее структура и статус разделов, смотри",
         "生命周期治理的八个部分",
         "编辑清理的 `en`",
         "覆盖追踪、评测、策略包、审批",
@@ -7150,6 +7163,9 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "AI 市场巡礼。本书",
         "平台文档之上",
         "写入路径应该怎样受限",
+        "如果你只想要最短入口",
+        "按角色或任务选择路线",
+        "更关心结构与状态",
         "可复用工件、Schema 和契约",
         "进入[参考层](reference.zh.md)",
     )
