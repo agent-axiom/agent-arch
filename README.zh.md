@@ -84,7 +84,7 @@ uv run mkdocs build --strict
 - 生命周期检查（lifecycle inspection）中可见的沙箱配置契约（sandbox profile contract）与沙箱审查证据（sandbox review evidence）
 - 用于运行骨架（operational skeleton）的 YAML 配置（YAML configs）
 
-快速示例：
+快速示例（quick examples）：
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
@@ -95,7 +95,7 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-规范说明、完整 CLI 命令列表（CLI commands）和配置概览（config overview）可见：
+规范包说明（canonical package description）、完整 CLI 命令列表（CLI commands）和配置概览（config overview）可见：
 
 - [参考运行时包（runtime reference package）](docs/appendix/reference-package.zh.md)
 
