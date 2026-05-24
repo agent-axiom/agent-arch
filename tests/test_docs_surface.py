@@ -6146,6 +6146,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "команд CLI (CLI commands)" in russian_text
     assert "обзор конфигурации (config overview)" in russian_text
     assert "Эталонная среда исполнения (runtime reference package)" in russian_text
+    assert "каталог возможностей (capability catalog)" in russian_text
     assert "утвержденный инвентарь (approved inventory)" in russian_text
     assert "путь памяти (memory path)" in russian_text
     assert "телеметрия (telemetry)" in russian_text
@@ -6161,6 +6162,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "CLI 命令列表（CLI commands）" in chinese_text
     assert "配置概览（config overview）" in chinese_text
     assert "参考运行时包（runtime reference package）" in chinese_text
+    assert "能力目录（capability catalog）" in chinese_text
     assert "已批准清单（approved inventory）" in chinese_text
     assert "记忆路径（memory path）" in chinese_text
     assert "遥测（telemetry）" in chinese_text
@@ -6180,6 +6182,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "обзор конфигов",
         "配置概览可见",
         "каталог возможностей и approved inventory",
+        "каталог возможностей и утвержденный инвентарь",
+        "能力目录与已批准清单",
         "память, телеметрия, подтверждения",
         "记忆路径、遥测、审批",
         "approvals и rollout checks",
