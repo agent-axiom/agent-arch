@@ -42,7 +42,7 @@
 
 ## 这本书怎么读
 
-如果你只想要最短入口，就从 [第 1 章](book/part-i/chapter-1.zh.md) 开始。如果你需要按角色或任务选择路线，就打开[从这里开始](start-here.zh.md)。如果你更关心结构与状态，就看[全书计划](book/plan.zh.md)。如果你需要可复用工件、Schema 和契约，就进入[参考层](reference.zh.md)。
+如果你只想要最短入口，就从 [第 1 章](book/part-i/chapter-1.zh.md) 开始。如果你需要按角色或任务选择路线，就打开[从这里开始](start-here.zh.md)。如果你更关心结构与状态，就看[全书计划](book/plan.zh.md)。如果你需要可复用工件（reusable artifacts）、模式（schemas）和契约（contracts），就进入[参考层（reference layer）](reference.zh.md)。
 
 穿过全书的最短实用途径大致是：
 
