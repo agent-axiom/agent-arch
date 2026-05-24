@@ -32,7 +32,7 @@
 
 ## 它应该改变读者什么思维
 
-读完这本书，读者应该停止把智能体想成“LLM 加一点编排”，而开始把它想成一个受治理的生产系统：
+读完这本书，读者应该停止把智能体想成“LLM 加一点编排（orchestration）”，而开始把它想成一个受治理的生产系统（governed production system）：
 
 - 有明确的信任边界（trust boundaries）与动作边界（action boundaries）；
 - 执行（execution）受策略约束；

@@ -6460,6 +6460,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "разового трюка (one-off trick)" in russian_text
     assert "ограничивать (constrain), наблюдать (observe), выпускать (ship)" in russian_text
     assert "улучшать без гадания (improve without guessing)" in russian_text
+    assert "LLM плюс немного оркестрации (orchestration)" in russian_text
+    assert "управляемую производственную систему (governed production system)" in russian_text
     assert "агентные функции (agent features)" in russian_text
     assert "общая среда исполнения (runtime)" in russian_text
     assert "границы доверия (trust boundaries)" in russian_text
@@ -6481,6 +6483,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "一次性炫技（one-off trick）" in chinese_text
     assert "约束（constrain）、观察（observe）、发布（ship）" in chinese_text
     assert "无需猜测地持续改进（improve without guessing）" in chinese_text
+    assert "LLM 加一点编排（orchestration）" in chinese_text
+    assert "受治理的生产系统（governed production system）" in chinese_text
     assert "智能体功能（agent features）" in chinese_text
     assert "共享运行时（runtime）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
@@ -6500,6 +6504,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "эффектного разового трюка команда получает систему",
         "ограничивать, наблюдать, выпускать",
         "улучшать без гадания.",
+        "LLM плюс немного оркестрации”",
+        "управляемую production-систему",
         "строить agent features",
         "общий runtime, policy layer, approvals",
         "важны trust boundaries, risky execution paths",
@@ -6517,6 +6523,8 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "一次性的炫技",
         "约束、观察、发布并持续改进",
         "不必靠猜",
+        "LLM 加一点编排”，",
+        "受治理的生产系统：",
         "共享运行时、策略层、审批",
         "信任边界、高风险执行路径",
         "运行级可观测性与证据",
