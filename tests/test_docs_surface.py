@@ -5991,6 +5991,23 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_readme_vendor_neutral_term_is_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Нейтральная к поставщикам архитектура (vendor-neutral architecture)" in russian_text
+    assert "厂商中立架构（vendor-neutral architecture）" in chinese_text
+
+    forbidden_markers = (
+        "Vendor-neutral архитектура",
+        "面向原则，而非单一厂商",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_readmes_surface_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
