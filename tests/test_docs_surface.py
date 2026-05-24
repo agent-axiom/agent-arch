@@ -4601,8 +4601,8 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
     assert "Каталог инструментов, семантическая фильтрация инструментов" in text
     assert "классификация чтения/записи" in text
     assert "Роли MCP: `host`, `client` и `server`" in text
-    assert "Семантический разрыв (`semantic gap`), `HyDE`" in text
-    assert "выбор между RAG и обучением модели (`RAG vs training`)" in text
+    assert "Семантический разрыв (semantic gap), HyDE" in text
+    assert "выбор между RAG и обучением модели (RAG vs training)" in text
     assert "Бюджет задержки (latency budget)" in text
     assert "быстрый/медленный путь и маршрутизированные конвейеры" in text
     assert "Оценка через LLM как судью (LLM-as-a-judge), калибровка" in text
@@ -4612,6 +4612,8 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
         "- Tool catalog, semantic tool filtering, read/write taxonomy:",
         "- MCP host/client/server, capability transport, sandbox boundary:",
         "- Semantic gap, HyDE, RAG vs training:",
+        "Семантический разрыв (`semantic gap`), `HyDE`",
+        "выбор между RAG и обучением модели (`RAG vs training`)",
         "- Latency budget, fast path / slow path, routed pipeline:",
         "Бюджет задержки (`latency budget`)",
         "- LLM-as-a-judge, calibration и judge-human agreement:",
@@ -4628,7 +4630,7 @@ def test_chinese_reference_fast_topic_routes_are_localized() -> None:
 
     assert "工具目录设计、语义化工具过滤、读/写分类法" in text
     assert "MCP 主机/客户端/服务器角色、能力传输、沙箱边界" in text
-    assert "语义鸿沟、HyDE、RAG 与训练的取舍" in text
+    assert "语义鸿沟（semantic gap）、HyDE、RAG 与训练的取舍（RAG vs training）" in text
     assert "延迟预算（latency budget）、快路径/慢路径、路由管线" in text
     assert "以 LLM 作为评审器（LLM-as-a-judge）、校准" in text
     assert "评审器/人类一致性（judge-human agreement）" in text
@@ -4636,6 +4638,7 @@ def test_chinese_reference_fast_topic_routes_are_localized() -> None:
     forbidden_markers = (
         "延迟预算、快路径/慢路径、路由管线",
         "Latency budget, fast path / slow path, routed pipeline",
+        "语义鸿沟、HyDE、RAG 与训练的取舍",
         "LLM-as-a-judge、校准与评审器/人类一致性",
     )
 
