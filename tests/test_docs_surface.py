@@ -6142,6 +6142,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     chinese_text = _read("README.zh.md")
 
     assert "эталонная среда исполнения (runtime)" in russian_text
+    assert "слой политик (policy layer)" in russian_text
     assert "Эталонная среда исполнения (runtime):" in russian_text
     assert "команд CLI (CLI commands)" in russian_text
     assert "обзор конфигурации (config overview)" in russian_text
@@ -6158,6 +6159,7 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "исполняемые эталонные артефакты (reference assets)" in russian_text
 
     assert "参考运行时（runtime）" in chinese_text
+    assert "策略层（policy layer）" in chinese_text
     assert "参考运行时包（reference package）" in chinese_text
     assert "CLI 命令列表（CLI commands）" in chinese_text
     assert "配置概览（config overview）" in chinese_text
@@ -6176,6 +6178,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     forbidden_markers = (
         "эталонный runtime",
         "Эталонный runtime",
+        "эталонная среда исполнения (runtime) и слой политик\n",
+        "参考运行时（runtime）与策略层\n",
         "- [Эталонный пакет]",
         "- 参考包：[docs/appendix/reference-package",
         "完整 CLI 列表",
