@@ -1,4 +1,4 @@
-# 参考层
+# 参考层（reference layer）
 
 如果这本书回答的是**为什么（why）**安全智能体系统（safe agent system）应该这样构建，那么参考层回答的就是：**哪些工件（artifacts）、模式页（schemas）与规则（rules）应该被明确固定下来**。
 
@@ -19,7 +19,7 @@
 - 它不会逐章解释主要因果论证（causal argument / chapter by chapter）；
 - 它也不应该成为读者学习取舍（tradeoffs）与层间边界（layer boundaries）的主要地方。
 
-## 从这里开始
+## 从这里开始（Start Here）
 
 如果只想快速进入，建议按这个顺序看：
 
