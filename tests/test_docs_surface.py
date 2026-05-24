@@ -5986,7 +5986,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "реальными пользователями (real users)" in russian_text
     assert "реальными инструментами (real tools)" in russian_text
     assert "реальной эксплуатацией (real operations)" in russian_text
+    assert "быстрому демо (quick demo)" in russian_text
     assert "промптинг (prompting)" in russian_text
+    assert "вызовы инструментов (tool calls)" in russian_text
     assert "границы доверия (trust boundaries)" in russian_text
     assert "слой политик (policy layer)" in russian_text
     assert "дисциплина памяти (memory discipline)" in russian_text
@@ -5998,7 +6000,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "真实工具（real tools）" in chinese_text
     assert "真实运维（real operations）" in chinese_text
     assert "可控且安全的智能体系统（controlled and safe agent systems）" in chinese_text
+    assert "快速演示（quick demo）" in chinese_text
     assert "提示词技巧（prompting）" in chinese_text
+    assert "工具调用（tool calls）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
     assert "策略执行（policy enforcement）" in chinese_text
     assert "记忆治理与约束（memory governance）" in chinese_text
@@ -6011,7 +6015,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "контролируемые и безопасные агентные системы, которые выдерживают контакт",
         "реальными пользователями, реальными инструментами",
         "реальной эксплуатацией.",
+        "быстрому демо. Реальным системам",
         "удачный prompting",
+        "вызовы инструментов. Им нужны",
         "явные границы доверия\n",
         "слой политик и подтверждений",
         "дисциплина памяти\n",
@@ -6020,7 +6026,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "可用于生产环境的 AI 智能体架构",
         "真实用户、真实工具和真实运维条件",
         "可控、安全、稳定运行的智能体系统",
+        "快速做出演示",
         "提示词技巧和工具调用",
+        "工具调用。它们还需要",
         "明确的信任边界\n",
         "策略执行与审批机制",
         "记忆治理与约束\n",
