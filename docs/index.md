@@ -55,7 +55,7 @@
 !!! note "Цепочка схем безопасного агента (Safe-agent schema spine)"
     Если нужен краткий путь по архитектуре безопасного агента (safe-agent architecture), начни со [схемы трасс (trace schema)](appendix/trace-schema.md), [схемы оценок (eval schema)](appendix/eval-schema.md) и [схемы памяти/поиска (memory/retrieval schema)](appendix/memory-retrieval-schema.md). Эта цепочка (spine) связывает модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
-## Что здесь уже есть
+## Что здесь уже есть (what already exists)
 
 - Опубликованная русская основная рукопись (core manuscript) в восьми частях: от архитектурных оснований до управления жизненным циклом (lifecycle governance).
 - Переводческие слои `en` и `zh`, уже пригодные для чтения, но все еще проходящие редакторскую очистку (editorial cleanup).
@@ -64,11 +64,11 @@
 - Практические кейсы, чеклисты, шаблоны политик и глоссарий.
 - Активный редакторский проход (editorial pass) по рукописи и публичной поверхности сайта.
 
-## Что не является целью книги
+## Что не является целью книги (what the book is not)
 
 Это не пособие по одному фреймворку (framework), не сборник трюков с промптами (prompt tricks) и не обзор AI-рынка (AI market overview). Книга стоит над конкретными SDK и платформенной документацией (platform docs) и пытается ответить на более неприятные вопросы: что агенту вообще разрешено, как ограничивать путь записи (write path), что наблюдать, как выпускать изменения и кто отвечает за систему после запуска.
 
-## Куда идти дальше
+## Куда идти дальше (where to go next)
 
 <div class="button-stack" markdown="1">
 

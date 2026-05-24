@@ -7089,6 +7089,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     russian_text = _read("docs/index.md")
     chinese_text = _read("docs/index.zh.md")
 
+    assert "Что здесь уже есть (what already exists)" in russian_text
     assert "основная рукопись (core manuscript)" in russian_text
     assert "управления жизненным циклом (lifecycle governance)" in russian_text
     assert "редакторскую очистку (editorial cleanup)" in russian_text
@@ -7103,6 +7104,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "обзор AI-рынка (AI market overview)" in russian_text
     assert "платформенной документацией (platform docs)" in russian_text
     assert "путь записи (write path)" in russian_text
+    assert "Что не является целью книги (what the book is not)" in russian_text
+    assert "Куда идти дальше (where to go next)" in russian_text
     assert "короткий вход (short entry)" in russian_text
     assert "маршрут под задачу и роль (task and role route)" in russian_text
     assert "страницу старта (Start Here)" in russian_text
@@ -7115,6 +7118,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "контракты (contracts)" in russian_text
     assert "справочный слой (reference layer)" in russian_text
 
+    assert "这里已经有什么（what already exists）" in chinese_text
     assert "核心原稿（core manuscript）" in chinese_text
     assert "生命周期治理（lifecycle governance）" in chinese_text
     assert "编辑清理（editorial cleanup）" in chinese_text
@@ -7129,6 +7133,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
     assert "AI 市场巡礼（AI market overview）" in chinese_text
     assert "平台文档（platform docs）" in chinese_text
     assert "写入路径（write path）" in chinese_text
+    assert "这本书不打算成为什么（what the book is not）" in chinese_text
+    assert "接下来去哪里（where to go next）" in chinese_text
     assert "短入口（short entry）" in chinese_text
     assert "任务和角色路线（task and role route）" in chinese_text
     assert "从这里开始（Start Here）" in chinese_text
@@ -7143,6 +7149,7 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
 
     forbidden_markers = (
         "core-рукопись",
+        "## Что здесь уже есть\n",
         "до lifecycle governance",
         "проходящие editorial cleanup",
         "схемами traces, evals",
@@ -7154,11 +7161,14 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "не обзор AI-рынка.",
         "SDK и platform docs",
         "ограничивать write path",
+        "## Что не является целью книги\n",
+        "## Куда идти дальше\n",
         "Если нужен короткий вход, начни",
         "маршрут под задачу и роль, открой",
         "важнее структура и статус разделов, смотри",
         "Самый короткий путь через книгу выглядит так",
         "生命周期治理的八个部分",
+        "## 这里已经有什么\n",
         "编辑清理的 `en`",
         "覆盖追踪、评测、策略包、审批",
         "生命周期工件的参考页面",
@@ -7168,6 +7178,8 @@ def test_multilingual_homepage_existing_scope_terms_are_localized() -> None:
         "AI 市场巡礼。本书",
         "平台文档之上",
         "写入路径应该怎样受限",
+        "## 这本书不打算成为什么\n",
+        "## 接下来去哪里\n",
         "如果你只想要最短入口",
         "按角色或任务选择路线",
         "更关心结构与状态",
