@@ -6702,6 +6702,34 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
+    assert "Маршруты по ролям (role-based routes)" in russian_text
+    assert "инженер продукта (product engineer)" in russian_text
+    assert "идеи агента (agent idea)" in russian_text
+    assert "рабочей архитектуре (working architecture)" in russian_text
+    assert "платформенный инженер (platform engineer)" in russian_text
+    assert "платформенный каркас (platform skeleton)" in russian_text
+    assert "одной модели (model wrapper)" in russian_text
+    assert "инженер по безопасности (security engineer)" in russian_text
+    assert "риск модели (model risk)" in russian_text
+    assert "риск реального исполнения (real execution risk)" in russian_text
+    assert "руководитель или архитектор (leader or architect)" in russian_text
+    assert "демо (demo)" in russian_text
+    assert "эксплуатационной дисциплине (operating discipline)" in russian_text
+
+    assert "按角色阅读（role-based routes）" in chinese_text
+    assert "产品工程师（product engineer）" in chinese_text
+    assert "智能体想法（agent idea）" in chinese_text
+    assert "可运行架构（working architecture）" in chinese_text
+    assert "平台工程师（platform engineer）" in chinese_text
+    assert "平台骨架（platform skeleton）" in chinese_text
+    assert "模型包壳（model wrapper）" in chinese_text
+    assert "安全工程师（security engineer）" in chinese_text
+    assert "模型风险（model risk）" in chinese_text
+    assert "真实执行风险（real execution risk）" in chinese_text
+    assert "负责人或架构师（leader or architect）" in chinese_text
+    assert "演示（demo）" in chinese_text
+    assert "运营纪律（operating discipline）" in chinese_text
+
     assert "скелет среды исполнения (runtime skeleton)" in russian_text
     assert "контракты политик (policy contracts)" in russian_text
     assert "путь памяти (memory path)" in russian_text
@@ -6715,10 +6743,31 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "发布工件（rollout artifacts）" in chinese_text
 
     forbidden_markers = (
+        "## Маршруты по ролям\n",
+        "### Если ты инженер продукта\n",
+        "от идеи агента к рабочей архитектуре",
+        "### Если ты платформенный инженер\n",
+        "платформенный каркас, а не локальную обвязку",
+        "### Если ты инженер по безопасности\n",
+        "не только model risk",
+        "риск реального исполнения.",
+        "### Если ты руководитель или архитектор\n",
+        "не собрать демо, а удержать инициативу",
+        "эксплуатационной дисциплине.",
         "скелет runtime (runtime skeleton)",
         "нужны runtime skeleton",
         "policy contracts, memory path",
         "telemetry и rollout-артефакты",
+        "## 按角色阅读\n",
+        "### 如果你是产品工程师\n",
+        "从智能体想法快速走到可运行架构",
+        "### 如果你是平台工程师\n",
+        "搭平台骨架、而不只是给一个模型包壳",
+        "### 如果你是安全工程师\n",
+        "不仅要看模型风险，还要看真实执行风险",
+        "### 如果你是负责人或架构师\n",
+        "不想只交付演示，而是要",
+        "真实运营纪律的人。",
         "需要运行时骨架、策略契约",
         "记忆路径、遥测和发布工件",
     )
