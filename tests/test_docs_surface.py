@@ -6186,6 +6186,23 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_start_here_change_management_link_is_localized() -> None:
+    russian_text = _read("docs/start-here.md")
+    chinese_text = _read("docs/start-here.zh.md")
+
+    assert "Управление изменениями (Change management) для агентных систем" in russian_text
+    assert "智能体系统的变更管理（Change management）" in chinese_text
+
+    forbidden_markers = (
+        "Глава 20. Change management для агентных систем",
+        "智能体系统的变更管理](book/part-viii/chapter-20",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_homepage_surfaces_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case map",

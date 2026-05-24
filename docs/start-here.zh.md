@@ -116,7 +116,7 @@
 - [第 11 章：追踪、跨度与结构化事件](book/part-v/chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
-- [第 20 章：智能体系统的变更管理](book/part-viii/chapter-20.zh.md)
+- [第 20 章：智能体系统的变更管理（Change management）](book/part-viii/chapter-20.zh.md)
 
 ### Safe-agent schema spine
 
