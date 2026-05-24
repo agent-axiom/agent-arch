@@ -36,10 +36,10 @@
 ## Почему это стоит читать
 
 - **Vendor-neutral архитектура.** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк или провайдера моделей.
-- **Production reality вместо agent theater.** Фокус на политиках, подтверждениях, наблюдаемости, evals и дисциплине жизненного цикла.
-- **Исполняемый эталонный слой.** В репозитории есть не только текст, но и рабочие эталонные assets.
-- **Один сквозной кейс по всему стеку.** Support-triage / duplicate-ticket thread связывает книгу, эталонные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от retrieval и tool execution до telemetry, evals, rollout, lifecycle и registry control.
-- **Три canonical cases для покрытия.** Support triage покрывает write capabilities и approvals, Internal knowledge assistant — retrieval, memory, freshness и knowledge provenance, а Incident coordination — traces, escalation, notification side effects, response ownership и post-incident learning.
+- **Производственная реальность (production reality) вместо театра агентов (agent theater).** Фокус на политиках, подтверждениях, наблюдаемости, оценках (evals) и дисциплине жизненного цикла.
+- **Исполняемый эталонный слой.** В репозитории есть не только текст, но и рабочие эталонные артефакты (assets).
+- **Один сквозной кейс по всему стеку.** Триаж поддержки / ветка дубля тикета (support-triage / duplicate-ticket thread) связывает книгу, эталонные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от поиска (retrieval) и выполнения инструментов (tool execution) до телеметрии (telemetry), оценок (evals), раскатки (rollout), жизненного цикла (lifecycle) и управления реестром (registry control).
+- **Три канонических сценария (canonical cases) для покрытия.** Триаж поддержки (Support triage) покрывает записывающие возможности (write capabilities) и подтверждения (approvals), внутренний ассистент знаний (Internal knowledge assistant) — поиск (retrieval), память (memory), свежесть (freshness) и происхождение знаний (knowledge provenance), а координация инцидентов (Incident coordination) — трассы (traces), эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владельца реагирования (response ownership) и обучение после инцидента (post-incident learning).
 
 ## С чего начать
 

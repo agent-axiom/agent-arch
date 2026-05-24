@@ -5895,6 +5895,43 @@ def test_readmes_surface_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
+    russian_text = _read("README.ru.md")
+    chinese_text = _read("README.zh.md")
+
+    assert "Производственная реальность (production reality)" in russian_text
+    assert "театра агентов (agent theater)" in russian_text
+    assert "Триаж поддержки (Support triage)" in russian_text
+    assert "записывающие возможности (write capabilities)" in russian_text
+    assert "происхождение знаний (knowledge provenance)" in russian_text
+    assert "побочные эффекты уведомлений (notification side effects)" in russian_text
+
+    assert "生产现实（production reality）" in chinese_text
+    assert "智能体表演（agent theater）" in chinese_text
+    assert "支持分诊（Support triage）" in chinese_text
+    assert "写入能力（write capabilities）" in chinese_text
+    assert "知识来源（knowledge provenance）" in chinese_text
+    assert "通知副作用（notification side effects）" in chinese_text
+
+    forbidden_markers = (
+        "Production reality вместо agent theater",
+        "Support-triage / duplicate-ticket thread",
+        "Три canonical cases",
+        "Support triage покрывает write capabilities",
+        "Internal knowledge assistant — retrieval",
+        "Incident coordination — traces",
+        "support-triage / duplicate-ticket thread 把",
+        "三个 canonical cases",
+        "Support triage 覆盖 write capabilities",
+        "Internal knowledge assistant 覆盖 retrieval",
+        "Incident coordination 覆盖 traces",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_readmes_surface_safe_agent_schema_spine() -> None:
     required_markers = (
         "Safe-agent schema spine",
