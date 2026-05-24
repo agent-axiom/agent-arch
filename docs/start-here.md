@@ -90,7 +90,7 @@
 - [Глава 17. Слой политик и каталог возможностей](book/part-vii/chapter-17.md)
 - [Справочные страницы](reference.md)
 
-Это полезно, если тебе сразу нужны скелет runtime (runtime skeleton), контракты политик (policy contracts), путь памяти (memory path), телеметрия (telemetry) и артефакты раскатки (rollout artifacts).
+Это полезно, если тебе сразу нужны скелет среды исполнения (runtime skeleton), контракты политик (policy contracts), путь памяти (memory path), телеметрия (telemetry) и артефакты раскатки (rollout artifacts).
 
 ## Если нужно быстро решить конкретную задачу
 

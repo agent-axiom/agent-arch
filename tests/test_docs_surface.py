@@ -6160,7 +6160,7 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
-    assert "скелет runtime (runtime skeleton)" in russian_text
+    assert "скелет среды исполнения (runtime skeleton)" in russian_text
     assert "контракты политик (policy contracts)" in russian_text
     assert "путь памяти (memory path)" in russian_text
     assert "телеметрия (telemetry)" in russian_text
@@ -6173,6 +6173,7 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "发布工件（rollout artifacts）" in chinese_text
 
     forbidden_markers = (
+        "скелет runtime (runtime skeleton)",
         "нужны runtime skeleton",
         "policy contracts, memory path",
         "telemetry и rollout-артефакты",
