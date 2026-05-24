@@ -6416,6 +6416,8 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
     assert "ограничения по веткам (branch restrictions)" in russian_text
     assert "деплой (deployment)" in russian_text
     assert "отдельный токен (separate token)" in russian_text
+    assert "персонального токена доступа (Personal Access Token)" in russian_text
+    assert "приложения GitHub (GitHub App)" in russian_text
     assert "право записи Pages (Pages write permission)" in russian_text
 
     assert "GitHub Pages 首次设置（first GitHub Pages setup）" in chinese_text
@@ -6427,6 +6429,8 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
     assert "分支限制（branch restrictions）" in chinese_text
     assert "部署（deployment）" in chinese_text
     assert "单独的 token（separate token）" in chinese_text
+    assert "个人访问令牌（Personal Access Token）" in chinese_text
+    assert "GitHub 应用（GitHub App）" in chinese_text
     assert "Pages 写权限（Pages write permission）" in chinese_text
 
     forbidden_markers = (
@@ -6439,6 +6443,8 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
         "ограничения по веткам, нужно",
         "явно разрешить деплой из",
         "нужен отдельный токен, а не",
+        "для Personal Access Token:",
+        "для GitHub App:",
         "Pages write permission\n",
         "## GitHub Pages 首次设置\n",
         "有一个重要限制：",
@@ -6449,6 +6455,8 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
         "部署分支限制",
         "来自 `docs-prod` 的部署。",
         "必须是真实 token",
+        "Personal Access Token:",
+        "GitHub App:",
         "Pages 写权限\n",
     )
 

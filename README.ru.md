@@ -152,8 +152,8 @@ git push origin HEAD:docs-prod
 
 Для `PAGES_PAT` нужен отдельный токен (separate token), а не `GITHUB_TOKEN`:
 
-- для Personal Access Token: `repo` или право записи Pages (Pages write permission)
-- для GitHub App: `administration:write` и `pages:write`
+- для персонального токена доступа (Personal Access Token): `repo` или право записи Pages (Pages write permission)
+- для приложения GitHub (GitHub App): `administration:write` и `pages:write`
 
 ## Модель веток (branch model)
 
