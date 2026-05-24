@@ -5856,13 +5856,46 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
+    assert "Рекомендуемый маршрут чтения (recommended reading path)" in russian_text
+    assert "короткий полезный маршрут (shortest useful path)" in russian_text
+    assert "Быстрый ориентир по стабильности (stability guide)" in russian_text
+    assert "практических слоя (practical layers)" in russian_text
+    assert "`Стабильное ядро` (stable core)" in russian_text
+    assert "`Быстро меняющийся слой` (fast-moving layer)" in russian_text
+    assert "исследовательские страницы приложений (research appendix pages)" in russian_text
+    assert "Прямые точки входа (direct entry points)" in russian_text
     assert "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]" in russian_text
     assert "[Перейти к жизненному циклу агентной системы]" in russian_text
+
+    assert "推荐阅读路径（recommended reading path）" in chinese_text
+    assert "最短有效路径（shortest useful path）" in chinese_text
+    assert "稳定性指南（stability guide）" in chinese_text
+    assert "实践层（practical layers）" in chinese_text
+    assert "`稳定核心`（stable core）" in chinese_text
+    assert "`快速变化层`（fast-moving layer）" in chinese_text
+    assert "研究型附录页面（research appendix pages）" in chinese_text
+    assert "直接入口（direct entry points）" in chinese_text
     assert "[跳到证据主线（Evidence Spine）]" in chinese_text
     assert "[跳到智能体系统生命周期]" in chinese_text
 
     forbidden_markers = (
+        "## Рекомендуемый маршрут чтения\n",
+        "самый короткий полезный маршрут, иди так",
+        "## Быстрый ориентир по стабильности\n",
+        "У книги есть два практических слоя:",
+        "`Стабильное ядро`: части",
+        "`Быстро меняющийся слой`: глава",
+        "исследовательские страницы приложений.",
+        "## Прямые точки входа\n",
         "[Перейти к Evidence Spine]",
+        "## 推荐阅读路径\n",
+        "最短但有效的路线",
+        "## 稳定性捷径\n",
+        "可以粗分为两层",
+        "`稳定核心`：",
+        "`快速变化层`：",
+        "偏研究型的附录页面",
+        "## 直接入口\n",
         "[跳到 Evidence Spine]",
     )
 
