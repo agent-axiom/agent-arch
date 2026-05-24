@@ -23,14 +23,14 @@
 
 </div>
 
-## 这本书适合谁
+## 这本书适合谁（who this book is for）
 
 - 想构建智能体功能（agent features）、又不想把系统做成提示和例外堆的产品工程师。
 - 需要共享运行时（runtime）、策略层（policy layer）、审批（approvals）、可观测性（observability）和受控发布（rollout）的平台团队。
 - 关心信任边界（trust boundaries）、高风险执行路径（risky execution paths）和滥用表面（abuse surfaces）的安全工程师。
 - 需要可复用工程纪律、而不是智能体剧场的技术负责人和架构师。
 
-## 它应该改变读者什么思维
+## 它应该改变读者什么思维（reader mindset shift）
 
 读完这本书，读者应该停止把智能体想成“LLM 加一点编排（orchestration）”，而开始把它想成一个受治理的生产系统（governed production system）：
 
