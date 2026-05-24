@@ -36,10 +36,10 @@
 ## 为什么值得读
 
 - **面向原则，而非单一厂商。** 这本书关注的是能跨越具体框架和模型厂商长期成立的架构原则与运行模型。
-- **关注生产现实，而不是智能体表演。** 它强调策略、审批、可观测性、评测与生命周期纪律。
-- **不仅有文字，也有可运行参考层。** 仓库里包含可执行的参考资产，而不只是概念说明。
-- **一条贯穿全栈的案例线。** support-triage / duplicate-ticket thread 把书籍、参考 Schema 和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索与工具执行一路看到 telemetry、evals、rollout、lifecycle 和 registry control。
-- **三个 canonical cases 用来检查覆盖面。** Support triage 覆盖 write capabilities 和 approvals，Internal knowledge assistant 覆盖 retrieval、memory、freshness 和 knowledge provenance，Incident coordination 覆盖 traces、escalation、notification side effects、response ownership 和 post-incident learning。
+- **关注生产现实（production reality），而不是智能体表演（agent theater）。** 它强调策略、审批、可观测性、评测（evals）与生命周期纪律。
+- **不仅有文字，也有可运行参考层。** 仓库里包含可执行的参考资产（assets），而不只是概念说明。
+- **一条贯穿全栈的案例线。** 支持分诊 / 重复工单线索（support-triage / duplicate-ticket thread）把书籍、参考 Schema 和 `agent_runtime_ref` 连在一起，让读者可以沿着一个事故，从检索（retrieval）与工具执行（tool execution）一路看到遥测（telemetry）、评测（evals）、发布（rollout）、生命周期（lifecycle）和注册表控制（registry control）。
+- **三个规范案例（canonical cases）用来检查覆盖面。** 支持分诊（Support triage）覆盖写入能力（write capabilities）和审批（approvals），内部知识助手（Internal knowledge assistant）覆盖检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），事件协调（Incident coordination）覆盖追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事后学习（post-incident learning）。
 
 ## 从这里开始
 
