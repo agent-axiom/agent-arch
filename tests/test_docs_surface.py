@@ -5790,6 +5790,25 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
+    russian_text = _read("docs/book/index.md")
+    chinese_text = _read("docs/book/index.zh.md")
+
+    assert "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]" in russian_text
+    assert "[Перейти к жизненному циклу агентной системы]" in russian_text
+    assert "[跳到证据主线（Evidence Spine）]" in chinese_text
+    assert "[跳到智能体系统生命周期]" in chinese_text
+
+    forbidden_markers = (
+        "[Перейти к Evidence Spine]",
+        "[跳到 Evidence Spine]",
+    )
+
+    for marker in forbidden_markers:
+        assert marker not in russian_text
+        assert marker not in chinese_text
+
+
 def test_case_studies_align_with_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case alignment",

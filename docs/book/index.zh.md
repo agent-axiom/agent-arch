@@ -47,7 +47,7 @@
 
 - [从第一部分开始](part-i/index.zh.md)
 - [打开全书计划](plan.zh.md)
-- [跳到 Evidence Spine](part-v/evidence-spine.zh.md)
+- [跳到证据主线（Evidence Spine）](part-v/evidence-spine.zh.md)
 - [跳到智能体系统生命周期](part-viii/index.zh.md)
 
 [开始读书](part-i/index.zh.md){ .md-button .md-button--primary }

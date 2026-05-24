@@ -47,7 +47,7 @@
 
 - [Начать с Части I](part-i/index.md)
 - [Открыть план книги](plan.md)
-- [Перейти к Сквозной цепочке доказательств](part-v/evidence-spine.md)
+- [Перейти к Сквозной цепочке доказательств (Evidence Spine)](part-v/evidence-spine.md)
 - [Перейти к жизненному циклу агентной системы](part-viii/index.md)
 
 [Читать книгу](part-i/index.md){ .md-button .md-button--primary }
