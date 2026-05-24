@@ -6143,6 +6143,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "границами доверия (trust boundaries)" in russian_text
     assert "слоем политик (policy layer)" in russian_text
     assert "производственную агентную систему (production agent system)" in russian_text
+    assert "фреймворку (framework)" in russian_text
+    assert "каталог AI-возможностей (AI feature catalog)" in russian_text
     assert "пути записи (write paths)" in russian_text
     assert "реальные границы доверия (trust boundaries)" in russian_text
     assert "трасс (traces), SLO и оценок (evals)" in russian_text
@@ -6153,6 +6155,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "信任边界（trust boundaries）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
     assert "生产级智能体系统（production agent system）" in chinese_text
+    assert "框架（framework）的指南" in chinese_text
+    assert "AI 功能目录（AI feature catalog）" in chinese_text
     assert "写入路径（write paths）" in chinese_text
     assert "真实信任边界（trust boundaries）" in chinese_text
     assert "追踪（traces）、SLO 和评测（evals）" in chinese_text
@@ -6164,6 +6168,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "границами доверия, policy layer",
         "дисциплина вокруг trust boundaries",
         "production agent system нельзя",
+        "по одному фреймворку и не каталог AI-возможностей",
         "набор tools",
         "есть write paths",
         "реальные trust boundaries",
@@ -6173,6 +6178,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "提示堆出来的原型，",
         "信任边界、策略层、审批",
         "生产级智能体系统不能",
+        "某个框架的指南，也不是 AI 功能目录",
         "几个工具”，",
         "有写入路径、人工审批",
         "真实信任边界在哪里",
