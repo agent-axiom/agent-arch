@@ -5991,6 +5991,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
 
     assert "эталонная среда исполнения (runtime)" in russian_text
     assert "Эталонная среда исполнения (runtime):" in russian_text
+    assert "команд CLI (CLI commands)" in russian_text
+    assert "Эталонная среда исполнения (runtime reference package)" in russian_text
     assert "утвержденный инвентарь (approved inventory)" in russian_text
     assert "подтверждения (approvals)" in russian_text
     assert "проверки раскатки (rollout checks)" in russian_text
@@ -5999,6 +6001,8 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
 
     assert "参考运行时（runtime）" in chinese_text
     assert "参考运行时包（reference package）" in chinese_text
+    assert "CLI 命令列表（CLI commands）" in chinese_text
+    assert "参考运行时包（runtime reference package）" in chinese_text
     assert "已批准清单（approved inventory）" in chinese_text
     assert "审批（approvals）" in chinese_text
     assert "发布检查（rollout checks）" in chinese_text
@@ -6008,7 +6012,9 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     forbidden_markers = (
         "эталонный runtime",
         "Эталонный runtime",
+        "- [Эталонный пакет]",
         "- 参考包：[docs/appendix/reference-package",
+        "完整 CLI 列表",
         "каталог возможностей и approved inventory",
         "approvals и rollout checks",
         "lifecycle-артефакты для change records",

@@ -95,9 +95,9 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-Каноническое описание пакета, полный список CLI-команд и обзор конфигов вынесены на отдельную страницу:
+Каноническое описание пакета, полный список команд CLI (CLI commands) и обзор конфигов вынесены на отдельную страницу:
 
-- [Эталонный пакет](docs/appendix/reference-package.md)
+- [Эталонная среда исполнения (runtime reference package)](docs/appendix/reference-package.md)
 
 ## Опциональные исследовательские зависимости
 
