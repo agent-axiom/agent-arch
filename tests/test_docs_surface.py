@@ -6467,9 +6467,13 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "агентные функции (agent features)" in russian_text
     assert "общая среда исполнения (runtime)" in russian_text
     assert "границы доверия (trust boundaries)" in russian_text
+    assert "границами действий (action boundaries)" in russian_text
     assert "рискованные пути исполнения (risky execution paths)" in russian_text
     assert "поверхности злоупотреблений (abuse surfaces)" in russian_text
     assert "наблюдаемостью уровня запуска (run-level observability)" in russian_text
+    assert "доказательствами (evidence)" in russian_text
+    assert "дисциплиной раскатки (rollout discipline)" in russian_text
+    assert "владением (ownership)" in russian_text
     assert "управлением жизненным циклом (lifecycle governance)" in russian_text
 
     assert "生产现实（production reality）" in chinese_text
@@ -6492,9 +6496,13 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "智能体功能（agent features）" in chinese_text
     assert "共享运行时（runtime）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
+    assert "动作边界（action boundaries）" in chinese_text
     assert "高风险执行路径（risky execution paths）" in chinese_text
     assert "滥用表面（abuse surfaces）" in chinese_text
     assert "运行级可观测性（run-level observability）" in chinese_text
+    assert "证据（evidence）" in chinese_text
+    assert "发布纪律（rollout discipline）" in chinese_text
+    assert "负责人机制（ownership）" in chinese_text
     assert "生命周期治理（lifecycle governance）" in chinese_text
 
     forbidden_markers = (
