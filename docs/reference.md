@@ -36,7 +36,7 @@
 !!! note "Цепочка схем безопасного агента (Safe-agent schema spine)"
     Если нужен короткий маршрут по архитектуре безопасного агента (safe-agent architecture), держи рядом [схему трасс (trace schema)](appendix/trace-schema.md), [схему оценок (eval schema)](appendix/eval-schema.md) и [схему памяти/поиска (memory/retrieval schema)](appendix/memory-retrieval-schema.md). В них теперь связаны модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
 
-## Схемы и контрактные страницы
+## Схемы и контрактные страницы (schemas and contract pages)
 
 - [Схема трасс и каталог событий](appendix/trace-schema.md)
 - [Схема наборов для оценки и правил проверки](appendix/eval-schema.md)
@@ -50,7 +50,7 @@
 - [Паттерны оценки памяти для агентных систем](appendix/memory-eval-patterns.md)
 - [Паттерны восстановления после сбоев инструментов в агентных системах](appendix/tool-failure-recovery.md)
 
-## Практические страницы
+## Практические страницы (practice pages)
 
 - [Эталонный пакет](appendix/reference-package.md)
 - [Практические кейсы](appendix/case-studies.md)
@@ -59,9 +59,9 @@
 - [Практическое руководство по реестру агентов (agent registry) и операциям инвентаря (inventory operations)](appendix/registry-operations-handbook.md)
 - [Шаблон постмортема (postmortem) для агентных систем](appendix/postmortem-template.md)
 
-## Быстрые маршруты по темам
+## Быстрые маршруты по темам (quick topic routes)
 
-Если тебе нужен не весь справочный слой (reference layer), а короткий вход в конкретный вопрос, начни так:
+Если тебе нужен не весь справочный слой (reference layer), а короткий вход (short entry) в конкретный вопрос (specific question), начни так:
 
 - Каталог инструментов, семантическая фильтрация инструментов (semantic tool filtering) и классификация чтения/записи (read/write taxonomy): [Глава 8. Модель выполнения и каталог инструментов](book/part-iv/chapter-8.md)
 - Роли MCP: хост, клиент и сервер (MCP host/client/server), передача возможностей (capability transport) и границы песочницы (sandbox boundary): [Глава 9. Песочница выполнения и MCP как интеграционный контракт](book/part-iv/chapter-9.md)
@@ -69,7 +69,7 @@
 - Бюджет задержки (latency budget), быстрый/медленный путь и маршрутизированные конвейеры: [Глава 12. SLO для агентных систем](book/part-v/chapter-12.md)
 - Оценка через LLM как судью (LLM-as-a-judge), калибровка и согласие судьи с человеком (judge-human agreement): [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](book/part-v/chapter-13.md)
 
-## Для дальнейшего чтения
+## Для дальнейшего чтения (further reading)
 
 - [С чего начать](start-here.md)
 - [План книги](book/plan.md)

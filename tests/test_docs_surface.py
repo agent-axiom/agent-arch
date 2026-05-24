@@ -7391,12 +7391,24 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
+    assert "Схемы и контрактные страницы (schemas and contract pages)" in russian_text
+    assert "Практические страницы (practice pages)" in russian_text
+    assert "Быстрые маршруты по темам (quick topic routes)" in russian_text
+    assert "короткий вход (short entry)" in russian_text
+    assert "конкретный вопрос (specific question)" in russian_text
+    assert "Для дальнейшего чтения (further reading)" in russian_text
     assert "постмортемом (postmortem)" in russian_text
     assert "реестру агентов (agent registry)" in russian_text
     assert "операциям инвентаря (inventory operations)" in russian_text
     assert "Шаблон постмортема (postmortem)" in russian_text
     assert "многоагентных систем (multi-agent systems)" in russian_text
 
+    assert "模式页与契约页（schemas and contract pages）" in chinese_text
+    assert "实践页面（practice pages）" in chinese_text
+    assert "按主题快速进入（quick topic routes）" in chinese_text
+    assert "短入口（short entry）" in chinese_text
+    assert "具体问题（specific question）" in chinese_text
+    assert "继续阅读（further reading）" in chinese_text
     assert "智能体注册表（agent registry）" in chinese_text
     assert "清单运维（inventory operations）" in chinese_text
     assert "事后复盘（postmortem）模板" in chinese_text
@@ -7404,9 +7416,19 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
 
     forbidden_markers = (
         "связи с postmortem",
+        "## Схемы и контрактные страницы\n",
+        "## Практические страницы\n",
+        "## Быстрые маршруты по темам\n",
+        "короткий вход в конкретный вопрос",
+        "## Для дальнейшего чтения\n",
         "по registry агентов и inventory operations",
         "Шаблон postmortem",
         "multi-agent систем",
+        "## 模式页与契约页\n",
+        "## 实践页面\n",
+        "## 按主题快速进入\n",
+        "快速进入一个具体问题",
+        "## 继续阅读\n",
         "智能体注册表与清单运维手册",
         "智能体系统事后复盘模板",
         "多智能体可靠性",
