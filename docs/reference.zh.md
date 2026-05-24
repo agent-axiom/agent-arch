@@ -67,7 +67,7 @@
 - MCP 主机/客户端/服务器角色、能力传输、沙箱边界：[第 9 章：沙箱执行与 MCP 作为集成契约](book/part-iv/chapter-9.zh.md)
 - 语义鸿沟、HyDE、RAG 与训练的取舍：[第 7 章：检索、压缩与后台更新](book/part-iii/chapter-7.zh.md)
 - 延迟预算（latency budget）、快路径/慢路径、路由管线：[第 12 章：智能体系统的 SLO](book/part-v/chapter-12.zh.md)
-- LLM-as-a-judge、校准与评审器/人类一致性：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
+- 以 LLM 作为评审器（LLM-as-a-judge）、校准与评审器/人类一致性（judge-human agreement）：[第 13 章：离线评测、在线评测与回归门禁](book/part-v/chapter-13.zh.md)
 
 ## 继续阅读
 

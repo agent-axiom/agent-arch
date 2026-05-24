@@ -4605,8 +4605,8 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
     assert "выбор между RAG и обучением модели (`RAG vs training`)" in text
     assert "Бюджет задержки (latency budget)" in text
     assert "быстрый/медленный путь и маршрутизированные конвейеры" in text
-    assert "Оценка через `LLM-as-a-judge`, калибровка" in text
-    assert "согласие судьи с человеком (`judge-human agreement`)" in text
+    assert "Оценка через LLM как судью (LLM-as-a-judge), калибровка" in text
+    assert "согласие судьи с человеком (judge-human agreement)" in text
 
     forbidden_markers = (
         "- Tool catalog, semantic tool filtering, read/write taxonomy:",
@@ -4615,6 +4615,8 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
         "- Latency budget, fast path / slow path, routed pipeline:",
         "Бюджет задержки (`latency budget`)",
         "- LLM-as-a-judge, calibration и judge-human agreement:",
+        "Оценка через `LLM-as-a-judge`",
+        "согласие судьи с человеком (`judge-human agreement`)",
     )
 
     for marker in forbidden_markers:
@@ -4628,11 +4630,13 @@ def test_chinese_reference_fast_topic_routes_are_localized() -> None:
     assert "MCP 主机/客户端/服务器角色、能力传输、沙箱边界" in text
     assert "语义鸿沟、HyDE、RAG 与训练的取舍" in text
     assert "延迟预算（latency budget）、快路径/慢路径、路由管线" in text
-    assert "LLM-as-a-judge、校准与评审器/人类一致性" in text
+    assert "以 LLM 作为评审器（LLM-as-a-judge）、校准" in text
+    assert "评审器/人类一致性（judge-human agreement）" in text
 
     forbidden_markers = (
         "延迟预算、快路径/慢路径、路由管线",
         "Latency budget, fast path / slow path, routed pipeline",
+        "LLM-as-a-judge、校准与评审器/人类一致性",
     )
 
     for marker in forbidden_markers:
