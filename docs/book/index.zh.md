@@ -10,10 +10,10 @@
 
 读完后，你应该能够：
 
-- 判断什么时候真的需要智能体，什么时候普通工作流就够了；
+- 判断什么时候真的需要智能体，什么时候普通工作流（workflow）就够了；
 - 看清在允许高风险动作之前，系统最少需要哪些平台层；
-- 追踪一次受治理的运行如何穿过策略、执行、证据、审批、发布与生命周期控制；
-- 把记忆、评测、来源谱系、退役与操作员问责看成同一个运行模型的一部分。
+- 追踪一次受治理的运行（run）如何穿过策略（policy）、执行（execution）、证据（evidence）、审批（approval）、发布（rollout）与生命周期控制（lifecycle control）；
+- 把记忆（memory）、评测（evals）、来源谱系（provenance）、退役（retirement）与操作员问责（operator accountability）看成同一个运行模型的一部分。
 
 !!! example "贯穿的支持案例"
     读这本书的一种方式，是一路跟随支持分诊（support-triage）案例：从检索（retrieval）与工具执行（tool execution），到重复工单恢复（duplicate-ticket recovery）、追踪（traces）、SLO、评测门（eval gates）、归属（ownership）、参考运行时（reference runtime）、策略（policy）、发布（rollout）、ADLC、保障（assurance）、来源谱系（provenance）、退役（retirement）、失配控制（misalignment controls）、遥测（telemetry）和注册表（registry）。这样，各章就不再只是主题集合，而是一条可审阅的故事线：一个事故如何变成平台契约。
