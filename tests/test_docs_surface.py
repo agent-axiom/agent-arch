@@ -4545,25 +4545,42 @@ def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
 
 
 def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Change case-spine note",
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "approval rules",
         "write capabilities",
-        "retrieval corpus",
         "freshness windows",
-        "memory write semantics",
-        "incident state",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-20.md",
-        "docs/book/part-viii/chapter-20.en.md",
-        "docs/book/part-viii/chapter-20.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-20.md": (
+            *common_markers,
+            "approval rules",
+            "retrieval corpus",
+            "memory write semantics",
+            "incident state",
+        ),
+        "docs/book/part-viii/chapter-20.en.md": (
+            *common_markers,
+            "approval rules",
+            "retrieval corpus",
+            "memory write semantics",
+            "incident state",
+        ),
+        "docs/book/part-viii/chapter-20.zh.md": (
+            *common_markers,
+            "审批规则（approval rules）",
+            "检索语料（retrieval corpus）",
+            "记忆写入语义（memory write semantics）",
+            "事故状态（incident state）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_20_change_case_spine_links_are_clickable() -> None:
@@ -4589,6 +4606,27 @@ def test_chapter_20_change_case_spine_links_are_clickable() -> None:
         text = _read(path)
         for expected_link in expected_links:
             assert f"]({expected_link})" in text, (path, expected_link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
+    expected_chinese_links = (
+        "[审批规则（approval rules）](../../appendix/approval-schema.zh.md)",
+        "[检索语料（retrieval corpus）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[记忆写入语义（memory write semantics）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[事故状态（incident state）]"
+        "(../../appendix/incident-record-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[approval rules](../../appendix/approval-schema.zh.md)",
+        "[retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
+        "[memory write semantics](../../appendix/memory-retrieval-schema.zh.md)",
+        "[incident state](../../appendix/incident-record-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_7_retrieval_threads_three_canonical_cases() -> None:
