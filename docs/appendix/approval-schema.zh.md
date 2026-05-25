@@ -212,9 +212,9 @@ linked_events:
 
 ## 下一步做什么
 
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 4 章：工具网关、审批与审计轨迹](../book/part-ii/chapter-4.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
