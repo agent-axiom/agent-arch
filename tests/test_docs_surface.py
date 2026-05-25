@@ -7625,6 +7625,14 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
     assert "многоагентных систем (multi-agent systems)" in russian_text
 
     assert "模式页与契约页（schemas and contract pages）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "审批请求与决策记录模式" in chinese_text
+    assert "事故记录与事后复盘链接模式" in chinese_text
+    assert "变更评审与发布门禁模式" in chinese_text
+    assert "生命周期工件模式" in chinese_text
+    assert "记忆记录与检索契约模式" in chinese_text
     assert "实践页面（practice pages）" in chinese_text
     assert "按主题快速进入（quick topic routes）" in chinese_text
     assert "短入口（short entry）" in chinese_text
@@ -7647,6 +7655,14 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
         "multi-agent систем",
         "## 模式页与契约页\n",
         "## 实践页面\n",
+        "追踪 Schema 与事件目录",
+        "评测数据集 Schema 与打分契约",
+        "策略包 Schema 与审批契约",
+        "审批请求与决策记录 Schema",
+        "事故记录与事后复盘链接 Schema",
+        "变更评审与发布门禁 Schema",
+        "生命周期工件 Schema",
+        "记忆记录与检索契约 Schema",
         "## 按主题快速进入\n",
         "快速进入一个具体问题",
         "## 继续阅读\n",
