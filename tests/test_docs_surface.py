@@ -5774,6 +5774,7 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
     assert "поиска (retrieval)" in russian_text
     assert "выполнения инструментов (tool execution)" in russian_text
     assert "восстановления после дубля тикета (duplicate-ticket recovery)" in russian_text
+    assert "эталонной среды исполнения (reference runtime)" in russian_text
     assert "контролей несоответствия (misalignment controls)" in russian_text
 
     assert "贯穿的支持案例（support case throughline）" in chinese_text
@@ -5788,6 +5789,7 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
         "следить за кейсом support-triage",
         "от retrieval и tool execution",
         "duplicate-ticket recovery, traces",
+        "эталонного runtime",
         "misalignment controls, telemetry",
         'example "贯穿的支持案例"',
         "跟随 support-triage 案例",
