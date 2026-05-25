@@ -9031,6 +9031,8 @@ def test_multilingual_causal_debugging_case_note_is_localized() -> None:
     assert "检索到的上下文（retrieved context）" in chinese_text
     assert "陈旧来源（stale source）" in chinese_text
     assert "升级触发器（escalation trigger）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "事故记录与事后复盘链接模式" in chinese_text
 
     forbidden_markers = (
         "Causal debugging должен искать",
@@ -9043,6 +9045,8 @@ def test_multilingual_causal_debugging_case_note_is_localized() -> None:
         "区分 retrieved context",
         "区分 stale source",
         "区分 escalation trigger",
+        "追踪 Schema 与事件目录",
+        "事故记录与事后复盘链接 Schema",
     )
 
     for marker in forbidden_markers:

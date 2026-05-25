@@ -74,7 +74,7 @@
 
 ## 5. 它和追踪、结构化事件的关系
 
-因果调试不替代 [追踪 Schema 与事件目录](trace-schema.zh.md)，它建立在其上。
+因果调试不替代 [追踪模式与事件目录](trace-schema.zh.md)，它建立在其上。
 
 好的追踪层已经提供：
 
@@ -159,8 +159,8 @@
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [事故记录与事后复盘链接模式](incident-record-schema.zh.md)
 - [智能体系统事后复盘模板](postmortem-template.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [第 11 章：追踪、跨度与结构化事件](../book/part-v/chapter-11.zh.md)
