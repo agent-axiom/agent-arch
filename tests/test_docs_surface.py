@@ -8661,6 +8661,11 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
     assert "写入能力（write capability）" in chinese_text
     assert "检索范围（retrieval scope）" in chinese_text
     assert "升级状态（escalation status）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "审批请求与决策记录模式" in chinese_text
+    assert "变更评审与发布门禁模式" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Incident response должен выбирать",
@@ -8674,6 +8679,11 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
         "冻结 write capability",
         "收窄 retrieval scope",
         "记录 escalation status",
+        "追踪 Schema 与事件目录",
+        "策略包 Schema 与审批契约",
+        "审批请求与决策记录 Schema",
+        "变更评审与发布门禁 Schema",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:
