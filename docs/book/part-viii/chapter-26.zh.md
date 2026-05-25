@@ -163,9 +163,9 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 - 稳定 schemas；
 - redaction rules；
 - retention policy；
-- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、[verifier evidence](../../appendix/eval-schema.zh.md)、verifier contract identity 和 lifecycle artifacts 之间的链接。
+- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)、verifier contract identity 和 lifecycle artifacts 之间的链接。
 
-如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 [verifier evidence](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
+如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
 
 Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应该衡量有多少比例的 AI systems 会发出 logs 和 traces，有多少比例的 releases 运行过标准 evaluation suite，以及有多少比例的 abuse/security scenarios 已经被 telemetry 覆盖。[^ms-observability] 这样，observability 就不再只是“我们有 dashboards”，而是变成可度量的 production obligation：inventory coverage、release-eval coverage 和 detection-scenario coverage。
 
@@ -354,7 +354,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - telemetry 覆盖了 happy path，却没覆盖 bypass path；
 - contract-version drift 只有在 payload 不再匹配预期时才被发现；
 - orchestration-pattern drift 或 worker-boundary crossings 没有成为一等遥测；
-- [verifier evidence](../../appendix/eval-schema.zh.md) 与 traces 或 screenshots 脱节；
+- [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与 traces 或 screenshots 脱节；
 - drift 只能靠用户抱怨才发现；
 - retention 和 redaction rules 与取证需求不一致。
 
@@ -365,7 +365,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 更高的标准应该是：
 
 - inventory coverage 和 telemetry coverage 被当成同一个控制问题；
-- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 [verifier evidence](../../appendix/eval-schema.zh.md)；
+- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)；
 - 除了 raw telemetry 之外，还有 behavioral baselines；
 - paused-run age、approval backlog 与 background-run aging 都是一等信号；
 - unobserved agents 被当成治理风险，而不只是记账缺口；
@@ -377,7 +377,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - 你知道生产资产里到底有多少 agents 吗？
 - 其中多少百分比真的会发 structured telemetry？
-- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 [verifier evidence](../../appendix/eval-schema.zh.md) 吗？
+- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 吗？
 - 你有没有 behavioral baselines，而不只是 raw dashboards？
 - 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
 - 你会不会把 unobserved agents 当成一个单独的风险类别？
@@ -391,7 +391,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 本章应该被读成一层 evidence readiness，而不是 logging checklist：
 
-- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 [verifier evidence](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
+- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
 - **厂商实践：** 当前 observability 与 infrastructure inventory 指南越来越把 telemetry coverage 和 asset coverage 视为生产控制，而不只是 debugging aids。
 - **运行时实践：** structured events、inventory coverage checks、behavioral baselines 与 detection-ready fields 让 traces 可以用于 release review 和 incident response。
 - **作者解释：** AI-native observability 是 evals、assurance、registry 与 lifecycle governance 之间的桥梁。
