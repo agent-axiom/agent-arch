@@ -45,10 +45,10 @@
 
 ## Прямые точки входа (direct entry points)
 
-- [Начать с Части I](part-i/index.md)
-- [Открыть план книги](plan.md)
+- [Начать с Части I (Part I)](part-i/index.md)
+- [Открыть план книги (Book Plan)](plan.md)
 - [Перейти к Сквозной цепочке доказательств (Evidence Spine)](part-v/evidence-spine.md)
-- [Перейти к жизненному циклу агентной системы](part-viii/index.md)
+- [Перейти к жизненному циклу агентной системы (agent system lifecycle)](part-viii/index.md)
 
-[Читать книгу](part-i/index.md){ .md-button .md-button--primary }
-[Открыть план](plan.md){ .md-button }
+[Читать книгу (Read the book)](part-i/index.md){ .md-button .md-button--primary }
+[Открыть план (Open plan)](plan.md){ .md-button }
