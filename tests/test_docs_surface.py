@@ -4308,9 +4308,10 @@ def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> Non
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
             "[关闭工具主体](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[撤销 gateway exposure]"
+            "[撤销网关暴露（gateway exposure）]"
             "(../../appendix/registry-operations-handbook.zh.md)",
-            "[让 paused approvals 过期](../../appendix/approval-schema.zh.md)",
+            "[让暂停审批（paused approvals）过期]"
+            "(../../appendix/approval-schema.zh.md)",
             "[停止后台重试](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[保留审计轨迹](../../appendix/trace-schema.zh.md)",
         ),
@@ -4320,6 +4321,15 @@ def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> Non
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[撤销 gateway exposure]"
+        "(../../appendix/registry-operations-handbook.zh.md)",
+        "[让 paused approvals 过期](../../appendix/approval-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> None:
