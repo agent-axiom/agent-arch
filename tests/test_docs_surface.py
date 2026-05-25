@@ -10924,6 +10924,13 @@ def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
     for path, expected_link in expected_links_by_file.items():
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
+    chinese_text = _read("docs/book/part-iv/chapter-9.zh.md")
+    assert (
+        "[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md)"
+        in chinese_text
+    )
+    assert "[MCP threat model](../../appendix/trace-schema.zh.md)" not in chinese_text
+
 
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
@@ -11024,6 +11031,16 @@ def test_practical_a2a_handoff_trust_trace_links_are_clickable() -> None:
 
     for path, expected_link in expected_links_by_file.items():
         assert f"]({expected_link})" in _read(path), (path, expected_link)
+
+    chinese_text = _read("docs/book/part-iv/practical-mcp-a2a.zh.md")
+    assert (
+        "[A2A 交接信任合约（A2A handoff trust contract）]"
+        "(../../appendix/trace-schema.zh.md)" in chinese_text
+    )
+    assert (
+        "[A2A handoff trust contract](../../appendix/trace-schema.zh.md)"
+        not in chinese_text
+    )
 
 
 def test_chapter_1_decision_frame_is_extraction_safe() -> None:
