@@ -4620,6 +4620,9 @@ def test_chapter_13_verifier_verdict_schema_links_are_clickable() -> None:
             "](../../appendix/trace-schema.en.md)",
         ),
         "docs/book/part-v/chapter-13.zh.md": (
+            "[验证器裁决记录（verifier verdict record）]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)",
             "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
             "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
