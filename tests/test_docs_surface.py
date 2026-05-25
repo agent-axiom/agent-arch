@@ -3849,7 +3849,7 @@ def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
             "and [verifier evidence](../../appendix/eval-schema.en.md) for how"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[verifier evidence](../../appendix/eval-schema.zh.md)，那它也许"
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许"
         ),
     }
 
@@ -3866,7 +3866,7 @@ def test_chapter_26_observability_breakages_link_verifier_evidence() -> None:
             "[verifier evidence](../../appendix/eval-schema.en.md) is detached"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[verifier evidence](../../appendix/eval-schema.zh.md) 与 traces"
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与 traces"
         ),
     }
 
@@ -3885,7 +3885,7 @@ def test_chapter_26_maturity_bar_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "reviewed orchestration patterns 与 [verifier evidence]"
+            "reviewed orchestration patterns 与 [验证器证据（verifier evidence）]"
             "(../../appendix/eval-schema.zh.md)"
         ),
     }
@@ -3905,7 +3905,7 @@ def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "当前 orchestration pattern 和 [verifier evidence]"
+            "当前 orchestration pattern 和 [验证器证据（verifier evidence）]"
             "(../../appendix/eval-schema.zh.md)"
         ),
     }
@@ -3923,12 +3923,16 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
             "artifacts, and [verifier evidence](../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "artifacts 与 [verifier evidence](../../appendix/eval-schema.zh.md)"
+            "artifacts 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
         ),
     }
 
     for path, expected_snippet in expected_snippets_by_file.items():
         assert expected_snippet in _read(path), (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    forbidden_chinese_link = "[verifier evidence](../../appendix/eval-schema.zh.md)"
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
