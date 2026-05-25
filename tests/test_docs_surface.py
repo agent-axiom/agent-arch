@@ -3168,7 +3168,7 @@ def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> No
         "docs/book/part-viii/chapter-22.zh.md": (
             "[哪一组已批准工件与哪一个发布身份]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[导出的失败字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)",
+            "[失败原因字段（`failure_reason`）](../../appendix/eval-schema.zh.md)",
             "[`latest_failure_reason`](../../appendix/eval-schema.zh.md)",
             "[`traceable_failed_runs`](../../appendix/eval-schema.zh.md)",
         ),
@@ -3180,8 +3180,12 @@ def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> No
             assert expected_snippet in text, (path, expected_snippet)
 
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
-    forbidden_chinese_link = "[导出字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)"
-    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+    forbidden_chinese_links = (
+        "[导出字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)",
+        "[导出的失败字段，例如 `failure_reason`](../../appendix/eval-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_maturity_bar_links_inventory_and_artifacts() -> None:
