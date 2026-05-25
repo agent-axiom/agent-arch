@@ -7801,6 +7801,11 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
     assert "覆盖视角（coverage lenses）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "追踪（traces）" in chinese_text
+    assert "附录模式" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "как runnable baseline для write capabilities",
@@ -7813,6 +7818,11 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
         "检查 retrieval、memory",
         "检查 traces、escalation",
         "做成 runnable configs",
+        "附录 Schema",
+        "追踪 Schema 与事件目录",
+        "评测数据集 Schema 与打分契约",
+        "策略包 Schema 与审批契约",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:
