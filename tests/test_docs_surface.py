@@ -6879,7 +6879,7 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
     assert "安全工具执行（safe tool execution）" in chinese_text
     assert "记忆与检索（memory and retrieval）" in chinese_text
     assert "可观测性、评测与发布（observability, evals, and rollout）" in chinese_text
-    assert "安全智能体 Schema 主线（Safe-agent schema spine）" in chinese_text
+    assert "安全智能体模式主线（Safe-agent schema spine）" in chinese_text
     assert "参考层（reference layer）" in chinese_text
     assert "旁边还可以打开什么（companion references）" in chinese_text
     assert "AI 落地页（AI landing page）" in chinese_text
@@ -6942,6 +6942,7 @@ def test_multilingual_start_here_code_artifact_route_is_localized() -> None:
         "### 记忆与检索\n",
         "### 可观测性、评测与发布（rollout）",
         "### Safe-agent schema spine\n",
+        "安全智能体 Schema 主线",
         "## 读书时旁边还可以打开什么\n",
         "AI 落地页更接近真实工程",
         "需要运行时骨架、策略契约",

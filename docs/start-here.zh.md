@@ -118,7 +118,7 @@
 - [第 18 章：生产上线检查清单](book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理（Change management）](book/part-viii/chapter-20.zh.md)
 
-### 安全智能体 Schema 主线（Safe-agent schema spine）
+### 安全智能体模式主线（Safe-agent schema spine）
 
 - [追踪 Schema 与事件目录](appendix/trace-schema.zh.md)
 - [评测数据集 Schema 与打分契约](appendix/eval-schema.zh.md)
