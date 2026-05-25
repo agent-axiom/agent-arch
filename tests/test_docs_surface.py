@@ -8395,6 +8395,9 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
     assert "回滚计划（rollback plan）" in chinese_text
     assert "检索新鲜度窗口（retrieval freshness window）" in chinese_text
     assert "升级演练（escalation drill）" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "生命周期工件模式" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
 
     forbidden_markers = (
         "Rollout gate должен проверять",
@@ -8407,6 +8410,9 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
         "需要 duplicate-ticket eval pass",
         "需要 retrieval freshness window",
         "需要 escalation drill",
+        "评测数据集 Schema 与打分契约",
+        "生命周期工件 Schema",
+        "策略包 Schema 与审批契约",
     )
 
     for marker in forbidden_markers:

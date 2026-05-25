@@ -2,7 +2,7 @@
 
 这一页把智能体系统里的变更评审和发布门禁所需的最小契约层放在一起。它适合用在这样一个阶段：团队已经知道策略、提示、模型路由、检索和工具暴露这些变化不能“凭感觉发布”，但还没有把这些检查沉淀成明确工件。
 
-如果 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 回答的是“生命周期里应该有哪些实体”，那么变更与发布门禁 Schema 回答的就是“真正做发布决策时，到底需要哪些字段”。
+如果 [生命周期工件模式](lifecycle-artifact-schema.zh.md) 回答的是“生命周期里应该有哪些实体”，那么变更与发布门禁 Schema 回答的就是“真正做发布决策时，到底需要哪些字段”。
 
 ## 1. 为什么需要单独的 Schema 层
 
@@ -136,9 +136,9 @@ decided_by:
 - 如果变更触及由 sandbox 支撑的执行，sandbox profile contract 是否也进入评审，包括 workspace materialization、permissions 与 snapshot/resume policy；
 - 如果中断语义在发布后开始漂移，紧急冻结由谁负责。
 
-## 6. 它和评测 Schema 的关系
+## 6. 它和评测模式的关系
 
-变更评审与发布门禁和 [评测 Schema](eval-schema.zh.md) 是紧密耦合的：
+变更评审与发布门禁和 [评测模式](eval-schema.zh.md) 是紧密耦合的：
 
 - 评审会声明哪些评测是必须的；
 - 门禁会判断这些结果是否足够支撑当前发布波次；
@@ -147,9 +147,9 @@ decided_by:
 
 也就是说，评测层不是独立存在的，而是门禁的一根支柱。
 
-## 7. 它和追踪 Schema 的关系
+## 7. 它和追踪模式的关系
 
-一旦追踪 Schema 完整，发布门禁就会强很多：
+一旦追踪模式完整，发布门禁就会强很多：
 
 - 追踪能看出高风险路径是否真的被覆盖；
 - 会话摘要能看出是否已经出现回归；
@@ -229,9 +229,9 @@ decided_by:
 
 ## 下一步做什么
 
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
