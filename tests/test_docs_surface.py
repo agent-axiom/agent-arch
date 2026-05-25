@@ -4448,11 +4448,12 @@ def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None
             "[record the final audit state](../../appendix/trace-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
-            "[停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure]"
+            "[停用已废弃的编排模式（orchestration patterns），并撤销 worker-safe "
+            "目录暴露（worker-safe catalog exposure）]"
             "(../../appendix/change-rollout-schema.zh.md)",
-            "[撤销 delegated authorization paths]"
+            "[撤销委派授权路径（delegated authorization paths）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)",
+            "[归档它们最终的血缘（lineage）](../../appendix/trace-schema.zh.md)",
             "[退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据]"
             "(../../appendix/eval-schema.zh.md)",
             "[`failure_reason`](../../appendix/eval-schema.zh.md)",
@@ -4470,6 +4471,17 @@ def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[撤销 delegated authorization paths]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
