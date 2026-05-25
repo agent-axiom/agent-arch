@@ -2638,8 +2638,9 @@ def test_chapter_22_maturity_bar_links_production_artifact_contracts() -> None:
             "[评测](../../appendix/eval-schema.zh.md)",
             "[能力](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[审批](../../appendix/approval-schema.zh.md)",
-            "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[verifier](../../appendix/eval-schema.zh.md) 工件",
+            "[运行时控制（runtime-control）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[验证器（verifier）](../../appendix/eval-schema.zh.md)工件",
         ),
     }
 
@@ -2647,6 +2648,14 @@ def test_chapter_22_maturity_bar_links_production_artifact_contracts() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_links = (
+        "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[verifier](../../appendix/eval-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_approved_inventory_links_registry_handbook() -> None:
@@ -3390,8 +3399,9 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[策略](../../appendix/policy-bundle-schema.zh.md)",
-            "[approval-schema](../../appendix/approval-schema.zh.md)",
-            "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[审批模式（approval-schema）](../../appendix/approval-schema.zh.md)",
+            "[运行时控制（runtime-control）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[评测和验证器](../../appendix/eval-schema.zh.md)工件",
         ),
     }
@@ -3400,6 +3410,14 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_links = (
+        "[approval-schema](../../appendix/approval-schema.zh.md)",
+        "[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_useful_refs_include_supply_chain_schema_pages() -> None:

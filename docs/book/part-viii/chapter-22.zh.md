@@ -334,7 +334,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 
 更高的标准应该是：
 
-- 提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[评测](../../appendix/eval-schema.zh.md)、[能力](../../appendix/lifecycle-artifact-schema.zh.md)、[审批](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md) 和 [verifier](../../appendix/eval-schema.zh.md) 工件都被当成生产工件；
+- 提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[评测](../../appendix/eval-schema.zh.md)、[能力](../../appendix/lifecycle-artifact-schema.zh.md)、[审批](../../appendix/approval-schema.zh.md)、[运行时控制（runtime-control）](../../appendix/lifecycle-artifact-schema.zh.md)和[验证器（verifier）](../../appendix/eval-schema.zh.md)工件都被当成生产工件；
 - 来源追踪能在事故评审和 rollout 决策中被快速恢复；
 - 发布和保障证据能回溯到当时生效的[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)与契约族；
 - [已批准清单](../../appendix/registry-operations-handbook.zh.md)和[已批准工件](../../appendix/lifecycle-artifact-schema.zh.md)被当成不同的控制层来管理；
@@ -348,7 +348,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 如果你想快速检查工件纪律，可以问：
 
 - 所有[生产工件](../../appendix/lifecycle-artifact-schema.zh.md)都有 owner 吗？
-- 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[approval-schema](../../appendix/approval-schema.zh.md)、[runtime-control](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
+- 模型、提示、[策略](../../appendix/policy-bundle-schema.zh.md)、[审批模式（approval-schema）](../../appendix/approval-schema.zh.md)、[运行时控制（runtime-control）](../../appendix/lifecycle-artifact-schema.zh.md)、[评测和验证器](../../appendix/eval-schema.zh.md)工件都有版本吗？
 - 事故评审时能快速恢复来源追踪、[验证器血缘](../../appendix/eval-schema.zh.md)与[生效中的契约/模式版本](../../appendix/trace-schema.zh.md)吗？
 - 平台是否有[已批准清单](../../appendix/registry-operations-handbook.zh.md)？
 - 你们能区分[平台批准的模式](../../appendix/change-rollout-schema.zh.md)和[发布批准的工件](../../appendix/lifecycle-artifact-schema.zh.md)吗？
