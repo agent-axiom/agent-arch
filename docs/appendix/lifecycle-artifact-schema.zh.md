@@ -18,7 +18,7 @@
 - 已批准工件包；
 - 退役计划；
 - 替换映射；
-- 运行时控制 Schema 与契约版本链接；
+- 运行时控制模式与契约版本链接；
 - 运行期审批和生命周期决策；
 - 当这些能力已进入运行时契约时，能力会话中断、过期与重新初始化规则；
 - 当这些能力已进入运行时契约时，委派授权规则、主体绑定假设与撤销行为；
@@ -181,7 +181,7 @@ owner: platform-operations
 
 ## 6. 它和第八部分的关系
 
-这个 Schema 直接支撑了几章核心内容：
+这个模式直接支撑了几章核心内容：
 
 - 第 20 章：变更管理；
 - 第 21 章：保障发现结果作为生命周期输入；
@@ -201,7 +201,7 @@ Lifecycle artifact loaders 会把 malformed release-state inputs 与失败但格
 - 每个高风险变更都有 `change_record`；
 - 每次生产环境上线都指向一个 `artifact_bundle`；
 - 每个工件包都能作为具体的发布身份记录，而不只是松散的版本清单；
-- 只要存在这些控制，每个工件包都应关联运行时控制 Schema 与契约版本；
+- 只要存在这些控制，每个工件包都应关联运行时控制模式与契约版本；
 - 当发布或保障依赖打分结果时，验证器契约谱系与契约族身份也必须可追溯；
 - 当 rollout 要求 `sandbox_profile_reviewed` 时，必须能从 bundle、trace 或 eval artifact 还原 sandbox profile review evidence；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
