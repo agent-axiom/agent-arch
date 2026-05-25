@@ -7937,6 +7937,9 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
     assert "明确的人工审批（explicit human approval）" in chinese_text
     assert "访问控制例外（access-control exceptions）" in chinese_text
     assert "审批轨迹（approval trail）" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Approval record нужен не только для write path",
@@ -7945,6 +7948,9 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
         "Approval record 不只服务于 write path",
         "需要 explicit human approval",
         "需要一条 approval trail",
+        "策略包 Schema 与审批契约",
+        "追踪 Schema 与事件目录",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:
