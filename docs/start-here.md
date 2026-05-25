@@ -35,7 +35,7 @@
 - почему одной “умной модели” (smart model) мало без трасс (traces), SLO и оценок (evals);
 - что требуется до первой серьезной раскатки (first serious rollout).
 
-!!! example "Если хочешь идти по сквозному кейсу"
+!!! example "Если хочешь идти по сквозному кейсу (throughline case)"
     Следи за историей триажа поддержки (support-triage): она начинается с поиска (retrieval) и безопасного выполнения инструментов (safe tool execution), проходит через восстановление после дубля тикета (duplicate-ticket recovery), трассы (traces), SLO и шлюзы оценок (eval gates), а затем доводится до раскатки (rollout), ADLC, заверения (assurance), происхождения данных (provenance), вывода из эксплуатации (retirement), контролей несоответствия (misalignment controls), телеметрии (telemetry) и реестра (registry). Это хороший маршрут, если хочется увидеть не абстрактные слои, а один путь от инцидента к платформенному контракту (incident-to-platform-contract path).
 
 !!! note "Канонические маршруты сценариев (Canonical case routes)"

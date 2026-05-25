@@ -6776,6 +6776,7 @@ def test_multilingual_start_here_support_case_example_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
+    assert "Если хочешь идти по сквозному кейсу (throughline case)" in russian_text
     assert "триажа поддержки (support-triage)" in russian_text
     assert "поиска (retrieval)" in russian_text
     assert "безопасного выполнения инструментов (safe tool execution)" in russian_text
@@ -6790,6 +6791,7 @@ def test_multilingual_start_here_support_case_example_is_localized() -> None:
     assert "реестра (registry)" in russian_text
     assert "платформенному контракту (incident-to-platform-contract path)" in russian_text
 
+    assert "如果你想跟随贯穿案例（throughline case）" in chinese_text
     assert "支持分诊（support-triage）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "安全工具执行（safe tool execution）" in chinese_text
@@ -6805,11 +6807,13 @@ def test_multilingual_start_here_support_case_example_is_localized() -> None:
     assert "从事故到平台契约的路径（incident-to-platform-contract path）" in chinese_text
 
     forbidden_markers = (
+        'example "Если хочешь идти по сквозному кейсу"',
         "историей support-triage",
         "начинается с retrieval",
         "проходит через duplicate-ticket recovery",
         "misalignment controls, telemetry",
         "incident-to-platform-contract путь",
+        'example "如果你想跟随贯穿案例"',
         "跟着 support-triage 故事",
         "重复工单恢复、traces",
         "进入 rollout、ADLC",
