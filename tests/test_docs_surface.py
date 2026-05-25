@@ -8242,6 +8242,9 @@ def test_multilingual_eval_schema_case_note_is_localized() -> None:
     assert "审批门禁（approval gates）" in chinese_text
     assert "检索新鲜度（retrieval freshness）" in chinese_text
     assert "升级时序（escalation timing）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Eval dataset должен покрывать",
@@ -8253,6 +8256,12 @@ def test_multilingual_eval_schema_case_note_is_localized() -> None:
         "检查 approval gates",
         "检查 retrieval freshness",
         "检查 escalation timing",
+        "追踪 Schema 与事件目录",
+        "策略包 Schema 与审批契约",
+        "生命周期工件 Schema",
+        "追踪 Schema 那一页",
+        "追踪 Schema 描述实际运行行为",
+        "评测数据集 Schema 描述期望行为",
     )
 
     for marker in forbidden_markers:
