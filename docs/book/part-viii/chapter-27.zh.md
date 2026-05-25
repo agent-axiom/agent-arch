@@ -379,9 +379,9 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 ## 16. 值得配套阅读的参考页
 
-- [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
-- [审批请求与决策模式](../../appendix/approval-schema.zh.md)
+- [审批请求与决策记录模式](../../appendix/approval-schema.zh.md)
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
 - [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
 - [记忆记录与检索契约模式](../../appendix/memory-retrieval-schema.zh.md)
