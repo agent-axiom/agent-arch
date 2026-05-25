@@ -3579,7 +3579,6 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "eval schema",
         "behavioral and control eval surfaces",
         "payload-mutation check",
         "source-grounding eval",
@@ -3589,18 +3588,21 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-25.md": (
             *common_markers,
+            "eval schema",
             "eval gate and verifier contract",
             "approval-path misuse check",
             "retrieval-poisoning scenario",
         ),
         "docs/book/part-viii/chapter-25.en.md": (
             *common_markers,
+            "eval schema",
             "eval gate and verifier contract",
             "approval-path misuse check",
             "retrieval-poisoning scenario",
         ),
         "docs/book/part-viii/chapter-25.zh.md": (
             *common_markers,
+            "评测模式（eval schema）",
             "评测门禁与验证器契约（eval gate and verifier contract）",
             "审批路径误用检查（approval-path misuse check）",
             "检索投毒场景（retrieval-poisoning scenario）",
@@ -3612,6 +3614,10 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    forbidden_chinese_link = "[eval schema](../../appendix/eval-schema.zh.md)"
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
