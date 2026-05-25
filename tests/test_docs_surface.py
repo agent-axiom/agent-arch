@@ -4686,11 +4686,11 @@ def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None
             "[staged migration](../../appendix/change-rollout-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
-            "[background routes 被遗忘没有关闭]"
+            "[后台路由（background routes）被遗忘没有关闭]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[归档状态没有负责人]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的 schemas 仍然被 gateways 或 runtimes 接受]"
+            "[已废弃的模式（schemas）仍然被网关（gateways）或运行时（runtimes）接受]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[已废弃模式存活太久]"
             "(../../appendix/change-rollout-schema.zh.md)",
@@ -4703,6 +4703,16 @@ def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[background routes 被遗忘没有关闭]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[已废弃的 schemas 仍然被 gateways 或 runtimes 接受]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
