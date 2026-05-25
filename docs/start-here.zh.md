@@ -38,7 +38,7 @@
 - 为什么没有追踪（traces）、SLO 和评测（evals）时，单靠“聪明模型”（smart model）不够；
 - 第一次认真发布（first serious rollout）之前到底需要什么。
 
-!!! example "如果你想跟随贯穿案例"
+!!! example "如果你想跟随贯穿案例（throughline case）"
     可以一路跟着支持分诊（support-triage）故事走：它从检索（retrieval）和安全工具执行（safe tool execution）开始，经过重复工单恢复（duplicate-ticket recovery）、追踪（traces）、SLO 和评测门（eval gates），然后继续进入发布（rollout）、ADLC、保障（assurance）、来源谱系（provenance）、退役（retirement）、失配控制（misalignment controls）、遥测（telemetry）和注册表（registry）。如果你想看到的是一条从事故到平台契约的路径（incident-to-platform-contract path），而不是一组抽象层，这是最好的路线。
 
 !!! note "规范案例路线（Canonical case routes）"
