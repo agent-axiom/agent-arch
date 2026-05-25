@@ -3413,10 +3413,10 @@ def test_chapter_26_useful_refs_include_observability_contracts() -> None:
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[Approval Schema](../../appendix/approval-schema.zh.md)",
-            "[Lifecycle Artifact Schema]"
+            "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
+            "[生命周期工件模式]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
