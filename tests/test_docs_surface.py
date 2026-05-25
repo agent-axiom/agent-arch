@@ -363,15 +363,16 @@ def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
         ),
         "docs/book/part-viii/index.zh.md": (
             "[变更包](../../appendix/change-rollout-schema.zh.md)",
-            "[Finding 与响应记录]"
+            "[发现与响应记录（finding and response record）]"
             "(../../appendix/incident-record-schema.zh.md)",
             "[已批准工件包]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[退役计划](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[Eval gate 与 verifier contract](../../appendix/eval-schema.zh.md)",
-            "[Trace 与 telemetry 覆盖记录]"
+            "[评测门禁与验证器契约（eval gate and verifier contract）]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[追踪与遥测覆盖记录（trace and telemetry coverage record）]"
             "(../../appendix/trace-schema.zh.md)",
-            "[Registry record]"
+            "[注册表记录（registry record）]"
             "(../../appendix/registry-operations-handbook.zh.md)",
         ),
     }
@@ -380,6 +381,16 @@ def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
         text = _read(relative_path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (relative_path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/index.zh.md")
+    forbidden_chinese_links = (
+        "[Finding 与响应记录](../../appendix/incident-record-schema.zh.md)",
+        "[Eval gate 与 verifier contract](../../appendix/eval-schema.zh.md)",
+        "[Trace 与 telemetry 覆盖记录](../../appendix/trace-schema.zh.md)",
+        "[Registry record](../../appendix/registry-operations-handbook.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_part_viii_role_map_is_print_friendly() -> None:

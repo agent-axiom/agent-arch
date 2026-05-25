@@ -41,13 +41,13 @@
 
 - **生命周期框架** 管住从设计到退役的状态转换。它的 artifact 是 ADLC 状态模型；它不是只给 SDLC 换名字。
 - **变更管理** 判断哪些变更需要评审和发布门禁。它的 artifact 是 [变更包](../../appendix/change-rollout-schema.zh.md)；它不是普通项目管理。
-- **保障闭环** 把 findings 转成 containment、remediation 和 ownership。它的 artifact 是 [Finding 与响应记录](../../appendix/incident-record-schema.zh.md)；它不是可观测性或 eval scoring。
+- **保障闭环** 把 findings 转成 containment、remediation 和 ownership。它的 artifact 是 [发现与响应记录（finding and response record）](../../appendix/incident-record-schema.zh.md)；它不是可观测性或 eval scoring。
 - **来源追踪** 保留受信任工件谱系和发布身份。它的 artifact 是 [已批准工件包](../../appendix/lifecycle-artifact-schema.zh.md)；它不是泛泛的 evidence 文件夹。
 - **退役** 在不丢失问责的情况下关闭或替换系统。它的 artifact 是 [退役计划](../../appendix/lifecycle-artifact-schema.zh.md)；它不是删除旧智能体。
 - **失配与内部人风险** 命名对抗性或激励驱动的误用路径。它的 artifact 是风险场景与控制计划；它不是 prompt-injection 指南的重复。
-- **行为/控制评测** 对行为和控制给出发布判断。它的 artifact 是 [Eval gate 与 verifier contract](../../appendix/eval-schema.zh.md)；它不是事故响应。
-- **可观测性** 让 evidence substrate 可见、可查询。它的 artifact 是 [Trace 与 telemetry 覆盖记录](../../appendix/trace-schema.zh.md)；它不是 governance decision 的负责人。
-- **清单与注册表** 通过 owner 和生命周期状态让整个 estate 可问责。它的 artifact 是 [Registry record](../../appendix/registry-operations-handbook.zh.md)；它不是松散的智能体表格。
+- **行为/控制评测** 对行为和控制给出发布判断。它的 artifact 是 [评测门禁与验证器契约（eval gate and verifier contract）](../../appendix/eval-schema.zh.md)；它不是事故响应。
+- **可观测性** 让 evidence substrate 可见、可查询。它的 artifact 是 [追踪与遥测覆盖记录（trace and telemetry coverage record）](../../appendix/trace-schema.zh.md)；它不是 governance decision 的负责人。
+- **清单与注册表** 通过 owner 和生命周期状态让整个 estate 可问责。它的 artifact 是 [注册表记录（registry record）](../../appendix/registry-operations-handbook.zh.md)；它不是松散的智能体表格。
 
 把这些章节当作一条链来读：lifecycle 定义状态，change management 控制移动，evals 判断是否可发布，provenance 记录哪些工件可信，observability 保留 evidence，assurance 在 evidence 变成 risk 时响应，retirement 关闭旧路径，registry 维持整个 estate 的 accountability。如果两章听起来都像 “governance”，就用它们在 review 后必须留下的工件来区分。
 
