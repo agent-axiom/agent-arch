@@ -3447,28 +3447,45 @@ def test_chapter_22_useful_refs_include_supply_chain_schema_pages() -> None:
 
 
 def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Misalignment case-spine note",
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
         "risk scenario and control plan",
         "insider-risk surfaces",
-        "approval-tight replacement window",
         "separate tool principal",
-        "immutable trace linkage",
-        "retrieval poisoning",
         "tenant-filter bypass",
         "notification suppression",
-        "incident-state tampering",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-24.md",
-        "docs/book/part-viii/chapter-24.en.md",
-        "docs/book/part-viii/chapter-24.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-24.md": (
+            *common_markers,
+            "approval-tight replacement window",
+            "immutable trace linkage",
+            "retrieval poisoning",
+            "incident-state tampering",
+        ),
+        "docs/book/part-viii/chapter-24.en.md": (
+            *common_markers,
+            "approval-tight replacement window",
+            "immutable trace linkage",
+            "retrieval poisoning",
+            "incident-state tampering",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            *common_markers,
+            "审批收紧替换窗口（approval-tight replacement window）",
+            "不可变追踪链接（immutable trace linkage）",
+            "检索投毒（retrieval poisoning）",
+            "事故状态篡改（incident-state tampering）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
@@ -3531,6 +3548,29 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         text = _read(path)
         for expected_link in expected_links:
             assert f"]({expected_link})" in text, (path, expected_link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_chinese_links = (
+        "[审批收紧替换窗口（approval-tight replacement window）]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[不可变追踪链接（immutable trace linkage）]"
+        "(../../appendix/trace-schema.zh.md)",
+        "[检索投毒（retrieval poisoning）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[事故状态篡改（incident-state tampering）]"
+        "(../../appendix/incident-record-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[approval-tight replacement window]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[immutable trace linkage](../../appendix/trace-schema.zh.md)",
+        "[retrieval poisoning](../../appendix/memory-retrieval-schema.zh.md)",
+        "[incident-state tampering](../../appendix/incident-record-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
