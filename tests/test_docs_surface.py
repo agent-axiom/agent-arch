@@ -4229,14 +4229,15 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
             "[已废弃清单（deprecated inventory）]"
             "(../../appendix/registry-operations-handbook.zh.md)",
             "[已废弃的能力契约](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的 approval schema](../../appendix/approval-schema.zh.md)",
-            "[已废弃的 runtime-control schema]"
+            "[已废弃的审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
+            "[已废弃的运行时控制模式（runtime-control schema）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的 orchestration pattern 或 worker-boundary policy]"
+            "[已废弃的编排模式（orchestration pattern）或 worker-boundary 策略"
+            "（worker-boundary policy）]"
             "(../../appendix/change-rollout-schema.zh.md)",
-            "[已废弃的 capability-session contract]"
+            "[已废弃的能力会话契约（capability-session contract）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的 verifier contract](../../appendix/eval-schema.zh.md)",
+            "[已废弃的验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)",
         ),
     }
 
@@ -4244,6 +4245,20 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[已废弃的 approval schema](../../appendix/approval-schema.zh.md)",
+        "[已废弃的 runtime-control schema]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[已废弃的 orchestration pattern 或 worker-boundary policy]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[已废弃的 capability-session contract]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[已废弃的 verifier contract](../../appendix/eval-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
