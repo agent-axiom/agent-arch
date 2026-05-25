@@ -7946,6 +7946,8 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
     assert "策略包模式与审批契约" in chinese_text
     assert "追踪模式与事件目录" in chinese_text
     assert "生命周期工件模式" in chinese_text
+    assert "审批模式回答的就是" in chinese_text
+    assert "它和追踪模式的关系" in chinese_text
 
     forbidden_markers = (
         "Approval record нужен не только для write path",
@@ -7957,6 +7959,11 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
         "策略包 Schema 与审批契约",
         "追踪 Schema 与事件目录",
         "生命周期工件 Schema",
+        "审批 Schema 回答的就是",
+        "最小可用的审批 Schema",
+        "追踪 Schema 和生命周期工件",
+        "它和追踪 Schema 的关系",
+        "审批 Schema 回答的是另一层",
     )
 
     for marker in forbidden_markers:
