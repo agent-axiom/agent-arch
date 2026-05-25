@@ -1828,29 +1828,36 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "finding and response record",
         "containment paths",
         "duplicate-outcome detection",
         "updated eval",
         "traceable outcome",
-        "retrieval-poisoning signal",
         "tenant-boundary containment",
         "notification throttling",
-        "post-incident control update",
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-21.md": (
             *common_markers,
+            "finding and response record",
             "approval-only containment",
+            "retrieval-poisoning signal",
+            "post-incident control update",
         ),
         "docs/book/part-viii/chapter-21.en.md": (
             *common_markers,
+            "finding and response record",
             "approval-only containment",
+            "retrieval-poisoning signal",
+            "post-incident control update",
         ),
         "docs/book/part-viii/chapter-21.zh.md": (
             *common_markers,
+            "发现与响应记录（finding and response record）",
             "仅审批遏制（approval-only containment）",
+            "检索投毒信号（retrieval-poisoning signal）",
+            "记忆写入隔离（memory-write quarantine）",
             "事故状态回滚（incident-state rollback）",
+            "事故后控制更新（post-incident control update）",
         ),
     }
 
@@ -1897,18 +1904,31 @@ def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
     expected_chinese_links = (
         "[评测（eval）](../../appendix/eval-schema.zh.md)",
         "[可追踪结果（traceable outcome）](../../appendix/trace-schema.zh.md)",
+        "[发现与响应记录（finding and response record）]"
+        "(../../appendix/incident-record-schema.zh.md)",
         "[仅审批遏制（approval-only containment）]"
         "(../../appendix/approval-schema.zh.md)",
+        "[检索投毒信号（retrieval-poisoning signal）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[记忆写入隔离（memory-write quarantine）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
         "[事故状态回滚（incident-state rollback）]"
         "(../../appendix/incident-record-schema.zh.md)",
+        "[事故后控制更新（post-incident control update）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
     )
     for expected_chinese_link in expected_chinese_links:
         assert expected_chinese_link in chinese_text, expected_chinese_link
     forbidden_chinese_links = (
         "[eval](../../appendix/eval-schema.zh.md)",
         "[traceable outcome](../../appendix/trace-schema.zh.md)",
+        "[finding and response record](../../appendix/incident-record-schema.zh.md)",
         "[approval-only containment](../../appendix/approval-schema.zh.md)",
+        "[retrieval-poisoning signal](../../appendix/memory-retrieval-schema.zh.md)",
+        "[memory-write quarantine](../../appendix/memory-retrieval-schema.zh.md)",
         "[incident-state rollback](../../appendix/incident-record-schema.zh.md)",
+        "[post-incident control update]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
     )
     for forbidden_chinese_link in forbidden_chinese_links:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
