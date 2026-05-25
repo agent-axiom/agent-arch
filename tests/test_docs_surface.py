@@ -1375,6 +1375,10 @@ def test_chapter_10_recovery_branches_link_to_eval_schema() -> None:
         text = _read(path)
         assert f"]({expected_link})" in text, (path, expected_link)
 
+    chinese_text = _read("docs/book/part-iv/chapter-10.zh.md")
+    assert "[评测模式（eval schema）](../../appendix/eval-schema.zh.md)" in chinese_text
+    assert "[eval schema](../../appendix/eval-schema.zh.md)" not in chinese_text
+
 
 def test_chapter_11_traces_thread_three_canonical_cases() -> None:
     required_markers = (
