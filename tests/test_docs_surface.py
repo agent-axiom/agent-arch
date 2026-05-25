@@ -5897,6 +5897,7 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "`Стабильное ядро` (stable core)" in russian_text
     assert "`Быстро меняющийся слой` (fast-moving layer)" in russian_text
     assert "исследовательские страницы приложений (research appendix pages)" in russian_text
+    assert "читаешь книгу впервые (first-time reader)" in russian_text
     assert "Прямые точки входа (direct entry points)" in russian_text
     assert "[Начать с Части I (Part I)]" in russian_text
     assert "[Открыть план книги (Book Plan)]" in russian_text
@@ -5912,6 +5913,7 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "`稳定核心`（stable core）" in chinese_text
     assert "`快速变化层`（fast-moving layer）" in chinese_text
     assert "研究型附录页面（research appendix pages）" in chinese_text
+    assert "第一次阅读者（first-time reader）" in chinese_text
     assert "直接入口（direct entry points）" in chinese_text
     assert "[从第一部分开始（Part I）]" in chinese_text
     assert "[打开全书计划（Book Plan）]" in chinese_text
@@ -5928,6 +5930,7 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         "`Стабильное ядро`: части",
         "`Быстро меняющийся слой`: глава",
         "исследовательские страницы приложений.",
+        "Если читаешь книгу впервые",
         "## Прямые точки входа\n",
         "[Начать с Части I](part-i/index.md)",
         "[Открыть план книги](plan.md)",
@@ -5942,6 +5945,7 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         "`稳定核心`：",
         "`快速变化层`：",
         "偏研究型的附录页面",
+        "如果你是第一次阅读，",
         "## 直接入口\n",
         "[从第一部分开始](part-i/index.zh.md)",
         "[打开全书计划](plan.zh.md)",
