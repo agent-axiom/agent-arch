@@ -7955,6 +7955,7 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
     assert "追踪模式与事件目录" in chinese_text
     assert "生命周期工件模式" in chinese_text
     assert "审批模式回答的就是" in chinese_text
+    assert "为什么要单独有审批模式" in chinese_text
     assert "它和追踪模式的关系" in chinese_text
 
     forbidden_markers = (
@@ -7968,6 +7969,7 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
         "追踪 Schema 与事件目录",
         "生命周期工件 Schema",
         "审批 Schema 回答的就是",
+        "为什么要单独有审批 Schema",
         "最小可用的审批 Schema",
         "追踪 Schema 和生命周期工件",
         "它和追踪 Schema 的关系",
