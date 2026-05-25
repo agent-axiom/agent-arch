@@ -2977,7 +2977,8 @@ def test_chapter_22_capability_contract_checklist_links_control_schemas() -> Non
         "docs/book/part-viii/chapter-22.zh.md": (
             "[谁是负责人](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[风险等级是什么](../../appendix/approval-schema.zh.md)",
-            "[使用哪个工具 principal](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[使用哪个工具主体（tool principal）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[网络访问配置是什么](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[允许哪些出口目标](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[采用什么审批语义](../../appendix/approval-schema.zh.md)",
@@ -2988,6 +2989,12 @@ def test_chapter_22_capability_contract_checklist_links_control_schemas() -> Non
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_link = (
+        "[使用哪个工具 principal](../../appendix/lifecycle-artifact-schema.zh.md)"
+    )
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas() -> None:
@@ -3023,7 +3030,8 @@ def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas()
         "docs/book/part-viii/chapter-22.zh.md": (
             "[暂停运行是会过期，还是可以无限等待]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[能力会话重新初始化是 allowed、denied，还是 approval-bound]"
+            "[能力会话重新初始化是允许、拒绝还是审批绑定"
+            "（allowed、denied、approval-bound）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来]"
             "(../../appendix/trace-schema.zh.md)",
@@ -3031,7 +3039,7 @@ def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas()
             "[会话控制逻辑](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[委派访问是平台拥有还是用户委派]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[principal 绑定规则与撤销行为]"
+            "[主体绑定规则与撤销行为（principal binding and revoke behavior）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -3040,6 +3048,16 @@ def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas()
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_links = (
+        "[能力会话重新初始化是 allowed、denied，还是 approval-bound]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[principal 绑定规则与撤销行为]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
