@@ -20,7 +20,7 @@
 
 ## 2. 核心实体
 
-这套最小 Schema 通常围绕两个实体展开：
+这套最小模式通常围绕两个实体展开：
 
 - `incident_record`
 - `incident_postmortem_link`
