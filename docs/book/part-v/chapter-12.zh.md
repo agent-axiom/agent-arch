@@ -30,8 +30,8 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
 在本书里，SLO 的角色也很具体。追踪捕获原始历史；评估产出判断；可观测性在系统尺度上保存证据；保证响应发现；而 SLO 定义的是平台在运行中允许消耗的健康预算与风险预算。
 
-!!! info "需要配套的 schema 和工程工件？"
-    如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)、[Incident Record Schema](../../appendix/incident-record-schema.zh.md) 和 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)。
+!!! info "需要配套的模式和工程工件？"
+    如果你需要的不只是原理说明，可以直接打开 [追踪模式与事件目录](../../appendix/trace-schema.zh.md)、[事故记录模式](../../appendix/incident-record-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
 
 ## 2. SLO 应该描述一次运行的行为，而不是单个部件的健康度
 
@@ -343,9 +343,9 @@ def classify_run_health(run: RunHealth) -> str:
 
 ## 16. 值得配套阅读的参考页
 
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
-- [Incident Record Schema](../../appendix/incident-record-schema.zh.md)
-- [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
+- [事故记录模式](../../appendix/incident-record-schema.zh.md)
+- [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
 
 - [第 11 章：追踪、跨度与结构化事件](chapter-11.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
