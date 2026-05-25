@@ -2,7 +2,7 @@
 
 这一页把智能体系统里记忆与检索所需的最小契约层放在一起：记忆记录长什么样、检索请求应该带哪些字段，以及记忆层至少要满足哪些约束，才能避免它变成泄漏、噪声和错误自信的来源。
 
-如果 [追踪 Schema 与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索 Schema 回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
+如果 [追踪模式与事件目录](trace-schema.zh.md) 回答的是“这些东西如何出现在遥测里”，而 [生命周期工件模式](lifecycle-artifact-schema.zh.md) 回答的是“哪些东西算受治理的运行工件”，那么记忆与检索模式回答的就是“记忆层里到底允许存在什么样的记录和过滤规则”。
 
 !!! note "规范记忆案例（Canonical memory cases）"
     记忆与检索契约（memory and retrieval contract）应该为三个规范案例（canonical cases）区分不同的记忆边界（memory boundaries）。**支持分流（Support triage）** 保存请求者上下文（requester context）、工单状态（ticket state）、`idempotency_key` 证据（`idempotency_key` evidence）和短期工作笔记（short-lived working notes）。**内部知识助手（Internal knowledge assistant）** 需要检索新鲜度（retrieval freshness）、来源归因（source attribution）、租户过滤器（tenant filters）、记忆来源（memory provenance）和访问控制（access control）。**事件协调（Incident coordination）** 保存事件时间线（incident timeline）、响应归属（response ownership）、交接摘要（handoff summaries）、升级状态（escalation status）和事件后经验（post-incident lessons），但不能把临时事件噪声（transient incident noise）变成持久真相（durable truth）。
@@ -29,7 +29,7 @@
 - `retrieval_query`
 - `retrieval_result`
 
-这已经足够把第 5-7 章、策略层、追踪 Schema 和参考运行时串起来。
+这已经足够把第 5-7 章、策略层、追踪模式和参考运行时串起来。
 
 ## 3. 记忆记录
 
@@ -134,9 +134,9 @@ excluded_records: 12
 
 所以，一个好的记忆模式几乎总是和策略即代码并排存在。
 
-## 7. 它和追踪 Schema 的关系
+## 7. 它和追踪模式的关系
 
-[追踪 Schema](trace-schema.zh.md) 里已经有一些字段和事件直接支撑记忆纪律：
+[追踪模式](trace-schema.zh.md) 里已经有一些字段和事件直接支撑记忆纪律：
 
 - `context_layers_built`
 - `memory_persisted`
@@ -197,9 +197,9 @@ excluded_records: 12
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 5 章：为什么智能体需要记忆，以及为什么记忆很危险](../book/part-iii/chapter-5.zh.md)
 - [第 6 章：短期记忆、长期记忆与用户画像记忆](../book/part-iii/chapter-6.zh.md)

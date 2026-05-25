@@ -8568,6 +8568,9 @@ def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
     assert "请求者上下文（requester context）" in chinese_text
     assert "检索新鲜度（retrieval freshness）" in chinese_text
     assert "临时事件噪声（transient incident noise）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Memory and retrieval contract должен",
@@ -8580,6 +8583,12 @@ def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
         "保存 requester context",
         "需要 retrieval freshness",
         "transient incident noise 变成 durable truth",
+        "追踪 Schema 与事件目录",
+        "生命周期工件 Schema",
+        "记忆与检索 Schema 回答的就是",
+        "追踪 Schema 和参考运行时",
+        "它和追踪 Schema 的关系",
+        "评测数据集 Schema 与打分契约",
     )
 
     for marker in forbidden_markers:
