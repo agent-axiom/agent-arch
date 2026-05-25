@@ -3840,6 +3840,30 @@ def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
 
+def test_chapter_26_governance_action_record_link_is_localized() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-26.md": (
+            "[governance action record](../../appendix/trace-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            "[governance action record](../../appendix/trace-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "[治理动作记录（governance action record）]"
+            "(../../appendix/trace-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    forbidden_chinese_link = (
+        "[governance action record](../../appendix/trace-schema.zh.md)"
+    )
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+
+
 def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
