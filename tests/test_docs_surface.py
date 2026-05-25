@@ -4630,11 +4630,13 @@ def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
             "[后台任务没关](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[记忆写入路径仍然在工作]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
-            "[paused approvals 在退役之后仍然可以恢复]"
+            "[暂停审批（paused approvals）在退役之后仍然可以恢复]"
             "(../../appendix/approval-schema.zh.md)",
-            "[已过期 capability sessions 仍可通过陈旧控制路径 re-initialize]"
+            "[已过期能力会话（capability sessions）仍可通过陈旧控制路径重新初始化"
+            "（re-initialize）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用]"
+            "[已废弃的编排模式（orchestration patterns）或 worker-boundary 策略"
+            "（worker-boundary policies）在退役后仍然可用]"
             "(../../appendix/change-rollout-schema.zh.md)",
         ),
     }
@@ -4643,6 +4645,18 @@ def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[paused approvals 在退役之后仍然可以恢复]"
+        "(../../appendix/approval-schema.zh.md)",
+        "[已过期 capability sessions 仍可通过陈旧控制路径 re-initialize]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None:
