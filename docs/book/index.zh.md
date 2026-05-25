@@ -45,10 +45,10 @@
 
 ## 直接入口（direct entry points）
 
-- [从第一部分开始](part-i/index.zh.md)
-- [打开全书计划](plan.zh.md)
+- [从第一部分开始（Part I）](part-i/index.zh.md)
+- [打开全书计划（Book Plan）](plan.zh.md)
 - [跳到证据主线（Evidence Spine）](part-v/evidence-spine.zh.md)
-- [跳到智能体系统生命周期](part-viii/index.zh.md)
+- [跳到智能体系统生命周期（agent system lifecycle）](part-viii/index.zh.md)
 
-[开始读书](part-i/index.zh.md){ .md-button .md-button--primary }
-[查看计划](plan.zh.md){ .md-button }
+[开始读书（Read the book）](part-i/index.zh.md){ .md-button .md-button--primary }
+[查看计划（Open plan）](plan.zh.md){ .md-button }

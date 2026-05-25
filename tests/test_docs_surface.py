@@ -5898,8 +5898,12 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "`Быстро меняющийся слой` (fast-moving layer)" in russian_text
     assert "исследовательские страницы приложений (research appendix pages)" in russian_text
     assert "Прямые точки входа (direct entry points)" in russian_text
+    assert "[Начать с Части I (Part I)]" in russian_text
+    assert "[Открыть план книги (Book Plan)]" in russian_text
     assert "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]" in russian_text
-    assert "[Перейти к жизненному циклу агентной системы]" in russian_text
+    assert "[Перейти к жизненному циклу агентной системы (agent system lifecycle)]" in russian_text
+    assert "[Читать книгу (Read the book)]" in russian_text
+    assert "[Открыть план (Open plan)]" in russian_text
 
     assert "推荐阅读路径（recommended reading path）" in chinese_text
     assert "最短有效路径（shortest useful path）" in chinese_text
@@ -5909,8 +5913,12 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "`快速变化层`（fast-moving layer）" in chinese_text
     assert "研究型附录页面（research appendix pages）" in chinese_text
     assert "直接入口（direct entry points）" in chinese_text
+    assert "[从第一部分开始（Part I）]" in chinese_text
+    assert "[打开全书计划（Book Plan）]" in chinese_text
     assert "[跳到证据主线（Evidence Spine）]" in chinese_text
-    assert "[跳到智能体系统生命周期]" in chinese_text
+    assert "[跳到智能体系统生命周期（agent system lifecycle）]" in chinese_text
+    assert "[开始读书（Read the book）]" in chinese_text
+    assert "[查看计划（Open plan）]" in chinese_text
 
     forbidden_markers = (
         "## Рекомендуемый маршрут чтения\n",
@@ -5921,7 +5929,12 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         "`Быстро меняющийся слой`: глава",
         "исследовательские страницы приложений.",
         "## Прямые точки входа\n",
+        "[Начать с Части I](part-i/index.md)",
+        "[Открыть план книги](plan.md)",
         "[Перейти к Evidence Spine]",
+        "[Перейти к жизненному циклу агентной системы](part-viii/index.md)",
+        "[Читать книгу](part-i/index.md)",
+        "[Открыть план](plan.md)",
         "## 推荐阅读路径\n",
         "最短但有效的路线",
         "## 稳定性捷径\n",
@@ -5930,7 +5943,12 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         "`快速变化层`：",
         "偏研究型的附录页面",
         "## 直接入口\n",
+        "[从第一部分开始](part-i/index.zh.md)",
+        "[打开全书计划](plan.zh.md)",
         "[跳到 Evidence Spine]",
+        "[跳到智能体系统生命周期](part-viii/index.zh.md)",
+        "[开始读书](part-i/index.zh.md)",
+        "[查看计划](plan.zh.md)",
     )
 
     for marker in forbidden_markers:
