@@ -8591,6 +8591,9 @@ def test_multilingual_postmortem_template_case_note_is_localized() -> None:
     assert "控制循环（control loop）" in chinese_text
     assert "重复工单根因（duplicate-ticket root cause）" in chinese_text
     assert "升级延迟（escalation delay）" in chinese_text
+    assert "事故记录与事后复盘链接模式" in chinese_text
+    assert "变更评审与发布门禁模式" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Postmortem должен возвращать",
@@ -8605,6 +8608,9 @@ def test_multilingual_postmortem_template_case_note_is_localized() -> None:
         "检查 duplicate-ticket root cause",
         "检查 stale source",
         "检查 escalation delay",
+        "事故记录与事后复盘链接 Schema",
+        "变更评审与发布门禁 Schema",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:
