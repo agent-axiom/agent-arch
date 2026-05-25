@@ -4184,7 +4184,8 @@ def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
             "[verifier evidence](../../appendix/eval-schema.en.md) obligations"
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
-            "[verifier evidence](../../appendix/eval-schema.zh.md) obligations"
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
+            "保留义务（obligations）"
         ),
     }
 
@@ -4530,9 +4531,11 @@ def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[数据集](../../appendix/eval-schema.zh.md)和"
             "[记忆工件](../../appendix/memory-retrieval-schema.zh.md)",
-            "[delegated authorization records]"
+            "[委派授权记录（delegated authorization records）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[verifier-contract history](../../appendix/eval-schema.zh.md)",
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)",
+            "[验证器契约历史（verifier-contract history）]"
+            "(../../appendix/eval-schema.zh.md)",
         ),
     }
 
@@ -4540,6 +4543,16 @@ def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[delegated authorization records]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[verifier evidence](../../appendix/eval-schema.zh.md)",
+        "[verifier-contract history](../../appendix/eval-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_staged_replacement_links_rollout_eval_lifecycle() -> None:
