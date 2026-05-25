@@ -8955,6 +8955,8 @@ def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
     assert "请求者上下文延续（requester context carryover）" in chinese_text
     assert "检索新鲜度（retrieval freshness）" in chinese_text
     assert "事件时间线回忆（incident timeline recall）" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "记忆记录与检索契约模式" in chinese_text
 
     forbidden_markers = (
         "Memory eval suite должен",
@@ -8967,6 +8969,8 @@ def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
         "检查 requester context carryover",
         "检查 retrieval freshness",
         "检查 incident timeline recall",
+        "评测数据集 Schema 与打分契约",
+        "记忆记录与检索契约 Schema",
     )
 
     for marker in forbidden_markers:
