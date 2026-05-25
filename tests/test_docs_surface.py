@@ -3400,6 +3400,7 @@ def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-25.zh.md": (
+            "[评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)",
             "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
             "[生命周期工件模式]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
