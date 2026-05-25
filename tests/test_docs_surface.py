@@ -1625,6 +1625,10 @@ def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
     for path, expected_link in expected_links_by_file.items():
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
+    chinese_text = _read("docs/book/part-vii/chapter-16.zh.md")
+    assert "[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md)" in chinese_text
+    assert "[trace evidence](../../appendix/trace-schema.zh.md)" not in chinese_text
+
 
 def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
     required_markers = (
