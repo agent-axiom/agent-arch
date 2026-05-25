@@ -9405,6 +9405,7 @@ def test_multilingual_research_frontier_case_note_is_localized() -> None:
     assert "分层记忆（hierarchical memory）" in chinese_text
     assert "因果追踪（causal tracing）" in chinese_text
     assert "记忆记录与检索契约模式" in chinese_text
+    assert "追踪模式；" in chinese_text
     assert "追踪模式与事件目录" in chinese_text
     assert "评测数据集模式与打分契约" in chinese_text
 
@@ -9421,6 +9422,7 @@ def test_multilingual_research_frontier_case_note_is_localized() -> None:
         "检查 hierarchical memory",
         "检查 causal tracing",
         "记忆记录与检索契约 Schema",
+        "追踪 Schema；",
         "追踪 Schema 与事件目录",
         "评测数据集 Schema 与打分契约",
     )
