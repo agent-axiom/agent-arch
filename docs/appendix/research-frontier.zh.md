@@ -152,9 +152,9 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 
 ## 下一步做什么
 
-- [记忆记录与检索契约 Schema](memory-retrieval-schema.zh.md)
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
+- [记忆记录与检索契约模式](memory-retrieval-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
 - [实践篇：MCP 用于工具，A2A 用于智能体](../book/part-iv/practical-mcp-a2a.zh.md)
