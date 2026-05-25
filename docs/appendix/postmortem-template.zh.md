@@ -162,8 +162,8 @@ postmortem:
 ## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
-- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [事故记录与事后复盘链接模式](incident-record-schema.zh.md)
+- [变更评审与发布门禁模式](change-rollout-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [智能体注册表与清单运维手册](registry-operations-handbook.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
