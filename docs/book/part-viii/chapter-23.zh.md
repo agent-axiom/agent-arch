@@ -306,9 +306,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 
 - [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
-- [Approval Schema](../../appendix/approval-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
+- [审批请求与决策记录模式](../../appendix/approval-schema.zh.md)
+- [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
+- [记忆记录与检索契约模式](../../appendix/memory-retrieval-schema.zh.md)
 - [参考包](../../appendix/reference-package.zh.md)
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
