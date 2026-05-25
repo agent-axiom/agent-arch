@@ -97,8 +97,8 @@
 - [关闭或归档能力会话状态（capability-session state），并阻断不受控的重新初始化（re-init）](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [停用已废弃的编排模式（orchestration patterns），并撤销 worker-safe 目录暴露（worker-safe catalog exposure）](../../appendix/change-rollout-schema.zh.md)；
 - [撤销委派授权路径（delegated authorization paths）](../../appendix/lifecycle-artifact-schema.zh.md)，并[归档它们最终的血缘（lineage）](../../appendix/trace-schema.zh.md)；
-- [退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据](../../appendix/eval-schema.zh.md)，包括像 [`failure_reason`](../../appendix/eval-schema.zh.md) 这样的 failed-run 导出字段，只要先前判断依赖过它们；
-- [归档那些承载 sprint scope、evaluator critique 或 reset-boundary decisions 的 handoff artifacts](../../appendix/lifecycle-artifact-schema.zh.md)，只要这些工件曾影响过即将退役的系统被允许执行什么；
+- [退役已废弃的验证器契约（verifier contracts），并保留解释既往发布（rollout）或保障决策所需的证据](../../appendix/eval-schema.zh.md)，包括像 [`failure_reason`](../../appendix/eval-schema.zh.md) 这样的失败运行（failed-run）导出字段，只要先前判断依赖过它们；
+- [归档那些承载 sprint scope、评测器批注（evaluator critique）或重置边界决策（reset-boundary decisions）的交接工件（handoff artifacts）](../../appendix/lifecycle-artifact-schema.zh.md)，只要这些工件曾影响过即将退役的系统被允许执行什么；
 - [撤销出口访问](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [关闭主体、密钥和连接器](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [固化最终审计状态](../../appendix/trace-schema.zh.md)。
