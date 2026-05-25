@@ -1682,7 +1682,7 @@ def test_chapter_18_rollout_trace_links_are_clickable() -> None:
 
 
 def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "ADLC case-spine note",
         "Support triage",
         "Internal knowledge assistant",
@@ -1690,21 +1690,35 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
         "lifecycle state model",
         "release-bearing surfaces",
         "write-capability contract",
-        "eval dataset",
-        "trace schema",
         "duplicate-ticket evals",
         "retrieval corpus",
         "source-grounding evals",
         "responder-role map",
         "governed change set",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-19.md",
-        "docs/book/part-viii/chapter-19.en.md",
-        "docs/book/part-viii/chapter-19.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-19.md": (
+            *common_markers,
+            "eval dataset",
+            "trace schema",
+        ),
+        "docs/book/part-viii/chapter-19.en.md": (
+            *common_markers,
+            "eval dataset",
+            "trace schema",
+        ),
+        "docs/book/part-viii/chapter-19.zh.md": (
+            *common_markers,
+            "评测数据集（eval dataset）",
+            "追踪模式（trace schema）",
+            "事故状态模式（incident-state schema）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_19_read_next_links_lifecycle_contracts() -> None:
@@ -1779,6 +1793,23 @@ def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
         text = _read(path)
         for link in expected_links:
             assert f"]({link})" in text, (path, link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
+    expected_chinese_links = (
+        "[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)",
+        "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)",
+        "[事故状态模式（incident-state schema）]"
+        "(../../appendix/incident-record-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[eval dataset](../../appendix/eval-schema.zh.md)",
+        "[trace schema](../../appendix/trace-schema.zh.md)",
+        "[incident-state schema](../../appendix/incident-record-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
