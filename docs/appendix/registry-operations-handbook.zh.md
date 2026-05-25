@@ -150,8 +150,8 @@
 ## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
-- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
+- [变更评审与发布门禁模式](change-rollout-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
 - [第 27 章：智能体清单、注册表与蔓延治理](../book/part-viii/chapter-27.zh.md)
