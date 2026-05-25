@@ -4381,11 +4381,12 @@ def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> Non
             "[把写入动作切到仅审批模式，或者直接停用]"
             "(../../appendix/approval-schema.zh.md)",
             "[停止记忆写入](../../appendix/memory-retrieval-schema.zh.md)",
-            "[让 paused runs 过期或直接取消]"
+            "[让暂停运行（paused runs）过期或直接取消]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[停止后台任务与 background routes]"
+            "[停止后台任务与后台路由（background routes）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[关闭或归档 capability-session state，并阻断不受控的 re-init]"
+            "[关闭或归档能力会话状态（capability-session state），"
+            "并阻断不受控的重新初始化（re-init）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -4394,6 +4395,18 @@ def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> Non
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[让 paused runs 过期或直接取消]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[停止后台任务与 background routes]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[关闭或归档 capability-session state，并阻断不受控的 re-init]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None:
