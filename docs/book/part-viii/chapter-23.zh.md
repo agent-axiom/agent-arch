@@ -250,9 +250,9 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 系统被认为已经退役，但[主体还活着](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [后台任务没关](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [记忆写入路径仍然在工作](../../appendix/memory-retrieval-schema.zh.md)；
-- [paused approvals 在退役之后仍然可以恢复](../../appendix/approval-schema.zh.md)；
-- [已过期 capability sessions 仍可通过陈旧控制路径 re-initialize](../../appendix/lifecycle-artifact-schema.zh.md)；
-- [已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用](../../appendix/change-rollout-schema.zh.md)；
+- [暂停审批（paused approvals）在退役之后仍然可以恢复](../../appendix/approval-schema.zh.md)；
+- [已过期能力会话（capability sessions）仍可通过陈旧控制路径重新初始化（re-initialize）](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [已废弃的编排模式（orchestration patterns）或 worker-boundary 策略（worker-boundary policies）在退役后仍然可用](../../appendix/change-rollout-schema.zh.md)；
 - 已废弃的验证器契约（verifier contracts）或[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)保留义务（obligations）在退役后仍然不清楚；
 - [background routes 被遗忘没有关闭](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [归档状态没有负责人](../../appendix/lifecycle-artifact-schema.zh.md)；
