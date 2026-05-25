@@ -129,11 +129,11 @@
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [审批请求与决策记录 Schema](approval-schema.zh.md)
-- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [审批请求与决策记录模式](approval-schema.zh.md)
+- [变更评审与发布门禁模式](change-rollout-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 23 章：退役、替换与终止使用纪律](../book/part-viii/chapter-23.zh.md)
