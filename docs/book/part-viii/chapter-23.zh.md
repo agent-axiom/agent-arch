@@ -92,9 +92,9 @@
 - [关闭高风险能力](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [把写入动作切到仅审批模式，或者直接停用](../../appendix/approval-schema.zh.md)；
 - [停止记忆写入](../../appendix/memory-retrieval-schema.zh.md)；
-- [让 paused runs 过期或直接取消](../../appendix/lifecycle-artifact-schema.zh.md)；
-- [停止后台任务与 background routes](../../appendix/lifecycle-artifact-schema.zh.md)；
-- [关闭或归档 capability-session state，并阻断不受控的 re-init](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [让暂停运行（paused runs）过期或直接取消](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [停止后台任务与后台路由（background routes）](../../appendix/lifecycle-artifact-schema.zh.md)；
+- [关闭或归档能力会话状态（capability-session state），并阻断不受控的重新初始化（re-init）](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [停用已废弃的 orchestration patterns，并撤销 worker-safe catalog exposure](../../appendix/change-rollout-schema.zh.md)；
 - [撤销 delegated authorization paths](../../appendix/lifecycle-artifact-schema.zh.md)，并[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)；
 - [退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据](../../appendix/eval-schema.zh.md)，包括像 [`failure_reason`](../../appendix/eval-schema.zh.md) 这样的 failed-run 导出字段，只要先前判断依赖过它们；
