@@ -3245,10 +3245,10 @@ def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-24.zh.md": (
-            "[Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)",
-            "[Eval Dataset Schema 与 Grading Contract]"
+            "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
+            "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
