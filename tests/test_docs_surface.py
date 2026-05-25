@@ -4454,11 +4454,12 @@ def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None
             "[撤销委派授权路径（delegated authorization paths）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[归档它们最终的血缘（lineage）](../../appendix/trace-schema.zh.md)",
-            "[退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据]"
+            "[退役已废弃的验证器契约（verifier contracts），"
+            "并保留解释既往发布（rollout）或保障决策所需的证据]"
             "(../../appendix/eval-schema.zh.md)",
             "[`failure_reason`](../../appendix/eval-schema.zh.md)",
-            "[归档那些承载 sprint scope、evaluator critique 或 reset-boundary "
-            "decisions 的 handoff artifacts]"
+            "[归档那些承载 sprint scope、评测器批注（evaluator critique）或"
+            "重置边界决策（reset-boundary decisions）的交接工件（handoff artifacts）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[撤销出口访问](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[关闭主体、密钥和连接器]"
@@ -4479,6 +4480,11 @@ def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None
         "[撤销 delegated authorization paths]"
         "(../../appendix/lifecycle-artifact-schema.zh.md)",
         "[归档它们最终的 lineage](../../appendix/trace-schema.zh.md)",
+        "[退役已废弃的 verifier contracts，并保留解释既往 rollout 或保障决策所需的证据]"
+        "(../../appendix/eval-schema.zh.md)",
+        "[归档那些承载 sprint scope、evaluator critique 或 reset-boundary "
+        "decisions 的 handoff artifacts]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
     )
     for forbidden_chinese_link in forbidden_chinese_links:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
