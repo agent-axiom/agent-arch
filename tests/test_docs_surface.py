@@ -8820,6 +8820,8 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
     assert "写入能力（write capability）" in chinese_text
     assert "语料负责人（corpus owner）" in chinese_text
     assert "紧急回滚负责人（emergency rollback owner）" in chinese_text
+    assert "生命周期工件模式" in chinese_text
+    assert "变更评审与发布门禁模式" in chinese_text
 
     forbidden_markers = (
         "Registry record должен фиксировать",
@@ -8832,6 +8834,8 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
         "需要 write capability",
         "需要 corpus owner",
         "需要 incident role owner",
+        "生命周期工件 Schema",
+        "变更评审与发布门禁 Schema",
     )
 
     for marker in forbidden_markers:
