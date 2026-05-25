@@ -41,7 +41,7 @@
 - `稳定核心`（stable core）：第一到第七部分，尤其是第 1 到 12 章以及第 18 章；
 - `快速变化层`（fast-moving layer）：第 13 章、第八部分，以及研究型附录页面（research appendix pages）。
 
-如果你是第一次阅读，建议先读稳定核心（stable core），再回来看变化更快的层（fast-moving layer）。
+如果你是第一次阅读者（first-time reader），建议先读稳定核心（stable core），再回来看变化更快的层（fast-moving layer）。
 
 ## 直接入口（direct entry points）
 
