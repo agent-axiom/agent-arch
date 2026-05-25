@@ -1691,7 +1691,6 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
         "release-bearing surfaces",
         "write-capability contract",
         "duplicate-ticket evals",
-        "retrieval corpus",
         "source-grounding evals",
         "responder-role map",
         "governed change set",
@@ -1700,16 +1699,21 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
         "docs/book/part-viii/chapter-19.md": (
             *common_markers,
             "eval dataset",
+            "retrieval corpus",
             "trace schema",
         ),
         "docs/book/part-viii/chapter-19.en.md": (
             *common_markers,
             "eval dataset",
+            "retrieval corpus",
             "trace schema",
         ),
         "docs/book/part-viii/chapter-19.zh.md": (
             *common_markers,
             "评测数据集（eval dataset）",
+            "策略包（policy bundle）",
+            "发布门禁（rollout gate）",
+            "检索语料（retrieval corpus）",
             "追踪模式（trace schema）",
             "事故状态模式（incident-state schema）",
         ),
@@ -1797,6 +1801,9 @@ def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
     expected_chinese_links = (
         "[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)",
+        "[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)",
+        "[发布门禁（rollout gate）](../../appendix/change-rollout-schema.zh.md)",
+        "[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)",
         "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)",
         "[事故状态模式（incident-state schema）]"
         "(../../appendix/incident-record-schema.zh.md)",
@@ -1805,6 +1812,9 @@ def test_chapter_19_adlc_release_artifact_schema_links_are_clickable() -> None:
         assert expected_chinese_link in chinese_text, expected_chinese_link
     forbidden_chinese_links = (
         "[eval dataset](../../appendix/eval-schema.zh.md)",
+        "[policy bundle](../../appendix/policy-bundle-schema.zh.md)",
+        "[rollout gate](../../appendix/change-rollout-schema.zh.md)",
+        "[retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
         "[trace schema](../../appendix/trace-schema.zh.md)",
         "[incident-state schema](../../appendix/incident-record-schema.zh.md)",
     )
