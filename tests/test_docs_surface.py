@@ -3256,9 +3256,10 @@ def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None
             "(../../appendix/change-rollout-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[编排模式治理规则与 worker-safe 目录定义]"
+            "[编排模式治理规则与 worker-safe 目录定义"
+            "（worker-safe catalog definitions）]"
             "(../../appendix/change-rollout-schema.zh.md)",
-            "[编排模式与 worker 边界策略]"
+            "[编排模式与工作器边界策略（worker-boundary policy）]"
             "(../../appendix/change-rollout-schema.zh.md)",
             "[编排模式治理变更]"
             "(../../appendix/change-rollout-schema.zh.md)",
@@ -3269,6 +3270,16 @@ def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_links = (
+        "[编排模式治理规则与 worker-safe 目录定义]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[编排模式与 worker 边界策略]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
