@@ -3197,13 +3197,17 @@ def test_chapter_22_useful_refs_include_supply_chain_schema_pages() -> None:
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[Approval Schema](../../appendix/approval-schema.zh.md)",
-            "[Change Review and Rollout Gate Schema]"
+            "[策略包模式与审批契约]"
+            "(../../appendix/policy-bundle-schema.zh.md)",
+            "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[变更评审与发布门禁模式]"
             "(../../appendix/change-rollout-schema.zh.md)",
-            "[Eval Dataset Schema and Grading Contract]"
+            "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
-            "[Trace Schema and Event Catalog](../../appendix/trace-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
