@@ -9127,6 +9127,8 @@ def test_multilingual_community_roadmap_case_note_is_localized() -> None:
     assert "规范路线图案例" in chinese_text
     assert "路线图（roadmap）" in chinese_text
     assert "下一层价值（next layer of value）" in chinese_text
+    assert "参考模式" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
     assert "支持分流（Support triage）" in chinese_text
     assert "事件追踪示例（incident trace examples）" in chinese_text
     assert "事件后学习资产（post-incident learning assets）" in chinese_text
@@ -9138,6 +9140,8 @@ def test_multilingual_community_roadmap_case_note_is_localized() -> None:
         "задает приоритет для knowledge scenario",
         "задает приоритет для incident trace examples",
         "Roadmap 应通过三个 canonical cases 衡量 next layer of value",
+        "参考 Schema",
+        "追踪 Schema 与事件目录",
         "优先推动 richer trace examples",
         "优先推动 knowledge scenario",
         "优先推动 incident trace examples",
