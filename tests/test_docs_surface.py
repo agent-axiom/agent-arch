@@ -1655,13 +1655,13 @@ def test_chapter_19_read_next_links_lifecycle_contracts() -> None:
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-19.zh.md": (
-            "[Lifecycle Artifact Schema]"
+            "[生命周期工件模式]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[Change Review and Rollout Gate Schema]"
+            "[变更评审与发布门禁模式]"
             "(../../appendix/change-rollout-schema.zh.md)",
-            "[Policy Bundle Schema 与 Approval Contract]"
+            "[策略包模式与审批契约]"
             "(../../appendix/policy-bundle-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
