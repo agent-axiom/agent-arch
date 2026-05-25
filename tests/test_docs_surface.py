@@ -1944,7 +1944,6 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "approved artifact bundle",
         "provenance",
         "capability contract",
-        "eval dataset",
         "approved retrieval corpus",
         "source-grounding rubric",
         "responder-role map",
@@ -1953,16 +1952,21 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             *common_markers,
+            "eval dataset",
             "trace schema",
             "approval schema",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             *common_markers,
+            "eval dataset",
             "trace schema",
             "approval schema",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             *common_markers,
+            "评测数据集（eval dataset）",
+            "策略包（policy bundle）",
+            "发布门禁（rollout gate）",
             "[审批模式](../../appendix/approval-schema.zh.md)",
             "[追踪模式](../../appendix/trace-schema.zh.md)",
             "[事故状态模式](../../appendix/incident-record-schema.zh.md)",
@@ -2004,6 +2008,25 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
         text = _read(path)
         for link in expected_links:
             assert f"]({link})" in text, (path, link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    expected_chinese_links = (
+        "[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)",
+        "[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)",
+        "[发布门禁（rollout gate）](../../appendix/change-rollout-schema.zh.md)",
+        "[能力契约（capability contract）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[eval dataset](../../appendix/eval-schema.zh.md)",
+        "[policy bundle](../../appendix/policy-bundle-schema.zh.md)",
+        "[rollout gate](../../appendix/change-rollout-schema.zh.md)",
+        "[capability contract](../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_provenance_questions_link_approval_schema() -> None:
@@ -3261,7 +3284,8 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
             "(../../appendix/policy-bundle-schema.zh.md)",
             "`create_support_ticket` [能力契约（capability contract）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[rollout gate](../../appendix/change-rollout-schema.zh.md)、"
+            "[发布门禁（rollout gate）]"
+            "(../../appendix/change-rollout-schema.zh.md)、"
             "[审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
         ),
     }
