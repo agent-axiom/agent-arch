@@ -4193,6 +4193,32 @@ def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
 
+def test_chapter_23_opening_state_tail_links_verifier_evidence() -> None:
+    expected_snippets_by_file = {
+        "docs/book/part-viii/chapter-23.md": (
+            "[verifier evidence](../../appendix/eval-schema.md)"
+        ),
+        "docs/book/part-viii/chapter-23.en.md": (
+            "[evidence-retention obligations]"
+            "(../../appendix/eval-schema.en.md)"
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "[验证器证据保留义务（verifier evidence retention obligations）]"
+            "(../../appendix/eval-schema.zh.md)"
+        ),
+    }
+
+    for path, expected_snippet in expected_snippets_by_file.items():
+        assert expected_snippet in _read(path), (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_link = (
+        "[verifier evidence retention obligations]"
+        "(../../appendix/eval-schema.zh.md)"
+    )
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+
+
 def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
