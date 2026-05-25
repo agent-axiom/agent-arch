@@ -3792,6 +3792,18 @@ def test_chapter_5_memory_poisoning_schema_links_are_clickable() -> None:
         for link in expected_links:
             assert f"]({link})" in text, (path, link)
 
+    chinese_text = _read("docs/book/part-iii/chapter-5.zh.md")
+    assert (
+        "[记忆/检索模式（memory/retrieval schema）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)"
+    ) in chinese_text
+    assert "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)" in chinese_text
+    assert (
+        "[memory/retrieval schema](../../appendix/memory-retrieval-schema.zh.md)"
+        not in chinese_text
+    )
+    assert "[trace schema](../../appendix/trace-schema.zh.md)" not in chinese_text
+
 
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
