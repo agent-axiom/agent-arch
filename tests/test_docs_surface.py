@@ -6617,6 +6617,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "управляемым системам (governed systems)" in russian_text
     assert "границами доверия (trust boundaries)" in russian_text
     assert "слоем политик (policy layer)" in russian_text
+    assert "дисциплиной жизненного цикла (lifecycle discipline)" in russian_text
     assert "производственную агентную систему (production agent system)" in russian_text
     assert "безопасно улучшать (safely improve)" in russian_text
     assert "маршрут чтения (reading route)" in russian_text
@@ -6647,6 +6648,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "受治理系统（governed systems）" in chinese_text
     assert "信任边界（trust boundaries）" in chinese_text
     assert "策略层（policy layer）" in chinese_text
+    assert "生命周期纪律（lifecycle discipline）" in chinese_text
     assert "生产级智能体系统（production agent system）" in chinese_text
     assert "安全改进的系统（safely improve）" in chinese_text
     assert "阅读路线（reading route）" in chinese_text
@@ -6676,6 +6678,7 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "от prompt-heavy прототипов",
         "к управляемым системам с границами",
         "границами доверия, policy layer",
+        "наблюдаемостью (observability), оценками (evals) и жизненным циклом.",
         "дисциплина вокруг trust boundaries",
         "безопасно улучшать.",
         "быстро выбрать маршрут чтения.",

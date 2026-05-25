@@ -2,7 +2,7 @@
 
 如果你第一次来到这本书，先问自己一个问题：你需要的是一个惊艳的演示智能体（impressive demo agent），还是一个能承受生产现实（production reality）的系统？
 
-这本书是写给第二种情况的。最适合把它读成一个完整论证（single argument）：智能体系统怎样从提示堆出来的原型（prompt-heavy prototypes），长成带有信任边界（trust boundaries）、策略层（policy layer）、审批（approvals）、可观测性（observability）、评测（evals）和生命周期纪律的受治理系统（governed systems）。
+这本书是写给第二种情况的。最适合把它读成一个完整论证（single argument）：智能体系统怎样从提示堆出来的原型（prompt-heavy prototypes），长成带有信任边界（trust boundaries）、策略层（policy layer）、审批（approvals）、可观测性（observability）、评测（evals）和生命周期纪律（lifecycle discipline）的受治理系统（governed systems）。
 
 构建智能体很枯燥，但结果令人震撼：围绕信任边界（trust boundaries）、追踪（traces）、审批（approvals）和发布（rollout）建立纪律，才能把演示变成可以安全改进的系统（safely improve）。
 
