@@ -3854,6 +3854,8 @@ def test_chapter_23_retirement_useful_refs_include_retirement_contracts() -> Non
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
             "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
