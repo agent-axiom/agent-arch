@@ -1531,6 +1531,10 @@ def test_chapter_14_ownership_trace_schema_link_is_clickable() -> None:
     for path, expected_link in expected_links_by_file.items():
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
+    chinese_text = _read("docs/book/part-vi/chapter-14.zh.md")
+    assert "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)" in chinese_text
+    assert "[trace schema](../../appendix/trace-schema.zh.md)" not in chinese_text
+
 
 def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:
     required_markers = (
