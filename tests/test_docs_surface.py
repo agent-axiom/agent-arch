@@ -3794,10 +3794,10 @@ def test_chapter_23_retirement_useful_refs_include_retirement_contracts() -> Non
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
-            "[Approval Schema](../../appendix/approval-schema.zh.md)",
-            "[Eval Dataset Schema 与 Grading Contract]"
+            "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
+            "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
