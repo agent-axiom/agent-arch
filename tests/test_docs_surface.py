@@ -8358,6 +8358,7 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
     assert "审批请求与决策记录模式" in chinese_text
     assert "变更评审与发布门禁模式" in chinese_text
     assert "生命周期工件模式" in chinese_text
+    assert "这套最小模式通常围绕两个实体展开" in chinese_text
 
     forbidden_markers = (
         "Incident record должен оставлять",
@@ -8375,6 +8376,7 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
         "审批请求与决策记录 Schema",
         "变更评审与发布门禁 Schema",
         "生命周期工件 Schema",
+        "这套最小 Schema 通常围绕两个实体展开",
     )
 
     for marker in forbidden_markers:
