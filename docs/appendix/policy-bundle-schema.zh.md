@@ -11,7 +11,7 @@
 
 - [参考包](reference-package.zh.md)
 
-如果追踪 Schema 和评测 Schema 那两页回答的是：
+如果追踪模式和评测模式那两页回答的是：
 
 - 如何描述实际行为；
 - 如何描述期望行为；
@@ -181,7 +181,7 @@ approval_contract:
 
 同一个 gate 也会明确约束 control bundle 的输入形状：controls config validation 会报告 `Controls policy config must be a mapping`、`'controls' must be a mapping`、`'controls.require' must be a list`、`'controls.block_if' must be a list`、`controls.require entries must be strings`、`controls.require entries must not be empty`、`controls.require entries must be unique`、`controls.block_if entries must be strings`、`controls.block_if entries must not be empty` 和 `controls.block_if entries must be unique`；signal overrides 会报告 `Assessment signals must be a mapping`、`Assessment signal key must be a string`、`Assessment signal key must not be empty`、`Assessment signal keys must be unique` 和 `Assessment signal value must be a boolean: {field}`。这样操作者可以区分 malformed policy bundle 与格式正确但评估失败的 control assessment。
 
-## 生产级 Schema 还应该补什么
+## 生产级模式还应该补什么
 
 一旦运行时开始包含有状态 MCP 与可恢复能力会话，策略包就不能只描述能力原则上能不能用，还必须描述这些在线会话是如何被治理的。
 

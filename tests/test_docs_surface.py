@@ -7878,6 +7878,8 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     assert "追踪模式与事件目录" in chinese_text
     assert "评测数据集模式与打分契约" in chinese_text
     assert "生命周期工件模式" in chinese_text
+    assert "追踪模式和评测模式那两页" in chinese_text
+    assert "生产级模式还应该补什么" in chinese_text
 
     forbidden_markers = (
         "Policy bundle не должен выглядеть",
@@ -7892,6 +7894,8 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
         "追踪 Schema 与事件目录",
         "评测数据集 Schema 与打分契约",
         "生命周期工件 Schema",
+        "追踪 Schema 和评测 Schema 那两页",
+        "生产级 Schema 还应该补什么",
     )
 
     for marker in forbidden_markers:
