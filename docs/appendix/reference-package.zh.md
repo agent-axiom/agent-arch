@@ -317,14 +317,14 @@ sandbox_profile:
 
 - 用本书理解架构、顺序与运营模型论证；
 - 用这个包查看可运行结构、配置表面与检查示例；
-- 用附录 Schema 理解运行时想要明确表达的契约边界。
+- 用附录模式理解运行时想要明确表达的契约边界。
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [第 17 章：策略层与能力目录](../book/part-vii/chapter-17.zh.md)
 
 
