@@ -129,8 +129,8 @@ flowchart LR
 - [追踪](../../appendix/trace-schema.zh.md)和[审批](../../appendix/approval-schema.zh.md)保留多久；
 - [归档状态的负责人是谁](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 替换后的系统是否可以复用旧[数据集](../../appendix/eval-schema.zh.md)和[记忆工件](../../appendix/memory-retrieval-schema.zh.md)；
-- 是否需要保留 [delegated authorization records](../../appendix/lifecycle-artifact-schema.zh.md)，以说明旧动作到底在谁的 identity 下执行；
-- 是否需要保留 [verifier evidence](../../appendix/eval-schema.zh.md) 与 [verifier-contract history](../../appendix/eval-schema.zh.md)，以解释为何早先的 releases 会被判定为可接受。
+- 是否需要保留[委派授权记录（delegated authorization records）](../../appendix/lifecycle-artifact-schema.zh.md)，以说明旧动作到底在谁的身份（identity）下执行；
+- 是否需要保留[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)与[验证器契约历史（verifier-contract history）](../../appendix/eval-schema.zh.md)，以解释为何早先的发布（releases）会被判定为可接受。
 
 所以退役影响的不只是正在运行的系统，还包括整段历史运行足迹。
 
@@ -253,7 +253,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [paused approvals 在退役之后仍然可以恢复](../../appendix/approval-schema.zh.md)；
 - [已过期 capability sessions 仍可通过陈旧控制路径 re-initialize](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [已废弃的 orchestration patterns 或 worker-boundary policies 在退役后仍然可用](../../appendix/change-rollout-schema.zh.md)；
-- 已废弃的 verifier contracts 或 [verifier evidence](../../appendix/eval-schema.zh.md) obligations 在退役后仍然不清楚；
+- 已废弃的验证器契约（verifier contracts）或[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)保留义务（obligations）在退役后仍然不清楚；
 - [background routes 被遗忘没有关闭](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [归档状态没有负责人](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [已废弃的 schemas 仍然被 gateways 或 runtimes 接受](../../appendix/lifecycle-artifact-schema.zh.md)；
