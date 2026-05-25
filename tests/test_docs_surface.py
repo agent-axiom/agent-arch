@@ -3316,6 +3316,9 @@ def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-24.zh.md": (
+            "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
             "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
