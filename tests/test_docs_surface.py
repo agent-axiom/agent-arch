@@ -2265,7 +2265,7 @@ def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> Non
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[评测](../../appendix/eval-schema.zh.md)覆盖了它",
-            "[rollout 波次](../../appendix/change-rollout-schema.zh.md)",
+            "[发布波次（rollout wave）](../../appendix/change-rollout-schema.zh.md)",
         ),
     }
 
@@ -2273,6 +2273,10 @@ def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> Non
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_link = "[rollout 波次](../../appendix/change-rollout-schema.zh.md)"
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_prompt_bundle_provenance_links_owner_version_schema() -> None:
@@ -2574,7 +2578,7 @@ def test_chapter_22_trusted_artifact_examples_link_schema_contracts() -> None:
             "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[策略 YAML](../../appendix/policy-bundle-schema.zh.md)",
+            "[策略 YAML（policy YAML）](../../appendix/policy-bundle-schema.zh.md)",
             "[检索配置](../../appendix/memory-retrieval-schema.zh.md)",
             "[审批阈值](../../appendix/approval-schema.zh.md)",
             "[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)",
@@ -2585,6 +2589,10 @@ def test_chapter_22_trusted_artifact_examples_link_schema_contracts() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_link = "[策略 YAML](../../appendix/policy-bundle-schema.zh.md)"
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_artifact_discipline_failures_link_schema_contracts() -> None:
@@ -3253,7 +3261,8 @@ def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> 
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[委派授权模式、principal 绑定与撤销策略]"
+            "[委派授权模式、主体绑定与撤销策略"
+            "（principal binding and revoke policy）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -3262,6 +3271,13 @@ def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> 
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_link = (
+        "[委派授权模式、principal 绑定与撤销策略]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)"
+    )
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None:
