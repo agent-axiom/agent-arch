@@ -8431,6 +8431,8 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
     assert "评测数据集模式与打分契约" in chinese_text
     assert "生命周期工件模式" in chinese_text
     assert "策略包模式与审批契约" in chinese_text
+    assert "变更与发布门禁模式回答的就是" in chinese_text
+    assert "为什么需要单独的模式层" in chinese_text
 
     forbidden_markers = (
         "Rollout gate должен проверять",
@@ -8446,6 +8448,10 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
         "评测数据集 Schema 与打分契约",
         "生命周期工件 Schema",
         "策略包 Schema 与审批契约",
+        "变更与发布门禁 Schema 回答的就是",
+        "为什么需要单独的 Schema 层",
+        "机器可读的 Schema 层",
+        "最小可用的 Schema 层",
     )
 
     for marker in forbidden_markers:
