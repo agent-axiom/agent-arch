@@ -4347,13 +4347,22 @@ def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
             "(../../appendix/change-rollout-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-20.zh.md": (
-            "[Change Review and Rollout Gate Schema]"
-            "(../../appendix/change-rollout-schema.zh.md)"
+            "[评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)",
+            "[策略包模式与审批契约]"
+            "(../../appendix/policy-bundle-schema.zh.md)",
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[变更评审与发布门禁模式]"
+            "(../../appendix/change-rollout-schema.zh.md)",
         ),
     }
 
-    for path, expected_snippet in expected_snippets_by_file.items():
-        assert expected_snippet in _read(path), (path, expected_snippet)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        if isinstance(expected_snippets, str):
+            expected_snippets = (expected_snippets,)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:

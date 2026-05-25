@@ -39,7 +39,7 @@
 **Change case-spine note：**change packet 应该能对三个 canonical cases 都做分类。Support triage 会让 [approval rules](../../appendix/approval-schema.zh.md)、retries 和 write capabilities 的变化变成 release-bearing。Internal knowledge assistant 会让 [retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)、freshness windows、[memory write semantics](../../appendix/memory-retrieval-schema.zh.md) 和 access control 的变化变成 release-bearing。Incident coordination 会让 escalation policy、notification routing、ownership transfer 和 [incident state](../../appendix/incident-record-schema.zh.md) 的变化变成 release-bearing。
 
 !!! info "需要变更工件？"
-    如果你需要更落地的工程层，可以打开 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)、[Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
+    如果你需要更落地的工程层，可以打开 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)、[生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md) 和 [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)。
 
 ## 2. 在智能体系统里，什么都算变更
 
@@ -319,10 +319,10 @@ def classify_change(change: ChangeRequest) -> str:
 
 ## 17. 值得配套阅读的参考页
 
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
-- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
+- [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
 
 - [第 19 章：从 SDLC 到 ADLC](chapter-19.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../part-v/chapter-13.zh.md)
