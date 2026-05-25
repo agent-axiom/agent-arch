@@ -4296,9 +4296,9 @@ def test_chapter_27_useful_refs_include_registry_evidence_contracts() -> None:
             "(../../appendix/memory-retrieval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-27.zh.md": (
-            "[Eval Dataset Schema 与 Grading Contract]"
+            "[评测数据集模式与打分契约]"
             "(../../appendix/eval-schema.zh.md)",
-            "[Memory and Retrieval Schema]"
+            "[记忆记录与检索契约模式]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }

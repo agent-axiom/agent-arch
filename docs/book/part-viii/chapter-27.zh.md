@@ -383,8 +383,8 @@ def registry_ready(state: AgentRegistryState) -> bool:
 - [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
 - [审批请求与决策模式](../../appendix/approval-schema.zh.md)
 - [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Memory and Retrieval Schema](../../appendix/memory-retrieval-schema.zh.md)
+- [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
+- [记忆记录与检索契约模式](../../appendix/memory-retrieval-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 23 章：退役、替换与终止使用纪律](chapter-23.zh.md)
