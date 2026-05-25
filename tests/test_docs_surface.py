@@ -4625,27 +4625,46 @@ def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None
 
 
 def test_chapter_27_registry_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Registry case-spine note",
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
         "write-capability owners",
-        "approval mode",
-        "retirement plan",
         "verifier evidence",
-        "corpus owners",
         "freshness review",
         "incident-role owners",
-        "lifecycle state",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-27.md",
-        "docs/book/part-viii/chapter-27.en.md",
-        "docs/book/part-viii/chapter-27.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-27.md": (
+            *common_markers,
+            "approval mode",
+            "retirement plan",
+            "corpus owners",
+            "lifecycle state",
+        ),
+        "docs/book/part-viii/chapter-27.en.md": (
+            *common_markers,
+            "approval mode",
+            "retirement plan",
+            "corpus owners",
+            "lifecycle state",
+        ),
+        "docs/book/part-viii/chapter-27.zh.md": (
+            *common_markers,
+            "命名注册记录（named registry record）",
+            "审批模式（approval mode）",
+            "退役计划（retirement plan）",
+            "语料负责人（corpus owners）",
+            "检索策略链接（retrieval-policy linkage）",
+            "生命周期状态（lifecycle state）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_27_useful_refs_include_registry_evidence_contracts() -> None:
@@ -4708,6 +4727,33 @@ def test_chapter_27_registry_case_spine_links_are_clickable() -> None:
         text = _read(path)
         for expected_link in expected_links:
             assert f"]({expected_link})" in text, (path, expected_link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
+    expected_chinese_links = (
+        "[命名注册记录（named registry record）]"
+        "(../../appendix/registry-operations-handbook.zh.md)",
+        "[审批模式（approval mode）](../../appendix/approval-schema.zh.md)",
+        "[退役计划（retirement plan）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[语料负责人（corpus owners）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[检索策略链接（retrieval-policy linkage）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[生命周期状态（lifecycle state）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[named registry record](../../appendix/registry-operations-handbook.zh.md)",
+        "[approval mode](../../appendix/approval-schema.zh.md)",
+        "[retirement plan](../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[corpus owners](../../appendix/memory-retrieval-schema.zh.md)",
+        "[retrieval-policy linkage](../../appendix/memory-retrieval-schema.zh.md)",
+        "[lifecycle state](../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
