@@ -101,7 +101,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 如果你想看一页专门展示这个受治理主干如何继续连回请求、策略、审批、追踪、评测、事故和 rollout 判断，可以直接打开 [Evidence Spine](../part-v/evidence-spine.zh.md)。
 
 !!! info "需要供应链工件？"
-    如果你需要契约层视角，可以直接查看 [生命周期工件规范](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
+    如果你需要契约层视角，可以直接查看 [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md) 和 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
 
 ## 4. 智能体需要多条信任链，而不是一条
 
