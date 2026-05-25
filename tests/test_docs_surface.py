@@ -7875,6 +7875,9 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     assert "幂等证据（idempotency evidence）" in chinese_text
     assert "检索策略（retrieval policy）" in chinese_text
     assert "升级规则（escalation rules）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Policy bundle не должен выглядеть",
@@ -7886,6 +7889,9 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
         "需要 write-capability approval policy",
         "需要 retrieval policy",
         "需要 escalation rules",
+        "追踪 Schema 与事件目录",
+        "评测数据集 Schema 与打分契约",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:

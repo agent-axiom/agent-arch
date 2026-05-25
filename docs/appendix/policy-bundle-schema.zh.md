@@ -286,9 +286,9 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [按场景组织的策略模板与检查清单](policy-templates.zh.md)
 
