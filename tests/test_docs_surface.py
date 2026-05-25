@@ -5525,6 +5525,23 @@ def test_practical_routines_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_practical_routines_zh_schema_term_is_localized() -> None:
+    text = _read("docs/book/part-i/practical-routines.zh.md")
+
+    expected_snippets = (
+        "输出模式",
+        'schema: "support_triage_decision_v1"',
+    )
+    forbidden_snippets = (
+        "输出 Schema",
+    )
+
+    for expected_snippet in expected_snippets:
+        assert expected_snippet in text, expected_snippet
+    for forbidden_snippet in forbidden_snippets:
+        assert forbidden_snippet not in text, forbidden_snippet
+
+
 def test_practical_manager_handoffs_threads_three_canonical_cases() -> None:
     required_markers = (
         "Manager/handoff case-spine note",
