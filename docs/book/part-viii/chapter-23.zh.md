@@ -71,9 +71,9 @@
   - [记忆访问权](../../appendix/memory-retrieval-schema.zh.md)；
   - [旧的上线路径](../../appendix/change-rollout-schema.zh.md)；
   - 后台任务；
-  - [可恢复的 paused approval path](../../appendix/approval-schema.zh.md)；
-  - [已过期但仍可通过旧路径 re-initialize 的 capability session](../../appendix/lifecycle-artifact-schema.zh.md)；
-  - [仍被 gateways 接受的旧 runtime-control schema](../../appendix/lifecycle-artifact-schema.zh.md)。
+  - [可恢复的暂停审批路径（paused approval path）](../../appendix/approval-schema.zh.md)；
+  - [已过期但仍可通过旧路径重新初始化的能力会话（re-initialize capability session）](../../appendix/lifecycle-artifact-schema.zh.md)；
+  - [仍被网关接受的旧运行时控制模式（runtime-control schema）](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 形式上系统已经“死了”，但在运行上它仍然能行动。
 

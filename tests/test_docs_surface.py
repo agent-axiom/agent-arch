@@ -4271,10 +4271,12 @@ def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
             "[活跃的工具主体](../../appendix/lifecycle-artifact-schema.zh.md)",
             "[记忆访问权](../../appendix/memory-retrieval-schema.zh.md)",
             "[旧的上线路径](../../appendix/change-rollout-schema.zh.md)",
-            "[可恢复的 paused approval path](../../appendix/approval-schema.zh.md)",
-            "[已过期但仍可通过旧路径 re-initialize 的 capability session]"
+            "[可恢复的暂停审批路径（paused approval path）]"
+            "(../../appendix/approval-schema.zh.md)",
+            "[已过期但仍可通过旧路径重新初始化的能力会话"
+            "（re-initialize capability session）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[仍被 gateways 接受的旧 runtime-control schema]"
+            "[仍被网关接受的旧运行时控制模式（runtime-control schema）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -4283,6 +4285,17 @@ def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    forbidden_chinese_links = (
+        "[可恢复的 paused approval path](../../appendix/approval-schema.zh.md)",
+        "[已过期但仍可通过旧路径 re-initialize 的 capability session]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[仍被 gateways 接受的旧 runtime-control schema]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> None:
