@@ -3697,28 +3697,43 @@ def test_chapter_25_control_eval_case_spine_links_are_clickable() -> None:
 
 
 def test_chapter_26_observability_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Observability case-spine note",
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "trace and telemetry coverage record",
         "observability coverage",
         "ticket-write paths",
         "bypass blind spots",
-        "retrieval provenance",
         "source-grounding verdicts",
         "verifier evidence",
         "notification delivery",
-        "post-incident control changes",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-26.md",
-        "docs/book/part-viii/chapter-26.en.md",
-        "docs/book/part-viii/chapter-26.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-26.md": (
+            *common_markers,
+            "trace and telemetry coverage record",
+            "retrieval provenance",
+            "post-incident control changes",
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            *common_markers,
+            "trace and telemetry coverage record",
+            "retrieval provenance",
+            "post-incident control changes",
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            *common_markers,
+            "追踪与遥测覆盖记录（trace and telemetry coverage record）",
+            "检索来源追踪（retrieval provenance）",
+            "事故后控制变更（post-incident control changes）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_26_useful_refs_include_observability_contracts() -> None:
@@ -3784,6 +3799,34 @@ def test_chapter_26_observability_case_spine_links_are_clickable() -> None:
         text = _read(path)
         for expected_link in expected_links:
             assert f"]({expected_link})" in text, (path, expected_link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_chinese_links = (
+        "[追踪与遥测覆盖记录（trace and telemetry coverage record）]"
+        "(../../appendix/trace-schema.zh.md)",
+        "[审批链接（approval linkage）](../../appendix/approval-schema.zh.md)",
+        "[检索来源追踪（retrieval provenance）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[记忆写入事件（memory-write events）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[事故状态转换（incident-state transitions）]"
+        "(../../appendix/incident-record-schema.zh.md)",
+        "[事故后控制变更（post-incident control changes）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[trace and telemetry coverage record](../../appendix/trace-schema.zh.md)",
+        "[approval linkage](../../appendix/approval-schema.zh.md)",
+        "[retrieval provenance](../../appendix/memory-retrieval-schema.zh.md)",
+        "[memory-write events](../../appendix/memory-retrieval-schema.zh.md)",
+        "[incident-state transitions](../../appendix/incident-record-schema.zh.md)",
+        "[post-incident control changes]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
