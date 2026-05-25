@@ -1971,32 +1971,38 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "approved artifact bundle",
         "provenance",
         "capability contract",
-        "approved retrieval corpus",
         "source-grounding rubric",
         "responder-role map",
-        "post-incident artifact update",
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             *common_markers,
+            "approved artifact bundle",
             "eval dataset",
+            "approved retrieval corpus",
+            "post-incident artifact update",
             "trace schema",
             "approval schema",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             *common_markers,
+            "approved artifact bundle",
             "eval dataset",
+            "approved retrieval corpus",
+            "post-incident artifact update",
             "trace schema",
             "approval schema",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             *common_markers,
+            "已批准工件包（approved artifact bundle）",
             "评测数据集（eval dataset）",
             "策略包（policy bundle）",
             "发布门禁（rollout gate）",
+            "已批准检索语料（approved retrieval corpus）",
+            "事故后工件更新（post-incident artifact update）",
             "[审批模式](../../appendix/approval-schema.zh.md)",
             "[追踪模式](../../appendix/trace-schema.zh.md)",
             "[事故状态模式](../../appendix/incident-record-schema.zh.md)",
@@ -2041,10 +2047,16 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
     expected_chinese_links = (
+        "[已批准工件包（approved artifact bundle）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
         "[评测数据集（eval dataset）](../../appendix/eval-schema.zh.md)",
         "[策略包（policy bundle）](../../appendix/policy-bundle-schema.zh.md)",
         "[发布门禁（rollout gate）](../../appendix/change-rollout-schema.zh.md)",
         "[能力契约（capability contract）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[已批准检索语料（approved retrieval corpus）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[事故后工件更新（post-incident artifact update）]"
         "(../../appendix/lifecycle-artifact-schema.zh.md)",
     )
     for expected_chinese_link in expected_chinese_links:
@@ -2054,6 +2066,10 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
         "[policy bundle](../../appendix/policy-bundle-schema.zh.md)",
         "[rollout gate](../../appendix/change-rollout-schema.zh.md)",
         "[capability contract](../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[approved artifact bundle](../../appendix/lifecycle-artifact-schema.zh.md)",
+        "[approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
+        "[post-incident artifact update]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)",
     )
     for forbidden_chinese_link in forbidden_chinese_links:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
@@ -2778,7 +2794,7 @@ def test_chapter_22_approved_artifact_bundle_links_lifecycle_schema() -> None:
             "(../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[approved artifact bundle]"
+            "[已批准工件包（approved artifact bundle）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -3281,9 +3297,11 @@ def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
         "docs/book/part-viii/chapter-22.zh.md": (
             "哪一版[检索语料（retrieval corpus）]"
             "(../../appendix/memory-retrieval-schema.zh.md)",
-            "[approved retrieval corpus](../../appendix/memory-retrieval-schema.zh.md)",
-            "[source-grounding rubric、tenant-filter config、memory-write policy "
-            "和 freshness attestation](../../appendix/memory-retrieval-schema.zh.md)",
+            "[已批准检索语料（approved retrieval corpus）]"
+            "(../../appendix/memory-retrieval-schema.zh.md)",
+            "[来源扎根评分规程、租户过滤配置、记忆写入策略与新鲜度证明"
+            "（source-grounding rubric、tenant-filter config、memory-write policy "
+            "和 freshness attestation）](../../appendix/memory-retrieval-schema.zh.md)",
         ),
     }
 
@@ -3341,10 +3359,12 @@ def test_chapter_22_incident_case_spine_links_incident_artifacts() -> None:
             "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "[escalation-policy bundle、notification contract、responder-role map]"
+            "[升级策略包、通知契约与响应者角色映射"
+            "（escalation-policy bundle、notification contract、responder-role map）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[事故状态模式](../../appendix/incident-record-schema.zh.md)",
-            "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[事故后工件更新（post-incident artifact update）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
 
