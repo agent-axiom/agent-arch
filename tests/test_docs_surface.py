@@ -1470,6 +1470,28 @@ def test_chapter_12_slo_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_12_slo_zh_refs_are_localized() -> None:
+    text = _read("docs/book/part-v/chapter-12.zh.md")
+
+    expected_snippets = (
+        "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
+        "[事故记录模式](../../appendix/incident-record-schema.zh.md)",
+        "[变更评审与发布门禁模式]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+    )
+    forbidden_snippets = (
+        "需要配套的 schema 和工程工件",
+        "Trace Schema 与 Event Catalog",
+        "Incident Record Schema",
+        "Change Review 与 Rollout Gate Schema",
+    )
+
+    for expected_snippet in expected_snippets:
+        assert expected_snippet in text, expected_snippet
+    for forbidden_snippet in forbidden_snippets:
+        assert forbidden_snippet not in text, forbidden_snippet
+
+
 def test_chapter_14_ownership_threads_three_canonical_cases() -> None:
     required_markers = (
         "Ownership case-spine note",
