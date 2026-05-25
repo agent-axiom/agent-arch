@@ -3574,28 +3574,44 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
 
 
 def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Control-eval case-spine note",
         "Support triage",
         "Internal knowledge assistant",
         "Incident coordination",
-        "eval gate and verifier contract",
         "eval schema",
         "behavioral and control eval surfaces",
         "payload-mutation check",
-        "approval-path misuse check",
         "source-grounding eval",
-        "retrieval-poisoning scenario",
         "notification suppression probe",
         "rollback control eval",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-25.md",
-        "docs/book/part-viii/chapter-25.en.md",
-        "docs/book/part-viii/chapter-25.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-25.md": (
+            *common_markers,
+            "eval gate and verifier contract",
+            "approval-path misuse check",
+            "retrieval-poisoning scenario",
+        ),
+        "docs/book/part-viii/chapter-25.en.md": (
+            *common_markers,
+            "eval gate and verifier contract",
+            "approval-path misuse check",
+            "retrieval-poisoning scenario",
+        ),
+        "docs/book/part-viii/chapter-25.zh.md": (
+            *common_markers,
+            "评测门禁与验证器契约（eval gate and verifier contract）",
+            "审批路径误用检查（approval-path misuse check）",
+            "检索投毒场景（retrieval-poisoning scenario）",
+            "事故状态篡改检查（incident-state tampering check）",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
@@ -3656,6 +3672,28 @@ def test_chapter_25_control_eval_case_spine_links_are_clickable() -> None:
         text = _read(path)
         for expected_link in expected_links:
             assert f"]({expected_link})" in text, (path, expected_link)
+
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_chinese_links = (
+        "[评测门禁与验证器契约（eval gate and verifier contract）]"
+        "(../../appendix/eval-schema.zh.md)",
+        "[审批路径误用检查（approval-path misuse check）]"
+        "(../../appendix/approval-schema.zh.md)",
+        "[检索投毒场景（retrieval-poisoning scenario）]"
+        "(../../appendix/memory-retrieval-schema.zh.md)",
+        "[事故状态篡改检查（incident-state tampering check）]"
+        "(../../appendix/incident-record-schema.zh.md)",
+    )
+    for expected_chinese_link in expected_chinese_links:
+        assert expected_chinese_link in chinese_text, expected_chinese_link
+    forbidden_chinese_links = (
+        "[eval gate and verifier contract](../../appendix/eval-schema.zh.md)",
+        "[approval-path misuse check](../../appendix/approval-schema.zh.md)",
+        "[retrieval-poisoning scenario](../../appendix/memory-retrieval-schema.zh.md)",
+        "[incident-state tampering check](../../appendix/incident-record-schema.zh.md)",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_26_observability_threads_three_canonical_cases() -> None:
