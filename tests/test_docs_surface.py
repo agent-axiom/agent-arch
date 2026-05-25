@@ -408,6 +408,51 @@ def test_part_viii_role_map_is_print_friendly() -> None:
         assert role_map.count("- **") >= 9, relative_path
 
 
+def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
+    expected_and_forbidden_by_file = {
+        "docs/book/part-viii/chapter-19.zh.md": (
+            "本章的主要工件是 智能体开发生命周期状态模型（ADLC state model）：",
+            "本章的主要工件是 ADLC state model：",
+        ),
+        "docs/book/part-viii/chapter-20.zh.md": (
+            "本章的主要工件是 变更包（change packet）：",
+            "本章的主要工件是 change packet：",
+        ),
+        "docs/book/part-viii/chapter-21.zh.md": (
+            "本章的主要工件是 发现与响应记录（finding and response record）：",
+            "本章的主要工件是 finding and response record：",
+        ),
+        "docs/book/part-viii/chapter-23.zh.md": (
+            "本章的主要工件是 退役计划（retirement plan）：",
+            "本章的主要工件是 retirement plan：",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "本章的主要工件是 风险场景与控制计划"
+            "（risk scenario and control plan）：",
+            "本章的主要工件是 risk scenario and control plan：",
+        ),
+        "docs/book/part-viii/chapter-25.zh.md": (
+            "本章的主要工件是 评测门禁与验证器契约"
+            "（eval gate and verifier contract）：",
+            "本章的主要工件是 eval gate and verifier contract：",
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "本章的主要工件是 追踪与遥测覆盖记录"
+            "（trace and telemetry coverage record）：",
+            "本章的主要工件是 trace and telemetry coverage record：",
+        ),
+        "docs/book/part-viii/chapter-27.zh.md": (
+            "本章的主要工件是 注册表记录（registry record）：",
+            "本章的主要工件是 registry record：",
+        ),
+    }
+
+    for relative_path, (expected_label, forbidden_label) in expected_and_forbidden_by_file.items():
+        text = _read(relative_path)
+        assert expected_label in text, (relative_path, expected_label)
+        assert forbidden_label not in text, (relative_path, forbidden_label)
+
+
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
         "Implementation status, 20 May 2026",
