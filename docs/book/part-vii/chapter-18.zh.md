@@ -34,7 +34,7 @@
 这正是 rollout 检查清单存在的原因。
 
 !!! info "需要 rollout 工件？"
-    如果你需要可审阅的工程工件层，可以直接查看 [Change Review 与 Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md) 和 [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)。
+    如果你需要可审阅的工程工件层，可以直接查看 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md) 和 [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 ## 2. 检查清单不是官僚流程，而是防止自我欺骗的工具
 
@@ -395,9 +395,9 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 ## 17. 值得配套阅读的参考页
 
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
 
 这一章把第 17 章里的受治理运行时路径变成 rollout 纪律。相同的审批、pause/resume 与控制信号，接下来会在第 21 章里继续作为保证回路的一部分出现。
 
