@@ -1664,6 +1664,7 @@ def test_chapter_18_rollout_trace_links_are_clickable() -> None:
             "](../../appendix/trace-schema.en.md)",
         ),
         "docs/book/part-vii/chapter-18.zh.md": (
+            "[追踪（traces）](../../appendix/trace-schema.zh.md)",
             "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
             "[策略包模式与审批契约]"
             "(../../appendix/policy-bundle-schema.zh.md)",
