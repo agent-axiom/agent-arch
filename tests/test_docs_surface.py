@@ -1596,14 +1596,28 @@ def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
 
 
 def test_chapter_18_rollout_trace_links_are_clickable() -> None:
-    expected_links_by_file = {
-        "docs/book/part-vii/chapter-18.md": "../../appendix/trace-schema.md",
-        "docs/book/part-vii/chapter-18.en.md": "../../appendix/trace-schema.en.md",
-        "docs/book/part-vii/chapter-18.zh.md": "../../appendix/trace-schema.zh.md",
+    expected_snippets_by_file = {
+        "docs/book/part-vii/chapter-18.md": (
+            "](../../appendix/trace-schema.md)",
+        ),
+        "docs/book/part-vii/chapter-18.en.md": (
+            "](../../appendix/trace-schema.en.md)",
+        ),
+        "docs/book/part-vii/chapter-18.zh.md": (
+            "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
+            "[策略包模式与审批契约]"
+            "(../../appendix/policy-bundle-schema.zh.md)",
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
+            "[变更评审与发布门禁模式]"
+            "(../../appendix/change-rollout-schema.zh.md)",
+        ),
     }
 
-    for path, expected_link in expected_links_by_file.items():
-        assert f"]({expected_link})" in _read(path), (path, expected_link)
+    for path, expected_snippets in expected_snippets_by_file.items():
+        text = _read(path)
+        for expected_snippet in expected_snippets:
+            assert expected_snippet in text, (path, expected_snippet)
 
 
 def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
