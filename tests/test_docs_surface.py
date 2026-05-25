@@ -1272,6 +1272,26 @@ def test_chapter_17_policy_catalog_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_17_policy_catalog_zh_refs_are_localized() -> None:
+    text = _read("docs/book/part-vii/chapter-17.zh.md")
+
+    expected_snippets = (
+        "[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)",
+        "[审批请求与决策记录模式](../../appendix/approval-schema.zh.md)",
+        "[生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)",
+    )
+    forbidden_snippets = (
+        "Policy Bundle Schema 与 Approval Contract",
+        "Approval Request 与 Decision Record Schema",
+        "Lifecycle Artifact Schema",
+    )
+
+    for expected_snippet in expected_snippets:
+        assert expected_snippet in text, expected_snippet
+    for forbidden_snippet in forbidden_snippets:
+        assert forbidden_snippet not in text, forbidden_snippet
+
+
 def test_chapter_8_execution_layer_threads_three_canonical_cases() -> None:
     required_markers = (
         "Execution case-spine note",

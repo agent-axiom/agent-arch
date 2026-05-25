@@ -31,7 +31,7 @@
 如果你想看这种受治理策略决策之后如何继续连接到追踪、审批、评测判断、事故和 rollout，可以直接打开单独的 [Evidence Spine](../part-v/evidence-spine.zh.md) 页面。
 
 !!! info "需要契约层的配套页面？"
-    如果你想直接看更落地的工程形式，可以打开 [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)、[Approval Request 与 Decision Record Schema](../../appendix/approval-schema.zh.md) 和 [参考包](../../appendix/reference-package.zh.md)。
+    如果你想直接看更落地的工程形式，可以打开 [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)、[审批请求与决策记录模式](../../appendix/approval-schema.zh.md) 和 [参考包](../../appendix/reference-package.zh.md)。
 
 ## 2. 策略层应该回答小而清晰的问题
 
@@ -433,8 +433,8 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 ## 17. 值得配套阅读的参考页
 
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
 - [参考包](../../appendix/reference-package.zh.md)
 
 这一章是整个运行时控制集群的契约枢纽。最值得继续看的下一步，是第 18 章里把这些路径变成 rollout 门禁，以及第 21 章里把同样的审批与策略路径变成保证响应。
