@@ -378,11 +378,11 @@ def emergency_action(signal: AssuranceSignal) -> str:
 
 ## 16. 值得配套阅读的参考页
 
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
-- [Policy Bundle Schema 与 Approval Contract](../../appendix/policy-bundle-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
-- [Change Review and Rollout Gate Schema](../../appendix/change-rollout-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
+- [策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)
+- [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
+- [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)
 
 这一章把第 17 章和第 18 章打开的回路真正闭合起来。那两章里策略、审批与运行时控制路径先被做成显式结构，而在这里，这些同样的路径会变成检测、遏制和响应表面。
 
