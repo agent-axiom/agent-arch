@@ -8027,6 +8027,8 @@ def test_multilingual_trace_schema_case_note_is_localized() -> None:
     assert "评测数据集模式与打分契约" in chinese_text
     assert "策略包模式与审批契约" in chinese_text
     assert "生命周期工件模式" in chinese_text
+    assert "为什么需要显式的追踪模式" in chinese_text
+    assert "生产级模式还应该补什么" in chinese_text
 
     forbidden_markers = (
         "Три canonical cases требуют разных trace emphases",
@@ -8038,6 +8040,11 @@ def test_multilingual_trace_schema_case_note_is_localized() -> None:
         "保留 retrieval spans",
         "展示 escalation timeline",
         "真正的追踪 Schema",
+        "为什么需要显式的追踪 Schema",
+        "显式的追踪 Schema",
+        "生产级 Schema 还应该补什么",
+        "Schema 版本字段",
+        "Schema 版本化",
         "评测数据集 Schema 与打分契约",
         "策略包 Schema 与审批契约",
         "生命周期工件 Schema",
