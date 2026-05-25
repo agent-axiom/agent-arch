@@ -100,7 +100,7 @@ flowchart LR
 - 可审计性不足；
 - 不安全的降级行为。
 
-可以把这张表看成用于 [trace schema](../../appendix/trace-schema.zh.md) 的 unified agent threat evidence model：每一行都把 threat class、control 和可复查的 evidence/telemetry markers 连接起来。
+可以把这张表看成用于 [追踪模式（trace schema）](../../appendix/trace-schema.zh.md) 的 unified agent threat evidence model：每一行都把 threat class、control 和可复查的 evidence/telemetry markers 连接起来。
 
 | 威胁 | 最先该在哪一层拦 | 有效手段 | Evidence / telemetry |
 | --- | --- | --- | --- |
@@ -165,7 +165,7 @@ defense_in_depth_map:
   trace_evidence: agent_threat_evidence_and_governance_action
 ```
 
-这张 map 故意保持紧凑。`ingress_control` 在 input 变成 context 之前拦住 unsafe 或 over-scoped input。`context_boundary` 和 `retrieval_memory_gate` 防止 untrusted content 变成 instructions 或 durable memory。`model_gateway_policy` 和 `tool_gateway_approval` 把 right to act 留在 probabilistic text generation 之外。`mcp_a2a_boundary` 让 external capability 和 delegation risk 可审查。`egress_filter` 限制离开系统的内容。`trace_evidence` 把这些 controls 连接回 [trace schema](../../appendix/trace-schema.zh.md)，这样 defense in depth 可以被 audit，而不是只停留在声明。
+这张 map 故意保持紧凑。`ingress_control` 在 input 变成 context 之前拦住 unsafe 或 over-scoped input。`context_boundary` 和 `retrieval_memory_gate` 防止 untrusted content 变成 instructions 或 durable memory。`model_gateway_policy` 和 `tool_gateway_approval` 把 right to act 留在 probabilistic text generation 之外。`mcp_a2a_boundary` 让 external capability 和 delegation risk 可审查。`egress_filter` 限制离开系统的内容。`trace_evidence` 把这些 controls 连接回 [追踪模式（trace schema）](../../appendix/trace-schema.zh.md)，这样 defense in depth 可以被 audit，而不是只停留在声明。
 
 ## 7. 最重要的实践规则：把指令和数据分开
 

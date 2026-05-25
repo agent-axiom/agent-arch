@@ -10647,6 +10647,10 @@ def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
     for path, expected_link in expected_links_by_file.items():
         assert f"]({expected_link})" in _read(path), (path, expected_link)
 
+    chinese_text = _read("docs/book/part-ii/chapter-3.zh.md")
+    assert "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)" in chinese_text
+    assert "[trace schema](../../appendix/trace-schema.zh.md)" not in chinese_text
+
 
 def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
     expected = {
