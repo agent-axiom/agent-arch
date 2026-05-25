@@ -3078,8 +3078,9 @@ def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
             "[结构化交接工件](../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[是哪一份交接工件传递了 scope、哪一条 evaluator critique "
-            "改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化]"
+            "[是哪一份交接工件传递了范围（scope）、哪一条评测器批注"
+            "（evaluator critique）改变了下一轮 sprint，"
+            "以及是在什么重置边界上，活动上下文发生了变化]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
@@ -3088,6 +3089,14 @@ def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_link = (
+        "[是哪一份交接工件传递了 scope、哪一条 evaluator critique "
+        "改变了下一轮 sprint，以及是在什么重置边界上，活动上下文发生了变化]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md)"
+    )
+    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_22_boundary_parity_links_telemetry_and_contract_family() -> None:
