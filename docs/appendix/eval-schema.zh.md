@@ -3,14 +3,14 @@
 这一页继续扩展两个相邻主题：
 
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
 - [Evidence Spine：从请求到发布判断](../book/part-v/evidence-spine.zh.md)
 
 并把它们和可运行参考包连接起来：
 
 - [参考包](reference-package.zh.md)
 
-如果追踪 Schema 那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
+如果追踪模式那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
 
 ## 为什么需要显式的评测数据集模式
 
@@ -121,8 +121,8 @@
 
 一个很实用的模型是：
 
-- 追踪 Schema 描述实际运行行为；
-- 评测数据集 Schema 描述期望行为；
+- 追踪模式描述实际运行行为；
+- 评测数据集模式描述期望行为；
 - 分级契约负责把两者对齐。
 
 也正是在这里，可观测性才不只是“事后回看”，而开始参与发布决策。
@@ -279,12 +279,12 @@ verifier_outputs:
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 
-如果连续几个答案都是“没有”，那你现在更像是拥有一组例子，而不是拥有真正的评测数据集 Schema。
+如果连续几个答案都是“没有”，那你现在更像是拥有一组例子，而不是拥有真正的评测数据集模式。
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
