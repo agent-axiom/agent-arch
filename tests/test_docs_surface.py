@@ -8888,6 +8888,8 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
     assert "幂等性查找（idempotency lookup）" in chinese_text
     assert "陈旧检索（stale retrieval）" in chinese_text
     assert "通知部分送达（notification partial delivery）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "事故记录与事后复盘链接模式" in chinese_text
 
     forbidden_markers = (
         "Recovery branch должен",
@@ -8899,6 +8901,8 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
         "idempotency lookup、duplicate-ticket prevention",
         "stale retrieval、source lookup failure",
         "notification partial delivery、escalation retry",
+        "追踪 Schema 与事件目录",
+        "事故记录与事后复盘链接 Schema",
     )
 
     for marker in forbidden_markers:

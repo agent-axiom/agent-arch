@@ -130,7 +130,7 @@
 ## 下一步做什么
 
 - [第 10 章：幂等性、重试、速率限制与回滚边界](../book/part-iv/chapter-10.zh.md)
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [事故记录与事后复盘链接 Schema](incident-record-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [事故记录与事后复盘链接模式](incident-record-schema.zh.md)
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
 - [智能体系统事后复盘模板](postmortem-template.zh.md)
