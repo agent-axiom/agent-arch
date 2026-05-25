@@ -82,7 +82,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 当时是哪一条[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 当时是哪一种[编排模式与工作器边界策略（worker-boundary policy）](../../appendix/change-rollout-schema.zh.md)在治理这次运行；
-- 当时是哪种[委派授权模式、principal 绑定与撤销策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
+- 当时是哪种[委派授权模式、主体绑定与撤销策略（principal binding and revoke policy）](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 这个变更是谁批准的。
 
 !!! example "贯穿案例：重复工单修复的 provenance"
@@ -166,14 +166,14 @@ flowchart LR
 - [谁改了提示](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 现在生产环境里是[哪一个版本](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 哪些[评测](../../appendix/eval-schema.zh.md)覆盖了它；
-- 它在哪个[rollout 波次](../../appendix/change-rollout-schema.zh.md)上生效；
+- 它在哪个[发布波次（rollout wave）](../../appendix/change-rollout-schema.zh.md)上生效；
 
 那这个提示包在运营上并不比来源不明的构建工件更可靠。
 
 同样的逻辑也适用于：
 
 - [例程](../../appendix/lifecycle-artifact-schema.zh.md)；
-- [策略 YAML](../../appendix/policy-bundle-schema.zh.md)；
+- [策略 YAML（policy YAML）](../../appendix/policy-bundle-schema.zh.md)；
 - [检索配置](../../appendix/memory-retrieval-schema.zh.md)；
 - [审批阈值](../../appendix/approval-schema.zh.md)；
 - 用来定义暂停/后台行为的[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)。
