@@ -5129,6 +5129,13 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-20.zh.md": (
             *common_markers,
+            "变更包（change packet）",
+            "重试（retries）",
+            "写入能力（write capabilities）",
+            "发布承载变更（release-bearing）",
+            "新鲜度窗口（freshness windows）",
+            "访问控制（access control）",
+            "负责人转移（ownership transfer）",
             "审批规则（approval rules）",
             "检索语料（retrieval corpus）",
             "记忆写入语义（memory write semantics）",
@@ -5140,6 +5147,17 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
+    forbidden_chinese_markers = (
+        "change packet 应该能对三个 canonical cases",
+        "retries 和 write capabilities 的变化变成 release-bearing",
+        "freshness windows、",
+        "access control 的变化变成 release-bearing",
+        "ownership transfer 和",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_20_change_case_spine_links_are_clickable() -> None:
