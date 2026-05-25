@@ -1854,7 +1854,7 @@ def test_chapter_21_useful_refs_include_change_rollout_schema() -> None:
 
 
 def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
-    required_markers = (
+    common_markers = (
         "Supply-chain case-spine note",
         "Support triage",
         "Internal knowledge assistant",
@@ -1863,20 +1863,34 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "provenance",
         "capability contract",
         "eval dataset",
-        "trace schema",
-        "approval schema",
         "approved retrieval corpus",
         "source-grounding rubric",
         "responder-role map",
         "post-incident artifact update",
     )
-    checked_files = (
-        "docs/book/part-viii/chapter-22.md",
-        "docs/book/part-viii/chapter-22.en.md",
-        "docs/book/part-viii/chapter-22.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-22.md": (
+            *common_markers,
+            "trace schema",
+            "approval schema",
+        ),
+        "docs/book/part-viii/chapter-22.en.md": (
+            *common_markers,
+            "trace schema",
+            "approval schema",
+        ),
+        "docs/book/part-viii/chapter-22.zh.md": (
+            *common_markers,
+            "[审批模式](../../appendix/approval-schema.zh.md)",
+            "[追踪模式](../../appendix/trace-schema.zh.md)",
+            "[事故状态模式](../../appendix/incident-record-schema.zh.md)",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
@@ -3193,7 +3207,7 @@ def test_chapter_22_incident_case_spine_links_incident_artifacts() -> None:
         "docs/book/part-viii/chapter-22.zh.md": (
             "[escalation-policy bundle、notification contract、responder-role map]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[incident-state schema](../../appendix/incident-record-schema.zh.md)",
+            "[事故状态模式](../../appendix/incident-record-schema.zh.md)",
             "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
