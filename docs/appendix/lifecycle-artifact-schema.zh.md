@@ -1,6 +1,6 @@
 # 生命周期工件 Schema
 
-这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪 Schema 回答的是“发生了什么”，评测 Schema 回答的是“如何评估”，那生命周期工件 Schema 回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
+这一页把生命周期工件的最小契约层放在一起：变更记录、已批准工件包和退役计划。如果追踪模式回答的是“发生了什么”，评测模式回答的是“如何评估”，那生命周期工件模式回答的就是“到底有哪些东西被批准、变更、替换或退役了”。
 
 !!! example "重复工单线索的 lifecycle artifact"
     对 support-triage 来说，bundle 不只应该把 `policy_bundle` 和 `eval_dataset` 放在一起，还应该保留 duplicate-ticket guard 的 evidence：`idempotency_key` 要求、approval record、带有 `side_effect_unknown` 的 trace、`duplicate_ticket_eval_passed` 和 rollout gate。这样 incident review 可以重建一条 `change -> bundle -> approval -> trace -> eval -> rollout` 链，而不是在不同页面里寻找证据。
@@ -242,9 +242,9 @@ Lifecycle artifact loaders 会把 malformed release-state inputs 与失败但格
 
 ## 下一步做什么
 
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [评测数据集 Schema 与打分契约](eval-schema.zh.md)
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [评测数据集模式与打分契约](eval-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
 - [参考包](reference-package.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
 - [第 22 章：供应链、来源追踪与已批准工件](../book/part-viii/chapter-22.zh.md)

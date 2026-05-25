@@ -8490,6 +8490,9 @@ def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
     assert "变更记录（change record）" in chinese_text
     assert "检索策略（retrieval policy）" in chinese_text
     assert "升级策略（escalation policy）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "评测数据集模式与打分契约" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
 
     forbidden_markers = (
         "Lifecycle artifacts должны удерживать",
@@ -8502,6 +8505,12 @@ def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
         "把 change record",
         "连接 retrieval policy",
         "连接 escalation policy",
+        "追踪 Schema 回答的是",
+        "评测 Schema 回答的是",
+        "生命周期工件 Schema 回答的就是",
+        "追踪 Schema 与事件目录",
+        "评测数据集 Schema 与打分契约",
+        "策略包 Schema 与审批契约",
     )
 
     for marker in forbidden_markers:
