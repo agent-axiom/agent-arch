@@ -1925,6 +1925,14 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
         "docs/book/part-viii/chapter-21.zh.md": (
             *common_markers,
             "发现与响应记录（finding and response record）",
+            "遏制路径（containment paths）",
+            "重复结果检测（duplicate-outcome detection）",
+            "更新后的评测（updated eval）",
+            "租户边界遏制（tenant-boundary containment）",
+            "新鲜度修复（freshness remediation）",
+            "升级滥用信号（escalation abuse signal）",
+            "通知节流（notification throttling）",
+            "响应者角色负责人（responder-role owner）",
             "仅审批遏制（approval-only containment）",
             "检索投毒信号（retrieval-poisoning signal）",
             "记忆写入隔离（memory-write quarantine）",
@@ -1937,6 +1945,18 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
+    forbidden_chinese_markers = (
+        "通过不同 containment paths 闭合",
+        "连接 duplicate-outcome detection、",
+        "owner、updated eval 和 traceable outcome",
+        "source-grounding review、tenant-boundary containment",
+        "freshness remediation。Incident coordination",
+        "escalation abuse signal、notification throttling",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
