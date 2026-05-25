@@ -47,8 +47,8 @@ SLO 帮你定义什么叫系统健康。
 
 **Eval case-spine note：**评测集应该在三个 canonical cases 之间保持平衡。Support triage 要测试 duplicate tickets、approval gates、retries 和 side effects。Internal knowledge assistant 要测试 retrieval freshness、source attribution、memory provenance 和 access-control failures。Incident coordination 要测试 escalation timing、handoff quality、response ownership，以及 post-incident changes 是否会在下一次 rollout 前变成 regression cases。
 
-!!! info "需要配套的 schema 和工程工件？"
-    如果你需要的不只是原理说明，可以直接打开 [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md) 和 [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)。
+!!! info "需要配套的模式和工程工件？"
+    如果你需要的不只是原理说明，可以直接打开 [追踪模式与事件目录](../../appendix/trace-schema.zh.md) 和 [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)。
 
 ## 2. 离线评测的作用，是在发布之前改变系统
 
@@ -519,9 +519,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 ## 17. 值得配套阅读的参考页
 
-- [Trace Schema 与 Event Catalog](../../appendix/trace-schema.zh.md)
-- [Eval Dataset Schema 与 Grading Contract](../../appendix/eval-schema.zh.md)
-- [Lifecycle Artifact Schema](../../appendix/lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](../../appendix/trace-schema.zh.md)
+- [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)
+- [生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)
 - [研究前沿：记忆、可观测性与多智能体可靠性](../../appendix/research-frontier.zh.md)
 
 - [第 12 章：智能体系统的 SLO](chapter-12.zh.md)

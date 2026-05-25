@@ -4547,25 +4547,28 @@ def test_chapter_13_eval_suite_threads_three_canonical_cases() -> None:
 
 
 def test_chapter_13_verifier_verdict_schema_links_are_clickable() -> None:
-    expected_links_by_file = {
+    expected_snippets_by_file = {
         "docs/book/part-v/chapter-13.md": (
-            "../../appendix/eval-schema.md",
-            "../../appendix/trace-schema.md",
+            "](../../appendix/eval-schema.md)",
+            "](../../appendix/trace-schema.md)",
         ),
         "docs/book/part-v/chapter-13.en.md": (
-            "../../appendix/eval-schema.en.md",
-            "../../appendix/trace-schema.en.md",
+            "](../../appendix/eval-schema.en.md)",
+            "](../../appendix/trace-schema.en.md)",
         ),
         "docs/book/part-v/chapter-13.zh.md": (
-            "../../appendix/eval-schema.zh.md",
-            "../../appendix/trace-schema.zh.md",
+            "[追踪模式与事件目录](../../appendix/trace-schema.zh.md)",
+            "[评测数据集模式与打分契约]"
+            "(../../appendix/eval-schema.zh.md)",
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
     }
 
-    for path, expected_links in expected_links_by_file.items():
+    for path, expected_links in expected_snippets_by_file.items():
         text = _read(path)
-        for link in expected_links:
-            assert f"]({link})" in text, (path, link)
+        for expected_link in expected_links:
+            assert expected_link in text, (path, expected_link)
 
 
 def test_evidence_spine_threads_three_canonical_cases() -> None:
