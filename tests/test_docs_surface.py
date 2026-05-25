@@ -8339,6 +8339,11 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
     assert "结果未知的写入（unknown write）" in chinese_text
     assert "陈旧检索（stale retrieval）" in chinese_text
     assert "升级延迟（escalation delay）" in chinese_text
+    assert "追踪模式与事件目录" in chinese_text
+    assert "策略包模式与审批契约" in chinese_text
+    assert "审批请求与决策记录模式" in chinese_text
+    assert "变更评审与发布门禁模式" in chinese_text
+    assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
         "Incident record должен оставлять",
@@ -8351,6 +8356,11 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
         "记录 unknown write",
         "记录 stale retrieval",
         "记录 escalation delay",
+        "追踪 Schema 与事件目录",
+        "策略包 Schema 与审批契约",
+        "审批请求与决策记录 Schema",
+        "变更评审与发布门禁 Schema",
+        "生命周期工件 Schema",
     )
 
     for marker in forbidden_markers:

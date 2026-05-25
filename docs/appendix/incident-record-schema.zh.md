@@ -93,9 +93,9 @@ status: open
 
 这一层的价值在于：它迫使事故评审以具体的生命周期更新结束，而不只是停留在文字总结里。
 
-## 5. 它与追踪 Schema 的关系
+## 5. 它与追踪模式的关系
 
-事故记录几乎总是依赖 [追踪 Schema 与事件目录](trace-schema.zh.md)：
+事故记录几乎总是依赖 [追踪模式与事件目录](trace-schema.zh.md)：
 
 - `trace_id` 与 `session_id` 把事故连到运行历史；
 - 策略事件说明什么被允许了；
@@ -112,10 +112,10 @@ status: open
 - 哪个策略包正在生效；
 - 到底是哪一个主体执行了动作。
 
-因此事故 Schema 应该紧挨着：
+因此事故记录模式应该紧挨着：
 
-- [策略包 Schema 与审批契约](policy-bundle-schema.zh.md)
-- [审批请求与决策记录 Schema](approval-schema.zh.md)
+- [策略包模式与审批契约](policy-bundle-schema.zh.md)
+- [审批请求与决策记录模式](approval-schema.zh.md)
 
 ## 7. 它与变更管理和发布的关系
 
@@ -128,7 +128,7 @@ status: open
 - 哪些检查没有拦住它；
 - 是否需要回滚、受限模式或退役。
 
-这就是为什么事故记录应该和 [变更评审与发布门禁 Schema](change-rollout-schema.zh.md) 以及 [生命周期工件 Schema](lifecycle-artifact-schema.zh.md) 相连。
+这就是为什么事故记录应该和 [变更评审与发布门禁模式](change-rollout-schema.zh.md) 以及 [生命周期工件模式](lifecycle-artifact-schema.zh.md) 相连。
 
 ## 8. 与参考包的关系
 
@@ -178,10 +178,10 @@ status: open
 ## 下一步做什么
 
 - [智能体系统事故响应手册](incident-response-playbook.zh.md)
-- [追踪 Schema 与事件目录](trace-schema.zh.md)
-- [审批请求与决策记录 Schema](approval-schema.zh.md)
-- [变更评审与发布门禁 Schema](change-rollout-schema.zh.md)
-- [生命周期工件 Schema](lifecycle-artifact-schema.zh.md)
+- [追踪模式与事件目录](trace-schema.zh.md)
+- [审批请求与决策记录模式](approval-schema.zh.md)
+- [变更评审与发布门禁模式](change-rollout-schema.zh.md)
+- [生命周期工件模式](lifecycle-artifact-schema.zh.md)
 - [智能体注册表与清单运维手册](registry-operations-handbook.zh.md)
 - [第 21 章：保障闭环：红队测试、检测与响应](../book/part-viii/chapter-21.zh.md)
 - [第 26 章：AI 原生可观测性、清单覆盖率与可用于检测的遥测](../book/part-viii/chapter-26.zh.md)
