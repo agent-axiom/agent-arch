@@ -1583,6 +1583,12 @@ def test_chapter_15_golden_path_trace_eval_links_are_clickable() -> None:
         for link in expected_links:
             assert f"]({link})" in text, (path, link)
 
+    chinese_text = _read("docs/book/part-vi/chapter-15.zh.md")
+    assert "[追踪（trace）](../../appendix/trace-schema.zh.md)" in chinese_text
+    assert "[评测（eval）](../../appendix/eval-schema.zh.md)" in chinese_text
+    assert "[trace](../../appendix/trace-schema.zh.md)" not in chinese_text
+    assert "[eval](../../appendix/eval-schema.zh.md)" not in chinese_text
+
 
 def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
     required_markers = (
