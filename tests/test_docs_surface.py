@@ -1986,6 +1986,8 @@ def test_chapter_22_supply_chain_surface_links_control_schemas() -> None:
             "(../../appendix/lifecycle-artifact-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
+            "[生命周期工件模式]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[审批规则与模式](../../appendix/approval-schema.zh.md)",
             "[运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)",
         ),
