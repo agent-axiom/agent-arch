@@ -11051,6 +11051,44 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_lifecycle_artifact_retirement_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+    expected_markers = (
+        "退役表面（retiring surface）",
+        "受控交接（controlled handover）",
+        "退役（retirement）",
+        "控制项（controls）",
+        "归属（ownership）",
+        "留存证据（retained evidence）",
+        "归档列表（Archive list）",
+        "记录（records）",
+        "可执行摘要（Executable summary）",
+        "退役步骤（retirement steps）",
+        "降级路径（degraded-path）",
+        "重复工单评审（duplicate-ticket review）",
+        "证据包（evidence bundles）",
+        "畸形退役步骤覆盖（malformed retirement step overrides）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "标识 retiring surface",
+        "表示 controlled handover",
+        "等 controls",
+        "保留 ownership 和 retained evidence",
+        "Archive list 会列出",
+        "可审查的 records",
+        "Executable summary `check-retirement`",
+        "未完成的 retirement steps",
+        "为 degraded-path 与 duplicate-ticket review",
+        "准确 evidence bundles",
+        "malformed retirement step overrides 会失败为",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_lifecycle_artifact_bundle_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
     expected_markers = (
