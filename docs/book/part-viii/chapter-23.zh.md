@@ -82,7 +82,7 @@
 !!! example "贯穿案例：替换后的旧工单写入器"
     如果 support-triage v2 替换了曾经制造重复工单的旧路径，退役必须证明旧的 `create_support_ticket` 路径已经不能再行动。仅仅移除 prompt route 不够：团队还必须[关闭工具主体](../../appendix/lifecycle-artifact-schema.zh.md)、[撤销网关暴露（gateway exposure）](../../appendix/registry-operations-handbook.zh.md)、[让暂停审批（paused approvals）过期](../../appendix/approval-schema.zh.md)、[停止后台重试](../../appendix/lifecycle-artifact-schema.zh.md)，并[保留审计轨迹](../../appendix/trace-schema.zh.md)，这样未来的重复工单才不会被归因成“来源不明”的旧智能体。
 
-**Retirement case-spine note：**每个 canonical case 都会退役一种不同的 right to act。Support triage 关闭 deprecated write paths 和 paused approvals；Internal knowledge assistant 退役 stale corpora、obsolete embeddings 和 memory-write rules；Incident coordination 在 response path 不再有效时关闭 emergency-only capabilities、escalation routes 和 notification channels。只删除 runtime 的 retirement plan 会把旧权限留在系统里。
+**Retirement case-spine note：**每个 canonical case 都会退役一种不同的行动权（right to act）。Support triage 关闭已弃用写入路径（deprecated write paths）和暂停审批（paused approvals）；Internal knowledge assistant 退役过时语料（stale corpora）、过时嵌入（obsolete embeddings）和记忆写入规则（memory-write rules）；Incident coordination 在响应路径（response path）不再有效时关闭仅应急能力（emergency-only capabilities）、升级路由（escalation routes）和通知通道（notification channels）。只删除 runtime 的退役计划（retirement plan）会把旧权限留在系统里。
 
 ## 5. 退役最好按层收缩
 
