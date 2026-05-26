@@ -10403,6 +10403,35 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_trace_schema_replay_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+    expected_markers = (
+        "分诊（triage）",
+        "原始 JSONL 转储（raw JSONL dump）",
+        "载荷（payload）",
+        "重放（replay）",
+        "重复写入键（key）",
+        "新运行（new run）",
+        "追踪重放（Trace replay）",
+        "证据（evidence）",
+        "种子（seed）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "可用于 triage",
+        "不只是 raw JSONL dump",
+        "`tool_execution` payload",
+        "说明 replay 是",
+        "重复写入 key 的新 run",
+        "Trace replay 会先校验这些 evidence",
+        "作为新 run 的 seed",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_trace_schema_tool_model_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
