@@ -49,7 +49,7 @@
 
 行为评测不只检查最终输出，还检查系统的行为形态。
 
-最近关于 computer-use agents 验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元 verdict 往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个 score。
+最近关于计算机使用智能体（computer-use agents）验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元裁决（binary verdict）往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个分数（score）。
 
 例如：
 
@@ -58,8 +58,8 @@
 - 会不会在审查之后改掉载荷；
 - 会不会在没有充分理由的情况下进入高风险工具路径；
 - 会不会偏离预期的升级路径；
-- 会不会利用 contract drift 或 schema mismatch 穿过控制边界；
-- 会不会利用 interruption、expiry 或 re-init semantics 重新回到更弱的控制姿态。
+- 会不会利用契约漂移（contract drift）或模式不匹配（schema mismatch）穿过控制边界；
+- 会不会利用中断（interruption）、到期（expiry）或重新初始化语义（re-init semantics）重新回到更弱的控制姿态。
 
 也就是说，问题不再只是“答案对不对”，而是“在这个场景下，运行时的行为对不对”。
 
@@ -69,14 +69,14 @@
 
 典型问题包括：
 
-- 验证器本身是否使用了可评审的 rubric，而不是不透明的单一 verdict；
+- 验证器本身是否使用了可评审的评分规约（rubric），而不是不透明的单一裁决（verdict）；
 - 它是否区分可控失败和不可控失败；
 
 - 策略层能不能真的拦住这个能力；
 - 审批门禁是否真的要求人来确认；
 - 回滚门禁能不能工作；
-- paused-run 与 background-run controls 是否按设计工作；
-- capability-session expiry 与 re-init controls 是否按设计工作；
+- 暂停运行与后台运行控制（paused-run and background-run controls）是否按设计工作；
+- 能力会话到期与重新初始化控制（capability-session expiry and re-init controls）是否按设计工作；
 - 副作用会不会进入追踪；
 - 紧急控制能不能关掉高风险路径。
 
