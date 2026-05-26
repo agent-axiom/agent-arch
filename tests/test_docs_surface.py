@@ -10403,6 +10403,32 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_trace_schema_tool_model_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+    expected_markers = (
+        "参考载荷（reference payloads）",
+        "操作元数据字段（operational metadata fields）",
+        "工具请求/结果模型校验（Tool request/result model validation）",
+        "追踪边界（trace boundary）",
+        "畸形工具调用（malformed tool calls）",
+        "畸形工具结果（malformed tool results）",
+        "`span_name` 和 `duration_ms`",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "当前 reference payloads",
+        "operational metadata fields：",
+        "`span_name`, and `duration_ms`",
+        "Tool request/result model validation 也属于",
+        "trace boundary：malformed tool calls",
+        "malformed tool results 会以",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_trace_schema_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/trace-schema.md")
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
