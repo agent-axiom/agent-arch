@@ -4573,6 +4573,58 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_research_frontier_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "追踪（traces）从“方便阅读的事件日志”",
+        "追踪查看器（trace viewer）",
+        "事件流（event stream）",
+        "追踪词汇表（trace vocabulary）",
+        "运行（run）无法关联到会话（session）、审批（approval）和工件包（artifact bundle）",
+        "根因（root cause）",
+        "转录（transcript）",
+        "稳定事件目录（stable event catalog）",
+        "模式版本控制（schema versioning）",
+        "会话感知追踪（session-aware traces）",
+        "遥测（telemetry）、审批（approvals）和生命周期工件（lifecycle artifacts）",
+        "明确链接（linkage）",
+        "AI 原生可观测性（AI-native observability）",
+        "遥测（telemetry）、清单（inventory）与治理证据（governance evidence）",
+        "清单覆盖 / Inventory coverage",
+        "运行时遥测 / Runtime telemetry",
+        "策略与审批证据 / Policy and approval evidence",
+        "事故重建 / Incident reconstruction",
+        "行为基线 / Behavioral baselines",
+        "滥用检测 / Abuse detection",
+        "发布证据 / Release evidence",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "把 traces 从“方便阅读的事件日志”",
+        "单有 trace viewer 并不够",
+        "event stream 的界面",
+        "trace vocabulary 太弱",
+        "一个 run 无法关联到 session、approval 和 artifact bundle",
+        "root cause 仍然只能靠人工通读长 transcript",
+        "- stable event catalog；",
+        "- schema versioning；",
+        "session-aware traces；",
+        "telemetry、approvals 和 lifecycle artifacts 之间的明确 linkage",
+        "AI-native observability 最好被理解成 telemetry、inventory 与 governance evidence",
+        "A[\"Inventory coverage\"]",
+        "B[\"Runtime telemetry\"]",
+        "C[\"Policy and approval evidence\"]",
+        "D --> E[\"Incident reconstruction\"]",
+        "D --> F[\"Behavioral baselines\"]",
+        "D --> G[\"Abuse detection\"]",
+        "D --> H[\"Release evidence\"]",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_governance_action_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (

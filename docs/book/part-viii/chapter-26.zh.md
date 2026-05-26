@@ -237,40 +237,40 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 ## 8. 研究前沿正在把可观测性推向哪里
 
-最新的智能体可观测性研究还在继续往前走：它们试图把 traces 从“方便阅读的事件日志”推进成“因果诊断层”。
+最新的智能体可观测性研究还在继续往前走：它们试图把追踪（traces）从“方便阅读的事件日志”推进成“因果诊断层”。
 
 这里有两点对本书尤其有价值。
 
-第一，单有 trace viewer 并不够。即使 event stream 的界面再漂亮，也不等于真正具备可回答性。如果：
+第一，单有追踪查看器（trace viewer）并不够。即使事件流（event stream）的界面再漂亮，也不等于真正具备可回答性。如果：
 
-- trace vocabulary 太弱；
-- 一个 run 无法关联到 session、approval 和 artifact bundle；
-- root cause 仍然只能靠人工通读长 transcript 来重建，
+- 追踪词汇表（trace vocabulary）太弱；
+- 一个运行（run）无法关联到会话（session）、审批（approval）和工件包（artifact bundle）；
+- 根因（root cause）仍然只能靠人工通读长转录（transcript）来重建，
 
 那么可观测性依然不够成熟。
 
 第二，因果诊断很有前景，但现在还不适合被讲成已经解决的问题。研究已经给出了值得跟进的方向，但生产纪律目前仍然要建立在更稳的基础上：
 
-- stable event catalog；
-- schema versioning；
-- redaction rules；
-- session-aware traces；
-- telemetry、approvals 和 lifecycle artifacts 之间的明确 linkage。
+- 稳定事件目录（stable event catalog）；
+- 模式版本控制（schema versioning）；
+- 脱敏规则（redaction rules）；
+- 会话感知追踪（session-aware traces）；
+- 遥测（telemetry）、审批（approvals）和生命周期工件（lifecycle artifacts）之间的明确链接（linkage）。
 
 也就是说，前沿研究的价值不在于让我们承诺“完全可解释性”，而在于提醒我们：可观测性的长期方向应该是从日志记录走向可诊断性。
 
 <div class="diagram-card">
-<p>AI-native observability 最好被理解成 telemetry、inventory 与 governance evidence 的组合</p>
+<p>AI 原生可观测性（AI-native observability）最好被理解成遥测（telemetry）、清单（inventory）与治理证据（governance evidence）的组合</p>
 
 ``` mermaid
 flowchart LR
-    A["Inventory coverage"] --> D["AI-native observability"]
-    B["Runtime telemetry"] --> D
-    C["Policy and approval evidence"] --> D
-    D --> E["Incident reconstruction"]
-    D --> F["Behavioral baselines"]
-    D --> G["Abuse detection"]
-    D --> H["Release evidence"]
+    A["清单覆盖 / Inventory coverage"] --> D["AI 原生可观测性 / AI-native observability"]
+    B["运行时遥测 / Runtime telemetry"] --> D
+    C["策略与审批证据 / Policy and approval evidence"] --> D
+    D --> E["事故重建 / Incident reconstruction"]
+    D --> F["行为基线 / Behavioral baselines"]
+    D --> G["滥用检测 / Abuse detection"]
+    D --> H["发布证据 / Release evidence"]
 ```
 
 </div>
