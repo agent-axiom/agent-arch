@@ -136,7 +136,7 @@ linked_events:
 这也是为什么好的审批流程应该既能从审计记录还原，也能从追踪还原。如果审批出现在失败运行演练或其他退化路径里，这种还原还应该和会话导出对得上，包括 `failure_reason` 这样的字段，而不是只停留在审批记录本身。
 
 !!! example "重复工单线索的 approval record"
-    在 support-triage 案例中，approver 按下 approve 之前就应该在 payload 旁看到 `idempotency_key`。如果之后 `create_ticket` 超时，audit record 会把同一个 key 保存在 `approval_id`、`trace_id` 和 `tool_principal` 旁边，让 review 能区分一次已审批的写入意图和 blind retry 之后重复发生的副作用。
+    在支持分诊（support-triage）案例中，审批者（approver）按下批准（approve）之前就应该在载荷（payload）旁看到 `idempotency_key`。如果之后 `create_ticket` 超时，审计记录（audit record）会把同一个键（key）保存在 `approval_id`、`trace_id` 和 `tool_principal` 旁边，让复核（review）能区分一次已审批的写入意图和盲目重试（blind retry）之后重复发生的副作用。
 
 !!! note "规范审批案例（Canonical approval cases）"
     审批记录（approval record）不只服务于写入路径（write path）。**支持分流（Support triage）** 需要明确的人工审批（explicit human approval）、`idempotency_key` 和重复工单恢复证据（duplicate-ticket recovery evidence）。**内部知识助手（Internal knowledge assistant）** 更常需要针对记忆写入（memory writes）、访问控制例外（access-control exceptions）和来源可见性决策（source visibility decisions）的审批（approval）或复核（review）。**事件协调（Incident coordination）** 需要审批轨迹（approval trail），用来覆盖升级权限（escalation authority）、通知副作用（notification side effects）、响应归属转移（response ownership transfer）和事件后学习更新（post-incident learning updates）。
