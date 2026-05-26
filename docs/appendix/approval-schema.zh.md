@@ -70,7 +70,7 @@ status: pending
 - `capability` 和 `requested_action` 防止审批退化成抽象的是/否；
 - `required_role` 让“谁都能看一眼”与“真正有权限批准的人”区分开；
 - `requested_fields` 固定了人类真正批准的载荷；
-- `sandbox_context` 对由 sandbox 支撑的动作很重要，审批人需要看到 workspace materialization、permissions 与 snapshot/resume policy，而不只是业务载荷。
+- `sandbox_context` 对由沙箱（sandbox）支撑的动作很重要，审批人需要看到工作区物化（workspace materialization）、权限（permissions）与快照/恢复策略（snapshot/resume policy），而不只是业务载荷。
 
 ## 4. 审批决策
 
@@ -192,7 +192,7 @@ linked_events:
 - 审批人看到的上下文太少；
 - 决策只存在于界面，没有进入追踪；
 - 运行时不区分“只批准这一次”和“永远都批准”；
-- 由 sandbox 支撑的审批隐藏了 sandbox profile、workspace entries 或 permissions；
+- 由沙箱（sandbox）支撑的审批隐藏了沙箱配置文件（sandbox profile）、工作区条目（workspace entries）或权限（permissions）；
 - 副作用执行时用的载荷和批准时不是同一个；
 - 事后没人能还原到底是谁批准了这个高风险动作。
 
@@ -203,7 +203,7 @@ linked_events:
 - 审批请求是否有明确的 `approval_id`？
 - 审批是否绑定到 `trace_id` 和 `session_id`？
 - 审批人看到的是不是之后真正会执行的载荷？
-- 如果动作由 sandbox 支撑，审批人是否能看到 sandbox profile contract、workspace entries、permissions 与 snapshot/resume policy？
+- 如果动作由沙箱（sandbox）支撑，审批人是否能看到沙箱配置文件契约（sandbox profile contract）、工作区条目（workspace entries）、权限（permissions）与快照/恢复策略（snapshot/resume policy）？
 - `decided_by`、`role` 和决策范围是否被保存？
 - 审批能不能与真实的工具执行对上？
 - 批准和拒绝两种路径是否都有便于审计的记录？
