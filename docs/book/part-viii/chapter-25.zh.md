@@ -37,19 +37,19 @@
 
 这时最好把下面三类东西分开：
 
-- `behavioral evals`
-- `control evals`
-- `automated red teaming`
+- 行为评测（`behavioral evals`）
+- 控制评测（`control evals`）
+- 自动化红队测试（`automated red teaming`）
 
 这里的清晰边界是：评测负责判断系统如何行为，以及控制面在受压时是否真的证明了自己。它们不替代保障响应闭环、可观测性证据层或资产注册表。它们产出的是供这些层后续消费的判断。
 
-这也正是本章的核心承诺。它要帮助读者把评测看成整个生命周期里的可评审判断层：在这里，行为、控制质量和验证器质量会被转化成 rollout、assurance、provenance 与 governance 真正可以依赖的判断。本章的主要工件是 评测门禁与验证器契约（eval gate and verifier contract）：可测试的发布条件和评审契约，而不是 incident response，也不是泛泛的 telemetry。
+这也正是本章的核心承诺。它要帮助读者把评测看成整个生命周期里的可评审判断层：在这里，行为、控制质量和验证器质量会被转化成发布（rollout）、保障（assurance）、出处（provenance）与治理（governance）真正可以依赖的判断。本章的主要工件是 评测门禁与验证器契约（eval gate and verifier contract）：可测试的发布条件和评审契约，而不是事故响应（incident response），也不是泛泛的遥测（telemetry）。
 
 ## 2. 什么是行为评测
 
 行为评测不只检查最终输出，还检查系统的行为形态。
 
-最近关于计算机使用智能体（computer-use agents）验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元裁决（binary verdict）往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把 `process verification` 和 `outcome verification` 分开，而不是压成一个分数（score）。
+最近关于计算机使用智能体（computer-use agents）验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元裁决（binary verdict）往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把过程验证（`process verification`）和结果验证（`outcome verification`）分开，而不是压成一个分数（score）。
 
 例如：
 

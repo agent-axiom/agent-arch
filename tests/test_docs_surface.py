@@ -3838,6 +3838,36 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_intro_layer_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "行为评测（`behavioral evals`）",
+        "控制评测（`control evals`）",
+        "自动化红队测试（`automated red teaming`）",
+        "发布（rollout）",
+        "保障（assurance）",
+        "出处（provenance）",
+        "治理（governance）",
+        "事故响应（incident response）",
+        "遥测（telemetry）",
+        "过程验证（`process verification`）",
+        "结果验证（`outcome verification`）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "- `behavioral evals`",
+        "- `control evals`",
+        "- `automated red teaming`",
+        "转化成 rollout、assurance、provenance 与 governance",
+        "而不是 incident response，也不是泛泛的 telemetry",
+        "把 `process verification` 和 `outcome verification` 分开",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_evidence_model_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
