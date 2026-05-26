@@ -9760,6 +9760,13 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_generic_loader_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    assert "通用加载器（Generic loaders）" in chinese_text
+    assert "畸形 YAML 形状（malformed YAML shapes）" in chinese_text
+    assert "Generic loaders 也会明确暴露 malformed YAML shapes" not in chinese_text
+
+
 def test_chinese_reference_package_eval_dataset_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
