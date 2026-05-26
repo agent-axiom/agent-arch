@@ -2090,6 +2090,8 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "docs/book/part-viii/chapter-22.zh.md": (
             *common_markers,
             "已批准工件包（approved artifact bundle）",
+            "来源追踪（provenance）",
+            "写入路径（write path）",
             "评测数据集（eval dataset）",
             "策略包（policy bundle）",
             "发布门禁（rollout gate）",
@@ -2105,6 +2107,18 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    forbidden_chinese_markers = (
+        "保留 provenance",
+        "需要 write path 的",
+        "[追踪模式](../../appendix/trace-schema.zh.md) 和 [发布门禁",
+        "需要 [已批准检索语料",
+        "需要 [升级策略包",
+        " 和 [事故后工件更新",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
