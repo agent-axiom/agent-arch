@@ -3968,8 +3968,25 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
             *common_markers,
+            "遥测（telemetry）已经具备检测就绪状态（detection-ready）",
+            "发布（rollout）",
+            "结果（outcome）",
+            "过程/结果验证器裁决（process/outcome verifier verdict）",
+            "工单写入路径（ticket-write paths）",
+            "绕过路径（bypass path）盲区",
+            "金丝雀（canary）",
             "追踪与遥测覆盖记录（trace and telemetry coverage record）",
+            "规范案例（canonical cases）的可观测性覆盖（observability coverage）",
+            "重复结果（duplicate outcome）",
+            "绕过盲点（bypass blind spots）",
             "检索来源追踪（retrieval provenance）",
+            "来源扎根裁决（source-grounding verdicts）",
+            "租户过滤决策（tenant-filter decisions）",
+            "新鲜度漂移（freshness drift）",
+            "升级路径（escalation path）",
+            "通知送达（notification delivery）",
+            "响应者角色身份（responder-role identity）",
+            "回滚事件（rollback events）",
             "事故后控制变更（post-incident control changes）",
         ),
     }
@@ -3978,6 +3995,25 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    forbidden_chinese_markers = (
+        "telemetry 已经 detection-ready",
+        "服务 rollout",
+        "`rollout_wave`、outcome、`side_effect_unknown`",
+        "以及 process/outcome verifier verdict",
+        "ticket-write paths 中有多少真正可观测",
+        "盲区 bypass path",
+        "canary 是否可以安全扩大",
+        "三个 canonical cases 的 observability coverage",
+        "duplicate outcome 和 bypass blind spots",
+        "source-grounding verdicts、tenant-filter decisions",
+        "和 freshness drift",
+        "覆盖 escalation path、notification delivery、responder-role identity",
+        "rollback events 和",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_26_useful_refs_include_observability_contracts() -> None:
