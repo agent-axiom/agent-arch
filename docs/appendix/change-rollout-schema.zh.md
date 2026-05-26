@@ -106,7 +106,7 @@ decided_by:
 这一层重要的原因在于：一个好的变更评审，并不自动等于“现在就可以发布”。
 
 !!! example "重复工单线索的 rollout gate"
-    对 support-triage canary 来说，gate 不应只检查 `offline_eval_pass`，还应检查具体的 `duplicate_ticket_eval_passed`：已复现 `create_ticket` 之后的超时，保留了 `trace_id` 与 `idempotency_key`，outcome 是一个工单副作用或一次 `side_effect_unknown` 停止；只有 blind retry 没有回来时，`blocking_findings` 才能保持为空。
+    对支持分诊金丝雀发布（support-triage canary）来说，门禁（gate）不应只检查 `offline_eval_pass`，还应检查具体的 `duplicate_ticket_eval_passed`：已复现 `create_ticket` 之后的超时，保留了 `trace_id` 与 `idempotency_key`，结果（outcome）是一个工单副作用或一次 `side_effect_unknown` 停止；只有盲目重试（blind retry）没有回来时，`blocking_findings` 才能保持为空。
 
 !!! note "规范发布案例（Canonical rollout cases）"
     发布门禁（rollout gate）应该为三个规范案例（canonical cases）检查不同的就绪信号（readiness signals）。**支持分流（Support triage）** 需要重复工单评测通过（duplicate-ticket eval pass）、回滚计划（rollback plan）、审批就绪度（approval readiness）和幂等证据（idempotency evidence）。**内部知识助手（Internal knowledge assistant）** 需要检索新鲜度窗口（retrieval freshness window）、来源归因复核（source attribution review）、记忆来源复核（memory provenance review）和访问控制签核（access control signoff）。**事件协调（Incident coordination）** 需要升级演练（escalation drill）、通知副作用复核（notification side effects review）、响应归属就绪度（response ownership readiness）和事件后学习门禁（post-incident learning gate）。

@@ -10954,6 +10954,27 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_change_rollout_canary_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+    expected_markers = (
+        "支持分诊金丝雀发布（support-triage canary）",
+        "门禁（gate）",
+        "结果（outcome）",
+        "盲目重试（blind retry）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对 support-triage canary 来说",
+        "gate 不应只检查",
+        "outcome 是一个工单副作用",
+        "只有 blind retry 没有回来时",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_change_rollout_review_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
     expected_markers = (
