@@ -5120,11 +5120,23 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-27.zh.md": (
             *common_markers,
+            "工件包（artifact bundle）",
+            "金丝雀（canary）",
+            "已废弃路由（route）",
+            "规范案例（canonical case）",
             "命名注册记录（named registry record）",
+            "写能力负责人（write-capability owners）",
             "审批模式（approval mode）",
+            "已废弃工单路径（deprecated ticket paths）",
             "退役计划（retirement plan）",
             "语料负责人（corpus owners）",
+            "新鲜度审查（freshness review）",
+            "租户范围（tenant scope）",
             "检索策略链接（retrieval-policy linkage）",
+            "事故角色负责人（incident-role owners）",
+            "升级权限（escalation authority）",
+            "通知渠道（notification channels）",
+            "仅限应急能力（emergency-only capabilities）",
             "生命周期状态（lifecycle state）",
         ),
     }
@@ -5133,6 +5145,21 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
+    forbidden_chinese_markers = (
+        "trace 或 artifact bundle",
+        "扩大 canary",
+        "已废弃 route",
+        "每个 canonical case",
+        "需要 write-capability owners",
+        "deprecated ticket paths 的",
+        "corpus owners）、freshness review、tenant scope",
+        "需要 incident-role owners、escalation authority、notification channels",
+        "emergency-only capabilities 的",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_27_useful_refs_include_registry_evidence_contracts() -> None:
