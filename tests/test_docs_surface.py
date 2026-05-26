@@ -11051,6 +11051,30 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_lifecycle_artifact_loader_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+    expected_markers = (
+        "生命周期工件加载器（Lifecycle artifact loaders）",
+        "畸形发布状态输入（malformed release-state inputs）",
+        "YAML 键（YAML keys）",
+        "身份/归属（identity/ownership）",
+        "工件评审证据（artifact review evidence）",
+        "畸形证据映射（malformed evidence maps）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "Lifecycle artifact loaders 会把 malformed release-state inputs",
+        "非字符串 YAML keys",
+        "缺失的 identity/ownership",
+        "artifact review evidence 会用",
+        "拒绝 malformed evidence maps",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_lifecycle_artifact_retirement_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
     expected_markers = (
