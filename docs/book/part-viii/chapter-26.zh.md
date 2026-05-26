@@ -14,7 +14,7 @@
     变化相对较慢的部分：
 
     - 必须建设可直接用于证据链的遥测，而不只是调试日志；
-    - 可观测性必须和 approvals、runtime-control states、policy decisions、tool principals、contract versions 与 artifact bundles 关联；
+    - 可观测性必须和审批（approvals）、运行时控制状态（runtime-control states）、策略决策（policy decisions）、工具主体（tool principals）、契约版本（contract versions）与工件包（artifact bundles）关联；
     - 完整的清单覆盖率仍然是检测和事故评审的前提。
 
 ## 1. 为什么智能体的可观测性不能只看延迟和错误率
@@ -28,7 +28,7 @@
 
 但对智能体系统来说，这远远不够。
 
-这里要始终保持一个简单区分：保障负责决定什么时候需要遏制、由谁来响应；可观测性则通过保留可被信任的证据，让这些 release、incident 与 governance decision 真正有据可依。
+这里要始终保持一个简单区分：保障负责决定什么时候需要遏制、由谁来响应；可观测性则通过保留可被信任的证据，让这些发布（release）、事故（incident）与治理决策（governance decision）真正有据可依。
 
 系统可能：
 
@@ -49,16 +49,16 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 - 发布证据；
 - 治理覆盖率。
 
-如果 traces 只是给开发者排查本地 bug 用的，这已经不够了。
+如果追踪（traces）只是给开发者排查本地 bug 用的，这已经不够了。
 
 在生产环境里，你还需要回答：
 
-- 一共存在多少 agents；
+- 一共存在多少智能体（agents）；
 - 其中多少是真正可观测的；
-- 它们实际调用了哪些 capabilities；
+- 它们实际调用了哪些能力（capabilities）；
 - 高风险动作出现在哪里；
-- 哪些 approvals 被请求、批准或绕过；
-- rollout 之后出现了哪些行为变化。
+- 哪些审批（approvals）被请求、批准或绕过；
+- 发布（rollout）之后出现了哪些行为变化。
 
 ## 3. 什么是 AI-native signals
 

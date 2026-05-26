@@ -4573,6 +4573,39 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_intro_observability_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "审批（approvals）",
+        "运行时控制状态（runtime-control states）",
+        "策略决策（policy decisions）",
+        "工具主体（tool principals）",
+        "契约版本（contract versions）",
+        "工件包（artifact bundles）",
+        "发布（release）",
+        "事故（incident）",
+        "治理决策（governance decision）",
+        "追踪（traces）只是给开发者排查本地 bug 用的",
+        "智能体（agents）",
+        "能力（capabilities）",
+        "发布（rollout）之后出现了哪些行为变化",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "policy decisions、tool principals、contract versions 与 artifact bundles",
+        "release、incident 与 governance decision",
+        "如果 traces 只是给开发者排查本地 bug 用的",
+        "一共存在多少 agents",
+        "调用了哪些 capabilities",
+        "哪些 approvals 被请求、批准或绕过",
+        "rollout 之后出现了哪些行为变化",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_observability_evidence_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
