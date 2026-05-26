@@ -9760,6 +9760,34 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_inspect_agent_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "清单评审（inventory review）",
+        "已配置身份（configured identity）",
+        "能力目录（capability catalog）",
+        "只批准（approved）`search_docs` 与 `create_ticket`",
+        "`catalog_capabilities` 条目（entry）",
+        "评审者（reviewers）",
+        "响应（response）",
+        "能力身份（capability identity）",
+        "出口姿态（egress posture）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "让 inventory review 可以把 configured identity 与 capability catalog 对照起来",
+        "只 approved `search_docs` 与 `create_ticket`",
+        "随后 capability catalog 将",
+        "`catalog_capabilities` entry",
+        "让 reviewers 在同一个 response 中看到 capability identity",
+        "egress posture。",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_contract_update_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
