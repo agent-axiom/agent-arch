@@ -7854,6 +7854,47 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_case_studies_incident_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/case-studies.zh.md")
+    expected_markers = (
+        "统一追踪（trace）",
+        "正确负责人（owner）",
+        "脑裂（split-brain）",
+        "告警来源（alert source）",
+        "事件线程 ID（incident thread ID）",
+        "交接负责人（handoff owner）",
+        "运行手册步骤（runbook step）",
+        "噪声告警（noisy alert）",
+        "运行手册上下文（runbook context）",
+        "演练运行（dry run）",
+        "追踪链（trace chain）",
+        "高风险步骤（high-risk steps）",
+        "交接（handoff）",
+        "幂等键（idempotency keys）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "统一 trace、正确 owner",
+        "出现 split-brain",
+        "alert source、incident thread ID",
+        "handoff owner、runbook step",
+        "noisy alert、重复通知",
+        "错误 owner 交接",
+        "缺失 runbook context",
+        "dry run 显示单一 trace chain",
+        "high-risk steps 需要人工审批",
+        "noisy alert 触发两条并行 handoff",
+        "split-brain 是从哪里进入流程",
+        "每一步 owner 是谁",
+        "哪些 idempotency keys 缺失",
+        "哪个 dry run 应该捕捉到重复",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_case_studies_intro_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/case-studies.zh.md")
     expected_markers = (
