@@ -9760,6 +9760,26 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_failed_run_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "失败或拒绝的运行（failed or denied runs）",
+        "终止态（terminal）`run_complete.failure_reason`",
+        "追踪检查（trace inspection）",
+        "回放摘要（replay summaries）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "为 failed 或 denied runs 发出",
+        "以及 terminal `run_complete.failure_reason`",
+        "trace inspection、replay summaries 与 CLI 输出",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_rollout_cli_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
