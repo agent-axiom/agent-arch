@@ -11154,6 +11154,35 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_lifecycle_artifact_intro_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+    expected_markers = (
+        "生命周期工件（lifecycle artifact）",
+        "支持分诊（support-triage）",
+        "工件包（bundle）",
+        "重复工单防护（duplicate-ticket guard）",
+        "证据（evidence）",
+        "审批记录（approval record）",
+        "追踪（trace）",
+        "发布门禁（rollout gate）",
+        "事故复盘（incident review）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "重复工单线索的 lifecycle artifact",
+        "对 support-triage 来说",
+        "bundle 不只应该",
+        "保留 duplicate-ticket guard 的 evidence",
+        "approval record、带有",
+        "和 rollout gate",
+        "这样 incident review 可以",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_lifecycle_artifact_loader_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
     expected_markers = (
