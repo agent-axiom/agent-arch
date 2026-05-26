@@ -101,7 +101,7 @@
 | `tool_execution` | capability call 或 approval handoff 后 | 记录 capability status 与 tool-principal context |
 | `a2a_handoff` | 一个 agent 将工作委派给另一个 agent 时 | 记录 delegation chain、authorization 与 failure-attribution context |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
-| `sandbox_profile_reviewed` | 由 sandbox 支撑的路径被评审时 | 记录 workspace、permissions 与 snapshot/resume evidence review |
+| `sandbox_profile_reviewed` | 由沙箱（sandbox）支撑的路径被评审时 | 记录工作区（workspace）、权限（permissions）与快照/恢复证据复核（snapshot/resume evidence review） |
 | `memory_write_decision` | 后台写入记忆前 | 记录 candidate memory write 被允许还是拒绝 |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `background_compaction` | background memory maintenance 后 | 记录 tenant-level compaction results |
@@ -207,7 +207,7 @@
 !!! note "规范追踪案例（Canonical trace cases）"
     三个规范案例（canonical cases）需要不同的追踪重点（trace emphases）。**支持分流（Support triage）** 要把审批事件（approval events）、`idempotency_key`、工具副作用（tool side effects）和重复工单恢复证据（duplicate-ticket recovery evidence）连起来。**内部知识助手（Internal knowledge assistant）** 应保留检索跨度（retrieval spans）、记忆访问（memory access）、来源归因（source attribution）、新鲜度检查（freshness checks）和访问控制决策（access control decisions）。**事件协调（Incident coordination）** 应展示升级时间线（escalation timeline）、通知副作用（notification side effects）、响应归属（response ownership）、交接事件（handoff events）和事件后学习（post-incident learning）。
 
-对于由 sandbox 支撑的运行，也应该预留把追踪和执行边界关联起来的字段：
+对于由沙箱（sandbox）支撑的运行，也应该预留把追踪和执行边界关联起来的字段：
 
 - `sandbox_session_id`
 - `sandbox_manifest_version`
@@ -215,7 +215,7 @@
 - `snapshot_id`
 - `workspace_manifest_ref`
 
-如果 rollout 或 eval 要求 `sandbox_profile_review`，追踪还应该能指向 review evidence，而不只是 state fields：
+如果发布（rollout）或评测（eval）要求 `sandbox_profile_review`，追踪还应该能指向复核证据（review evidence），而不只是状态字段（state fields）：
 
 - `sandbox_profile_contract`
 - `workspace_entries_reviewed`
@@ -300,8 +300,8 @@
 - 敏感字段的脱敏规则；
 - 把追踪与验证器证据、截图或打分工件显式关联起来的方式；
 - 稳定记录是哪个验证器契约版本产出该打分输出的方式；
-- sandbox state fields，用于那些会物化 workspace、使用 shell/filesystem capabilities，或从 snapshot 继续的 runs；
-- 用于 `sandbox_profile_reviewed` 的 event 或 linked payload，确保 workspace、permissions 与 snapshot/resume policy 的 rollout/eval evidence 可以被追踪。
+- 沙箱状态字段（sandbox state fields），用于那些会物化工作区（workspace）、使用 shell/文件系统能力（shell/filesystem capabilities），或从快照（snapshot）继续的运行（runs）；
+- 用于 `sandbox_profile_reviewed` 的事件（event）或关联载荷（linked payload），确保工作区（workspace）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的发布/评测证据（rollout/eval evidence）可以被追踪。
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
@@ -315,7 +315,7 @@
 - 能不能从追踪里还原出策略决策和工具路径？
 - 能不能从会话导出结果构建评测数据集？
 - 能不能把追踪关联到用于打分或发布评审的验证器证据？
-- 如果 rollout 要求 `sandbox_profile_review`，是否有关于 workspace entries、permissions 与 snapshot/resume policy 的 trace evidence？
+- 如果发布（rollout）要求 `sandbox_profile_review`，是否有关于工作区条目（workspace entries）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的追踪证据（trace evidence）？
 - 能不能看出是哪一个验证器契约版本产出了这份打分输出？
 - 有没有脱敏与模式版本化的计划？
 
