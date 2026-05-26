@@ -11012,6 +11012,29 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_memory_retrieval_candidate_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+    expected_markers = (
+        "候选修订模式（Memory candidate revision mode）",
+        "候选置信度（Memory candidate confidence）",
+        "候选字段（Memory candidate field）",
+        "记忆查询字段（Memory lookup field）",
+        "记忆查询限制（Memory lookup limit）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "以及 `Memory candidate revision mode must be a string`",
+        "和 `Memory candidate confidence must be a number` 和",
+        "和 `Memory candidate field must be a string: {field}` 和",
+        "和 `Memory lookup field must be a string: {field}` 和",
+        "和 `Memory lookup limit must be an integer` 和",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_memory_retrieval_direct_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
     expected_markers = (
