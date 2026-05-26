@@ -3838,6 +3838,39 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_control_question_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "计算机使用智能体（computer-use agents）",
+        "二元裁决（binary verdict）",
+        "分数（score）",
+        "契约漂移（contract drift）",
+        "模式不匹配（schema mismatch）",
+        "中断（interruption）",
+        "到期（expiry）",
+        "重新初始化语义（re-init semantics）",
+        "评分规约（rubric）",
+        "单一裁决（verdict）",
+        "暂停运行与后台运行控制（paused-run and background-run controls）",
+        "能力会话到期与重新初始化控制（capability-session expiry and re-init controls）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "computer-use agents 验证器设计",
+        "二元 verdict 往往太弱",
+        "压成一个 score",
+        "利用 contract drift 或 schema mismatch",
+        "interruption、expiry 或 re-init semantics",
+        "可评审的 rubric，而不是不透明的单一 verdict",
+        "paused-run 与 background-run controls",
+        "capability-session expiry 与 re-init controls",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_control_maturity_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
