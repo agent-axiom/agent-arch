@@ -3838,6 +3838,57 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_evidence_model_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "通过/失败裁决（pass/fail verdict）",
+        "发现结果（findings）",
+        "证据（evidence）",
+        "控制证据（control evidence）",
+        "风险轨迹（risky trajectories）",
+        "评测（evals）",
+        "最终答案（final answers）",
+        "智能体评测（agent-eval）",
+        "追踪（traces）",
+        "轨迹（trajectories）",
+        "发布门禁（rollout gates）",
+        "场景类别（scenario classes）",
+        "验证器契约（verifier contracts）",
+        "有追踪支持的失败（trace-backed failures）",
+        "行为证据（behavioral evidence）",
+        "控制评测（control evals）",
+        "自动化红队测试（automated red teaming）",
+        "判断系统（judgment system）",
+        "模拟器质量（simulator quality）",
+        "裁判模型（judge models）",
+        "红队生成（red-team generation）",
+        "过程失败（process failure）",
+        "结果失败（outcome failure）",
+        "控制失败（control failure）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "pass/fail verdict，而是分开的过程/结果判断",
+        "响应 findings",
+        "保存 evidence",
+        "一层 control evidence",
+        "针对 risky trajectories 的 evals",
+        "不只是 final answers",
+        "现代 agent-eval 材料",
+        "把 traces、trajectories 与 rollout gates",
+        "scenario classes、verifier contracts、trace-backed failures 与 rollout gates",
+        "behavioral 和 control evidence",
+        "behavioral evals、control evals 与 automated red teaming",
+        "judgment system 中的不同角色",
+        "simulator quality、judge models 与 red-team generation",
+        "process failure、outcome failure 与 control failure",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_scenario_source_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
