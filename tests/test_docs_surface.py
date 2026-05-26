@@ -9629,13 +9629,97 @@ def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
         "response ownership",
         "post-incident learning",
     )
-    checked_files = (
+    checked_english_files = (
         "docs/book/part-viii/index.md",
         "docs/book/part-viii/index.en.md",
-        "docs/book/part-viii/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(checked_english_files, required_markers)
+
+    chinese_text = _read("docs/book/part-viii/index.zh.md")
+    expected_chinese_markers = (
+        "规范生命周期案例（Canonical lifecycle cases）",
+        "支持分诊（Support triage）",
+        "内部知识助手（Internal knowledge assistant）",
+        "事故协调（Incident coordination）",
+        "写能力变更包（write-capability change packets）",
+        "审批（approvals）",
+        "重复工单恢复证据（duplicate-ticket recovery evidence）",
+        "语料责任归属（corpus ownership）",
+        "新鲜度审查（freshness review）",
+        "访问控制（access control）",
+        "知识来源证明（knowledge provenance）",
+        "升级权限（escalation authority）",
+        "通知副作用（notification side effects）",
+        "响应责任归属（response ownership）",
+        "事故后学习（post-incident learning）",
+    )
+    for expected_chinese_marker in expected_chinese_markers:
+        assert expected_chinese_marker in chinese_text, expected_chinese_marker
+
+    forbidden_chinese_markers = (
+        'note "Canonical lifecycle cases"',
+        "三个 canonical cases 会拆到不同 lifecycle questions",
+        "**Support triage** 检查 write-capability change packets",
+        "approvals 和 duplicate-ticket recovery evidence",
+        "**Internal knowledge assistant** 检查 corpus ownership",
+        "freshness review、access control 和 knowledge provenance",
+        "**Incident coordination** 检查 escalation authority",
+        "notification side effects、response ownership 和 post-incident learning",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
+
+
+def test_part_viii_chinese_role_map_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/index.zh.md")
+    expected_markers = (
+        "地图（map）",
+        "治理（governance）观点",
+        "便于打印（print-friendly）",
+        "工件（artifact）是 ADLC 状态模型",
+        "发现项（findings）转成遏制（containment）",
+        "修复（remediation）和责任归属（ownership）",
+        "评测打分（eval scoring）",
+        "证据基底（evidence substrate）",
+        "治理决策（governance decision）",
+        "负责人（owner）和生命周期状态",
+        "智能体群体（estate）",
+        "生命周期（lifecycle）定义状态",
+        "变更管理（change management）控制移动",
+        "评测（evals）判断是否可发布",
+        "来源追踪（provenance）记录哪些工件可信",
+        "可观测性（observability）保留证据（evidence）",
+        "保障（assurance）在证据变成风险（risk）时响应",
+        "退役（retirement）关闭旧路径",
+        "注册表（registry）维持整个智能体群体（estate）的问责（accountability）",
+        "评审（review）后必须留下的工件",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "用这张 map 来避免",
+        "同一个 governance 观点",
+        "Print-friendly 版本",
+        "它的 artifact 是 ADLC 状态模型",
+        "把 findings 转成 containment、remediation 和 ownership",
+        "不是可观测性或 eval scoring",
+        "让 evidence substrate 可见",
+        "不是 governance decision 的负责人",
+        "通过 owner 和生命周期状态让整个 estate 可问责",
+        "lifecycle 定义状态，change management 控制移动",
+        "evals 判断是否可发布",
+        "provenance 记录哪些工件可信",
+        "observability 保留 evidence",
+        "assurance 在 evidence 变成 risk 时响应",
+        "retirement 关闭旧路径",
+        "registry 维持整个 estate 的 accountability",
+        "像 “governance”",
+        "review 后必须留下的工件",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
