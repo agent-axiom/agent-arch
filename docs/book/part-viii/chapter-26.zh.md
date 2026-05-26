@@ -195,30 +195,30 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 所以对智能体系统来说，最好把可观测性理解成`治理的证据层`。
 
-### 7.1. Governance-aware telemetry 会闭合 enforcement loop
+### 7.1. 治理感知遥测（Governance-aware telemetry）会闭合执行闭环（enforcement loop）
 
-下一个成熟度层级，不只是“看见事件”，而是让 telemetry 可以直接服务治理动作。`Governance-aware telemetry` 应该回流到控制闭环，作为 policy decisions、containment、rollout gates 和 incident response 的输入。
+下一个成熟度层级，不只是“看见事件”，而是让遥测（telemetry）可以直接服务治理动作。`Governance-aware telemetry` 应该回流到控制闭环，作为策略决策（policy decisions）、遏制（containment）、发布门禁（rollout gates）和事故响应（incident response）的输入。
 
-最小 closed-loop contract 可以这样定义：
+最小闭环契约（closed-loop contract）可以这样定义：
 
-- `policy_decision_feedback`：哪些 telemetry signals 会改变后续 policy decision 或 risk tier；
-- `containment_decision`：哪个信号会把 run、agent、capability 或 rollout wave 置为 paused / quarantined state；
-- `rollout_gate_input`：哪些 coverage、verifier 和 drift signals 会阻止 canary 扩大；
-- `incident_response_trigger`：哪些 patterns 会创建 investigation、escalation 或 postmortem task；
-- `registry_update_signal`：哪些 blind spots、stale owners 或 shadow capabilities 需要更新 inventory。
+- `policy_decision_feedback`：哪些遥测信号（telemetry signals）会改变后续策略决策（policy decision）或风险层级（risk tier）；
+- `containment_decision`：哪个信号会把运行（run）、智能体（agent）、能力（capability）或发布波次（rollout wave）置为暂停/隔离状态（paused / quarantined state）；
+- `rollout_gate_input`：哪些覆盖（coverage）、验证器（verifier）和漂移信号（drift signals）会阻止金丝雀（canary）扩大；
+- `incident_response_trigger`：哪些模式（patterns）会创建调查（investigation）、升级（escalation）或复盘任务（postmortem task）；
+- `registry_update_signal`：哪些盲点（blind spots）、过期负责人（stale owners）或影子能力（shadow capabilities）需要更新清单（inventory）。
 
 为了避免这只停留在漂亮图示里，每一个这样的事件都应该保存成一个小的[治理动作记录（governance action record）](../../appendix/trace-schema.zh.md)：
 
 - `governance_action_id`：治理动作的稳定标识符；
-- `source_signal`：触发该动作的 telemetry signal 或 detection scenario；
+- `source_signal`：触发该动作的遥测信号（telemetry signal）或检测场景（detection scenario）；
 - `decision_owner`：负责该决定的角色或团队；
 - `action_state`：`open`、`accepted`、`waived`、`contained`、`closed`；
-- `evidence_refs`：指向 trace、verifier output、policy decision 和 rollout gate 的链接；
+- `evidence_refs`：指向追踪（trace）、验证器输出（verifier output）、策略决策（policy decision）和发布门禁（rollout gate）的链接；
 - `review_deadline`：该动作必须被重新审查或关闭的时间。
 
-这样 telemetry 就不只是 dashboard signal。它会成为可审查 governance queue 的输入，团队可以看到谁做了决定、依据哪些证据，以及为什么控制闭环可以重新被视为受治理。
+这样，遥测（telemetry）就不只是仪表板信号（dashboard signal）。它会成为可审查治理队列（governance queue）的输入，团队可以看到谁做了决定、依据哪些证据，以及为什么控制闭环可以重新被视为受治理。
 
-这样，telemetry 就不再只是事后的 evidence。它会变成 governance loop 的运行输入：observe → policy decision → containment 或 rollout action → 关于结果的新 evidence。
+这样，遥测（telemetry）就不再只是事后的证据（evidence）。它会变成治理闭环（governance loop）的运行输入：观察（observe）→ 策略决策（policy decision）→ 遏制（containment）或发布动作（rollout action）→ 关于结果的新证据（evidence）。
 
 这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
 

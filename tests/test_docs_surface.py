@@ -11502,6 +11502,56 @@ def test_governance_aware_telemetry_contract_is_documented() -> None:
     for path in checked_files:
         _assert_files_contain_all((path,), required_fields)
 
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_chinese_markers = (
+        "治理感知遥测（Governance-aware telemetry）",
+        "执行闭环（enforcement loop）",
+        "策略决策（policy decisions）",
+        "遏制（containment）",
+        "发布门禁（rollout gates）",
+        "事故响应（incident response）",
+        "闭环契约（closed-loop contract）",
+        "遥测信号（telemetry signals）",
+        "策略决策（policy decision）",
+        "风险层级（risk tier）",
+        "发布波次（rollout wave）",
+        "暂停/隔离状态（paused / quarantined state）",
+        "漂移信号（drift signals）",
+        "调查（investigation）",
+        "复盘任务（postmortem task）",
+        "影子能力（shadow capabilities）",
+        "检测场景（detection scenario）",
+        "验证器输出（verifier output）",
+        "仪表板信号（dashboard signal）",
+        "可审查治理队列（governance queue）",
+        "治理闭环（governance loop）",
+        "观察（observe）",
+        "发布动作（rollout action）",
+    )
+    for expected_chinese_marker in expected_chinese_markers:
+        assert expected_chinese_marker in chinese_text, expected_chinese_marker
+
+    forbidden_chinese_markers = (
+        "Governance-aware telemetry 会闭合 enforcement loop",
+        "让 telemetry 可以直接服务治理动作",
+        "作为 policy decisions、containment、rollout gates 和 incident response 的输入",
+        "最小 closed-loop contract",
+        "哪些 telemetry signals 会改变后续 policy decision 或 risk tier",
+        "rollout wave 置为 paused / quarantined state",
+        "哪些 coverage、verifier 和 drift signals",
+        "哪些 patterns 会创建 investigation、escalation 或 postmortem task",
+        "shadow capabilities 需要更新 inventory",
+        "telemetry signal 或 detection scenario",
+        "指向 trace、verifier output、policy decision 和 rollout gate",
+        "telemetry 就不只是 dashboard signal",
+        "可审查 governance queue",
+        "telemetry 就不再只是事后的 evidence",
+        "governance loop 的运行输入",
+        "observe → policy decision → containment 或 rollout action",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
+
 
 def test_chapter_26_governance_telemetry_maps_to_nist_ai_rmf() -> None:
     required_fields = (
