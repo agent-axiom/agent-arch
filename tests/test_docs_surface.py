@@ -9760,6 +9760,31 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_eval_dataset_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "资料查询（profile lookup）",
+        "标签（labels）",
+        "预期结果（expected outcomes）",
+        "多运行审批加记忆（multi-run approval-plus-memory）",
+        "标签（label）",
+        "预期结果（expected outcome）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "profile lookup 场景",
+        "grounded_answer` labels",
+        "session_evals` labels",
+        "作为 expected outcomes 的 multi-run approval-plus-memory",
+        "sandbox_profile_review` label",
+        "sandbox_profile_reviewed` expected outcome",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_failed_run_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
