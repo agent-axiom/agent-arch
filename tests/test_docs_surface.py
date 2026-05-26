@@ -11051,6 +11051,32 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_lifecycle_artifact_bundle_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+    expected_markers = (
+        "参考运行时（runtime）",
+        "契约（contract）",
+        "包身份（bundle identity）",
+        "问责（accountability）",
+        "畸形身份与来源证明字段（malformed identity and provenance fields）",
+        "证据链（evidence chain）",
+        "证据引用（evidence refs）",
+        "承载发布的文件（release-bearing files）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "参考 runtime 会把这个 contract 保存",
+        "描述 bundle identity 与 accountability",
+        "malformed identity 和 provenance fields",
+        "evidence chain 这样的 evidence refs",
+        "列出 release-bearing files",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
