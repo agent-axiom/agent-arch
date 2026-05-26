@@ -10706,6 +10706,26 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_change_rollout_gate_input_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+    expected_markers = (
+        "门禁输入（gate inputs）",
+        "必需证据（required evidence）",
+        "运行时信号覆盖（Runtime signal overrides）",
+        "直接评估输入（direct assessment inputs）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "把 gate inputs 具体化",
+        "校验：required evidence 包括",
+        "Runtime signal overrides 和 direct assessment inputs 也会被校验",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_change_rollout_runtime_policy_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
     expected_markers = (
