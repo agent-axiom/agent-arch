@@ -124,11 +124,11 @@ OpenAI 关于智能体评测（agent evals）的指南给出了一条有用的�
 - 高风险写入能力；
 - 带出口访问的工具；
 - 审批密集型工作流；
-- 涉及 pause/resume 或 background execution 的 runtime-control transitions；
-- capability-session expiry 与 re-initialization paths；
+- 涉及暂停/恢复（pause/resume）或后台执行（background execution）的运行时控制转换（runtime-control transitions）；
+- 能力会话到期（capability-session expiry）与重新初始化路径（re-initialization paths）；
 - 替换与退役过渡期；
 - 多智能体委派；
-- orchestration-pattern selection 与 delegated worker boundaries；
+- 编排模式选择（orchestration-pattern selection）与委派工作者边界（delegated worker boundaries）；
 - 记忆写入与检索治理。
 
 如果高风险路径根本没有被这些评测覆盖，团队几乎一定会先从事故里学到教训。
@@ -160,9 +160,9 @@ OpenAI 关于智能体评测（agent evals）的指南给出了一条有用的�
 
 ## 8. 用户模拟器和合成对手是两种角色
 
-`user simulator` 适合用来稳定生成正常和边界用户场景。
+`user simulator`（用户模拟器）适合用来稳定生成正常和边界用户场景。
 
-`synthetic adversary` 适合用来故意压测系统弱点：
+`synthetic adversary`（合成对手）适合用来故意压测系统弱点：
 
 - 含糊指令；
 - 冲突目标；
@@ -171,8 +171,8 @@ OpenAI 关于智能体评测（agent evals）的指南给出了一条有用的�
 
 在成熟系统里，这两种角色应该并存：
 
-- simulator 提供更真实的任务分布；
-- adversary 提供压力测试。
+- 模拟器（simulator）提供更真实的任务分布；
+- 对手（adversary）提供压力测试。
 
 ### 8.1. 研究在这里更适合作为场景类别的来源
 
@@ -180,13 +180,13 @@ OpenAI 关于智能体评测（agent evals）的指南给出了一条有用的�
 
 它能帮助团队补齐那些很难仅靠本地经验就完整想出的场景类别。比如：
 
-- concealment；
-- oversight evasion；
+- 隐蔽（concealment）；
+- 监督规避（oversight evasion）；
 - 类似破坏的持续行为；
 - 压力下的协作失序；
-- 对 schema mismatch 或 control drift 的利用；
-- 对 interruption 或 re-init windows 的滥用；
-- 对 delegated worker paths 的滥用或 worker-boundary drift。
+- 对模式不匹配（schema mismatch）或控制漂移（control drift）的利用；
+- 对中断（interruption）或重新初始化窗口（re-init windows）的滥用；
+- 对委派工作者路径（delegated worker paths）的滥用或工作者边界漂移（worker-boundary drift）。
 
 但工程纪律仍然应该保持严格：
 

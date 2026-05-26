@@ -3838,6 +3838,49 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_scenario_source_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "暂停/恢复（pause/resume）",
+        "后台执行（background execution）",
+        "运行时控制转换（runtime-control transitions）",
+        "能力会话到期（capability-session expiry）",
+        "重新初始化路径（re-initialization paths）",
+        "编排模式选择（orchestration-pattern selection）",
+        "委派工作者边界（delegated worker boundaries）",
+        "`user simulator`（用户模拟器）",
+        "`synthetic adversary`（合成对手）",
+        "模拟器（simulator）",
+        "对手（adversary）",
+        "隐蔽（concealment）",
+        "监督规避（oversight evasion）",
+        "模式不匹配（schema mismatch）",
+        "控制漂移（control drift）",
+        "重新初始化窗口（re-init windows）",
+        "委派工作者路径（delegated worker paths）",
+        "工作者边界漂移（worker-boundary drift）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "涉及 pause/resume 或 background execution 的 runtime-control transitions",
+        "capability-session expiry 与 re-initialization paths",
+        "orchestration-pattern selection 与 delegated worker boundaries",
+        "`user simulator` 适合",
+        "`synthetic adversary` 适合",
+        "simulator 提供更真实的任务分布",
+        "adversary 提供压力测试",
+        "- concealment；",
+        "- oversight evasion；",
+        "schema mismatch 或 control drift",
+        "interruption 或 re-init windows",
+        "delegated worker paths 的滥用或 worker-boundary drift",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_control_question_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
