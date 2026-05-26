@@ -170,13 +170,13 @@
 
 ### 运营最低要求
 
-- **成功标准：** 事故有一条统一 trace、正确 owner 和一个一致的下一步。
-- **失败标准：** 重复通知、交接时责任丢失、没有审批的高风险修复，或多个渠道出现 split-brain。
-- **最低遥测：** alert source、incident thread ID、handoff owner、runbook step、写入意图、审批和通知幂等键。
-- **最低评测集：** noisy alert、重复通知、错误 owner 交接、缺失 runbook context 和高风险修复请求。
-- **发布门禁：** dry run 显示单一 trace chain、无重复副作用，并且 high-risk steps 需要人工审批。
-- **事故示例：** noisy alert 触发两条并行 handoff，并向不同渠道发送重复通知。
-- **复盘问题：** split-brain 是从哪里进入流程的，每一步 owner 是谁，哪些 idempotency keys 缺失，哪个 dry run 应该捕捉到重复？
+- **成功标准：** 事故有一条统一追踪（trace）、正确负责人（owner）和一个一致的下一步。
+- **失败标准：** 重复通知、交接时责任丢失、没有审批的高风险修复，或多个渠道出现脑裂（split-brain）。
+- **最低遥测：** 告警来源（alert source）、事件线程 ID（incident thread ID）、交接负责人（handoff owner）、运行手册步骤（runbook step）、写入意图、审批和通知幂等键。
+- **最低评测集：** 噪声告警（noisy alert）、重复通知、错误负责人（owner）交接、缺失运行手册上下文（runbook context）和高风险修复请求。
+- **发布门禁：** 演练运行（dry run）显示单一追踪链（trace chain）、无重复副作用，并且高风险步骤（high-risk steps）需要人工审批。
+- **事故示例：** 噪声告警（noisy alert）触发两条并行交接（handoff），并向不同渠道发送重复通知。
+- **复盘问题：** 脑裂（split-brain）是从哪里进入流程的，每一步负责人（owner）是谁，哪些幂等键（idempotency keys）缺失，哪个演练运行（dry run）应该捕捉到重复？
 
 ### 书里对应阅读
 
