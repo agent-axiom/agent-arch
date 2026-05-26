@@ -4573,6 +4573,39 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_governance_action_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "开放（`open`）",
+        "已接受（`accepted`）",
+        "已豁免（`waived`）",
+        "已遏制（`contained`）",
+        "已关闭（`closed`）",
+        "框架（framing）",
+        "来源链章节（provenance chapter）",
+        "证据（evidence）",
+        "覆盖（coverage）",
+        "关联（correlation）",
+        "来源链（provenance）",
+        "已批准工件（approved artifacts）",
+        "契约版本（contract version）",
+        "受治理包（governed bundle）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "`action_state`：`open`、`accepted`、`waived`、`contained`、`closed`",
+        "这种 framing 也把本章",
+        "和 provenance chapter 保持分离",
+        "足够的 evidence、coverage 与 correlation",
+        "来源链（provenance）关注的是，后续决策究竟由哪一组 approved artifacts",
+        "contract version 或 governed bundle",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_governance_fragility_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
