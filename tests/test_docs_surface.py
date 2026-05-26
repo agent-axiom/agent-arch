@@ -10111,6 +10111,10 @@ def test_chinese_reference_package_inspect_agent_labels_are_localized() -> None:
         "清单评审（inventory review）",
         "已配置身份（configured identity）",
         "能力目录（capability catalog）",
+        "该身份（identity）使用 agent_id `support-triage-ref`",
+        "显示名（display_name）是 `Support triage reference agent`",
+        "归属团队 owner_team `agent_platform`",
+        "运行时主体 runtime_principal `svc-support-triage-ref`",
         "只批准（approved）`search_docs` 与 `create_ticket`",
         "`catalog_capabilities` 条目（entry）",
         "评审者（reviewers）",
@@ -10123,6 +10127,10 @@ def test_chinese_reference_package_inspect_agent_labels_are_localized() -> None:
 
     forbidden_markers = (
         "让 inventory review 可以把 configured identity 与 capability catalog 对照起来",
+        "该 identity 使用 agent_id",
+        "display_name 是 `Support triage reference agent`",
+        "，owner_team `agent_platform`",
+        "，runtime_principal `svc-support-triage-ref`",
         "只 approved `search_docs` 与 `create_ticket`",
         "随后 capability catalog 将",
         "`catalog_capabilities` entry",
