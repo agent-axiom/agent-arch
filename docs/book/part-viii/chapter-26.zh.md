@@ -385,17 +385,17 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 如果连续几个答案都是“否”，那你的可观测性虽然已经存在，但还没有变成治理层。
 
-这通常意味着平台还只能描述活动，却还不能提供那种足以让 reviewer、incident owner 或 estate governor 有信心依赖的稳定证据。
+这通常意味着平台还只能描述活动，却还不能提供那种足以让审查者（reviewer）、事故负责人（incident owner）或智能体群体治理者（estate governor）有信心依赖的稳定证据。
 
 ## 14. 本章的证据模型
 
-本章应该被读成一层 evidence readiness，而不是 logging checklist：
+本章应该被读成一层证据就绪度（evidence readiness），而不是日志清单（logging checklist）：
 
-- **稳定主张：** 如果 high-risk actions、approvals、principals、artifacts 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
-- **厂商实践：** 当前 observability 与 infrastructure inventory 指南越来越把 telemetry coverage 和 asset coverage 视为生产控制，而不只是 debugging aids。
-- **运行时实践：** structured events、inventory coverage checks、behavioral baselines 与 detection-ready fields 让 traces 可以用于 release review 和 incident response。
-- **作者解释：** AI-native observability 是 evals、assurance、registry 与 lifecycle governance 之间的桥梁。
-- **快速变化层：** tracing products、detectors 与 telemetry pipelines 会继续变化；但 attributable、reviewable evidence 的需求不会。
+- **稳定主张：** 如果高风险动作（high-risk actions）、审批（approvals）、主体（principals）、工件（artifacts）与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
+- **厂商实践：** 当前可观测性（observability）与基础设施清单（infrastructure inventory）指南越来越把遥测覆盖（telemetry coverage）和资产覆盖（asset coverage）视为生产控制，而不只是调试辅助（debugging aids）。
+- **运行时实践：** 结构化事件（structured events）、清单覆盖检查（inventory coverage checks）、行为基线（behavioral baselines）与检测就绪字段（detection-ready fields）让追踪（traces）可以用于发布审查（release review）和事故响应（incident response）。
+- **作者解释：** AI 原生可观测性（AI-native observability）是评测（evals）、保障（assurance）、注册表（registry）与生命周期治理（lifecycle governance）之间的桥梁。
+- **快速变化层：** 追踪产品（tracing products）、检测器（detectors）与遥测管线（telemetry pipelines）会继续变化；但可归因、可审查证据（attributable, reviewable evidence）的需求不会。
 
 ## 15. 值得配套阅读的参考页
 

@@ -4343,6 +4343,54 @@ def test_chapter_26_chinese_observability_evidence_labels_are_localized() -> Non
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_26_chinese_evidence_model_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "审查者（reviewer）",
+        "事故负责人（incident owner）",
+        "智能体群体治理者（estate governor）",
+        "证据就绪度（evidence readiness）",
+        "日志清单（logging checklist）",
+        "高风险动作（high-risk actions）",
+        "主体（principals）",
+        "工件（artifacts）",
+        "基础设施清单（infrastructure inventory）",
+        "遥测覆盖（telemetry coverage）",
+        "资产覆盖（asset coverage）",
+        "调试辅助（debugging aids）",
+        "结构化事件（structured events）",
+        "清单覆盖检查（inventory coverage checks）",
+        "行为基线（behavioral baselines）",
+        "检测就绪字段（detection-ready fields）",
+        "发布审查（release review）",
+        "事故响应（incident response）",
+        "AI 原生可观测性（AI-native observability）",
+        "生命周期治理（lifecycle governance）",
+        "追踪产品（tracing products）",
+        "检测器（detectors）",
+        "遥测管线（telemetry pipelines）",
+        "可归因、可审查证据（attributable, reviewable evidence）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "让 reviewer、incident owner 或 estate governor",
+        "一层 evidence readiness，而不是 logging checklist",
+        "如果 high-risk actions、approvals、principals、artifacts",
+        "当前 observability 与 infrastructure inventory 指南",
+        "telemetry coverage 和 asset coverage 视为生产控制",
+        "而不只是 debugging aids",
+        "structured events、inventory coverage checks、behavioral baselines",
+        "detection-ready fields 让 traces 可以用于 release review 和 incident response",
+        "AI-native observability 是 evals、assurance、registry 与 lifecycle governance",
+        "tracing products、detectors 与 telemetry pipelines",
+        "attributable、reviewable evidence 的需求不会",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
     required_markers = (
         "Architecture case-spine note",
