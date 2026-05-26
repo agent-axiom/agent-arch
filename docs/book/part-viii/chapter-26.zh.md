@@ -212,7 +212,7 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 - `governance_action_id`：治理动作的稳定标识符；
 - `source_signal`：触发该动作的遥测信号（telemetry signal）或检测场景（detection scenario）；
 - `decision_owner`：负责该决定的角色或团队；
-- `action_state`：`open`、`accepted`、`waived`、`contained`、`closed`；
+- `action_state`：开放（`open`）、已接受（`accepted`）、已豁免（`waived`）、已遏制（`contained`）、已关闭（`closed`）；
 - `evidence_refs`：指向追踪（trace）、验证器输出（verifier output）、策略决策（policy decision）和发布门禁（rollout gate）的链接；
 - `review_deadline`：该动作必须被重新审查或关闭的时间。
 
@@ -220,7 +220,7 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 这样，遥测（telemetry）就不再只是事后的证据（evidence）。它会变成治理闭环（governance loop）的运行输入：观察（observe）→ 策略决策（policy decision）→ 遏制（containment）或发布动作（rollout action）→ 关于结果的新证据（evidence）。
 
-这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
+这种框架（framing）也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
 
 它也应该和来源链章节（provenance chapter）保持分离。可观测性关注系统是否发出了足够的证据（evidence）、覆盖（coverage）与关联（correlation），足以支持调查和检测；来源链（provenance）关注的是，后续决策究竟由哪一组已批准工件（approved artifacts）、契约版本（contract version）或受治理包（governed bundle）来支撑。
 
