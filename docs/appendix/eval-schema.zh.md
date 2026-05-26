@@ -261,7 +261,7 @@ verifier_outputs:
 - 不给数据集做版本管理；
 - 不把数据集条目和追踪证据或事故历史关联起来；
 - 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因；
-- 在 rollout 中要求 `sandbox_profile_review`，却没有 grading rule 去检查 workspace、permissions 与 snapshot/resume evidence。
+- 在发布（rollout）中要求 `sandbox_profile_review`，却没有打分规则（grading rule）去检查工作区（workspace）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）。
 
 这样会让评测文化变得很脆弱。
 
@@ -275,7 +275,7 @@ verifier_outputs:
 - 能不能评估行为，而不只是文本？
 - 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
-- 是否有专门面向由 sandbox 支撑的路径的规则，用来检查 sandbox profile contract、workspace entries、permissions 与 snapshot/resume evidence？
+- 是否有专门面向由沙箱（sandbox）支撑的路径的规则，用来检查沙箱配置文件契约（sandbox profile contract）、工作区条目（workspace entries）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 
