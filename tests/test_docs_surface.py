@@ -10538,6 +10538,33 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_trace_schema_support_and_memory_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+    expected_markers = (
+        "支持分流（support-triage）案例",
+        "最终结果（outcome）",
+        "追踪（trace）应显示",
+        "调和（reconciliation）",
+        "记忆投毒复核（memory poisoning review）",
+        "记忆模式（memory schema）",
+        "记忆投毒复核字段（memory poisoning review fields）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "在 support-triage 案例里",
+        "最终 outcome 应该",
+        "trace 应显示",
+        "没有 reconciliation 的情况下",
+        "对于 memory poisoning review 中的",
+        "trace 应保留与 memory schema",
+        "相同的 memory poisoning review fields",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_trace_schema_sandbox_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
