@@ -9760,6 +9760,24 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_change_readiness_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "必需信号（required signals）",
+        "变更就绪度（change readiness）",
+        "发布就绪度（rollout readiness）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "它的 required signals 包括",
+        "进入 change readiness 和 rollout readiness",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_sandbox_construction_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
