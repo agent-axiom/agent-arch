@@ -178,26 +178,26 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 治理往往会被写成：
 
-- policy bundles；
-- review processes；
-- release gates；
-- approval contracts。
+- 策略包（policy bundles）；
+- 评审流程（review processes）；
+- 发布门禁（release gates）；
+- 审批契约（approval contracts）。
 
 但如果没有可观测性，这一切很容易退化成纸面控制。
 
 强治理真正需要的是：
 
 - 看到真实行为；
-- 发现 drift；
-- 衡量 coverage；
-- 区分 governed path 和 bypass path；
-- 在事故发生前发现 stuck approvals、aging background runs、capability-session expiry drift、approval-resume misuse、orchestration-pattern drift、verifier-quality drift 与 contract mismatches。
+- 发现漂移（drift）；
+- 衡量覆盖率（coverage）；
+- 区分受治理路径（governed path）和绕过路径（bypass path）；
+- 在事故发生前发现卡住的审批（stuck approvals）、老化的后台运行（aging background runs）、能力会话到期漂移（capability-session expiry drift）、审批恢复误用（approval-resume misuse）、编排模式漂移（orchestration-pattern drift）、验证器质量漂移（verifier-quality drift）与契约不匹配（contract mismatches）。
 
 所以对智能体系统来说，最好把可观测性理解成`治理的证据层`。
 
 ### 7.1. 治理感知遥测（Governance-aware telemetry）会闭合执行闭环（enforcement loop）
 
-下一个成熟度层级，不只是“看见事件”，而是让遥测（telemetry）可以直接服务治理动作。`Governance-aware telemetry` 应该回流到控制闭环，作为策略决策（policy decisions）、遏制（containment）、发布门禁（rollout gates）和事故响应（incident response）的输入。
+下一个成熟度层级，不只是“看见事件”，而是让遥测（telemetry）可以直接服务治理动作。治理感知遥测（`Governance-aware telemetry`）应该回流到控制闭环，作为策略决策（policy decisions）、遏制（containment）、发布门禁（rollout gates）和事故响应（incident response）的输入。
 
 最小闭环契约（closed-loop contract）可以这样定义：
 

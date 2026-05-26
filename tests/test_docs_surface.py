@@ -4573,6 +4573,46 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_governance_fragility_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "策略包（policy bundles）",
+        "评审流程（review processes）",
+        "发布门禁（release gates）",
+        "审批契约（approval contracts）",
+        "漂移（drift）",
+        "覆盖率（coverage）",
+        "受治理路径（governed path）",
+        "绕过路径（bypass path）",
+        "卡住的审批（stuck approvals）",
+        "老化的后台运行（aging background runs）",
+        "能力会话到期漂移（capability-session expiry drift）",
+        "审批恢复误用（approval-resume misuse）",
+        "编排模式漂移（orchestration-pattern drift）",
+        "验证器质量漂移（verifier-quality drift）",
+        "契约不匹配（contract mismatches）",
+        "治理感知遥测（`Governance-aware telemetry`）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "- policy bundles；",
+        "- review processes；",
+        "- release gates；",
+        "- approval contracts。",
+        "发现 drift",
+        "衡量 coverage",
+        "governed path 和 bypass path",
+        "stuck approvals、aging background runs",
+        "capability-session expiry drift、approval-resume misuse",
+        "orchestration-pattern drift、verifier-quality drift 与 contract mismatches",
+        "`Governance-aware telemetry` 应该回流",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_behavioral_baseline_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
