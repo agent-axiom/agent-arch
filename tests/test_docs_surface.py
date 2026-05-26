@@ -10138,6 +10138,29 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_policy_bundle_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
+    expected_markers = (
+        "由沙箱（sandbox）支撑的路径",
+        "沙箱配置文件契约（sandbox profile contract）",
+        "复核（review）",
+        "工作区（workspace）",
+        "shell/文件系统权限（shell/filesystem permissions）",
+        "快照/恢复行为（snapshot/resume behavior）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "由 sandbox 支撑的路径",
+        "指向 sandbox profile contract",
+        "经过 review；否则 workspace",
+        "shell/filesystem permissions 与 snapshot/resume behavior",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_policy_bundle_validation_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
     expected_markers = (
