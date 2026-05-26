@@ -60,7 +60,7 @@
 
 Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不一致和发现滞后联系在一起。[^ms-inventory][^ms-agentic-risk]
 
-同样的基础纪律也和 NIST SP 800-53 一致：清单必须完整、持续维护并连接到 accountability，否则控制很快就会变成装饰。[^nist-sp53]
+同样的基础纪律也和 NIST SP 800-53 一致：清单必须完整、持续维护并连接到问责（accountability），否则控制很快就会变成装饰。[^nist-sp53]
 
 ## 3. 清单和注册表不是同一层
 
