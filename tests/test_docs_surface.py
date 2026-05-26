@@ -4573,6 +4573,69 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_ai_native_signal_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "AI 原生信号（`AI-native signals`）",
+        "请求身份（request identity）",
+        "行动者（actor）与智能体身份（agent identity）",
+        "检索出处（retrieval provenance）",
+        "工具调用（tool invocations）",
+        "工具权限（tool permissions）与主体（principals）",
+        "审批积压信号（approval backlog signals）",
+        "到期原因（expiry reason）与重新初始化状态（re-init status）",
+        "委派工作者谱系（delegated worker lineage）",
+        "输出摘要（output summaries）",
+        "脱敏状态（redaction status）",
+        "活跃验证器契约（active verifier contract）",
+        "身份与范围（Identity and scope）",
+        "控制证据（Control evidence）",
+        "执行状态（Execution state）",
+        "质量证据（Quality evidence）",
+        "发布与工件上下文（Release and artifact context）",
+        "租户/请求范围（tenant/request scope）",
+        "暂停/后台化/委派（paused/backgrounded/delegated）",
+        "恢复（resumed）",
+        "工件包（artifact bundle）",
+        "运行时控制信号（runtime-control signals）",
+        "暂停/恢复路径（pause/resume paths）",
+        "后台执行（background execution）",
+        "契约版本转换（contract-version transitions）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "演进成 `AI-native signals`",
+        "## 3. 什么是 AI-native signals",
+        "- request identity；",
+        "- actor 与 agent identity；",
+        "- retrieval provenance；",
+        "- tool invocations；",
+        "tool permissions 与 principals",
+        "- approval backlog signals；",
+        "capability sessions 的状态、expiry reason 与 re-init status",
+        "orchestration-pattern selection 与 delegated worker lineage",
+        "- background runs 的状态",
+        "- output summaries；",
+        "- redaction status；",
+        "active verifier contract 与 verifier contract version",
+        "**Identity and scope：**",
+        "**Control evidence：**",
+        "**Execution state：**",
+        "**Quality evidence：**",
+        "**Release and artifact context：**",
+        "处在哪个 tenant/request scope 中",
+        "在哪里 paused/backgrounded/delegated",
+        "如何 resumed。",
+        "哪个 artifact bundle",
+        "runtime-control signals 不能继续",
+        "pause/resume paths、background execution 和 contract-version transitions",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_intro_observability_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
