@@ -274,42 +274,42 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 - 所有评测最后都退化成最终答案质量；
 - 危险路径没有独立的场景类别；
-- approval-path misuse、session re-init misuse、delegated-worker misuse 与 contract drift 没有被显式测试；
-- verifier outputs 把长轨迹压缩成了过于薄弱的 pass/fail label；
-- verifier contract swaps 改变了 grading behavior，却没有被当成 release-bearing eval regressions；
-- controllable 与 uncontrollable failures 没有被分开；
+- 审批路径误用（approval-path misuse）、会话重新初始化误用（session re-init misuse）、委派工作者误用（delegated-worker misuse）与契约漂移（contract drift）没有被显式测试；
+- 验证器输出（verifier outputs）把长轨迹压缩成了过于薄弱的通过/失败标签（pass/fail label）；
+- 验证器契约替换（verifier contract swaps）改变了评分行为（grading behavior），却没有被当成承载发布的评测回归（release-bearing eval regressions）；
+- 可控失败（controllable failures）与不可控失败（uncontrollable failures）没有被分开；
 - 红队测试只是一次性活动；
-- runtime-control regressions 只有在 rollout 或 incidents 中才被发现；
+- 运行时控制回归（runtime-control regressions）只有在发布（rollout）或事故（incidents）中才被发现；
 - 发现结果没有进入发布门禁；
 - 控制失效被当成“不是模型 bug”，于是从待办列表里消失；
 - 团队分不清普通失效和类似破坏的行为。
 
 ## 13. 给行为评测和控制评测做一次快速成熟度测试
 
-团队不应该只因为已经有回归评测、模拟器和几条 adversarial prompts，就觉得自己已经准备好面对自主行为。
+团队不应该只因为已经有回归评测、模拟器和几条对抗提示（adversarial prompts），就觉得自己已经准备好面对自主行为。
 
 更高的标准应该是：
 
 - 高风险路径有明确的行为场景类别；
 - 控制评测会验证控制层本身在压力下是否真的有效；
 - 验证器输出会分开表示过程质量、结果质量与失败归因，而不是把一切压成单一二元判断；
-- approval-path misuse、session re-init misuse、delegated-worker misuse、contract drift 与 runtime-control regressions 都有明确的场景覆盖；
-- red-team findings 会进入 rollout 和 change gates，而不是停留在单独报告里；
-- realistic simulation 和 adversarial generation 扮演不同但互补的角色；
+- 审批路径误用（approval-path misuse）、会话重新初始化误用（session re-init misuse）、委派工作者误用（delegated-worker misuse）、契约漂移（contract drift）与运行时控制回归（runtime-control regressions）都有明确的场景覆盖；
+- 红队发现（red-team findings）会进入发布（rollout）和变更门禁（change gates），而不是停留在单独报告里；
+- 真实负载模拟（realistic simulation）和对抗生成（adversarial generation）扮演不同但互补的角色；
 - 发布决策能拿出控制证据，而不只是质量分数。
 
 如果这些条件大多不成立，那团队也许已经有一些评测活动，但还没有足够的行为和控制覆盖。
 
-这时团队也许已经在测量行为，但还没有产出那种足以让 rollout、assurance 与治理函数稳定依赖的可评审判断。
+这时团队也许已经在测量行为，但还没有产出那种足以让发布（rollout）、保障（assurance）与治理函数稳定依赖的可评审判断。
 
 ## 14. 实用检查清单
 
 - 高风险能力是否有单独的行为场景类别？
-- 你是否测试审批规避、载荷篡改、approval-path misuse 与 delegated-worker misuse？
-- 是否有专门验证控制措施、contract-version matching、runtime-control behavior、orchestration-pattern boundaries 与验证器质量的评测，而不只是检查输出质量？
+- 你是否测试审批规避、载荷篡改、审批路径误用（approval-path misuse）与委派工作者误用（delegated-worker misuse）？
+- 是否有专门验证控制措施、契约版本匹配（contract-version matching）、运行时控制行为（runtime-control behavior）、编排模式边界（orchestration-pattern boundaries）与验证器质量的评测，而不只是检查输出质量？
 - 验证器能否区分过程失败、结果失败与不可控环境失败？
 - 红队发现结果是否会进入变更评审和发布门禁？
-- 是否同时有 realistic workload simulator 和 adversarial generator？
+- 是否同时有真实负载模拟器（realistic workload simulator）和对抗生成器（adversarial generator）？
 - 你能展示的是控制证据，还是只有最终分数？
 
 如果连续几个答案都是“否”，那你的评测层虽然已经存在，但还没准备好面对自主行为。
