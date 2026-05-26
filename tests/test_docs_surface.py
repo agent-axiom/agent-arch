@@ -9760,6 +9760,34 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_runtime_control_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "运行时控制摘要（runtime-control summary）",
+        "能力会话（capability sessions）",
+        "进度（progress）",
+        "澄清请求（elicitation）",
+        "过期假设（expiry assumptions）",
+        "默认值（defaults）",
+        "可恢复/重新初始化流程（resumable/reinit flows）",
+        "沙箱配置文件加载器（Sandbox-profile loader）",
+        "运行时控制形状（runtime-control shapes）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "同一份 runtime-control summary",
+        "可恢复的 capability sessions 会明确暴露 progress",
+        "elicitation 与 expiry assumptions",
+        "`delegated_authorization` defaults",
+        "resumable/reinit flows 使用",
+        "Sandbox-profile loader 会用这些错误校验 runtime-control shapes",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_identity_loader_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     assert "身份/目录加载器（Identity/catalog loaders）" in chinese_text
