@@ -13146,7 +13146,9 @@ def test_multilingual_why_this_book_case_note_is_localized() -> None:
     assert "写入动作（write actions）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "追踪（traces）" in chinese_text
-    assert "production incident 之前" in chinese_text
+    assert "服务级目标（SLOs）" in chinese_text
+    assert "提示词技巧（prompt tricks）" in chinese_text
+    assert "生产事故（production incident）之前" in chinese_text
 
     forbidden_markers = (
         "трех canonical cases",
@@ -13159,6 +13161,8 @@ def test_multilingual_why_this_book_case_note_is_localized() -> None:
         "比 polished demo",
         "为什么 retrieval、memory boundaries",
         "为什么 traces、SLOs",
+        "而不是 prompt tricks",
+        "production incident 之前",
     )
 
     for marker in forbidden_markers:
