@@ -11016,6 +11016,35 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_change_rollout_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+    expected_markers = (
+        "由沙箱（sandbox）支撑的执行",
+        "沙箱配置文件契约（sandbox profile contract）",
+        "工作区物化（workspace materialization）",
+        "权限（permissions）",
+        "快照/恢复策略（snapshot/resume policy）",
+        "沙箱配置文件（sandbox profile）变更",
+        "工作区条目（workspace entries）",
+        "shell/文件系统权限（shell/filesystem permissions）",
+        "快照/恢复行为（snapshot/resume behavior）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "由 sandbox 支撑的执行",
+        "sandbox profile contract 是否也进入评审",
+        "包括 workspace materialization、permissions",
+        "snapshot/resume policy；",
+        "sandbox profile 变更会在发布前被检查",
+        "改变 workspace entries、shell/filesystem permissions",
+        "snapshot/resume behavior 时",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_change_rollout_canary_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
     expected_markers = (
