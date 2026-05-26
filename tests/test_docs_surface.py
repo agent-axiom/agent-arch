@@ -10138,6 +10138,29 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_policy_bundle_validation_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
+    expected_markers = (
+        "门禁（gate）",
+        "控制包（control bundle）的输入形状",
+        "控制配置验证（controls config validation）",
+        "信号覆盖（signal overrides）",
+        "畸形策略包（malformed policy bundle）",
+        "控制评估（control assessment）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "同一个 gate 也会明确约束 control bundle 的输入形状",
+        "controls config validation 会报告",
+        "signal overrides 会报告",
+        "区分 malformed policy bundle 与格式正确但评估失败的 control assessment",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_policy_bundle_control_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
     expected_markers = (
