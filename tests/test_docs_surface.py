@@ -4350,6 +4350,34 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         assert "internal knowledge assistant" not in text, path
         assert "incident coordination" not in text, path
 
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    expected_chinese_markers = (
+        "行动权（right to act）",
+        "已弃用写入路径（deprecated write paths）",
+        "暂停审批（paused approvals）",
+        "过时语料（stale corpora）",
+        "过时嵌入（obsolete embeddings）",
+        "记忆写入规则（memory-write rules）",
+        "响应路径（response path）",
+        "仅应急能力（emergency-only capabilities）",
+        "升级路由（escalation routes）",
+        "通知通道（notification channels）",
+        "退役计划（retirement plan）",
+    )
+    for expected_chinese_marker in expected_chinese_markers:
+        assert expected_chinese_marker in chinese_text, expected_chinese_marker
+
+    forbidden_chinese_markers = (
+        "不同的 right to act",
+        "关闭 deprecated write paths 和 paused approvals",
+        "退役 stale corpora、obsolete embeddings 和 memory-write rules",
+        "在 response path 不再有效时关闭 emergency-only capabilities",
+        "escalation routes 和 notification channels",
+        "runtime 的 retirement plan",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
+
 
 def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> None:
     expected_links_by_file = {
