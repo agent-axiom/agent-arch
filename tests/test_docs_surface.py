@@ -453,6 +453,58 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
         assert forbidden_label not in text, (relative_path, forbidden_label)
 
 
+def test_chapter_27_chinese_registry_contract_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
+    expected_markers = (
+        "智能体身份（agent identity）",
+        "负责人（owner）",
+        "生命周期状态（lifecycle state）",
+        "能力（capabilities）",
+        "运行时控制责任归属（runtime-control ownership）",
+        "证据链接（evidence links）",
+        "问责层（accountability layer）",
+        "清单表格（inventory spreadsheet）",
+        "发现（discovery）",
+        "生产智能体（production agent）",
+        "责任归属（ownership）",
+        "策略链接（policy linkage）",
+        "可观测的控制状态（observable control status）",
+        "基础设施清单（infrastructure inventory）",
+        "智能体风险指南（agentic-risk guidance）",
+        "持续资产覆盖（continuous asset coverage）",
+        "控制问责（control accountability）",
+        "注册表记录（registry records）",
+        "生命周期工件（lifecycle artifacts）",
+        "策略包（policy bundles）",
+        "审批模式（approval modes）",
+        "主体状态（principal status）",
+        "遥测覆盖（telemetry coverage）",
+        "智能体群体（agent estate）",
+        "可问责的生产实体（accountable production entity）",
+        "已批准生产智能体（approved production agents）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "agent identity、owner、lifecycle state",
+        "capabilities、runtime-control ownership 与 evidence links",
+        "本章应该被读成 accountability layer",
+        "而不是 inventory spreadsheet",
+        "治理不只是 discovery；每个 production agent",
+        "需要 ownership、lifecycle state、policy linkage 与 observable control status",
+        "infrastructure inventory 与 agentic-risk guidance",
+        "continuous asset coverage、ownership 和 control accountability",
+        "registry records、lifecycle artifacts、policy bundles、approval modes",
+        "principal status 与 telemetry coverage 让 agent estate",
+        "registry 是收束层",
+        "一个 accountable production entity",
+        "approved production agents 的区别不应消失",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_book_improvement_blueprint_records_review_remediation_status() -> None:
     required_markers = (
         "Implementation status, 20 May 2026",

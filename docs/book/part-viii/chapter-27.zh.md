@@ -44,7 +44,7 @@
 
 这种可追责性就是本章的重心。注册表并不拥有证据主干，也不拥有遥测基底。它真正维护的是，受治理实体与负责人、状态和问责路径之间的映射。
 
-这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。本章的主要工件是 注册表记录（registry record）：一条把 agent identity、owner、lifecycle state、capabilities、runtime-control ownership 与 evidence links 连起来的记录。
+这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。本章的主要工件是 注册表记录（registry record）：一条把智能体身份（agent identity）、负责人（owner）、生命周期状态（lifecycle state）、能力（capabilities）、运行时控制责任归属（runtime-control ownership）与证据链接（evidence links）连起来的记录。
 
 ## 2. 为什么蔓延不只是组织问题
 
@@ -369,13 +369,13 @@ def registry_ready(state: AgentRegistryState) -> bool:
 
 ## 15. 本章的证据模型
 
-本章应该被读成 accountability layer，而不是 inventory spreadsheet：
+本章应该被读成问责层（accountability layer），而不是清单表格（inventory spreadsheet）：
 
-- **稳定主张：** 智能体治理不只是 discovery；每个 production agent 都需要 ownership、lifecycle state、policy linkage 与 observable control status。
-- **厂商实践：** infrastructure inventory 与 agentic-risk guidance 都指向 continuous asset coverage、ownership 和 control accountability。
-- **运行时实践：** registry records、lifecycle artifacts、policy bundles、approval modes、principal status 与 telemetry coverage 让 agent estate 可以被审查。
-- **作者解释：** registry 是收束层，把 observability、policy、lifecycle 与 retirement 连接成一个 accountable production entity。
-- **快速变化层：** agent builders、registries 与 discovery mechanisms 会继续变化；但 discovered entities 与 approved production agents 的区别不应消失。
+- **稳定主张：** 智能体治理不只是发现（discovery）；每个生产智能体（production agent）都需要责任归属（ownership）、生命周期状态（lifecycle state）、策略链接（policy linkage）与可观测的控制状态（observable control status）。
+- **厂商实践：** 基础设施清单（infrastructure inventory）与智能体风险指南（agentic-risk guidance）都指向持续资产覆盖（continuous asset coverage）、责任归属（ownership）和控制问责（control accountability）。
+- **运行时实践：** 注册表记录（registry records）、生命周期工件（lifecycle artifacts）、策略包（policy bundles）、审批模式（approval modes）、主体状态（principal status）与遥测覆盖（telemetry coverage）让智能体群体（agent estate）可以被审查。
+- **作者解释：** 注册表（registry）是收束层，把可观测性（observability）、策略（policy）、生命周期（lifecycle）与退役（retirement）连接成一个可问责的生产实体（accountable production entity）。
+- **快速变化层：** 智能体构建器（agent builders）、注册表（registries）与发现机制（discovery mechanisms）会继续变化；但已发现实体（discovered entities）与已批准生产智能体（approved production agents）的区别不应消失。
 
 ## 16. 值得配套阅读的参考页
 
