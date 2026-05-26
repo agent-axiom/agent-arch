@@ -113,7 +113,7 @@
 
 `failed_run_traceable` 会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
 
-`sandbox_profile_review` 对由 sandbox 支撑的路径很重要：它检查 workspace materialization、shell/filesystem permissions、network/secrets posture 与 snapshot/resume policy 是否被显式表示成可评审证据，而不是停留为隐含的 runtime settings。
+`sandbox_profile_review` 对由沙箱（sandbox）支撑的路径很重要：它检查工作区物化（workspace materialization）、shell/文件系统权限（shell/filesystem permissions）、网络/密钥姿态（network/secrets posture）与快照/恢复策略（snapshot/resume policy）是否被显式表示成可评审证据，而不是停留为隐含的运行时设置（runtime settings）。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 

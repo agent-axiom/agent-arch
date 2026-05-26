@@ -10730,6 +10730,30 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_eval_schema_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+    expected_markers = (
+        "沙箱（sandbox）支撑的路径",
+        "工作区物化（workspace materialization）",
+        "shell/文件系统权限（shell/filesystem permissions）",
+        "网络/密钥姿态（network/secrets posture）",
+        "快照/恢复策略（snapshot/resume policy）",
+        "运行时设置（runtime settings）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对由 sandbox 支撑的路径很重要",
+        "检查 workspace materialization",
+        "shell/filesystem permissions、network/secrets posture",
+        "snapshot/resume policy 是否",
+        "隐含的 runtime settings",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_eval_schema_gate_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
     expected_markers = (
