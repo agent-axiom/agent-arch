@@ -9760,6 +9760,37 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_inspect_agent_tail_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "重复工单线索（duplicate-ticket thread）",
+        "支持团队拥有（support-owned）",
+        "高风险（high-risk）",
+        "经纪式（brokered）",
+        "调和（reconciliation）",
+        "幂等键（idempotency key）",
+        "写入能力（write capability）",
+        "负责人（owner）",
+        "工具主体绑定（tool-principal binding）",
+        "出口目标（egress target）",
+        "操作员（operators）",
+        "完整目录列表（catalog list）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对于贯穿的 duplicate-ticket thread",
+        "呈现为 support-owned、high-risk、brokered",
+        "安全重试或 reconciliation 之前要求 idempotency key",
+        "写入 capability 的 owner 与 tool-principal binding",
+        "brokered `tickets.internal` egress target",
+        "operators 不必先扫描完整 catalog list",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_inspect_agent_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
