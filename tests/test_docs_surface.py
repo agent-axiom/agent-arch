@@ -4301,7 +4301,12 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
             "post-incident control changes",
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            *common_markers,
+            "可观测性案例主线说明（Observability case-spine note）",
+            "支持分诊（support-triage）的控制评测",
+            "追踪（trace）都应该关联",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
             "遥测（telemetry）已经具备检测就绪状态（detection-ready）",
             "发布（rollout）",
             "结果（outcome）",
@@ -4332,6 +4337,12 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     forbidden_chinese_markers = (
+        "support-triage 的控制评测",
+        "trace 都应该关联",
+        "**Observability case-spine note：**",
+        "Support triage 需要覆盖",
+        "Internal knowledge assistant 需要覆盖",
+        "Incident coordination 需要覆盖",
         "telemetry 已经 detection-ready",
         "服务 rollout",
         "`rollout_wave`、outcome、`side_effect_unknown`",
