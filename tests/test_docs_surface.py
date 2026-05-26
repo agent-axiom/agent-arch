@@ -9760,6 +9760,25 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_lifecycle_loader_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "生命周期列表加载器（Lifecycle list loaders）",
+        "拒绝畸形、空白和重复条目（malformed, blank, and duplicate entries）",
+        "控制包（control-bundle）记录",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "Lifecycle list loaders reject malformed",
+        "blank, and duplicate entries with",
+        "审批/control-bundle 记录",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_controls_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
