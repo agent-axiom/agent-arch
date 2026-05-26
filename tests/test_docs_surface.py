@@ -9760,6 +9760,13 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_identity_loader_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    assert "身份/目录加载器（Identity/catalog loaders）" in chinese_text
+    assert "错误验证形状（validation shapes）" in chinese_text
+    assert "Identity/catalog loaders 会用这些错误校验 shape" not in chinese_text
+
+
 def test_chinese_reference_package_inspect_agent_tail_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
