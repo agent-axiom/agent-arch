@@ -10538,6 +10538,30 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_trace_schema_mcp_a2a_verdict_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+    expected_markers = (
+        "生产追踪（production trace）",
+        "MCP 威胁模型证据（MCP threat-model evidence）",
+        "允许/拒绝决策（allow/deny decision）",
+        "载荷（payload）",
+        "A2A 交接信任契约（A2A handoff trust contract）",
+        "验证器裁决记录（verifier verdict record）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "production trace 应记录",
+        "记录 MCP threat-model evidence",
+        "最终 allow/deny decision",
+        "payload 应保留 A2A handoff trust contract",
+        "承载 verifier verdict record",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_trace_schema_threat_and_governance_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
