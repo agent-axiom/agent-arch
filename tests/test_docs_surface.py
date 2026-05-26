@@ -3817,6 +3817,19 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
             *common_markers,
             "评测模式（eval schema）",
             "评测门禁与验证器契约（eval gate and verifier contract）",
+            "行为与控制评测表面（behavioral and control eval surfaces）",
+            "重复预防（duplicate prevention）",
+            "载荷变更检查（payload-mutation check）",
+            "旧网关路由探针（old-gateway-route probe）",
+            "应急禁用断言（emergency-disable assertion）",
+            "来源扎根评测（source-grounding eval）",
+            "租户过滤绕过探针（tenant-filter bypass probe）",
+            "不当记忆写入检查（improper-memory-write check）",
+            "新鲜度回归门禁（freshness regression gate）",
+            "升级路径检查（escalation-path check）",
+            "通知压制探针（notification suppression probe）",
+            "响应者角色滥用场景（responder-role abuse scenario）",
+            "回滚控制评测（rollback control eval）",
             "审批路径误用检查（approval-path misuse check）",
             "检索投毒场景（retrieval-poisoning scenario）",
             "事故状态篡改检查（incident-state tampering check）",
@@ -3831,6 +3844,18 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     forbidden_chinese_link = "[eval schema](../../appendix/eval-schema.zh.md)"
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+    forbidden_chinese_markers = (
+        "不同 behavioral and control eval surfaces",
+        "需要 duplicate prevention、payload-mutation check",
+        "old-gateway-route probe 和 emergency-disable assertion",
+        "需要 source-grounding eval、tenant-filter bypass probe",
+        "improper-memory-write check、",
+        "freshness regression gate。Incident coordination",
+        "notification suppression probe、responder-role abuse scenario",
+        "和 rollback control eval",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_25_useful_refs_include_control_surface_contracts() -> None:
