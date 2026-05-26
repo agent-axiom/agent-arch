@@ -129,26 +129,26 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 更重要的是看偏离正常行为的模式：
 
-- risky tool calls 异常增多；
-- approval denials 上升；
-- approval backlog 老化或 stuck paused runs 出现；
-- memory write pattern 变化；
-- retrieval profile 改变；
-- unusual egress destinations 激增；
-- capability-session expiry spikes 或异常 re-init rate；
-- interruption 之后 approval 与 resume 的不匹配；
-- orchestration-pattern selection 或 worker-boundary crossings 的异常变化；
-- session length 或 tool hop count 拉长。
+- 风险工具调用（risky tool calls）异常增多；
+- 审批拒绝（approval denials）上升；
+- 审批积压（approval backlog）老化或卡住的暂停运行（stuck paused runs）出现；
+- 记忆写入模式（memory write pattern）变化；
+- 检索画像（retrieval profile）改变；
+- 异常出口目的地（unusual egress destinations）激增；
+- 能力会话到期峰值（capability-session expiry spikes）或异常重新初始化率（re-init rate）；
+- 中断（interruption）之后审批（approval）与恢复（resume）的不匹配；
+- 编排模式选择（orchestration-pattern selection）或工作者边界穿越（worker-boundary crossings）的异常变化；
+- 会话长度（session length）或工具跳数（tool hop count）拉长。
 
 从这里开始，可观测性就真正和安全检测、运行治理连在一起了。
 
-但它不应该直接塌缩成这些功能本身。可观测性是证据基底，它让 assurance、rollout 与 registry functions 能基于同一份可追踪记录推理，而不是依赖彼此冲突的 dashboards、screenshots 或事后回忆。
+但它不应该直接塌缩成这些功能本身。可观测性是证据基底，它让保障（assurance）、发布（rollout）与注册表函数（registry functions）能基于同一份可追踪记录推理，而不是依赖彼此冲突的仪表板（dashboards）、截图（screenshots）或事后回忆。
 
-这个基底讨论的是跨 runs 与 systems 可用的 telemetry。它并不等同于 provenance backbone，后者负责长期保留 approved artifact identity 与 decision lineage。
+这个基底讨论的是跨运行（runs）与系统（systems）可用的遥测（telemetry）。它并不等同于出处骨干（provenance backbone），后者负责长期保留已批准工件身份（approved artifact identity）与决策谱系（decision lineage）。
 
 ## 6. 什么叫可用于检测的遥测
 
-`Detection-ready telemetry` 并不只是“我们有日志”。
+检测就绪遥测（`Detection-ready telemetry`）并不只是“我们有日志”。
 
 它意味着这些遥测已经足够支撑：
 

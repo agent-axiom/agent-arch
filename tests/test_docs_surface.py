@@ -4573,6 +4573,56 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_behavioral_baseline_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "风险工具调用（risky tool calls）",
+        "审批拒绝（approval denials）",
+        "审批积压（approval backlog）",
+        "卡住的暂停运行（stuck paused runs）",
+        "记忆写入模式（memory write pattern）",
+        "检索画像（retrieval profile）",
+        "异常出口目的地（unusual egress destinations）",
+        "能力会话到期峰值（capability-session expiry spikes）",
+        "重新初始化率（re-init rate）",
+        "中断（interruption）之后审批（approval）与恢复（resume）",
+        "编排模式选择（orchestration-pattern selection）",
+        "工作者边界穿越（worker-boundary crossings）",
+        "会话长度（session length）",
+        "工具跳数（tool hop count）",
+        "保障（assurance）、发布（rollout）与注册表函数（registry functions）",
+        "仪表板（dashboards）、截图（screenshots）",
+        "跨运行（runs）与系统（systems）可用的遥测（telemetry）",
+        "出处骨干（provenance backbone）",
+        "已批准工件身份（approved artifact identity）",
+        "决策谱系（decision lineage）",
+        "检测就绪遥测（`Detection-ready telemetry`）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "risky tool calls 异常增多",
+        "approval denials 上升",
+        "approval backlog 老化或 stuck paused runs",
+        "memory write pattern 变化",
+        "retrieval profile 改变",
+        "unusual egress destinations 激增",
+        "capability-session expiry spikes 或异常 re-init rate",
+        "interruption 之后 approval 与 resume",
+        "orchestration-pattern selection 或 worker-boundary crossings",
+        "session length 或 tool hop count",
+        "assurance、rollout 与 registry functions",
+        "dashboards、screenshots 或事后回忆",
+        "跨 runs 与 systems 可用的 telemetry",
+        "等同于 provenance backbone",
+        "approved artifact identity 与 decision lineage。",
+        "`Detection-ready telemetry` 并不只是",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_observability_promise_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
