@@ -58,7 +58,7 @@ retention: long_term
 - `revision` 让历史不会被静默覆盖；
 - `trust_level` 防止所有记录被一视同仁。
 
-对于 memory poisoning review，应该通过 memory poisoning review fields 把记录或 candidate write 描述成可审查的 security object，而不只是 retrieval payload：
+对于记忆投毒复核（memory poisoning review），应该通过记忆投毒复核字段（memory poisoning review fields）把记录或候选写入（candidate write）描述成可审查的安全对象（security object），而不只是检索载荷（retrieval payload）：
 
 ```yaml
 write_trust_boundary: untrusted_write

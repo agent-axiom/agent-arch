@@ -11581,6 +11581,28 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_memory_retrieval_poisoning_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+    expected_markers = (
+        "记忆投毒复核（memory poisoning review）",
+        "记忆投毒复核字段（memory poisoning review fields）",
+        "候选写入（candidate write）",
+        "安全对象（security object）",
+        "检索载荷（retrieval payload）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对于 memory poisoning review",
+        "通过 memory poisoning review fields",
+        "candidate write 描述成",
+        "security object，而不只是 retrieval payload",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_memory_retrieval_candidate_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
     expected_markers = (
