@@ -10138,6 +10138,27 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_policy_bundle_control_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
+    expected_markers = (
+        "运行时控制契约（runtime-control contracts）",
+        "可执行门禁（Executable gate）",
+        "控制包（control bundle）",
+        "策略/控制失败（policy/control failures）",
+        "能力清单漂移（capability inventory drift）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "与 runtime-control contracts 不再只是",
+        "Executable gate `check-controls` 也让 control bundle 可审查",
+        "会把 policy/control failures 和 capability inventory drift 分开",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/policy-bundle-schema.md")
     chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
