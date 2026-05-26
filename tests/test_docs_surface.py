@@ -10171,6 +10171,30 @@ def test_policy_bundle_schema_surfaces_three_canonical_policy_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_policy_bundle_support_triage_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
+    expected_markers = (
+        "支持分流（support-triage）",
+        "网关（gateway）",
+        "追踪（trace）",
+        "策略包（policy bundle）",
+        "调和（reconciliation）",
+        "发布复核（rollout review）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对 support-triage 来说",
+        "人工审批、gateway 和 trace",
+        "policy bundle 可以",
+        "没有 reconciliation 的重试",
+        "rollout review 检查的是",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_policy_bundle_sandbox_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
     expected_markers = (
