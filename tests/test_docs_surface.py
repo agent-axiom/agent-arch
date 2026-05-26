@@ -11040,6 +11040,12 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_eval_schema_verdict_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+    assert "验证器裁决记录（verifier verdict record）字段" in chinese_text
+    assert "这些 verifier verdict record 字段" not in chinese_text
+
+
 def test_chinese_eval_schema_sandbox_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
     expected_markers = (

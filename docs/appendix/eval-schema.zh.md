@@ -161,7 +161,7 @@
 
 ## 生产级数据集模式还应该补什么
 
-随着系统变得更严肃，模式最好继续补充这些 verifier verdict record 字段：
+随着系统变得更严肃，模式最好继续补充这些验证器裁决记录（verifier verdict record）字段：
 
 - `dataset_version`
 - `scenario_owner`
