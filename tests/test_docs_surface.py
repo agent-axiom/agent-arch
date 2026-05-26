@@ -10739,6 +10739,13 @@ def test_chinese_eval_schema_sandbox_labels_are_localized() -> None:
         "网络/密钥姿态（network/secrets posture）",
         "快照/恢复策略（snapshot/resume policy）",
         "运行时设置（runtime settings）",
+        "发布（rollout）",
+        "打分规则（grading rule）",
+        "工作区（workspace）",
+        "权限（permissions）",
+        "快照/恢复证据（snapshot/resume evidence）",
+        "沙箱配置文件契约（sandbox profile contract）",
+        "工作区条目（workspace entries）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -10749,6 +10756,10 @@ def test_chinese_eval_schema_sandbox_labels_are_localized() -> None:
         "shell/filesystem permissions、network/secrets posture",
         "snapshot/resume policy 是否",
         "隐含的 runtime settings",
+        "在 rollout 中要求",
+        "没有 grading rule 去检查 workspace",
+        "检查 sandbox profile contract、workspace entries",
+        "snapshot/resume evidence？",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
