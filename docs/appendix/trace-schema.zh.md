@@ -132,7 +132,7 @@
 - 哪些字段对分级重要；
 - 哪些字段对审计重要。
 
-对于 `agent_threat_evidence`，应保留 unified agent threat evidence model 中的 evidence markers，让 threat rows 能通过 traces 检查，而不只停留在 prose：
+对于 `agent_threat_evidence`，应保留统一智能体威胁证据模型（unified agent threat evidence model）中的证据标记（evidence markers），让威胁行（threat rows）能通过追踪（traces）检查，而不只停留在散文说明（prose）：
 
 - `prompt_boundary_event`
 - `rejected_instruction_trace`
@@ -239,7 +239,7 @@
 - `reviewer_override`
 - `evidence_refs`
 
-对于 `governance_action`，应该记录 governance action record fields，让 telemetry 变成治理动作、而不只是 dashboard signal：
+对于 `governance_action`，应该记录治理动作记录字段（governance action record fields），让遥测（telemetry）变成治理动作，而不只是仪表板信号（dashboard signal）：
 
 - `governance_action_id`
 - `source_signal`
