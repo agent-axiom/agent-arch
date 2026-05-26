@@ -11012,6 +11012,42 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_memory_retrieval_seed_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+    expected_markers = (
+        "种子记录（seed record）",
+        "打包类别（bundled kinds）",
+        "演示（demo）",
+        "检索过滤（retrieval filtering）",
+        "记录脉络（lineage）",
+        "来源（sources）",
+        "来源信息（provenance）",
+        "检索示例（retrieval examples）",
+        "信任与持久化级别（trust and persistence levels）",
+        "非资料种子内容（Non-profile seed content）",
+        "策略式事实（policy-like fact）",
+        "工作笔记（working note）",
+        "加载器（Loader）",
+        "形状（shape）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "每条 seed record",
+        "bundled kinds 是",
+        "因此 demo 可以同时展示 retrieval filtering 与记录 lineage",
+        "session_state` sources",
+        "这样的 provenance",
+        "让 retrieval examples 能呈现不同的 trust 与 persistence levels",
+        "Non-profile seed content 还包括 policy-like fact",
+        "以及 working note",
+        "Loader 也会校验这个 shape",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/memory-retrieval-schema.md")
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
