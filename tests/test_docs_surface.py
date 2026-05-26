@@ -10648,6 +10648,26 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_eval_schema_export_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+    expected_markers = (
+        "打包导出契约（Bundled export contract）",
+        "会话评测配置验证（Session eval config validation）",
+        "畸形评测规格（malformed eval specs）",
+        "失败的评测结果（failed eval results）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "Bundled export contract 是有意保持具体的",
+        "Session eval config validation 也会用",
+        "把 malformed eval specs 与 failed eval results 区分开",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_eval_schema_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/eval-schema.md")
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
