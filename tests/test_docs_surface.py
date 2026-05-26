@@ -10625,6 +10625,7 @@ def test_chinese_trace_schema_mcp_a2a_verdict_labels_are_localized() -> None:
     expected_markers = (
         "生产追踪（production trace）",
         "MCP 威胁模型证据（MCP threat-model evidence）",
+        "MCP 威胁模型（MCP threat model）词汇表",
         "允许/拒绝决策（allow/deny decision）",
         "载荷（payload）",
         "A2A 交接信任契约（A2A handoff trust contract）",
@@ -10636,6 +10637,7 @@ def test_chinese_trace_schema_mcp_a2a_verdict_labels_are_localized() -> None:
     forbidden_markers = (
         "production trace 应记录",
         "记录 MCP threat-model evidence",
+        "MCP threat model 词汇表",
         "最终 allow/deny decision",
         "payload 应保留 A2A handoff trust contract",
         "承载 verifier verdict record",

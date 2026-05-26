@@ -189,7 +189,7 @@
 - `quarantine_state`
 - `evidence_refs`
 
-`threat_class` 应保持在 MCP threat model 词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
+`threat_class` 应保持在 MCP 威胁模型（MCP threat model）词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
 
 对于 `a2a_handoff`，载荷（payload）应保留 A2A 交接信任契约（A2A handoff trust contract），而不只是委派消息文本：
 
