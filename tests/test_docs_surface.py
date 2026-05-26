@@ -4279,7 +4279,7 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
             "artifacts, and [verifier evidence](../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "artifacts 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
+            "生命周期工件（lifecycle artifacts）之间的链接"
         ),
     }
 
@@ -4289,6 +4289,58 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     forbidden_chinese_link = "[verifier evidence](../../appendix/eval-schema.zh.md)"
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+
+
+def test_chapter_26_chinese_observability_evidence_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "统一标识符（identifiers）",
+        "稳定模式（schemas）",
+        "脱敏规则（redaction rules）",
+        "留存策略（retention policy）",
+        "追踪（traces）",
+        "审批（approvals）",
+        "策略决策（policy decisions）",
+        "运行时控制状态（runtime-control states）",
+        "能力会话事件（capability-session events）",
+        "编排模式事件（orchestration-pattern events）",
+        "验证器契约身份（verifier contract identity）",
+        "生命周期工件（lifecycle artifacts）",
+        "作为证据层（evidence layer）还是太弱",
+        "可观测性（observability）指南",
+        "覆盖问题（coverage）",
+        "AI 系统（AI systems）",
+        "日志（logs）和追踪（traces）",
+        "发布（releases）运行过标准评测套件（evaluation suite）",
+        "滥用/安全场景（abuse/security scenarios）",
+        "遥测（telemetry）覆盖",
+        "仪表板（dashboards）",
+        "生产义务（production obligation）",
+        "清单覆盖（inventory coverage）",
+        "发布评测覆盖（release-eval coverage）",
+        "检测场景覆盖（detection-scenario coverage）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "统一 identifiers",
+        "稳定 schemas",
+        "稳定 schemas；\n- redaction rules；\n- retention policy；",
+        "traces、approvals、policy decisions、runtime-control states",
+        "capability-session events、orchestration-pattern events",
+        "verifier contract identity 和 lifecycle artifacts",
+        "作为 evidence layer 还是太弱",
+        "observability 指南把 coverage 问题",
+        "AI systems 会发出 logs 和 traces",
+        "releases 运行过标准 evaluation suite",
+        "abuse/security scenarios 已经被 telemetry 覆盖",
+        "observability 就不再只是“我们有 dashboards”",
+        "production obligation：inventory coverage",
+        "release-eval coverage 和 detection-scenario coverage",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_2_architecture_threads_three_canonical_cases() -> None:

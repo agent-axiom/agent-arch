@@ -159,15 +159,15 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 从工程上说，这通常要求：
 
-- 统一 identifiers；
-- 稳定 schemas；
-- redaction rules；
-- retention policy；
-- traces、approvals、policy decisions、runtime-control states、capability-session events、orchestration-pattern events、[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)、verifier contract identity 和 lifecycle artifacts 之间的链接。
+- 统一标识符（identifiers）；
+- 稳定模式（schemas）；
+- 脱敏规则（redaction rules）；
+- 留存策略（retention policy）；
+- 追踪（traces）、审批（approvals）、策略决策（policy decisions）、运行时控制状态（runtime-control states）、能力会话事件（capability-session events）、编排模式事件（orchestration-pattern events）、[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)、验证器契约身份（verifier contract identity）和生命周期工件（lifecycle artifacts）之间的链接。
 
-如果一条 trace 无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该 run 如何被判定的 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为 evidence layer 还是太弱。
+如果一条追踪（trace）无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该运行（run）如何被判定的 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为证据层（evidence layer）还是太弱。
 
-Microsoft 的 observability 指南把 coverage 问题说得更具体：团队应该衡量有多少比例的 AI systems 会发出 logs 和 traces，有多少比例的 releases 运行过标准 evaluation suite，以及有多少比例的 abuse/security scenarios 已经被 telemetry 覆盖。[^ms-observability] 这样，observability 就不再只是“我们有 dashboards”，而是变成可度量的 production obligation：inventory coverage、release-eval coverage 和 detection-scenario coverage。
+Microsoft 的可观测性（observability）指南把覆盖问题（coverage）说得更具体：团队应该衡量有多少比例的 AI 系统（AI systems）会发出日志（logs）和追踪（traces），有多少比例的发布（releases）运行过标准评测套件（evaluation suite），以及有多少比例的滥用/安全场景（abuse/security scenarios）已经被遥测（telemetry）覆盖。[^ms-observability] 这样，可观测性（observability）就不再只是“我们有仪表板（dashboards）”，而是变成可度量的生产义务（production obligation）：清单覆盖（inventory coverage）、发布评测覆盖（release-eval coverage）和检测场景覆盖（detection-scenario coverage）。
 
 !!! example "贯穿案例：ticket-write 控制评测的遥测（telemetry）"
     support-triage 的控制评测只有在遥测（telemetry）已经具备检测就绪状态（detection-ready）时，才真正能服务发布（rollout）。对每一次 `create_support_ticket` 运行（run），trace 都应该关联 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`、结果（outcome）、`side_effect_unknown`，以及过程/结果验证器裁决（process/outcome verifier verdict）。这样团队看到的不只是“没有重复工单”，还包括工单写入路径（ticket-write paths）中有多少真正可观测，哪里还有绕过路径（bypass path）盲区，以及金丝雀（canary）是否可以安全扩大。
