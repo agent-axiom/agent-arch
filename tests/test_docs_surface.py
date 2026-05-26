@@ -11554,8 +11554,7 @@ def test_governance_aware_telemetry_contract_is_documented() -> None:
 
 
 def test_chapter_26_governance_telemetry_maps_to_nist_ai_rmf() -> None:
-    required_fields = (
-        "Mapping the Loop to NIST AI RMF",
+    common_required_fields = (
         "Govern",
         "Map",
         "Measure",
@@ -11563,27 +11562,84 @@ def test_chapter_26_governance_telemetry_maps_to_nist_ai_rmf() -> None:
         "decision_owner",
         "review_deadline",
         "source_signal",
-        "inventory coverage",
-        "bypass-path telemetry",
         "evidence_refs",
-        "verifier outputs",
-        "coverage ratios",
-        "drift signals",
-        "detection scenarios",
         "policy_decision_feedback",
         "containment_decision",
         "rollout_gate_input",
         "incident_response_trigger",
-        "control action",
         "[^nist-ai-rmf]",
     )
-    checked_files = (
+    english_required_fields = (
+        "Mapping the Loop to NIST AI RMF",
+        "inventory coverage",
+        "bypass-path telemetry",
+        "verifier outputs",
+        "coverage ratios",
+        "drift signals",
+        "detection scenarios",
+        "control action",
+    )
+    checked_english_files = (
         "docs/book/part-viii/chapter-26.md",
         "docs/book/part-viii/chapter-26.en.md",
-        "docs/book/part-viii/chapter-26.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_fields)
+    _assert_files_contain_all(
+        checked_english_files,
+        (*common_required_fields, *english_required_fields),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-viii/chapter-26.zh.md",),
+        common_required_fields,
+    )
+
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_chinese_markers = (
+        "将闭环映射到 NIST AI RMF（Mapping the Loop to NIST AI RMF）",
+        "闭环（closed loop）",
+        "可观测性（observability）",
+        "合规清单（compliance checklist）",
+        "注册表覆盖（registry coverage）",
+        "治理队列（governance queue）",
+        "清单覆盖（inventory coverage）",
+        "绕过路径遥测（bypass-path telemetry）",
+        "发布表面（rollout surface）",
+        "验证器输出（verifier outputs）",
+        "覆盖率（coverage ratios）",
+        "检测场景（detection scenarios）",
+        "可观测证据（observable evidence）",
+        "控制动作（control action）",
+        "映射（mapping）",
+        "可操作（operational）",
+        "审查者（reviewer）",
+        "风险表面（risk surface）",
+        "度量证据（measurement evidence）",
+    )
+    for expected_chinese_marker in expected_chinese_markers:
+        assert expected_chinese_marker in chinese_text, expected_chinese_marker
+
+    forbidden_chinese_markers = (
+        "它也应该和 provenance chapter 保持分离",
+        "足够的 evidence、coverage 与 correlation",
+        "approved artifacts、contract version 或 governed bundle",
+        "### 7.2. Mapping the Loop to NIST AI RMF",
+        "这个 closed loop",
+        "把 observability 映射到 NIST AI RMF",
+        "变成 compliance checklist",
+        "registry coverage 说明谁拥有这个 signal",
+        "哪条 governance queue",
+        "inventory coverage 和 bypass-path telemetry",
+        "处于 risk 中的是哪个 agent、capability、tenant 或 rollout surface",
+        "verifier outputs、coverage ratios、drift signals 和 detection scenarios",
+        "变成 observable evidence",
+        "说明 evidence 之后触发了哪项 control action",
+        "这个 mapping 故意保持 operational",
+        "dashboard 有没有写 Govern",
+        "reviewer 是否能把一个 telemetry signal",
+        "owner、risk surface、measurement evidence 和最终 control action",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_verifier_contract_fields_are_documented() -> None:
