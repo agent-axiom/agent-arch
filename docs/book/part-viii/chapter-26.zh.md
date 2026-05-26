@@ -37,7 +37,7 @@
 - 一直返回 HTTP 200；
 - 但行为依然危险、低质或者失控。
 
-Microsoft 对这个转变的表述很准确：对智能体系统来说，我们需要把传统的日志、指标和追踪演进成 `AI-native signals`，让系统不仅能说明“发生了请求”，还能说明“系统究竟是怎么行为的”。[^ms-observability]
+Microsoft 对这个转变的表述很准确：对智能体系统来说，我们需要把传统的日志、指标和追踪演进成 AI 原生信号（`AI-native signals`），让系统不仅能说明“发生了请求”，还能说明“系统究竟是怎么行为的”。[^ms-observability]
 
 ## 2. 可观测性不只是为了调试
 
@@ -60,36 +60,36 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 - 哪些审批（approvals）被请求、批准或绕过；
 - 发布（rollout）之后出现了哪些行为变化。
 
-## 3. 什么是 AI-native signals
+## 3. 什么是 AI 原生信号（AI-native signals）
 
 对智能体系统来说，一个有用的遥测契约通常包括：
 
-- request identity；
+- 请求身份（request identity）；
 - `run_id`、`trace_id`、`session_id`；
-- actor 与 agent identity；
-- retrieval provenance；
-- tool invocations；
-- tool permissions 与 principals；
-- policy decisions；
-- approvals；
-- paused runs 的状态与等待时长；
-- approval backlog signals；
-- capability sessions 的状态、expiry reason 与 re-init status；
-- orchestration-pattern selection 与 delegated worker lineage；
-- background runs 的状态与运行时长；
-- output summaries；
-- redaction status；
-- verifier outputs，例如 `process_score`、`outcome_score` 与 `failure_attribution`；
-- active verifier contract 与 verifier contract version；
-- bundle、version、rollout wave 与 contract version。
+- 行动者（actor）与智能体身份（agent identity）；
+- 检索出处（retrieval provenance）；
+- 工具调用（tool invocations）；
+- 工具权限（tool permissions）与主体（principals）；
+- 策略决策（policy decisions）；
+- 审批（approvals）；
+- 暂停运行（paused runs）的状态与等待时长；
+- 审批积压信号（approval backlog signals）；
+- 能力会话（capability sessions）的状态、到期原因（expiry reason）与重新初始化状态（re-init status）；
+- 编排模式选择（orchestration-pattern selection）与委派工作者谱系（delegated worker lineage）；
+- 后台运行（background runs）的状态与运行时长；
+- 输出摘要（output summaries）；
+- 脱敏状态（redaction status）；
+- 验证器输出（verifier outputs），例如 `process_score`、`outcome_score` 与 `failure_attribution`；
+- 活跃验证器契约（active verifier contract）与验证器契约版本（verifier contract version）；
+- 包（bundle）、版本（version）、发布波次（rollout wave）与契约版本（contract version）。
 
-为了避免这份清单变成一堆没有结构的字段，可以把它看成五组 signals：
+为了避免这份清单变成一堆没有结构的字段，可以把它看成五组信号（signals）：
 
-1. **Identity and scope：** 谁在行动、代表谁行动、处在哪个 tenant/request scope 中。
-2. **Control evidence：** 哪些 policy decisions、approvals、quotas 和 capability sessions 约束了这次 run。
-3. **Execution state：** 选择了哪种 orchestration pattern，run 在哪里 paused/backgrounded/delegated，又如何 resumed。
-4. **Quality evidence：** 哪些 verifier outputs、eval verdicts 和 failure attribution 连接到了 outcome。
-5. **Release and artifact context：** 哪个 bundle、contract version 与 rollout wave 支撑了这次 run。
+1. **身份与范围（Identity and scope）：** 谁在行动、代表谁行动、处在哪个租户/请求范围（tenant/request scope）中。
+2. **控制证据（Control evidence）：** 哪些策略决策（policy decisions）、审批（approvals）、配额（quotas）和能力会话（capability sessions）约束了这次运行（run）。
+3. **执行状态（Execution state）：** 选择了哪种编排模式（orchestration pattern），运行（run）在哪里被暂停/后台化/委派（paused/backgrounded/delegated），又如何恢复（resumed）。
+4. **质量证据（Quality evidence）：** 哪些验证器输出（verifier outputs）、评测裁决（eval verdicts）和失败归因（failure attribution）连接到了结果（outcome）。
+5. **发布与工件上下文（Release and artifact context）：** 哪个包（bundle）、契约版本（contract version）与发布波次（rollout wave）支撑了这次运行（run）。
 
 也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
 
@@ -97,10 +97,10 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 - 穿过了哪一层控制层；
 - 拥有哪些权限；
 - 依据哪套规则；
-- 属于哪个 artifact bundle；
+- 属于哪个工件包（artifact bundle）；
 - 最终造成了什么副作用。
 
-这也正是为什么 runtime-control signals 不能继续被当成隐藏的实现细节。只要系统里存在 pause/resume paths、background execution 和 contract-version transitions，它们就已经属于证据层。
+这也正是为什么运行时控制信号（runtime-control signals）不能继续被当成隐藏的实现细节。只要系统里存在暂停/恢复路径（pause/resume paths）、后台执行（background execution）和契约版本转换（contract-version transitions），它们就已经属于证据层。
 
 但这并不意味着可观测性成了 工件谱系 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 来源证明层 仍然回答，后续决策依赖的是哪一个 受治理工件、已批准版本或发布身份。
 
