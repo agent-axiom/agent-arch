@@ -119,7 +119,7 @@
 - **最低评测集：** 已知答案、上下文不足、角色不可访问文档、冲突来源和过期知识。
 - **发布门禁：** regression set 确认 grounding、角色隔离和低置信度时的正确行为。
 - **事故示例：** 智能体引用过期 runbook 回答，没有 citations，并向员工暴露了超出角色权限的文档。
-- **复盘问题：** retrieval scope 为什么扩大，哪个 source 被当作 trusted，low-confidence stop 应该在哪里触发，哪个 eval 覆盖 stale knowledge？
+- **复盘问题：** 检索范围（retrieval scope）为什么扩大，哪个来源（source）被当作可信（trusted），低置信度停止（low-confidence stop）应该在哪里触发，哪个评测（eval）覆盖陈旧知识（stale knowledge）？
 
 ### 书里对应阅读
 

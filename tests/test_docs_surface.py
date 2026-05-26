@@ -7854,6 +7854,27 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_case_studies_knowledge_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/case-studies.zh.md")
+    expected_markers = (
+        "检索范围（retrieval scope）为什么扩大",
+        "来源（source）被当作可信（trusted）",
+        "低置信度停止（low-confidence stop）",
+        "评测（eval）覆盖陈旧知识（stale knowledge）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "retrieval scope 为什么扩大",
+        "哪个 source 被当作 trusted",
+        "low-confidence stop 应该在哪里触发",
+        "哪个 eval 覆盖 stale knowledge",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_case_studies_incident_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/case-studies.zh.md")
     expected_markers = (
