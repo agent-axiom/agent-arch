@@ -7982,6 +7982,7 @@ def test_multilingual_case_studies_alignment_note_is_localized() -> None:
     assert "规范案例（canonical cases）" in chinese_text
     assert "写入能力（write capability）" in chinese_text
     assert "访问控制（access control）" in chinese_text
+    assert "服务级目标（SLO）" in chinese_text
     assert "通知副作用（notification side effects）" in chinese_text
 
     forbidden_markers = (
@@ -7993,6 +7994,7 @@ def test_multilingual_case_studies_alignment_note_is_localized() -> None:
         "承载 write capability",
         "承载 retrieval",
         "承载 traces",
+        "追踪（traces）、SLO、升级",
     )
 
     for marker in forbidden_markers:

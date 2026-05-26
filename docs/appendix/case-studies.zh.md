@@ -10,7 +10,7 @@
     支持分流（support triage）案例已经成为本书的贯穿线索：从这里开始，然后看同一个重复工单故障如何穿过信任边界（trust boundaries）、工具网关（tool gateway）、记忆/检索（memory/retrieval）、幂等性（idempotency）、追踪（traces）、服务级目标（SLO）、评测门禁（eval gates）、归属（ownership）、运行时（runtime）、策略（policy）、发布（rollout）、智能体开发生命周期（ADLC）、保障（assurance）、来源证明（provenance）、退役（retirement）、失配控制（misalignment controls）、遥测（telemetry）和注册表（registry）。
 
 !!! note "规范案例对齐（Canonical case alignment）"
-    这些场景对应书籍计划里的三个规范案例（canonical cases）。**支持分流（Support triage）** 是案例 1，用来承载写入能力（write capability）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 是案例 2，用来承载检索（retrieval）、记忆（memory）、访问控制（access control）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 是案例 3，用来承载追踪（traces）、SLO、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
+    这些场景对应书籍计划里的三个规范案例（canonical cases）。**支持分流（Support triage）** 是案例 1，用来承载写入能力（write capability）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 是案例 2，用来承载检索（retrieval）、记忆（memory）、访问控制（access control）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 是案例 3，用来承载追踪（traces）、服务级目标（SLO）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
 ## 案例 1：支持分诊智能体
 
