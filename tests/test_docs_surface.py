@@ -10481,6 +10481,47 @@ def test_trace_schema_surfaces_three_canonical_trace_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_trace_schema_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/trace-schema.zh.md")
+    expected_markers = (
+        "由沙箱（sandbox）支撑的路径",
+        "工作区（workspace）",
+        "权限（permissions）",
+        "快照/恢复证据复核（snapshot/resume evidence review）",
+        "发布（rollout）或评测（eval）",
+        "复核证据（review evidence）",
+        "状态字段（state fields）",
+        "沙箱状态字段（sandbox state fields）",
+        "shell/文件系统能力（shell/filesystem capabilities）",
+        "快照（snapshot）",
+        "运行（runs）",
+        "事件（event）",
+        "关联载荷（linked payload）",
+        "发布/评测证据（rollout/eval evidence）",
+        "工作区条目（workspace entries）",
+        "追踪证据（trace evidence）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "由 sandbox 支撑的路径被评审时",
+        "记录 workspace、permissions",
+        "对于由 sandbox 支撑的运行",
+        "如果 rollout 或 eval 要求",
+        "指向 review evidence，而不只是 state fields",
+        "sandbox state fields，用于",
+        "物化 workspace、使用 shell/filesystem capabilities",
+        "从 snapshot 继续的 runs",
+        "event 或 linked payload",
+        "snapshot/resume policy 的 rollout/eval evidence",
+        "关于 workspace entries、permissions",
+        "trace evidence？",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_trace_schema_replay_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
