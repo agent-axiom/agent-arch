@@ -10254,6 +10254,33 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_approval_schema_support_triage_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/approval-schema.zh.md")
+    expected_markers = (
+        "支持分诊（support-triage）案例",
+        "审批者（approver）",
+        "批准（approve）",
+        "载荷（payload）",
+        "审计记录（audit record）",
+        "键（key）",
+        "复核（review）",
+        "盲目重试（blind retry）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "在 support-triage 案例中",
+        "approver 按下 approve",
+        "在 payload 旁",
+        "audit record 会把同一个 key",
+        "让 review 能区分",
+        "blind retry 之后",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_approval_schema_lineage_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/approval-schema.zh.md")
     expected_markers = (
