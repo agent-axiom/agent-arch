@@ -11319,6 +11319,13 @@ def test_chinese_lifecycle_artifact_sandbox_labels_are_localized() -> None:
         "沙箱配置文件复核证据（sandbox profile review evidence）",
         "追踪事件（trace event）",
         "评测/发布证据（eval/rollout evidence）",
+        "发布（rollout）要求",
+        "包（bundle）、追踪（trace）或评测工件（eval artifact）",
+        "工作区（workspace）",
+        "权限（permissions）",
+        "快照/恢复策略（snapshot/resume policy）",
+        "复核证据链接（review-evidence link）",
+        "复核证据（review evidence）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -11330,6 +11337,13 @@ def test_chinese_lifecycle_artifact_sandbox_labels_are_localized() -> None:
         "sandbox profile review evidence，包括",
         "trace event、`workspace_manifest_ref`",
         "指向 eval/rollout evidence",
+        "当 rollout 要求",
+        "从 bundle、trace 或 eval artifact",
+        "还原 sandbox profile review evidence",
+        "bundle 写了 `sandbox_profile`",
+        "workspace、permissions 与 snapshot/resume policy",
+        "review-evidence link。",
+        "review evidence？",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
