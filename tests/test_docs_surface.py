@@ -13224,7 +13224,11 @@ def test_multilingual_publishing_stack_case_note_is_localized() -> None:
     assert "阅读路线（reader routes）" in chinese_text
     assert "快速构建（fast build）" in chinese_text
     assert "多语言页面（multilingual pages）" in chinese_text
+    assert "记忆/检索材料（memory/retrieval material）" in chinese_text
+    assert "低摩擦更新（low-friction updates）" in chinese_text
     assert "严格构建门禁（strict build gate）" in chinese_text
+    assert "事件/发布页面（incident/rollout pages）" in chinese_text
+    assert "稳定导航（stable navigation）" in chinese_text
 
     forbidden_markers = (
         "Publishing stack должен",
@@ -13238,7 +13242,9 @@ def test_multilingual_publishing_stack_case_note_is_localized() -> None:
         "只是 build pages",
         "需要 fast build",
         "需要 Markdown-first authoring",
+        "对记忆/检索材料的低摩擦更新（low-friction updates for memory/retrieval material）",
         "需要 strict build gate",
+        "指向事件/发布页面的稳定导航（stable navigation to incident/rollout pages）",
     )
 
     for marker in forbidden_markers:
