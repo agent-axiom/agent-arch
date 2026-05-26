@@ -12008,6 +12008,23 @@ def test_multilingual_postmortem_template_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_postmortem_duplicate_ticket_example_is_localized() -> None:
+    chinese_text = _read("docs/appendix/postmortem-template.zh.md")
+    expected_markers = (
+        "支持分流（support-triage）事故",
+        "旧工单写入器（ticket writer）的退役计划",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "对于 support-triage 事故",
+        "旧 ticket writer 的退役计划",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_incident_response_playbook_surfaces_three_canonical_response_cases() -> None:
     required_markers = (
         "Canonical response cases",
