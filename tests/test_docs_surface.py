@@ -10254,6 +10254,34 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_approval_schema_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/approval-schema.zh.md")
+    expected_markers = (
+        "由沙箱（sandbox）支撑的动作",
+        "工作区物化（workspace materialization）",
+        "权限（permissions）",
+        "快照/恢复策略（snapshot/resume policy）",
+        "由沙箱（sandbox）支撑的审批",
+        "沙箱配置文件（sandbox profile）",
+        "工作区条目（workspace entries）",
+        "沙箱配置文件契约（sandbox profile contract）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "由 sandbox 支撑的动作",
+        "workspace materialization、permissions",
+        "snapshot/resume policy，而不只是业务载荷",
+        "由 sandbox 支撑的审批隐藏了 sandbox profile",
+        "workspace entries 或 permissions",
+        "动作由 sandbox 支撑",
+        "看到 sandbox profile contract、workspace entries",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_approval_schema_support_triage_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/approval-schema.zh.md")
     expected_markers = (
