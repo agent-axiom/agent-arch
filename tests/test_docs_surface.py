@@ -7854,6 +7854,23 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_case_studies_support_review_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/case-studies.zh.md")
+    expected_markers = (
+        "追踪（trace）没有阻止重试",
+        "评测（eval）阻挡这类回归",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "为什么 trace 没有阻止重试",
+        "哪个 eval 阻挡这类回归",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_case_studies_knowledge_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/case-studies.zh.md")
     expected_markers = (
