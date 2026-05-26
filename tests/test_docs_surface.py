@@ -3661,6 +3661,20 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-24.zh.md": (
             *common_markers,
+            "风险场景与控制计划（risk scenario and control plan）",
+            "内部人风险表面（insider-risk surfaces）",
+            "独立工具主体（separate tool principal）",
+            "写入能力族（write capability family）",
+            "应急禁用（emergency disable）",
+            "租户过滤绕过（tenant-filter bypass）",
+            "隐藏记忆写入（hidden memory write）",
+            "来源扎根规避（source-grounding evasion）",
+            "遏制（containment）",
+            "升级操纵（escalation manipulation）",
+            "通知压制（notification suppression）",
+            "响应者角色滥用（responder-role abuse）",
+            "过渡期（transition periods）",
+            "回滚（rollback）控制（controls）",
             "审批收紧替换窗口（approval-tight replacement window）",
             "不可变追踪链接（immutable trace linkage）",
             "检索投毒（retrieval poisoning）",
@@ -3672,6 +3686,19 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         text = _read(path)
         for expected_marker in expected_markers:
             assert expected_marker in text, (path, expected_marker)
+
+    chinese_text = _read("docs/book/part-viii/chapter-24.zh.md")
+    forbidden_chinese_markers = (
+        "risk scenario and control plan 应该",
+        "不同 insider-risk surfaces 覆盖",
+        "separate tool principal、",
+        "面向 write capability family 的 emergency disable",
+        "tenant-filter bypass、hidden memory write 和 source-grounding evasion",
+        "escalation manipulation、notification suppression、responder-role abuse",
+        "transition periods 中 rollback 的 controls",
+    )
+    for forbidden_chinese_marker in forbidden_chinese_markers:
+        assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
