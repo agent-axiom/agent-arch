@@ -9760,6 +9760,29 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_sandbox_construction_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "直接构造（direct construction）",
+        "畸形沙箱根（malformed sandbox roots）",
+        "畸形沙箱分区（malformed sandbox sections）",
+        "畸形沙箱证据值（malformed sandbox evidence values）",
+        "畸形工作区条目（malformed workspace entries）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "direct construction 会用",
+        "拒绝 malformed sandbox roots",
+        "拒绝 malformed sandbox sections",
+        "拒绝 malformed sandbox evidence values",
+        "拒绝 malformed workspace entries",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_lifecycle_loader_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
