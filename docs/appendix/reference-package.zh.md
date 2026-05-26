@@ -254,7 +254,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
 
-它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。Generic loaders 也会明确暴露 malformed YAML shapes：`Config at {config_path!s} must be a mapping at the top level`、`{label} config must be a mapping` 和 `{key} must be a list`。
+它们现在已经不只是静态示例。`config.py` 可以把这些 YAML 加载进智能体身份、已批准能力清单、运行时、上下文层、记忆存储、上线策略、带有发布身份的生命周期工件以及其他生命周期状态，所以这个包已经更接近真实的运行骨架。通用加载器（Generic loaders）也会明确暴露畸形 YAML 形状（malformed YAML shapes）：`Config at {config_path!s} must be a mapping at the top level`、`{label} config must be a mapping` 和 `{key} must be a list`。
 
 其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停/恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 
