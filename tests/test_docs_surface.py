@@ -10648,6 +10648,40 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_eval_schema_scenario_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+    expected_markers = (
+        "导出契约（Export contract）",
+        "顶层摘要（top-level summary）",
+        "审批支撑场景（approval-backed scenarios）",
+        "内置场景（built-in scenarios）",
+        "标签（label）",
+        "标签（labels）",
+        "预期结果（expected outcome）",
+        "阻断型（blocking）",
+        "打分规则（grading rule）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "Export contract 是有意保持具体的",
+        "top-level summary 包含",
+        "approval-backed scenarios 也会",
+        "built-in scenarios 包括",
+        "duplicate_ticket_eval_passed` label",
+        "blocking `duplicate_ticket_guard` grading rule",
+        "labels 的 `profile_memory`",
+        "session_evals` labels",
+        "作为 expected outcome",
+        "sandbox_profile_review` label",
+        "sandbox_profile_reviewed` expected outcome",
+        "blocking `sandbox_profile_review` grading rule",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_eval_schema_export_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
     expected_markers = (
