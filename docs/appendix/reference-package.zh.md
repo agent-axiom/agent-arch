@@ -39,7 +39,7 @@
 !!! note "规范案例运行时范围（Canonical case runtime scope）"
     参考包把 **支持分诊（Support triage）** 作为可运行基线（runnable baseline），用来承载写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 与 **事故协调（Incident coordination）** 仍是同一架构的覆盖视角（coverage lenses）：前者检查检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），后者检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。如果以后把它们也做成可运行配置（runnable configs），它们应该复用同一组策略、遥测、生命周期和注册表契约（policy, telemetry, lifecycle and registry contracts），而不是变成彼此分离的演示。
 
-最近的 contract updates 让这个表面更适合 review：delegated authorization context 会贯穿 CLI demos、sessions、eval exports 与 replay；trace export redaction 现在覆盖 command summaries 和 JSONL artifacts；lifecycle inspection 会暴露 runtime-control assumptions；docs guard 也固定了定义这些边界的 stable validation errors。
+最近的契约更新（contract updates）让这个表面更适合评审（review）：委派授权上下文（delegated authorization context）会贯穿 CLI 演示（CLI demos）、会话（sessions）、评测导出（eval exports）与回放（replay）；追踪导出脱敏（trace export redaction）现在覆盖命令摘要（command summaries）和 JSONL 工件（JSONL artifacts）；生命周期检查（lifecycle inspection）会暴露运行时控制假设（runtime-control assumptions）；文档守卫（docs guard）也固定了定义这些边界的稳定验证错误（stable validation errors）。
 
 ## 里面有什么
 
