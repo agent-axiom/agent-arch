@@ -9771,9 +9771,14 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
     assert "поиск (retrieval)" in russian_text
     assert "трассы (traces)" in russian_text
 
+    assert "支持分诊（support-triage）的运行时锚点" in chinese_text
+    assert "追踪/会话 ID（trace/session IDs）" in chinese_text
+    assert "正文叙事（prose）" in chinese_text
     assert "规范案例运行时范围" in chinese_text
+    assert "支持分诊（Support triage）" in chinese_text
     assert "可运行基线（runnable baseline）" in chinese_text
     assert "写入能力（write capabilities）" in chinese_text
+    assert "事故协调（Incident coordination）" in chinese_text
     assert "覆盖视角（coverage lenses）" in chinese_text
     assert "检索（retrieval）" in chinese_text
     assert "追踪（traces）" in chinese_text
@@ -9791,6 +9796,11 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
         "проверяет retrieval, memory",
         "traces, escalation, notification side effects",
         "как runnable configs",
+        "support-triage 的运行时锚点",
+        "审批等待、trace/session IDs",
+        "不只是 prose",
+        "支持分流（Support triage）",
+        "事件协调（Incident coordination）",
         "作为 runnable baseline，用来承载 write capabilities",
         "仍是同一架构的 coverage lenses",
         "检查 retrieval、memory",
