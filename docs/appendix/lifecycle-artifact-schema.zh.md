@@ -203,7 +203,7 @@ owner: platform-operations
 - 每个工件包都能作为具体的发布身份记录，而不只是松散的版本清单；
 - 只要存在这些控制，每个工件包都应关联运行时控制模式与契约版本；
 - 当发布或保障依赖打分结果时，验证器契约谱系与契约族身份也必须可追溯；
-- 当 rollout 要求 `sandbox_profile_reviewed` 时，必须能从 bundle、trace 或 eval artifact 还原 sandbox profile review evidence；
+- 当发布（rollout）要求 `sandbox_profile_reviewed` 时，必须能从包（bundle）、追踪（trace）或评测工件（eval artifact）还原沙箱配置文件复核证据（sandbox profile review evidence）；
 - 每个已废弃工件都有 `retirement_plan` 或明确例外；
 - 当存在这些路径时，退役或替换必须说明已暂停运行、交接工件和过期能力会话状态会如何处理；
 - 当这些控制存在时，委派授权负责人和撤销行为也必须能够对受影响运行被还原出来；
@@ -223,7 +223,7 @@ owner: platform-operations
 - 来源证明只到 Git 提交，进不了运行时工件包；
 - 替换发生时，已暂停运行与过期会话状态被遗忘，但操作员其实还需要它们；
 - 验证器契约谱系丢失了，尽管发布或保障决策曾依赖它；
-- bundle 写了 `sandbox_profile`，却没有保留 workspace、permissions 与 snapshot/resume policy 的 review-evidence link。
+- 包（bundle）写了 `sandbox_profile`，却没有保留工作区（workspace）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的复核证据链接（review-evidence link）。
 
 ## 9. 现在就该做什么
 
@@ -233,7 +233,7 @@ owner: platform-operations
 - 你是否真的有已批准工件包，而不是“最新几个 YAML 文件”？
 - 出现事故追踪时，你能反推出当时激活的工件包及其发布身份吗？
 - 你能说清一次发布当时是在哪个带有验证器约束的契约族下被批准的吗？
-- 如果 bundle 包含 `sandbox_profile`，能不能找到 workspace、permissions 与 snapshot/resume policy 的 review evidence？
+- 如果包（bundle）包含 `sandbox_profile`，能不能找到工作区（workspace）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的复核证据（review evidence）？
 - 已废弃能力和策略包是否有退役计划？
 - 替换之后归档状态是否还有负责人？
 - 生命周期工件层面的回滚单元是否清晰？
