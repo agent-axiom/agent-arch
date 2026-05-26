@@ -12171,6 +12171,25 @@ def test_policy_templates_surface_three_canonical_policy_template_cases() -> Non
             assert marker not in text, (path, marker)
 
 
+def test_chinese_policy_templates_duplicate_ticket_example_is_localized() -> None:
+    chinese_text = _read("docs/appendix/policy-templates.zh.md")
+    expected_markers = (
+        "支持分流（support-triage）案例",
+        "强制幂等键（idempotency key）",
+        "发布/评测门禁（rollout/eval gate）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "贯穿的 support-triage 案例",
+        "强制 idempotency key",
+        "捕获重复建单的 rollout/eval gate",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_policy_templates_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/policy-templates.md")
     chinese_text = _read("docs/appendix/policy-templates.zh.md")
