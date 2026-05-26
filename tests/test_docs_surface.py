@@ -11307,6 +11307,13 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_incident_record_duplicate_ticket_example_is_localized() -> None:
+    chinese_text = _read("docs/appendix/incident-record-schema.zh.md")
+
+    assert "支持分流（support-triage）事故" in chinese_text
+    assert "在 support-triage 事故里" not in chinese_text
+
+
 def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     required_markers = (
         "Canonical rollout cases",
