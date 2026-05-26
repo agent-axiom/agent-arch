@@ -33,11 +33,11 @@
 - 第 22 章配合生命周期模式看受治理工件链接、发布身份、验证器契约谱系与委派授权来源证明，
 - 第 23 到 27 章看能力会话周围的中断、过期、重新初始化、退役、可观测性、注册表负责人、验证器证据义务与委派授权生命周期控制。
 
-!!! example "support-triage 的运行时锚点"
-    内置的 `support-triage-ref` 以可执行形式展示同一个贯穿案例：智能体身份、已批准的 `search_docs`/`create_ticket` 能力、审批等待、trace/session IDs、生命周期检查和评测导出。因此，书中的重复工单线索不只是 prose，也可以作为可运行的契约表面来审阅。
+!!! example "支持分诊（support-triage）的运行时锚点"
+    内置的 `support-triage-ref` 以可执行形式展示同一个贯穿案例：智能体身份、已批准的 `search_docs`/`create_ticket` 能力、审批等待、追踪/会话 ID（trace/session IDs）、生命周期检查和评测导出。因此，书中的重复工单线索不只是正文叙事（prose），也可以作为可运行的契约表面来审阅。
 
 !!! note "规范案例运行时范围（Canonical case runtime scope）"
-    参考包把 **支持分流（Support triage）** 作为可运行基线（runnable baseline），用来承载写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 与 **事件协调（Incident coordination）** 仍是同一架构的覆盖视角（coverage lenses）：前者检查检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），后者检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。如果以后把它们也做成可运行配置（runnable configs），它们应该复用同一组策略、遥测、生命周期和注册表契约（policy, telemetry, lifecycle and registry contracts），而不是变成彼此分离的演示。
+    参考包把 **支持分诊（Support triage）** 作为可运行基线（runnable baseline），用来承载写入能力（write capabilities）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 与 **事故协调（Incident coordination）** 仍是同一架构的覆盖视角（coverage lenses）：前者检查检索（retrieval）、记忆（memory）、新鲜度（freshness）和知识来源（knowledge provenance），后者检查追踪（traces）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。如果以后把它们也做成可运行配置（runnable configs），它们应该复用同一组策略、遥测、生命周期和注册表契约（policy, telemetry, lifecycle and registry contracts），而不是变成彼此分离的演示。
 
 最近的 contract updates 让这个表面更适合 review：delegated authorization context 会贯穿 CLI demos、sessions、eval exports 与 replay；trace export redaction 现在覆盖 command summaries 和 JSONL artifacts；lifecycle inspection 会暴露 runtime-control assumptions；docs guard 也固定了定义这些边界的 stable validation errors。
 
