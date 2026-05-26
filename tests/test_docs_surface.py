@@ -10210,6 +10210,47 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_approval_schema_lineage_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/approval-schema.zh.md")
+    expected_markers = (
+        "审批条目（approval entry）",
+        "可运行演示（demo）",
+        "审批脉络（approval lineage）",
+        "能力会话状态（capability-session state）",
+        "委派权限（delegated authority）",
+        "重复写入意图（duplicate-write intent）",
+        "最终审批状态（approval status）",
+        "审批/会话脉络（Approval/session lineage）",
+        "委派授权证据（delegated-authorization evidence）",
+        "审批或能力会话状态（approval or capability-session states）",
+        "未知模式或状态（mode/status）",
+        "会话导出（session exports）",
+        "子智能体继承（subagent inheritance）",
+        "子智能体（child agent）",
+        "审批路径（approval path）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "每条 approval entry",
+        "可运行 demo",
+        "保留可见的 approval lineage",
+        "capability-session state、delegated authority",
+        "duplicate-write intent 与最终 approval status",
+        "Approval/session lineage 也会用",
+        "拒绝不受支持的 delegated-authorization evidence",
+        "approval 或 capability-session states",
+        "未知 mode 或 status",
+        "session exports 旁边",
+        "subagent inheritance 设为",
+        "delegated authority 不会流入 child agent",
+        "approval path 明确点名",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_approval_schema_policy_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/approval-schema.zh.md")
     expected_markers = (
