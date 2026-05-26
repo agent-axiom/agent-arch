@@ -10706,6 +10706,34 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_change_rollout_review_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+    expected_markers = (
+        "已评审变更表面（reviewed change surface）",
+        "发布证据（release evidence）",
+        "必需评审者（required reviewers）",
+        "发布评审（release review）",
+        "降级路径（degraded-path）",
+        "重复工单就绪度（duplicate-ticket readiness）",
+        "变更加载器（Change loader）",
+        "畸形评审记录（malformed review records）",
+        "失败门禁（gates）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "定义 reviewed change surface",
+        "等 release evidence",
+        "标记为 required reviewers",
+        "让 release review 能把",
+        "与 degraded-path、duplicate-ticket readiness 区分开",
+        "Change loader 也会把 malformed review records 与失败的 gates 区分开",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_change_rollout_gate_input_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
     expected_markers = (
