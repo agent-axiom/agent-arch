@@ -10706,6 +10706,28 @@ def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_change_rollout_runtime_policy_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
+    expected_markers = (
+        "发布策略（rollout policy）",
+        "规范化（normalize）",
+        "模式（schema）",
+        "发布自动化（release automation）",
+        "重复工单证据（duplicate-ticket evidence）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "internally rollout policy",
+        "把 `block_if` normalize",
+        "与 schema 中",
+        "让 release automation 单独看到 duplicate-ticket evidence",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_change_rollout_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/change-rollout-schema.md")
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
