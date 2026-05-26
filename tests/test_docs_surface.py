@@ -12080,6 +12080,23 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
         assert marker not in chinese_text
 
 
+def test_chinese_incident_response_duplicate_ticket_example_is_localized() -> None:
+    chinese_text = _read("docs/appendix/incident-response-playbook.zh.md")
+    expected_markers = (
+        "支持分流（support-triage）事故",
+        "评测/发布门禁（eval/rollout gate）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "贯穿的 support-triage 事故",
+        "转成 eval/rollout gate",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_policy_templates_surface_three_canonical_policy_template_cases() -> None:
     required_markers = (
         "Canonical policy template cases",
