@@ -10891,8 +10891,11 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
     assert "规范注册表案例" in chinese_text
     assert "注册表记录（registry record）" in chinese_text
     assert "责任锚点（accountability anchors）" in chinese_text
+    assert "支持分诊（Support triage）" in chinese_text
     assert "写入能力（write capability）" in chinese_text
     assert "语料负责人（corpus owner）" in chinese_text
+    assert "事故协调（Incident coordination）" in chinese_text
+    assert "事故角色负责人（incident role owner）" in chinese_text
     assert "紧急回滚负责人（emergency rollback owner）" in chinese_text
     assert "生命周期工件模式" in chinese_text
     assert "变更评审与发布门禁模式" in chinese_text
@@ -10905,6 +10908,9 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
         "требует incident role owner",
         "Registry record 应为三个 canonical cases",
         "不同 accountability anchors",
+        "支持分流（Support triage）",
+        "事件协调（Incident coordination）",
+        "事件角色负责人（incident role owner）",
         "需要 write capability",
         "需要 corpus owner",
         "需要 incident role owner",
