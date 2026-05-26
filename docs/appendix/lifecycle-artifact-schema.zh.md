@@ -76,7 +76,7 @@ status: approved
 - `rollback_unit` 迫使团队提前想清楚到底回滚什么；
 - `status` 是运行事实，而不是流程摆设。
 
-而一旦系统里已经存在审批绑定运行、有状态能力会话或由 sandbox 支撑的执行，变更记录通常也应该能看出中断行为、过期处理、重新初始化语义、委派授权规则以及 sandbox profile contract 是否属于被审查的表面。
+而一旦系统里已经存在审批绑定运行、有状态能力会话或由沙箱（sandbox）支撑的执行，变更记录通常也应该能看出中断行为、过期处理、重新初始化语义、委派授权规则以及沙箱配置文件契约（sandbox profile contract）是否属于被审查的表面。
 
 ## 4. 已批准工件包
 
@@ -139,7 +139,7 @@ provenance:
 - 主体绑定要求；
 - 已暂停或进行中动作的撤销行为；
 - 当发布或保障依赖验证器判断时，验证器契约版本、打分准则与证据链接期望；
-- 当 release identity 包含由 sandbox 支撑的执行时，sandbox profile review evidence，包括 `sandbox_profile_reviewed` trace event、`workspace_manifest_ref` 以及指向 eval/rollout evidence 的链接。
+- 当发布身份（release identity）包含由沙箱（sandbox）支撑的执行时，沙箱配置文件复核证据（sandbox profile review evidence），包括 `sandbox_profile_reviewed` 追踪事件（trace event）、`workspace_manifest_ref` 以及指向评测/发布证据（eval/rollout evidence）的链接。
 
 ## 5. 退役计划
 

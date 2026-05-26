@@ -11310,6 +11310,31 @@ def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() ->
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_lifecycle_artifact_sandbox_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
+    expected_markers = (
+        "由沙箱（sandbox）支撑的执行",
+        "沙箱配置文件契约（sandbox profile contract）",
+        "发布身份（release identity）",
+        "沙箱配置文件复核证据（sandbox profile review evidence）",
+        "追踪事件（trace event）",
+        "评测/发布证据（eval/rollout evidence）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "由 sandbox 支撑的执行",
+        "以及 sandbox profile contract",
+        "当 release identity 包含",
+        "sandbox profile review evidence，包括",
+        "trace event、`workspace_manifest_ref`",
+        "指向 eval/rollout evidence",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_lifecycle_artifact_intro_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
     expected_markers = (
