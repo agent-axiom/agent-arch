@@ -9855,6 +9855,39 @@ def test_chinese_reference_package_change_readiness_labels_are_localized() -> No
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chinese_reference_package_sandbox_profile_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "沙箱配置文件（sandbox profile）变更",
+        "最小沙箱配置文件（sandbox profile）",
+        "由沙箱（sandbox）支撑的执行",
+        "工作区（workspace）",
+        "配置文件（profile）",
+        "运行时（runtime）",
+        "清单（manifest）",
+        "权限（permissions）",
+        "工作区物化（workspace materialization）",
+        "会话状态（session state）",
+        "快照/恢复策略（snapshot/resume policy）",
+        "复核（review）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "sandbox profile 变更",
+        "### 最小 sandbox profile",
+        "由 sandbox 支撑的执行",
+        "把 workspace 和权限显式化的小 profile",
+        "真实由 sandbox 支撑的 runtime",
+        "manifest、permissions、workspace materialization",
+        "session state，以及 snapshot/resume policy",
+        "可以被 review",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_sandbox_construction_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
