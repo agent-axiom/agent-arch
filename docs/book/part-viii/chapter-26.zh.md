@@ -222,18 +222,18 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 这种 framing 也把本章和保障章节、注册表章节清楚地区分开来。保障负责遏制与响应；注册表负责资产问责；可观测性则是让二者都可审计的共享基底。
 
-它也应该和 provenance chapter 保持分离。可观测性关注系统是否发出了足够的 evidence、coverage 与 correlation，足以支持调查和检测；provenance 关注的是，后续决策究竟由哪一组 approved artifacts、contract version 或 governed bundle 来支撑。
+它也应该和来源链章节（provenance chapter）保持分离。可观测性关注系统是否发出了足够的证据（evidence）、覆盖（coverage）与关联（correlation），足以支持调查和检测；来源链（provenance）关注的是，后续决策究竟由哪一组已批准工件（approved artifacts）、契约版本（contract version）或受治理包（governed bundle）来支撑。
 
-### 7.2. Mapping the Loop to NIST AI RMF
+### 7.2. 将闭环映射到 NIST AI RMF（Mapping the Loop to NIST AI RMF）
 
-这个 closed loop 也提供了一种务实方式，把 observability 映射到 NIST AI RMF，而不是把本章变成 compliance checklist。[^nist-ai-rmf]
+这个闭环（closed loop）也提供了一种务实方式，把可观测性（observability）映射到 NIST AI RMF，而不是把本章变成合规清单（compliance checklist）。[^nist-ai-rmf]
 
-- **Govern**：`decision_owner`、`review_deadline` 和 registry coverage 说明谁拥有这个 signal，以及哪条 governance queue 必须关闭它。
-- **Map**：`source_signal`、inventory coverage 和 bypass-path telemetry 说明实际处于 risk 中的是哪个 agent、capability、tenant 或 rollout surface。
-- **Measure**：`evidence_refs`、verifier outputs、coverage ratios、drift signals 和 detection scenarios 把 risk 变成 observable evidence。
-- **Manage**：`policy_decision_feedback`、`containment_decision`、`rollout_gate_input` 和 `incident_response_trigger` 说明 evidence 之后触发了哪项 control action。
+- **Govern**：`decision_owner`、`review_deadline` 和注册表覆盖（registry coverage）说明谁拥有这个信号（signal），以及哪条治理队列（governance queue）必须关闭它。
+- **Map**：`source_signal`、清单覆盖（inventory coverage）和绕过路径遥测（bypass-path telemetry）说明实际处于风险（risk）中的是哪个智能体（agent）、能力（capability）、租户（tenant）或发布表面（rollout surface）。
+- **Measure**：`evidence_refs`、验证器输出（verifier outputs）、覆盖率（coverage ratios）、漂移信号（drift signals）和检测场景（detection scenarios）把风险（risk）变成可观测证据（observable evidence）。
+- **Manage**：`policy_decision_feedback`、`containment_decision`、`rollout_gate_input` 和 `incident_response_trigger` 说明证据（evidence）之后触发了哪项控制动作（control action）。
 
-这个 mapping 故意保持 operational。问题不是 dashboard 有没有写 Govern、Map、Measure、Manage，而是 reviewer 是否能把一个 telemetry signal 追踪到 owner、risk surface、measurement evidence 和最终 control action。
+这个映射（mapping）故意保持可操作（operational）。问题不是仪表板（dashboard）有没有写 Govern、Map、Measure、Manage，而是审查者（reviewer）是否能把一个遥测信号（telemetry signal）追踪到负责人（owner）、风险表面（risk surface）、度量证据（measurement evidence）和最终控制动作（control action）。
 
 ## 8. 研究前沿正在把可观测性推向哪里
 
