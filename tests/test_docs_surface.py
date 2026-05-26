@@ -453,6 +453,41 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
         assert forbidden_label not in text, (relative_path, forbidden_label)
 
 
+def test_chapter_27_chinese_registry_layer_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
+    expected_markers = (
+        "智能体蔓延”（agent sprawl）",
+        "智能体清单（agent inventory）",
+        "智能体注册表（agent registry）",
+        "身份（Identity）",
+        "生命周期（Lifecycle）",
+        "能力（Capabilities）",
+        "运行时责任归属（Runtime ownership）",
+        "暂停运行（paused runs）",
+        "后台运行（background runs）",
+        "能力会话（capability sessions）",
+        "证据链接（Evidence links）",
+        "验证器/评测证据（verifier/eval evidence）",
+        "验证器契约（verifier contracts）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "智能体蔓延”（`agent sprawl`）",
+        "`agent inventory`（智能体清单）",
+        "`agent registry`（智能体注册表）",
+        "**Identity：**",
+        "**Lifecycle：**",
+        "**Capabilities：**",
+        "**Runtime ownership：** 谁负责 paused runs、background runs 和 capability sessions",
+        "**Evidence links：** 可观测性状态、verifier/eval evidence",
+        "智能体注册表（`agent registry`）",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_27_chinese_registry_contract_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
     expected_markers = (

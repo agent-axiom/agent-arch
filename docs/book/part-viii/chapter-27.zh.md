@@ -36,7 +36,7 @@
 - 哪些其实还活着；
 - 哪些仍然挂着暂停中的审批、后台路由、已废弃的契约路径或陈旧的验证器契约。
 
-这正是值得被称作“智能体蔓延”（`agent sprawl`）的状态。
+这正是值得被称作“智能体蔓延”（agent sprawl）的状态。
 
 注册表这一层首先要做成一件事：让整个智能体群体具备可追责性。
 
@@ -66,8 +66,8 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 
 最好把下面两层分开看：
 
-- `agent inventory`（智能体清单）
-- `agent registry`（智能体注册表）
+- 智能体清单（agent inventory）
+- 智能体注册表（agent registry）
 
 清单回答的问题是：
 
@@ -106,11 +106,11 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 
 为了避免这条记录变成一张为了填写而填写的长表，可以把它读成五组字段：
 
-1. **Identity：** `agent_id`、运行时身份、负责团队和业务用途。
-2. **Lifecycle：** 生命周期状态、退役计划和已废弃路径。
-3. **Capabilities：** 允许使用的能力、工具主体和审批要求。
-4. **Runtime ownership：** 谁负责 paused runs、background runs 和 capability sessions。
-5. **Evidence links：** 可观测性状态、verifier/eval evidence、verifier contracts 和制品包关联。
+1. **身份（Identity）：** `agent_id`、运行时身份、负责团队和业务用途。
+2. **生命周期（Lifecycle）：** 生命周期状态、退役计划和已废弃路径。
+3. **能力（Capabilities）：** 允许使用的能力、工具主体和审批要求。
+4. **运行时责任归属（Runtime ownership）：** 谁负责暂停运行（paused runs）、后台运行（background runs）和能力会话（capability sessions）。
+5. **证据链接（Evidence links）：** 可观测性状态、验证器/评测证据（verifier/eval evidence）、验证器契约（verifier contracts）和制品包关联。
 
 它的意义不是“多一张表”，而是把智能体这个实体明确接到：
 
@@ -141,7 +141,7 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 
 ## 6. 注册表不只是给安全团队用的
 
-一个好的智能体注册表（`agent registry`）不只服务安全或治理。
+一个好的智能体注册表（agent registry）不只服务安全或治理。
 
 它同样服务于：
 
