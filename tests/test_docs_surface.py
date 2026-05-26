@@ -9902,7 +9902,7 @@ def test_chinese_reference_package_rollout_cli_labels_are_localized() -> None:
         "发布检查（Rollout check）",
         "必需证据（required evidence）",
         "信号覆盖（signal overrides）",
-        "布尔型（boolean）`key=value` 对（pairs）",
+        "布尔型 `key=value` 键值对（boolean `key=value` pairs）",
         "未知布尔文本（boolean text）",
         "运行时 CLI 失败路径（Runtime CLI failure paths）",
         "面向操作员消息（operator-facing messages）",
@@ -9914,6 +9914,7 @@ def test_chinese_reference_package_rollout_cli_labels_are_localized() -> None:
         "Rollout check 会返回",
         "它的 required evidence 包括",
         "signal overrides 接受 boolean",
+        "布尔型（boolean）`key=value` 对（pairs）",
         "拒绝未知 boolean text",
         "Runtime CLI failure paths 也会保持稳定的 operator-facing messages",
     )
