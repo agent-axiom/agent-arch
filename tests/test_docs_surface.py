@@ -9760,6 +9760,41 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_contract_update_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "契约更新（contract updates）",
+        "评审（review）",
+        "委派授权上下文（delegated authorization context）",
+        "CLI 演示（CLI demos）",
+        "会话（sessions）",
+        "评测导出（eval exports）",
+        "回放（replay）",
+        "追踪导出脱敏（trace export redaction）",
+        "命令摘要（command summaries）",
+        "JSONL 工件（JSONL artifacts）",
+        "生命周期检查（lifecycle inspection）",
+        "运行时控制假设（runtime-control assumptions）",
+        "文档守卫（docs guard）",
+        "稳定验证错误（stable validation errors）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "最近的 contract updates",
+        "适合 review",
+        "delegated authorization context 会贯穿 CLI demos",
+        "sessions、eval exports 与 replay",
+        "trace export redaction 现在覆盖 command summaries 和 JSONL artifacts",
+        "lifecycle inspection 会暴露 runtime-control assumptions",
+        "docs guard 也固定了",
+        "定义这些边界的 stable validation errors",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_reference_package_runtime_scope_note_is_localized() -> None:
     russian_text = _read("docs/appendix/reference-package.md")
     chinese_text = _read("docs/appendix/reference-package.zh.md")
