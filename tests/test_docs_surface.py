@@ -7854,6 +7854,47 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_chinese_case_studies_intro_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/case-studies.zh.md")
+    expected_markers = (
+        "支持分流（support triage）案例",
+        "信任边界（trust boundaries）",
+        "工具网关（tool gateway）",
+        "记忆/检索（memory/retrieval）",
+        "幂等性（idempotency）",
+        "追踪（traces）",
+        "服务级目标（SLO）",
+        "评测门禁（eval gates）",
+        "归属（ownership）",
+        "运行时（runtime）",
+        "策略（policy）",
+        "发布（rollout）",
+        "智能体开发生命周期（ADLC）",
+        "保障（assurance）",
+        "来源证明（provenance）",
+        "退役（retirement）",
+        "失配控制（misalignment controls）",
+        "遥测（telemetry）",
+        "注册表（registry）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "support triage 案例",
+        "穿过 trust boundaries",
+        "tool gateway、memory/retrieval",
+        "idempotency、traces",
+        "eval gates、ownership",
+        "runtime、policy、rollout",
+        "ADLC、assurance、provenance",
+        "retirement、misalignment controls",
+        "telemetry 和 registry",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_case_studies_align_with_three_canonical_cases() -> None:
     required_markers = (
         "Canonical case alignment",
