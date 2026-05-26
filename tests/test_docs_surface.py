@@ -5984,7 +5984,12 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
             "lifecycle state",
         ),
         "docs/book/part-viii/chapter-27.zh.md": (
-            *common_markers,
+            "注册表案例主线说明（Registry case-spine note）",
+            "支持分诊（support-triage）不应该只是",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
+            "追踪（trace）或工件包（artifact bundle）",
             "工件包（artifact bundle）",
             "金丝雀（canary）",
             "已废弃路由（route）",
@@ -6013,7 +6018,13 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
     forbidden_chinese_markers = (
+        "注册表里的 support-triage",
+        "support-triage 不应该只是",
         "trace 或 artifact bundle",
+        "**Registry case-spine note：**",
+        "Support triage 需要写能力负责人",
+        "Internal knowledge assistant 需要",
+        "Incident coordination 需要事故角色负责人",
         "扩大 canary",
         "已废弃 route",
         "每个 canonical case",

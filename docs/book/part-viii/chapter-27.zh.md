@@ -193,10 +193,10 @@ Microsoft 直接把不完整的清单和智能体蔓延，与盲区、执行不�
 
 这同样也是它和来源链章节的边界。来源链回答系统运行在什么受治理版本或已批准包之下；注册表回答哪一个生产实体拥有这条路径，以及现在该由谁负责。
 
-!!! example "贯穿案例：注册表里的 support-triage"
-    经过所有修复后，support-triage 不应该只是“那个支持智能体”。它应该是一条注册表记录，包含负责人、生命周期状态、允许能力、`create_support_ticket` 工具主体、审批模式、可观测性状态、评测证据关联，以及旧工单写入器的退役计划。这样，重复工单信号就不只关联到 trace 或工件包（artifact bundle），还能关联到一个命名的生产实体：谁拥有这条路径，谁扩大金丝雀（canary），谁关闭写能力，谁对已废弃路由（route）负责。
+!!! example "贯穿案例：注册表里的支持分诊（support-triage）"
+    经过所有修复后，支持分诊（support-triage）不应该只是“那个支持智能体”。它应该是一条注册表记录，包含负责人、生命周期状态、允许能力、`create_support_ticket` 工具主体、审批模式、可观测性状态、评测证据关联，以及旧工单写入器的退役计划。这样，重复工单信号就不只关联到追踪（trace）或工件包（artifact bundle），还能关联到一个命名的生产实体：谁拥有这条路径，谁扩大金丝雀（canary），谁关闭写能力，谁对已废弃路由（route）负责。
 
-**Registry case-spine note：**每个规范案例（canonical case）都应该变成 [命名注册记录（named registry record）](../../appendix/registry-operations-handbook.zh.md)，而不只是正文里的案例。Support triage 需要写能力负责人（write-capability owners）、[审批模式（approval mode）](../../appendix/approval-schema.zh.md)，以及已废弃工单路径（deprecated ticket paths）的 [退役计划（retirement plan）](../../appendix/lifecycle-artifact-schema.zh.md)。Internal knowledge assistant 需要 [语料负责人（corpus owners）](../../appendix/memory-retrieval-schema.zh.md)、新鲜度审查（freshness review）、租户范围（tenant scope）和 [检索策略链接（retrieval-policy linkage）](../../appendix/memory-retrieval-schema.zh.md)。Incident coordination 需要事故角色负责人（incident-role owners）、升级权限（escalation authority）、通知渠道（notification channels），以及仅限应急能力（emergency-only capabilities）的 [生命周期状态（lifecycle state）](../../appendix/lifecycle-artifact-schema.zh.md)。
+**注册表案例主线说明（Registry case-spine note）：**每个规范案例（canonical case）都应该变成 [命名注册记录（named registry record）](../../appendix/registry-operations-handbook.zh.md)，而不只是正文里的案例。支持分诊（Support triage）需要写能力负责人（write-capability owners）、[审批模式（approval mode）](../../appendix/approval-schema.zh.md)，以及已废弃工单路径（deprecated ticket paths）的 [退役计划（retirement plan）](../../appendix/lifecycle-artifact-schema.zh.md)。内部知识助手（Internal knowledge assistant）需要 [语料负责人（corpus owners）](../../appendix/memory-retrieval-schema.zh.md)、新鲜度审查（freshness review）、租户范围（tenant scope）和 [检索策略链接（retrieval-policy linkage）](../../appendix/memory-retrieval-schema.zh.md)。事故协调（Incident coordination）需要事故角色负责人（incident-role owners）、升级权限（escalation authority）、通知渠道（notification channels），以及仅限应急能力（emergency-only capabilities）的 [生命周期状态（lifecycle state）](../../appendix/lifecycle-artifact-schema.zh.md)。
 
 ### 8.1. 没有持续校验的注册表会变得整洁，但不再准确
 
