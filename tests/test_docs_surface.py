@@ -9760,6 +9760,30 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_controls_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "能力清单不匹配（capability inventory mismatches）",
+        "输入（inputs）",
+        "验证形状（validation shapes）",
+        "控制策略（controls policy）",
+        "规范化（normalize）",
+        "评测（evaluation）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "与 capability inventory mismatches 就能",
+        "中的 inputs 要求",
+        "with validation shapes",
+        "controls policy 会把这些 normalize",
+        "在 evaluation 中成为",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_runtime_control_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
