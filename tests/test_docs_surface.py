@@ -4810,7 +4810,7 @@ def test_chapter_26_chinese_observability_promise_labels_are_localized() -> None
 def test_chapter_26_chinese_ai_native_signal_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
-        "AI 原生信号（`AI-native signals`）",
+        "AI 原生信号（AI-native signals）",
         "请求身份（request identity）",
         "行动者（actor）与智能体身份（agent identity）",
         "检索出处（retrieval provenance）",
@@ -4841,6 +4841,7 @@ def test_chapter_26_chinese_ai_native_signal_labels_are_localized() -> None:
 
     forbidden_markers = (
         "演进成 `AI-native signals`",
+        "AI 原生信号（`AI-native signals`）",
         "## 3. 什么是 AI-native signals",
         "- request identity；",
         "- actor 与 agent identity；",
@@ -4882,7 +4883,7 @@ def test_chapter_26_chinese_intro_observability_labels_are_localized() -> None:
         "发布（release）",
         "事故（incident）",
         "治理决策（governance decision）",
-        "追踪（traces）只是给开发者排查本地 bug 用的",
+        "追踪（traces）只是给开发者排查本地缺陷（bug）用的",
         "智能体（agents）",
         "能力（capabilities）",
         "发布（rollout）之后出现了哪些行为变化",
@@ -4894,6 +4895,7 @@ def test_chapter_26_chinese_intro_observability_labels_are_localized() -> None:
         "policy decisions、tool principals、contract versions 与 artifact bundles",
         "release、incident 与 governance decision",
         "如果 traces 只是给开发者排查本地 bug 用的",
+        "排查本地 bug 用的",
         "一共存在多少 agents",
         "调用了哪些 capabilities",
         "哪些 approvals 被请求、批准或绕过",
