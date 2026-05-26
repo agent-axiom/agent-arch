@@ -4687,7 +4687,7 @@ def test_chapter_26_chinese_governance_fragility_labels_are_localized() -> None:
         "编排模式漂移（orchestration-pattern drift）",
         "验证器质量漂移（verifier-quality drift）",
         "契约不匹配（contract mismatches）",
-        "治理感知遥测（`Governance-aware telemetry`）",
+        "治理感知遥测（Governance-aware telemetry）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -4704,6 +4704,7 @@ def test_chapter_26_chinese_governance_fragility_labels_are_localized() -> None:
         "capability-session expiry drift、approval-resume misuse",
         "orchestration-pattern drift、verifier-quality drift 与 contract mismatches",
         "`Governance-aware telemetry` 应该回流",
+        "治理感知遥测（`Governance-aware telemetry`）",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
@@ -4732,7 +4733,7 @@ def test_chapter_26_chinese_behavioral_baseline_labels_are_localized() -> None:
         "出处骨干（provenance backbone）",
         "已批准工件身份（approved artifact identity）",
         "决策谱系（decision lineage）",
-        "检测就绪遥测（`Detection-ready telemetry`）",
+        "检测就绪遥测（Detection-ready telemetry）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -4754,6 +4755,7 @@ def test_chapter_26_chinese_behavioral_baseline_labels_are_localized() -> None:
         "等同于 provenance backbone",
         "approved artifact identity 与 decision lineage。",
         "`Detection-ready telemetry` 并不只是",
+        "检测就绪遥测（`Detection-ready telemetry`）",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker

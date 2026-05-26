@@ -148,7 +148,7 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 ## 6. 什么叫可用于检测的遥测
 
-检测就绪遥测（`Detection-ready telemetry`）并不只是“我们有日志”。
+检测就绪遥测（Detection-ready telemetry）并不只是“我们有日志”。
 
 它意味着这些遥测已经足够支撑：
 
@@ -197,7 +197,7 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 ### 7.1. 治理感知遥测（Governance-aware telemetry）会闭合执行闭环（enforcement loop）
 
-下一个成熟度层级，不只是“看见事件”，而是让遥测（telemetry）可以直接服务治理动作。治理感知遥测（`Governance-aware telemetry`）应该回流到控制闭环，作为策略决策（policy decisions）、遏制（containment）、发布门禁（rollout gates）和事故响应（incident response）的输入。
+下一个成熟度层级，不只是“看见事件”，而是让遥测（telemetry）可以直接服务治理动作。治理感知遥测（Governance-aware telemetry）应该回流到控制闭环，作为策略决策（policy decisions）、遏制（containment）、发布门禁（rollout gates）和事故响应（incident response）的输入。
 
 最小闭环契约（closed-loop contract）可以这样定义：
 
