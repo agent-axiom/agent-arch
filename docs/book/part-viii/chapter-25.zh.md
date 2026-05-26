@@ -252,7 +252,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这里的核心是：失效不只是“模型行为古怪”，也包括“控制层没能证明自己真的有效”。
 
-如果分级契约能表达的不只是 pass/fail verdict，而是分开的过程/结果判断，以及可控与不可控原因的失败归因，它就会更强。
+如果分级契约能表达的不只是通过/失败裁决（pass/fail verdict），而是分开的过程/结果判断，以及可控与不可控原因的失败归因，它就会更强。
 
 ## 11. 如何把它接进 ADLC
 
@@ -268,7 +268,7 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 这样评测层就不再只是“一张指标表”，而会变成运行模型的一部分。
 
-也正因为如此，本章更应该被理解成测试与判断层。保障决定如何响应 findings；可观测性保存 evidence；注册表在整个智能体群体上分配问责；而评测决定到底测试了什么、哪里失败了，以及团队当前应当对控制姿态保持多大信心。
+也正因为如此，本章更应该被理解成测试与判断层。保障决定如何响应发现结果（findings）；可观测性保存证据（evidence）；注册表在整个智能体群体上分配问责；而评测决定到底测试了什么、哪里失败了，以及团队当前应当对控制姿态保持多大信心。
 
 ## 12. 最常见的错误
 
@@ -316,13 +316,13 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 ## 15. 本章的证据模型
 
-本章应该被读成一层 control evidence，而不是一组额外测试类型清单：
+本章应该被读成一层控制证据（control evidence），而不是一组额外测试类型清单：
 
-- **稳定主张：** 自主系统需要针对 risky trajectories 的 evals，而不只是 final answers。
-- **厂商实践：** 现代 agent-eval 材料越来越把 traces、trajectories 与 rollout gates 当作评测的一等输入。
-- **运行时实践：** scenario classes、verifier contracts、trace-backed failures 与 rollout gates 是让 behavioral 和 control evidence 可审查的具体方式。
-- **作者解释：** behavioral evals、control evals 与 automated red teaming 是同一个 judgment system 中的不同角色，而不是可以互换的标签。
-- **快速变化层：** simulator quality、judge models 与 red-team generation 会快速变化；但区分 process failure、outcome failure 与 control failure 的需求不会。
+- **稳定主张：** 自主系统需要针对风险轨迹（risky trajectories）的评测（evals），而不只是最终答案（final answers）。
+- **厂商实践：** 现代智能体评测（agent-eval）材料越来越把追踪（traces）、轨迹（trajectories）与发布门禁（rollout gates）当作评测的一等输入。
+- **运行时实践：** 场景类别（scenario classes）、验证器契约（verifier contracts）、有追踪支持的失败（trace-backed failures）与发布门禁（rollout gates）是让行为证据（behavioral evidence）和控制证据（control evidence）可审查的具体方式。
+- **作者解释：** 行为评测（behavioral evals）、控制评测（control evals）与自动化红队测试（automated red teaming）是同一个判断系统（judgment system）中的不同角色，而不是可以互换的标签。
+- **快速变化层：** 模拟器质量（simulator quality）、裁判模型（judge models）与红队生成（red-team generation）会快速变化；但区分过程失败（process failure）、结果失败（outcome failure）与控制失败（control failure）的需求不会。
 
 ## 16. 值得配套阅读的参考页
 
