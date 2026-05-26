@@ -105,7 +105,7 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 离线评测；
 - 在线评测；
 - 回归门禁；
-- trace grading。
+- 追踪分级（trace grading）。
 
 行为评测和控制评测不是用来替换它们的，而是在上面再叠一层：
 
@@ -113,9 +113,9 @@ Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测�
 - 追踪分级检查路径质量；
 - 行为评测检查与策略相关的行为；
 - 控制评测检查控制本身是否真的有效；
-- runtime-control evals 还要验证 pause/resume、background、capability-session expiry/re-init、contract-version behavior，以及 orchestration-pattern behavior 在受压场景下是否按预期工作。
+- 运行时控制评测（runtime-control evals）还要验证暂停/恢复（pause/resume）、后台执行（background）、能力会话到期/重新初始化（capability-session expiry/re-init）、契约版本行为（contract-version behavior），以及编排模式行为（orchestration-pattern behavior）在受压场景下是否按预期工作。
 
-OpenAI 关于 agent evals 的指南给出了一条有用的操作阶梯：在调试单个 workflow 行为时先从 traces 开始，用 structured graders 评估 tool choice、handoff、guardrail 和 instruction-following failures，然后把稳定的问题迁移到 datasets 和可重复的 eval runs 中，用于跨时间比较变更。[^openai-agent-evals][^openai-trace-grading] 换句话说，trace grading 是显微镜，而 datasets 和 eval runs 是 regression harness。成熟的 agent 程序需要这两层：traces 解释某一次 run 为什么失败；datasets 证明新的 prompt、policy、routing rule 或 tool surface 是否改善了一类 runs，同时没有削弱其他地方的 controls。
+OpenAI 关于智能体评测（agent evals）的指南给出了一条有用的操作阶梯：在调试单个工作流（workflow）行为时先从追踪（traces）开始，用结构化评分器（structured graders）评估工具选择（tool choice）、交接（handoff）、护栏（guardrail）和指令遵循失败（instruction-following failures），然后把稳定的问题迁移到数据集（datasets）和可重复的评测运行（eval runs）中，用于跨时间比较变更。[^openai-agent-evals][^openai-trace-grading] 换句话说，追踪分级（trace grading）是显微镜，而数据集（datasets）和评测运行（eval runs）是回归测试框架（regression harness）。成熟的智能体程序（agent program）需要这两层：追踪（traces）解释某一次运行（run）为什么失败；数据集（datasets）证明新的提示词（prompt）、策略（policy）、路由规则（routing rule）或工具表面（tool surface）是否改善了一类运行（runs），同时没有削弱其他地方的控制（controls）。
 
 ## 6. 哪些地方最需要这类评测
 

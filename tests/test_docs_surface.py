@@ -3838,6 +3838,55 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_eval_layer_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "追踪分级（trace grading）",
+        "运行时控制评测（runtime-control evals）",
+        "暂停/恢复（pause/resume）",
+        "后台执行（background）",
+        "能力会话到期/重新初始化（capability-session expiry/re-init）",
+        "契约版本行为（contract-version behavior）",
+        "编排模式行为（orchestration-pattern behavior）",
+        "智能体评测（agent evals）",
+        "工作流（workflow）",
+        "追踪（traces）",
+        "结构化评分器（structured graders）",
+        "工具选择（tool choice）",
+        "交接（handoff）",
+        "护栏（guardrail）",
+        "指令遵循失败（instruction-following failures）",
+        "数据集（datasets）",
+        "评测运行（eval runs）",
+        "回归测试框架（regression harness）",
+        "智能体程序（agent program）",
+        "路由规则（routing rule）",
+        "工具表面（tool surface）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "trace grading。",
+        "runtime-control evals 还要验证 pause/resume",
+        "background、capability-session expiry/re-init",
+        "contract-version behavior，以及 orchestration-pattern behavior",
+        "agent evals 的指南",
+        "单个 workflow 行为时先从 traces 开始",
+        "用 structured graders 评估 tool choice、handoff、guardrail",
+        "guardrail 和 instruction-following failures",
+        "迁移到 datasets 和可重复的 eval runs",
+        "trace grading 是显微镜",
+        "datasets 和 eval runs 是 regression harness",
+        "成熟的 agent 程序",
+        "traces 解释某一次 run 为什么失败",
+        "新的 prompt、policy、routing rule 或 tool surface",
+        "一类 runs，同时没有削弱其他地方的 controls",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     common_markers = (
         "Control-eval case-spine note",
