@@ -178,7 +178,7 @@
 - `risk_tier`
 - `tool_principal`
 
-对于 `mcp_tool_risk_review`，production trace 应记录 MCP threat-model evidence，而不只是最终 allow/deny decision：
+对于 `mcp_tool_risk_review`，生产追踪（production trace）应记录 MCP 威胁模型证据（MCP threat-model evidence），而不只是最终允许/拒绝决策（allow/deny decision）：
 
 - `threat_class`
 - `mcp_server_id`
@@ -191,7 +191,7 @@
 
 `threat_class` 应保持在 MCP threat model 词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
 
-对于 `a2a_handoff`，payload 应保留 A2A handoff trust contract，而不只是委派消息文本：
+对于 `a2a_handoff`，载荷（payload）应保留 A2A 交接信任契约（A2A handoff trust contract），而不只是委派消息文本：
 
 - `agent_identity`
 - `delegation_chain`
@@ -225,7 +225,7 @@
 - `reviewed_by`
 - `review_evidence_refs`
 
-如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载 verifier verdict record：
+如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器裁决记录（verifier verdict record）：
 
 - `verdict_id`
 - `verifier_id`
