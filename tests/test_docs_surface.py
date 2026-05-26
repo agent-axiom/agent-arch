@@ -10648,6 +10648,29 @@ def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_eval_schema_gate_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/eval-schema.zh.md")
+    expected_markers = (
+        "评测门禁（eval gate）",
+        "支持分诊（support-triage）案例",
+        "专门评测（eval）",
+        "提示词/模型/适配器（prompt/model/adapter）",
+        "阻断发布（rollout）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "重复工单线索的 eval gate",
+        "贯穿的 support-triage 案例",
+        "专门 eval 复现",
+        "新的 prompt/model/adapter 版本",
+        "阻断 rollout",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_eval_schema_scenario_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
     expected_markers = (
