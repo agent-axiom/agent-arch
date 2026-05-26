@@ -9760,6 +9760,31 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_reference_package_rollout_cli_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "发布检查（Rollout check）",
+        "必需证据（required evidence）",
+        "信号覆盖（signal overrides）",
+        "布尔型（boolean）`key=value` 对（pairs）",
+        "未知布尔文本（boolean text）",
+        "运行时 CLI 失败路径（Runtime CLI failure paths）",
+        "面向操作员消息（operator-facing messages）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "Rollout check 会返回",
+        "它的 required evidence 包括",
+        "signal overrides 接受 boolean",
+        "拒绝未知 boolean text",
+        "Runtime CLI failure paths 也会保持稳定的 operator-facing messages",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_reference_package_change_readiness_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
