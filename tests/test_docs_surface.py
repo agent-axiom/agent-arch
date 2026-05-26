@@ -3838,6 +3838,58 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_control_maturity_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "审批路径误用（approval-path misuse）",
+        "会话重新初始化误用（session re-init misuse）",
+        "委派工作者误用（delegated-worker misuse）",
+        "契约漂移（contract drift）",
+        "验证器输出（verifier outputs）",
+        "通过/失败标签（pass/fail label）",
+        "验证器契约替换（verifier contract swaps）",
+        "评分行为（grading behavior）",
+        "承载发布的评测回归（release-bearing eval regressions）",
+        "可控失败（controllable failures）",
+        "不可控失败（uncontrollable failures）",
+        "运行时控制回归（runtime-control regressions）",
+        "发布（rollout）或事故（incidents）",
+        "对抗提示（adversarial prompts）",
+        "红队发现（red-team findings）",
+        "变更门禁（change gates）",
+        "真实负载模拟（realistic simulation）",
+        "对抗生成（adversarial generation）",
+        "发布（rollout）、保障（assurance）",
+        "契约版本匹配（contract-version matching）",
+        "运行时控制行为（runtime-control behavior）",
+        "编排模式边界（orchestration-pattern boundaries）",
+        "真实负载模拟器（realistic workload simulator）",
+        "对抗生成器（adversarial generator）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "approval-path misuse、session re-init misuse、delegated-worker misuse",
+        "contract drift 没有被显式测试",
+        "verifier outputs 把长轨迹压缩成了过于薄弱的 pass/fail label",
+        "verifier contract swaps 改变了 grading behavior",
+        "当成 release-bearing eval regressions",
+        "controllable 与 uncontrollable failures 没有被分开",
+        "runtime-control regressions 只有在 rollout 或 incidents",
+        "几条 adversarial prompts",
+        "contract drift 与 runtime-control regressions 都有明确的场景覆盖",
+        "red-team findings 会进入 rollout 和 change gates",
+        "realistic simulation 和 adversarial generation",
+        "让 rollout、assurance 与治理函数",
+        "approval-path misuse 与 delegated-worker misuse",
+        "contract-version matching、runtime-control behavior、orchestration-pattern boundaries",
+        "realistic workload simulator 和 adversarial generator",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_eval_layer_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
