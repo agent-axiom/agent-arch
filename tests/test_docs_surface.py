@@ -11012,6 +11012,28 @@ def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_memory_retrieval_direct_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+    expected_markers = (
+        "直接记忆存储构造（direct memory store construction）",
+        "畸形注入记录（malformed injected records）",
+        "畸形直接候选（malformed direct candidates）",
+        "直接构造记录（direct construction records）",
+        "稳定错误（stable errors）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "direct memory store construction 会用",
+        "拒绝 malformed injected records",
+        "拒绝 malformed direct candidates",
+        "direct construction records 使用稳定 errors",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_memory_retrieval_seed_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
     expected_markers = (
