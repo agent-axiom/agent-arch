@@ -249,7 +249,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 - [controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/controls.yaml)
 - [approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
-  现在变更门禁里还有显式的 `failed_run_drill_checked` 和 `sandbox_profile_reviewed` 信号，避免高风险发布评审把退化路径或 sandbox profile 变更当成检查范围之外的东西。
+  现在变更门禁里还有显式的 `failed_run_drill_checked` 和 `sandbox_profile_reviewed` 信号，避免高风险发布评审把退化路径或沙箱配置文件（sandbox profile）变更当成检查范围之外的东西。
 - [artifacts.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/artifacts.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 - [retirement.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/retirement.yaml)
@@ -258,9 +258,9 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 
 其中运行时控制包现在也被用来显式承载审批与会话治理规则，包括暂停/恢复、后台处理、过期、重新初始化策略、能力会话负责人，以及用户运行与能力侧会话之间的契约边界。
 
-### 最小 sandbox profile
+### 最小沙箱配置文件（sandbox profile）
 
-如果这个包以后扩展到由 sandbox 支撑的执行，正确起点不是一套庞大的新子系统，而是一个把 workspace 和权限显式化的小 profile：
+如果这个包以后扩展到由沙箱（sandbox）支撑的执行，正确起点不是一套庞大的新子系统，而是一个把工作区（workspace）和权限显式化的小配置文件（profile）：
 
 ```yaml
 sandbox_profile:
@@ -288,7 +288,7 @@ sandbox_profile:
     persist_session_state: true
 ```
 
-这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由 sandbox 支撑的 runtime 暴露出来的契约表面：manifest、permissions、workspace materialization、session state，以及 snapshot/resume policy 都应该可以被 review。
+这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由沙箱（sandbox）支撑的运行时（runtime）暴露出来的契约表面：清单（manifest）、权限（permissions）、工作区物化（workspace materialization）、会话状态（session state），以及快照/恢复策略（snapshot/resume policy）都应该可以被复核（review）。
 
 ## 为什么它有用
 
