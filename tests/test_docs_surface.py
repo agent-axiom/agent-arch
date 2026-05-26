@@ -10210,6 +10210,37 @@ def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chinese_approval_schema_policy_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/approval-schema.zh.md")
+    expected_markers = (
+        "审批运行策略（approval operating policy）",
+        "顶层形状（top-level shape）",
+        "委派动作（delegated actions）",
+        "证据（evidence）必须保持可见",
+        "委派（delegation）",
+        "子智能体（subagents）",
+        "策略加载器（Policy loader）",
+        "评审者（reviewer）",
+        "升级（escalation）",
+        "委派授权证据（delegated-authorization evidence）",
+        "类型安全（type-safety）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "明确 approval operating policy",
+        "校验 top-level shape",
+        "评审 delegated actions",
+        "哪些 evidence 必须保持可见",
+        "delegation 是否可以传递给 subagents",
+        "Policy loader 也会用",
+        "保持 reviewer、escalation 与 delegated-authorization evidence 的 type-safety",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_multilingual_approval_schema_case_note_is_localized() -> None:
     russian_text = _read("docs/appendix/approval-schema.md")
     chinese_text = _read("docs/appendix/approval-schema.zh.md")
