@@ -91,7 +91,7 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 4. **质量证据（Quality evidence）：** 哪些验证器输出（verifier outputs）、评测裁决（eval verdicts）和失败归因（failure attribution）连接到了结果（outcome）。
 5. **发布与工件上下文（Release and artifact context）：** 哪个包（bundle）、契约版本（contract version）与发布波次（rollout wave）支撑了这次运行（run）。
 
-也就是说，traces 不该只告诉你“哪里坏了”，还应该告诉你：
+也就是说，追踪（traces）不该只告诉你“哪里坏了”，还应该告诉你：
 
 - 是谁在行动；
 - 穿过了哪一层控制层；
@@ -102,26 +102,26 @@ Microsoft 对这个转变的表述很准确：对智能体系统来说，我们�
 
 这也正是为什么运行时控制信号（runtime-control signals）不能继续被当成隐藏的实现细节。只要系统里存在暂停/恢复路径（pause/resume paths）、后台执行（background execution）和契约版本转换（contract-version transitions），它们就已经属于证据层。
 
-但这并不意味着可观测性成了 工件谱系 的拥有者。可观测性负责在跨 runs 的范围内保留和关联证据；而 来源证明层 仍然回答，后续决策依赖的是哪一个 受治理工件、已批准版本或发布身份。
+但这并不意味着可观测性成了工件谱系的拥有者。可观测性负责在跨运行（runs）的范围内保留和关联证据；而来源证明层仍然回答，后续决策依赖的是哪一个受治理工件、已批准版本或发布身份。
 
-这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、approvals 与跨系统活动保留得足够可见，使 assurance、rollout、judgment 与 registry functions 都能建立在同一份运行记录之上。本章的主要工件是 追踪与遥测覆盖记录（trace and telemetry coverage record）：一张说明哪些 agents、capabilities、control paths 与 side effects 真正可观测、哪些地方仍有 blind spots 的覆盖图。
+这也正是本章的核心承诺。它要帮助读者把可观测性看成整个生命周期的证据基底：这一层把运行时行为、控制信号、审批（approvals）与跨系统活动保留得足够可见，使保障（assurance）、发布（rollout）、判断（judgment）与注册表函数（registry functions）都能建立在同一份运行记录之上。本章的主要工件是 追踪与遥测覆盖记录（trace and telemetry coverage record）：一张说明哪些智能体（agents）、能力（capabilities）、控制路径（control paths）与副作用（side effects）真正可观测、哪些地方仍有盲点（blind spots）的覆盖图。
 
 ## 4. 清单覆盖率其实也是可观测性
 
-一个经常被忽略的关键点是：可观测性的起点不是漂亮的 trace viewer，而是先知道到底有哪些系统存在。
+一个经常被忽略的关键点是：可观测性的起点不是漂亮的追踪查看器（trace viewer），而是先知道到底有哪些系统存在。
 
 Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventory]
 
 对智能体资产来说，这意味着你应该知道：
 
-- 哪些 agents 正在 active；
-- 哪些已经 deprecated；
-- 它们挂着哪些 connectors 和 capabilities；
-- 使用哪些 principals；
-- 哪些真的在发 telemetry；
-- 还有哪些 blind spots 没覆盖。
+- 哪些智能体（agents）正在活跃（active）；
+- 哪些已经弃用（deprecated）；
+- 它们挂着哪些连接器（connectors）和能力（capabilities）；
+- 使用哪些主体（principals）；
+- 哪些真的在发遥测（telemetry）；
+- 还有哪些盲点（blind spots）没覆盖。
 
-如果没有 inventory coverage，你就没有完整的 observability。你只有一块被局部照亮的舞台。
+如果没有清单覆盖（inventory coverage），你就没有完整的可观测性（observability）。你只有一块被局部照亮的舞台。
 
 ## 5. 行为基线比原始流量更重要
 

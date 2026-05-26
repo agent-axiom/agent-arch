@@ -4573,6 +4573,54 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_26_chinese_observability_promise_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "追踪（traces）不该只告诉你",
+        "跨运行（runs）",
+        "审批（approvals）与跨系统活动",
+        "保障（assurance）",
+        "发布（rollout）",
+        "判断（judgment）",
+        "注册表函数（registry functions）",
+        "智能体（agents）",
+        "能力（capabilities）",
+        "控制路径（control paths）",
+        "副作用（side effects）",
+        "盲点（blind spots）",
+        "追踪查看器（trace viewer）",
+        "智能体（agents）正在活跃（active）",
+        "弃用（deprecated）",
+        "连接器（connectors）和能力（capabilities）",
+        "主体（principals）",
+        "遥测（telemetry）",
+        "清单覆盖（inventory coverage）",
+        "可观测性（observability）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "traces 不该只告诉你",
+        "跨 runs 的范围内",
+        "控制信号、approvals 与跨系统活动",
+        "使 assurance、rollout、judgment 与 registry functions",
+        "哪些 agents、capabilities、control paths 与 side effects",
+        "哪些地方仍有 blind spots",
+        "漂亮的 trace viewer",
+        "哪些 agents 正在 active",
+        "哪些已经 deprecated",
+        "connectors 和 capabilities",
+        "使用哪些 principals",
+        "发 telemetry",
+        "哪些 blind spots 没覆盖",
+        "没有 inventory coverage",
+        "完整的 observability",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_26_chinese_ai_native_signal_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
