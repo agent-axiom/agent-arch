@@ -347,41 +347,41 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 ## 11. 最常见的失效模式
 
-- traces 只覆盖“主 runtime”，却没覆盖真正的 adapters；
-- agents 存在于 inventory 之外；
-- approvals 单独记录，却不和 traces 关联；
-- paused runs 与 background runs 明明存在，但它们的年龄和 ownership 在 telemetry 中不可见；
-- telemetry 覆盖了 happy path，却没覆盖 bypass path；
-- contract-version drift 只有在 payload 不再匹配预期时才被发现；
-- orchestration-pattern drift 或 worker-boundary crossings 没有成为一等遥测；
-- [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与 traces 或 screenshots 脱节；
-- drift 只能靠用户抱怨才发现；
-- retention 和 redaction rules 与取证需求不一致。
+- 追踪（traces）只覆盖“主运行时（runtime）”，却没覆盖真正的适配器（adapters）；
+- 智能体（agents）存在于清单（inventory）之外；
+- 审批（approvals）单独记录，却不和追踪（traces）关联；
+- 暂停运行（paused runs）与后台运行（background runs）明明存在，但它们的年龄（age）和责任归属（ownership）在遥测（telemetry）中不可见；
+- 遥测（telemetry）覆盖了正常路径（happy path），却没覆盖绕过路径（bypass path）；
+- 契约版本漂移（contract-version drift）只有在载荷（payload）不再匹配预期时才被发现；
+- 编排模式漂移（orchestration-pattern drift）或工作者边界穿越（worker-boundary crossings）没有成为一等遥测；
+- [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与追踪（traces）或截图（screenshots）脱节；
+- 漂移（drift）只能靠用户抱怨才发现；
+- 留存（retention）和脱敏规则（redaction rules）与取证需求不一致。
 
-## 12. 给 AI-native observability 做一次快速成熟度测试
+## 12. 给 AI 原生可观测性（AI-native observability）做一次快速成熟度测试
 
-团队不应该只因为已经有 traces、dashboards 和 log pipeline，就觉得自己已经具备生产级可观测性。
+团队不应该只因为已经有追踪（traces）、仪表板（dashboards）和日志管线（log pipeline），就觉得自己已经具备生产级可观测性。
 
 更高的标准应该是：
 
-- inventory coverage 和 telemetry coverage 被当成同一个控制问题；
-- high-risk actions 能关联到 approvals、principals、artifact bundles、contract versions、reviewed orchestration patterns 与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)；
-- 除了 raw telemetry 之外，还有 behavioral baselines；
-- paused-run age、approval backlog 与 background-run aging 都是一等信号；
-- unobserved agents 被当成治理风险，而不只是记账缺口；
-- telemetry 能作为 release 和 incident decisions 的 evidence。
+- 清单覆盖（inventory coverage）和遥测覆盖（telemetry coverage）被当成同一个控制问题；
+- 高风险动作（high-risk actions）能关联到审批（approvals）、主体（principals）、工件包（artifact bundles）、契约版本（contract versions）、已审查的编排模式（reviewed orchestration patterns）与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)；
+- 除了原始遥测（raw telemetry）之外，还有行为基线（behavioral baselines）；
+- 暂停运行年龄（paused-run age）、审批积压（approval backlog）与后台运行老化（background-run aging）都是一等信号；
+- 未观测智能体（unobserved agents）被当成治理风险，而不只是记账缺口；
+- 遥测（telemetry）能作为发布与事故决策证据（release and incident decisions evidence）。
 
-如果这些条件大多不成立，那团队也许已经有可观测性工具，但还没有真正作为治理层的 AI-native observability。
+如果这些条件大多不成立，那团队也许已经有可观测性工具，但还没有真正作为治理层的 AI 原生可观测性（AI-native observability）。
 
 ## 13. 实用检查清单
 
-- 你知道生产资产里到底有多少 agents 吗？
-- 其中多少百分比真的会发 structured telemetry？
-- 你能把一个 high-risk action 关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前 orchestration pattern 和 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 吗？
-- 你有没有 behavioral baselines，而不只是 raw dashboards？
-- 你能否在用户抱怨之前看到 paused-run age、approval backlog 和 aging background runs？
-- 你会不会把 unobserved agents 当成一个单独的风险类别？
-- 你能把可观测性当成 release evidence，而不是只当 debug aid 吗？
+- 你知道生产资产里到底有多少智能体（agents）吗？
+- 其中多少百分比真的会发结构化遥测（structured telemetry）？
+- 你能把一个高风险动作（high-risk action）关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前编排模式（orchestration pattern）和 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 吗？
+- 你有没有行为基线（behavioral baselines），而不只是原始仪表板（raw dashboards）？
+- 你能否在用户抱怨之前看到暂停运行年龄（paused-run age）、审批积压（approval backlog）和后台运行老化（aging background runs）？
+- 你会不会把未观测智能体（unobserved agents）当成一个单独的风险类别？
+- 你能把可观测性当成发布证据（release evidence），而不是只当调试辅助（debug aid）吗？
 
 如果连续几个答案都是“否”，那你的可观测性虽然已经存在，但还没有变成治理层。
 

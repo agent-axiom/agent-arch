@@ -4222,7 +4222,7 @@ def test_chapter_26_observability_breakages_link_verifier_evidence() -> None:
             "[verifier evidence](../../appendix/eval-schema.en.md) is detached"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与 traces"
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与追踪（traces）"
         ),
     }
 
@@ -4241,8 +4241,8 @@ def test_chapter_26_maturity_bar_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "reviewed orchestration patterns 与 [验证器证据（verifier evidence）]"
-            "(../../appendix/eval-schema.zh.md)"
+            "已审查的编排模式（reviewed orchestration patterns）与 "
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
         ),
     }
 
@@ -4261,8 +4261,8 @@ def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "当前 orchestration pattern 和 [验证器证据（verifier evidence）]"
-            "(../../appendix/eval-schema.zh.md)"
+            "当前编排模式（orchestration pattern）和 "
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
         ),
     }
 
@@ -4338,6 +4338,68 @@ def test_chapter_26_chinese_observability_evidence_labels_are_localized() -> Non
         "observability 就不再只是“我们有 dashboards”",
         "production obligation：inventory coverage",
         "release-eval coverage 和 detection-scenario coverage",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
+def test_chapter_26_chinese_maturity_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "追踪（traces）只覆盖“主运行时（runtime）”",
+        "适配器（adapters）",
+        "暂停运行（paused runs）",
+        "后台运行（background runs）",
+        "正常路径（happy path）",
+        "绕过路径（bypass path）",
+        "契约版本漂移（contract-version drift）",
+        "载荷（payload）",
+        "编排模式漂移（orchestration-pattern drift）",
+        "工作者边界穿越（worker-boundary crossings）",
+        "截图（screenshots）",
+        "AI 原生可观测性（AI-native observability）",
+        "清单覆盖（inventory coverage）",
+        "遥测覆盖（telemetry coverage）",
+        "已审查的编排模式（reviewed orchestration patterns）",
+        "原始遥测（raw telemetry）",
+        "行为基线（behavioral baselines）",
+        "暂停运行年龄（paused-run age）",
+        "审批积压（approval backlog）",
+        "后台运行老化（background-run aging）",
+        "未观测智能体（unobserved agents）",
+        "结构化遥测（structured telemetry）",
+        "原始仪表板（raw dashboards）",
+        "发布证据（release evidence）",
+        "调试辅助（debug aid）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "traces 只覆盖“主 runtime”",
+        "agents 存在于 inventory 之外",
+        "approvals 单独记录，却不和 traces 关联",
+        "paused runs 与 background runs",
+        "ownership 在 telemetry 中不可见",
+        "telemetry 覆盖了 happy path，却没覆盖 bypass path",
+        "contract-version drift 只有在 payload",
+        "orchestration-pattern drift 或 worker-boundary crossings",
+        "与 traces 或 screenshots 脱节",
+        "给 AI-native observability 做一次快速成熟度测试",
+        "已经有 traces、dashboards 和 log pipeline",
+        "inventory coverage 和 telemetry coverage",
+        "high-risk actions 能关联到 approvals、principals、artifact bundles",
+        "reviewed orchestration patterns 与",
+        "除了 raw telemetry 之外，还有 behavioral baselines",
+        "paused-run age、approval backlog 与 background-run aging",
+        "unobserved agents 被当成治理风险",
+        "telemetry 能作为 release 和 incident decisions 的 evidence",
+        "真正作为治理层的 AI-native observability",
+        "多少百分比真的会发 structured telemetry",
+        "当前 orchestration pattern 和",
+        "behavioral baselines，而不只是 raw dashboards",
+        "approval backlog 和 aging background runs",
+        "release evidence，而不是只当 debug aid",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
