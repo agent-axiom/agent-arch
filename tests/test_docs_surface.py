@@ -3838,6 +3838,30 @@ def test_chapter_24_misalignment_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_25_chinese_verifier_control_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "契约版本纪律（contract-version discipline）",
+        "发布决策（rollout decisions）",
+        "发布（rollout）和训练循环（training loops）",
+        "辅助提示词（helper prompt）",
+        "验证器契约替换（verifier contract swaps）",
+        "验证器契约版本变更（verifier contract version changes）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "contract-version discipline 和 rollout decisions",
+        "rollout 和 training loops",
+        "方便的 helper prompt",
+        "这也包括 verifier contract swaps",
+        "未经审查的 verifier contract version changes",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_25_chinese_intro_layer_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (

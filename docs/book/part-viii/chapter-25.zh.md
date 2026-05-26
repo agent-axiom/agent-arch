@@ -15,7 +15,7 @@
 
     - 必须评估运行时行为，而不只是最终答案；
     - 必须验证控制层本身，而不只是模型质量；
-    - 控制评测、回归门禁、contract-version discipline 和 rollout decisions 必须连起来。
+    - 控制评测、回归门禁、契约版本纪律（contract-version discipline）和发布决策（rollout decisions）必须连起来。
 
 ## 1. 为什么普通回归评测已经不够
 
@@ -82,9 +82,9 @@
 
 这里的关键转变在于：你检查的不只是模型，而是围绕模型的一整层控制面。
 
-在成熟体系里，验证器本身也属于控制面。如果它制造了虚假的信心，rollout 和 training loops 就会继承这个错误。所以验证器设计应该被当成受治理基础设施，而不只是一个方便的 helper prompt。
+在成熟体系里，验证器本身也属于控制面。如果它制造了虚假的信心，发布（rollout）和训练循环（training loops）就会继承这个错误。所以验证器设计应该被当成受治理基础设施，而不只是一个方便的辅助提示词（helper prompt）。
 
-这也包括 verifier contract swaps。评测回归不一定只来自模型或运行时行为，也可能来自未经审查的 verifier contract version changes，它们会悄悄改变评分标准。
+这也包括验证器契约替换（verifier contract swaps）。评测回归不一定只来自模型或运行时行为，也可能来自未经审查的验证器契约版本变更（verifier contract version changes），它们会悄悄改变评分标准。
 
 ## 4. 什么是自动化红队测试
 
