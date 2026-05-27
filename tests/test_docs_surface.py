@@ -506,18 +506,22 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
 
 def test_chapter_23_chinese_retirement_maturity_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
-    expected_marker = (
+    expected_markers = (
         "主体（principals）、连接器（connectors）、记忆写入（memory writes）、"
         "暂停运行（paused runs）、能力会话（capability sessions）、"
-        "编排模式（orchestration patterns）与后台任务（background jobs）"
+        "编排模式（orchestration patterns）与后台任务（background jobs）",
+        "替换是分阶段的，而不是二元切换（cutover）",
     )
-    assert expected_marker in chinese_text, expected_marker
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
 
-    forbidden_marker = (
+    forbidden_markers = (
         "principals、connectors、memory writes、paused runs、capability sessions、"
-        "orchestration patterns 与 background jobs"
+        "orchestration patterns 与 background jobs",
+        "替换是分阶段的，而不是二元 cutover",
     )
-    assert forbidden_marker not in chinese_text, forbidden_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_23_chinese_deprecated_schema_labels_are_localized() -> None:
