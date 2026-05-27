@@ -5041,7 +5041,7 @@ def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
             "and [verifier evidence](../../appendix/eval-schema.en.md) for how"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许"
+            "的[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许"
         ),
     }
 
@@ -5058,7 +5058,7 @@ def test_chapter_26_observability_breakages_link_verifier_evidence() -> None:
             "[verifier evidence](../../appendix/eval-schema.en.md) is detached"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与追踪（traces）"
+            "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)与追踪（traces）"
         ),
     }
 
@@ -5077,7 +5077,7 @@ def test_chapter_26_maturity_bar_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "已审查的编排模式（reviewed orchestration patterns）与 "
+            "已审查的编排模式（reviewed orchestration patterns）与"
             "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
         ),
     }
@@ -5097,7 +5097,7 @@ def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
             "(../../appendix/eval-schema.en.md)"
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "当前编排模式（orchestration pattern）和 "
+            "当前编排模式（orchestration pattern）和"
             "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)"
         ),
     }
@@ -5123,8 +5123,23 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
         assert expected_snippet in _read(path), (path, expected_snippet)
 
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
-    forbidden_chinese_link = "[verifier evidence](../../appendix/eval-schema.zh.md)"
-    assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
+    expected_tightened_links = (
+        "工件（artifacts）与[验证器证据（verifier evidence）]",
+        "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)事后无法关联",
+    )
+    for expected_tightened_link in expected_tightened_links:
+        assert expected_tightened_link in chinese_text, expected_tightened_link
+
+    forbidden_chinese_links = (
+        "[verifier evidence](../../appendix/eval-schema.zh.md)",
+        "被判定的 [验证器证据（verifier evidence）]",
+        "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与追踪",
+        "与 [验证器证据（verifier evidence）]",
+        "和 [验证器证据（verifier evidence）]",
+        "[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 事后无法关联",
+    )
+    for forbidden_chinese_link in forbidden_chinese_links:
+        assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
 def test_chapter_26_chinese_research_frontier_labels_are_localized() -> None:

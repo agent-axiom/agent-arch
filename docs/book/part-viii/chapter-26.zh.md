@@ -165,7 +165,7 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 - 留存策略（retention policy）；
 - 追踪（traces）、审批（approvals）、策略决策（policy decisions）、运行时控制状态（runtime-control states）、能力会话事件（capability-session events）、编排模式事件（orchestration-pattern events）、[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)、验证器契约身份（verifier contract identity）和生命周期工件（lifecycle artifacts）之间的链接。
 
-如果一条追踪（trace）无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该运行（run）如何被判定的 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为证据层（evidence layer）还是太弱。
+如果一条追踪（trace）无法关联到 `approval_id`、`tool_principal`、`policy_bundle`、`contract_version`、`rollout_wave`，以及关于该运行（run）如何被判定的[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)，那它也许对调试有帮助，但作为证据层（evidence layer）还是太弱。
 
 Microsoft 的可观测性（observability）指南把覆盖问题（coverage）说得更具体：团队应该衡量有多少比例的 AI 系统（AI systems）会发出日志（logs）和追踪（traces），有多少比例的发布（releases）运行过标准评测套件（evaluation suite），以及有多少比例的滥用/安全场景（abuse/security scenarios）已经被遥测（telemetry）覆盖。[^ms-observability] 这样，可观测性（observability）就不再只是“我们有仪表板（dashboards）”，而是变成可度量的生产义务（production obligation）：清单覆盖（inventory coverage）、发布评测覆盖（release-eval coverage）和检测场景覆盖（detection-scenario coverage）。
 
@@ -354,7 +354,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - 遥测（telemetry）覆盖了正常路径（happy path），却没覆盖绕过路径（bypass path）；
 - 契约版本漂移（contract-version drift）只有在载荷（payload）不再匹配预期时才被发现；
 - 编排模式漂移（orchestration-pattern drift）或工作者边界穿越（worker-boundary crossings）没有成为一等遥测；
-- [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 与追踪（traces）或截图（screenshots）脱节；
+- [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)与追踪（traces）或截图（screenshots）脱节；
 - 漂移（drift）只能靠用户抱怨才发现；
 - 留存（retention）和脱敏规则（redaction rules）与取证需求不一致。
 
@@ -365,7 +365,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 更高的标准应该是：
 
 - 清单覆盖（inventory coverage）和遥测覆盖（telemetry coverage）被当成同一个控制问题；
-- 高风险动作（high-risk actions）能关联到审批（approvals）、主体（principals）、工件包（artifact bundles）、契约版本（contract versions）、已审查的编排模式（reviewed orchestration patterns）与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)；
+- 高风险动作（high-risk actions）能关联到审批（approvals）、主体（principals）、工件包（artifact bundles）、契约版本（contract versions）、已审查的编排模式（reviewed orchestration patterns）与[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)；
 - 除了原始遥测（raw telemetry）之外，还有行为基线（behavioral baselines）；
 - 暂停运行年龄（paused-run age）、审批积压（approval backlog）与后台运行老化（background-run aging）都是一等信号；
 - 未观测智能体（unobserved agents）被当成治理风险，而不只是记账缺口；
@@ -377,7 +377,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - 你知道生产资产里到底有多少智能体（agents）吗？
 - 其中多少百分比真的会发结构化遥测（structured telemetry）？
-- 你能把一个高风险动作（high-risk action）关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前编排模式（orchestration pattern）和 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 吗？
+- 你能把一个高风险动作（high-risk action）关联到 `trace_id`、`approval_id`、`tool_principal`、`contract_version`、`bundle_id`、当前编排模式（orchestration pattern）和[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)吗？
 - 你有没有行为基线（behavioral baselines），而不只是原始仪表板（raw dashboards）？
 - 你能否在用户抱怨之前看到暂停运行年龄（paused-run age）、审批积压（approval backlog）和后台运行老化（aging background runs）？
 - 你会不会把未观测智能体（unobserved agents）当成一个单独的风险类别？
@@ -391,7 +391,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 本章应该被读成一层证据就绪度（evidence readiness），而不是日志清单（logging checklist）：
 
-- **稳定主张：** 如果高风险动作（high-risk actions）、审批（approvals）、主体（principals）、工件（artifacts）与 [验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md) 事后无法关联，智能体系统就无法被治理。
+- **稳定主张：** 如果高风险动作（high-risk actions）、审批（approvals）、主体（principals）、工件（artifacts）与[验证器证据（verifier evidence）](../../appendix/eval-schema.zh.md)事后无法关联，智能体系统就无法被治理。
 - **厂商实践：** 当前可观测性（observability）与基础设施清单（infrastructure inventory）指南越来越把遥测覆盖（telemetry coverage）和资产覆盖（asset coverage）视为生产控制，而不只是调试辅助（debugging aids）。
 - **运行时实践：** 结构化事件（structured events）、清单覆盖检查（inventory coverage checks）、行为基线（behavioral baselines）与检测就绪字段（detection-ready fields）让追踪（traces）可以用于发布审查（release review）和事故响应（incident response）。
 - **作者解释：** AI 原生可观测性（AI-native observability）是评测（evals）、保障（assurance）、注册表（registry）与生命周期治理（lifecycle governance）之间的桥梁。
