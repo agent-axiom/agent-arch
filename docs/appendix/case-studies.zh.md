@@ -115,10 +115,10 @@
 
 - **成功标准：** 答案基于允许访问的来源，显示引用，并诚实限制置信度。
 - **失败标准：** 没有来源的答案、越权访问、短期状态和长期记忆混用，或虚构策略。
-- **最低遥测：** query、检索范围、source IDs、置信信号、被拒绝来源和答案 grounding verdict。
+- **最低遥测：** 查询（query）、检索范围、来源 ID（source IDs）、置信信号、被拒绝来源和答案锚定结论（grounding verdict）。
 - **最低评测集：** 已知答案、上下文不足、角色不可访问文档、冲突来源和过期知识。
-- **发布门禁：** regression set 确认 grounding、角色隔离和低置信度时的正确行为。
-- **事故示例：** 智能体引用过期 runbook 回答，没有 citations，并向员工暴露了超出角色权限的文档。
+- **发布门禁：** 回归集（regression set）确认锚定（grounding）、角色隔离和低置信度时的正确行为。
+- **事故示例：** 智能体引用过期运行手册（runbook）回答，没有引用（citations），并向员工暴露了超出角色权限的文档。
 - **复盘问题：** 检索范围（retrieval scope）为什么扩大，哪个来源（source）被当作可信（trusted），低置信度停止（low-confidence stop）应该在哪里触发，哪个评测（eval）覆盖陈旧知识（stale knowledge）？
 
 ### 书里对应阅读
