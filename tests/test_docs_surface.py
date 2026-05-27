@@ -3983,11 +3983,19 @@ def test_chapter_22_chinese_rollout_labels_are_localized() -> None:
 
 def test_chapter_22_chinese_evidence_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
-    expected_marker = "发布或保障证据（evidence）中缺少[验证器契约血缘]"
-    assert expected_marker in chinese_text, expected_marker
+    expected_markers = (
+        "而不是泛泛的证据（evidence）文件夹",
+        "发布或保障证据（evidence）中缺少[验证器契约血缘]",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
 
-    forbidden_marker = "发布或保障 evidence 中缺少[验证器契约血缘]"
-    assert forbidden_marker not in chinese_text, forbidden_marker
+    forbidden_markers = (
+        "而不是泛泛的 evidence 文件夹",
+        "发布或保障 evidence 中缺少[验证器契约血缘]",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_22_chinese_evidence_spine_link_is_localized() -> None:
