@@ -3751,7 +3751,11 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         "docs/book/part-viii/chapter-24.zh.md": (
             *common_markers,
             "风险场景与控制计划（risk scenario and control plan）",
+            "规范案例（canonical cases）",
             "内部人风险表面（insider-risk surfaces）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事件协调（Incident coordination）",
             "独立工具主体（separate tool principal）",
             "写入能力族（write capability family）",
             "应急禁用（emergency disable）",
@@ -3779,6 +3783,10 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-24.zh.md")
     forbidden_chinese_markers = (
         "risk scenario and control plan 应该",
+        "三个 canonical cases",
+        "Support triage 需要",
+        "Internal knowledge assistant 需要",
+        "Incident coordination 需要",
         "不同 insider-risk surfaces 覆盖",
         "separate tool principal、",
         "面向 write capability family 的 emergency disable",
