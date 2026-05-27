@@ -21,7 +21,7 @@
 - capability-session state 与 interruption lineage；
 - orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
-- verifier-contract lineage 与[验证器证据保留义务（verifier evidence retention obligations）](../../appendix/eval-schema.zh.md)；
+- 验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务（verifier evidence retention obligations）](../../appendix/eval-schema.zh.md)；
 - 跨越 context reset 与角色交接边界的 handoff-artifact lineage；[^anthropic-harness]
 - 外部集成；
 - 用户预期；

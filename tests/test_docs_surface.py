@@ -474,6 +474,15 @@ def test_chapter_22_chinese_intro_artifact_label_is_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_23_chinese_verifier_contract_lineage_label_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    expected_marker = "验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_marker = "verifier-contract lineage 与[验证器证据保留义务"
+    assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_23_chinese_intro_artifact_label_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
     expected_markers = (
