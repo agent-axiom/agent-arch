@@ -575,6 +575,15 @@ def test_chapter_20_chinese_intro_artifact_label_is_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_19_chinese_rollout_checklist_label_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
+    expected_marker = "发布（rollout）检查清单就等于整个生命周期"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_marker = "rollout 检查清单就等于整个生命周期"
+    assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_19_chinese_intro_artifact_label_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
     expected_markers = (
