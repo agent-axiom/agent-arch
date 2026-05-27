@@ -2131,11 +2131,16 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
             "post-incident control update",
         ),
         "docs/book/part-viii/chapter-21.zh.md": (
-            *common_markers,
+            "保障案例主线说明（Assurance case-spine note）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
             "发现与响应记录（finding and response record）",
             "遏制路径（containment paths）",
+            "规范案例（canonical cases）",
             "重复结果检测（duplicate-outcome detection）",
             "更新后的评测（updated eval）",
+            "可追踪结果（traceable outcome）",
             "租户边界遏制（tenant-boundary containment）",
             "新鲜度修复（freshness remediation）",
             "升级滥用信号（escalation abuse signal）",
@@ -2156,7 +2161,12 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
     forbidden_chinese_markers = (
+        "**Assurance case-spine note：**",
         "通过不同 containment paths 闭合",
+        "三个 canonical cases",
+        "Support triage 连接",
+        "Internal knowledge assistant 连接",
+        "Incident coordination 连接",
         "连接 duplicate-outcome detection、",
         "owner、updated eval 和 traceable outcome",
         "source-grounding review、tenant-boundary containment",
