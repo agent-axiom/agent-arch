@@ -4691,6 +4691,8 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
             "事故协调（Incident coordination）",
             "评测模式（eval schema）",
             "评测门禁与验证器契约（eval gate and verifier contract）",
+            "[评测门禁与验证器契约（eval gate and verifier contract）]"
+            "(../../appendix/eval-schema.zh.md)应该把",
             "行为与控制评测表面（behavioral and control eval surfaces）",
             "重复预防（duplicate prevention）",
             "载荷变更检查（payload-mutation check）",
@@ -4726,6 +4728,8 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
         "Incident coordination 需要",
         "事件协调（Incident coordination）需要升级路径检查",
         "不同 behavioral and control eval surfaces",
+        "[评测门禁与验证器契约（eval gate and verifier contract）]"
+        "(../../appendix/eval-schema.zh.md) 应该把",
         "需要 duplicate prevention、payload-mutation check",
         "old-gateway-route probe 和 emergency-disable assertion",
         "需要 source-grounding eval、tenant-filter bypass probe",
