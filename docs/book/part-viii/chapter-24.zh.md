@@ -94,7 +94,7 @@
 - 紧急遏制；
 - 运行时控制路径（runtime-control paths）与受治理的契约版本（governed contract versions）之间的强链接。
 
-Google Research 把这压缩成三个很实用的原则：human controllers、limited powers 和 observable actions。[^google-secure-agents]
+Google Research 把这压缩成三个很实用的原则：人类控制者（human controllers）、有限权力（limited powers）和可观察动作（observable actions）。[^google-secure-agents]
 
 ## 5. 过渡阶段尤其危险
 
@@ -135,7 +135,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 
 - 模型能不能隐藏一个有问题的意图；
 - 它能不能绕过或滥用审批路径；
-- 它能不能利用 interruption、expiry 或 re-init semantics 重新获得更多自主性；
+- 它能不能利用中断（interruption）、过期（expiry）或重新初始化语义（re-init semantics）重新获得更多自主性；
 - 它能不能把执行导向更弱的编排模式（orchestration pattern）或委派工作器路径（delegated worker path）；
 - 某次运行时变更会不会削弱监督；
 - 模式漂移（schema drift）或契约不匹配（contract mismatch）会不会打开更弱的控制路径；

@@ -3877,6 +3877,24 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_chinese_control_principle_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "人类控制者（human controllers）、有限权力（limited powers）和"
+        "可观察动作（observable actions）",
+        "中断（interruption）、过期（expiry）或重新初始化语义（re-init semantics）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "原则：human controllers、limited powers 和 observable actions",
+        "利用 interruption、expiry 或 re-init semantics",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_chinese_diagram_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
