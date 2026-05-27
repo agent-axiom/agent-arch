@@ -6585,8 +6585,12 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
             "incident state",
         ),
         "docs/book/part-viii/chapter-20.zh.md": (
-            *common_markers,
+            "变更案例主线说明（Change case-spine note）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
             "变更包（change packet）",
+            "规范案例（canonical cases）",
             "重试（retries）",
             "写入能力（write capabilities）",
             "发布承载变更（release-bearing）",
@@ -6607,7 +6611,12 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
     forbidden_chinese_markers = (
+        "**Change case-spine note：**",
         "change packet 应该能对三个 canonical cases",
+        "三个 canonical cases",
+        "Support triage 会让",
+        "Internal knowledge assistant 会让",
+        "Incident coordination 会让",
         "retries 和 write capabilities 的变化变成 release-bearing",
         "freshness windows、",
         "access control 的变化变成 release-bearing",
