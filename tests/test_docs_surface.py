@@ -3888,6 +3888,7 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
 def test_chapter_24_chinese_intro_artifact_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
+        "智能体失配（`agentic misalignment`）",
         "本章的主要工件是风险场景与控制计划（risk scenario and control plan）",
         "误用路径（misuse path）、受影响权限、控制（controls）、"
         "遏制（containment）与监控（monitoring）",
@@ -3897,6 +3898,7 @@ def test_chapter_24_chinese_intro_artifact_labels_are_localized() -> None:
         assert expected_marker in text, expected_marker
 
     forbidden_markers = (
+        "称为 `agentic misalignment`",
         "本章的主要工件是 风险场景",
         "描述 misuse path、受影响权限、controls、containment 与 monitoring",
         "prompt-injection 指南",
