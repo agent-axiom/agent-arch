@@ -39,7 +39,7 @@
 **变更案例主线说明（Change case-spine note）：**变更包（change packet）应该能对三个规范案例（canonical cases）都做分类。支持分诊（Support triage）会让[审批规则（approval rules）](../../appendix/approval-schema.zh.md)、重试（retries）和写入能力（write capabilities）的变化变成发布承载变更（release-bearing）。内部知识助手（Internal knowledge assistant）会让[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)、新鲜度窗口（freshness windows）、[记忆写入语义（memory write semantics）](../../appendix/memory-retrieval-schema.zh.md)和访问控制（access control）的变化变成发布承载变更（release-bearing）。事故协调（Incident coordination）会让升级策略（escalation policy）、通知路由（notification routing）、负责人转移（ownership transfer）和[事故状态（incident state）](../../appendix/incident-record-schema.zh.md)的变化变成发布承载变更（release-bearing）。
 
 !!! info "需要变更工件？"
-    如果你需要更落地的工程层，可以打开 [变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)、[生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md) 和 [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)。
+    如果你需要更落地的工程层，可以打开[变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)、[生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)和[评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)。
 
 ## 2. 在智能体系统里，什么都算变更
 
