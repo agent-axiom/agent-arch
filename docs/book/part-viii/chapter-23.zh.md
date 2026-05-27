@@ -271,7 +271,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 系统会在被宣布 `retired` 之前先失去行动能力；
 - principals、connectors、memory writes、paused runs、capability sessions、orchestration patterns 与 background jobs 会被有意识地逐层收缩；
 - 替换是分阶段的，而不是二元 cutover；
-- 已废弃的 approval 与 runtime-control schemas 会被真正关闭，而不是作为隐藏兼容路径长期残留；
+- 已废弃的审批模式（approval schemas）与运行时控制模式（runtime-control schemas）会被真正关闭，而不是作为隐藏兼容路径长期残留；
 - 归档状态有负责人，也有保留决策；
 - 已废弃模式会变成真正被阻断的路径，而不只是 warnings。
 
