@@ -5717,20 +5717,23 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         "emergency-only capabilities",
         "notification channels",
     )
-    checked_files = (
+    english_files = (
         "docs/book/part-viii/chapter-23.md",
         "docs/book/part-viii/chapter-23.en.md",
-        "docs/book/part-viii/chapter-23.zh.md",
     )
-
-    _assert_files_contain_all(checked_files, required_markers)
-    for path in checked_files:
+    _assert_files_contain_all(english_files, required_markers)
+    for path in english_files:
         text = _read(path)
         assert "internal knowledge assistant" not in text, path
         assert "incident coordination" not in text, path
 
     chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
     expected_chinese_markers = (
+        "退役案例主线说明（Retirement case-spine note）",
+        "规范案例（canonical case）",
+        "支持分诊（Support triage）",
+        "内部知识助手（Internal knowledge assistant）",
+        "事故协调（Incident coordination）",
         "行动权（right to act）",
         "已弃用写入路径（deprecated write paths）",
         "暂停审批（paused approvals）",
@@ -5747,6 +5750,11 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         assert expected_chinese_marker in chinese_text, expected_chinese_marker
 
     forbidden_chinese_markers = (
+        "**Retirement case-spine note：**",
+        "每个 canonical case",
+        "Support triage 关闭",
+        "Internal knowledge assistant 退役",
+        "Incident coordination 在",
         "不同的 right to act",
         "关闭 deprecated write paths 和 paused approvals",
         "退役 stale corpora、obsolete embeddings 和 memory-write rules",
