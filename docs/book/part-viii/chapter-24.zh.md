@@ -237,10 +237,10 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 更高的标准应该是：
 
 - 类似破坏的行为会被独立于普通失效单独测试；
-- 高风险动作会绑定到精确载荷审批、专用 principals、已链接的 contract versions、受治理的 re-init 行为与已评审的 worker boundaries；
-- rollout、replacement、retirement 与 orchestration-pattern change 这些过渡期里，自主性会被收紧，而不是放松；
-- 追踪能把意图、审批、artifact bundle 和 side effect 连起来；
-- 紧急遏制能缩小某个 capability family，而不用等整套系统 shutdown。
+- 高风险动作会绑定到精确载荷审批、专用主体（principals）、已链接的契约版本（contract versions）、受治理的重新初始化（re-init）行为与已评审的工作器边界（worker boundaries）；
+- 发布（rollout）、替换（replacement）、退役（retirement）与编排模式变更（orchestration-pattern change）这些过渡期里，自主性会被收紧，而不是放松；
+- 追踪能把意图、审批、工件包（artifact bundle）和副作用（side effect）连起来；
+- 紧急遏制能缩小某个能力族（capability family），而不用等整套系统关闭（shutdown）。
 
 如果这些条件大多不成立，那团队也许已经有一些安全控制，但还没有足够支撑高风险自主性的控制层。
 
@@ -248,10 +248,10 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 - 你是否把类似破坏的行为和普通失效分开测试？
 - 高风险副作用能不能反推出具体的 `approval_id` 与 `tool_principal`？
-- 系统能不能紧急停掉某个 capability family，而不是只能整套 runtime 一起关？
-- 你是否有针对隐瞒、approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse 的行为评测？
-- 发布、替换、退役、interruption、schema-transition windows 与 orchestration-pattern changes 期间的自主性是否被收紧？
-- 同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里？
+- 系统能不能紧急停掉某个能力族（capability family），而不是只能整套运行时（runtime）一起关？
+- 你是否有针对隐瞒、审批路径滥用（approval-path misuse）、审批规避（approval evasion）、会话重新初始化滥用（session re-init misuse）与委派工作器滥用（delegated-worker misuse）的行为评测？
+- 发布、替换、退役、中断（interruption）、模式迁移窗口（schema-transition windows）与编排模式变更（orchestration-pattern changes）期间的自主性是否被收紧？
+- 同一个主体（principal）会不会同时出现在低风险（low-risk）和高风险（high-risk）路径里？
 
 如果连续几个答案都是“否”，那你已经拥有自主性，但还没有足够的控制层。
 
