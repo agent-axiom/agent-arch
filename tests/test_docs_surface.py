@@ -12128,6 +12128,7 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
     assert "遏制路径（containment paths）" in chinese_text
     assert "写入能力（write capability）" in chinese_text
     assert "检索范围（retrieval scope）" in chinese_text
+    assert "暂停记忆写入动作（pauses memory writes）" in chinese_text
     assert "升级状态（escalation status）" in chinese_text
     assert "追踪模式与事件目录" in chinese_text
     assert "策略包模式与审批契约" in chinese_text
@@ -12146,6 +12147,7 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
         "选择不同 containment paths",
         "冻结 write capability",
         "收窄 retrieval scope",
+        "暂停记忆写入（pauses memory writes）",
         "记录 escalation status",
         "追踪 Schema 与事件目录",
         "策略包 Schema 与审批契约",
