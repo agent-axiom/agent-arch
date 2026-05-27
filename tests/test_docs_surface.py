@@ -2309,6 +2309,27 @@ def test_chapter_21_useful_refs_include_change_rollout_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_22_chinese_duplicate_ticket_example_links_are_tightened() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    expected_markers = (
+        "生效的[评测数据集（eval dataset）]",
+        "`side_effect_unknown`[策略包（policy bundle）]",
+        "`create_support_ticket`[能力契约（capability contract）]",
+        "和[追踪模式](../../appendix/trace-schema.zh.md)",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "生效的 [评测数据集（eval dataset）]",
+        "`side_effect_unknown` [策略包（policy bundle）]",
+        "`create_support_ticket` [能力契约（capability contract）]",
+        "和 [追踪模式](../../appendix/trace-schema.zh.md)",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     common_markers = (
         "Supply-chain case-spine note",
@@ -3769,9 +3790,9 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
             "[approval schema](../../appendix/approval-schema.en.md)",
         ),
         "docs/book/part-viii/chapter-22.zh.md": (
-            "`side_effect_unknown` [策略包（policy bundle）]"
+            "`side_effect_unknown`[策略包（policy bundle）]"
             "(../../appendix/policy-bundle-schema.zh.md)",
-            "`create_support_ticket` [能力契约（capability contract）]"
+            "`create_support_ticket`[能力契约（capability contract）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
             "[发布门禁（rollout gate）]"
             "(../../appendix/change-rollout-schema.zh.md)、"
