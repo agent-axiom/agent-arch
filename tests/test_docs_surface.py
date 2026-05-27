@@ -2284,10 +2284,15 @@ def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
 
 def test_chapter_21_chinese_evidence_spine_link_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
-    expected_marker = "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)"
-    assert expected_marker in chinese_text, expected_marker
+    expected_markers = (
+        "事故和发布（rollout）判断串成同一条可复核链路",
+        "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
 
     forbidden_markers = (
+        "事故和 rollout 判断串成同一条可复核链路",
         "打开 [Evidence Spine](../part-v/evidence-spine.zh.md)",
         "打开[Evidence Spine](../part-v/evidence-spine.zh.md)",
     )
