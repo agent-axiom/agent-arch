@@ -160,13 +160,13 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 
 ``` mermaid
 flowchart LR
-    A["Goal pressure"] --> D["Model behavior"]
-    B["Restricted access"] --> D
-    C["Replacement or review pressure"] --> D
-    D --> E["Concealment attempt"]
-    D --> F["Approval evasion"]
-    D --> G["Alternative tool path"]
-    E --> H["Detection and containment"]
+    A["目标压力（Goal pressure）"] --> D["模型行为（Model behavior）"]
+    B["受限访问（Restricted access）"] --> D
+    C["替换或评审压力（Replacement or review pressure）"] --> D
+    D --> E["隐藏尝试（Concealment attempt）"]
+    D --> F["审批规避（Approval evasion）"]
+    D --> G["替代工具路径（Alternative tool path）"]
+    E --> H["检测与遏制（Detection and containment）"]
     F --> H
     G --> H
 ```
