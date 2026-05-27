@@ -2194,6 +2194,23 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
         assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
+def test_chapter_21_chinese_assurance_example_links_are_tightened() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
+    expected_markers = (
+        "更新后的[评测（eval）]",
+        "已确认的[可追踪结果（traceable outcome）]"
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "更新后的 [评测（eval）]",
+        "已确认的 [可追踪结果（traceable outcome）] 都通过",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-21.md": (
