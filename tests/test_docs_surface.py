@@ -6212,7 +6212,7 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
             "[已废弃的审批模式（approval schema）](../../appendix/approval-schema.zh.md)",
             "[已废弃的运行时控制模式（runtime-control schema）]"
             "(../../appendix/lifecycle-artifact-schema.zh.md)",
-            "[已废弃的编排模式（orchestration pattern）或 worker-boundary 策略"
+            "[已废弃的编排模式（orchestration pattern）或工作者边界策略"
             "（worker-boundary policy）]"
             "(../../appendix/change-rollout-schema.zh.md)",
             "[已废弃的能力会话契约（capability-session contract）]"
@@ -6232,6 +6232,9 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
         "[已废弃的 runtime-control schema]"
         "(../../appendix/lifecycle-artifact-schema.zh.md)",
         "[已废弃的 orchestration pattern 或 worker-boundary policy]"
+        "(../../appendix/change-rollout-schema.zh.md)",
+        "[已废弃的编排模式（orchestration pattern）或 worker-boundary 策略"
+        "（worker-boundary policy）]"
         "(../../appendix/change-rollout-schema.zh.md)",
         "[已废弃的 capability-session contract]"
         "(../../appendix/lifecycle-artifact-schema.zh.md)",
