@@ -481,6 +481,7 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
         "能力会话状态（capability-session state）与中断血缘（interruption lineage）",
         "编排模式血缘（orchestration-pattern lineage）与工作边界决策（worker-boundary decisions）",
         "委托授权血缘（delegated authorization lineage）与撤销状态（revoke state）",
+        "跨越上下文重置（context reset）与角色交接边界的交接工件血缘（handoff-artifact lineage）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -490,6 +491,7 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
         "capability-session state 与 interruption lineage",
         "orchestration-pattern lineage 与 worker-boundary decisions",
         "delegated authorization lineage 与 revoke state",
+        "跨越 context reset 与角色交接边界的 handoff-artifact lineage",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker

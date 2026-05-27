@@ -22,7 +22,7 @@
 - 编排模式血缘（orchestration-pattern lineage）与工作边界决策（worker-boundary decisions）；
 - 委托授权血缘（delegated authorization lineage）与撤销状态（revoke state）；
 - 验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务（verifier evidence retention obligations）](../../appendix/eval-schema.zh.md)；
-- 跨越 context reset 与角色交接边界的 handoff-artifact lineage；[^anthropic-harness]
+- 跨越上下文重置（context reset）与角色交接边界的交接工件血缘（handoff-artifact lineage）；[^anthropic-harness]
 - 外部集成；
 - 用户预期；
 - 依赖它的工作流。
