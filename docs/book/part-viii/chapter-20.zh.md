@@ -34,7 +34,7 @@
 
 这也正是本章的核心承诺。它要帮助读者看见：承载发布意义的判断是如何变成一套运行纪律的，不是停留在抽象的风险提醒里，而是落实为一套可重复的方法，用来给变更分类、为不同变更匹配证据，并决定什么值得进入正式门禁。本章的主要工件是变更包（change packet）：一个发布重要性决策包，而不是普通任务日志或项目管理记录。
 
-如果你想看一页专门说明请求、策略、审批、追踪、评测、事故和 rollout 判断如何被维持在同一条链上，可以直接打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)。
+如果你想看一页专门说明请求、策略、审批、追踪、评测、事故和发布（rollout）判断如何被维持在同一条链上，可以直接打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)。
 
 **变更案例主线说明（Change case-spine note）：**变更包（change packet）应该能对三个规范案例（canonical cases）都做分类。支持分诊（Support triage）会让[审批规则（approval rules）](../../appendix/approval-schema.zh.md)、重试（retries）和写入能力（write capabilities）的变化变成发布承载变更（release-bearing）。内部知识助手（Internal knowledge assistant）会让[检索语料（retrieval corpus）](../../appendix/memory-retrieval-schema.zh.md)、新鲜度窗口（freshness windows）、[记忆写入语义（memory write semantics）](../../appendix/memory-retrieval-schema.zh.md)和访问控制（access control）的变化变成发布承载变更（release-bearing）。事故协调（Incident coordination）会让升级策略（escalation policy）、通知路由（notification routing）、负责人转移（ownership transfer）和[事故状态（incident state）](../../appendix/incident-record-schema.zh.md)的变化变成发布承载变更（release-bearing）。
 
