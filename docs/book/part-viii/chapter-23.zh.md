@@ -285,7 +285,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 能力能否按阶段关闭，而不是只能“一键全关”？
 - 关闭后记忆、追踪、审批、暂停运行状态（paused-run state）和能力会话状态（capability-session state）怎么处理，是否清楚？
 - 是否有分阶段替换计划？
-- 主体、连接器、出口访问、paused approvals、capability-session re-init 和 background routes 能否快速撤销或排空？
+- 主体、连接器、出口访问、暂停审批（paused approvals）、能力会话重新初始化（capability-session re-init）和后台路由（background routes）能否快速撤销或排空？
 - 已归档工件和历史状态的负责人是否明确？
 
 如果连续几个问题的答案都是“否”，那你的生命周期其实还停留在发布，而不是完整运营。

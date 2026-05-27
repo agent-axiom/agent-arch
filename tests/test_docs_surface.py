@@ -484,6 +484,8 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
         "跨越上下文重置（context reset）与角色交接边界的交接工件血缘（handoff-artifact lineage）",
         "关闭后记忆、追踪、审批、暂停运行状态（paused-run state）和"
         "能力会话状态（capability-session state）怎么处理",
+        "主体、连接器、出口访问、暂停审批（paused approvals）、能力会话重新初始化"
+        "（capability-session re-init）和后台路由（background routes）能否快速撤销或排空",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -495,6 +497,8 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
         "delegated authorization lineage 与 revoke state",
         "跨越 context reset 与角色交接边界的 handoff-artifact lineage",
         "关闭后记忆、追踪、审批、paused-run state 和 capability-session state 怎么处理",
+        "主体、连接器、出口访问、paused approvals、capability-session re-init 和 "
+        "background routes 能否快速撤销或排空",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
