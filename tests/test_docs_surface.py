@@ -3790,6 +3790,33 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
+def test_chapter_24_chinese_risk_surface_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "密钥（secrets）和记忆写入（memory writes）",
+        "暂停审批（paused approval）与恢复路径",
+        "能力会话（capability-session）中断与重新初始化路径",
+        "编排模式（orchestration-pattern）选择与委派工作器（delegated worker）路径",
+        "暂停审批路径（paused approval path）",
+        "能力会话过期（capability-session expiry）或重新初始化路径（re-init path）",
+        "后台路由（background routes）或可恢复路径（resumable paths）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "secrets 和 memory writes",
+        "paused approval 与恢复路径",
+        "capability-session 中断与重新初始化路径",
+        "orchestration-pattern 选择与 delegated worker 路径",
+        "滥用 paused approval path",
+        "capability-session expiry 或 re-init path",
+        "background routes 或 resumable paths",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-24.md": (

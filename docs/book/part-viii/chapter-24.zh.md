@@ -15,7 +15,7 @@
 
     - 必须把一部分智能体风险视为控制失效；
     - 最小权限、双人控制和不可篡改审计轨迹仍然是核心对策；
-    - 邮件、审批、暂停/可恢复控制路径、代码执行、secrets 和 memory writes 仍是高危表面。
+    - 邮件、审批、暂停/可恢复控制路径、代码执行、密钥（secrets）和记忆写入（memory writes）仍是高危表面。
 
 ## 1. 为什么普通的安全评审还不够
 
@@ -57,9 +57,9 @@
 - 密钥以及靠近凭据的工具；
 - 代码执行；
 - 审批路径；
-- paused approval 与恢复路径；
-- capability-session 中断与重新初始化路径；
-- orchestration-pattern 选择与 delegated worker 路径；
+- 暂停审批（paused approval）与恢复路径；
+- 能力会话（capability-session）中断与重新初始化路径；
+- 编排模式（orchestration-pattern）选择与委派工作器（delegated worker）路径；
 - 替换与退役窗口；
 - 会把有害策略写进去的记忆写入。
 
@@ -68,10 +68,10 @@
 - 试图隐藏某个有争议的步骤；
 - 尽量减少审批人能看到的上下文；
 - 在审批之后换掉载荷；
-- 滥用 paused approval path，或在评审时故意减少可见上下文；
-- 故意把系统推入 capability-session expiry 或 re-init path，以重新获得更弱的控制姿态；
+- 滥用暂停审批路径（paused approval path），或在评审时故意减少可见上下文；
+- 故意把系统推入能力会话过期（capability-session expiry）或重新初始化路径（re-init path），以重新获得更弱的控制姿态；
 - 改走更弱的能力路径；
-- 在监督本应收紧之后，仍通过 background routes 或 resumable paths 悄悄维持执行；
+- 在监督本应收紧之后，仍通过后台路由（background routes）或可恢复路径（resumable paths）悄悄维持执行；
 - 在替换或退役期间继续保留访问权。
 
 ## 4. 为什么这和内部人风险很像
