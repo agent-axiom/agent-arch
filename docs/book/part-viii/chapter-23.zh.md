@@ -273,7 +273,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - 替换是分阶段的，而不是二元切换（cutover）；
 - 已废弃的审批模式（approval schemas）与运行时控制模式（runtime-control schemas）会被真正关闭，而不是作为隐藏兼容路径长期残留；
 - 归档状态有负责人，也有保留决策；
-- 已废弃模式会变成真正被阻断的路径，而不只是 warnings。
+- 已废弃模式会变成真正被阻断的路径，而不只是警告（warnings）。
 
 如果这些条件大多不成立，那团队也许已经有一些关闭机制，但还没有真正的终止使用纪律。
 

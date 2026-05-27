@@ -511,6 +511,7 @@ def test_chapter_23_chinese_retirement_maturity_labels_are_localized() -> None:
         "暂停运行（paused runs）、能力会话（capability sessions）、"
         "编排模式（orchestration patterns）与后台任务（background jobs）",
         "替换是分阶段的，而不是二元切换（cutover）",
+        "已废弃模式会变成真正被阻断的路径，而不只是警告（warnings）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -519,6 +520,7 @@ def test_chapter_23_chinese_retirement_maturity_labels_are_localized() -> None:
         "principals、connectors、memory writes、paused runs、capability sessions、"
         "orchestration patterns 与 background jobs",
         "替换是分阶段的，而不是二元 cutover",
+        "已废弃模式会变成真正被阻断的路径，而不只是 warnings",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
