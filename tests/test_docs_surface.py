@@ -4865,6 +4865,8 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
             "绕过路径（bypass path）盲区",
             "金丝雀（canary）",
             "追踪与遥测覆盖记录（trace and telemetry coverage record）",
+            "[追踪与遥测覆盖记录（trace and telemetry coverage record）]"
+            "(../../appendix/trace-schema.zh.md)应该展示",
             "规范案例（canonical cases）的可观测性覆盖（observability coverage）",
             "重复结果（duplicate outcome）",
             "绕过盲点（bypass blind spots）",
@@ -4903,6 +4905,8 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
         "盲区 bypass path",
         "canary 是否可以安全扩大",
         "三个 canonical cases 的 observability coverage",
+        "[追踪与遥测覆盖记录（trace and telemetry coverage record）]"
+        "(../../appendix/trace-schema.zh.md) 应该展示",
         "duplicate outcome 和 bypass blind spots",
         "source-grounding verdicts、tenant-filter decisions",
         "需要覆盖 [检索来源追踪",
