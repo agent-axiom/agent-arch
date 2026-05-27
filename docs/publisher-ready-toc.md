@@ -642,7 +642,7 @@ Drafted and ready for editorial assembly:
 - print/companion split;
 - public and runtime/reference links.
 
-Still needs human/editorial input before external submission:
+Still blocked before external submission:
 
 - final author bio and credential framing;
 - independent copy-edit of the selected sample chapter for print rhythm;

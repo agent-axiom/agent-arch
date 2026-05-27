@@ -14,7 +14,7 @@ _Current as of May 20, 2026._
 
 ### Editorial QA pass on May 14, 2026
 
-The first publisher-readiness QA package is now closed: the Chapter 1 decision frame was moved from a table into extraction-safe prose for HTML/PDF/plain-text surfaces, and fast-moving chapters, Sources, and What’s New now carry a fresh editorial review date.
+The first review-remediation QA slice is closed: the Chapter 1 decision frame was moved from a table into extraction-safe prose for HTML/PDF/plain-text surfaces, and fast-moving chapters, Sources, and What’s New now carry a fresh editorial review date.
 
 Why it matters: the external book surface now depends less on table rendering quirks and is clearer about when the fast-moving agent-security sections were reviewed.
 
@@ -105,7 +105,7 @@ Why it matters: the new topics are now visible not only inside individual chapte
 
 ### A cleaner site before publication
 
-The publisher-facing quality pass is in progress, not fully closed.
+The print/publication quality pass is in progress, not fully closed.
 
 Closed so far:
 
@@ -113,12 +113,12 @@ Closed so far:
 - OpenGraph/Twitter metadata and a social preview image were added;
 - the search index, sitemap, robots file, local assets, anchors, alt text, and external links were checked;
 - basic navigation and canonical fallback redirects cover the main hand-copied entry points;
-- the public-link availability record was refreshed on May 20, 2026 after all nine publisher-packet links returned HTTP 200;
-- the publisher packet blocker register, waiver/decision log, line-length guard, and packet labels are print/export-friendly;
+- the public-link availability record was refreshed on May 20, 2026 after all nine public-packet links returned HTTP 200;
+- the packet blocker register, waiver/decision log, line-length guard, and packet labels are print/export-friendly;
 - the Part VIII role map is now print-friendly;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-Remaining before this can be called publisher-ready: deep EN/ZH cleanup, independent rendering/export QA, sample-chapter polish, and target-specific manuscript/online-companion packaging.
+Remaining before this can be called print-ready: deep EN/ZH cleanup, independent rendering/export QA, sample-chapter polish, and target-specific manuscript/online-companion packaging.
 
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 
