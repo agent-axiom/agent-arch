@@ -322,7 +322,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [编排模式治理变更](../../appendix/change-rollout-schema.zh.md)没有工件血缘；
 - 没有人知道事故发生时到底是哪一个精确工件在运行；
 - [事故证据](../../appendix/incident-record-schema.zh.md)中缺少[契约版本链接](../../appendix/trace-schema.zh.md)；
-- 发布或保障 evidence 中缺少[验证器契约血缘](../../appendix/eval-schema.zh.md)；
+- 发布或保障证据（evidence）中缺少[验证器契约血缘](../../appendix/eval-schema.zh.md)；
 - [已废弃模式](../../appendix/lifecycle-artifact-schema.zh.md)在生产环境里活得太久；
 - [已批准清单](../../appendix/registry-operations-handbook.zh.md)只存在于 wiki，而不存在于运营工具。
 
