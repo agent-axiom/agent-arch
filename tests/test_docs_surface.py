@@ -493,11 +493,19 @@ def test_chapter_23_chinese_intro_artifact_label_is_localized() -> None:
 
 def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
-    expected_marker = "事故、检测、重新设计和发布（rollout）规则变更之间必须闭环"
-    assert expected_marker in chinese_text, expected_marker
+    expected_markers = (
+        "事故、检测、重新设计和发布（rollout）规则变更之间必须闭环",
+        "不只是发布（rollout）工件，也是一种保障场景",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
 
-    forbidden_marker = "事故、检测、重新设计和 rollout 规则变更之间必须闭环"
-    assert forbidden_marker not in chinese_text, forbidden_marker
+    forbidden_markers = (
+        "事故、检测、重新设计和 rollout 规则变更之间必须闭环",
+        "不只是 rollout 工件，也是一种保障场景",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_21_chinese_intro_artifact_label_is_localized() -> None:
