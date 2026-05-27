@@ -1961,11 +1961,17 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
             "trace schema",
         ),
         "docs/book/part-viii/chapter-19.zh.md": (
-            *common_markers,
+            "ADLC 案例主线说明（ADLC case-spine note）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
             "生命周期状态模型（lifecycle state model）",
+            "规范案例（canonical cases）",
             "发布承载表面（release-bearing surfaces）",
             "写能力契约（write-capability contract）",
+            "重复工单评测（duplicate-ticket evals）",
             "来源扎根评测（source-grounding evals）",
+            "响应者角色映射（responder-role map）",
             "受治理变更集（governed change set）",
             "评测数据集（eval dataset）",
             "策略包（policy bundle）",
@@ -1983,10 +1989,16 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
     forbidden_chinese_markers = (
+        "**ADLC case-spine note：**",
         "lifecycle state model 应该把三个 canonical cases",
+        "三个 canonical cases",
         "release-bearing surfaces 来跟踪",
+        "Support triage 连接",
+        "Internal knowledge assistant 连接",
+        "Incident coordination 把",
         "write-capability contract、duplicate-ticket evals",
         "source-grounding evals、memory-write rules",
+        "responder-role map、notification contract",
         "作为一个 governed change set 连接起来",
     )
     for forbidden_chinese_marker in forbidden_chinese_markers:
