@@ -3877,6 +3877,27 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_chinese_identifier_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "独立的工具主体（`tool principal`）",
+        "追踪编号（`trace_id`）、审批编号（`approval_id`）、"
+        "工具主体（`tool_principal`）、契约版本（`contract_version`）与"
+        "工件包（`artifact_bundle`）",
+        "审批编号（`approval_id`）与工具主体（`tool_principal`）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "使用独立的 `tool principal`",
+        "`trace_id`、`approval_id`、`tool_principal`、`contract_version` 与 `artifact_bundle`",
+        "具体的 `approval_id` 与 `tool_principal`",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_chinese_control_principle_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (

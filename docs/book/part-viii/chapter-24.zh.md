@@ -147,11 +147,11 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 这里最可靠的手段通常不是“魔法”，而是明确又朴素的工程控制：
 
 - 能力范围足够小；
-- 高风险动作使用独立的 `tool principal`；
+- 高风险动作使用独立的工具主体（`tool principal`）；
 - 审批针对的是具体载荷，而不是抽象的“可以继续”；
 - 能力会话重新初始化（capability-session re-init）在拒绝（denied）、允许（allowed）或审批绑定（approval-bound）之间有明确控制；
 - 追踪同时记录策略决策和实际副作用；
-- `trace_id`、`approval_id`、`tool_principal`、`contract_version` 与 `artifact_bundle` 之间有不可断开的链接；
+- 追踪编号（`trace_id`）、审批编号（`approval_id`）、工具主体（`tool_principal`）、契约版本（`contract_version`）与工件包（`artifact_bundle`）之间有不可断开的链接；
 - 能力族有紧急停用路径；
 - 行为评测会专门测试破坏、隐瞒、规避监督以及编排模式滥用（orchestration-pattern misuse）。
 
@@ -247,7 +247,7 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 ## 11. 实用检查清单
 
 - 你是否把类似破坏的行为和普通失效分开测试？
-- 高风险副作用能不能反推出具体的 `approval_id` 与 `tool_principal`？
+- 高风险副作用能不能反推出具体的审批编号（`approval_id`）与工具主体（`tool_principal`）？
 - 系统能不能紧急停掉某个能力族（capability family），而不是只能整套运行时（runtime）一起关？
 - 你是否有针对隐瞒、审批路径滥用（approval-path misuse）、审批规避（approval evasion）、会话重新初始化滥用（session re-init misuse）与委派工作器滥用（delegated-worker misuse）的行为评测？
 - 发布、替换、退役、中断（interruption）、模式迁移窗口（schema-transition windows）与编排模式变更（orchestration-pattern changes）期间的自主性是否被收紧？
