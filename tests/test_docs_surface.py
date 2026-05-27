@@ -479,6 +479,7 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
     expected_markers = (
         "暂停运行状态（paused-run state）与后台运行状态（background-run state）",
         "能力会话状态（capability-session state）与中断血缘（interruption lineage）",
+        "编排模式血缘（orchestration-pattern lineage）与工作边界决策（worker-boundary decisions）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -486,6 +487,7 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
     forbidden_markers = (
         "paused-run state 与 background-run state",
         "capability-session state 与 interruption lineage",
+        "orchestration-pattern lineage 与 worker-boundary decisions",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
