@@ -1,55 +1,55 @@
-# Книга об архитектуре агентов (Agent Architecture Book)
+# Книга об архитектуре агентных систем
 
 ![Coverage](docs/assets/badges/coverage.svg)
 
-[Английская версия (English version)](README.md)
-[Китайская версия (Chinese version)](README.zh.md)
-[Руководство для вкладов (Contributing guide)](CONTRIBUTING.md)
-[Кодекс поведения (Code of Conduct)](CODE_OF_CONDUCT.md)
+[Английская версия](README.md)
+[Китайская версия](README.zh.md)
+[Руководство для вкладов](CONTRIBUTING.md)
+[Кодекс поведения](CODE_OF_CONDUCT.md)
 
-Практическая книга и документационный сайт о безопасной, управляемой и готовой к production архитектуре (production-ready architecture) AI-агентов.
+Практическая книга и документационный сайт о безопасной, управляемой и готовой к промышленной эксплуатации архитектуре ИИ-агентов.
 
-Этот проект для тех, кто хочет строить не магию для демо, а спокойные, контролируемые и безопасные агентные системы (controlled and safe agent systems), которые выдерживают контакт с реальными пользователями (real users), реальными инструментами (real tools) и реальной эксплуатацией (real operations).
+Этот проект для тех, кто хочет строить не магию для демонстраций, а спокойные, контролируемые и безопасные агентные системы, которые выдерживают контакт с реальными пользователями, реальными инструментами и реальной эксплуатацией.
 
 ![Превью книги об архитектуре агентов](docs/assets/images/readme.png)
 
-## Зачем существует этот репозиторий (why this repository exists)
+## Зачем существует этот репозиторий
 
-Большинство материалов про агентов оптимизируют путь к быстрому демо (quick demo). Реальным системам нужно больше, чем удачный промптинг (prompting) и вызовы инструментов (tool calls). Им нужны:
+Большинство материалов про агентов оптимизируют путь к быстрой демонстрации. Реальным системам нужно больше, чем удачно сформулированный запрос и вызовы инструментов. Им нужны:
 
-- явные границы доверия (trust boundaries)
-- слой политик (policy layer) и подтверждений (approvals)
-- дисциплина памяти (memory discipline)
-- наблюдаемость (observability) и оценки (evals)
-- контроль раскатки (rollout control) и управление жизненным циклом (lifecycle governance)
+- явные границы доверия;
+- слой политик и подтверждений;
+- дисциплина памяти;
+- наблюдаемость и оценки;
+- контроль поэтапного выпуска и управление жизненным циклом.
 
 Этот репозиторий существует, чтобы документировать всю эту операционную модель целиком.
 
-## Что есть в этом репозитории (what is in this repository)
+## Что есть в этом репозитории
 
-- многоязычная книга по архитектуре безопасных AI-агентов
+- многоязычная книга по архитектуре безопасных ИИ-агентов
 - документационный сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
-- исполняемая эталонная среда исполнения (runtime) в `agent_runtime_ref/`
+- исполняемая эталонная среда в `agent_runtime_ref/`
 - практические схемы, чеклисты и операционные артефакты
-- современный Python-first стек на базе `uv`
+- современный стек с приоритетом Python и `uv`
 
-## Почему это стоит читать (why read this)
+## Почему это стоит читать
 
-- **Нейтральная к поставщикам архитектура (vendor-neutral architecture).** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк (framework) или провайдера моделей (model provider).
-- **Производственная реальность (production reality) вместо театра агентов (agent theater).** Фокус на политиках, подтверждениях, наблюдаемости, оценках (evals) и дисциплине жизненного цикла.
-- **Исполняемый эталонный слой.** В репозитории есть не только концептуальный текст (conceptual prose), но и исполняемые эталонные артефакты (reference assets).
-- **Один сквозной кейс по всему стеку (full-stack case).** Триаж поддержки / ветка дубля тикета (support-triage / duplicate-ticket thread) связывает книгу, эталонные схемы (reference schemas) и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от поиска (retrieval) и выполнения инструментов (tool execution) до телеметрии (telemetry), оценок (evals), раскатки (rollout), жизненного цикла (lifecycle) и управления реестром (registry control).
-- **Три канонических сценария (canonical cases) для проверки покрытия (coverage check).** Триаж поддержки (Support triage) покрывает записывающие возможности (write capabilities) и подтверждения (approvals), внутренний ассистент знаний (Internal knowledge assistant) — поиск (retrieval), память (memory), свежесть (freshness) и происхождение знаний (knowledge provenance), а координация инцидентов (Incident coordination) — трассы (traces), эскалацию (escalation), побочные эффекты уведомлений (notification side effects), владельца реагирования (response ownership) и обучение после инцидента (post-incident learning).
+- **Нейтральная к поставщикам архитектура.** Книга опирается на принципы и операционные модели, которые переживут любой конкретный фреймворк или поставщика моделей.
+- **Промышленная эксплуатация вместо театра агентов.** Фокус на политиках, подтверждениях, наблюдаемости, оценках и дисциплине жизненного цикла.
+- **Исполняемый эталонный слой.** В репозитории есть не только концептуальный текст, но и исполняемые эталонные артефакты.
+- **Один сквозной сценарий по всему стеку.** Триаж поддержки и ветка дубля тикета связывают книгу, эталонные схемы и `agent_runtime_ref`, чтобы читатель мог проследить один инцидент от поиска и выполнения инструментов до телеметрии, оценок, поэтапного выпуска, жизненного цикла и управления реестром.
+- **Три канонических сценария для проверки покрытия.** Триаж поддержки покрывает записывающие возможности и подтверждения, внутренний ассистент знаний — поиск, память, свежесть и происхождение знаний, а координация инцидентов — трассы, эскалацию, побочные эффекты уведомлений, владельца реагирования и обучение после инцидента.
 
-## С чего начать (Start Here)
+## С чего начать
 
 - Сайт проекта: <https://agent-axiom.github.io/agent-arch/>
 - Главная страница книги: [docs/index.md](docs/index.md)
 - Навигационная стартовая страница: [docs/start-here.md](docs/start-here.md)
-- Сквозная цепочка схем безопасного агента (Safe-agent schema spine): [схема трасс (trace schema)](docs/appendix/trace-schema.md), [схема оценок (eval schema)](docs/appendix/eval-schema.md) и [схема памяти/поиска (memory/retrieval schema)](docs/appendix/memory-retrieval-schema.md) связывают модель угроз MCP (MCP threat model), контракт доверия передачи A2A (A2A handoff trust contract), запись вердикта проверяющего (verifier verdict record), запись действия управления (governance action record), поля ревью отравления памяти (memory poisoning review fields) и единые доказательства угроз агенту (unified agent threat evidence).
-- Эталонная среда исполнения (runtime): [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
+- Сквозная цепочка схем безопасного агента: [схема трасс](docs/appendix/trace-schema.md), [схема оценок](docs/appendix/eval-schema.md) и [схема памяти/поиска](docs/appendix/memory-retrieval-schema.md) связывают модель угроз MCP, контракт доверия передачи A2A, запись вердикта проверяющего, запись управленческого действия, поля проверки отравления памяти и единые доказательства угроз агенту.
+- Эталонная среда исполнения: [docs/appendix/reference-package.md](docs/appendix/reference-package.md)
 
-## Локальная разработка (local development)
+## Локальная разработка
 
 ```bash
 uv sync --group docs --group dev
@@ -58,7 +58,7 @@ uv run mkdocs serve
 
 Локальный сайт будет доступен по адресу `http://127.0.0.1:8000/`.
 
-## Проверки (checks)
+## Проверки
 
 ```bash
 uv run ruff check .
@@ -67,7 +67,7 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-## Эталонный пакет (reference package)
+## Эталонный пакет
 
 В репозитории есть минимальный эталонный пакет, который можно запустить:
 
@@ -75,16 +75,16 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref
 ```
 
-Это компактная кодовая опора (compact code support) для книги:
+Это компактная кодовая опора для книги:
 
-- эталонная среда исполнения (runtime) и слой политик (policy layer)
-- каталог возможностей (capability catalog) и утвержденный инвентарь (approved inventory)
-- путь памяти (memory path), телеметрия (telemetry), подтверждения (approvals) и проверки раскатки (rollout checks)
-- артефакты жизненного цикла (lifecycle artifacts) для записей изменений (change records), пакетов артефактов (artifact bundles) и планов вывода из эксплуатации (retirement plans)
-- видимый контракт профиля песочницы (sandbox profile contract) и доказательства ревью песочницы (sandbox review evidence) в инспекции жизненного цикла (lifecycle inspection)
-- YAML-конфиги (YAML configs) для операционного скелета (operational skeleton)
+- эталонная среда исполнения и слой политик
+- каталог возможностей и утвержденный инвентарь
+- путь памяти, телеметрия, подтверждения и проверки поэтапного выпуска
+- артефакты жизненного цикла для записей изменений, пакетов артефактов и планов вывода из эксплуатации
+- видимый контракт профиля песочницы и доказательства проверки песочницы в инспекции жизненного цикла
+- YAML-конфиги для операционного скелета
 
-Быстрые примеры (quick examples):
+Быстрые примеры:
 
 ```bash
 .venv/bin/python -m agent_runtime_ref simulate-run
@@ -95,29 +95,29 @@ uv run mkdocs build --strict
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json
 ```
 
-Каноническое описание пакета (canonical package description), полный список команд CLI (CLI commands) и обзор конфигурации (config overview) вынесены на отдельную страницу:
+Каноническое описание пакета, полный список команд CLI и обзор конфигурации вынесены на отдельную страницу:
 
-- [Эталонная среда исполнения (runtime reference package)](docs/appendix/reference-package.md)
+- [Эталонная среда исполнения](docs/appendix/reference-package.md)
 
-## Опциональные исследовательские зависимости (optional research dependencies)
+## Опциональные исследовательские зависимости
 
-Если тебе нужны ноутбуки (notebooks) или инструменты анализа данных (data analysis tools):
+Если тебе нужны ноутбуки или инструменты анализа данных:
 
 ```bash
 uv sync --group research
 ```
 
-В исследовательскую группу (research group) уже включены `marimo` и `polars`.
+В исследовательскую группу уже включены `marimo` и `polars`.
 
-## Публикация (publishing)
+## Публикация сайта
 
-В репозитории настроен рабочий процесс GitHub Actions (GitHub Actions workflow) для GitHub Pages:
+В репозитории настроен рабочий процесс GitHub Actions для GitHub Pages:
 
-- сборка (build) через `uv`
-- строгая проверка (strict check) `mkdocs build --strict`
-- деплой (deploy) в Pages из ветки публикации (publishing branch) `docs-prod`
+- сборка через `uv`
+- строгая проверка `mkdocs build --strict`
+- публикация в Pages из ветки `docs-prod`
 
-Перед публикацией прогоните локальные проверки (local checks) и убедитесь, что `main` может обновить обе удалённые ветки fast-forward способом:
+Перед публикацией прогоните локальные проверки и убедитесь, что `main` может обновить обе удаленные ветки без расходящейся истории:
 
 ```bash
 .venv/bin/ruff check .
@@ -130,44 +130,44 @@ git rev-list --left-right --count origin/main...HEAD
 git rev-list --left-right --count origin/docs-prod...HEAD
 ```
 
-Когда учётные данные на запись (write credentials) настроены, публикуйте только fast-forward push-командами (fast-forward push commands):
+Когда учетные данные на запись настроены, публикуйте только командами прямого продвижения:
 
 ```bash
 git push origin main
 git push origin HEAD:docs-prod
 ```
 
-Не делайте force-push в `docs-prod`; это намеренно только ветка-триггер (trigger branch) для GitHub Pages.
+Не делайте принудительную отправку в `docs-prod`; это намеренно только ветка-триггер для GitHub Pages.
 
-## Первый запуск GitHub Pages (first GitHub Pages setup)
+## Первый запуск GitHub Pages
 
-У `actions/configure-pages@v5` есть важное ограничение (important limitation): если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать сайт Pages (Pages site).
+У `actions/configure-pages@v5` есть важное ограничение: если Pages еще ни разу не были включены в репозитории, стандартный `GITHUB_TOKEN` может не суметь автоматически создать сайт Pages.
 
-Есть два корректных варианта (correct options):
+Есть два корректных варианта:
 
-1. Один раз вручную включить Pages (manually enable Pages) в `Settings -> Pages` и выбрать `GitHub Actions`.
-2. Добавить секрет `PAGES_PAT` с нужными правами, и рабочий процесс (workflow) сможет включить Pages автоматически.
+1. Один раз вручную включить Pages в `Settings -> Pages` и выбрать `GitHub Actions`.
+2. Добавить секрет `PAGES_PAT` с нужными правами, и рабочий процесс сможет включить Pages автоматически.
 
-Если для окружения `github-pages` заданы ограничения по веткам (branch restrictions), нужно явно разрешить деплой (deployment) из `docs-prod`.
+Если для окружения `github-pages` заданы ограничения по веткам, нужно явно разрешить публикацию из `docs-prod`.
 
-Для `PAGES_PAT` нужен отдельный токен (separate token), а не `GITHUB_TOKEN`:
+Для `PAGES_PAT` нужен отдельный токен, а не `GITHUB_TOKEN`:
 
-- для персонального токена доступа (Personal Access Token): `repo` или право записи Pages (Pages write permission)
-- для приложения GitHub (GitHub App): `administration:write` и `pages:write`
+- для персонального токена доступа: `repo` или право записи Pages
+- для приложения GitHub: `administration:write` и `pages:write`
 
-## Модель веток (branch model)
+## Модель веток
 
-- `main` — основная ветка разработки (development branch) и источник правды (source of truth)
-- `docs-prod` — ветка публикации (publishing branch) для GitHub Pages (GitHub Pages site)
+- `main` — основная ветка разработки и источник правды
+- `docs-prod` — ветка публикации для GitHub Pages
 
-## Стек (stack)
+## Технический стек
 
-- `uv` для окружения (environment) и зависимостей (dependencies)
-- `ruff` для статического анализа (linting)
-- `ty` для типовой проверки (type checking)
-- `MkDocs + Material for MkDocs` для публикации (publishing)
-- `Mermaid` и `Observable Plot` для визуальных материалов (visualizations)
+- `uv` для окружения и зависимостей
+- `ruff` для статического анализа
+- `ty` для проверки типов
+- `MkDocs + Material for MkDocs` для публикации
+- `Mermaid` и `Observable Plot` для визуальных материалов
 
-## Лицензия (license)
+## Лицензия
 
-Репозиторий опубликован под лицензией (licensed under) [CC BY-SA 4.0](LICENSE).
+Репозиторий опубликован под лицензией [CC BY-SA 4.0](LICENSE).
