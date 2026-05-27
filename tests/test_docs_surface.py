@@ -610,6 +610,18 @@ def test_chapter_21_chinese_intro_artifact_label_is_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_20_chinese_worker_boundary_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
+    expected_marker = (
+        "编排模式选择、工作者安全目录（worker-safe catalog）暴露与"
+        "委派工作者（delegated worker）评审边界"
+    )
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_marker = "编排模式选择、worker-safe 目录暴露与委派 worker 评审边界"
+    assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_20_chinese_review_rollout_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
     expected_markers = (
