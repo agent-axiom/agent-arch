@@ -437,7 +437,7 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
             "本章的主要工件是 eval gate and verifier contract：",
         ),
         "docs/book/part-viii/chapter-26.zh.md": (
-            "本章的主要工件是 追踪与遥测覆盖记录"
+            "本章的主要工件是追踪与遥测覆盖记录"
             "（trace and telemetry coverage record）：",
             "本章的主要工件是 trace and telemetry coverage record：",
         ),
@@ -3882,6 +3882,24 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         "approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse",
         "interruption、schema-transition windows 与 orchestration-pattern changes",
         "同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
+def test_chapter_26_chinese_intro_artifact_label_is_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "本章的主要工件是追踪与遥测覆盖记录（trace and telemetry coverage record）",
+        "控制路径（control paths）与副作用（side effects）",
+        "盲点（blind spots）的覆盖图",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "本章的主要工件是 追踪与遥测覆盖记录",
+        "本章的主要工件是 trace and telemetry coverage record",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in text, forbidden_marker
