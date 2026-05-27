@@ -3750,6 +3750,7 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-24.zh.md": (
             *common_markers,
+            "失配案例主线说明（Misalignment case-spine note）",
             "风险场景与控制计划（risk scenario and control plan）",
             "规范案例（canonical cases）",
             "内部人风险表面（insider-risk surfaces）",
@@ -3782,6 +3783,7 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
 
     chinese_text = _read("docs/book/part-viii/chapter-24.zh.md")
     forbidden_chinese_markers = (
+        "**Misalignment case-spine note：**",
         "risk scenario and control plan 应该",
         "三个 canonical cases",
         "Support triage 需要",
