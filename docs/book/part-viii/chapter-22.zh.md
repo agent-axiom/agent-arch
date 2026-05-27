@@ -81,7 +81,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - 当时生效的是哪一版[验证器契约（verifier contract）](../../appendix/eval-schema.zh.md)、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - 当时生效的是哪个契约版本与[审批模式（approval schema）](../../appendix/approval-schema.zh.md)；
 - 当时是哪一条[中断或过期策略](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
-- 当时是哪一种[编排模式与工作器边界策略（worker-boundary policy）](../../appendix/change-rollout-schema.zh.md)在治理这次运行；
+- 当时是哪一种[编排模式与工作者边界策略（worker-boundary policy）](../../appendix/change-rollout-schema.zh.md)在治理这次运行；
 - 当时是哪种[委派授权模式、主体绑定与撤销策略（principal binding and revoke policy）](../../appendix/lifecycle-artifact-schema.zh.md)在治理这次运行；
 - 这个变更是谁批准的。
 
