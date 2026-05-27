@@ -54,8 +54,8 @@
 
 - 增加更真实的 JSONL 追踪示例；
 - 展示成功运行、等待审批、被策略拒绝和失败运行；
-- 确保渲染后的 schema 页面没有破损表格、粘连列表或 raw diagram blocks；
-- 为最显眼的页面增加轻量级 rendered-site QA checklist。
+- 确保渲染后的模式（schema）页面没有破损表格、粘连列表或原始图表块（raw diagram blocks）；
+- 为最显眼的页面增加轻量级渲染站点 QA 检查清单（rendered-site QA checklist）。
 
 为什么重要：当社区既有统一事件模型，也能看到它在发布站点里的具体样子时，可观测性才会真正形成共享实践。
 
