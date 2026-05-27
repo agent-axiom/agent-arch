@@ -501,6 +501,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
         "- 发布（rollout）策略。",
         "更新后的策略、评测和发布（rollout）规则",
         "事故会回流进评测、策略和发布（rollout）规则。",
+        "事故会不会回流到评测和发布（rollout）规则？",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -513,6 +514,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
         "- rollout 策略。",
         "更新后的策略、评测和 rollout 规则",
         "事故会回流进评测、策略和 rollout 规则。",
+        "事故会不会回流到评测和 rollout 规则？",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
