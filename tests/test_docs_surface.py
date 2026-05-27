@@ -4390,6 +4390,11 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
         ),
         "docs/book/part-viii/chapter-25.zh.md": (
             *common_markers,
+            "控制评测案例主线说明（Control-eval case-spine note）",
+            "规范案例（canonical cases）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事件协调（Incident coordination）",
             "评测模式（eval schema）",
             "评测门禁与验证器契约（eval gate and verifier contract）",
             "行为与控制评测表面（behavioral and control eval surfaces）",
@@ -4420,6 +4425,11 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     forbidden_chinese_link = "[eval schema](../../appendix/eval-schema.zh.md)"
     assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
     forbidden_chinese_markers = (
+        "**Control-eval case-spine note：**",
+        "三个 canonical cases",
+        "Support triage 需要",
+        "Internal knowledge assistant 需要",
+        "Incident coordination 需要",
         "不同 behavioral and control eval surfaces",
         "需要 duplicate prevention、payload-mutation check",
         "old-gateway-route probe 和 emergency-disable assertion",
