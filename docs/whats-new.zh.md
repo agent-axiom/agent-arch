@@ -14,7 +14,7 @@ _更新于 2026 年 5 月 20 日。_
 
 ### 2026 年 5 月 14 日编辑质量检查（QA）
 
-第一组出版就绪质量检查（QA）问题已经关闭：第 1 章的判断框架从表格改成了更适合 HTML/PDF 与纯文本抽取的文字块；变化较快的章节、参考来源页和最新进展页也更新了编辑审查日期。
+第一轮评审修复质量检查（QA）切片已经关闭：第 1 章的判断框架从表格改成了更适合 HTML/PDF 与纯文本抽取的文字块；变化较快的章节、参考来源页和最新进展页也更新了编辑审查日期。
 
 为什么这很重要：外部阅读表面现在更少依赖表格渲染细节，也更清楚地说明了快速变化的智能体安全（agent-security）章节何时被复核。
 
@@ -105,7 +105,7 @@ _更新于 2026 年 5 月 20 日。_
 
 ### 发布前站点表面更干净
 
-面向出版的质量检查正在进行中，但还没有完全关闭。
+面向印刷与发布的质量检查正在进行中，但还没有完全关闭。
 
 已完成的站点工作：
 
@@ -113,12 +113,12 @@ _更新于 2026 年 5 月 20 日。_
 - 添加了 OpenGraph/Twitter 元数据和社交预览图（social preview image）；
 - 检查了搜索索引（search index）、站点地图（sitemap）、robots 文件（robots file）、本地资源（local assets）、锚点（anchors）、图片替代文本（alt text）和外部链接（external links）；
 - 基础导航和规范备用重定向（canonical fallback redirects）已覆盖人们最容易手动复制的主要入口；
-- 公共链接可用性记录（public-link availability record）已在 2026 年 5 月 20 日刷新，出版材料包（publisher packet）中的九个链接全部返回 HTTP 200；
-- 出版材料包（publisher packet）的阻塞项登记表（blocker register）、豁免与决策日志（waiver/decision log）、行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出；
+- 公共链接可用性记录（public-link availability record）已在 2026 年 5 月 20 日刷新，公开材料包中的九个链接全部返回 HTTP 200；
+- 公开材料包的阻塞项登记表（blocker register）、豁免与决策日志（waiver/decision log）、行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出；
 - 第 VIII 部分角色图（role map）现在适合打印和导出；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单（quick sync publish checklist）。
 
-在称为出版就绪之前，仍然需要完成深层 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、样章打磨（sample-chapter polish），以及面向具体出版社的纸质稿件与在线配套材料包装（publisher-specific print/companion packaging）。
+在称为可印刷版本之前，仍然需要完成 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、样章打磨（sample-chapter polish），以及面向具体提交格式的纸质稿件与在线配套材料包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 

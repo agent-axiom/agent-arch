@@ -1,5 +1,5 @@
-site_name: Архитектура Безопасных AI-Агентов
-site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению AI-агентами.
+site_name: Архитектура безопасных ИИ-агентов
+site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению ИИ-агентами.
 site_url: https://agent-axiom.github.io/agent-arch/
 repo_name: agent-arch
 repo_url: https://github.com/agent-axiom/agent-arch
@@ -11,9 +11,11 @@ exclude_docs: |
   book-identity-memo.md
   book-improvement-blueprint.md
   publisher-ready-toc.md
+  render-export-qa-checklist.md
   chapter-surgery-plan.md
   late-book-overlap-audit.md
   reader-journey-map.md
+  superpowers/**
   appendix/google-integration-roadmap.md
   appendix/google-integration-roadmap.en.md
   appendix/google-integration-roadmap.zh.md
@@ -63,8 +65,8 @@ plugins:
           name: Русский
           default: true
           build: true
-          site_name: Архитектура Безопасных AI-Агентов
-          site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению AI-агентами.
+          site_name: Архитектура безопасных ИИ-агентов
+          site_description: Современная книга по архитектуре, безопасности, наблюдаемости и управлению ИИ-агентами.
           nav_translations:
             Главная: Главная
             Start Here: С чего начать
