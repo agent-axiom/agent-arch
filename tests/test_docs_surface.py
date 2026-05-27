@@ -3951,6 +3951,15 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_22_chinese_rollout_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    expected_marker = "之后的事故评审或发布（rollout）争议，可能都需要知道"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_marker = "之后的事故评审或 rollout 争议，可能都需要知道"
+    assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_22_chinese_evidence_spine_link_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
     expected_markers = (
