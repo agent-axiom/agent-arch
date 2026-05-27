@@ -427,7 +427,7 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
             "本章的主要工件是 retirement plan：",
         ),
         "docs/book/part-viii/chapter-24.zh.md": (
-            "本章的主要工件是 风险场景与控制计划"
+            "本章的主要工件是风险场景与控制计划"
             "（risk scenario and control plan）：",
             "本章的主要工件是 risk scenario and control plan：",
         ),
@@ -3872,6 +3872,26 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         "approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse",
         "interruption、schema-transition windows 与 orchestration-pattern changes",
         "同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
+def test_chapter_24_chinese_intro_artifact_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "本章的主要工件是风险场景与控制计划（risk scenario and control plan）",
+        "误用路径（misuse path）、受影响权限、控制（controls）、"
+        "遏制（containment）与监控（monitoring）",
+        "提示注入（prompt-injection）指南",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "本章的主要工件是 风险场景",
+        "描述 misuse path、受影响权限、controls、containment 与 monitoring",
+        "prompt-injection 指南",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in text, forbidden_marker
