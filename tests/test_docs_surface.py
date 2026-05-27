@@ -6332,10 +6332,19 @@ def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> Non
             assert expected_snippet in text, (path, expected_snippet)
 
     chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    expected_chinese_markers = (
+        "如果支持分诊（support-triage）v2 替换了曾经制造重复工单的旧路径",
+        "仅仅移除提示路由（prompt route）不够",
+    )
+    for expected_chinese_marker in expected_chinese_markers:
+        assert expected_chinese_marker in chinese_text, expected_chinese_marker
+
     forbidden_chinese_links = (
         "[撤销 gateway exposure]"
         "(../../appendix/registry-operations-handbook.zh.md)",
         "[让 paused approvals 过期](../../appendix/approval-schema.zh.md)",
+        "如果 support-triage v2 替换了曾经制造重复工单的旧路径",
+        "仅仅移除 prompt route 不够",
     )
     for forbidden_chinese_link in forbidden_chinese_links:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
