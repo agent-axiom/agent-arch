@@ -504,6 +504,18 @@ def test_chapter_23_chinese_state_tail_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_23_chinese_deprecated_schema_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
+    expected_marker = (
+        "已废弃的审批模式（approval schemas）与运行时控制模式（runtime-control schemas）"
+        "会被真正关闭"
+    )
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_marker = "已废弃的 approval 与 runtime-control schemas 会被真正关闭"
+    assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_23_chinese_verifier_contract_lineage_label_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-23.zh.md")
     expected_marker = "验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务"
