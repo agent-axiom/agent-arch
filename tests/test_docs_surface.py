@@ -6713,6 +6713,19 @@ def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_20_chinese_evidence_spine_link_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
+    expected_marker = "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "打开 [Evidence Spine](../part-v/evidence-spine.zh.md)",
+        "打开[Evidence Spine](../part-v/evidence-spine.zh.md)",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_20_chinese_useful_ref_links_are_tightened() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
     expected_markers = (
