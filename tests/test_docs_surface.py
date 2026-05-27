@@ -1933,6 +1933,23 @@ def test_chapter_18_rollout_trace_links_are_clickable() -> None:
             assert expected_snippet in text, (path, expected_snippet)
 
 
+def test_chapter_19_chinese_adlc_example_links_are_tightened() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
+    expected_markers = (
+        "包括新的[评测数据集（eval dataset）]",
+        "所需的[追踪模式（trace schema）]",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "包括新的 [评测数据集（eval dataset）]",
+        "所需的 [追踪模式（trace schema）]",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
     common_markers = (
         "ADLC case-spine note",
