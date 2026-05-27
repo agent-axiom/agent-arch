@@ -18,7 +18,7 @@
 - 工具访问；
 - 审批与审计轨迹；
 - 暂停运行状态（paused-run state）与后台运行状态（background-run state）；
-- capability-session state 与 interruption lineage；
+- 能力会话状态（capability-session state）与中断血缘（interruption lineage）；
 - orchestration-pattern lineage 与 worker-boundary decisions；
 - delegated authorization lineage 与 revoke state；
 - 验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务（verifier evidence retention obligations）](../../appendix/eval-schema.zh.md)；
