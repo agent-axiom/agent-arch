@@ -20,7 +20,7 @@
 - 暂停运行状态（paused-run state）与后台运行状态（background-run state）；
 - 能力会话状态（capability-session state）与中断血缘（interruption lineage）；
 - 编排模式血缘（orchestration-pattern lineage）与工作边界决策（worker-boundary decisions）；
-- delegated authorization lineage 与 revoke state；
+- 委托授权血缘（delegated authorization lineage）与撤销状态（revoke state）；
 - 验证器契约血缘（verifier-contract lineage）与[验证器证据保留义务（verifier evidence retention obligations）](../../appendix/eval-schema.zh.md)；
 - 跨越 context reset 与角色交接边界的 handoff-artifact lineage；[^anthropic-harness]
 - 外部集成；
