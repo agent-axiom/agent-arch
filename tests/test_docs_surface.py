@@ -3896,6 +3896,19 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_22_chinese_evidence_spine_link_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
+    expected_marker = "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "打开 [Evidence Spine](../part-v/evidence-spine.zh.md)",
+        "打开[Evidence Spine](../part-v/evidence-spine.zh.md)",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_22_chinese_useful_ref_links_are_tightened() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
     expected_markers = (
