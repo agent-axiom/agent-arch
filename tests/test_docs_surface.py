@@ -3877,6 +3877,35 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_chinese_diagram_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "目标压力（Goal pressure）",
+        "模型行为（Model behavior）",
+        "受限访问（Restricted access）",
+        "替换或评审压力（Replacement or review pressure）",
+        "隐藏尝试（Concealment attempt）",
+        "审批规避（Approval evasion）",
+        "替代工具路径（Alternative tool path）",
+        "检测与遏制（Detection and containment）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        'A["Goal pressure"]',
+        'D["Model behavior"]',
+        'B["Restricted access"]',
+        'C["Replacement or review pressure"]',
+        'E["Concealment attempt"]',
+        'F["Approval evasion"]',
+        'G["Alternative tool path"]',
+        'H["Detection and containment"]',
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-24.md": (
