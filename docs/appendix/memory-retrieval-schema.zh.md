@@ -70,7 +70,7 @@ quarantine_state: quarantined
 rollback_ref: mem-rollback-2026-05-001
 ```
 
-这些字段把 `untrusted write`、`delayed activation`、`cross-tenant contamination`、`policy influence`、`provenance check` 和 `quarantine and rollback` 连接到 machine-checkable memory schema。
+这些字段把 `untrusted write`、`delayed activation`、`cross-tenant contamination`、`policy influence`、`provenance check` 和 `quarantine and rollback` 连接到机器可检查的记忆模式（machine-checkable memory schema）。
 
 ## 4. 检索查询
 

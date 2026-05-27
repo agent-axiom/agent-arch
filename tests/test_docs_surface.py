@@ -11905,6 +11905,21 @@ def test_chinese_memory_retrieval_direct_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chinese_memory_retrieval_machine_schema_label_is_localized() -> None:
+    chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
+    expected_markers = (
+        "机器可检查的记忆模式（machine-checkable memory schema）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "连接到 machine-checkable memory schema",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chinese_memory_retrieval_seed_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
     expected_markers = (
