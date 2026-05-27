@@ -442,7 +442,7 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
             "本章的主要工件是 trace and telemetry coverage record：",
         ),
         "docs/book/part-viii/chapter-27.zh.md": (
-            "本章的主要工件是 注册表记录（registry record）：",
+            "本章的主要工件是注册表记录（registry record）：",
             "本章的主要工件是 registry record：",
         ),
     }
@@ -451,6 +451,24 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
         text = _read(relative_path)
         assert expected_label in text, (relative_path, expected_label)
         assert forbidden_label not in text, (relative_path, forbidden_label)
+
+
+def test_chapter_27_chinese_intro_artifact_label_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-27.zh.md")
+    expected_markers = (
+        "本章的主要工件是注册表记录（registry record）",
+        "运行时控制责任归属（runtime-control ownership）",
+        "证据链接（evidence links）连起来的记录",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "本章的主要工件是 注册表记录",
+        "本章的主要工件是 registry record",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_27_chinese_registry_layer_labels_are_localized() -> None:
