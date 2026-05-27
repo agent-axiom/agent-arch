@@ -499,6 +499,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
         "未经评审的发布（rollout）控制下的验证器契约版本变更",
         "- 发布（rollout）门禁；",
         "- 发布（rollout）策略。",
+        "更新后的策略、评测和发布（rollout）规则",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -509,6 +510,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
         "未经评审的 rollout 控制下的验证器契约版本变更",
         "- rollout 门禁；",
         "- rollout 策略。",
+        "更新后的策略、评测和 rollout 规则",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
