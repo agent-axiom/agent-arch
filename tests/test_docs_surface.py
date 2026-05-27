@@ -7874,6 +7874,10 @@ def test_chinese_case_studies_support_review_labels_are_localized() -> None:
 def test_chinese_case_studies_knowledge_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/case-studies.zh.md")
     expected_markers = (
+        "查询（query）、检索范围、来源 ID（source IDs）",
+        "答案锚定结论（grounding verdict）",
+        "回归集（regression set）确认锚定（grounding）",
+        "过期运行手册（runbook）回答，没有引用（citations）",
         "检索范围（retrieval scope）为什么扩大",
         "来源（source）被当作可信（trusted）",
         "低置信度停止（low-confidence stop）",
@@ -7883,6 +7887,10 @@ def test_chinese_case_studies_knowledge_labels_are_localized() -> None:
         assert expected_marker in chinese_text, expected_marker
 
     forbidden_markers = (
+        "query、检索范围、source IDs",
+        "答案 grounding verdict",
+        "regression set 确认 grounding",
+        "过期 runbook 回答，没有 citations",
         "retrieval scope 为什么扩大",
         "哪个 source 被当作 trusted",
         "low-confidence stop 应该在哪里触发",
