@@ -67,7 +67,7 @@ def test_all_appendix_pages_carry_canonical_case_markers() -> None:
     missing = []
     for path in appendix_paths:
         text = _read(str(path))
-        if "Canonical " not in text:
+        if "Canonical " not in text and "Канонические " not in text:
             missing.append(str(path))
 
     assert missing == []
@@ -8992,7 +8992,7 @@ def test_multilingual_case_studies_alignment_note_is_localized() -> None:
 
 
 def test_readmes_surface_three_canonical_cases() -> None:
-    required_markers = (
+    english_markers = (
         "canonical cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -9004,34 +9004,49 @@ def test_readmes_surface_three_canonical_cases() -> None:
         "response ownership",
         "post-incident learning",
     )
-    checked_files = (
-        "README.md",
-        "README.ru.md",
-        "README.zh.md",
+    russian_markers = (
+        "Три канонических сценария для проверки покрытия",
+        "Триаж поддержки",
+        "внутренний ассистент знаний",
+        "координация инцидентов",
+        "записывающие возможности",
+        "подтверждения",
+        "происхождение знаний",
+        "побочные эффекты уведомлений",
+        "владельца реагирования",
+        "обучение после инцидента",
+    )
+    chinese_markers = (
+        "规范案例",
+        "支持分诊",
+        "内部知识助手",
+        "事件协调",
+        "写入能力",
+        "审批",
+        "知识来源",
+        "通知副作用",
+        "响应归属",
+        "事后学习",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("README.md",), english_markers)
+    _assert_files_contain_all(("README.ru.md",), russian_markers)
+    _assert_files_contain_all(("README.zh.md",), chinese_markers)
 
 
 def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Производственная реальность (production reality)" in russian_text
-    assert "театра агентов (agent theater)" in russian_text
-    assert "сквозной кейс по всему стеку (full-stack case)" in russian_text
-    assert "ветка дубля тикета (support-triage / duplicate-ticket thread)" in russian_text
-    assert "эталонные схемы (reference schemas)" in russian_text
-    assert "телеметрии (telemetry)" in russian_text
-    assert "оценок (evals)" in russian_text
-    assert "раскатки (rollout)" in russian_text
-    assert "жизненного цикла (lifecycle)" in russian_text
-    assert "управления реестром (registry control)" in russian_text
-    assert "проверки покрытия (coverage check)" in russian_text
-    assert "Триаж поддержки (Support triage)" in russian_text
-    assert "записывающие возможности (write capabilities)" in russian_text
-    assert "происхождение знаний (knowledge provenance)" in russian_text
-    assert "побочные эффекты уведомлений (notification side effects)" in russian_text
+    assert "Промышленная эксплуатация вместо театра агентов" in russian_text
+    assert "Один сквозной сценарий по всему стеку" in russian_text
+    assert "ветка дубля тикета связывают книгу" in russian_text
+    assert "эталонные схемы и `agent_runtime_ref`" in russian_text
+    assert "до телеметрии, оценок, поэтапного выпуска" in russian_text
+    assert "Три канонических сценария для проверки покрытия" in russian_text
+    assert "Триаж поддержки покрывает записывающие возможности" in russian_text
+    assert "происхождение знаний" in russian_text
+    assert "побочные эффекты уведомлений" in russian_text
 
     assert "生产现实（production reality）" in chinese_text
     assert "智能体表演（agent theater）" in chinese_text
@@ -9049,16 +9064,24 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
     assert "知识来源（knowledge provenance）" in chinese_text
     assert "通知副作用（notification side effects）" in chinese_text
 
-    forbidden_markers = (
-        "Production reality вместо agent theater",
-        "Один сквозной кейс по всему стеку.",
-        "Support-triage / duplicate-ticket thread",
-        "эталонные схемы и `agent_runtime_ref`",
-        "Три канонических сценария (canonical cases) для покрытия",
-        "Три canonical cases",
-        "Support triage покрывает write capabilities",
-        "Internal knowledge assistant — retrieval",
-        "Incident coordination — traces",
+    russian_forbidden = (
+        "production reality",
+        "agent theater",
+        "full-stack case",
+        "support-triage / duplicate-ticket thread",
+        "reference schemas",
+        "evals",
+        "rollout",
+        "registry control",
+        "coverage check",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "knowledge provenance",
+        "notification side effects",
+    )
+    chinese_forbidden = (
         "一条贯穿全栈的案例线。",
         "support-triage / duplicate-ticket thread 把",
         "参考 Schema 和 `agent_runtime_ref`",
@@ -9069,8 +9092,9 @@ def test_multilingual_readme_canonical_case_intro_is_localized() -> None:
         "Incident coordination 覆盖 traces",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9078,32 +9102,29 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Книга об архитектуре агентов (Agent Architecture Book)" in russian_text
-    assert "Английская версия (English version)" in russian_text
-    assert "Китайская версия (Chinese version)" in russian_text
-    assert "Руководство для вкладов (Contributing guide)" in russian_text
-    assert "Кодекс поведения (Code of Conduct)" in russian_text
-    assert "Зачем существует этот репозиторий (why this repository exists)" in russian_text
-    assert "Что есть в этом репозитории (what is in this repository)" in russian_text
-    assert "Почему это стоит читать (why read this)" in russian_text
-    assert "С чего начать (Start Here)" in russian_text
-    assert "готовой к production архитектуре (production-ready architecture)" in russian_text
-    assert (
-        "контролируемые и безопасные агентные системы "
-        "(controlled and safe agent systems)"
-    ) in russian_text
-    assert "реальными пользователями (real users)" in russian_text
-    assert "реальными инструментами (real tools)" in russian_text
-    assert "реальной эксплуатацией (real operations)" in russian_text
-    assert "быстрому демо (quick demo)" in russian_text
-    assert "промптинг (prompting)" in russian_text
-    assert "вызовы инструментов (tool calls)" in russian_text
-    assert "границы доверия (trust boundaries)" in russian_text
-    assert "слой политик (policy layer)" in russian_text
-    assert "дисциплина памяти (memory discipline)" in russian_text
-    assert "наблюдаемость (observability) и оценки (evals)" in russian_text
-    assert "контроль раскатки (rollout control)" in russian_text
-    assert "управление жизненным циклом (lifecycle governance)" in russian_text
+    assert "# Книга об архитектуре агентных систем" in russian_text
+    assert "[Английская версия](README.md)" in russian_text
+    assert "[Китайская версия](README.zh.md)" in russian_text
+    assert "[Руководство для вкладов](CONTRIBUTING.md)" in russian_text
+    assert "[Кодекс поведения](CODE_OF_CONDUCT.md)" in russian_text
+    assert "## Зачем существует этот репозиторий" in russian_text
+    assert "## Что есть в этом репозитории" in russian_text
+    assert "## Почему это стоит читать" in russian_text
+    assert "## С чего начать" in russian_text
+    assert "готовой к промышленной эксплуатации архитектуре ИИ-агентов" in russian_text
+    assert "контролируемые и безопасные агентные системы" in russian_text
+    assert "реальными пользователями" in russian_text
+    assert "реальными инструментами" in russian_text
+    assert "реальной эксплуатацией" in russian_text
+    assert "быстрой демонстрации" in russian_text
+    assert "удачно сформулированный запрос" in russian_text
+    assert "вызовы инструментов" in russian_text
+    assert "явные границы доверия" in russian_text
+    assert "слой политик и подтверждений" in russian_text
+    assert "дисциплина памяти" in russian_text
+    assert "наблюдаемость и оценки" in russian_text
+    assert "контроль поэтапного выпуска" in russian_text
+    assert "управление жизненным циклом" in russian_text
     assert "智能体架构之书（Agent Architecture Book）" in chinese_text
     assert "英文版（English version）" in chinese_text
     assert "俄文版（Russian version）" in chinese_text
@@ -9128,28 +9149,40 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
     assert "发布控制（rollout control）" in chinese_text
     assert "生命周期治理（lifecycle governance）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "Agent Architecture Book",
+        "English version",
+        "Chinese version",
+        "Contributing guide",
+        "Code of Conduct",
+        "why this repository exists",
+        "what is in this repository",
+        "why read this",
+        "Start Here",
+        "production-ready architecture",
+        "controlled and safe agent systems",
+        "real users",
+        "real tools",
+        "real operations",
+        "quick demo",
+        "prompting",
+        "tool calls",
+        "trust boundaries",
+        "policy layer",
+        "memory discipline",
+        "observability",
+        "lifecycle governance",
         "# Agent Architecture Book\n",
         "готовой к production архитектуре AI-агентов",
         "[English version](README.md)",
         "[中文版](README.zh.md)",
         "[Contributing guide](CONTRIBUTING.md)",
         "[Code of Conduct](CODE_OF_CONDUCT.md)",
-        "## Зачем существует этот репозиторий\n",
-        "## Что есть в этом репозитории\n",
-        "## Почему это стоит читать\n",
-        "## С чего начать\n",
-        "контролируемые и безопасные агентные системы, которые выдерживают контакт",
-        "реальными пользователями, реальными инструментами",
-        "реальной эксплуатацией.",
         "быстрому демо. Реальным системам",
         "удачный prompting",
-        "вызовы инструментов. Им нужны",
-        "явные границы доверия\n",
-        "слой политик и подтверждений",
-        "дисциплина памяти\n",
-        "наблюдаемость и оценки",
-        "контроль раскатки и управление жизненным циклом",
+        "контроль раскатки",
+    )
+    chinese_forbidden = (
         "可用于生产环境的 AI 智能体架构",
         "[Русская версия](README.ru.md)",
         "## 为什么这个仓库存在\n",
@@ -9168,8 +9201,9 @@ def test_multilingual_readme_purpose_prompting_term_is_localized() -> None:
         "发布控制与生命周期管理",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9177,27 +9211,33 @@ def test_multilingual_readme_vendor_neutral_term_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Нейтральная к поставщикам архитектура (vendor-neutral architecture)" in russian_text
-    assert "фреймворк (framework)" in russian_text
-    assert "провайдера моделей (model provider)" in russian_text
+    assert "Нейтральная к поставщикам архитектура" in russian_text
+    assert "любой конкретный фреймворк" in russian_text
+    assert "поставщика моделей" in russian_text
     assert "厂商中立架构（vendor-neutral architecture）" in chinese_text
     assert "框架（framework）" in chinese_text
     assert "模型厂商（model provider）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "vendor-neutral architecture",
+        "framework)",
+        "model provider",
         "Vendor-neutral архитектура",
-        "любой конкретный фреймворк или провайдера моделей",
+        "провайдера моделей",
+    )
+    chinese_forbidden = (
         "面向原则，而非单一厂商",
         "具体框架和模型厂商",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
 def test_readmes_surface_safe_agent_schema_spine() -> None:
-    required_markers = (
+    english_markers = (
         "Safe-agent schema spine",
         "trace schema",
         "eval schema",
@@ -9209,24 +9249,45 @@ def test_readmes_surface_safe_agent_schema_spine() -> None:
         "memory poisoning review fields",
         "unified agent threat evidence",
     )
-    checked_files = (
-        "README.md",
-        "README.ru.md",
-        "README.zh.md",
+    russian_markers = (
+        "Сквозная цепочка схем безопасного агента",
+        "схема трасс",
+        "схема оценок",
+        "схема памяти/поиска",
+        "модель угроз MCP",
+        "контракт доверия передачи A2A",
+        "запись вердикта проверяющего",
+        "запись управленческого действия",
+        "поля проверки отравления памяти",
+        "единые доказательства угроз агенту",
+    )
+    chinese_markers = (
+        "Safe-agent schema spine",
+        "trace schema",
+        "eval schema",
+        "memory/retrieval schema",
+        "MCP threat model",
+        "A2A handoff trust contract",
+        "verifier verdict record",
+        "governance action record",
+        "memory poisoning review fields",
+        "unified agent threat evidence",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("README.md",), english_markers)
+    _assert_files_contain_all(("README.ru.md",), russian_markers)
+    _assert_files_contain_all(("README.zh.md",), chinese_markers)
 
 
 def test_multilingual_readme_safe_agent_schema_spine_is_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Сквозная цепочка схем безопасного агента (Safe-agent schema spine)" in russian_text
-    assert "схема трасс (trace schema)" in russian_text
-    assert "схема оценок (eval schema)" in russian_text
-    assert "модель угроз MCP (MCP threat model)" in russian_text
-    assert "единые доказательства угроз агенту (unified agent threat evidence)" in russian_text
+    assert "Сквозная цепочка схем безопасного агента" in russian_text
+    assert "схема трасс" in russian_text
+    assert "схема оценок" in russian_text
+    assert "модель угроз MCP" in russian_text
+    assert "единые доказательства угроз агенту" in russian_text
 
     assert "安全智能体模式主线（Safe-agent schema spine）" in chinese_text
     assert "追踪模式（trace schema）" in chinese_text
@@ -9234,18 +9295,26 @@ def test_multilingual_readme_safe_agent_schema_spine_is_localized() -> None:
     assert "MCP 威胁模型（MCP threat model）" in chinese_text
     assert "统一智能体威胁证据（unified agent threat evidence）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "Safe-agent schema spine",
+        "trace schema",
+        "eval schema",
+        "MCP threat model",
+        "unified agent threat evidence",
         "- Safe-agent schema spine:",
         "trace schema](docs/appendix/trace-schema.md), [eval schema",
         "связывают MCP threat model",
         "verifier verdict record, governance action record",
+    )
+    chinese_forbidden = (
         "- Safe-agent schema spine：",
         "连接 MCP threat model",
         "verifier verdict record、governance action record",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9253,42 +9322,26 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Локальная разработка (local development)" in russian_text
-    assert "Проверки (checks)" in russian_text
-    assert "Эталонный пакет (reference package)" in russian_text
-    assert "компактная кодовая опора (compact code support)" in russian_text
-    assert "эталонная среда исполнения (runtime)" in russian_text
-    assert "слой политик (policy layer)" in russian_text
-    assert "Эталонная среда исполнения (runtime):" in russian_text
-    assert "команд CLI (CLI commands)" in russian_text
-    assert "обзор конфигурации (config overview)" in russian_text
-    assert "Эталонная среда исполнения (runtime reference package)" in russian_text
-    assert "каталог возможностей (capability catalog)" in russian_text
-    assert "утвержденный инвентарь (approved inventory)" in russian_text
-    assert "путь памяти (memory path)" in russian_text
-    assert "телеметрия (telemetry)" in russian_text
-    assert "подтверждения (approvals)" in russian_text
-    assert "проверки раскатки (rollout checks)" in russian_text
-    assert "артефакты жизненного цикла (lifecycle artifacts)" in russian_text
-    assert "записей изменений (change records)" in russian_text
-    assert "пакетов артефактов (artifact bundles)" in russian_text
-    assert "планов вывода из эксплуатации (retirement plans)" in russian_text
-    assert "контракт профиля песочницы (sandbox profile contract)" in russian_text
-    assert "доказательства ревью песочницы (sandbox review evidence)" in russian_text
-    assert "инспекции жизненного цикла (lifecycle inspection)" in russian_text
-    assert "YAML-конфиги (YAML configs)" in russian_text
-    assert "операционного скелета (operational skeleton)" in russian_text
-    assert "концептуальный текст (conceptual prose)" in russian_text
-    assert "исполняемые эталонные артефакты (reference assets)" in russian_text
-    assert "Быстрые примеры (quick examples):" in russian_text
-    assert "Каноническое описание пакета (canonical package description)" in russian_text
-    assert (
-        "Опциональные исследовательские зависимости (optional research dependencies)"
-        in russian_text
-    )
-    assert "ноутбуки (notebooks)" in russian_text
-    assert "инструменты анализа данных (data analysis tools)" in russian_text
-    assert "исследовательскую группу (research group)" in russian_text
+    assert "Локальная разработка" in russian_text
+    assert "Проверки" in russian_text
+    assert "Эталонный пакет" in russian_text
+    assert "компактная кодовая опора" in russian_text
+    assert "эталонная среда исполнения и слой политик" in russian_text
+    assert "Эталонная среда исполнения:" in russian_text
+    assert "команд CLI" in russian_text
+    assert "обзор конфигурации" in russian_text
+    assert "каталог возможностей и утвержденный инвентарь" in russian_text
+    assert "путь памяти, телеметрия, подтверждения" in russian_text
+    assert "проверки поэтапного выпуска" in russian_text
+    assert "артефакты жизненного цикла для записей изменений" in russian_text
+    assert "видимый контракт профиля песочницы" in russian_text
+    assert "доказательства проверки песочницы" in russian_text
+    assert "YAML-конфиги для операционного скелета" in russian_text
+    assert "Быстрые примеры:" in russian_text
+    assert "Каноническое описание пакета" in russian_text
+    assert "Опциональные исследовательские зависимости" in russian_text
+    assert "ноутбуки или инструменты анализа данных" in russian_text
+    assert "исследовательскую группу" in russian_text
 
     assert "本地开发（local development）" in chinese_text
     assert "检查（checks）" in chinese_text
@@ -9324,14 +9377,43 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
     assert "数据分析工具（data analysis tools）" in chinese_text
     assert "研究组（research group）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "local development",
+        "reference package",
+        "compact code support",
+        "runtime)",
+        "policy layer",
+        "runtime reference package",
+        "capability catalog",
+        "approved inventory",
+        "memory path",
+        "telemetry)",
+        "approvals)",
+        "rollout checks",
+        "lifecycle artifacts",
+        "change records",
+        "artifact bundles",
+        "retirement plans",
+        "sandbox profile contract",
+        "sandbox review evidence",
+        "lifecycle inspection",
+        "YAML configs",
+        "operational skeleton",
+        "quick examples",
+        "canonical package description",
+        "optional research dependencies",
+        "notebooks",
+        "data analysis tools",
+        "research group",
         "эталонный runtime",
-        "## Локальная разработка\n",
-        "## Проверки\n",
-        "## Эталонный пакет\n",
         "Эталонный runtime",
-        "компактная кодовая опора для книги",
         "эталонная среда исполнения (runtime) и слой политик\n",
+        "approvals и rollout checks",
+        "lifecycle-артефакты для change records",
+        "sandbox profile contract и sandbox review evidence",
+        "для operational skeleton",
+    )
+    chinese_forbidden = (
         "参考运行时（runtime）与策略层\n",
         "## 本地开发\n",
         "## 检查\n",
@@ -9374,8 +9456,9 @@ def test_multilingual_readme_runtime_artifact_bullets_are_localized() -> None:
         "不只是概念说明",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9383,16 +9466,15 @@ def test_multilingual_readme_publishing_terms_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Публикация (publishing)" in russian_text
-    assert "рабочий процесс GitHub Actions (GitHub Actions workflow)" in russian_text
-    assert "сборка (build)" in russian_text
-    assert "строгая проверка (strict check)" in russian_text
-    assert "деплой (deploy)" in russian_text
-    assert "ветки публикации (publishing branch)" in russian_text
-    assert "локальные проверки (local checks)" in russian_text
-    assert "учётные данные на запись (write credentials)" in russian_text
-    assert "fast-forward push-командами (fast-forward push commands)" in russian_text
-    assert "ветка-триггер (trigger branch)" in russian_text
+    assert "Публикация сайта" in russian_text
+    assert "рабочий процесс GitHub Actions" in russian_text
+    assert "сборка через `uv`" in russian_text
+    assert "строгая проверка `mkdocs build --strict`" in russian_text
+    assert "публикация в Pages из ветки `docs-prod`" in russian_text
+    assert "локальные проверки" in russian_text
+    assert "учетные данные на запись" in russian_text
+    assert "командами прямого продвижения" in russian_text
+    assert "ветка-триггер для GitHub Pages" in russian_text
 
     assert "发布（publishing）" in chinese_text
     assert "GitHub Actions 工作流（GitHub Actions workflow）" in chinese_text
@@ -9405,15 +9487,22 @@ def test_multilingual_readme_publishing_terms_are_localized() -> None:
     assert "fast-forward push 命令（fast-forward push commands）" in chinese_text
     assert "触发分支（trigger branch）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "publishing)",
+        "GitHub Actions workflow",
+        "build)",
+        "strict check",
+        "deploy)",
+        "publishing branch",
+        "local checks",
+        "write credentials",
+        "fast-forward push commands",
+        "trigger branch",
         "## Публикация\n",
-        "рабочий процесс GitHub Actions для GitHub Pages",
-        "- сборка через `uv`",
-        "строгая проверка `mkdocs build --strict`",
         "деплой в Pages из ветки",
-        "локальные проверки и убедитесь",
         "Когда write credentials настроены",
-        "ветка-триггер для GitHub Pages",
+    )
+    chinese_forbidden = (
         "## 发布\n",
         "GitHub Actions 工作流：",
         "使用 `uv` 构建",
@@ -9424,8 +9513,9 @@ def test_multilingual_readme_publishing_terms_are_localized() -> None:
         "触发分支。",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9433,18 +9523,18 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Первый запуск GitHub Pages (first GitHub Pages setup)" in russian_text
-    assert "важное ограничение (important limitation)" in russian_text
-    assert "создать сайт Pages (Pages site)" in russian_text
-    assert "корректных варианта (correct options)" in russian_text
-    assert "вручную включить Pages (manually enable Pages)" in russian_text
-    assert "рабочий процесс (workflow)" in russian_text
-    assert "ограничения по веткам (branch restrictions)" in russian_text
-    assert "деплой (deployment)" in russian_text
-    assert "отдельный токен (separate token)" in russian_text
-    assert "персонального токена доступа (Personal Access Token)" in russian_text
-    assert "приложения GitHub (GitHub App)" in russian_text
-    assert "право записи Pages (Pages write permission)" in russian_text
+    assert "Первый запуск GitHub Pages" in russian_text
+    assert "важное ограничение" in russian_text
+    assert "создать сайт Pages" in russian_text
+    assert "корректных варианта" in russian_text
+    assert "вручную включить Pages" in russian_text
+    assert "рабочий процесс сможет включить Pages" in russian_text
+    assert "ограничения по веткам" in russian_text
+    assert "разрешить публикацию из `docs-prod`" in russian_text
+    assert "отдельный токен" in russian_text
+    assert "персонального токена доступа" in russian_text
+    assert "приложения GitHub" in russian_text
+    assert "право записи Pages" in russian_text
 
     assert "GitHub Pages 首次设置（first GitHub Pages setup）" in chinese_text
     assert "重要限制（important limitation）" in chinese_text
@@ -9459,19 +9549,25 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
     assert "GitHub 应用（GitHub App）" in chinese_text
     assert "Pages 写权限（Pages write permission）" in chinese_text
 
-    forbidden_markers = (
-        "## Первый запуск GitHub Pages\n",
-        "важное ограничение: если Pages",
-        "создать сайт Pages.",
-        "Есть два корректных варианта:",
-        "вручную включить Pages в",
-        "рабочий процесс сможет",
-        "ограничения по веткам, нужно",
+    russian_forbidden = (
+        "first GitHub Pages setup",
+        "important limitation",
+        "Pages site",
+        "correct options",
+        "manually enable Pages",
+        "workflow)",
+        "branch restrictions",
+        "deployment)",
+        "separate token",
+        "Personal Access Token",
+        "GitHub App)",
+        "Pages write permission",
         "явно разрешить деплой из",
-        "нужен отдельный токен, а не",
         "для Personal Access Token:",
         "для GitHub App:",
         "Pages write permission\n",
+    )
+    chinese_forbidden = (
         "## GitHub Pages 首次设置\n",
         "有一个重要限制：",
         "完成站点初始化",
@@ -9486,8 +9582,9 @@ def test_multilingual_readme_pages_setup_terms_are_localized() -> None:
         "Pages 写权限\n",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -9495,19 +9592,16 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
     russian_text = _read("README.ru.md")
     chinese_text = _read("README.zh.md")
 
-    assert "Модель веток (branch model)" in russian_text
-    assert "ветка разработки (development branch)" in russian_text
-    assert "источник правды (source of truth)" in russian_text
-    assert "ветка публикации (publishing branch)" in russian_text
-    assert "GitHub Pages (GitHub Pages site)" in russian_text
-    assert "Стек (stack)" in russian_text
-    assert "окружения (environment)" in russian_text
-    assert "зависимостей (dependencies)" in russian_text
-    assert "статического анализа (linting)" in russian_text
-    assert "типовой проверки (type checking)" in russian_text
-    assert "визуальных материалов (visualizations)" in russian_text
-    assert "Лицензия (license)" in russian_text
-    assert "под лицензией (licensed under)" in russian_text
+    assert "Модель веток" in russian_text
+    assert "основная ветка разработки и источник правды" in russian_text
+    assert "ветка публикации для GitHub Pages" in russian_text
+    assert "Технический стек" in russian_text
+    assert "для окружения и зависимостей" in russian_text
+    assert "для статического анализа" in russian_text
+    assert "для проверки типов" in russian_text
+    assert "для визуальных материалов" in russian_text
+    assert "Лицензия" in russian_text
+    assert "опубликован под лицензией [CC BY-SA" in russian_text
 
     assert "分支模型（branch model）" in chinese_text
     assert "开发分支（development branch）" in chinese_text
@@ -9523,18 +9617,24 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
     assert "许可证（license）" in chinese_text
     assert "授权发布（licensed under）" in chinese_text
 
-    forbidden_markers = (
-        "## Модель веток\n",
-        "основная ветка разработки и источник правды",
-        "ветка публикации для GitHub Pages",
-        "GitHub Pages\n",
-        "## Стек\n",
-        "для окружения и зависимостей",
+    russian_forbidden = (
+        "branch model",
+        "development branch",
+        "source of truth",
+        "publishing branch",
+        "GitHub Pages site",
+        "Стек (stack)",
+        "environment",
+        "dependencies",
+        "linting",
+        "type checking",
+        "visualizations",
+        "license)",
+        "licensed under",
         "для линтинга",
-        "для проверки типов",
         "для визуализаций",
-        "## Лицензия\n",
-        "опубликован под лицензией [CC BY-SA",
+    )
+    chinese_forbidden = (
         "## 分支模型\n",
         "事实来源开发分支",
         "使用的发布分支",
@@ -9548,8 +9648,9 @@ def test_multilingual_readme_branch_stack_terms_are_localized() -> None:
         "基于 [CC BY-SA 4.0](LICENSE) 发布",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -13270,7 +13371,7 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
 
 
 def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical recovery cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -13292,13 +13393,54 @@ def test_tool_failure_recovery_surfaces_three_canonical_recovery_cases() -> None
         "emergency rollback decision",
         "post-incident learning capture",
     )
-    checked_files = (
-        "docs/appendix/tool-failure-recovery.md",
-        "docs/appendix/tool-failure-recovery.en.md",
-        "docs/appendix/tool-failure-recovery.zh.md",
+    russian_markers = (
+        "Канонические сценарии восстановления",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "поверхности отказа",
+        "side_effect_unknown",
+        "ключу идемпотентности",
+        "предотвращении дубля тикета",
+        "ручной сверке",
+        "регрессии оценки/поэтапного выпуска",
+        "устаревшем поиске",
+        "сбое поиска источника",
+        "восстановлении после отказа доступа",
+        "откате записи в память",
+        "повторной проверке обоснованного ответа",
+        "частичной доставке уведомлений",
+        "повторе эскалации",
+        "исправлении передачи владельца",
+        "решении об экстренном откате",
+        "фиксации обучения после инцидента",
+    )
+    chinese_markers = (
+        "Canonical recovery cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "failure surfaces",
+        "side_effect_unknown",
+        "idempotency lookup",
+        "duplicate-ticket prevention",
+        "manual reconciliation",
+        "eval/rollout regression",
+        "stale retrieval",
+        "source lookup failure",
+        "access-denied recovery",
+        "memory write rollback",
+        "grounded-answer recheck",
+        "notification partial delivery",
+        "escalation retry",
+        "owner handoff repair",
+        "emergency rollback decision",
+        "post-incident learning capture",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/tool-failure-recovery.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/tool-failure-recovery.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/tool-failure-recovery.zh.md",), chinese_markers)
 
 
 def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
@@ -13306,11 +13448,10 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/tool-failure-recovery.zh.md")
 
     assert "Канонические сценарии восстановления" in russian_text
-    assert "Ветка восстановления (recovery branch)" in russian_text
-    assert "поверхности отказа (failure surfaces)" in russian_text
-    assert "поиске по идемпотентности (idempotency lookup)" in russian_text
-    assert "устаревшем поиске (stale retrieval)" in russian_text
-    assert "частичной доставке уведомлений (notification partial delivery)" in russian_text
+    assert "Ветка восстановления должна различать поверхности отказа" in russian_text
+    assert "поиске по ключу идемпотентности" in russian_text
+    assert "устаревшем поиске" in russian_text
+    assert "частичной доставке уведомлений" in russian_text
 
     assert "规范恢复案例" in chinese_text
     assert "恢复分支（recovery branch）" in chinese_text
@@ -13321,12 +13462,25 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
     assert "追踪模式与事件目录" in chinese_text
     assert "事故记录与事后复盘链接模式" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "recovery branch",
+        "failure surfaces",
+        "idempotency lookup",
+        "duplicate-ticket prevention",
+        "stale retrieval",
+        "source lookup failure",
+        "notification partial delivery",
+        "escalation retry",
+        "owner handoff repair",
+        "emergency rollback decision",
+        "post-incident learning capture",
         "Recovery branch должен",
         "failure surfaces для трех canonical cases",
         "idempotency lookup, duplicate-ticket prevention",
         "stale retrieval, source lookup failure",
         "notification partial delivery, escalation retry",
+    )
+    chinese_forbidden = (
         "Recovery branch 应区分三个 canonical cases",
         "idempotency lookup、duplicate-ticket prevention",
         "stale retrieval、source lookup failure",
@@ -13335,8 +13489,9 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
         "事故记录与事后复盘链接 Schema",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
@@ -13849,7 +14004,7 @@ def test_multilingual_language_stack_case_note_is_localized() -> None:
 
 
 def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical Rust platform cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -13872,13 +14027,56 @@ def test_rust_agent_platforms_surface_three_canonical_platform_cases() -> None:
         "notification safety",
         "control-plane reliability",
     )
-    checked_files = (
-        "docs/appendix/rust-agent-platforms.md",
-        "docs/appendix/rust-agent-platforms.en.md",
-        "docs/appendix/rust-agent-platforms.zh.md",
+    russian_markers = (
+        "Канонические сценарии Rust-платформы",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "Rust-инфраструктура",
+        "канонических сценариях",
+        "шлюз инструментов",
+        "сервис применения политик",
+        "сервис очереди подтверждений",
+        "семантику идемпотентности",
+        "конвейер аудита",
+        "слои памяти и индекса",
+        "границы сервиса поиска",
+        "происхождение источников",
+        "изоляцию арендатора",
+        "обработчики трасс",
+        "долгоживущую среду исполнения",
+        "MCP-совместимый интеграционный слой",
+        "сервисы контроля исходящих соединений",
+        "безопасность уведомлений",
+        "надежность управляющего слоя",
+    )
+    chinese_markers = (
+        "Canonical Rust platform cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Rust infrastructure",
+        "canonical cases",
+        "tool gateway",
+        "policy enforcement service",
+        "approval queue service",
+        "idempotency semantics",
+        "audit pipeline",
+        "memory/index layers",
+        "retrieval service boundaries",
+        "source provenance",
+        "tenant isolation",
+        "trace processors",
+        "long-lived runtime",
+        "MCP-compatible integration layer",
+        "egress control services",
+        "notification safety",
+        "control-plane reliability",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/rust-agent-platforms.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/rust-agent-platforms.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/rust-agent-platforms.zh.md",), chinese_markers)
 
 
 def test_multilingual_rust_agent_platforms_case_note_is_localized() -> None:
@@ -13886,10 +14084,10 @@ def test_multilingual_rust_agent_platforms_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/rust-agent-platforms.zh.md")
 
     assert "Канонические сценарии Rust-платформы" in russian_text
-    assert "Rust-инфраструктура (Rust infrastructure)" in russian_text
-    assert "шлюз инструментов (tool gateway)" in russian_text
-    assert "слои памяти/индекса (memory/index layers)" in russian_text
-    assert "долгоживущий рантайм (long-lived runtime)" in russian_text
+    assert "Rust-инфраструктура должна доказывать пользу" in russian_text
+    assert "шлюз инструментов" in russian_text
+    assert "слои памяти и индекса" in russian_text
+    assert "долгоживущую среду исполнения" in russian_text
 
     assert "规范 Rust 平台案例" in chinese_text
     assert "Rust 基础设施（Rust infrastructure）" in chinese_text
@@ -13897,25 +14095,35 @@ def test_multilingual_rust_agent_platforms_case_note_is_localized() -> None:
     assert "记忆/索引层（memory/index layers）" in chinese_text
     assert "长期运行时（long-lived runtime）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "Rust infrastructure",
+        "tool gateway",
+        "memory/index layers",
+        "long-lived runtime",
+        "canonical cases",
+        "agent infrastructure",
+        "vendor-native agent building",
         "Rust infrastructure должен",
         "трех canonical cases",
         "проверяет tool gateway",
         "проверяет memory/index layers",
         "проверяет long-lived runtime",
+    )
+    chinese_forbidden = (
         "Rust infrastructure 应该通过三个 canonical cases",
         "检查 tool gateway",
         "检查 memory/index layers",
         "检查 long-lived runtime",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
 def test_glossary_surfaces_three_canonical_routes() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical glossary routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -13939,13 +14147,58 @@ def test_glossary_surfaces_three_canonical_routes() -> None:
         "Span",
         "Approved inventory",
     )
-    checked_files = (
-        "docs/appendix/glossary.md",
-        "docs/appendix/glossary.en.md",
-        "docs/appendix/glossary.zh.md",
+    russian_markers = (
+        "Канонические маршруты глоссария",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "быстрый маршрут",
+        "Шлюз инструментов",
+        "Шлюз подтверждения",
+        "Шлюз политик",
+        "Каталог возможностей",
+        "Трасса",
+        "Набор оценочных данных",
+        "Извлечение контекста",
+        "Долгосрочная память",
+        "Профильная память",
+        "Происхождение данных",
+        "Граница доверия",
+        "Правила исходящих соединений",
+        "Исполняющая среда агента",
+        "Управляющий слой",
+        "Шлюз поэтапного выпуска",
+        "Спан",
+        "Утвержденный реестр",
+    )
+    chinese_markers = (
+        "Canonical glossary routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "fast route",
+        "Tool gateway",
+        "Approval gate",
+        "Policy gate",
+        "Capability catalog",
+        "Trace",
+        "Eval dataset",
+        "Retrieval",
+        "Long-term memory",
+        "Profile memory",
+        "Provenance",
+        "Trust boundary",
+        "Egress policy",
+        "Agent runtime",
+        "Control plane",
+        "Rollout gate",
+        "Span",
+        "Approved inventory",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/glossary.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/glossary.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/glossary.zh.md",), chinese_markers)
 
 
 def test_multilingual_glossary_routes_note_is_localized() -> None:
@@ -13953,11 +14206,11 @@ def test_multilingual_glossary_routes_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/glossary.zh.md")
 
     assert "Канонические маршруты глоссария" in russian_text
-    assert "глоссарий (glossary) как быстрый маршрут (fast route)" in russian_text
-    assert "шлюза инструментов (Tool gateway)" in russian_text
-    assert "долгосрочной памяти (Long-term memory)" in russian_text
-    assert "контура управления (Control plane)" in russian_text
-    assert "утвержденного реестра (Approved inventory)" in russian_text
+    assert "глоссарий как быстрый маршрут" in russian_text
+    assert "шлюза инструментов" in russian_text
+    assert "долгосрочной памяти" in russian_text
+    assert "управляющего слоя" in russian_text
+    assert "утвержденного реестра" in russian_text
 
     assert "规范术语表路线" in chinese_text
     assert "术语表（glossary）" in chinese_text
@@ -13967,25 +14220,39 @@ def test_multilingual_glossary_routes_note_is_localized() -> None:
     assert "控制平面（Control plane）" in chinese_text
     assert "已批准清单（Approved inventory）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "glossary)",
+        "fast route",
+        "Tool gateway",
+        "Long-term memory",
+        "Control plane",
+        "Approved inventory",
+        "Agent runtime",
+        "Policy gate",
+        "Capability catalog",
+        "Egress policy",
+        "Rollout gate",
         "Используй glossary как fast route",
         "по трем canonical cases",
         "начинается с Tool gateway",
         "начинается с Retrieval",
         "начинается с Agent runtime",
+    )
+    chinese_forbidden = (
         "Use the glossary 作为三个 canonical cases 的 fast route",
         "从 Tool gateway、Approval gate",
         "从 Retrieval、Long-term memory",
         "从 Agent runtime、Control plane",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
 def test_sources_surface_three_canonical_source_routes() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical source routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -14009,13 +14276,58 @@ def test_sources_surface_three_canonical_source_routes() -> None:
         "incident review",
         "rollout/control-plane material",
     )
-    checked_files = (
-        "docs/appendix/sources.md",
-        "docs/appendix/sources.en.md",
-        "docs/appendix/sources.zh.md",
+    russian_markers = (
+        "Канонические маршруты источников",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "быстрый маршрут",
+        "OWASP",
+        "руководств OpenAI по агентам",
+        "человеке в контуре",
+        "материалов по политикам и подтверждениям",
+        "оценки трасс",
+        "кейсов инцидентов",
+        "материалов LangGraph о памяти",
+        "материалов OpenAI о памяти агента",
+        "источников по поиску и оценке",
+        "управления с акцентом на происхождение данных",
+        "исследовательского фронтира памяти",
+        "NIST/AI RMF",
+        "материалов Google и Microsoft по управлению",
+        "источников наблюдаемости",
+        "исследований надежности многоагентных систем",
+        "разбора инцидентов",
+        "материалов по выпуску и управляющему слою",
+    )
+    chinese_markers = (
+        "Canonical source routes",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "fast route",
+        "OWASP",
+        "OpenAI agent guides",
+        "HITL sources",
+        "policy/approval material",
+        "trace grading",
+        "incident cases",
+        "LangGraph memory",
+        "OpenAI Agent memory",
+        "retrieval/eval sources",
+        "provenance-oriented governance",
+        "memory research frontier",
+        "NIST/AI RMF",
+        "Google/Microsoft governance",
+        "observability sources",
+        "multi-agent reliability research",
+        "incident review",
+        "rollout/control-plane material",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/sources.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/sources.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/sources.zh.md",), chinese_markers)
 
 
 def test_multilingual_sources_canonical_routes_note_is_localized() -> None:
@@ -14023,11 +14335,10 @@ def test_multilingual_sources_canonical_routes_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/sources.zh.md")
 
     assert "Канонические маршруты источников" in russian_text
-    assert "источники (sources)" in russian_text
-    assert "быстрый маршрут (fast route)" in russian_text
-    assert "руководств OpenAI по агентам (OpenAI agent guides)" in russian_text
-    assert "памяти LangGraph (LangGraph memory)" in russian_text
-    assert "источников наблюдаемости (observability sources)" in russian_text
+    assert "источники как быстрый маршрут" in russian_text
+    assert "руководств OpenAI по агентам" in russian_text
+    assert "материалов LangGraph о памяти" in russian_text
+    assert "источников наблюдаемости" in russian_text
 
     assert "规范来源路线" in chinese_text
     assert "来源（sources）" in chinese_text
@@ -14036,25 +14347,37 @@ def test_multilingual_sources_canonical_routes_note_is_localized() -> None:
     assert "LangGraph 记忆（LangGraph memory）" in chinese_text
     assert "可观测性来源（observability sources）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "sources)",
+        "fast route",
+        "OpenAI agent guides",
+        "LangGraph memory",
+        "OpenAI Agent memory",
+        "retrieval/eval sources",
+        "observability sources",
+        "multi-agent reliability research",
+        "rollout/control-plane material",
         "Используй sources как fast route",
         "трех canonical cases",
         "OpenAI agent guides, HITL sources",
         "LangGraph memory, OpenAI Agent memory",
         "observability sources, multi-agent reliability research",
+    )
+    chinese_forbidden = (
         "Use the sources 作为三个 canonical cases 的 fast route",
         "OpenAI agent guides、HITL sources",
         "LangGraph memory、OpenAI Agent memory",
         "observability sources、multi-agent reliability research",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
 def test_sources_include_agent_specific_owasp_security_sources() -> None:
-    required_markers = (
+    english_markers = (
         "Agent-specific security",
         "AI Agent Security Cheat Sheet",
         "AI_Agent_Security_Cheat_Sheet.html",
@@ -14066,13 +14389,34 @@ def test_sources_include_agent_specific_owasp_security_sources() -> None:
         "RAG_Security_Cheat_Sheet.html",
         "Governance and baseline controls",
     )
-    checked_files = (
-        "docs/appendix/sources.md",
-        "docs/appendix/sources.en.md",
-        "docs/appendix/sources.zh.md",
+    russian_markers = (
+        "Безопасность агентных систем",
+        "AI Agent Security Cheat Sheet",
+        "AI_Agent_Security_Cheat_Sheet.html",
+        "MCP Security Cheat Sheet",
+        "MCP_Security_Cheat_Sheet.html",
+        "LLM Prompt Injection Prevention Cheat Sheet",
+        "LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+        "RAG Security Cheat Sheet",
+        "RAG_Security_Cheat_Sheet.html",
+        "Управление и базовые меры контроля",
+    )
+    chinese_markers = (
+        "Agent-specific security",
+        "AI Agent Security Cheat Sheet",
+        "AI_Agent_Security_Cheat_Sheet.html",
+        "MCP Security Cheat Sheet",
+        "MCP_Security_Cheat_Sheet.html",
+        "LLM Prompt Injection Prevention Cheat Sheet",
+        "LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+        "RAG Security Cheat Sheet",
+        "RAG_Security_Cheat_Sheet.html",
+        "Governance and baseline controls",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/sources.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/sources.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/sources.zh.md",), chinese_markers)
 
 
 def test_fast_moving_chapters_carry_may_17_review_dates() -> None:
@@ -14143,7 +14487,7 @@ def test_fast_moving_chapter_review_notes_reflect_closed_editorial_work() -> Non
 
 
 def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical book cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14168,13 +14512,60 @@ def test_why_this_book_surfaces_three_canonical_book_cases() -> None:
         "post-incident learning",
         "production incident",
     )
-    checked_files = (
-        "docs/appendix/why-this-book.md",
-        "docs/appendix/why-this-book.en.md",
-        "docs/appendix/why-this-book.zh.md",
+    russian_markers = (
+        "Канонические сценарии книги",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "записывающие действия",
+        "подтверждения",
+        "шлюзы политик",
+        "восстановление после дубля тикета",
+        "аудиторский след",
+        "отполированной демонстрации",
+        "поиск",
+        "границы памяти",
+        "привязка к источникам",
+        "происхождение данных",
+        "доступ с учетом арендатора",
+        "приемами формулирования запросов",
+        "трассы",
+        "SLO",
+        "эскалация",
+        "владение реагированием",
+        "контроль поэтапного выпуска",
+        "обучение после инцидента",
+        "производственного инцидента",
+    )
+    chinese_markers = (
+        "Canonical book cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write actions",
+        "approvals",
+        "policy gates",
+        "duplicate-ticket recovery",
+        "audit trail",
+        "polished demo",
+        "retrieval",
+        "memory boundaries",
+        "source grounding",
+        "provenance",
+        "tenant-aware access",
+        "prompt tricks",
+        "traces",
+        "SLOs",
+        "escalation",
+        "response ownership",
+        "rollout control",
+        "post-incident learning",
+        "production incident",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/why-this-book.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/why-this-book.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/why-this-book.zh.md",), chinese_markers)
 
 
 def test_multilingual_why_this_book_case_note_is_localized() -> None:
@@ -14182,11 +14573,11 @@ def test_multilingual_why_this_book_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/why-this-book.zh.md")
 
     assert "Канонические сценарии книги" in russian_text
-    assert "канонических сценариях (canonical cases)" in russian_text
-    assert "записывающие действия (write actions)" in russian_text
-    assert "поиск (retrieval)" in russian_text
-    assert "трассы (traces)" in russian_text
-    assert "до production incident" in russian_text
+    assert "канонических сценариях" in russian_text
+    assert "записывающие действия" in russian_text
+    assert "поиск" in russian_text
+    assert "трассы" in russian_text
+    assert "до производственного инцидента" in russian_text
 
     assert "规范书籍案例" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
@@ -14197,12 +14588,22 @@ def test_multilingual_why_this_book_case_note_is_localized() -> None:
     assert "提示词技巧（prompt tricks）" in chinese_text
     assert "生产事故（production incident）之前" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "canonical cases",
+        "write actions",
+        "polished demo",
+        "retrieval",
+        "memory boundaries",
+        "prompt tricks",
+        "traces)",
+        "production incident",
         "трех canonical cases",
         "почему write actions",
         "важнее polished demo",
         "почему retrieval, memory boundaries",
         "почему traces, SLOs",
+    )
+    chinese_forbidden = (
         "三个 canonical cases",
         "为什么 write actions",
         "比 polished demo",
@@ -14212,13 +14613,14 @@ def test_multilingual_why_this_book_case_note_is_localized() -> None:
         "production incident 之前",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
 def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical publishing cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14244,13 +14646,62 @@ def test_publishing_stack_surfaces_three_canonical_publishing_cases() -> None:
         "visible changelog-style diffs",
         "migration-risk discipline",
     )
-    checked_files = (
-        "docs/appendix/stack.md",
-        "docs/appendix/stack.en.md",
-        "docs/appendix/stack.zh.md",
+    russian_markers = (
+        "Канонические сценарии публикации",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "Стек публикации",
+        "канонических сценария",
+        "маршруты чтения",
+        "страницы сборки",
+        "быстрой сборки",
+        "публикации на GitHub Pages",
+        "поиска и навигации",
+        "примеров политик и подтверждений",
+        "артефакты трасс и оценок",
+        "авторства с приоритетом Markdown",
+        "многоязычных страниц",
+        "глоссария и поиска",
+        "ссылок на источники",
+        "материалов памяти/поиска",
+        "строгого шлюза сборки",
+        "воспроизводимых команд документации",
+        "страницам инцидентов и выпусков",
+        "стабильной навигации",
+        "видимых различий в стиле журнала изменений",
+        "дисциплины миграционного риска",
+    )
+    chinese_markers = (
+        "Canonical publishing cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Publishing stack",
+        "canonical cases",
+        "reader routes",
+        "build pages",
+        "fast build",
+        "GitHub Pages deployment",
+        "search/navigation",
+        "policy/approval examples",
+        "trace/eval artifacts",
+        "Markdown-first authoring",
+        "multilingual pages",
+        "glossary/search surface",
+        "source links",
+        "memory/retrieval material",
+        "strict build gate",
+        "reproducible docs commands",
+        "incident/rollout pages",
+        "stable navigation",
+        "visible changelog-style diffs",
+        "migration-risk discipline",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/stack.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/stack.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/stack.zh.md",), chinese_markers)
 
 
 def test_multilingual_publishing_stack_case_note_is_localized() -> None:
@@ -14258,11 +14709,11 @@ def test_multilingual_publishing_stack_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/stack.zh.md")
 
     assert "Канонические сценарии публикации" in russian_text
-    assert "Стек публикации (Publishing stack)" in russian_text
-    assert "маршруты чтения (reader routes)" in russian_text
-    assert "быстрой сборки (fast build)" in russian_text
-    assert "многоязычных страниц (multilingual pages)" in russian_text
-    assert "строгого шлюза сборки (strict build gate)" in russian_text
+    assert "Стек публикации должен поддерживать" in russian_text
+    assert "маршруты чтения" in russian_text
+    assert "быстрой сборки" in russian_text
+    assert "многоязычных страниц" in russian_text
+    assert "строгого шлюза сборки" in russian_text
 
     assert "规范发布案例" in chinese_text
     assert "发布栈（Publishing stack）" in chinese_text
@@ -14275,13 +14726,24 @@ def test_multilingual_publishing_stack_case_note_is_localized() -> None:
     assert "事件/发布页面（incident/rollout pages）" in chinese_text
     assert "稳定导航（stable navigation）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden = (
+        "Publishing stack",
+        "canonical cases",
+        "reader routes",
+        "build pages",
+        "fast build",
+        "Markdown-first authoring",
+        "multilingual pages",
+        "strict build gate",
+        "low-friction updates",
         "Publishing stack должен",
         "три canonical cases как reader routes",
         "только build pages",
         "требует fast build",
         "требует Markdown-first authoring",
         "требует strict build gate",
+    )
+    chinese_forbidden = (
         "Publishing stack 应该把三个 canonical cases",
         "支撑成 reader routes",
         "只是 build pages",
@@ -14292,8 +14754,9 @@ def test_multilingual_publishing_stack_case_note_is_localized() -> None:
         "指向事件/发布页面的稳定导航（stable navigation to incident/rollout pages）",
     )
 
-    for marker in forbidden_markers:
+    for marker in russian_forbidden:
         assert marker not in russian_text
+    for marker in chinese_forbidden:
         assert marker not in chinese_text
 
 
