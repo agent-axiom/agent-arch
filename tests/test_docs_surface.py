@@ -3887,6 +3887,25 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_25_chinese_verifier_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-25.zh.md")
+    expected_markers = (
+        "计算机使用智能体（computer-use agents）",
+        "二元裁决（binary verdict）",
+        "过程验证（process verification）和结果验证（outcome verification）",
+        "分数（score）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "过程验证（`process verification`）",
+        "结果验证（`outcome verification`）",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_25_chinese_intro_artifact_label_is_localized() -> None:
     text = _read("docs/book/part-viii/chapter-25.zh.md")
     expected_markers = (
@@ -4115,8 +4134,8 @@ def test_chapter_25_chinese_intro_layer_labels_are_localized() -> None:
         "治理（governance）",
         "事故响应（incident response）",
         "遥测（telemetry）",
-        "过程验证（`process verification`）",
-        "结果验证（`outcome verification`）",
+        "过程验证（process verification）",
+        "结果验证（outcome verification）",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
