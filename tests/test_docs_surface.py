@@ -411,7 +411,7 @@ def test_part_viii_role_map_is_print_friendly() -> None:
 def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
     expected_and_forbidden_by_file = {
         "docs/book/part-viii/chapter-19.zh.md": (
-            "本章的主要工件是 智能体开发生命周期状态模型（ADLC state model）：",
+            "本章的主要工件是智能体开发生命周期状态模型（ADLC state model）：",
             "本章的主要工件是 ADLC state model：",
         ),
         "docs/book/part-viii/chapter-20.zh.md": (
@@ -451,6 +451,23 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
         text = _read(relative_path)
         assert expected_label in text, (relative_path, expected_label)
         assert forbidden_label not in text, (relative_path, forbidden_label)
+
+
+def test_chapter_19_chinese_intro_artifact_label_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-19.zh.md")
+    expected_markers = (
+        "本章的主要工件是智能体开发生命周期状态模型（ADLC state model）",
+        "一张状态与转换地图",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "本章的主要工件是 智能体开发生命周期状态模型",
+        "本章的主要工件是 ADLC state model",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_27_chinese_intro_artifact_label_is_localized() -> None:
