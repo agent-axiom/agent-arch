@@ -3903,10 +3903,15 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
 
 def test_chapter_22_chinese_evidence_spine_link_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
-    expected_marker = "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)"
-    assert expected_marker in chinese_text, expected_marker
+    expected_markers = (
+        "事故和发布（rollout）判断，可以直接打开",
+        "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
 
     forbidden_markers = (
+        "事故和 rollout 判断，可以直接打开",
         "打开 [Evidence Spine](../part-v/evidence-spine.zh.md)",
         "打开[Evidence Spine](../part-v/evidence-spine.zh.md)",
     )

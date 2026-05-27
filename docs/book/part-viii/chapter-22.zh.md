@@ -98,7 +98,7 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 
 这也正是本章的核心承诺。它要帮助读者看见证据怎样从一般性的遥测变成受治理的主干：这一层保存着后续事故复盘或治理决策究竟建立在[哪一组已评审工件、哪一个可信契约版本，以及哪一个已批准发布身份](../../appendix/lifecycle-artifact-schema.zh.md)之上。本章的主要工件是[已批准工件包（approved artifact bundle）](../../appendix/lifecycle-artifact-schema.zh.md)：一组已评审的版本、契约和模式，而不是泛泛的 evidence 文件夹。
 
-如果你想看一页专门展示这个受治理主干如何继续连回请求、策略、审批、追踪、评测、事故和 rollout 判断，可以直接打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)。
+如果你想看一页专门展示这个受治理主干如何继续连回请求、策略、审批、追踪、评测、事故和发布（rollout）判断，可以直接打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)。
 
 !!! info "需要供应链工件？"
     如果你需要契约层视角，可以直接查看[生命周期工件模式](../../appendix/lifecycle-artifact-schema.zh.md)、[策略包模式与审批契约](../../appendix/policy-bundle-schema.zh.md)和[变更评审与发布门禁模式](../../appendix/change-rollout-schema.zh.md)。
