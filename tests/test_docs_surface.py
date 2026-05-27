@@ -3887,6 +3887,22 @@ def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_26_chinese_ticket_write_example_label_is_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-26.zh.md")
+    expected_markers = (
+        "贯穿案例：工单写入（ticket-write）控制评测的遥测（telemetry）",
+        "工单写入路径（ticket-write paths）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "贯穿案例：ticket-write 控制评测的遥测",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_26_chinese_intro_artifact_label_is_localized() -> None:
     text = _read("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
