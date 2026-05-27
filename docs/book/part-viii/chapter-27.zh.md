@@ -44,7 +44,7 @@
 
 这种可追责性就是本章的重心。注册表并不拥有证据主干，也不拥有遥测基底。它真正维护的是，受治理实体与负责人、状态和问责路径之间的映射。
 
-这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。本章的主要工件是 注册表记录（registry record）：一条把智能体身份（agent identity）、负责人（owner）、生命周期状态（lifecycle state）、能力（capabilities）、运行时控制责任归属（runtime-control ownership）与证据链接（evidence links）连起来的记录。
+这也正是本章的核心承诺。它要帮助读者把注册表看成整个智能体群体的问责层：在这里，受治理实体不再只是模糊的一群工具和助手，而会成为生产系统，拥有负责人、生命周期状态与明确责任。本章的主要工件是注册表记录（registry record）：一条把智能体身份（agent identity）、负责人（owner）、生命周期状态（lifecycle state）、能力（capabilities）、运行时控制责任归属（runtime-control ownership）与证据链接（evidence links）连起来的记录。
 
 ## 2. 为什么蔓延不只是组织问题
 
