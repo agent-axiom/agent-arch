@@ -508,6 +508,23 @@ def test_chapter_21_chinese_intro_artifact_label_is_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_chapter_20_chinese_review_rollout_labels_are_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
+    expected_markers = (
+        "审批流与分阶段发布（rollout）能力",
+        "变更评审必须与评测、审批和发布（rollout）门禁连接起来",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "审批流与分阶段 rollout 能力",
+        "变更评审必须与评测、审批和 rollout 门禁连接起来",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_20_chinese_intro_artifact_label_is_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-20.zh.md")
     expected_markers = (
