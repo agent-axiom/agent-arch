@@ -419,7 +419,7 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
             "本章的主要工件是 change packet：",
         ),
         "docs/book/part-viii/chapter-21.zh.md": (
-            "本章的主要工件是 发现与响应记录（finding and response record）：",
+            "本章的主要工件是发现与响应记录（finding and response record）：",
             "本章的主要工件是 finding and response record：",
         ),
         "docs/book/part-viii/chapter-23.zh.md": (
@@ -451,6 +451,23 @@ def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
         text = _read(relative_path)
         assert expected_label in text, (relative_path, expected_label)
         assert forbidden_label not in text, (relative_path, forbidden_label)
+
+
+def test_chapter_21_chinese_intro_artifact_label_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
+    expected_markers = (
+        "本章的主要工件是发现与响应记录（finding and response record）",
+        "把信号、风险、负责人、临时遏制、修复和关闭条件连在一起",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "本章的主要工件是 发现与响应记录",
+        "本章的主要工件是 finding and response record",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_chapter_20_chinese_intro_artifact_label_is_localized() -> None:
