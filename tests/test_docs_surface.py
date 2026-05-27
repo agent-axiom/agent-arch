@@ -2370,6 +2370,8 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
             "内部知识助手（Internal knowledge assistant）",
             "事故协调（Incident coordination）",
             "已批准工件包（approved artifact bundle）",
+            "[已批准工件包（approved artifact bundle）]"
+            "(../../appendix/lifecycle-artifact-schema.zh.md)应该为",
             "规范案例（canonical cases）",
             "来源追踪（provenance）",
             "写入路径（write path）",
@@ -2401,6 +2403,8 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
         "Internal knowledge assistant 需要",
         "Incident coordination 需要",
         "保留 provenance",
+        "[已批准工件包（approved artifact bundle）]"
+        "(../../appendix/lifecycle-artifact-schema.zh.md) 应该为",
         "需要 write path 的",
         "写入路径（write path）的 [评测数据集（eval dataset）]",
         "[追踪模式](../../appendix/trace-schema.zh.md) 和 [发布门禁",
