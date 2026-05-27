@@ -2153,6 +2153,8 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
             "内部知识助手（Internal knowledge assistant）",
             "事故协调（Incident coordination）",
             "发现与响应记录（finding and response record）",
+            "[发现与响应记录（finding and response record）]"
+            "(../../appendix/incident-record-schema.zh.md)应该通过",
             "遏制路径（containment paths）",
             "规范案例（canonical cases）",
             "重复结果检测（duplicate-outcome detection）",
@@ -2180,6 +2182,8 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
     forbidden_chinese_markers = (
         "**Assurance case-spine note：**",
         "通过不同 containment paths 闭合",
+        "[发现与响应记录（finding and response record）]"
+        "(../../appendix/incident-record-schema.zh.md) 应该通过",
         "三个 canonical cases",
         "Support triage 连接",
         "Internal knowledge assistant 连接",
