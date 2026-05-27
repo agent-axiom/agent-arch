@@ -49,7 +49,7 @@
 
 行为评测不只检查最终输出，还检查系统的行为形态。
 
-最近关于计算机使用智能体（computer-use agents）验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元裁决（binary verdict）往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把过程验证（`process verification`）和结果验证（`outcome verification`）分开，而不是压成一个分数（score）。
+最近关于计算机使用智能体（computer-use agents）验证器设计的一个重要经验是，对于长跨度轨迹，单一的二元裁决（binary verdict）往往太弱。智能体可能走对了过程，却因为环境阻断而失败，也可能通过不安全路径达成名义结果。所以验证器设计最好把过程验证（process verification）和结果验证（outcome verification）分开，而不是压成一个分数（score）。
 
 例如：
 
