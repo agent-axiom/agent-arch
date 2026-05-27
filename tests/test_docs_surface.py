@@ -496,6 +496,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
     expected_markers = (
         "事故、检测、重新设计和发布（rollout）规则变更之间必须闭环",
         "不只是发布（rollout）工件，也是一种保障场景",
+        "未经评审的发布（rollout）控制下的验证器契约版本变更",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -503,6 +504,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
     forbidden_markers = (
         "事故、检测、重新设计和 rollout 规则变更之间必须闭环",
         "不只是 rollout 工件，也是一种保障场景",
+        "未经评审的 rollout 控制下的验证器契约版本变更",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
