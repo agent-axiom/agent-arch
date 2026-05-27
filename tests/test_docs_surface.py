@@ -3817,6 +3817,32 @@ def test_chapter_24_chinese_risk_surface_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_chinese_control_path_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "运行时控制路径（runtime-control paths）与受治理的契约版本（governed contract versions）",
+        "模式（schema）或契约版本（contract version）迁移期间",
+        "编排模式（orchestration pattern）或委派工作器路径（delegated worker path）",
+        "模式漂移（schema drift）或契约不匹配（contract mismatch）",
+        "能力会话重新初始化（capability-session re-init）在拒绝（denied）、"
+        "允许（allowed）或审批绑定（approval-bound）",
+        "编排模式滥用（orchestration-pattern misuse）",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "runtime-control paths 与 governed contract versions",
+        "schema 或 contract version 迁移期间",
+        "更弱的 orchestration pattern 或 delegated worker path",
+        "schema drift 或 contract mismatch",
+        "capability-session re-init 在 denied、allowed 或 approval-bound",
+        "以及 orchestration-pattern misuse",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-24.md": (

@@ -92,7 +92,7 @@
 - 不可篡改的审计轨迹；
 - 行为监测；
 - 紧急遏制；
-- runtime-control paths 与 governed contract versions 之间的强链接。
+- 运行时控制路径（runtime-control paths）与受治理的契约版本（governed contract versions）之间的强链接。
 
 Google Research 把这压缩成三个很实用的原则：human controllers、limited powers 和 observable actions。[^google-secure-agents]
 
@@ -105,7 +105,7 @@ Google Research 把这压缩成三个很实用的原则：human controllers、li
 - 模型路由切换期间；
 - 高风险工具正在纳入审批的过程中；
 - 替换与退役期间；
-- schema 或 contract version 迁移期间。
+- 模式（schema）或契约版本（contract version）迁移期间。
 
 这时系统面临的是新的激励格局：
 
@@ -136,9 +136,9 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 模型能不能隐藏一个有问题的意图；
 - 它能不能绕过或滥用审批路径；
 - 它能不能利用 interruption、expiry 或 re-init semantics 重新获得更多自主性；
-- 它能不能把执行导向更弱的 orchestration pattern 或 delegated worker path；
+- 它能不能把执行导向更弱的编排模式（orchestration pattern）或委派工作器路径（delegated worker path）；
 - 某次运行时变更会不会削弱监督；
-- schema drift 或 contract mismatch 会不会打开更弱的控制路径；
+- 模式漂移（schema drift）或契约不匹配（contract mismatch）会不会打开更弱的控制路径；
 - 我们有没有单独针对类似破坏行为的信号；
 - 能不能紧急冻结某个能力、主体或发布波次。
 
@@ -149,11 +149,11 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 能力范围足够小；
 - 高风险动作使用独立的 `tool principal`；
 - 审批针对的是具体载荷，而不是抽象的“可以继续”；
-- capability-session re-init 在 denied、allowed 或 approval-bound 之间有明确控制；
+- 能力会话重新初始化（capability-session re-init）在拒绝（denied）、允许（allowed）或审批绑定（approval-bound）之间有明确控制；
 - 追踪同时记录策略决策和实际副作用；
 - `trace_id`、`approval_id`、`tool_principal`、`contract_version` 与 `artifact_bundle` 之间有不可断开的链接；
 - 能力族有紧急停用路径；
-- 行为评测会专门测试破坏、隐瞒、规避监督以及 orchestration-pattern misuse。
+- 行为评测会专门测试破坏、隐瞒、规避监督以及编排模式滥用（orchestration-pattern misuse）。
 
 <div class="diagram-card">
 <p>失配风险最适合被看成自主性与控制面之间的张力</p>
