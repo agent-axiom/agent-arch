@@ -514,6 +514,7 @@ def test_chapter_20_chinese_review_rollout_labels_are_localized() -> None:
         "审批流与分阶段发布（rollout）能力",
         "变更评审必须与评测、审批和发布（rollout）门禁连接起来",
         "写能力、重试行为和发布（rollout）门禁",
+        "影响半径在发布（rollout）前就被限制",
     )
     for expected_marker in expected_markers:
         assert expected_marker in chinese_text, expected_marker
@@ -522,6 +523,7 @@ def test_chapter_20_chinese_review_rollout_labels_are_localized() -> None:
         "审批流与分阶段 rollout 能力",
         "变更评审必须与评测、审批和 rollout 门禁连接起来",
         "写能力、重试行为和 rollout 门禁",
+        "影响半径在 rollout 前就被限制",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
