@@ -3843,6 +3843,40 @@ def test_chapter_24_chinese_control_path_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    expected_markers = (
+        "专用主体（principals）、已链接的契约版本（contract versions）、"
+        "受治理的重新初始化（re-init）行为与已评审的工作器边界（worker boundaries）",
+        "发布（rollout）、替换（replacement）、退役（retirement）与"
+        "编排模式变更（orchestration-pattern change）",
+        "工件包（artifact bundle）和副作用（side effect）",
+        "能力族（capability family），而不用等整套系统关闭（shutdown）",
+        "能力族（capability family），而不是只能整套运行时（runtime）一起关",
+        "审批路径滥用（approval-path misuse）、审批规避（approval evasion）、"
+        "会话重新初始化滥用（session re-init misuse）与"
+        "委派工作器滥用（delegated-worker misuse）",
+        "中断（interruption）、模式迁移窗口（schema-transition windows）与"
+        "编排模式变更（orchestration-pattern changes）",
+        "同一个主体（principal）会不会同时出现在低风险（low-risk）和高风险（high-risk）路径里",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "专用 principals、已链接的 contract versions",
+        "rollout、replacement、retirement 与 orchestration-pattern change",
+        "artifact bundle 和 side effect",
+        "capability family，而不用等整套系统 shutdown",
+        "capability family，而不是只能整套 runtime 一起关",
+        "approval-path misuse、approval evasion、session re-init misuse 与 delegated-worker misuse",
+        "interruption、schema-transition windows 与 orchestration-pattern changes",
+        "同一个 principal 会不会同时出现在 low-risk 和 high-risk 路径里",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-24.md": (
