@@ -3963,6 +3963,7 @@ def test_chapter_22_practical_checklist_links_artifact_version_contracts() -> No
 def test_chapter_22_chinese_rollout_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-22.zh.md")
     expected_markers = (
+        "供应链纪律必须与事故复盘、变更管理和发布（rollout）连接起来",
         "之后的事故评审或发布（rollout）争议，可能都需要知道",
         "来源追踪能在事故评审和发布（rollout）决策中被快速恢复",
     )
@@ -3970,6 +3971,7 @@ def test_chapter_22_chinese_rollout_labels_are_localized() -> None:
         assert expected_marker in chinese_text, expected_marker
 
     forbidden_markers = (
+        "供应链纪律必须与事故复盘、变更管理和 rollout 连接起来",
         "之后的事故评审或 rollout 争议，可能都需要知道",
         "来源追踪能在事故评审和 rollout 决策中被快速恢复",
     )
