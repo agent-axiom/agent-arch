@@ -2282,6 +2282,19 @@ def test_chapter_21_assurance_case_spine_links_are_clickable() -> None:
         assert forbidden_chinese_link not in chinese_text, forbidden_chinese_link
 
 
+def test_chapter_21_chinese_evidence_spine_link_is_localized() -> None:
+    chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
+    expected_marker = "打开[证据主干（Evidence Spine）](../part-v/evidence-spine.zh.md)"
+    assert expected_marker in chinese_text, expected_marker
+
+    forbidden_markers = (
+        "打开 [Evidence Spine](../part-v/evidence-spine.zh.md)",
+        "打开[Evidence Spine](../part-v/evidence-spine.zh.md)",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
 def test_chapter_21_useful_refs_include_change_rollout_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-21.md": (
