@@ -39,7 +39,7 @@
 - 验证器契约、[评分规则与证据链接规则](../../appendix/eval-schema.zh.md)；
 - [审批规则与模式](../../appendix/approval-schema.zh.md)；
 - [运行时控制模式](../../appendix/lifecycle-artifact-schema.zh.md)；
-- [编排模式治理规则与 worker-safe 目录定义（worker-safe catalog definitions）](../../appendix/change-rollout-schema.zh.md)；
+- [编排模式治理规则与工作者安全目录定义（worker-safe catalog definitions）](../../appendix/change-rollout-schema.zh.md)；
 - [能力会话中断与重新初始化规则](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [发布工件包](../../appendix/change-rollout-schema.zh.md)。
 
@@ -221,7 +221,7 @@ flowchart LR
 - [暂停运行是会过期，还是可以无限等待](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [能力会话重新初始化是允许、拒绝还是审批绑定（allowed、denied、approval-bound）](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [遥测是否应该把原始能力会话和重新初始化后的能力会话关联起来](../../appendix/trace-schema.zh.md)；
-- 当时这条路径批准的是哪一种[编排模式](../../appendix/change-rollout-schema.zh.md)，以及 worker-safe 目录边界是否生效；
+- 当时这条路径批准的是哪一种[编排模式](../../appendix/change-rollout-schema.zh.md)，以及工作者安全目录（worker-safe catalog）边界是否生效；
 - [审批](../../appendix/approval-schema.zh.md)与[会话控制逻辑](../../appendix/lifecycle-artifact-schema.zh.md)当时是受同一个契约版本治理，还是已经发生漂移；
 - [委派访问是平台拥有还是用户委派](../../appendix/lifecycle-artifact-schema.zh.md)；
 - 哪一条[主体绑定规则与撤销行为（principal binding and revoke behavior）](../../appendix/lifecycle-artifact-schema.zh.md)在治理进行中或暂停动作。
