@@ -49,6 +49,7 @@ If you are reading for the first time, start with the stable core and return to 
 - [Open the Book Plan](plan.en.md)
 - [Jump to the Evidence Spine](part-v/evidence-spine.en.md)
 - [Jump to the Agent System Lifecycle](part-viii/index.en.md)
+- [Open Practical Case Studies](../appendix/case-studies.en.md)
 
 [Read the book](part-i/index.en.md){ .md-button .md-button--primary }
 [View the plan](plan.en.md){ .md-button }
