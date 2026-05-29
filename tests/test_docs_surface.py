@@ -40,6 +40,13 @@ def _assert_files_contain_all(paths: tuple[str, ...], expected: tuple[str, ...])
             assert item in text, (path, item)
 
 
+def _assert_files_contain_none(paths: tuple[str, ...], forbidden: tuple[str, ...]) -> None:
+    for path in paths:
+        text = _read(path)
+        for item in forbidden:
+            assert item not in text, (path, item)
+
+
 def test_all_book_chapters_carry_case_spine_markers() -> None:
     chapter_paths = sorted(Path("docs/book").glob("part-*/chapter-*.md"))
 
@@ -75,16 +82,35 @@ def test_all_appendix_pages_carry_canonical_case_markers() -> None:
 
 def test_all_book_part_indexes_surface_three_canonical_cases() -> None:
     part_index_paths = sorted(Path("docs/book").glob("part-*/index*.md"))
-    required_markers = (
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-    )
+    required_markers_by_suffix = {
+        ".zh.md": (
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+        ),
+        ".en.md": (
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+        ),
+        ".md": (
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+        ),
+    }
 
     assert part_index_paths
 
     missing = []
     for path in part_index_paths:
+        if path.name.endswith(".zh.md"):
+            suffix = ".zh.md"
+        elif path.name.endswith(".en.md"):
+            suffix = ".en.md"
+        else:
+            suffix = ".md"
+        required_markers = required_markers_by_suffix[suffix]
         text = _read(str(path))
         absent = [marker for marker in required_markers if marker not in text]
         if absent:
@@ -138,6 +164,68 @@ def test_public_markdown_do_not_use_stale_publisher_packet_labels() -> None:
             hits.append((str(path), found))
 
     assert hits == []
+
+
+def test_russian_book_overview_pages_use_print_facing_terms() -> None:
+    paths = (
+        "docs/book/index.md",
+        "docs/book/part-i/index.md",
+        "docs/book/part-ii/index.md",
+        "docs/book/part-iii/index.md",
+        "docs/book/part-iv/index.md",
+        "docs/book/part-v/index.md",
+        "docs/book/part-vi/index.md",
+        "docs/book/part-vii/index.md",
+        "docs/book/part-viii/index.md",
+        "docs/book/part-i/chapter-1.md",
+    )
+    expected_by_file = {
+        "docs/book/index.md": (
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+        ),
+        "docs/book/part-i/chapter-1.md": ("Печатная схема выбора",),
+        "docs/book/part-viii/index.md": (
+            "Рамка жизненного цикла",
+            "пакет изменения",
+            "запись реестра",
+        ),
+    }
+    forbidden = (
+        "(book)",
+        "(workflow)",
+        "canonical case routes",
+        "Canonical lifecycle cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "security perimeter",
+        "execution layer",
+        "observability",
+        "operating model",
+        "production discipline",
+        "production-систем",
+        "reference implementation",
+        "runtime paths",
+        "rollout checklist",
+        "rollout readiness",
+        "rollout shape",
+        "Evidence Spine",
+        "agent system",
+        "release judgment",
+        "red teaming",
+        "governance",
+        "ownership",
+        "рантайм",
+        "референс",
+        "ревью",
+        "раскатк",
+    )
+
+    for path, expected in expected_by_file.items():
+        _assert_files_contain_all((path,), expected)
+    _assert_files_contain_none(paths, forbidden)
 
 
 def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
@@ -332,15 +420,15 @@ def test_part_viii_role_map_is_present_in_all_languages() -> None:
     expected_by_file = {
         "docs/book/part-viii/index.md": (
             "Карта ролей этой части",
-            "Lifecycle frame",
-            "Change management",
-            "Assurance",
-            "Provenance",
-            "Retirement",
-            "Misalignment и insider risk",
-            "Behavioral/control evals",
-            "Observability",
-            "Inventory и registry",
+            "Рамка жизненного цикла",
+            "Управление изменениями",
+            "Контур заверения",
+            "Происхождение",
+            "Вывод из эксплуатации",
+            "Несоответствие целей и инсайдерский риск",
+            "Поведенческие и контрольные оценки",
+            "Наблюдаемость",
+            "Инвентаризация и реестр",
         ),
         "docs/book/part-viii/index.en.md": (
             "Role Map for This Part",
@@ -377,15 +465,15 @@ def test_part_viii_role_map_is_present_in_all_languages() -> None:
 def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/index.md": (
-            "[Change packet](../../appendix/change-rollout-schema.md)",
-            "[Finding and response record](../../appendix/incident-record-schema.md)",
-            "[Approved artifact bundle]"
+            "[пакет изменения](../../appendix/change-rollout-schema.md)",
+            "[запись о находке и реагировании](../../appendix/incident-record-schema.md)",
+            "[утвержденный набор артефактов]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[Retirement plan](../../appendix/lifecycle-artifact-schema.md)",
-            "[Eval gate and verifier contract](../../appendix/eval-schema.md)",
-            "[Trace and telemetry coverage record]"
+            "[план вывода из эксплуатации](../../appendix/lifecycle-artifact-schema.md)",
+            "[оценочный шлюз и контракт проверки](../../appendix/eval-schema.md)",
+            "[запись покрытия трассировкой и телеметрией]"
             "(../../appendix/trace-schema.md)",
-            "[Registry record](../../appendix/registry-operations-handbook.md)",
+            "[запись реестра](../../appendix/registry-operations-handbook.md)",
         ),
         "docs/book/part-viii/index.en.md": (
             "[Change packet](../../appendix/change-rollout-schema.en.md)",
@@ -434,16 +522,16 @@ def test_part_viii_role_map_links_schema_backed_artifacts() -> None:
 
 def test_part_viii_role_map_is_print_friendly() -> None:
     role_map_markers = {
-        "docs/book/part-viii/index.md": "## В этой части",
-        "docs/book/part-viii/index.en.md": "## In This Part",
-        "docs/book/part-viii/index.zh.md": "## 本部分内容",
+        "docs/book/part-viii/index.md": ("## В этой части", "Печатная версия"),
+        "docs/book/part-viii/index.en.md": ("## In This Part", "print-friendly"),
+        "docs/book/part-viii/index.zh.md": ("## 本部分内容", "print-friendly"),
     }
 
-    for relative_path, next_heading in role_map_markers.items():
+    for relative_path, (next_heading, print_marker) in role_map_markers.items():
         text = _read(relative_path)
         role_map = text.split("##", 2)[2].split(next_heading, 1)[0]
         assert "|" not in role_map, relative_path
-        assert "print-friendly" in role_map.lower(), relative_path
+        assert print_marker.lower() in role_map.lower(), relative_path
         assert role_map.count("- **") >= 9, relative_path
 
 
@@ -7319,7 +7407,7 @@ def test_chapter_1_decision_frame_is_print_friendly() -> None:
         "docs/book/part-i/chapter-1.md": (
             "## 6.",
             "## 7.",
-            "Быстрый выбор",
+            "Печатная схема выбора",
             ("рабочий процесс", "одиночный агентный цикл", "многоагентная схема"),
         ),
         "docs/book/part-i/chapter-1.en.md": (
@@ -7340,7 +7428,11 @@ def test_chapter_1_decision_frame_is_print_friendly() -> None:
         text = _read(path)
         section = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
         assert title_marker in section
-        assert "|" not in section
+        if path == "docs/book/part-i/chapter-1.md":
+            assert "| Если в задаче видно это | Начинай с этого | Почему |" in section
+            assert "!!! info" not in section
+        else:
+            assert "|" not in section
         for expected_term in expected_terms:
             assert expected_term in section
 
@@ -8333,7 +8425,27 @@ def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
 
 
 def test_part_iv_index_surfaces_three_execution_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "слое исполнения",
+        "границам инструментов",
+        "возможность записи тикета",
+        "шлюз подтверждения",
+        "ключ идемпотентности",
+        "восстановление после дубля",
+        "адаптер поиска",
+        "привязку к источникам",
+        "границу арендатора",
+        "MCP-контракт только для чтения",
+        "инструмент эскалации",
+        "побочные эффекты уведомлений",
+        "обновления состояния инцидента",
+        "границу отката",
+    )
+    translated_markers = (
         "Part IV canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8353,17 +8465,35 @@ def test_part_iv_index_surfaces_three_execution_case_routes() -> None:
         "incident state updates",
         "rollback boundary",
     )
-    checked_files = (
-        "docs/book/part-iv/index.md",
+    translated_files = (
         "docs/book/part-iv/index.en.md",
         "docs/book/part-iv/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-iv/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_iii_index_surfaces_three_memory_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "слое памяти и поиска",
+        "временное состояние тикета",
+        "контекст дубля",
+        "поиск по утвержденным инструкциям",
+        "привязку к источникам",
+        "окно свежести",
+        "границу арендатора",
+        "происхождение записей памяти",
+        "шкалу времени инцидента",
+        "сводки передачи владельцу",
+        "статус эскалации",
+        "уроки после инцидента",
+    )
+    translated_markers = (
         "Part III canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8381,17 +8511,39 @@ def test_part_iii_index_surfaces_three_memory_case_routes() -> None:
         "escalation status",
         "post-incident lessons",
     )
-    checked_files = (
-        "docs/book/part-iii/index.md",
+    translated_files = (
         "docs/book/part-iii/index.en.md",
         "docs/book/part-iii/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-iii/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_ii_index_surfaces_three_security_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "периметре безопасности",
+        "контрольных точек",
+        "инструментальный шлюз",
+        "остановку на подтверждение",
+        "журнал аудита",
+        "доступ с минимальными правами",
+        "записи тикетов",
+        "границу поиска",
+        "контроль доступа",
+        "сборку подсказки",
+        "выходную фильтрацию",
+        "защищенных чтений",
+        "инструменты эскалации",
+        "подтверждения уведомлений",
+        "границу данных инцидента",
+        "побочных эффектов во время реагирования",
+    )
+    translated_markers = (
         "Part II canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8413,17 +8565,38 @@ def test_part_ii_index_surfaces_three_security_case_routes() -> None:
         "incident-data boundary",
         "side effects during response",
     )
-    checked_files = (
-        "docs/book/part-ii/index.md",
+    translated_files = (
         "docs/book/part-ii/index.en.md",
         "docs/book/part-ii/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-ii/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_i_index_surfaces_three_foundation_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "слое оснований",
+        "канонических сценария",
+        "архитектурная форма",
+        "границу между рабочим процессом и агентом",
+        "право на действие",
+        "ограниченную автономность",
+        "первый рискованный путь записи",
+        "рабочий процесс только для чтения",
+        "потребность в поиске",
+        "дисциплину памяти",
+        "ответы с опорой на источники",
+        "цикл координации",
+        "триггер эскалации",
+        "границу передачи управления",
+        "одноагентной схеме",
+    )
+    translated_markers = (
         "Part I canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8444,17 +8617,37 @@ def test_part_i_index_surfaces_three_foundation_case_routes() -> None:
         "handoff boundary",
         "single-agent first decision",
     )
-    checked_files = (
-        "docs/book/part-i/index.md",
+    translated_files = (
         "docs/book/part-i/index.en.md",
         "docs/book/part-i/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-i/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "слое надежности и наблюдаемости",
+        "маршрутов доказательств",
+        "покрытие трассировкой",
+        "записи тикетов",
+        "регрессию дублей",
+        "доказательства пути подтверждения",
+        "качество поиска",
+        "суждение об опоре на источники",
+        "бюджет свежести",
+        "доказательства происхождения памяти",
+        "задержку эскалации",
+        "доставку уведомлений",
+        "владение реагированием",
+        "послеинцидентное суждение о поэтапном выпуске",
+    )
+    translated_markers = (
         "Part V canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8474,17 +8667,36 @@ def test_part_v_index_surfaces_three_reliability_case_routes() -> None:
         "response ownership",
         "post-incident rollout judgment",
     )
-    checked_files = (
-        "docs/book/part-v/index.md",
+    translated_files = (
         "docs/book/part-v/index.en.md",
         "docs/book/part-v/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-v/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_vi_index_surfaces_three_ownership_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "операционной модели",
+        "границ ответственности",
+        "настройками записи тикетов",
+        "режимом подтверждения",
+        "путем восстановления после дубля",
+        "владеет корпусом знаний",
+        "проверкой доступа",
+        "качеством поиска",
+        "происхождением знаний",
+        "правом эскалации",
+        "политикой уведомлений",
+        "ответственностью за реагирование",
+        "действиями после инцидента",
+    )
+    translated_markers = (
         "Part VI canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8503,17 +8715,38 @@ def test_part_vi_index_surfaces_three_ownership_case_routes() -> None:
         "response ownership",
         "post-incident action items",
     )
-    checked_files = (
-        "docs/book/part-vi/index.md",
+    translated_files = (
         "docs/book/part-vi/index.en.md",
         "docs/book/part-vi/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-vi/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_part_vii_index_surfaces_three_runtime_case_routes() -> None:
-    required_markers = (
+    russian_markers = (
+        "Маршруты канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "эталонной реализации",
+        "пути среды исполнения",
+        "цикл запуска",
+        "каталог возможностей",
+        "паузу и возобновление после подтверждения",
+        "проверочный список поэтапного выпуска",
+        "записи тикетов",
+        "сервис памяти и поиска",
+        "политику возможностей чтения",
+        "привязку к источникам",
+        "изоляцию арендаторов",
+        "возможность эскалации",
+        "побочные эффекты уведомлений",
+        "передачу состояния инцидента",
+        "доказательства готовности к поэтапному выпуску",
+    )
+    translated_markers = (
         "Part VII canonical case routes",
         "Support triage",
         "Internal knowledge assistant",
@@ -8534,17 +8767,30 @@ def test_part_vii_index_surfaces_three_runtime_case_routes() -> None:
         "incident state handoff",
         "rollout readiness evidence",
     )
-    checked_files = (
-        "docs/book/part-vii/index.md",
+    translated_files = (
         "docs/book/part-vii/index.en.md",
         "docs/book/part-vii/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-vii/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_book_index_surfaces_three_canonical_cases() -> None:
-    required_markers = (
+    russian_markers = (
+        "Карта канонических сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "записывающих возможностей",
+        "восстановления после дубля тикета",
+        "границы арендатора",
+        "привязка к источникам",
+        "побочные эффекты уведомлений",
+        "обучение после инцидента",
+        "поверхностей управления",
+    )
+    translated_markers = (
         "Canonical case map",
         "Support triage",
         "Internal knowledge assistant",
@@ -8557,24 +8803,24 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
         "post-incident learning",
         "control surfaces",
     )
-    checked_files = (
-        "docs/book/index.md",
+    translated_files = (
         "docs/book/index.en.md",
         "docs/book/index.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/index.md",), russian_markers)
+    _assert_files_contain_all(translated_files, translated_markers)
 
 
 def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
-    assert "Каноническая карта сценариев" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
-    assert "записывающих возможностей (write capabilities)" in russian_text
-    assert "поиск (retrieval)" in russian_text
-    assert "поверхностей управления (control surfaces)" in russian_text
+    assert "Карта канонических сценариев" in russian_text
+    assert "три канонических сценария делают книгу" in russian_text
+    assert "записывающих возможностей" in russian_text
+    assert "поиск, память, границы арендатора" in russian_text
+    assert "картой разных поверхностей управления" in russian_text
 
     assert "规范案例地图" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
@@ -8588,6 +8834,9 @@ def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
         "что retrieval, memory",
         "проверяет traces",
         "три canonical cases",
+        "Каноническая карта сценариев (Canonical case map)",
+        "записывающих возможностей (write capabilities)",
+        "поверхностей управления (control surfaces)",
         "Support triage 仍然是",
         "是 write capabilities",
         "检查 retrieval、memory",
@@ -8595,8 +8844,9 @@ def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
         "三个 canonical cases",
     )
 
-    for marker in forbidden_markers:
+    for marker in forbidden_markers[:8]:
         assert marker not in russian_text
+    for marker in forbidden_markers[8:]:
         assert marker not in chinese_text
 
 
@@ -8604,13 +8854,12 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
-    assert "Сквозной кейс поддержки (support case throughline)" in russian_text
-    assert "триажа поддержки (support-triage)" in russian_text
-    assert "поиска (retrieval)" in russian_text
-    assert "выполнения инструментов (tool execution)" in russian_text
-    assert "восстановления после дубля тикета (duplicate-ticket recovery)" in russian_text
-    assert "эталонной среды исполнения (reference runtime)" in russian_text
-    assert "контролей несоответствия (misalignment controls)" in russian_text
+    assert "Сквозной сценарий поддержки" in russian_text
+    assert "следить за сценарием разбора обращений поддержки" in russian_text
+    assert "от поиска и выполнения инструментов" in russian_text
+    assert "до восстановления после дубля тикета" in russian_text
+    assert "эталонной среды исполнения" in russian_text
+    assert "контроля несоответствия" in russian_text
 
     assert "贯穿的支持案例（support case throughline）" in chinese_text
     assert "支持分诊（support-triage）" in chinese_text
@@ -8621,8 +8870,10 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
 
     forbidden_markers = (
         'example "Сквозной кейс поддержки"',
+        "Сквозной кейс поддержки (support case throughline)",
         "следить за кейсом support-triage",
         "от retrieval и tool execution",
+        "выполнения инструментов (tool execution)",
         "duplicate-ticket recovery, traces",
         "эталонного runtime",
         "misalignment controls, telemetry",
@@ -8632,8 +8883,9 @@ def test_multilingual_book_index_support_case_example_is_localized() -> None:
         "失配控制、telemetry",
     )
 
-    for marker in forbidden_markers:
+    for marker in forbidden_markers[:8]:
         assert marker not in russian_text
+    for marker in forbidden_markers[8:]:
         assert marker not in chinese_text
 
 
@@ -8641,26 +8893,22 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
-    assert "# Книга (book)" in russian_text
-    assert "главная входная страница (main entry page)" in russian_text
-    assert "самый короткий путь (shortest path)" in russian_text
-    assert "основной текст (main text)" in russian_text
-    assert "статус публикации (structure and publication status)" in russian_text
-    assert "План книги (Book Plan)" in russian_text
-    assert "Что обещает эта книга (book promise)" in russian_text
-    assert "После чтения ты должен уметь (learning outcomes)" in russian_text
-    assert "главный тезис (main thesis)" in russian_text
-    assert "платформа (platform)" in russian_text
-    assert "разового трюка (one-off trick)" in russian_text
-    assert "ограничивать (constrain), наблюдать (observe), выпускать (ship)" in russian_text
-    assert "улучшать без гадания (improve without guessing)" in russian_text
-    assert "платформенных слоев (minimum platform layers)" in russian_text
-    assert "рискованным действиям (risky actions)" in russian_text
-    assert "рабочего процесса (workflow)" in russian_text
-    assert "управляемый запуск (run)" in russian_text
-    assert "политику (policy)" in russian_text
-    assert "доказательства (evidence)" in russian_text
-    assert "ответственность оператора (operator accountability)" in russian_text
+    assert "# Книга" in russian_text
+    assert "главная входная страница самой книги" in russian_text
+    assert "самый короткий путь в основной текст" in russian_text
+    assert "структуру и статус публикации" in russian_text
+    assert "План книги" in russian_text
+    assert "Что обещает эта книга" in russian_text
+    assert "После чтения ты должен уметь:" in russian_text
+    assert "главный тезис: агенту нужна платформа" in russian_text
+    assert "вместо эффектного разового трюка появляется система" in russian_text
+    assert "ограничивать, наблюдать, выпускать и улучшать без гадания" in russian_text
+    assert "минимальный набор платформенных слоев" in russian_text
+    assert "рискованным действиям" in russian_text
+    assert "обычного рабочего процесса" in russian_text
+    assert "один управляемый запуск" in russian_text
+    assert "политику, исполнение, доказательства" in russian_text
+    assert "ответственность оператора" in russian_text
 
     assert "# 书籍（book）" in chinese_text
     assert "主入口页（main entry page）" in chinese_text
@@ -8684,23 +8932,23 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "操作员问责（operator accountability）" in chinese_text
 
     forbidden_markers = (
-        "# Книга\n",
-        "главная входная страница самой книги",
-        "самый короткий путь в основной текст",
-        "увидеть структуру и статус публикации, открой [План книги](plan.md)",
-        "[План книги](plan.md)",
-        "## Что обещает эта книга\n",
-        "После чтения ты должен уметь:",
-        "достаточно обычного workflow",
-        "У книги один главный тезис: агенту нужна платформа",
-        "вместо эффектного разового трюка появляется система",
-        "ограничивать, наблюдать, выпускать",
-        "улучшать без гадания.",
-        "минимальный набор платформенных слоев, без которых",
-        "управляемый run через policy",
-        "execution, evidence, approval",
-        "рассматривать memory, evals",
-        "operator accountability как",
+        "# Книга (book)",
+        "главная входная страница (main entry page)",
+        "самый короткий путь (shortest path)",
+        "основной текст (main text)",
+        "План книги (Book Plan)",
+        "Что обещает эта книга (book promise)",
+        "После чтения ты должен уметь (learning outcomes)",
+        "главный тезис (main thesis)",
+        "платформа (platform)",
+        "разового трюка (one-off trick)",
+        "ограничивать (constrain)",
+        "улучшать без гадания (improve without guessing)",
+        "рабочего процесса (workflow)",
+        "управляемый запуск (run)",
+        "политику (policy)",
+        "доказательства (evidence)",
+        "operator accountability",
         "# 书籍\n",
         "这是整本书的主入口页。",
         "最短路径进入正文",
@@ -8718,8 +8966,9 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "记忆、评测、来源谱系、退役",
     )
 
-    for marker in forbidden_markers:
+    for marker in forbidden_markers[:17]:
         assert marker not in russian_text
+    for marker in forbidden_markers[17:]:
         assert marker not in chinese_text
 
 
@@ -8727,21 +8976,21 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
-    assert "Рекомендуемый маршрут чтения (recommended reading path)" in russian_text
-    assert "короткий полезный маршрут (shortest useful path)" in russian_text
-    assert "Быстрый ориентир по стабильности (stability guide)" in russian_text
-    assert "практических слоя (practical layers)" in russian_text
-    assert "`Стабильное ядро` (stable core)" in russian_text
-    assert "`Быстро меняющийся слой` (fast-moving layer)" in russian_text
-    assert "исследовательские страницы приложений (research appendix pages)" in russian_text
-    assert "читаешь книгу впервые (first-time reader)" in russian_text
-    assert "Прямые точки входа (direct entry points)" in russian_text
-    assert "[Начать с Части I (Part I)]" in russian_text
-    assert "[Открыть план книги (Book Plan)]" in russian_text
-    assert "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]" in russian_text
-    assert "[Перейти к жизненному циклу агентной системы (agent system lifecycle)]" in russian_text
-    assert "[Читать книгу (Read the book)]" in russian_text
-    assert "[Открыть план (Open plan)]" in russian_text
+    assert "Рекомендуемый маршрут чтения" in russian_text
+    assert "короткий полезный маршрут" in russian_text
+    assert "Быстрый ориентир по стабильности" in russian_text
+    assert "практических слоя" in russian_text
+    assert "`Стабильное ядро`" in russian_text
+    assert "`Быстро меняющийся слой`" in russian_text
+    assert "исследовательские страницы приложений" in russian_text
+    assert "читаешь книгу впервые" in russian_text
+    assert "Прямые точки входа" in russian_text
+    assert "[Начать с Части I]" in russian_text
+    assert "[Открыть план книги]" in russian_text
+    assert "[Перейти к сквозной цепочке доказательств]" in russian_text
+    assert "[Перейти к жизненному циклу агентной системы]" in russian_text
+    assert "[Читать книгу]" in russian_text
+    assert "[Открыть план]" in russian_text
 
     assert "推荐阅读路径（recommended reading path）" in chinese_text
     assert "最短有效路径（shortest useful path）" in chinese_text
@@ -8760,21 +9009,20 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "[查看计划（Open plan）]" in chinese_text
 
     forbidden_markers = (
-        "## Рекомендуемый маршрут чтения\n",
-        "самый короткий полезный маршрут, иди так",
-        "## Быстрый ориентир по стабильности\n",
-        "У книги есть два практических слоя:",
-        "`Стабильное ядро`: части",
-        "`Быстро меняющийся слой`: глава",
-        "исследовательские страницы приложений.",
-        "Если читаешь книгу впервые",
-        "## Прямые точки входа\n",
-        "[Начать с Части I](part-i/index.md)",
-        "[Открыть план книги](plan.md)",
-        "[Перейти к Evidence Spine]",
-        "[Перейти к жизненному циклу агентной системы](part-viii/index.md)",
-        "[Читать книгу](part-i/index.md)",
-        "[Открыть план](plan.md)",
+        "Рекомендуемый маршрут чтения (recommended reading path)",
+        "короткий полезный маршрут (shortest useful path)",
+        "Быстрый ориентир по стабильности (stability guide)",
+        "`Стабильное ядро` (stable core)",
+        "`Быстро меняющийся слой` (fast-moving layer)",
+        "исследовательские страницы приложений (research appendix pages)",
+        "читаешь книгу впервые (first-time reader)",
+        "Прямые точки входа (direct entry points)",
+        "[Начать с Части I (Part I)]",
+        "[Открыть план книги (Book Plan)]",
+        "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]",
+        "[Перейти к жизненному циклу агентной системы (agent system lifecycle)]",
+        "[Читать книгу (Read the book)]",
+        "[Открыть план (Open plan)]",
         "## 推荐阅读路径\n",
         "最短但有效的路线",
         "## 稳定性捷径\n",
@@ -10748,7 +10996,24 @@ def test_multilingual_reference_safe_agent_schema_spine_is_localized() -> None:
 
 
 def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
-    required_markers = (
+    russian_markers = (
+        "Канонические сценарии жизненного цикла",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "пакеты изменений для записывающих возможностей",
+        "подтверждения",
+        "доказательства восстановления после дубля тикета",
+        "владение корпусом",
+        "проверку свежести",
+        "контроль доступа",
+        "происхождение знаний",
+        "право эскалации",
+        "побочные эффекты уведомлений",
+        "ответственность за реагирование",
+        "обучение после инцидента",
+    )
+    english_markers = (
         "Canonical lifecycle cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -10765,12 +11030,9 @@ def test_part_viii_index_surfaces_three_canonical_lifecycle_cases() -> None:
         "response ownership",
         "post-incident learning",
     )
-    checked_english_files = (
-        "docs/book/part-viii/index.md",
-        "docs/book/part-viii/index.en.md",
-    )
 
-    _assert_files_contain_all(checked_english_files, required_markers)
+    _assert_files_contain_all(("docs/book/part-viii/index.md",), russian_markers)
+    _assert_files_contain_all(("docs/book/part-viii/index.en.md",), english_markers)
 
     chinese_text = _read("docs/book/part-viii/index.zh.md")
     expected_chinese_markers = (
