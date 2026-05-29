@@ -183,5 +183,5 @@ Incident review редко заканчивается только containment p
 - [Схема проверки изменений и шлюза раскатки](change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Handbook по agent registry и inventory operations](registry-operations-handbook.md)
-- [Глава 21. Assurance loop: red teaming, detection и response](../book/part-viii/chapter-21.md)
+- [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](../book/part-viii/chapter-21.md)
 - [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)

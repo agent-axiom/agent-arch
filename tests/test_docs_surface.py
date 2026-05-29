@@ -1777,25 +1777,49 @@ def test_publisher_packet_all_lines_are_print_export_friendly() -> None:
 
 
 def test_chapter_17_policy_catalog_threads_three_canonical_cases() -> None:
-    required_markers = (
-        "Policy case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "write capabilities",
-        "approval requirements",
-        "read capabilities",
-        "corpus scope",
-        "memory-write permissions",
-        "emergency-only policy overrides",
-    )
-    checked_files = (
-        "docs/book/part-vii/chapter-17.md",
-        "docs/book/part-vii/chapter-17.en.md",
-        "docs/book/part-vii/chapter-17.zh.md",
-    )
+    markers_by_file = {
+        "docs/book/part-vii/chapter-17.md": (
+            "Заметка о сквозных сценариях слоя политик",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "пишущих возможностей",
+            "требований подтверждения",
+            "читающих возможностей",
+            "границ корпуса",
+            "прав записи в память",
+            "аварийных переопределений политик",
+        ),
+        "docs/book/part-vii/chapter-17.en.md": (
+            "Policy case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "write capabilities",
+            "approval requirements",
+            "read capabilities",
+            "corpus scope",
+            "memory-write permissions",
+            "emergency-only policy overrides",
+        ),
+        "docs/book/part-vii/chapter-17.zh.md": (
+            "Policy case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "write capabilities",
+            "approval requirements",
+            "read capabilities",
+            "corpus scope",
+            "memory-write permissions",
+            "emergency-only policy overrides",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in markers_by_file.items():
+        text = _read(path)
+        for required_marker in required_markers:
+            assert required_marker in text, (path, required_marker)
 
 
 def test_chapter_17_policy_catalog_zh_refs_are_localized() -> None:
@@ -2117,28 +2141,57 @@ def test_chapter_15_golden_path_trace_eval_links_are_clickable() -> None:
 
 
 def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
-    required_markers = (
-        "Runtime case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "baseline runtime",
-        "approval hooks",
-        "idempotency contract",
-        "duplicate-ticket telemetry",
-        "trace evidence",
-        "source grounding",
-        "tenant filters",
-        "guarded memory writes",
-        "incident-state updates",
-    )
-    checked_files = (
-        "docs/book/part-vii/chapter-16.md",
-        "docs/book/part-vii/chapter-16.en.md",
-        "docs/book/part-vii/chapter-16.zh.md",
-    )
+    markers_by_file = {
+        "docs/book/part-vii/chapter-16.md": (
+            "Заметка о сквозных сценариях среды исполнения",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "базовая среда исполнения",
+            "проверками подтверждения",
+            "контрактом идемпотентности",
+            "телеметрией дублей тикета",
+            "привязкой к источникам",
+            "клиентскими границами",
+            "защищенными записями в память",
+            "обновлениями состояния инцидента",
+        ),
+        "docs/book/part-vii/chapter-16.en.md": (
+            "Runtime case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "baseline runtime",
+            "approval hooks",
+            "idempotency contract",
+            "duplicate-ticket telemetry",
+            "trace evidence",
+            "source grounding",
+            "tenant filters",
+            "guarded memory writes",
+            "incident-state updates",
+        ),
+        "docs/book/part-vii/chapter-16.zh.md": (
+            "Runtime case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "baseline runtime",
+            "approval hooks",
+            "idempotency contract",
+            "duplicate-ticket telemetry",
+            "trace evidence",
+            "source grounding",
+            "tenant filters",
+            "guarded memory writes",
+            "incident-state updates",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in markers_by_file.items():
+        text = _read(path)
+        for required_marker in required_markers:
+            assert required_marker in text, (path, required_marker)
 
 
 def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
@@ -2157,28 +2210,58 @@ def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
 
 
 def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
-    required_markers = (
-        "Rollout case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "production checklist",
-        "duplicate-ticket regression gate",
-        "approval coverage",
-        "idempotency strategy",
-        "traces",
-        "retrieval freshness gate",
-        "source-grounding evals",
-        "tenant-boundary checks",
-        "post-incident regression plan",
-    )
-    checked_files = (
-        "docs/book/part-vii/chapter-18.md",
-        "docs/book/part-vii/chapter-18.en.md",
-        "docs/book/part-vii/chapter-18.zh.md",
-    )
+    markers_by_file = {
+        "docs/book/part-vii/chapter-18.md": (
+            "Заметка о сквозных сценариях поэтапного выпуска",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "чеклист промышленного запуска",
+            "регрессионного шлюза против дублей тикета",
+            "покрытия подтверждениями",
+            "стратегии идемпотентности",
+            "трассы",
+            "шлюза свежести извлечения",
+            "оценок привязки к источникам",
+            "проверок клиентских границ",
+            "плана регрессии после инцидента",
+        ),
+        "docs/book/part-vii/chapter-18.en.md": (
+            "Rollout case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "production checklist",
+            "duplicate-ticket regression gate",
+            "approval coverage",
+            "idempotency strategy",
+            "traces",
+            "retrieval freshness gate",
+            "source-grounding evals",
+            "tenant-boundary checks",
+            "post-incident regression plan",
+        ),
+        "docs/book/part-vii/chapter-18.zh.md": (
+            "Rollout case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "production checklist",
+            "duplicate-ticket regression gate",
+            "approval coverage",
+            "idempotency strategy",
+            "traces",
+            "retrieval freshness gate",
+            "source-grounding evals",
+            "tenant-boundary checks",
+            "post-incident regression plan",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in markers_by_file.items():
+        text = _read(path)
+        for required_marker in required_markers:
+            assert required_marker in text, (path, required_marker)
 
 
 def test_chapter_18_rollout_trace_links_are_clickable() -> None:
@@ -2240,10 +2323,20 @@ def test_chapter_19_adlc_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-19.md": (
-            *common_markers,
-            "eval dataset",
-            "retrieval corpus",
-            "trace schema",
+            "Заметка о сквозных сценариях ADLC",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "модель состояний жизненного цикла",
+            "поверхности риска выпуска",
+            "контракт пишущей возможности",
+            "оценки дублей тикета",
+            "оценки привязки к источникам",
+            "карту ролей реагирующих",
+            "управляемый набор изменений",
+            "набор для оценки",
+            "корпус извлечения",
+            "схема трасс",
         ),
         "docs/book/part-viii/chapter-19.en.md": (
             *common_markers,
@@ -2408,11 +2501,20 @@ def test_chapter_21_assurance_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-21.md": (
-            *common_markers,
-            "finding and response record",
-            "approval-only containment",
-            "retrieval-poisoning signal",
-            "post-incident control update",
+            "Заметка о сквозных сценариях контура заверения",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "путями сдерживания",
+            "обнаружение дублей результата",
+            "обновленную оценку",
+            "трассируемый результат",
+            "сдерживание по клиентским границам",
+            "ограничение уведомлений",
+            "запись о находке и реагировании",
+            "сдерживание через режим только с подтверждением",
+            "сигнал отравления извлечения",
+            "обновление контроля после инцидента",
         ),
         "docs/book/part-viii/chapter-21.en.md": (
             *common_markers,
@@ -2577,7 +2679,7 @@ def test_chapter_21_chinese_evidence_spine_link_is_localized() -> None:
 def test_chapter_21_useful_refs_include_change_rollout_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-21.md": (
-            "[Схема change review и rollout gate]"
+            "[Схема проверки изменений и шлюза поэтапного выпуска]"
             "(../../appendix/change-rollout-schema.md)"
         ),
         "docs/book/part-viii/chapter-21.en.md": (
@@ -2639,13 +2741,20 @@ def test_chapter_22_supply_chain_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            *common_markers,
-            "approved artifact bundle",
-            "eval dataset",
-            "approved retrieval corpus",
-            "post-incident artifact update",
-            "trace schema",
-            "approval schema",
+            "Заметка о сквозных сценариях цепочки поставки",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "происхождение",
+            "контракт возможности",
+            "рубрики привязки к источникам",
+            "карты ролей реагирующих",
+            "утвержденный набор артефактов",
+            "набор для оценки",
+            "утвержденного корпуса извлечения",
+            "обновления артефактов после инцидента",
+            "схемы трасс",
+            "схемы подтверждения",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             *common_markers,
@@ -2771,7 +2880,7 @@ def test_chapter_22_supply_chain_schema_links_are_clickable() -> None:
 def test_chapter_22_provenance_questions_link_approval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "contract version и [approval schema](../../appendix/approval-schema.md)"
+            "версия контракта и [схема подтверждения](../../appendix/approval-schema.md)"
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "contract version and [approval schema](../../appendix/approval-schema.en.md)"
@@ -2788,7 +2897,7 @@ def test_chapter_22_provenance_questions_link_approval_schema() -> None:
 def test_chapter_22_provenance_questions_link_policy_bundle() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен"
+            "какой [набор политик](../../appendix/policy-bundle-schema.md) был активен"
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [policy bundle](../../appendix/policy-bundle-schema.en.md) was active"
@@ -2805,9 +2914,9 @@ def test_chapter_22_provenance_questions_link_policy_bundle() -> None:
 def test_chapter_22_artifact_inventory_links_lifecycle_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[capability contract](../../appendix/lifecycle-artifact-schema.md)",
-            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
-            "[правила interruption и re-initialization для capability sessions]"
+            "[контракт возможности](../../appendix/lifecycle-artifact-schema.md)",
+            "[схема управления средой исполнения](../../appendix/lifecycle-artifact-schema.md)",
+            "[правила прерывания и повторной инициализации для сессий возможностей]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -2835,8 +2944,8 @@ def test_chapter_22_artifact_inventory_links_lifecycle_artifacts() -> None:
 def test_chapter_22_supply_chain_surface_links_control_schemas() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[правила и схемы approval](../../appendix/approval-schema.md)",
-            "[схемы runtime-control](../../appendix/lifecycle-artifact-schema.md)",
+            "[правила и схемы подтверждения](../../appendix/approval-schema.md)",
+            "[схемы управления средой исполнения](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approval rules and schemas](../../appendix/approval-schema.en.md)",
@@ -2888,7 +2997,8 @@ def test_chapter_22_supply_chain_surface_links_artifact_families() -> None:
 def test_chapter_22_supply_chain_surface_links_rollout_bundles() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[наборы для раскатки](../../appendix/change-rollout-schema.md)",
+            "[наборы для поэтапного выпуска]"
+            "(../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[rollout bundles](../../appendix/change-rollout-schema.en.md)",
@@ -2928,7 +3038,7 @@ def test_chapter_22_approved_model_route_links_lifecycle_schema() -> None:
 def test_chapter_22_approved_prompt_bundle_links_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "утвержденный [набор prompt-правил]"
+            "утвержденный [набор правил инструкций]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -2950,7 +3060,8 @@ def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> Non
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[оценки](../../appendix/eval-schema.md) ее покрыли",
-            "[волне раскатки](../../appendix/change-rollout-schema.md)",
+            "[волне поэтапного выпуска]"
+            "(../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[evals](../../appendix/eval-schema.en.md) covered it",
@@ -2975,7 +3086,8 @@ def test_chapter_22_prompt_bundle_provenance_links_eval_rollout_schemas() -> Non
 def test_chapter_22_prompt_bundle_provenance_links_owner_version_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[кто менял prompt](../../appendix/lifecycle-artifact-schema.md)",
+            "[кто менял инструкцию]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
             "[какая версия](../../appendix/lifecycle-artifact-schema.md) сейчас в проде",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -2998,7 +3110,7 @@ def test_chapter_22_prompt_bundle_provenance_links_owner_version_schema() -> Non
 def test_chapter_22_prompt_bundle_related_routines_link_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[routines](../../appendix/lifecycle-artifact-schema.md)",
+            "[рабочим процедурам](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[routines](../../appendix/lifecycle-artifact-schema.en.md)",
@@ -3018,7 +3130,7 @@ def test_chapter_22_supply_chain_surface_links_model_prompt_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[маршруты к моделям](../../appendix/lifecycle-artifact-schema.md)",
-            "[наборы prompt- и routine-правил]"
+            "[наборы правил инструкций и рабочих процедур]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3042,7 +3154,7 @@ def test_chapter_22_provenance_questions_link_model_prompt_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[откуда взялась эта модель](../../appendix/lifecycle-artifact-schema.md)",
-            "[набор prompt-правил](../../appendix/lifecycle-artifact-schema.md)",
+            "[набор правил инструкций](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[where this model came from]"
@@ -3142,8 +3254,9 @@ def test_chapter_22_trust_chain_links_capability_schema() -> None:
 def test_chapter_22_trust_chain_links_approval_runtime_control_schemas() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approval](../../appendix/approval-schema.md) и "
-            "[runtime-control](../../appendix/lifecycle-artifact-schema.md)",
+            "[подтверждения](../../appendix/approval-schema.md) и "
+            "[управления средой исполнения]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approval](../../appendix/approval-schema.en.md) and "
@@ -3164,9 +3277,9 @@ def test_chapter_22_trust_chain_links_approval_runtime_control_schemas() -> None
 def test_chapter_22_trust_chain_links_session_authorization_schemas() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[цепочкой правил управления capability sessions]"
+            "[цепочкой правил управления сессиями возможностей]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[цепочкой delegated authorization]"
+            "[цепочкой делегированной авторизации]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3191,7 +3304,7 @@ def test_chapter_22_trust_chain_links_model_prompt_schemas() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[цепочкой моделей](../../appendix/lifecycle-artifact-schema.md)",
-            "[цепочкой prompt- и routine-правил]"
+            "[цепочкой правил инструкций и рабочих процедур]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3214,8 +3327,9 @@ def test_chapter_22_trust_chain_links_model_prompt_schemas() -> None:
 def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск",
-            "считать [eval dataset](../../appendix/eval-schema.md) чем-то второстепенным",
+            "какой [набор для оценки](../../appendix/eval-schema.md) подтвердил выпуск",
+            "считать [набор данных для оценки](../../appendix/eval-schema.md) "
+            "чем-то второстепенным",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [eval dataset](../../appendix/eval-schema.en.md) validated the release",
@@ -3236,8 +3350,8 @@ def test_chapter_22_provenance_questions_link_eval_dataset() -> None:
 def test_chapter_22_runtime_control_schema_links_are_clickable() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approval schema](../../appendix/approval-schema.md)",
-            "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
+            "[схема подтверждения](../../appendix/approval-schema.md)",
+            "[схема управления средой исполнения](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approval schemas](../../appendix/approval-schema.en.md)",
@@ -3497,7 +3611,7 @@ def test_chapter_22_approved_artifact_definition_links_lifecycle_schema() -> Non
 def test_chapter_22_approved_artifact_bundle_links_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approved artifact bundle](../../appendix/lifecycle-artifact-schema.md)",
+            "[утвержденный набор артефактов](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approved artifact bundle]"
@@ -3518,7 +3632,7 @@ def test_chapter_22_approved_artifact_bundle_links_lifecycle_schema() -> None:
 def test_chapter_22_duplicate_ticket_release_bundle_links_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approved release bundle](../../appendix/lifecycle-artifact-schema.md)",
+            "[утвержденном наборе выпуска](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approved release bundle]"
@@ -3538,8 +3652,8 @@ def test_chapter_22_duplicate_ticket_release_bundle_links_lifecycle_schema() -> 
 def test_chapter_22_inventory_artifact_distinction_links_both_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approved inventory](../../appendix/registry-operations-handbook.md) отвечает",
-            "[approved artifacts](../../appendix/lifecycle-artifact-schema.md) отвечает",
+            "[утвержденный реестр](../../appendix/registry-operations-handbook.md) отвечает",
+            "[доверенные артефакты](../../appendix/lifecycle-artifact-schema.md) отвечают",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approved inventory]"
@@ -3585,7 +3699,7 @@ def test_chapter_22_release_discipline_links_bundle_and_verifier_contracts() -> 
         "docs/book/part-viii/chapter-22.md": (
             "[управляемой версией, утвержденным набором]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[семейством контрактов с verifier-ограничениями]"
+            "[семейством контрактов с ограничениями проверяющего]"
             "(../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3873,8 +3987,8 @@ def test_chapter_22_failed_run_provenance_links_identity_and_eval_fields() -> No
 def test_chapter_22_maturity_bar_links_inventory_and_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[approved inventory](../../appendix/registry-operations-handbook.md) "
-            "и [approved artifacts](../../appendix/lifecycle-artifact-schema.md)",
+            "[утвержденный реестр](../../appendix/registry-operations-handbook.md)",
+            "[доверенные артефакты](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[approved inventory]"
@@ -3896,7 +4010,7 @@ def test_chapter_22_maturity_bar_links_inventory_and_artifacts() -> None:
 def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [verifier contract](../../appendix/eval-schema.md)",
+            "какой [контракт проверяющего](../../appendix/eval-schema.md)",
             "[verifier contracts](../../appendix/eval-schema.md)",
             "[verifier contract](../../appendix/eval-schema.md) не просто оценивает качество",
             "активного [verifier contract](../../appendix/eval-schema.md)",
@@ -3924,9 +4038,9 @@ def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
 def test_chapter_22_links_grading_and_evidence_rules_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[rubric definitions и правила связывания доказательной базы]"
+            "[определения рубрик и правила связывания доказательной базы]"
             "(../../appendix/eval-schema.md)",
-            "[grading rubric и правила связывания доказательной базы]"
+            "[рубрика оценки и правила связывания доказательной базы]"
             "(../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3949,9 +4063,9 @@ def test_chapter_22_links_grading_and_evidence_rules_to_eval_schema() -> None:
 def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[interruption или expiry policy]"
+            "[политика прерывания или истечения]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[delegated authorization mode, principal binding и revoke policy]"
+            "[режим делегированной авторизации, привязка принципала и политика отзыва]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -3984,9 +4098,10 @@ def test_chapter_22_links_session_and_delegation_rules_to_lifecycle_schema() -> 
 def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[governance-правила для orchestration pattern и определения worker-safe catalog]"
+            "[управленческие правила для схемы оркестрации и определения "
+            "безопасного каталога рабочих агентов]"
             "(../../appendix/change-rollout-schema.md)",
-            "[orchestration pattern и какая worker-boundary policy]"
+            "[схема оркестрации и политика границ рабочих агентов]"
             "(../../appendix/change-rollout-schema.md)",
             "[изменения в orchestration pattern]"
             "(../../appendix/change-rollout-schema.md)",
@@ -4036,7 +4151,7 @@ def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None
 def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "утвержденный [rollout gate](../../appendix/change-rollout-schema.md)"
+            "утвержденный [шлюз поэтапного выпуска](../../appendix/change-rollout-schema.md)"
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "approved [rollout gate](../../appendix/change-rollout-schema.en.md)"
@@ -4054,10 +4169,11 @@ def test_chapter_22_artifact_inventory_links_rollout_gate() -> None:
 def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался",
-            "[approved retrieval corpus](../../appendix/memory-retrieval-schema.md)",
-            "[source-grounding rubric, tenant-filter config, memory-write policy "
-            "и freshness attestation](../../appendix/memory-retrieval-schema.md)",
+            "какой [корпус извлечения](../../appendix/memory-retrieval-schema.md) использовался",
+            "[утвержденного корпуса извлечения](../../appendix/memory-retrieval-schema.md)",
+            "[рубрики привязки к источникам, конфигурации клиентских фильтров, "
+            "политики записи в память "
+            "и подтверждения свежести](../../appendix/memory-retrieval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [retrieval corpus](../../appendix/memory-retrieval-schema.en.md) was used",
@@ -4085,11 +4201,11 @@ def test_chapter_22_provenance_questions_link_retrieval_corpus() -> None:
 def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[policy bundle](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`",
-            "[capability contract](../../appendix/lifecycle-artifact-schema.md) "
+            "[набора политик](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`",
+            "[контракта возможности](../../appendix/lifecycle-artifact-schema.md) "
             "`create_support_ticket`",
-            "[rollout gate](../../appendix/change-rollout-schema.md), "
-            "[approval schema](../../appendix/approval-schema.md)",
+            "[шлюза поэтапного выпуска](../../appendix/change-rollout-schema.md), "
+            "[схемы подтверждения](../../appendix/approval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "`side_effect_unknown` [policy bundle](../../appendix/policy-bundle-schema.en.md)",
@@ -4118,10 +4234,10 @@ def test_chapter_22_duplicate_ticket_case_links_release_artifacts() -> None:
 def test_chapter_22_incident_case_spine_links_incident_artifacts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[escalation-policy bundle, notification contract и responder-role map]"
+            "[набора политик эскалации, контракта уведомлений и карты ролей реагирующих]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[incident-state schema](../../appendix/incident-record-schema.md)",
-            "[post-incident artifact update](../../appendix/lifecycle-artifact-schema.md)",
+            "[схемы состояния инцидента](../../appendix/incident-record-schema.md)",
+            "[обновления артефактов после инцидента](../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[escalation-policy bundle, notification contract, and responder-role map]"
@@ -4319,11 +4435,19 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-24.md": (
-            *common_markers,
-            "approval-tight replacement window",
-            "immutable trace linkage",
-            "retrieval poisoning",
-            "incident-state tampering",
+            "Заметка о сквозных сценариях несоответствия целей",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "сценарий риска и план управления",
+            "поверхности инсайдерского риска",
+            "отдельного принципала инструмента",
+            "обхода клиентских фильтров",
+            "подавления уведомлений",
+            "строгого окна замены с подтверждениями",
+            "неизменяемой связи трасс",
+            "отравления извлечения",
+            "подмены состояния инцидента",
         ),
         "docs/book/part-viii/chapter-24.en.md": (
             *common_markers,
@@ -5029,11 +5153,18 @@ def test_chapter_25_control_evals_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-25.md": (
-            *common_markers,
-            "eval schema",
-            "eval gate and verifier contract",
-            "approval-path misuse check",
-            "retrieval-poisoning scenario",
+            "Заметка о сквозных сценариях контрольных оценок",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "поверхности поведенческих и контрольных оценок",
+            "проверки изменения полезной нагрузки",
+            "оценки привязки к источникам",
+            "пробы подавления уведомлений",
+            "контрольной оценки отката",
+            "оценочный шлюз и контракт проверяющего",
+            "проверки злоупотребления путем подтверждения",
+            "сценария отравления извлечения",
         ),
         "docs/book/part-viii/chapter-25.en.md": (
             *common_markers,
@@ -5199,10 +5330,19 @@ def test_chapter_26_observability_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            *common_markers,
-            "trace and telemetry coverage record",
-            "retrieval provenance",
-            "post-incident control changes",
+            "Заметка о сквозных сценариях наблюдаемости",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "покрытие наблюдаемостью",
+            "путей записи тикетов",
+            "слепых зон обхода",
+            "вердиктов привязки к источникам",
+            "доказательную базу",
+            "доставки уведомлений",
+            "запись покрытия трассировкой и телеметрией",
+            "происхождения извлечения",
+            "изменений контроля после инцидента",
         ),
         "docs/book/part-viii/chapter-26.en.md": (
             *common_markers,
@@ -6190,7 +6330,20 @@ def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
 
 
 def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
-    required_markers = (
+    russian_markers = (
+        "Заметка о сквозных сценариях вывода из эксплуатации",
+        "Разбор обращений поддержки",
+        "внутренний ассистент знаний",
+        "координация инцидентов",
+        "устаревшие пишущие пути",
+        "приостановленные подтверждения",
+        "доказательств проверки",
+        "устаревшие корпуса",
+        "устаревшие векторные представления",
+        "возможности только для аварийного режима",
+        "каналы уведомлений",
+    )
+    english_markers = (
         "Retirement case-spine note",
         "Support triage",
         "Internal knowledge assistant",
@@ -6203,12 +6356,11 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         "emergency-only capabilities",
         "notification channels",
     )
-    english_files = (
-        "docs/book/part-viii/chapter-23.md",
-        "docs/book/part-viii/chapter-23.en.md",
-    )
-    _assert_files_contain_all(english_files, required_markers)
-    for path in english_files:
+
+    _assert_files_contain_all(("docs/book/part-viii/chapter-23.md",), russian_markers)
+    _assert_files_contain_all(("docs/book/part-viii/chapter-23.en.md",), english_markers)
+
+    for path in ("docs/book/part-viii/chapter-23.md", "docs/book/part-viii/chapter-23.en.md"):
         text = _read(path)
         assert "internal knowledge assistant" not in text, path
         assert "incident coordination" not in text, path
@@ -6266,7 +6418,7 @@ def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> Non
 def test_chapter_23_retirement_useful_refs_include_retirement_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[Схема approval](../../appendix/approval-schema.md)",
+            "[Схема подтверждения](../../appendix/approval-schema.md)",
             "[Схема наборов для оценки и правил проверки]"
             "(../../appendix/eval-schema.md)",
             "[Схема памяти и извлечения]"
@@ -6299,7 +6451,8 @@ def test_chapter_23_retirement_useful_refs_include_retirement_contracts() -> Non
 def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "obligations по [verifier evidence](../../appendix/eval-schema.md)"
+            "обязательства по хранению [доказательств проверки]"
+            "(../../appendix/eval-schema.md)"
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[verifier evidence](../../appendix/eval-schema.en.md) obligations"
@@ -6317,7 +6470,7 @@ def test_chapter_23_retirement_breakages_link_verifier_evidence() -> None:
 def test_chapter_23_opening_state_tail_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[verifier evidence](../../appendix/eval-schema.md)"
+            "[доказательств проверки](../../appendix/eval-schema.md)"
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[evidence-retention obligations]"
@@ -6343,18 +6496,19 @@ def test_chapter_23_opening_state_tail_links_verifier_evidence() -> None:
 def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[approved inventory](../../appendix/registry-operations-handbook.md)",
-            "[deprecated inventory](../../appendix/registry-operations-handbook.md)",
-            "[deprecated capability contract]"
+            "[утвержденный реестр](../../appendix/registry-operations-handbook.md)",
+            "[реестр устаревших элементов]"
+            "(../../appendix/registry-operations-handbook.md)",
+            "[устаревший контракт возможности]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated approval schema](../../appendix/approval-schema.md)",
-            "[deprecated runtime-control schema]"
+            "[устаревшая схема подтверждения](../../appendix/approval-schema.md)",
+            "[устаревшая схема управления средой исполнения]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated orchestration pattern или worker-boundary policy]"
+            "[устаревшая схема оркестрации или политика границы рабочих агентов]"
             "(../../appendix/change-rollout-schema.md)",
-            "[deprecated capability-session contract]"
+            "[устаревший контракт сессии возможности]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated verifier contract](../../appendix/eval-schema.md)",
+            "[устаревший контракт проверяющего](../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[approved inventory](../../appendix/registry-operations-handbook.en.md)",
@@ -6414,13 +6568,17 @@ def test_chapter_23_deprecated_inventory_links_control_contracts() -> None:
 def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[active tool principal](../../appendix/lifecycle-artifact-schema.md)",
-            "[доступ к memory](../../appendix/memory-retrieval-schema.md)",
-            "[старый путь rollout](../../appendix/change-rollout-schema.md)",
-            "[resumable paused approval path](../../appendix/approval-schema.md)",
-            "[expired capability session, которую все еще можно re-initialize "
-            "через старый path](../../appendix/lifecycle-artifact-schema.md)",
-            "[старая runtime-control schema, которую gateways все еще принимают]"
+            "[активный принципал инструмента]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[доступ к памяти](../../appendix/memory-retrieval-schema.md)",
+            "[старый путь поэтапного выпуска]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[возобновляемый путь приостановленного подтверждения]"
+            "(../../appendix/approval-schema.md)",
+            "[истекшая сессия возможности, которую все еще можно повторно "
+            "инициализировать через старый путь]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[старая схема управления средой исполнения, которую шлюзы все еще принимают]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
@@ -6467,13 +6625,15 @@ def test_chapter_23_right_to_act_risks_link_retirement_contracts() -> None:
 def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[закрыть tool principal](../../appendix/lifecycle-artifact-schema.md)",
-            "[отозвать gateway exposure]"
-            "(../../appendix/registry-operations-handbook.md)",
-            "[истечь paused approvals](../../appendix/approval-schema.md)",
-            "[остановить background retries]"
+            "[закрыть принципал инструмента]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[сохранить audit trail](../../appendix/trace-schema.md)",
+            "[отозвать экспозицию шлюза]"
+            "(../../appendix/registry-operations-handbook.md)",
+            "[истечь приостановленные подтверждения]"
+            "(../../appendix/approval-schema.md)",
+            "[остановить фоновые повторы]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[сохранить контрольный след](../../appendix/trace-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[close the tool principal]"
@@ -6523,18 +6683,20 @@ def test_chapter_23_old_ticket_writer_example_links_retirement_controls() -> Non
 def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[остановить новые rollout waves](../../appendix/change-rollout-schema.md)",
-            "[запретить risky capabilities]"
+            "[остановить новые волны поэтапного выпуска]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[запретить рискованные возможности]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[перевести write actions в approval-only или disable]"
+            "[перевести пишущие действия в режим подтверждения или отключения]"
             "(../../appendix/approval-schema.md)",
-            "[остановить memory writes](../../appendix/memory-retrieval-schema.md)",
-            "[истечь или отменить paused runs]"
+            "[остановить записи в память](../../appendix/memory-retrieval-schema.md)",
+            "[истечь или отменить приостановленные запуски]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[отключить background jobs и background routes]"
+            "[отключить фоновые задачи и фоновые маршруты]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[закрыть или архивировать capability-session state и запретить "
-            "uncontrolled re-init](../../appendix/lifecycle-artifact-schema.md)",
+            "[закрыть или архивировать состояние сессии возможности и запретить "
+            "неконтролируемую повторную инициализацию]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[stop new rollout waves](../../appendix/change-rollout-schema.en.md)",
@@ -6587,22 +6749,25 @@ def test_chapter_23_layered_retirement_checklist_links_control_surfaces() -> Non
 def test_chapter_23_layered_retirement_evidence_links_control_surfaces() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[выключить deprecated orchestration patterns и отозвать worker-safe "
-            "catalog exposure](../../appendix/change-rollout-schema.md)",
-            "[отозвать delegated authorization paths]"
+            "[выключить устаревшие схемы оркестрации и отозвать экспозицию "
+            "безопасного каталога рабочих агентов]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[отозвать пути делегированной авторизации]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[архивировать их final lineage](../../appendix/trace-schema.md)",
-            "[вывести из эксплуатации deprecated verifier contracts и сохранить "
-            "evidence, нужные для объяснения прежних rollout или assurance "
-            "decisions](../../appendix/eval-schema.md)",
+            "[архивировать их итоговую линию происхождения]"
+            "(../../appendix/trace-schema.md)",
+            "[вывести из эксплуатации устаревшие контракты проверяющего и сохранить "
+            "доказательства, нужные для объяснения прежних решений по поэтапному "
+            "выпуску или заверению](../../appendix/eval-schema.md)",
             "[`failure_reason`](../../appendix/eval-schema.md)",
-            "[архивировать handoff artifacts, которые несли scope спринта, "
-            "evaluator critique или решения на границе reset]"
+            "[архивировать артефакты передачи, которые несли область спринта, "
+            "критику оценщика или решения на границе сброса]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[отозвать egress access](../../appendix/lifecycle-artifact-schema.md)",
-            "[закрыть principals, secrets и connectors]"
+            "[отозвать исходящий доступ](../../appendix/lifecycle-artifact-schema.md)",
+            "[закрыть принципалы, секреты и соединители]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[зафиксировать final audit state](../../appendix/trace-schema.md)",
+            "[зафиксировать итоговое контрольное состояние]"
+            "(../../appendix/trace-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[disable deprecated orchestration patterns and revoke worker-safe "
@@ -6670,16 +6835,17 @@ def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
         "docs/book/part-viii/chapter-23.md": (
             "[что архивировать](../../appendix/lifecycle-artifact-schema.md)",
             "[что удалить](../../appendix/memory-retrieval-schema.md)",
-            "[что anonymize](../../appendix/memory-retrieval-schema.md)",
-            "[traces](../../appendix/trace-schema.md) и "
-            "[approvals](../../appendix/approval-schema.md)",
-            "[кто остается owner у archived state]"
+            "[что обезличить](../../appendix/memory-retrieval-schema.md)",
+            "[трассы](../../appendix/trace-schema.md) и "
+            "[подтверждения](../../appendix/approval-schema.md)",
+            "[кто остается владельцем архивированного состояния]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[datasets](../../appendix/eval-schema.md) и "
-            "[memory artifacts](../../appendix/memory-retrieval-schema.md)",
-            "[delegated authorization records]"
+            "[наборы данных](../../appendix/eval-schema.md) и "
+            "[артефакты памяти](../../appendix/memory-retrieval-schema.md)",
+            "[записи делегированной авторизации]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[историю verifier contracts](../../appendix/eval-schema.md)",
+            "[доказательства проверяющего](../../appendix/eval-schema.md)",
+            "[историю контрактов проверяющего](../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[what to archive](../../appendix/lifecycle-artifact-schema.en.md)",
@@ -6732,13 +6898,15 @@ def test_chapter_23_memory_audit_retention_links_state_contracts() -> None:
 def test_chapter_23_staged_replacement_links_rollout_eval_lifecycle() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[shadow comparison](../../appendix/eval-schema.md)",
-            "[limited tenant migration](../../appendix/change-rollout-schema.md)",
-            "[dual-run for critical scenarios]"
+            "[теневое сравнение](../../appendix/eval-schema.md)",
+            "[ограниченная миграция клиентов]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[параллельный запуск для критичных сценариев]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[side-by-side evals](../../appendix/eval-schema.md)",
-            "[staged traffic shift](../../appendix/change-rollout-schema.md)",
-            "[final cutover only after confidence is high]"
+            "[сравнительные оценки](../../appendix/eval-schema.md)",
+            "[поэтапное перенаправление трафика]"
+            "(../../appendix/change-rollout-schema.md)",
+            "[финальное переключение только после достаточной уверенности]"
             "(../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
@@ -6771,17 +6939,19 @@ def test_chapter_23_staged_replacement_links_rollout_eval_lifecycle() -> None:
 def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[principals еще живы](../../appendix/lifecycle-artifact-schema.md)",
-            "[background jobs забыли выключить]"
+            "[принципалы еще живы](../../appendix/lifecycle-artifact-schema.md)",
+            "[фоновые задачи забыли выключить]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[memory write path остался активным]"
+            "[путь записи в память остался активным]"
             "(../../appendix/memory-retrieval-schema.md)",
-            "[paused approvals остались resumable после retirement]"
+            "[приостановленные подтверждения остались возобновляемыми после "
+            "вывода из эксплуатации]"
             "(../../appendix/approval-schema.md)",
-            "[expired capability sessions все еще можно re-initialize через "
-            "stale control paths](../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated orchestration patterns или worker-boundary policies "
-            "остаются рабочими после retirement]"
+            "[истекшие сессии возможностей все еще можно повторно инициализировать "
+            "через устаревшие пути контроля]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
+            "[устаревшие схемы оркестрации или политики границ рабочих агентов "
+            "остаются рабочими после вывода из эксплуатации]"
             "(../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
@@ -6839,16 +7009,16 @@ def test_chapter_23_breakage_list_links_retirement_control_surfaces() -> None:
 def test_chapter_23_breakage_list_links_retirement_completion_controls() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-23.md": (
-            "[background routes забыли выключить]"
+            "[фоновые маршруты забыли выключить]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[archived state никому не принадлежит]"
+            "[архивированное состояние никому не принадлежит]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated schemas все еще принимаются gateways или runtime]"
+            "[устаревшие схемы все еще принимаются шлюзами или средой исполнения]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[deprecated patterns остаются рабочими слишком долго]"
+            "[устаревшие схемы остаются рабочими слишком долго]"
             "(../../appendix/change-rollout-schema.md)",
-            "[dual-run](../../appendix/lifecycle-artifact-schema.md) или "
-            "[staged migration](../../appendix/change-rollout-schema.md)",
+            "[параллельного запуска](../../appendix/lifecycle-artifact-schema.md) "
+            "или [поэтапной миграции](../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-23.en.md": (
             "[background routes were forgotten]"
@@ -6905,11 +7075,18 @@ def test_chapter_27_registry_threads_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-27.md": (
-            *common_markers,
-            "approval mode",
-            "retirement plan",
-            "corpus owners",
-            "lifecycle state",
+            "Заметка о сквозных сценариях реестра",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "владельцев пишущих возможностей",
+            "доказательства проверяющего",
+            "проверки свежести",
+            "владельцев ролей инцидента",
+            "режима подтверждения",
+            "плана вывода из эксплуатации",
+            "владельцев корпуса",
+            "состояния жизненного цикла",
         ),
         "docs/book/part-viii/chapter-27.en.md": (
             *common_markers,
@@ -7075,7 +7252,7 @@ def test_chapter_27_registry_case_spine_links_are_clickable() -> None:
 def test_chapter_20_useful_refs_include_change_rollout_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-20.md": (
-            "[Схема change review и rollout gate]"
+            "[Схема проверки изменений и шлюза поэтапного выпуска]"
             "(../../appendix/change-rollout-schema.md)"
         ),
         "docs/book/part-viii/chapter-20.en.md": (
@@ -7148,11 +7325,16 @@ def test_chapter_20_change_packets_thread_three_canonical_cases() -> None:
     )
     expected_markers_by_file = {
         "docs/book/part-viii/chapter-20.md": (
-            *common_markers,
-            "approval rules",
-            "retrieval corpus",
-            "memory write semantics",
-            "incident state",
+            "Заметка о сквозных сценариях управления изменениями",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "пишущих возможностей",
+            "окон свежести",
+            "правил подтверждения",
+            "корпуса извлечения",
+            "семантики записи в память",
+            "состояния инцидента",
         ),
         "docs/book/part-viii/chapter-20.en.md": (
             *common_markers,
@@ -10251,11 +10433,11 @@ def test_multilingual_start_here_change_management_link_is_localized() -> None:
     russian_text = _read("docs/start-here.md")
     chinese_text = _read("docs/start-here.zh.md")
 
-    assert "Управление изменениями для агентных систем" in russian_text
+    assert "Управление изменениями в агентных системах" in russian_text
     assert "智能体系统的变更管理（Change management）" in chinese_text
 
     forbidden_markers = (
-        "Глава 20. Change management для агентных систем",
+        "Change management для агентных систем",
         "智能体系统的变更管理](book/part-viii/chapter-20",
     )
 
@@ -15540,13 +15722,23 @@ def test_chapter_26_governance_telemetry_maps_to_nist_ai_rmf() -> None:
         "detection scenarios",
         "control action",
     )
-    checked_english_files = (
-        "docs/book/part-viii/chapter-26.md",
-        "docs/book/part-viii/chapter-26.en.md",
+    russian_required_fields = (
+        "Наложение контура на NIST AI RMF",
+        "покрытие инвентаря",
+        "телеметрия путей обхода",
+        "выходы проверяющего",
+        "доли покрытия",
+        "сигналы дрейфа",
+        "сценарии обнаружения",
+        "итоговое действие контроля",
     )
 
     _assert_files_contain_all(
-        checked_english_files,
+        ("docs/book/part-viii/chapter-26.md",),
+        (*common_required_fields, *russian_required_fields),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-viii/chapter-26.en.md",),
         (*common_required_fields, *english_required_fields),
     )
     _assert_files_contain_all(

@@ -515,7 +515,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
 - [Глава 12. SLO для агентных систем](chapter-12.md)
-- [Глава 25. Behavioral evals, control evals и automated red teaming](../part-viii/chapter-25.md)
+- [Глава 25. Поведенческие оценки, контрольные оценки и автоматизированное соревновательное тестирование](../part-viii/chapter-25.md)
 - [Глава 14. Платформенная команда и продуктовые команды](../part-vi/chapter-14.md)
 - [Часть V. Надежность и наблюдаемость](index.md)
 - [Источники](../../appendix/sources.md)
