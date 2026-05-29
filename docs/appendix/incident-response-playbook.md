@@ -135,6 +135,6 @@
 - [Схема проверки изменений и шлюза раскатки](change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
 - [Эталонный пакет](reference-package.md)
-- [Глава 21. Assurance loop: red teaming, detection и response](../book/part-viii/chapter-21.md)
-- [Глава 23. Retirement, replacement и end-of-life discipline](../book/part-viii/chapter-23.md)
+- [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](../book/part-viii/chapter-21.md)
+- [Глава 23. Вывод из эксплуатации, замена и дисциплина завершения жизненного цикла](../book/part-viii/chapter-23.md)
 - [Глава 26. Наблюдаемость для ИИ-систем, покрытие реестра и телеметрия для обнаружения проблем](../book/part-viii/chapter-26.md)
