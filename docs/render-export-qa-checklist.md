@@ -36,7 +36,7 @@ Recorded result:
 
 - status: passed local MkDocs/search/test QA and automated browser/PDF/mobile smoke QA
 - owner: editorial QA
-- last run: 2026-05-28
-- artifacts: `/private/tmp/agent-arch-render-qa-2026-05-28`
-- scope: desktop and mobile screenshots, plain text checks, print media emulation, and PDF export for all priority pages
+- last run: 2026-05-29
+- artifacts: `/private/tmp/agent-arch-render-qa-2026-05-29`
+- scope: desktop and mobile screenshots, plain text checks, print media emulation, and PDF export for all priority pages after the Chapter 1 decision-frame polish
 - blockers: independent human copy-edit and final print proof remain required before external submission
