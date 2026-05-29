@@ -106,6 +106,7 @@ Trace replay валидирует эти evidence до того, как они �
 | `memory_persisted` | после фоновой записи | фиксирует происхождение и ревизию записи памяти |
 | `background_compaction` | после background memory maintenance | фиксирует tenant-level compaction results |
 | `background_update_scheduled` | после постановки или завершения background work | фиксирует background update status для запуска |
+| `verification_result` | когда запуск проверяет условие завершения | фиксирует stop condition, verifier actor, команду/механизм проверки, pass/fail/warning/blocked и ссылки на evidence |
 | `run_failed` | когда tool failure становится итогом запуска | сохраняет явную failed-run traceability |
 | `governance_action` | когда telemetry signal запускает policy, containment, rollout или registry decision | связывает governance action record с trace evidence |
 | `run_complete` | в конце запуска | фиксирует итог запуска |
@@ -299,6 +300,7 @@ Trace replay валидирует эти evidence до того, как они �
 - разделение `display payload` и `machine payload`;
 - правила маскирования чувствительных полей;
 - явный способ связывать трассы с verifier evidence, screenshots или grading artifacts;
+- поля `stop_condition`, `verification_command`, `verification_result`, `verifier_actor` и `evidence_refs` для проверяемого завершения запуска;
 - стабильный способ фиксировать, какая версия verifier contract породила grading output;
 - sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot;
 - event или linked payload для `sandbox_profile_reviewed`, чтобы rollout/eval evidence по workspace, permissions и snapshot/resume policy была traceable.
@@ -315,6 +317,7 @@ Trace replay валидирует эти evidence до того, как они �
 - Можно ли по трассе восстановить решение политики и путь инструмента?
 - Можно ли по экспорту сессии собирать набор для оценки?
 - Можно ли связать трассу с verifier evidence, которое использовалось для grading или rollout review?
+- Есть ли событие или payload, где видно, какое условие завершения проверялось, кем и с каким результатом?
 - Если rollout требует `sandbox_profile_review`, есть ли trace evidence для workspace entries, permissions и snapshot/resume policy?
 - Можно ли понять, какая версия verifier contract породила этот grading output?
 - Есть ли план по маскированию данных и версионированию схемы?

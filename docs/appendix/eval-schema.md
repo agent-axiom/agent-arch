@@ -110,10 +110,13 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 - `sandbox_profile_review`
+- `stop_condition_verified`
 
 `failed_run_traceable` становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
 
 `sandbox_profile_review` нужен для sandbox-backed paths: он проверяет, что workspace materialization, shell/filesystem permissions, network/secrets posture и snapshot/resume policy были явно представлены как reviewable evidence, а не остались неявными runtime settings.
+
+`stop_condition_verified` нужен для agent-run paths, где результат нельзя принимать по свободному тексту “готово”. Он проверяет, что у сценария есть явное условие завершения, механизм проверки, результат проверки, actor проверки и ссылки на evidence: вывод теста, трассу, снимок экрана, diff или другой артефакт.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -182,6 +185,11 @@ Export contract намеренно конкретный: default `dataset_name` 
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `stop_condition`
+- `verification_command`
+- `verification_result`
+- `verifier_actor`
+- `evidence_refs`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
 
@@ -212,6 +220,16 @@ grading_rules:
       permissions_profile: restricted-shell-network-denied
       network_secrets_posture: network:denied,secrets:none
       snapshot_policy: required_on_completion
+    blocking: true
+  - type: stop_condition_verified
+    expected:
+      stop_condition: no duplicate ticket side effect after timeout replay
+      verification_command: .venv/bin/pytest tests/test_docs_surface.py
+      verification_result: pass
+      verifier_actor: deterministic_gate
+      evidence_refs:
+        - trace:trace_123
+        - artifact:pytest-output
     blocking: true
 verifier_outputs:
   verdict_id: verdict_failed_run_timeout_2026_05
@@ -261,7 +279,8 @@ verifier_outputs:
 - не версионировать набор;
 - не связывать элементы набора с данными трасс или историей инцидентов;
 - схлопывать verifier output в один слабый verdict без process/outcome split и failure attribution;
-- требовать `sandbox_profile_review` в rollout, но не иметь grading rule, который проверяет workspace, permissions и snapshot/resume evidence.
+- требовать `sandbox_profile_review` в rollout, но не иметь grading rule, который проверяет workspace, permissions и snapshot/resume evidence;
+- позволять агенту завершать задачу без `stop_condition_verified` и без доказательства, которое можно проверить после сессии.
 
 Все это делает культуру оценки хрупкой.
 
@@ -276,6 +295,7 @@ verifier_outputs:
 - Умеет ли verifier выдавать отдельно `process_score`, `outcome_score` и `failure_attribution`?
 - Можно ли понять, какой verifier identity и contract version породили этот grading output?
 - Есть ли отдельное правило для sandbox-backed paths, которое проверяет sandbox profile contract, workspace entries, permissions и snapshot/resume evidence?
+- Есть ли правило, которое проверяет stop condition, verification command/result, verifier actor и evidence refs для завершения запуска?
 - Поддерживаются ли многошаговые сессии?
 - Есть ли версионирование набора и владелец?
 
