@@ -11,3 +11,5 @@ site/
 artifacts/*
 !artifacts/eval-dataset.json
 docs/book-backlog.md
+
+.worktrees/
