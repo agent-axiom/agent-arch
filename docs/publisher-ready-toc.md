@@ -77,6 +77,22 @@ Status: working editorial artifact, not a public navigation page and not final e
 - source catalog;
 - public documentation site.
 
+## Russian Submission Track Addendum
+
+The packet above is still useful for positioning, but Russian publisher submission should not reuse the
+English sample manifest unchanged.
+
+For a Russian publisher-facing packet:
+
+- use `docs/book/part-i/chapter-1.md` as the primary sample source;
+- use `docs/book/part-v/chapter-13.md` as the technical credibility sample source;
+- use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;
+- use [Russian terminology policy](publisher/ru-terminology.md) before line-editing samples;
+- use [Russian submission checklist](publisher/ru-submission-checklist.md) as the pre-send gate.
+
+If the target is an English-language publisher, keep the existing `.en.md` sample manifest and describe
+the Russian manuscript as the public source/core edition.
+
 ## Print Manuscript Shape
 
 Target:
