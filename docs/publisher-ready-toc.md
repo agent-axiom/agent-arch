@@ -79,7 +79,8 @@ Status: working editorial artifact, not a public navigation page and not final e
 
 ## Russian Submission Track Addendum
 
-The packet above is still useful for positioning, but Russian publisher submission should not reuse the English sample manifest unchanged.
+The packet above is still useful for positioning, but Russian publisher submission should not reuse the
+English sample manifest unchanged.
 
 For a Russian publisher-facing packet:
 
@@ -89,7 +90,8 @@ For a Russian publisher-facing packet:
 - use [Russian terminology policy](publisher/ru-terminology.md) before line-editing samples;
 - use [Russian submission checklist](publisher/ru-submission-checklist.md) as the pre-send gate.
 
-If the target is an English-language publisher, keep the existing `.en.md` sample manifest and describe the Russian manuscript as the public source/core edition.
+If the target is an English-language publisher, keep the existing `.en.md` sample manifest and describe
+the Russian manuscript as the public source/core edition.
 
 ## Print Manuscript Shape
 

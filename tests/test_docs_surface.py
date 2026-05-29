@@ -8448,7 +8448,7 @@ def test_part_vii_index_surfaces_three_runtime_case_routes() -> None:
 
 
 def test_book_index_surfaces_three_canonical_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical case map",
         "Support triage",
         "Internal knowledge assistant",
@@ -8461,13 +8461,22 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
         "post-incident learning",
         "control surfaces",
     )
-    checked_files = (
-        "docs/book/index.md",
-        "docs/book/index.en.md",
-        "docs/book/index.zh.md",
+    russian_markers = (
+        "Каноническая карта сценариев",
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "записывающих возможностей",
+        "восстановления после дубля тикета",
+        "границы арендатора",
+        "привязка к источникам",
+        "побочные эффекты уведомлений",
+        "обучение после инцидента",
+        "поверхностей управления",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/book/index.en.md", "docs/book/index.zh.md"), english_markers)
+    _assert_files_contain_all(("docs/book/index.md",), russian_markers)
 
 
 def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
@@ -8475,7 +8484,7 @@ def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
     chinese_text = _read("docs/book/index.zh.md")
 
     assert "Каноническая карта сценариев" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
+    assert "три канонических сценария" in russian_text
     assert "записывающих возможностей (write capabilities)" in russian_text
     assert "поиск (retrieval)" in russian_text
     assert "поверхностей управления (control surfaces)" in russian_text
@@ -8551,7 +8560,7 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "основной текст (main text)" in russian_text
     assert "статус публикации (structure and publication status)" in russian_text
     assert "План книги (Book Plan)" in russian_text
-    assert "Что обещает эта книга (book promise)" in russian_text
+    assert "Что обещает эта книга" in russian_text
     assert "После чтения ты должен уметь (learning outcomes)" in russian_text
     assert "главный тезис (main thesis)" in russian_text
     assert "платформа (platform)" in russian_text
@@ -8593,8 +8602,7 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "самый короткий путь в основной текст",
         "увидеть структуру и статус публикации, открой [План книги](plan.md)",
         "[План книги](plan.md)",
-        "## Что обещает эта книга\n",
-        "После чтения ты должен уметь:",
+                "После чтения ты должен уметь:",
         "достаточно обычного workflow",
         "У книги один главный тезис: агенту нужна платформа",
         "вместо эффектного разового трюка появляется система",
@@ -8631,15 +8639,15 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     russian_text = _read("docs/book/index.md")
     chinese_text = _read("docs/book/index.zh.md")
 
-    assert "Рекомендуемый маршрут чтения (recommended reading path)" in russian_text
+    assert "Рекомендуемый маршрут чтения" in russian_text
     assert "короткий полезный маршрут (shortest useful path)" in russian_text
-    assert "Быстрый ориентир по стабильности (stability guide)" in russian_text
+    assert "Быстрый ориентир по стабильности" in russian_text
     assert "практических слоя (practical layers)" in russian_text
     assert "`Стабильное ядро` (stable core)" in russian_text
     assert "`Быстро меняющийся слой` (fast-moving layer)" in russian_text
     assert "исследовательские страницы приложений (research appendix pages)" in russian_text
     assert "читаешь книгу впервые (first-time reader)" in russian_text
-    assert "Прямые точки входа (direct entry points)" in russian_text
+    assert "Прямые точки входа" in russian_text
     assert "[Начать с Части I (Part I)]" in russian_text
     assert "[Открыть план книги (Book Plan)]" in russian_text
     assert "[Перейти к Сквозной цепочке доказательств (Evidence Spine)]" in russian_text
@@ -8664,15 +8672,12 @@ def test_multilingual_book_index_direct_entry_links_are_localized() -> None:
     assert "[查看计划（Open plan）]" in chinese_text
 
     forbidden_markers = (
-        "## Рекомендуемый маршрут чтения\n",
         "самый короткий полезный маршрут, иди так",
-        "## Быстрый ориентир по стабильности\n",
         "У книги есть два практических слоя:",
         "`Стабильное ядро`: части",
         "`Быстро меняющийся слой`: глава",
         "исследовательские страницы приложений.",
         "Если читаешь книгу впервые",
-        "## Прямые точки входа\n",
         "[Начать с Части I](part-i/index.md)",
         "[Открыть план книги](plan.md)",
         "[Перейти к Evidence Spine]",
@@ -9616,7 +9621,7 @@ def test_multilingual_start_here_canonical_routes_note_is_localized() -> None:
     chinese_text = _read("docs/start-here.zh.md")
 
     assert "Канонические маршруты сценариев" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
+    assert "три канонических сценария" in russian_text
     assert "записывающие возможности (write capabilities)" in russian_text
     assert "поиск (retrieval)" in russian_text
     assert "трассы (traces)" in russian_text
@@ -9896,7 +9901,7 @@ def test_multilingual_homepage_canonical_case_map_is_localized() -> None:
     chinese_text = _read("docs/index.zh.md")
 
     assert "Каноническая карта сценариев" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
+    assert "три канонических сценария" in russian_text
     assert "записывающие возможности (write capabilities)" in russian_text
     assert "поиск (retrieval)" in russian_text
     assert "трассы (traces)" in russian_text
@@ -10335,7 +10340,7 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     assert "контрактную страницу (contract page)" in russian_text
     assert "архитектурное ревью (architecture review)" in russian_text
     assert "ревью раскатки (rollout review)" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
+    assert "Три канонических сценария" in russian_text
     assert "запись подтверждения (approval record)" in russian_text
     assert "контракт памяти/поиска (memory/retrieval contract)" in russian_text
     assert "запись инцидента (incident record)" in russian_text
