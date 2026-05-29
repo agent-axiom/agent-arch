@@ -1,4 +1,4 @@
-# Практика. MCP для tools, A2A для agents
+# Практика. MCP для инструментов, A2A для агентов
 
 Очень многие команды слишком рано смешивают две разные задачи:
 
@@ -108,7 +108,7 @@ a2a_trust_delegation:
 
 Такой artifact нужно проверять против конкретных A2A failure modes: delegation laundering, context over-sharing, remote-agent impersonation, unbounded delegation chains, conflicting actions, lost accountability и cross-agent prompt injection.
 
-## 4. Типовая ошибка: строить multi-agent слишком рано
+## 4. Типовая ошибка: строить многоагентную систему слишком рано
 
 На практике путаница обычно выглядит так:
 
@@ -151,7 +151,7 @@ a2a_trust_delegation:
 
 Поэтому multi-agent agreement полезно трактовать как signal, а не как доказательство correctness.
 
-## 5. Decision table
+## 5. Таблица решений
 
 | Вопрос | Скорее `MCP` | Скорее `A2A` |
 | --- | --- | --- |
@@ -202,7 +202,7 @@ flowchart LR
 
 Во всех этих случаях лучше остаться на `MCP` или даже на обычном gateway/adaptor layer.
 
-## 8. Минимальный code sketch
+## 8. Минимальный кодовый эскиз
 
 Ниже очень короткий набросок, который показывает различие мышления:
 
