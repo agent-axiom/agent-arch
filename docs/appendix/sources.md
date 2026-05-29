@@ -6,25 +6,25 @@
     Полезно разделять источники не только по теме, но и по силе опоры:
 
     - `Нормативный каркас`: NIST, OWASP, CISA и другие документы, которые задают устойчивые контуры управления;
-    - `Платформенная практика`: OpenAI, Anthropic, LangGraph, Google Cloud, Microsoft и другие материалы о том, как эти контуры реально собирают в production;
+    - `Платформенная практика`: OpenAI, Anthropic, LangGraph, Google Cloud, Microsoft и другие материалы о том, как эти контуры реально собирают в промышленной эксплуатации;
     - `HCI, HITL и человеческий надзор`: источники, которые показывают, где automation ошибается и как удерживать человека в петле;
-    - `Исследовательский фронтир`: свежие статьи про память, observability, verifier design и multi-agent reliability.
+    - `Исследовательский фронтир`: свежие статьи про память, наблюдаемость, дизайн проверяющих и надежность многоагентных систем.
 
     Если нужна самая надежная база для Parts I, V и VIII, начинай с нормативного каркаса и слоя HCI/HITL. Если нужна текущая инженерная практика, смотри платформенные документы и свежие исследования, но всегда учитывай дату публикации.
 
-!!! note "Канонические маршруты источников (Canonical source routes)"
-    Используй источники (sources) как быстрый маршрут (fast route) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** начинается с OWASP, руководств OpenAI по агентам (OpenAI agent guides), источников HITL (HITL sources), материалов по политикам/подтверждениям (policy/approval material), оценки трасс (trace grading) и кейсов инцидентов (incident cases). **Внутренний ассистент знаний (Internal knowledge assistant)** начинается с памяти LangGraph (LangGraph memory), памяти OpenAI Agent (OpenAI Agent memory), источников по поиску/оценке (retrieval/eval sources), управления с акцентом на происхождение (provenance-oriented governance) и исследовательского фронтира памяти (memory research frontier). **Координация инцидентов (Incident coordination)** начинается с NIST/AI RMF, управления Google/Microsoft (Google/Microsoft governance), источников наблюдаемости (observability sources), исследований надежности многоагентных систем (multi-agent reliability research), разбора инцидентов (incident review) и материалов по раскатке/контрольной плоскости (rollout/control-plane material).
+!!! note "Канонические маршруты источников"
+    Используй источники как быстрый маршрут для трех канонических сценариев. **Триаж обращений поддержки** начинается с OWASP, руководств OpenAI по агентам, источников о человеке в контуре, материалов по политикам и подтверждениям, оценки трасс и кейсов инцидентов. **Внутренний ассистент знаний** начинается с материалов LangGraph о памяти, материалов OpenAI о памяти агента, источников по поиску и оценке, управления с акцентом на происхождение данных и исследовательского фронтира памяти. **Координация инцидентов** начинается с NIST/AI RMF, материалов Google и Microsoft по управлению, источников наблюдаемости, исследований надежности многоагентных систем, разбора инцидентов и материалов по выпуску и управляющему слою.
 
 ## Нормативные рамки и контуры управления
 
-### Agent-specific security
+### Безопасность агентных систем
 
 - OWASP, [AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
 - OWASP, [MCP Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html)
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 - OWASP, [RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
 
-### Governance and baseline controls
+### Управление и базовые меры контроля
 
 - NIST, [AI RMF 1.0](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 - NIST, [AI RMF: Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)
@@ -57,7 +57,7 @@
 - Cloudflare Agents SDK, [Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) и [WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 - Cloudflare, [Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
 
-## Наблюдаемость, evals и verifier design
+## Наблюдаемость, оценки и дизайн проверяющих
 
 - OpenAI, [Agent evals](https://platform.openai.com/docs/guides/agent-evals)
 - OpenAI, [Trace grading](https://platform.openai.com/docs/guides/trace-grading)
@@ -78,7 +78,7 @@
 - OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
 - Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 
-## Governance, security и operational assurance
+## Управление, безопасность и операционная гарантия
 
 - Google Cloud, [How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 - Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
@@ -102,7 +102,7 @@
 
 - American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 
-## Исследовательский фронтир: память, observability и multi-agent reliability
+## Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем
 
 - OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
@@ -137,12 +137,12 @@
 Если развивать книгу дальше, удобнее идти в таком порядке:
 
 1. Нормативный каркас риска и контроля: NIST, OWASP, CISA.
-2. Архитектурные паттерны и runtime-дисциплина: Anthropic, OpenAI, LangGraph, Google Cloud, Microsoft.
-3. Наблюдаемость, evals и verifier layer: OpenAI, Microsoft, arXiv, GitHub.
+2. Архитектурные паттерны и дисциплина среды исполнения: Anthropic, OpenAI, LangGraph, Google Cloud, Microsoft.
+3. Наблюдаемость, оценки и слой проверяющих: OpenAI, Microsoft, arXiv, GitHub.
 4. HCI, HITL и кейсы: Microsoft Research, OpenReview, ABA.
-5. Исследовательский фронтир: memory, consistency, observability, multi-agent failure modes.
+5. Исследовательский фронтир: память, согласованность поведения, наблюдаемость и режимы отказа многоагентных систем.
 
 Для чтения самой книги полезно держать еще одну развилку:
 
-- `Устойчивое ядро`: нормативные рамки, архитектура, policy, execution, наблюдаемость.
-- `Быстро меняющийся слой`: инструменты evals, дизайн verifier'ов, inventory governance, frontier research и свежие кейсы.
+- `Устойчивое ядро`: нормативные рамки, архитектура, политики, выполнение и наблюдаемость.
+- `Быстро меняющийся слой`: инструменты оценивания, дизайн проверяющих, управление реестром, свежие исследования и свежие кейсы.

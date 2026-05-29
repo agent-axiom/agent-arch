@@ -11,8 +11,8 @@
 
     Вместе эти три шага дают слой памяти, который можно обсуждать как инженерную систему, а не как абстрактное “добавим памяти”.
 
-!!! note "Part III canonical case routes"
-    В memory/retrieval layer три canonical cases проверяют разные риски. **Support triage** проверяет temporary ticket state, duplicate-ticket context и approved playbook retrieval. **Internal knowledge assistant** проверяет source attribution, freshness window, tenant boundary и memory provenance. **Incident coordination** проверяет incident timeline, owner handoff summaries, escalation status и post-incident lessons.
+!!! note "Маршруты канонических сценариев"
+    В слое памяти и поиска три канонических сценария проверяют разные риски. **Разбор обращений поддержки** проверяет временное состояние тикета, контекст дубля и поиск по утвержденным инструкциям. **Внутренний ассистент знаний** проверяет привязку к источникам, окно свежести, границу арендатора и происхождение записей памяти. **Координация инцидентов** проверяет шкалу времени инцидента, сводки передачи владельцу, статус эскалации и уроки после инцидента.
 
 <div class="book-cover" markdown="1">
 

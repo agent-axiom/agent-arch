@@ -7,6 +7,7 @@
     "/reference",
     "/appendix/sources",
     "/book/part-i/chapter-1",
+    "/book/part-iv/chapter-9",
     "/book/part-v/chapter-13"
   ]);
   var projectPrefix = "/agent-arch";

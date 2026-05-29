@@ -3,13 +3,13 @@
 !!! info "Актуальность главы"
     Последняя редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка: **14 июня 2026 года**.
 
-    Что изменилось после предыдущей проверки: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry и замечания по готовности к публикации теперь имеют конкретное покрытие контрактами и проверки поверхности документации.
+    Что изменилось после предыдущей проверки: поверхности безопасности MCP/A2A, контракты проверяющего, управленческая телеметрия и замечания по готовности к печатной версии теперь покрыты конкретными контрактами и проверками документации.
 
     Быстрее всего здесь меняются:
 
     - инструменты аттестации, подписи и подтверждения происхождения для моделей и конфигураций;
     - вендорские функции для управления артефактами и встроенных механизмов контроля цепочки поставки;
-    - практики описания prompt-, policy- и eval-артефактов как полноценных объектов проверки.
+    - практики описания артефактов инструкций, политик и оценок как полноценных объектов проверки.
 
     Медленнее меняются:
 
@@ -31,17 +31,17 @@
 Проблема в том, что рабочее поведение здесь зависит не только от кода. На него влияют еще:
 
 - [маршруты к моделям](../../appendix/lifecycle-artifact-schema.md);
-- [наборы prompt- и routine-правил](../../appendix/lifecycle-artifact-schema.md);
+- [наборы правил инструкций и рабочих процедур](../../appendix/lifecycle-artifact-schema.md);
 - [конфигурации политик](../../appendix/policy-bundle-schema.md);
 - [корпуса для извлечения](../../appendix/memory-retrieval-schema.md);
 - [контракты возможностей](../../appendix/lifecycle-artifact-schema.md);
 - [наборы для оценки](../../appendix/eval-schema.md);
-- verifier contracts, [rubric definitions и правила связывания доказательной базы](../../appendix/eval-schema.md);
-- [правила и схемы approval](../../appendix/approval-schema.md);
-- [схемы runtime-control](../../appendix/lifecycle-artifact-schema.md);
-- [governance-правила для orchestration pattern и определения worker-safe catalog](../../appendix/change-rollout-schema.md);
-- [правила interruption и re-initialization для capability sessions](../../appendix/lifecycle-artifact-schema.md);
-- [наборы для раскатки](../../appendix/change-rollout-schema.md).
+- контракты проверяющего, [определения рубрик и правила связывания доказательной базы](../../appendix/eval-schema.md);
+- [правила и схемы подтверждения](../../appendix/approval-schema.md);
+- [схемы управления средой исполнения](../../appendix/lifecycle-artifact-schema.md);
+- [управленческие правила для схемы оркестрации и определения безопасного каталога рабочих агентов](../../appendix/change-rollout-schema.md);
+- [правила прерывания и повторной инициализации для сессий возможностей](../../appendix/lifecycle-artifact-schema.md);
+- [наборы для поэтапного выпуска](../../appendix/change-rollout-schema.md).
 
 То есть цепочка поставки у агента шире, потому что сама система шире.
 
@@ -51,19 +51,19 @@
 
 [Доверенный артефакт](../../appendix/lifecycle-artifact-schema.md) — это любой артефакт, который разрешено использовать в промышленной среде, потому что у него есть владелец, происхождение, статус проверки, понятная рабочая роль и явное место в идентичности выпуска.
 
-Это означает, что доверенные артефакты — это не только образы или wheel-файлы. Это еще и управляемые объекты, к которым потом должен уметь точно вернуться разбор раскатки, assurance-решение или разбор инцидента.
+Это означает, что доверенные артефакты — это не только образы или wheel-файлы. Это еще и управляемые объекты, к которым потом должен уметь точно вернуться разбор поэтапного выпуска, решение заверения или разбор инцидента.
 
 В агентной платформе к ним часто относятся:
 
 - утвержденный [маршрут к модели](../../appendix/lifecycle-artifact-schema.md);
-- утвержденный [набор prompt-правил](../../appendix/lifecycle-artifact-schema.md);
-- утвержденный [policy bundle](../../appendix/policy-bundle-schema.md);
-- утвержденный [capability contract](../../appendix/lifecycle-artifact-schema.md);
-- утвержденная [approval schema](../../appendix/approval-schema.md);
-- утвержденная [runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
-- утвержденный [retrieval corpus](../../appendix/memory-retrieval-schema.md);
-- утвержденный [eval dataset](../../appendix/eval-schema.md);
-- утвержденный [rollout gate](../../appendix/change-rollout-schema.md).
+- утвержденный [набор правил инструкций](../../appendix/lifecycle-artifact-schema.md);
+- утвержденный [набор политик](../../appendix/policy-bundle-schema.md);
+- утвержденный [контракт возможности](../../appendix/lifecycle-artifact-schema.md);
+- утвержденная [схема подтверждения](../../appendix/approval-schema.md);
+- утвержденная [схема управления средой исполнения](../../appendix/lifecycle-artifact-schema.md);
+- утвержденный [корпус извлечения](../../appendix/memory-retrieval-schema.md);
+- утвержденный [набор для оценки](../../appendix/eval-schema.md);
+- утвержденный [шлюз поэтапного выпуска](../../appendix/change-rollout-schema.md).
 
 Если у команды нет такой категории, она очень быстро начинает жить в неявной системе доверия: «Кажется, это нормальный артефакт, потому что кто-то его уже использовал».
 
@@ -74,32 +74,32 @@ Google Research очень точно показывает, что подтве�
 Тебе нужно уметь отвечать:
 
 - [откуда взялась эта модель](../../appendix/lifecycle-artifact-schema.md);
-- какой [набор prompt-правил](../../appendix/lifecycle-artifact-schema.md) сейчас активен;
-- какой [policy bundle](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
-- какой [retrieval corpus](../../appendix/memory-retrieval-schema.md) использовался;
-- какой [eval dataset](../../appendix/eval-schema.md) подтвердил выпуск;
-- какой [verifier contract](../../appendix/eval-schema.md), [grading rubric и правила связывания доказательной базы](../../appendix/eval-schema.md) были активны;
-- какие contract version и [approval schema](../../appendix/approval-schema.md) были активны;
-- какая [interruption или expiry policy](../../appendix/lifecycle-artifact-schema.md) управляла этим run;
-- какой [orchestration pattern и какая worker-boundary policy](../../appendix/change-rollout-schema.md) управляли этим run;
-- какой [delegated authorization mode, principal binding и revoke policy](../../appendix/lifecycle-artifact-schema.md) управляли этим run;
+- какой [набор правил инструкций](../../appendix/lifecycle-artifact-schema.md) сейчас активен;
+- какой [набор политик](../../appendix/policy-bundle-schema.md) был активен во время инцидента;
+- какой [корпус извлечения](../../appendix/memory-retrieval-schema.md) использовался;
+- какой [набор для оценки](../../appendix/eval-schema.md) подтвердил выпуск;
+- какой [контракт проверяющего](../../appendix/eval-schema.md), [рубрика оценки и правила связывания доказательной базы](../../appendix/eval-schema.md) были активны;
+- какие версия контракта и [схема подтверждения](../../appendix/approval-schema.md) были активны;
+- какая [политика прерывания или истечения](../../appendix/lifecycle-artifact-schema.md) управляла этим запуском;
+- какая [схема оркестрации и политика границ рабочих агентов](../../appendix/change-rollout-schema.md) управляли этим запуском;
+- какой [режим делегированной авторизации, привязка принципала и политика отзыва](../../appendix/lifecycle-artifact-schema.md) управляли этим запуском;
 - кто одобрил это изменение.
 
-!!! example "Сквозной кейс: provenance для duplicate-ticket fix"
-    После инцидента с дублем тикета последующий разбор должен уметь восстановить не только commit с retry patch. Ему нужны версии [eval dataset](../../appendix/eval-schema.md), [policy bundle](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`, [capability contract](../../appendix/lifecycle-artifact-schema.md) `create_support_ticket`, [rollout gate](../../appendix/change-rollout-schema.md), [approval schema](../../appendix/approval-schema.md) и [trace schema](../../appendix/trace-schema.md), которые были активны в canary. Если хотя бы один из этих артефактов “где-то в чате”, а не в [approved release bundle](../../appendix/lifecycle-artifact-schema.md), команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
+!!! example "Сквозной кейс: происхождение для исправления дубля тикета"
+    После инцидента с дублем тикета последующий разбор должен уметь восстановить не только фиксацию с исправлением повтора. Ему нужны версии [набора для оценки](../../appendix/eval-schema.md), [набора политик](../../appendix/policy-bundle-schema.md) для `side_effect_unknown`, [контракта возможности](../../appendix/lifecycle-artifact-schema.md) `create_support_ticket`, [шлюза поэтапного выпуска](../../appendix/change-rollout-schema.md), [схемы подтверждения](../../appendix/approval-schema.md) и [схемы трасс](../../appendix/trace-schema.md), которые были активны в контрольной волне. Если хотя бы один из этих артефактов “где-то в чате”, а не в [утвержденном наборе выпуска](../../appendix/lifecycle-artifact-schema.md), команда не сможет доказать, что повторный дубль случился под исправленным контролем или под старым набором правил.
 
-**Supply-chain case-spine note:** [approved artifact bundle](../../appendix/lifecycle-artifact-schema.md) должен удерживать provenance для всех трех canonical cases. Support triage требует версии [eval dataset](../../appendix/eval-schema.md), [policy bundle](../../appendix/policy-bundle-schema.md), [capability contract](../../appendix/lifecycle-artifact-schema.md), [approval schema](../../appendix/approval-schema.md), [trace schema](../../appendix/trace-schema.md) и [rollout gate](../../appendix/change-rollout-schema.md) для write path. Internal knowledge assistant требует [approved retrieval corpus](../../appendix/memory-retrieval-schema.md), [source-grounding rubric, tenant-filter config, memory-write policy и freshness attestation](../../appendix/memory-retrieval-schema.md). Incident coordination требует [escalation-policy bundle, notification contract и responder-role map](../../appendix/lifecycle-artifact-schema.md), [incident-state schema](../../appendix/incident-record-schema.md) и [post-incident artifact update](../../appendix/lifecycle-artifact-schema.md).
+**Заметка о сквозных сценариях цепочки поставки:** [утвержденный набор артефактов](../../appendix/lifecycle-artifact-schema.md) должен удерживать происхождение для всех трех канонических сценариев. Разбор обращений поддержки требует версии [набора для оценки](../../appendix/eval-schema.md), [набора политик](../../appendix/policy-bundle-schema.md), [контракта возможности](../../appendix/lifecycle-artifact-schema.md), [схемы подтверждения](../../appendix/approval-schema.md), [схемы трасс](../../appendix/trace-schema.md) и [шлюза поэтапного выпуска](../../appendix/change-rollout-schema.md) для пишущего пути. Внутренний ассистент знаний требует [утвержденного корпуса извлечения](../../appendix/memory-retrieval-schema.md), [рубрики привязки к источникам, конфигурации клиентских фильтров, политики записи в память и подтверждения свежести](../../appendix/memory-retrieval-schema.md). Координация инцидентов требует [набора политик эскалации, контракта уведомлений и карты ролей реагирующих](../../appendix/lifecycle-artifact-schema.md), [схемы состояния инцидента](../../appendix/incident-record-schema.md) и [обновления артефактов после инцидента](../../appendix/lifecycle-artifact-schema.md).
 
 Если на эти вопросы нельзя ответить быстро, управление изменениями и разбор инцидентов начинают ломаться почти сразу.
 
 Именно поэтому происхождение в этой главе стоит читать узко и предметно. Это не весь доказательный слой целиком. Это управляемый слой происхождения и преемственности для [доверенных артефактов, идентичности выпуска и версий](../../appendix/lifecycle-artifact-schema.md), на которые реально опираются решения.
 
-Эта глава отвечает на один вопрос: **на какой именно [проверенный набор артефактов](../../appendix/lifecycle-artifact-schema.md) потом опирается rollout review, incident analysis или assurance-решение**. Здесь provenance нужно не как общее слово про evidence, а как управляемую преемственность доверенных версий и контрактов. Главный артефакт этой главы — [approved artifact bundle](../../appendix/lifecycle-artifact-schema.md): проверенный набор версий, контрактов и схем, а не общая папка с доказательствами.
+Эта глава отвечает на один вопрос: **на какой именно [проверенный набор артефактов](../../appendix/lifecycle-artifact-schema.md) потом опирается проверка поэтапного выпуска, разбор инцидента или решение заверения**. Здесь происхождение нужно не как общее слово про доказательства, а как управляемая преемственность доверенных версий и контрактов. Главный артефакт этой главы — [утвержденный набор артефактов](../../appendix/lifecycle-artifact-schema.md): проверенный набор версий, контрактов и схем, а не общая папка с доказательствами.
 
 !!! info "Нужны артефакты цепочки поставки?"
-    Для формального описания смотри [схему lifecycle-артефактов](../../appendix/lifecycle-artifact-schema.md), [схему набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md) и [схему change review и rollout gate](../../appendix/change-rollout-schema.md).
+    Для формального описания смотри [схему артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md), [схему набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md) и [схему проверки изменений и шлюза поэтапного выпуска](../../appendix/change-rollout-schema.md).
 
-Если тебе нужен мост, который показывает, как этот governed backbone остается связан с request, policy, approvals, traces, evals, incidents и rollout judgment, используй отдельную страницу [Evidence Spine](../part-v/evidence-spine.md).
+Если тебе нужен мост, который показывает, как этот управляемый каркас остается связан с запросом, политикой, подтверждениями, трассами, оценками, инцидентами и суждением о поэтапном выпуске, используй отдельную страницу [Доказательный каркас](../part-v/evidence-spine.md).
 
 ## 4. У агента должно быть несколько цепочек доверия, а не одна
 
@@ -109,12 +109,12 @@ Google Research очень точно показывает, что подтве�
 
 - цепочкой кода и сборки;
 - [цепочкой моделей](../../appendix/lifecycle-artifact-schema.md);
-- [цепочкой prompt- и routine-правил](../../appendix/lifecycle-artifact-schema.md);
+- [цепочкой правил инструкций и рабочих процедур](../../appendix/lifecycle-artifact-schema.md);
 - [цепочкой политик](../../appendix/policy-bundle-schema.md);
 - [цепочкой возможностей](../../appendix/lifecycle-artifact-schema.md);
-- цепочкой [approval](../../appendix/approval-schema.md) и [runtime-control](../../appendix/lifecycle-artifact-schema.md);
-- [цепочкой правил управления capability sessions](../../appendix/lifecycle-artifact-schema.md);
-- [цепочкой delegated authorization](../../appendix/lifecycle-artifact-schema.md);
+- цепочкой [подтверждения](../../appendix/approval-schema.md) и [управления средой исполнения](../../appendix/lifecycle-artifact-schema.md);
+- [цепочкой правил управления сессиями возможностей](../../appendix/lifecycle-artifact-schema.md);
+- [цепочкой делегированной авторизации](../../appendix/lifecycle-artifact-schema.md);
 - [цепочкой данных и извлечения](../../appendix/memory-retrieval-schema.md);
 - [цепочкой оценки](../../appendix/eval-schema.md).
 
@@ -123,13 +123,13 @@ Google Research очень точно показывает, что подтве�
 
 ``` mermaid
 flowchart LR
-    A["Код и сборка"] --> G["Утвержденный release bundle"]
+    A["Код и сборка"] --> G["Утвержденный набор выпуска"]
     B["Артефакты модели"] --> G
-    C["Prompt- и routine-наборы"] --> G
-    D["Policy bundles"] --> G
-    E["Capability contracts"] --> G
-    F["Approval и runtime-control schemas"] --> G
-    H["Eval datasets и отчеты"] --> G
+    C["Наборы инструкций и процедур"] --> G
+    D["Наборы политик"] --> G
+    E["Контракты возможностей"] --> G
+    F["Схемы подтверждения и управления средой исполнения"] --> G
+    H["Наборы данных оценки и отчеты"] --> G
 ```
 
 </div>
@@ -138,11 +138,11 @@ flowchart LR
 
 Это близкие, но разные понятия.
 
-[approved inventory](../../appendix/registry-operations-handbook.md) отвечает на вопрос:
+[утвержденный реестр](../../appendix/registry-operations-handbook.md) отвечает на вопрос:
 
 - какие рантаймы, шлюзы, возможности и шаблоны вообще разрешены на платформе.
 
-[approved artifacts](../../appendix/lifecycle-artifact-schema.md) отвечает на вопрос:
+[доверенные артефакты](../../appendix/lifecycle-artifact-schema.md) отвечают на вопрос:
 
 - какие конкретные [версии и наборы](../../appendix/lifecycle-artifact-schema.md) разрешены к запуску прямо сейчас.
 
@@ -153,34 +153,34 @@ flowchart LR
 
 Это различие полезно, потому что реестр дает рамку уровня платформы, а доверенные артефакты дают дисциплину уровня конкретного выпуска.
 
-Именно эта дисциплина уровня релиза и составляет здесь сердцевину подтвержденного происхождения. Вопрос не только в том, есть ли телеметрия, а в том, под какой [управляемой версией, утвержденным набором](../../appendix/lifecycle-artifact-schema.md), проверенной схемой или [семейством контрактов с verifier-ограничениями](../../appendix/eval-schema.md) система реально работала.
+Именно эта дисциплина уровня релиза и составляет здесь сердцевину подтвержденного происхождения. Вопрос не только в том, есть ли телеметрия, а в том, под какой [управляемой версией, утвержденным набором](../../appendix/lifecycle-artifact-schema.md), проверенной схемой или [семейством контрактов с ограничениями проверяющего](../../appendix/eval-schema.md) система реально работала.
 
-То же правило важно и для failed runs. Если capability упала по timeout, путь approval закончился validation failure или внешняя dependency обрушилась, последующий разбор все равно должен видеть, какой [набор доверенных артефактов и какая идентичность выпуска](../../appendix/lifecycle-artifact-schema.md) управляли этим сбоем, какое [экспортируемое поле, например `failure_reason`](../../appendix/eval-schema.md), сохранило конкретное условие сбоя, отображалось ли оно в operator-facing summary через поля вроде [`latest_failure_reason`](../../appendix/eval-schema.md) и продолжал ли этот run учитываться как [`traceable_failed_runs`](../../appendix/eval-schema.md) на уровне session review. Иначе организация сохраняет подтвержденное происхождение только для happy path, а деградировавшее поведение превращает в бесхозный остаток.
+То же правило важно и для неудачных запусков. Если возможность упала по ограничению времени, путь подтверждения закончился ошибкой проверки или внешняя зависимость обрушилась, последующий разбор все равно должен видеть, какой [набор доверенных артефактов и какая идентичность выпуска](../../appendix/lifecycle-artifact-schema.md) управляли этим сбоем, какое [экспортируемое поле, например `failure_reason`](../../appendix/eval-schema.md), сохранило конкретное условие сбоя, отображалось ли оно в операторском резюме через поля вроде [`latest_failure_reason`](../../appendix/eval-schema.md) и продолжал ли этот запуск учитываться как [`traceable_failed_runs`](../../appendix/eval-schema.md) на уровне проверки сессии. Иначе организация сохраняет подтвержденное происхождение только для штатного пути, а деградировавшее поведение превращает в бесхозный остаток.
 
-## 6. Набор prompt-правил без происхождения — это такой же пробел, как неподписанная сборка
+## 6. Набор правил инструкций без происхождения — это такой же пробел, как неподписанная сборка
 
-Очень частая ошибка команд: относиться к изменениям prompt как к живому тексту, а не как к артефакту выпуска.
+Очень частая ошибка команд: относиться к изменениям инструкций как к живому тексту, а не как к артефакту выпуска.
 
 Но если ты не знаешь:
 
-- [кто менял prompt](../../appendix/lifecycle-artifact-schema.md);
+- [кто менял инструкцию](../../appendix/lifecycle-artifact-schema.md);
 - [какая версия](../../appendix/lifecycle-artifact-schema.md) сейчас в проде;
 - какие [оценки](../../appendix/eval-schema.md) ее покрыли;
-- на какой [волне раскатки](../../appendix/change-rollout-schema.md) она активна;
+- на какой [волне поэтапного выпуска](../../appendix/change-rollout-schema.md) она активна;
 
 то такой набор правил по сути ничем не лучше артефакта, происхождение которого неизвестно.
 
 То же самое относится к:
 
-- [routines](../../appendix/lifecycle-artifact-schema.md);
+- [рабочим процедурам](../../appendix/lifecycle-artifact-schema.md);
 - [policy YAML](../../appendix/policy-bundle-schema.md);
 - [конфигурациям извлечения](../../appendix/memory-retrieval-schema.md);
 - [порогам подтверждения](../../appendix/approval-schema.md);
-- [runtime-control schemas](../../appendix/lifecycle-artifact-schema.md), которые определяют paused/background behavior.
+- [схемам управления средой исполнения](../../appendix/lifecycle-artifact-schema.md), которые определяют поведение приостановленных и фоновых запусков.
 
 ## 7. Наборы для оценки тоже должны быть доверенными артефактами
 
-Очень легко считать [eval dataset](../../appendix/eval-schema.md) чем-то второстепенным: «Ну это просто набор тестовых примеров».
+Очень легко считать [набор данных для оценки](../../appendix/eval-schema.md) чем-то второстепенным: «Ну это просто набор тестовых примеров».
 
 На самом деле это критичный артефакт управления.
 
@@ -370,7 +370,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Эталонный пакет](../../appendix/reference-package.md)
 
-- [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
+- [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](chapter-21.md)
 - [Глава 17. Слой политик и каталог возможностей](../part-vii/chapter-17.md)
 - [Глава 18. Чеклист промышленного запуска](../part-vii/chapter-18.md)
 - [Источники](../../appendix/sources.md)
