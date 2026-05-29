@@ -108,16 +108,23 @@ The signs in favor of an ordinary workflow look different:
 
 ## 6. Decision Rules: Workflow, Single-Agent, or Multi-Agent
 
-This is the most useful short frame to start with.
+This is the most useful short frame to start with. It is written as standalone prose, not as a dense table, so the frame survives print, PDF, search, and plain-text extraction.
 
-!!! info "Fast decision: workflow, single-agent, or multi-agent"
-    Start with the least dynamic shape that can safely solve the problem.
+### Print-ready decision frame
 
-    **Mostly known path.** Start with `workflow`: it is cheaper to operate, easier to test, and easier to explain.
+Start with the least dynamic shape that can safely solve the problem.
 
-    **Constrained choice of next step or tool.** Use a `single-agent loop`: it adds flexibility without an early complexity explosion.
+### Workflow
 
-    **Independent subtasks with different contexts and owners.** Only then consider `multi-agent`: it separates responsibility and context when that separation is real.
+Use it when the path is mostly known in advance, transitions are easy to describe, and repeatability matters more than flexible reasoning. It is cheaper to operate, easier to test, and easier to explain.
+
+### Single-agent loop
+
+Use it when the system needs a constrained choice of next step or tool inside a narrow boundary. It adds flexibility without an early complexity explosion while keeping one owner accountable for the run.
+
+### Multi-agent architecture
+
+Use it only when the task has independent subtasks, different contexts, and different owners of the result. It is useful because it separates responsibility where the separation is real, not because it sounds more advanced.
 
 Text-only formula: known path — `workflow`; constrained next-step choice — `single-agent loop`; independent subtasks with different owners — only then `multi-agent`.
 
@@ -192,6 +199,8 @@ flowchart LR
 
 </div>
 
+Text fallback for the diagram: the request first becomes an execution context; policy and approvals constrain the right to act; the runtime path then calls the model, memory, and tools; every step leaves trace and evaluation evidence for rollout, investigation, and lifecycle changes.
+
 ## 10. What a Production Team Should Always See
 
 The minimally useful set is very concrete:
@@ -246,7 +255,13 @@ This chapter does not prove that agents are always needed. It argues almost the 
 
 If the path can be described in advance, start with a workflow. If flexibility is needed, add it only together with ownership, policy boundaries, approvals, traces, and eval signals. The core claim is therefore simple: an agent is not a replacement for engineering discipline; it increases the need for it.
 
-## 14. Evidence Model for This Chapter
+## 14. Reviewable Claims in This Chapter
+
+- **claim:** teams should start from the simplest executable shape; **source support:** Anthropic and OpenAI independently state this practical starting rule for agent systems.[^anthropic][^openai-practical]
+- **claim:** autonomy becomes an architectural problem when it touches access, memory, write paths, or incidents; **source support:** durable execution, agent SDK, and agent-eval practices all require a controlled execution path.[^langgraph-durable][^openai-sdk][^openai-evals]
+- **claim:** traces and evaluation signals are accountability mechanisms, not polish; **source support:** agent SDK and eval guidance connect step evidence with quality checks and release decisions.[^openai-sdk][^openai-evals]
+
+## 15. Evidence Model for This Chapter
 
 Use the claims in this chapter with different confidence levels:
 
@@ -257,7 +272,7 @@ Use the claims in this chapter with different confidence levels:
 - **Fast-moving area:** agent frameworks, SDKs, and orchestration patterns will change faster than the underlying control principle.
 - **Author interpretation:** the phrase `platform, not magic` is this book's synthesis of those practices into one design rule.
 
-## 15. What to Read Next
+## 16. What to Read Next
 
 - [Part I. Foundations](index.en.md)
 - [Chapter 2. Reference Architecture for a Safe Agent](chapter-2.en.md)
