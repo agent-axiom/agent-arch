@@ -49,6 +49,7 @@
 - [打开全书计划（Book Plan）](plan.zh.md)
 - [跳到证据主线（Evidence Spine）](part-v/evidence-spine.zh.md)
 - [跳到智能体系统生命周期（agent system lifecycle）](part-viii/index.zh.md)
+- [打开实战案例](../appendix/case-studies.zh.md)
 
 [开始读书（Read the book）](part-i/index.zh.md){ .md-button .md-button--primary }
 [查看计划（Open plan）](plan.zh.md){ .md-button }
