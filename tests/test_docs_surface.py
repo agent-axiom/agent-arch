@@ -9079,8 +9079,9 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
         "побочные эффекты уведомлений",
         "обучение после инцидента",
         "поверхностей управления",
+        "Открыть практические кейсы",
     )
-    translated_markers = (
+    english_markers = (
         "Canonical case map",
         "Support triage",
         "Internal knowledge assistant",
@@ -9092,14 +9093,26 @@ def test_book_index_surfaces_three_canonical_cases() -> None:
         "notification side effects",
         "post-incident learning",
         "control surfaces",
+        "Open Practical Case Studies",
     )
-    translated_files = (
-        "docs/book/index.en.md",
-        "docs/book/index.zh.md",
+    chinese_markers = (
+        "Canonical case map",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "write capabilities",
+        "duplicate-ticket recovery",
+        "tenant boundaries",
+        "source grounding",
+        "notification side effects",
+        "post-incident learning",
+        "control surfaces",
+        "打开实战案例",
     )
 
     _assert_files_contain_all(("docs/book/index.md",), russian_markers)
-    _assert_files_contain_all(translated_files, translated_markers)
+    _assert_files_contain_all(("docs/book/index.en.md",), english_markers)
+    _assert_files_contain_all(("docs/book/index.zh.md",), chinese_markers)
 
 
 def test_multilingual_book_index_canonical_case_map_is_localized() -> None:
@@ -9493,6 +9506,109 @@ def test_case_studies_align_with_three_canonical_cases() -> None:
         text = _read(path)
         for marker in deprecated_markers:
             assert marker not in text, (path, marker)
+
+
+def test_case_studies_define_operational_contract_fields_for_each_canonical_case() -> None:
+    required_by_file = {
+        "docs/appendix/case-studies.md": (
+            "Критерий успеха",
+            "Критерий провала",
+            "Минимальная телеметрия",
+            "Минимальный оценочный набор",
+            "Модель подтверждения",
+            "Политика памяти",
+            "Профиль риска инструментов",
+            "Экспозиция MCP/A2A",
+            "Шлюз поэтапного выпуска",
+            "Пример инцидента",
+            "Вопросы разбора после инцидента",
+            "Условие вывода из эксплуатации",
+        ),
+        "docs/appendix/case-studies.en.md": (
+            "Success criteria",
+            "Failure criteria",
+            "Minimum telemetry",
+            "Minimum eval dataset",
+            "Approval model",
+            "Memory policy",
+            "Tool risk profile",
+            "MCP/A2A exposure",
+            "Rollout gate",
+            "Example incident",
+            "Postmortem questions",
+            "Retirement condition",
+        ),
+        "docs/appendix/case-studies.zh.md": (
+            "成功标准",
+            "失败标准",
+            "最低遥测",
+            "最低评测集",
+            "审批模型",
+            "记忆策略",
+            "工具风险画像",
+            "MCP/A2A 暴露面",
+            "发布门禁",
+            "事故示例",
+            "复盘问题",
+            "退役条件",
+        ),
+    }
+
+    for path, fields in required_by_file.items():
+        text = _read(path)
+        for field in fields:
+            assert text.count(field) >= 3, (path, field)
+
+
+def test_case_studies_map_canonical_cases_across_book_chapters() -> None:
+    expected_by_file = {
+        "docs/appendix/case-studies.md": (
+            "Сквозной маршрут по главам",
+            "глава 1",
+            "глава 2",
+            "главы 3-4",
+            "главы 5-7",
+            "главы 8-10",
+            "глава 13",
+            "глава 18",
+            "главы 21-27",
+            "выбор между рабочим процессом, одиночным агентным циклом и многоагентной схемой",
+            "оценки, проверяющий и регрессионные шлюзы",
+            "жизненный цикл, контур заверения, происхождение, вывод из эксплуатации, "
+            "телеметрия и реестр",
+        ),
+        "docs/appendix/case-studies.en.md": (
+            "Cross-chapter route",
+            "Chapter 1",
+            "Chapter 2",
+            "Chapters 3-4",
+            "Chapters 5-7",
+            "Chapters 8-10",
+            "Chapter 13",
+            "Chapter 18",
+            "Chapters 21-27",
+            "choice between workflow, single-agent loop, and multi-agent shape",
+            "evals, verifier, and regression gates",
+            "lifecycle, assurance, provenance, retirement, telemetry, and registry",
+        ),
+        "docs/appendix/case-studies.zh.md": (
+            "跨章节路线",
+            "第 1 章",
+            "第 2 章",
+            "第 3-4 章",
+            "第 5-7 章",
+            "第 8-10 章",
+            "第 13 章",
+            "第 18 章",
+            "第 21-27 章",
+            "工作流、单智能体循环和多智能体形态之间的选择",
+            "评测、验证器和回归门禁",
+            "生命周期、保障、来源证明、退役、遥测和注册表",
+        ),
+    }
+
+    for path, expected_markers in expected_by_file.items():
+        _assert_files_contain_all((path,), expected_markers)
 
 
 def test_multilingual_case_studies_alignment_note_is_localized() -> None:
