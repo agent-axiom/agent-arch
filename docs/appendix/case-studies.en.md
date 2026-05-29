@@ -12,6 +12,19 @@ If you need reusable policy artifacts rather than scenarios, go to [Policy Templ
 !!! note "Canonical case alignment"
     These scenarios correspond to the three canonical cases from the book plan. **Support triage** is Case 1 for write capability, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** is Case 2 for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is Case 3 for traces, SLOs, escalation, notification side effects, response ownership, and post-incident learning.
 
+## Cross-chapter route
+
+Keep these cases beside the main text as coverage checks:
+
+- **Chapter 1:** choice between workflow, single-agent loop, and multi-agent shape;
+- **Chapter 2:** path through the reference architecture, control plane, and data boundaries;
+- **Chapters 3-4:** trust boundaries, approvals, policies, and the agent's right to act;
+- **Chapters 5-7:** memory, retrieval, freshness, knowledge provenance, and poisoning defense;
+- **Chapters 8-10:** tool gateway, MCP/A2A, idempotency, retries, and rollback;
+- **Chapter 13:** evals, verifier, and regression gates;
+- **Chapter 18:** rollout readiness and pre-scale review;
+- **Chapters 21-27:** lifecycle, assurance, provenance, retirement, telemetry, and registry.
+
 ## Case 1. Support triage
 
 ### What the system does
@@ -61,9 +74,14 @@ This is a good candidate for `workflow + guarded agent loop`.
 - **Failure criteria:** unnecessary write action, neighboring-context leakage, lost approval, or no recoverable trace.
 - **Minimum telemetry:** `session_id`, `trace_id`, selected action, retrieval sources, policy decision, approval state, and idempotency key.
 - **Minimum eval dataset:** normal request, ambiguous request, prompt-injection attempt, retry after timeout, and duplicate-ticket scenario.
+- **Approval model:** simple ticket creation can proceed under policy; priority changes, escalations, mass notifications, and retries after unknown side effects require fresh approval.
+- **Memory policy:** long-term memory must not store customer text as trusted fact; only validated tenant-scoped preferences with provenance, TTL, and cleanup support are allowed.
+- **Tool risk profile:** profile and history reads are low risk; ticket creation is medium risk with idempotency; status, priority, or recipient changes are high risk with approval.
+- **MCP/A2A exposure:** the support MCP server must be in the approved registry and filter returned values; A2A handoff to support must not transfer write authority without a separate decision.
 - **Rollout gate:** canary shows no duplicate writes, and the verifier confirms tenant isolation and the correct approval path.
 - **Example incident:** a timeout after `create_ticket` leaves `side_effect_unknown`, and a retry attempts to create a second ticket.
 - **Postmortem questions:** where did idempotency fail, who saw the approval state, why did the trace not stop the retry, and which eval should block the regression now?
+- **Retirement condition:** the old ticket-write path is closed, pending approvals have expired, the tool principal is revoked, and the registry points only to the new write contract.
 
 ### Where to read in the book
 
@@ -117,9 +135,14 @@ Most of the time, it is enough to have:
 - **Failure criteria:** answer without sources, role-inappropriate access, mixed short-term state and long-term memory, or hallucinated policy.
 - **Minimum telemetry:** query, retrieval scope, source IDs, confidence signal, denied sources, and answer-grounding verdict.
 - **Minimum eval dataset:** known answer, insufficient context, role-denied document, conflicting sources, and stale knowledge.
+- **Approval model:** reading allowed sources needs no approval; memory writes, retrieval-scope expansion, and sensitive answers require policy approval or human review.
+- **Memory policy:** short-term state is cleared after the session; long-term memory stores only validated facts with provenance, TTL, tenant scope, and no writes from untrusted text.
+- **Tool risk profile:** retrieval from the approved corpus is low risk; memory writes and corpus updates are medium risk; access expansion and tenant-filter changes are high risk.
+- **MCP/A2A exposure:** MCP retrieval must return source identifiers and access labels; A2A expert handoff may share the question and selected citations, not the full hidden session context.
 - **Rollout gate:** regression set confirms grounding, role isolation, and correct low-confidence behavior.
 - **Example incident:** the agent answers from a stale runbook without citations and exposes a document outside the employee's role.
 - **Postmortem questions:** why did retrieval scope expand, which source was trusted, where should the low-confidence stop have fired, and which eval covers stale knowledge?
+- **Retirement condition:** the stale corpus, embeddings, and memory-write rules are disabled, and the replacement corpus passes provenance and access review.
 
 ### Where to read in the book
 
@@ -174,9 +197,14 @@ A good starting shape is usually:
 - **Failure criteria:** duplicate notifications, lost handoff responsibility, risky remediation without approval, or split-brain across channels.
 - **Minimum telemetry:** alert source, incident thread ID, handoff owner, runbook step, write intents, approvals, and notification idempotency keys.
 - **Minimum eval dataset:** noisy alert, duplicate notification, wrong-owner handoff, missing runbook context, and risky remediation request.
+- **Approval model:** thread creation and next-step suggestions can run under policy; escalation, external notifications, and remediation actions require the incident owner or on-call approver.
+- **Memory policy:** incident working memory lives until post-incident review closes; only approved lessons, runbook updates, and artifact links persist long term.
+- **Tool risk profile:** reading alerts and runbooks is low risk; creating the thread and notifying the team is medium risk; remediation actions and external notifications are high risk.
+- **MCP/A2A exposure:** monitoring and notification MCP tools need narrow tokens; A2A responder handoff requires a correlation ID, delegation depth, and accountability-return rule.
 - **Rollout gate:** dry run shows one trace chain, no duplicate side effects, and human approval for high-risk steps.
 - **Example incident:** a noisy alert starts two parallel handoffs and sends duplicate notifications into different channels.
 - **Postmortem questions:** where did split-brain enter the process, who owned each step, which idempotency keys were missing, and which dry run should have caught the duplicate?
+- **Retirement condition:** the emergency-only path is closed, temporary tokens and notification channels are revoked, and the registry keeps only active roles and runbooks.
 
 ### Where to read in the book
 
