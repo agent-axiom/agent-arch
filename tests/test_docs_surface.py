@@ -6170,11 +6170,11 @@ def test_chapter_2_architecture_threads_three_canonical_cases() -> None:
 def test_chapter_1_platform_threads_three_canonical_cases() -> None:
     localized_markers = (
         "Заметка о сквозных сценариях платформы",
-        "Триаж обращений поддержки",
+        "Разбор обращений поддержки",
         "Внутренний ассистент знаний",
         "Координация инцидентов",
         "платформа, а не магия",
-        "запись тикетов",
+        "запись заявок",
         "восстановление хода инцидента",
         "область поиска",
         "опора на источники",
@@ -7589,19 +7589,19 @@ def test_chapter_1_decision_frame_is_print_friendly() -> None:
         "docs/book/part-i/chapter-1.md": (
             "## 6.",
             "## 7.",
-            "Печатная схема выбора",
+            "Печатная рамка выбора",
             ("рабочий процесс", "одиночный агентный цикл", "многоагентная схема"),
         ),
         "docs/book/part-i/chapter-1.en.md": (
             "## 6.",
             "## 7.",
-            "Fast decision",
+            "Print-ready decision frame",
             ("workflow", "single-agent loop", "multi-agent"),
         ),
         "docs/book/part-i/chapter-1.zh.md": (
             "## 6.",
             "## 7.",
-            "快速判断",
+            "适合印刷的判断框架",
             ("workflow", "single-agent loop", "multi-agent"),
         ),
     }
@@ -7610,11 +7610,8 @@ def test_chapter_1_decision_frame_is_print_friendly() -> None:
         text = _read(path)
         section = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
         assert title_marker in section
-        if path == "docs/book/part-i/chapter-1.md":
-            assert "| Если в задаче видно это | Начинай с этого | Почему |" in section
-            assert "!!! info" not in section
-        else:
-            assert "|" not in section
+        assert "|" not in section
+        assert "!!! info" not in section
         for expected_term in expected_terms:
             assert expected_term in section
 
@@ -15568,12 +15565,12 @@ def test_chapter_1_has_sample_chapter_ending_template() -> None:
     expected = {
         "docs/book/part-i/chapter-1.md": (
             "Шаблон завершения главы",
-                "Что запомнить",
-                "Типичные ошибки",
-                "Что проверить в своей системе",
-                "Сопутствующие артефакты",
-                "Что читать дальше",
-            ),
+            "Что запомнить",
+            "Типичные ошибки",
+            "Что проверить в своей системе",
+            "Сопутствующие материалы",
+            "Что читать дальше",
+        ),
         "docs/book/part-i/chapter-1.en.md": (
             "Chapter ending template",
             "What to remember",
@@ -16107,16 +16104,95 @@ def test_chapter_1_decision_frame_is_extraction_safe() -> None:
         "| 任务看起来像什么 |",
     )
     required_text_markers = (
-        "Короткая текстовая формула",
+        "Текстовая формула выбора",
         "Text-only formula",
         "文本版公式",
     )
+    required_step_markers = {
+        "docs/book/part-i/chapter-1.md": (
+            "### Рабочий процесс",
+            "### Одиночный агентный цикл",
+            "### Многоагентная схема",
+        ),
+        "docs/book/part-i/chapter-1.en.md": (
+            "### Workflow",
+            "### Single-agent loop",
+            "### Multi-agent architecture",
+        ),
+        "docs/book/part-i/chapter-1.zh.md": (
+            "### 工作流",
+            "### 单智能体循环",
+            "### 多智能体架构",
+        ),
+    }
 
     for path in checked_files:
         text = _read(path)
         assert not any(header in text for header in forbidden_table_headers), path
+        for marker in required_step_markers[path]:
+            assert marker in text, (path, marker)
     for path, marker in zip(checked_files, required_text_markers, strict=True):
         assert marker in _read(path), (path, marker)
+
+
+def test_chapter_1_has_claim_evidence_and_diagram_fallback() -> None:
+    expected = {
+        "docs/book/part-i/chapter-1.md": (
+            "Проверяемые утверждения главы",
+            "Текстовый дубль схемы",
+            "утверждение",
+            "опора",
+        ),
+        "docs/book/part-i/chapter-1.en.md": (
+            "Reviewable Claims in This Chapter",
+            "Text fallback for the diagram",
+            "claim",
+            "source support",
+        ),
+        "docs/book/part-i/chapter-1.zh.md": (
+            "本章可核查主张",
+            "图示的文本补充",
+            "主张",
+            "来源支撑",
+        ),
+    }
+
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_russian_chapter_1_uses_print_facing_vocabulary() -> None:
+    chapter_body = _read("docs/book/part-i/chapter-1.md").split("\n[^", maxsplit=1)[0]
+    visible_body = re.sub(r"\[\^[^\]]+\]", "", chapter_body)
+    forbidden_terms = (
+        "LLM",
+        "API",
+        "SDK",
+        "демо",
+        "Демо",
+        "кейс",
+        "Кейс",
+        "тикет",
+        "Тикет",
+        "таймаут",
+        "паттерн",
+        "фреймворк",
+        "рантайм",
+        "workflow",
+        "single-agent",
+        "multi-agent",
+        "runtime",
+        "policy",
+        "trace",
+        "eval",
+        "rollout",
+        "metadata",
+        "framework",
+    )
+
+    for term in forbidden_terms:
+        pattern = rf"(?<![0-9A-Za-zА-Яа-яЁё_-]){re.escape(term)}(?![0-9A-Za-zА-Яа-яЁё_-])"
+        assert re.search(pattern, visible_body) is None, term
 
 
 def test_fast_moving_pages_have_may_2026_review_metadata() -> None:
