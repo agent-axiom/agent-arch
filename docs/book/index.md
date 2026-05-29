@@ -49,6 +49,7 @@
 - [Открыть план книги](plan.md)
 - [Перейти к сквозной цепочке доказательств](part-v/evidence-spine.md)
 - [Перейти к жизненному циклу агентной системы](part-viii/index.md)
+- [Открыть практические кейсы](../appendix/case-studies.md)
 
 [Читать книгу](part-i/index.md){ .md-button .md-button--primary }
 [Открыть план](plan.md){ .md-button }
