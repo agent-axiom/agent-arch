@@ -17,6 +17,17 @@
     - the link between observability, approvals, runtime-control states, policy decisions, tool principals, contract versions, and artifact bundles;
     - the importance of full inventory coverage for detection and incident review.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** which signals must be visible so risk decisions rest on evidence.
+
+    **Unique artifact:** trace and telemetry coverage record.
+
+    **Neighboring boundary:** evidence substrate, not ownership registry.
+
+    **This chapter does not cover:** owner assignment, lifecycle state, or retirement policy.
+
+    **Case continuation:** the support-ticket write path gets coverage for approvals, tool principals, duplicates, and blind spots.
+
 ## 1. Why observability for agents cannot stop at latency and errors
 
 In an ordinary service, observability often starts with a simple set:
