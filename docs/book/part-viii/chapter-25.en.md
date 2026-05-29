@@ -17,6 +17,17 @@
     - the requirement to test control layers themselves, not only model quality;
     - the link between control evals, regression gates, contract-version discipline, and rollout decisions.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** how to make a reviewable judgment about system behavior and control effectiveness.
+
+    **Unique artifact:** eval gate and verifier contract.
+
+    **Neighboring boundary:** behavioral and control judgment, not incident response.
+
+    **This chapter does not cover:** finding containment, telemetry design, or registry ownership.
+
+    **Case continuation:** the support-ticket write path receives a control eval for duplicates, approval bypass, and the old route.
+
 ## 1. Why ordinary regression evals are no longer enough
 
 Regression evals are excellent at answering one question:

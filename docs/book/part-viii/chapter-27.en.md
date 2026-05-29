@@ -17,6 +17,17 @@
     - the requirement for every production agent to have an owner, lifecycle state, capability record, and runtime-control ownership;
     - the importance of periodic review so sprawl does not turn into a blind spot.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** how to make the agent estate accountable, not merely observable.
+
+    **Unique artifact:** registry record.
+
+    **Neighboring boundary:** ownership and accountability, not telemetry design.
+
+    **This chapter does not cover:** trace format, eval datasets, or operational containment.
+
+    **Case continuation:** the support agent is recorded with owners for write capabilities, approvals, and old-path retirement.
+
 ## 1. Why nearly every successful agent program produces sprawl
 
 As soon as the first agent systems prove useful, the same story usually begins:

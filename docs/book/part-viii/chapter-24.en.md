@@ -17,6 +17,17 @@
     - the value of least privilege, two-person control, and immutable audit trails;
     - the especially dangerous role of mail, approvals, paused or resumable control paths, code execution, secrets, and memory writes.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** where an autonomous system or insider may pursue the wrong objective.
+
+    **Unique artifact:** risk scenario and control plan.
+
+    **Neighboring boundary:** misalignment and insider-risk scenarios, not generic prompt-injection rules.
+
+    **This chapter does not cover:** the full threat catalog, behavioral evals, or operational response.
+
+    **Case continuation:** support-ticket writer replacement is checked for approval bypass and retained old authority.
+
 ## 1. Why a normal security review is not enough
 
 When teams discuss risks in agent systems, the conversation usually jumps straight to prompt injection, data exfiltration, and unsafe tool use.

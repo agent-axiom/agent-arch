@@ -1,5 +1,16 @@
 # Chapter 19. From SDLC to ADLC
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** how to move an agent system from a normal software lifecycle into ADLC.
+
+    **Unique artifact:** ADLC state model.
+
+    **Neighboring boundary:** lifecycle defines states; change management decides which transitions need review.
+
+    **This chapter does not cover:** release rules, response to findings, or ownership registry.
+
+    **Case continuation:** the duplicate support ticket becomes a lifecycle change, not a local patch.
+
 ## 1. Why it is worth revisiting classical SDLC first
 
 When teams start building agent systems, they often feel tempted to say that “old processes no longer work” and that they now need a completely new lifecycle.

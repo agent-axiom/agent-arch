@@ -1,5 +1,16 @@
 # Chapter 23. Retirement, Replacement, and End-of-Life Discipline
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** how to retire or replace an agent system without leaving old authority behind.
+
+    **Unique artifact:** retirement or replacement plan.
+
+    **Neighboring boundary:** retirement closes old rights to act.
+
+    **This chapter does not cover:** new misalignment threats, behavioral evals, or telemetry coverage.
+
+    **Case continuation:** the old support-ticket write path loses the right to act after replacement.
+
 ## 1. Why a mature agent system must know how to leave the stage
 
 Many teams think about lifecycle like this:

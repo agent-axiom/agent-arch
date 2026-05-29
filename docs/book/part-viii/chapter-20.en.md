@@ -17,6 +17,17 @@
     - the need to treat prompts, policies, retrieval, and capability changes as real releases;
     - the requirement to connect change review to evals, approvals, and rollout gates.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** which agent-system changes require formal release control, evals, and rollback.
+
+    **Unique artifact:** change packet.
+
+    **Neighboring boundary:** change management decides what needs release control; assurance begins after a risk signal.
+
+    **This chapter does not cover:** artifact provenance, incident response, or ownership across the agent estate.
+
+    **Case continuation:** duplicate-ticket protection moves through a governed change packet.
+
 ## 1. Why agent systems need explicit change discipline
 
 Once a team accepts that it is already living in ADLC, the next practical question is straightforward: what exactly counts as a change, and how should that change be managed?
