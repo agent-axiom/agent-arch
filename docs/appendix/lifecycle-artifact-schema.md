@@ -246,6 +246,6 @@ Lifecycle artifact loaders отделяют malformed release-state inputs от 
 - [Схема наборов для оценки и правил проверки](eval-schema.md)
 - [Схема набора политик и контракта подтверждения](policy-bundle-schema.md)
 - [Эталонный пакет](reference-package.md)
-- [Глава 20. Change management для агентных систем](../book/part-viii/chapter-20.md)
+- [Глава 20. Управление изменениями в агентных системах](../book/part-viii/chapter-20.md)
 - [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../book/part-viii/chapter-22.md)
-- [Глава 23. Retirement, replacement и end-of-life discipline](../book/part-viii/chapter-23.md)
+- [Глава 23. Вывод из эксплуатации, замена и дисциплина завершения жизненного цикла](../book/part-viii/chapter-23.md)
