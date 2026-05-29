@@ -17,6 +17,17 @@
     - the idea of multiple chains of trust rather than one global chain;
     - the link between supply chain discipline, incident review, change management, and rollout.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** which approved artifacts the team can trust during release and investigation.
+
+    **Unique artifact:** approved artifact bundle.
+
+    **Neighboring boundary:** artifact provenance, not observability.
+
+    **This chapter does not cover:** trace event detection, operational response, or ownership registry.
+
+    **Case continuation:** the duplicate-ticket fix is linked to policy, eval, capability-contract, and rollout-gate versions.
+
 ## 1. Why the agent supply chain is wider than a normal service supply chain
 
 When engineers hear the words “software supply chain,” they usually think about familiar things:

@@ -17,6 +17,17 @@
     - the requirement to track findings as backlog items with owners, remediation, and rollback logic;
     - the link between incidents, detection, redesign, and rollout-rule changes.
 
+!!! note "Chapter Role in Part VIII"
+    **Main question:** how a risk signal becomes containment, remediation, and a closed finding.
+
+    **Unique artifact:** finding and response record.
+
+    **Neighboring boundary:** response and containment, not eval judgment.
+
+    **This chapter does not cover:** eval dataset design, artifact provenance, or telemetry design.
+
+    **Case continuation:** the repeated duplicate support ticket becomes a finding with an owner and temporary containment.
+
 ## 1. Why lifecycle does not end at release gates
 
 By this point, the picture is already more mature:

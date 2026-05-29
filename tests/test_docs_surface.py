@@ -535,6 +535,117 @@ def test_part_viii_role_map_is_print_friendly() -> None:
         assert role_map.count("- **") >= 9, relative_path
 
 
+def test_part_viii_chapters_define_print_friendly_role_cards() -> None:
+    chapter_bases = tuple(f"docs/book/part-viii/chapter-{number}" for number in range(19, 28))
+    expected_by_suffix = {
+        ".md": (
+            '!!! note "Роль главы в части VIII"',
+            "Главный вопрос:",
+            "Уникальный артефакт:",
+            "Граница с соседними главами:",
+            "Что эта глава не покрывает:",
+            "Продолжение сквозного сценария:",
+        ),
+        ".en.md": (
+            '!!! note "Chapter Role in Part VIII"',
+            "Main question:",
+            "Unique artifact:",
+            "Neighboring boundary:",
+            "This chapter does not cover:",
+            "Case continuation:",
+        ),
+        ".zh.md": (
+            '!!! note "第 VIII 部分中的章节角色"',
+            "核心问题：",
+            "独特工件：",
+            "相邻边界：",
+            "本章不覆盖：",
+            "案例延续：",
+        ),
+    }
+
+    for base in chapter_bases:
+        for suffix, expected_markers in expected_by_suffix.items():
+            _assert_files_contain_all((f"{base}{suffix}",), expected_markers)
+
+
+def test_part_viii_role_cards_keep_neighboring_chapters_distinct() -> None:
+    expected_russian_boundaries = {
+        "docs/book/part-viii/chapter-19.md": (
+            "жизненный цикл задает состояния; управление изменениями решает, "
+            "какие переходы требуют проверки"
+        ),
+        "docs/book/part-viii/chapter-20.md": (
+            "управление изменениями решает, что требует выпуска; контур заверения "
+            "начинается после сигнала риска"
+        ),
+        "docs/book/part-viii/chapter-21.md": (
+            "реагирование и сдерживание, не оценочное суждение"
+        ),
+        "docs/book/part-viii/chapter-22.md": "происхождение артефактов, не наблюдаемость",
+        "docs/book/part-viii/chapter-23.md": (
+            "вывод из эксплуатации закрывает старые права действовать"
+        ),
+        "docs/book/part-viii/chapter-24.md": (
+            "сценарии несоответствия целей и инсайдерского риска, не общие правила "
+            "против внедрения инструкций"
+        ),
+        "docs/book/part-viii/chapter-25.md": (
+            "поведенческая и контрольная оценка, не реагирование на инцидент"
+        ),
+        "docs/book/part-viii/chapter-26.md": "доказательная подложка, не реестр владения",
+        "docs/book/part-viii/chapter-27.md": (
+            "владение и ответственность, не проектирование телеметрии"
+        ),
+    }
+    expected_english_boundaries = {
+        "docs/book/part-viii/chapter-19.en.md": (
+            "lifecycle defines states; change management decides which transitions need review"
+        ),
+        "docs/book/part-viii/chapter-20.en.md": (
+            "change management decides what needs release control; assurance begins "
+            "after a risk signal"
+        ),
+        "docs/book/part-viii/chapter-21.en.md": "response and containment, not eval judgment",
+        "docs/book/part-viii/chapter-22.en.md": "artifact provenance, not observability",
+        "docs/book/part-viii/chapter-23.en.md": "retirement closes old rights to act",
+        "docs/book/part-viii/chapter-24.en.md": (
+            "misalignment and insider-risk scenarios, not generic prompt-injection rules"
+        ),
+        "docs/book/part-viii/chapter-25.en.md": (
+            "behavioral and control judgment, not incident response"
+        ),
+        "docs/book/part-viii/chapter-26.en.md": "evidence substrate, not ownership registry",
+        "docs/book/part-viii/chapter-27.en.md": (
+            "ownership and accountability, not telemetry design"
+        ),
+    }
+    expected_chinese_boundaries = {
+        "docs/book/part-viii/chapter-19.zh.md": (
+            "生命周期定义状态；变更管理决定哪些状态转换需要审查"
+        ),
+        "docs/book/part-viii/chapter-20.zh.md": (
+            "变更管理决定什么需要发布控制；保障闭环从风险信号之后开始"
+        ),
+        "docs/book/part-viii/chapter-21.zh.md": "响应与遏制，而不是评测判断",
+        "docs/book/part-viii/chapter-22.zh.md": "工件来源追踪，而不是可观测性",
+        "docs/book/part-viii/chapter-23.zh.md": "退役关闭旧的行动权",
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "失配与内部人风险场景，而不是通用提示注入规则"
+        ),
+        "docs/book/part-viii/chapter-25.zh.md": "行为与控制判断，而不是事故响应",
+        "docs/book/part-viii/chapter-26.zh.md": "证据基底，而不是所有权注册表",
+        "docs/book/part-viii/chapter-27.zh.md": "所有权与问责，而不是遥测设计",
+    }
+
+    for path, marker in {
+        **expected_russian_boundaries,
+        **expected_english_boundaries,
+        **expected_chinese_boundaries,
+    }.items():
+        assert marker in _read(path), (path, marker)
+
+
 def test_part_viii_chinese_chapter_artifact_labels_are_localized() -> None:
     expected_and_forbidden_by_file = {
         "docs/book/part-viii/chapter-19.zh.md": (
