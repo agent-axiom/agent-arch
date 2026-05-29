@@ -267,6 +267,6 @@ platform_defaults:
 Следующий шаг после этой главы уже не в новых орг-диаграммах, а в кодовом каркасе: посмотреть, как golden path, shared gateway и approved runtime patterns закрепляются в reference implementation.
 
 - [Глава 14. Платформенная команда и продуктовые команды](chapter-14.md)
-- [Глава 16. Базовая схема рантайма](../part-vii/chapter-16.md)
+- [Глава 16. Базовая схема среды исполнения](../part-vii/chapter-16.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)
