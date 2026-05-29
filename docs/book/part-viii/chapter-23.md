@@ -1,4 +1,4 @@
-# Глава 23. Retirement, replacement и end-of-life discipline
+# Глава 23. Вывод из эксплуатации, замена и дисциплина завершения жизненного цикла
 
 ## 1. Почему зрелая агентная система должна уметь не только запускаться, но и уходить
 
@@ -10,55 +10,55 @@
 - наблюдать за ней;
 - безопасно выкатывать изменения.
 
-Но у любой production system есть еще один обязательный этап: она когда-то должна быть заменена, выключена или выведена из эксплуатации.
+Но у любой промышленной системы есть еще один обязательный этап: она когда-то должна быть заменена, выключена или выведена из эксплуатации.
 
-Для agent systems это особенно важно, потому что они обычно оставляют за собой длинный рабочий хвост:
+Для агентных систем это особенно важно, потому что они обычно оставляют за собой длинный рабочий хвост:
 
-- memory state;
-- tool access;
-- approvals and audit trails;
-- состояние paused runs и background runs;
-- состояние capability sessions и interruption lineage;
-- lineage для orchestration patterns и worker-boundary decisions;
-- delegated authorization lineage и revoke state;
-- verifier-contract lineage и obligations по retention для [verifier evidence](../../appendix/eval-schema.md);
-- lineage handoff artifacts на границах context reset и role handoff;[^anthropic-harness]
-- external integrations;
-- user expectations;
-- dependent workflows.
+- состояние памяти;
+- доступ к инструментам;
+- подтверждения и контрольные следы;
+- состояние приостановленных и фоновых запусков;
+- состояние сессий возможностей и линия происхождения прерываний;
+- линия происхождения схем оркестрации и решений о границах рабочих агентов;
+- линия происхождения делегированной авторизации и состояние отзыва;
+- линия происхождения контрактов проверяющего и обязательства по хранению [доказательств проверки](../../appendix/eval-schema.md);
+- артефакты передачи на границах сброса контекста и передачи роли;[^anthropic-harness]
+- внешние интеграции;
+- ожидания пользователей;
+- зависимые рабочие процессы.
 
-То есть retirement здесь — это не “удалили сервис и забыли”. Это управляемый рабочий процесс.
+То есть вывод из эксплуатации здесь — это не “удалили сервис и забыли”. Это управляемый рабочий процесс.
 
-В этом и состоит главный смысл этой главы. Она должна показать retirement не как приложение к delivery, а как функцию закрытия всего жизненного цикла: момент, когда система теряет право действовать, а ее memory, evidence, approvals и operational lineage доводятся до контролируемого завершения. Главный артефакт этой главы — retirement plan: план закрытия прав, состояния, evidence и владельцев, а не просто удаление старого агента.
+В этом и состоит главный смысл этой главы. Она должна показать вывод из эксплуатации не как приложение к поставке, а как функцию закрытия всего жизненного цикла: момент, когда система теряет право действовать, а ее память, доказательная база, подтверждения и операционная линия происхождения доводятся до контролируемого завершения. Главный артефакт этой главы — план вывода из эксплуатации: план закрытия прав, состояния, доказательств и владельцев, а не просто удаление старого агента.
 
-## 2. Когда вообще пора думать о retirement
+## 2. Когда вообще пора думать о выводе из эксплуатации
 
-Полезно перестать воспринимать retirement как нечто далекое и неприятное.
+Полезно перестать воспринимать вывод из эксплуатации как нечто далекое и неприятное.
 
 На практике триггерами часто становятся:
 
-- runtime или model устарел;
-- capability contract больше не считается безопасным;
-- maintenance cost стал слишком высоким;
-- quality ceiling reached, дальше нужен replacement;
-- новый platform path вытесняет старый;
-- regulatory или governance requirements изменились;
+- среда исполнения или модель устарели;
+- контракт возможности больше не считается безопасным;
+- стоимость сопровождения стала слишком высокой;
+- потолок качества достигнут, дальше нужна замена;
+- новый платформенный путь вытесняет старый;
+- изменились регуляторные или управленческие требования;
 - продуктовая задача больше не существует.
 
-Если у команды нет явных retirement triggers, старые agent systems почти всегда живут дольше, чем безопасно и полезно.
+Если у команды нет явных триггеров вывода из эксплуатации, старые агентные системы почти всегда живут дольше, чем безопасно и полезно.
 
-## 3. Retirement и replacement — это не одно и то же
+## 3. Вывод из эксплуатации и замена — это не одно и то же
 
 Полезно разделять два сценария:
 
-- `retirement`: система или capability просто выводится из эксплуатации;
+- `retirement`: система или возможность просто выводится из эксплуатации;
 - `replacement`: старая система снимается, но перед этим или параллельно ее заменяет новая.
 
 Это важное различие.
 
-В retirement главный вопрос: как безопасно убрать систему.
+При выводе из эксплуатации главный вопрос: как безопасно убрать систему.
 
-В replacement главный вопрос: как провести controlled transition, не потеряв качество, контроль и историю.
+При замене главный вопрос: как провести управляемый переход, не потеряв качество, контроль и историю.
 
 ## 4. Главная опасность — тихо оставить за системой право действовать
 
@@ -66,58 +66,58 @@
 
 - команда считает систему “почти выключенной”;
 - но у нее все еще есть:
-  - [active tool principal](../../appendix/lifecycle-artifact-schema.md);
-  - живой connector;
-  - [доступ к memory](../../appendix/memory-retrieval-schema.md);
-  - [старый путь rollout](../../appendix/change-rollout-schema.md);
-  - background job;
-  - [resumable paused approval path](../../appendix/approval-schema.md);
-  - [expired capability session, которую все еще можно re-initialize через старый path](../../appendix/lifecycle-artifact-schema.md);
-  - [старая runtime-control schema, которую gateways все еще принимают](../../appendix/lifecycle-artifact-schema.md).
+  - [активный принципал инструмента](../../appendix/lifecycle-artifact-schema.md);
+  - живой соединитель;
+  - [доступ к памяти](../../appendix/memory-retrieval-schema.md);
+  - [старый путь поэтапного выпуска](../../appendix/change-rollout-schema.md);
+  - фоновая задача;
+  - [возобновляемый путь приостановленного подтверждения](../../appendix/approval-schema.md);
+  - [истекшая сессия возможности, которую все еще можно повторно инициализировать через старый путь](../../appendix/lifecycle-artifact-schema.md);
+  - [старая схема управления средой исполнения, которую шлюзы все еще принимают](../../appendix/lifecycle-artifact-schema.md).
 
 То есть формально система уже “мертвая”, а по факту она все еще может делать действия.
 
-Для agent systems это особенно опасно, потому что автономные и полуавтономные пути исполнения очень легко забыть.
+Для агентных систем это особенно опасно, потому что автономные и полуавтономные пути исполнения очень легко забыть.
 
-!!! example "Сквозной кейс: старый ticket writer после замены"
-    Если support-triage v2 заменил старый path, который когда-то создавал duplicate tickets, retirement должен доказать, что старый `create_support_ticket` больше не может действовать. Недостаточно убрать prompt route: нужно [закрыть tool principal](../../appendix/lifecycle-artifact-schema.md), [отозвать gateway exposure](../../appendix/registry-operations-handbook.md), [истечь paused approvals](../../appendix/approval-schema.md), [остановить background retries](../../appendix/lifecycle-artifact-schema.md) и [сохранить audit trail](../../appendix/trace-schema.md), чтобы будущий дубль нельзя было списать на “непонятно откуда пришедший” старый агент.
+!!! example "Сквозной кейс: старый пишущий путь тикета после замены"
+    Если v2 в сценарии разбора обращений поддержки заменил старый путь, который когда-то создавал дубли тикетов, вывод из эксплуатации должен доказать, что старый `create_support_ticket` больше не может действовать. Недостаточно убрать маршрут инструкции: нужно [закрыть принципал инструмента](../../appendix/lifecycle-artifact-schema.md), [отозвать экспозицию шлюза](../../appendix/registry-operations-handbook.md), [истечь приостановленные подтверждения](../../appendix/approval-schema.md), [остановить фоновые повторы](../../appendix/lifecycle-artifact-schema.md) и [сохранить контрольный след](../../appendix/trace-schema.md), чтобы будущий дубль нельзя было списать на “непонятно откуда пришедший” старый агент.
 
-**Retirement case-spine note:** каждый canonical case выводит из эксплуатации разный right to act. Support triage закрывает deprecated write paths и paused approvals; Internal knowledge assistant выводит stale corpora, obsolete embeddings и memory-write rules; Incident coordination закрывает emergency-only capabilities, escalation routes и notification channels, когда response path больше не валиден. Retirement plan, который только удаляет runtime, оставляет старые полномочия жить дальше.
+**Заметка о сквозных сценариях вывода из эксплуатации:** каждый канонический сценарий выводит из эксплуатации разное право действовать. Разбор обращений поддержки закрывает устаревшие пишущие пути и приостановленные подтверждения; внутренний ассистент знаний выводит устаревшие корпуса, устаревшие векторные представления и правила записи в память; координация инцидентов закрывает возможности только для аварийного режима, маршруты эскалации и каналы уведомлений, когда путь реагирования больше не действителен. План вывода из эксплуатации, который только удаляет среду исполнения, оставляет старые полномочия жить дальше.
 
-## 5. Retirement должен идти по слоям
+## 5. Вывод из эксплуатации должен идти по слоям
 
-Хороший end-of-life process редко сводится к одному действию. Обычно его стоит раскладывать по слоям:
+Хороший процесс завершения жизненного цикла редко сводится к одному действию. Обычно его стоит раскладывать по слоям:
 
-- [остановить новые rollout waves](../../appendix/change-rollout-schema.md);
-- [запретить risky capabilities](../../appendix/lifecycle-artifact-schema.md);
-- [перевести write actions в approval-only или disable](../../appendix/approval-schema.md);
-- [остановить memory writes](../../appendix/memory-retrieval-schema.md);
-- [истечь или отменить paused runs](../../appendix/lifecycle-artifact-schema.md);
-- [отключить background jobs и background routes](../../appendix/lifecycle-artifact-schema.md);
-- [закрыть или архивировать capability-session state и запретить uncontrolled re-init](../../appendix/lifecycle-artifact-schema.md);
-- [выключить deprecated orchestration patterns и отозвать worker-safe catalog exposure](../../appendix/change-rollout-schema.md);
-- [отозвать delegated authorization paths](../../appendix/lifecycle-artifact-schema.md) и [архивировать их final lineage](../../appendix/trace-schema.md);
-- [вывести из эксплуатации deprecated verifier contracts и сохранить evidence, нужные для объяснения прежних rollout или assurance decisions](../../appendix/eval-schema.md), включая экспортируемые поля failed run вроде [`failure_reason`](../../appendix/eval-schema.md), если на них опиралось прежнее суждение;
-- [архивировать handoff artifacts, которые несли scope спринта, evaluator critique или решения на границе reset](../../appendix/lifecycle-artifact-schema.md) для длинных работ, если именно эти артефакты влияли на то, что retiring system было разрешено делать;
-- [отозвать egress access](../../appendix/lifecycle-artifact-schema.md);
-- [закрыть principals, secrets и connectors](../../appendix/lifecycle-artifact-schema.md);
-- [зафиксировать final audit state](../../appendix/trace-schema.md).
+- [остановить новые волны поэтапного выпуска](../../appendix/change-rollout-schema.md);
+- [запретить рискованные возможности](../../appendix/lifecycle-artifact-schema.md);
+- [перевести пишущие действия в режим подтверждения или отключения](../../appendix/approval-schema.md);
+- [остановить записи в память](../../appendix/memory-retrieval-schema.md);
+- [истечь или отменить приостановленные запуски](../../appendix/lifecycle-artifact-schema.md);
+- [отключить фоновые задачи и фоновые маршруты](../../appendix/lifecycle-artifact-schema.md);
+- [закрыть или архивировать состояние сессии возможности и запретить неконтролируемую повторную инициализацию](../../appendix/lifecycle-artifact-schema.md);
+- [выключить устаревшие схемы оркестрации и отозвать экспозицию безопасного каталога рабочих агентов](../../appendix/change-rollout-schema.md);
+- [отозвать пути делегированной авторизации](../../appendix/lifecycle-artifact-schema.md) и [архивировать их итоговую линию происхождения](../../appendix/trace-schema.md);
+- [вывести из эксплуатации устаревшие контракты проверяющего и сохранить доказательства, нужные для объяснения прежних решений по поэтапному выпуску или заверению](../../appendix/eval-schema.md), включая экспортируемые поля неудачного запуска вроде [`failure_reason`](../../appendix/eval-schema.md), если на них опиралось прежнее суждение;
+- [архивировать артефакты передачи, которые несли область спринта, критику оценщика или решения на границе сброса](../../appendix/lifecycle-artifact-schema.md) для длинных работ, если именно эти артефакты влияли на то, что выводимой системе было разрешено делать;
+- [отозвать исходящий доступ](../../appendix/lifecycle-artifact-schema.md);
+- [закрыть принципалы, секреты и соединители](../../appendix/lifecycle-artifact-schema.md);
+- [зафиксировать итоговое контрольное состояние](../../appendix/trace-schema.md).
 
 <div class="diagram-card">
-<p>Retirement лучше делать как последовательное сужение рабочей поверхности системы</p>
+<p>Вывод из эксплуатации лучше делать как последовательное сужение рабочей поверхности системы</p>
 
 ``` mermaid
 flowchart LR
-    A["Заморозить rollout"] --> B["Отключить risky capabilities"]
-    B --> C["Отключить writes и background jobs"]
-    C --> D["Отозвать egress и principals"]
-    D --> E["Архивировать audit и memory state"]
-    E --> F["Пометить систему retired"]
+    A["Заморозить поэтапный выпуск"] --> B["Отключить рискованные возможности"]
+    B --> C["Отключить записи и фоновые задачи"]
+    C --> D["Отозвать исходящий доступ и принципалы"]
+    D --> E["Архивировать контрольный след и состояние памяти"]
+    E --> F["Пометить систему как выведенную"]
 ```
 
 </div>
 
-## 6. Memory и audit data требуют отдельной дисциплины
+## 6. Память и контрольные данные требуют отдельной дисциплины
 
 Когда система уходит, сразу появляется неудобный вопрос: что делать с накопленным state?
 
@@ -125,70 +125,70 @@ flowchart LR
 
 - [что архивировать](../../appendix/lifecycle-artifact-schema.md);
 - [что удалить](../../appendix/memory-retrieval-schema.md);
-- [что anonymize](../../appendix/memory-retrieval-schema.md);
-- как долго хранить [traces](../../appendix/trace-schema.md) и [approvals](../../appendix/approval-schema.md);
-- [кто остается owner у archived state](../../appendix/lifecycle-artifact-schema.md);
-- можно ли использовать старые [datasets](../../appendix/eval-schema.md) и [memory artifacts](../../appendix/memory-retrieval-schema.md) в replacement;
-- нужно ли сохранять [delegated authorization records](../../appendix/lifecycle-artifact-schema.md), чтобы объяснять, под чьей identity исполнялись старые действия;
-- нужно ли сохранять [verifier evidence](../../appendix/eval-schema.md) и [историю verifier contracts](../../appendix/eval-schema.md), чтобы объяснять, почему прежние релизы считались приемлемыми.
+- [что обезличить](../../appendix/memory-retrieval-schema.md);
+- как долго хранить [трассы](../../appendix/trace-schema.md) и [подтверждения](../../appendix/approval-schema.md);
+- [кто остается владельцем архивированного состояния](../../appendix/lifecycle-artifact-schema.md);
+- можно ли использовать старые [наборы данных](../../appendix/eval-schema.md) и [артефакты памяти](../../appendix/memory-retrieval-schema.md) при замене;
+- нужно ли сохранять [записи делегированной авторизации](../../appendix/lifecycle-artifact-schema.md), чтобы объяснять, под чьей идентичностью исполнялись старые действия;
+- нужно ли сохранять [доказательства проверяющего](../../appendix/eval-schema.md) и [историю контрактов проверяющего](../../appendix/eval-schema.md), чтобы объяснять, почему прежние релизы считались приемлемыми.
 
-То есть retirement затрагивает не только running system, но и накопленный рабочий след системы.
+То есть вывод из эксплуатации затрагивает не только работающую систему, но и накопленный рабочий след системы.
 
-## 7. Replacement должен быть staged, а не бинарным переключением
+## 7. Замена должна быть поэтапной, а не бинарным переключением
 
-Когда старую систему заменяет новая, соблазн велик: “сделаем cutover и поедем дальше”.
+Когда старую систему заменяет новая, соблазн велик: “переключим и поедем дальше”.
 
-Для agent systems это рискованный путь.
+Для агентных систем это рискованный путь.
 
-Полезнее staged replacement:
+Полезнее поэтапная замена:
 
-- [shadow comparison](../../appendix/eval-schema.md);
-- [limited tenant migration](../../appendix/change-rollout-schema.md);
-- [dual-run for critical scenarios](../../appendix/lifecycle-artifact-schema.md);
-- [side-by-side evals](../../appendix/eval-schema.md);
-- [staged traffic shift](../../appendix/change-rollout-schema.md);
-- [final cutover only after confidence is high](../../appendix/change-rollout-schema.md).
+- [теневое сравнение](../../appendix/eval-schema.md);
+- [ограниченная миграция клиентов](../../appendix/change-rollout-schema.md);
+- [параллельный запуск для критичных сценариев](../../appendix/lifecycle-artifact-schema.md);
+- [сравнительные оценки](../../appendix/eval-schema.md);
+- [поэтапное перенаправление трафика](../../appendix/change-rollout-schema.md);
+- [финальное переключение только после достаточной уверенности](../../appendix/change-rollout-schema.md).
 
-Именно здесь replacement сближается с rollout discipline, но добавляет еще один вопрос: как не потерять continuity между старой и новой системой.
+Именно здесь замена сближается с дисциплиной поэтапного выпуска, но добавляет еще один вопрос: как не потерять преемственность между старой и новой системой.
 
-## 8. Старые capabilities и patterns нужно уметь официально депрекейтить
+## 8. Старые возможности и схемы нужно уметь официально объявлять устаревшими
 
-Полезно иметь не только [approved inventory](../../appendix/registry-operations-handbook.md), но и [deprecated inventory](../../appendix/registry-operations-handbook.md).
+Полезно иметь не только [утвержденный реестр](../../appendix/registry-operations-handbook.md), но и [реестр устаревших элементов](../../appendix/registry-operations-handbook.md).
 
 Например:
 
-- deprecated runtime;
-- deprecated prompt bundle family;
-- deprecated gateway pattern;
-- deprecated memory strategy;
-- [deprecated capability contract](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated approval schema](../../appendix/approval-schema.md);
-- [deprecated runtime-control schema](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated orchestration pattern или worker-boundary policy](../../appendix/change-rollout-schema.md);
-- [deprecated capability-session contract](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated verifier contract](../../appendix/eval-schema.md).
+- устаревшая среда исполнения;
+- устаревшее семейство наборов инструкций;
+- устаревший шаблон шлюза;
+- устаревшая стратегия памяти;
+- [устаревший контракт возможности](../../appendix/lifecycle-artifact-schema.md);
+- [устаревшая схема подтверждения](../../appendix/approval-schema.md);
+- [устаревшая схема управления средой исполнения](../../appendix/lifecycle-artifact-schema.md);
+- [устаревшая схема оркестрации или политика границы рабочих агентов](../../appendix/change-rollout-schema.md);
+- [устаревший контракт сессии возможности](../../appendix/lifecycle-artifact-schema.md);
+- [устаревший контракт проверяющего](../../appendix/eval-schema.md).
 
 Это важно, потому что retirement почти всегда начинается не с выключения, а с ясного сигнала:
 
 “это больше не считается нормальным путем”.
 
-## 9. User-facing transition тоже часть жизненного цикла
+## 9. Переход, видимый пользователю, тоже часть жизненного цикла
 
-Если agent system влияет на пользовательский или внутренний workflow, end-of-life нельзя делать только внутри platform layer.
+Если агентная система влияет на пользовательский или внутренний рабочий процесс, завершение жизненного цикла нельзя делать только внутри платформенного слоя.
 
 Полезно отдельно продумать:
 
 - кого нужно предупредить;
-- какие flows изменятся;
-- какие expectations надо переустановить;
-- какие fallback paths появятся;
+- какие потоки изменятся;
+- какие ожидания надо переустановить;
+- какие резервные пути появятся;
 - как временно поддерживать старые интеграции.
 
-Это особенно важно для internal agent systems, которые быстро встраиваются в реальные привычки команд.
+Это особенно важно для внутренних агентных систем, которые быстро встраиваются в реальные привычки команд.
 
-## 10. Пример retirement policy
+## 10. Пример политики вывода из эксплуатации
 
-Ниже очень рабочий skeleton:
+Ниже очень рабочий каркас:
 
 ```yaml
 retirement:
@@ -212,9 +212,9 @@ retirement:
     - set_retired_status
 ```
 
-Это полезно не потому, что YAML “решает проблему”, а потому что retirement превращается в явный операционный contract.
+Это полезно не потому, что YAML “решает проблему”, а потому что вывод из эксплуатации превращается в явный операционный контракт.
 
-## 11. Пример replacement readiness check
+## 11. Пример проверки готовности к замене
 
 Ниже каркас, который показывает правильный тип проверки:
 
@@ -243,52 +243,52 @@ def ready_for_replacement(state: ReplacementState) -> bool:
     )
 ```
 
-Смысл здесь в том, что replacement тоже должен иметь gate, а не быть “переключением по настроению”.
+Смысл здесь в том, что замена тоже должна иметь шлюз, а не быть “переключением по настроению”.
 
-## 12. Что чаще всего ломается в end-of-life discipline
+## 12. Что чаще всего ломается в дисциплине завершения жизненного цикла
 
 Проблемы здесь довольно повторяемые:
 
-- система считается retired, но [principals еще живы](../../appendix/lifecycle-artifact-schema.md);
-- [background jobs забыли выключить](../../appendix/lifecycle-artifact-schema.md);
-- [memory write path остался активным](../../appendix/memory-retrieval-schema.md);
-- [paused approvals остались resumable после retirement](../../appendix/approval-schema.md);
-- [expired capability sessions все еще можно re-initialize через stale control paths](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated orchestration patterns или worker-boundary policies остаются рабочими после retirement](../../appendix/change-rollout-schema.md);
-- deprecated verifier contracts или obligations по [verifier evidence](../../appendix/eval-schema.md) остаются неясными после retirement;
-- [background routes забыли выключить](../../appendix/lifecycle-artifact-schema.md);
-- [archived state никому не принадлежит](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated schemas все еще принимаются gateways или runtime](../../appendix/lifecycle-artifact-schema.md);
-- [deprecated patterns остаются рабочими слишком долго](../../appendix/change-rollout-schema.md);
-- replacement делается без [dual-run](../../appendix/lifecycle-artifact-schema.md) или [staged migration](../../appendix/change-rollout-schema.md).
+- система считается выведенной из эксплуатации, но [принципалы еще живы](../../appendix/lifecycle-artifact-schema.md);
+- [фоновые задачи забыли выключить](../../appendix/lifecycle-artifact-schema.md);
+- [путь записи в память остался активным](../../appendix/memory-retrieval-schema.md);
+- [приостановленные подтверждения остались возобновляемыми после вывода из эксплуатации](../../appendix/approval-schema.md);
+- [истекшие сессии возможностей все еще можно повторно инициализировать через устаревшие пути контроля](../../appendix/lifecycle-artifact-schema.md);
+- [устаревшие схемы оркестрации или политики границ рабочих агентов остаются рабочими после вывода из эксплуатации](../../appendix/change-rollout-schema.md);
+- устаревшие контракты проверяющего или обязательства по [доказательствам проверяющего](../../appendix/eval-schema.md) остаются неясными после вывода из эксплуатации;
+- [фоновые маршруты забыли выключить](../../appendix/lifecycle-artifact-schema.md);
+- [архивированное состояние никому не принадлежит](../../appendix/lifecycle-artifact-schema.md);
+- [устаревшие схемы все еще принимаются шлюзами или средой исполнения](../../appendix/lifecycle-artifact-schema.md);
+- [устаревшие схемы остаются рабочими слишком долго](../../appendix/change-rollout-schema.md);
+- замена делается без [параллельного запуска](../../appendix/lifecycle-artifact-schema.md) или [поэтапной миграции](../../appendix/change-rollout-schema.md).
 
 Именно такие мелочи превращают “почти завершенный” жизненный цикл в источник новых инцидентов.
 
-## 13. Быстрый тест зрелости для end-of-life discipline
+## 13. Быстрый тест зрелости дисциплины завершения жизненного цикла
 
-Команде не стоит думать, что она умеет делать retirement, только потому, что умеет отвести трафик в сторону и пометить систему как deprecated.
+Команде не стоит думать, что она умеет делать вывод из эксплуатации, только потому, что умеет отвести трафик в сторону и пометить систему как устаревшую.
 
 Более сильная планка такая:
 
-- система теряет право действовать до того, как ее объявляют retired;
-- principals, connectors, memory writes, paused runs, capability sessions, orchestration patterns и background jobs сужаются осознанно, а не по остаточному принципу;
-- replacement идет staged, а не как бинарный cutover;
-- deprecated approval и runtime-control schemas выключаются, а не висят как скрытые compatibility paths;
-- у archived state есть owner и решение по retention;
-- deprecated patterns превращаются в заблокированные paths, а не только в warnings.
+- система теряет право действовать до того, как ее объявляют выведенной из эксплуатации;
+- принципалы, соединители, записи в память, приостановленные запуски, сессии возможностей, схемы оркестрации и фоновые задачи сужаются осознанно, а не по остаточному принципу;
+- замена идет поэтапно, а не как бинарное переключение;
+- устаревшие схемы подтверждения и управления средой исполнения выключаются, а не висят как скрытые пути совместимости;
+- у архивированного состояния есть владелец и решение по хранению;
+- устаревшие схемы превращаются в заблокированные пути, а не только в предупреждения.
 
-Если большинство этих условий не выполняется, у команды уже может быть shutdown mechanics, но реального end-of-life discipline у нее пока нет.
+Если большинство этих условий не выполняется, у команды уже может быть механика выключения, но реальной дисциплины завершения жизненного цикла у нее пока нет.
 
 ## 14. Практический чеклист
 
-Если хочешь быстро проверить свою end-of-life discipline, пройди по вопросам:
+Если хочешь быстро проверить свою дисциплину завершения жизненного цикла, пройди по вопросам:
 
-- У системы есть явные retirement triggers?
-- Можно ли выключать capabilities поэтапно, а не только все сразу?
-- Ясно ли, что делать с memory, traces, approvals, состоянием paused runs и capability-session state после shutdown?
-- Есть ли staged plan для replacement?
-- Можно ли быстро отозвать principals, connectors, egress access, paused approvals, capability-session re-init и background routes?
-- Понятно ли, кто owner у archived artifacts и historical state?
+- У системы есть явные триггеры вывода из эксплуатации?
+- Можно ли выключать возможности поэтапно, а не только все сразу?
+- Ясно ли, что делать с памятью, трассами, подтверждениями, состоянием приостановленных запусков и состоянием сессий возможностей после выключения?
+- Есть ли поэтапный план замены?
+- Можно ли быстро отозвать принципалы, соединители, исходящий доступ, приостановленные подтверждения, повторную инициализацию сессий возможностей и фоновые маршруты?
+- Понятно ли, кто владелец архивированных артефактов и исторического состояния?
 
 Если на несколько вопросов подряд ответ “нет”, значит жизненный цикл у тебя пока все еще заканчивается на релизе, а не на реальной эксплуатации.
 
@@ -297,25 +297,25 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 Эта глава замыкает часть VIII в цельный операционный цикл:
 
 - SDLC -> ADLC;
-- change management;
-- assurance loop;
-- artifact governance;
-- retirement and replacement.
+- управление изменениями;
+- контур заверения;
+- управление артефактами;
+- вывод из эксплуатации и замена.
 
-Эта часть работает не только как архитектурное объяснение, но и как handbook по жизненному циклу production-grade agent systems.
+Эта часть работает не только как архитектурное объяснение, но и как практическое руководство по жизненному циклу промышленных агентных систем.
 
 ## 16. Полезные справочные страницы
 
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
-- [Схема approval](../../appendix/approval-schema.md)
+- [Схема подтверждения](../../appendix/approval-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
 - [Эталонный пакет](../../appendix/reference-package.md)
 
 - [Глава 19. От SDLC к ADLC](chapter-19.md)
 - [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](chapter-22.md)
-- [Глава 24. Agentic misalignment и insider-risk](chapter-24.md)
+- [Глава 24. Агентное несоответствие целей и инсайдерский риск](chapter-24.md)
 - [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 - [Часть VIII. Жизненный цикл агентной системы](index.md)
 - [Источники](../../appendix/sources.md)

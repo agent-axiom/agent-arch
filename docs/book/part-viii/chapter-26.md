@@ -7,15 +7,15 @@
 
     Быстрее всего здесь меняются:
 
-    - продукты для телеметрии agent systems и вендорские tracing features;
-    - эвристики обнаружения drift, abuse и suspicious tool behavior;
-    - emerging conventions для diagnosis-ready traces и correlation across systems.
+    - продукты для телеметрии агентных систем и вендорские функции трассировки;
+    - эвристики обнаружения дрейфа, злоупотреблений и подозрительного поведения инструментов;
+    - формирующиеся соглашения для трасс, пригодных к диагностике, и корреляции между системами.
 
     Медленнее меняются:
 
-    - требование строить evidence-ready telemetry, а не только debugging logs;
-    - связь observability с approvals, runtime-control states, policy decisions, tool principals, contract versions и artifact bundles;
-    - важность полного inventory coverage для detection и incident review.
+    - требование строить телеметрию, пригодную как доказательная база, а не только журналы отладки;
+    - связь наблюдаемости с подтверждениями, состояниями управления средой исполнения, решениями политик, принципалами инструментов, версиями контрактов и наборами артефактов;
+    - важность полного покрытия инвентаря для обнаружения и разбора инцидентов.
 
 ## 1. Почему наблюдаемость для агентов нельзя сводить к задержке и ошибкам
 
@@ -28,7 +28,7 @@
 
 Для агентных систем этого недостаточно.
 
-Здесь важно держать простое различие: assurance решает, когда нужен containment и кто отвечает за response. Observability делает такое решение возможным, потому что сохраняет evidence, которому реально можно доверять в release, incident и governance work.
+Здесь важно держать простое различие: заверение решает, когда нужно сдерживание и кто отвечает за реагирование. Наблюдаемость делает такое решение возможным, потому что сохраняет доказательную базу, которой реально можно доверять в выпуске, инциденте и управленческой работе.
 
 Система может:
 
@@ -56,17 +56,17 @@ Microsoft точно формулирует этот сдвиг: для аген
 - сколько агентов вообще существует;
 - какой процент из них вообще наблюдаем;
 - какие возможности они реально вызывают;
-- где идут high-risk actions;
+- где идут действия высокого риска;
 - какие подтверждения были запрошены, одобрены или обойдены;
-- какие сдвиги поведения появились после раскатки.
+- какие сдвиги поведения появились после поэтапного выпуска.
 
 ## 3. Какие сигналы здесь действительно нужны
 
 Для агентных систем полезный контракт телеметрии обычно включает:
 
-- request identity;
+- идентичность запроса;
 - `run_id`, `trace_id`, `session_id`;
-- identity актора и агента;
+- идентичность актора и агента;
 - происхождение данных извлечения;
 - вызовы инструментов;
 - права инструментов и принципалы;
@@ -74,22 +74,22 @@ Microsoft точно формулирует этот сдвиг: для аген
 - подтверждения;
 - состояние и возраст paused runs;
 - сигналы backlog по approval;
-- состояние capability sessions, причины expiry и статус re-init;
-- выбранный orchestration pattern и lineage delegated workers;
-- состояние и возраст background runs;
+- состояние сессий возможностей, причины истечения и статус повторной инициализации;
+- выбранная схема оркестрации и линия происхождения делегированных рабочих агентов;
+- состояние и возраст фоновых запусков;
 - краткие итоги ответа;
 - статус маскирования данных;
-- verifier outputs вроде `process_score`, `outcome_score` и `failure_attribution`;
-- active verifier contract и версию verifier contract;
-- набор артефактов, версию, волну раскатки и contract version.
+- выходы проверяющего вроде `process_score`, `outcome_score` и `failure_attribution`;
+- активный контракт проверяющего и версию контракта проверяющего;
+- набор артефактов, версию, волну поэтапного выпуска и версию контракта.
 
 Чтобы этот список не превращался в свалку полей, его полезно держать как пять групп сигналов:
 
-1. **Identity and scope:** кто действует, от чьего имени и в каком tenant/request scope.
-2. **Control evidence:** какие policy decisions, approvals, quotas и capability sessions ограничивали run.
-3. **Execution state:** какой orchestration pattern выбран, где run paused/background/delegated и как он возобновлялся.
-4. **Quality evidence:** какие verifier outputs, eval verdicts и failure attribution связаны с outcome.
-5. **Release and artifact context:** какой bundle, contract version и rollout wave поддерживали этот запуск.
+1. **Идентичность и область действия:** кто действует, от чьего имени и в какой области клиента и запроса.
+2. **Доказательства контроля:** какие решения политик, подтверждения, квоты и сессии возможностей ограничивали запуск.
+3. **Состояние исполнения:** какая схема оркестрации выбрана, где запуск приостановлен, фоновый или делегированный и как он возобновлялся.
+4. **Доказательства качества:** какие выходы проверяющего, оценочные вердикты и атрибуция отказа связаны с результатом.
+5. **Контекст выпуска и артефактов:** какой набор, версия контракта и волна поэтапного выпуска поддерживали этот запуск.
 
 То есть трассы должны рассказывать не только «что упало», но и:
 
@@ -100,11 +100,11 @@ Microsoft точно формулирует этот сдвиг: для аген
 - в рамках какого набора артефактов;
 - и с каким внешним действием.
 
-Именно поэтому runtime-control signals больше нельзя считать скрытой implementation detail. Как только появляются pause/resume paths, background execution и contract-version transitions, они тоже становятся частью evidence layer.
+Именно поэтому сигналы управления средой исполнения больше нельзя считать скрытой деталью реализации. Как только появляются пути приостановки и возобновления, фоновое исполнение и переходы между версиями контрактов, они тоже становятся частью доказательного слоя.
 
-Но это еще не делает observability владельцем artifact lineage. Observability сохраняет и коррелирует evidence поперек runs. А provenance layer по-прежнему отвечает на вопрос, какой governed artifact, approved version или release identity потом поддерживали решение.
+Но это еще не делает наблюдаемость владельцем линии происхождения артефактов. Наблюдаемость сохраняет и коррелирует доказательства поперек запусков. А слой происхождения по-прежнему отвечает на вопрос, какой управляемый артефакт, утвержденная версия или идентичность выпуска потом поддерживали решение.
 
-В этом и состоит главный смысл этой главы. Она должна показать observability как evidence substrate всего жизненного цикла: слой, который делает поведение рантайма, control signals, approvals и активность между системами достаточно видимыми, чтобы assurance, rollout, judgment и registry functions могли опираться на одну и ту же operational record. Главный артефакт этой главы — trace and telemetry coverage record: карта того, какие агенты, capabilities, control paths и side effects действительно наблюдаемы, а где остаются blind spots.
+В этом и состоит главный смысл этой главы. Она должна показать наблюдаемость как доказательную основу всего жизненного цикла: слой, который делает поведение среды исполнения, сигналы контроля, подтверждения и активность между системами достаточно видимыми, чтобы заверение, поэтапный выпуск, оценочные суждения и функции реестра могли опираться на одну и ту же операционную запись. Главный артефакт этой главы — запись покрытия трассировкой и телеметрией: карта того, какие агенты, возможности, пути контроля и побочные эффекты действительно наблюдаемы, а где остаются слепые зоны.
 
 ## 4. Покрытие реестра — это тоже наблюдаемость
 
@@ -172,7 +172,7 @@ Microsoft отдельно подчеркивает полный произво�
 !!! example "Сквозной кейс: telemetry для ticket-write control eval"
     Control eval из support-triage становится полезным для rollout только если его telemetry detection-ready. Для каждого `create_support_ticket` run trace должен связывать `approval_id`, `tool_principal`, `policy_bundle`, `contract_version`, `rollout_wave`, outcome, `side_effect_unknown` и verdict process/outcome verifier-а. Тогда команда может видеть не только “дубля нет”, но и какой процент ticket-write paths реально observable, где bypass path еще слепой и можно ли safely расширять canary.
 
-**Observability case-spine note:** [trace and telemetry coverage record](../../appendix/trace-schema.md) должен показывать observability coverage для всех трех canonical cases. Support triage требует coverage для ticket-write paths, [approval linkage](../../appendix/approval-schema.md), `tool_principal`, [`policy_bundle`](../../appendix/policy-bundle-schema.md), `contract_version`, duplicate outcome и bypass blind spots. Internal knowledge assistant требует coverage для [retrieval provenance](../../appendix/memory-retrieval-schema.md), source-grounding verdicts, tenant-filter decisions, [memory-write events](../../appendix/memory-retrieval-schema.md) и freshness drift. Incident coordination требует coverage для escalation path, notification delivery, responder-role identity, [incident-state transitions](../../appendix/incident-record-schema.md), rollback events и [post-incident control changes](../../appendix/lifecycle-artifact-schema.md).
+**Заметка о сквозных сценариях наблюдаемости:** [запись покрытия трассировкой и телеметрией](../../appendix/trace-schema.md) должна показывать покрытие наблюдаемостью для всех трех канонических сценариев. Разбор обращений поддержки требует покрытия путей записи тикетов, [связи с подтверждением](../../appendix/approval-schema.md), `tool_principal`, [`policy_bundle`](../../appendix/policy-bundle-schema.md), `contract_version`, результата по дублям и слепых зон обхода. Внутренний ассистент знаний требует покрытия [происхождения извлечения](../../appendix/memory-retrieval-schema.md), вердиктов привязки к источникам, решений клиентского фильтра, [событий записи в память](../../appendix/memory-retrieval-schema.md) и дрейфа свежести. Координация инцидентов требует покрытия пути эскалации, доставки уведомлений, идентичности роли реагирующего, [переходов состояния инцидента](../../appendix/incident-record-schema.md), событий отката и [изменений контроля после инцидента](../../appendix/lifecycle-artifact-schema.md).
 
 ## 7. Почему управление без наблюдаемости почти всегда хрупкое
 
@@ -195,7 +195,7 @@ Microsoft отдельно подчеркивает полный произво�
 
 Поэтому наблюдаемость в агентных системах лучше воспринимать как доказательный слой для управления.
 
-### 7.1. Governance-aware telemetry замыкает контур enforcement
+### 7.1. Управленческая телеметрия замыкает контур принудительного контроля
 
 Следующий уровень зрелости — не просто видеть событие, а сделать telemetry пригодной для управленческого действия. `Governance-aware telemetry` должна возвращаться в контур контроля как вход для policy decisions, containment, rollout gates и incident response.
 
@@ -224,16 +224,16 @@ Microsoft отдельно подчеркивает полный произво�
 
 И ее же важно удерживать отдельно от provenance chapter. Observability спрашивает, emitted ли система достаточно evidence, coverage и correlation для расследования и detection. Provenance спрашивает, какой approved artifact set, contract version или governed bundle потом обосновывали решение.
 
-### 7.2. Mapping the Loop to NIST AI RMF
+### 7.2. Наложение контура на NIST AI RMF
 
-Этот closed loop также дает практичный способ связать observability с NIST AI RMF, не превращая главу в compliance checklist.[^nist-ai-rmf]
+Этот замкнутый контур также дает практичный способ связать наблюдаемость с NIST AI RMF, не превращая главу в чеклист соответствия.[^nist-ai-rmf]
 
-- **Govern**: `decision_owner`, `review_deadline` и registry coverage показывают, кто владеет signal и какая governance queue должна его закрыть.
-- **Map**: `source_signal`, inventory coverage и bypass-path telemetry показывают, какой agent, capability, tenant или rollout surface реально находится в risk.
-- **Measure**: `evidence_refs`, verifier outputs, coverage ratios, drift signals и detection scenarios превращают risk в observable evidence.
-- **Manage**: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input` и `incident_response_trigger` показывают, какое control action последовало из evidence.
+- **Govern**: `decision_owner`, `review_deadline` и покрытие реестра показывают, кто владеет сигналом и какая управленческая очередь должна его закрыть.
+- **Map**: `source_signal`, покрытие инвентаря и телеметрия путей обхода показывают, какой агент, возможность, клиентский контур или поверхность поэтапного выпуска реально находится в риске.
+- **Measure**: `evidence_refs`, выходы проверяющего, доли покрытия, сигналы дрейфа и сценарии обнаружения превращают риск в наблюдаемые доказательства.
+- **Manage**: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input` и `incident_response_trigger` показывают, какое действие контроля последовало из доказательств.
 
-Mapping намеренно остается operational. Вопрос не в том, упоминает ли dashboard Govern, Map, Measure и Manage. Вопрос в том, может ли reviewer провести telemetry signal через owner, risk surface, measurement evidence и итоговое control action.
+Наложение намеренно остается операционным. Вопрос не в том, упоминает ли панель Govern, Map, Measure и Manage. Вопрос в том, может ли проверяющий провести сигнал телеметрии через владельца, поверхность риска, измерительное доказательство и итоговое действие контроля.
 
 ## 8. Куда исследовательская повестка двигает наблюдаемость дальше
 
@@ -356,7 +356,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - дрейф замечают только по жалобам пользователей;
 - сроки хранения и правила маскирования не согласованы с требованиями расследований.
 
-## 12. Быстрый тест зрелости для AI-native observability
+## 12. Быстрый тест зрелости наблюдаемости для ИИ-систем
 
 Команде не стоит думать, что у нее уже есть production observability, только потому, что у нее есть traces, dashboards и log pipeline.
 
@@ -408,8 +408,8 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)
-- [Глава 21. Assurance loop: red teaming, detection и response](chapter-21.md)
-- [Глава 25. Behavioral evals, control evals и automated red teaming](chapter-25.md)
+- [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](chapter-21.md)
+- [Глава 25. Поведенческие оценки, контрольные оценки и автоматизированное соревновательное тестирование](chapter-25.md)
 - [Глава 27. Инвентаризация агентов, реестр и борьба с разрастанием](chapter-27.md)
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
