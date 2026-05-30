@@ -116,6 +116,8 @@ sequenceDiagram
 
 Если подтверждение относится к долгому рабочему процессу, ему нужен тайм-аут, эскалация и долговечное возобновление. Если это браузерный или клиентский инструмент, рантайм должен понимать, что часть проверки и результата пришла с клиентской границы. Если это запрос ввода MCP, подтверждение похоже не на “да/нет”, а на запрос структурированного ввода с собственной схемой.
 
+Здесь полезно явно различать **быстрое чат-подтверждение** и **долговечное подтверждение рабочего процесса**. Быстрое подтверждение подходит для действия, которое можно безопасно решить в текущем interaction loop. Долговечное подтверждение должно жить в durable workflow: оно может ждать часы или дни, переживать перезапуск рантайма, иметь отдельный `approval_id`, срок действия, escalation path и trace evidence, которое показывает, какой шаг был остановлен и какой шаг продолжился после решения.[^cloudflare-workflows]
+
 Хороший поток подтверждения всегда хранит:
 
 - кто запросил действие;
@@ -230,6 +232,7 @@ sequenceDiagram
 - [Источники](../../appendix/sources.md)
 
 [^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

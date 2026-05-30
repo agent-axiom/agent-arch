@@ -229,6 +229,27 @@ The scheduling side matters in particular: Cloudflare shows delayed, scheduled, 
 
 The real-time side adds one more boundary: connection state is not agent state. In Cloudflare Agents WebSocket model, a connection has its own `id`, `uri`, per-connection `state`, tags, lifecycle hooks, and the option to disable protocol messages such as identity/state/MCP for a specific connection.[^cloudflare-websockets] For a baseline runtime, that means broadcast, presence, approval UI, and streaming updates should pass through connection-scoped authorization and traceable fan-out, not directly expose the whole durable state of the agent.
 
+### 8.3. Agent Shell + Durable Workflow Spine
+
+The next useful Cloudflare pattern is to avoid putting all long work into one agent event loop. The agent can be the **stateful interaction boundary**: it owns instance identity, WebSocket/HTTP session, local state, user callbacks, and the current conversation view. The workflow then becomes the **durable execution boundary**: it owns steps, retries, waiting for external events, long approval gates, and recovery after failure.[^cloudflare-workflows]
+
+<div class="diagram-card">
+<p>A live agent and a durable workflow solve different problems</p>
+
+``` mermaid
+flowchart LR
+    S["Session / state store"] --> A["Agent runtime shell"]
+    A --> W["Durable workflow spine"]
+    W --> E["Tool / external event / approval step"]
+    W --> L["Audit + evidence log"]
+    A --> U["User-facing stream / WebSocket"]
+    E --> L
+```
+
+</div>
+
+In the reference shape, the agent shell may report progress, accept new messages, and show approval UI, but the durable workflow should own what cannot be lost: step id, idempotency key, retry/timeout policy, external-event wait, approval decision, and evidence refs. Then agent restart or WebSocket disconnect does not turn long work into a half-remembered user conversation.
+
 ## 9. Stateful Tool Sessions Belong in the Baseline Too
 
 Once the execution layer includes stateful MCP-style capabilities, the baseline runtime needs one more explicit boundary: **run state is not the same thing as capability session state**.[^aws-stateful-mcp]
@@ -426,6 +447,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
 
 [^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
+
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 

@@ -229,7 +229,28 @@ Cloudflare Agents SDK показывает другую полезную баз�
 
 Сторона реального времени добавляет еще одну границу: состояние соединения не равно состоянию агента. В WebSocket-модели Cloudflare Agents у соединения есть собственный `id`, `uri`, состояние на уровне соединения, метки, обработчики жизненного цикла и возможность выключить протокольные сообщения вроде identity/state/MCP для конкретного соединения.[^cloudflare-websockets] Для базовой среды исполнения это означает, что широковещательные сообщения, присутствие пользователя, интерфейс подтверждения и потоковые обновления должны проходить через авторизацию в области соединения и трассируемую рассылку, а не напрямую читать все долговечное состояние агента.
 
-### 8.3. Проверяемое завершение как обязанность среды исполнения
+### 8.3. Agent shell + durable workflow spine
+
+Следующий полезный паттерн Cloudflare — не складывать всю долгую работу в один event loop агента. Agent может быть **stateful interaction boundary**: держать идентичность экземпляра, WebSocket/HTTP-сессию, локальное состояние, пользовательские callbacks и текущую картину диалога. Workflow при этом становится **durable execution boundary**: хранит шаги, retries, ожидание внешних событий, длительные approval gates и восстановление после падения.[^cloudflare-workflows]
+
+<div class="diagram-card">
+<p>Живой агент и долговечный workflow решают разные задачи</p>
+
+``` mermaid
+flowchart LR
+    S["Session / state store"] --> A["Agent runtime shell"]
+    A --> W["Durable workflow spine"]
+    W --> E["Tool / external event / approval step"]
+    W --> L["Audit + evidence log"]
+    A --> U["User-facing stream / WebSocket"]
+    E --> L
+```
+
+</div>
+
+В эталонной схеме это означает: agent shell может сообщать прогресс, принимать новые сообщения и показывать интерфейс подтверждения, но durable workflow должен владеть тем, что нельзя потерять: step id, idempotency key, retry/timeout policy, external-event wait, approval decision и evidence refs. Тогда перезапуск агента или разрыв WebSocket не превращает длинную работу в полупамятный пользовательский диалог.
+
+### 8.4. Проверяемое завершение как обязанность среды исполнения
 
 Один практический урок из Claude Code переносится почти напрямую в базовую среду исполнения: автономному агенту нужен не только цикл действий, но и цикл проверки.[^anthropic-claude-code-best-practices] Если рантайм знает только “агент вернул финальный ответ”, оператор снова становится единственным контуром качества. Если же рантайм хранит условие завершения и результат проверки, запуск можно безопаснее оставлять без постоянного наблюдения.
 
@@ -442,6 +463,8 @@ runtime:
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
 
 [^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
+
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 
