@@ -25,6 +25,22 @@
 - **第 18 章：** 发布就绪度和扩大规模前的审查；
 - **第 21-27 章：** 生命周期、保障、来源证明、退役、遥测和注册表。
 
+## 工业运行时模式（Industrial runtime patterns）
+
+把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
+
+### Cloudflare Agents SDK：作为命名持久对象的智能体
+
+Cloudflare Agents SDK 展示了一种模式：智能体不只是围绕模型的一次性循环，而是运行在 Durable Object 之上的可寻址 `Agent` 实例。它有稳定名称、持久 SQL/key-value 状态、WebSocket 连接、定时任务、唤醒和休眠。对本书来说，架构结论很简单：当智能体绑定到真实实体——客户案例、租户工作区、事故房间、设备、项目或研究档案——运行时就应该明确展示谁拥有状态、哪些运行修改过它、哪些定时任务可以唤醒实例，以及哪些追踪证明可以安全恢复。
+
+这里的实践契约是：**稳定名称 → 持久状态 → 唤醒/休眠 → 定时/后台工作 → 审批门禁 → 追踪证据**。这把记忆、后台更新、执行、追踪和发布章节连成一个形状：schedule 不应该是不可见 callback，WebSocket UI 不应该暴露智能体的全部状态，approval 应该位于真正发生 side effect 的边界。
+
+### GitHub Copilot cloud agent：云端编码智能体契约
+
+GitHub Copilot cloud agent 展示了另一种生产形态：智能体从 GitHub、IDE、CLI、API 或集成入口接收任务，研究仓库，规划修改，把代码推送到独立分支，暴露 session logs，然后打开 pull request 供人工 review。关键点不只是“智能体会写代码”，而是自治被包装进了熟悉的工程生命周期。
+
+对本书有用的契约是：**request/issue → isolated task session → branch → commits/logs → validation/security checks → human review → pull request**。分支成为变更边界，session logs 成为可观测性表面，PR 成为审批门禁，而是否允许 GitHub Actions 在智能体分支上运行则是独立风险决策，因为 workflow 可能接触 secrets 或 write permissions。这个模式也应该迁移到其他 cloud coding agents：自治 worker 可以做准备性工作，但 merge、privileged workflows 和 production impact 必须保持为可 review 的控制点。
+
 ## 案例 1：支持分诊智能体
 
 ### 系统做什么

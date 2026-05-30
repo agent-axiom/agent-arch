@@ -25,6 +25,22 @@ Keep these cases beside the main text as coverage checks:
 - **Chapter 18:** rollout readiness and pre-scale review;
 - **Chapters 21-27:** lifecycle, assurance, provenance, retirement, telemetry, and registry.
 
+## Industrial runtime patterns
+
+These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
+
+### Cloudflare Agents SDK: agent as a named durable object
+
+Cloudflare Agents SDK shows a pattern where an agent is not only a transient loop around a model, but an addressable `Agent` instance on top of a Durable Object: it has a stable name, durable SQL/key-value state, WebSocket connections, scheduled tasks, wakeups, and hibernation. The architectural lesson for the book is simple: when an agent is bound to a real-world entity — customer case, tenant workspace, incident room, device, project, or research dossier — the runtime should make it clear who owns state, which runs changed it, which scheduled tasks can wake the instance, and which traces prove safe resume.
+
+The practical contract is: **stable name → durable state → wake/hibernate → scheduled/background work → approval gates → trace evidence**. That ties the chapters on memory, background updates, execution, traces, and rollout into one shape: a schedule should not be an invisible callback, a WebSocket UI should not expose all agent state, and an approval should live where the side effect actually happens.
+
+### GitHub Copilot cloud agent: cloud coding agent contract
+
+GitHub Copilot cloud agent shows a different production shape: the agent receives work from GitHub, an IDE, CLI, API, or integration; researches the repository; plans changes; pushes code to a separate branch; exposes session logs; and then opens a pull request for human review. The important point is not merely that “an agent writes code,” but that autonomy is packaged inside a familiar engineering lifecycle.
+
+For this book, the useful contract is: **request/issue → isolated task session → branch → commits/logs → validation/security checks → human review → pull request**. The branch becomes the change boundary, session logs become the observability surface, the PR becomes the approval gate, and allowing GitHub Actions to run on the agent branch becomes a separate risk decision because workflows may reach secrets or write permissions. The same pattern should carry into other cloud coding agents: an autonomous worker may do preparatory work, but merge, privileged workflows, and production impact should remain reviewable control points.
+
 ## Case 1. Support triage
 
 ### What the system does

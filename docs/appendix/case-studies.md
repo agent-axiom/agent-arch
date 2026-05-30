@@ -25,6 +25,22 @@
 - **глава 18:** готовность к поэтапному выпуску и проверка перед масштабированием;
 - **главы 21-27:** жизненный цикл, контур заверения, происхождение, вывод из эксплуатации, телеметрия и реестр.
 
+## Промышленные runtime-паттерны
+
+Эти кейсы полезнее читать рядом с промышленными примерами. Они не доказывают, что нужно копировать конкретного вендора, но хорошо показывают, какие формы уже становятся узнаваемыми в production.
+
+### Cloudflare Agents SDK: агент как именованный долговечный объект
+
+Cloudflare Agents SDK показывает паттерн, в котором агент — это не только transient loop вокруг модели, а адресуемый `Agent` instance поверх Durable Object: у него есть стабильное имя, долговечное SQL/key-value состояние, WebSocket-соединения, scheduled tasks, wakeups и hibernation. Архитектурный вывод для книги простой: если агент привязан к реальной сущности — customer case, tenant workspace, incident room, device, project или research dossier, — runtime должен явно показывать, кто владеет состоянием, какие runs его меняли, какие scheduled tasks могут разбудить instance и какие traces доказывают безопасный resume.
+
+Практический контракт здесь такой: **stable name → durable state → wake/hibernate → scheduled/background work → approval gates → trace evidence**. Это связывает главы про память, фоновые обновления, выполнение, трассы и rollout в одну форму: schedule не должен быть невидимым callback, WebSocket UI не должен открывать всё состояние агента, а approval должен жить там, где реально происходит side effect.
+
+### GitHub Copilot cloud agent: контракт cloud coding agent
+
+GitHub Copilot cloud agent показывает другой production shape: агент получает задачу из GitHub, IDE, CLI, API или интеграции, исследует репозиторий, планирует изменения, пушит код в отдельную ветку, дает session logs, а затем открывает pull request для человеческого review. Важный момент не в том, что это “агент пишет код”, а в том, что автономия упакована в знакомый инженерный lifecycle.
+
+Для книги это хороший образец контракта: **request/issue → isolated task session → branch → commits/logs → validation/security checks → human review → pull request**. Ветка становится границей изменений, session logs — поверхностью наблюдаемости, PR — approval gate, а настройка запуска GitHub Actions на ветке агента — отдельным risk decision, потому что workflow может получить доступ к секретам или write permissions. Такой паттерн стоит переносить в любые cloud coding agents: автономный worker может делать подготовительную работу, но merge, privileged workflows и production impact должны оставаться reviewable control points.
+
 ## Кейс 1. Агент разбора обращений поддержки
 
 ### Что делает система
