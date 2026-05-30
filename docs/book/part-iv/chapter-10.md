@@ -175,6 +175,12 @@ tools:
 
 Такой YAML помогает команде заранее признать неприятную правду: не все действия одинаково безопасны для автоматизации.
 
+### 7.1. Долговечный шаг не равен сообщению о прогрессе
+
+Cloudflare Agents SDK полезно разделяет работу, которая остается внутри агента, и работу, которую лучше вынести в Workflows: agent отвечает за живую коммуникацию и состояние interaction boundary, а workflow — за durable multi-step execution, автоматические retries, ожидание внешних событий и восстановление.[^cloudflare-workflows]
+
+Для этой главы это важная граница. **Durable step** должен иметь устойчивый идентификатор, ключ идемпотентности, replay policy, retry policy, timeout и audit linkage. **Progress reporting** — WebSocket-сообщение, streaming update или UI state — не должен сам становиться источником истины. Если прогресс был отправлен, но durable step не был зафиксирован, рантайм обязан вернуться к последней долговечной контрольной точке, а не “доверять” последнему видимому сообщению пользователю.
+
 ## 8. Простой кодовый пример логики решений для повторов
 
 Ниже не движок политик эксплуатационного уровня, а понятный каркас. Его задача показать, что повтор должен зависеть от класса исхода, а не быть общим рефлексом.
@@ -273,3 +279,4 @@ def next_step(outcome: ExecutionOutcome) -> str:
 - [Источники](../../appendix/sources.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)

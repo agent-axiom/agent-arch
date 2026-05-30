@@ -116,6 +116,8 @@ sequenceDiagram
 
 如果 approval 属于 long-running workflow，它需要 timeout、escalation 和 durable resume。如果它是 browser/client-side tool，运行时必须知道一部分检查和结果来自 client boundary。如果它是 MCP elicitation，approval 就不只是 yes/no 开关，而更像带有自己 schema 的 structured input request。
 
+这里还应该明确区分 **quick chat approval** 和 **durable workflow approval**。前者适合能在当前 interaction loop 内安全决策的动作；后者应该属于 durable workflow：它可能等待数小时或数天，跨运行时重启继续存在，带有独立的 `approval_id`、过期时间、escalation path，以及能说明哪个步骤暂停、哪个步骤在审批后恢复的 trace evidence。[^cloudflare-workflows]
+
 一个好的审批流程总是会保存：
 
 - 谁发起了这个动作；
@@ -230,6 +232,7 @@ sequenceDiagram
 - [参考资料](../../appendix/sources.zh.md)
 
 [^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

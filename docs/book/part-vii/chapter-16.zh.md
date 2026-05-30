@@ -229,6 +229,27 @@ Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cr
 
 Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
 
+### 8.3. Agent shell + durable workflow spine
+
+Cloudflare 的下一个有用模式是：不要把所有长时间工作都塞进同一个 agent event loop。Agent 可以是 **stateful interaction boundary**：负责实例身份、WebSocket/HTTP 会话、本地状态、用户 callbacks 和当前对话视图。Workflow 则成为 **durable execution boundary**：负责步骤、重试、等待外部事件、长时间 approval gates，以及故障后的恢复。[^cloudflare-workflows]
+
+<div class="diagram-card">
+<p>实时 agent 与 durable workflow 解决的是不同问题</p>
+
+``` mermaid
+flowchart LR
+    S["Session / state store"] --> A["Agent runtime shell"]
+    A --> W["Durable workflow spine"]
+    W --> E["Tool / external event / approval step"]
+    W --> L["Audit + evidence log"]
+    A --> U["User-facing stream / WebSocket"]
+    E --> L
+```
+
+</div>
+
+在参考形态里，agent shell 可以报告进度、接收新消息并展示审批界面，但 durable workflow 应该拥有不能丢失的东西：step id、idempotency key、retry/timeout policy、external-event wait、approval decision 和 evidence refs。这样，agent 重启或 WebSocket 断开就不会把长时间工作变成只靠半截用户对话记住的状态。
+
 ## 9. 有状态工具会话也应该属于基线
 
 一旦执行层开始接入类似有状态 MCP 能力，基线运行时就会多出一条必须明确的边界：**用户可见运行的状态，不等于能力会话的状态**。[^aws-stateful-mcp]
@@ -426,6 +447,8 @@ runtime:
 [^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
 
 [^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
+
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^cloudflare-schedule]: [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 

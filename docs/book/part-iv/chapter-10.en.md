@@ -173,6 +173,12 @@ tools:
 
 The value of that YAML is that it forces the team to admit an uncomfortable truth: not every action is equally safe to automate.
 
+### 7.1. A Durable Step Is Not Progress Reporting
+
+Cloudflare Agents SDK usefully separates work that stays inside the agent from work that belongs in Workflows: the agent owns live communication and the interaction boundary state, while the workflow owns durable multi-step execution, automatic retries, waiting for external events, and recovery.[^cloudflare-workflows]
+
+For this chapter, that distinction is a reliability boundary. A **durable step** should have a stable identifier, idempotency key, replay policy, retry policy, timeout, and audit linkage. **Progress reporting** — a WebSocket message, streaming update, or UI state — should not become the source of truth. If progress was shown but the durable step was not committed, the runtime should resume from the last durable checkpoint, not trust the last message visible to the user.
+
 ## 8. A Simple Retry Decision Example
 
 This is not a production policy engine, but a simple skeleton. Its job is to show that retry must depend on outcome class, not on a generic reflex.
@@ -271,3 +277,4 @@ Part IV now closes the basic execution layer: contracts, sandboxing, capability 
 - [Sources](../../appendix/sources.en.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)

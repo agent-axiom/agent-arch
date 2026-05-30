@@ -290,6 +290,21 @@ sandbox_profile:
 
 这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由沙箱（sandbox）支撑的运行时（runtime）暴露出来的契约表面：清单（manifest）、权限（permissions）、工作区物化（workspace materialization）、会话状态（session state），以及快照/恢复策略（snapshot/resume policy）都应该可以被复核（review）。
 
+### Agent shell + durable workflow spine 模式
+
+未来扩展 reference runtime 时，应该把一个模式单独保留下来：agent 不必拥有所有长时间工作。它可以只是 interaction shell——`agent_instance_id`、session state、user-facing stream、connection-scoped authorization 和 approval UI。与它并列的 durable workflow spine 应该拥有 steps、retries、等待外部事件、durable approval records、idempotency keys 和 evidence refs。
+
+这个示例的最小契约表面包括：
+
+- `workflow_instance_id`，与 `agent_instance_id`、`run_id` 和 `trace_id` 并列；
+- `durable_step_id`、`step_status`、`retry_policy`、`timeout_policy` 和 `idempotency_key`；
+- `waiting_for`：external event、approval、timer 或 reconciliation；
+- workflow 停在 HITL gate 时的 `approval_id` 和 `approval_decision_ref`；
+- `progress_event_id`，并明确它不是 durable step；
+- 把 workflow resume 和 audit/event export 连接起来的 `evidence_refs`。
+
+这个模式能补足当前的后台更新：background task 可以是简单的延迟工作，而 workflow spine 是一种可复核的 durable procedure，能跨数小时等待、故障和人工决策继续存在。
+
 ## 为什么它有用
 
 这本书现在不只依赖文档里的文字说明，也依赖真实的代码骨架：

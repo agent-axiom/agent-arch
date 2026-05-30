@@ -116,6 +116,8 @@ Different products will implement this differently, but a useful platform usuall
 
 If approval belongs to a long-running workflow, it needs timeout, escalation, and durable resume. If it is a browser/client-side tool, the runtime must recognize that part of the check and result came from the client boundary. If it is MCP elicitation, the approval is less like a yes/no switch and more like a structured input request with its own schema.
 
+It is also useful to distinguish **quick chat approval** from **durable workflow approval**. Quick approval fits an action that can safely be decided inside the current interaction loop. Durable approval belongs in a durable workflow: it may wait for hours or days, survive runtime restart, carry a separate `approval_id`, expiration, escalation path, and trace evidence showing which step paused and which step resumed after the decision.[^cloudflare-workflows]
+
 A good approval flow always stores:
 
 - who requested the action;
@@ -230,6 +232,7 @@ First map the real execution boundaries and approval points, then carry that sam
 - [Sources](../../appendix/sources.en.md)
 
 [^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)

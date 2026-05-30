@@ -290,6 +290,21 @@ sandbox_profile:
 
 Такой пример не делает reference runtime полноценным sandbox orchestrator. Он фиксирует contract surface, который Chapters 9 и 16 требуют от настоящего sandbox-backed runtime: manifest, permissions, workspace materialization, session state и snapshot/resume policy должны быть видимыми для review.
 
+### Паттерн Agent shell + durable workflow spine
+
+Для будущего расширения reference runtime полезно держать отдельный паттерн: агент не обязан владеть всей долгой работой. Он может быть оболочкой взаимодействия — `agent_instance_id`, session state, user-facing stream, connection-scoped authorization, approval UI. Рядом с ним durable workflow spine должен владеть шагами, retries, ожиданием внешних событий, долговечными approval records, idempotency keys и evidence refs.
+
+Минимальная contract surface для такого примера:
+
+- `workflow_instance_id` рядом с `agent_instance_id`, `run_id` и `trace_id`;
+- `durable_step_id`, `step_status`, `retry_policy`, `timeout_policy` и `idempotency_key`;
+- `waiting_for`: external event, approval, timer или reconciliation;
+- `approval_id` и `approval_decision_ref`, если workflow остановлен на HITL gate;
+- `progress_event_id`, который явно не считается durable step;
+- `evidence_refs`, связывающие workflow resume с audit/event export.
+
+Такой паттерн хорошо дополняет текущие фоновые обновления: background task может быть простой отложенной работой, а workflow spine — проверяемой долговечной процедурой, которая переживает часы ожидания, сбои и ручные решения.
+
 ## Почему это полезно
 
 Книга теперь опирается не только на текстовые объяснения, но и на реальный кодовый каркас:

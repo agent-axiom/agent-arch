@@ -173,6 +173,12 @@ tools:
 
 这个 YAML 的价值在于，它逼着团队正视一个不舒服的事实：不是所有动作都同样适合自动化。
 
+### 7.1. Durable step 不等于 progress reporting
+
+Cloudflare Agents SDK 很有用地区分了留在 agent 内部的工作，以及更适合放进 Workflows 的工作：agent 负责实时通信和 interaction boundary state，workflow 负责 durable multi-step execution、automatic retries、等待外部事件和恢复。[^cloudflare-workflows]
+
+对本章来说，这是一条可靠性边界。**Durable step** 应该有稳定标识符、幂等键、replay policy、retry policy、timeout 和 audit linkage。**Progress reporting**——WebSocket 消息、streaming update 或 UI state——不应该成为事实来源。如果用户已经看到了进度，但 durable step 没有提交，运行时应该从最后一个 durable checkpoint 恢复，而不是相信用户界面里最后显示的消息。
+
 ## 8. 一个简单的重试决策示例
 
 下面不是生产策略引擎，而是一个小骨架。它的目的就是说明：重试应该依赖结果类别，而不是普遍条件反射。
@@ -271,3 +277,4 @@ OpenAI 指南里的另一个实践建议也很值得形式化：run loop 必须�
 - [参考来源](../../appendix/sources.zh.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
