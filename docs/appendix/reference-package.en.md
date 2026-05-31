@@ -290,6 +290,21 @@ sandbox_profile:
 
 This example does not turn the reference runtime into a full sandbox orchestrator. It fixes the contract surface that Chapters 9 and 16 require from a real sandbox-backed runtime: manifest, permissions, workspace materialization, session state, and snapshot/resume policy should be visible to review.
 
+### Durable Agent Actor Pattern
+
+A future reference-runtime example should also model the durable-agent-actor boundary from Chapter 16. The runtime does not need a vendor-specific Durable Object implementation, but it should have a visible contract for stable agent identity, instance-local state, resumable sessions, scheduled wake-ups, and handoff to governed stores.
+
+The allowed local state is narrow: workflow cursor, per-instance queue position, connection/session preferences, last processed event, schedule metadata, and rebuildable cached views. Profile memory, tenant knowledge, secrets, policy, audit logs, and cross-instance facts should remain in governed stores with provenance, retention, export, and access-control rules.
+
+A minimal config surface would include:
+
+- `agent_instance_id`, `tenant_id`, `owner_ref`, and `schema_version`;
+- `state_class`: `ephemeral`, `instance_local`, `governed_memory_ref`, or `external_record_ref`;
+- `resume_policy`, `hibernation_policy`, and `state_migration_policy`;
+- `schedule_records` with owner instance, idempotency key, overlap policy, next fire time, and trace linkage;
+- `connection_scope` for WebSocket/streaming fan-out and approval UI visibility;
+- `export_ref`, `delete_ref`, and `audit_refs` so hidden durable memory is not possible.
+
 ### Agent Shell + Durable Workflow Spine Pattern
 
 A future reference-runtime extension should keep one pattern separate: the agent does not need to own all long-running work. It can be the interaction shell — `agent_instance_id`, session state, user-facing stream, connection-scoped authorization, and approval UI. Beside it, the durable workflow spine should own steps, retries, waiting for external events, durable approval records, idempotency keys, and evidence refs.
