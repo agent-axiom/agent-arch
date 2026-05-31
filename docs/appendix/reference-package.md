@@ -290,6 +290,21 @@ sandbox_profile:
 
 Такой пример не делает reference runtime полноценным sandbox orchestrator. Он фиксирует contract surface, который Chapters 9 и 16 требуют от настоящего sandbox-backed runtime: manifest, permissions, workspace materialization, session state и snapshot/resume policy должны быть видимыми для review.
 
+### Паттерн durable agent actor
+
+В будущем примере reference runtime стоит отдельно смоделировать границу durable-agent-actor из Chapter 16. Рантайму не нужна vendor-specific реализация Durable Object, но ему нужен видимый контракт для stable agent identity, instance-local state, resumable sessions, scheduled wake-ups и handoff к governed stores.
+
+Допустимое локальное состояние узкое: workflow cursor, per-instance queue position, connection/session preferences, last processed event, schedule metadata и rebuildable cached views. Profile memory, tenant knowledge, secrets, policy, audit logs и cross-instance facts должны оставаться в governed stores с правилами provenance, retention, export и access control.
+
+Минимальная config surface:
+
+- `agent_instance_id`, `tenant_id`, `owner_ref` и `schema_version`;
+- `state_class`: `ephemeral`, `instance_local`, `governed_memory_ref` или `external_record_ref`;
+- `resume_policy`, `hibernation_policy` и `state_migration_policy`;
+- `schedule_records` с owner instance, idempotency key, overlap policy, next fire time и trace linkage;
+- `connection_scope` для WebSocket/streaming fan-out и видимости approval UI;
+- `export_ref`, `delete_ref` и `audit_refs`, чтобы скрытая долговечная память была невозможна.
+
 ### Паттерн Agent shell + durable workflow spine
 
 Для будущего расширения reference runtime полезно держать отдельный паттерн: агент не обязан владеть всей долгой работой. Он может быть оболочкой взаимодействия — `agent_instance_id`, session state, user-facing stream, connection-scoped authorization, approval UI. Рядом с ним durable workflow spine должен владеть шагами, retries, ожиданием внешних событий, долговечными approval records, idempotency keys и evidence refs.

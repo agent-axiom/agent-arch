@@ -229,6 +229,10 @@ The scheduling side matters in particular: Cloudflare shows delayed, scheduled, 
 
 The real-time side adds one more boundary: connection state is not agent state. In Cloudflare Agents WebSocket model, a connection has its own `id`, `uri`, per-connection `state`, tags, lifecycle hooks, and the option to disable protocol messages such as identity/state/MCP for a specific connection.[^cloudflare-websockets] For a baseline runtime, that means broadcast, presence, approval UI, and streaming updates should pass through connection-scoped authorization and traceable fan-out, not directly expose the whole durable state of the agent.
 
+The vendor-neutral pattern is a **durable agent actor**: stable identity, local durable state, resumable sessions, scheduled wake-ups, and traceable handoff to governed stores. Its local state may hold instance-scoped facts such as open workflow cursor, UI/session preferences, per-instance queue position, last processed event, schedule metadata, and small cached views that can be rebuilt. It should not silently become the system of record for user profile memory, tenant knowledge, secrets, policy, audit logs, or cross-instance facts. Those belong in governed stores with provenance, retention, export, and access-control contracts.
+
+The anti-pattern is hidden durable memory: a named agent accumulates private state, later retrieves or acts on it as if it were validated knowledge, and gives operators no export, audit trail, schema migration path, or deletion story. Durable actor state is useful only when its ownership and lifecycle are explicit.
+
 ### 8.3. Agent Shell + Durable Workflow Spine
 
 The next useful Cloudflare pattern is to avoid putting all long work into one agent event loop. The agent can be the **stateful interaction boundary**: it owns instance identity, WebSocket/HTTP session, local state, user callbacks, and the current conversation view. The workflow then becomes the **durable execution boundary**: it owns steps, retries, waiting for external events, long approval gates, and recovery after failure.[^cloudflare-workflows]

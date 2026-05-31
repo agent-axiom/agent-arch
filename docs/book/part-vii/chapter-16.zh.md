@@ -229,6 +229,10 @@ Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cr
 
 Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
 
+用 vendor-neutral 的说法，这个模式可以叫 **durable agent actor**：稳定身份、本地持久状态、可恢复 session、scheduled wake-ups，以及到 governed stores 的可追踪 handoff。本地状态可以保存 instance-scoped facts，例如当前 workflow cursor、UI/session preferences、实例队列位置、last processed event、schedule metadata，以及可以重建的小型 cached views。它不应该悄悄成为 user profile memory、tenant knowledge、secrets、policy、audit logs 或 cross-instance facts 的 system of record。这些数据应该属于 governed stores，并带有 provenance、retention、export 和 access-control contracts。
+
+这里的 anti-pattern 是 hidden durable memory：一个 named agent 持续积累私有状态，之后把它当作 validated knowledge 来检索或行动，但 operators 看不到 export、audit trail、schema migration path 或 deletion story。Durable actor state 只有在 ownership 和 lifecycle 明确时才有价值。
+
 ### 8.3. Agent shell + durable workflow spine
 
 Cloudflare 的下一个有用模式是：不要把所有长时间工作都塞进同一个 agent event loop。Agent 可以是 **stateful interaction boundary**：负责实例身份、WebSocket/HTTP 会话、本地状态、用户 callbacks 和当前对话视图。Workflow 则成为 **durable execution boundary**：负责步骤、重试、等待外部事件、长时间 approval gates，以及故障后的恢复。[^cloudflare-workflows]
