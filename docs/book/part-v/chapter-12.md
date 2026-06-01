@@ -370,7 +370,7 @@ def classify_run_health(run: RunHealth) -> str:
 ## 16. Полезные справочные страницы
 
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
-- [Схема incident record](../../appendix/incident-record-schema.md)
+- [Схема записи инцидента](../../appendix/incident-record-schema.md)
 - [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
 
 - [Глава 11. Трассы, спаны и структурированные события](chapter-11.md)

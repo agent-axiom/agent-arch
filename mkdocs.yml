@@ -77,8 +77,8 @@ plugins:
             Часть I. Основания: Часть I. Основания
             Глава 1. Почему агенту нужна платформа, а не магия: Глава 1. Почему агенту нужна платформа, а не магия
             Глава 2. Референсная архитектура безопасного агента: Глава 2. Референсная архитектура безопасного агента
-            Практика. Instructions, routines и prompt templates: Практика. Инструкции, сценарии и шаблоны запросов
-            Практика. Manager pattern vs handoffs: Практика. Координатор и передача управления
+            Практика. Инструкции, сценарии и шаблоны запросов: Практика. Инструкции, сценарии и шаблоны запросов
+            Практика. Координатор и передача управления: Практика. Координатор и передача управления
             Часть II. Контур безопасности: Часть II. Контур безопасности
             Глава 3. Контур безопасности и границы доверия: Глава 3. Контур безопасности и границы доверия
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Глава 4. Инструментальный шлюз, подтверждения и журнал аудита
@@ -89,13 +89,13 @@ plugins:
             Часть IV. Инструменты и выполнение: Часть IV. Инструменты и выполнение
             Глава 8. Модель выполнения и каталог инструментов: Глава 8. Модель выполнения и каталог инструментов
             Глава 9. Песочница выполнения и MCP как интеграционный контракт: Глава 9. Песочница выполнения и MCP как интеграционный контракт
-            Практика. MCP для tools, A2A для agents: Практика. MCP для инструментов, A2A для агентов
+            Практика. MCP для инструментов, A2A для агентов: Практика. MCP для инструментов, A2A для агентов
             Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката
             Часть V. Надежность и наблюдаемость: Часть V. Надежность и наблюдаемость
             Глава 11. Трассы, спаны и структурированные события: Глава 11. Трассы, спаны и структурированные события
             Глава 12. SLO для агентных систем: Глава 12. SLO для агентных систем
             Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы
-            "Сквозная цепочка доказательств: от запроса к решению о rollout": "Сквозная цепочка доказательств: от запроса к решению о rollout"
+            "Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске": "Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске"
             Часть VI. Организационная модель: Часть VI. Организационная модель
             Глава 14. Платформенная команда и продуктовые команды: Глава 14. Платформенная команда и продуктовые команды
             Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы
@@ -126,20 +126,20 @@ plugins:
             Rust для платформы агентных систем: Rust для платформы агентных систем
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python и TypeScript для платформы агентных систем
             Плейбук реагирования на инциденты в агентных системах: Плейбук реагирования на инциденты в агентных системах
-            Handbook по agent registry и inventory operations: Handbook по agent registry и inventory operations
-            Шаблон postmortem для агентных систем: Шаблон postmortem для агентных систем
-            Causal debugging и root-cause analysis для agent systems: Causal debugging и root-cause analysis для agent systems
-            Memory eval patterns для agent systems: Memory eval patterns для agent systems
-            Tool failure recovery patterns для agent systems: Tool failure recovery patterns для agent systems
+            Практическое руководство по реестру агентов и инвентаризации: Практическое руководство по реестру агентов и инвентаризации
+            Шаблон постмортема для агентных систем: Шаблон постмортема для агентных систем
+            Причинная отладка и анализ первопричин для агентных систем: Причинная отладка и анализ первопричин для агентных систем
+            Шаблоны оценки памяти для агентных систем: Шаблоны оценки памяти для агентных систем
+            Восстановление после сбоев инструментов в агентных системах: Восстановление после сбоев инструментов в агентных системах
             Схема трасс и каталог событий: Схема трасс и каталог событий
             Схема наборов для оценки и правил проверки: Схема наборов для оценки и правил проверки
             Схема набора политик и контракта подтверждения: Схема набора политик и контракта подтверждения
             Схема запроса на подтверждение и записи о решении: Схема запроса на подтверждение и записи о решении
-            Схема incident record и postmortem linkage: Схема incident record и postmortem linkage
+            Схема записи инцидента и связи с разбором: Схема записи инцидента и связи с разбором
             Схема проверки изменений и шлюза раскатки: Схема проверки изменений и шлюза раскатки
             Схема артефактов жизненного цикла: Схема артефактов жизненного цикла
             Схема записей памяти и контракта извлечения: Схема записей памяти и контракта извлечения
-            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем"
+            "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем": "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем"
             Эталонный пакет: Эталонный пакет
             Практические кейсы: Практические кейсы
             Шаблоны политик и проверочные списки по кейсам: Шаблоны политик и проверочные списки по кейсам
@@ -165,8 +165,8 @@ plugins:
             Часть I. Основания: Part I. Foundations
             Глава 1. Почему агенту нужна платформа, а не магия: Chapter 1. Why an Agent Needs a Platform, Not Magic
             Глава 2. Референсная архитектура безопасного агента: Chapter 2. Reference Architecture for a Safe Agent
-            Практика. Instructions, routines и prompt templates: Practice. Instructions, Routines, and Prompt Templates
-            Практика. Manager pattern vs handoffs: Practice. Manager Pattern vs Handoffs
+            Практика. Инструкции, сценарии и шаблоны запросов: Practice. Instructions, Routines, and Prompt Templates
+            Практика. Координатор и передача управления: Practice. Manager Pattern vs Handoffs
             Часть II. Контур безопасности: Part II. Security Perimeter
             Глава 3. Контур безопасности и границы доверия: Chapter 3. Security Perimeter and Trust Boundaries
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: Chapter 4. Tool Gateway, Approval, and Audit Trail
@@ -177,13 +177,13 @@ plugins:
             Часть IV. Инструменты и выполнение: Part IV. Tools and Execution
             Глава 8. Модель выполнения и каталог инструментов: Chapter 8. Execution Model and Tool Catalog
             Глава 9. Песочница выполнения и MCP как интеграционный контракт: Chapter 9. Sandbox Execution and MCP as an Integration Contract
-            Практика. MCP для tools, A2A для agents: Practice. MCP for Tools, A2A for Agents
+            Практика. MCP для инструментов, A2A для агентов: Practice. MCP for Tools, A2A for Agents
             Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: Chapter 10. Idempotency, Retries, Rate Limits, and Rollback Boundaries
             Часть V. Надежность и наблюдаемость: Part V. Reliability and Observability
             Глава 11. Трассы, спаны и структурированные события: Chapter 11. Traces, Spans, and Structured Events
             Глава 12. SLO для агентных систем: Chapter 12. SLO for Agent Systems
             Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: Chapter 13. Offline Evals, Online Evals, and Regression Gates
-            "Сквозная цепочка доказательств: от запроса к решению о rollout": "Evidence Spine: From Request to Rollout Judgment"
+            "Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске": "Evidence Spine: From Request to Rollout Judgment"
             Часть VI. Организационная модель: Part VI. Organizational Model
             Глава 14. Платформенная команда и продуктовые команды: Chapter 14. Platform Team vs Product Teams
             Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: Chapter 15. Golden Paths, Shared Gateways, and Anti-Zoo Patterns
@@ -214,20 +214,20 @@ plugins:
             Rust для платформы агентных систем: Rust for Agent Platforms
             Rust vs Python и TypeScript для платформы агентных систем: Rust vs Python and TypeScript for Agent Platforms
             Плейбук реагирования на инциденты в агентных системах: Incident Response Playbook for Agent Systems
-            Handbook по agent registry и inventory operations: Handbook for Agent Registry and Inventory Operations
-            Шаблон postmortem для агентных систем: Postmortem Template for Agent Systems
-            Causal debugging и root-cause analysis для agent systems: Causal Debugging and Root-Cause Analysis for Agent Systems
-            Memory eval patterns для agent systems: Memory Eval Patterns for Agent Systems
-            Tool failure recovery patterns для agent systems: Tool Failure Recovery Patterns for Agent Systems
+            Практическое руководство по реестру агентов и инвентаризации: Handbook for Agent Registry and Inventory Operations
+            Шаблон постмортема для агентных систем: Postmortem Template for Agent Systems
+            Причинная отладка и анализ первопричин для агентных систем: Causal Debugging and Root-Cause Analysis for Agent Systems
+            Шаблоны оценки памяти для агентных систем: Memory Eval Patterns for Agent Systems
+            Восстановление после сбоев инструментов в агентных системах: Tool Failure Recovery Patterns for Agent Systems
             Схема трасс и каталог событий: Trace Schema and Event Catalog
             Схема наборов для оценки и правил проверки: Eval Dataset Schema and Grading Contract
             Схема набора политик и контракта подтверждения: Policy Bundle Schema and Approval Contract
             Схема запроса на подтверждение и записи о решении: Approval Request and Decision Schema
-            Схема incident record и postmortem linkage: Incident Record and Postmortem Linkage Schema
+            Схема записи инцидента и связи с разбором: Incident Record and Postmortem Linkage Schema
             Схема проверки изменений и шлюза раскатки: Change Review and Rollout Gate Schema
             Схема артефактов жизненного цикла: Lifecycle Artifact Schema
             Схема записей памяти и контракта извлечения: Memory Record and Retrieval Contract Schema
-            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "Research Frontier: Memory, Observability, and Multi-Agent Reliability"
+            "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем": "Research Frontier: Memory, Observability, and Multi-Agent Reliability"
             Эталонный пакет: Reference Package
             Практические кейсы: Practical Case Studies
             Шаблоны политик и проверочные списки по кейсам: Policy Templates and Checklists by Use Case
@@ -253,8 +253,8 @@ plugins:
             Часть I. Основания: 第一部分：基础
             Глава 1. Почему агенту нужна платформа, а не магия: 第 1 章：为什么智能体需要的是平台，而不是魔法
             Глава 2. Референсная архитектура безопасного агента: 第 2 章：安全智能体的参考架构
-            Практика. Instructions, routines и prompt templates: 实践篇：Instructions、Routines 与 Prompt Templates
-            Практика. Manager pattern vs handoffs: 实践篇：Manager Pattern vs Handoffs
+            Практика. Инструкции, сценарии и шаблоны запросов: 实践篇：Instructions、Routines 与 Prompt Templates
+            Практика. Координатор и передача управления: 实践篇：Manager Pattern vs Handoffs
             Часть II. Контур безопасности: 第二部分：安全边界
             Глава 3. Контур безопасности и границы доверия: 第 3 章：安全边界与信任边界
             Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: 第 4 章：工具网关、审批与审计轨迹
@@ -265,13 +265,13 @@ plugins:
             Часть IV. Инструменты и выполнение: 第四部分：工具与执行
             Глава 8. Модель выполнения и каталог инструментов: 第 8 章：执行模型与工具目录
             Глава 9. Песочница выполнения и MCP как интеграционный контракт: 第 9 章：沙箱执行与 MCP 作为集成契约
-            Практика. MCP для tools, A2A для agents: 实践篇：MCP 用于 Tools，A2A 用于 Agents
+            Практика. MCP для инструментов, A2A для агентов: 实践篇：MCP 用于 Tools，A2A 用于 Agents
             Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: 第 10 章：幂等性、重试、速率限制与回滚边界
             Часть V. Надежность и наблюдаемость: 第五部分：可靠性与可观测性
             Глава 11. Трассы, спаны и структурированные события: 第 11 章：追踪、跨度与结构化事件
             Глава 12. SLO для агентных систем: 第 12 章：智能体系统的 SLO
             Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: 第 13 章：离线评测、在线评测与回归门禁
-            "Сквозная цепочка доказательств: от запроса к решению о rollout": "Evidence Spine：从请求到发布判断"
+            "Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске": "Evidence Spine：从请求到发布判断"
             Часть VI. Организационная модель: 第六部分：组织模型
             Глава 14. Платформенная команда и продуктовые команды: 第 14 章：平台团队与产品团队
             Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: 第 15 章：黄金路径、共享网关与反动物园模式
@@ -302,20 +302,20 @@ plugins:
             Rust для платформы агентных систем: Rust 与智能体平台
             Rust vs Python и TypeScript для платформы агентных систем: Rust、Python 与 TypeScript：如何为智能体平台选型
             Плейбук реагирования на инциденты в агентных системах: 智能体系统事故响应手册
-            Handbook по agent registry и inventory operations: 智能体注册表与清单运维手册
-            Шаблон postmortem для агентных систем: 智能体系统事后复盘模板
-            Causal debugging и root-cause analysis для agent systems: 智能体系统中的因果调试与根因分析
-            Memory eval patterns для agent systems: 智能体系统的记忆评测模式
-            Tool failure recovery patterns для agent systems: 智能体系统的工具失败恢复模式
+            Практическое руководство по реестру агентов и инвентаризации: 智能体注册表与清单运维手册
+            Шаблон постмортема для агентных систем: 智能体系统事后复盘模板
+            Причинная отладка и анализ первопричин для агентных систем: 智能体系统中的因果调试与根因分析
+            Шаблоны оценки памяти для агентных систем: 智能体系统的记忆评测模式
+            Восстановление после сбоев инструментов в агентных системах: 智能体系统的工具失败恢复模式
             Схема трасс и каталог событий: 追踪 Schema 与事件目录
             Схема наборов для оценки и правил проверки: 评测数据集 Schema 与打分契约
             Схема набора политик и контракта подтверждения: 策略包 Schema 与审批契约
             Схема запроса на подтверждение и записи о решении: 审批请求与决策记录 Schema
-            Схема incident record и postmortem linkage: 事故记录与事后复盘链接 Schema
+            Схема записи инцидента и связи с разбором: 事故记录与事后复盘链接 Schema
             Схема проверки изменений и шлюза раскатки: 变更评审与发布门禁 Schema
             Схема артефактов жизненного цикла: 生命周期工件 Schema
             Схема записей памяти и контракта извлечения: 记忆记录与检索契约 Schema
-            "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": "研究前沿：记忆、可观测性与多智能体可靠性"
+            "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем": "研究前沿：记忆、可观测性与多智能体可靠性"
             Эталонный пакет: 参考包
             Практические кейсы: 实战案例
             Шаблоны политик и проверочные списки по кейсам: 按场景组织的策略模板与检查清单
@@ -377,8 +377,8 @@ nav:
       - Часть I. Основания: book/part-i/index.md
       - Глава 1. Почему агенту нужна платформа, а не магия: book/part-i/chapter-1.md
       - Глава 2. Референсная архитектура безопасного агента: book/part-i/chapter-2.md
-      - Практика. Instructions, routines и prompt templates: book/part-i/practical-routines.md
-      - Практика. Manager pattern vs handoffs: book/part-i/practical-manager-handoffs.md
+      - Практика. Инструкции, сценарии и шаблоны запросов: book/part-i/practical-routines.md
+      - Практика. Координатор и передача управления: book/part-i/practical-manager-handoffs.md
       - Часть II. Контур безопасности: book/part-ii/index.md
       - Глава 3. Контур безопасности и границы доверия: book/part-ii/chapter-3.md
       - Глава 4. Инструментальный шлюз, подтверждения и журнал аудита: book/part-ii/chapter-4.md
@@ -389,13 +389,13 @@ nav:
       - Часть IV. Инструменты и выполнение: book/part-iv/index.md
       - Глава 8. Модель выполнения и каталог инструментов: book/part-iv/chapter-8.md
       - Глава 9. Песочница выполнения и MCP как интеграционный контракт: book/part-iv/chapter-9.md
-      - Практика. MCP для tools, A2A для agents: book/part-iv/practical-mcp-a2a.md
+      - Практика. MCP для инструментов, A2A для агентов: book/part-iv/practical-mcp-a2a.md
       - Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката: book/part-iv/chapter-10.md
       - Часть V. Надежность и наблюдаемость: book/part-v/index.md
       - Глава 11. Трассы, спаны и структурированные события: book/part-v/chapter-11.md
       - Глава 12. SLO для агентных систем: book/part-v/chapter-12.md
       - Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы: book/part-v/chapter-13.md
-      - "Сквозная цепочка доказательств: от запроса к решению о rollout": book/part-v/evidence-spine.md
+      - "Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске": book/part-v/evidence-spine.md
       - Часть VI. Организационная модель: book/part-vi/index.md
       - Глава 14. Платформенная команда и продуктовые команды: book/part-vi/chapter-14.md
       - Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы: book/part-vi/chapter-15.md
@@ -418,18 +418,18 @@ nav:
           - Глоссарий терминов: appendix/glossary.md
           - Зачем нужна эта книга: appendix/why-this-book.md
           - Шпаргалки: appendix/cheat-sheets.md
-          - Causal debugging и root-cause analysis для agent systems: appendix/causal-debugging.md
-          - Memory eval patterns для agent systems: appendix/memory-eval-patterns.md
-          - Tool failure recovery patterns для agent systems: appendix/tool-failure-recovery.md
+          - Причинная отладка и анализ первопричин для агентных систем: appendix/causal-debugging.md
+          - Шаблоны оценки памяти для агентных систем: appendix/memory-eval-patterns.md
+          - Восстановление после сбоев инструментов в агентных системах: appendix/tool-failure-recovery.md
           - Rust для платформы агентных систем: appendix/rust-agent-platforms.md
           - Rust vs Python и TypeScript для платформы агентных систем: appendix/rust-vs-python-typescript.md
-          - "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем": appendix/research-frontier.md
+          - "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем": appendix/research-frontier.md
       - Schemas:
           - Схема трасс и каталог событий: appendix/trace-schema.md
           - Схема наборов для оценки и правил проверки: appendix/eval-schema.md
           - Схема набора политик и контракта подтверждения: appendix/policy-bundle-schema.md
           - Схема запроса на подтверждение и записи о решении: appendix/approval-schema.md
-          - Схема incident record и postmortem linkage: appendix/incident-record-schema.md
+          - Схема записи инцидента и связи с разбором: appendix/incident-record-schema.md
           - Схема проверки изменений и шлюза раскатки: appendix/change-rollout-schema.md
           - Схема артефактов жизненного цикла: appendix/lifecycle-artifact-schema.md
           - Схема записей памяти и контракта извлечения: appendix/memory-retrieval-schema.md
@@ -438,8 +438,8 @@ nav:
           - Практические кейсы: appendix/case-studies.md
           - Шаблоны политик и проверочные списки по кейсам: appendix/policy-templates.md
           - Плейбук реагирования на инциденты в агентных системах: appendix/incident-response-playbook.md
-          - Handbook по agent registry и inventory operations: appendix/registry-operations-handbook.md
-          - Шаблон postmortem для агентных систем: appendix/postmortem-template.md
+          - Практическое руководство по реестру агентов и инвентаризации: appendix/registry-operations-handbook.md
+          - Шаблон постмортема для агентных систем: appendix/postmortem-template.md
       - Project Meta:
           - Выбор стека публикации: appendix/stack.md
           - Дорожная карта для сообщества: appendix/community-roadmap.md
