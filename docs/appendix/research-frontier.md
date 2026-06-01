@@ -100,11 +100,14 @@
 
 Свежие работы по causal tracing для multi-agent systems дополняют это тем, что reliability надо проектировать не только как orchestration pattern, но и как diagnosable system. Если root cause нельзя локализовать, то формально workflow существует, но рабочая зрелость системы остается низкой.
 
+Практический пост Anthropic о multi-agent research system важен как production-контрапункт к этому research-блоку. Он показывает, что multi-agent может давать сильный выигрыш на open-ended research, особенно для breadth-first запросов с независимыми ветками, но этот выигрыш связан с экономикой: больше токенов, больше вызовов инструментов, больше параллельных контекстов и больше требований к координации. Поэтому его стоит читать не как универсальный аргумент за multi-agent, а как критерий отбора задач: высокая ценность результата, независимые направления исследования, явные бюджеты и eval-gates.
+
 Что уже можно уверенно брать в практику:
 
 - skepticism к premature multi-agent decomposition;
 - явные handoff contracts;
 - verification и review loops;
+- cost/SLO gates для token budget, tool budget и fan-out depth;
 - failure taxonomy как часть eval design;
 - observability, рассчитанную на coordination failures, а не только на single-run latency.
 
@@ -112,7 +115,8 @@
 
 - полностью автоматическая оптимизация multi-agent topologies;
 - сильные claims, что coordination можно надежно лечить только role prompting;
-- представление, будто multi-agent architecture сама по себе повышает robustness.
+- представление, будто multi-agent architecture сама по себе повышает robustness;
+- перенос research-паттерна на tightly coupled задачи с общим состоянием без экономического обоснования.
 
 ## Как использовать frontier research без потери инженерной дисциплины
 
@@ -149,6 +153,7 @@
 - AgentTrace, [A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+- Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
 
 ## Что делать дальше
 
