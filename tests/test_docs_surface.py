@@ -228,6 +228,105 @@ def test_russian_book_overview_pages_use_print_facing_terms() -> None:
     _assert_files_contain_none(paths, forbidden)
 
 
+def test_late_russian_public_pages_avoid_visible_english_role_terms() -> None:
+    forbidden_by_file = {
+        "docs/book/part-vi/chapter-14.md": (
+            "Ownership case-spine note",
+            "platform/product split",
+            "canonical cases",
+            "platform team",
+            "product teams",
+            "golden paths",
+            "shared gateways",
+            "anti-zoo patterns",
+        ),
+        "docs/book/part-vi/chapter-15.md": (
+            "best practices",
+            "Golden-path case-spine note",
+            "Shared gateways",
+            "Reusable template",
+            "opinionated",
+            "golden path",
+            "golden paths",
+            "Anti-zoo pattern",
+            "platform defaults policy",
+            "approved runtime patterns",
+            "reference implementation",
+        ),
+        "docs/book/part-viii/chapter-25.md": (
+            "behavioral scenarios",
+            "User simulator",
+            "synthetic adversary",
+            "Research",
+            "scenario classes",
+            "failure classes",
+            "release discipline",
+        ),
+        "docs/book/part-viii/chapter-27.md": (
+            "accountability layer",
+            "production entities",
+            "control ownership",
+            "lifecycle truth",
+            "registry —",
+            "observability, policy, lifecycle",
+            "accountable production entity",
+            "agent builders",
+            "discovery mechanisms",
+            "discovered entities",
+            "approved production agents",
+        ),
+        "docs/appendix/google-integration-roadmap.md": (
+            "production-ready platform view",
+            "agent identity, registry и governance",
+            "platform-grade",
+            "User simulator",
+            "continuous eval loop",
+            "Registry, approved inventory",
+            "organizational controls",
+        ),
+    }
+
+    for path, forbidden in forbidden_by_file.items():
+        _assert_files_contain_none((path,), forbidden)
+
+
+def test_late_russian_public_pages_use_print_friendly_role_terms() -> None:
+    expected_by_file = {
+        "docs/book/part-vi/chapter-14.md": (
+            "Заметка о сквозных сценариях владения",
+            "разделение платформы и продуктов",
+            "золотые пути, общие шлюзы и антизоопарк-подходы",
+        ),
+        "docs/book/part-vi/chapter-15.md": (
+            "набор советов",
+            "Заметка о сквозных сценариях золотого пути",
+            "Общие шлюзы",
+            "Переиспользуемый шаблон",
+            "Пример политики платформенных настроек по умолчанию",
+        ),
+        "docs/book/part-viii/chapter-25.md": (
+            "таксономия поведенческих сценариев",
+            "Симулятор пользователя и синтетический противник",
+            "классы сценариев",
+            "дисциплины выпуска",
+        ),
+        "docs/book/part-viii/chapter-27.md": (
+            "слой подотчетности",
+            "производственные сущности",
+            "управление умеет различать обнаруженные сущности и агентов, "
+            "одобренных для промышленной среды",
+        ),
+        "docs/appendix/google-integration-roadmap.md": (
+            "платформенный взгляд, пригодный для промышленной эксплуатации",
+            "идентичность агента, реестр и управление",
+            "Симулятор пользователя и непрерывный оценочный контур",
+        ),
+    }
+
+    for path, expected in expected_by_file.items():
+        _assert_files_contain_all((path,), expected)
+
+
 def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
     required_markers = (
         "Render / Export QA Checklist",
@@ -2158,28 +2257,56 @@ def test_chapter_12_slo_zh_refs_are_localized() -> None:
 
 
 def test_chapter_14_ownership_threads_three_canonical_cases() -> None:
-    required_markers = (
-        "Ownership case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "platform/product split",
-        "approval policy",
-        "write-capability contract",
-        "trace schema",
-        "corpus ownership",
-        "retrieval policy",
-        "memory-write rules",
-        "escalation authority",
-        "post-incident change ownership",
-    )
-    checked_files = (
-        "docs/book/part-vi/chapter-14.md",
-        "docs/book/part-vi/chapter-14.en.md",
-        "docs/book/part-vi/chapter-14.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/book/part-vi/chapter-14.md": (
+            "Заметка о сквозных сценариях владения",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "разделение платформы и продуктов",
+            "политикой подтверждений",
+            "контрактом пишущей возможности",
+            "схемой трасс",
+            "владение корпусом",
+            "политику извлечения",
+            "правила записи в память",
+            "право эскалации",
+            "изменение после инцидента",
+        ),
+        "docs/book/part-vi/chapter-14.en.md": (
+            "Ownership case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "platform/product split",
+            "approval policy",
+            "write-capability contract",
+            "trace schema",
+            "corpus ownership",
+            "retrieval policy",
+            "memory-write rules",
+            "escalation authority",
+            "post-incident change ownership",
+        ),
+        "docs/book/part-vi/chapter-14.zh.md": (
+            "Ownership case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "platform/product split",
+            "approval policy",
+            "write-capability contract",
+            "trace schema",
+            "corpus ownership",
+            "retrieval policy",
+            "memory-write rules",
+            "escalation authority",
+            "post-incident change ownership",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_chapter_14_ownership_trace_schema_link_is_clickable() -> None:
@@ -2198,29 +2325,59 @@ def test_chapter_14_ownership_trace_schema_link_is_clickable() -> None:
 
 
 def test_chapter_15_golden_paths_thread_three_canonical_cases() -> None:
-    required_markers = (
-        "Golden-path case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "anti-zoo strategy",
-        "workflow-agent template",
-        "approved write gateway",
-        "trace",
-        "eval",
-        "duplicate-ticket evals",
-        "knowledge-agent template",
-        "source grounding",
-        "memory-write guardrails",
-        "incident-agent template",
-    )
-    checked_files = (
-        "docs/book/part-vi/chapter-15.md",
-        "docs/book/part-vi/chapter-15.en.md",
-        "docs/book/part-vi/chapter-15.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/book/part-vi/chapter-15.md": (
+            "Заметка о сквозных сценариях золотого пути",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "антизоопарк-стратегия",
+            "шаблон агента рабочего процесса",
+            "утвержденным шлюзом записи",
+            "трассировки",
+            "оценки",
+            "оценками дублей тикета",
+            "шаблон агента знаний",
+            "привязкой к источникам",
+            "защитными ограничениями записи в память",
+            "шаблон агента координации инцидентов",
+        ),
+        "docs/book/part-vi/chapter-15.en.md": (
+            "Golden-path case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "anti-zoo strategy",
+            "workflow-agent template",
+            "approved write gateway",
+            "trace",
+            "eval",
+            "duplicate-ticket evals",
+            "knowledge-agent template",
+            "source grounding",
+            "memory-write guardrails",
+            "incident-agent template",
+        ),
+        "docs/book/part-vi/chapter-15.zh.md": (
+            "Golden-path case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "anti-zoo strategy",
+            "workflow-agent template",
+            "approved write gateway",
+            "trace",
+            "eval",
+            "duplicate-ticket evals",
+            "knowledge-agent template",
+            "source grounding",
+            "memory-write guardrails",
+            "incident-agent template",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_chapter_15_golden_path_trace_eval_links_are_clickable() -> None:
@@ -14450,37 +14607,83 @@ def test_multilingual_community_roadmap_case_note_is_localized() -> None:
 
 
 def test_google_integration_roadmap_surfaces_three_canonical_platform_cases() -> None:
-    required_markers = (
-        "Canonical Google integration cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "platform-grade ideas",
-        "agent identity",
-        "least privilege",
-        "approval/audit linkage",
-        "sandbox profile",
-        "high-risk tools",
-        "duplicate-ticket controls",
-        "context layers",
-        "memory governance",
-        "retrieval policy",
-        "source provenance",
-        "tenant-aware access",
-        "registry governance",
-        "A2A boundaries",
-        "continuous controls",
-        "rollout gates",
-        "escalation traces",
-        "response ownership",
-    )
-    checked_files = (
-        "docs/appendix/google-integration-roadmap.md",
-        "docs/appendix/google-integration-roadmap.en.md",
-        "docs/appendix/google-integration-roadmap.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/appendix/google-integration-roadmap.md": (
+            "Канонические сценарии Google-интеграции",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "идеи платформенного уровня",
+            "идентичность агента",
+            "минимальные привилегии",
+            "связь подтверждений и аудита",
+            "профиль песочницы",
+            "инструменты высокого риска",
+            "контроль дублей тикетов",
+            "слои контекста",
+            "управление памятью",
+            "политику поиска",
+            "происхождение источников",
+            "доступ с учетом арендатора",
+            "управление реестром",
+            "границы A2A",
+            "непрерывные проверки",
+            "шлюзы поэтапного выпуска",
+            "трассы эскалации",
+            "владение ответом",
+        ),
+        "docs/appendix/google-integration-roadmap.en.md": (
+            "Canonical Google integration cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "platform-grade ideas",
+            "agent identity",
+            "least privilege",
+            "approval/audit linkage",
+            "sandbox profile",
+            "high-risk tools",
+            "duplicate-ticket controls",
+            "context layers",
+            "memory governance",
+            "retrieval policy",
+            "source provenance",
+            "tenant-aware access",
+            "registry governance",
+            "A2A boundaries",
+            "continuous controls",
+            "rollout gates",
+            "escalation traces",
+            "response ownership",
+        ),
+        "docs/appendix/google-integration-roadmap.zh.md": (
+            "Canonical Google integration cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "platform-grade ideas",
+            "agent identity",
+            "least privilege",
+            "approval/audit linkage",
+            "sandbox profile",
+            "high-risk tools",
+            "duplicate-ticket controls",
+            "context layers",
+            "memory governance",
+            "retrieval policy",
+            "source provenance",
+            "tenant-aware access",
+            "registry governance",
+            "A2A boundaries",
+            "continuous controls",
+            "rollout gates",
+            "escalation traces",
+            "response ownership",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_multilingual_google_integration_case_note_is_localized() -> None:
@@ -14488,11 +14691,11 @@ def test_multilingual_google_integration_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/google-integration-roadmap.zh.md")
 
     assert "Канонические сценарии Google-интеграции" in russian_text
-    assert "Дорожная карта Google-интеграции (Google integration roadmap)" in russian_text
-    assert "идеи платформенного уровня (platform-grade ideas)" in russian_text
-    assert "идентичность агента (agent identity)" in russian_text
-    assert "слои контекста (context layers)" in russian_text
-    assert "управление реестром (registry governance)" in russian_text
+    assert "Дорожная карта Google-интеграции полезнее" in russian_text
+    assert "идеи платформенного уровня" in russian_text
+    assert "идентичность агента" in russian_text
+    assert "слои контекста" in russian_text
+    assert "управление реестром" in russian_text
 
     assert "规范 Google 集成案例" in chinese_text
     assert "Google 集成路线图（Google integration roadmap）" in chinese_text
