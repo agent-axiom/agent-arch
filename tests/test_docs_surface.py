@@ -327,6 +327,168 @@ def test_late_russian_public_pages_use_print_friendly_role_terms() -> None:
         _assert_files_contain_all((path,), expected)
 
 
+def test_russian_appendix_reference_pages_avoid_visible_english_role_terms() -> None:
+    forbidden_by_file = {
+        "docs/appendix/policy-templates.md": (
+            "production YAML",
+            "read and write actions",
+            "duplicate-ticket thread",
+            "write tool",
+            "governed capability",
+            "approval boundary",
+            "traceable write intent",
+            "rollout/eval gate",
+            "Canonical policy template cases",
+            "customer context",
+            "read tools",
+            "approval policy",
+            "write path",
+            "Role-based filtering",
+            "retrieval path",
+            "knowledge zone",
+            "incident trace",
+            "Risky remediation",
+            "dangerous write path",
+            "policy artifacts",
+            "prompt engineering",
+            "policy layer",
+        ),
+        "docs/appendix/causal-debugging.md": (
+            "Causal debugging",
+            "root-cause analysis",
+            "agent systems",
+            "traces, session summaries",
+            "incident records",
+            "Canonical causal cases",
+            "retrieval;",
+            "model step",
+            "tool call",
+            "approval path",
+            "orchestration step",
+            "cascade of failures",
+            "system behavior",
+            "suspect path",
+            "downstream noise",
+            "corrective action",
+            "bad postmortem conclusion",
+            "causal graph",
+            "trace review",
+        ),
+        "docs/appendix/memory-eval-patterns.md": (
+            "Memory eval patterns",
+            "agent systems",
+            "runs",
+            "memory layer",
+            "eval dataset",
+            "memory evals",
+            "overall task success",
+            "memory design",
+            "system remembers the wrong thing",
+            "background compaction",
+            "evaluation logic",
+            "Short-term memory",
+            "storage itself",
+            "worth carrying forward",
+            "Profile memory",
+            "long-term memory",
+            "multi-run scenarios",
+            "single-turn checks",
+            "Memory evals",
+        ),
+        "docs/appendix/incident-record-schema.md": (
+            "incident record",
+            "postmortem linkage",
+            "incident review",
+            "agent systems",
+            "traces, approvals, rollout",
+            "lifecycle artifacts",
+            "containment phase",
+            "incident artifact",
+            "observability system",
+            "approval history",
+            "audit trail",
+            "rollback decision",
+            "repeated incidents",
+            "operational response",
+            "lifecycle correction",
+            "blast radius",
+            "release discipline",
+            "duplicate-ticket thread",
+            "Canonical incident cases",
+        ),
+        "docs/appendix/research-frontier.md": (
+            "Research frontier",
+            "multi-agent систем",
+            "production",
+            "papers",
+            "policy layers",
+            "approval gates",
+            "trace schema",
+            "eval datasets",
+            "lifecycle discipline",
+            "research frontier",
+            "paper architecture",
+            "promising pattern",
+            "production default",
+            "accuracy",
+            "explainability",
+            "auditability",
+            "Canonical frontier cases",
+            "Frontier по памяти",
+            "vector store",
+            "self-adaptive memory reorganization",
+            "reasoning loop",
+        ),
+    }
+
+    for path, forbidden in forbidden_by_file.items():
+        _assert_files_contain_none((path,), forbidden)
+
+
+def test_russian_appendix_reference_pages_use_print_friendly_terms() -> None:
+    expected_by_file = {
+        "docs/appendix/policy-templates.md": (
+            "готовый промышленный YAML",
+            "читающие и пишущие действия",
+            "Политика для ветки дубля тикета",
+            "Канонические сценарии шаблонов политик",
+            "управляемой пишущей возможности",
+            "ролевых ограничений поиска",
+        ),
+        "docs/appendix/causal-debugging.md": (
+            "Причинная отладка и анализ первопричин",
+            "трассы, сводки сессий и записи инцидентов",
+            "Канонические причинные сценарии",
+            "решающие связи",
+            "сеть зависимостей",
+        ),
+        "docs/appendix/memory-eval-patterns.md": (
+            "Шаблоны оценки памяти для агентных систем",
+            "серии запусков",
+            "слой памяти",
+            "Канонические сценарии оценки памяти",
+            "проверочной логики",
+        ),
+        "docs/appendix/incident-record-schema.md": (
+            "Схема записи инцидента и связи с разбором",
+            "контрактный слой для разбора инцидентов",
+            "запись инцидента",
+            "Канонические сценарии инцидентов",
+            "радиус воздействия",
+        ),
+        "docs/appendix/research-frontier.md": (
+            "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем",
+            "промышленную среду",
+            "Канонические сценарии исследовательского фронтира",
+            "многообещающий шаблон",
+            "инженерной дисциплины",
+        ),
+    }
+
+    for path, expected in expected_by_file.items():
+        _assert_files_contain_all((path,), expected)
+
+
 def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
     required_markers = (
         "Render / Export QA Checklist",
@@ -13115,7 +13277,7 @@ def test_eval_schema_includes_verifier_verdict_record_fields() -> None:
 
 
 def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical incident cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -13136,13 +13298,31 @@ def test_incident_record_schema_surfaces_three_canonical_incident_cases() -> Non
         "handoff failure",
         "post-incident learning update",
     )
-    checked_files = (
-        "docs/appendix/incident-record-schema.md",
-        "docs/appendix/incident-record-schema.en.md",
-        "docs/appendix/incident-record-schema.zh.md",
+    russian_markers = (
+        "Канонические сценарии инцидентов",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "пути исправления",
+        "неизвестным исходом",
+        "idempotency_key",
+        "восстановление после дубля тикета",
+        "шлюз оценки/обновления",
+        "устаревший поиск",
+        "разрывы привязки к источникам",
+        "загрязнение памяти",
+        "нарушение контроля доступа",
+        "восстановление происхождения знаний",
+        "задержку эскалации",
+        "побочные эффекты уведомлений",
+        "разрыв владения ответом",
+        "сбой передачи управления",
+        "обновление обучения после инцидента",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/incident-record-schema.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/incident-record-schema.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/incident-record-schema.zh.md",), english_markers)
 
 
 def test_multilingual_incident_record_case_note_is_localized() -> None:
@@ -13150,11 +13330,11 @@ def test_multilingual_incident_record_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/incident-record-schema.zh.md")
 
     assert "Канонические сценарии инцидентов" in russian_text
-    assert "Запись инцидента (incident record)" in russian_text
-    assert "пути исправления (corrective paths)" in russian_text
-    assert "запись с неизвестным исходом (unknown write)" in russian_text
-    assert "устаревший поиск (stale retrieval)" in russian_text
-    assert "задержку эскалации (escalation delay)" in russian_text
+    assert "Запись инцидента должна оставлять разные пути исправления" in russian_text
+    assert "запись с неизвестным исходом" in russian_text
+    assert "устаревший поиск" in russian_text
+    assert "задержку эскалации" in russian_text
+    assert "Схема записи инцидента и связи с разбором" in russian_text
 
     assert "规范事故案例" in chinese_text
     assert "事故记录（incident record）" in chinese_text
@@ -14025,7 +14205,7 @@ def test_chinese_incident_response_duplicate_ticket_example_is_localized() -> No
 
 
 def test_policy_templates_surface_three_canonical_policy_template_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical policy template cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14047,13 +14227,37 @@ def test_policy_templates_surface_three_canonical_policy_template_cases() -> Non
         "risky remediation disabled by default",
         "incident trace coverage",
     )
+    russian_markers = (
+        "Канонические сценарии шаблонов политик",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "операционными заготовками",
+        "управляемой пишущей возможности",
+        "границы подтверждения",
+        "ключа идемпотентности",
+        "отслеживаемого намерения записи",
+        "защиты от дубля тикета",
+        "ролевых ограничений поиска",
+        "ссылок на источники",
+        "проверок привязки к источникам",
+        "границ арендатора",
+        "поведения при отказе доступа",
+        "управляемых передач",
+        "текущего владельца",
+        "подтверждения уведомлений",
+        "опасного исправления, выключенного по умолчанию",
+        "покрытия трасс инцидента",
+    )
     checked_files = (
         "docs/appendix/policy-templates.md",
         "docs/appendix/policy-templates.en.md",
         "docs/appendix/policy-templates.zh.md",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/policy-templates.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/policy-templates.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/policy-templates.zh.md",), english_markers)
     deprecated_markers = (
         "Support Triage Agent",
         "Internal Knowledge Agent",
@@ -14089,10 +14293,10 @@ def test_multilingual_policy_templates_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/policy-templates.zh.md")
 
     assert "Канонические сценарии шаблонов политик" in russian_text
-    assert "операционными заготовками (operational starters)" in russian_text
-    assert "управляемой записывающей возможности (governed write capability)" in russian_text
-    assert "поиска по ролям (role-scoped retrieval)" in russian_text
-    assert "управляемых передач (controlled handoffs)" in russian_text
+    assert "операционными заготовками для трех канонических сценариев" in russian_text
+    assert "управляемой пишущей возможности" in russian_text
+    assert "ролевых ограничений поиска" in russian_text
+    assert "управляемых передач" in russian_text
 
     assert "规范策略模板案例" in chinese_text
     assert "运营起点（operational starters）" in chinese_text
@@ -14321,7 +14525,7 @@ def test_multilingual_tool_failure_recovery_case_note_is_localized() -> None:
 
 
 def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical memory eval cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14343,13 +14547,32 @@ def test_memory_eval_patterns_surface_three_canonical_memory_eval_cases() -> Non
         "noisy alert filtering",
         "post-incident lesson retention",
     )
-    checked_files = (
-        "docs/appendix/memory-eval-patterns.md",
-        "docs/appendix/memory-eval-patterns.en.md",
-        "docs/appendix/memory-eval-patterns.zh.md",
+    russian_markers = (
+        "Канонические сценарии оценки памяти",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "качество состояния",
+        "перенос контекста заявителя",
+        "извлечение состояния тикета",
+        "idempotency_key",
+        "решение не выполнять запись",
+        "регрессию дубля тикета",
+        "свежесть поиска",
+        "привязку к источнику",
+        "изоляцию арендатора",
+        "происхождение памяти",
+        "качество обоснованного ответа",
+        "восстановление хронологии инцидента",
+        "передачу владения ответом",
+        "статус эскалации",
+        "фильтрацию шумных оповещений",
+        "сохранение уроков после инцидента",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/memory-eval-patterns.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/memory-eval-patterns.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/memory-eval-patterns.zh.md",), english_markers)
 
 
 def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
@@ -14357,11 +14580,10 @@ def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/memory-eval-patterns.zh.md")
 
     assert "Канонические сценарии оценки памяти" in russian_text
-    assert "Набор оценок памяти (memory eval suite)" in russian_text
-    assert "качество состояния (state quality)" in russian_text
-    assert "перенос контекста заявителя (requester context carryover)" in russian_text
-    assert "свежесть поиска (retrieval freshness)" in russian_text
-    assert "восстановление хронологии инцидента (incident timeline recall)" in russian_text
+    assert "Набор оценок памяти должен по-разному проверять качество состояния" in russian_text
+    assert "перенос контекста заявителя" in russian_text
+    assert "свежесть поиска" in russian_text
+    assert "восстановление хронологии инцидента" in russian_text
 
     assert "规范记忆评测案例" in chinese_text
     assert "记忆评测套件（memory eval suite）" in chinese_text
@@ -14393,7 +14615,7 @@ def test_multilingual_memory_eval_patterns_case_note_is_localized() -> None:
 
 
 def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical causal cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14415,13 +14637,32 @@ def test_causal_debugging_surfaces_three_canonical_causal_cases() -> None:
         "response ownership",
         "post-incident learning update",
     )
-    checked_files = (
-        "docs/appendix/causal-debugging.md",
-        "docs/appendix/causal-debugging.en.md",
-        "docs/appendix/causal-debugging.zh.md",
+    russian_markers = (
+        "Канонические причинные сценарии",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "решающие связи",
+        "найденный контекст",
+        "решение о подтверждении",
+        "idempotency_key",
+        "выполнение инструмента",
+        "каскад дубля тикета",
+        "устаревший источник",
+        "фильтрацию поиска",
+        "привязку к источнику",
+        "запись в память",
+        "решение контроля доступа",
+        "триггер эскалации",
+        "побочные эффекты уведомлений",
+        "связь передачи управления",
+        "владение ответом",
+        "обновление обучения после инцидента",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/causal-debugging.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/causal-debugging.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/causal-debugging.zh.md",), english_markers)
 
 
 def test_multilingual_causal_debugging_case_note_is_localized() -> None:
@@ -14429,11 +14670,10 @@ def test_multilingual_causal_debugging_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/causal-debugging.zh.md")
 
     assert "Канонические причинные сценарии" in russian_text
-    assert "Причинная отладка (causal debugging)" in russian_text
-    assert "решающие связи (decisive edges)" in russian_text
-    assert "найденный контекст (retrieved context)" in russian_text
-    assert "устаревший источник (stale source)" in russian_text
-    assert "триггер эскалации (escalation trigger)" in russian_text
+    assert "Причинная отладка должна искать разные решающие связи" in russian_text
+    assert "найденный контекст" in russian_text
+    assert "устаревший источник" in russian_text
+    assert "триггер эскалации" in russian_text
 
     assert "规范因果案例" in chinese_text
     assert "因果调试（causal debugging）" in chinese_text
@@ -14723,7 +14963,7 @@ def test_multilingual_google_integration_case_note_is_localized() -> None:
 
 
 def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
-    required_markers = (
+    english_markers = (
         "Canonical frontier cases",
         "Support triage",
         "Internal knowledge assistant",
@@ -14747,13 +14987,34 @@ def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
         "incident review",
         "diagnosable system boundaries",
     )
-    checked_files = (
-        "docs/appendix/research-frontier.md",
-        "docs/appendix/research-frontier.en.md",
-        "docs/appendix/research-frontier.zh.md",
+    russian_markers = (
+        "Канонические сценарии исследовательского фронтира",
+        "Триаж обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+        "исследовательский фронтир",
+        "многообещающий шаблон",
+        "промышленным правилом по умолчанию",
+        "память агента",
+        "оценки, связанные с трассами",
+        "шлюзы подтверждений",
+        "восстановление после дубля тикета",
+        "стоимость отката",
+        "иерархическую память",
+        "происхождение источников",
+        "свежесть поиска",
+        "доступ с учетом арендатора",
+        "аудитируемость",
+        "причинную трассировку",
+        "надежность многоагентных систем",
+        "контракты передачи управления",
+        "разбор инцидента",
+        "диагностируемые границы системы",
     )
 
-    _assert_files_contain_all(checked_files, required_markers)
+    _assert_files_contain_all(("docs/appendix/research-frontier.md",), russian_markers)
+    _assert_files_contain_all(("docs/appendix/research-frontier.en.md",), english_markers)
+    _assert_files_contain_all(("docs/appendix/research-frontier.zh.md",), english_markers)
 
 
 def test_multilingual_research_frontier_case_note_is_localized() -> None:
@@ -14761,11 +15022,11 @@ def test_multilingual_research_frontier_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/research-frontier.zh.md")
 
     assert "Канонические сценарии исследовательского фронтира" in russian_text
-    assert "Исследовательский фронтир (research frontier)" in russian_text
-    assert "многообещающий паттерн (promising pattern)" in russian_text
-    assert "память агента (agent memory)" in russian_text
-    assert "иерархическую память (hierarchical memory)" in russian_text
-    assert "причинную трассировку (causal tracing)" in russian_text
+    assert "Исследовательский фронтир стоит фильтровать" in russian_text
+    assert "многообещающий шаблон" in russian_text
+    assert "память агента" in russian_text
+    assert "иерархическую память" in russian_text
+    assert "причинную трассировку" in russian_text
 
     assert "规范前沿案例" in chinese_text
     assert "研究前沿（research frontier）" in chinese_text
