@@ -426,7 +426,7 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
 - [Схема проверки изменений и шлюза раскатки](../../appendix/change-rollout-schema.md)
 - [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)
-- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
+- [Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем](../../appendix/research-frontier.md)
 
 - [Глава 11. Трассы, спаны и структурированные события](../part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../part-v/chapter-13.md)

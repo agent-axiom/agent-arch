@@ -3,6 +3,7 @@ import re
 import shutil
 import subprocess
 import textwrap
+from collections.abc import Sequence
 from pathlib import Path
 
 import pytest
@@ -530,11 +531,23 @@ def test_public_book_canonical_redirects_are_configured() -> None:
         '"/en/book"',
         '"/zh/book"',
         '"/start-here"',
+        '"/en/start-here"',
+        '"/zh/start-here"',
         '"/reference"',
+        '"/en/reference"',
+        '"/zh/reference"',
         '"/appendix/sources"',
+        '"/en/appendix/sources"',
+        '"/zh/appendix/sources"',
         '"/book/part-i/chapter-1"',
+        '"/en/book/part-i/chapter-1"',
+        '"/zh/book/part-i/chapter-1"',
         '"/book/part-iv/chapter-9"',
+        '"/en/book/part-iv/chapter-9"',
+        '"/zh/book/part-iv/chapter-9"',
         '"/book/part-v/chapter-13"',
+        '"/en/book/part-v/chapter-13"',
+        '"/zh/book/part-v/chapter-13"',
     ):
         assert route in redirect_script
     assert 'projectPrefix = "/agent-arch"' in redirect_script
@@ -598,6 +611,18 @@ def test_public_book_canonical_redirects_add_trailing_slash_to_entrypoints() -> 
     assert _canonical_redirects_for("/agent-arch/book/part-v/chapter-13") == [
         "https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/"
     ]
+    assert _canonical_redirects_for("/agent-arch/en/reference", "?view=schemas") == [
+        "https://agent-axiom.github.io/agent-arch/en/reference/?view=schemas"
+    ]
+    assert _canonical_redirects_for("/agent-arch/zh/appendix/sources", "", "#top") == [
+        "https://agent-axiom.github.io/agent-arch/zh/appendix/sources/#top"
+    ]
+    assert _canonical_redirects_for("/agent-arch/en/book/part-i/chapter-1") == [
+        "https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/"
+    ]
+    assert _canonical_redirects_for("/agent-arch/zh/book/part-v/chapter-13") == [
+        "https://agent-axiom.github.io/agent-arch/zh/book/part-v/chapter-13/"
+    ]
 
 
 def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
@@ -606,11 +631,23 @@ def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
         "docs/en/book.html": ("en", "book/"),
         "docs/zh/book.html": ("zh", "book/"),
         "docs/start-here.html": ("ru", "start-here/"),
+        "docs/en/start-here.html": ("en", "start-here/"),
+        "docs/zh/start-here.html": ("zh", "start-here/"),
         "docs/reference.html": ("ru", "reference/"),
+        "docs/en/reference.html": ("en", "reference/"),
+        "docs/zh/reference.html": ("zh", "reference/"),
         "docs/appendix/sources.html": ("ru", "sources/"),
+        "docs/en/appendix/sources.html": ("en", "sources/"),
+        "docs/zh/appendix/sources.html": ("zh", "sources/"),
         "docs/book/part-i/chapter-1.html": ("ru", "chapter-1/"),
+        "docs/en/book/part-i/chapter-1.html": ("en", "chapter-1/"),
+        "docs/zh/book/part-i/chapter-1.html": ("zh", "chapter-1/"),
         "docs/book/part-iv/chapter-9.html": ("ru", "chapter-9/"),
+        "docs/en/book/part-iv/chapter-9.html": ("en", "chapter-9/"),
+        "docs/zh/book/part-iv/chapter-9.html": ("zh", "chapter-9/"),
         "docs/book/part-v/chapter-13.html": ("ru", "chapter-13/"),
+        "docs/en/book/part-v/chapter-13.html": ("en", "chapter-13/"),
+        "docs/zh/book/part-v/chapter-13.html": ("zh", "chapter-13/"),
     }
 
     for page_path, (language, target) in expected_pages.items():
@@ -620,6 +657,45 @@ def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
         assert f'<link rel="canonical" href="{target}">' in page
         assert "window.location.replace" in page
         assert "window.location.search + window.location.hash" in page
+
+
+def _flatten_nav_labels(entries: Sequence[object]) -> list[str]:
+    labels = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        for label, value in entry.items():
+            labels.append(str(label))
+            if isinstance(value, list):
+                labels.extend(_flatten_nav_labels(value))
+    return labels
+
+
+def test_russian_nav_labels_are_print_friendly() -> None:
+    config = _load_mkdocs_config()
+    labels = _flatten_nav_labels(config["nav"])
+    mkdocs_text = _read("mkdocs.yml")
+
+    for expected in (
+        "Причинная отладка и анализ первопричин для агентных систем",
+        "Шаблоны оценки памяти для агентных систем",
+        "Восстановление после сбоев инструментов в агентных системах",
+        "Схема записи инцидента и связи с разбором",
+        "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем",
+        "Практическое руководство по реестру агентов и инвентаризации",
+    ):
+        assert expected in labels
+
+    for forbidden in (
+        "Causal debugging и root-cause analysis для agent systems",
+        "Memory eval patterns для agent systems",
+        "Tool failure recovery patterns для agent systems",
+        "Схема incident record и postmortem linkage",
+        "Исследовательский фронтир: память, наблюдаемость и надежность multi-agent систем",
+        "Handbook по agent registry и inventory operations",
+    ):
+        assert forbidden not in labels
+        assert forbidden not in mkdocs_text
 
 
 def test_translated_markdown_pages_have_no_cyrillic_residue() -> None:
@@ -636,6 +712,81 @@ def test_translated_markdown_pages_have_no_cyrillic_residue() -> None:
                 leaked_lines.append((str(path.relative_to(ROOT)), line_number, line.strip()))
 
     assert leaked_lines == []
+
+
+def test_russian_public_entrypoints_avoid_inline_english_glosses() -> None:
+    forbidden_by_file = {
+        "docs/reference.md": (
+            "(reference layer)",
+            "(why)",
+            "(safe agent system)",
+            "(artifacts)",
+            "(schemas)",
+            "(rules)",
+            "(contract page)",
+            "(architecture review)",
+            "(rollout review)",
+            "(canonical cases)",
+            "(support-triage)",
+            "(traces)",
+            "(eval dataset)",
+            "(policy bundle)",
+            "(approval record)",
+            "(incident record)",
+            "(change rollout)",
+            "(lifecycle artifacts)",
+            "(registry operations)",
+            "(Safe-agent schema spine)",
+            "(trace schema)",
+            "(eval schema)",
+            "(memory/retrieval schema)",
+            "(MCP threat model)",
+            "(A2A handoff trust contract)",
+            "(verifier verdict record)",
+            "(governance action record)",
+            "(memory poisoning review fields)",
+            "(unified agent threat evidence)",
+            "(semantic tool filtering)",
+            "(read/write taxonomy)",
+            "(MCP host/client/server)",
+            "(capability transport)",
+            "(sandbox boundary)",
+            "(semantic gap)",
+            "(RAG vs training)",
+            "(latency budget)",
+            "(LLM-as-a-judge)",
+            "(judge-human agreement)",
+        ),
+        "docs/appendix/cheat-sheets.md": (
+            "Safety checklist",
+            "Memory checklist",
+            "Rollout checklist",
+            "Observability checklist",
+            "Tool gateway checklist",
+            "(Canonical checklist cases)",
+            "(fast route)",
+            "(canonical cases)",
+            "(Support triage)",
+            "(Internal knowledge assistant)",
+            "(Incident coordination)",
+            "(safety)",
+            "(tool gateway)",
+            "(approval)",
+            "(idempotency)",
+            "(rollout checks)",
+            "(memory)",
+            "(retrieval)",
+            "(source grounding)",
+            "(tenant boundary)",
+            "(observability checks)",
+            "(incident review)",
+            "(response ownership)",
+            "(post-incident learning checks)",
+        ),
+    }
+
+    for path, forbidden_markers in forbidden_by_file.items():
+        _assert_files_contain_none((path,), forbidden_markers)
 
 
 def test_translated_navigation_values_have_no_cyrillic_residue() -> None:
@@ -8089,25 +8240,33 @@ def test_russian_reference_fast_topic_routes_are_localized() -> None:
     text = _read("docs/reference.md")
 
     assert "Каталог инструментов, семантическая фильтрация инструментов" in text
-    assert "семантическая фильтрация инструментов (semantic tool filtering)" in text
-    assert "классификация чтения/записи (read/write taxonomy)" in text
-    assert "Роли MCP: хост, клиент и сервер (MCP host/client/server)" in text
-    assert "передача возможностей (capability transport)" in text
-    assert "границы песочницы (sandbox boundary)" in text
-    assert "Семантический разрыв (semantic gap), HyDE" in text
-    assert "выбор между RAG и обучением модели (RAG vs training)" in text
-    assert "Бюджет задержки (latency budget)" in text
+    assert "классификация чтения и записи" in text
+    assert "Роли MCP: хост, клиент и сервер" in text
+    assert "передача возможностей" in text
+    assert "границы песочницы" in text
+    assert "Семантический разрыв, HyDE" in text
+    assert "выбор между RAG и обучением модели" in text
+    assert "Бюджет задержки" in text
     assert "быстрый/медленный путь и маршрутизированные конвейеры" in text
-    assert "Оценка через LLM как судью (LLM-as-a-judge), калибровка" in text
-    assert "согласие судьи с человеком (judge-human agreement)" in text
+    assert "Оценка через языковую модель как судью, калибровка" in text
+    assert "согласие судьи с человеком" in text
 
     forbidden_markers = (
         "- Tool catalog, semantic tool filtering, read/write taxonomy:",
+        "(semantic tool filtering)",
+        "(read/write taxonomy)",
+        "(MCP host/client/server)",
+        "(capability transport)",
+        "(sandbox boundary)",
+        "(semantic gap)",
+        "(RAG vs training)",
+        "(latency budget)",
+        "(LLM-as-a-judge)",
+        "(judge-human agreement)",
         "семантическая фильтрация инструментов (`semantic tool filtering`)",
         "классификация чтения/записи:",
         "- MCP host/client/server, capability transport, sandbox boundary:",
         "Роли MCP: `host`, `client` и `server`",
-        "передача возможностей и границы песочницы:",
         "- Semantic gap, HyDE, RAG vs training:",
         "Семантический разрыв (`semantic gap`), `HyDE`",
         "выбор между RAG и обучением модели (`RAG vs training`)",
@@ -11429,64 +11588,86 @@ def test_public_entry_safe_agent_schema_spine_links_are_clickable() -> None:
 
 
 def test_reference_layer_surfaces_three_canonical_case_artifacts() -> None:
-    required_markers = (
-        "Canonical case artifacts",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "approval record",
-        "policy bundle",
-        "duplicate-ticket recovery evidence",
-        "memory/retrieval contract",
-        "freshness checks",
-        "access control",
-        "knowledge provenance",
-        "notification side effects",
-        "response ownership",
-        "post-incident learning",
-    )
-    checked_files = (
-        "docs/reference.md",
-        "docs/reference.en.md",
-        "docs/reference.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/reference.md": (
+            "Канонические артефакты сценариев",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "запись подтверждения",
+            "пакет политик",
+            "доказательства восстановления после дубля тикета",
+            "контракт памяти и поиска",
+            "проверки свежести",
+            "контроль доступа",
+            "происхождение знаний",
+            "побочные эффекты уведомлений",
+            "ответственность за реагирование",
+            "обучение после инцидента",
+        ),
+        "docs/reference.en.md": (
+            "Canonical case artifacts",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "approval record",
+            "policy bundle",
+            "duplicate-ticket recovery evidence",
+            "memory/retrieval contract",
+            "freshness checks",
+            "access control",
+            "knowledge provenance",
+            "notification side effects",
+            "response ownership",
+            "post-incident learning",
+        ),
+        "docs/reference.zh.md": (
+            "Canonical case artifacts",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "approval record",
+            "policy bundle",
+            "duplicate-ticket recovery evidence",
+            "memory/retrieval contract",
+            "freshness checks",
+            "access control",
+            "knowledge provenance",
+            "notification side effects",
+            "response ownership",
+            "post-incident learning",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
-    assert "# Справочный слой (reference layer)" in russian_text
-    assert "С чего начать (Start Here)" in russian_text
+    assert "# Справочный слой" in russian_text
+    assert "## С чего начать" in russian_text
     assert "Канонические артефакты сценариев" in russian_text
-    assert "почему (why)" in russian_text
-    assert "безопасная агентная система (safe agent system)" in russian_text
-    assert "артефакты (artifacts), схемы (schemas) и правила (rules)" in russian_text
-    assert "контрактную страницу (contract page)" in russian_text
-    assert "архитектурное ревью (architecture review)" in russian_text
-    assert "ревью раскатки (rollout review)" in russian_text
-    assert "канонических сценария (canonical cases)" in russian_text
-    assert "запись подтверждения (approval record)" in russian_text
-    assert "контракт памяти/поиска (memory/retrieval contract)" in russian_text
-    assert "запись инцидента (incident record)" in russian_text
-    assert "поддерживающие схемы (supporting schemas)" in russian_text
-    assert "чеклисты (checklists)" in russian_text
-    assert "контрактные поверхности (contract surfaces)" in russian_text
-    assert "справочный слой (reference layer)" in russian_text
-    assert "переиспользуемых инженерных материалов (reusable engineering materials)" in russian_text
-    assert "читательский путь (reading path)" in russian_text
-    assert "готовые артефакты (ready-to-use artifacts)" in russian_text
-    assert "прикладной инженерной форме (applied engineering form)" in russian_text
-    assert "причинно-следственный аргумент (causal argument)" in russian_text
-    assert "главу за главой (chapter by chapter)" in russian_text
-    assert "компромиссы (tradeoffs)" in russian_text
-    assert "границы между слоями (layer boundaries)" in russian_text
-    assert "аргумента (argument)" in russian_text
-    assert "последовательности (sequence)" in russian_text
-    assert "вспомогательных артефактов (supporting artifacts)" in russian_text
-    assert "деталей реализации (implementation details)" in russian_text
+    assert "почему безопасная агентная система" in russian_text
+    assert "какие артефакты, схемы и правила" in russian_text
+    assert "нужную контрактную страницу" in russian_text
+    assert "архитектурное ревью или ревью поэтапного выпуска" in russian_text
+    assert "Три канонических сценария" in russian_text
+    assert "запись подтверждения" in russian_text
+    assert "контракт памяти и поиска" in russian_text
+    assert "запись инцидента" in russian_text
+    assert "поддерживающие схемы" in russian_text
+    assert "проверочные списки" in russian_text
+    assert "контрактные поверхности" in russian_text
+    assert "переиспользуемых инженерных материалов" in russian_text
+    assert "читательский путь" in russian_text
+    assert "готовые артефакты" in russian_text
+    assert "прикладной инженерной форме" in russian_text
+    assert "причинно-следственный аргумент" in russian_text
+    assert "компромиссы" in russian_text
+    assert "границы между слоями" in russian_text
 
     assert "# 参考层（reference layer）" in chinese_text
     assert "从这里开始（Start Here）" in chinese_text
@@ -11519,11 +11700,7 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
 
     forbidden_markers = (
         "Три canonical cases",
-        "# Справочный слой\n",
-        "## С чего начать\n",
         "**почему** безопасная агентная система",
-        "какие артефакты, схемы и правила",
-        "нужную контрактную страницу;",
         "архитектурное ревью или ревью раскатки",
         "опирается на approval record",
         "требует memory/retrieval contract",
@@ -11531,12 +11708,31 @@ def test_multilingual_reference_case_artifacts_note_is_localized() -> None:
         "поддерживающие схемы, чеклисты и контрактные страницы",
         "не весь reference layer",
         "переиспользуемых инженерных материалов,",
-        "готовые артефакты для своей команды",
-        "прикладной инженерной форме.",
-        "причинно-следственный аргумент главу за главой",
-        "компромиссы и границы между слоями",
-        "для аргумента и последовательности",
-        "вспомогательных артефактов и прикладных деталей реализации",
+        "(reference layer)",
+        "(Start Here)",
+        "(why)",
+        "(safe agent system)",
+        "(artifacts)",
+        "(schemas)",
+        "(rules)",
+        "(contract page)",
+        "(architecture review)",
+        "(rollout review)",
+        "(canonical cases)",
+        "(approval record)",
+        "(memory/retrieval contract)",
+        "(incident record)",
+        "(supporting schemas)",
+        "(checklists)",
+        "(contract surfaces)",
+        "(reusable engineering materials)",
+        "(reading path)",
+        "(ready-to-use artifacts)",
+        "(applied engineering form)",
+        "(causal argument)",
+        "(chapter by chapter)",
+        "(tradeoffs)",
+        "(layer boundaries)",
         "三个 canonical cases",
         "# 参考层\n",
         "## 从这里开始\n",
@@ -11567,16 +11763,16 @@ def test_multilingual_reference_support_triage_artifact_route_is_localized() -> 
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
-    assert "Артефактный маршрут триажа поддержки (support-triage)" in russian_text
-    assert "трассы (traces)" in russian_text
-    assert "набор данных оценок (eval dataset)" in russian_text
-    assert "пакет политик (policy bundle)" in russian_text
-    assert "запись подтверждения (approval record)" in russian_text
-    assert "запись инцидента (incident record)" in russian_text
-    assert "раскатку изменений (change rollout)" in russian_text
-    assert "артефакты жизненного цикла (lifecycle artifacts)" in russian_text
-    assert "операции реестра (registry operations)" in russian_text
-    assert "инцидент с дублем тикета (duplicate-ticket incident)" in russian_text
+    assert "Артефактный маршрут триажа поддержки" in russian_text
+    assert "трассы" in russian_text
+    assert "набор данных оценок" in russian_text
+    assert "пакет политик" in russian_text
+    assert "запись подтверждения" in russian_text
+    assert "запись инцидента" in russian_text
+    assert "поэтапный выпуск изменений" in russian_text
+    assert "артефакты жизненного цикла" in russian_text
+    assert "операции реестра" in russian_text
+    assert "инцидент с дублем тикета" in russian_text
 
     assert "支持分诊工件路线（support-triage）" in chinese_text
     assert "追踪（traces）" in chinese_text
@@ -11602,6 +11798,16 @@ def test_multilingual_reference_support_triage_artifact_route_is_localized() -> 
         "把 traces、评测数据集",
         "policy bundle、审批记录",
         "registry operations 这些页面",
+        "(support-triage)",
+        "(traces)",
+        "(eval dataset)",
+        "(policy bundle)",
+        "(approval record)",
+        "(incident record)",
+        "(change rollout)",
+        "(lifecycle artifacts)",
+        "(registry operations)",
+        "(duplicate-ticket incident)",
     )
 
     for marker in forbidden_markers:
@@ -11613,17 +11819,17 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
-    assert "Схемы и контрактные страницы (schemas and contract pages)" in russian_text
-    assert "Практические страницы (practice pages)" in russian_text
-    assert "Быстрые маршруты по темам (quick topic routes)" in russian_text
-    assert "короткий вход (short entry)" in russian_text
-    assert "конкретный вопрос (specific question)" in russian_text
-    assert "Для дальнейшего чтения (further reading)" in russian_text
-    assert "постмортемом (postmortem)" in russian_text
-    assert "реестру агентов (agent registry)" in russian_text
-    assert "операциям инвентаря (inventory operations)" in russian_text
-    assert "Шаблон постмортема (postmortem)" in russian_text
-    assert "многоагентных систем (multi-agent systems)" in russian_text
+    assert "Схемы и контрактные страницы" in russian_text
+    assert "Практические страницы" in russian_text
+    assert "Быстрые маршруты по темам" in russian_text
+    assert "короткий вход" in russian_text
+    assert "конкретный вопрос" in russian_text
+    assert "Для дальнейшего чтения" in russian_text
+    assert "связи с разбором" in russian_text
+    assert "реестру агентов" in russian_text
+    assert "инвентаризации" in russian_text
+    assert "Шаблон постмортема" in russian_text
+    assert "многоагентных систем" in russian_text
 
     assert "模式页与契约页（schemas and contract pages）" in chinese_text
     assert "追踪模式与事件目录" in chinese_text
@@ -11646,11 +11852,6 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
 
     forbidden_markers = (
         "связи с postmortem",
-        "## Схемы и контрактные страницы\n",
-        "## Практические страницы\n",
-        "## Быстрые маршруты по темам\n",
-        "короткий вход в конкретный вопрос",
-        "## Для дальнейшего чтения\n",
         "по registry агентов и inventory operations",
         "Шаблон postmortem",
         "multi-agent систем",
@@ -11670,6 +11871,16 @@ def test_multilingual_reference_practice_links_are_localized() -> None:
         "智能体注册表与清单运维手册",
         "智能体系统事后复盘模板",
         "多智能体可靠性",
+        "(schemas and contract pages)",
+        "(practice pages)",
+        "(quick topic routes)",
+        "(short entry)",
+        "(specific question)",
+        "(further reading)",
+        "(postmortem)",
+        "(agent registry)",
+        "(inventory operations)",
+        "(multi-agent systems)",
     )
 
     for marker in forbidden_markers:
@@ -11681,15 +11892,15 @@ def test_multilingual_reference_safe_agent_schema_spine_is_localized() -> None:
     russian_text = _read("docs/reference.md")
     chinese_text = _read("docs/reference.zh.md")
 
-    assert "Цепочка схем безопасного агента (Safe-agent schema spine)" in russian_text
-    assert "архитектуре безопасного агента (safe-agent architecture)" in russian_text
-    assert "схему трасс (trace schema)" in russian_text
-    assert "схему оценок (eval schema)" in russian_text
-    assert "схему памяти/поиска (memory/retrieval schema)" in russian_text
-    assert "модель угроз MCP (MCP threat model)" in russian_text
-    assert "контракт доверия передачи A2A (A2A handoff trust contract)" in russian_text
-    assert "запись вердикта проверяющего (verifier verdict record)" in russian_text
-    assert "единые доказательства угроз агенту (unified agent threat evidence)" in russian_text
+    assert "Цепочка схем безопасного агента" in russian_text
+    assert "архитектуре безопасного агента" in russian_text
+    assert "схему трасс" in russian_text
+    assert "схему оценивания" in russian_text
+    assert "схему памяти и поиска" in russian_text
+    assert "модель угроз MCP" in russian_text
+    assert "контракт доверия передачи управления A2A" in russian_text
+    assert "запись вердикта проверяющего" in russian_text
+    assert "единые доказательства угроз агенту" in russian_text
 
     assert "安全智能体模式主线（Safe-agent schema spine）" in chinese_text
     assert "安全智能体架构（safe-agent architecture）" in chinese_text
@@ -11708,6 +11919,15 @@ def test_multilingual_reference_safe_agent_schema_spine_is_localized() -> None:
         "связаны MCP threat model",
         "A2A handoff trust contract, verifier verdict record",
         "memory poisoning review fields и unified agent threat evidence",
+        "(Safe-agent schema spine)",
+        "(safe-agent architecture)",
+        "(trace schema)",
+        "(eval schema)",
+        "(memory/retrieval schema)",
+        "(MCP threat model)",
+        "(A2A handoff trust contract)",
+        "(verifier verdict record)",
+        "(unified agent threat evidence)",
         "safe-agent architecture 的短路线",
         "[trace schema]",
         "连接了 MCP threat model",
@@ -14322,35 +14542,77 @@ def test_multilingual_policy_templates_case_note_is_localized() -> None:
 
 
 def test_registry_operations_handbook_surfaces_three_canonical_registry_cases() -> None:
-    required_markers = (
-        "Canonical registry cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "accountability anchors",
-        "write capability",
-        "approval mode",
-        "idempotency controls",
-        "policy bundle",
-        "retirement linkage",
-        "corpus owner",
-        "retrieval policy",
-        "tenant scope",
-        "source provenance review",
-        "freshness review cadence",
-        "incident role owner",
-        "escalation authority",
-        "notification channel ownership",
-        "emergency rollback owner",
-        "emergency-only capabilities",
-    )
-    checked_files = (
-        "docs/appendix/registry-operations-handbook.md",
-        "docs/appendix/registry-operations-handbook.en.md",
-        "docs/appendix/registry-operations-handbook.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/appendix/registry-operations-handbook.md": (
+            "Канонические сценарии реестра",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "якоря ответственности",
+            "возможности записи",
+            "режима подтверждения",
+            "средств идемпотентности",
+            "пакета политик",
+            "связи с выводом из эксплуатации",
+            "владельца корпуса",
+            "политики извлечения",
+            "границ арендатора",
+            "проверки происхождения источников",
+            "ритма проверки свежести",
+            "владельца инцидентной роли",
+            "полномочий эскалации",
+            "владельца канала уведомлений",
+            "владельца экстренного отката",
+            "возможностей только на случай чрезвычайной ситуации",
+        ),
+        "docs/appendix/registry-operations-handbook.en.md": (
+            "Canonical registry cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "accountability anchors",
+            "write capability",
+            "approval mode",
+            "idempotency controls",
+            "policy bundle",
+            "retirement linkage",
+            "corpus owner",
+            "retrieval policy",
+            "tenant scope",
+            "source provenance review",
+            "freshness review cadence",
+            "incident role owner",
+            "escalation authority",
+            "notification channel ownership",
+            "emergency rollback owner",
+            "emergency-only capabilities",
+        ),
+        "docs/appendix/registry-operations-handbook.zh.md": (
+            "Canonical registry cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "accountability anchors",
+            "write capability",
+            "approval mode",
+            "idempotency controls",
+            "policy bundle",
+            "retirement linkage",
+            "corpus owner",
+            "retrieval policy",
+            "tenant scope",
+            "source provenance review",
+            "freshness review cadence",
+            "incident role owner",
+            "escalation authority",
+            "notification channel ownership",
+            "emergency rollback owner",
+            "emergency-only capabilities",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_multilingual_registry_operations_case_note_is_localized() -> None:
@@ -14358,11 +14620,11 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/registry-operations-handbook.zh.md")
 
     assert "Канонические сценарии реестра" in russian_text
-    assert "Запись реестра (registry record)" in russian_text
-    assert "якоря ответственности (accountability anchors)" in russian_text
-    assert "возможности записи (write capability)" in russian_text
-    assert "владельца корпуса (corpus owner)" in russian_text
-    assert "владельца экстренного отката (emergency rollback owner)" in russian_text
+    assert "Запись реестра должна фиксировать" in russian_text
+    assert "якоря ответственности" in russian_text
+    assert "возможности записи" in russian_text
+    assert "владельца корпуса" in russian_text
+    assert "владельца экстренного отката" in russian_text
 
     assert "规范注册表案例" in chinese_text
     assert "注册表记录（registry record）" in chinese_text
@@ -14382,6 +14644,11 @@ def test_multilingual_registry_operations_case_note_is_localized() -> None:
         "требует owner для write capability",
         "требует corpus owner",
         "требует incident role owner",
+        "(registry record)",
+        "(accountability anchors)",
+        "(write capability)",
+        "(corpus owner)",
+        "(emergency rollback owner)",
         "Registry record 应为三个 canonical cases",
         "不同 accountability anchors",
         "支持分流（Support triage）",
@@ -14705,33 +14972,71 @@ def test_multilingual_causal_debugging_case_note_is_localized() -> None:
 
 
 def test_cheat_sheets_surface_three_canonical_checklist_cases() -> None:
-    required_markers = (
-        "Canonical checklist cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "fast route",
-        "safety",
-        "tool gateway",
-        "approval",
-        "idempotency",
-        "rollout checks",
-        "memory",
-        "retrieval",
-        "source grounding",
-        "tenant boundary",
-        "observability checks",
-        "incident review",
-        "response ownership",
-        "post-incident learning checks",
-    )
-    checked_files = (
-        "docs/appendix/cheat-sheets.md",
-        "docs/appendix/cheat-sheets.en.md",
-        "docs/appendix/cheat-sheets.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/appendix/cheat-sheets.md": (
+            "Канонические сценарии для проверочных списков",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "быстрый маршрут",
+            "безопасности",
+            "шлюза инструментов",
+            "подтверждения",
+            "идемпотентности",
+            "проверки поэтапного выпуска",
+            "память",
+            "извлечение",
+            "привязки к источникам",
+            "границ арендатора",
+            "проверок наблюдаемости",
+            "разбора инцидента",
+            "ответственности за реагирование",
+            "обучения после инцидента",
+        ),
+        "docs/appendix/cheat-sheets.en.md": (
+            "Canonical checklist cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "fast route",
+            "safety",
+            "tool gateway",
+            "approval",
+            "idempotency",
+            "rollout checks",
+            "memory",
+            "retrieval",
+            "source grounding",
+            "tenant boundary",
+            "observability checks",
+            "incident review",
+            "response ownership",
+            "post-incident learning checks",
+        ),
+        "docs/appendix/cheat-sheets.zh.md": (
+            "Canonical checklist cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "fast route",
+            "safety",
+            "tool gateway",
+            "approval",
+            "idempotency",
+            "rollout checks",
+            "memory",
+            "retrieval",
+            "source grounding",
+            "tenant boundary",
+            "observability checks",
+            "incident review",
+            "response ownership",
+            "post-incident learning checks",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_multilingual_cheat_sheet_canonical_case_note_is_localized() -> None:
@@ -14739,13 +15044,13 @@ def test_multilingual_cheat_sheet_canonical_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/cheat-sheets.zh.md")
 
     assert "Канонические сценарии для проверочных списков" in russian_text
-    assert "блоки проверок как быстрый маршрут (fast route)" in russian_text
-    assert "Триаж обращений поддержки (Support triage)" in russian_text
-    assert "Внутренний ассистент знаний (Internal knowledge assistant)" in russian_text
-    assert "Координация инцидентов (Incident coordination)" in russian_text
-    assert "безопасности (safety), шлюза инструментов (tool gateway)" in russian_text
-    assert "памяти (memory), поиска (retrieval)" in russian_text
-    assert "разбора инцидента (incident review)" in russian_text
+    assert "блоки проверок как быстрый маршрут" in russian_text
+    assert "Триаж обращений поддержки" in russian_text
+    assert "Внутренний ассистент знаний" in russian_text
+    assert "Координация инцидентов" in russian_text
+    assert "безопасности, шлюза инструментов" in russian_text
+    assert "памяти, извлечения" in russian_text
+    assert "разбора инцидента" in russian_text
 
     assert "规范检查清单案例" in chinese_text
     assert "快速路线（fast route）" in chinese_text
@@ -14761,6 +15066,24 @@ def test_multilingual_cheat_sheet_canonical_case_note_is_localized() -> None:
         "начинается с safety, tool gateway, approval",
         "начинается с memory, retrieval, source grounding",
         "начинается с rollout, observability, incident review",
+        "(Canonical checklist cases)",
+        "(fast route)",
+        "(canonical cases)",
+        "(Support triage)",
+        "(Internal knowledge assistant)",
+        "(Incident coordination)",
+        "(safety)",
+        "(tool gateway)",
+        "(approval)",
+        "(rollout checks)",
+        "(memory)",
+        "(retrieval)",
+        "(source grounding)",
+        "(tenant boundary)",
+        "(observability checks)",
+        "(incident review)",
+        "(response ownership)",
+        "(post-incident learning checks)",
         "Use these checklist blocks 作为三个 canonical cases 的 fast route",
         "从 safety、tool gateway、approval",
         "从 memory、retrieval、source grounding",
@@ -15957,25 +16280,47 @@ def test_multilingual_start_here_safe_agent_schema_route_is_localized() -> None:
 
 
 def test_reference_surfaces_safe_agent_schema_spine() -> None:
-    required_markers = (
-        "Safe-agent schema spine",
-        "trace schema",
-        "eval schema",
-        "memory/retrieval schema",
-        "MCP threat model",
-        "A2A handoff trust contract",
-        "verifier verdict record",
-        "governance action record",
-        "memory poisoning review fields",
-        "unified agent threat evidence",
-    )
-    checked_files = (
-        "docs/reference.md",
-        "docs/reference.en.md",
-        "docs/reference.zh.md",
-    )
+    required_markers_by_file = {
+        "docs/reference.md": (
+            "Цепочка схем безопасного агента",
+            "схему трасс",
+            "схему оценивания",
+            "схему памяти и поиска",
+            "модель угроз MCP",
+            "контракт доверия передачи управления A2A",
+            "запись вердикта проверяющего",
+            "запись управленческого действия",
+            "поля проверки отравления памяти",
+            "единые доказательства угроз агенту",
+        ),
+        "docs/reference.en.md": (
+            "Safe-agent schema spine",
+            "trace schema",
+            "eval schema",
+            "memory/retrieval schema",
+            "MCP threat model",
+            "A2A handoff trust contract",
+            "verifier verdict record",
+            "governance action record",
+            "memory poisoning review fields",
+            "unified agent threat evidence",
+        ),
+        "docs/reference.zh.md": (
+            "Safe-agent schema spine",
+            "trace schema",
+            "eval schema",
+            "memory/retrieval schema",
+            "MCP threat model",
+            "A2A handoff trust contract",
+            "verifier verdict record",
+            "governance action record",
+            "memory poisoning review fields",
+            "unified agent threat evidence",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
 
 
 def test_reference_safe_agent_schema_spine_links_are_clickable() -> None:
