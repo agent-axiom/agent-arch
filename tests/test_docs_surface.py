@@ -15820,6 +15820,33 @@ def test_chapter_1_has_sample_chapter_ending_template() -> None:
         _assert_files_contain_all((path,), markers)
 
 
+def test_russian_book_chapters_have_unified_chapter_ending_template() -> None:
+    chapter_paths = tuple(
+        path
+        for path in sorted(Path("docs/book").glob("part-*/chapter-*.md"))
+        if not path.name.endswith((".en.md", ".zh.md"))
+    )
+    required_markers = (
+        '!!! summary "Шаблон завершения главы"',
+        "Что запомнить:",
+        "Типичные ошибки:",
+        "Что проверить в своей системе:",
+        "Сопутствующие материалы:",
+        "Что читать дальше:",
+    )
+
+    assert len(chapter_paths) == 27
+
+    missing = []
+    for path in chapter_paths:
+        text = _read(str(path))
+        absent = [marker for marker in required_markers if marker not in text]
+        if absent:
+            missing.append((str(path), absent))
+
+    assert missing == []
+
+
 def test_chinese_entry_surfaces_disclose_draft_localization_status() -> None:
     checked_files = (
         "docs/index.zh.md",
