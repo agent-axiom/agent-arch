@@ -230,7 +230,7 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 - У сущности есть собственная роль, policy surface и lifecycle?
 - Это delegation problem или integration problem?
 - Могу ли я объяснить, почему здесь недостаточно `MCP`?
-- Не строю ли я multi-agent topology раньше, чем мне это реально нужно?
+- Не строю ли я многоагентную топологию раньше, чем мне это реально нужно?
 
 Если на эти вопросы трудно ответить, почти всегда безопаснее сначала выбрать `MCP`, а не `A2A`.
 
@@ -239,7 +239,7 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Глава 9. Песочница выполнения и MCP как интеграционный контракт](chapter-9.md)
 - [Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката](chapter-10.md)
-- [Research frontier: память, наблюдаемость и надежность multi-agent систем](../../appendix/research-frontier.md)
+- [Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем](../../appendix/research-frontier.md)
 - [Источники](../../appendix/sources.md)
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)

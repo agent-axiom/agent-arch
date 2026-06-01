@@ -151,19 +151,19 @@ postmortem:
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
-- Есть ли в postmortem точный `incident_id`?
+- Есть ли в постмортеме точный `incident_id`?
 - Восстановлены ли `trace_id`, `session_id`, `bundle_id` и `change_id`?
-- Есть ли не только root cause, но и contributing factors?
-- Зафиксированы ли control gaps?
-- Есть ли concrete corrective actions с owners и сроками?
-- Понятно ли, какие lifecycle artifacts должны обновиться?
-- Возвращается ли incident в evals и rollout criteria?
+- Есть ли не только первопричина, но и сопутствующие факторы?
+- Зафиксированы ли пробелы управления?
+- Есть ли конкретные корректирующие действия с владельцами и сроками?
+- Понятно ли, какие артефакты жизненного цикла должны обновиться?
+- Возвращается ли инцидент в оценки и критерии поэтапного выпуска?
 
 ## Что делать дальше
 
 - [Плейбук реагирования на инциденты в агентных системах](incident-response-playbook.md)
-- [Схема incident record и postmortem linkage](incident-record-schema.md)
+- [Схема записи инцидента и связи с разбором](incident-record-schema.md)
 - [Схема проверки изменений и шлюза раскатки](change-rollout-schema.md)
 - [Схема артефактов жизненного цикла](lifecycle-artifact-schema.md)
-- [Handbook по agent registry и inventory operations](registry-operations-handbook.md)
+- [Практическое руководство по реестру агентов и инвентаризации](registry-operations-handbook.md)
 - [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](../book/part-viii/chapter-21.md)
