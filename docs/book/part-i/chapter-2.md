@@ -279,6 +279,8 @@ Google правильно дисциплинирует сборку подска
 - параллелизм действительно уменьшает задержку или когнитивную нагрузку;
 - границы безопасности различаются настолько, что одному агенту нельзя давать все полномочия сразу.
 
+Практический разбор Anthropic про production multi-agent research system добавляет к этому еще более узкий критерий: многоагентность лучше всего окупается для breadth-first задач, где несколько независимых направлений можно исследовать параллельно, а затем сжать результат обратно в общий ответ.[^anthropic-multi-agent-research] Их важный инженерный урок не в том, что “агентов должно быть больше”, а в том, что качество часто покупается дополнительным токенным бюджетом, вызовами инструментов и изолированными context windows. Это нормально для дорогого research-запроса с высокой ценностью результата, но плохо для дешевого рутинного действия, плотной транзакционной логики или задачи, где все подшаги зависят от одного общего состояния.
+
 Если этих признаков нет, один агент с хорошим графом рабочего процесса почти всегда проще и надежнее.
 
 Практическая лестница усложнения выглядит так:
@@ -413,6 +415,7 @@ def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway)
 - [Глава 3. Контур безопасности и границы доверия](../part-ii/chapter-3.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
 [^langgraph-memory]: [LangGraph, Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-five-pillars]: [Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/get-started-with-vertex-ai-agent-builder)

@@ -270,6 +270,8 @@ flowchart LR
 
 Именно поэтому исследования надежности multi-agent систем полезны здесь не как призыв срочно усложнять рантайм, а как напоминание: чем сложнее оркестрация, тем богаче должен быть дизайн оценки.
 
+Разбор Anthropic про multi-agent research system добавляет к этому экономический eval-gate: если multi-agent режим выигрывает потому, что тратит больше токенов, tool calls и параллельных context windows, то релизный gate должен проверять не только качество ответа, но и оправданность этого бюджета.[^anthropic-multi-agent-research] Для breadth-first research это может быть честным trade-off. Для плотной задачи с общим состоянием тот же прирост расходов должен считаться регрессией архитектуры, даже если финальный ответ выглядит лучше на нескольких примерах.
+
 ### 5.3. Multi-turn consistency тоже стоит проверять отдельно
 
 Еще один полезный сигнал свежих работ: агент может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинном контуре взаимодействия.
@@ -536,6 +538,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - [Источники](../../appendix/sources.md)
 
 [^anthropic-claude-code-best-practices]: Anthropic, [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices).
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
