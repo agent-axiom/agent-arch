@@ -135,6 +135,21 @@ flowchart LR
 
 一个很实用的规则是：高风险决策不要交给模型的自由概率判断。最终行动权最好放在策略层和审批路径里。
 
+### 5.2. 遏制比无休止监督更强
+
+Anthropic 最近的生产经验在这里很有价值，因为它给出了一条工程不变量：agent 越有能力，风险就不只是“出错概率”，还包括可能的 blast radius。单靠权限提示守不住这条边界。用户如果看到几十个确认提示，就会开始机械地点“同意”；human-in-the-loop 很容易从控制变成仪式。[^anthropic-containment]
+
+因此，上面的威胁清单应该用一个更硬的问题来读：**如果模型错了，或者用户已经确认疲劳，agent 在物理上到底还能做什么？** 每个高风险能力不仅需要 approval rules，还需要架构层面的边界：
+
+- egress controls：执行环境可以连接到哪里；
+- filesystem scope：哪些目录、mount 和 snapshot 可访问；
+- credentials scope：本次运行里存在什么 token，以及它们多快过期；
+- rollback boundary：哪些影响可以回滚，而不必恢复整个系统；
+- audit boundary：哪些事件可以在不暴露用户数据的情况下被调试。
+
+这不是取消审批，而是把审批放回正确位置：approval 决定动作能不能执行；containment 在决策错误、不完整或被攻击时限制损害。
+
+
 ## 6. 防护栏更适合做成多层，而不是一个过滤器
 
 OpenAI 的实用指南在这里非常贴近现实：防护栏更适合设计成分层防御，而不是一个“聪明的入口检查”。[^openai-practical]
