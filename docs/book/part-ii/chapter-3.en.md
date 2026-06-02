@@ -135,6 +135,21 @@ This distinction matters not for taxonomy itself, but because the mitigation pat
 
 The practical rule is simple: high-stakes decisions should not be left to unconstrained probabilistic judgment. The final right to act is better kept in the policy layer and approval path.
 
+### 5.2. Containment is stronger than endless supervision
+
+Anthropic's recent production lesson is useful here as an engineering invariant: as an agent becomes more capable, the relevant risk is not only the chance of a mistake, but also the possible blast radius. Permission prompts alone do not hold that boundary. If users see dozens of prompts, they start approving mechanically; human-in-the-loop control can degrade into ritual.[^anthropic-containment]
+
+So the threat list above should be read through a harder question: **what can the agent physically do if the model is wrong or the user is tired?** Every risky capability needs not only approval rules, but architectural limits:
+
+- egress controls: where the execution environment can connect;
+- filesystem scope: which directories, mounts, and snapshots are reachable;
+- credentials scope: which tokens exist inside the run and how quickly they expire;
+- rollback boundary: what can be undone without restoring the whole system;
+- audit boundary: which events remain debuggable without exposing user data.
+
+This does not remove approvals. It puts them in the right place: approval decides whether an action may run; containment limits the damage if that decision is wrong, incomplete, or attacked.
+
+
 ## 6. Guardrails Work Best as Layers, Not as One Filter
 
 The OpenAI practical guide maps well to engineering reality here: guardrails are more effective as layered defense than as one "smart" check at ingress.[^openai-practical]

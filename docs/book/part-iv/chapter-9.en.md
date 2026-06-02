@@ -453,6 +453,25 @@ That maps cleanly onto the execution contracts in this chapter. A platform needs
 
 Such a manifest does not replace the policy layer. It makes the execution boundary reviewable: reviewers can see what enters the workspace, what rights the agent receives, and whether the work can be safely resumed or snapshotted.
 
+### 9.3. Brain / hands / session as an isolation contract
+
+Anthropic's Managed Agents architecture states a useful runtime shape for this chapter: `session`, `harness`, and `sandbox/tools` should be treated as separate interfaces, not as one container with magical internal logic.[^anthropic-managed-agents]
+
+- `session` is the append-only log of events, decisions, tool calls, approvals, and results;
+- `harness` is the replaceable control loop that calls the model and routes capability requests;
+- `hands` are the sandboxes, tools, and adapters that actually read files, touch networks, and create side effects.
+
+That split is useful for scaling, but it is also a security boundary. If the harness hangs, the session should remain readable. If the sandbox dies, the session should not disappear with it. If an operator needs to debug, they should inspect events, profiles, and snapshots, not open a shell inside an environment that also contains user data.
+
+In this chapter's terms, a capability request should pass through a short chain:
+
+```text
+capability request → policy → contained execution → telemetry → incident/eval feedback
+```
+
+The chain makes containment reviewable: policy chooses the execution profile, hands execute inside the restricted environment, telemetry records the boundary, and assurance/eval loops use the result for the next decision.
+
+
 ## 10. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.

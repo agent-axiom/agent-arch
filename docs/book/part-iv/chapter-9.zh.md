@@ -453,6 +453,25 @@ OpenAI 最近的 Sandbox Agents 文档给这个问题补了一种很实用的形
 
 这样的 manifest 不能替代策略层。它让执行边界变得可审查：reviewer 可以看到什么进入了 workspace、智能体拿到了哪些权限，以及这项工作是否能安全地 resume 或 snapshot。
 
+### 9.3. Brain / hands / session 作为隔离契约
+
+Anthropic 的 Managed Agents 架构给本章提供了一个很实用的 runtime 形状：`session`、`harness` 和 `sandbox/tools` 应该被看作彼此分离的接口，而不是一个装满神奇内部逻辑的容器。[^anthropic-managed-agents]
+
+- `session` 是事件、决策、tool calls、approvals 和结果的 append-only log；
+- `harness` 是可替换的 control loop，负责调用模型并路由 capability request；
+- `hands` 是真正读取文件、访问网络、产生副作用的 sandboxes、tools 和 adapters。
+
+这种拆分不只是为了扩展性，它本身也是安全边界。harness 卡住时，session 仍应可读。sandbox 死掉时，session 不应跟着消失。operator 需要 debug 时，应该查看 events、profiles 和 snapshots，而不是进入一个同时持有用户数据的环境开 shell。
+
+按本章的语言，一个 capability request 应该经过一条短链：
+
+```text
+capability request → policy → contained execution → telemetry → incident/eval feedback
+```
+
+这条链让 containment 可以被审查：policy 选择执行 profile，hands 在受限环境内执行，telemetry 记录边界，assurance/eval loops 再用结果影响下一次决策。
+
+
 ## 10. 一个简单的能力分发示例
 
 这个小骨架展示的核心思想是：传输和执行画像来自能力契约，而不是由模型临时决定。

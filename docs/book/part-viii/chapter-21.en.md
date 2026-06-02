@@ -194,6 +194,21 @@ flowchart LR
 
 </div>
 
+### 6.1. Containment should be the first governed action
+
+Once a signal is credible, the team should not wait for full root-cause analysis before reducing blast radius. Containment practice suggests a faster first move: shift the run, capability, sandbox profile, or rollout wave into a narrower mode, then investigate more deeply.[^anthropic-containment]
+
+Common fast actions are:
+
+- close external egress and keep only the brokered internal gateway;
+- move a write capability to approval-only or deny-by-default;
+- revoke delegated credentials and require re-approval after resume;
+- stop sandbox snapshot reuse and start fresh sessions;
+- preserve session evidence while forbidding direct debug inside an environment containing user data.
+
+Then the assurance loop is not merely “find the bug.” It becomes an operational loop: signal → containment decision → owner → remediation → updated policy/eval/telemetry.
+
+
 ## 7. Remediation should change the system, not only the document trail
 
 A common weakness is this: the incident is reviewed, a document is written, but the actual system behavior barely changes.

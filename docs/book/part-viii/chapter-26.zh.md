@@ -235,6 +235,21 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 它也应该和来源链章节（provenance chapter）保持分离。可观测性关注系统是否发出了足够的证据（evidence）、覆盖（coverage）与关联（correlation），足以支持调查和检测；来源链（provenance）关注的是，后续决策究竟由哪一组已批准工件（approved artifacts）、契约版本（contract version）或受治理包（governed bundle）来支撑。
 
+#### 7.1.1. Brain / hands / session 拆分的遥测
+
+如果 runtime 拆分了 session、harness 和 hands，telemetry 就应该显示这条绑定，而不只是一个泛泛的 `tool_called` event。[^anthropic-managed-agents] 最小有用事件包括：
+
+- `session_event_appended`：哪个事件进入 append-only log；
+- `harness_decision`：哪个 control loop 选择了下一步；
+- `contained_execution_started`：哪个 sandbox/tool profile 成为本次动作的 hands；
+- `egress_decision`：hands 能连接哪里、不能连接哪里；
+- `credential_scope_bound`：发放了哪些 credentials，何时过期；
+- `debug_surface_used`：operator 通过哪个安全通道调查问题；
+- `containment_feedback`：哪些后续 policy 或 assurance decision 因 evidence 而改变。
+
+这样，observability 记录的不只是“执行发生了”，还包括执行确实经过受限 hands、绑定到具体 session、并由具体 harness 管理的证据。
+
+
 ### 7.2. 将闭环映射到 NIST AI RMF（Mapping the Loop to NIST AI RMF）
 
 这个闭环（closed loop）也提供了一种务实方式，把可观测性（observability）映射到 NIST AI RMF，而不是把本章变成合规清单（compliance checklist）。[^nist-ai-rmf]

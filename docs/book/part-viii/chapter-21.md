@@ -193,6 +193,21 @@ flowchart LR
 
 </div>
 
+### 6.1. Сдерживание должно быть первым управляемым действием
+
+Когда сигнал уже правдоподобен, команда не должна ждать полного root-cause analysis, чтобы уменьшить blast radius. Практика containment подсказывает более быстрый первый ход: перевести run, capability, sandbox profile или rollout wave в более узкий режим, а уже потом разбираться глубже.[^anthropic-containment]
+
+Типовые быстрые действия:
+
+- закрыть внешний egress и оставить только brokered internal gateway;
+- перевести write capability в approval-only или deny-by-default;
+- отозвать delegated credentials и потребовать re-approval после resume;
+- остановить sandbox snapshot reuse и запускать fresh session;
+- сохранить session evidence, но запретить direct debug внутри окружения с пользовательскими данными.
+
+Так assurance loop не сводится к «найти баг». Он становится операционным контуром: signal → containment decision → owner → remediation → updated policy/eval/telemetry.
+
+
 ## 7. Исправление должно менять систему, а не только документацию
 
 Очень частая слабость: инцидент вроде бы разобрали, документ написали, а поведение системы почти не изменилось.
