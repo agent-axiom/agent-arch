@@ -357,6 +357,20 @@ def continue_run(run_id: str):
 
 参考运行时的价值不在于功能最大化，而在于形态清晰。一个小而干净的实现，远比一个谁都看不懂的“万能机器”更有用。
 
+### 12.1. Runtime 是 session、harness 和 hands 的拆分
+
+检验 reference runtime 成熟度的另一个办法，是问它的部件能否彼此独立替换。在 managed-agent 形状里，session、harness 和 hands 被拆成接口，而不是同一个进程里的实现细节。[^anthropic-managed-agents]
+
+对 reference package 来说，这意味着：
+
+- session 保持为 append-only evidence log，并且能在 executor 故障后继续存在；
+- harness 可以作为 control loop 被替换，而不需要迁移用户 workspace；
+- sandbox/tools 作为 contained hands 工作，并带有显式的 network、filesystem、secrets 和 snapshot profiles；
+- debug 通过 trace、lifecycle summary 和 sandbox profile 完成，而不是直接进入持有用户数据的环境。
+
+这也和本章前面的内容相配：background execution、resumable runs 和 capability sessions 不再是“容器里的长请求”，而是 session state、control loop 和 contained execution surface 之间受治理的绑定。
+
+
 ## 13. 一个运行时配置示例
 
 下面是一个通过配置定义运行时形态、而不是把所有决定都写死在代码里的例子：

@@ -148,6 +148,20 @@ A practical field set usually looks like this:
 
 With that contract, the runtime can already behave predictably instead of adapting ad hoc to every capability.
 
+### 5.1. Policy chooses not only the tool, but also the hands
+
+Once brain / hands / session are split, the policy layer gets one more responsibility: it must decide not only whether a capability is allowed, but also **which hands** may execute it.[^anthropic-managed-agents]
+
+The same logical action can have different profiles:
+
+- read-only through a brokered internal gateway;
+- write through a high-risk tool with approval and an idempotency key;
+- shell-like operation only inside an ephemeral sandbox with no external egress;
+- delegated subagent execution without inheriting secrets by default.
+
+So the capability catalog is stronger when it includes `execution_profile`, `sandbox_profile_id`, `egress_profile`, `credential_scope`, `debug_surface`, and `rollback_boundary`. The policy decision then becomes not just `allow`, but a route: which harness may continue, which hands are available, which session evidence must be recorded, and where the blast-radius boundary sits.
+
+
 ## 6. Approval Should Look Like an Interruptible Runtime Path, Not a Side Conversation
 
 A policy layer becomes much more real when approval is modeled as part of runtime control flow rather than as a manual process outside the system. LangGraph's interrupt model is useful here because it makes pause, review, and resume explicit runtime primitives instead of ad hoc human workarounds.[^langgraph-interrupts]

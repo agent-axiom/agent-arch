@@ -148,6 +148,20 @@ Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropi
 
 有了这样的契约，运行时才能以可预测的方式运行，而不是对每个能力临时适配。
 
+### 5.1. 策略选择的不只是工具，也是 hands
+
+一旦 brain / hands / session 被拆开，policy layer 就多了一项职责：它不仅要决定 capability 是否允许，还要决定**由哪些 hands 来执行**。[^anthropic-managed-agents]
+
+同一个 logical action 可以有不同 profile：
+
+- 通过 brokered internal gateway 只读；
+- 通过 high-risk tool 写入，并要求 approval 和 idempotency key；
+- shell-like operation 只能在没有外部 egress 的 ephemeral sandbox 中运行；
+- delegated subagent execution 默认不继承 secrets。
+
+因此，capability catalog 最好包含 `execution_profile`、`sandbox_profile_id`、`egress_profile`、`credential_scope`、`debug_surface` 和 `rollback_boundary`。这样，policy decision 就不只是 `allow`，而是一条 route：哪个 harness 可以继续，哪些 hands 可用，必须记录哪些 session evidence，以及 blast-radius boundary 在哪里。
+
+
 ## 6. 审批应该表现成可中断运行时路径，而不是旁路的人类对话
 
 当审批被建模为运行时控制流的一部分，而不是系统外部的手工流程时，策略层才会真正落地。LangGraph 的 interrupts 模型在这里很有用，因为它把 pause、审查与 resume 变成了显式运行时基础件，而不是临时人工补丁。[^langgraph-interrupts]

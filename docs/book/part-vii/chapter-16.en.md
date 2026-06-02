@@ -357,6 +357,20 @@ At the start, you do not need all of this immediately:
 
 The value of a reference runtime is not maximal power. It is clarity of form. A small clean implementation is better than a universal machine nobody understands.
 
+### 12.1. Runtime as a split between session, harness, and hands
+
+Another way to test the maturity of the reference runtime is to ask whether its parts can be replaced independently. In the managed-agent shape, session, harness, and hands are separated as interfaces rather than treated as details of one process.[^anthropic-managed-agents]
+
+For the reference package, that means:
+
+- session remains an append-only evidence log and survives executor failure;
+- harness can change as a control loop without migrating the user's workspace;
+- sandbox/tools act as contained hands with explicit network, filesystem, secrets, and snapshot profiles;
+- debugging happens through trace, lifecycle summary, and sandbox profile, not through direct access to an environment containing user data.
+
+This fits the earlier sections of the chapter: background execution, resumable runs, and capability sessions stop being “a long request inside a container” and become a governed binding between session state, control loop, and contained execution surface.
+
+
 ## 13. Example Runtime Configuration
 
 Here is an example config that defines the runtime shape without hardcoding every decision:

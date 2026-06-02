@@ -235,6 +235,21 @@ That framing also keeps this chapter separate from the assurance chapter and the
 
 It should also stay separate from the provenance chapter. Observability asks whether the system emitted enough evidence, coverage, and correlation to investigate or detect. Provenance asks which approved artifact set, contract version, or governed bundle later justified the decision.
 
+#### 7.1.1. Telemetry for the brain / hands / session split
+
+If the runtime splits session, harness, and hands, telemetry should show that binding rather than only a generic `tool_called` event.[^anthropic-managed-agents] The minimum useful events are:
+
+- `session_event_appended`: which event entered the append-only log;
+- `harness_decision`: which control loop chose the next step;
+- `contained_execution_started`: which sandbox/tool profile became the hands for the action;
+- `egress_decision`: where the hands could and could not connect;
+- `credential_scope_bound`: which credentials were issued and when they expire;
+- `debug_surface_used`: which safe channel an operator used to investigate;
+- `containment_feedback`: which later policy or assurance decision changed because of the evidence.
+
+Observability then records not only that execution happened, but also evidence that it passed through restricted hands bound to a concrete session and governed by a concrete harness.
+
+
 ### 7.2. Mapping the Loop to NIST AI RMF
 
 This closed loop also gives a practical way to map observability to NIST AI RMF without turning the chapter into a compliance checklist.[^nist-ai-rmf]
