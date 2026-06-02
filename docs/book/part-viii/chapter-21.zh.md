@@ -194,6 +194,21 @@ flowchart LR
 
 </div>
 
+### 6.1. 遏制应该是第一个受治理动作
+
+一旦信号可信，团队不应该等完整 root-cause analysis 之后才缩小 blast radius。containment 实践提示更快的第一步：先把 run、capability、sandbox profile 或 rollout wave 收窄到更安全模式，再深入调查。[^anthropic-containment]
+
+常见的快速动作包括：
+
+- 关闭外部 egress，只保留 brokered internal gateway；
+- 把 write capability 切到 approval-only 或 deny-by-default；
+- 撤销 delegated credentials，并要求 resume 后重新审批；
+- 停止复用 sandbox snapshot，改用 fresh session；
+- 保留 session evidence，但禁止直接进入含用户数据的环境 debug。
+
+这样，assurance loop 就不只是“找 bug”。它变成操作闭环：signal → containment decision → owner → remediation → updated policy/eval/telemetry。
+
+
 ## 7. 修复应该改变系统，而不只是增加文档
 
 很常见的一种弱点是：事故被复盘了，文档也写了，但系统本身几乎没变。

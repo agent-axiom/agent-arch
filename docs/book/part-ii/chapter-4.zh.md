@@ -183,6 +183,22 @@ sequenceDiagram
 
 如果这些问题里有任何一个回答不上来，那你大概率还没有真正的审计轨迹，而只是有一些可观测性，却没有足够的问责性。[^google-ai-controls]
 
+### 5.2. 审计轨迹应该显示遏制边界
+
+如果 agent 在 sandbox、VM、brokered gateway 或受限 egress profile 中运行，这件事应该出现在 audit trail 里，而不是只存在于团队口头约定中。调查时，只知道模型调用了某个工具还不够；还必须知道**调用发生时生效的是哪条执行边界**。[^anthropic-containment]
+
+最小有用关联包括：
+
+- `sandbox_profile_id` 或 execution profile 名称；
+- `egress_policy` 以及最终 egress decision；
+- `filesystem_scope` 或 workspace/snapshot id；
+- `credential_scope` 和 delegated token 的生命周期；
+- `policy_decision_id`，说明动作为什么落入这个 profile；
+- `rollback_ref` 或其他安全恢复点指针。
+
+这样，audit trail 回答的就不只是“谁允许了这个动作？”，还包括更重要的问题：“为什么即便动作被允许，也不能越过预期的 blast radius？”
+
+
 ## 6. 安全边界本质上是一组习惯
 
 大家总会想找一个神奇库，仿佛它能“自动做安全”。但现实里，边界更像是一组习惯：

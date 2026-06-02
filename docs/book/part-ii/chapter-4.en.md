@@ -183,6 +183,22 @@ In practice, an audit trail should answer four questions:
 
 If any of those questions cannot be answered, you most likely do not yet have an audit trail. You have observability without enough accountability.[^google-ai-controls]
 
+### 5.2. The audit trail should show the containment boundary
+
+If an agent runs inside a sandbox, VM, brokered gateway, or restricted egress profile, that fact should be visible in the audit trail rather than preserved as team folklore. For investigation, it is not enough to know that the model called a tool. You need to know **which execution boundary was active at the moment of the call**.[^anthropic-containment]
+
+The minimum useful links are:
+
+- `sandbox_profile_id` or execution profile name;
+- `egress_policy` and the resulting egress decision;
+- `filesystem_scope` or workspace/snapshot id;
+- `credential_scope` and delegated-token lifetime;
+- `policy_decision_id`, showing why the action landed in that profile;
+- `rollback_ref` or another pointer to a safe restoration point.
+
+Then the audit trail answers not only “who allowed the action?” but also the more important question: “why could even an allowed action not exceed the intended blast radius?”
+
+
 ## 6. The Security Perimeter as a Set of Habits
 
 It is very tempting to look for one magic library that will "do safety." In practice, the perimeter is a set of habits:
