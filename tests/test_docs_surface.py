@@ -75,7 +75,11 @@ def test_all_appendix_pages_carry_canonical_case_markers() -> None:
     missing = []
     for path in appendix_paths:
         text = _read(str(path))
-        if "Canonical " not in text and "Канонические " not in text:
+        if (
+            "Canonical " not in text
+            and "Канонические " not in text
+            and "Каноническая " not in text
+        ):
             missing.append(str(path))
 
     assert missing == []
@@ -6810,27 +6814,55 @@ def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
 
 
 def test_memory_retrieval_schema_includes_poisoning_review_fields() -> None:
-    required_markers = (
-        "memory poisoning",
-        "memory poisoning review fields",
-        "write_trust_boundary",
-        "untrusted_write",
-        "activation_policy",
-        "delayed_activation_review",
-        "contamination_scope",
-        "policy_influence",
-        "provenance_check",
-        "quarantine_state",
-        "rollback_ref",
-        "quarantine and rollback",
-    )
-    checked_files = (
-        "docs/appendix/memory-retrieval-schema.md",
-        "docs/appendix/memory-retrieval-schema.en.md",
-        "docs/appendix/memory-retrieval-schema.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/memory-retrieval-schema.md": (
+            "проверки отравления памяти",
+            "поля проверки отравления памяти",
+            "write_trust_boundary",
+            "untrusted_write",
+            "activation_policy",
+            "delayed_activation_review",
+            "contamination_scope",
+            "policy_influence",
+            "provenance_check",
+            "quarantine_state",
+            "rollback_ref",
+            "карантина и отката",
+        ),
+        "docs/appendix/memory-retrieval-schema.en.md": (
+            "memory poisoning",
+            "memory poisoning review fields",
+            "write_trust_boundary",
+            "untrusted_write",
+            "activation_policy",
+            "delayed_activation_review",
+            "contamination_scope",
+            "policy_influence",
+            "provenance_check",
+            "quarantine_state",
+            "rollback_ref",
+            "quarantine and rollback",
+        ),
+        "docs/appendix/memory-retrieval-schema.zh.md": (
+            "记忆投毒复核",
+            "记忆投毒复核字段",
+            "write_trust_boundary",
+            "untrusted_write",
+            "activation_policy",
+            "delayed_activation_review",
+            "contamination_scope",
+            "policy_influence",
+            "provenance_check",
+            "quarantine_state",
+            "rollback_ref",
+            "quarantine and rollback",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chapter_5_memory_poisoning_scenario_is_documented() -> None:
@@ -12069,38 +12101,84 @@ def test_reference_package_scopes_three_canonical_cases_to_runtime() -> None:
     from agent_runtime_ref.config import load_agent_profile
 
     agent, _ = load_agent_profile(ROOT / "agent_runtime_ref/configs/agent.yaml")
-    required_markers = (
-        "Canonical case runtime scope",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "runnable baseline",
-        "write capabilities",
-        "approvals",
-        "duplicate-ticket recovery",
-        "coverage lenses",
-        "retrieval",
-        "memory",
-        "freshness",
-        "knowledge provenance",
-        "notification side effects",
-        "response ownership",
-        "post-incident learning",
-        "runnable configs",
-        f"agent_id `{agent.agent_id}`",
-        f"`{agent.display_name}`",
-        f"owner_team `{agent.owner_team}`",
-        f"runtime_principal `{agent.runtime_principal}`",
-        "policy, telemetry, lifecycle",
-        "registry contracts",
-    )
-    checked_files = (
-        "docs/appendix/reference-package.md",
-        "docs/appendix/reference-package.en.md",
-        "docs/appendix/reference-package.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/reference-package.md": (
+            "Каноническая область выполнения сценариев",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "исполняемую базовую линию",
+            "записывающих возможностей",
+            "подтверждений",
+            "восстановления после дубля тикета",
+            "контрольными линзами покрытия",
+            "поиск, память, свежесть",
+            "происхождение знаний",
+            "побочные эффекты уведомлений",
+            "владение ответом",
+            "обучение после инцидента",
+            "исполняемые конфигурации",
+            f"`agent_id` `{agent.agent_id}`",
+            f"`{agent.display_name}`",
+            f"`owner_team` `{agent.owner_team}`",
+            f"`runtime_principal` `{agent.runtime_principal}`",
+            "контракты политик, телеметрии, жизненного цикла и реестра",
+        ),
+        "docs/appendix/reference-package.en.md": (
+            "Canonical case runtime scope",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "runnable baseline",
+            "write capabilities",
+            "approvals",
+            "duplicate-ticket recovery",
+            "coverage lenses",
+            "retrieval",
+            "memory",
+            "freshness",
+            "knowledge provenance",
+            "notification side effects",
+            "response ownership",
+            "post-incident learning",
+            "runnable configs",
+            f"agent_id `{agent.agent_id}`",
+            f"`{agent.display_name}`",
+            f"owner_team `{agent.owner_team}`",
+            f"runtime_principal `{agent.runtime_principal}`",
+            "policy, telemetry, lifecycle",
+            "registry contracts",
+        ),
+        "docs/appendix/reference-package.zh.md": (
+            "规范案例运行时范围",
+            "支持分诊",
+            "内部知识助手",
+            "事故协调",
+            "可运行基线",
+            "写入能力",
+            "审批",
+            "重复工单恢复",
+            "覆盖视角",
+            "检索",
+            "记忆",
+            "新鲜度",
+            "知识来源",
+            "通知副作用",
+            "响应归属",
+            "事件后学习",
+            "可运行配置",
+            f"agent_id `{agent.agent_id}`",
+            f"`{agent.display_name}`",
+            f"owner_team `{agent.owner_team}`",
+            f"runtime_principal `{agent.runtime_principal}`",
+            "策略、遥测、生命周期和注册表契约",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chinese_reference_package_generic_loader_labels_are_localized() -> None:
@@ -12439,12 +12517,12 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
     russian_text = _read("docs/appendix/reference-package.md")
     chinese_text = _read("docs/appendix/reference-package.zh.md")
 
-    assert "Канонический runtime-scope сценариев" in russian_text
-    assert "исполняемую базовую линию (runnable baseline)" in russian_text
-    assert "записывающих возможностей (write capabilities)" in russian_text
-    assert "линзами покрытия (coverage lenses)" in russian_text
-    assert "поиск (retrieval)" in russian_text
-    assert "трассы (traces)" in russian_text
+    assert "Каноническая область выполнения сценариев" in russian_text
+    assert "исполняемую базовую линию" in russian_text
+    assert "записывающих возможностей" in russian_text
+    assert "контрольными линзами покрытия" in russian_text
+    assert "поиск, память, свежесть" in russian_text
+    assert "трассы, эскалацию" in russian_text
 
     assert "支持分诊（support-triage）的运行时锚点" in chinese_text
     assert "追踪/会话 ID（trace/session IDs）" in chinese_text
@@ -12466,6 +12544,12 @@ def test_multilingual_reference_package_runtime_scope_note_is_localized() -> Non
     assert "运行时控制模式" in chinese_text
 
     forbidden_markers = (
+        "Канонический runtime-scope сценариев",
+        "исполняемую базовую линию (runnable baseline)",
+        "записывающих возможностей (write capabilities)",
+        "линзами покрытия (coverage lenses)",
+        "поиск (retrieval)",
+        "трассы (traces)",
         "как runnable baseline для write capabilities",
         "остаются coverage lenses",
         "проверяет retrieval, memory",
@@ -12660,30 +12744,64 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
 
 
 def test_approval_schema_surfaces_three_canonical_approval_cases() -> None:
-    required_markers = (
-        "Canonical approval cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "explicit human approval",
-        "idempotency_key",
-        "duplicate-ticket recovery evidence",
-        "memory writes",
-        "access-control exceptions",
-        "source visibility decisions",
-        "approval trail",
-        "escalation authority",
-        "notification side effects",
-        "response ownership transfer",
-        "post-incident learning updates",
-    )
-    checked_files = (
-        "docs/appendix/approval-schema.md",
-        "docs/appendix/approval-schema.en.md",
-        "docs/appendix/approval-schema.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/approval-schema.md": (
+            "Канонические сценарии подтверждений",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "явного подтверждения человеком",
+            "idempotency_key",
+            "доказательств восстановления после дубля тикета",
+            "записей в память",
+            "исключений контроля доступа",
+            "решений о видимости источников",
+            "следа подтверждений",
+            "полномочий эскалации",
+            "побочных эффектов уведомлений",
+            "передачи владения ответом",
+            "обновлений обучения после инцидента",
+        ),
+        "docs/appendix/approval-schema.en.md": (
+            "Canonical approval cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "explicit human approval",
+            "idempotency_key",
+            "duplicate-ticket recovery evidence",
+            "memory writes",
+            "access-control exceptions",
+            "source visibility decisions",
+            "approval trail",
+            "escalation authority",
+            "notification side effects",
+            "response ownership transfer",
+            "post-incident learning updates",
+        ),
+        "docs/appendix/approval-schema.zh.md": (
+            "规范审批案例",
+            "支持分流",
+            "内部知识助手",
+            "事件协调",
+            "明确的人工审批",
+            "idempotency_key",
+            "重复工单恢复证据",
+            "记忆写入",
+            "访问控制例外",
+            "来源可见性决策",
+            "审批轨迹",
+            "升级权限",
+            "通知副作用",
+            "响应归属转移",
+            "事件后学习更新",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chinese_approval_schema_sandbox_labels_are_localized() -> None:
@@ -12818,11 +12936,10 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/approval-schema.zh.md")
 
     assert "Канонические сценарии подтверждений" in russian_text
-    assert "Запись подтверждения (approval record)" in russian_text
-    assert "пути записи (write path)" in russian_text
-    assert "явного подтверждения человеком (explicit human approval)" in russian_text
-    assert "исключений контроля доступа (access-control exceptions)" in russian_text
-    assert "следа подтверждений (approval trail)" in russian_text
+    assert "Запись подтверждения нужна не только для пути записи" in russian_text
+    assert "явного подтверждения человеком" in russian_text
+    assert "исключений контроля доступа" in russian_text
+    assert "следа подтверждений" in russian_text
 
     assert "规范审批案例" in chinese_text
     assert "审批记录（approval record）" in chinese_text
@@ -12838,6 +12955,11 @@ def test_multilingual_approval_schema_case_note_is_localized() -> None:
     assert "它和追踪模式的关系" in chinese_text
 
     forbidden_markers = (
+        "Запись подтверждения (approval record)",
+        "пути записи (write path)",
+        "явного подтверждения человеком (explicit human approval)",
+        "исключений контроля доступа (access-control exceptions)",
+        "следа подтверждений (approval trail)",
         "Approval record нужен не только для write path",
         "требует explicit human approval",
         "требует approval trail для escalation authority",
@@ -14037,36 +14159,82 @@ def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
 
 
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
-    required_markers = (
-        "Canonical memory cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "memory boundaries",
-        "requester context",
-        "ticket state",
-        "idempotency_key",
-        "short-lived working notes",
-        "retrieval freshness",
-        "source attribution",
-        "tenant filters",
-        "memory provenance",
-        "access control",
-        "incident timeline",
-        "response ownership",
-        "handoff summaries",
-        "escalation status",
-        "post-incident lessons",
-        "transient incident noise",
-        "durable truth",
-    )
-    checked_files = (
-        "docs/appendix/memory-retrieval-schema.md",
-        "docs/appendix/memory-retrieval-schema.en.md",
-        "docs/appendix/memory-retrieval-schema.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/memory-retrieval-schema.md": (
+            "Канонические сценарии памяти",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "границы памяти",
+            "контекст запрашивающего",
+            "состояние тикета",
+            "idempotency_key",
+            "короткоживущие рабочие заметки",
+            "свежести поиска",
+            "привязки к источникам",
+            "фильтров арендатора",
+            "происхождения памяти",
+            "контроля доступа",
+            "таймлайн инцидента",
+            "владение ответом",
+            "сводки передачи управления",
+            "статус эскалации",
+            "уроки после инцидента",
+            "временный шум инцидента",
+            "долговечную истину",
+        ),
+        "docs/appendix/memory-retrieval-schema.en.md": (
+            "Canonical memory cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "memory boundaries",
+            "requester context",
+            "ticket state",
+            "idempotency_key",
+            "short-lived working notes",
+            "retrieval freshness",
+            "source attribution",
+            "tenant filters",
+            "memory provenance",
+            "access control",
+            "incident timeline",
+            "response ownership",
+            "handoff summaries",
+            "escalation status",
+            "post-incident lessons",
+            "transient incident noise",
+            "durable truth",
+        ),
+        "docs/appendix/memory-retrieval-schema.zh.md": (
+            "规范记忆案例",
+            "支持分流",
+            "内部知识助手",
+            "事件协调",
+            "记忆边界",
+            "请求者上下文",
+            "工单状态",
+            "idempotency_key",
+            "短期工作笔记",
+            "检索新鲜度",
+            "来源归因",
+            "租户过滤器",
+            "记忆来源",
+            "访问控制",
+            "事件时间线",
+            "响应归属",
+            "交接摘要",
+            "升级状态",
+            "临时事件噪声",
+            "事件后经验",
+            "持久真相",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_chinese_memory_retrieval_poisoning_labels_are_localized() -> None:
@@ -14192,11 +14360,10 @@ def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/memory-retrieval-schema.zh.md")
 
     assert "Канонические сценарии памяти" in russian_text
-    assert "Контракт памяти и поиска (memory and retrieval contract)" in russian_text
-    assert "границы памяти (memory boundaries)" in russian_text
-    assert "контекст запрашивающего (requester context)" in russian_text
-    assert "свежести поиска (retrieval freshness)" in russian_text
-    assert "временный шум инцидента (transient incident noise)" in russian_text
+    assert "Контракт памяти и поиска должен отделять разные границы памяти" in russian_text
+    assert "контекст запрашивающего" in russian_text
+    assert "свежести поиска" in russian_text
+    assert "временный шум инцидента" in russian_text
 
     assert "规范记忆案例" in chinese_text
     assert "记忆与检索契约（memory and retrieval contract）" in chinese_text
@@ -14209,6 +14376,11 @@ def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
     assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
+        "Контракт памяти и поиска (memory and retrieval contract)",
+        "границы памяти (memory boundaries)",
+        "контекст запрашивающего (requester context)",
+        "свежести поиска (retrieval freshness)",
+        "временный шум инцидента (transient incident noise)",
         "Memory and retrieval contract должен",
         "разные memory boundaries",
         "хранит requester context",
@@ -14233,36 +14405,82 @@ def test_multilingual_memory_retrieval_case_note_is_localized() -> None:
 
 
 def test_postmortem_template_surfaces_three_canonical_postmortem_cases() -> None:
-    required_markers = (
-        "Canonical postmortem cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "failure classes",
-        "control loop",
-        "duplicate-ticket root cause",
-        "approval scope",
-        "idempotency_key",
-        "side-effect containment",
-        "eval/rollout correction",
-        "stale source",
-        "retrieval freshness",
-        "memory provenance",
-        "access-control gap",
-        "knowledge-base correction",
-        "escalation delay",
-        "notification side effects",
-        "response ownership gap",
-        "handoff breakdown",
-        "post-incident learning update",
-    )
-    checked_files = (
-        "docs/appendix/postmortem-template.md",
-        "docs/appendix/postmortem-template.en.md",
-        "docs/appendix/postmortem-template.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/postmortem-template.md": (
+            "Канонические сценарии разбора инцидентов",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "классы отказов",
+            "контур управления",
+            "корневую причину дубля тикета",
+            "область подтверждения",
+            "idempotency_key",
+            "сдерживание побочного эффекта",
+            "исправление оценки и поэтапного выпуска",
+            "устаревший источник",
+            "свежесть поиска",
+            "происхождение памяти",
+            "разрыв контроля доступа",
+            "исправление базы знаний",
+            "задержку эскалации",
+            "побочные эффекты уведомлений",
+            "разрыв владения ответом",
+            "сбой передачи управления",
+            "обновление обучения после инцидента",
+        ),
+        "docs/appendix/postmortem-template.en.md": (
+            "Canonical postmortem cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "failure classes",
+            "control loop",
+            "duplicate-ticket root cause",
+            "approval scope",
+            "idempotency_key",
+            "side-effect containment",
+            "eval/rollout correction",
+            "stale source",
+            "retrieval freshness",
+            "memory provenance",
+            "access-control gap",
+            "knowledge-base correction",
+            "escalation delay",
+            "notification side effects",
+            "response ownership gap",
+            "handoff breakdown",
+            "post-incident learning update",
+        ),
+        "docs/appendix/postmortem-template.zh.md": (
+            "规范事后复盘案例",
+            "支持分流",
+            "内部知识助手",
+            "事件协调",
+            "失败类别",
+            "控制循环",
+            "重复工单根因",
+            "审批范围",
+            "idempotency_key",
+            "副作用遏制",
+            "评测/发布修正",
+            "陈旧来源",
+            "检索新鲜度",
+            "记忆来源",
+            "访问控制缺口",
+            "知识库修正",
+            "升级延迟",
+            "通知副作用",
+            "响应归属缺口",
+            "交接崩溃",
+            "事件后学习更新",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_multilingual_postmortem_template_case_note_is_localized() -> None:
@@ -14270,11 +14488,11 @@ def test_multilingual_postmortem_template_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/postmortem-template.zh.md")
 
     assert "Канонические сценарии разбора инцидентов" in russian_text
-    assert "Разбор инцидента (postmortem)" in russian_text
-    assert "классы отказов (failure classes)" in russian_text
-    assert "контур управления (control loop)" in russian_text
-    assert "корневую причину дубля тикета (duplicate-ticket root cause)" in russian_text
-    assert "задержку эскалации (escalation delay)" in russian_text
+    assert "Разбор инцидента должен возвращать" in russian_text
+    assert "классы отказов" in russian_text
+    assert "контур управления" in russian_text
+    assert "корневую причину дубля тикета" in russian_text
+    assert "задержку эскалации" in russian_text
 
     assert "规范事后复盘案例" in chinese_text
     assert "事后复盘（postmortem）" in chinese_text
@@ -14287,6 +14505,11 @@ def test_multilingual_postmortem_template_case_note_is_localized() -> None:
     assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
+        "Разбор инцидента (postmortem)",
+        "классы отказов (failure classes)",
+        "контур управления (control loop)",
+        "корневую причину дубля тикета (duplicate-ticket root cause)",
+        "задержку эскалации (escalation delay)",
         "Postmortem должен возвращать",
         "разные failure classes",
         "в control loop",
@@ -14327,35 +14550,79 @@ def test_chinese_postmortem_duplicate_ticket_example_is_localized() -> None:
 
 
 def test_incident_response_playbook_surfaces_three_canonical_response_cases() -> None:
-    required_markers = (
-        "Canonical response cases",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "containment paths",
-        "write capability",
-        "approval evidence",
-        "idempotency_key",
-        "side-effect status",
-        "rollout wave",
-        "retrieval scope",
-        "pauses memory writes",
-        "source provenance",
-        "tenant boundary evidence",
-        "access-control decision",
-        "escalation status",
-        "notification side effects",
-        "response ownership",
-        "handoff state",
-        "emergency rollback owner",
-    )
-    checked_files = (
-        "docs/appendix/incident-response-playbook.md",
-        "docs/appendix/incident-response-playbook.en.md",
-        "docs/appendix/incident-response-playbook.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/incident-response-playbook.md": (
+            "Канонические сценарии реагирования",
+            "Триаж обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "пути сдерживания",
+            "записывающую возможность",
+            "доказательства подтверждения",
+            "idempotency_key",
+            "статус побочного эффекта",
+            "волну поэтапного выпуска",
+            "область поиска",
+            "приостанавливает записи в память",
+            "происхождение источников",
+            "доказательства границы арендатора",
+            "решение контроля доступа",
+            "статус эскалации",
+            "побочные эффекты уведомлений",
+            "владение ответом",
+            "состояние передачи управления",
+            "владельцем экстренного отката",
+        ),
+        "docs/appendix/incident-response-playbook.en.md": (
+            "Canonical response cases",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "containment paths",
+            "write capability",
+            "approval evidence",
+            "idempotency_key",
+            "side-effect status",
+            "rollout wave",
+            "retrieval scope",
+            "pauses memory writes",
+            "source provenance",
+            "tenant boundary evidence",
+            "access-control decision",
+            "escalation status",
+            "notification side effects",
+            "response ownership",
+            "handoff state",
+            "emergency rollback owner",
+        ),
+        "docs/appendix/incident-response-playbook.zh.md": (
+            "规范响应案例",
+            "支持分流",
+            "内部知识助手",
+            "事件协调",
+            "遏制路径",
+            "写入能力",
+            "审批证据",
+            "idempotency_key",
+            "副作用状态",
+            "发布波次",
+            "检索范围",
+            "暂停记忆写入",
+            "来源证明",
+            "租户边界证据",
+            "访问控制决策",
+            "升级状态",
+            "通知副作用",
+            "响应归属",
+            "交接状态",
+            "紧急回滚负责人",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_multilingual_incident_response_playbook_case_note_is_localized() -> None:
@@ -14363,11 +14630,11 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
     chinese_text = _read("docs/appendix/incident-response-playbook.zh.md")
 
     assert "Канонические сценарии реагирования" in russian_text
-    assert "Реагирование на инцидент (incident response)" in russian_text
-    assert "пути сдерживания (containment paths)" in russian_text
-    assert "записывающую возможность (write capability)" in russian_text
-    assert "область поиска (retrieval scope)" in russian_text
-    assert "статус эскалации (escalation status)" in russian_text
+    assert "Реагирование на инцидент должно выбирать" in russian_text
+    assert "пути сдерживания" in russian_text
+    assert "записывающую возможность" in russian_text
+    assert "область поиска" in russian_text
+    assert "статус эскалации" in russian_text
 
     assert "规范响应案例" in chinese_text
     assert "事件响应（incident response）" in chinese_text
@@ -14383,6 +14650,11 @@ def test_multilingual_incident_response_playbook_case_note_is_localized() -> Non
     assert "生命周期工件模式" in chinese_text
 
     forbidden_markers = (
+        "Реагирование на инцидент (incident response)",
+        "пути сдерживания (containment paths)",
+        "записывающую возможность (write capability)",
+        "область поиска (retrieval scope)",
+        "статус эскалации (escalation status)",
         "Incident response должен выбирать",
         "разные containment paths",
         "трех canonical cases",
@@ -17466,22 +17738,40 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
 
 
 def test_reference_package_has_reader_route_contract() -> None:
-    required_markers = (
-        "Reader-route contract",
-        "Quick start",
-        "Architecture map",
-        "CLI examples",
-        "Config contracts",
-        "Advanced lifecycle-controls",
-        "Runtime internals",
-    )
-    checked_files = (
-        "docs/appendix/reference-package.md",
-        "docs/appendix/reference-package.en.md",
-        "docs/appendix/reference-package.zh.md",
-    )
+    expected_markers_by_file = {
+        "docs/appendix/reference-package.md": (
+            "Маршрут чтения",
+            "Быстрый запуск",
+            "Архитектурная карта",
+            "Примеры команд",
+            "Контракты конфигураций",
+            "Расширенный контроль жизненного цикла",
+            "Внутреннее устройство среды выполнения",
+        ),
+        "docs/appendix/reference-package.en.md": (
+            "Reader-route contract",
+            "Quick start",
+            "Architecture map",
+            "CLI examples",
+            "Config contracts",
+            "Advanced lifecycle-controls",
+            "Runtime internals",
+        ),
+        "docs/appendix/reference-package.zh.md": (
+            "Reader-route contract",
+            "Quick start",
+            "Architecture map",
+            "CLI examples",
+            "Config contracts",
+            "Advanced lifecycle-controls",
+            "Runtime internals",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, expected_markers in expected_markers_by_file.items():
+        text = _read(path)
+        for expected_marker in expected_markers:
+            assert expected_marker in text, (path, expected_marker)
 
 
 def test_reference_package_rollout_errors_are_documented() -> None:
