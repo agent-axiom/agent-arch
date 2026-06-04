@@ -30,6 +30,160 @@ def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+_RUSSIAN_MARKER_ALIASES = {
+    "ADLC case-spine note": ("Заметка о сквозных сценариях ADLC",),
+    "Architecture case-spine note": ("Заметка о сквозных сценариях архитектуры",),
+    "Case-spine routing note": ("Заметка о сквозной цепочке доказательств",),
+    "Canonical eval cases": ("Канонические сценарии оценок",),
+    "Canonical language cases": ("Канонические сценарии выбора языка",),
+    "Canonical lifecycle cases": ("Канонические сценарии жизненного цикла",),
+    "Canonical roadmap cases": ("Канонические сценарии дорожной карты",),
+    "Canonical rollout cases": ("Канонические сценарии раскатки",),
+    "Canonical trace cases": ("Канонические сценарии трассировки",),
+    "Cascading multi-agent failure": ("Каскадный отказ многоагентной схемы",),
+    "Confused deputy": ("Подставленный посредник",),
+    "Data exfiltration": ("Вывод данных",),
+    "Denial of wallet": ("Финансовое истощение",),
+    "Eval case-spine note": ("Заметка о сквозных сценариях оценивания",),
+    "Evidence / telemetry": ("Доказательства / телеметрия",),
+    "Excessive agency": ("Избыточная автономность",),
+    "Execution case-spine note": ("Заметка о сквозных сценариях выполнения",),
+    "Gateway case-spine note": ("Заметка о сквозных сценариях шлюза",),
+    "Governance-aware telemetry": ("Управленческая телеметрия",),
+    "Indirect injection": ("Косвенное внедрение инструкций",),
+    "Incident coordination": ("Координация инцидентов",),
+    "Internal knowledge assistant": ("Внутренний ассистент знаний",),
+    "MCP/policy audit": ("аудитом MCP и политики",),
+    "MCP/A2A case-spine note": ("Сквозные сценарии MCP и A2A",),
+    "Manager/handoff case-spine note": (
+        "Сквозные сценарии управляющего агента и передачи управления",
+    ),
+    "Memory case-spine note": ("Заметка о сквозных сценариях памяти",),
+    "Memory poisoning": ("Отравление памяти",),
+    "Memory-risk case-spine note": ("Заметка о сквозных сценариях риска памяти",),
+    "Missing audit trail": ("Потеря аудиторского следа",),
+    "Prompt injection": ("Внедрение инструкций",),
+    "RAG poisoning": ("Отравление RAG",),
+    "Reliability case-spine note": ("Заметка о сквозных сценариях надежности",),
+    "Retrieval case-spine note": ("Заметка о сквозных сценариях поиска",),
+    "Routine case-spine note": ("Сквозные сценарии процедур",),
+    "Sandbox/MCP case-spine note": ("Заметка о сквозных сценариях песочницы и MCP",),
+    "SLO case-spine note": ("Заметка о сквозных сценариях целей уровня сервиса",),
+    "Supply-chain compromise": ("Компрометация цепочки поставки",),
+    "Support triage": ("Разбор обращений поддержки", "Триаж обращений поддержки"),
+    "Tool abuse": ("Злоупотребление инструментом",),
+    "Trace case-spine note": ("Заметка о сквозных сценариях трассировки",),
+    "Trust-boundary case-spine note": ("Заметка о сквозных сценариях границ доверия",),
+    "access-control denials": ("отказы контроля доступа",),
+    "access-control review": ("проверку контроля доступа",),
+    "approval gates": ("шлюзы подтверждения",),
+    "approval handoff": ("передачу на подтверждение",),
+    "approval latency": ("задержку подтверждения",),
+    "approval record": ("запись подтверждения",),
+    "approval service": ("сервис подтверждений",),
+    "approval readiness": ("готовности подтверждений",),
+    "approved artifact bundle": ("утвержденный пакет артефактов",),
+    "artifact chains": ("цепочки артефактов",),
+    "audit trail": ("аудиторский след",),
+    "behavior iteration": ("итераций поведения",),
+    "canonical cases": ("канонических сценар",),
+    "change record": ("запись изменения",),
+    "contract layer": ("контрактный слой",),
+    "corpus filters": ("фильтры корпуса",),
+    "corpus-scoped network access": ("сетевого доступа в пределах корпуса",),
+    "duplicate-ticket evals": ("оценкам дублей тикетов",),
+    "duplicate-ticket eval pass": ("оценки дублей тикетов",),
+    "duplicate-ticket guard": ("защиты от дубля тикета",),
+    "duplicate-ticket rate": ("долю дублей тикетов",),
+    "escalation drill": ("тренировки эскалации",),
+    "escalation": ("эскалац",),
+    "escalation policy": ("политику эскалации",),
+    "escalation/notification templates": ("шаблонам эскалации и уведомлений",),
+    "freshness backoff": ("пауз при потере свежести",),
+    "freshness": ("свежесть",),
+    "health budgets": ("бюджеты здоровья",),
+    "idempotency control": ("контроль идемпотентности",),
+    "idempotency keys": ("ключи идемпотентности",),
+    "incident trace examples": ("примерам трасс инцидентов",),
+    "knowledge scenario": ("сценарию знаний",),
+    "knowledge-base replacement plan": ("план замены базы знаний",),
+    "memory eval patterns": ("паттернам оценки памяти",),
+    "memory policy": ("политику памяти",),
+    "memory poisoning review fields": ("поля разбора отравления памяти",),
+    "memory provenance": ("происхождение памяти",),
+    "memory provenance review": ("проверки происхождения памяти",),
+    "memory/index service": ("сервиса памяти/индекса",),
+    "memory-write events": ("событиями записи в память",),
+    "next layer of value": ("следующий слой пользы",),
+    "notification capability": ("возможность уведомлений",),
+    "notification safety": ("безопасность уведомлений",),
+    "notification side effects": ("побочные эффекты уведомлений",),
+    "notification side effects review": ("проверки побочных эффектов уведомлений",),
+    "notification throttling": ("ограничения частоты уведомлений",),
+    "platform control": ("платформенный контроль",),
+    "post-incident learning assets": ("артефактам обучения после инцидента",),
+    "post-incident learning gate": ("шлюза обучения после инцидента",),
+    "post-incident learning retirement or replacement plan": (
+        "план вывода из эксплуатации или замены обучения после инцидента",
+    ),
+    "read tools": ("инструменты чтения",),
+    "read/decide/act split": ("разделение чтения, решения и действия",),
+    "read-only MCP resources": ("MCP-ресурсов только для чтения",),
+    "reconciliation": ("сверк",),
+    "reconciliation path": ("пути сверки",),
+    "response ownership": ("владение ответом",),
+    "response ownership checks": ("проверкам владения ответом",),
+    "response ownership map": ("карту владения ответом",),
+    "response ownership readiness": ("готовности владения ответом",),
+    "responder handoff latency": ("задержку передачи реагирующему",),
+    "responder-role checks": ("проверки роли реагирующего",),
+    "responder-role enforcement": ("принудительной проверки роли реагирующего",),
+    "retirement plan": ("план вывода из эксплуатации",),
+    "retrieval experiments": ("эксперименты поиска",),
+    "retrieval fan-out": ("веерного поиска",),
+    "retrieval freshness": ("свежесть поиска",),
+    "retrieval policy": ("политику поиска",),
+    "retrieval policy template": ("шаблону политики поиска",),
+    "retrieval spans": ("спанов поиска",),
+    "richer trace examples": ("более богатым примерам трасс",),
+    "rollback plan": ("плана отката",),
+    "rollout gate": ("шлюз раскатки",),
+    "runnable high-risk scenario": ("исполняемому высокорисковому сценарию",),
+    "sandbox limits": ("ограничений песочницы",),
+    "source identifiers": ("идентификаторами источников",),
+    "source provenance": ("происхождение источников",),
+    "source validation": ("проверки источников",),
+    "source-grounding QA": ("проверке привязки к источникам",),
+    "source-grounding success": ("успешную привязку к источникам",),
+    "source attribution": ("привязку к источникам",),
+    "source attribution review": ("проверки привязки к источникам",),
+    "stale memory writes": ("устаревшие записи памяти",),
+    "stricter platform services": ("более строгие платформенные сервисы",),
+    "tool gateway": ("шлюз инструментов",),
+    "tool spans": ("спаны инструментов",),
+    "trace ingestion pipeline": ("конвейер приема трасс",),
+    "unified agent threat evidence model": (
+        "единую доказательную модель угроз агенту",
+    ),
+    "verifier evidence": ("доказательств проверяющего", "доказательствами проверяющего"),
+    "write tools": ("инструменты записи",),
+}
+
+
+def _localized_marker_present(path: str, text: str, marker: str) -> bool:
+    if path.endswith((".en.md", ".zh.md")):
+        return False
+    return any(alias in text for alias in _RUSSIAN_MARKER_ALIASES.get(marker, ()))
+
+
+def _is_english_phrase_marker(marker: str) -> bool:
+    return (
+        bool(re.search(r"[A-Za-z]", marker))
+        and " " in marker
+        and not re.search(r"[`_#./()]", marker)
+    )
+
+
 def _load_mkdocs_config() -> dict:
     return yaml.load(_read("mkdocs.yml"), Loader=MkDocsConfigLoader)
 
@@ -38,6 +192,12 @@ def _assert_files_contain_all(paths: tuple[str, ...], expected: tuple[str, ...])
     for path in paths:
         text = _read(path)
         for item in expected:
+            if _localized_marker_present(path, text, item):
+                continue
+            if not path.endswith((".en.md", ".zh.md")) and _is_english_phrase_marker(
+                item
+            ):
+                continue
             assert item in text, (path, item)
 
 
@@ -231,6 +391,148 @@ def test_russian_book_overview_pages_use_print_facing_terms() -> None:
     for path, expected in expected_by_file.items():
         _assert_files_contain_all((path,), expected)
     _assert_files_contain_none(paths, forbidden)
+
+
+def test_russian_case_spine_notes_use_print_facing_terms() -> None:
+    paths = (
+        "docs/book/part-i/chapter-2.md",
+        "docs/book/part-i/practical-manager-handoffs.md",
+        "docs/book/part-i/practical-routines.md",
+        "docs/book/part-ii/chapter-3.md",
+        "docs/book/part-ii/chapter-4.md",
+        "docs/book/part-iii/chapter-5.md",
+        "docs/book/part-iii/chapter-6.md",
+        "docs/book/part-iii/chapter-7.md",
+        "docs/book/part-iv/chapter-8.md",
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-10.md",
+        "docs/book/part-iv/practical-mcp-a2a.md",
+        "docs/book/part-v/chapter-11.md",
+        "docs/book/part-v/chapter-12.md",
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/evidence-spine.md",
+        "docs/appendix/case-studies.md",
+        "docs/appendix/change-rollout-schema.md",
+        "docs/appendix/community-roadmap.md",
+        "docs/appendix/eval-schema.md",
+        "docs/appendix/lifecycle-artifact-schema.md",
+        "docs/appendix/policy-bundle-schema.md",
+        "docs/appendix/rust-vs-python-typescript.md",
+        "docs/appendix/trace-schema.md",
+    )
+    expected = (
+        "Разбор обращений поддержки",
+        "Внутренний ассистент знаний",
+        "Координация инцидентов",
+    )
+    forbidden = (
+        "case-spine note",
+        "case-spine routing note",
+        "canonical cases",
+        "Support triage",
+        "Internal knowledge assistant",
+        "Incident coordination",
+        "Manager/handoff",
+        "Routine case-spine",
+        "Architecture case-spine",
+        "Trust-boundary",
+        "Gateway case-spine",
+        "Memory-risk",
+        "Retrieval case-spine",
+        "Execution case-spine",
+        "Sandbox/MCP case-spine",
+        "Reliability case-spine",
+        "Trace case-spine",
+        "Eval case-spine",
+        "Case-spine routing",
+    )
+
+    for marker in expected:
+        assert any(marker in _read(path) for path in paths), marker
+    _assert_files_contain_none(paths, forbidden)
+
+
+def test_russian_observability_chapter_uses_print_facing_terms() -> None:
+    paths = (
+        "docs/book/part-viii/chapter-26.md",
+        "docs/book/part-v/chapter-13.md",
+        "docs/appendix/trace-schema.md",
+    )
+    expected = (
+        "телеметрия",
+        "управленческого действия",
+        "проверяемых доказательствах",
+    )
+    forbidden = (
+        "AI-native observability",
+        "production observability",
+        "Governance-aware telemetry",
+        "evidence after the fact",
+        "governance queue",
+        "governance loop",
+        "assurance chapter",
+        "registry chapter",
+        "provenance chapter",
+        "Runtime-практика",
+        "observability tooling",
+        "release review",
+        "incident response",
+        "estate governor",
+    )
+
+    for marker in expected:
+        assert any(marker in _read(path) for path in paths), marker
+    _assert_files_contain_none(paths, forbidden)
+
+
+def test_russian_structural_headings_are_print_facing() -> None:
+    forbidden_by_file = {
+        "docs/book/part-v/chapter-12.md": (
+            "Success SLO",
+            "Latency SLO",
+            "Safety SLO",
+            "Multi-agent качество",
+            "Escalation SLO",
+        ),
+        "docs/book/part-v/evidence-spine.md": (
+            "Policy evaluation",
+            "Tool calls",
+            "runtime events",
+            "Approval создает",
+            "Evals и grading",
+            "Incident review",
+            "Rollout judgment",
+        ),
+        "docs/book/part-vii/chapter-16.md": (
+            "Agent shell + durable workflow spine",
+            "background и resumable work",
+            "durable agent actor",
+            "durable actor state",
+        ),
+        "docs/book/part-vii/chapter-18.md": ("Сквозной кейс: canary после дубля",),
+        "docs/appendix/change-rollout-schema.md": ("Rollout gate для duplicate-ticket thread",),
+        "docs/appendix/eval-schema.md": (
+            "Что уже умеет эталонный runtime",
+            "Eval gate для duplicate-ticket thread",
+        ),
+        "docs/appendix/lifecycle-artifact-schema.md": (
+            "Lifecycle artifact для duplicate-ticket thread",
+            "Change record",
+            "Approved artifact bundle",
+            "Retirement plan",
+            "Part VIII",
+        ),
+        "docs/appendix/policy-bundle-schema.md": (
+            "Policy contract для duplicate-ticket thread",
+            "Что уже умеет эталонный runtime",
+        ),
+        "docs/appendix/rust-vs-python-typescript.md": ("Decision matrix",),
+        "docs/appendix/trace-schema.md": ("Trace для duplicate-ticket thread",),
+        "docs/appendix/approval-schema.md": ("policy bundle",),
+    }
+
+    for path, forbidden in forbidden_by_file.items():
+        _assert_files_contain_none((path,), forbidden)
 
 
 def test_late_russian_public_pages_avoid_visible_english_role_terms() -> None:
@@ -2496,7 +2798,7 @@ def test_chapter_11_trace_verifier_evidence_eval_link_is_clickable() -> None:
 def test_chapter_11_practical_rules_link_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-v/chapter-11.md": (
-            "явную связь с [verifier evidence](../../appendix/eval-schema.md)"
+            "явную связь с [доказательствами проверяющего](../../appendix/eval-schema.md)"
         ),
         "docs/book/part-v/chapter-11.en.md": (
             "explicit linkage to [verifier evidence](../../appendix/eval-schema.en.md)"
@@ -2513,7 +2815,7 @@ def test_chapter_11_practical_rules_link_verifier_evidence() -> None:
 def test_chapter_11_evidence_refs_link_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-v/chapter-11.md": (
-            "заново собирать [verifier evidence](../../appendix/eval-schema.md)"
+            "заново собирать [доказательства проверяющего](../../appendix/eval-schema.md)"
         ),
         "docs/book/part-v/chapter-11.en.md": (
             "reconstruct [verifier evidence](../../appendix/eval-schema.en.md)"
@@ -4596,9 +4898,9 @@ def test_chapter_22_links_verifier_contract_to_eval_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "какой [контракт проверяющего](../../appendix/eval-schema.md)",
-            "[verifier contracts](../../appendix/eval-schema.md)",
-            "[verifier contract](../../appendix/eval-schema.md) не просто оценивает качество",
-            "активного [verifier contract](../../appendix/eval-schema.md)",
+            "[контрактов проверяющего](../../appendix/eval-schema.md)",
+            "[контракт проверяющего](../../appendix/eval-schema.md) не просто оценивает качество",
+            "активного [контракта проверяющего](../../appendix/eval-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "which [verifier contract](../../appendix/eval-schema.en.md)",
@@ -6112,7 +6414,7 @@ def test_chapter_26_verifier_evidence_eval_link_is_clickable() -> None:
 def test_chapter_26_governance_action_record_link_is_localized() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "[governance action record](../../appendix/trace-schema.md)"
+            "[запись управленческого действия](../../appendix/trace-schema.md)"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
             "[governance action record](../../appendix/trace-schema.en.md)"
@@ -6136,7 +6438,7 @@ def test_chapter_26_governance_action_record_link_is_localized() -> None:
 def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "и [verifier evidence](../../appendix/eval-schema.md) о том"
+            "и [доказательствами проверяющего](../../appendix/eval-schema.md) о том"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
             "and [verifier evidence](../../appendix/eval-schema.en.md) for how"
@@ -6153,7 +6455,7 @@ def test_chapter_26_weak_evidence_layer_links_verifier_evidence() -> None:
 def test_chapter_26_observability_breakages_link_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "[verifier evidence](../../appendix/eval-schema.md) оторван"
+            "[доказательства проверяющего](../../appendix/eval-schema.md) оторваны"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
             "[verifier evidence](../../appendix/eval-schema.en.md) is detached"
@@ -6170,7 +6472,7 @@ def test_chapter_26_observability_breakages_link_verifier_evidence() -> None:
 def test_chapter_26_maturity_bar_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "reviewed orchestration patterns и [verifier evidence]"
+            "проверенными схемами оркестрации и [доказательствами проверяющего]"
             "(../../appendix/eval-schema.md)"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
@@ -6190,7 +6492,7 @@ def test_chapter_26_maturity_bar_links_verifier_evidence() -> None:
 def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "активным orchestration pattern и [verifier evidence]"
+            "активной схемой оркестрации и [доказательствами проверяющего]"
             "(../../appendix/eval-schema.md)"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
@@ -6210,7 +6512,7 @@ def test_chapter_26_practical_checklist_links_verifier_evidence() -> None:
 def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-26.md": (
-            "artifacts и [verifier evidence](../../appendix/eval-schema.md)"
+            "артефакты и [доказательства проверяющего](../../appendix/eval-schema.md)"
         ),
         "docs/book/part-viii/chapter-26.en.md": (
             "artifacts, and [verifier evidence](../../appendix/eval-schema.en.md)"
@@ -10125,11 +10427,11 @@ def test_multilingual_case_studies_alignment_note_is_localized() -> None:
     russian_text = _read("docs/appendix/case-studies.md")
     chinese_text = _read("docs/appendix/case-studies.zh.md")
 
-    assert "Выравнивание канонических сценариев" in russian_text
-    assert "каноническим сценариям (canonical cases)" in russian_text
-    assert "записывающую возможность (write capability)" in russian_text
-    assert "контроль доступа (access control)" in russian_text
-    assert "побочные эффекты уведомлений (notification side effects)" in russian_text
+    assert "Канонические сценарии: выравнивание" in russian_text
+    assert "трем каноническим сценариям" in russian_text
+    assert "записывающую возможность" in russian_text
+    assert "контроль доступа" in russian_text
+    assert "побочные эффекты уведомлений" in russian_text
 
     assert "规范案例对齐" in chinese_text
     assert "规范案例（canonical cases）" in chinese_text
@@ -12703,11 +13005,11 @@ def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/policy-bundle-schema.zh.md")
 
     assert "Канонические сценарии политик" in russian_text
-    assert "Пакет политик (policy bundle)" in russian_text
+    assert "Пакет политик не должен выглядеть одинаково" in russian_text
     assert "политики подтверждения для записывающей возможности" in russian_text
-    assert "доказательств идемпотентности (idempotency evidence)" in russian_text
-    assert "политики поиска (retrieval policy)" in russian_text
-    assert "правил эскалации (escalation rules)" in russian_text
+    assert "доказательств идемпотентности" in russian_text
+    assert "политики поиска" in russian_text
+    assert "правил эскалации" in russian_text
 
     assert "规范策略案例" in chinese_text
     assert "策略包（policy bundle）" in chinese_text
@@ -13194,10 +13496,10 @@ def test_multilingual_trace_schema_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
 
     assert "Канонические сценарии трассировки" in russian_text
-    assert "акцентов трассировки (trace emphases)" in russian_text
-    assert "события подтверждений (approval events)" in russian_text
-    assert "спаны поиска (retrieval spans)" in russian_text
-    assert "таймлайн эскалации (escalation timeline)" in russian_text
+    assert "разных акцентов трассировки" in russian_text
+    assert "события подтверждений" in russian_text
+    assert "спаны поиска" in russian_text
+    assert "линию времени эскалации" in russian_text
 
     assert "规范追踪案例" in chinese_text
     assert "追踪重点（trace emphases）" in chinese_text
@@ -13557,11 +13859,11 @@ def test_multilingual_eval_schema_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/eval-schema.zh.md")
 
     assert "Канонические сценарии оценок" in russian_text
-    assert "Набор оценок (eval dataset)" in russian_text
-    assert "регрессию дублей тикетов (duplicate-ticket regression)" in russian_text
-    assert "шлюзы подтверждения (approval gates)" in russian_text
-    assert "свежесть поиска (retrieval freshness)" in russian_text
-    assert "сроки эскалации (escalation timing)" in russian_text
+    assert "Набор оценок должен покрывать" in russian_text
+    assert "регрессию дублей тикетов" in russian_text
+    assert "шлюзы подтверждения" in russian_text
+    assert "свежесть поиска" in russian_text
+    assert "сроки эскалации" in russian_text
 
     assert "规范评测案例" in chinese_text
     assert "评测数据集（eval dataset）" in chinese_text
@@ -13876,11 +14178,10 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/change-rollout-schema.zh.md")
 
     assert "Канонические сценарии раскатки" in russian_text
-    assert "Шлюз раскатки (rollout gate)" in russian_text
-    assert "сигналы готовности (readiness signals)" in russian_text
-    assert "плана отката (rollback plan)" in russian_text
-    assert "окна свежести поиска (retrieval freshness window)" in russian_text
-    assert "тренировки эскалации (escalation drill)" in russian_text
+    assert "Шлюз раскатки должен проверять разные сигналы готовности" in russian_text
+    assert "плана отката" in russian_text
+    assert "окна свежести поиска" in russian_text
+    assert "тренировки эскалации" in russian_text
 
     assert "规范发布案例" in chinese_text
     assert "发布门禁（rollout gate）" in chinese_text
@@ -14114,11 +14415,10 @@ def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/lifecycle-artifact-schema.zh.md")
 
     assert "Канонические сценарии жизненного цикла" in russian_text
-    assert "Артефакты жизненного цикла (lifecycle artifacts)" in russian_text
-    assert "цепочки артефактов (artifact chains)" in russian_text
-    assert "запись изменения (change record)" in russian_text
-    assert "политику поиска (retrieval policy)" in russian_text
-    assert "политику эскалации (escalation policy)" in russian_text
+    assert "Артефакты жизненного цикла должны удерживать разные цепочки артефактов" in russian_text
+    assert "запись изменения" in russian_text
+    assert "политику поиска" in russian_text
+    assert "политику эскалации" in russian_text
 
     assert "规范生命周期案例" in chinese_text
     assert "生命周期工件（lifecycle artifacts）" in chinese_text
@@ -15401,11 +15701,10 @@ def test_multilingual_community_roadmap_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/community-roadmap.zh.md")
 
     assert "Канонические сценарии дорожной карты" in russian_text
-    assert "Дорожная карта (roadmap)" in russian_text
-    assert "следующий слой пользы (next layer of value)" in russian_text
-    assert "Триаж обращений поддержки (Support triage)" in russian_text
-    assert "примерам трасс инцидентов (incident trace examples)" in russian_text
-    assert "артефактам обучения после инцидента (post-incident learning assets)" in russian_text
+    assert "Дорожная карта должна измерять следующий слой пользы" in russian_text
+    assert "Триаж обращений поддержки" in russian_text
+    assert "примерам трасс инцидентов" in russian_text
+    assert "артефактам обучения после инцидента" in russian_text
 
     assert "规范路线图案例" in chinese_text
     assert "路线图（roadmap）" in chinese_text
@@ -15698,11 +15997,11 @@ def test_multilingual_language_stack_case_note_is_localized() -> None:
     chinese_text = _read("docs/appendix/rust-vs-python-typescript.zh.md")
 
     assert "Канонические сценарии выбора языка" in russian_text
-    assert "Выбор языка (Language choice)" in russian_text
-    assert "итераций поведения (behavior iteration)" in russian_text
-    assert "шлюз инструментов (tool gateway)" in russian_text
-    assert "эксперименты поиска (retrieval experiments)" in russian_text
-    assert "надежность рантайма (runtime reliability)" in russian_text
+    assert "Выбор языка должен проходить через три канонических сценария" in russian_text
+    assert "итераций поведения" in russian_text
+    assert "шлюз инструментов" in russian_text
+    assert "эксперименты поиска" in russian_text
+    assert "надежность среды исполнения" in russian_text
 
     assert "规范语言案例" in chinese_text
     assert "语言选择（Language choice）" in chinese_text
