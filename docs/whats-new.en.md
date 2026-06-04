@@ -2,7 +2,7 @@
 
 This page is a short reader-facing log of major additions to the book and reference runtime. It is not a replacement for git history; it exists to show that the project is active and what is already here.
 
-_Current as of May 20, 2026._
+_Current as of June 4, 2026._
 
 !!! note "Canonical case update"
     The major update from May 15, 2026 is the end-to-end map of the three canonical cases. **Support triage**, **Internal knowledge assistant**, and **Incident coordination** are now visible across book chapters, public entry points, reference pages, and appendix artifacts, while coverage guards protect chapters and appendix pages from losing those routes.
@@ -116,9 +116,10 @@ Closed so far:
 - the public-link availability record was refreshed on May 20, 2026 after all nine public-packet links returned HTTP 200;
 - the packet blocker register, waiver/decision log, line-length guard, and packet labels are print/export-friendly;
 - the Part VIII role map is now print-friendly;
+- Chapter 1 now has a reader orientation block, a stable decision frame, and a compact print-ready exit that works without relying on live site navigation;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-Remaining before this can be called print-ready: deep EN/ZH cleanup, independent rendering/export QA, sample-chapter polish, and target-specific manuscript/online-companion packaging.
+Remaining before this can be called print-ready: deep EN/ZH cleanup, independent rendering/export QA, independent sample copy-edit, Chapter 13 sample polish, and target-specific manuscript/online-companion packaging.
 
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 

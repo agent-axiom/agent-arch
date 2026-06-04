@@ -2,7 +2,7 @@
 
 这一页是面向读者的简短更新日志，用来展示这本书和参考运行时最近有哪些重要增强。它不是 Git 历史记录（Git history）的替代品，而是让读者快速看到项目是否持续演进。
 
-_更新于 2026 年 5 月 20 日。_
+_更新于 2026 年 6 月 4 日。_
 
 !!! note "规范案例更新"
     2026 年 5 月 15 日的主要更新，是贯穿全书的三个规范案例（canonical cases）路线图。**支持分流（Support triage）**、**内部知识助手（Internal knowledge assistant）** 和 **事件协调（Incident coordination）** 现在已经出现在章节（book chapters）、公共入口（public entry points）、参考页（reference pages）和附录工件（appendix artifacts）中，并且覆盖率守卫（coverage guards）会防止章节与附录页面（appendix pages）丢失这些路线。
@@ -116,9 +116,10 @@ _更新于 2026 年 5 月 20 日。_
 - 公共链接可用性记录（public-link availability record）已在 2026 年 5 月 20 日刷新，公开材料包中的九个链接全部返回 HTTP 200；
 - 公开材料包的阻塞项登记表（blocker register）、豁免与决策日志（waiver/decision log）、行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出；
 - 第 VIII 部分角色图（role map）现在适合打印和导出；
+- 第 1 章现在有读者导向块、稳定的判断框架，以及不依赖网站实时导航也能成立的适合印刷章节结尾；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单（quick sync publish checklist）。
 
-在称为可印刷版本之前，仍然需要完成 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、样章打磨（sample-chapter polish），以及面向具体提交格式的纸质稿件与在线配套材料包装。
+在称为可印刷版本之前，仍然需要完成 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、独立样章审校（independent sample copy-edit）、第 13 章样章打磨（Chapter 13 sample polish），以及面向具体提交格式的纸质稿件与在线配套材料包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
