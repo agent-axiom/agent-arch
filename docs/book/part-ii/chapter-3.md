@@ -55,7 +55,7 @@
 !!! example "Сквозной кейс: разбор обращений поддержки"
     Тот же кейс разбора обращений из [главы 1](../part-i/chapter-1.md) здесь превращается в карту границ: текст клиента — недоверенный ввод, профиль и история тикетов — чтение в заданной области, `create_ticket` — управляемая операция записи, а эскалация — решение политики, которому может потребоваться подтверждение.
 
-**Trust-boundary case-spine note:** тот же read/decide/act split нужно провести для всех трех canonical cases. Support triage разделяет customer input, ticket history, escalation decisions и ticket writes. Internal knowledge assistant разделяет trusted instructions, retrieved documents, source authority, tenant scope и memory writes. Incident coordination разделяет incident reports, escalation authority, responder roles и external notifications.
+**Заметка о сквозных сценариях границ доверия:** то же разделение чтения, решения и действия нужно провести для всех трех канонических сценариев. Разбор обращений поддержки разделяет ввод клиента, историю тикетов, решения об эскалации и записи тикетов. Внутренний ассистент знаний разделяет доверенные инструкции, найденные документы, авторитет источника, область арендатора и записи памяти. Координация инцидентов разделяет сообщения об инцидентах, право на эскалацию, роли реагирующих и внешние уведомления.
 
 ## 4. Как периметр выглядит на одном реальном запросе
 
@@ -100,22 +100,22 @@ flowchart LR
 - недостаточная пригодность для аудита;
 - небезопасное поведение при откате.
 
-Эту таблицу удобно читать как unified agent threat evidence model для [trace schema](../../appendix/trace-schema.md): каждая строка связывает класс угрозы, контроль и проверяемые evidence/telemetry markers.
+Эту таблицу удобно читать как единую доказательную модель угроз агенту для [схемы трасс](../../appendix/trace-schema.md): каждая строка связывает класс угрозы, контроль и проверяемые маркеры доказательств и телеметрии.
 
-| Угроза | Где ловить в первую очередь | Что помогает | Evidence / telemetry |
+| Угроза | Где ловить в первую очередь | Что помогает | Доказательства / телеметрия |
 | --- | --- | --- | --- |
-| Prompt injection | Сборка подсказки, retrieval, gateway модели | границы между trusted/untrusted content, policy checks, отказ от смешивания instructions и data | `prompt_boundary_event`, source labels, rejected-instruction trace |
-| Indirect injection | Retrieval, tool return values, memory write path | маркировка источников, sanitizer для tool output, запрет недоверенному контенту менять policy/tool-use logic | `tool_output_sanitized`, untrusted-content marker, policy-decision trace |
-| RAG poisoning | Индексация, retrieval, provenance layer | source allowlist, document provenance, freshness/reputation signals, quarantine подозрительных источников | `retrieval_source_id`, freshness score, quarantine event |
-| Memory poisoning | Memory write/retrieval path | approval или confidence gate на запись, TTL, provenance, audit trail и rollback памяти | `memory_record_id`, validation state, rollback/replay evidence |
-| Tool abuse | Tool gateway, approval flow | allowlist, argument validation, risk-tiering, human approval для side effects | `tool_call_id`, approval record, argument validation result |
-| Confused deputy | Identity layer, delegated auth, MCP/A2A boundary | scoped tokens, subject binding, explicit delegation record, проверка caller/callee identity | `subject_id`, `delegation_trace_id`, caller/callee identity check |
-| Excessive agency | Planner/orchestrator, action policy | bounded goals, stopping conditions, budget limits, escalation вместо бесконечной автономии | step budget event, stop reason, escalation decision |
-| Data exfiltration | Retrieval, egress, tool gateway | DLP, redaction, output filters, tenant-scoped access | `tenant_id`, egress decision, redaction/DLP result |
-| Denial of wallet | Planner, tool gateway, model gateway | rate limits, cost budgets, circuit breakers, per-run spend telemetry | `cost_budget_event`, rate-limit decision, circuit-breaker state |
-| Cascading multi-agent failure | A2A handoff, coordinator, eval loop | handoff contracts, containment, independent verification, traceable delegation | `handoff_id`, containment state, verifier verdict |
-| Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review | artifact digest, registry decision, sandbox profile id |
-| Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals | `decision_trace_id`, immutable log pointer, evidence completeness flag |
+| Внедрение инструкций | Сборка подсказки, поиск, шлюз модели | границы между доверенным и недоверенным контентом, проверки политики, отказ от смешивания инструкций и данных | `prompt_boundary_event`, метки источников, трасса отклоненной инструкции |
+| Косвенное внедрение инструкций | Поиск, возвращаемые значения инструментов, путь записи в память | маркировка источников, очистка вывода инструмента, запрет недоверенному контенту менять логику политики или выбора инструмента | `tool_output_sanitized`, маркер недоверенного контента, трасса решения политики |
+| Отравление RAG | Индексация, поиск, слой происхождения | разрешенный список источников, происхождение документа, сигналы свежести и репутации, карантин подозрительных источников | `retrieval_source_id`, оценка свежести, событие карантина |
+| Отравление памяти | Путь записи и извлечения памяти | подтверждение или шлюз уверенности на запись, TTL, происхождение, аудиторский след и откат памяти | `memory_record_id`, состояние проверки, доказательство отката или повторного проигрывания |
+| Злоупотребление инструментом | Шлюз инструментов, путь подтверждения | разрешенный список, проверка аргументов, уровень риска, человеческое подтверждение для побочных эффектов | `tool_call_id`, запись подтверждения, результат проверки аргументов |
+| Подставленный посредник | Слой идентичности, делегированное разрешение, граница MCP/A2A | ограниченные токены, привязка субъекта, явная запись делегирования, проверка идентичности вызывающего и вызываемого | `subject_id`, `delegation_trace_id`, проверка идентичности вызывающего и вызываемого |
+| Избыточная автономность | Планировщик или оркестратор, политика действий | ограниченные цели, условия остановки, бюджетные лимиты, эскалация вместо бесконечной автономии | событие бюджета шагов, причина остановки, решение эскалации |
+| Вывод данных | Поиск, исходящий обмен, шлюз инструментов | DLP, маскирование, выходные фильтры, доступ в области арендатора | `tenant_id`, решение исходящего обмена, результат DLP или маскирования |
+| Финансовое истощение | Планировщик, шлюз инструментов, шлюз модели | ограничения частоты, бюджет стоимости, автоматические выключатели, телеметрия расходов на запуск | `cost_budget_event`, решение ограничения частоты, состояние автоматического выключателя |
+| Каскадный отказ многоагентной схемы | Передача A2A, координатор, контур оценки | контракты передачи управления, сдерживание, независимая проверка, прослеживаемое делегирование | `handoff_id`, состояние сдерживания, вердикт проверяющего |
+| Компрометация цепочки поставки | Серверы MCP, артефакты модели и инструментов, путь зависимостей | утвержденный реестр, подписи и происхождение, песочница, проверка жизненного цикла | хеш артефакта, решение реестра, идентификатор профиля песочницы |
+| Потеря аудиторского следа | Среда исполнения, плоскость телеметрии | структурированные трассы, неизменяемые журналы, проверяемые подтверждения | `decision_trace_id`, указатель неизменяемого журнала, флаг полноты доказательств |
 
 ### 5.1. Внедрение инструкций, jailbreak и галлюцинация действия — не одно и то же
 

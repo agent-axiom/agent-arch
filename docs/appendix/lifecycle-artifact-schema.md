@@ -1,18 +1,18 @@
 # Схема артефактов жизненного цикла
 
-Эта страница собирает в одном месте минимальный contract layer для lifecycle-артефактов: change record, approved artifact bundle и retirement plan. Если trace schema отвечает на вопрос "что произошло", а eval schema отвечает на вопрос "как это оценивать", то lifecycle artifact schema отвечает на вопрос "что именно было одобрено, изменено, заменено или выведено из эксплуатации".
+Эта страница собирает в одном месте минимальный контрактный слой для артефактов жизненного цикла: запись изменения, утвержденный пакет артефактов и план вывода из эксплуатации. Если схема трасс отвечает на вопрос "что произошло", а схема оценок отвечает на вопрос "как это оценивать", то схема артефактов жизненного цикла отвечает на вопрос "что именно было одобрено, изменено, заменено или выведено из эксплуатации".
 
-!!! example "Lifecycle artifact для duplicate-ticket thread"
-    Для support-triage bundle должен удерживать вместе не только `policy_bundle` и `eval_dataset`, но и evidence о duplicate-ticket guard: требование `idempotency_key`, approval record, trace с `side_effect_unknown`, `duplicate_ticket_eval_passed` и rollout gate. Тогда incident review восстанавливает одну цепочку `change -> bundle -> approval -> trace -> eval -> rollout`, а не ищет доказательства по разным страницам.
+!!! example "Артефакт жизненного цикла для цепочки дубля тикета"
+    Для пакета разбора обращений поддержки нужно удерживать вместе не только `policy_bundle` и `eval_dataset`, но и доказательства защиты от дубля тикета: требование `idempotency_key`, запись подтверждения, трассу с `side_effect_unknown`, `duplicate_ticket_eval_passed` и шлюз раскатки. Тогда разбор инцидента восстанавливает одну цепочку `change -> bundle -> approval -> trace -> eval -> rollout`, а не ищет доказательства по разным страницам.
 
-!!! note "Канонические сценарии жизненного цикла (Canonical lifecycle cases)"
-    Артефакты жизненного цикла (lifecycle artifacts) должны удерживать разные цепочки артефактов (artifact chains) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** связывает запись изменения (change record), утвержденный пакет артефактов (approved artifact bundle), запись подтверждения (approval record), трассу (trace), набор оценок (eval dataset), шлюз раскатки (rollout gate) и план вывода из эксплуатации (retirement plan) для защиты от дубля тикета (duplicate-ticket guard). **Внутренний ассистент знаний (Internal knowledge assistant)** связывает политику поиска (retrieval policy), политику памяти (memory policy), происхождение источников (source provenance), проверку контроля доступа (access-control review) и план замены базы знаний (knowledge-base replacement plan). **Координация инцидентов (Incident coordination)** связывает политику эскалации (escalation policy), возможность уведомлений (notification capability), карту владения ответом (response ownership map), артефакт передачи управления (handoff artifact) и план вывода из эксплуатации или замены обучения после инцидента (post-incident learning retirement or replacement plan).
+!!! note "Канонические сценарии жизненного цикла"
+    Артефакты жизненного цикла должны удерживать разные цепочки артефактов для трех канонических сценариев. **Триаж обращений поддержки** связывает запись изменения, утвержденный пакет артефактов, запись подтверждения, трассу, набор оценок, шлюз раскатки и план вывода из эксплуатации для защиты от дубля тикета. **Внутренний ассистент знаний** связывает политику поиска, политику памяти, происхождение источников, проверку контроля доступа и план замены базы знаний. **Координация инцидентов** связывает политику эскалации, возможность уведомлений, карту владения ответом, артефакт передачи управления и план вывода из эксплуатации или замены обучения после инцидента.
 
-Она напрямую связана и со страницей [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md), потому что lifecycle-артефакты входят в ту управляемую запись, на которую потом опираются judgment и incident review.
+Она напрямую связана и со страницей [Сквозная цепочка доказательств: от запроса к решению о раскатке](../book/part-v/evidence-spine.md), потому что артефакты жизненного цикла входят в ту управляемую запись, на которую потом опираются суждение и разбор инцидента.
 
 ## 1. Зачем это нужно
 
-У production-grade agent system есть несколько классов артефактов, которые нельзя держать только в голове команды или в wiki:
+У агентной системы промышленного уровня есть несколько классов артефактов, которые нельзя держать только в голове команды или в wiki:
 
 - change records;
 - approved artifact bundles;
@@ -37,7 +37,7 @@
 
 Этого уже достаточно, чтобы связать design review, release gate, assurance loop и end-of-life discipline.
 
-## 3. Change record
+## 3. Запись изменения
 
 `change_record` описывает конкретное изменение и его operational semantics.
 
@@ -78,7 +78,7 @@ status: approved
 
 А если в системе уже есть approval-bound, stateful capability sessions или sandbox-backed execution, change record почти всегда стоит делать достаточно явным, чтобы было видно, входили ли interruption behavior, expiry handling, re-init semantics, delegated authorization rules и sandbox profile contract в reviewed surface.
 
-## 4. Approved artifact bundle
+## 4. Утвержденный пакет артефактов
 
 `artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
 
@@ -127,23 +127,23 @@ provenance:
 
 - он отделяет "есть артефакт" от "артефакт одобрен для релиза";
 - он делает идентичность выпуска проверяемой, а не неявной договоренностью;
-- он делает incident review и rollback гораздо короче.
+- он делает разбор инцидента и откат гораздо короче.
 
-А когда capability-session governance уже оформлена явно, bundle почти всегда стоит делать достаточно подробным, чтобы было видно не только contract version, но и какие session-control assumptions и семейство контрактов с verifier-ограничениями были одобрены вместе с ним:
+А когда управление сессией возможности уже оформлено явно, пакет почти всегда стоит делать достаточно подробным, чтобы было видно не только версию контракта, но и какие допущения управления сессией и семейство контрактов с ограничениями проверяющего были одобрены вместе с ним:
 
-- expiry policy;
-- re-init policy;
-- ownership для stuck или expired capability-session state;
-- ожидания по linkage между approval events и session events;
-- delegated authorization mode;
-- требования к principal binding;
-- revoke behavior для paused или in-flight actions;
-- версия verifier contract, grading rubric и ожидания по evidence linkage, если rollout или assurance зависят от verifier judgments;
-- sandbox profile review evidence, включая `sandbox_profile_reviewed` trace event, `workspace_manifest_ref` и ссылки на eval/rollout evidence, если release identity включает sandbox-backed execution.
+- политика истечения срока;
+- политика повторной инициализации;
+- владение застрявшим или истекшим состоянием сессии возможности;
+- ожидания по связи между событиями подтверждения и событиями сессии;
+- режим делегированного разрешения;
+- требования к привязке субъекта;
+- поведение отзыва для приостановленных или уже выполняющихся действий;
+- версия контракта проверяющего, рубрика оценивания и ожидания по связи доказательств, если раскатка или заверение зависят от суждений проверяющего;
+- доказательства разбора профиля песочницы, включая событие трассы `sandbox_profile_reviewed`, `workspace_manifest_ref` и ссылки на доказательства оценки/раскатки, если идентичность выпуска включает выполнение в песочнице.
 
-## 5. Retirement plan
+## 5. План вывода из эксплуатации
 
-`retirement_plan` нужен не только для полного выключения агента, но и для controlled replacement capability, policy bundle или artifact family. Эталонный loader также явно фиксирует replacement identity: malformed replacement fields падают с `retirement.replacement_mode must be a string` и `retirement.replacement_mode is required`, рядом с уже описанной validation для `retirement.system_id`.
+`retirement_plan` нужен не только для полного выключения агента, но и для управляемой замены возможности, набора политик или семейства артефактов. Эталонный загрузчик также явно фиксирует идентичность замены: испорченные поля замены падают с `retirement.replacement_mode must be a string` и `retirement.replacement_mode is required`, рядом с уже описанной проверкой для `retirement.system_id`.
 
 ```yaml
 kind: retirement_plan
@@ -179,7 +179,7 @@ owner: platform-operations
 - структурированные handoff artifacts, в которых фиксировались scope спринта, evaluator critique или решения на границе reset;
 - expired capability-session state, если он все еще важен для audit или delayed operator response.
 
-## 6. Как это связано с Part VIII
+## 6. Как это связано с частью VIII
 
 Эта схема напрямую поддерживает несколько глав:
 
@@ -229,14 +229,14 @@ Lifecycle artifact loaders отделяют malformed release-state inputs от 
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
-- Есть ли у high-risk changes явные change records?
-- Есть ли approved artifact bundle, а не просто список последних YAML-файлов?
-- Можно ли по incident trace восстановить активный bundle и его идентичность выпуска?
+- Есть ли у высокорисковых изменений явные записи изменений?
+- Есть ли утвержденный пакет артефактов, а не просто список последних YAML-файлов?
+- Можно ли по трассе инцидента восстановить активный пакет и его идентичность выпуска?
 - Можно ли понять, под каким семейством контрактов с verifier-ограничениями выпуск был одобрен?
-- Если bundle включает `sandbox_profile`, можно ли найти review evidence для workspace, permissions и snapshot/resume policy?
-- Есть ли retirement plan для deprecated capabilities и policy bundles?
-- Есть ли owner у archived state после replacement?
-- Понятен ли rollback unit на уровне lifecycle artifacts?
+- Если пакет включает `sandbox_profile`, можно ли найти доказательства разбора для рабочей области, прав и политики снимков/возобновления?
+- Есть ли план вывода из эксплуатации для устаревших возможностей и наборов политик?
+- Есть ли владелец у архивного состояния после замены?
+- Понятна ли единица отката на уровне артефактов жизненного цикла?
 
 Если на несколько вопросов подряд ответ "нет", у тебя уже может быть хороший SDLC и даже хороший rollout, но lifecycle layer пока еще не собран до конца.
 
