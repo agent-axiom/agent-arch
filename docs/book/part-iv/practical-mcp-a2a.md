@@ -171,12 +171,12 @@ a2a_trust_delegation:
 
 ``` mermaid
 flowchart LR
-    A["Coordinator agent"] --> B["A2A handoff"]
-    B --> C["Specialist agent"]
-    A --> D["MCP client"]
-    C --> E["MCP client"]
-    D --> F["Tool / resource server"]
-    E --> G["Tool / resource server"]
+    A["Координирующий агент"] --> B["Передача управления A2A"]
+    B --> C["Специализированный агент"]
+    A --> D["MCP-клиент"]
+    C --> E["MCP-клиент"]
+    D --> F["Сервер инструментов / ресурсов"]
+    E --> G["Сервер инструментов / ресурсов"]
 ```
 
 </div>
