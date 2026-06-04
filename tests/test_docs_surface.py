@@ -8701,13 +8701,15 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "Глава 1 получила начальный читательский ориентир",
             "компактный печатный вывод",
             "без живой навигации сайта",
+            "Глава 13 получила технический читательский ориентир",
+            "оценочный набор -> контракт проверяющего -> шлюз раскатки",
             "файлы README на трех языках теперь содержат проверочный список "
             "быстрой синхронизации публикации",
             "До готовности к печатной версии еще остаются",
             "проверка английского и китайского слоев",
             "независимая проверка качества HTML/PDF и экспорта",
             "независимая вычитка образцовых глав",
-            "полировка Главы 13",
+            "независимая проверка качества экспорта образцовых глав",
             "упаковка печатной рукописи и онлайн-приложения под конкретный формат подачи",
             "не выглядеть как черновая сборка из файлов Markdown",
         ),
@@ -8725,11 +8727,13 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "Chapter 1 now has a reader orientation block",
             "compact print-ready exit",
             "without relying on live site navigation",
+            "Chapter 13 now has a technical reader orientation",
+            "eval dataset -> verifier contract -> rollout gate",
             "Remaining before this can be called print-ready",
             "deep EN/ZH cleanup",
             "independent rendering/export QA",
             "independent sample copy-edit",
-            "Chapter 13 sample polish",
+            "sample export QA",
         ),
         "docs/whats-new.zh.md": (
             "更新于 2026 年 6 月 4 日",
@@ -8752,12 +8756,14 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "第 1 章现在有读者导向块",
             "稳定的判断框架",
             "不依赖网站实时导航",
+            "第 13 章现在有技术读者导向",
+            "评测数据集 -> 验证器契约 -> 发布门禁",
             "快速同步发布检查清单（quick sync publish checklist）",
             "在称为可印刷版本之前",
             "EN/ZH 清理（deep EN/ZH cleanup）",
             "独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）",
             "独立样章审校（independent sample copy-edit）",
-            "第 13 章样章打磨（Chapter 13 sample polish）",
+            "样章导出质量检查（sample export QA）",
             "面向具体提交格式的纸质稿件与在线配套材料包装",
         ),
     }
@@ -8815,6 +8821,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "локальные ресурсы, anchors, alt text",
         "локальные ресурсы, якоря, alt-тексты",
         "альтернативные тексты (alt text)",
+        "полировка Главы 13",
+        "Chapter 13 sample polish",
+        "第 13 章样章打磨（Chapter 13 sample polish）",
         "EN/ZH-проверка",
         "проверка EN/ZH-слоев",
         "EN/ZH-слоев",
@@ -17504,6 +17513,38 @@ def test_verifier_contract_fields_are_documented() -> None:
 
     for path in checked_files:
         _assert_files_contain_all((path,), required_fields)
+
+
+def test_chapter_13_has_technical_sample_orientation_and_compact_exit() -> None:
+    expected_by_file = {
+        "docs/book/part-v/chapter-13.md": (
+            "Как читать эту главу",
+            "Ориентир главы",
+            "Печатный вывод главы",
+            "контракт проверяющего",
+            "шлюз раскатки",
+            "без живой навигации сайта",
+        ),
+        "docs/book/part-v/chapter-13.en.md": (
+            "How to read this chapter",
+            "Chapter orientation",
+            "Print-ready chapter exit",
+            "verifier contract",
+            "rollout gate",
+            "without relying on live site navigation",
+        ),
+        "docs/book/part-v/chapter-13.zh.md": (
+            "如何阅读本章",
+            "章节导向",
+            "适合印刷的章节结尾",
+            "验证器契约",
+            "发布门禁",
+            "不依赖网站实时导航",
+        ),
+    }
+
+    for path, expected_markers in expected_by_file.items():
+        _assert_files_contain_all((path,), expected_markers)
 
 
 def test_agent_threat_model_matrix_covers_required_classes() -> None:
