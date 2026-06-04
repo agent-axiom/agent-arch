@@ -15,6 +15,7 @@ _Current as of June 4, 2026._
 ### Editorial QA pass on May 14, 2026
 
 The first review-remediation QA slice is closed: the Chapter 1 decision frame was moved from a table into extraction-safe prose for HTML/PDF/plain-text surfaces, and fast-moving chapters, Sources, and What’s New now carry a fresh editorial review date.
+The broader print/publication quality pass remains in progress.
 
 Why it matters: the external book surface now depends less on table rendering quirks and is clearer about when the fast-moving agent-security sections were reviewed.
 
