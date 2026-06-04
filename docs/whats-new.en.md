@@ -117,9 +117,10 @@ Closed so far:
 - the packet blocker register, waiver/decision log, line-length guard, and packet labels are print/export-friendly;
 - the Part VIII role map is now print-friendly;
 - Chapter 1 now has a reader orientation block, a stable decision frame, and a compact print-ready exit that works without relying on live site navigation;
+- Chapter 13 now has a technical reader orientation and compact print-ready exit for the eval dataset -> verifier contract -> rollout gate chain;
 - the READMEs in all three languages now include a fast-forward publish checklist for `main` and `docs-prod`.
 
-Remaining before this can be called print-ready: deep EN/ZH cleanup, independent rendering/export QA, independent sample copy-edit, Chapter 13 sample polish, and target-specific manuscript/online-companion packaging.
+Remaining before this can be called print-ready: deep EN/ZH cleanup, independent rendering/export QA, independent sample copy-edit, sample export QA, and target-specific manuscript/online-companion packaging.
 
 Why it matters: the published site should keep moving toward a polished reader-facing product, not feel like a raw build of Markdown files.
 

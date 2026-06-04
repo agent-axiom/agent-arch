@@ -8800,26 +8800,32 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         ),
     }
     expected_by_file = {
-            "docs/whats-new.md": (
-                "Проход качества для печатной версии идет, но еще не закрыт полностью.",
-                "черновые и плановые страницы исключены из опубликованного сайта",
-                "исключены из опубликованного сайта и карты сайта",
-                "метаданные для OpenGraph и Twitter и изображение для предпросмотра в соцсетях",
-                "проверены поисковый индекс, карта сайта, файл robots, "
-                "локальные ресурсы, якоря",
-                "альтернативный текст и внешние ссылки",
-                "резервные канонические редиректы покрывают основные точки входа",
+        "docs/whats-new.md": (
+            "Проход качества для печатной версии идет, но еще не закрыт полностью.",
+            "черновые и плановые страницы исключены из опубликованного сайта",
+            "исключены из опубликованного сайта и карты сайта",
+            "метаданные для OpenGraph и Twitter и изображение для предпросмотра в соцсетях",
+            "проверены поисковый индекс, карта сайта, файл robots, "
+            "локальные ресурсы, якоря",
+            "альтернативный текст и внешние ссылки",
+            "резервные канонические редиректы покрывают основные точки входа",
             "запись о доступности публичных ссылок обновлена 20 мая 2026 года",
             "все девять ссылок из пакета публичных материалов вернули HTTP 200",
             "реестр блокеров, журнал решений/исключений, ограничение длины строк",
             "названия пакета материалов устойчивы для печати и экспорта",
             "карта ролей части VIII теперь устойчива для печати",
+            "Глава 1 получила начальный читательский ориентир",
+            "компактный печатный вывод",
+            "без живой навигации сайта",
+            "Глава 13 получила технический читательский ориентир",
+            "оценочный набор -> контракт проверяющего -> шлюз раскатки",
             "файлы README на трех языках теперь содержат проверочный список "
             "быстрой синхронизации публикации",
             "До готовности к печатной версии еще остаются",
             "проверка английского и китайского слоев",
             "независимая проверка качества HTML/PDF и экспорта",
-            "редакционная полировка образцовых глав",
+            "независимая вычитка образцовых глав",
+            "независимая проверка качества экспорта образцовых глав",
             "упаковка печатной рукописи и онлайн-приложения под конкретный формат подачи",
             "не выглядеть как черновая сборка из файлов Markdown",
         ),
@@ -8833,10 +8839,16 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "all nine public-packet links returned HTTP 200",
             "line-length guard, and packet labels are print/export-friendly",
             "Part VIII role map is now print-friendly",
+            "Chapter 1 now has a reader orientation block",
+            "compact print-ready exit",
+            "without relying on live site navigation",
+            "Chapter 13 now has a technical reader orientation",
+            "eval dataset -> verifier contract -> rollout gate",
             "Remaining before this can be called print-ready",
             "deep EN/ZH cleanup",
             "independent rendering/export QA",
-            "sample-chapter polish",
+            "independent sample copy-edit",
+            "sample export QA",
         ),
         "docs/whats-new.zh.md": (
             "### 发布前站点表面更干净",
@@ -8855,11 +8867,17 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "豁免与决策日志（waiver/decision log）",
             "行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出",
             "第 VIII 部分角色图（role map）现在适合打印和导出",
+            "第 1 章现在有读者导向块",
+            "稳定的判断框架",
+            "不依赖网站实时导航",
+            "第 13 章现在有技术读者导向",
+            "评测数据集 -> 验证器契约 -> 发布门禁",
             "快速同步发布检查清单（quick sync publish checklist）",
             "在称为可印刷版本之前",
             "EN/ZH 清理（deep EN/ZH cleanup）",
             "独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）",
-            "样章打磨（sample-chapter polish）",
+            "独立样章审校（independent sample copy-edit）",
+            "样章导出质量检查（sample export QA）",
             "面向具体提交格式的纸质稿件与在线配套材料包装",
         ),
     }
@@ -8917,6 +8935,9 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "локальные ресурсы, anchors, alt text",
         "локальные ресурсы, якоря, alt-тексты",
         "альтернативные тексты (alt text)",
+        "полировка Главы 13",
+        "Chapter 13 sample polish",
+        "第 13 章样章打磨（Chapter 13 sample polish）",
         "EN/ZH-проверка",
         "проверка EN/ZH-слоев",
         "EN/ZH-слоев",
@@ -8958,11 +8979,8 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
     for path, expected_markers in expected_by_file.items():
         text = _read(path)
         assert any(marker in text for marker in date_markers_by_file[path]), path
-        if "June 4, 2026" in text or "4 июня 2026 года" in text or "2026 年 6 月 4 日" in text:
-            pass
-        else:
-            for marker in expected_markers:
-                assert marker in text, (path, marker)
+        for marker in expected_markers:
+            assert marker in text, (path, marker)
         for marker in forbidden:
             assert marker not in text, (path, marker)
 
@@ -17654,6 +17672,38 @@ def test_verifier_contract_fields_are_documented() -> None:
 
     for path in checked_files:
         _assert_files_contain_all((path,), required_fields)
+
+
+def test_chapter_13_has_technical_sample_orientation_and_compact_exit() -> None:
+    expected_by_file = {
+        "docs/book/part-v/chapter-13.md": (
+            "Как читать эту главу",
+            "Ориентир главы",
+            "Печатный вывод главы",
+            "контракт проверяющего",
+            "шлюз раскатки",
+            "без живой навигации сайта",
+        ),
+        "docs/book/part-v/chapter-13.en.md": (
+            "How to read this chapter",
+            "Chapter orientation",
+            "Print-ready chapter exit",
+            "verifier contract",
+            "rollout gate",
+            "without relying on live site navigation",
+        ),
+        "docs/book/part-v/chapter-13.zh.md": (
+            "如何阅读本章",
+            "章节导向",
+            "适合印刷的章节结尾",
+            "验证器契约",
+            "发布门禁",
+            "不依赖网站实时导航",
+        ),
+    }
+
+    for path, expected_markers in expected_by_file.items():
+        _assert_files_contain_all((path,), expected_markers)
 
 
 def test_agent_threat_model_matrix_covers_required_classes() -> None:

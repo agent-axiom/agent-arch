@@ -17,6 +17,9 @@
     - 评测需要与追踪、SLO 和 rollout 决策绑定；
     - 关键场景必须在发布前被验证，而不是等到事故后才补救。
 
+!!! info "如何阅读本章"
+    **章节导向：**请把发布决策放在中心，而不只是看测试集或分数表。本章说明评测数据集、验证器契约、回归门禁和发布门禁如何形成一份可审查的团队契约。这份契约应该能放在一页里，并且在不依赖网站实时导航时仍然清楚。
+
 ## 1. 从一个问题开始：怎样避免同一个故障再次被发出去
 
 继续沿用同一个支持场景。
@@ -512,6 +515,9 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - **另一种观点：** automated judges 很有吸引力，因为它们可以扩大 review 规模并减少 human bottleneck。本章承认这种价值，但把 judge output 视为需要校准的 evidence，而不是必须服从的 authority；高风险 rollout decisions 仍然需要 disagreement review、明确的 rubric owner 和 trace-backed attribution。
 - **作者解释：** 本书把 evals 视为 observability 与 lifecycle governance 之间的 release-judgment layer。
 - **快速变化层：** judge models、simulators 与 automated red-team techniques 会快速变化；但 explicit gates 与 attributable failures 的需求不会。
+
+!!! note "适合印刷的章节结尾"
+    在一页里，本章应该留下三个决策：哪个评测数据集检查行为；哪份验证器契约把一次运行变成裁决；哪个发布门禁在出现回归时阻止发布。
 
 ## 16. 接下来读什么
 
