@@ -782,17 +782,42 @@ class TestRuntimeDocsParity:
 
     def test_reference_package_documents_eval_artifact_contract(self) -> None:
         """Keep reference package docs aligned with nested eval artifact fields."""
-        required_terms = (
-            "support_ticket",
-            "sandbox_profile_review",
-            "sandbox_profile_reviewed",
-            "required_run_count",
-            "expected outcome",
-            "summary.pending_approval_ids",
-            "summary.pending_approval_capability_names",
-            "summary.approval_status_counts",
-            "per-run `request_agent_id`",
-        )
+        required_terms_by_path = {
+            Path("docs/appendix/reference-package.en.md"): (
+                "support_ticket",
+                "sandbox_profile_review",
+                "sandbox_profile_reviewed",
+                "required_run_count",
+                "expected outcome",
+                "summary.pending_approval_ids",
+                "summary.pending_approval_capability_names",
+                "summary.approval_status_counts",
+                "per-run `request_agent_id`",
+            ),
+            Path("docs/appendix/reference-package.md"): (
+                "support_ticket",
+                "sandbox_profile_review",
+                "sandbox_profile_reviewed",
+                "required_run_count",
+                "ожидаемый исход",
+                "summary.pending_approval_ids",
+                "summary.pending_approval_capability_names",
+                "summary.approval_status_counts",
+                "для каждого запуска",
+                "`request_agent_id`",
+            ),
+            Path("docs/appendix/reference-package.zh.md"): (
+                "support_ticket",
+                "sandbox_profile_review",
+                "sandbox_profile_reviewed",
+                "required_run_count",
+                "expected outcome",
+                "summary.pending_approval_ids",
+                "summary.pending_approval_capability_names",
+                "summary.approval_status_counts",
+                "per-run `request_agent_id`",
+            ),
+        }
         required_artifact_snippets = {
             Path("docs/appendix/reference-package.en.md"): (
                 "top-level `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
@@ -802,7 +827,7 @@ class TestRuntimeDocsParity:
                 "and `latest_failure_reason`"
             ),
             Path("docs/appendix/reference-package.md"): (
-                "top-level `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
+                "на верхнем уровне `failed_runs`, `traceable_failed_runs`, `trace_ids`, "
                 "`failed_trace_ids`, `idempotency_keys`, `approval_ids`, "
                 "`approval_capability_names`, `pending_approval_ids`, "
                 "`pending_approval_capability_names`, `approval_status_counts` "
@@ -819,7 +844,7 @@ class TestRuntimeDocsParity:
         for path, artifact_snippet in required_artifact_snippets.items():
             text = path.read_text(encoding="utf-8")
             assert "export-eval-dataset" in text
-            for term in required_terms:
+            for term in required_terms_by_path[path]:
                 assert term in text
             assert artifact_snippet in text
 
@@ -880,7 +905,12 @@ class TestRuntimeDocsParity:
             Path("docs/appendix/reference-package.zh.md"),
         ):
             text = path.read_text(encoding="utf-8")
-            assert "Lifecycle list loaders" in text
+            expected_marker = (
+                "Загрузчики списков жизненного цикла"
+                if path.name == "reference-package.md"
+                else "Lifecycle list loaders"
+            )
+            assert expected_marker in text
             for error in required_errors:
                 assert error in text
 
@@ -1037,7 +1067,12 @@ class TestRuntimeDocsParity:
             Path("docs/appendix/reference-package.zh.md"),
         ):
             text = path.read_text(encoding="utf-8")
-            assert "Runtime CLI failure paths" in text
+            expected_marker = (
+                "Неудачные пути командного интерфейса среды выполнения"
+                if path.name == "reference-package.md"
+                else "Runtime CLI failure paths"
+            )
+            assert expected_marker in text
             for error in required_errors:
                 assert error in text
 
@@ -1057,7 +1092,12 @@ class TestRuntimeDocsParity:
             Path("docs/appendix/reference-package.zh.md"),
         ):
             text = path.read_text(encoding="utf-8")
-            assert "Runtime CLI failure paths" in text
+            expected_marker = (
+                "Неудачные пути командного интерфейса среды выполнения"
+                if path.name == "reference-package.md"
+                else "Runtime CLI failure paths"
+            )
+            assert expected_marker in text
             for error in required_errors:
                 assert error in text
 

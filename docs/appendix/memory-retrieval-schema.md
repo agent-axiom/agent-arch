@@ -4,8 +4,8 @@
 
 Если [схема трасс и каталог событий](trace-schema.md) отвечает на вопрос «как это видно в телеметрии», а [схема lifecycle-артефактов](lifecycle-artifact-schema.md) отвечает на вопрос «что считается управляемым рабочим артефактом», то эта схема отвечает на вопрос «какие именно записи и фильтры вообще допустимы в слое памяти».
 
-!!! note "Канонические сценарии памяти (Canonical memory cases)"
-    Контракт памяти и поиска (memory and retrieval contract) должен отделять разные границы памяти (memory boundaries) для трех канонических сценариев (canonical cases). **Триаж обращений поддержки (Support triage)** хранит контекст запрашивающего (requester context), состояние тикета (ticket state), доказательства `idempotency_key` (`idempotency_key` evidence) и короткоживущие рабочие заметки (short-lived working notes). **Внутренний ассистент знаний (Internal knowledge assistant)** требует свежести поиска (retrieval freshness), привязки к источникам (source attribution), фильтров арендатора (tenant filters), происхождения памяти (memory provenance) и контроля доступа (access control). **Координация инцидентов (Incident coordination)** хранит таймлайн инцидента (incident timeline), владение ответом (response ownership), сводки передачи управления (handoff summaries), статус эскалации (escalation status) и уроки после инцидента (post-incident lessons), не превращая временный шум инцидента (transient incident noise) в долговечную истину (durable truth).
+!!! note "Канонические сценарии памяти"
+    Контракт памяти и поиска должен отделять разные границы памяти для трех канонических сценариев. **Триаж обращений поддержки** хранит контекст запрашивающего, состояние тикета, доказательства `idempotency_key` и короткоживущие рабочие заметки. **Внутренний ассистент знаний** требует свежести поиска, привязки к источникам, фильтров арендатора, происхождения памяти и контроля доступа. **Координация инцидентов** хранит таймлайн инцидента, владение ответом, сводки передачи управления, статус эскалации и уроки после инцидента, не превращая временный шум инцидента в долговечную истину.
 
 ## 1. Зачем нужен отдельный слой схем
 
@@ -17,9 +17,9 @@
   - что это была за запись;
   - откуда она взялась;
   - кто имел право ее читать;
-  - по каким правилам она попала в prompt.
+  - по каким правилам она попала в запрос к модели.
 
-Поэтому слой памяти полезно описывать не как «у нас есть vector store», а как набор типизированных записей и типизированных правил извлечения.
+Поэтому слой памяти полезно описывать не как «у нас есть векторное хранилище», а как набор типизированных записей и типизированных правил извлечения.
 
 ## 2. Базовые сущности
 
@@ -29,7 +29,7 @@
 - `retrieval_query`
 - `retrieval_result`
 
-Этого уже достаточно, чтобы связать главы 5-7, слой политик, схему трасс и эталонный runtime.
+Этого уже достаточно, чтобы связать главы 5-7, слой политик, схему трасс и эталонную среду выполнения.
 
 ## 3. Запись памяти
 
@@ -58,7 +58,7 @@ retention: long_term
 - `revision` нужен, чтобы не терять историю тихими перезаписями;
 - `trust_level` помогает не ставить все записи в один ряд.
 
-Для memory poisoning review запись или candidate write полезно дополнительно описывать через memory poisoning review fields как проверяемый security object, а не только как retrieval payload:
+Для проверки отравления памяти запись или кандидат на запись полезно дополнительно описывать через поля проверки отравления памяти как проверяемый объект безопасности, а не только как данные для извлечения:
 
 ```yaml
 write_trust_boundary: untrusted_write
@@ -70,7 +70,7 @@ quarantine_state: quarantined
 rollback_ref: mem-rollback-2026-05-001
 ```
 
-Эти поля связывают сценарии `untrusted write`, `delayed activation`, `cross-tenant contamination`, `policy influence`, `provenance check` и `quarantine and rollback` с машинно-проверяемой схемой памяти.
+Эти поля связывают сценарии недоверенной записи, отложенной активации, межарендаторского загрязнения, влияния на политику, проверки происхождения, карантина и отката с машинно-проверяемой схемой памяти.
 
 ## 4. Запрос на извлечение
 
@@ -121,7 +121,7 @@ excluded_records: 12
 
 Это важно потому, что потом можно объяснить:
 
-- почему именно эти записи попали в prompt;
+- почему именно эти записи попали в запрос к модели;
 - какие ограничения сработали;
 - сколько записей было отброшено.
 
@@ -129,7 +129,7 @@ excluded_records: 12
 
 Контур чтения памяти и контур записи памяти почти никогда не должны жить по одним и тем же правилам:
 
-- контур записи больше смотрит на validation, provenance и retention;
+- контур записи больше смотрит на валидацию, происхождение и срок хранения;
 - контур чтения больше смотрит на границы арендаторов, фильтры доверия и ограничения по классам.
 
 Поэтому хорошая схема памяти почти всегда живет рядом с политиками как кодом.
@@ -156,7 +156,7 @@ excluded_records: 12
 - CLI:
   - `inspect-memory`
 
-Встроенный `memory.yaml` делает это конкретным через `seed_records`: каждая seed record несёт стабильный `memory_id`, а также `tenant_id`, `memory_class`, `kind`, `content`, `source`, `confidence`, `provenance` и `revision`; bundled kinds — `language_preference`, `validated_fact` и `working_note`, чтобы demo показывало и retrieval filtering, и lineage записи. Эталонные seed records (`mem-001`, `mem-002` и `mem-003`) намеренно покрывают sources `trusted_profile`, `trusted_service` и `session_state`, включая provenance вроде `ephemeral_session_note`, чтобы retrieval examples показывали разные trust и persistence levels. Non-profile seed content также включает policy-like fact `Support tickets must use the support queue and include requester_id.` и working note `Recent runtime demo used create_ticket as the main write capability.` Loader тоже валидирует эту форму: `Memory store config must be a mapping`, `'memory' must be a mapping`, `'seed_records' must be a list`, `Memory record #{idx} must be a mapping`, `Memory record #{idx} field must be a string: {key}`, `Memory record #{idx} field must be a string: {field}`, `Memory record #{idx} field must be a string: memory_id`, `Memory record #{idx} field must be a string: provenance`, `Memory record #{idx} field is required: {key}`, `Memory record #{idx} field is required: memory_id`, `Memory record #{idx} confidence must be a number`, `Memory record #{idx} confidence must be between 0 and 1` и `Memory record #{idx} revision must be an integer` и `Memory record #{idx} revision must be positive`, а direct memory store construction отвергает malformed injected records через `Memory store records must be MemoryRecord` и malformed direct candidates через `Memory store candidate must be MemoryCandidate`, while direct construction records использует стабильные errors `Memory record field must be a string: {field}`, `Memory record field is required: {field}`, `Memory record confidence must be a number`, `Memory record confidence must be between 0 and 1`, `Memory record revision must be an integer` и `Memory record revision must be positive`, и `Memory candidate revision mode must be a string` и `Memory candidate revision mode is not supported: {revision_mode}` и `Memory candidate confidence must be a number` и `Memory candidate confidence must be between 0 and 1` и `Memory candidate field must be a string: {field}` и `Memory candidate field is required: {field}` и `Memory lookup field must be a string: {field}` и `Memory lookup field is required: {field}` и `Memory lookup limit must be an integer` и `Memory lookup limit must be non-negative`.
+Встроенный `memory.yaml` делает это конкретным через `seed_records`: каждая исходная запись несёт стабильный `memory_id`, а также `tenant_id`, `memory_class`, `kind`, `content`, `source`, `confidence`, `provenance` и `revision`; встроенные виды — `language_preference`, `validated_fact` и `working_note`, чтобы демонстрация показывала и фильтрацию извлечения, и цепочку происхождения записи. Эталонные исходные записи (`mem-001`, `mem-002` и `mem-003`) намеренно покрывают источники `trusted_profile`, `trusted_service` и `session_state`, включая происхождение вроде `ephemeral_session_note`, чтобы примеры извлечения показывали разные уровни доверия и стойкости. Непрофильное исходное содержимое также включает факт, похожий на правило, `Support tickets must use the support queue and include requester_id.` и рабочую заметку `Recent runtime demo used create_ticket as the main write capability.` Загрузчик тоже валидирует эту форму: `Memory store config must be a mapping`, `'memory' must be a mapping`, `'seed_records' must be a list`, `Memory record #{idx} must be a mapping`, `Memory record #{idx} field must be a string: {key}`, `Memory record #{idx} field must be a string: {field}`, `Memory record #{idx} field must be a string: memory_id`, `Memory record #{idx} field must be a string: provenance`, `Memory record #{idx} field is required: {key}`, `Memory record #{idx} field is required: memory_id`, `Memory record #{idx} confidence must be a number`, `Memory record #{idx} confidence must be between 0 and 1` и `Memory record #{idx} revision must be an integer` и `Memory record #{idx} revision must be positive`, а прямое построение хранилища памяти отвергает некорректные внедренные записи через `Memory store records must be MemoryRecord` и некорректных прямых кандидатов через `Memory store candidate must be MemoryCandidate`; записи прямого построения используют стабильные ошибки `Memory record field must be a string: {field}`, `Memory record field is required: {field}`, `Memory record confidence must be a number`, `Memory record confidence must be between 0 and 1`, `Memory record revision must be an integer` и `Memory record revision must be positive`, а также `Memory candidate revision mode must be a string`, `Memory candidate revision mode is not supported: {revision_mode}`, `Memory candidate confidence must be a number`, `Memory candidate confidence must be between 0 and 1`, `Memory candidate field must be a string: {field}`, `Memory candidate field is required: {field}`, `Memory lookup field must be a string: {field}`, `Memory lookup field is required: {field}`, `Memory lookup limit must be an integer` и `Memory lookup limit must be non-negative`.
 
 Книга не только описывает этот контракт, но и показывает исполняемый каркас.
 
@@ -169,7 +169,7 @@ excluded_records: 12
 - извлечение всегда ограничено по классам и объему;
 - запрос на извлечение знает, кто читает и зачем;
 - результат извлечения можно восстановить по трассе;
-- summaries не считаются truth by default.
+- сводки не считаются истиной по умолчанию.
 
 ## 10. Что чаще всего ломается
 
@@ -177,10 +177,10 @@ excluded_records: 12
 
 - извлечение возвращает «похожее», но не «полезное»;
 - записи памяти не различаются по уровню доверия;
-- summaries тихо перезаписывают более надежные данные;
+- сводки тихо перезаписывают более надежные данные;
 - извлечение игнорирует границы арендатора;
-- prompt получает слишком много контекста без фильтров;
-- происхождение есть только на бумаге, но не в рантайме.
+- запрос к модели получает слишком много контекста без фильтров;
+- происхождение есть только на бумаге, но не в среде выполнения.
 
 ## 11. Что сделать сразу
 
@@ -189,8 +189,8 @@ excluded_records: 12
 - Есть ли у каждой записи `tenant_id`, `memory_class`, `provenance` и `revision`?
 - Отличаются ли политика чтения памяти и политика записи?
 - Ограничено ли извлечение по доверию, классам и объему?
-- Можно ли объяснить, почему конкретная запись попала в prompt?
-- Есть ли защита от чтения через чужой tenant?
+- Можно ли объяснить, почему конкретная запись попала в запрос к модели?
+- Есть ли защита от чтения через чужого арендатора?
 - Видно ли решения о памяти в трассе и экспорте сессии?
 
 Если на несколько вопросов подряд ответ «нет», значит память у тебя уже есть, а вот дисциплины работы с ней пока нет.
