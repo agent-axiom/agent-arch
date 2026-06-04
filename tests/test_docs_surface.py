@@ -8865,6 +8865,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
     expected_by_file = {
         "docs/whats-new.md": (
             "Проход качества для печатной версии идет, но еще не закрыт полностью.",
+            "Более широкий проход качества для печатной версии и публикации остается в работе.",
             "черновые и плановые страницы исключены из опубликованного сайта",
             "исключены из опубликованного сайта и карты сайта",
             "метаданные для OpenGraph и Twitter и изображение для предпросмотра в соцсетях",
@@ -8894,6 +8895,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         ),
         "docs/whats-new.en.md": (
             "The print/publication quality pass is in progress, not fully closed.",
+            "The broader print/publication quality pass remains in progress.",
             "draft and planning pages are excluded from the published site",
             "OpenGraph/Twitter metadata and a social preview image",
             "search index, sitemap, robots file",
@@ -8916,6 +8918,7 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
         "docs/whats-new.zh.md": (
             "### 发布前站点表面更干净",
             "面向印刷与发布的质量检查正在进行中，但还没有完全关闭。",
+            "更广泛的印刷与发布质量检查仍在进行中。",
             "已完成的站点工作：",
             "草稿与规划页面已从发布站点和站点地图（sitemap）中排除",
             "OpenGraph/Twitter 元数据和社交预览图（social preview image）",
