@@ -17798,31 +17798,57 @@ def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
 
 def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
     expected = {
-        "docs/book/part-iv/chapter-9.md": "MCP threat model matrix",
-        "docs/book/part-iv/chapter-9.en.md": "MCP Threat Model Matrix",
-        "docs/book/part-iv/chapter-9.zh.md": "MCP 威胁模型矩阵",
+        "docs/book/part-iv/chapter-9.md": (
+            "Матрица угроз для MCP",
+            "модель угроз MCP",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "MCP Threat Model Matrix",
+            "MCP threat model",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "MCP 威胁模型矩阵",
+            "MCP threat model",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
     }
-    required_markers = (
-        "MCP threat model",
-        "tool poisoning",
-        "rug pull attack",
-        "tool shadowing",
-        "confused deputy",
-        "over-scoped tokens",
-        "data exfiltration through legitimate channels",
-        "supply-chain attack",
-        "replay/tampering",
-        "sandbox escape",
-        "telemetry",
-    )
 
-    for path, heading in expected.items():
-        _assert_files_contain_all((path,), (heading, *required_markers))
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
 
 
 def test_chapter_9_mcp_server_contract_covers_required_controls() -> None:
     expected_headings = {
-        "docs/book/part-iv/chapter-9.md": "Минимальный контракт MCP server",
+        "docs/book/part-iv/chapter-9.md": "Минимальный контракт MCP-сервера",
         "docs/book/part-iv/chapter-9.en.md": "Minimal MCP Server Contract",
         "docs/book/part-iv/chapter-9.zh.md": "最小 MCP server contract",
     }
@@ -17870,8 +17896,10 @@ def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": (
-            "MCP — это security boundary",
-            "tool descriptions и tool return values",
+            "MCP — это граница безопасности",
+            "описания инструментов и результаты инструментов",
+            "Матрица угроз для MCP",
+            "Минимальный контракт MCP-сервера",
         ),
         "docs/book/part-iv/chapter-9.en.md": (
             "MCP Is a Security Boundary",
@@ -17882,16 +17910,16 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
             "tool descriptions 和 tool return values",
         ),
         "docs/book/part-iv/practical-mcp-a2a.md": (
-            "A2A требует governance",
-            "A2A handoff trust contract",
-            "delegated authority",
-            "agent identity",
-            "delegation chain",
-            "allowed collaboration graph",
-            "inter-agent authorization",
-            "policy inheritance",
-            "non-repudiation",
-            "failure attribution",
+            "A2A требует управления",
+            "контракт доверия при передаче управления A2A",
+            "делегированных полномочий",
+            "идентичность агента",
+            "цепочка делегирования",
+            "граф разрешенного взаимодействия",
+            "межагентная авторизация",
+            "наследование политик",
+            "неотказуемость",
+            "атрибуция сбоев",
         ),
         "docs/book/part-iv/practical-mcp-a2a.en.md": (
             "A2A Needs Governance",
@@ -17921,6 +17949,16 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
 
     for path, markers in expected.items():
         _assert_files_contain_all((path,), markers)
+
+    russian_security_text = _read("docs/book/part-iv/chapter-9.md")
+    assert "MCP — это security boundary" not in russian_security_text
+    assert "tool descriptions и tool return values" not in russian_security_text
+    assert "### 4.2. MCP threat model matrix" not in russian_security_text
+    assert "### 4.3. Минимальный контракт MCP server" not in russian_security_text
+
+    russian_practical_text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    assert "A2A требует governance" not in russian_practical_text
+    assert "Расширенный [A2A handoff trust contract]" not in russian_practical_text
 
 
 def test_practical_a2a_trust_delegation_contract_covers_required_controls() -> None:
