@@ -14,18 +14,18 @@
 
 У агентной системы промышленного уровня есть несколько классов артефактов, которые нельзя держать только в голове команды или в wiki:
 
-- change records;
-- approved artifact bundles;
-- retirement plans;
-- replacement mappings;
-- runtime-control schemas и contract-version linkages;
-- operational approvals и lifecycle decisions;
-- capability-session interruption, expiry и re-initialization rules, если они уже входят в runtime contract;
-- delegated authorization rules, assumptions про principal binding и revoke behavior, если они уже входят в runtime contract;
-- verifier contracts, grading rubrics и rules для evidence linkage, если release или assurance зависят от verifier output;
-- структурированные handoff artifacts, если длинная работа пересекает границу context reset или role handoff.
+- записи изменений (change records);
+- утвержденные пакеты артефактов (approved artifact bundles);
+- планы вывода из эксплуатации (retirement plans);
+- карты замены (replacement mappings);
+- связи между схемами управления средой исполнения и версиями контрактов;
+- рабочие подтверждения и решения жизненного цикла;
+- правила прерывания, истечения и повторной инициализации сессий возможностей, если они уже входят в контракт времени выполнения;
+- правила делегированного разрешения, допущения о привязке субъекта и поведение отзыва, если они уже входят в контракт времени выполнения;
+- контракты проверяющего, рубрики оценивания и правила связи доказательств, если выпуск или заверение зависят от вывода проверяющего;
+- структурированные артефакты передачи управления, если длинная работа пересекает границу сброса контекста или передачи роли.
 
-Без этого change management быстро разваливается на устные договоренности. А incident review превращается в расследование того, кто и когда "примерно поменял policy или routing".
+Без этого управление изменениями быстро разваливается на устные договоренности. А разбор инцидента превращается в расследование того, кто и когда "примерно поменял policy или routing".
 
 ## 2. Базовые сущности
 

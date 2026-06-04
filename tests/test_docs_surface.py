@@ -14714,6 +14714,55 @@ def test_multilingual_lifecycle_artifact_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_russian_lifecycle_artifact_core_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+    expected_markers = (
+        "записи изменений (change records)",
+        "утвержденные пакеты артефактов (approved artifact bundles)",
+        "планы вывода из эксплуатации (retirement plans)",
+        "карты замены (replacement mappings)",
+        "связи между схемами управления средой исполнения и версиями контрактов",
+        "рабочие подтверждения и решения жизненного цикла",
+        "правила прерывания, истечения и повторной инициализации сессий возможностей",
+        "правила делегированного разрешения",
+        "контракты проверяющего, рубрики оценивания и правила связи доказательств",
+        "структурированные артефакты передачи управления",
+        "управление изменениями",
+        "разбор инцидента",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "- change records;",
+        "- approved artifact bundles;",
+        "- retirement plans;",
+        "- replacement mappings;",
+        "- runtime-control schemas и contract-version linkages;",
+        "- operational approvals и lifecycle decisions;",
+        (
+            "- capability-session interruption, expiry и re-initialization rules, "
+            "если они уже входят в runtime contract;"
+        ),
+        (
+            "- delegated authorization rules, assumptions про principal binding и "
+            "revoke behavior, если они уже входят в runtime contract;"
+        ),
+        (
+            "- verifier contracts, grading rubrics и rules для evidence linkage, "
+            "если release или assurance зависят от verifier output;"
+        ),
+        (
+            "- структурированные handoff artifacts, если длинная работа пересекает "
+            "границу context reset или role handoff."
+        ),
+        "change management быстро разваливается",
+        "incident review превращается",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     expected_markers_by_file = {
         "docs/appendix/memory-retrieval-schema.md": (
