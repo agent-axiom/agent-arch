@@ -5541,6 +5541,51 @@ def test_chapter_24_chinese_control_path_labels_are_localized() -> None:
         assert forbidden_marker not in text, forbidden_marker
 
 
+def test_chapter_24_russian_control_path_labels_are_localized() -> None:
+    text = _read("docs/book/part-viii/chapter-24.md")
+    expected_markers = (
+        "Как это меняет модель угроз",
+        "сможет ли она увести исполнение в более слабую схему оркестрации "
+        "или путь делегированного рабочего агента",
+        "может ли изменение в среде исполнения сделать надзор слабее",
+        "может ли дрейф схемы или рассогласование контрактов открыть более "
+        "слабый контур управления",
+        "есть ли у нас отдельные сигналы на поведение, похожее на саботаж",
+        "умеем ли мы экстренно замораживать возможность, принципал или волну "
+        "поэтапного выпуска",
+        "ограниченная область действия каждой возможности",
+        "отдельный принципал инструмента (`tool principal`) для действий "
+        "высокого риска",
+        "подтверждение конкретной полезной нагрузки",
+        "явные правила для того, когда повторная инициализация сессии "
+        "возможности запрещена, разрешена или привязана к подтверждению",
+        "неизменяемая связь между `trace_id`, `approval_id`, "
+        "`tool_principal`, `contract_version` и `artifact_bundle`",
+        "аварийная остановка для семейства возможностей",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in text, expected_marker
+
+    forbidden_markers = (
+        "Как это меняет threat model",
+        "execution в более слабый orchestration pattern или delegated worker path",
+        "change в runtime сделать oversight слабее",
+        "schema drift или contract mismatch открыть более слабый control path",
+        "сигналы на sabotage-like behavior",
+        "capability, principal или rollout wave",
+        "ограниченный scope каждого capability",
+        "отдельные `tool principal` для risky actions",
+        "approval на конкретный payload",
+        "явные controls для того, когда capability-session re-init denied, "
+        "allowed или approval-bound",
+        "immutable linkage между `trace_id`, `approval_id`, "
+        "`tool_principal`, `contract_version` и `artifact_bundle`",
+        "emergency stop для capability family",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in text, forbidden_marker
+
+
 def test_chapter_24_chinese_maturity_checklist_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
