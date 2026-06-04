@@ -1,5 +1,8 @@
 # Chapter 1. Why an Agent Needs a Platform, Not Magic
 
+!!! info "How to read this chapter"
+    **Chapter orientation:** first check whether an ordinary workflow is enough. Only then add an agent loop, memory, tools, and delegation. The chapter gives a decision rule that should fit on one page and stay understandable without relying on live site navigation.
+
 ## 1. Start with a Failure, Not with Magic
 
 If there is one mistake this book keeps resisting, it is the habit of starting with apparent smartness instead of operational failure.
@@ -227,6 +230,9 @@ If you do not yet have answers to those questions, it is too early to debate "ho
 
 !!! tip "Mini design-review checklist"
     Before calling the system production-ready, check five things: the execution pattern is the least dynamic one that still works; all risky side effects pass through a control layer; the write path has an owner; the trace shows identity, policy decision, and outcome; the first eval set covers retry, timeout, and incident-shaped failure.
+
+!!! note "Print-ready chapter exit"
+    On one page, this chapter should leave three decisions: start with a workflow; add an agent loop only for necessary flexibility; introduce a multi-agent shape only when context, authority, and accountability truly split.
 
 !!! summary "Chapter ending template"
     **What to remember:** an agent product starts with a governed execution platform, not with maximum autonomy.
