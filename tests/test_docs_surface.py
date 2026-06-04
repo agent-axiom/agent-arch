@@ -8597,6 +8597,11 @@ def test_evidence_spine_threads_three_canonical_cases() -> None:
 
     for path, required_markers in required_markers_by_file.items():
         _assert_files_contain_all((path,), required_markers)
+    checked_files = tuple(required_markers_by_file)
+
+    for path, required_markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), required_markers)
+    for path in checked_files:
         text = _read(path)
         for marker in deprecated_markers:
             assert marker not in text, (path, marker)
@@ -18011,6 +18016,149 @@ def test_russian_practical_pages_prefer_reader_facing_terminology() -> None:
         "в один walkthrough",
         "от user request до rollout judgment",
         "Сильная evidence spine",
+    )
+
+    for marker in forbidden_practical_markers:
+        assert marker not in practical_text
+    for marker in forbidden_evidence_markers:
+        assert marker not in evidence_text
+
+
+def test_russian_practical_pages_localize_deeper_reader_facing_prose() -> None:
+    practical_text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    evidence_text = _read("docs/book/part-v/evidence-spine.md")
+
+    _assert_files_contain_all(
+        ("docs/book/part-iv/practical-mcp-a2a.md",),
+        (
+            "набор инструментов",
+            "результат вызова инструмента",
+            "еще один адаптер",
+            "контракт управления для A2A",
+            "выявление возможностей",
+            "журнал аудита для передачи управления",
+            "проверки политик",
+            "по какой политике и с какой областью действия",
+            "не равно независимой проверке",
+            "типизированный контракт для инструментов",
+            "изолировать адаптер и путь политики",
+            "другой среде исполнения агента",
+            "Агент работает с инструментами через `MCP`",
+            "политики и аудит должны покрывать оба направления",
+            "собственной поверхности политик",
+            "операционной идентичности",
+            "контракт возможностей",
+            "Это разные правила работы",
+            "новый агент или просто новая возможность",
+            "поверхность политик и жизненный цикл",
+            "Это проблема делегирования или интеграции",
+        ),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-v/evidence-spine.md",),
+        (
+            "подозрительный запуск",
+            "цепочки доказательств",
+            "оценки и суждение о поэтапном выпуске",
+            "поведение среды исполнения",
+            "артефакты жизненного цикла",
+            "Как минимум один управляемый запуск",
+            "в среде исполнения",
+            "цепочка событий",
+            "связанный утвержденный артефакт",
+            "набор контрактов проверяющего",
+            "границу сброса контекста или передачи роли",
+            "Полезно мыслить цепочку доказательств",
+            "запуск разбора обращений поддержки",
+            "по производственному инциденту клиента",
+            "поверхность выпуска",
+            "возможность для данного арендатора и действующего лица",
+            "поиск по внутренним знаниям",
+            "делегированная авторизация",
+            "для обработки высокого риска",
+            "Слой политик",
+            "События среды исполнения",
+            "сырого набора доказательств",
+            "какие входные данные были приняты или отклонены",
+            "какие вызовы инструментов были сделаны",
+            "ставилась ли сессия на паузу",
+            "описании для оператора",
+            "разбор оценки вне сети",
+            "оценки в сети",
+            "сравнение с регрессией",
+            "отдельный лист оценок",
+            "утверждение отклонено",
+            "утверждение просрочено",
+            "Если запуск выявил серьезную проблему",
+            "оператор должен быстро ответить",
+            "сбор сырых доказательств",
+            "проверяемое суждение",
+            "реагирование в контуре заверения",
+            "линия происхождения артефактов",
+        ),
+    )
+
+    forbidden_practical_markers = (
+        "набор tools",
+        "payload tool-а",
+        "agent-а",
+        "governance-контракт",
+        "capability discovery",
+        "audit trail",
+        "по какой policy и с каким scope",
+        "Согласие нескольких agents",
+        "typed contract для tools",
+        "изолировать adapter и policy path",
+        "другому agent runtime",
+        "агент работает с tools через `MCP`",
+        "policy и audit должны покрывать оба направления",
+        "policy surface",
+        "operational identity",
+        "capability contract",
+        "operational semantics",
+        "новый agent или просто новый capability",
+        "policy surface и lifecycle",
+        "delegation problem или integration problem",
+    )
+    forbidden_evidence_markers = (
+        "подозрительный run",
+        "evidence spine",
+        "policy, approvals, evals, incidents и rollout judgment",
+        "runtime behavior",
+        "lifecycle artifacts",
+        "Как минимум один управляемый run",
+        "в runtime",
+        "event lineage",
+        "approved artifact",
+        "verifier contracts",
+        "context reset или role handoff",
+        "Полезно мыслить evidence spine",
+        "run разбора обращений поддержки",
+        "ticket по production-инциденту клиента",
+        "release surface",
+        "capability для данного tenant и actor",
+        "internal knowledge retrieval",
+        "delegated authorization",
+        "high-risk handling",
+        "Policy, это не просто",
+        "Runtime извлекает контекст",
+        "сырого evidence",
+        "какие inputs были приняты или отклонены",
+        "какие tool calls были сделаны",
+        "была ли pause в session",
+        "operator-facing summary",
+        "offline review",
+        "online grading",
+        "regression comparison",
+        "disconnected score sheet",
+        "approval denied",
+        "approval expired",
+        "Если run выявил серьезную проблему",
+        "operator должен быстро ответить",
+        "raw evidence capture",
+        "reviewable judgment",
+        "assurance response",
+        "artifact lineage",
     )
 
     for marker in forbidden_practical_markers:
