@@ -1,27 +1,27 @@
 # Схема запроса на подтверждение и записи о решении
 
-Эта страница описывает минимальный контрактный слой для human approval в agent systems: какие данные должен содержать запрос на подтверждение, как фиксируется решение и что должно остаться в audit trail после high-risk действия.
+Эта страница описывает минимальный контрактный слой для подтверждения человеком в агентных системах: какие данные должен содержать запрос на подтверждение, как фиксируется решение и что должно остаться в журнале аудита после действия высокого риска.
 
-Она напрямую связана и со страницей [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md), потому что approval - один из тех records, которые делают управляемый run читаемым от запроса до rollout.
+Она напрямую связана со страницей [Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске](../book/part-v/evidence-spine.md), потому что подтверждение - одна из тех записей, которые делают управляемый запуск читаемым от запроса до решения о выпуске.
 
-Если [policy bundle](policy-bundle-schema.md) отвечает на вопрос "какие правила вообще действуют", то approval schema отвечает на вопрос "как именно рантайм передает человеку право последнего решения".
+Если [набор политик](policy-bundle-schema.md) отвечает на вопрос "какие правила вообще действуют", то схема подтверждения отвечает на вопрос "как именно среда выполнения передает человеку право последнего решения".
 
-## 1. Зачем нужна отдельная approval schema
+## 1. Зачем нужна отдельная схема подтверждения
 
 Очень частая ошибка устроена так:
 
-- policy говорит, что действие high-risk;
-- runtime возвращает `approval_required`;
-- дальше вся логика живет где-то в UI или в устной договоренности команды.
+- политика говорит, что действие относится к высокому риску;
+- среда выполнения возвращает `approval_required`;
+- дальше вся логика живет где-то в интерфейсе или в устной договоренности команды.
 
 В этом случае ты теряешь:
 
 - единый формат запроса;
-- проверяемый decision record;
-- повторяемую audit trail;
-- связь между approval и конкретным run или trace.
+- проверяемую запись о решении;
+- воспроизводимый журнал аудита;
+- связь между подтверждением и конкретным запуском или трассой.
 
-Поэтому approval boundary лучше оформлять как machine-readable contract, а не как "кнопку в интерфейсе".
+Поэтому границу подтверждения лучше оформлять как машиночитаемый контракт, а не как "кнопку в интерфейсе".
 
 ## 2. Базовые сущности
 
@@ -31,11 +31,11 @@
 - `approval_decision`
 - `approval_audit_record`
 
-Этого уже достаточно, чтобы связать policy layer, runtime, trace schema и lifecycle artifacts.
+Этого уже достаточно, чтобы связать слой политик, среду выполнения, схему трасс и артефакты жизненного цикла.
 
-## 3. Approval request
+## 3. Запрос на подтверждение
 
-`approval_request` создается тогда, когда runtime сталкивается с действием, которое нельзя продолжать автоматически.
+`approval_request` создается тогда, когда среда выполнения сталкивается с действием, которое нельзя продолжать автоматически.
 
 ```yaml
 kind: approval_request
@@ -67,12 +67,12 @@ status: pending
 Что здесь особенно важно:
 
 - `trace_id` и `session_id` связывают approval с run history;
-- `capability` и `requested_action` не дают approval превратиться в абстрактное "да/нет";
-- `required_role` помогает не смешивать любого reviewer с нужным approver;
-- `requested_fields` фиксируют именно тот payload, который человек реально подтверждает;
-- `sandbox_context` нужен для sandbox-backed действий, чтобы approver видел workspace materialization, permissions и snapshot/resume policy, а не только бизнес-payload.
+- `capability` и `requested_action` не дают подтверждению превратиться в абстрактное "да/нет";
+- `required_role` помогает не смешивать любого проверяющего с нужным подтверждающим;
+- `requested_fields` фиксируют именно те данные, которые человек реально подтверждает;
+- `sandbox_context` нужен для действий, выполняемых через песочницу, чтобы подтверждающий видел материализацию рабочей области, права доступа и правила снимка/возобновления, а не только бизнес-данные.
 
-## 4. Approval decision
+## 4. Решение по запросу
 
 `approval_decision` описывает, что именно решил человек и на каком основании.
 
@@ -91,13 +91,13 @@ expires_at: 2026-04-07T12:00:00Z
 Здесь есть несколько важных инвариантов:
 
 - решение должно ссылаться на конкретный `approval_id`;
-- `decided_by` и `role` должны быть audit-friendly;
+- `decided_by` и `role` должны быть пригодны для аудита;
 - `scope` не должен быть неявным;
-- `expires_at` полезен, если approval не должен жить бесконечно.
+- `expires_at` полезен, если подтверждение не должно жить бесконечно.
 
-## 5. Approval audit record
+## 5. Аудиторская запись подтверждения
 
-`approval_audit_record` связывает решение с реальным side effect или отказом от него.
+`approval_audit_record` связывает решение с реальным побочным действием или отказом от него.
 
 ```yaml
 kind: approval_audit_record
@@ -116,16 +116,16 @@ linked_events:
   - tool_succeeded
 ```
 
-Это уже не просто "решение было принято", а понятный operational след:
+Это уже не просто "решение было принято", а понятный рабочий след:
 
 - запросили;
 - одобрили или отклонили;
 - выполнили или не выполнили;
-- понятно, каким principal был сделан side effect.
+- понятно, каким субъектом было выполнено побочное действие.
 
-## 6. Как это связано с trace schema
+## 6. Как это связано со схемой трасс
 
-Approval schema живет не отдельно, а рядом с trace schema:
+Схема подтверждения живет не отдельно, а рядом со схемой трасс:
 
 - `approval_requested`
 - `approval_resolved`
@@ -133,33 +133,33 @@ Approval schema живет не отдельно, а рядом с trace schema:
 - `tool_succeeded`
 - `tool_failed`
 
-Именно поэтому хороший approval flow должен легко восстанавливаться как из отдельного audit record, так и из trace. Если approval участвует в failed-run drill или другом degraded path, такое восстановление должно сходиться и с session export, включая поле `failure_reason`, а не останавливаться только на approval record.
+Именно поэтому хорошая цепочка подтверждения должна легко восстанавливаться как из отдельной аудиторской записи, так и из трассы. Если подтверждение участвует в разборе неудачного запуска или другом деградировавшем пути, такое восстановление должно сходиться и с экспортом сессии, включая поле `failure_reason`, а не останавливаться только на записи подтверждения.
 
-!!! example "Approval record для duplicate-ticket thread"
-    В support-triage кейсе approver должен видеть `idempotency_key` вместе с payload до нажатия approve. Если `create_ticket` затем timeout-ится, audit record сохраняет тот же key рядом с `approval_id`, `trace_id` и `tool_principal`, чтобы review отличал один approved write intent от повторного side effect после blind retry.
+!!! example "Запись подтверждения для цепочки с дублем тикета"
+    В сценарии триажа обращений поддержки подтверждающий должен видеть `idempotency_key` вместе с данными запроса до нажатия кнопки подтверждения. Если `create_ticket` затем завершается по тайм-ауту, аудиторская запись сохраняет тот же ключ рядом с `approval_id`, `trace_id` и `tool_principal`, чтобы проверка отличала один подтвержденный замысел записи от повторного побочного действия после слепого повтора.
 
-!!! note "Канонические сценарии подтверждений (Canonical approval cases)"
-    Запись подтверждения (approval record) нужна не только для пути записи (write path). **Триаж обращений поддержки (Support triage)** требует явного подтверждения человеком (explicit human approval), `idempotency_key` и доказательств восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** чаще требует подтверждения (approval) или проверки (review) для записей в память (memory writes), исключений контроля доступа (access-control exceptions) и решений о видимости источников (source visibility decisions). **Координация инцидентов (Incident coordination)** требует следа подтверждений (approval trail) для полномочий эскалации (escalation authority), побочных эффектов уведомлений (notification side effects), передачи владения ответом (response ownership transfer) и обновлений обучения после инцидента (post-incident learning updates).
+!!! note "Канонические сценарии подтверждений"
+    Запись подтверждения нужна не только для пути записи. **Триаж обращений поддержки** требует явного подтверждения человеком, `idempotency_key` и доказательств восстановления после дубля тикета. **Внутренний ассистент знаний** чаще требует подтверждения или проверки для записей в память, исключений контроля доступа и решений о видимости источников. **Координация инцидентов** требует следа подтверждений для полномочий эскалации, побочных эффектов уведомлений, передачи владения ответом и обновлений обучения после инцидента.
 
 ## 7. Как это связано с policy bundle
 
-Policy bundle отвечает на вопросы:
+Набор политик отвечает на вопросы:
 
-- какая capability требует approval;
-- кто имеет право approve;
-- какие risk tiers вообще существуют;
-- какие действия запрещены без human gate.
+- какая возможность требует подтверждения;
+- кто имеет право подтверждать;
+- какие уровни риска вообще существуют;
+- какие действия запрещены без человеческого шлюза.
 
-Approval schema отвечает на другой слой:
+Схема подтверждения отвечает за другой слой:
 
 - как выглядит сам запрос;
 - что именно человек подтверждает;
 - как хранится решение;
 - как это решение связывается с выполнением.
 
-## 8. Связь с опорным пакетом
+## 8. Связь с эталонным пакетом
 
-В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть operational primitives, которые поддерживают эту модель:
+В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть рабочие примитивы, которые поддерживают эту модель:
 
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
 - [configs/approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
@@ -167,48 +167,48 @@ Approval schema отвечает на другой слой:
   - `inspect-approvals`
   - `resolve-approval`
 
-`inspect-approvals` возвращает `trace_id`, `session_id`, `tenant_id`, `agent_id`, `count`, `approval_ids`, `pending_approval_ids`, `approval_capability_names`, `pending_approval_capability_names`, `approval_status_counts`, `idempotency_keys` и `approvals`; каждая approval entry сохраняет `approval_id`, `tenant_id`, `agent_id`, `capability_name`, `requested_by`, `reviewer`, `reason`, `status`, `capability_session_id`, `capability_session_status`, `authorization_mode`, `delegated_principal_id`, `delegated_scope` и `idempotency_key`. `resolve-approval` возвращает `approval_id`, `approval_ids`, `trace_id`, `session_id`, `tenant_id`, `agent_id`, `capability_name`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `requested_by`, `status`, `reviewer`, `resolution_note`, `capability_session_id`, `capability_session_status`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `idempotency_key`, `idempotency_keys` и `approval_status_counts`, поэтому runnable demo сохраняет approval lineage, capability-session state, delegated authority, duplicate-write intent и итоговый approval status видимыми до и после решения.
+`inspect-approvals` возвращает `trace_id`, `session_id`, `tenant_id`, `agent_id`, `count`, `approval_ids`, `pending_approval_ids`, `approval_capability_names`, `pending_approval_capability_names`, `approval_status_counts`, `idempotency_keys` и `approvals`; каждая запись подтверждения сохраняет `approval_id`, `tenant_id`, `agent_id`, `capability_name`, `requested_by`, `reviewer`, `reason`, `status`, `capability_session_id`, `capability_session_status`, `authorization_mode`, `delegated_principal_id`, `delegated_scope` и `idempotency_key`. `resolve-approval` возвращает `approval_id`, `approval_ids`, `trace_id`, `session_id`, `tenant_id`, `agent_id`, `capability_name`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `requested_by`, `status`, `reviewer`, `resolution_note`, `capability_session_id`, `capability_session_status`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `idempotency_key`, `idempotency_keys` и `approval_status_counts`, поэтому исполняемая демонстрация сохраняет цепочку подтверждений, состояние сессии возможности, делегированные полномочия, намерение повторной записи и итоговый статус подтверждения видимыми до и после решения.
 
-Встроенный `approvals.yaml` также явно задаёт approval operating policy и валидирует top-level форму через `'approvals' must be a mapping`: `default_reviewer`, `escalation_sla_minutes` и настройки `delegated_authorization`, такие как `reviewer_required_for_user_delegation`, `require_principal_binding`, `require_scope_visibility`, `on_scope_revoked` и `subagent_inheritance`, описывают, кто проверяет delegated actions, какие evidence должны оставаться видимыми и может ли delegation переходить к subagents. Policy loader сохраняет reviewer, escalation и delegated-authorization evidence type-safe через `approvals.default_reviewer must be a string`, `approvals.default_reviewer is required`, `approvals.escalation_sla_minutes must be an integer`, `approvals.escalation_sla_minutes must be positive`, `approvals.delegated_authorization must be a mapping`, `approvals.delegated_authorization must be DelegatedAuthorizationPolicy`, `delegated_authorization.require_principal_binding must be a boolean` и `delegated_authorization.require_scope_visibility must be a boolean`. Approval/session lineage также отвергает неподдержанную delegated-authorization evidence через `Authorization mode is not supported: {authorization_mode}` и неподдержанные approval или capability-session states через `Approval status is not supported: {status}`, а не сохраняет неизвестные modes или statuses рядом с approvals или session exports. Эталонная policy задаёт subagent inheritance как `explicit_only`, поэтому delegated authority не переходит в child agent без явного указания в approval path.
+Встроенный `approvals.yaml` также явно задаёт рабочую политику подтверждений и валидирует форму верхнего уровня через `'approvals' must be a mapping`: `default_reviewer`, `escalation_sla_minutes` и настройки `delegated_authorization`, такие как `reviewer_required_for_user_delegation`, `require_principal_binding`, `require_scope_visibility`, `on_scope_revoked` и `subagent_inheritance`, описывают, кто проверяет делегированные действия, какие доказательства должны оставаться видимыми и может ли делегирование переходить к дочерним агентам. Загрузчик политик сохраняет проверяющего, эскалацию и доказательства делегированного разрешения с типовой защитой через `approvals.default_reviewer must be a string`, `approvals.default_reviewer is required`, `approvals.escalation_sla_minutes must be an integer`, `approvals.escalation_sla_minutes must be positive`, `approvals.delegated_authorization must be a mapping`, `approvals.delegated_authorization must be DelegatedAuthorizationPolicy`, `delegated_authorization.require_principal_binding must be a boolean` и `delegated_authorization.require_scope_visibility must be a boolean`. Цепочка подтверждений и сессий также отвергает неподдержанное доказательство делегированного разрешения через `Authorization mode is not supported: {authorization_mode}` и неподдержанные состояния подтверждения или сессии возможности через `Approval status is not supported: {status}`, а не сохраняет неизвестные режимы или статусы рядом с подтверждениями или экспортами сессии. Эталонная политика задаёт наследование дочерними агентами как `explicit_only`, поэтому делегированные полномочия не переходят в дочерний агент без явного указания в цепочке подтверждения.
 
-Так approval можно не только описывать, но и реально прогонять как часть демонстрационного runtime.
+Так подтверждение можно не только описывать, но и реально прогонять как часть демонстрационной среды выполнения.
 
 ## 9. Минимальные инварианты
 
-Если коротко, у зрелого approval layer должны быть такие инварианты:
+Если коротко, у зрелого слоя подтверждений должны быть такие инварианты:
 
 - у каждого запроса есть стабильный `approval_id`;
-- approval привязан к `trace_id` и `session_id`;
-- ясно, какой payload был одобрен;
-- approver и role сохраняются в audit trail;
-- side effect можно связать с конкретным approval decision;
-- expired approval не используется повторно.
+- подтверждение привязано к `trace_id` и `session_id`;
+- ясно, какие данные были одобрены;
+- подтверждающий и роль сохраняются в журнале аудита;
+- побочное действие можно связать с конкретным решением по подтверждению;
+- истекшее подтверждение не используется повторно.
 
 ## 10. Что чаще всего ломается
 
 Типовые проблемы здесь довольно узнаваемы:
 
-- approval request не содержит реального action payload;
-- approver видит слишком мало контекста;
-- решение хранится только в UI и не доходит до trace;
-- runtime не различает `approved once` и `approved forever`;
-- sandbox-backed approval не показывает sandbox profile, workspace entries или permissions;
-- side effect исполняется другим payload, чем тот, который был одобрен;
+- запрос на подтверждение не содержит реальных данных действия;
+- подтверждающий видит слишком мало контекста;
+- решение хранится только в интерфейсе и не доходит до трассы;
+- среда выполнения не различает "подтверждено один раз" и "подтверждено навсегда";
+- подтверждение для действия в песочнице не показывает профиль песочницы, записи рабочей области или права доступа;
+- побочное действие исполняется с другими данными, чем те, что были одобрены;
 - никто не может восстановить, кто подтвердил рискованное действие.
 
 ## 11. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
-- Есть ли у approval request явный `approval_id`?
-- Привязан ли approval к `trace_id` и `session_id`?
-- Видит ли approver ровно тот payload, который потом идет в действие?
-- Если действие sandbox-backed, видит ли approver sandbox profile contract, workspace entries, permissions и snapshot/resume policy?
+- Есть ли у запроса на подтверждение явный `approval_id`?
+- Привязано ли подтверждение к `trace_id` и `session_id`?
+- Видит ли подтверждающий ровно те данные, которые потом идут в действие?
+- Если действие выполняется в песочнице, видит ли подтверждающий контракт профиля песочницы, записи рабочей области, права доступа и правила снимка/возобновления?
 - Сохраняются ли `decided_by`, `role` и `decision scope`?
-- Можно ли связать approval с реальным tool execution?
-- Есть ли audit-friendly record для approved и rejected путей?
+- Можно ли связать подтверждение с реальным выполнением инструмента?
+- Есть ли пригодная для аудита запись для подтвержденных и отклоненных путей?
 
-Если на несколько вопросов подряд ответ "нет", у тебя есть human gate по смыслу, но еще нет полноценного approval contract.
+Если на несколько вопросов подряд ответ "нет", у тебя есть человеческий шлюз по смыслу, но еще нет полноценного контракта подтверждения.
 
 ## Что делать дальше
 
