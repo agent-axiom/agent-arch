@@ -8683,8 +8683,8 @@ def test_english_book_plan_matches_home_publication_status() -> None:
 
 def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
     expected_by_file = {
-            "docs/whats-new.md": (
-                "Актуально на 20 мая 2026 года",
+        "docs/whats-new.md": (
+            "Актуально на 4 июня 2026 года",
                 "Проход качества для печатной версии идет, но еще не закрыт полностью.",
                 "черновые и плановые страницы исключены из опубликованного сайта",
                 "исключены из опубликованного сайта и карты сайта",
@@ -8698,17 +8698,21 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "реестр блокеров, журнал решений/исключений, ограничение длины строк",
             "названия пакета материалов устойчивы для печати и экспорта",
             "карта ролей части VIII теперь устойчива для печати",
+            "Глава 1 получила начальный читательский ориентир",
+            "компактный печатный вывод",
+            "без живой навигации сайта",
             "файлы README на трех языках теперь содержат проверочный список "
             "быстрой синхронизации публикации",
             "До готовности к печатной версии еще остаются",
             "проверка английского и китайского слоев",
             "независимая проверка качества HTML/PDF и экспорта",
-            "редакционная полировка образцовых глав",
+            "независимая вычитка образцовых глав",
+            "полировка Главы 13",
             "упаковка печатной рукописи и онлайн-приложения под конкретный формат подачи",
             "не выглядеть как черновая сборка из файлов Markdown",
         ),
         "docs/whats-new.en.md": (
-            "Current as of May 20, 2026",
+            "Current as of June 4, 2026",
             "The print/publication quality pass is in progress, not fully closed.",
             "draft and planning pages are excluded from the published site",
             "OpenGraph/Twitter metadata and a social preview image",
@@ -8718,13 +8722,17 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "all nine public-packet links returned HTTP 200",
             "line-length guard, and packet labels are print/export-friendly",
             "Part VIII role map is now print-friendly",
+            "Chapter 1 now has a reader orientation block",
+            "compact print-ready exit",
+            "without relying on live site navigation",
             "Remaining before this can be called print-ready",
             "deep EN/ZH cleanup",
             "independent rendering/export QA",
-            "sample-chapter polish",
+            "independent sample copy-edit",
+            "Chapter 13 sample polish",
         ),
         "docs/whats-new.zh.md": (
-            "更新于 2026 年 5 月 20 日",
+            "更新于 2026 年 6 月 4 日",
             "### 发布前站点表面更干净",
             "面向印刷与发布的质量检查正在进行中，但还没有完全关闭。",
             "已完成的站点工作：",
@@ -8741,11 +8749,15 @@ def test_whats_new_publisher_readiness_claim_stays_scoped() -> None:
             "豁免与决策日志（waiver/decision log）",
             "行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出",
             "第 VIII 部分角色图（role map）现在适合打印和导出",
+            "第 1 章现在有读者导向块",
+            "稳定的判断框架",
+            "不依赖网站实时导航",
             "快速同步发布检查清单（quick sync publish checklist）",
             "在称为可印刷版本之前",
             "EN/ZH 清理（deep EN/ZH cleanup）",
             "独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）",
-            "样章打磨（sample-chapter polish）",
+            "独立样章审校（independent sample copy-edit）",
+            "第 13 章样章打磨（Chapter 13 sample polish）",
             "面向具体提交格式的纸质稿件与在线配套材料包装",
         ),
     }
@@ -17193,6 +17205,35 @@ def test_chapter_1_has_sample_chapter_ending_template() -> None:
             "检查自己的系统",
             "Companion assets",
             "接下来读什么",
+        ),
+    }
+
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_chapter_1_has_print_sample_orientation_and_compact_exit() -> None:
+    expected = {
+        "docs/book/part-i/chapter-1.md": (
+            "Как читать эту главу",
+            "Ориентир главы",
+            "Печатный вывод главы",
+            "одной странице",
+            "без живой навигации сайта",
+        ),
+        "docs/book/part-i/chapter-1.en.md": (
+            "How to read this chapter",
+            "Chapter orientation",
+            "Print-ready chapter exit",
+            "one page",
+            "without relying on live site navigation",
+        ),
+        "docs/book/part-i/chapter-1.zh.md": (
+            "如何阅读本章",
+            "章节导向",
+            "适合印刷的章节结尾",
+            "一页纸",
+            "不依赖网站实时导航",
         ),
     }
 
