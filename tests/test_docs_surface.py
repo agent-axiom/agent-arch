@@ -211,6 +211,7 @@ _RUSSIAN_EXPECTED_ALTERNATIVES = {
     "response ownership": ("владение ответом", "владения ответом"),
     "platform control": ("платформенный контроль",),
     "Governance-aware telemetry": ("Управленческая телеметрия",),
+    "telemetry": ("телеметрия", "телеметрии"),
     "governance action record": ("запись управленческого действия",),
     "readiness signals": ("сигналы готовности",),
     "duplicate-ticket eval pass": ("оценки дублей тикетов",),
@@ -18066,6 +18067,22 @@ def test_russian_chapter_9_prefers_reader_facing_mcp_contract_terms() -> None:
         "Минимальный контракт MCP-сервера",
         "проверяемый серверный артефакт",
         "одобренную точку подключения",
+        "неявным контуром доверия внутри поверхности платформы",
+        "отделять результаты инструментов от инструкций и держать список разрешенных контрактов",
+        "ранее одобренный MCP-сервер меняет инструменты, области доступа или поведение",
+        "новый инструмент маскируется под похожий одобренный инструмент",
+        "слишком широкими делегированными полномочиями",
+        (
+            "проверка субъекта, привязки к цели, состояния подтверждения и "
+            "решения политики прямо перед побочным эффектом"
+        ),
+        "какой след останется в телеметрии после инцидента",
+        "Полезно не путать узел, клиент и сервер MCP",
+        "`host` - это узел",
+        "`client` - это протокольный компонент, который узел создает",
+        "`server` - это граница",
+        "один узел может одновременно держать несколько клиентов",
+        "MCP-клиент — это не пользовательский интерфейс",
     )
     forbidden_markers = (
         "MCP — это security boundary",
@@ -18079,6 +18096,24 @@ def test_russian_chapter_9_prefers_reader_facing_mcp_contract_terms() -> None:
         "Минимальный контракт MCP server",
         "server artifact",
         "approved endpoint",
+        "trust boundary внутри platform surface",
+        (
+            "валидировать tool descriptions, отделять tool output от инструкций "
+            "и держать allowlist известных контрактов"
+        ),
+        "MCP server меняет инструменты, scopes или поведение",
+        "новый tool маскируется под похожий approved tool",
+        "уникальные capability names, registry ownership и semantic review",
+        "слишком широкой delegated authority",
+        (
+            "проверка principal, purpose binding, approval state и policy "
+            "decision прямо перед side effect"
+        ),
+        "MCP endpoint",
+        "telemetry после инцидента",
+        "MCP host, client и server",
+        "`client` - это протокольный компонент, который host создает",
+        "MCP client — это не пользовательский интерфейс",
     )
 
     for marker in expected_markers:
@@ -18121,16 +18156,16 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
             "tool descriptions 和 tool return values",
         ),
         "docs/book/part-iv/practical-mcp-a2a.md": (
-            "A2A требует governance",
-            "A2A handoff trust contract",
-            "delegated authority",
+            "A2A требует управления",
+            "контракт доверия для передачи управления A2A",
+            "делегированных полномочий",
             "agent identity",
-            "delegation chain",
-            "allowed collaboration graph",
-            "inter-agent authorization",
-            "policy inheritance",
-            "non-repudiation",
-            "failure attribution",
+            "цепочка делегирования",
+            "граф разрешенного взаимодействия",
+            "межагентная авторизация",
+            "наследование политик",
+            "неотказуемость",
+            "атрибуция сбоев",
         ),
         "docs/book/part-iv/practical-mcp-a2a.en.md": (
             "A2A Needs Governance",
@@ -18160,6 +18195,36 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
 
     for path, markers in expected.items():
         _assert_files_contain_all((path,), markers)
+
+    russian_practical_text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    assert "A2A требует governance" not in russian_practical_text
+    assert "A2A handoff trust contract" not in russian_practical_text
+    assert "delegation chain" not in russian_practical_text
+    assert "non-repudiation" not in russian_practical_text
+
+
+def test_russian_practical_a2a_diagram_uses_localized_labels() -> None:
+    text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+
+    expected_markers = (
+        'A["Координирующий агент"]',
+        'B["Передача управления A2A"]',
+        'C["Специализированный агент"]',
+        'D["MCP-клиент"]',
+        'F["Сервер инструментов / ресурсов"]',
+    )
+    forbidden_markers = (
+        'A["Coordinator agent"]',
+        'B["A2A handoff"]',
+        'C["Specialist agent"]',
+        'D["MCP client"]',
+        'F["Tool / resource server"]',
+    )
+
+    for marker in expected_markers:
+        assert marker in text, marker
+    for marker in forbidden_markers:
+        assert marker not in text, marker
 
 
 def test_practical_a2a_trust_delegation_contract_covers_required_controls() -> None:
