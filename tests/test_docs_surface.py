@@ -34,6 +34,7 @@ _RUSSIAN_EXPECTED_ALTERNATIVES = {
     "Support triage": ("Разбор обращений поддержки", "Триаж обращений поддержки"),
     "Internal knowledge assistant": ("Внутренний ассистент знаний",),
     "Incident coordination": ("Координация инцидентов",),
+    "A2A требует governance": ("A2A требует управления",),
     "Execution case-spine note": ("Заметка о сквозных сценариях выполнения",),
     "Sandbox/MCP case-spine note": (
         "Заметка о сквозных сценариях песочницы и MCP",
