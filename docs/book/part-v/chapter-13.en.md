@@ -17,6 +17,9 @@
     - the link between evals, traces, SLOs, and rollout decisions;
     - the engineering discipline that critical scenarios must be checked before release, not after an incident.
 
+!!! info "How to read this chapter"
+    **Chapter orientation:** keep the release decision in focus, not only the test set or the scorecard. The chapter shows how an eval dataset, verifier contract, regression gate, and rollout gate become one reviewable contract between the team and the system. That contract should fit on one page and stay understandable without relying on live site navigation.
+
 ## 1. Start with the Question: How Do You Avoid Shipping the Same Failure Twice?
 
 Continue with the same support case.
@@ -514,6 +517,9 @@ This chapter should be read as a judgment model, not as a benchmark checklist:
 - **Competing view:** automated judges are attractive because they scale review and reduce human bottlenecks. This chapter accepts that benefit, but treats judge output as evidence to calibrate, not as authority to obey; high-risk rollout decisions still need disagreement review, rubric ownership, and trace-backed attribution.
 - **Author interpretation:** this book treats evals as the release-judgment layer between observability and lifecycle governance.
 - **Fast-moving area:** judge models, simulators, and automated red-team techniques will change quickly; the need for explicit gates and attributable failures should not.
+
+!!! note "Print-ready chapter exit"
+    On one page, this chapter should leave three decisions: which eval dataset tests behavior; which verifier contract turns a run into a verdict; which rollout gate blocks release when regression appears.
 
 ## 16. What to Read Next
 

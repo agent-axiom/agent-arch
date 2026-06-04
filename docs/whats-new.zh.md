@@ -117,9 +117,10 @@ _更新于 2026 年 6 月 4 日。_
 - 公开材料包的阻塞项登记表（blocker register）、豁免与决策日志（waiver/decision log）、行长限制（line-length guard）与材料包标签（packet labels）现在都适合打印和导出；
 - 第 VIII 部分角色图（role map）现在适合打印和导出；
 - 第 1 章现在有读者导向块、稳定的判断框架，以及不依赖网站实时导航也能成立的适合印刷章节结尾；
+- 第 13 章现在有技术读者导向，并为评测数据集 -> 验证器契约 -> 发布门禁这条链路补上了适合印刷的章节结尾；
 - 三种语言的 README 都加入了面向 `main` 与 `docs-prod` 的快速同步发布检查清单（quick sync publish checklist）。
 
-在称为可印刷版本之前，仍然需要完成 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、独立样章审校（independent sample copy-edit）、第 13 章样章打磨（Chapter 13 sample polish），以及面向具体提交格式的纸质稿件与在线配套材料包装。
+在称为可印刷版本之前，仍然需要完成 EN/ZH 清理（deep EN/ZH cleanup）、独立 HTML/PDF 渲染/导出质量检查（independent rendering/export QA）、独立样章审校（independent sample copy-edit）、样章导出质量检查（sample export QA），以及面向具体提交格式的纸质稿件与在线配套材料包装。
 
 为什么这很重要：发布出来的站点应该持续接近一个打磨过的读者产品，而不是一堆 Markdown 文件的原始构建结果。
 
