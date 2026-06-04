@@ -17932,55 +17932,154 @@ def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
 
 def test_mcp_threat_model_matrix_covers_required_attacks() -> None:
     expected = {
-        "docs/book/part-iv/chapter-9.md": "MCP threat model matrix",
-        "docs/book/part-iv/chapter-9.en.md": "MCP Threat Model Matrix",
-        "docs/book/part-iv/chapter-9.zh.md": "MCP 威胁模型矩阵",
+        "docs/book/part-iv/chapter-9.md": (
+            "Матрица угроз для MCP",
+            "модель угроз MCP",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "MCP Threat Model Matrix",
+            "MCP threat model",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "MCP 威胁模型矩阵",
+            "MCP threat model",
+            "tool poisoning",
+            "rug pull attack",
+            "tool shadowing",
+            "confused deputy",
+            "over-scoped tokens",
+            "data exfiltration through legitimate channels",
+            "supply-chain attack",
+            "replay/tampering",
+            "sandbox escape",
+            "telemetry",
+        ),
     }
-    required_markers = (
-        "MCP threat model",
-        "tool poisoning",
-        "rug pull attack",
-        "tool shadowing",
-        "confused deputy",
-        "over-scoped tokens",
-        "data exfiltration through legitimate channels",
-        "supply-chain attack",
-        "replay/tampering",
-        "sandbox escape",
-        "telemetry",
-    )
 
-    for path, heading in expected.items():
-        _assert_files_contain_all((path,), (heading, *required_markers))
+    for path, markers in expected.items():
+        _assert_files_contain_all((path,), markers)
 
 
 def test_chapter_9_mcp_server_contract_covers_required_controls() -> None:
-    expected_headings = {
-        "docs/book/part-iv/chapter-9.md": "Минимальный контракт MCP server",
-        "docs/book/part-iv/chapter-9.en.md": "Minimal MCP Server Contract",
-        "docs/book/part-iv/chapter-9.zh.md": "最小 MCP server contract",
+    expected_markers = {
+        "docs/book/part-iv/chapter-9.md": (
+            "Минимальный контракт MCP-сервера",
+            "mcp_server:",
+            "owner:",
+            "approved_registry_id:",
+            "schema_hash:",
+            "tool_definition_hash:",
+            "allowed_origins:",
+            "auth_mode:",
+            "token_scope:",
+            "token_ttl:",
+            "user_delegation_required:",
+            "server_isolation_profile:",
+            "return_value_filtering:",
+            "replay_protection:",
+            "schema_change_requires_review:",
+            "внедрение схемы инструмента",
+            "внедрение инструкций через результаты инструментов",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "Minimal MCP Server Contract",
+            "mcp_server:",
+            "owner:",
+            "approved_registry_id:",
+            "schema_hash:",
+            "tool_definition_hash:",
+            "allowed_origins:",
+            "auth_mode:",
+            "token_scope:",
+            "token_ttl:",
+            "user_delegation_required:",
+            "server_isolation_profile:",
+            "return_value_filtering:",
+            "replay_protection:",
+            "schema_change_requires_review:",
+            "tool schema injection",
+            "prompt injection",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "最小 MCP server contract",
+            "mcp_server:",
+            "owner:",
+            "approved_registry_id:",
+            "schema_hash:",
+            "tool_definition_hash:",
+            "allowed_origins:",
+            "auth_mode:",
+            "token_scope:",
+            "token_ttl:",
+            "user_delegation_required:",
+            "server_isolation_profile:",
+            "return_value_filtering:",
+            "replay_protection:",
+            "schema_change_requires_review:",
+            "tool schema injection",
+            "prompt injection",
+        ),
     }
-    required_fields = (
-        "mcp_server:",
-        "owner:",
-        "approved_registry_id:",
-        "schema_hash:",
-        "tool_definition_hash:",
-        "allowed_origins:",
-        "auth_mode:",
-        "token_scope:",
-        "token_ttl:",
-        "user_delegation_required:",
-        "server_isolation_profile:",
-        "return_value_filtering:",
-        "replay_protection:",
-        "schema_change_requires_review:",
-        "tool schema injection",
-        "prompt injection",
+
+    for path, markers in expected_markers.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_russian_chapter_9_prefers_reader_facing_mcp_contract_terms() -> None:
+    text = _read("docs/book/part-iv/chapter-9.md")
+    expected_markers = (
+        "MCP — это граница безопасности",
+        "результаты инструментов",
+        "инструменты и ресурсы",
+        "операции записи требуют подтверждения",
+        "области доступа, сетевые пути и ограничения песочницы",
+        "среда исполнения валидирует описания инструментов и результаты инструментов",
+        "телеметрия доказывает, какой запуск агента",
+        "Матрица угроз для MCP",
+        "модель угроз MCP",
+        "Минимальный контракт MCP-сервера",
+        "проверяемый серверный артефакт",
+        "одобренную точку подключения",
+    )
+    forbidden_markers = (
+        "MCP — это security boundary",
+        "tool results",
+        "tools/resources",
+        "операции записи требуют approval",
+        "scopes, network paths и sandbox limits",
+        "runtime валидирует tool descriptions и tool return values",
+        "telemetry доказывает, какой agent run, identity и policy decision",
+        "MCP threat model matrix",
+        "Минимальный контракт MCP server",
+        "server artifact",
+        "approved endpoint",
     )
 
-    for path, heading in expected_headings.items():
-        _assert_files_contain_all((path,), (heading, *required_fields))
+    for marker in expected_markers:
+        assert marker in text, marker
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
 
 
 def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
@@ -18004,8 +18103,8 @@ def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
 def test_mcp_a2a_security_governance_sections_are_present() -> None:
     expected = {
         "docs/book/part-iv/chapter-9.md": (
-            "MCP — это security boundary",
-            "tool descriptions и tool return values",
+            "MCP — это граница безопасности",
+            "описания инструментов и результаты инструментов",
         ),
         "docs/book/part-iv/chapter-9.en.md": (
             "MCP Is a Security Boundary",
