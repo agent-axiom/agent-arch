@@ -24,25 +24,25 @@
 
 Одна из самых частых ошибок в агентных системах устроена так:
 
-- правила частично живут в prompt;
+- правила частично живут в инструкции;
 - частично в коде шлюза;
 - частично в интерфейсе подтверждения;
 - частично в голове команды.
 
 Пока система маленькая, это может работать. Но как только появляется управление изменениями, аудит и поэтапная раскатка, такой слой политик становится слишком размытым.
 
-Поэтому полезно собирать `policy bundle` как отдельный артефакт.
+Поэтому полезно собирать набор политик как отдельный артефакт.
 
 ## Что такое набор политик
 
-Под `policy bundle` здесь удобно понимать набор связанных правил, который выпускается как единое целое:
+Под набором политик здесь удобно понимать набор связанных правил, который выпускается как единое целое:
 
-- runtime policy;
-- tool policy;
-- approval policy;
-- runtime-control rules для pause/resume и background paths;
-- memory write rules;
-- escalation rules;
+- политика среды выполнения;
+- политика инструментов;
+- политика подтверждений;
+- правила управления средой выполнения для паузы, возобновления и фоновых путей;
+- правила записи в память;
+- правила эскалации;
 - egress rules;
 - expectations around trusted verifier contracts for high-risk eval и rollout evidence.
 
@@ -53,8 +53,8 @@
 - traceable;
 - releasable.
 
-!!! note "Канонические сценарии политик (Canonical policy cases)"
-    Пакет политик (policy bundle) не должен выглядеть одинаково во всех трех канонических сценариях (canonical cases). **Триаж обращений поддержки (Support triage)** требует политики подтверждения для записывающей возможности (write-capability approval policy), доказательств идемпотентности (idempotency evidence) и средств восстановления после дубля тикета (duplicate-ticket recovery controls). **Внутренний ассистент знаний (Internal knowledge assistant)** требует политики поиска (retrieval policy), правил записи в память (memory write rules), проверок свежести (freshness checks), контроля доступа (access control) и происхождения знаний (knowledge provenance). **Координация инцидентов (Incident coordination)** требует правил эскалации (escalation rules), побочных эффектов уведомлений (notification side effects), владения ответом (response ownership) и шлюзов обучения после инцидента (post-incident learning gates).
+!!! note "Канонические сценарии политик"
+    Пакет политик не должен выглядеть одинаково во всех трех канонических сценариях. **Триаж обращений поддержки** требует политики подтверждения для записывающей возможности, доказательств идемпотентности и средств восстановления после дубля тикета. **Внутренний ассистент знаний** требует политики поиска, правил записи в память, проверок свежести, контроля доступа и происхождения знаний. **Координация инцидентов** требует правил эскалации, побочных эффектов уведомлений, владения ответом и шлюзов обучения после инцидента.
 
 ## Минимальная структура набора политик
 
@@ -134,8 +134,8 @@ approval_contract:
 
 Смысл тут простой: подтверждение должно быть не галочкой в интерфейсе, а машиночитаемым рабочим контрактом. А если подтверждение влияет на выпуск, такой контракт должен еще и явно показывать, к какой версии набора и к какой идентичности выпуска относится человеческое решение.
 
-!!! example "Policy contract для duplicate-ticket thread"
-    Для support-triage contract `create_ticket` должен требовать `idempotency_key` уже в approval request, а не только во время tool execution. Тогда человек, gateway и trace видят один и тот же write intent, policy bundle может запретить retry без reconciliation при `side_effect_unknown`, а rollout review проверяет governed capability, а не loose tool call.
+!!! example "Контракт политики для цепочки дубля тикета"
+    Для кейса разбора обращений поддержки контракт `create_ticket` должен требовать `idempotency_key` уже в запросе на подтверждение, а не только во время выполнения инструмента. Тогда человек, шлюз и трасса видят одно и то же намерение записи, набор политик может запретить повтор без сверки при `side_effect_unknown`, а проверка раскатки оценивает управляемую возможность, а не свободный вызов инструмента.
 
 ## Как набор политик связан с жизненным циклом
 
@@ -167,7 +167,7 @@ approval_contract:
 
 Без этой связки из четырех элементов расследование быстро превращается в угадайку.
 
-## Что уже умеет эталонный runtime
+## Что уже умеет эталонная среда исполнения
 
 В `agent_runtime_ref` сейчас уже есть:
 
@@ -177,13 +177,13 @@ approval_contract:
 - [change.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/change.yaml)
 - [runtime-controls.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/runtime-controls.yaml)
 
-То есть пакет уже живет в модели, где политики, подтверждения и runtime-control contracts не просто побочные настройки, а отдельные управляемые артефакты. Executable gate `check-controls` делает control bundle тоже reviewable: он возвращает `healthy`, `required_controls`, `blocked_findings_expected`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `support_duplicate_controls`, `preserved_support_duplicate_controls`, `support_duplicate_controls_healthy`, `blocking_findings` и `inventory_drift`, где вложенные поля `has_drift`, `missing_from_catalog` и `missing_from_inventory` отделяют policy/control failures от capability inventory drift.
+То есть пакет уже живет в модели, где политики, подтверждения и контракты управления средой выполнения не просто побочные настройки, а отдельные управляемые артефакты. Исполняемый шлюз `check-controls` делает набор средств управления тоже проверяемым: он возвращает `healthy`, `required_controls`, `blocked_findings_expected`, `missing_controls`, `failed_run_controls`, `preserved_failed_run_controls`, `failed_run_controls_healthy`, `support_duplicate_controls`, `preserved_support_duplicate_controls`, `support_duplicate_controls_healthy`, `blocking_findings` и `inventory_drift`, где вложенные поля `has_drift`, `missing_from_catalog` и `missing_from_inventory` отделяют отказы политик и средств управления от дрейфа каталога возможностей.
 
-Этот же gate явно фиксирует форму входного control bundle: validation для controls config сообщает `Controls policy config must be a mapping`, `'controls' must be a mapping`, `'controls.require' must be a list`, `'controls.block_if' must be a list`, `controls.require entries must be strings`, `controls.require entries must not be empty`, `controls.require entries must be unique`, `controls.block_if entries must be strings`, `controls.block_if entries must not be empty` и `controls.block_if entries must be unique`; signal overrides сообщают `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`. Поэтому оператор может отличить malformed policy bundle от провалившейся, но корректно сформированной control assessment.
+Этот же шлюз явно фиксирует форму входного набора средств управления: проверка конфигурации средств управления сообщает `Controls policy config must be a mapping`, `'controls' must be a mapping`, `'controls.require' must be a list`, `'controls.block_if' must be a list`, `controls.require entries must be strings`, `controls.require entries must not be empty`, `controls.require entries must be unique`, `controls.block_if entries must be strings`, `controls.block_if entries must not be empty` и `controls.block_if entries must be unique`; переопределения сигналов сообщают `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`. Поэтому оператор может отличить испорченный набор политик от провалившейся, но корректно сформированной оценки средств управления.
 
 ## Что должна добавить промышленная схема
 
-Как только в runtime появляются stateful MCP и resumable capability sessions, набор политик уже должен описывать не только допустимость capability “в принципе”, но и то, как управляется ее живая session lifecycle.
+Как только в среде выполнения появляются MCP с состоянием и возобновляемые сессии возможностей, набор политик уже должен описывать не только допустимость возможности “в принципе”, но и то, как управляется ее живой жизненный цикл сессии.
 
 Здесь почти сразу становятся полезны такие поля:
 
@@ -210,9 +210,9 @@ approval_contract:
 - `mcp_auth_mode`
 - `shadow_mcp_handling`
 
-Именно они не дают ситуации, когда policy bundle формально одобряет capability, но оставляет ее реальный session lifecycle вне контроля.
+Именно они не дают ситуации, когда набор политик формально одобряет возможность, но оставляет ее реальный жизненный цикл сессии вне контроля.
 
-Таксономия workflow-паттернов у Anthropic добавляет сюда еще одно полезное контрактное измерение.[^anthropic] По мере взросления policy bundle должен описывать не только то, разрешена ли capability вообще, но и в каких orchestration patterns она допустима.
+Таксономия паттернов рабочих процессов у Anthropic добавляет сюда еще одно полезное контрактное измерение.[^anthropic] По мере взросления набор политик должен описывать не только то, разрешена ли возможность вообще, но и в каких схемах оркестрации она допустима.
 
 Здесь быстро становятся полезны и такие поля, как:
 
@@ -245,7 +245,7 @@ approval_contract:
 - `deprecated_rules`
 - `redaction_policy`
 
-Если capability может выполняться в sandbox-backed path, policy bundle также должен ссылаться на sandbox profile contract или явно требовать его review, иначе workspace, shell/filesystem permissions и snapshot/resume behavior останутся вне release identity.
+Если возможность может выполняться через путь с песочницей, набор политик также должен ссылаться на контракт профиля песочницы или явно требовать его разбора, иначе рабочая область, права оболочки и файловой системы и поведение снимка/возобновления останутся вне идентичности выпуска.
 
 Это превращает слой политик из набора файлов в полноценную поверхность выпуска.
 

@@ -133,8 +133,8 @@ Escalate when approval is required or when the outcome of a write action is unce
 Always return a structured decision object.
 ```
 
-!!! note "Routine case-spine note"
-    Эти инструкции выглядят как Support triage example, но та же routine discipline нужна во всех трех canonical cases. **Support triage** проверяет approved write routine перед созданием ticket. **Internal knowledge assistant** проверяет retrieval routine, source attribution и tenant boundary. **Incident coordination** проверяет incident escalation routine, notification handoff и owner record.
+!!! note "Сквозные сценарии процедур"
+    Эти инструкции выглядят как пример для разбора обращений поддержки, но та же дисциплина процедур нужна во всех трех канонических сценариях. **Разбор обращений поддержки** проверяет подтвержденную процедуру записи перед созданием тикета. **Внутренний ассистент знаний** проверяет процедуру поиска, привязку к источникам и границу арендатора. **Координация инцидентов** проверяет процедуру эскалации инцидента, передачу уведомления и запись владельца.
 
 Это намного полезнее, чем пытаться в одном абзаце одновременно описать всю внутреннюю кухню компании.
 

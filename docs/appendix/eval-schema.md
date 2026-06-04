@@ -4,7 +4,7 @@
 
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
 - [Схема трасс и каталог событий](trace-schema.md)
-- [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md)
+- [Сквозная цепочка доказательств: от запроса к решению о раскатке](../book/part-v/evidence-spine.md)
 
 И связывает их со справочным пакетом:
 
@@ -112,7 +112,7 @@
 - `sandbox_profile_review`
 - `stop_condition_verified`
 
-`failed_run_traceable` становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
+`failed_run_traceable` становится важным, как только проверка выпуска начинает требовать тренировки неудачных запусков. Оно проверяет, что деградировавший путь не просто завершился неуспешно, а сохранил проверяемый статус, конкретную причину сбоя, например в поле `failure_reason`, связь с трассой и управляемую идентичность выпуска.
 
 `sandbox_profile_review` нужен для sandbox-backed paths: он проверяет, что workspace materialization, shell/filesystem permissions, network/secrets posture и snapshot/resume policy были явно представлены как reviewable evidence, а не остались неявными runtime settings.
 
@@ -130,7 +130,7 @@
 
 Именно в этой точке наблюдаемость становится не только способом смотреть назад, но и способом принимать решения о выпуске.
 
-## Что уже умеет эталонный runtime
+## Что уже умеет эталонная среда исполнения
 
 В `agent_runtime_ref` команда:
 
@@ -149,11 +149,11 @@ Bundled export contract намеренно конкретный. Session eval co
 
 Export contract намеренно конкретный: default `dataset_name` — `agent-runtime-ref-eval-seed`; top-level summary включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; approval-backed scenarios также несут `approval_status_counts` в `expected_outcomes`; built-in scenarios включают `failed_run_timeout` с label `duplicate_ticket_eval_passed`, `max_ticket_side_effects: 1` и blocking `duplicate_ticket_guard` grading rule, `profile_memory` с labels `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с labels `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как expected outcome, а также `support_ticket` с label `sandbox_profile_review`, expected outcome `sandbox_profile_reviewed` и blocking `sandbox_profile_review` grading rule.
 
-!!! example "Eval gate для duplicate-ticket thread"
-    Для сквозного support-triage кейса отдельный eval должен воспроизводить timeout после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один ticket side effect или `side_effect_unknown` stop, и блокировать rollout, если новая prompt/model/adapter версия снова делает blind retry и создает второй тикет.
+!!! example "Шлюз оценки для цепочки дубля тикета"
+    Для сквозного кейса разбора обращений поддержки отдельная оценка должна воспроизводить тайм-аут после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один побочный эффект тикета или остановку `side_effect_unknown`, и блокировать раскатку, если новая версия подсказки, модели или адаптера снова делает слепой повтор и создает второй тикет.
 
-!!! note "Канонические сценарии оценок (Canonical eval cases)"
-    Набор оценок (eval dataset) должен покрывать не только регрессию дублей тикетов (duplicate-ticket regression). **Триаж обращений поддержки (Support triage)** проверяет шлюзы подтверждения (approval gates), доказательства идемпотентности (idempotency evidence), поведение повторов (retry behavior) и восстановление после дубля тикета (duplicate-ticket recovery). **Внутренний ассистент знаний (Internal knowledge assistant)** проверяет свежесть поиска (retrieval freshness), привязку к источникам (source attribution), происхождение памяти (memory provenance), контроль доступа (access control) и качество ответа с опорой на источники (grounded answer quality). **Координация инцидентов (Incident coordination)** проверяет сроки эскалации (escalation timing), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership), качество передачи управления (handoff quality) и регрессии обучения после инцидента (post-incident learning regressions).
+!!! note "Канонические сценарии оценок"
+    Набор оценок должен покрывать не только регрессию дублей тикетов. **Триаж обращений поддержки** проверяет шлюзы подтверждения, доказательства идемпотентности, поведение повторов и восстановление после дубля тикета. **Внутренний ассистент знаний** проверяет свежесть поиска, привязку к источникам, происхождение памяти, контроль доступа и качество ответа с опорой на источники. **Координация инцидентов** проверяет сроки эскалации, побочные эффекты уведомлений, владение ответом, качество передачи управления и регрессии обучения после инцидента.
 
 Это еще не полноценный промышленный контур оценки, но уже нормальная заготовка для:
 

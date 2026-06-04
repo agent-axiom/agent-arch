@@ -24,8 +24,8 @@
 - оболочку трассы;
 - каталог событий;
 - контракты полезной нагрузки;
-- identity verifier contract;
-- verifier evidence linkage.
+- контракт идентичности проверяющего;
+- связь с доказательствами проверяющего.
 
 Даже если первый рантайм еще маленький.
 
@@ -202,11 +202,11 @@ Trace replay валидирует эти evidence до того, как они �
 - `non_repudiation`
 - `failure_attribution`
 
-!!! example "Trace для duplicate-ticket thread"
-    В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.
+!!! example "Трасса для цепочки дубля тикета"
+    В кейсе разбора обращений поддержки события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный исход должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с тайм-аутом и статус побочного эффекта неизвестен, трасса должна показать `side_effect_unknown`, а не маскировать запуск как успешный или повторять запись без сверки.
 
-!!! note "Канонические сценарии трассировки (Canonical trace cases)"
-    Три канонических сценария (canonical cases) требуют разных акцентов трассировки (trace emphases). **Триаж обращений поддержки (Support triage)** связывает события подтверждений (approval events), `idempotency_key`, побочные эффекты инструментов (tool side effects) и доказательства восстановления после дубля тикета (duplicate-ticket recovery evidence). **Внутренний ассистент знаний (Internal knowledge assistant)** должен сохранять спаны поиска (retrieval spans), доступ к памяти (memory access), привязку к источникам (source attribution), проверки свежести (freshness checks) и решения контроля доступа (access control decisions). **Координация инцидентов (Incident coordination)** должна показывать таймлайн эскалации (escalation timeline), побочные эффекты уведомлений (notification side effects), владение ответом (response ownership), события передачи управления (handoff events) и обучение после инцидента (post-incident learning).
+!!! note "Канонические сценарии трассировки"
+    Три канонических сценария требуют разных акцентов трассировки. **Триаж обращений поддержки** связывает события подтверждений, `idempotency_key`, побочные эффекты инструментов и доказательства восстановления после дубля тикета. **Внутренний ассистент знаний** должен сохранять спаны поиска, доступ к памяти, привязку к источникам, проверки свежести и решения контроля доступа. **Координация инцидентов** должна показывать линию времени эскалации, побочные эффекты уведомлений, владение ответом, события передачи управления и обучение после инцидента.
 
 А для sandbox-backed run полезно заранее зарезервировать поля, которые связывают трассу с execution boundary:
 
@@ -240,7 +240,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `reviewer_override`
 - `evidence_refs`
 
-А для `governance_action` полезно фиксировать поля governance action record, которые делают telemetry управленческим действием, а не просто dashboard-сигналом:
+А для `governance_action` полезно фиксировать поля записи управленческого действия, которые делают телеметрию управленческим действием, а не просто сигналом панели:
 
 - `governance_action_id`
 - `source_signal`
@@ -249,7 +249,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `evidence_refs`
 - `review_deadline`
 
-`source_signal` лучше держать в ограниченном словаре, согласованном с governance-aware telemetry: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
+`source_signal` лучше держать в ограниченном словаре, согласованном с управленческой телеметрией: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
 
 Для `memory_write_decision` в memory poisoning review трасса должна сохранять те же memory poisoning review fields, что и memory schema:
 
@@ -293,17 +293,17 @@ Trace replay валидирует эти evidence до того, как они �
 
 Справочный рантайм намеренно небольшой, поэтому в более зрелой системе стоит почти сразу добавить:
 
-- timestamp в каждом событии;
+- временную метку в каждом событии;
 - явные `span_id` и `parent_span_id`;
 - `run_id` как отдельный стабильный идентификатор;
 - версионирование схемы событий;
-- разделение `display payload` и `machine payload`;
+- разделение отображаемой и машинной полезной нагрузки;
 - правила маскирования чувствительных полей;
-- явный способ связывать трассы с verifier evidence, screenshots или grading artifacts;
+- явный способ связывать трассы с доказательствами проверяющего, снимками экрана или артефактами оценивания;
 - поля `stop_condition`, `verification_command`, `verification_result`, `verifier_actor` и `evidence_refs` для проверяемого завершения запуска;
-- стабильный способ фиксировать, какая версия verifier contract породила grading output;
-- sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot;
-- event или linked payload для `sandbox_profile_reviewed`, чтобы rollout/eval evidence по workspace, permissions и snapshot/resume policy была traceable.
+- стабильный способ фиксировать, какая версия контракта проверяющего породила результат оценивания;
+- поля состояния песочницы для запусков, которые материализуют рабочую область, используют возможности оболочки или файловой системы либо продолжаются из снимка состояния;
+- событие или связанная полезная нагрузка для `sandbox_profile_reviewed`, чтобы доказательства раскатки и оценки по рабочей области, правам и политике снимков/возобновления были прослеживаемыми.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 
@@ -316,10 +316,10 @@ Trace replay валидирует эти evidence до того, как они �
 - Понятно ли, какие поля обязательны для каждого типа событий?
 - Можно ли по трассе восстановить решение политики и путь инструмента?
 - Можно ли по экспорту сессии собирать набор для оценки?
-- Можно ли связать трассу с verifier evidence, которое использовалось для grading или rollout review?
+- Можно ли связать трассу с доказательствами проверяющего, которые использовались для оценивания или разбора раскатки?
 - Есть ли событие или payload, где видно, какое условие завершения проверялось, кем и с каким результатом?
-- Если rollout требует `sandbox_profile_review`, есть ли trace evidence для workspace entries, permissions и snapshot/resume policy?
-- Можно ли понять, какая версия verifier contract породила этот grading output?
+- Если раскатка требует `sandbox_profile_review`, есть ли доказательства в трассе для записей рабочей области, прав и политики снимков/возобновления?
+- Можно ли понять, какая версия контракта проверяющего породила этот результат оценивания?
 - Есть ли план по маскированию данных и версионированию схемы?
 
 Если на несколько вопросов подряд ответ «нет», значит у тебя пока есть логирование, но еще нет полноценной схемы трасс.
