@@ -17767,6 +17767,58 @@ def test_practical_a2a_handoff_trust_trace_links_are_clickable() -> None:
     )
 
 
+def test_russian_practical_pages_prefer_reader_facing_terminology() -> None:
+    practical_text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    evidence_text = _read("docs/book/part-v/evidence-spine.md")
+
+    _assert_files_contain_all(
+        ("docs/book/part-iv/practical-mcp-a2a.md",),
+        (
+            "инструментами, ресурсами и адаптерами",
+            "внешних возможностей",
+            "контракты возможностей",
+            "проверки политик",
+            "протокола передачи управления",
+            "операционными ролями",
+        ),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-v/evidence-spine.md",),
+        (
+            (
+                "В производственной агентной системе трассировку, политики, "
+                "подтверждения, оценки, разбор инцидентов"
+            ),
+            "один сквозной разбор",
+            "от запроса пользователя до суждения о поэтапном выпуске",
+            "Сильная цепочка доказательств",
+        ),
+    )
+
+    forbidden_practical_markers = (
+        "tools, resources и adapters",
+        "external capability",
+        "стандартизировать contract;",
+        "adapters от core runtime",
+        "governance, а не только handoff-протокола",
+        "между operational roles",
+    )
+    forbidden_evidence_markers = (
+        (
+            "production agent system tracing, policy, approvals, evals, "
+            "incident review и rollout judgment"
+        ),
+        "в один walkthrough",
+        "от user request до rollout judgment",
+        "Сильная evidence spine",
+    )
+
+    for marker in forbidden_practical_markers:
+        assert marker not in practical_text
+    for marker in forbidden_evidence_markers:
+        assert marker not in evidence_text
+
+
 def test_chapter_1_decision_frame_is_extraction_safe() -> None:
     checked_files = (
         "docs/book/part-i/chapter-1.md",
