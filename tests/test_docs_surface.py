@@ -18230,8 +18230,31 @@ def test_russian_practical_pages_prefer_reader_facing_terminology() -> None:
             "проверки политик",
             "протокола передачи управления",
             "операционными ролями",
+            "A2A требует управления",
+            "контракт доверия для передачи управления A2A",
+            "цепочка делегирования",
+            "наследование политик",
+            "неотказуемость",
+            "телеметрия различает ошибку инициатора",
+            "управляемым графом взаимодействия",
+            "Проверяемый артефакт доверия и делегирования для A2A",
+            "обычном слое шлюза и адаптеров",
         ),
     )
+    for marker in (
+        "A2A требует governance",
+        "A2A handoff trust contract",
+        "delegation chain",
+        "downstream agent",
+        "non-repudiation",
+        "trace/evidence",
+        "policy denial",
+        "tool failure",
+        "collaboration graph",
+        "A2A trust and delegation artifact",
+        "gateway/adaptor layer",
+    ):
+        assert marker not in practical_text, marker
     _assert_files_contain_all(
         ("docs/book/part-v/evidence-spine.md",),
         (
