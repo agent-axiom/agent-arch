@@ -14471,6 +14471,46 @@ def test_multilingual_change_rollout_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_russian_change_rollout_core_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/change-rollout-schema.md")
+    expected_markers = (
+        "проверки изменений и шлюза поэтапного выпуска",
+        "изменения в политике, промптах, маршрутизации моделей, поиске или доступе к инструментам",
+        "У change review в агентной системе",
+        "инженерное ревью в pull request",
+        "результаты оценивания в CI",
+        "решение о поэтапном выпуске в чате или устно на созвоне",
+        "несколько ответственных",
+        "высокорисковые действия",
+        "поэтапный выпуск",
+        "машинно-читаемый слой",
+        "дисциплину эксплуатации",
+        "кто это проверил",
+        "рабочий факт",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "change review и rollout gate",
+        "policy, prompt, model routing, retrieval или tool exposure",
+        "agent system change review",
+        "engineering review в pull request",
+        "safety review где-то в отдельном документе",
+        "eval results в CI",
+        "rollout decision в чате или устно на созвоне",
+        "несколько owners",
+        "high-risk actions",
+        "staged rollout",
+        "machine-readable слой",
+        "operational discipline",
+        "кто это reviewed",
+        "operational факт",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() -> None:
     required_markers = (
         "Canonical lifecycle cases",
