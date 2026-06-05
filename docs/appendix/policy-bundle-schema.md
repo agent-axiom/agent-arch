@@ -43,8 +43,8 @@
 - правила управления средой выполнения для паузы, возобновления и фоновых путей;
 - правила записи в память;
 - правила эскалации;
-- egress rules;
-- expectations around trusted verifier contracts for high-risk eval и rollout evidence.
+- правила исходящего сетевого доступа;
+- ожидания относительно доверенных контрактов проверяющего для оценок высокого риска и доказательств раскатки.
 
 Смысл не в том, что все должно лежать в одном YAML-файле. Смысл в том, что такой набор должен быть:
 
@@ -222,14 +222,14 @@ approval_contract:
 - `worker_capability_subset`
 - `review_required_before_worker_write`
 
-Именно они помогают governed contract отвечать на вопросы:
+Именно они помогают управляемому контракту отвечать на вопросы:
 
 - можно ли вызывать capability внутри `prompt chaining`, `routing` или `parallelization`;
-- наследуют ли delegated workers в `orchestrator-workers` approval или delegated authorization context;
+- наследуют ли делегированные исполнители в схеме `orchestrator-workers` контекст подтверждения или делегированной авторизации;
 - может ли worker запросить дополнительные capabilities или работает только с ограниченным subset;
 - должен ли worker output пройти review до того, как будет выполнена любая write-capability.
 
-Заодно они помогают избежать и второго дрейфа: когда delegated approval path уже существует в product behavior, но все еще не представлен как governed contract.
+Заодно они помогают избежать и второго дрейфа: когда путь подтверждения с делегированием уже существует в поведении продукта, но все еще не представлен как управляемый контракт.
 
 Как только система взрослеет, для набора политик почти сразу полезно добавить:
 
@@ -262,11 +262,11 @@ approval_contract:
 Поэтому практическое правило простое:
 
 - каталог возможностей описывает, что система умеет;
-- набор политик описывает, как, при каких условиях и в каких orchestration patterns это можно использовать;
+- набор политик описывает, как, при каких условиях и в каких схемах оркестрации это можно использовать;
 - контракт подтверждения описывает, где система обязана остановиться и уступить человеку;
-- authorization contract описывает, под чьей identity и с каким delegated scope действие вообще может быть выполнено;
-- MCP governance contract описывает, из какого approved registry пришла capability, кто owner у MCP server, какой auth mode ее защищает и что делать, если обнаружен shadow MCP path;
-- verifier contract policy описывает, каким verifier contracts вообще можно доверять для high-risk grading, rollout evidence или assurance decisions.
+- контракт авторизации описывает, от чьей идентичности и с какой делегированной областью действия вообще может быть выполнено действие;
+- контракт управления MCP описывает, из какого утвержденного реестра пришла возможность, кто владеет MCP-сервером, каким режимом авторизации она защищена и что делать, если обнаружен теневой путь MCP;
+- политика контрактов проверяющего описывает, каким контрактам проверяющего вообще можно доверять для оценивания высокого риска, доказательств раскатки и решений по заверению.
 
 Эталонный runtime делает этот стык конкретным в `capabilities.yaml` и `policy.yaml`: capability entries содержат `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds` и `idempotency_key_required`, а policy entries содержат `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions для `search_docs`, `create_ticket` и `run_shell`, memory-write `allow_kinds` (`validated_fact` и `session_summary`) и execution-level `allow_network_access`. Policy loader явно валидирует эту структуру: `Policy config must be a mapping`, `'policy' must be a mapping`, `'run_precheck' must be a mapping`, `'run_precheck.require_tenant' must be a boolean`, `'run_precheck.deny_if_principal_missing' must be a boolean`, `'{label}' must be a boolean`, `'memory_write' must be a mapping`, `'allow_kinds' must be a list`, `memory_write.allow_kinds entries must be strings`, `memory_write.allow_kinds entries must not be empty`, `memory_write.allow_kinds entries must be unique`, `'execution' must be a mapping`, `'allow_network_access' must be a list`, `execution.allow_network_access entries must be strings`, `execution.allow_network_access entries must not be empty`, `execution.allow_network_access entries must be unique`, `Policy capability names must be strings`, `Policy capability name must not be empty`, `Policy capability names must be unique`, `Policy capability entries must be CapabilityPolicy`, `Policy precheck request must be RunRequest`, `Policy context must be RunContext`, `Policy tool request must be ToolRequest`, `Policy capability must be CapabilitySpec`, `'capabilities' must be a mapping`, `Policy action must be a string`, `Policy action is not supported: {action}`, `Policy field must be a string: {field}`, `Policy field is required: {field}`, `Policy decision must be a string`, `Policy decision is not supported: {decision}`, `Policy approver must be a string`, `Policy approver must not be empty: {capability_name}`, `Policy memory kind must be a string`, `Policy memory kind must not be empty` и `Policy for capability {name!r} must be a mapping`.
 
@@ -280,7 +280,7 @@ approval_contract:
 - Ясно ли, какие поля обязан содержать запрос на подтверждение?
 - Есть ли связь между набором политик и каталогом возможностей?
 - Можно ли понять, какая версия политики и какая идентичность выпуска были активны в момент трассы?
-- Явно ли описано, каким verifier contracts можно доверять для high-risk grading или rollout evidence?
+- Явно ли описано, каким контрактам проверяющего можно доверять для оценивания высокого риска или доказательств раскатки?
 
 Если несколько ответов подряд «нет», значит слой политик у тебя пока существует, но еще не оформлен как полноценный рабочий артефакт.
 
