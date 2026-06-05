@@ -13244,6 +13244,50 @@ def test_chinese_policy_bundle_control_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_russian_policy_bundle_security_contract_labels_are_localized() -> None:
+    russian_text = _read("docs/appendix/policy-bundle-schema.md")
+    expected_markers = (
+        "управляемому контракту отвечать на вопросы",
+        "делегированные исполнители в схеме `orchestrator-workers`",
+        "путь подтверждения с делегированием",
+        "в поведении продукта",
+        "в каких схемах оркестрации это можно использовать",
+        "контракт авторизации описывает, от чьей идентичности и с какой "
+        "делегированной областью действия вообще может быть выполнено действие",
+        "контракт управления MCP описывает, из какого утвержденного реестра "
+        "пришла возможность, кто владеет MCP-сервером, каким режимом "
+        "авторизации она защищена и что делать, если обнаружен теневой путь MCP",
+        "политика контрактов проверяющего описывает, каким контрактам "
+        "проверяющего вообще можно доверять для оценивания высокого риска, "
+        "доказательств раскатки и решений по заверению",
+        "каким контрактам проверяющего можно доверять для оценивания высокого "
+        "риска или доказательств раскатки",
+    )
+    forbidden_markers = (
+        "governed contract отвечать на вопросы",
+        "delegated workers в `orchestrator-workers` approval или delegated "
+        "authorization context",
+        "delegated approval path уже существует в product behavior",
+        "в каких orchestration patterns это можно использовать",
+        "authorization contract описывает",
+        "MCP governance contract описывает",
+        "approved registry",
+        "кто owner у MCP server",
+        "auth mode",
+        "shadow MCP path",
+        "verifier contract policy описывает",
+        "каким verifier contracts можно доверять",
+        "high-risk grading",
+        "rollout evidence",
+        "assurance decisions",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     russian_path = "docs/appendix/policy-bundle-schema.md"
     russian_text = _read(russian_path)
