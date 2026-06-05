@@ -14324,6 +14324,30 @@ def test_chinese_incident_record_duplicate_ticket_example_is_localized() -> None
     assert "在 support-triage 事故里" not in chinese_text
 
 
+def test_russian_incident_record_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/incident-record-schema.md")
+
+    expected_markers = (
+        'title: "Несанкционированный путь записи ticket_write во время вводного прогона"',
+        "с решением о поэтапном выпуске и его волной",
+        "какой пакет политик был активен",
+        "какая учетная запись или другой принципал реально выполнил действие",
+        "несколько базовых механизмов, которые делают эту схему полезной на практике",
+    )
+    forbidden_markers = (
+        'title: "Unauthorized ticket_write path during onboarding run"',
+        "с дисциплиной выпуска",
+        "какой набор политик был активен",
+        "какой принципал реально выполнил действие",
+        "несколько примитивов, которые делают эту схему полезной на практике",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_change_rollout_schema_surfaces_three_canonical_rollout_cases() -> None:
     required_markers = (
         "Canonical rollout cases",
