@@ -18885,6 +18885,40 @@ def test_memory_schema_loader_root_error_is_documented() -> None:
         assert "Memory store config must be a mapping" in _read(path), path
 
 
+def test_russian_memory_retrieval_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/memory-retrieval-schema.md")
+
+    expected_markers = (
+        "схема артефактов жизненного цикла",
+        "среда исполнения решила вернуть в контекст",
+        "команда `inspect-memory`",
+        "встроенные типы записей",
+        "эталонные исходные записи",
+        "непрофильные исходные записи",
+        "прямое построение хранилища памяти",
+        "неправильные внедренные записи",
+        "неправильные прямые кандидаты",
+        "стабильные сообщения об ошибках",
+        "Книга не только описывает этот контракт, но и показывает исполняемый эталонный каркас.",
+    )
+    forbidden_markers = (
+        "схема lifecycle-артефактов",
+        "рантайм решил вернуть в контекст",
+        "- CLI:",
+        "встроенные виды",
+        "Непрофильное исходное содержимое",
+        "некорректные внедренные записи",
+        "некорректных прямых кандидатов",
+        "стабильные ошибки",
+        "Книга не только описывает этот контракт, но и показывает исполняемый каркас.",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_approval_schema_delegated_authorization_errors_are_documented() -> None:
     required_errors = (
         "approvals.delegated_authorization must be a mapping",
