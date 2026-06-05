@@ -6,7 +6,7 @@
 
 - [Глава 11. Трассы, спаны и структурированные события](../book/part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
-- [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md)
+- [Сквозная цепочка доказательств: от запроса к решению о раскатке](../book/part-v/evidence-spine.md)
 
 И на исполняемый пакет:
 
@@ -24,7 +24,7 @@
 - оболочку трассы;
 - каталог событий;
 - контракты полезной нагрузки;
-- контракт идентичности проверяющего;
+- идентичность контракта проверяющего;
 - связь с доказательствами проверяющего.
 
 Даже если первый рантайм еще маленький.
@@ -85,7 +85,7 @@
 
 Trace replay валидирует эти evidence до того, как они могут стать seed для нового run: `Trace ID request must be a string`, `Trace ID not found in event file: {requested_trace_id}`, `Trace file does not contain any trace IDs`, `Trace file contains multiple trace IDs; pass --trace-id explicitly`, `Trace file does not contain a run_start event`, `Trace file contains multiple run_start events`, `Trace run_start event is missing replay fields: {missing_keys}`, `Trace run_start event has redacted replay fields: {redacted_keys}`, `Trace run_start replay field must be a string: {field}` и `Trace run_start replay field must not be empty: {field}`.
 
-## Каталог событий справочного рантайма
+## Каталог событий эталонной среды исполнения
 
 Ниже текущий минимальный каталог событий.
 
@@ -93,28 +93,28 @@ Trace replay валидирует эти evidence до того, как они �
 | --- | --- | --- |
 | `run_start` | в начале запуска | фиксирует входные параметры и идентичность актора |
 | `policy_precheck` | сразу после допуска запуска | фиксирует policy precheck action, reason и policy ID |
-| `agent_threat_evidence` | когда threat-model control оставляет доказательство | связывает threat class с trace/evidence identifiers |
-| `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
-| `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
-| `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
-| `mcp_tool_risk_review` | при review MCP tool/server риска | связывает threat class, registry evidence, scope review и quarantine state |
-| `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
-| `a2a_handoff` | когда один agent делегирует работу другому agent | фиксирует delegation chain, authorization и failure-attribution context |
-| `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
-| `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
-| `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена candidate memory write |
+| `agent_threat_evidence` | когда контроль из модели угроз оставляет доказательство | связывает класс угрозы с идентификаторами трассы и доказательств |
+| `retrieval` | при извлечении контекста памяти | фиксирует источник и число найденных записей |
+| `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; внутри `RunContext` хранятся `retrieved_context` и `retrieved_records` до обработки `tool_request` |
+| `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину разрешения, запрета или подтверждения |
+| `mcp_tool_risk_review` | при проверке риска инструмента или сервера MCP | связывает класс угрозы, доказательства из реестра, область проверки и состояние карантина |
+| `tool_execution` | после вызова возможности или передачи в контур подтверждения | фиксирует статус возможности и контекст субъекта инструмента |
+| `a2a_handoff` | когда один агент делегирует работу другому агенту | фиксирует цепочку делегирования, авторизацию и контекст атрибуции сбоя |
+| `approval_requested` | при высокорисковом пути записи | показывает, что система ушла в очередь человеческой проверки |
+| `sandbox_profile_reviewed` | при проверке пути с песочницей | фиксирует рабочую область, права и доказательства проверки снимка/возобновления |
+| `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена кандидатная запись памяти |
 | `memory_persisted` | после фоновой записи | фиксирует происхождение и ревизию записи памяти |
-| `background_compaction` | после background memory maintenance | фиксирует tenant-level compaction results |
-| `background_update_scheduled` | после постановки или завершения background work | фиксирует background update status для запуска |
-| `verification_result` | когда запуск проверяет условие завершения | фиксирует stop condition, verifier actor, команду/механизм проверки, pass/fail/warning/blocked и ссылки на evidence |
-| `run_failed` | когда tool failure становится итогом запуска | сохраняет явную failed-run traceability |
-| `governance_action` | когда telemetry signal запускает policy, containment, rollout или registry decision | связывает governance action record с trace evidence |
+| `background_compaction` | после фонового обслуживания памяти | фиксирует результаты уплотнения на уровне арендатора |
+| `background_update_scheduled` | после постановки или завершения фоновой работы | фиксирует статус фонового обновления для запуска |
+| `verification_result` | когда запуск проверяет условие завершения | фиксирует условие остановки, актор проверки, команду или механизм проверки, pass/fail/warning/blocked и ссылки на доказательства |
+| `run_failed` | когда отказ инструмента становится итогом запуска | сохраняет явную трассируемость неуспешного запуска |
+| `governance_action` | когда сигнал телеметрии запускает решение политики, сдерживания, раскатки или реестра | связывает запись управленческого действия с доказательствами трассы |
 | `run_complete` | в конце запуска | фиксирует итог запуска |
 | `span` | вокруг отдельных вызовов | дает простую телеметрию задержки и статуса |
 
 Это не универсальный каталог на все случаи. Это базовый рабочий словарь, на который уже можно опирать:
 
-В более зрелой production-схеме в этом словаре полезно сразу оставлять место и для verifier-aware evidence, чтобы трассы могли объяснять не только что сделал runtime, но и на каких данных verifier оценил process quality, outcome quality или failure attribution.
+В более зрелой промышленной схеме в этом словаре полезно сразу оставлять место и для доказательств, ориентированных на проверяющего, чтобы трассы могли объяснять не только что сделала среда исполнения, но и по каким данным проверяющий оценил качество процесса, качество результата или атрибуцию сбоя.
 
 - просмотр трасс;
 - заготовки для регрессий;

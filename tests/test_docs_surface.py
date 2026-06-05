@@ -13658,6 +13658,33 @@ def test_russian_trace_schema_security_contract_labels_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_trace_schema_reader_facing_labels_are_localized() -> None:
+    russian_text = _read("docs/appendix/trace-schema.md")
+    expected_markers = (
+        "[Сквозная цепочка доказательств: от запроса к решению о раскатке]",
+        "контракты полезной нагрузки",
+        "идентичность контракта проверяющего",
+        "связь с доказательствами проверяющего",
+        "Каталог событий эталонной среды исполнения",
+        "при проверке пути с песочницей",
+        "сигнал телеметрии запускает решение политики, сдерживания, раскатки или реестра",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "решению о rollout",
+        "payload contracts",
+        "verifier contract identity",
+        "verifier evidence linkage",
+        "Reference runtime event catalog",
+        "sandbox-backed path",
+        "telemetry signal запускает policy, containment, rollout или registry decision",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_chinese_trace_schema_threat_and_governance_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
