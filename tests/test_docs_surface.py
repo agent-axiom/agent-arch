@@ -13632,6 +13632,32 @@ def test_chinese_trace_schema_mcp_a2a_verdict_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_russian_trace_schema_security_contract_labels_are_localized() -> None:
+    russian_text = _read("docs/appendix/trace-schema.md")
+    expected_markers = (
+        "производственная трасса",
+        "доказательства модели угроз MCP (MCP threat-model evidence)",
+        "словаре модели угроз MCP (MCP threat model)",
+        "решение о разрешении или запрете (allow/deny)",
+        "payload должен сохранять контракт доверия для передачи управления A2A",
+        "контракт данных или связанный payload для записи вердикта проверяющего",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "production trace должен фиксировать",
+        "фиксировать MCP threat-model evidence",
+        "словаре из MCP threat model",
+        "итоговый allow/deny",
+        "payload должен сохранять A2A handoff trust contract",
+        "verifier-aware evals",
+        "linked payload contract for verifier verdict record",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_chinese_trace_schema_threat_and_governance_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
