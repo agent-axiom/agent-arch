@@ -14857,6 +14857,38 @@ def test_russian_lifecycle_artifact_core_terms_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_lifecycle_artifact_reader_facing_contract_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+
+    expected_markers = (
+        "с привязкой к подтверждению",
+        "проверяемую поверхность",
+        "идентичность пакета и подотчетность",
+        "ошибки в полях идентичности и происхождения",
+        "ссылки на доказательства",
+        "файлы конфигурации релиза",
+        "Загрузчики артефактов жизненного цикла",
+        "слоя артефактов жизненного цикла",
+        "высокорисковое изменение",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "approval-bound, stateful capability sessions",
+        "reviewed surface",
+        "bundle identity и accountability",
+        "malformed identity и provenance fields",
+        "evidence refs",
+        "release-bearing files",
+        "Lifecycle artifact loaders",
+        "healthy lifecycle artifact layer",
+        "high-risk change",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     expected_markers_by_file = {
         "docs/appendix/memory-retrieval-schema.md": (
