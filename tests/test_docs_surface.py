@@ -18945,6 +18945,47 @@ def test_memory_schema_loader_root_error_is_documented() -> None:
         assert "Memory store config must be a mapping" in _read(path), path
 
 
+def test_russian_eval_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/eval-schema.md")
+
+    expected_markers = (
+        "путей с опорой на песочницу",
+        "подготовка рабочего пространства",
+        "права оболочки и файловой системы",
+        "позиция по сети и секретам",
+        "проверяемые доказательства",
+        "настройками среды выполнения",
+        "путей запуска агента",
+        "сценарием тренировки неудачного запуска",
+        "Контракт пакетного экспорта намеренно конкретен.",
+        "сценарии с ожиданием подтверждения",
+        "встроенные сценарии",
+        "агентов с длинным горизонтом действий",
+    )
+    forbidden_markers = (
+        "sandbox-backed paths",
+        "workspace materialization",
+        "network/secrets posture",
+        "reviewable evidence",
+        "runtime settings",
+        "agent-run paths",
+        "failed-run drill scenario",
+        "Bundled export contract",
+        "Export contract намеренно конкретный",
+        "approval-backed scenarios",
+        "built-in scenarios",
+        "long-horizon agents",
+        "blocked outcome",
+        "unsafe behavior",
+        "nominal success",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_russian_memory_retrieval_schema_prefers_reader_facing_terms() -> None:
     russian_text = _read("docs/appendix/memory-retrieval-schema.md")
 

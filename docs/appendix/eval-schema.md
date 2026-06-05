@@ -114,9 +114,9 @@
 
 `failed_run_traceable` становится важным, как только проверка выпуска начинает требовать тренировки неудачных запусков. Оно проверяет, что деградировавший путь не просто завершился неуспешно, а сохранил проверяемый статус, конкретную причину сбоя, например в поле `failure_reason`, связь с трассой и управляемую идентичность выпуска.
 
-`sandbox_profile_review` нужен для sandbox-backed paths: он проверяет, что workspace materialization, shell/filesystem permissions, network/secrets posture и snapshot/resume policy были явно представлены как reviewable evidence, а не остались неявными runtime settings.
+`sandbox_profile_review` нужен для путей с опорой на песочницу: он проверяет, что подготовка рабочего пространства, права оболочки и файловой системы, позиция по сети и секретам и политика снимка/возобновления были явно представлены как проверяемые доказательства, а не остались неявными настройками среды выполнения.
 
-`stop_condition_verified` нужен для agent-run paths, где результат нельзя принимать по свободному тексту “готово”. Он проверяет, что у сценария есть явное условие завершения, механизм проверки, результат проверки, actor проверки и ссылки на evidence: вывод теста, трассу, снимок экрана, diff или другой артефакт.
+`stop_condition_verified` нужен для путей запуска агента, где результат нельзя принимать по свободному тексту “готово”. Он проверяет, что у сценария есть явное условие завершения, механизм проверки, результат проверки, исполнитель проверки и ссылки на доказательства: вывод теста, трассу, снимок экрана, diff или другой артефакт.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -143,11 +143,11 @@
 - несколькими сценариями сессий;
 - `labels`;
 - `expected_outcomes`;
-- отдельным failed-run drill scenario, который сохраняет failed status и `failure_reason` в session export и eval expectations.
+- отдельным сценарием тренировки неудачного запуска, который сохраняет failed status и `failure_reason` в экспорте сессии и ожидаемых результатах оценки.
 
-Bundled export contract намеренно конкретный. Session eval config validation также отделяет malformed eval specs от failed eval results через `Session eval specs must be a mapping`, `Session eval spec must be a mapping`, `Session eval spec key must be a string`, `Session eval spec key must not be empty` и `Session eval spec keys must be unique`.
+Контракт пакетного экспорта намеренно конкретен. Проверка конфигурации сессионных оценок также отделяет некорректно сформированные спецификации оценки от неуспешных результатов оценки через `Session eval specs must be a mapping`, `Session eval spec must be a mapping`, `Session eval spec key must be a string`, `Session eval spec key must not be empty` и `Session eval spec keys must be unique`.
 
-Export contract намеренно конкретный: default `dataset_name` — `agent-runtime-ref-eval-seed`; top-level summary включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; approval-backed scenarios также несут `approval_status_counts` в `expected_outcomes`; built-in scenarios включают `failed_run_timeout` с label `duplicate_ticket_eval_passed`, `max_ticket_side_effects: 1` и blocking `duplicate_ticket_guard` grading rule, `profile_memory` с labels `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с labels `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как expected outcome, а также `support_ticket` с label `sandbox_profile_review`, expected outcome `sandbox_profile_reviewed` и blocking `sandbox_profile_review` grading rule.
+Контракт экспорта намеренно конкретен: значение `dataset_name` по умолчанию — `agent-runtime-ref-eval-seed`; верхнеуровневая сводка (`top-level summary`) включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; сценарии с ожиданием подтверждения также несут `approval_status_counts` в `expected_outcomes`; встроенные сценарии включают `failed_run_timeout` с меткой `duplicate_ticket_eval_passed`, `max_ticket_side_effects: 1` и блокирующим правилом проверки `duplicate_ticket_guard`, `profile_memory` с метками `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с метками `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как ожидаемый результат, а также `support_ticket` с меткой `sandbox_profile_review`, ожидаемым результатом `sandbox_profile_reviewed` и блокирующим правилом проверки `sandbox_profile_review`.
 
 !!! example "Шлюз оценки для цепочки дубля тикета"
     Для сквозного кейса разбора обращений поддержки отдельная оценка должна воспроизводить тайм-аут после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один побочный эффект тикета или остановку `side_effect_unknown`, и блокировать раскатку, если новая версия подсказки, модели или адаптера снова делает слепой повтор и создает второй тикет.
@@ -195,7 +195,7 @@ Export contract намеренно конкретный: default `dataset_name` 
 
 ## Пример правил проверки
 
-Ниже рабочий skeleton для failed-run drill scenario:
+Ниже рабочий пример для сценария тренировки неудачного запуска:
 
 ```yaml
 scenario_id: failed_run_timeout
@@ -252,7 +252,7 @@ verifier_outputs:
 
 Смысл здесь в том, что правила проверки оценивают не только финальный текст, но и правильную рабочую форму поведения, включая то, остается ли конкретное failed condition достаточно видимым для последующего разбора.
 
-Это особенно важно для long-horizon agents, где binary pass/fail verdict часто скрывает разницу между корректным поведением с blocked outcome и unsafe behavior, которое случайно закончилось nominal success.
+Это особенно важно для агентов с длинным горизонтом действий, где двоичная оценка pass/fail часто скрывает разницу между корректным поведением с заблокированным итогом и небезопасным поведением, которое случайно закончилось номинальным успехом.
 
 ## Почему особенно важны многошаговые сессии
 
@@ -294,7 +294,7 @@ verifier_outputs:
 - Можно ли оценивать не только текст, но и поведение?
 - Умеет ли verifier выдавать отдельно `process_score`, `outcome_score` и `failure_attribution`?
 - Можно ли понять, какой verifier identity и contract version породили этот grading output?
-- Есть ли отдельное правило для sandbox-backed paths, которое проверяет sandbox profile contract, workspace entries, permissions и snapshot/resume evidence?
+- Есть ли отдельное правило для путей с опорой на песочницу, которое проверяет контракт профиля песочницы, элементы рабочего пространства, права доступа и доказательства по снимку/возобновлению?
 - Есть ли правило, которое проверяет stop condition, verification command/result, verifier actor и evidence refs для завершения запуска?
 - Поддерживаются ли многошаговые сессии?
 - Есть ли версионирование набора и владелец?
