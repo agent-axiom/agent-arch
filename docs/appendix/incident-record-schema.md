@@ -34,7 +34,7 @@
 ```yaml
 kind: incident_record
 incident_id: inc-2026-04-09-001
-title: "Unauthorized ticket_write path during onboarding run"
+title: "Несанкционированный путь записи ticket_write во время вводного прогона"
 severity: sev2
 status: contained
 category: unauthorized_side_effect
@@ -62,7 +62,7 @@ owner: platform-operations
 Ключевые поля здесь такие:
 
 - `category` позволяет связывать инцидент с таксономией разбора и обновлениями оценок;
-- `bundle_id`, `change_id` и `rollout_wave` связывают инцидент с дисциплиной выпуска;
+- `bundle_id`, `change_id` и `rollout_wave` связывают инцидент с решением о поэтапном выпуске и его волной;
 - `tool_principal`, `approval_id` и `idempotency_key` сокращают путь до реального побочного эффекта и показывают, мог ли повтор безопасно сопоставиться с уже созданным объектом;
 - `affected_surfaces` помогает не сводить разбор к одному только ответу модели.
 
@@ -109,8 +109,8 @@ status: open
 
 - какой путь подтверждения действовал;
 - какое решение было принято;
-- какой набор политик был активен;
-- какой принципал реально выполнил действие.
+- какой пакет политик был активен;
+- какая учетная запись или другой принципал реально выполнил действие.
 
 Поэтому схема инцидента должна стоять рядом с:
 
@@ -132,7 +132,7 @@ status: open
 
 ## 8. Связь со справочным пакетом
 
-В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть несколько примитивов, которые делают эту схему полезной на практике:
+В [agent_runtime_ref](https://github.com/agent-axiom/agent-arch/tree/main/agent_runtime_ref) уже есть несколько базовых механизмов, которые делают эту схему полезной на практике:
 
 - трассы и сводки сессий;
 - очередь подтверждений;
