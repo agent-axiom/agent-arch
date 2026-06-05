@@ -7366,6 +7366,62 @@ def test_chapter_5_memory_poisoning_schema_links_are_clickable() -> None:
     assert "[trace schema](../../appendix/trace-schema.zh.md)" not in chinese_text
 
 
+def test_russian_chapters_5_and_8_use_reader_facing_runtime_terms() -> None:
+    chapter_5_text = _read("docs/book/part-iii/chapter-5.md")
+    chapter_8_text = _read("docs/book/part-iv/chapter-8.md")
+
+    _assert_files_contain_all(
+        ("docs/book/part-iii/chapter-5.md",),
+        (
+            "устойчивую память",
+            "следующий запуск",
+            "границу арендатора",
+            "решении политики, подтверждении или выборе инструмента",
+            "идентичность записавшего компонента",
+            "затронутые трассы",
+            "проверку качества данных",
+            "проверку модели угроз",
+        ),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-iv/chapter-8.md",),
+        (
+            "Инструменты чтения",
+            "Инструменты записи",
+            "Инструменты данных",
+            "Инструменты действия",
+            "Инструменты оркестрации",
+            "почти всегда ближе к инструментам чтения",
+            "почти всегда ближе к инструментам записи",
+        ),
+    )
+
+    forbidden_chapter_5_markers = (
+        "persistent memory",
+        "следующий run",
+        "tenant boundary",
+        "policy decision, approval или tool selection",
+        "writer identity",
+        "affected traces",
+        "data-quality review",
+        "threat-model review",
+    )
+    forbidden_chapter_8_markers = (
+        "`read tools`",
+        "`write tools`",
+        "`data tools`",
+        "`action tools`",
+        "`orchestration tools`",
+        "почти всегда ближе к `read`",
+        "почти всегда ближе к `write`",
+    )
+
+    for marker in forbidden_chapter_5_markers:
+        assert marker not in chapter_5_text, marker
+    for marker in forbidden_chapter_8_markers:
+        assert marker not in chapter_8_text, marker
+
+
 def test_chapter_3_trust_boundaries_thread_three_canonical_cases() -> None:
     required_markers = (
         "Trust-boundary case-spine note",
