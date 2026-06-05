@@ -18252,6 +18252,44 @@ def test_russian_chapter_9_prefers_reader_facing_mcp_contract_terms() -> None:
         assert marker not in text, marker
 
 
+def test_russian_chapter_9_localizes_threat_labels() -> None:
+    text = _read("docs/book/part-iv/chapter-9.md")
+
+    expected_markers = (
+        "**отравление инструмента (tool poisoning)**",
+        "**подмена после одобрения (rug pull attack)**",
+        "**маскировка инструмента (tool shadowing)**",
+        "**подставленный посредник (confused deputy)**",
+        "**избыточные области доступа (over-scoped tokens)**",
+        (
+            "**вывод данных через разрешенные каналы "
+            "(data exfiltration through legitimate channels)**"
+        ),
+        "**компрометация цепочки поставки (supply-chain attack)**",
+        "**повтор или подмена сообщений (replay/tampering)**",
+        "**выход из песочницы (sandbox escape)**",
+        "сценарии подставленного посредника (confused deputy)",
+    )
+    forbidden_markers = (
+        "**tool poisoning**",
+        "**rug pull attack**",
+        "**tool shadowing**",
+        "**confused deputy**",
+        "**over-scoped tokens**",
+        "**data exfiltration through legitimate channels**",
+        "**supply-chain attack**",
+        "**replay/tampering**",
+        "**sandbox escape**",
+        "confused-deputy сценарии",
+    )
+
+    for marker in expected_markers:
+        assert marker in text, marker
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_chapter_9_mcp_threat_model_trace_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-iv/chapter-9.md": "../../appendix/trace-schema.md",
