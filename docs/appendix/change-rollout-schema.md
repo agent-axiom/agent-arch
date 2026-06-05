@@ -17,10 +17,10 @@
 
 Отдельный машинно-читаемый слой полезен потому, что он:
 
-- связывает change record с eval requirements;
-- фиксирует release gate явно, а не в памяти команды;
-- сохраняет rollout strategy и blast radius;
-- облегчает incident review и rollback.
+- связывает запись изменения с требованиями к оцениванию;
+- фиксирует шлюз выпуска явно, а не в памяти команды;
+- сохраняет стратегию раскатки и радиус воздействия;
+- облегчает разбор инцидента и откат.
 
 ## 2. Базовые сущности
 
@@ -31,7 +31,7 @@
 
 Этого уже достаточно, чтобы связать Part V, Part VII и Part VIII в одну дисциплину эксплуатации.
 
-## 3. Change review record
+## 3. Запись проверки изменения
 
 `change_review_record` описывает, что именно изменилось, кто это проверил и какие условия должны быть выполнены до выкладки.
 
@@ -111,11 +111,11 @@ decided_by:
 !!! note "Канонические сценарии раскатки"
     Шлюз раскатки должен проверять разные сигналы готовности для трех канонических сценариев. **Триаж обращений поддержки** требует прохождения оценки дублей тикетов, плана отката, готовности подтверждений и доказательств идемпотентности. **Внутренний ассистент знаний** требует окна свежести поиска, проверки привязки к источникам, проверки происхождения памяти и подтверждения контроля доступа. **Координация инцидентов** требует тренировки эскалации, проверки побочных эффектов уведомлений, готовности владения ответом и шлюза обучения после инцидента.
 
-Это еще важнее, когда rollout опирается на richer verifier outputs, а не только на binary pass/fail status. Тогда gate record должен явно показывать, проверялись ли для затронутых high-risk paths качество verifier'а и linkage его evidence.
+Это еще важнее, когда раскатка опирается на более содержательные выводы проверяющего, а не только на двоичный статус прошел/не прошел. Тогда запись шлюза должна явно показывать, проверялись ли для затронутых высокорисковых путей качество проверяющего и связность его доказательств.
 
 Как только в runtime появляются approval и stateful capability sessions, gate еще должен явно фиксировать, было ли interruption behavior отдельно проверено, а не просто принято по умолчанию.
 
-## 5. Чем change review отличается от rollout gate
+## 5. Чем проверка изменения отличается от шлюза раскатки
 
 Эти два слоя часто путают, хотя задачи у них разные:
 
@@ -125,27 +125,27 @@ decided_by:
 Из-за этого у них и поля разные:
 
 - review больше смотрит на тип изменения, риски и required evals;
-- rollout gate больше смотрит на telemetry, on-call, rollback, traffic scope, live readiness и interruption handling для approval-bound или stateful capability paths.
+- шлюз раскатки больше смотрит на телеметрию, готовность дежурных, откат, область трафика, готовность к реальному выпуску и обработку прерываний для путей, завязанных на подтверждения или сессии возможностей с состоянием.
 
 На практике это обычно означает, что gate должен еще явно фиксировать:
 
 - проверялось ли capability-session expiry behavior до rollout;
 - является ли re-init для затронутого path denied, allowed или approval-bound;
-- проверялась ли delegated authorization continuity между run traces, approval records и session export;
-- были ли changes в orchestration pattern отдельно reviewed как runtime-control changes до rollout;
+- проверялась ли непрерывность делегированного разрешения между трассами запуска, записями подтверждений и экспортом сессии;
+- были ли изменения в шаблоне оркестрации отдельно проверены как изменения управления средой исполнения до раскатки;
 - был ли sandbox profile contract, включая workspace materialization, permissions и snapshot/resume policy, включен в review, если изменение затрагивает sandbox-backed execution;
 - кто owner у emergency freeze, если interruption semantics начнут дрейфовать после релиза.
 
-## 6. Как это связано с eval schema
+## 6. Как это связано со схемой оценивания
 
-Change review и rollout gate тесно связаны с [eval schema](eval-schema.md):
+Проверка изменений и шлюз раскатки тесно связаны со [схемой оценивания](eval-schema.md):
 
 - review указывает, какие evals обязательны;
 - gate смотрит, достаточно ли результатов для конкретной rollout wave;
 - incidents и findings потом возвращаются обратно в список required checks;
-- verifier regressions и failures в evidence linkage тоже становятся rollout-relevant findings.
+- регрессии проверяющего и сбои связывания доказательств тоже становятся значимыми находками для раскатки.
 
-То есть eval layer не живет отдельно от release discipline, а становится одной из опор gate.
+То есть слой оценивания не живет отдельно от дисциплины выпуска, а становится одной из опор шлюза.
 
 ## 7. Как это связано со схемой трасс
 
@@ -176,7 +176,7 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 
 `check-rollout` возвращает `ready`, `required_checks`, `blocked_checks`, `missing_required`, `support_duplicate_required`, `missing_support_duplicate_required`, `support_duplicate_required_ready`, `blocking_signals` и `rollout_mode`; internally rollout policy normalizes `block_if` into `blocked_checks`, поэтому executable gate сохраняет то же различие между отсутствующей required evidence и явными blockers, что и schema, а release automation отдельно видит duplicate-ticket evidence.
 
-Встроенный `rollout.yaml` делает inputs gate конкретными и валидирует их через `Rollout policy config must be a mapping`, `'rollout' must be a mapping`, `'require' must be a list`, `'block_if' must be a list`, `'rollout_mode' must be a mapping`, `{label} entries must be strings`, `{label} entries must not be empty`, `{label} entries must be unique`, `rollout.rollout_mode keys must be strings`, `rollout.rollout_mode values must be scalar: {field}`, `rollout.rollout_mode entries must not be empty` и `rollout.rollout_mode entries must be unique`: required evidence включает `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `duplicate_ticket_eval_passed`, `slo_defined`, `rollback_plan` и `oncall_owner`; `rollout_mode` задаёт `initial`, `max_tenant_exposure_pct` и `require_shadow_period`; а `block_if` называет жёсткие blockers вроде `unknown_side_effect_path_missing`, `direct_tool_access_present` и `policy_decisions_not_traced`. Runtime signal overrides и direct assessment inputs тоже валидируются: `Signal key must not be empty: {raw_signal!r}`, `Unsupported boolean value in signal: {raw_signal!r}`, `Lifecycle change must be ChangeRecord`, `Lifecycle retirement plan must be RetirementPlan`, `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique`, `Assessment signal value must be a boolean: {field}` и `Rollout policy must be RolloutPolicy`, `Rollout readiness must be RolloutReadiness`, `Rollout readiness flag must be a boolean: {field}`.
+Встроенный `rollout.yaml` делает входы шлюза конкретными и валидирует их через `Rollout policy config must be a mapping`, `'rollout' must be a mapping`, `'require' must be a list`, `'block_if' must be a list`, `'rollout_mode' must be a mapping`, `{label} entries must be strings`, `{label} entries must not be empty`, `{label} entries must be unique`, `rollout.rollout_mode keys must be strings`, `rollout.rollout_mode values must be scalar: {field}`, `rollout.rollout_mode entries must not be empty` и `rollout.rollout_mode entries must be unique`: обязательные доказательства включают `trace_coverage`, `policy_prechecks`, `capability_owners`, `offline_eval_pass`, `duplicate_ticket_eval_passed`, `slo_defined`, `rollback_plan` и `oncall_owner`; `rollout_mode` задаёт `initial`, `max_tenant_exposure_pct` и `require_shadow_period`; а `block_if` называет жесткие блокирующие условия вроде `unknown_side_effect_path_missing`, `direct_tool_access_present` и `policy_decisions_not_traced`. Переопределения сигналов времени выполнения и прямые входы оценивания тоже валидируются: `Signal key must not be empty: {raw_signal!r}`, `Unsupported boolean value in signal: {raw_signal!r}`, `Lifecycle change must be ChangeRecord`, `Lifecycle retirement plan must be RetirementPlan`, `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique`, `Assessment signal value must be a boolean: {field}` и `Rollout policy must be RolloutPolicy`, `Rollout readiness must be RolloutReadiness`, `Rollout readiness flag must be a boolean: {field}`.
 
 Соседний `change.yaml` также задаёт проверяемую поверхность изменения: `change_id` равен `chg-2026-04-07-support-runtime`, `change_type` — `capability_contract_update`, `risk_level` — `high`, а `rollout_strategy` — `staged_canary`. Его `required_signals` перечисляет доказательства выпуска — `design_review_passed`, `offline_eval_passed`, `duplicate_ticket_eval_passed`, `policy_diff_reviewed`, `rollback_plan_ready`, `session_expiry_behavior_checked`, `reinit_policy_reviewed`, `sandbox_profile_reviewed` и `failed_run_drill_checked`, а `approval_roles` фиксирует `platform-owner` и `security-reviewer` как обязательных проверяющих. `check-change` возвращает `change_id`, `ready`, `required_signals`, `approval_roles`, `missing_signals`, `failed_run_signals`, `missing_failed_run_signals`, `support_duplicate_signals`, `missing_support_duplicate_signals`, `support_duplicate_signals_ready`, `rollout_strategy` и `risk_level`, чтобы проверка выпуска отличала общую недостающую доказательную базу от готовности деградировавшего пути и сценария дубля тикета. Загрузчик изменений также отделяет неправильно оформленные записи проверки от проваленных шлюзов через `change config must be a mapping`, `change config keys must be strings`, `change.change_id must be a string`, `change.change_id is required`, `change.change_type must be a string`, `change.change_type is required`, `change.risk_level must be a string`, `change.risk_level is required`, `change.rollout_strategy must be a string`, `change.rollout_strategy is required`, `change.session_control_owner is required` и `change.emergency_freeze_owner is required`; списки вроде `artifacts`, `required_signals` и `approval_roles` отклоняют неправильные значения через `{key} must be a list`, `{key} entries must be strings`, `{key} entries must not be empty` и `{key} entries must be unique`.
 
@@ -184,20 +184,20 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 
 ## 9. Минимальные инварианты
 
-Если коротко, у здорового change-rollout слоя должны быть такие инварианты:
+Если коротко, у здорового слоя проверки изменений и раскатки должны быть такие инварианты:
 
-- high-risk change не попадает в rollout без review record;
-- rollout gate указывает конкретный `bundle_id` и `rollout_wave`;
+- высокорисковое изменение не попадает в раскатку без записи проверки;
+- шлюз раскатки указывает конкретный `bundle_id` и `rollout_wave`;
 - required checks и blocking findings видны явно;
 - decision всегда имеет owner;
 - review и gate можно восстановить по incident trace;
 - interruption behavior для approval-bound или stateful capability sessions проверяется до rollout;
 - expiry и re-init behavior для capability sessions проверяются до rollout;
-- delegated authorization continuity между run traces, approval records и session export проверяется до rollout;
-- качество verifier'а и linkage его evidence проверяются до rollout, если release control зависит от graded outcomes;
-- changes в orchestration pattern проверяются до rollout, особенно если они добавляют routing, parallelization или delegated worker surfaces;
-- sandbox profile changes проверяются до rollout, особенно если они меняют workspace entries, shell/filesystem permissions или snapshot/resume behavior;
-- rollback plan не живет только в головах команды.
+- непрерывность делегированного разрешения между трассами запуска, записями подтверждений и экспортом сессии проверяется до раскатки;
+- качество проверяющего и связность его доказательств проверяются до раскатки, если контроль выпуска зависит от градуированных исходов;
+- изменения в шаблоне оркестрации проверяются до раскатки, особенно если они добавляют маршрутизацию, параллелизацию или поверхности делегированных исполнителей;
+- изменения профиля песочницы проверяются до раскатки, особенно если они меняют записи рабочего пространства, разрешения shell и файловой системы или стратегию snapshot/resume;
+- план отката не живет только в головах команды.
 
 ## 10. Что чаще всего ломается
 
@@ -207,9 +207,9 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 - gating criteria не versioned;
 - telemetry readiness проверяется "на глаз";
 - safety findings не считаются blocker'ами;
-- качество verifier'а или linkage его evidence предполагаются, а не проверяются;
+- качество проверяющего или связность его доказательств предполагаются, а не проверяются;
 - capability-session expiry или re-init behavior остаются неоформленными;
-- changes в orchestration pattern проходят как «деталь реализации» без явного review;
+- изменения в шаблоне оркестрации проходят как «деталь реализации» без явной проверки;
 - rollout wave описан слишком расплывчато;
 - никто не может объяснить, почему изменение вообще было допущено в canary.
 
@@ -217,15 +217,15 @@ Change review и rollout gate тесно связаны с [eval schema](eval-sc
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
-- Есть ли явный review record для high-risk changes?
-- Есть ли отдельный rollout gate, а не только "review approved"?
-- Видно ли, какие checks обязаны пройти перед rollout?
+- Есть ли явная запись проверки для высокорисковых изменений?
+- Есть ли отдельный шлюз раскатки, а не только "изменение одобрено"?
+- Видно ли, какие проверки обязаны пройти перед раскаткой?
 - Есть ли связка `change_id -> bundle_id -> rollout_wave`?
-- Видно ли, что verifier quality и evidence-linkage checks присутствуют, когда graded outcomes влияют на release?
+- Видно ли, что проверка качества проверяющего и связывания доказательств присутствует, когда градуированные исходы влияют на выпуск?
 - Сохраняются ли blocking findings и decision owners?
-- Можно ли по incident review восстановить, какой gate пропустил изменение?
+- Можно ли по разбору инцидента восстановить, какой шлюз пропустил изменение?
 
-Если на несколько вопросов подряд ответ "нет", у тебя уже может быть change process, но еще нет полноценного rollout gate layer.
+Если на несколько вопросов подряд ответ "нет", у тебя уже может быть процесс изменения, но еще нет полноценного слоя шлюза раскатки.
 
 ## Что делать дальше
 

@@ -14589,6 +14589,42 @@ def test_russian_change_rollout_core_terms_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_change_rollout_reader_facing_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/change-rollout-schema.md")
+    expected_markers = (
+        "связывает запись изменения с требованиями к оцениванию",
+        "фиксирует шлюз выпуска явно",
+        "сохраняет стратегию раскатки и радиус воздействия",
+        "облегчает разбор инцидента и откат",
+        "Это еще важнее, когда раскатка опирается на более содержательные выводы проверяющего",
+        (
+            "проверялась ли непрерывность делегированного разрешения между "
+            "трассами запуска, записями подтверждений и экспортом сессии"
+        ),
+        "Встроенный `rollout.yaml` делает входы шлюза конкретными",
+        "а `block_if` называет жесткие блокирующие условия",
+        "Проверка изменений и шлюз раскатки тесно связаны со [схемой оценивания](eval-schema.md)",
+        "Если коротко, у здорового слоя проверки изменений и раскатки должны быть такие инварианты",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "связывает change record с eval requirements",
+        "фиксирует release gate явно",
+        "сохраняет rollout strategy и blast radius",
+        "облегчает incident review и rollback",
+        "rollout опирается на richer verifier outputs",
+        "между run traces, approval records и session export",
+        "делает inputs gate конкретными",
+        "называет жёсткие blockers",
+        "Change review и rollout gate тесно связаны с [eval schema]",
+        "у здорового change-rollout слоя должны быть такие инварианты",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_lifecycle_artifact_schema_surfaces_three_canonical_lifecycle_cases() -> None:
     required_markers = (
         "Canonical lifecycle cases",
