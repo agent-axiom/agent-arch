@@ -13658,6 +13658,63 @@ def test_russian_trace_schema_security_contract_labels_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_trace_schema_event_catalog_reader_labels_are_localized() -> None:
+    russian_text = _read("docs/appendix/trace-schema.md")
+    expected_markers = (
+        "фиксирует действие, причину и идентификатор политики предварительной проверки",
+        "когда средство контроля из модели угроз оставляет доказательство",
+        "связывает класс угрозы с идентификаторами трассы и доказательств",
+        "при извлечении контекста памяти",
+        "фиксирует решение политики и причину: разрешить, запретить или запросить подтверждение",
+        "при разборе риска инструмента или сервера MCP",
+        "после вызова возможности или передачи на подтверждение",
+        "когда один агент делегирует работу другому агенту",
+        "при высокорисковом пути записи",
+        "при проверке пути на базе песочницы",
+        (
+            "фиксирует проверенное рабочее пространство, профиль разрешений "
+            "и доказательства по снимкам и возобновлению"
+        ),
+        "место и для доказательств с учетом проверяющего",
+        "какие поля можно добавлять без поломки зависимых инструментов",
+        (
+            "Для пути на базе песочницы полезно заранее зарезервировать поля, "
+            "которые связывают трассу с границей исполнения"
+        ),
+        (
+            "Если для раскатки или оценки нужен `sandbox_profile_review`, "
+            "трасса должна также уметь ссылаться на доказательства проверки, "
+            "а не только на поля состояния"
+        ),
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "фиксирует policy precheck action, reason и policy ID",
+        "когда threat-model control оставляет доказательство",
+        "связывает threat class с trace/evidence identifiers",
+        "при извлечении memory context",
+        "фиксирует решение политики и причину allow/deny/approval",
+        "при review MCP tool/server риска",
+        "после capability call или approval handoff",
+        "когда один agent делегирует работу другому agent",
+        "при high-risk write path",
+        "при проверке sandbox-backed path",
+        "фиксирует review workspace, permissions и snapshot/resume evidence",
+        "место и для verifier-aware evidence",
+        "какие поля можно добавлять без поломки downstream tooling",
+        "Для sandbox-backed run полезно заранее зарезервировать поля",
+        (
+            "Если rollout или eval требует `sandbox_profile_review`, трасса "
+            "должна также уметь ссылаться на review evidence, а не только на "
+            "state fields"
+        ),
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_chinese_trace_schema_threat_and_governance_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/trace-schema.zh.md")
     expected_markers = (
