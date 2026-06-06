@@ -19256,6 +19256,16 @@ def test_russian_trace_schema_prefers_reader_facing_terms() -> None:
         "маркеры доказательств из единой модели доказательств угроз агенту",
         "строки угроз можно было проверить по трассам",
         "итоговое решение: разрешить или запретить",
+        "эталонные полезные нагрузки",
+        "операционные метаданные",
+        "Проверка модели запросов и результатов инструмента",
+        "границе трассировки",
+        "неправильные обращения к инструменту",
+        "неправильные результаты инструмента",
+        "`span_name` и `duration_ms`",
+        "проверке отравления памяти",
+        "те же поля проверки отравления памяти, что и схема памяти",
+        "Текущие эталонные полезные нагрузки",
     )
     forbidden_markers = (
         "набор ad hoc JSON-полей",
@@ -19266,6 +19276,16 @@ def test_russian_trace_schema_prefers_reader_facing_terms() -> None:
         "evidence markers из unified agent threat evidence model",
         "threat rows можно было проверить по traces",
         "итоговое решение о разрешении или запрете (allow/deny)",
+        "reference payloads",
+        "operational metadata fields",
+        "Tool request/result model validation",
+        "trace boundary",
+        "malformed tool calls",
+        "malformed tool results",
+        "`span_name`, and `duration_ms`",
+        "memory poisoning review",
+        "memory poisoning review fields",
+        "memory schema",
     )
 
     for marker in expected_markers:
