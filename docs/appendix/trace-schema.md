@@ -179,7 +179,7 @@
 - `risk_tier`
 - `tool_principal`
 
-Для `mcp_tool_risk_review` производственная трасса должна фиксировать доказательства модели угроз MCP (MCP threat-model evidence), а не только решение о разрешении или запрете (allow/deny): итоговое решение: разрешить или запретить:
+Для `mcp_tool_risk_review` производственная трасса должна фиксировать доказательства модели угроз MCP (MCP threat-model evidence), а не только итоговое решение: разрешить или запретить:
 
 - `threat_class`
 - `mcp_server_id`
@@ -192,7 +192,7 @@
 
 `threat_class` лучше держать в словаре модели угроз MCP (MCP threat model): `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
 
-Для `a2a_handoff` payload должен сохранять контракт доверия для передачи управления A2A (A2A handoff trust contract), а не только текст делегированного сообщения:
+Полезная нагрузка события `a2a_handoff` должна сохранять контракт доверия для передачи управления A2A (A2A handoff trust contract), а не только текст делегированного сообщения:
 
 - `agent_identity`
 - `delegation_chain`
@@ -226,7 +226,7 @@
 - `reviewed_by`
 - `review_evidence_refs`
 
-Если система опирается на оценки с учетом проверяющего, полезно отдельно определить событие, контракт данных или связанный payload для записи вердикта проверяющего (verifier verdict record):
+Если система опирается на оценки с учетом проверяющего, полезно отдельно определить событие, контракт данных или связанную полезную нагрузку (`payload`) для записи вердикта проверяющего (verifier verdict record):
 
 - `verdict_id`
 - `verifier_id`

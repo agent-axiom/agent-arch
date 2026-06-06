@@ -13666,9 +13666,9 @@ def test_russian_trace_schema_security_contract_labels_are_localized() -> None:
         "производственная трасса",
         "доказательства модели угроз MCP (MCP threat-model evidence)",
         "словаре модели угроз MCP (MCP threat model)",
-        "решение о разрешении или запрете (allow/deny)",
-        "payload должен сохранять контракт доверия для передачи управления A2A",
-        "контракт данных или связанный payload для записи вердикта проверяющего",
+        "итоговое решение: разрешить или запретить",
+        "Полезная нагрузка события `a2a_handoff` должна сохранять",
+        "контракт данных или связанную полезную нагрузку (`payload`)",
     )
     for expected_marker in expected_markers:
         assert expected_marker in russian_text, expected_marker
@@ -13677,9 +13677,11 @@ def test_russian_trace_schema_security_contract_labels_are_localized() -> None:
         "production trace должен фиксировать",
         "фиксировать MCP threat-model evidence",
         "словаре из MCP threat model",
-        "итоговый allow/deny",
+        "решение о разрешении или запрете (allow/deny)",
+        "payload должен сохранять контракт доверия для передачи управления A2A",
         "payload должен сохранять A2A handoff trust contract",
         "verifier-aware evals",
+        "контракт данных или связанный payload для записи вердикта проверяющего",
         "linked payload contract for verifier verdict record",
     )
     for forbidden_marker in forbidden_markers:
@@ -19194,6 +19196,8 @@ def test_russian_trace_schema_prefers_reader_facing_terms() -> None:
         "Повтор трассы проверяет эти доказательства",
         "маркеры доказательств из единой модели доказательств угроз агенту",
         "строки угроз можно было проверить по трассам",
+        "Полезная нагрузка события `a2a_handoff`",
+        "связанную полезную нагрузку (`payload`)",
         "итоговое решение: разрешить или запретить",
     )
     forbidden_markers = (
@@ -19204,6 +19208,8 @@ def test_russian_trace_schema_prefers_reader_facing_terms() -> None:
         "Trace replay валидирует эти evidence",
         "evidence markers из unified agent threat evidence model",
         "threat rows можно было проверить по traces",
+        "payload должен сохранять контракт доверия для передачи управления A2A",
+        "связанный payload для записи вердикта проверяющего",
         "итоговое решение о разрешении или запрете (allow/deny)",
     )
 
