@@ -15064,6 +15064,54 @@ def test_russian_lifecycle_artifact_reader_facing_contract_terms_are_localized()
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_lifecycle_artifact_deep_reader_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+
+    expected_markers = (
+        "Минимальный слой жизненного цикла удобно строить вокруг трех сущностей",
+        "проверку дизайна",
+        "шлюз выпуска",
+        "контур заверения",
+        "дисциплину завершения жизненного цикла",
+        "операционный смысл",
+        "эксплуатационный факт",
+        "конфигурации выпуска",
+        "Эталонная среда исполнения хранит этот контракт",
+        "думать не только о замене, но и о следах прежней системы",
+        "идентифицируют выводимую из эксплуатации поверхность",
+        "для управляемой передачи управления",
+        "Архивный список называет",
+        "Краткая исполняемая сводка `check-retirement` возвращает",
+        "незавершенные шаги вывода из эксплуатации",
+        "испорченные переопределения шагов вывода из эксплуатации",
+        "производственный шлюз раскатки указывает на `artifact_bundle`",
+    )
+
+    forbidden_markers = (
+        "lifecycle layer",
+        "design review",
+        "release gate",
+        "assurance loop",
+        "end-of-life discipline",
+        "operational semantics",
+        "operational fact",
+        "release-конфигурации",
+        "Эталонный runtime хранит этот контракт",
+        "retiring surface",
+        "controlled handover",
+        "Archive list",
+        "Executable summary `check-retirement`",
+        "retirement steps",
+        "production rollout",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     expected_markers_by_file = {
         "docs/appendix/memory-retrieval-schema.md": (
