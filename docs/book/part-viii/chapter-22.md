@@ -225,23 +225,23 @@ flowchart LR
 
 Если контракт меняется тихо, без происхождения и без следа проверки, то такое изменение может быть не менее опасно, чем непроверенный деплой кода.
 
-То же самое верно и для [approval schema](../../appendix/approval-schema.md) и [runtime-control schema](../../appendix/lifecycle-artifact-schema.md). Если команда меняет timeout, pause/resume behavior, expiry semantics, правила re-initialization или ожидаемую форму payloads без дисциплины управления артефактами, она меняет рабочее поведение системы, даже если ни модель, ни исходный код не сдвинулись.
+То же самое верно и для [схем подтверждения](../../appendix/approval-schema.md) и [схем управления средой исполнения](../../appendix/lifecycle-artifact-schema.md). Если команда меняет правила тайм-аута, приостановки и возобновления, истечения срока, повторной инициализации или ожидаемую форму полезной нагрузки без дисциплины управления артефактами, она меняет рабочее поведение системы, даже если ни модель, ни исходный код не сдвинулись.
 
-Это означает, что подтвержденное происхождение все чаще должно хранить не только сам факт существования runtime-control schema, но и то, какая версия interruption-governance реально была активна:
+Это означает, что подтвержденное происхождение все чаще должно хранить не только сам факт существования схемы управления средой исполнения, но и то, какая версия правил прерывания реально была активна:
 
-- [paused runs истекали или могли ждать бесконечно](../../appendix/lifecycle-artifact-schema.md);
-- [capability-session re-init была allowed, denied или approval-bound](../../appendix/lifecycle-artifact-schema.md);
-- [telemetry обязана была связывать исходную и reinitialized capability sessions](../../appendix/trace-schema.md) или нет;
-- какой [orchestration pattern](../../appendix/change-rollout-schema.md) был утвержден для этого path и действовали ли worker-safe catalog boundaries;
-- [approval](../../appendix/approval-schema.md) и [session-control logic](../../appendix/lifecycle-artifact-schema.md) еще управлялись одним contract version или уже начали расходиться;
-- [delegated access была platform-owned или user-delegated](../../appendix/lifecycle-artifact-schema.md);
-- какое [principal-binding rule и revoke behavior](../../appendix/lifecycle-artifact-schema.md) управляли in-flight или paused actions.
+- [приостановленные запуски истекали или могли ждать бесконечно](../../appendix/lifecycle-artifact-schema.md);
+- [повторная инициализация сессии возможности была разрешена, запрещена или требовала подтверждения](../../appendix/lifecycle-artifact-schema.md);
+- [телеметрия обязана была связывать исходную и повторно инициализированную сессии возможности](../../appendix/trace-schema.md) или нет;
+- какая [схема оркестрации и политика границ рабочих агентов](../../appendix/change-rollout-schema.md) была утверждена для этого пути, и действовали ли безопасные каталожные границы для рабочих агентов;
+- [схема подтверждения](../../appendix/approval-schema.md) и [логика управления сеансом](../../appendix/lifecycle-artifact-schema.md) еще управлялись одной версией контракта или уже начали расходиться;
+- [делегированный доступ управлялся платформой или самим пользователем](../../appendix/lifecycle-artifact-schema.md);
+- какое [правило привязки принципала и поведение при отзыве доступа](../../appendix/lifecycle-artifact-schema.md) управляло действиями в полете или во время паузы.
 
-Более поздняя работа Anthropic про harness design показывает еще одно следствие для цепочки происхождения.[^anthropic-harness] Если длинная работа зависит от context resets, разделения ролей planner/generator/evaluator, sprint contracts и [структурированных handoff artifacts](../../appendix/lifecycle-artifact-schema.md), то такие handoff artifacts уже нельзя считать одноразовыми координационными заметками. Они тоже становятся артефактами с управляемым происхождением. Поздний incident review или спор о rollout может потребовать выяснить, [какой handoff artifact перенес scope, какой evaluator critique изменил следующий sprint и на какой reset boundary активный контекст сменился](../../appendix/lifecycle-artifact-schema.md) без смены user-visible run.
+Более поздняя работа Anthropic про проектирование harness-среды показывает еще одно следствие для цепочки происхождения.[^anthropic-harness] Если длинная работа зависит от сбросов контекста, разделения ролей planner/generator/evaluator, контрактов спринта и [структурированных артефактов передачи управления](../../appendix/lifecycle-artifact-schema.md), то такие артефакты передачи управления уже нельзя считать одноразовыми координационными заметками. Они тоже становятся артефактами с управляемым происхождением. Поздний разбор инцидента или спор о поэтапном выпуске может потребовать выяснить, [какой артефакт передачи управления перенес область работы, какая критика оценщика изменила следующий спринт и на какой границе сброса активный контекст сменился](../../appendix/lifecycle-artifact-schema.md) без смены видимого пользователю запуска.
 
-Это вопросы происхождения именно потому, что они определяют управляемую идентичность поведения, а не просто факт того, что поведение было видно в telemetry.
+Это вопросы происхождения именно потому, что они определяют управляемую идентичность поведения, а не просто факт того, что поведение было видно в телеметрии.
 
-Именно здесь важна граница этой главы. [Telemetry](../../appendix/trace-schema.md) может показать, что pause, re-init или delegated action действительно произошли. Provenance должен сохранить, какая [проверенная contract family](../../appendix/lifecycle-artifact-schema.md) сделала такое поведение легитимным для платформы. Без этого слоя incident review видит события, но все равно не может объяснить, почему платформа считала их допустимыми.
+Именно здесь важна граница этой главы. [Телеметрия](../../appendix/trace-schema.md) может показать, что приостановка, повторная инициализация или делегированное действие действительно произошли. Происхождение должно сохранить, какое [проверенное семейство контрактов](../../appendix/lifecycle-artifact-schema.md) сделало такое поведение легитимным для платформы. Без этого слоя разбор инцидента видит события, но все равно не может объяснить, почему платформа считала их допустимыми.
 
 ## 9. Пример политики доверенных артефактов
 
@@ -329,8 +329,8 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - наборы prompt-правил не версионируются;
 - [наборы для оценки](../../appendix/eval-schema.md) тихо меняются;
 - [контракты возможностей](../../appendix/lifecycle-artifact-schema.md) редактируются без следа проверки;
-- [approval schemas](../../appendix/approval-schema.md) или [runtime-control schemas](../../appendix/lifecycle-artifact-schema.md) меняются без дисциплины версий;
-- [изменения в orchestration pattern](../../appendix/change-rollout-schema.md) не имеют прослеживаемого происхождения артефактов;
+- [схемы подтверждения](../../appendix/approval-schema.md) или [схемы управления средой исполнения](../../appendix/lifecycle-artifact-schema.md) меняются без дисциплины версий;
+- [изменения в схеме оркестрации](../../appendix/change-rollout-schema.md) не имеют прослеживаемого происхождения артефактов;
 - никто не знает, какой именно артефакт был активен в момент инцидента;
 - в [доказательном слое](../../appendix/trace-schema.md) отсутствует связь с версией контракта;
 - [устаревшие шаблоны](../../appendix/lifecycle-artifact-schema.md) живут в промышленной среде слишком долго;
@@ -386,7 +386,7 @@ def artifact_ready(record: ArtifactRecord) -> bool:
 - [Схема набора политик и контракта подтверждения](../../appendix/policy-bundle-schema.md)
 - [Схема approval](../../appendix/approval-schema.md)
 - [Схема артефактов жизненного цикла](../../appendix/lifecycle-artifact-schema.md)
-- [Схема change review и rollout gate](../../appendix/change-rollout-schema.md)
+- [Схема проверки изменений и шлюза поэтапного выпуска](../../appendix/change-rollout-schema.md)
 - [Схема наборов для оценки и правил проверки](../../appendix/eval-schema.md)
 - [Схема трасс и каталог событий](../../appendix/trace-schema.md)
 - [Схема памяти и извлечения](../../appendix/memory-retrieval-schema.md)

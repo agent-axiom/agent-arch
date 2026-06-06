@@ -3409,7 +3409,7 @@ def test_chapter_19_read_next_links_lifecycle_contracts() -> None:
         "docs/book/part-viii/chapter-19.md": (
             "[Схема артефактов жизненного цикла]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[Схема change review и rollout gate]"
+            "[Схема проверки изменений и шлюза поэтапного выпуска]"
             "(../../appendix/change-rollout-schema.md)",
             "[Схема набора политик и контракта подтверждения]"
             "(../../appendix/policy-bundle-schema.md)",
@@ -4391,7 +4391,8 @@ def test_chapter_22_trusted_artifact_examples_link_schema_contracts() -> None:
             "[policy YAML](../../appendix/policy-bundle-schema.md)",
             "[конфигурациям извлечения](../../appendix/memory-retrieval-schema.md)",
             "[порогам подтверждения](../../appendix/approval-schema.md)",
-            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.md)",
+            "[схемам управления средой исполнения]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[policy YAML](../../appendix/policy-bundle-schema.en.md)",
@@ -4422,8 +4423,9 @@ def test_chapter_22_artifact_discipline_failures_link_schema_contracts() -> None
         "docs/book/part-viii/chapter-22.md": (
             "[наборы для оценки](../../appendix/eval-schema.md)",
             "[контракты возможностей](../../appendix/lifecycle-artifact-schema.md)",
-            "[approval schemas](../../appendix/approval-schema.md) или "
-            "[runtime-control schemas](../../appendix/lifecycle-artifact-schema.md)",
+            "[схемы подтверждения](../../appendix/approval-schema.md) или "
+            "[схемы управления средой исполнения]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[eval datasets](../../appendix/eval-schema.en.md)",
@@ -4443,6 +4445,57 @@ def test_chapter_22_artifact_discipline_failures_link_schema_contracts() -> None
         text = _read(path)
         for expected_snippet in expected_snippets:
             assert expected_snippet in text, (path, expected_snippet)
+
+
+def test_russian_chapter_22_runtime_provenance_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/book/part-viii/chapter-22.md")
+
+    expected_markers = (
+        "схемы подтверждения",
+        "схемы управления средой исполнения",
+        "правила тайм-аута, приостановки и возобновления, истечения срока, "
+        "повторной инициализации",
+        "правил прерывания реально была активна",
+        "приостановленные запуски",
+        "повторная инициализация сессии возможности",
+        "телеметрия обязана была связывать исходную и повторно инициализированную "
+        "сессии возможности",
+        "какая [схема оркестрации и политика границ рабочих агентов]"
+        "(../../appendix/change-rollout-schema.md) была утверждена для этого пути",
+        "логика управления сеансом",
+        "делегированный доступ управлялся платформой или самим пользователем",
+        "правило привязки принципала и поведение при отзыве доступа",
+        "Поздний разбор инцидента или спор о поэтапном выпуске",
+        "а не просто факт того, что поведение было видно в телеметрии",
+        "какое [проверенное семейство контрактов]"
+        "(../../appendix/lifecycle-artifact-schema.md)",
+        "разбор инцидента видит события",
+        "[Схема проверки изменений и шлюза поэтапного выпуска]"
+        "(../../appendix/change-rollout-schema.md)",
+    )
+    forbidden_markers = (
+        "[approval schema](../../appendix/approval-schema.md)",
+        "[runtime-control schema](../../appendix/lifecycle-artifact-schema.md)",
+        "timeout, pause/resume behavior",
+        "runtime-control schema",
+        "interruption-governance",
+        "paused runs",
+        "capability-session re-init",
+        "reinitialized capability sessions",
+        "orchestration pattern",
+        "session-control logic",
+        "delegated access была platform-owned или user-delegated",
+        "principal-binding rule",
+        "incident review",
+        "[Telemetry](../../appendix/trace-schema.md)",
+        "Provenance должен сохранить",
+        "contract family",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
 
 
 def test_chapter_22_maturity_bar_links_production_artifact_contracts() -> None:
@@ -4830,17 +4883,18 @@ def test_chapter_22_capability_contract_checklist_links_control_schemas() -> Non
 def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[paused runs истекали или могли ждать бесконечно]"
+            "[приостановленные запуски истекали или могли ждать бесконечно]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[capability-session re-init была allowed, denied или approval-bound]"
+            "[повторная инициализация сессии возможности была разрешена, запрещена "
+            "или требовала подтверждения]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[telemetry обязана была связывать исходную и reinitialized "
-            "capability sessions](../../appendix/trace-schema.md)",
-            "[approval](../../appendix/approval-schema.md) и "
-            "[session-control logic](../../appendix/lifecycle-artifact-schema.md)",
-            "[delegated access была platform-owned или user-delegated]"
+            "[телеметрия обязана была связывать исходную и повторно "
+            "инициализированную сессии возможности](../../appendix/trace-schema.md)",
+            "[схема подтверждения](../../appendix/approval-schema.md) и "
+            "[логика управления сеансом](../../appendix/lifecycle-artifact-schema.md)",
+            "[делегированный доступ управлялся платформой или самим пользователем]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[principal-binding rule и revoke behavior]"
+            "[правило привязки принципала и поведение при отзыве доступа]"
             "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -4893,11 +4947,12 @@ def test_chapter_22_runtime_control_provenance_checklist_links_control_schemas()
 def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[структурированных handoff artifacts]"
+            "[структурированных артефактов передачи управления]"
             "(../../appendix/lifecycle-artifact-schema.md)",
-            "[какой handoff artifact перенес scope, какой evaluator critique "
-            "изменил следующий sprint и на какой reset boundary активный "
-            "контекст сменился](../../appendix/lifecycle-artifact-schema.md)",
+            "[какой артефакт передачи управления перенес область работы, какая "
+            "критика оценщика изменила следующий спринт и на какой границе "
+            "сброса активный контекст сменился]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[structured handoff artifacts]"
@@ -4932,9 +4987,10 @@ def test_chapter_22_harness_handoff_artifacts_link_lifecycle_schema() -> None:
 def test_chapter_22_boundary_parity_links_telemetry_and_contract_family() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
-            "[Telemetry](../../appendix/trace-schema.md) может показать",
-            "pause, re-init или delegated action",
-            "[проверенная contract family](../../appendix/lifecycle-artifact-schema.md)",
+            "[Телеметрия](../../appendix/trace-schema.md) может показать",
+            "приостановка, повторная инициализация или делегированное действие",
+            "[проверенное семейство контрактов]"
+            "(../../appendix/lifecycle-artifact-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
             "[Telemetry](../../appendix/trace-schema.en.md) may show",
@@ -5117,7 +5173,7 @@ def test_chapter_22_links_orchestration_rules_to_change_rollout_schema() -> None
             "(../../appendix/change-rollout-schema.md)",
             "[схема оркестрации и политика границ рабочих агентов]"
             "(../../appendix/change-rollout-schema.md)",
-            "[изменения в orchestration pattern]"
+            "[изменения в схеме оркестрации]"
             "(../../appendix/change-rollout-schema.md)",
         ),
         "docs/book/part-viii/chapter-22.en.md": (
@@ -5395,7 +5451,7 @@ def test_chapter_22_useful_refs_include_supply_chain_schema_pages() -> None:
     expected_snippets_by_file = {
         "docs/book/part-viii/chapter-22.md": (
             "[Схема approval](../../appendix/approval-schema.md)",
-            "[Схема change review и rollout gate]"
+            "[Схема проверки изменений и шлюза поэтапного выпуска]"
             "(../../appendix/change-rollout-schema.md)",
             "[Схема наборов для оценки и правил проверки]"
             "(../../appendix/eval-schema.md)",
