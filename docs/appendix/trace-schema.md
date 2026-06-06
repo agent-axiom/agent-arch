@@ -251,7 +251,7 @@
 
 `source_signal` лучше держать в ограниченном словаре, согласованном с управленческой телеметрией: `policy_decision_feedback`, `containment_decision`, `rollout_gate_input`, `incident_response_trigger`, `registry_update_signal`.
 
-Для `memory_write_decision` в memory poisoning review трасса должна сохранять те же memory poisoning review fields, что и memory schema:
+Для `memory_write_decision` при проверке отравления памяти трасса должна сохранять те же поля проверки отравления памяти, что и схема памяти:
 
 - `write_trust_boundary`
 - `activation_policy`
@@ -268,7 +268,7 @@
 - `provenance`
 - `revision`
 
-Текущие reference payloads также используют operational metadata fields: `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`. Tool request/result model validation относится к той же trace boundary: malformed tool calls падают с `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, а malformed tool results падают с `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique` и `Tool result payload value must be a string: {payload_key}`.
+Текущие эталонные полезные нагрузки также используют операционные метаданные: `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name` и `duration_ms`. Проверка модели запросов и результатов инструмента относится к той же границе трассировки: неправильные обращения к инструменту падают с `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, а неправильные результаты инструмента падают с `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique` и `Tool result payload value must be a string: {payload_key}`.
 
 ## Что уже умеет пакет
 
