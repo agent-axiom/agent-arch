@@ -7547,6 +7547,31 @@ def test_chapter_23_retirement_threads_three_canonical_cases() -> None:
         assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
+def test_russian_chapter_23_prefers_reader_facing_retirement_terms() -> None:
+    russian_text = _read("docs/book/part-viii/chapter-23.md")
+
+    expected_markers = (
+        "вывод из эксплуатации (`retirement`): система или возможность просто "
+        "выводится из эксплуатации",
+        "замена (`replacement`): старая система снимается, но перед этим или "
+        "параллельно ее заменяет новая",
+        "что делать с накопленным состоянием",
+        "вывод из эксплуатации почти всегда начинается не с выключения",
+    )
+    forbidden_markers = (
+        "- `retirement`: система или возможность просто выводится из эксплуатации;",
+        "- `replacement`: старая система снимается, но перед этим или параллельно "
+        "ее заменяет новая.",
+        "что делать с накопленным state?",
+        "Это важно, потому что retirement почти всегда начинается не с выключения",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_chapter_23_retirement_verifier_evidence_eval_link_is_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-viii/chapter-23.md": "../../appendix/eval-schema.md",
