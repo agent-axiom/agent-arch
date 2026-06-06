@@ -695,6 +695,14 @@ def test_late_russian_public_pages_use_print_friendly_role_terms() -> None:
 
 def test_russian_practical_pages_use_reader_facing_terms() -> None:
     expected_by_file = {
+        "docs/book/part-i/practical-manager-handoffs.md": (
+            "Паттерн координатора означает, что у тебя есть один центральный координатор",
+            "Передача управления означает, что текущий агент может передать "
+            "управление другому агенту",
+            "## 8. Простая таблица решений",
+            "| Нужен единый контроль шагов, стоимости и политик | паттерн координатора |",
+            "| Роли и домены естественно разделены | передача управления |",
+        ),
         "docs/book/part-iv/practical-mcp-a2a.md": (
             "# Практика. MCP для инструментов, A2A для агентов",
             "## 4. Типовая ошибка: строить многоагентную систему слишком рано",
@@ -710,6 +718,14 @@ def test_russian_practical_pages_use_reader_facing_terms() -> None:
         ),
     }
     forbidden_by_file = {
+        "docs/book/part-i/practical-manager-handoffs.md": (
+            "`manager pattern` означает",
+            "`handoff pattern` означает",
+            "| Нужен единый контроль шагов, стоимости и политик | `manager pattern` |",
+            "| Роли и домены естественно разделены | `handoffs` |",
+            "| Специалист больше похож на инструмент | `manager pattern` |",
+            "| У следующего участника своя граница контекста | `handoffs` |",
+        ),
         "docs/book/part-iv/practical-mcp-a2a.md": (
             "MCP для tools, A2A для agents",
             "multi-agent",
