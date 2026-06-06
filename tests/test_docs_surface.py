@@ -897,6 +897,34 @@ def test_russian_appendix_reference_pages_use_print_friendly_terms() -> None:
         _assert_files_contain_all((path,), expected)
 
 
+def test_russian_change_rollout_schema_uses_reader_facing_terms() -> None:
+    path = "docs/appendix/change-rollout-schema.md"
+
+    _assert_files_contain_all(
+        (path,),
+        (
+            "## 3. Запись проверки изменений",
+            "## 4. Запись шлюза раскатки",
+            "## 5. Чем проверка изменений отличается от шлюза раскатки",
+            "## 6. Как это связано со схемой оценивания",
+            "Отдельный слой полезен потому, что он:",
+            "Проверка изменений и шлюз раскатки тесно связаны со [схемой оценивания]",
+            "Книга теперь показывает не только идею шлюза, но и исполняемый каркас этого контура.",
+        ),
+    )
+    _assert_files_contain_none(
+        (path,),
+        (
+            "## 3. Change review record",
+            "## 4. Rollout gate record",
+            "## 5. Чем change review отличается от rollout gate",
+            "## 6. Как это связано с eval schema",
+            "Change review и rollout gate тесно связаны с [eval schema]",
+            "Книга теперь показывает не только идею gate, но и runnable skeleton этого gate.",
+        ),
+    )
+
+
 def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
     required_markers = (
         "Render / Export QA Checklist",
@@ -14637,14 +14665,14 @@ def test_russian_change_rollout_core_terms_are_localized() -> None:
     expected_markers = (
         "проверки изменений и шлюза поэтапного выпуска",
         "изменения в политике, промптах, маршрутизации моделей, поиске или доступе к инструментам",
-        "У change review в агентной системе",
+        "Проверка изменений в агентной системе",
         "инженерное ревью в pull request",
         "результаты оценивания в CI",
         "решение о поэтапном выпуске в чате или устно на созвоне",
         "несколько ответственных",
         "высокорисковые действия",
         "поэтапный выпуск",
-        "машинно-читаемый слой",
+        "Отдельный слой полезен потому, что он",
         "дисциплину эксплуатации",
         "кто это проверил",
         "рабочий факт",
