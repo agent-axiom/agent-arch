@@ -6,7 +6,7 @@
 
 - [Глава 11. Трассы, спаны и структурированные события](../book/part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
-- [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md)
+- [Сквозная цепочка доказательств: от запроса к решению о раскатке](../book/part-v/evidence-spine.md)
 
 И на исполняемый пакет:
 
@@ -16,7 +16,7 @@
 
 Если у команды нет явной схемы трасс, обычно происходит одно из двух:
 
-- события есть, но они собраны как набор ad hoc JSON-полей;
+- события есть, но они собраны как разрозненный набор JSON-полей;
 - события вроде бы полезны для отладки, но плохо подходят для оценки, аудита и разбора инцидентов.
 
 Поэтому в промышленной агентной системе полезно отделять:
@@ -63,7 +63,7 @@
 - `span_id`
 - `parent_span_id`
 
-В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Event loader явно проверяет эту форму: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty` и `Telemetry redact field is not present in events: {missing}`.
+В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Загрузчик событий явно проверяет эту форму: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty` и `Telemetry redact field is not present in events: {missing}`.
 
 ## Как связаны трасса и сессия
 
@@ -81,9 +81,9 @@
 - `export-session`
 - `export-eval-dataset`
 
-`dump-events`, `export-events` и `inspect-trace` также держат command response пригодным для triage, а не только raw JSONL dump: они показывают `session_id`, `tenant_id`, `principal_id`, `agent_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `output_preview`, `failure_reason`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и непустые `idempotency_keys` до того, как оператору придется вручную просматривать каждый `approval_requested` или `tool_execution` payload. `replay-run` затем отдельно возвращает `source_idempotency_keys` и `replay_idempotency_keys`, явно показывая, что replay — новый run со своим duplicate-write key, а не тихое повторное использование исходного write.
+`dump-events`, `export-events` и `inspect-trace` также делают ответ команд пригодным для разбора, а не только сырым дампом JSONL: они показывают `session_id`, `tenant_id`, `principal_id`, `agent_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `output_preview`, `failure_reason`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и непустые `idempotency_keys` до того, как оператору придется вручную просматривать каждый `approval_requested` или `tool_execution` payload. `replay-run` затем отдельно возвращает `source_idempotency_keys` и `replay_idempotency_keys`, явно показывая, что повтор — новый запуск со своим ключом защиты от дублей записи, а не тихое повторное использование исходной операции записи.
 
-Trace replay валидирует эти evidence до того, как они могут стать seed для нового run: `Trace ID request must be a string`, `Trace ID not found in event file: {requested_trace_id}`, `Trace file does not contain any trace IDs`, `Trace file contains multiple trace IDs; pass --trace-id explicitly`, `Trace file does not contain a run_start event`, `Trace file contains multiple run_start events`, `Trace run_start event is missing replay fields: {missing_keys}`, `Trace run_start event has redacted replay fields: {redacted_keys}`, `Trace run_start replay field must be a string: {field}` и `Trace run_start replay field must not be empty: {field}`.
+Повтор трассы проверяет эти доказательства до того, как они могут стать исходным материалом для нового запуска: `Trace ID request must be a string`, `Trace ID not found in event file: {requested_trace_id}`, `Trace file does not contain any trace IDs`, `Trace file contains multiple trace IDs; pass --trace-id explicitly`, `Trace file does not contain a run_start event`, `Trace file contains multiple run_start events`, `Trace run_start event is missing replay fields: {missing_keys}`, `Trace run_start event has redacted replay fields: {redacted_keys}`, `Trace run_start replay field must be a string: {field}` и `Trace run_start replay field must not be empty: {field}`.
 
 ## Каталог событий справочного рантайма
 
@@ -133,7 +133,7 @@ Trace replay валидирует эти evidence до того, как они �
 - какие поля нужны для оценки;
 - какие поля нужны для аудита.
 
-Для `agent_threat_evidence` полезно сохранять evidence markers из unified agent threat evidence model, чтобы threat rows можно было проверить по traces, а не только по prose:
+Для `agent_threat_evidence` полезно сохранять маркеры доказательств из единой модели доказательств угроз агенту (unified agent threat evidence model), чтобы строки угроз можно было проверить по трассам, а не только по объясняющему тексту:
 
 - `prompt_boundary_event`
 - `rejected_instruction_trace`
@@ -179,7 +179,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `risk_tier`
 - `tool_principal`
 
-Для `mcp_tool_risk_review` производственная трасса должна фиксировать доказательства модели угроз MCP (MCP threat-model evidence), а не только итоговое решение о разрешении или запрете (allow/deny):
+Для `mcp_tool_risk_review` производственная трасса должна фиксировать доказательства модели угроз MCP (MCP threat-model evidence), а не только решение о разрешении или запрете (allow/deny): итоговое решение: разрешить или запретить:
 
 - `threat_class`
 - `mcp_server_id`
