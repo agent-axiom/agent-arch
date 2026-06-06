@@ -19183,6 +19183,36 @@ def test_russian_memory_retrieval_schema_prefers_reader_facing_terms() -> None:
         assert marker not in russian_text, marker
 
 
+def test_russian_trace_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/trace-schema.md")
+
+    expected_markers = (
+        "разрозненный набор JSON-полей",
+        "Загрузчик событий явно проверяет эту форму",
+        "ответ команд пригодным для разбора",
+        "сырым дампом JSONL",
+        "Повтор трассы проверяет эти доказательства",
+        "маркеры доказательств из единой модели доказательств угроз агенту",
+        "строки угроз можно было проверить по трассам",
+        "итоговое решение: разрешить или запретить",
+    )
+    forbidden_markers = (
+        "набор ad hoc JSON-полей",
+        "Event loader явно проверяет эту форму",
+        "command response пригодным для triage",
+        "raw JSONL dump",
+        "Trace replay валидирует эти evidence",
+        "evidence markers из unified agent threat evidence model",
+        "threat rows можно было проверить по traces",
+        "итоговое решение о разрешении или запрете (allow/deny)",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_approval_schema_delegated_authorization_errors_are_documented() -> None:
     required_errors = (
         "approvals.delegated_authorization must be a mapping",
