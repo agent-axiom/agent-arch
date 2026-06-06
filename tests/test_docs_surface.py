@@ -9807,6 +9807,27 @@ def test_practical_manager_handoffs_threads_three_canonical_cases() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_practical_manager_handoffs_uses_reader_facing_russian_labels() -> None:
+    path = "docs/book/part-i/practical-manager-handoffs.md"
+    required_markers = (
+        "паттерн координатора",
+        "передача управления",
+        "Нужен единый контроль шагов, стоимости и политик | паттерн координатора",
+        "Роли и домены естественно разделены | передача управления",
+        "Специалист больше похож на инструмент | паттерн координатора",
+        "У следующего участника своя граница контекста | передача управления",
+    )
+    forbidden_markers = (
+        "`manager pattern` означает",
+        "`handoff pattern` означает",
+        "| `manager pattern` |",
+        "| `handoffs` |",
+    )
+
+    _assert_files_contain_all((path,), required_markers)
+    _assert_files_contain_none((path,), forbidden_markers)
+
+
 def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
     required_markers_by_file = {
         "docs/book/part-iv/practical-mcp-a2a.md": (
