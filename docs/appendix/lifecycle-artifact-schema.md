@@ -29,17 +29,17 @@
 
 ## 2. Базовые сущности
 
-Минимальный lifecycle layer удобно строить вокруг трех сущностей:
+Минимальный слой жизненного цикла удобно строить вокруг трех сущностей:
 
 - `change_record`
 - `artifact_bundle`
 - `retirement_plan`
 
-Этого уже достаточно, чтобы связать design review, release gate, assurance loop и end-of-life discipline.
+Этого уже достаточно, чтобы связать проверку дизайна, шлюз выпуска, контур заверения и дисциплину завершения жизненного цикла.
 
 ## 3. Запись изменения
 
-`change_record` описывает конкретное изменение и его operational semantics.
+`change_record` описывает конкретное изменение и его операционный смысл.
 
 Минимальные поля:
 
@@ -74,15 +74,15 @@ status: approved
 - `affected_surfaces` не дает делать вид, будто изменение маленькое;
 - `eval_requirements` связывает change management с eval loop;
 - `rollback_unit` заставляет заранее понимать, что именно откатывается;
-- `status` нужен не как бюрократия, а как operational fact.
+- `status` нужен не как бюрократия, а как эксплуатационный факт.
 
 А если в системе уже есть длительные сессии возможностей с привязкой к подтверждению или выполнение с опорой на песочницу, `change_record` почти всегда стоит делать достаточно явным, чтобы было видно, входили ли правила прерывания, обработки истечения, повторной инициализации, делегированного разрешения и контракт профиля песочницы в проверяемую поверхность.
 
 ## 4. Утвержденный пакет артефактов
 
-`artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной release-конфигурации. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
+`artifact_bundle` фиксирует набор артефактов, которые считаются доверенными и совместимыми друг с другом в конкретной конфигурации выпуска. На практике это еще и контрактная поверхность, которая задает управляемую идентичность выпуска.
 
-Эталонный runtime хранит этот контракт в `artifacts.yaml`: `bundle_name` — например, `support-triage-runtime-bundle` — `version`, `provenance_required`, `signed` и `session_control_owner` описывают идентичность пакета и подотчетность; ошибки в полях идентичности и происхождения явно падают с `bundle.version must be a string`, `bundle.version is required`, `'bundle.provenance_required' must be a boolean` и `'bundle.signed' must be a boolean`; `review_evidence` также может указывать на ссылки на доказательства вроде `trace:sandbox_profile_reviewed` и на цепочку доказательств `duplicate_ticket_guard`; а `artifacts` явно перечисляет файлы конфигурации релиза: `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json` и `runtime-control-bundle-metadata`.
+Эталонная среда исполнения хранит этот контракт в `artifacts.yaml`: `bundle_name` — например, `support-triage-runtime-bundle` — `version`, `provenance_required`, `signed` и `session_control_owner` описывают идентичность пакета и подотчетность; ошибки в полях идентичности и происхождения явно падают с `bundle.version must be a string`, `bundle.version is required`, `'bundle.provenance_required' must be a boolean` и `'bundle.signed' must be a boolean`; `review_evidence` также может указывать на ссылки на доказательства вроде `trace:sandbox_profile_reviewed` и на цепочку доказательств `duplicate_ticket_guard`; а `artifacts` явно перечисляет файлы конфигурации релиза: `agent.yaml`, `capabilities.yaml`, `policy.yaml`, `memory.yaml`, `controls.yaml`, `approvals.yaml`, `runtime-controls.yaml`, `change.yaml`, `retirement.yaml`, `eval-dataset.json` и `runtime-control-bundle-metadata`.
 
 ```yaml
 kind: artifact_bundle
@@ -167,30 +167,30 @@ status: planned
 owner: platform-operations
 ```
 
-Сильная сторона этого артефакта в том, что он заставляет думать не только о replacement, но и о следах старой системы:
+Сильная сторона этого артефакта в том, что он заставляет думать не только о замене, но и о следах прежней системы:
 
-- traces;
-- approvals;
+- трассы;
+- подтверждения;
 - paused-run state;
 - ownership фоновых маршрутов;
-- principals;
-- memory;
-- archived bundles;
-- структурированные handoff artifacts, в которых фиксировались scope спринта, evaluator critique или решения на границе reset;
-- expired capability-session state, если он все еще важен для audit или delayed operator response.
+- субъекты доступа;
+- память;
+- архивированные пакеты артефактов;
+- структурированные артефакты передачи управления, в которых фиксировались границы спринта, замечания проверяющего или решения на границе сброса контекста;
+- состояние истекших capability-session, если оно все еще важно для аудита или отложенного ответа оператора.
 
 ## 6. Как это связано с частью VIII
 
 Эта схема напрямую поддерживает несколько глав:
 
-- Chapter 20: change management;
-- Chapter 21: assurance findings, которые становятся lifecycle input;
-- Chapter 22: approved artifacts и provenance;
-- Chapter 23: replacement и retirement.
+- Глава 20: управление изменениями;
+- Глава 21: выводы заверения, которые становятся входом жизненного цикла;
+- Глава 22: утвержденные артефакты и происхождение;
+- Глава 23: переход на заменяющую поверхность и вывод из эксплуатации.
 
-Именно поэтому артефакты жизненного цикла полезно держать не как prose-only documentation, а как проверяемый YAML- или JSON-контракт.
+Именно поэтому артефакты жизненного цикла полезно держать не как документацию только в виде прозы, а как проверяемый YAML- или JSON-контракт.
 
-Эталонный runtime отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют retiring surface, причём эталонный пакет использует `staged_replacement` для controlled handover, `triggers` объясняют, почему начинается retirement (`deprecated_runtime`, `replacement_ready` и `unsafe_capability_pattern`), `required_steps` включает controls вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют ownership и retained evidence. Archive list называет `telemetry_jsonl`, `session_exports`, `approval_history`, `paused_run_state`, `capability_session_state` и `runtime_control_bundle` — именно records, которые должны оставаться reviewable после retirement. Executable summary `check-retirement` возвращает `system_id`, `ready`, `triggers`, `missing_steps`, `required_steps`, `archive_targets`, `failed_run_archive_targets`, `support_duplicate_archive_targets` и `replacement_mode`, чтобы оператор видел и незавершённые retirement steps, и точные evidence bundles, которые переживают retirement ради degraded-path и duplicate-ticket review; malformed retirement step overrides падают с `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`.
+Эталонная среда исполнения отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют выводимую из эксплуатации поверхность, причём эталонный пакет использует `staged_replacement` для управляемой передачи управления, `triggers` объясняют, почему начинается вывод из эксплуатации (`deprecated_runtime`, `replacement_ready` и `unsafe_capability_pattern`), `required_steps` включает меры контроля вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют владение и сохраняемые доказательства. Архивный список называет `telemetry_jsonl`, `session_exports`, `approval_history`, `paused_run_state`, `capability_session_state` и `runtime_control_bundle` — именно записи, которые должны оставаться доступными для ревью после вывода из эксплуатации. Краткая исполняемая сводка `check-retirement` возвращает `system_id`, `ready`, `triggers`, `missing_steps`, `required_steps`, `archive_targets`, `failed_run_archive_targets`, `support_duplicate_archive_targets` и `replacement_mode`, чтобы оператор видел и незавершенные шаги вывода из эксплуатации, и точные пакеты доказательств, которые переживают вывод из эксплуатации ради разбора деградировавших путей и защиты от дубля тикета; испорченные переопределения шагов вывода из эксплуатации падают с `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`.
 
 Загрузчики артефактов жизненного цикла отделяют испорченные входы состояния релиза от проваленных проверок: `change config must be a mapping`, `artifact bundle config must be a mapping` и `retirement config must be a mapping` отклоняют неверные корни; `change config keys must be strings`, `artifact bundle config keys must be strings` и `retirement config keys must be strings` отклоняют нестроковые YAML-ключи; `change.change_id must be a string`, `change.change_id is required`, `change.session_control_owner is required`, `change.emergency_freeze_owner is required`, `bundle.bundle_name must be a string`, `bundle.bundle_name is required`, `bundle.session_control_owner is required`, `retirement.system_id must be a string`, `retirement.system_id is required`, `retirement.session_control_owner is required` и `retirement.emergency_freeze_owner is required` отклоняют потерю идентичности и владения; списки вроде `required_signals`, `artifacts` и `archive_targets` отклоняют неправильные значения через `{key} must be a list`, `{key} entries must be strings`, `{key} entries must not be empty` и `{key} entries must be unique`; доказательства ревью артефактов отклоняют испорченные карты доказательств через `artifact bundle review_evidence config must be a mapping`, `artifact bundle review_evidence config keys must be strings`, `artifact bundle review_evidence key must not be empty` и `artifact bundle review_evidence keys must be unique`.
 
@@ -199,13 +199,13 @@ owner: platform-operations
 Если делать совсем коротко, у слоя артефактов жизненного цикла должны быть такие инварианты:
 
 - каждое высокорисковое изменение имеет `change_record`;
-- каждый production rollout указывает на `artifact_bundle`;
+- каждый производственный шлюз раскатки указывает на `artifact_bundle`;
 - каждый artifact bundle может служить конкретной записью об идентичности выпуска, а не просто рыхлым списком версий;
 - каждый artifact bundle связывает runtime-control schema и contract version, если такие controls существуют;
 - lineage verifier contract и идентичность семейства контрактов можно восстановить, если release или assurance зависят от graded outcomes;
 - sandbox profile review evidence можно восстановить из bundle, trace или eval artifact, если rollout требовал `sandbox_profile_reviewed`;
 - у deprecated artifact есть `retirement_plan` или явное исключение;
-- retirement или replacement path объясняет, что происходит с paused runs, handoff artifacts и expired capability-session state, если такие контуры вообще есть;
+- вывод из эксплуатации или путь замены объясняет, что происходит с paused runs, handoff artifacts и expired capability-session state, если такие контуры вообще есть;
 - delegated authorization ownership и revoke behavior можно восстановить для затронутых runs, если такие controls существуют;
 - lifecycle artifacts имеют owner и version;
 - incident review может восстановить связку `change -> bundle -> run -> retirement`;
@@ -218,10 +218,10 @@ owner: platform-operations
 - bundle собирается "на словах", а не как артефакт;
 - change records живут отдельно от eval requirements;
 - retirement есть в roadmap, но не в operational config;
-- replacement делается без dual-run semantics;
+- замена делается без семантики двойного прогона;
 - historical state не имеет retention owner;
 - provenance заканчивается на уровне git commit и не доходит до runtime bundle;
-- paused-run и expired-session state теряются при replacement, хотя они еще могут быть нужны операторам;
+- paused-run и expired-session state теряются при замене, хотя они еще могут быть нужны операторам;
 - lineage verifier contract теряется, хотя от него зависели rollout или assurance decisions;
 - bundle указывает `sandbox_profile`, но не хранит ссылку на review evidence по workspace, permissions и snapshot/resume policy.
 
@@ -238,7 +238,7 @@ owner: platform-operations
 - Есть ли владелец у архивного состояния после замены?
 - Понятна ли единица отката на уровне артефактов жизненного цикла?
 
-Если на несколько вопросов подряд ответ "нет", у тебя уже может быть хороший SDLC и даже хороший rollout, но lifecycle layer пока еще не собран до конца.
+Если на несколько вопросов подряд ответ "нет", у тебя уже может быть хороший SDLC и даже хороший rollout, но слой жизненного цикла пока еще не собран до конца.
 
 ## Что делать дальше
 
