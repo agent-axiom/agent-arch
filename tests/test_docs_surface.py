@@ -14696,6 +14696,12 @@ def test_russian_change_rollout_core_terms_are_localized() -> None:
         "доказательства проверяющего и связность этих доказательств",
         "зависят от оцененных исходов",
         "добавляют маршрутизацию, распараллеливание или поверхности делегированных исполнителей",
+        "внутри политика поэтапного выпуска приводит `block_if` к виду `blocked_checks`",
+        "исполняемый шлюз сохраняет то же различие",
+        "отсутствующими обязательными доказательствами",
+        "явными блокирующими сигналами",
+        "автоматизация выпуска отдельно видит доказательства по дублям тикетов",
+        "Переопределения сигналов времени выполнения и прямые входы оценки",
     )
     for expected_marker in expected_markers:
         assert expected_marker in russian_text, expected_marker
@@ -14735,6 +14741,13 @@ def test_russian_change_rollout_core_terms_are_localized() -> None:
         "linkage его evidence",
         "release control зависит от graded outcomes",
         "routing, parallelization или delegated worker surfaces",
+        "internally rollout policy normalizes `block_if` into `blocked_checks`",
+        "executable gate",
+        "required evidence",
+        "blockers",
+        "release automation",
+        "Runtime signal overrides",
+        "direct assessment inputs",
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in russian_text, forbidden_marker
