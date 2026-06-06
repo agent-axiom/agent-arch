@@ -19247,6 +19247,16 @@ def test_russian_eval_schema_prefers_reader_facing_terms() -> None:
         "сценарии с ожиданием подтверждения",
         "встроенные сценарии",
         "агентов с длинным горизонтом действий",
+        "идентификатор проверяющего и версия контракта",
+        "карточки решения проверяющего",
+        "подборка несвязанных примеров для подсказок",
+        "эталонного ответа",
+        "верхнеуровневая сводка",
+        "считается успехом или провалом",
+        "предупреждением",
+        "конкретное условие сбоя",
+        "итоговую оценку",
+        "номинальным успехом",
     )
     forbidden_markers = (
         "sandbox-backed paths",
@@ -19264,6 +19274,13 @@ def test_russian_eval_schema_prefers_reader_facing_terms() -> None:
         "blocked outcome",
         "unsafe behavior",
         "nominal success",
+        "verifier identity",
+        "contract version",
+        "prompt-cases",
+        "ground truth",
+        "pass/fail",
+        "failed condition",
+        "grading output",
     )
 
     for marker in expected_markers:
