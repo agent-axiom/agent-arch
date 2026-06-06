@@ -15125,6 +15125,68 @@ def test_russian_lifecycle_artifact_deep_reader_terms_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_lifecycle_artifact_invariant_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+
+    expected_markers = (
+        "каждый утвержденный пакет артефактов может служить конкретной записью",
+        "связывает схему управления средой исполнения и версию контракта",
+        "версию контракта проверяющего и идентичность семейства контрактов",
+        (
+            "доказательства разбора профиля песочницы можно восстановить из пакета, "
+            "трассы или артефакта оценки"
+        ),
+        "у устаревшего артефакта есть `retirement_plan`",
+        (
+            "что происходит с приостановленными запусками, артефактами передачи "
+            "управления и состоянием истекших сессий возможностей"
+        ),
+        "правила владения делегированным разрешением и поведение отзыва",
+        "артефакты жизненного цикла имеют владельца и версию",
+        "разбор инцидента может восстановить связку `change -> bundle -> run -> retirement`",
+        (
+            "владение управлением сессией можно восстановить для истекших, "
+            "приостановленных или повторно инициализированных путей возможностей"
+        ),
+        "записи изменений живут отдельно от требований к оценке",
+        "план вывода из эксплуатации есть в дорожной карте, но не в рабочей конфигурации",
+        "историческое состояние не имеет владельца удержания",
+        (
+            "происхождение заканчивается на уровне git commit и не доходит до пакета "
+            "времени выполнения"
+        ),
+        "версия контракта проверяющего теряется",
+        "по рабочей области, правам и политике снимков/возобновления",
+        "под каким семейством контрактов с ограничениями проверяющего выпуск был одобрен",
+        "хорошо настроенная раскатка",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "каждый artifact bundle может служить конкретной записью",
+        "runtime-control schema и contract version",
+        "lineage verifier contract",
+        "sandbox profile review evidence можно восстановить из bundle, trace или eval artifact",
+        "у deprecated artifact есть `retirement_plan`",
+        "paused runs, handoff artifacts и expired capability-session state",
+        "delegated authorization ownership и revoke behavior",
+        "lifecycle artifacts имеют owner и version",
+        "incident review может восстановить связку",
+        "session-control ownership можно восстановить",
+        "change records живут отдельно от eval requirements",
+        "retirement есть в roadmap",
+        "operational config",
+        "historical state",
+        "retention owner",
+        "runtime bundle",
+        "review evidence по workspace, permissions и snapshot/resume policy",
+        "verifier-ограничениями",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     expected_markers_by_file = {
         "docs/appendix/memory-retrieval-schema.md": (
