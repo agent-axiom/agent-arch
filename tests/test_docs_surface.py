@@ -49,6 +49,7 @@ _RUSSIAN_EXPECTED_ALTERNATIVES = {
     "Reliability case-spine note": ("Заметка о сквозных сценариях надежности",),
     "Trace case-spine note": ("Заметка о сквозных сценариях трассировки",),
     "Canonical trace cases": ("Канонические сценарии трассировки",),
+    "trace schema": ("схеме трасс", "схема трасс", "схемой трасс", "схемы трасс"),
     "trace emphases": ("акцентов трассировки",),
     "approval events": ("события подтверждений",),
     "retrieval spans": ("спанов поиска", "спаны поиска"),
@@ -18399,6 +18400,48 @@ def test_chapter_3_defense_in_depth_map_covers_control_layers() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_russian_chapter_3_defense_in_depth_terms_are_reader_facing() -> None:
+    russian_text = _read("docs/book/part-ii/chapter-3.md")
+
+    expected_markers = (
+        "### 6.1. Карта эшелонированной защиты",
+        "Полезная карта эшелонированной защиты",
+        "не стена контролей",
+        "где сбой должен быть остановлен",
+        "какое доказательство показывает",
+        "Эта карта намеренно компактная.",
+        "небезопасный или слишком широкий ввод",
+        "станет контекстом",
+        "недоверенное содержимое",
+        "в инструкции или долговечную память",
+        "право на действие",
+        "внешнюю возможность и риск делегирования",
+        "с [схемой трасс](../../appendix/trace-schema.md)",
+        "эшелонированную защиту можно было проверять по аудиторскому следу",
+    )
+    forbidden_markers = (
+        "### 6.1. Defense-in-depth control map",
+        "Полезная defense-in-depth map",
+        "стена controls",
+        "где failure должен быть остановлен",
+        "какое evidence доказывает",
+        "Эта map намеренно компактная.",
+        "unsafe или over-scoped input",
+        "станет context",
+        "untrusted content",
+        "в instructions или durable memory",
+        "right to act",
+        "external capability и delegation risk",
+        "[trace schema](../../appendix/trace-schema.md)",
+        "defense in depth можно было audit",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
 
 
 def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
