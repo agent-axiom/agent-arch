@@ -25,7 +25,7 @@
 - контракты проверяющего, рубрики оценивания и правила связи доказательств, если выпуск или заверение зависят от вывода проверяющего;
 - структурированные артефакты передачи управления, если длинная работа пересекает границу сброса контекста или передачи роли.
 
-Без этого управление изменениями быстро разваливается на устные договоренности. А разбор инцидента превращается в расследование того, кто и когда "примерно поменял policy или routing".
+Без этого управление изменениями быстро разваливается на устные договоренности. А разбор инцидента превращается в расследование того, кто и когда "примерно поменял политику или маршрутизацию".
 
 ## 2. Базовые сущности
 
@@ -72,7 +72,7 @@ status: approved
 Что здесь особенно важно:
 
 - `affected_surfaces` не дает делать вид, будто изменение маленькое;
-- `eval_requirements` связывает change management с eval loop;
+- `eval_requirements` связывает управление изменениями с циклом оценки;
 - `rollback_unit` заставляет заранее понимать, что именно откатывается;
 - `status` нужен не как бюрократия, а как эксплуатационный факт.
 
@@ -177,7 +177,7 @@ owner: platform-operations
 - память;
 - архивированные пакеты артефактов;
 - структурированные артефакты передачи управления, в которых фиксировались границы спринта, замечания проверяющего или решения на границе сброса контекста;
-- состояние истекших capability-session, если оно все еще важно для аудита или отложенного ответа оператора.
+- состояние истекших сессий возможностей, если оно все еще важно для аудита или отложенного ответа оператора.
 
 ## 6. Как это связано с частью VIII
 
@@ -190,7 +190,7 @@ owner: platform-operations
 
 Именно поэтому артефакты жизненного цикла полезно держать не как документацию только в виде прозы, а как проверяемый YAML- или JSON-контракт.
 
-Эталонная среда исполнения отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют выводимую из эксплуатации поверхность, причём эталонный пакет использует `staged_replacement` для управляемой передачи управления, `triggers` объясняют, почему начинается вывод из эксплуатации (`deprecated_runtime`, `replacement_ready` и `unsafe_capability_pattern`), `required_steps` включает меры контроля вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют владение и сохраняемые доказательства. Архивный список называет `telemetry_jsonl`, `session_exports`, `approval_history`, `paused_run_state`, `capability_session_state` и `runtime_control_bundle` — именно записи, которые должны оставаться доступными для ревью после вывода из эксплуатации. Краткая исполняемая сводка `check-retirement` возвращает `system_id`, `ready`, `triggers`, `missing_steps`, `required_steps`, `archive_targets`, `failed_run_archive_targets`, `support_duplicate_archive_targets` и `replacement_mode`, чтобы оператор видел и незавершенные шаги вывода из эксплуатации, и точные пакеты доказательств, которые переживают вывод из эксплуатации ради разбора деградировавших путей и защиты от дубля тикета; испорченные переопределения шагов вывода из эксплуатации падают с `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`.
+Эталонная среда исполнения отражает эту форму в `retirement.yaml`: `system_id` и `replacement_mode` идентифицируют выводимую из эксплуатации поверхность, причём эталонный пакет использует `staged_replacement` для управляемой передачи управления, `triggers` объясняют, почему начинается вывод из эксплуатации (`deprecated_runtime`, `replacement_ready` и `unsafe_capability_pattern`), `required_steps` включает меры контроля вроде `freeze_rollout`, `disable_risky_capabilities`, `stop_memory_write`, `expire_paused_runs`, `stop_background_routes`, `freeze_reinitialization`, `revoke_egress`, `archive_audit_state` и `set_retired_status`, а `session_control_owner`, `emergency_freeze_owner` и `archive_targets` явно фиксируют владение и сохраняемые доказательства. Архивный список называет `telemetry_jsonl`, `session_exports`, `approval_history`, `paused_run_state`, `capability_session_state` и `runtime_control_bundle` — именно записи, которые должны оставаться доступными для проверки после вывода из эксплуатации. Краткая исполняемая сводка `check-retirement` возвращает `system_id`, `ready`, `triggers`, `missing_steps`, `required_steps`, `archive_targets`, `failed_run_archive_targets`, `support_duplicate_archive_targets` и `replacement_mode`, чтобы оператор видел и незавершенные шаги вывода из эксплуатации, и точные пакеты доказательств, которые переживают вывод из эксплуатации ради разбора деградировавших путей и защиты от дубля тикета; испорченные переопределения шагов вывода из эксплуатации падают с `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`.
 
 Загрузчики артефактов жизненного цикла отделяют испорченные входы состояния релиза от проваленных проверок: `change config must be a mapping`, `artifact bundle config must be a mapping` и `retirement config must be a mapping` отклоняют неверные корни; `change config keys must be strings`, `artifact bundle config keys must be strings` и `retirement config keys must be strings` отклоняют нестроковые YAML-ключи; `change.change_id must be a string`, `change.change_id is required`, `change.session_control_owner is required`, `change.emergency_freeze_owner is required`, `bundle.bundle_name must be a string`, `bundle.bundle_name is required`, `bundle.session_control_owner is required`, `retirement.system_id must be a string`, `retirement.system_id is required`, `retirement.session_control_owner is required` и `retirement.emergency_freeze_owner is required` отклоняют потерю идентичности и владения; списки вроде `required_signals`, `artifacts` и `archive_targets` отклоняют неправильные значения через `{key} must be a list`, `{key} entries must be strings`, `{key} entries must not be empty` и `{key} entries must be unique`; доказательства ревью артефактов отклоняют испорченные карты доказательств через `artifact bundle review_evidence config must be a mapping`, `artifact bundle review_evidence config keys must be strings`, `artifact bundle review_evidence key must not be empty` и `artifact bundle review_evidence keys must be unique`.
 
