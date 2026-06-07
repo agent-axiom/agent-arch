@@ -351,6 +351,7 @@ _RUSSIAN_EXPECTED_ALTERNATIVES = {
         "rollout judgment",
     ),
     "unified agent threat evidence model": ("единую доказательную модель угроз агенту",),
+    "trace schema": ("схеме трасс", "схемой трасс", "схема трасс"),
     "Prompt injection": ("Внедрение инструкций",),
     "Indirect injection": ("Косвенное внедрение инструкций",),
     "RAG poisoning": ("Отравление RAG",),
@@ -18422,6 +18423,42 @@ def test_chapter_3_defense_in_depth_map_covers_control_layers() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_3_russian_defense_in_depth_section_uses_reader_facing_terms() -> None:
+    russian_text = _read("docs/book/part-ii/chapter-3.md")
+    section = russian_text.split("### 6.1. Defense-in-depth control map", maxsplit=1)[1]
+    section = section.split("## 7. Главное практическое правило", maxsplit=1)[0]
+
+    expected_markers = (
+        "Полезная карта эшелонированной защиты",
+        "где сбой должен быть остановлен",
+        "какое доказательство показывает, что слой сработал",
+        "Эта карта намеренно компактна.",
+        "отсекает небезопасный или чрезмерно широкий ввод",
+        "не дают недоверенному содержимому превратиться в инструкции или долговременную память",
+        "удерживают право на действие за пределами вероятностной генерации текста",
+        "делает внешние возможности и риск делегирования проверяемыми",
+        "связывает эти меры контроля со [схемой трасс](../../appendix/trace-schema.md)",
+        "чтобы эшелонированную защиту можно было проверить по аудиту",
+    )
+    forbidden_markers = (
+        "Полезная defense-in-depth map",
+        "где failure должен быть остановлен",
+        "какое evidence доказывает",
+        "Эта map намеренно компактная.",
+        "ловит unsafe или over-scoped input",
+        "не дают untrusted content превратиться в instructions или durable memory",
+        "удерживают right to act вне probabilistic text generation",
+        "делает external capability и delegation risk проверяемыми",
+        "связывает эти controls с [trace schema](../../appendix/trace-schema.md)",
+        "чтобы defense in depth можно было audit",
+    )
+
+    for marker in expected_markers:
+        assert marker in section, marker
+    for marker in forbidden_markers:
+        assert marker not in section, marker
 
 
 def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
