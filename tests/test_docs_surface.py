@@ -13466,6 +13466,67 @@ def test_russian_policy_bundle_security_contract_labels_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_policy_bundle_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/policy-bundle-schema.md")
+    expected_markers = (
+        "версионируемым",
+        "проверяемым",
+        "трассируемым",
+        "пригодным к выпуску",
+        "рабочий каркас",
+        "руководитель одобряет создание тикета",
+        "команда безопасности подтверждает опасные действия",
+        "можно ли приостановить запуск, возобновить его, дать ему истечь "
+        "или отменить",
+        "если среда выполнения уже обращается с наборами как с управляемыми "
+        "поверхностями выпуска",
+        "можно ли вызывать возможность внутри `prompt chaining`, `routing` "
+        "или `parallelization`",
+        "может ли исполнитель запросить дополнительные возможности или "
+        "работает только с ограниченным подмножеством",
+        "должен ли результат исполнителя пройти проверку до того, как будет "
+        "выполнена любая записывающая возможность",
+        "эта же среда явно фиксирует форму входного набора средств "
+        "управления",
+        "Эталонная среда исполнения делает этот стык конкретным",
+        "записи возможностей содержат `tool_principal`",
+        "policy-записи содержат `run_precheck`",
+        "записываемые в память `allow_kinds`",
+        "исполнительный уровень `allow_network_access`",
+        "загрузчик политик явно валидирует эту структуру",
+    )
+    forbidden_markers = (
+        "- versioned;",
+        "- reviewable;",
+        "- traceable;",
+        "- releasable.",
+        "рабочий skeleton",
+        "manager approves ticket creation",
+        "security signs off on dangerous actions",
+        "может ли run pause, resume, expire или cancel",
+        "А если runtime уже обращается с наборами как с управляемыми "
+        "поверхностями выпуска",
+        "можно ли вызывать capability внутри `prompt chaining`, `routing` "
+        "или `parallelization`",
+        "может ли worker запросить дополнительные capabilities",
+        "должен ли worker output пройти review до того, как будет выполнена "
+        "любая write-capability",
+        "Этот же шлюз явно фиксирует форму входного набора средств "
+        "управления",
+        "Эталонный runtime делает этот стык конкретным",
+        "capability entries содержат `tool_principal`",
+        "policy entries содержат `run_precheck`",
+        "memory-write `allow_kinds`",
+        "execution-level `allow_network_access`",
+        "Policy loader явно валидирует эту структуру",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     russian_path = "docs/appendix/policy-bundle-schema.md"
     russian_text = _read(russian_path)
