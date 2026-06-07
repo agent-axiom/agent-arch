@@ -13466,6 +13466,50 @@ def test_russian_policy_bundle_security_contract_labels_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_policy_bundle_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/policy-bundle-schema.md")
+
+    expected_markers = (
+        "такой набор должен быть:",
+        "- версионируемым;",
+        "- пригодным для ревью;",
+        "- прослеживаемым;",
+        "- готовым к выпуску.",
+        "что происходит после отклонения;",
+        "может ли запуск ставиться на паузу, продолжаться, истекать или отменяться;",
+        "Ниже рабочий каркас:",
+        "Если среда исполнения уже обращается с наборами как с управляемыми "
+        "поверхностями выпуска",
+        "можно ли вызывать возможность внутри `prompt chaining`, `routing` или "
+        "`parallelization`;",
+        "может ли рабочий агент запросить дополнительные возможности или работает "
+        "только с ограниченным набором;",
+        "должен ли результат рабочего агента пройти ревью до того, как будет "
+        "выполнена любая пишущая возможность.",
+    )
+    forbidden_markers = (
+        "- versioned;",
+        "- reviewable;",
+        "- traceable;",
+        "- releasable.",
+        "что происходит после reject;",
+        "может ли run pause, resume, expire или cancel;",
+        "Ниже рабочий skeleton:",
+        "А если runtime уже обращается с наборами",
+        "можно ли вызывать capability внутри `prompt chaining`, `routing` или "
+        "`parallelization`;",
+        "может ли worker запросить дополнительные capabilities или работает "
+        "только с ограниченным subset;",
+        "должен ли worker output пройти review до того, как будет выполнена "
+        "любая write-capability.",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_multilingual_policy_bundle_case_note_is_localized() -> None:
     russian_path = "docs/appendix/policy-bundle-schema.md"
     russian_text = _read(russian_path)
