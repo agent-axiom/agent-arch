@@ -3226,6 +3226,43 @@ def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
     assert "[trace evidence](../../appendix/trace-schema.zh.md)" not in chinese_text
 
 
+def test_russian_chapter_16_prefers_reader_facing_runtime_session_terms() -> None:
+    text = _read("docs/book/part-vii/chapter-16.md")
+
+    expected_markers = (
+        "синхронные запуски",
+        "фоновые запуски",
+        "возобновляемые запуски",
+        "параллельное исполнение требует видимости состояния объединения",
+        "состояния координации оркестратора и рабочих агентов",
+        "`Manifest` описывает контракт свежего рабочего пространства",
+        "или стартовать из снимка `snapshot`",
+        "который описывает пользовательскую или транспортную сессию",
+        "абстракция вроде хранилища экземпляров агента `AgentInstanceStore`",
+        "и границы планировщика `SchedulerBoundary`",
+        "WebSocket- или HTTP-сессию",
+        "`resume_token` или другой дескриптор продолжения",
+    )
+    forbidden_markers = (
+        "`synchronous runs`",
+        "`background runs`",
+        "`resumable runs`",
+        "`parallelization` требует видимости состояния объединения",
+        "`orchestrator-workers` требует состояния координации родителя и рабочих агентов",
+        "или стартовать из `snapshot`",
+        "который описывает user-facing или transport session",
+        "абстракция вроде `AgentInstanceStore` и `SchedulerBoundary`",
+        "WebSocket/HTTP-сессию",
+        "`resume_token` или другой continuation handle",
+    )
+
+    for marker in expected_markers:
+        assert marker in text, marker
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
+
+
 def test_chapter_18_rollout_threads_three_canonical_cases() -> None:
     markers_by_file = {
         "docs/book/part-vii/chapter-18.md": (
