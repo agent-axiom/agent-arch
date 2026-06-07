@@ -350,6 +350,7 @@ _RUSSIAN_EXPECTED_ALTERNATIVES = {
         "решение о раскатке после инцидента",
         "rollout judgment",
     ),
+    "trace schema": ("схема трасс", "схемой трасс"),
     "unified agent threat evidence model": ("единую доказательную модель угроз агенту",),
     "Prompt injection": ("Внедрение инструкций",),
     "Indirect injection": ("Косвенное внедрение инструкций",),
@@ -18437,6 +18438,41 @@ def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
     chinese_text = _read("docs/book/part-ii/chapter-3.zh.md")
     assert "[追踪模式（trace schema）](../../appendix/trace-schema.zh.md)" in chinese_text
     assert "[trace schema](../../appendix/trace-schema.zh.md)" not in chinese_text
+
+
+def test_chapter_3_russian_defense_in_depth_section_prefers_reader_facing_terms() -> None:
+    text = _read("docs/book/part-ii/chapter-3.md")
+
+    expected_markers = (
+        "### 6.1. Карта многоуровневой защиты",
+        "Полезная карта многоуровневой защиты",
+        "не стена защитных слоев",
+        "какой проверяемый след доказывает",
+        "небезопасный или слишком широкий ввод",
+        "не дают недоверенному содержимому превратиться в инструкции",
+        "удерживают право на действие",
+        "внешние возможности и риск делегирования",
+        "связывает эти слои с [схемой трасс]",
+        "многоуровневую защиту можно проверять аудитом",
+    )
+    forbidden_markers = (
+        "### 6.1. Defense-in-depth control map",
+        "Полезная defense-in-depth map",
+        "не стена controls",
+        "какое evidence доказывает",
+        "unsafe или over-scoped input",
+        "не дают untrusted content превратиться в instructions",
+        "удерживают right to act",
+        "external capability и delegation risk",
+        "связывает эти controls с [trace schema]",
+        "defense in depth можно было audit",
+    )
+
+    for marker in expected_markers:
+        assert marker in text, marker
+
+    for marker in forbidden_markers:
+        assert marker not in text, marker
 
 
 def test_mcp_threat_model_matrix_covers_required_attacks() -> None:

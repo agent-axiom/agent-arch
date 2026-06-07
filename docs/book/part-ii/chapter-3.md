@@ -149,9 +149,9 @@ flowchart LR
 
 Это важно по очень простой причине: одно защитное правило видит только один класс риска. Реальный инцидент почти всегда проходит через несколько слоев сразу.
 
-### 6.1. Defense-in-depth control map
+### 6.1. Карта многоуровневой защиты
 
-Полезная defense-in-depth map — это не стена controls, а короткая цепочка: где failure должен быть остановлен и какое evidence доказывает, что слой сработал.
+Полезная карта многоуровневой защиты — это не стена защитных слоев, а короткая цепочка: где отказ должен быть остановлен и какой проверяемый след доказывает, что слой сработал.
 
 ```yaml
 defense_in_depth_map:
@@ -165,7 +165,7 @@ defense_in_depth_map:
   trace_evidence: agent_threat_evidence_and_governance_action
 ```
 
-Эта map намеренно компактная. `ingress_control` ловит unsafe или over-scoped input до того, как он станет context. `context_boundary` и `retrieval_memory_gate` не дают untrusted content превратиться в instructions или durable memory. `model_gateway_policy` и `tool_gateway_approval` удерживают right to act вне probabilistic text generation. `mcp_a2a_boundary` делает external capability и delegation risk проверяемыми. `egress_filter` ограничивает то, что выходит из системы. `trace_evidence` связывает эти controls с [trace schema](../../appendix/trace-schema.md), чтобы defense in depth можно было audit, а не просто декларировать.
+Эта карта намеренно компактная. `ingress_control` ловит небезопасный или слишком широкий ввод до того, как он станет контекстом. `context_boundary` и `retrieval_memory_gate` не дают недоверенному содержимому превратиться в инструкции или долговечную память. `model_gateway_policy` и `tool_gateway_approval` удерживают право на действие вне вероятностной генерации текста. `mcp_a2a_boundary` делает внешние возможности и риск делегирования проверяемыми. `egress_filter` ограничивает то, что выходит из системы. `trace_evidence` связывает эти слои с [схемой трасс](../../appendix/trace-schema.md), чтобы многоуровневую защиту можно проверять аудитом, а не просто декларировать.
 
 ## 7. Главное практическое правило: отделяй инструкции от данных
 
