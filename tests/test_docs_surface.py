@@ -422,6 +422,7 @@ def test_all_book_chapters_carry_case_spine_markers() -> None:
             "case-spine" not in lower_text
             and "case spine" not in lower_text
             and "сквозн" not in lower_text
+            and "案例主线" not in text
         ):
             missing.append(str(path))
 
@@ -3188,19 +3189,19 @@ def test_chapter_16_runtime_blueprint_threads_three_canonical_cases() -> None:
             "incident-state updates",
         ),
         "docs/book/part-vii/chapter-16.zh.md": (
-            "Runtime case-spine note",
-            "Support triage",
-            "Internal knowledge assistant",
-            "Incident coordination",
-            "baseline runtime",
-            "approval hooks",
-            "idempotency contract",
-            "duplicate-ticket telemetry",
-            "trace evidence",
-            "source grounding",
-            "tenant filters",
-            "guarded memory writes",
-            "incident-state updates",
+            "运行时案例主线说明",
+            "支持分诊",
+            "内部知识助手",
+            "事故协调",
+            "基线运行时",
+            "审批钩子",
+            "幂等契约",
+            "重复工单遥测",
+            "追踪证据",
+            "来源扎根",
+            "租户过滤器",
+            "受保护的记忆写入",
+            "事故状态更新",
         ),
     }
 
@@ -3223,6 +3224,46 @@ def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
     chinese_text = _read("docs/book/part-vii/chapter-16.zh.md")
     assert "[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md)" in chinese_text
     assert "[trace evidence](../../appendix/trace-schema.zh.md)" not in chinese_text
+
+
+def test_chapter_16_zh_localizes_realtime_runtime_boundary_terms() -> None:
+    text = _read("docs/book/part-vii/chapter-16.zh.md")
+    paragraph = text.split("实时这一侧又增加了一条边界：", 1)[1].split("\n\n", 1)[0]
+
+    required_markers = (
+        "实时这一侧又增加了一条边界",
+        "连接状态不等于智能体状态",
+        "每连接 `state`",
+        "生命周期钩子",
+        "协议消息",
+        "广播",
+        "在线状态",
+        "审批界面",
+        "流式更新",
+        "按连接范围授权",
+        "可追踪的扇出",
+        "持久状态",
+    )
+    forbidden_markers = (
+        "Real-time 这一侧",
+        "connection state",
+        "agent state",
+        "per-connection `state`",
+        "lifecycle hooks",
+        "protocol messages",
+        "broadcast",
+        "presence",
+        "approval UI",
+        "streaming updates",
+        "connection-scoped authorization",
+        "fan-out",
+        "durable state",
+    )
+
+    for marker in required_markers:
+        assert marker in text, marker
+    for marker in forbidden_markers:
+        assert marker not in paragraph, marker
 
 
 def test_chapter_18_rollout_threads_three_canonical_cases() -> None:

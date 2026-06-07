@@ -94,7 +94,7 @@ flowchart LR
 !!! example "贯穿案例：防重复保护应该放在哪里"
     在支持分诊运行时里，防止重复工单的逻辑不应该藏在 helpdesk 适配器里。`runtime.py` 应该负责运行上下文和重试分支，`execution.py` 应该通过幂等契约执行写工具，`telemetry.py` 应该记录 `side_effect_unknown`，而 `policy.py` 加发布门应该决定运行是否可以继续。这样，同一个事故就不会散落到一堆处理器里。
 
-**Runtime case-spine note：**baseline runtime 应该支持三个 canonical cases，而不依赖本地绕路。Support triage 需要带 approval hooks、idempotency contract 和 duplicate-ticket telemetry 的 write-capability path。Internal knowledge assistant 需要带 source grounding、tenant filters、freshness checks 和 guarded memory writes 的 retrieval path。Incident coordination 需要带 responder-role checks、notification dispatch、incident-state updates 和 post-incident background tasks 的 escalation path。
+**运行时案例主线说明：**基线运行时应该支持三个规范案例（canonical cases），而不依赖本地绕路。支持分诊（Support triage）需要一条带有审批钩子、幂等契约和重复工单遥测的写能力路径。内部知识助手（Internal knowledge assistant）需要一条带有来源扎根、租户过滤器、新鲜度检查和受保护的记忆写入的检索路径。事故协调（Incident coordination）需要一条带有响应者角色检查、通知分发、事故状态更新和事故后后台任务的升级路径。
 
 ## 5. 不要把编排和业务适配器混在一起
 
@@ -207,7 +207,7 @@ OpenAI Agents SDK 的 Sandbox Agents 做了一个很有用的区分，应该进�
 - 已物化的 workspace entries，或指向已审查 manifest 的链接；
 - 这个沙箱是否可以 resume、snapshot，还是必须重新创建。
 
-这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md) 放在一起管理。
+这样，围绕文件、shell 和记忆的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个运行时控制层的一部分，并和审批、后台运行、能力会话以及[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md)放在一起管理。
 
 ### 8.2. Stateful named agent instance 作为一种运行时拓扑
 
@@ -218,16 +218,16 @@ Cloudflare Agents SDK 展示了另一个有用的基线模式：智能体不一�
 - `agent_instance_id`，它比单次 run 活得更久；
 - `run_id`，它描述一次具体执行；
 - `session_id`，它描述用户可见会话或 transport session；
-- durable agent state，它可以跨 disconnect、deploy、hibernation 和 background wake-up 保留下来；
-- external knowledge store，它不是某一个 instance 的私有可变状态。
+- 持久智能体状态（durable agent state），它可以跨断开连接、部署、休眠和后台唤醒保留下来；
+- 外部知识存储（external knowledge store），它不是某一个实例的私有可变状态。
 
-这个模式特别适合 chat、voice、workflow 和 monitoring agents，因为用户期待的是连续性，而不是 stateless request/response。但它也引入了基线运行时必须显式暴露的风险：named instances 的 tenant isolation、跨 WebSocket sessions 的泄漏、hibernation 之后的 replay/resume、没有活跃用户时的 scheduled side effects，以及 agent version 变化时的 durable-state migrations。
+这个模式特别适合聊天、语音、工作流和监控类智能体，因为用户期待的是连续性，而不是无状态请求/响应。但它也引入了基线运行时必须显式暴露的风险：命名实例的租户隔离、跨 WebSocket 会话的泄漏、休眠之后的重放/恢复、没有活跃用户时的计划副作用，以及智能体版本变化时的持久状态迁移。
 
-因此，参考运行时不必实现 Durable Objects，但需要类似 `AgentInstanceStore` 和 `SchedulerBoundary` 的抽象：一个能看清哪个 named instance 拥有哪些状态、哪些 runs 修改过它、哪些 scheduled tasks 可能唤醒它、哪些 traces 能证明安全恢复的位置。
+因此，参考运行时不必实现 Durable Objects，但需要类似 `AgentInstanceStore` 和 `SchedulerBoundary` 的抽象：一个能看清哪个命名实例拥有哪些状态、哪些运行修改过它、哪些计划任务可能唤醒它、哪些追踪能证明安全恢复位置的抽象。
 
-Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cron 和 interval tasks，这些任务会跨 restart 保留，persist 到 SQLite，并通过 Durable Object alarms 唤醒 agent。[^cloudflare-schedule] 对本书的架构结论是：schedule 不应该只是不可见的 callback，而应该表示成 durable control record，带有 owner instance、payload schema、idempotency key、overlap policy、next fire time 和 trace linkage。
+调度这一侧尤其重要：Cloudflare 展示了延迟、定时、cron 和间隔任务，这些任务会跨重启保留，持久化到 SQLite，并通过 Durable Object 的告警唤醒智能体。[^cloudflare-schedule] 对本书的架构结论是：调度不应该只是不可见的回调，而应该表示成持久控制记录，带有所属实例、载荷模式、幂等键、重叠策略、下次触发时间和追踪关联。
 
-Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
+实时这一侧又增加了一条边界：连接状态不等于智能体状态。在 Cloudflare Agents 的 WebSocket 模型里，一个连接有自己的 `id`、`uri`、每连接 `state`、标签、生命周期钩子，并且可以针对某个连接关闭 identity/state/MCP 等协议消息。[^cloudflare-websockets] 对基线运行时来说，这意味着广播、在线状态、审批界面和流式更新都应该经过按连接范围授权和可追踪的扇出，而不是直接暴露智能体的整个持久状态。
 
 用 vendor-neutral 的说法，这个模式可以叫 **durable agent actor**：稳定身份、本地持久状态、可恢复 session、scheduled wake-ups，以及到 governed stores 的可追踪 handoff。本地状态可以保存 instance-scoped facts，例如当前 workflow cursor、UI/session preferences、实例队列位置、last processed event、schedule metadata，以及可以重建的小型 cached views。它不应该悄悄成为 user profile memory、tenant knowledge、secrets、policy、audit logs 或 cross-instance facts 的 system of record。这些数据应该属于 governed stores，并带有 provenance、retention、export 和 access-control contracts。
 
