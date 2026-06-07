@@ -19098,6 +19098,54 @@ def test_russian_practical_pages_localize_deeper_reader_facing_prose() -> None:
         assert marker not in evidence_text
 
 
+def test_russian_evidence_spine_and_trace_schema_use_reader_facing_release_terms() -> None:
+    evidence_text = _read("docs/book/part-v/evidence-spine.md")
+    trace_schema_text = _read("docs/appendix/trace-schema.md")
+
+    expected_evidence_markers = (
+        'I --> J["решение о поэтапном выпуске"]',
+        "- были ли повторы;",
+        "- редактировался ли результат;",
+        "- где именно система остановилась до побочных эффектов.",
+        "дальнейшее суждение превращается не в реконструкцию, а в пересказ",
+        "- запрошенной возможности и уровня риска.",
+        "- регрессию политики;",
+        "- деградацию, привязанную к конкретному выпуску;",
+        "- проблему доверия к проверяющему;",
+        "- сбой пути подтверждения.",
+        "Компактная управляемая запись для такого запуска может выглядеть так:",
+        "- глава 20 по-прежнему отвечает за суждение о выпуске;",
+    )
+    forbidden_evidence_markers = (
+        'I --> J["rollout judgment"]',
+        "- были ли retries;",
+        "- редактировался ли output;",
+        "- где именно система остановилась до side effects.",
+        "дальнейшее judgment превращается не в реконструкцию, а в пересказ",
+        "- запрошенной capability и risk tier.",
+        "- регрессию policy;",
+        "- деградацию, привязанную к конкретному release;",
+        "- проблему доверия к verifier;",
+        "- сбой approval path.",
+        "Компактная управляемая запись для такого run может выглядеть так:",
+        "- глава 20 по-прежнему отвечает за release judgment;",
+    )
+
+    for marker in expected_evidence_markers:
+        assert marker in evidence_text, marker
+    for marker in forbidden_evidence_markers:
+        assert marker not in evidence_text, marker
+
+    assert (
+        "[Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске]"
+        "(../book/part-v/evidence-spine.md)" in trace_schema_text
+    )
+    assert (
+        "[Сквозная цепочка доказательств: от запроса к решению о раскатке]"
+        "(../book/part-v/evidence-spine.md)" not in trace_schema_text
+    )
+
+
 def test_chapter_1_decision_frame_is_extraction_safe() -> None:
     checked_files = (
         "docs/book/part-i/chapter-1.md",
