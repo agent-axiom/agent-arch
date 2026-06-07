@@ -66,7 +66,7 @@ status: pending
 
 Что здесь особенно важно:
 
-- `trace_id` и `session_id` связывают approval с run history;
+- `trace_id` и `session_id` связывают подтверждение с историей запуска;
 - `capability` и `requested_action` не дают подтверждению превратиться в абстрактное "да/нет";
 - `required_role` помогает не смешивать любого проверяющего с нужным подтверждающим;
 - `requested_fields` фиксируют именно те данные, которые человек реально подтверждает;
@@ -163,7 +163,7 @@ linked_events:
 
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
 - [configs/approvals.yaml](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/configs/approvals.yaml)
-- CLI:
+- Команды командной строки:
   - `inspect-approvals`
   - `resolve-approval`
 
@@ -204,7 +204,7 @@ linked_events:
 - Привязано ли подтверждение к `trace_id` и `session_id`?
 - Видит ли подтверждающий ровно те данные, которые потом идут в действие?
 - Если действие выполняется в песочнице, видит ли подтверждающий контракт профиля песочницы, записи рабочей области, права доступа и правила снимка/возобновления?
-- Сохраняются ли `decided_by`, `role` и `decision scope`?
+- Сохраняются ли `decided_by`, `role` и область действия решения?
 - Можно ли связать подтверждение с реальным выполнением инструмента?
 - Есть ли пригодная для аудита запись для подтвержденных и отклоненных путей?
 

@@ -19550,6 +19550,26 @@ def test_approval_schema_delegated_authorization_errors_are_documented() -> None
     _assert_files_contain_all(checked_files, required_errors)
 
 
+def test_russian_approval_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/approval-schema.md")
+
+    expected_markers = (
+        "`trace_id` и `session_id` связывают подтверждение с историей запуска;",
+        "- Команды командной строки:",
+        "Сохраняются ли `decided_by`, `role` и область действия решения?",
+    )
+    forbidden_markers = (
+        "`trace_id` и `session_id` связывают approval с run history;",
+        "- CLI:",
+        "Сохраняются ли `decided_by`, `role` и `decision scope`?",
+    )
+
+    for marker in expected_markers:
+        assert marker in russian_text, marker
+    for marker in forbidden_markers:
+        assert marker not in russian_text, marker
+
+
 def test_reference_package_has_reader_route_contract() -> None:
     expected_markers_by_file = {
         "docs/appendix/reference-package.md": (
