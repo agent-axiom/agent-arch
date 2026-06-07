@@ -15289,6 +15289,29 @@ def test_russian_lifecycle_artifact_invariant_terms_are_localized() -> None:
         assert forbidden_marker not in russian_text, forbidden_marker
 
 
+def test_russian_lifecycle_artifact_operational_terms_are_localized() -> None:
+    russian_text = _read("docs/appendix/lifecycle-artifact-schema.md")
+
+    expected_markers = (
+        "примерно поменял политику или маршрутизацию",
+        "связывает управление изменениями с циклом оценки",
+        "состояние истекших сессий возможностей",
+        "доступными для проверки после вывода из эксплуатации",
+    )
+    forbidden_markers = (
+        "примерно поменял policy или routing",
+        "change management с eval loop",
+        "capability-session",
+        "доступными для ревью после вывода из эксплуатации",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_memory_retrieval_schema_surfaces_three_canonical_memory_cases() -> None:
     expected_markers_by_file = {
         "docs/appendix/memory-retrieval-schema.md": (
