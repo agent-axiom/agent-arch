@@ -5,7 +5,7 @@
 - [Глава 4. Инструментальный шлюз, подтверждения и журнал аудита](../book/part-ii/chapter-4.md)
 - [Глава 17. Слой политик и каталог возможностей](../book/part-vii/chapter-17.md)
 - [Глава 20. Управление изменениями в агентных системах](../book/part-viii/chapter-20.md)
-- [Сквозная цепочка доказательств: от запроса к решению о rollout](../book/part-v/evidence-spine.md)
+- [Сквозная цепочка доказательств: от запроса к решению о поэтапном выпуске](../book/part-v/evidence-spine.md)
 
 И опирается на эталонный пакет:
 
@@ -48,10 +48,10 @@
 
 Смысл не в том, что все должно лежать в одном YAML-файле. Смысл в том, что такой набор должен быть:
 
-- versioned;
-- reviewable;
-- traceable;
-- releasable.
+- версионируемым;
+- пригодным для проверки;
+- прослеживаемым;
+- готовым к выпуску.
 
 !!! note "Канонические сценарии политик"
     Пакет политик не должен выглядеть одинаково во всех трех канонических сценариях. **Триаж обращений поддержки** требует политики подтверждения для записывающей возможности, доказательств идемпотентности и средств восстановления после дубля тикета. **Внутренний ассистент знаний** требует политики поиска, правил записи в память, проверок свежести, контроля доступа и происхождения знаний. **Координация инцидентов** требует правил эскалации, побочных эффектов уведомлений, владения ответом и шлюзов обучения после инцидента.
@@ -88,8 +88,8 @@ bundle:
 Очень часто логика подтверждения описывается словами:
 
 - «если риск высокий, нужно подтверждение»;
-- «manager approves ticket creation»;
-- «security signs off on dangerous actions».
+- «руководитель подтверждает создание тикета»;
+- «служба безопасности подтверждает рискованные действия».
 
 Этого недостаточно.
 
@@ -99,13 +99,13 @@ bundle:
 - какой класс действий требует подтверждения;
 - какие поля должны попасть в запрос на подтверждение;
 - какие решения допустимы;
-- что происходит после reject;
-- может ли run pause, resume, expire или cancel;
+- что происходит после отклонения;
+- может ли запуск остановиться в ожидании, возобновиться, завершиться по времени ожидания или быть отменен;
 - что должно остаться в журнале аудита.
 
 ## Пример контракта подтверждения
 
-Ниже рабочий skeleton:
+Ниже рабочий каркас:
 
 ```yaml
 approval_contract:
@@ -152,7 +152,7 @@ approval_contract:
 
 «Какая именно версия набора политик была активна в момент этой раскатки или инцидента?»
 
-А если runtime уже обращается с наборами как с управляемыми поверхностями выпуска, неизбежно появляется и следующий вопрос:
+Если среда исполнения уже обращается с наборами как с управляемыми поверхностями выпуска, неизбежно появляется и следующий вопрос:
 
 «В формировании какой идентичности выпуска участвовал этот набор политик?»
 
@@ -224,10 +224,10 @@ approval_contract:
 
 Именно они помогают управляемому контракту отвечать на вопросы:
 
-- можно ли вызывать capability внутри `prompt chaining`, `routing` или `parallelization`;
+- можно ли вызывать возможность внутри `prompt chaining`, `routing` или `parallelization`;
 - наследуют ли делегированные исполнители в схеме `orchestrator-workers` контекст подтверждения или делегированной авторизации;
-- может ли worker запросить дополнительные capabilities или работает только с ограниченным subset;
-- должен ли worker output пройти review до того, как будет выполнена любая write-capability.
+- может ли исполняющий агент запросить дополнительные возможности или работает только с ограниченным набором возможностей;
+- должен ли результат работы исполнителя пройти проверку до того, как будет выполнена любая записывающая возможность.
 
 Заодно они помогают избежать и второго дрейфа: когда путь подтверждения с делегированием уже существует в поведении продукта, но все еще не представлен как управляемый контракт.
 
@@ -268,7 +268,7 @@ approval_contract:
 - контракт управления MCP описывает, из какого утвержденного реестра пришла возможность, кто владеет MCP-сервером, каким режимом авторизации она защищена и что делать, если обнаружен теневой путь MCP;
 - политика контрактов проверяющего описывает, каким контрактам проверяющего вообще можно доверять для оценивания высокого риска, доказательств раскатки и решений по заверению.
 
-Эталонный runtime делает этот стык конкретным в `capabilities.yaml` и `policy.yaml`: capability entries содержат `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds` и `idempotency_key_required`, а policy entries содержат `run_precheck`, `require_tenant`, `deny_if_principal_missing`, capability decisions для `search_docs`, `create_ticket` и `run_shell`, memory-write `allow_kinds` (`validated_fact` и `session_summary`) и execution-level `allow_network_access`. Policy loader явно валидирует эту структуру: `Policy config must be a mapping`, `'policy' must be a mapping`, `'run_precheck' must be a mapping`, `'run_precheck.require_tenant' must be a boolean`, `'run_precheck.deny_if_principal_missing' must be a boolean`, `'{label}' must be a boolean`, `'memory_write' must be a mapping`, `'allow_kinds' must be a list`, `memory_write.allow_kinds entries must be strings`, `memory_write.allow_kinds entries must not be empty`, `memory_write.allow_kinds entries must be unique`, `'execution' must be a mapping`, `'allow_network_access' must be a list`, `execution.allow_network_access entries must be strings`, `execution.allow_network_access entries must not be empty`, `execution.allow_network_access entries must be unique`, `Policy capability names must be strings`, `Policy capability name must not be empty`, `Policy capability names must be unique`, `Policy capability entries must be CapabilityPolicy`, `Policy precheck request must be RunRequest`, `Policy context must be RunContext`, `Policy tool request must be ToolRequest`, `Policy capability must be CapabilitySpec`, `'capabilities' must be a mapping`, `Policy action must be a string`, `Policy action is not supported: {action}`, `Policy field must be a string: {field}`, `Policy field is required: {field}`, `Policy decision must be a string`, `Policy decision is not supported: {decision}`, `Policy approver must be a string`, `Policy approver must not be empty: {capability_name}`, `Policy memory kind must be a string`, `Policy memory kind must not be empty` и `Policy for capability {name!r} must be a mapping`.
+Эталонная среда исполнения делает этот стык конкретным в `capabilities.yaml` и `policy.yaml`: записи возможностей содержат `tool_principal`, `risk_tier`, `network_access`, `allowed_egress`, `timeout_seconds` и `idempotency_key_required`, а записи политик содержат `run_precheck`, `require_tenant`, `deny_if_principal_missing`, решения по возможностям для `search_docs`, `create_ticket` и `run_shell`, политику записи в память `allow_kinds` (`validated_fact` и `session_summary`) и правило уровня выполнения `allow_network_access`. Загрузчик политик явно валидирует эту структуру: `Policy config must be a mapping`, `'policy' must be a mapping`, `'run_precheck' must be a mapping`, `'run_precheck.require_tenant' must be a boolean`, `'run_precheck.deny_if_principal_missing' must be a boolean`, `'{label}' must be a boolean`, `'memory_write' must be a mapping`, `'allow_kinds' must be a list`, `memory_write.allow_kinds entries must be strings`, `memory_write.allow_kinds entries must not be empty`, `memory_write.allow_kinds entries must be unique`, `'execution' must be a mapping`, `'allow_network_access' must be a list`, `execution.allow_network_access entries must be strings`, `execution.allow_network_access entries must not be empty`, `execution.allow_network_access entries must be unique`, `Policy capability names must be strings`, `Policy capability name must not be empty`, `Policy capability names must be unique`, `Policy capability entries must be CapabilityPolicy`, `Policy precheck request must be RunRequest`, `Policy context must be RunContext`, `Policy tool request must be ToolRequest`, `Policy capability must be CapabilitySpec`, `'capabilities' must be a mapping`, `Policy action must be a string`, `Policy action is not supported: {action}`, `Policy field must be a string: {field}`, `Policy field is required: {field}`, `Policy decision must be a string`, `Policy decision is not supported: {decision}`, `Policy approver must be a string`, `Policy approver must not be empty: {capability_name}`, `Policy memory kind must be a string`, `Policy memory kind must not be empty` и `Policy for capability {name!r} must be a mapping`.
 
 ## Что сделать сразу
 

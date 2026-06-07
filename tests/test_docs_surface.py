@@ -13375,6 +13375,63 @@ def test_chinese_policy_bundle_control_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_russian_policy_bundle_schema_prefers_reader_facing_terms() -> None:
+    russian_text = _read("docs/appendix/policy-bundle-schema.md")
+    expected_markers = (
+        "решению о поэтапном выпуске",
+        "версионируемым",
+        "пригодным для проверки",
+        "прослеживаемым",
+        "готовым к выпуску",
+        "руководитель подтверждает создание тикета",
+        "служба безопасности подтверждает рискованные действия",
+        "что происходит после отклонения",
+        "может ли запуск остановиться в ожидании, возобновиться, "
+        "завершиться по времени ожидания или быть отменен",
+        "Ниже рабочий каркас",
+        "Если среда исполнения уже обращается",
+        "исполняющий агент",
+        "ограниченным набором возможностей",
+        "результат работы исполнителя",
+        "должен ли результат работы исполнителя пройти проверку",
+        "Эталонная среда исполнения делает этот стык конкретным",
+        "записи возможностей содержат",
+        "записи политик содержат",
+        "решения по возможностям",
+        "политику записи в память `allow_kinds`",
+        "правило уровня выполнения `allow_network_access`",
+    )
+    forbidden_markers = (
+        "rollout judgment",
+        "versioned",
+        "reviewable",
+        "traceable",
+        "releasable",
+        "manager approves ticket creation",
+        "security signs off on dangerous actions",
+        "что происходит после reject",
+        "может ли run pause, resume, expire или cancel",
+        "рабочий skeleton",
+        "Если runtime уже обращается",
+        (
+            "может ли worker запросить дополнительные capabilities "
+            "или работает только с ограниченным subset"
+        ),
+        "должен ли worker output пройти review",
+        "Эталонный runtime делает этот стык конкретным",
+        "capability entries содержат",
+        "policy entries содержат",
+        "capability decisions",
+        "memory-write `allow_kinds`",
+        "execution-level `allow_network_access`",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_russian_policy_bundle_security_contract_labels_are_localized() -> None:
     russian_text = _read("docs/appendix/policy-bundle-schema.md")
     expected_markers = (
