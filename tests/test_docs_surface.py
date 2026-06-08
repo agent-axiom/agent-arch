@@ -13202,6 +13202,37 @@ def test_chinese_reference_package_inspect_agent_labels_are_localized() -> None:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
 
+def test_russian_reference_package_inspect_agent_labels_are_localized() -> None:
+    russian_text = _read("docs/appendix/reference-package.md")
+    expected_markers = (
+        "проверка инвентаря",
+        "настроенную идентичность агента",
+        "каталогом возможностей",
+        "показываемое имя `Support triage reference agent`",
+        "поле `owner_team` `agent_platform` задает команду-владельца",
+        "поле `runtime_principal` `svc-support-triage-ref` задает субъект среды исполнения",
+        "одобрена только для `search_docs` и `create_ticket`",
+        "запись `catalog_capabilities`",
+        "позицию по исходящему обмену",
+        "привязку инструментального субъекта",
+        "полный список каталога",
+    )
+    for expected_marker in expected_markers:
+        assert expected_marker in russian_text, expected_marker
+
+    forbidden_markers = (
+        "настроенную идентичность с каталогом возможностей",
+        "эта идентичность имеет `agent_id` `support-triage-ref`, `display_name` "
+        "`Support triage reference agent`, `owner_team` `agent_platform`, "
+        "`runtime_principal` `svc-support-triage-ref`",
+        "каталог возможностей затем помечает `search_docs`",
+        "Каждая запись `catalog_capabilities` также несёт",
+        "операторам не приходилось сначала сканировать весь список каталога",
+    )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in russian_text, forbidden_marker
+
+
 def test_chinese_reference_package_contract_update_labels_are_localized() -> None:
     chinese_text = _read("docs/appendix/reference-package.zh.md")
     expected_markers = (
