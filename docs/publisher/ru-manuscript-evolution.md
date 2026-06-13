@@ -133,8 +133,8 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: first-pass complete; deeper cross-reference, terminology and line edit
-pass still pending.
+Status: structural pass started; Introduction and Part I completed, deeper
+cross-reference, terminology and line edit pass still pending.
 
 Goal:
 
@@ -169,9 +169,8 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. separate working/publisher service blocks from the manuscript body in the
-   Google Doc;
-2. run structural editorial pass by parts;
+1. continue structural editorial pass with Part II and Part III;
+2. keep working/publisher service blocks outside the final manuscript body;
 3. run terminology, glossary, cross-reference and companion-boundary passes;
 4. fill author bio fields and apply БХВ styles when they arrive;
 5. keep commits local unless explicitly requested to push.
@@ -485,3 +484,27 @@ Notes:
 - This is not a line edit. It is the high-level plan for the remaining
   publisher-prep work after the full first compression/editorial pass.
 - БХВ formatting and DOCX/export QA remain blocked until style files arrive.
+
+### 2026-06-14. Introduction and Part I structural pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-i.md`
+
+Google Doc content updated:
+
+- top status now says structural editorial pass started and Introduction /
+  Part I completed;
+- Introduction now states the reader contract explicitly: the book is a map of
+  responsibility and control layers, not a collection of agent patterns;
+- Part I bridge now has clear exit criteria before the security part;
+- Chapter 2 now transitions into Chapter 3 instead of ending as a standalone
+  taxonomy;
+- Chapter 3 now closes Part I and hands off to Part II security.
+
+Notes:
+
+- This is a structural pass, not a full terminology or line edit.
+- Next structural batch should cover Part II and Part III.

@@ -58,6 +58,10 @@ Definition of done:
 - нет крупных провалов между архитектурой, эксплуатацией и организационной
   моделью.
 
+Progress:
+
+- 2026-06-14: Introduction and Part I completed as the first structural batch.
+
 ## Workstream 3. Terminology pass
 
 Задача: закрепить единый русский словарь для повторяющихся технических

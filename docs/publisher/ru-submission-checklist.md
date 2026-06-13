@@ -75,6 +75,8 @@ full proofread and publisher formatting.**
 - [x] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [x] High-level roadmap for structural, terminology, cross-reference and
       companion-boundary passes is created.
+- [x] Introduction and Part I structural pass completed and synced to Google
+      Doc.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
@@ -82,6 +84,7 @@ full proofread and publisher formatting.**
 
 - [ ] Working/publisher service blocks are separated from manuscript body for
       final delivery.
+- [ ] Structural editorial pass is complete across all parts.
 - [ ] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
 - [ ] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
