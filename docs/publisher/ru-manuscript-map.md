@@ -1,308 +1,193 @@
 # Карта русской издательской рукописи
 
-Status: editorial assembly map. The public website remains broader than this print manuscript.
+Status: editorial assembly map. Основано на плане-проспекте к договору
+авторского заказа N 4-5/26 от 15 мая 2026 года.
 
 ## Назначение
 
-Публичная версия книги остается полной web-версией: 8 частей, 27 глав, практические страницы, схемы, справочные приложения и эталонная среда исполнения. Для издательства нужна более компактная рукопись: меньше справочного шума, яснее маршрут чтения, меньше повторов и тяжелых runtime-деталей.
+Публичная версия в репозитории остается широкой web-версией: 8 частей, 27 глав,
+практические страницы, справочные приложения и исполняемый reference package.
+Издательская рукопись собирается как отдельный слой: 7 частей, 23 главы,
+введение и приложения. Google Doc используется как рабочая издательская
+рукопись, но смысловые изменения должны возвращаться в Markdown.
 
-## Целевой формат
+Source map для сборки:
 
-- 6 частей;
-- около 20 глав;
-- 2 sample chapters для первого контакта с редактором;
-- online companion для схем, CLI, runtime output, validation errors, длинных чеклистов и источников.
+- `docs/publisher/ru-source-map.md`
 
-## Предлагаемая структура
+Рабочая Google Doc-рукопись:
 
-### Часть I. Зачем агентам нужна платформа
+- <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 
-**Печатная глава 1. Почему агенту нужна платформа, а не магия**
+## Целевой формат по плану-проспекту
 
-Источник:
+- рабочее название: `Архитектура безопасных ИИ-агентов`;
+- введение: 8-12 стр.;
+- 7 частей;
+- 23 главы;
+- приложения: 20-30 стр.;
+- ориентировочный общий диапазон по плану-проспекту: 425-497 стр. до
+  фактической версточной проверки.
 
-- `docs/book/part-i/chapter-1.md`
+## Договорная структура
 
-Роль:
+### Введение
 
-- главный sample chapter;
-- вводит тезис книги;
-- показывает отличие книги от prompt-hype и framework manual.
+Диапазон: 8-12 стр.
 
-Редакторская задача:
+Состав:
 
-- сохранить сильный авторский голос;
-- убрать служебные англоязычные метки;
-- сделать финал главы пригодным для печати без ссылок на структуру сайта.
+- для кого эта книга;
+- почему агент - это не prompt-трюк, а production-система;
+- как читать книгу;
+- чем книга отличается от фреймворк-туториалов.
 
-**Печатная глава 2. Анатомия производственной агентной системы**
+### Часть I. От demo-агента к платформе
 
-Источники:
+Диапазон: 55-85 стр.
 
-- `docs/book/part-i/chapter-2.md`
-- `docs/book/part-i/practical-routines.md`
-- `docs/book/part-i/practical-manager-handoffs.md`
+1. Почему агенту нужна платформа, а не магия.
+2. Когда нужен агент: workflow, single-agent, multi-agent.
+3. Референсная архитектура безопасной агентной системы.
 
-Роль:
+Редакторский фокус:
 
-- объяснить базовую архитектуру, инструкции, сценарии, шаблоны запросов, координатора и передачу управления.
+- сохранить сильный opening argument;
+- сделать главу 1 первым sample chapter;
+- развести выбор формы исполнения и архитектурный blueprint по разным главам.
 
-Что вынести в companion:
+### Часть II. Безопасность и контур управления
 
-- длинные code sketches;
-- дополнительные decision tables.
+Диапазон: 60-70 стр.
 
-**Печатная глава 3. Границы доверия, идентичность и право действовать**
+4. Контур безопасности и границы доверия.
+5. Identity, session, policy layer и capability model.
+6. Инструментальный шлюз, подтверждения и журнал аудита.
 
-Источники:
+Редакторский фокус:
 
-- `docs/book/part-ii/chapter-3.md`
-- часть материала из `docs/book/part-ii/chapter-4.md`
+- заменить лишние англоязычные вставки русскими формами там, где это не имена
+  протоколов или полей;
+- показать право на действие как инженерный контракт.
 
-Роль:
+### Часть III. Память, знания и контекст
 
-- задать security perimeter как основу всей книги.
+Диапазон: 45-55 стр.
 
-### Часть II. Контекст, память и извлечение
+7. Зачем агенту память и почему она опасна.
+8. Краткосрочная, долгосрочная и профильная память.
+9. Извлечение контекста, уплотнение и фоновые обновления.
 
-**Печатная глава 4. Контекст как контракт среды исполнения**
+Редакторский фокус:
 
-Источники:
+- не превращать главу в schema reference;
+- держать provenance, freshness и tenant boundary в основном объяснении.
 
-- `docs/book/part-iii/chapter-5.md`
-- начало `docs/book/part-iii/chapter-7.md`
+### Часть IV. Инструменты, выполнение и интеграция
 
-Роль:
+Диапазон: 55-65 стр.
 
-- объяснить, почему память и контекст являются управляемым состоянием, а не удобной функцией.
+10. Модель выполнения и каталог инструментов.
+11. Песочница выполнения и MCP как интеграционный контракт.
+12. Идемпотентность, повторы, лимиты и границы отката.
 
-**Печатная глава 5. Память, происхождение знаний и устойчивость**
+Редакторский фокус:
 
-Источники:
+- показать side effects и tool gateway через decision model;
+- оставить protocol detail в online companion.
 
-- `docs/book/part-iii/chapter-6.md`
-- `docs/appendix/memory-retrieval-schema.md` как companion reference
+### Часть V. Надежность, наблюдаемость и оценки
 
-Роль:
+Диапазон: 60-70 стр.
 
-- разделить краткосрочную, долговременную и профильную память;
-- ввести provenance и правила записи.
+13. Трассы, спаны и структурированные события.
+14. SLO для агентных систем.
+15. Offline/online evals и регрессионные шлюзы.
+16. Сквозная цепочка доказательств: от запроса к rollout.
 
-**Печатная глава 6. Извлечение, уплотнение и фоновые обновления**
+Редакторский фокус:
 
-Источник:
+- использовать главу 15 как технический sample при необходимости;
+- держать trace/eval/rollout как один evidence model, а не три справочника.
 
-- `docs/book/part-iii/chapter-7.md`
+### Часть VI. Организационная модель и жизненный цикл
 
-Роль:
+Диапазон: 60-70 стр.
 
-- показать retrieval/compaction как управляемый слой качества и безопасности.
+17. Платформенная команда и продуктовые команды.
+18. Golden paths, общие шлюзы и борьба с агентным зоопарком.
+19. От SDLC к ADLC: жизненный цикл агентной системы.
+20. Assurance loop, incident response, registry и retirement.
 
-### Часть III. Инструменты, побочные эффекты и выполнение
+Редакторский фокус:
 
-**Печатная глава 7. Модель выполнения и каталог инструментов**
+- сжать текущий поздний web-материал в управляемый lifecycle arc;
+- не тащить в печать весь registry/incident/reference detail.
 
-Источник:
+### Часть VII. Эталонная реализация и промышленный запуск
 
-- `docs/book/part-iv/chapter-8.md`
+Диапазон: 40-50 стр.
 
-Роль:
+21. Базовая схема runtime.
+22. Слой политик и каталог возможностей.
+23. Чеклист промышленного запуска.
 
-- показать, почему агент не должен обращаться к инструментам напрямую.
+Редакторский фокус:
 
-**Печатная глава 8. Песочницы, MCP и интеграционные границы**
+- дать исполнимую структуру без CLI manual;
+- оставить команды, config contracts и runtime internals в companion.
 
-Источники:
+### Приложения
 
-- `docs/book/part-iv/chapter-9.md`
-- `docs/book/part-iv/practical-mcp-a2a.md`
+Диапазон: 20-30 стр.
 
-Роль:
-
-- объяснить MCP как контрактную границу, а A2A как отдельную модель доверия.
-
-**Печатная глава 9. Повторы, идемпотентность, лимиты и восстановление после сбоев**
-
-Источники:
-
-- `docs/book/part-iv/chapter-10.md`
-- `docs/appendix/tool-failure-recovery.md` as companion reference
-
-Роль:
-
-- связать failure recovery с безопасным выполнением инструментов.
-
-### Часть IV. Надежность, наблюдаемость и оценки
-
-**Печатная глава 10. Трассы и наблюдаемость запусков агента**
-
-Источник:
-
-- `docs/book/part-v/chapter-11.md`
-
-Роль:
-
-- объяснить trace/span/event как доказательную модель, а не только логи.
-
-**Печатная глава 11. SLO и деградированные пути**
-
-Источник:
-
-- `docs/book/part-v/chapter-12.md`
-
-Роль:
-
-- показать, как измерять здоровье агентной системы.
-
-**Печатная глава 12. Оценки, регрессионные шлюзы и решение о выпуске**
-
-Источник:
-
-- `docs/book/part-v/chapter-13.md`
-
-Роль:
-
-- technical credibility sample;
-- связать оценки, verifier outputs и release judgment.
-
-**Печатная глава 13. Цепочка доказательств от запроса к решению**
-
-Источник:
-
-- `docs/book/part-v/evidence-spine.md`
-
-Роль:
-
-- короткая синтезирующая глава, не справочник;
-- показать общий entity map и end-to-end run.
-
-### Часть V. Выпуск и эксплуатация агентов
-
-**Печатная глава 14. Платформенная команда и продуктовые команды**
-
-Источник:
-
-- `docs/book/part-vi/chapter-14.md`
-
-Роль:
-
-- объяснить ownership model.
-
-**Печатная глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы**
-
-Источник:
-
-- `docs/book/part-vi/chapter-15.md`
-
-Роль:
-
-- показать, как организация избегает хаоса множества агентных реализаций.
-
-**Печатная глава 16. Эталонная среда исполнения и производственный запуск**
-
-Источники:
-
-- `docs/book/part-vii/chapter-16.md`
-- `docs/book/part-vii/chapter-17.md`
-- `docs/book/part-vii/chapter-18.md`
-
-Роль:
-
-- дать минимальный runtime blueprint без превращения главы в CLI manual.
-
-Что вынести в companion:
-
-- full reference package walkthrough;
-- команды CLI;
-- config contracts;
-- runtime internals.
-
-### Часть VI. Жизненный цикл, управление и вывод из эксплуатации
-
-**Печатная глава 17. От SDLC к ADLC: жизненный цикл агентной системы**
-
-Источники:
-
-- `docs/book/part-viii/chapter-19.md`
-- часть `docs/book/part-viii/chapter-20.md`
-
-Роль:
-
-- задать lifecycle frame и change-bearing system model.
-
-**Печатная глава 18. Assurance, реагирование и доверенные артефакты**
-
-Источники:
-
-- `docs/book/part-viii/chapter-21.md`
-- `docs/book/part-viii/chapter-22.md`
-
-Роль:
-
-- объединить assurance loop, incident response, provenance и artifact lineage.
-
-**Печатная глава 19. Рассогласование поведения, внутренний риск и контрольные оценки**
-
-Источники:
-
-- `docs/book/part-viii/chapter-24.md`
-- `docs/book/part-viii/chapter-25.md`
-
-Роль:
-
-- показать adversarial pressure и reviewable judgment.
-
-**Печатная глава 20. Реестр, инвентаризация и конец жизненного цикла**
-
-Источники:
-
-- `docs/book/part-viii/chapter-23.md`
-- `docs/book/part-viii/chapter-26.md`
-- `docs/book/part-viii/chapter-27.md`
-
-Роль:
-
-- закрыть книгу ответственностью за estate, retirement и long-term accountability.
+1. Глоссарий.
+2. Чеклисты.
+3. Шаблон incident/postmortem.
+4. Источники и online companion.
 
 ## Online companion boundary
 
 Оставить преимущественно online:
 
-- `docs/appendix/reference-package.md`;
+- runnable `agent_runtime_ref` package и CLI walkthrough;
 - schema appendices for trace/eval/approval/policy/memory/lifecycle/change/incident;
 - long CLI outputs;
 - validation error catalogs;
 - full YAML/JSON examples;
-- source catalog;
+- source catalog beyond curated print bibliography;
 - community roadmap;
 - detailed policy templates and worksheets.
 
-## Sample chapters for Russian publishers
+## Sample chapters
 
 Primary sample:
 
-- role: opening editorial sample;
 - source path: `docs/book/part-i/chapter-1.md`;
-- reason: strongest thesis chapter.
+- print role: глава 1;
+- reason: strongest thesis chapter and opening failure story.
 
-Secondary sample:
+Secondary technical sample:
 
-- role: technical credibility sample;
 - source path: `docs/book/part-v/chapter-13.md`;
-- reason: shows evals, traces, verifier outputs, regression gates and release judgment.
+- print role: глава 15;
+- reason: evals, traces, verifier outputs, regression gates and release judgment.
 
-Optional differentiator sample:
+Optional lifecycle differentiator:
 
-- role: lifecycle/governance uniqueness sample;
-- source path: merged print chapter from `docs/book/part-viii/chapter-23.md`, `docs/book/part-viii/chapter-26.md`, and `docs/book/part-viii/chapter-27.md`;
-- reason: fewer competing books cover registry, retirement and estate accountability.
+- source paths: `docs/book/part-viii/chapter-21.md`,
+  `docs/book/part-viii/chapter-23.md`, `docs/book/part-viii/chapter-26.md`,
+  `docs/book/part-viii/chapter-27.md`;
+- print role: глава 20;
+- reason: assurance, registry, retirement and accountability are less covered in
+  competing books.
 
 ## First editorial pass order
 
-1. Chapter 1.
-2. Chapter 13.
-3. Part VIII compression chapters.
-4. Reference/runtime chapter compression.
-5. Appendix-to-companion pass.
-6. Full terminology pass.
-7. Print/PDF export pass.
+1. Синхронизировать source map с договорной структурой.
+2. Подготовить главу 1 в Google Doc.
+3. Вернуть редакционные изменения главы 1 в Markdown.
+4. Подготовить технический sample из текущей главы 13 как печатную главу 15.
+5. Сжать текущую часть VIII в печатные главы 19-20.
+6. Провести terminology pass по sample chapters.
+7. После получения стилей БХВ выполнить DOCX formatting pass.

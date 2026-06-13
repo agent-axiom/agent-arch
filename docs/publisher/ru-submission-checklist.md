@@ -12,16 +12,24 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 
 ## P0 gates before external submission
 
-- [ ] Целевая подача выбрана: Russian publisher package, English publisher package, or dual-track package.
-- [ ] Для Russian package sample manifest указывает RU source paths, not `.en.md` paths.
-- [ ] Есть отдельная assembly map for print manuscript.
+- [x] Целевая подача выбрана: Russian publisher package.
+- [x] Рабочая Google Doc-рукопись создана и доступна для чтения/записи:
+      <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
+- [x] Для Russian package sample manifest указывает RU source paths, not `.en.md` paths.
+- [x] Есть отдельная assembly map for print manuscript:
+      `docs/publisher/ru-manuscript-map.md`.
+- [x] Есть source map от договорной структуры к Markdown-источникам:
+      `docs/publisher/ru-source-map.md`.
+- [x] Зафиксировано правило синхронизации repository -> Google Doc:
+      `docs/publisher/ru-google-doc-workflow.md`.
+- [x] Chapter 1 working sample loaded into the Google Doc manuscript.
 - [ ] Терминологическая политика применена к sample chapters.
 - [ ] Chapter 1 passed Russian line edit.
 - [ ] Chapter 13 passed Russian line edit.
-- [ ] Part VIII compression plan is applied or explicitly deferred with a waiver.
-- [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only.
+- [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
+- [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [ ] Author bio / credential framing is provided by the author.
-- [ ] Target editor/imprint formatting requirements are known or explicitly waived.
+- [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
 ## P1 gates before serious editor review
 
@@ -51,12 +59,13 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 Include:
 
 1. One-page Russian positioning memo.
-2. Proposed print table of contents.
-3. Chapter 1 sample.
-4. Chapter 13 sample if the editor asks for technical depth.
-5. Companion-site description.
-6. Author bio and platform note.
-7. Status note: public web manuscript exists; publisher manuscript is being assembled from it.
+2. Договорная структура 7 частей / 23 главы.
+3. Source map from repository Markdown to publisher manuscript chapters.
+4. Chapter 1 sample from `docs/book/part-i/chapter-1.md`.
+5. Chapter 13 sample from `docs/book/part-v/chapter-13.md` if the editor asks for technical depth.
+6. Companion-site description.
+7. Author bio and platform note.
+8. Status note: public web manuscript exists; publisher manuscript is being assembled from it.
 
 Do not include:
 
