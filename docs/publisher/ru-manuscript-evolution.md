@@ -18,10 +18,12 @@ manuscript itself, not the publisher cover materials.
 - rough assembly Части I: Chapter 1, Chapter 2 and Chapter 3;
 - rough assembly Части II: Chapter 4, Chapter 5 and Chapter 6;
 - rough assembly Части III: Chapter 7, Chapter 8 and Chapter 9.
+- rough assembly Части IV: Chapter 10, Chapter 11 and Chapter 12;
+- rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16.
 
 Поэтому текущий Google Doc уже начал набирать тело рукописи, но это все еще не
 полная книга. Это assembly snapshot: skeleton, publisher packet, введение,
-Часть I, Часть II и Часть III.
+Часть I, Часть II, Часть III, Часть IV и Часть V.
 
 ## Source volume
 
@@ -92,8 +94,9 @@ Batch order:
    Google Doc on 2026-06-13.
 2. Часть II + Часть III: print chapters 4-9. Status: rough assembly synced to
    Google Doc on 2026-06-13.
-3. Часть IV + Часть V: print chapters 10-16. Status: next batch.
-4. Часть VI + Часть VII: print chapters 17-23.
+3. Часть IV + Часть V: print chapters 10-16. Status: rough assembly synced to
+   Google Doc on 2026-06-13.
+4. Часть VI + Часть VII: print chapters 17-23. Status: next batch.
 5. Приложения: glossary, checklists, incident/postmortem, curated sources and
    online companion.
 
@@ -155,7 +158,7 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. assemble Part IV + Part V body into the Google Doc;
+1. assemble Part VI + Part VII body into the Google Doc;
 2. update this ledger with exact chapter statuses;
 3. commit the manuscript assembly checkpoint;
 4. continue batch by batch until the Google Doc reflects book volume, not only
@@ -184,7 +187,8 @@ Notes:
   Part I.
 - Chapter 2 and Chapter 3 are rough print assemblies, not final line edits.
 - Connector readback verified the inserted headings and body paragraph placement.
-- Next batch should continue with Part IV and Part V, not publisher packet work.
+- At this checkpoint the next batch was Part IV and Part V, not publisher
+  packet work.
 
 ### 2026-06-13. Part II and Part III rough assembly
 
@@ -209,7 +213,38 @@ Notes:
 
 - This batch adds the security/control and memory/context body, not final line
   edits.
-- Google Doc status text now points to the next batch: Part IV + Part V.
+- At this checkpoint Google Doc status text pointed to the next batch:
+  Part IV + Part V.
 - Connector readback verified target document identity, inserted headings,
   final Part III paragraph and heading/body paragraph styles after a follow-up
   style normalization pass.
+
+### 2026-06-13. Part IV and Part V rough assembly
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-iv-v.md`
+
+Google Doc content added:
+
+- `Часть IV. Инструменты, выполнение и интеграция`;
+- `Глава 10. Модель выполнения и каталог инструментов`;
+- `Глава 11. Песочница выполнения и MCP как интеграционный контракт`;
+- `Глава 12. Идемпотентность, повторы, лимиты и границы отката`;
+- `Часть V. Надежность, наблюдаемость и оценки`;
+- `Глава 13. Трассы, спаны и структурированные события`;
+- `Глава 14. SLO для агентных систем`;
+- `Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы`;
+- `Глава 16. Сквозная цепочка доказательств: от запроса к rollout`.
+
+Notes:
+
+- This batch adds execution/integration and reliability/evaluation body, not
+  final line edits.
+- Long schemas, YAML examples, CLI/runtime details and full event catalogs stay
+  in online companion for now.
+- Google Doc status text now points to the next batch: Part VI + Part VII.
+- Connector readback verified target document identity, inserted headings,
+  final Chapter 16 paragraph and updated top status text.
