@@ -329,6 +329,7 @@ Credibility points to emphasize:
 
 Bio gap to fill before submission:
 
+- fill the author/platform template in `docs/publisher/ru-publisher-packet-v0.1.md`;
 - add a short human author bio with role;
 - include relevant production/engineering background;
 - include public writing or project links;
