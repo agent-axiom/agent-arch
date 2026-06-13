@@ -5,7 +5,7 @@ manuscript itself, not the publisher cover materials.
 
 ## Current reality
 
-На 2026-06-13 Google Doc **не является финальной рукописью книги**.
+На 2026-06-14 Google Doc **не является финальной рукописью книги**.
 
 Текущий Google Doc содержит:
 
@@ -14,10 +14,10 @@ manuscript itself, not the publisher cover materials.
 - compact publisher packet;
 - договорную структуру 7 частей / 23 главы;
 - служебные следующие шаги;
-- rough assembly введения;
-- rough assembly Части I: Chapter 1, Chapter 2 and Chapter 3;
-- rough assembly Части II: Chapter 4, Chapter 5 and Chapter 6;
-- rough assembly Части III: Chapter 7, Chapter 8 and Chapter 9;
+- first compression/editorial pass введения;
+- first compression/editorial pass Части I: Chapter 1, Chapter 2 and Chapter 3;
+- first compression/editorial pass Части II: Chapter 4, Chapter 5 and Chapter 6;
+- first compression/editorial pass Части III: Chapter 7, Chapter 8 and Chapter 9;
 - rough assembly Части IV: Chapter 10, Chapter 11 and Chapter 12;
 - rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16;
 - rough assembly Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
@@ -28,9 +28,9 @@ manuscript itself, not the publisher cover materials.
 Поэтому текущий Google Doc уже отражает договорный объем как rough manuscript
 snapshot: skeleton, publisher packet, введение, Часть I, Часть II, Часть III,
 Часть IV, Часть V, Часть VI, Часть VII и приложения. Это все еще не финальная
-книга: compression/editorial pass начат с введения и Части I, но остаются
-сверка ссылок, авторские поля, полный редакторский проход и издательское
-оформление.
+книга: compression/editorial pass начат с введения, Части I, Части II и
+Части III, но остаются сверка ссылок, авторские поля, полный редакторский
+проход и издательское оформление.
 
 ## Source volume
 
@@ -132,8 +132,8 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: in progress for Introduction and Part I; pending for the rest of the
-manuscript.
+Status: in progress for Introduction and Parts I-III; pending for the rest of
+the manuscript.
 
 Goal:
 
@@ -167,7 +167,7 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. continue compression/editorial pass with Part II and Part III;
+1. continue compression/editorial pass with Part IV and Part V;
 2. remove web-friction: repeated template endings, case-spine/internal labels,
    over-English headings and schema-heavy residue;
 3. commit each manuscript assembly checkpoint without pushing unless explicitly
@@ -344,3 +344,37 @@ Notes:
   policy, context boundary, tool gateway, trace evidence and rollout ownership.
 - Google Doc stale service status was updated from the old Part IV/V next step
   to the current Part II/III editorial pass.
+
+### 2026-06-14. Part II and Part III first compression/editorial pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-ii-iii.md`
+
+Google Doc content updated:
+
+- `Часть II. Безопасность и контур управления`;
+- `Глава 4. Контур безопасности и границы доверия`;
+- `Глава 5. Identity, session, policy layer и capability model`;
+- `Глава 6. Инструментальный шлюз, подтверждения и журнал аудита`;
+- `Часть III. Память, знания и контекст`;
+- `Глава 7. Зачем агенту память и почему она опасна`;
+- `Глава 8. Краткосрочная, долгосрочная и профильная память`;
+- `Глава 9. Извлечение контекста, уплотнение и фоновые обновления`.
+
+Notes:
+
+- Part II now frames agent security as a question of trust boundaries and the
+  right to convert intent into action.
+- Chapter 5 now gives Russian explanations for policy layer and capability
+  model while keeping the contract terms.
+- Chapter 6 now emphasizes the tool gateway as the central contract for turning
+  model intent into a managed side effect.
+- Part III now frames memory as durable state that requires provenance, TTL,
+  trust level, read/write policy and rollback.
+- Chapter endings were normalized from repeated `Что запомнить` to `Ключевой
+  вывод` for this batch.
+- Google Doc status text now points to the next compression/editorial batch:
+  Part IV + Part V.
