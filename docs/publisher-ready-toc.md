@@ -164,6 +164,7 @@ Current strengths:
 - includes a mini design-review checklist;
 - includes a compact platform visual summary;
 - includes an evidence model.
+- first Russian publisher line edit is applied in source and synced to the Google Doc manuscript.
 
 Structural readiness:
 
@@ -171,7 +172,7 @@ Structural readiness:
 
 Remaining before external submission:
 
-- independent copy-edit pass for print rhythm.
+- independent copy-edit pass for final print rhythm.
 
 ### Chapter 13 — strongest technical credibility sample
 
@@ -187,10 +188,12 @@ Current strengths:
 - includes calibrated judge/human-review guidance;
 - includes an evidence model;
 - includes practical maturity and post-chapter checklists.
+- first Russian publisher line edit is applied in source.
 
 Remaining before external submission:
 
-- independent copy-edit pass for print rhythm.
+- optional Google Doc sync if this technical sample is included in the first packet;
+- independent copy-edit pass for final print rhythm.
 
 ## Russian Sample Chapter Export Manifest Draft
 

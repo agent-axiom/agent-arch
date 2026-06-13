@@ -23,9 +23,10 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 - [x] Зафиксировано правило синхронизации repository -> Google Doc:
       `docs/publisher/ru-google-doc-workflow.md`.
 - [x] Chapter 1 working sample loaded into the Google Doc manuscript.
-- [ ] Терминологическая политика применена к sample chapters.
-- [ ] Chapter 1 passed Russian line edit.
-- [ ] Chapter 13 passed Russian line edit.
+- [x] Chapter 1 first Russian publisher line edit applied and synced to the Google Doc.
+- [x] Терминологическая политика применена к Chapter 1 and source Chapter 13 samples.
+- [x] Chapter 1 passed first Russian line edit.
+- [x] Source Chapter 13 passed first Russian line edit.
 - [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [ ] Author bio / credential framing is provided by the author.

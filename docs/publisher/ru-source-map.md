@@ -54,6 +54,8 @@ Companion boundary:
 - первый редакционный sample;
 - тезис всей книги;
 - вход через failure story и правило выбора формы исполнения.
+- статус: первая русская издательская line edit применена в source и
+  синхронизирована в Google Doc 2026-06-13.
 
 Companion boundary:
 
@@ -274,7 +276,7 @@ Companion boundary:
 
 - расширенные метрики и таблицы оставить online, если они мешают печатному ритму.
 
-### Глава 15. Offline/online evals и регрессионные шлюзы
+### Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы
 
 Основные источники:
 
@@ -284,11 +286,13 @@ Companion boundary:
 Роль:
 
 - второй технический sample;
-- связать eval datasets, verifier outputs, regression gates и release judgment.
+- связать наборы оценок, выводы проверяющего, регрессионные шлюзы и релизное
+  суждение;
+- статус: первая русская издательская line edit применена в source 2026-06-13.
 
 Companion boundary:
 
-- полный eval schema, datasets и validation errors оставить online.
+- полную схему оценок, наборы данных и validation errors оставить online.
 
 ### Глава 16. Сквозная цепочка доказательств: от запроса к rollout
 
