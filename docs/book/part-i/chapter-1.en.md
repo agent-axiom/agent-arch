@@ -51,7 +51,7 @@ For that reason, it is more useful to think about a safe agent system not as one
 
 This is the book's main claim in its shortest form: **agents need a platform, not magic**.
 
-Building agents is boring, but the result is staggering: the boring layers — policies, traces, approvals, idempotency, and lifecycle — turn an impressive demo into a system people can trust.
+Mature agents are built through calm engineering layers: policies, traces, approvals, idempotency, and lifecycle. Those layers turn an impressive demo into a system people can trust.
 
 ## 3. What Vikulin Framed Well, and What Is No Longer Enough
 
@@ -115,7 +115,7 @@ This is the most useful short frame to start with. It is written as standalone p
 
 ### Print-ready decision frame
 
-Start with the least dynamic shape that can safely solve the problem.
+Start with the least dynamic shape that can safely solve the problem. This frame is intentionally not a table: in PDF, print, search, and plain-text extraction, the reader should see a rule, not a fragile grid.
 
 ### Workflow
 
@@ -129,7 +129,7 @@ Use it when the system needs a constrained choice of next step or tool inside a 
 
 Use it only when the task has independent subtasks, different contexts, and different owners of the result. It is useful because it separates responsibility where the separation is real, not because it sounds more advanced.
 
-Text-only formula: known path — `workflow`; constrained next-step choice — `single-agent loop`; independent subtasks with different owners — only then `multi-agent`.
+Text-only formula: a known path means `workflow`; constrained next-step choice means `single-agent loop`; independent subtasks with different owners means `multi-agent` only after proven need.
 
 There is one more practical rule:
 

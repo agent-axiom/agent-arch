@@ -59,7 +59,7 @@ tools:
 !!! example "贯穿案例：受控的 `create_ticket`"
     在支持分诊案例里，`read_kb` 可以保持为低风险读取，但 `create_ticket` 是第一个真正的写入边界。网关应该先保存智能体的意图，校验工单参数，绑定行动者和租户上下文，按策略请求审批，然后才允许副作用真正发生。
 
-**Gateway case-spine note：**同一条边界在三个 canonical cases 中会呈现不同形态。Support triage 考验 `create_ticket` 这样的 governed writes；Internal knowledge assistant 考验 scoped reads、source visibility 和 retrieval limits；Incident coordination 考验 escalation tools、notification tools，以及谁可以声明或更新 incident state。只理解其中一种形态的 gateway 仍然太窄。
+**网关案例主线说明（Gateway case-spine note）：**同一条边界在三个规范案例（canonical cases）中会呈现不同形态。支持分诊（Support triage）考验 `create_ticket` 这样的受治理写入（governed writes）；内部知识助手（Internal knowledge assistant）考验有作用域的读取（scoped reads）、来源可见性（source visibility）和检索限制（retrieval limits）；事故协调（Incident coordination）考验升级工具（escalation tools）、通知工具（notification tools），以及谁可以声明或更新事故状态（incident state）。只理解其中一种形态的网关（gateway）仍然太窄。
 
 ### 2.1. 网关不只要知道工具，还要知道行动者
 

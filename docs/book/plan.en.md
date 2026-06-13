@@ -32,7 +32,7 @@ This page is about the structure and status of the book. If you need a reading r
 
 ### Part I. Foundations
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: when an agent is actually justified, and what a minimally mature architecture should look like if you build it not as a prompt trick, but as a system.
 
@@ -43,7 +43,7 @@ Question of the part: when an agent is actually justified, and what a minimally 
 
 ### Part II. Security Perimeter
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: where the real trust boundaries of an agent system live, and what should govern the right to act.
 
@@ -52,7 +52,7 @@ Question of the part: where the real trust boundaries of an agent system live, a
 
 ### Part III. Memory and Knowledge
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: how to make memory useful without turning it into an uncontrolled source of errors and leakage.
 
@@ -62,7 +62,7 @@ Question of the part: how to make memory useful without turning it into an uncon
 
 ### Part IV. Tools and Execution
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: how to turn tool use and execution into a governed contract rather than a chaotic collection of calls.
 
@@ -73,7 +73,7 @@ Question of the part: how to turn tool use and execution into a governed contrac
 
 ### Part V. Reliability and Observability
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: how not to guess about system behavior after the first incident, but instead capture run history, define budgets, and produce reviewable judgments.
 
@@ -84,7 +84,7 @@ Question of the part: how not to guess about system behavior after the first inc
 
 ### Part VI. Organizational Model
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: who owns the agent platform, who holds the quality bar, and how to avoid turning the organization into an agent zoo.
 
@@ -93,7 +93,7 @@ Question of the part: who owns the agent platform, who holds the quality bar, an
 
 ### Part VII. Reference Implementation
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: how to assemble runnable structure so the architectural model becomes an executable system.
 
@@ -103,7 +103,7 @@ Question of the part: how to assemble runnable structure so the architectural mo
 
 ### Part VIII. Agent System Lifecycle
 
-Status: `Published`
+Status: `RU core published; EN translation draft`
 
 Question of the part: how to live with an agent system for months, release changes, respond to failures, close old contours, and keep the whole estate under control.
 

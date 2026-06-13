@@ -5,6 +5,16 @@
 !!! info "中文本地化预览"
     中文层当前是本地化预览，而不是最终中文版。章节结构和技术内容会跟随主稿更新，但正式出版前还需要单独的中文编辑、术语表锁定、图表/表格导出 QA 和整稿母语审校。
 
+!!! info "当前发布状态"
+    三个语言层使用同一套状态模型：
+
+    - `俄文核心原稿`：八个部分已经发布，覆盖从架构基础到生命周期治理的主线。
+    - `英文层`：可阅读的编辑草稿，已经跟随俄文核心同步，但还不是独立的出版级英文版。
+    - `中文层`：可阅读的本地化预览；正式称为中文版之前，还需要中文母语编辑、术语锁定和导出质量检查。
+    - `参考层`：持续更新的伴随材料，包含模式页、检查清单、案例和运行契约。
+    - `参考运行时`：可运行的参考包，用来证明架构形状，不是生产框架。
+    - `印刷准备包`：仍在整理中；公开站点是开放书稿和伴随项目，不是最终出版社交付稿。
+
 !!! info "按稳定性来阅读本书"
     这本书有两个层次：
 
@@ -13,19 +23,19 @@
 
     如果你第一次读这本书，先走稳定内核。如果你需要最新的运营轮廓，再进入更快变化的层。
 
-!!! example "编辑线索：support-triage"
-    在当前已发布层里，support-triage 案例承担着贯穿全书的编辑线索。它把检索、工具执行、重复工单恢复、traces、SLO、评测门、ownership、运行时模块、能力策略、rollout gates、ADLC、保障、来源谱系、退役、失配控制、telemetry 和 registry 串在一起。这有助于检查全书结构没有碎成一组互不相干的主题。
+!!! example "编辑线索：支持分诊（Support triage）"
+    在当前已发布层里，支持分诊（Support triage）案例承担着贯穿全书的编辑线索。它把检索、工具执行、重复工单恢复、追踪（traces）、SLO、评测门、归属（ownership）、运行时模块、能力策略、发布门禁（rollout gates）、ADLC、保障、来源谱系、退役、失配控制、遥测（telemetry）和注册表（registry）串在一起。这有助于检查全书结构没有碎成一组互不相干的主题。
 
-!!! summary "Case-spine map"
-    本书使用三个 canonical cases，但它们承担不同角色。**Support triage** 是主线案例，用来贯穿 write capabilities、approvals、duplicate-ticket recovery 和 production lifecycle。**Internal knowledge assistant** 是辅助案例，用来承载 retrieval、memory、access control、freshness 和 knowledge provenance。**Incident coordination** 是辅助案例，用来承载 traces、SLO、assurance loop、escalation 和 post-incident learning。
+!!! summary "案例主线图（Case-spine map）"
+    本书使用三个规范案例（canonical cases），但它们承担不同角色。**支持分诊（Support triage）** 是主线案例，用来贯穿写入能力（write capabilities）、审批（approvals）、重复工单恢复（duplicate-ticket recovery）和生产生命周期（production lifecycle）。**内部知识助手（Internal knowledge assistant）** 是辅助案例，用来承载检索（retrieval）、记忆（memory）、访问控制（access control）、新鲜度（freshness）和知识来源证明（knowledge provenance）。**事故协调（Incident coordination）** 是辅助案例，用来承载追踪（traces）、SLO、保障闭环（assurance loop）、升级（escalation）和事故后学习（post-incident learning）。
 
-    当某章引入新机制时，检查它强化的是哪条 case：**Support triage** 对应 side effects，**Internal knowledge assistant** 对应 context quality，**Incident coordination** 对应 response and governance。
+    当某章引入新机制时，检查它强化的是哪条案例：**支持分诊（Support triage）** 对应副作用（side effects），**内部知识助手（Internal knowledge assistant）** 对应上下文质量（context quality），**事故协调（Incident coordination）** 对应响应和治理（response and governance）。
 
 ## 结构
 
 ### 第一部分：基础
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：什么时候智能体真的有必要，以及如果不把它做成提示技巧，而是做成系统，一个最小成熟架构应该长什么样。
 
@@ -36,7 +46,7 @@
 
 ### 第二部分：安全边界
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：智能体系统真正的 trust boundaries 在哪里，什么层应该掌控“行动的权利”。
 
@@ -45,7 +55,7 @@
 
 ### 第三部分：记忆与知识
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：怎样让记忆真正有用，同时不把它变成一个不受控的错误与泄漏来源。
 
@@ -55,7 +65,7 @@
 
 ### 第四部分：工具与执行
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：怎样把工具使用和执行变成受治理契约，而不是一堆混乱的调用。
 
@@ -66,7 +76,7 @@
 
 ### 第五部分：可靠性与可观测性
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：怎样在第一次事故之后不靠猜，而是能够捕获运行历史、定义预算，并产出可评审判断。
 
@@ -77,7 +87,7 @@
 
 ### 第六部分：组织模型
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：谁拥有智能体平台，谁守住质量门槛，以及如何避免把组织做成智能体动物园。
 
@@ -86,7 +96,7 @@
 
 ### 第七部分：参考实现
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：怎样把架构模型落成可运行结构，让它真的成为可执行系统。
 
@@ -96,7 +106,7 @@
 
 ### 第八部分：智能体系统生命周期
 
-状态：`Published`
+状态：`俄文核心已发布；中文为本地化预览`
 
 这一部分的问题是：怎样与智能体系统共处数月，发布变更、响应故障、关闭旧轮廓，并让整个系统资产保持在控制之下。
 
@@ -115,14 +125,14 @@
 1. 继续收紧入口页和第一幕。
 2. 继续压缩后半本的重叠内容，并保持章节角色分离。
 3. 在本书提出强论断的地方继续加强证据基础。
-4. 继续清理公开入口页和 sample chapters。
-5. 将 `.en` 和 `.zh` 保持为可读的 draft translation layers，并在俄文 core 出现语义修改后同步。
+4. 继续清理公开入口页和示例章节。
+5. 将英文层和中文层保持为可读的翻译草稿，并在俄文核心出现语义修改后同步。
 
 ## 已经完成的内容
 
 - 基于 MkDocs 和 Material 的站点骨架。
-- 完整的全书结构和已发布的俄文 core。
-- 仍在进行 editorial cleanup、但已经可读的 `.en` 与 `.zh` translation layers。
+- 完整的全书结构和已发布的俄文核心原稿。
+- 仍在进行编辑清理、但已经可读的英文与中文翻译层。
 - 可运行的参考运行时 `agent_runtime_ref`。
 - 覆盖追踪、评测、记忆、审批和生命周期的参考层。
 - 实战案例、策略模板、检查清单与术语表。

@@ -11,8 +11,8 @@
 
     只走完这条路线，也已经足够把系统当作工程轮廓来讨论，而不是停留在概念层面。
 
-!!! note "Part I canonical case routes"
-    在 foundations layer 中，三个 canonical cases 帮助判断是否真的需要智能体，以及哪种 architecture shape 才安全。**Support triage** 检查 workflow vs agent boundary、right to act、guarded autonomy 和 first risky write path。**Internal knowledge assistant** 检查 read-only workflow、retrieval need、memory discipline 和 source-grounded answers。**Incident coordination** 检查 coordination loop、escalation trigger、handoff boundary 和 single-agent first decision。
+!!! note "第一部分规范案例路线（Part I canonical case routes）"
+    在基础层（foundations layer）中，三个规范案例（canonical cases）帮助判断是否真的需要智能体，以及哪种架构形态（architecture shape）才安全。**支持分诊（Support triage）** 检查工作流与智能体边界（workflow vs agent boundary）、行动权（right to act）、受控自治（guarded autonomy）和第一个高风险写入路径（first risky write path）。**内部知识助手（Internal knowledge assistant）** 检查只读工作流（read-only workflow）、检索需求（retrieval need）、记忆纪律（memory discipline）和有来源支撑的回答（source-grounded answers）。**事故协调（Incident coordination）** 检查协调循环（coordination loop）、升级触发器（escalation trigger）、交接边界（handoff boundary）和先保持单智能体的判断（single-agent first decision）。
 
 ## 这一部分解决什么问题
 

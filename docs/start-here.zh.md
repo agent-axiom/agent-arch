@@ -4,7 +4,7 @@
 
 这本书是写给第二种情况的。最适合把它读成一个完整论证（single argument）：智能体系统怎样从提示堆出来的原型（prompt-heavy prototypes），长成带有信任边界（trust boundaries）、策略层（policy layer）、审批（approvals）、可观测性（observability）、评测（evals）和生命周期纪律（lifecycle discipline）的受治理系统（governed systems）。
 
-构建智能体很枯燥，但结果令人震撼：围绕信任边界（trust boundaries）、追踪（traces）、审批（approvals）和发布（rollout）建立纪律，才能把演示变成可以安全改进的系统（safely improve）。
+成熟的智能体要靠平稳的工程层来构建：信任边界（trust boundaries）、追踪（traces）、审批（approvals）和分阶段发布（staged rollout）。这种纪律才能把演示变成可以安全改进的系统。
 
 !!! info "中文本地化预览"
     这份中文版本当前定位为本地化预览：内容可用于阅读和评审，但还不是最终中文版。请优先把它看作社区预览；正式出版前还需要统一术语、母语编辑和 print/PDF 导出检查。

@@ -182,8 +182,23 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `stop_condition`
+- `verification_command`
+- `verification_result`
+- `verifier_actor`
+- `evidence_refs`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
+
+### Verifier Verdict Acceptance Criteria
+
+A verifier verdict is a contract, not a reviewer comment, only if it passes a few checks:
+
+- it has stable `verdict_id`, `verifier_id`, and `verifier_contract_version`;
+- inputs (`input_refs`) and evidence (`verifier_evidence_refs` or `evidence_refs`) point to traces, scenarios, and policy versions;
+- `process_score`, `outcome_score`, and `failure_attribution` are separate, not collapsed into one label;
+- `blocking_decision`, `comparison_baseline`, and `reviewer_override` explain whether release is blocked, warned, or allowed;
+- `stop_condition`, `verification_command`, `verification_result`, and `verifier_actor` record how run completion was checked.
 
 ## Example grading contract
 
@@ -212,6 +227,16 @@ grading_rules:
       permissions_profile: restricted-shell-network-denied
       network_secrets_posture: network:denied,secrets:none
       snapshot_policy: required_on_completion
+    blocking: true
+  - type: stop_condition_verified
+    expected:
+      stop_condition: no duplicate ticket side effect after timeout replay
+      verification_command: .venv/bin/pytest tests/test_docs_surface.py
+      verification_result: pass
+      verifier_actor: deterministic_gate
+      evidence_refs:
+        - trace:trace_123
+        - artifact:pytest-output
     blocking: true
 verifier_outputs:
   verdict_id: verdict_failed_run_timeout_2026_05
@@ -262,6 +287,7 @@ Several mistakes are very common:
 - not linking dataset items to trace evidence or incident history;
 - collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution;
 - requiring `sandbox_profile_review` in rollout, but having no grading rule that checks workspace, permissions, and snapshot/resume evidence.
+- letting the agent finish a task without `stop_condition_verified` and without evidence that can be checked after the session.
 
 That makes eval culture fragile.
 
@@ -276,6 +302,7 @@ Start with this short list and mark every "no" explicitly:
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Can you tell which verifier identity and contract version produced that grading output?
 - Is there a dedicated rule for sandbox-backed paths that checks sandbox profile contract, workspace entries, permissions, and snapshot/resume evidence?
+- Is there a rule that checks stop condition, verification command/result, verifier actor, and evidence refs before run completion is accepted?
 - Do you support multi-run sessions?
 - Do you have dataset versioning and ownership?
 
