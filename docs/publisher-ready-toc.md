@@ -85,8 +85,9 @@ English sample manifest unchanged.
 For a Russian publisher-facing packet:
 
 - use [Russian publisher packet v0.1](publisher/ru-publisher-packet-v0.1.md) as the working packet source;
+- use [Russian cover note draft](publisher/ru-cover-note-draft.md) as the first-contact email draft;
 - use `docs/book/part-i/chapter-1.md` as the primary sample source;
-- use `docs/book/part-v/chapter-13.md` as the technical credibility sample source;
+- keep `docs/book/part-v/chapter-13.md` as a follow-up technical credibility sample by request;
 - use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;
 - use [Russian source map](publisher/ru-source-map.md) to map the contract TOC to repository files;
 - use [Google Docs workflow](publisher/ru-google-doc-workflow.md) to keep Markdown as source of truth;
@@ -208,12 +209,13 @@ It keeps the sample reproducible and prevents companion-link drift.
 - source path: `docs/book/part-i/chapter-1.md`;
 - public URL: <https://agent-axiom.github.io/agent-arch/book/part-i/chapter-1/>.
 
-**Secondary technical sample:**
+**Follow-up technical sample:**
 
 - role: Chapter 13 as the technical credibility sample;
 - contract role: Russian print chapter 15;
 - source path: `docs/book/part-v/chapter-13.md`;
 - public URL: <https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/>;
+- do not include in the first packet by default;
 - send only when an editor asks for deeper eval, verifier, and rollout-gate proof.
 
 **Export metadata to include:**
