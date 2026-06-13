@@ -9,8 +9,9 @@ Status: working gate for Russian publisher submission.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
 Current status: **Not ready as a final publisher submission; Google Doc now
-contains Introduction and Parts I-VII rough assembly, but appendices, compression
-and final editorial passes are still pending.**
+contains Introduction, Parts I-VII and appendices in rough assembly form, but
+compression, line editing, cross-reference review and publisher formatting are
+still pending.**
 
 ## P0 gates before external submission
 
@@ -52,7 +53,10 @@ and final editorial passes are still pending.**
 - [x] Part VI and Part VII rough assembly source created:
       `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`.
 - [x] Part VI and Part VII rough assembly completed in Google Doc.
-- [ ] Google Doc contains the full manuscript body including appendices, not only
+- [x] Appendices rough assembly source created:
+      `docs/publisher/ru-manuscript-assembly-appendices.md`.
+- [x] Appendices rough assembly completed in Google Doc.
+- [x] Google Doc contains the full manuscript body including appendices, not only
       skeleton plus chapter rough assembly.
 - [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.

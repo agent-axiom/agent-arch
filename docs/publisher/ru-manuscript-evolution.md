@@ -5,7 +5,7 @@ manuscript itself, not the publisher cover materials.
 
 ## Current reality
 
-На 2026-06-13 Google Doc **не является полной рукописью книги**.
+На 2026-06-13 Google Doc **не является финальной рукописью книги**.
 
 Текущий Google Doc содержит:
 
@@ -21,11 +21,15 @@ manuscript itself, not the publisher cover materials.
 - rough assembly Части IV: Chapter 10, Chapter 11 and Chapter 12;
 - rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16;
 - rough assembly Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
-- rough assembly Части VII: Chapter 21, Chapter 22 and Chapter 23.
+- rough assembly Части VII: Chapter 21, Chapter 22 and Chapter 23;
+- rough assembly приложений: glossary, checklists, incident/postmortem,
+  curated sources and online companion.
 
-Поэтому текущий Google Doc уже начал набирать тело рукописи, но это все еще не
-полная книга. Это assembly snapshot: skeleton, publisher packet, введение,
-Часть I, Часть II, Часть III, Часть IV, Часть V, Часть VI и Часть VII.
+Поэтому текущий Google Doc уже отражает договорный объем как rough manuscript
+snapshot: skeleton, publisher packet, введение, Часть I, Часть II, Часть III,
+Часть IV, Часть V, Часть VI, Часть VII и приложения. Это все еще не финальная
+книга: нужны compression pass, editorial pass, сверка ссылок, авторские поля и
+издательское оформление.
 
 ## Source volume
 
@@ -81,7 +85,7 @@ Limit:
 
 ### Stage 2. Manuscript body assembly
 
-Status: active.
+Status: done for rough assembly; final manuscript quality still pending.
 
 Goal:
 
@@ -101,7 +105,7 @@ Batch order:
 4. Часть VI + Часть VII: print chapters 17-23. Status: rough assembly synced to
    Google Doc on 2026-06-13.
 5. Приложения: glossary, checklists, incident/postmortem, curated sources and
-   online companion. Status: next batch.
+   online companion. Status: rough assembly synced to Google Doc on 2026-06-13.
 
 Definition of done:
 
@@ -111,7 +115,7 @@ Definition of done:
 
 ### Stage 3. Compression from web manuscript to print manuscript
 
-Status: pending.
+Status: next.
 
 Goal:
 
@@ -161,9 +165,10 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. assemble appendices and companion-facing reference material into the Google
-   Doc where it belongs in print;
-2. start compression/editorial pass across the full 23-chapter body;
+1. start compression/editorial pass across the full 23-chapter body and
+   appendices;
+2. remove web-friction: repeated template endings, case-spine/internal labels,
+   over-English headings and schema-heavy residue;
 3. commit each manuscript assembly checkpoint without pushing unless explicitly
    requested.
 
@@ -283,3 +288,30 @@ Notes:
   compression.
 - Connector readback verified target document identity, inserted headings,
   final Chapter 23 paragraph and updated top status text.
+
+### 2026-06-13. Appendices rough assembly
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+
+Google Doc content added:
+
+- `Приложения`;
+- `Приложение 1. Глоссарий`;
+- `Приложение 2. Чеклисты`;
+- `Приложение 3. Шаблон incident/postmortem`;
+- `Приложение 4. Источники и online companion`.
+
+Notes:
+
+- This batch adds the print appendix layer, not the full online reference
+  catalog.
+- Full trace/eval/approval/policy/memory/lifecycle/change/incident schemas,
+  registry operations, long YAML examples, CLI walkthrough and source catalog
+  remain in online companion.
+- Google Doc status text now points to compression/editorial pass.
+- Connector readback verified target document identity, inserted appendix
+  headings, final companion rule paragraph and updated top status text.
