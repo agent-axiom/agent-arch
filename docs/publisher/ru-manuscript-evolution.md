@@ -133,7 +133,7 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: structural pass started; Introduction and Part I completed, deeper
+Status: structural pass started; Introduction and Parts I-III completed, deeper
 cross-reference, terminology and line edit pass still pending.
 
 Goal:
@@ -169,7 +169,7 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. continue structural editorial pass with Part II and Part III;
+1. continue structural editorial pass with Part IV and Part V;
 2. keep working/publisher service blocks outside the final manuscript body;
 3. run terminology, glossary, cross-reference and companion-boundary passes;
 4. fill author bio fields and apply БХВ styles when they arrive;
@@ -508,3 +508,30 @@ Notes:
 
 - This is a structural pass, not a full terminology or line edit.
 - Next structural batch should cover Part II and Part III.
+
+### 2026-06-14. Part II and Part III structural pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-ii-iii.md`
+
+Google Doc content updated:
+
+- top status now says Introduction and Parts I-III completed for structural
+  pass;
+- roadmap progress now marks Introduction and Parts I-III complete;
+- Part II now frames security as a route through trust boundaries rather than
+  a single model filter;
+- Part II has explicit exit criteria: trust boundary, subject, policy decision,
+  capability, approval and audit record;
+- Chapter 6 now hands off from right-to-act controls to memory and context;
+- Part III now separates memory write, retrieval and background maintenance as
+  distinct contracts;
+- Chapter 9 now hands off from context quality to tool execution and integration.
+
+Notes:
+
+- This is a structural pass, not a full terminology or line edit.
+- Next structural batch should cover Part IV and Part V.

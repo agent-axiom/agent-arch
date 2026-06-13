@@ -61,6 +61,7 @@ Definition of done:
 Progress:
 
 - 2026-06-14: Introduction and Part I completed as the first structural batch.
+- 2026-06-14: Parts II-III completed as the second structural batch.
 
 ## Workstream 3. Terminology pass
 
