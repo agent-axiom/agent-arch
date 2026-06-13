@@ -48,7 +48,7 @@ SLO 帮你定义什么叫系统健康。
 
 如果你想看一页专门把评测判断再连接回请求、策略、审批、追踪、事故和 rollout 的桥接层，可以直接使用单独的 [Evidence Spine](evidence-spine.zh.md) 页面。
 
-**Eval case-spine note：**评测集应该在三个 canonical cases 之间保持平衡。Support triage 要测试 duplicate tickets、approval gates、retries 和 side effects。Internal knowledge assistant 要测试 retrieval freshness、source attribution、memory provenance 和 access-control failures。Incident coordination 要测试 escalation timing、handoff quality、response ownership，以及 post-incident changes 是否会在下一次 rollout 前变成 regression cases。
+**评测案例主线说明（Eval case-spine note）：**评测集应该在三个规范案例（canonical cases）之间保持平衡。支持分诊（Support triage）要测试重复工单（duplicate tickets）、审批门禁（approval gates）、重试（retries）和副作用（side effects）。内部知识助手（Internal knowledge assistant）要测试检索新鲜度（retrieval freshness）、来源归因（source attribution）、记忆来源（memory provenance）和访问控制失败（access-control failures）。事故协调（Incident coordination）要测试升级时机（escalation timing）、交接质量（handoff quality）、响应归属（response ownership），以及事件后变更（post-incident changes）是否会在下一次发布（rollout）前变成回归案例（regression cases）。
 
 !!! info "需要配套的模式和工程工件？"
     如果你需要的不只是原理说明，可以直接打开 [追踪模式与事件目录](../../appendix/trace-schema.zh.md) 和 [评测数据集模式与打分契约](../../appendix/eval-schema.zh.md)。

@@ -54,7 +54,7 @@ And they need to:
 - exchange status;
 - return results not as tool payloads, but as the work product of another agent.
 
-That means `A2A` appears not where you need "one more adapter," but where real agent boundaries already exist in the system.
+That means `A2A` appears not where you need "one more adapter," but where real agent boundaries already exist in the system. The A2A specification shows this in its core model: an agent publishes an `AgentCard`, the client discovers capabilities and security requirements, and the server must authenticate requests and authorize actions under its own policy.[^a2a-spec]
 
 ### 3.1. A2A Needs Governance, Not Just a Handoff Protocol
 
@@ -107,6 +107,15 @@ a2a_trust_delegation:
 ```
 
 The artifact should be reviewed against concrete A2A failure modes: delegation laundering, context over-sharing, remote-agent impersonation, unbounded delegation chains, conflicting actions, lost accountability, and cross-agent prompt injection.
+
+Minimum acceptance criteria for A2A delegation:
+
+1. Caller and receiver agents have stable identities, owners, and roles.
+2. The `AgentCard` or equivalent discovery artifact is not the only source of trust: the platform verifies the allowed collaboration graph.
+3. Delegation is limited by task, data scope, chain depth, and lifetime.
+4. The receiving agent inherits original request constraints and does not expand authority through its own tools.
+5. Failure can be attributed to initiator, executor, policy, tool, or external environment.
+6. The trace preserves `handoff_id`, `delegation_chain`, `inter_agent_authorization`, `policy_inheritance`, and evidence links.
 
 ## 4. The Typical Mistake: Building Multi-Agent Too Early
 
@@ -244,3 +253,4 @@ If those questions are hard to answer, it is usually safer to choose `MCP` first
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 [^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
+[^a2a-spec]: [Agent2Agent Protocol, A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)

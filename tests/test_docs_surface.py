@@ -30,6 +30,25 @@ def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def test_zh_case_spine_notes_use_localized_primary_labels() -> None:
+    raw_case_spine_lead = re.compile(
+        r'(?m)^(?:!!! note\s+")?(?:\*\*)?'
+        r"(?:[A-Z][A-Za-z0-9/& -]+ case-spine note|"
+        r"Case-spine routing note|"
+        r"Part [IVX]+ canonical case routes)"
+        r'(?:：|\*\*|")'
+    )
+    offenders = []
+
+    for path in sorted((ROOT / "docs").rglob("*.zh.md")):
+        text = path.read_text(encoding="utf-8")
+        match = raw_case_spine_lead.search(text)
+        if match:
+            offenders.append(f"{path.relative_to(ROOT)}: {match.group(0)}")
+
+    assert not offenders, "\n".join(offenders)
+
+
 _RUSSIAN_EXPECTED_ALTERNATIVES = {
     "Support triage": ("Разбор обращений поддержки", "Триаж обращений поддержки"),
     "Internal knowledge assistant": ("Внутренний ассистент знаний",),
@@ -953,9 +972,12 @@ def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
         "Reference Package CLI / YAML blocks",
         "Chapter 26 telemetry lists",
         "Chapter 27 registry records",
-        "status: passed local MkDocs/search/test QA and automated browser/PDF/mobile smoke QA",
-        "desktop and mobile screenshots, plain text checks, print media emulation, and PDF export",
-        "independent human copy-edit and final print proof remain required",
+        "Chapter 1, Chapter 2, and the Reference page keep their main decision/list/layer-map blocks readable after plain text extraction",
+        "print CSS keeps tables, Mermaid wrappers, YAML/code blocks, and diagram cards",
+        "status: refreshed for Chapter 1 decision-frame prose, Chapter 2 layer-map fallback prose, Reference final rule prose, print CSS guardrails, and fallback static QA",
+        "live browser/PDF proof remains required",
+        "local tests, strict MkDocs build, static redirect artifact checks, targeted plain-text checks, and print-CSS guardrails",
+        "live browser/PDF visual proof, independent human copy-edit, and final print proof remain required",
         "not a public book page",
     )
 
@@ -969,7 +991,11 @@ def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
     scripts = mkdocs_config["extra_javascript"]
 
-    assert "javascripts/canonical-redirects.js" in scripts
+    assert "javascripts/canonical-redirects.js" not in scripts
+    assert "javascripts/mermaid-init.js" in scripts
+
+    main_override = _read("overrides/main.html")
+    assert "{{ 'javascripts/canonical-redirects.js' | url }}" in main_override
 
     redirect_script = _read("docs/javascripts/canonical-redirects.js")
     for route in (
@@ -1103,6 +1129,33 @@ def test_public_book_extensionless_fallback_redirect_pages_exist() -> None:
         assert f'<link rel="canonical" href="{target}">' in page
         assert "window.location.replace" in page
         assert "window.location.search + window.location.hash" in page
+
+
+def test_public_book_404_fallback_redirects_slashless_routes() -> None:
+    main_override = _read("overrides/main.html")
+    redirect_script = _read("docs/javascripts/canonical-redirects.js")
+
+    assert "{{ 'javascripts/canonical-redirects.js' | url }}" in main_override
+
+    for route in (
+        '"/book"',
+        '"/en/book"',
+        '"/zh/book"',
+        '"/book/part-i/chapter-1"',
+        '"/en/book/part-i/chapter-1"',
+        '"/zh/book/part-i/chapter-1"',
+        '"/book/part-iv/chapter-9"',
+        '"/en/book/part-iv/chapter-9"',
+        '"/zh/book/part-iv/chapter-9"',
+        '"/book/part-v/chapter-13"',
+        '"/en/book/part-v/chapter-13"',
+        '"/zh/book/part-v/chapter-13"',
+    ):
+        assert route in redirect_script
+
+    assert 'projectPrefix = "/agent-arch"' in redirect_script
+    assert "window.location.replace" in redirect_script
+    assert "window.location.search + window.location.hash" in redirect_script
 
 
 def _flatten_nav_labels(entries: Sequence[object]) -> list[str]:
@@ -1272,6 +1325,45 @@ def test_translated_navigation_has_no_known_russian_leaks() -> None:
         nav_targets = locales[locale]["nav_translations"].values()
         for target in nav_targets:
             assert all(fragment not in str(target) for fragment in forbidden), (locale, target)
+
+
+def test_book_plan_status_model_is_synced_across_languages() -> None:
+    russian_plan = _read("docs/book/plan.md")
+    english_plan = _read("docs/book/plan.en.md")
+    chinese_plan = _read("docs/book/plan.zh.md")
+
+    for marker in (
+        "Текущий статус публикации",
+        "`Русское ядро`",
+        "`Английский слой`",
+        "`Китайский слой`",
+        "`Печатный пакет`",
+    ):
+        assert marker in russian_plan
+
+    assert "Status: `RU core published; EN translation draft`" in english_plan
+    assert "Status: `Published`" not in english_plan
+    assert "the first chapter is published" not in english_plan
+
+    for marker in (
+        "当前发布状态",
+        "`俄文核心原稿`",
+        "`英文层`",
+        "`中文层`",
+        "状态：`俄文核心已发布；中文为本地化预览`",
+        "编辑线索：支持分诊（Support triage）",
+        "案例主线图（Case-spine map）",
+        "三个规范案例（canonical cases）",
+        "写入能力（write capabilities）",
+        "事故协调（Incident coordination）",
+    ):
+        assert marker in chinese_plan
+
+    assert "状态：`Published`" not in chinese_plan
+    assert "draft translation layers" not in chinese_plan
+    assert "sample chapters" not in chinese_plan
+    assert "support-triage 案例" not in chinese_plan
+    assert "**Support triage** 是" not in chinese_plan
 
 
 def test_part_viii_role_map_is_present_in_all_languages() -> None:
@@ -2047,6 +2139,27 @@ def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
     assert all(len(line) <= 135 for line in section.splitlines())
 
 
+def test_publisher_packet_separates_manuscript_toc_from_web_navigation() -> None:
+    text = _read("docs/publisher-ready-toc.md")
+    section = text.split("## Print Manuscript Shape", 1)[1].split(
+        "## Online Companion Boundary",
+        1,
+    )[0]
+    required_markers = (
+        "publisher-facing manuscript TOC",
+        "separate from the MkDocs",
+        "web navigation",
+        "print argument",
+        "localization layers online",
+    )
+
+    for marker in required_markers:
+        assert marker in section, marker
+
+    assert "publisher-ready TOC" not in section
+    assert "publisher-ready table of contents" not in section
+
+
 
 def test_publisher_packet_sample_candidates_are_print_friendly() -> None:
     text = _read("docs/publisher-ready-toc.md")
@@ -2147,6 +2260,8 @@ def test_publisher_packet_blocker_sections_are_print_friendly() -> None:
     )
     assert "author explicitly waives the remaining blockers." in blocker_section
     assert "until all four blockers are closed or explicitly waived" not in blocker_section
+    assert "TBD" not in blocker_section
+    assert "TBD" not in waiver_section
     assert waiver_section.count("- **") >= 6
     for marker in forbidden_inline_labels:
         assert marker not in blocker_section
@@ -2812,27 +2927,53 @@ def test_chapter_17_policy_catalog_zh_refs_are_localized() -> None:
 
 
 def test_chapter_8_execution_layer_threads_three_canonical_cases() -> None:
-    required_markers = (
-        "Execution case-spine note",
-        "Support triage",
-        "Internal knowledge assistant",
-        "Incident coordination",
-        "read tools",
-        "write tools",
-        "approval handoff",
-        "idempotency keys",
-        "retrieval tools",
-        "corpus filters",
-        "responder-role checks",
-        "timeout paths",
-    )
-    checked_files = (
-        "docs/book/part-iv/chapter-8.md",
-        "docs/book/part-iv/chapter-8.en.md",
-        "docs/book/part-iv/chapter-8.zh.md",
-    )
+    markers_by_file = {
+        "docs/book/part-iv/chapter-8.md": (
+            "Заметка о сквозных сценариях выполнения",
+            "Разбор обращений поддержки",
+            "Внутренний ассистент знаний",
+            "Координация инцидентов",
+            "инструменты чтения",
+            "инструменты записи",
+            "передачу на подтверждение",
+            "ключи идемпотентности",
+            "инструменты поиска",
+            "фильтры корпуса",
+            "проверки роли реагирующего",
+            "ветки тайм-аута",
+        ),
+        "docs/book/part-iv/chapter-8.en.md": (
+            "Execution case-spine note",
+            "Support triage",
+            "Internal knowledge assistant",
+            "Incident coordination",
+            "read tools",
+            "write tools",
+            "approval handoff",
+            "idempotency keys",
+            "retrieval tools",
+            "corpus filters",
+            "responder-role checks",
+            "timeout paths",
+        ),
+        "docs/book/part-iv/chapter-8.zh.md": (
+            "执行案例主线说明（Execution case-spine note）",
+            "支持分诊（Support triage）",
+            "内部知识助手（Internal knowledge assistant）",
+            "事故协调（Incident coordination）",
+            "读取工具",
+            "写入工具",
+            "审批交接",
+            "幂等键",
+            "检索工具",
+            "语料过滤器",
+            "响应者角色检查",
+            "超时路径",
+        ),
+    }
 
-    _assert_files_contain_all(checked_files, required_markers)
+    for path, markers in markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
 
 
 def test_chapter_9_sandbox_mcp_threads_three_canonical_cases() -> None:
@@ -3234,6 +3375,52 @@ def test_chapter_16_runtime_trace_evidence_link_is_clickable() -> None:
     chinese_text = _read("docs/book/part-vii/chapter-16.zh.md")
     assert "[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md)" in chinese_text
     assert "[trace evidence](../../appendix/trace-schema.zh.md)" not in chinese_text
+
+
+def test_chinese_chapter_16_durable_agent_section_is_localized() -> None:
+    chinese_text = _read("docs/book/part-vii/chapter-16.zh.md")
+    expected_markers = (
+        "厂商中立（vendor-neutral）",
+        "持久化智能体 actor（durable agent actor）",
+        "可恢复会话",
+        "计划唤醒",
+        "受治理存储（governed stores）",
+        "实例作用域事实（instance-scoped facts）",
+        "工作流游标（workflow cursor）",
+        "权威记录系统（system of record）",
+        "隐藏的持久记忆（hidden durable memory）",
+        "已验证知识",
+        "操作员看不到导出、审计轨迹",
+        "负责人机制和生命周期",
+        "智能体外壳 + 持久工作流主线",
+        "智能体事件循环（agent event loop）",
+        "有状态交互边界（stateful interaction boundary）",
+        "持久执行边界（durable execution boundary）",
+        "长时间审批门禁",
+    )
+    forbidden_markers = (
+        "用 vendor-neutral 的说法",
+        "稳定身份、本地持久状态、可恢复 session",
+        "scheduled wake-ups，以及到 governed stores",
+        "instance-scoped facts，例如当前 workflow cursor",
+        "UI/session preferences",
+        "user profile memory、tenant knowledge",
+        "system of record。这些数据应该属于 governed stores",
+        "anti-pattern 是 hidden durable memory",
+        "named agent 持续积累",
+        "validated knowledge 来检索",
+        "operators 看不到 export",
+        "ownership 和 lifecycle",
+        "### 8.3. Agent shell + durable workflow spine",
+        "agent event loop。Agent 可以是",
+        "用户 callbacks",
+        "long-running approval gates",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
 
 
 def test_russian_chapter_16_prefers_reader_facing_runtime_session_terms() -> None:
@@ -7359,12 +7546,24 @@ def test_chapter_1_platform_threads_three_canonical_cases() -> None:
         "notification side effects",
         "governed execution system",
     )
+    chinese_markers = (
+        "平台案例主线说明（Platform case-spine note）",
+        "支持分诊（Support triage）",
+        "内部知识助手（Internal knowledge assistant）",
+        "事故协调（Incident coordination）",
+        "平台，而不是魔法（platform, not magic）",
+        "工单写入（ticket writes）",
+        "事故还原（incident reconstruction）",
+        "检索范围（retrieval scope）",
+        "来源锚定（source grounding）",
+        "租户边界（tenant boundaries）",
+        "通知副作用",
+        "受治理的执行系统",
+    )
 
     _assert_files_contain_all(("docs/book/part-i/chapter-1.md",), localized_markers)
-    _assert_files_contain_all(
-        ("docs/book/part-i/chapter-1.en.md", "docs/book/part-i/chapter-1.zh.md"),
-        english_markers,
-    )
+    _assert_files_contain_all(("docs/book/part-i/chapter-1.en.md",), english_markers)
+    _assert_files_contain_all(("docs/book/part-i/chapter-1.zh.md",), chinese_markers)
 
 
 def test_chapter_5_memory_risk_threads_three_canonical_cases() -> None:
@@ -10434,7 +10633,9 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "Что обещает эта книга" in russian_text
     assert "После чтения ты должен уметь:" in russian_text
     assert "главный тезис: агенту нужна платформа" in russian_text
-    assert "вместо эффектного разового трюка появляется система" in russian_text
+    assert "Зрелые агенты строятся через спокойные инженерные слои" in russian_text
+    assert "границы доверия, политики, трассы" in russian_text
+    assert "Так появляется система" in russian_text
     assert "ограничивать, наблюдать, выпускать и улучшать без гадания" in russian_text
     assert "минимальный набор платформенных слоев" in russian_text
     assert "рискованным действиям" in russian_text
@@ -10453,7 +10654,9 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "读完后，你应该能够做到（learning outcomes）" in chinese_text
     assert "核心判断（main thesis）" in chinese_text
     assert "平台（platform）" in chinese_text
-    assert "一次性炫技（one-off trick）" in chinese_text
+    assert "成熟的智能体要靠平稳的工程层来构建" in chinese_text
+    assert "信任边界、策略、追踪、审批和分阶段发布" in chinese_text
+    assert "这样得到的才是一个可以约束" in chinese_text
     assert "约束（constrain）、观察（observe）、发布（ship）" in chinese_text
     assert "无需猜测地持续改进（improve without guessing）" in chinese_text
     assert "高风险动作（risky actions）" in chinese_text
@@ -10464,7 +10667,7 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
     assert "证据（evidence）" in chinese_text
     assert "操作员问责（operator accountability）" in chinese_text
 
-    forbidden_markers = (
+    russian_forbidden_markers = (
         "# Книга (book)",
         "главная входная страница (main entry page)",
         "самый короткий путь (shortest path)",
@@ -10474,6 +10677,9 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "После чтения ты должен уметь (learning outcomes)",
         "главный тезис (main thesis)",
         "платформа (platform)",
+        "Агентов строить скучно",
+        "результат ошеломляющий",
+        "эффектного разового трюка",
         "разового трюка (one-off trick)",
         "ограничивать (constrain)",
         "улучшать без гадания (improve without guessing)",
@@ -10482,6 +10688,8 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "политику (policy)",
         "доказательства (evidence)",
         "operator accountability",
+    )
+    chinese_forbidden_markers = (
         "# 书籍\n",
         "这是整本书的主入口页。",
         "最短路径进入正文",
@@ -10491,7 +10699,10 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "读完后，你应该能够：",
         "普通工作流就够了",
         "核心判断：智能体需要平台",
+        "构建智能体很枯燥",
+        "结果令人震撼",
         "一次性的炫技",
+        "一次性炫技（one-off trick）",
         "约束、观察、发布并持续改进",
         "不必靠猜",
         "最少需要哪些平台层",
@@ -10499,9 +10710,9 @@ def test_multilingual_book_index_promise_bullets_are_localized() -> None:
         "记忆、评测、来源谱系、退役",
     )
 
-    for marker in forbidden_markers[:17]:
+    for marker in russian_forbidden_markers:
         assert marker not in russian_text
-    for marker in forbidden_markers[17:]:
+    for marker in chinese_forbidden_markers:
         assert marker not in chinese_text
 
 
@@ -11589,6 +11800,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "слоем политик, согласованиями, наблюдаемостью" in russian_text
     assert "дисциплиной жизненного цикла" in russian_text
     assert "производственную агентную систему нельзя строить" in russian_text
+    assert "Зрелые агенты строятся через спокойные инженерные слои" in russian_text
+    assert "границы доверия, трассы, согласования" in russian_text
     assert "безопасно улучшать" in russian_text
     assert "маршрут чтения" in russian_text
     assert "Если читать только одно" in russian_text
@@ -11619,7 +11832,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
     assert "策略层（policy layer）" in chinese_text
     assert "生命周期纪律（lifecycle discipline）" in chinese_text
     assert "生产级智能体系统（production agent system）" in chinese_text
-    assert "安全改进的系统（safely improve）" in chinese_text
+    assert "成熟的智能体要靠平稳的工程层来构建" in chinese_text
+    assert "分阶段发布（staged rollout）" in chinese_text
+    assert "可以安全改进的系统" in chinese_text
     assert "阅读路线（reading route）" in chinese_text
     assert "如果你只读一章（read only one）" in chinese_text
     assert "最短入口（shortest entry point）" in chinese_text
@@ -11646,6 +11861,8 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "границами доверия, policy layer",
         "наблюдаемостью (observability), оценками (evals) и жизненным циклом.",
         "дисциплина вокруг trust boundaries",
+        "Агентов строить скучно",
+        "результат ошеломляющий",
         "production agent system нельзя",
         "фреймворку (framework)",
         "человеческие подтверждения, границы доступа",
@@ -11660,7 +11877,9 @@ def test_multilingual_start_here_intro_terms_are_localized() -> None:
         "读成一个完整论证：",
         "提示堆出来的原型，",
         "生命周期纪律的受治理系统。",
-        "安全改进的系统。",
+        "构建智能体很枯燥",
+        "结果令人震撼",
+        "安全改进的系统（safely improve）",
         "阅读路线。",
         "## 如果你只读一章\n",
         "# 从这里开始\n",
@@ -12002,7 +12221,10 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "наблюдаемость" in russian_text
     assert "оценка качества" in russian_text
     assert "дисциплина жизненного цикла" in russian_text
-    assert "разового трюка" in russian_text
+    assert "Зрелые агенты строятся через спокойные инженерные слои" in russian_text
+    assert "границы доверия, политики, трассы" in russian_text
+    assert "поэтапный выпуск" in russian_text
+    assert "демонстрация превращается в систему" in russian_text
     assert "ограничивать, наблюдать, выпускать" in russian_text
     assert "улучшать без гадания" in russian_text
     assert "Для кого эта книга" in russian_text
@@ -12034,7 +12256,9 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
     assert "可观测性（observability）" in chinese_text
     assert "质量评估（quality assessment）" in chinese_text
     assert "生命周期纪律（lifecycle discipline）" in chinese_text
-    assert "一次性炫技（one-off trick）" in chinese_text
+    assert "成熟的智能体要靠平稳的工程层来构建" in chinese_text
+    assert "信任边界、策略、追踪、审批和分阶段发布" in chinese_text
+    assert "演示才会变成一个可以约束" in chinese_text
     assert "约束（constrain）、观察（observe）、发布（ship）" in chinese_text
     assert "无需猜测地持续改进（improve without guessing）" in chinese_text
     assert "这本书适合谁（who this book is for）" in chinese_text
@@ -12062,6 +12286,9 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "память, подтверждения, раскатка",
         "нескольких tools",
         "Нужны явные границы доверия, policy layer",
+        "Агентов строить скучно",
+        "результат ошеломляющий",
+        "разового трюка",
         "управляемую production-систему",
         "с исполнением (execution) под контролем политик",
         "строить agent features",
@@ -12079,7 +12306,10 @@ def test_multilingual_homepage_platform_terms_are_localized() -> None:
         "长期运维尾部，",
         "几个工具就不够",
         "受控执行、可观测性、质量判断",
+        "构建智能体很枯燥",
+        "结果令人震撼",
         "一次性的炫技",
+        "一次性炫技（one-off trick）",
         "约束、观察、发布并持续改进",
         "不必靠猜",
         "## 这本书适合谁\n",
@@ -13030,6 +13260,45 @@ def test_chinese_reference_package_sandbox_profile_labels_are_localized() -> Non
         "session state，以及 snapshot/resume policy",
         "可以被 review",
     )
+    for forbidden_marker in forbidden_markers:
+        assert forbidden_marker not in chinese_text, forbidden_marker
+
+
+def test_chinese_reference_package_durable_agent_labels_are_localized() -> None:
+    chinese_text = _read("docs/appendix/reference-package.zh.md")
+    expected_markers = (
+        "持久化智能体 actor 模式（Durable agent actor）",
+        "参考运行时示例",
+        "第 16 章",
+        "稳定智能体身份（stable agent identity）",
+        "实例本地状态（instance-local state）",
+        "可恢复会话（resumable sessions）",
+        "计划唤醒（scheduled wake-ups）",
+        "受治理存储（governed stores）",
+        "工作流游标（workflow cursor）",
+        "画像记忆（profile memory）",
+        "隐藏的持久记忆（hidden durable memory）",
+        "智能体外壳 + 持久工作流主线模式",
+        "交互外壳（interaction shell）",
+        "持久审批记录",
+        "幂等键和证据引用",
+    )
+    forbidden_markers = (
+        "未来的 reference-runtime 示例",
+        "建模 Chapter 16",
+        "Runtime 不需要 vendor-specific",
+        "表达 stable agent identity",
+        "workflow cursor、per-instance queue position",
+        "Profile memory、tenant knowledge",
+        "避免 hidden durable memory",
+        "未来扩展 reference runtime",
+        "agent 不必拥有",
+        "它可以只是 interaction shell",
+        "durable workflow spine 应该拥有 steps",
+    )
+
+    for expected_marker in expected_markers:
+        assert expected_marker in chinese_text, expected_marker
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
 
@@ -14353,6 +14622,71 @@ def test_trace_schema_includes_verifier_verdict_record_fields() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_security_artifact_acceptance_criteria_are_documented() -> None:
+    expected_markers_by_file = {
+        "docs/appendix/eval-schema.md": (
+            "Критерии приемки вердикта проверяющего",
+            "stop_condition",
+            "verification_command",
+            "verification_result",
+            "verifier_actor",
+        ),
+        "docs/appendix/eval-schema.en.md": (
+            "Verifier Verdict Acceptance Criteria",
+            "stop_condition_verified",
+            "verification_command",
+            "verification_result",
+            "verifier_actor",
+        ),
+        "docs/appendix/eval-schema.zh.md": (
+            "验证器裁决验收条件",
+            "stop_condition_verified",
+            "verification_command",
+            "verification_result",
+            "verifier_actor",
+        ),
+        "docs/appendix/memory-retrieval-schema.md": (
+            "Сценарий отравления памяти: отложенная активация",
+            "write_trust_boundary: untrusted_write",
+            "policy_influence: true",
+            "memory_write_decision",
+        ),
+        "docs/appendix/memory-retrieval-schema.en.md": (
+            "Memory Poisoning Scenario: Delayed Activation",
+            "write_trust_boundary: untrusted_write",
+            "policy_influence: true",
+            "memory_write_decision",
+        ),
+        "docs/appendix/memory-retrieval-schema.zh.md": (
+            "记忆投毒场景：延迟激活",
+            "write_trust_boundary: untrusted_write",
+            "policy_influence: true",
+            "memory_write_decision",
+        ),
+        "docs/book/part-viii/chapter-26.md": (
+            "Минимальные критерии приемки управленческой телеметрии",
+            "source_signal",
+            "evidence_refs",
+            "review_deadline",
+        ),
+        "docs/book/part-viii/chapter-26.en.md": (
+            "Minimal acceptance criteria for governance-aware telemetry",
+            "source_signal",
+            "evidence_refs",
+            "review deadline",
+        ),
+        "docs/book/part-viii/chapter-26.zh.md": (
+            "治理感知遥测（governance-aware telemetry）的最低验收条件",
+            "source_signal",
+            "evidence_refs",
+            "复查期限",
+        ),
+    }
+
+    for path, markers in expected_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
 
 
 def test_eval_schema_surfaces_three_canonical_eval_cases() -> None:

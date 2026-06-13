@@ -76,7 +76,11 @@
 - [研究前沿：记忆、可观测性与多智能体（multi-agent）可靠性](appendix/research-frontier.zh.md)
 - [参考来源](appendix/sources.zh.md)
 
+## 最后规则
+
 最简单的规则是：
 
 - 用本书理解论证（argument）与顺序（sequence）；
-- 用参考层查看支撑工件（supporting artifacts）与实现细节（implementation details）。
+- 用参考层查看支撑工件（supporting artifacts）、契约和实现细节（implementation details）。
+
+如果某个参考页开始替代章节本身，就应该把材料移回正文，或明确保留为伴随项目中的实现细节。

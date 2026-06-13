@@ -95,8 +95,8 @@ manager pattern 通常在这些情况下很好用：
 - 调用多个重读取能力的内部副驾驶；
 - 专家智能体本质上更像类型化工具的场景。
 
-!!! note "Manager/handoff case-spine note"
-    manager-vs-handoff 选择会随三个 canonical cases 改变。**Support triage** 通常更适合 manager pattern，因为 approved write routine 和 ticket state 应该留在同一条 audit story 中。**Internal knowledge assistant** 在 read-heavy capabilities、source attribution 和 tenant boundary 仍可放进同一个 controlled context 时，通常也保持 manager-led。**Incident coordination** 更早需要 handoffs，因为 escalation、security investigation、remediation 和 owner record 往往会跨过不同 accountable roles。
+!!! note "管理器/交接案例主线说明（Manager/handoff case-spine note）"
+    管理器与交接（manager-vs-handoff）选择会随三个规范案例（canonical cases）改变。**支持分诊（Support triage）** 通常更适合管理器模式（manager pattern），因为已批准写入例程（approved write routine）和工单状态（ticket state）应该留在同一条审计故事（audit story）中。**内部知识助手（Internal knowledge assistant）** 在重读取能力（read-heavy capabilities）、来源归因（source attribution）和租户边界（tenant boundary）仍可放进同一个受控上下文（controlled context）时，通常也保持 manager-led。**事故协调（Incident coordination）** 更早需要交接（handoffs），因为升级（escalation）、安全调查（security investigation）、修复（remediation）和负责人记录（owner record）往往会跨过不同问责角色（accountable roles）。
 
 在这些地方，manager pattern 往往是最无聊、也最正确的答案。
 

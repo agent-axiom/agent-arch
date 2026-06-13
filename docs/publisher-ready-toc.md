@@ -95,6 +95,10 @@ the Russian manuscript as the public source/core edition.
 
 ## Print Manuscript Shape
 
+This section is the publisher-facing manuscript TOC. It is intentionally separate from the MkDocs
+web navigation: the manuscript compresses the public site into a print argument, while the web site
+keeps companion schemas, runtime details, checklists, source catalogs, and localization layers online.
+
 Target:
 
 - 6 parts;
@@ -700,7 +704,7 @@ Do not remove the blocker register; record why the exception is safe enough for 
 
 Print-friendly waiver log starter:
 
-- **Date:** TBD.
+- **Date:** 2026-06-13 editorial QA pass; no waiver recorded.
 - **Decision:** no waivers yet.
 - **Applies to blocker:** n/a.
 - **Decider:** n/a.

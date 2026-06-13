@@ -44,9 +44,9 @@
 对于同一个支持场景，这意味着模型不应该直接调用 helpdesk API 或 IAM 服务。它应该只和执行层说话。
 
 !!! example "贯穿案例：重复工单控制"
-    在 support-triage 案例里，执行层会变得非常具体。`check_access_request_status` 是带作用域的读操作，而 `create_support_ticket` 是受治理的写操作，需要 approval、idempotency、timeout handling 和 outcome telemetry。如果 helpdesk API 在创建工单后超时，运行时不能让模型简单重试；它需要一条 reconciliation path，用来证明副作用是否已经发生。
+    在支持分诊（Support triage）案例里，执行层会变得非常具体。`check_access_request_status` 是带作用域的读操作，而 `create_support_ticket` 是受治理的写操作，需要审批（approval）、幂等性（idempotency）、超时处理（timeout handling）和结果遥测（outcome telemetry）。如果 helpdesk API 在创建工单后超时，运行时不能让模型简单重试；它需要一条对账路径（reconciliation path），用来证明副作用是否已经发生。
 
-**Execution case-spine note：**execution layer 应该服务三个 canonical cases，而不只是 ticket workflow。Support triage 考验 read tools、write tools、approval handoff 和 idempotency keys。Internal knowledge assistant 考验 retrieval tools、corpus filters、source visibility，以及禁止 hidden writes。Incident coordination 考验 escalation tools、notification tools、responder-role checks，以及 side effect 可能已经发生的 timeout paths。
+**执行案例主线说明（Execution case-spine note）：**执行层（execution layer）应该服务三个规范案例（canonical cases），而不只是工单工作流（ticket workflow）。支持分诊（Support triage）考验读取工具、写入工具、审批交接和幂等键。内部知识助手（Internal knowledge assistant）考验检索工具、语料过滤器、来源可见性，以及禁止隐藏写入。事故协调（Incident coordination）考验升级工具、通知工具、响应者角色检查，以及副作用可能已经发生的超时路径。
 
 ## 3. 一个请求如何穿过执行层
 

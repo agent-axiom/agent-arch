@@ -182,8 +182,23 @@
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `stop_condition`
+- `verification_command`
+- `verification_result`
+- `verifier_actor`
+- `evidence_refs`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
+
+### 验证器裁决验收条件（Verifier verdict acceptance criteria）
+
+只有通过下面几项检查，验证器裁决才算契约，而不是评审者的一段意见：
+
+- 它有稳定的 `verdict_id`、`verifier_id` 与 `verifier_contract_version`；
+- 输入（`input_refs`）和证据（`verifier_evidence_refs` 或 `evidence_refs`）指向追踪、场景和策略版本；
+- `process_score`、`outcome_score` 与 `failure_attribution` 分开记录，而不是压成一个标签；
+- `blocking_decision`、`comparison_baseline` 与 `reviewer_override` 解释发布是阻断、警告还是放行；
+- `stop_condition`、`verification_command`、`verification_result` 与 `verifier_actor` 记录运行结束是如何被检查的。
 
 ## 打分契约示例
 
@@ -212,6 +227,16 @@ grading_rules:
       permissions_profile: restricted-shell-network-denied
       network_secrets_posture: network:denied,secrets:none
       snapshot_policy: required_on_completion
+    blocking: true
+  - type: stop_condition_verified
+    expected:
+      stop_condition: no duplicate ticket side effect after timeout replay
+      verification_command: .venv/bin/pytest tests/test_docs_surface.py
+      verification_result: pass
+      verifier_actor: deterministic_gate
+      evidence_refs:
+        - trace:trace_123
+        - artifact:pytest-output
     blocking: true
 verifier_outputs:
   verdict_id: verdict_failed_run_timeout_2026_05
@@ -262,6 +287,7 @@ verifier_outputs:
 - 不把数据集条目和追踪证据或事故历史关联起来；
 - 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因；
 - 在发布（rollout）中要求 `sandbox_profile_review`，却没有打分规则（grading rule）去检查工作区（workspace）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）。
+- 允许智能体在没有 `stop_condition_verified`、也没有会话后可检查证据的情况下结束任务。
 
 这样会让评测文化变得很脆弱。
 
@@ -276,6 +302,7 @@ verifier_outputs:
 - 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
 - 是否有专门面向由沙箱（sandbox）支撑的路径的规则，用来检查沙箱配置文件契约（sandbox profile contract）、工作区条目（workspace entries）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）？
+- 是否有规则在接受运行结束前检查停止条件、验证命令/结果、验证器角色与证据引用？
 - 支不支持多轮会话？
 - 有没有数据集版本管理和负责人？
 

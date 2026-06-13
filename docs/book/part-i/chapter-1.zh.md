@@ -30,7 +30,7 @@
 !!! example "贯穿案例"
     支持分诊故事不只是开篇例子。它是本书反复使用的实战案例之一：后面同一个形态会再次出现，只是换成信任边界、工具网关、审批、追踪、评测和发布前检查。如果你更喜欢先从具体系统读起，可以先看[实战案例](../../appendix/case-studies.zh.md)，再回到本章。
 
-**Platform case-spine note：**“platform, not magic” 这个论点从一开始就应该覆盖三个 canonical cases。Support triage 展示 retries、approvals、ticket writes 和 incident reconstruction 怎样打破 demo-only thinking。Internal knowledge assistant 展示 retrieval scope、source grounding、tenant boundaries 和 memory writes 为什么需要 platform controls。Incident coordination 展示 escalation、notification side effects、responder roles 和 rollback evidence 怎样把“聪明助手”变成 governed execution system。
+**平台案例主线说明（Platform case-spine note）：**“平台，而不是魔法（platform, not magic）”这个论点从一开始就应该覆盖三个规范案例（canonical cases）。**支持分诊（Support triage）** 展示重试（retries）、审批（approvals）、工单写入（ticket writes）和事故还原（incident reconstruction）怎样打破只适合演示的思维。**内部知识助手（Internal knowledge assistant）** 展示检索范围（retrieval scope）、来源锚定（source grounding）、租户边界（tenant boundaries）和记忆写入（memory writes）为什么需要平台控制。**事故协调（Incident coordination）** 展示升级、通知副作用、响应者角色和回滚证据，怎样把“聪明助手”变成受治理的执行系统。
 
 所以，这本书并不是真的在教你如何让一个智能体看起来神奇。它是在讨论，怎样避免这种“魔法感”在第一次重试、第一次副作用、第一次审批边界、长上下文或第一次事故面前就崩掉。
 
@@ -51,7 +51,7 @@
 
 这也是本书最短的一句主张：**智能体需要平台，而不是魔法**。
 
-构建智能体很枯燥，但结果令人震撼：正是策略、追踪、审批、幂等性和生命周期这些枯燥层，把好看的演示变成值得信任的系统。
+成熟智能体靠平稳的工程层建立：策略、追踪、审批、幂等性和生命周期。正是这些层把好看的演示变成值得信任的系统。
 
 ## 3. Vikulin 提出的问题是对的，但今天已经不够了
 
@@ -115,7 +115,7 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 ### 适合印刷的判断框架
 
-先选择能够安全解决问题、同时动态性最低的形态。
+先选择能够安全解决问题、同时动态性最低的形态。这个框架刻意不用表格表达：导出到 PDF、印刷稿、搜索索引或纯文本时，读者看到的应该是一条清楚规则，而不是脆弱的网格。
 
 ### 工作流
 
@@ -129,7 +129,7 @@ Anthropic 还有一个很实用的提醒，就是在早期阶段不要默认先�
 
 只有当任务存在独立子任务、不同上下文和不同责任边界时，才考虑 `multi-agent`。它的价值不是“听起来更先进”，而是在拆分真实存在时分离责任。
 
-文本版公式：路径已知时用 `workflow`；只需要受限选择下一步时用 `single-agent loop`；只有在独立子任务和不同 owner 都真实存在时，才用 `multi-agent`。
+文本版公式：路径已知意味着 `workflow`；只需要受限选择下一步意味着 `single-agent loop`；独立子任务和不同负责人都真实存在，才意味着可以在证明必要性之后使用 `multi-agent`。
 
 还有一条很实用的判断规则：
 

@@ -113,7 +113,7 @@ MCP удобен не потому, что это модное слово, а п
 
 ### 4.2. Матрица угроз для MCP
 
-Для MCP полезно держать [модель угроз MCP](../../appendix/trace-schema.md) не как общий страх перед интеграциями, а как проверочную матрицу у каждой подключаемой возможности. Минимальный вариант выглядит так:
+Для MCP полезно держать [модель угроз MCP](../../appendix/trace-schema.md) не как общий страх перед интеграциями, а как проверочную матрицу у каждой подключаемой возможности. Официальные материалы MCP отдельно подчеркивают запрет token passthrough, проверку областей доступа, HTTPS/SSRF-ограничения и защиту stateful-сессий; это делает матрицу не опциональным украшением, а частью авторизационного и эксплуатационного контракта.[^mcp-security][^mcp-authorization] Минимальный вариант выглядит так:
 
 - **отравление инструмента (tool poisoning)** — описание инструмента или результат пытаются изменить поведение модели; контроль: отделять результаты инструментов от инструкций и держать список разрешенных контрактов.
 - **подмена после одобрения (rug pull attack)** — ранее одобренный MCP-сервер меняет инструменты, области доступа или поведение после ревью; контроль: фиксация версии, повторная аттестация, проверка различий и быстрый путь карантина.
@@ -126,6 +126,15 @@ MCP удобен не потому, что это модное слово, а п
 - **выход из песочницы (sandbox escape)** — инструмент или адаптер выходит за пределы сетевой, файловой или процессной границы; контроль: эфемерная песочница, минимальные правила выхода во внешнюю сеть, изоляция секретов и сдерживание на уровне среды исполнения.
 
 Эта матрица нужна не для того, чтобы запретить MCP. Она нужна, чтобы у каждой точки подключения MCP был понятный ответ: какой класс угрозы она добавляет, какой контроль ее ограничивает и какой след останется в телеметрии после инцидента.
+
+Минимальные критерии приемки MCP-подключения:
+
+1. Сервер есть в утвержденном реестре, владелец и версия контракта видимы.
+2. Токен выпущен именно для MCP-сервера или его resource audience, а не проброшен вслепую из другого слоя.
+3. Области доступа ограничены конкретной операцией и не требуют широкого постоянного секрета.
+4. Изменение схемы инструмента, описания или области доступа запускает повторное ревью.
+5. Результат инструмента считается недоверенным содержимым до фильтрации и классификации.
+6. В трассе остаются `mcp_server_id`, `tool_contract_version`, `scope_review`, `quarantine_state` и ссылки на доказательства.
 
 ### 4.3. Минимальный контракт MCP-сервера
 
@@ -541,3 +550,7 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) и [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+
+[^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
+
+[^mcp-authorization]: [Model Context Protocol, Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)

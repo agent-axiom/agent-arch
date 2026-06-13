@@ -54,7 +54,7 @@
 - 交换状态；
 - 返回的不是工具载荷，而是另一个智能体的工作结果。
 
-也就是说，`A2A` 出现的前提不是“我还想再接一个适配器”，而是系统里已经存在真实的智能体边界。
+也就是说，`A2A` 出现的前提不是“我还想再接一个适配器”，而是系统里已经存在真实的智能体边界。A2A 规范本身也体现了这一点：智能体发布 `AgentCard`，客户端发现能力和安全要求，服务器必须认证请求，并按自己的策略授权动作。[^a2a-spec]
 
 ### 3.1. A2A 需要治理，不只是 handoff 协议
 
@@ -107,6 +107,15 @@ a2a_trust_delegation:
 ```
 
 这个 artifact 应该用具体的 A2A failure modes 来审查：delegation laundering、context over-sharing、remote-agent impersonation、unbounded delegation chains、conflicting actions、lost accountability 和 cross-agent prompt injection。
+
+A2A 委派的最低验收条件：
+
+1. 调用方和接收方智能体都有稳定身份、负责人和角色。
+2. `AgentCard` 或类似发现工件不是唯一信任来源：平台还要验证允许协作图。
+3. 委派受任务、数据范围、链路深度和生命周期限制。
+4. 接收方智能体继承原始请求限制，不能通过自己的工具扩大权限。
+5. 失败可以归因到发起方、执行方、策略、工具或外部环境。
+6. 追踪保留 `handoff_id`、`delegation_chain`、`inter_agent_authorization`、`policy_inheritance` 和证据链接。
 
 ## 4. 典型错误：过早做多智能体
 
@@ -187,8 +196,8 @@ flowchart LR
 - 智能体通过 `A2A` 与另一个智能体协作；
 - policy 和 audit 要覆盖这两个方向。
 
-!!! note "MCP/A2A case-spine note"
-    MCP-vs-A2A 选择在三个 canonical cases 中会呈现不同形态。**Support triage** 通常把 helpdesk、CRM 和 ticket-write tools 放在 MCP boundary 后面，只有出现单独 responsible role 时才加入 A2A。**Internal knowledge assistant** 通过 MCP 检查 knowledge server、retrieval adapter、source attribution 和 tenant boundary。**Incident coordination** 更常需要 intake、investigation、remediation 和 owner record 之间的 A2A handoff，但 notification tools 和 incident state resources 仍然要留在 MCP/policy audit 之下。
+!!! note "MCP/A2A 案例主线说明（MCP/A2A case-spine note）"
+    MCP-vs-A2A 选择在三个规范案例（canonical cases）中会呈现不同形态。**支持分诊（Support triage）** 通常把帮助台（helpdesk）、CRM 和工单写入工具（ticket-write tools）放在 MCP 边界（MCP boundary）后面，只有出现单独负责角色（responsible role）时才加入 A2A。**内部知识助手（Internal knowledge assistant）** 通过 MCP 检查知识服务器（knowledge server）、检索适配器（retrieval adapter）、来源归因（source attribution）和租户边界（tenant boundary）。**事故协调（Incident coordination）** 更常需要在接入、调查、修复和负责人记录（owner record）之间做 A2A 交接（A2A handoff），但通知工具（notification tools）和事故状态资源（incident state resources）仍然要留在 MCP/策略审计（MCP/policy audit）之下。
 
 ## 7. 什么情况下不要用 A2A
 
@@ -244,3 +253,4 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 [^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
+[^a2a-spec]: [Agent2Agent Protocol, A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)

@@ -89,7 +89,7 @@ flowchart LR
 !!! example "贯穿案例：谁来修共享层"
     重复工单事故之后，产品团队应该负责支持工作流如何回复用户、什么时候升级处理。但平台团队应该负责运行时重试策略、幂等契约、[追踪模式（trace schema）](../../appendix/trace-schema.zh.md) 和发布门，因为这些决定服务的是所有写能力场景，而不只是一个智能体。如果事故前没有明确这种分工，下一次事故又会变成一场责任归属争议。
 
-**Ownership case-spine note：**platform/product split 应该覆盖三个 canonical cases。Support triage 把 ownership 分到 product workflow、approval policy、write-capability contract 和 duplicate-ticket response。Internal knowledge assistant 把 ownership 分到 corpus ownership、retrieval policy、memory-write rules 和 access-control review。Incident coordination 把 ownership 分到 incident roles、escalation authority、notification ownership 和 post-incident change ownership，避免 platform team 变成 bottleneck，也避免 product teams 做出三套不兼容的 control planes。
+**负责人案例主线说明（Ownership case-spine note）：**平台/产品拆分（platform/product split）应该覆盖三个规范案例（canonical cases）。支持分诊（Support triage）把负责人机制（ownership）分到产品工作流（product workflow）、审批策略（approval policy）、写入能力契约（write-capability contract）和重复工单响应（duplicate-ticket response）。内部知识助手（Internal knowledge assistant）把负责人机制分到语料责任（corpus ownership）、检索策略（retrieval policy）、记忆写入规则（memory-write rules）和访问控制复核（access-control review）。事故协调（Incident coordination）把负责人机制分到事故角色（incident roles）、升级权限（escalation authority）、通知责任（notification ownership）和事件后变更责任（post-incident change ownership），避免平台团队（platform team）变成瓶颈（bottleneck），也避免产品团队（product teams）做出三套不兼容的控制平面（control planes）。
 
 ## 5. 平台应该提供黄金路径，而不是只给一堆底层零件
 
