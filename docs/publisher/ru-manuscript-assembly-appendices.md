@@ -1,6 +1,6 @@
 # Сборка рукописи: Приложения
 
-Status: rough print-manuscript assembly for Google Doc sync.
+Status: first compression/editorial pass completed for Google Doc sync.
 
 Google Doc target:
 
@@ -13,9 +13,9 @@ Source map:
 
 ## Assembly note
 
-Эта сборка закрывает следующий практический batch: приложения печатной
+Эта сборка закрывает первый редакторский проход по приложениям печатной
 рукописи. Текст намеренно не переносит все web-приложения один к одному.
-Полные схемы трасс, оценок, памяти, подтверждений, lifecycle artifacts,
+Полные схемы трасс, оценок, памяти, подтверждений, артефакты жизненного цикла,
 change/rollout gates, incident records, registry operations, reference package
 CLI walkthrough и длинный список источников остаются в online companion.
 
@@ -26,8 +26,9 @@ CLI walkthrough и длинный список источников остают
 3. форма incident/postmortem;
 4. curated source list и карта online companion.
 
-Задача batch - дать читателю рабочие опоры после прочтения книги, но не
-перегружать финал справочными схемами.
+Задача этого прохода - дать читателю рабочие опоры после прочтения книги, но
+не перегружать финал справочными схемами. Печатные приложения должны помогать
+вспомнить решение и начать ревью, а не заменять online companion.
 
 ## Body for Google Doc
 
@@ -62,8 +63,8 @@ CLI walkthrough и длинный список источников остают
 Решение политики должно попадать в трассу.
 
 **Каталог возможностей** - управляемый список capabilities: владелец, риск,
-transport, read/write mode, principal, idempotency, approval, timeout, retry,
-statefulness и lifecycle status.
+транспорт, read/write mode, principal, идемпотентность, подтверждение, timeout,
+retry, statefulness и lifecycle status.
 
 **Шлюз инструментов** - контрольная точка между reasoning layer и внешним миром.
 Он проверяет capability contract, политику, аргументы, principal, tenant boundary,
@@ -113,15 +114,15 @@ rollback/containment и доказательства из трасс.
 
 **Проверяющий** - человек, модель или гибридный контракт, который оценивает
 процесс, исход, доказательства и attribution failure. Проверяющий должен быть
-калиброван и версионирован, если от него зависит выпуск.
+калиброван и версионирован, если от него зависит решение о выпуске.
 
 **Утвержденный реестр** - управляемый список агентов, runtime templates,
 capabilities, gateways, owners, lifecycle states и deprecated paths. Реестр
 делает парк агентов подотчетным.
 
-**Вывод из эксплуатации** - закрытие права действовать. Старый агент, capability,
-principal, connector, approval path, memory write path or background route
-должен потерять возможность влиять на внешний мир.
+**Вывод из эксплуатации** - закрытие права действовать. Старый агент,
+capability, principal, connector, approval path, memory write path or background
+route должен потерять возможность влиять на внешний мир.
 
 ### Приложение 2. Чеклисты
 

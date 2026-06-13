@@ -10,9 +10,9 @@ Status: working gate for Russian publisher submission.
 
 Current status: **Not ready as a final publisher submission; Google Doc now
 contains Introduction, Parts I-VII and appendices, with the first
-compression/editorial pass applied to Introduction and Parts I-III. The
-remaining body still needs compression, line editing, cross-reference review
-and publisher formatting.**
+compression/editorial pass applied across the full contract manuscript. The
+book still needs cross-reference review, terminology polish, author fields,
+full proofread and publisher formatting.**
 
 ## P0 gates before external submission
 
@@ -63,18 +63,24 @@ and publisher formatting.**
       local assembly and synced to Google Doc.
 - [x] Part II and Part III first compression/editorial pass completed in local
       assembly and synced to Google Doc.
-- [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
-- [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
+- [x] Part IV and Part V first compression/editorial pass completed in local
+      assembly and synced to Google Doc.
+- [x] Part VI and Part VII first compression/editorial pass completed in local
+      assembly and synced to Google Doc.
+- [x] Appendices first compression/editorial pass completed in local assembly
+      and synced to Google Doc.
+- [x] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
+- [x] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
 ## P1 gates before serious editor review
 
 - [ ] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
-- [ ] Russian headings avoid unnecessary English terms.
+- [x] Russian headings avoid unnecessary English terms.
 - [ ] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
-- [ ] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
-- [ ] Dense CLI/runtime details are moved to online companion or summarized.
+- [x] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
+- [x] Dense CLI/runtime details are moved to online companion or summarized.
 - [ ] All Mermaid diagrams have print-safe fallback prose or captions.
 - [ ] Long tables and code blocks are reviewed for PDF/print readability.
 - [ ] Public companion links are stable.

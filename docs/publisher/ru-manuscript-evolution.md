@@ -18,19 +18,19 @@ manuscript itself, not the publisher cover materials.
 - first compression/editorial pass Части I: Chapter 1, Chapter 2 and Chapter 3;
 - first compression/editorial pass Части II: Chapter 4, Chapter 5 and Chapter 6;
 - first compression/editorial pass Части III: Chapter 7, Chapter 8 and Chapter 9;
-- rough assembly Части IV: Chapter 10, Chapter 11 and Chapter 12;
-- rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16;
-- rough assembly Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
-- rough assembly Части VII: Chapter 21, Chapter 22 and Chapter 23;
-- rough assembly приложений: glossary, checklists, incident/postmortem,
+- first compression/editorial pass Части IV: Chapter 10, Chapter 11 and Chapter 12;
+- first compression/editorial pass Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16;
+- first compression/editorial pass Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
+- first compression/editorial pass Части VII: Chapter 21, Chapter 22 and Chapter 23;
+- first compression/editorial pass приложений: glossary, checklists, incident/postmortem,
   curated sources and online companion.
 
-Поэтому текущий Google Doc уже отражает договорный объем как rough manuscript
-snapshot: skeleton, publisher packet, введение, Часть I, Часть II, Часть III,
-Часть IV, Часть V, Часть VI, Часть VII и приложения. Это все еще не финальная
-книга: compression/editorial pass начат с введения, Части I, Части II и
-Части III, но остаются сверка ссылок, авторские поля, полный редакторский
-проход и издательское оформление.
+Поэтому текущий Google Doc уже отражает договорный объем как manuscript
+snapshot после первого compression/editorial pass: skeleton, publisher packet,
+введение, Часть I, Часть II, Часть III, Часть IV, Часть V, Часть VI, Часть VII
+и приложения. Это все еще не финальная книга: остаются сверка ссылок,
+терминологический проход, авторские поля, углубленная line edit and publisher
+formatting.
 
 ## Source volume
 
@@ -116,7 +116,7 @@ Definition of done:
 
 ### Stage 3. Compression from web manuscript to print manuscript
 
-Status: in progress.
+Status: first-pass complete across the full contract manuscript.
 
 Goal:
 
@@ -132,8 +132,8 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: in progress for Introduction and Parts I-III; pending for the rest of
-the manuscript.
+Status: first-pass complete; deeper cross-reference, terminology and line edit
+pass still pending.
 
 Goal:
 
@@ -148,7 +148,8 @@ Definition of done:
 
 ### Stage 5. Publisher formatting and external packet
 
-Status: blocked until manuscript body exists and БХВ styles arrive.
+Status: manuscript body exists; publisher formatting is blocked until БХВ
+styles arrive and author fields are filled.
 
 Goal:
 
@@ -167,11 +168,11 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. continue compression/editorial pass with Part IV and Part V;
-2. remove web-friction: repeated template endings, case-spine/internal labels,
-   over-English headings and schema-heavy residue;
-3. commit each manuscript assembly checkpoint without pushing unless explicitly
-   requested.
+1. run a full-manuscript cross-reference and terminology pass;
+2. check that glossary, headings and chapter endings match the terminology
+   policy and do not leave accidental web-template residue;
+3. fill author bio fields and apply БХВ styles when they arrive;
+4. keep commits local unless explicitly requested to push.
 
 ## Assembly checkpoints
 
@@ -378,3 +379,85 @@ Notes:
   вывод` for this batch.
 - Google Doc status text now points to the next compression/editorial batch:
   Part IV + Part V.
+
+### 2026-06-14. Part IV and Part V first compression/editorial pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-iv-v.md`
+
+Google Doc content updated:
+
+- `Часть IV. Инструменты, выполнение и интеграция`;
+- `Глава 10. Модель выполнения и каталог инструментов`;
+- `Глава 11. Песочница выполнения и MCP как интеграционный контракт`;
+- `Глава 12. Идемпотентность, повторы, лимиты и границы отката`;
+- `Часть V. Надежность, наблюдаемость и оценки`;
+- `Глава 13. Трассы, спаны и структурированные события`;
+- `Глава 14. SLO для агентных систем`;
+- `Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы`;
+- `Глава 16. Сквозная цепочка доказательств: от запроса к rollout`.
+
+Notes:
+
+- Tool gateway, MCP, SLO, evals and evidence chain are now introduced with
+  Russian explanatory framing before retaining the technical English term.
+- Repeated chapter endings were normalized to `Ключевой вывод`.
+- Google Doc readback verified the updated top status, Part IV terminology
+  changes and absence of the old `Что запомнить` marker.
+
+### 2026-06-14. Part VI and Part VII first compression/editorial pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`
+
+Google Doc content updated:
+
+- `Часть VI. Организационная модель и жизненный цикл`;
+- `Глава 17. Платформенная команда и продуктовые команды`;
+- `Глава 18. Golden paths, общие шлюзы и борьба с агентным зоопарком`;
+- `Глава 19. От SDLC к ADLC: жизненный цикл агентной системы`;
+- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Часть VII. Эталонная реализация и промышленный запуск`;
+- `Глава 21. Базовая схема runtime`;
+- `Глава 22. Слой политик и каталог возможностей`;
+- `Глава 23. Чеклист промышленного запуска`.
+
+Notes:
+
+- Organizational vocabulary now maps golden path, assurance loop, registry and
+  retirement to explicit Russian concepts.
+- ADLC and runtime sections were tightened so the final part reads as an
+  operational launch model, not as package documentation.
+- Google Doc readback verified that the old ownership wording and old ADLC
+  wording were removed from the manuscript.
+
+### 2026-06-14. Appendices first compression/editorial pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+
+Google Doc content updated:
+
+- `Приложения`;
+- `Приложение 1. Глоссарий`;
+- `Приложение 2. Чеклисты`;
+- `Приложение 3. Шаблон incident/postmortem`;
+- `Приложение 4. Источники и online companion`.
+
+Notes:
+
+- Appendices now explicitly remain a short print companion rather than the full
+  online reference package.
+- Glossary wording was tightened around capability catalog, verifier and
+  retirement.
+- Google Doc readback verified updated appendix terminology and the final
+  companion rule paragraph.

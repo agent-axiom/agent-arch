@@ -1,6 +1,6 @@
 # Сборка рукописи: Часть VI и Часть VII
 
-Status: rough print-manuscript assembly for Google Doc sync.
+Status: first compression/editorial pass completed for Google Doc sync.
 
 Google Doc target:
 
@@ -13,18 +13,20 @@ Source map:
 
 ## Assembly note
 
-Эта сборка закрывает следующий практический batch: Часть VI и Часть VII,
-печатные главы 17-23. Текст намеренно сжимает lifecycle-heavy и
-runtime-heavy web-материал: длинные схемы изменений, incident playbook,
-registry handbook, CLI walkthrough, YAML-конфиги и полный reference package
-остаются в online companion. В печатную рукопись попадают организационная
-модель, жизненный цикл, принципы эталонной реализации и критерии промышленного
-запуска.
+Эта сборка закрывает первый редакторский проход по Части VI и Части VII,
+печатные главы 17-23. Текст намеренно сжимает web-материал о жизненном цикле
+и runtime: длинные схемы изменений, incident playbook, registry handbook,
+CLI walkthrough, YAML-конфиги и полный reference package остаются в online
+companion. В печатную рукопись попадают организационная модель, жизненный
+цикл, принципы эталонной реализации и критерии промышленного запуска.
 
 Задача batch - довести рукопись от архитектуры и evidence layer до вопроса,
 который задает зрелая организация: кто этим владеет, как это меняется, как
 агентная система проходит весь жизненный цикл и какой минимальный runtime
 достаточно хорош для первого промышленного запуска.
+Первый проход переводит организационные термины в устойчивую русскую рамку:
+golden path становится поддерживаемым стандартным путем, assurance loop -
+контуром заверения, registry - реестром, retirement - выводом из эксплуатации.
 
 ## Body for Google Doc
 
@@ -38,9 +40,10 @@ SLO, оценки и цепочка доказательств. Но даже х
 
 Шестая часть переводит разговор из инженерной схемы в операционную модель.
 Агентная платформа не должна быть ни централизованным bottleneck, ни набором
-локальных самоделок. Ей нужны platform-owned контракты, product-owned сценарии,
-golden paths, общие шлюзы, контролируемые отклонения, управление изменениями,
-assurance loop, реестр и дисциплина вывода из эксплуатации.
+локальных самоделок. Ей нужны контракты, которыми владеет платформа,
+продуктовые сценарии, поддерживаемые стандартные пути (golden paths), общие
+шлюзы, контролируемые отклонения, управление изменениями, контур заверения
+(assurance loop), реестр и дисциплина вывода из эксплуатации.
 
 Главная мысль этой части: промышленная агентная система - это не только runtime.
 Это совокупность владельцев, артефактов, правил изменения, сигналов заверения,
@@ -99,7 +102,7 @@ forks, прямой доступ к инструментам в обход gatew
 templates, стоимость добавления нового workflow, время расследования инцидента,
 число unowned deviations и скорость вывода устаревших путей.
 
-Что запомнить: платформенная команда владеет контрактами, безопасными путями
+Ключевой вывод: платформенная команда владеет контрактами, безопасными путями
 и общими механизмами контроля; продуктовая команда владеет смыслом сценария,
 качеством результата и доменной логикой. Без явного ownership агентная платформа
 становится либо bottleneck, либо набором несовместимых локальных систем.
@@ -111,11 +114,11 @@ templates, стоимость добавления нового workflow, вре
 по себе. Golden path работает только тогда, когда им проще воспользоваться,
 чем обойти.
 
-Golden path - это не advice page. Это поддерживаемый путь сборки агентного
-workflow: runtime template, policy hooks, trace and eval defaults, общий tool
-gateway, approval pattern, rollout defaults, примеры, тестовые fixtures и
-ограниченные extension points. Команда должна получить не абстрактную свободу,
-а понятную стартовую траекторию.
+Golden path - это не страница с советами. Это поддерживаемый путь сборки
+агентного workflow: runtime template, policy hooks, базовые настройки трасс и
+оценок, общий инструментальный шлюз, pattern подтверждения, rollout defaults,
+примеры, тестовые fixtures и ограниченные extension points. Команда должна
+получить не абстрактную свободу, а понятную стартовую траекторию.
 
 В агентных системах особенно опасна ситуация, когда каждая команда немного
 по-своему решает одни и те же проблемы. Один агент вызывает инструменты напрямую.
@@ -154,7 +157,7 @@ capability classes и правила deviation review, ей легче выбр�
 Если exception process долгий и непрозрачный, исключения станут неформальными.
 Платформа должна быть достаточно удобной, чтобы правильный путь был естественным.
 
-Что запомнить: golden path полезен только тогда, когда он исполнимый,
+Ключевой вывод: golden path полезен только тогда, когда он исполнимый,
 поддерживаемый и быстрее обхода. Общие шлюзы, ограниченное число templates,
 видимые deviations и registry discipline превращают рост агентных систем из
 хаоса в управляемую платформу.
@@ -166,10 +169,11 @@ capability classes и правила deviation review, ей легче выбр�
 становится недостаточным, потому что поведение агента зависит не только от
 кода.
 
-Agent Development Lifecycle, или ADLC, добавляет к обычному циклу новые
-артефакты риска: model route, system instructions, working procedures, policy
-bundles, capability contracts, retrieval corpus, memory write rules, approval
-rules, eval datasets, verifier contract, rollout gates и orchestration pattern.
+Agent Development Lifecycle, или ADLC, расширяет обычный цикл разработки
+агентным контуром. Он добавляет новые артефакты риска: model route, system
+instructions, working procedures, policy bundles, capability contracts,
+retrieval corpus, memory write rules, approval rules, eval datasets, verifier
+contract, rollout gates и orchestration pattern.
 Изменение любого из этих слоев может поменять поведение системы так же серьезно,
 как изменение исходного кода.
 
@@ -212,7 +216,7 @@ ADLC полезен не как новая бюрократия, а как яз�
 для следующего шага. Без этого агентная система меняется слишком быстро для
 обычной инженерной памяти.
 
-Что запомнить: ADLC расширяет SDLC на все артефакты, которые формируют поведение
+Ключевой вывод: ADLC расширяет SDLC на все артефакты, которые формируют поведение
 агента. Prompt, policy, retrieval, memory, capability, verifier and rollout
 changes должны считаться release-risk changes, если они меняют право видеть,
 решать или действовать.
@@ -225,11 +229,11 @@ checklist, выйти на canary, начать помогать пользов�
 инструменты, накапливаются paused runs, растет approval backlog, стареют
 контракты и появляются обходы golden path.
 
-Поэтому lifecycle должен иметь assurance loop. Evals отвечают на вопрос,
-стало лучше или хуже на измеримых сценариях. Assurance отвечает на другой
-вопрос: находится ли система в управляемом состоянии, и что делать, если нет.
-В этот контур входят adversarial testing, vulnerability management, detection,
-response, remediation and lessons learned.
+Поэтому жизненный цикл должен иметь контур заверения, или assurance loop.
+Evals отвечают на вопрос, стало лучше или хуже на измеримых сценариях.
+Assurance отвечает на другой вопрос: находится ли система в управляемом
+состоянии, и что делать, если нет. В этот контур входят adversarial testing,
+vulnerability management, detection, response, remediation and lessons learned.
 
 Adversarial testing должен проверять реальные failure modes: prompt injection,
 hidden instruction override, tool misuse, unsafe egress, approval bypass,
@@ -276,7 +280,7 @@ critical workflows, comparative evals, staged traffic shift and final switch
 после достаточных доказательств. Иначе команда рискует потерять контроль именно
 в момент, когда считает систему улучшенной.
 
-Что запомнить: зрелый lifecycle содержит не только выпуск, но и assurance loop,
+Ключевой вывод: зрелый lifecycle содержит не только выпуск, но и assurance loop,
 incident response, registry discipline and retirement. Агентная система остается
 управляемой, пока у нее есть владельцы, сигналы, действия сдерживания, следы
 доказательств и ясный способ потерять право действовать.
@@ -291,10 +295,11 @@ manual быстро устаревает и превращает книгу в �
 CLI walkthrough и конфиги в companion.
 
 Эталонная реализация здесь не является "единственно правильным фреймворком".
-Ее роль - показать, какие границы должны существовать в первом промышленном
-runtime: run coordinator, policy layer, memory access, capability execution,
-telemetry, resumable work, approvals and rollout gates. Команда может реализовать
-эти границы на другом стеке, но не должна терять сами контракты.
+Ее роль - показать, какие границы должны существовать в первой промышленной
+исполняющей среде агента: run coordinator, policy layer, memory access,
+capability execution, telemetry, resumable work, approvals and rollout gates.
+Команда может реализовать эти границы на другом стеке, но не должна терять
+сами контракты.
 
 ### Глава 21. Базовая схема runtime
 
@@ -342,7 +347,7 @@ structured outcomes, background state, approval continuation and rollout gate.
 продолжить paused run без потери контекста? Можно ли отличить retryable failure
 от side effect unknown? Если нет, runtime еще не готов быть промышленным.
 
-Что запомнить: эталонный runtime нужен не как библиотека для копирования, а
+Ключевой вывод: эталонный runtime нужен не как библиотека для копирования, а
 как минимальная карта границ. Он должен делать запуск, политику, capability
 execution, телеметрию, approval pause and background work явными объектами,
 которые можно проверять и сопровождать.
@@ -359,7 +364,7 @@ write actions, tenant boundaries, approvals, memory writes and background runs,
 запустить сценарий, можно ли читать этот контекст, можно ли вызвать эту
 capability, нужно ли подтверждение, можно ли записать в память, можно ли
 вернуть такой ответ пользователю, можно ли продолжить paused run. Он не заменяет
-reasoning, но ограничивает поле допустимых действий.
+рассуждение модели, но ограничивает поле допустимых действий.
 
 Policy decision должен быть объектом. `allow`, `deny`, `approval_required`,
 `sanitize_and_continue` and `escalate` несут разный смысл. К решению нужны
@@ -392,7 +397,7 @@ delegated approver или classifier могут быть разными субъ
 tenant, session and risk state имеют право ее вызвать. Разрешение возникает
 только после policy decision and capability contract check.
 
-Что запомнить: policy layer и capability catalog превращают агентное действие
+Ключевой вывод: policy layer и capability catalog превращают агентное действие
 из выбора модели в управляемое решение платформы. Система должна знать не
 только, какой tool существует, но и кому, когда, с каким риском, через какой
 principal и при каком подтверждении разрешено его использовать.
@@ -449,7 +454,7 @@ rollout. Нет rollback or containment action - нет rollout. Нет поня
 отдельно. Canary, shadow mode and blast radius не добавляются после запуска;
 они являются частью design.
 
-Что запомнить: промышленный запуск агента должен быть решением на доказательствах,
+Ключевой вывод: промышленный запуск агента должен быть решением на доказательствах,
 а не на календарной дате. Минимальный launch checklist проверяет runtime,
 политику, capabilities, observability, evals, approvals, operations, rollback
 and owner before rollout.
