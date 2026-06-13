@@ -87,6 +87,8 @@ For a Russian publisher-facing packet:
 - use `docs/book/part-i/chapter-1.md` as the primary sample source;
 - use `docs/book/part-v/chapter-13.md` as the technical credibility sample source;
 - use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;
+- use [Russian source map](publisher/ru-source-map.md) to map the contract TOC to repository files;
+- use [Google Docs workflow](publisher/ru-google-doc-workflow.md) to keep Markdown as source of truth;
 - use [Russian terminology policy](publisher/ru-terminology.md) before line-editing samples;
 - use [Russian submission checklist](publisher/ru-submission-checklist.md) as the pre-send gate.
 
@@ -101,47 +103,33 @@ keeps companion schemas, runtime details, checklists, source catalogs, and local
 
 Target:
 
-- 6 parts;
-- about 20 chapters;
+- Russian contract track: 7 parts;
+- 23 chapters;
+- introduction and appendices;
 - keep schemas, runtime command details, long checklists, and source catalogs in the online companion.
 
-### Part I — Why Agents Need Platforms
+### Russian Contract Track — Архитектура безопасных ИИ-агентов
 
-1. Why an Agent Needs a Platform, Not Magic
-2. Anatomy of a Production Agent System
-3. Trust Boundaries, Identity, and the Right to Act
+Use this shape for the Russian publisher manuscript until the publisher changes the
+plan-prospectus:
 
-### Part II — Context, Memory, and Retrieval
+1. Introduction
+2. Part I. From Demo Agent to Platform
+3. Part II. Safety and Control Plane
+4. Part III. Memory, Knowledge, and Context
+5. Part IV. Tools, Execution, and Integration
+6. Part V. Reliability, Observability, and Evals
+7. Part VI. Organizational Model and Lifecycle
+8. Part VII. Reference Implementation and Production Launch
+9. Appendices
 
-4. Context as a Runtime Contract
-5. Memory, Provenance, and Persistence
-6. Retrieval, Compaction, and Background Updates
+The detailed contract chapter map lives in `docs/publisher/ru-manuscript-map.md`.
 
-### Part III — Tools, Side Effects, and Execution
+### English Proposal Track
 
-7. Execution Model and Tool Catalog
-8. Sandboxes, MCP, and Integration Boundaries
-9. Retries, Idempotency, Rollback, and Failure Recovery
+Keep the older 6-part / about 20-chapter compression only for a future
+English-language proposal track. Do not use it as the Russian contract TOC.
 
-### Part IV — Reliability, Observability, and Evals
-
-10. Trace Schema and Observability for Agent Runs
-11. SLOs and Degraded-Path Evidence
-12. Offline Evals, Online Evals, and Regression Gates
-13. Behavioral and Control Evals for Agent Systems
-
-### Part V — Shipping and Operating Agents
-
-14. Production Rollout Checklist
-15. Change Review, Approval Gates, and Release Identity
-16. Incident Response and Assurance
-17. Supply Chain, Provenance, and Artifact Lineage
-
-### Part VI — Lifecycle, Governance, and Retirement
-
-18. Capability Sessions, Pause/Resume, and Expiry
-19. Registry, Ownership, and Inventory Control
-20. Retirement, Replacement, and Long-Term Accountability
 
 ## Online Companion Boundary
 
@@ -204,22 +192,24 @@ Remaining before external submission:
 
 - independent copy-edit pass for print rhythm.
 
-## Sample Chapter Export Manifest Draft
+## Russian Sample Chapter Export Manifest Draft
 
-Use this manifest when assembling the first external packet.
+Use this manifest when assembling the first Russian external packet.
 It keeps the sample reproducible and prevents companion-link drift.
 
 **Primary sample:**
 
 - role: Chapter 1 as the first editorial sample;
-- source path: `docs/book/part-i/chapter-1.en.md`;
-- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>.
+- contract role: Russian print chapter 1;
+- source path: `docs/book/part-i/chapter-1.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/book/part-i/chapter-1/>.
 
 **Secondary technical sample:**
 
 - role: Chapter 13 as the technical credibility sample;
-- source path: `docs/book/part-v/chapter-13.en.md`;
-- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>;
+- contract role: Russian print chapter 15;
+- source path: `docs/book/part-v/chapter-13.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/>;
 - send only when an editor asks for deeper eval, verifier, and rollout-gate proof.
 
 **Export metadata to include:**

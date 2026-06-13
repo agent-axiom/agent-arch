@@ -2110,12 +2110,17 @@ def test_publisher_packet_manuscript_shape_boundary_is_print_friendly() -> None:
     )[0]
     required_markers = (
         "Target:",
-        "- 6 parts;",
-        "- about 20 chapters;",
+        "- Russian contract track: 7 parts;",
+        "- 23 chapters;",
+        "- introduction and appendices;",
         (
             "- keep schemas, runtime command details, long checklists, "
             "and source catalogs in the online companion."
         ),
+        "Russian Contract Track",
+        "docs/publisher/ru-manuscript-map.md",
+        "English Proposal Track",
+        "Do not use it as the Russian contract TOC.",
         "Online Companion Boundary",
         (
             "- schema appendices for traces, eval datasets, approvals, memory, "
@@ -2658,17 +2663,19 @@ def test_publisher_packet_print_companion_split_is_print_friendly() -> None:
 
 def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
     required_markers = (
-        "Sample Chapter Export Manifest Draft",
-        "Use this manifest when assembling the first external packet.",
+        "Russian Sample Chapter Export Manifest Draft",
+        "Use this manifest when assembling the first Russian external packet.",
         "It keeps the sample reproducible and prevents companion-link drift.",
         "Primary sample",
         "role: Chapter 1 as the first editorial sample",
-        "source path: `docs/book/part-i/chapter-1.en.md`",
-        "https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/",
+        "contract role: Russian print chapter 1",
+        "source path: `docs/book/part-i/chapter-1.md`",
+        "https://agent-axiom.github.io/agent-arch/book/part-i/chapter-1/",
         "Secondary technical sample",
         "role: Chapter 13 as the technical credibility sample",
-        "source path: `docs/book/part-v/chapter-13.en.md`",
-        "https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/",
+        "contract role: Russian print chapter 15",
+        "source path: `docs/book/part-v/chapter-13.md`",
+        "https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/",
         "publisher-packet-2026-05",
         "Export metadata to include",
         "Pre-export checks",
@@ -2680,7 +2687,7 @@ def test_publisher_packet_has_sample_chapter_export_manifest() -> None:
 
 def test_publisher_packet_sample_export_manifest_is_print_friendly() -> None:
     text = _read("docs/publisher-ready-toc.md")
-    section = text.split("## Sample Chapter Export Manifest Draft", 1)[1].split(
+    section = text.split("## Russian Sample Chapter Export Manifest Draft", 1)[1].split(
         "## Sample Copy-Edit Handoff Brief Draft",
         1,
     )[0]
@@ -2699,7 +2706,7 @@ def test_publisher_packet_sample_export_manifest_is_print_friendly() -> None:
 
     for marker in forbidden_inline_labels:
         assert marker not in section
-    assert section.count("\n- ") >= 20
+    assert section.count("\n- ") >= 22
     assert all(len(line) <= 130 for line in section.splitlines())
 
 
