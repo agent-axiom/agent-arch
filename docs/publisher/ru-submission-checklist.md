@@ -8,7 +8,9 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Not ready as a final publisher submission; Google Doc is currently a skeleton plus sample, not a full manuscript.**
+Current status: **Not ready as a final publisher submission; Google Doc now
+contains Introduction and Part I rough assembly, but not the full manuscript
+body.**
 
 ## P0 gates before external submission
 
@@ -38,8 +40,11 @@ Current status: **Not ready as a final publisher submission; Google Doc is curre
 - [x] Терминологическая политика применена к Chapter 1 and source Chapter 13 samples.
 - [x] Chapter 1 passed first Russian line edit.
 - [x] Source Chapter 13 passed first Russian line edit.
+- [x] Introduction and Part I rough assembly source created:
+      `docs/publisher/ru-manuscript-assembly-part-i.md`.
+- [x] Introduction and Part I rough assembly synced to the Google Doc.
 - [ ] Google Doc contains the full manuscript body, not only skeleton plus sample.
-- [ ] Introduction and Part I rough assembly completed in Google Doc.
+- [ ] Part II and Part III rough assembly completed in Google Doc.
 - [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [ ] Author bio / credential framing fields are filled by the author.

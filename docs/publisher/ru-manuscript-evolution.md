@@ -14,10 +14,12 @@ manuscript itself, not the publisher cover materials.
 - compact publisher packet;
 - договорную структуру 7 частей / 23 главы;
 - служебные следующие шаги;
-- полный редакционный sample Chapter 1.
+- rough assembly введения;
+- rough assembly Части I: Chapter 1, Chapter 2 and Chapter 3.
 
-Поэтому наблюдаемые 13 страниц в Google Doc - это не объем книги, а текущий
-assembly snapshot: skeleton plus one sample chapter.
+Поэтому текущий Google Doc уже начал набирать тело рукописи, но это все еще не
+полная книга. Это assembly snapshot: skeleton, publisher packet, введение и
+первая содержательная партия Части I.
 
 ## Source volume
 
@@ -73,7 +75,7 @@ Limit:
 
 ### Stage 2. Manuscript body assembly
 
-Status: next active stage.
+Status: active.
 
 Goal:
 
@@ -84,8 +86,9 @@ Goal:
 
 Batch order:
 
-1. Введение + Часть I: print chapters 1-3.
-2. Часть II + Часть III: print chapters 4-9.
+1. Введение + Часть I: print chapters 1-3. Status: rough assembly synced to
+   Google Doc on 2026-06-13.
+2. Часть II + Часть III: print chapters 4-9. Status: next batch.
 3. Часть IV + Часть V: print chapters 10-16.
 4. Часть VI + Часть VII: print chapters 17-23.
 5. Приложения: glossary, checklists, incident/postmortem, curated sources and
@@ -149,8 +152,33 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. assemble the Introduction and Part I body into the Google Doc;
+1. assemble Part II + Part III body into the Google Doc;
 2. update this ledger with exact chapter statuses;
 3. commit the manuscript assembly checkpoint;
 4. continue batch by batch until the Google Doc reflects book volume, not only
    a sample package.
+
+## Assembly checkpoints
+
+### 2026-06-13. Introduction and Part I rough assembly
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-i.md`
+
+Google Doc content added:
+
+- `Введение. Зачем эта книга нужна`;
+- `Часть I. От demo-агента к платформе`;
+- `Глава 2. Когда нужен агент: workflow, single-agent, multi-agent`;
+- `Глава 3. Референсная архитектура безопасной агентной системы`.
+
+Notes:
+
+- Chapter 1 was already present as the edited sample and remains the anchor of
+  Part I.
+- Chapter 2 and Chapter 3 are rough print assemblies, not final line edits.
+- Connector readback verified the inserted headings and body paragraph placement.
+- Next batch should start with Part II and Part III, not publisher packet work.
