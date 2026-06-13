@@ -84,6 +84,7 @@ English sample manifest unchanged.
 
 For a Russian publisher-facing packet:
 
+- use [Russian publisher packet v0.1](publisher/ru-publisher-packet-v0.1.md) as the working packet source;
 - use `docs/book/part-i/chapter-1.md` as the primary sample source;
 - use `docs/book/part-v/chapter-13.md` as the technical credibility sample source;
 - use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;

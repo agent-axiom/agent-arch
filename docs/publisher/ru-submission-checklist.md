@@ -22,6 +22,9 @@ Current status: **Not ready as a final publisher submission; strong enough for i
       `docs/publisher/ru-source-map.md`.
 - [x] Зафиксировано правило синхронизации repository -> Google Doc:
       `docs/publisher/ru-google-doc-workflow.md`.
+- [x] Publisher-facing packet v0.1 drafted:
+      `docs/publisher/ru-publisher-packet-v0.1.md`.
+- [x] Publisher-facing packet v0.1 compact block synced to the Google Doc.
 - [x] Chapter 1 working sample loaded into the Google Doc manuscript.
 - [x] Chapter 1 first Russian publisher line edit applied and synced to the Google Doc.
 - [x] Терминологическая политика применена к Chapter 1 and source Chapter 13 samples.
@@ -67,6 +70,10 @@ Include:
 6. Companion-site description.
 7. Author bio and platform note.
 8. Status note: public web manuscript exists; publisher manuscript is being assembled from it.
+
+Working packet source:
+
+- `docs/publisher/ru-publisher-packet-v0.1.md`
 
 Do not include:
 
