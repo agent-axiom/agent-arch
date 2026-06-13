@@ -17,13 +17,15 @@ manuscript itself, not the publisher cover materials.
 - rough assembly введения;
 - rough assembly Части I: Chapter 1, Chapter 2 and Chapter 3;
 - rough assembly Части II: Chapter 4, Chapter 5 and Chapter 6;
-- rough assembly Части III: Chapter 7, Chapter 8 and Chapter 9.
+- rough assembly Части III: Chapter 7, Chapter 8 and Chapter 9;
 - rough assembly Части IV: Chapter 10, Chapter 11 and Chapter 12;
-- rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16.
+- rough assembly Части V: Chapter 13, Chapter 14, Chapter 15 and Chapter 16;
+- rough assembly Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
+- rough assembly Части VII: Chapter 21, Chapter 22 and Chapter 23.
 
 Поэтому текущий Google Doc уже начал набирать тело рукописи, но это все еще не
 полная книга. Это assembly snapshot: skeleton, publisher packet, введение,
-Часть I, Часть II, Часть III, Часть IV и Часть V.
+Часть I, Часть II, Часть III, Часть IV, Часть V, Часть VI и Часть VII.
 
 ## Source volume
 
@@ -96,9 +98,10 @@ Batch order:
    Google Doc on 2026-06-13.
 3. Часть IV + Часть V: print chapters 10-16. Status: rough assembly synced to
    Google Doc on 2026-06-13.
-4. Часть VI + Часть VII: print chapters 17-23. Status: next batch.
+4. Часть VI + Часть VII: print chapters 17-23. Status: rough assembly synced to
+   Google Doc on 2026-06-13.
 5. Приложения: glossary, checklists, incident/postmortem, curated sources and
-   online companion.
+   online companion. Status: next batch.
 
 Definition of done:
 
@@ -158,11 +161,11 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. assemble Part VI + Part VII body into the Google Doc;
-2. update this ledger with exact chapter statuses;
-3. commit the manuscript assembly checkpoint;
-4. continue batch by batch until the Google Doc reflects book volume, not only
-   a sample package.
+1. assemble appendices and companion-facing reference material into the Google
+   Doc where it belongs in print;
+2. start compression/editorial pass across the full 23-chapter body;
+3. commit each manuscript assembly checkpoint without pushing unless explicitly
+   requested.
 
 ## Assembly checkpoints
 
@@ -248,3 +251,35 @@ Notes:
 - Google Doc status text now points to the next batch: Part VI + Part VII.
 - Connector readback verified target document identity, inserted headings,
   final Chapter 16 paragraph and updated top status text.
+
+### 2026-06-13. Part VI and Part VII rough assembly
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`
+
+Google Doc content added:
+
+- `Часть VI. Организационная модель и жизненный цикл`;
+- `Глава 17. Платформенная команда и продуктовые команды`;
+- `Глава 18. Golden paths, общие шлюзы и борьба с агентным зоопарком`;
+- `Глава 19. От SDLC к ADLC: жизненный цикл агентной системы`;
+- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Часть VII. Эталонная реализация и промышленный запуск`;
+- `Глава 21. Базовая схема runtime`;
+- `Глава 22. Слой политик и каталог возможностей`;
+- `Глава 23. Чеклист промышленного запуска`.
+
+Notes:
+
+- This batch adds organizational/lifecycle and reference implementation/launch
+  body, not final line edits.
+- Late lifecycle web material is compressed into print Chapter 20; full incident
+  playbooks, registry operations, schemas and long checklists remain in online
+  companion for now.
+- Google Doc status text now points to the next batch: appendices and editorial
+  compression.
+- Connector readback verified target document identity, inserted headings,
+  final Chapter 23 paragraph and updated top status text.
