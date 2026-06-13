@@ -28,8 +28,9 @@ manuscript itself, not the publisher cover materials.
 Поэтому текущий Google Doc уже отражает договорный объем как rough manuscript
 snapshot: skeleton, publisher packet, введение, Часть I, Часть II, Часть III,
 Часть IV, Часть V, Часть VI, Часть VII и приложения. Это все еще не финальная
-книга: нужны compression pass, editorial pass, сверка ссылок, авторские поля и
-издательское оформление.
+книга: compression/editorial pass начат с введения и Части I, но остаются
+сверка ссылок, авторские поля, полный редакторский проход и издательское
+оформление.
 
 ## Source volume
 
@@ -115,7 +116,7 @@ Definition of done:
 
 ### Stage 3. Compression from web manuscript to print manuscript
 
-Status: next.
+Status: in progress.
 
 Goal:
 
@@ -131,7 +132,8 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: pending.
+Status: in progress for Introduction and Part I; pending for the rest of the
+manuscript.
 
 Goal:
 
@@ -165,8 +167,7 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. start compression/editorial pass across the full 23-chapter body and
-   appendices;
+1. continue compression/editorial pass with Part II and Part III;
 2. remove web-friction: repeated template endings, case-spine/internal labels,
    over-English headings and schema-heavy residue;
 3. commit each manuscript assembly checkpoint without pushing unless explicitly
@@ -315,3 +316,31 @@ Notes:
 - Google Doc status text now points to compression/editorial pass.
 - Connector readback verified target document identity, inserted appendix
   headings, final companion rule paragraph and updated top status text.
+
+### 2026-06-13. Introduction and Part I first compression/editorial pass
+
+Status: synced to Google Doc.
+
+Local assembly source:
+
+- `docs/publisher/ru-manuscript-assembly-part-i.md`
+
+Google Doc content updated:
+
+- `Введение. Зачем эта книга нужна`;
+- `Часть I. От demo-агента к платформе` bridge;
+- `Глава 2. Когда нужен агент: workflow, single-agent, multi-agent`;
+- `Глава 3. Референсная архитектура безопасной агентной системы`.
+
+Notes:
+
+- Chapter 1 was preserved as the previously edited sample and was not
+  overwritten.
+- Introduction now explains book/companion split, audience and production-agent
+  framing more directly.
+- Chapter 2 now reads as a decision ladder from direct model calls to workflow,
+  single-agent loops, coordinator patterns and explicit handoff.
+- Chapter 3 now emphasizes failure-oriented architecture checks: identity,
+  policy, context boundary, tool gateway, trace evidence and rollout ownership.
+- Google Doc stale service status was updated from the old Part IV/V next step
+  to the current Part II/III editorial pass.

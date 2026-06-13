@@ -24,9 +24,10 @@ Google Doc является рабочей издательской рукопи
   синхронизации в репозиторий.
 
 Текущий Google Doc snapshot может быть неполным. На 2026-06-13 он содержит
-skeleton, publisher packet, rough assembly введения, Частей I-VII и приложений,
-но еще не финальную рукопись с compression pass, cross-reference review,
-издательским line edit и БХВ-оформлением.
+skeleton, publisher packet, rough assembly Частей II-VII и приложений, а также
+первый compression/editorial pass введения и Части I. Это еще не финальная
+рукопись: остаются полный compression/editorial pass, cross-reference review,
+издательский line edit и БХВ-оформление.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`
