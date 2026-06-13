@@ -66,6 +66,7 @@ Evidence:
 - `docs/publisher/ru-manuscript-map.md`;
 - `docs/publisher/ru-source-map.md`;
 - `docs/publisher/ru-google-doc-workflow.md`.
+- `docs/publisher/ru-editorial-roadmap.md`.
 
 ### Stage 1. Google Doc skeleton and first sample
 
@@ -168,11 +169,12 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. run a full-manuscript cross-reference and terminology pass;
-2. check that glossary, headings and chapter endings match the terminology
-   policy and do not leave accidental web-template residue;
-3. fill author bio fields and apply БХВ styles when they arrive;
-4. keep commits local unless explicitly requested to push.
+1. separate working/publisher service blocks from the manuscript body in the
+   Google Doc;
+2. run structural editorial pass by parts;
+3. run terminology, glossary, cross-reference and companion-boundary passes;
+4. fill author bio fields and apply БХВ styles when they arrive;
+5. keep commits local unless explicitly requested to push.
 
 ## Assembly checkpoints
 
@@ -461,3 +463,25 @@ Notes:
   retirement.
 - Google Doc readback verified updated appendix terminology and the final
   companion rule paragraph.
+
+### 2026-06-14. High-level editorial roadmap
+
+Status: roadmap created and synced to Google Doc as a working editorial block.
+
+Local source:
+
+- `docs/publisher/ru-editorial-roadmap.md`
+
+Google Doc content updated:
+
+- top status now points to structural, terminology, cross-reference and
+  companion-boundary passes;
+- service/front-matter area is explicitly marked as not part of the final
+  manuscript delivery;
+- a working editorial roadmap was added before the manuscript structure/body.
+
+Notes:
+
+- This is not a line edit. It is the high-level plan for the remaining
+  publisher-prep work after the full first compression/editorial pass.
+- БХВ formatting and DOCX/export QA remain blocked until style files arrive.

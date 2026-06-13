@@ -26,6 +26,8 @@ full proofread and publisher formatting.**
       `docs/publisher/ru-source-map.md`.
 - [x] Есть ledger эволюции рукописи:
       `docs/publisher/ru-manuscript-evolution.md`.
+- [x] Есть верхнеуровневая редакционная дорожная карта:
+      `docs/publisher/ru-editorial-roadmap.md`.
 - [x] Зафиксировано правило синхронизации repository -> Google Doc:
       `docs/publisher/ru-google-doc-workflow.md`.
 - [x] Publisher-facing packet v0.1 drafted:
@@ -71,11 +73,15 @@ full proofread and publisher formatting.**
       and synced to Google Doc.
 - [x] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [x] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
+- [x] High-level roadmap for structural, terminology, cross-reference and
+      companion-boundary passes is created.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
 ## P1 gates before serious editor review
 
+- [ ] Working/publisher service blocks are separated from manuscript body for
+      final delivery.
 - [ ] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
 - [ ] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
