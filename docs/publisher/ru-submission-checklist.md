@@ -25,6 +25,8 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 - [x] Publisher-facing packet v0.1 drafted:
       `docs/publisher/ru-publisher-packet-v0.1.md`.
 - [x] Publisher-facing packet v0.1 compact block synced to the Google Doc.
+- [x] Author/platform note template with fill-in fields added to packet v0.1.
+- [x] Author/platform note compact template synced to the Google Doc.
 - [x] Chapter 1 working sample loaded into the Google Doc manuscript.
 - [x] Chapter 1 first Russian publisher line edit applied and synced to the Google Doc.
 - [x] Терминологическая политика применена к Chapter 1 and source Chapter 13 samples.
@@ -32,7 +34,7 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 - [x] Source Chapter 13 passed first Russian line edit.
 - [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
-- [ ] Author bio / credential framing is provided by the author.
+- [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
 ## P1 gates before serious editor review
@@ -70,6 +72,12 @@ Include:
 6. Companion-site description.
 7. Author bio and platform note.
 8. Status note: public web manuscript exists; publisher manuscript is being assembled from it.
+
+Before sending:
+
+- fill every `[заполнить]` field in `docs/publisher/ru-publisher-packet-v0.1.md`;
+- replace the cover-note author placeholder with the final short author line;
+- decide whether Chapter 13 is included or only held as a follow-up technical sample.
 
 Working packet source:
 
