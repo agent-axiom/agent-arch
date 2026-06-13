@@ -8,7 +8,7 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Not ready as a final publisher submission; strong enough for internal editorial packaging.**
+Current status: **Not ready as a final publisher submission; Google Doc is currently a skeleton plus sample, not a full manuscript.**
 
 ## P0 gates before external submission
 
@@ -20,6 +20,8 @@ Current status: **Not ready as a final publisher submission; strong enough for i
       `docs/publisher/ru-manuscript-map.md`.
 - [x] Есть source map от договорной структуры к Markdown-источникам:
       `docs/publisher/ru-source-map.md`.
+- [x] Есть ledger эволюции рукописи:
+      `docs/publisher/ru-manuscript-evolution.md`.
 - [x] Зафиксировано правило синхронизации repository -> Google Doc:
       `docs/publisher/ru-google-doc-workflow.md`.
 - [x] Publisher-facing packet v0.1 drafted:
@@ -36,6 +38,8 @@ Current status: **Not ready as a final publisher submission; strong enough for i
 - [x] Терминологическая политика применена к Chapter 1 and source Chapter 13 samples.
 - [x] Chapter 1 passed first Russian line edit.
 - [x] Source Chapter 13 passed first Russian line edit.
+- [ ] Google Doc contains the full manuscript body, not only skeleton plus sample.
+- [ ] Introduction and Part I rough assembly completed in Google Doc.
 - [ ] Текущая web-структура 8/27 сжата в договорную структуру 7/23.
 - [ ] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [ ] Author bio / credential framing fields are filled by the author.
@@ -80,6 +84,7 @@ Include:
 
 Before sending:
 
+- do not use the external cover note until the Google Doc shows manuscript volume;
 - fill every `[заполнить]` field in `docs/publisher/ru-publisher-packet-v0.1.md`;
 - replace the cover-note author placeholder with the final short author line;
 - keep Chapter 13 out of the first packet unless the editor explicitly asks for technical depth;

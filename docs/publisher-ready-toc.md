@@ -86,6 +86,8 @@ For a Russian publisher-facing packet:
 
 - use [Russian publisher packet v0.1](publisher/ru-publisher-packet-v0.1.md) as the working packet source;
 - use [Russian cover note draft](publisher/ru-cover-note-draft.md) as the first-contact email draft;
+- use [Russian manuscript evolution ledger](publisher/ru-manuscript-evolution.md) to distinguish source
+  volume from the current Google Doc snapshot;
 - use `docs/book/part-i/chapter-1.md` as the primary sample source;
 - keep `docs/book/part-v/chapter-13.md` as a follow-up technical credibility sample by request;
 - use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;
