@@ -63,6 +63,8 @@ Progress:
 - 2026-06-14: Introduction and Part I completed as the first structural batch.
 - 2026-06-14: Parts II-III completed as the second structural batch.
 - 2026-06-14: Parts IV-V completed as the third structural batch.
+- 2026-06-14: Parts VI-VII and appendices completed; first full structural
+  pass across the manuscript is complete.
 
 ## Workstream 3. Terminology pass
 

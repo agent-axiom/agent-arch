@@ -79,6 +79,8 @@ full proofread and publisher formatting.**
       Doc.
 - [x] Part II and Part III structural pass completed and synced to Google Doc.
 - [x] Part IV and Part V structural pass completed and synced to Google Doc.
+- [x] Part VI, Part VII and appendices structural pass completed and synced to
+      Google Doc.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 
@@ -86,7 +88,7 @@ full proofread and publisher formatting.**
 
 - [ ] Working/publisher service blocks are separated from manuscript body for
       final delivery.
-- [ ] Structural editorial pass is complete across all parts.
+- [x] Structural editorial pass is complete across all parts.
 - [ ] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
 - [ ] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.

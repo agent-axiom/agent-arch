@@ -133,7 +133,7 @@ Definition of done:
 
 ### Stage 4. Editorial pass
 
-Status: structural pass started; Introduction and Parts I-V completed, deeper
+Status: structural pass completed across the full manuscript; deeper
 cross-reference, terminology and line edit pass still pending.
 
 Goal:
@@ -169,10 +169,10 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. continue structural editorial pass with Part VI, Part VII and appendices;
+1. run terminology, glossary, cross-reference and companion-boundary passes;
 2. keep working/publisher service blocks outside the final manuscript body;
-3. run terminology, glossary, cross-reference and companion-boundary passes;
-4. fill author bio fields and apply БХВ styles when they arrive;
+3. fill author bio fields and apply БХВ styles when they arrive;
+4. prepare print/readability QA only after style files and export shape are clear;
 5. keep commits local unless explicitly requested to push.
 
 ## Assembly checkpoints
@@ -562,3 +562,30 @@ Notes:
 
 - This is a structural pass, not a full terminology or line edit.
 - Next structural batch should cover Part VI, Part VII and appendices.
+
+### 2026-06-14. Part VI, Part VII and appendices structural pass
+
+Status: synced to Google Doc.
+
+Local assembly sources:
+
+- `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+
+Google Doc content updated:
+
+- `Часть VI. Организационная модель и жизненный цикл`;
+- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Часть VII. Эталонная реализация и промышленный запуск`;
+- `Глава 23. Чеклист промышленного запуска`;
+- `Приложения`;
+- `Приложение 4. Источники и online companion`.
+
+Notes:
+
+- Added exit criteria for Part VI and Part VII.
+- Added the bridge from organizational lifecycle to reference runtime.
+- Added appendix framing and final manuscript closure.
+- This checkpoint completes the first structural pass across the whole
+  manuscript. Remaining work is terminology, glossary alignment,
+  cross-references, companion-boundary and later publisher styling.
