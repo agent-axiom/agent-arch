@@ -83,6 +83,7 @@ full proofread and publisher formatting.**
       Google Doc.
 - [x] First terminology/glossary anchor batch completed for Part VI, Part VII
       and appendices.
+- [x] Second terminology anchor batch completed for Introduction and Parts I-V.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 

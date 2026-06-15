@@ -93,6 +93,10 @@ Progress:
   `capability`, `principal`, `tenant`, `lifecycle`, `inventory`,
   `assurance loop`, `runtime`, `registry` and `retirement` in Part VI,
   Part VII and appendices.
+- 2026-06-15: second terminology anchor batch completed for reader-facing
+  `runtime`, `workflow`, `policy layer`, `tool gateway`, `capability model`,
+  `rollout`, `trace` and `evidence chain` anchors in Introduction and
+  Parts I-V.
 
 ## Workstream 4. Cross-reference and continuity pass
 

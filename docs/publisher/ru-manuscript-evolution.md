@@ -613,3 +613,28 @@ Notes:
 - This is not the full terminology pass across the whole manuscript.
 - Remaining terminology work should continue through Parts I-V, then verify
   glossary consistency, cross-references and companion-boundary language.
+
+### 2026-06-15. Second terminology anchor batch
+
+Status: synced to Google Doc.
+
+Local sources updated:
+
+- `docs/publisher/ru-manuscript-assembly-part-i.md`
+- `docs/publisher/ru-manuscript-assembly-part-ii-iii.md`
+- `docs/publisher/ru-manuscript-assembly-part-iv-v.md`
+
+Google Doc content updated:
+
+- Introduction and Part I now prefer Russian-first forms for environment,
+  workflow, policy layer, tool gateway, rollout gates and trace;
+- Parts II-III now prefer Russian-first forms for identity, session, policy
+  layer, capability model, tool gateway and audit record;
+- Parts IV-V now prefer Russian-first forms for execution layer, tool gateway,
+  trace, span, rollout decision and evidence chain.
+
+Notes:
+
+- English lookup terms remain at first explanation or in field/code names.
+- Remaining terminology work should verify consistency chapter-by-chapter and
+  then move into cross-reference and companion-boundary passes.
