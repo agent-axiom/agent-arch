@@ -87,6 +87,13 @@ Definition of done:
 - headings avoid English unless the term is essential for industry lookup;
 - terms are consistent across introduction, chapters and appendices.
 
+Progress:
+
+- 2026-06-14: first terminology/glossary anchor batch completed for
+  `capability`, `principal`, `tenant`, `lifecycle`, `inventory`,
+  `assurance loop`, `runtime`, `registry` and `retirement` in Part VI,
+  Part VII and appendices.
+
 ## Workstream 4. Cross-reference and continuity pass
 
 Задача: проверить внутренние связи после сжатия web-структуры 8/27 в печатную

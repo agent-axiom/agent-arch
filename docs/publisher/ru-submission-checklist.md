@@ -81,6 +81,8 @@ full proofread and publisher formatting.**
 - [x] Part IV and Part V structural pass completed and synced to Google Doc.
 - [x] Part VI, Part VII and appendices structural pass completed and synced to
       Google Doc.
+- [x] First terminology/glossary anchor batch completed for Part VI, Part VII
+      and appendices.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [ ] Стилевые файлы БХВ получены и применены или явно отложены.
 

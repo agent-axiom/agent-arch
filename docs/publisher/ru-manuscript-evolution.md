@@ -589,3 +589,27 @@ Notes:
 - This checkpoint completes the first structural pass across the whole
   manuscript. Remaining work is terminology, glossary alignment,
   cross-references, companion-boundary and later publisher styling.
+
+### 2026-06-14. First terminology/glossary anchor batch
+
+Status: synced to Google Doc.
+
+Local sources updated:
+
+- `docs/publisher/ru-terminology.md`
+- `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+
+Google Doc content updated:
+
+- `assurance loop` canonical Russian form changed to `контур заверения`;
+- Part VI and Part VII headings and body anchors now prefer reader-facing
+  Russian forms for runtime, inventory, registry discipline and retirement;
+- appendix glossary anchors now define capability, principal, tenant,
+  lifecycle and tool gateway in Russian-first form.
+
+Notes:
+
+- This is not the full terminology pass across the whole manuscript.
+- Remaining terminology work should continue through Parts I-V, then verify
+  glossary consistency, cross-references and companion-boundary language.
