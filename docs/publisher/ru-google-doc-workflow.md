@@ -26,10 +26,12 @@ Google Doc является рабочей издательской рукопи
   не включаются в финальную сдачу, пока явно не перенесены в front matter.
 
 Текущий Google Doc snapshot уже содержит договорную рукопись целиком. На
-2026-06-14 он содержит skeleton, publisher packet, введение, Части I-VII и
-приложения после первого compression/editorial pass. Это еще не финальная
-рукопись: остаются cross-reference review, терминологический проход, авторские
-поля, издательский line edit и БХВ-оформление.
+2026-06-15 он содержит skeleton, publisher packet, введение, Части I-VII и
+приложения после structural, terminology, cross-reference, companion-boundary
+and current-source print-readability passes. Это почти готовая рукопись для
+доверенного редакторского чтения, но не финальная издательская сдача: остаются
+авторские поля, стилевые файлы БХВ, DOCX/export QA после применения стилей и
+финальная внешняя вычитка.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

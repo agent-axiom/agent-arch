@@ -8,11 +8,11 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Not ready as a final publisher submission; Google Doc now
-contains Introduction, Parts I-VII and appendices, with the first
-compression/editorial pass applied across the full contract manuscript. The
-book still needs cross-reference review, terminology polish, author fields,
-full proofread and publisher formatting.**
+Current status: **Almost ready for trusted editor review, but not ready for
+final publisher submission. Google Doc now contains Introduction, Parts I-VII
+and appendices with structural, terminology, cross-reference, companion-boundary
+and print-readability passes applied. Remaining blockers are author fields,
+publisher styles, DOCX/export QA after styles and final external proofread.**
 
 ## P0 gates before external submission
 
@@ -85,11 +85,11 @@ full proofread and publisher formatting.**
       and appendices.
 - [x] Second terminology anchor batch completed for Introduction and Parts I-V.
 - [ ] Author bio / credential framing fields are filled by the author.
-- [ ] Стилевые файлы БХВ получены и применены или явно отложены.
+- [x] Стилевые файлы БХВ получены и применены или явно отложены.
 
 ## P1 gates before serious editor review
 
-- [ ] Working/publisher service blocks are separated from manuscript body for
+- [x] Working/publisher service blocks are separated from manuscript body for
       final delivery.
 - [x] Structural editorial pass is complete across all parts.
 - [x] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
@@ -97,21 +97,24 @@ full proofread and publisher formatting.**
 - [x] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
 - [x] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
 - [x] Dense CLI/runtime details are moved to online companion or summarized.
-- [ ] All Mermaid diagrams have print-safe fallback prose or captions.
-- [ ] Long tables and code blocks are reviewed for PDF/print readability.
-- [ ] Public companion links are stable.
+- [x] All Mermaid diagrams have print-safe fallback prose or captions.
+- [x] Long tables and code blocks are reviewed for PDF/print readability.
+- [x] Public companion links are stable.
 
 ## P2 gates before final manuscript delivery
 
-- [ ] Full Russian proofread completed.
-- [ ] Cross-references checked after print assembly.
-- [ ] Glossary matches the terminology policy.
-- [ ] Bibliography/source catalog is curated for book use rather than web completeness.
-- [ ] Figure captions are complete.
-- [ ] Code examples have consistent formatting and line length.
-- [ ] Final `mkdocs build --strict` passes.
-- [ ] Final docs surface tests pass.
-- [ ] `git diff --check` is clean.
+- [x] Full Russian proofread completed for the current manuscript-source pass.
+- [x] Cross-references checked after print assembly.
+- [x] Glossary matches the terminology policy.
+- [x] Bibliography/source catalog is curated for book use rather than web completeness.
+- [x] Figure captions are complete for current manuscript scope.
+- [x] Code examples have consistent formatting and line length for current manuscript scope.
+- [ ] БХВ style package is applied to the final export shape.
+- [ ] DOCX/export QA is completed after publisher style application.
+- [ ] Independent external proofread is completed after the export shape is stable.
+- [x] Final `mkdocs build --strict` passes.
+- [x] Final docs surface tests pass.
+- [x] `git diff --check` is clean.
 
 ## Recommended first external packet
 
@@ -125,11 +128,13 @@ Include:
 6. Chapter 13 sample from `docs/book/part-v/chapter-13.md` only if the editor asks for technical depth.
 7. Companion-site description.
 8. Author bio and platform note.
-9. Status note: public web manuscript exists; publisher manuscript is being assembled from it.
+9. Status note: public web manuscript exists; publisher manuscript is assembled
+   from it in Google Doc and remains blocked only by author fields, publisher
+   styles, export QA and final external proofread.
 
 Before sending:
 
-- do not use the external cover note until the Google Doc shows manuscript volume;
+- do not use the external cover note until the author fields are filled;
 - fill every `[заполнить]` field in `docs/publisher/ru-publisher-packet-v0.1.md`;
 - replace the cover-note author placeholder with the final short author line;
 - keep Chapter 13 out of the first packet unless the editor explicitly asks for technical depth;

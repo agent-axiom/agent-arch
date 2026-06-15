@@ -1,6 +1,7 @@
 # Редакционная дорожная карта русской рукописи
 
-Status: high-level roadmap after full first compression/editorial pass.
+Status: execution roadmap after structural, terminology, cross-reference,
+companion-boundary and current-source print-readability passes.
 
 Google Doc target:
 
@@ -9,14 +10,13 @@ Google Doc target:
 
 ## Current verdict
 
-На 2026-06-14 Google Doc уже содержит договорную рукопись целиком: введение,
-7 частей, 23 главы и приложения. Первый compression/editorial pass завершен по
-всей рукописи.
+На 2026-06-15 Google Doc уже содержит договорную рукопись целиком: введение,
+7 частей, 23 главы и приложения. Structural, terminology, cross-reference,
+companion-boundary and current-source print-readability passes завершены.
 
-Это не финальная издательская сдача. Следующий этап - не дописывание объема, а
-доведение рукописи до редакционно устойчивого состояния: отделить рабочие
-материалы, проверить сквозную дугу книги, закрепить терминологию, сверить
-внутренние ссылки и подготовить front matter.
+Это почти готовая рукопись для доверенного редакторского чтения, но не финальная
+издательская сдача. Остаются внешние зависимости: авторские поля, стилевые файлы
+БХВ, DOCX/export QA после применения стилей и финальная внешняя вычитка.
 
 ## Workstream 1. Разделить рукопись и рабочие материалы
 
@@ -35,6 +35,12 @@ Definition of done:
 - редактор видит, где начинается книга;
 - служебные блоки не могут случайно попасть в финальный DOCX;
 - repository -> Google Doc sync rule остается явным.
+
+Progress:
+
+- 2026-06-15: Google Doc contains `Начало основного текста книги`; working
+  blocks are treated as service/front-matter material and excluded from final
+  delivery unless explicitly promoted.
 
 ## Workstream 2. Structural editorial pass
 
@@ -119,6 +125,9 @@ Progress:
 
 - 2026-06-15: reader-facing `case-spine note` and `canonical cases` labels were
   checked across the assembled manuscript sources; no stale service labels remain.
+- 2026-06-15: stale web-structure references were checked across assembled
+  manuscript sources; no reader-facing references to Part VIII or chapters
+  24-27 remain, and the 7/23 structure is stable.
 
 Definition of done:
 
@@ -144,6 +153,15 @@ Definition of done:
 - reader can understand the design without opening companion immediately;
 - companion remains useful as executable/reference layer.
 
+Progress:
+
+- 2026-06-15: companion boundary checked across assembled manuscript sources;
+  YAML, CLI walkthroughs, reference outputs, registry operations and long
+  schemas are consistently assigned to the online companion.
+- 2026-06-15: current manuscript-source print-readability scan found no
+  Mermaid blocks, Markdown tables or fenced code blocks in the assembled
+  publisher manuscript sources.
+
 ## Workstream 6. Publisher front matter and final delivery prep
 
 Задача: подготовить рукопись к внешнему редакторскому циклу.
@@ -162,6 +180,14 @@ Definition of done:
 - Google Doc or exported DOCX has publisher-ready structure;
 - final checks include proofread, cross-reference review, glossary match,
   `git diff --check`, `uv run pytest`, and `uv run mkdocs build --strict`.
+
+Progress:
+
+- 2026-06-15: author fields remain intentionally open for the author; БХВ style
+  files are explicitly deferred until received.
+- 2026-06-15: current-source proofread, cross-reference, glossary, source
+  catalog, figure/code and print-readability gates are complete for the
+  assembled manuscript. DOCX/export QA remains blocked until styles are applied.
 
 ## Recommended execution order
 

@@ -70,7 +70,7 @@ Evidence:
 
 ### Stage 1. Google Doc skeleton and first sample
 
-Status: done, but not a full manuscript.
+Status: done and superseded by later full-manuscript assembly.
 
 Done:
 
@@ -80,14 +80,15 @@ Done:
 - Chapter 1 прошла первый русский издательский line edit;
 - source Chapter 13 прошел первый technical sample line edit.
 
-Limit:
+Historical limit at this stage:
 
-- объем Google Doc пока отражает только skeleton plus sample;
-- это нельзя трактовать как готовую или почти готовую книгу.
+- объем Google Doc тогда отражал только skeleton plus sample;
+- этот checkpoint больше нельзя трактовать как текущий статус рукописи.
 
 ### Stage 2. Manuscript body assembly
 
-Status: done for rough assembly; final manuscript quality still pending.
+Status: done for rough assembly and followed by structural, terminology,
+cross-reference, companion-boundary and current-source print-readability passes.
 
 Goal:
 
@@ -666,3 +667,35 @@ Notes:
   established security practices or source titles.
 - Next editorial work should move from terminology into cross-reference,
   companion-link stability, print readability and final proofread.
+
+### 2026-06-15. Current-source editorial readiness pass
+
+Status: synced to Google Doc.
+
+Local sources updated:
+
+- `docs/publisher/ru-submission-checklist.md`
+- `docs/publisher/ru-editorial-roadmap.md`
+- `docs/publisher/ru-google-doc-workflow.md`
+- `docs/publisher/ru-publisher-packet-v0.1.md`
+- `docs/publisher/ru-cover-note-draft.md`
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+
+Google Doc content updated:
+
+- manuscript status now reflects full Introduction, Parts I-VII and appendices
+  in the Google Doc;
+- service/body boundary is explicit: working blocks above `Начало основного
+  текста книги` are not part of the final manuscript unless promoted into front
+  matter;
+- companion map now includes the public site and source repository links;
+- checklist and roadmap mark cross-reference, companion-boundary,
+  print-readability and current-source proofread gates complete.
+
+Notes:
+
+- Author fields remain intentionally open because they require factual input
+  from the author.
+- Publisher style files from БХВ and DOCX/export QA remain deferred until the
+  style package arrives.
+- Final external proofread should happen after the export shape is stable.

@@ -3,8 +3,11 @@
 Status: publisher-facing working packet for the Russian edition. This file is
 not part of the public site navigation.
 
-Google Doc sync status: compact v0.1 block with author template and default
-sample scope synced on 2026-06-13.
+Google Doc sync status: full manuscript body synced through Introduction,
+Parts I-VII and appendices. Structural, terminology, cross-reference,
+companion-boundary and current-source print-readability passes are complete as
+of 2026-06-15. Remaining external blockers are author facts, publisher style
+files and DOCX/export QA after style application.
 
 Google Doc manuscript:
 
@@ -19,9 +22,10 @@ Repository source of truth:
 
 ## Назначение пакета
 
-Этот пакет нужен не как финальная сдача рукописи, а как первая управляемая
+Этот пакет нужен не как финальная сдача рукописи, а как управляемая
 редакторская версия для разговора с БХВ: показать позиционирование книги,
-договорную структуру, основной sample chapter и границы online companion.
+договорную структуру, собранную рукопись в Google Doc, стратегию sample chapters
+и границы online companion.
 
 Пакет v0.1 должен отвечать на четыре вопроса редактора:
 
@@ -29,7 +33,8 @@ Repository source of truth:
 2. Почему это не фреймворк-туториал и не книга про prompt tricks.
 3. Как публичная web-рукопись превращается в печатную структуру 7 частей / 23
    главы.
-4. Какой sample уже можно читать как издательскую главу.
+4. Какие фрагменты стоит читать первыми, если редактору нужен короткий sample
+   вместо полного прохода по Google Doc.
 
 ## Короткое позиционирование
 
@@ -53,15 +58,16 @@ staff engineers, technical leads и архитекторы, которые от�
 предмет книги - инженерные контракты: identity, policy, tool gateway, memory,
 traces, evals, rollout gates, incident response и lifecycle ownership.
 
-## Состав первого пакета
+## Состав текущего рабочего пакета
 
 Рекомендуемый состав v0.1:
 
 1. Позиционирование книги на одну страницу.
 2. Договорная структура русской рукописи: 7 частей / 23 главы.
 3. Статус рукописи: source of truth в репозитории, редакционная сборка в
-   Google Doc.
-4. Основной sample chapter: Глава 1, `docs/book/part-i/chapter-1.md`.
+   Google Doc; тело рукописи собрано полностью.
+4. Основной sample chapter при коротком первом чтении: Глава 1,
+   `docs/book/part-i/chapter-1.md`.
 5. Cover note draft: `docs/publisher/ru-cover-note-draft.md`.
 6. Описание online companion: схемы, runtime, расширенные чеклисты и длинные
    справочные материалы остаются online.
@@ -92,7 +98,7 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 процессом, одиночным агентным циклом и многоагентной схемой.
 
 **Текущий статус:** первая русская издательская line edit применена в source и
-синхронизирована в Google Doc.
+синхронизирована в Google Doc как часть полного тела рукописи.
 
 ### Secondary technical sample: Chapter 13
 
@@ -105,9 +111,8 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 книга работает с оценками, трассами, проверяющим, регрессионными шлюзами и
 решениями о выпуске.
 
-**Текущий статус:** первая русская издательская line edit применена в source.
-Полный перенос в Google Doc стоит делать после решения, что Chapter 13 входит в
-первый пакет.
+**Текущий статус:** первая русская издательская line edit применена в source и
+синхронизирована в Google Doc как часть полного тела рукописи.
 
 ## Об авторе
 
@@ -173,6 +178,9 @@ engineering / AI systems / security / reliability]. Автор проекта
 companion должен удерживать материалы, которые полезны инженеру, но утяжеляют
 книжное чтение:
 
+- публичная версия companion: <https://agent-axiom.github.io/agent-arch/>;
+- исходный репозиторий: <https://github.com/agent-axiom/agent-arch>;
+
 - runnable reference runtime;
 - полные YAML/JSON-схемы;
 - длинные validation errors и CLI-output;
@@ -196,16 +204,18 @@ companion должен удерживать материалы, которые �
   временный простой стиль.
 - **Решение по Chapter 13:** держать как follow-up technical sample; включать
   во второй attachment только при запросе на техническую глубину.
-- **Финальная copy-edit вычитка:** Chapter 1 и Chapter 13 прошли первый
-  издательский проход, но не заменяют независимую редакторскую вычитку.
+- **Финальная copy-edit вычитка:** текущий source-проход завершен, но не
+  заменяет независимую редакторскую вычитку после применения стилей.
+- **DOCX/export QA:** выполнять после получения стилевых файлов БХВ и
+  применения финального экспортного шаблона.
 
 ## Cover note draft
 
 Отдельный черновик письма: `docs/publisher/ru-cover-note-draft.md`.
 
 Это будущий артефакт, а не сигнал, что книгу уже можно отправлять. Его нельзя
-использовать как external email, пока Google Doc не содержит тело рукописи, а не
-только skeleton plus sample.
+использовать как external email, пока не заполнены фактические авторские поля и
+не проверены права доступа к Google Doc.
 
 Перед отправкой нужно заполнить авторскую строку и проверить, что default scope
 первого пакета остается прежним: Chapter 1 only; Chapter 13 - follow-up
@@ -225,12 +235,12 @@ technical sample по запросу редактора.
 
 ## Следующий практический шаг
 
-До заполнения author/platform note главным шагом является не письмо, а сборка
-тела рукописи.
+До заполнения author/platform note главным шагом является не письмо, а доведение
+собранной рукописи до внешне читаемого состояния.
 
-1. собрать Introduction and Part I body в Google Doc;
-2. обновить `docs/publisher/ru-manuscript-evolution.md`;
-3. продолжить batch assembly до полного тела 7 частей / 23 главы;
-4. после этого заменить `[заполнить]` на фактические данные;
-5. синхронизировать финальную короткую авторскую строку в Google Doc;
-6. применить стилевые файлы БХВ, когда они будут доступны.
+1. заменить `[заполнить]` на фактические авторские данные;
+2. синхронизировать финальную короткую авторскую строку в Google Doc;
+3. применить стилевые файлы БХВ, когда они будут доступны;
+4. выполнить DOCX/export QA после применения стилей;
+5. провести независимую редакторскую вычитку финального экспортного вида;
+6. зафиксировать external packet version для отправки.
