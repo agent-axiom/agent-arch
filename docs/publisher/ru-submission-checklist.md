@@ -92,9 +92,9 @@ full proofread and publisher formatting.**
 - [ ] Working/publisher service blocks are separated from manuscript body for
       final delivery.
 - [x] Structural editorial pass is complete across all parts.
-- [ ] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
+- [x] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
-- [ ] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
+- [x] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
 - [x] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
 - [x] Dense CLI/runtime details are moved to online companion or summarized.
 - [ ] All Mermaid diagrams have print-safe fallback prose or captions.

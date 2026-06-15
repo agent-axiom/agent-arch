@@ -97,6 +97,9 @@ Progress:
   `runtime`, `workflow`, `policy layer`, `tool gateway`, `capability model`,
   `rollout`, `trace` and `evidence chain` anchors in Introduction and
   Parts I-V.
+- 2026-06-15: third terminology consistency batch completed for reader-facing
+  ADLC, assurance, registry, retirement, reference runtime, launch checklist
+  and appendix checklist/postmortem language in Parts VI-VII and appendices.
 
 ## Workstream 4. Cross-reference and continuity pass
 
@@ -111,6 +114,11 @@ Progress:
 - consistency of chapter numbers and part numbers;
 - whether Chapter 13 as follow-up technical sample is still described correctly
   after full manuscript assembly.
+
+Progress:
+
+- 2026-06-15: reader-facing `case-spine note` and `canonical cases` labels were
+  checked across the assembled manuscript sources; no stale service labels remain.
 
 Definition of done:
 

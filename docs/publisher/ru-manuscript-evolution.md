@@ -638,3 +638,31 @@ Notes:
 - English lookup terms remain at first explanation or in field/code names.
 - Remaining terminology work should verify consistency chapter-by-chapter and
   then move into cross-reference and companion-boundary passes.
+
+### 2026-06-15. P1 terminology and appendix consistency batch
+
+Status: synced to Google Doc.
+
+Local sources updated:
+
+- `docs/publisher/ru-manuscript-assembly-part-vi-vii.md`
+- `docs/publisher/ru-manuscript-assembly-appendices.md`
+- `docs/publisher/ru-editorial-roadmap.md`
+- `docs/publisher/ru-submission-checklist.md`
+
+Google Doc content updated:
+
+- Parts VI-VII now use Russian-first reader-facing language for ADLC artifacts,
+  supported paths, assurance loop, incident response, registry, retirement,
+  reference runtime and launch checklist;
+- appendices now use the same vocabulary in glossary entries, review
+  checklists, incident/postmortem template and companion map;
+- stale `case-spine note` and `canonical cases` service labels were checked
+  across assembled manuscript sources and are not present in reader-facing prose.
+
+Notes:
+
+- English remains only for first-use lookup terms, code-like identifiers,
+  established security practices or source titles.
+- Next editorial work should move from terminology into cross-reference,
+  companion-link stability, print readability and final proofread.
