@@ -2,9 +2,11 @@
 
 Status: рабочее правило для издательской подготовки.
 
-Google Doc:
+Google Docs:
 
-- `Архитектура безопасных ИИ-агентов`
+- Full manuscript: `Архитектура безопасных ИИ-агентов — полная рукопись`
+- <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Compressed/staging snapshot: `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 
 ## Source of truth
@@ -25,12 +27,17 @@ Google Doc является рабочей издательской рукопи
 - может содержать временные рабочие блоки перед основным текстом; эти блоки
   не включаются в финальную сдачу, пока явно не перенесены в front matter.
 
-Текущий Google Doc snapshot содержит договорную структуру целиком. На
-2026-06-15 он содержит skeleton, publisher packet, введение, Части I-VII и
-приложения, но это compressed editorial assembly, а не полный книжный объем.
-Следующий обязательный этап - развернуть главы из Markdown-источников по
-`docs/publisher/ru-source-map.md`, затем повторить terminology,
-cross-reference, companion-boundary, proofread and export QA passes.
+На 2026-06-15 полная рукопись собрана в
+`docs/publisher/ru-manuscript-full.md`, экспортирована в Google Docs-targeted
+DOCX, проверена render smoke QA на 437 страницах и импортирована как native
+Google Doc:
+<https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>.
+Старый 71-страничный Google Doc оставлен как compressed/staging snapshot и
+содержит ссылку на полный документ.
+
+Следующие этапы после полного импорта: авторские поля, повторная вычитка,
+терминологический/cross-reference polish, стили БХВ, DOCX/export QA и финальная
+внешняя вычитка.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

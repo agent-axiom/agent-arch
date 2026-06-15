@@ -8,18 +8,18 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Structurally assembled, but volume-incomplete. Do not send as
-a trusted editor review package yet. Google Doc contains the 7-part / 23-chapter
-structure and a compressed editorial assembly, but it must be expanded from the
-Markdown source corpus into full manuscript volume before external review.
-Remaining blockers are manuscript expansion, author fields, publisher styles,
-DOCX/export QA after styles and final external proofread.**
+Current status: **Full manuscript volume assembled and imported to Google Docs.
+Do not send as final publisher submission yet: remaining blockers are author
+fields, publisher styles, DOCX/export QA after styles and final external
+proofread.**
 
 ## P0 gates before external submission
 
 - [x] Целевая подача выбрана: Russian publisher package.
 - [x] Рабочая Google Doc-рукопись создана и доступна для чтения/записи:
       <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
+- [x] Полная Google Doc-рукопись создана native import из DOCX:
+      <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>.
 - [x] Для Russian package sample manifest указывает RU source paths, not `.en.md` paths.
 - [x] Есть отдельная assembly map for print manuscript:
       `docs/publisher/ru-manuscript-map.md`.
@@ -62,8 +62,12 @@ DOCX/export QA after styles and final external proofread.**
 - [x] Appendices rough assembly completed in Google Doc.
 - [x] Google Doc contains the full 7-part / 23-chapter structure including
       appendices.
-- [ ] Google Doc contains full manuscript volume expanded from the Markdown
+- [x] Google Doc contains full manuscript volume expanded from the Markdown
       source corpus, not only compressed chapter assembly.
+- [x] Full source-to-print manuscript Markdown created:
+      `docs/publisher/ru-manuscript-full.md`.
+- [x] Full manuscript DOCX render smoke QA completed for current Google Docs
+      import artifact: 437 rendered pages, no blank/near-blank PNGs detected.
 - [x] Introduction and Part I first compression/editorial pass completed in
       local assembly and synced to Google Doc.
 - [x] Part II and Part III first compression/editorial pass completed in local
@@ -131,8 +135,8 @@ Include:
 6. Chapter 13 sample from `docs/book/part-v/chapter-13.md` only if the editor asks for technical depth.
 7. Companion-site description.
 8. Author bio and platform note.
-9. Status note: public web manuscript exists; publisher manuscript is assembled
-   from it in Google Doc and remains blocked only by author fields, publisher
+9. Status note: public web manuscript exists; full publisher manuscript is now
+   assembled in Google Doc and remains blocked only by author fields, publisher
    styles, export QA and final external proofread.
 
 Before sending:

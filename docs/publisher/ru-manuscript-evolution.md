@@ -722,3 +722,40 @@ Correction:
   not publisher email preparation.
 - Terminology, cross-reference, companion-boundary and proofread passes must be
   repeated after expansion.
+
+### 2026-06-15. Full source-to-print manuscript import
+
+Status: synced to full Google Doc.
+
+Local sources updated:
+
+- `docs/publisher/ru-manuscript-full.md`
+- `docs/publisher/ru-submission-checklist.md`
+- `docs/publisher/ru-google-doc-workflow.md`
+- `docs/publisher/ru-editorial-roadmap.md`
+- `docs/publisher/ru-publisher-packet-v0.1.md`
+- `docs/publisher/ru-cover-note-draft.md`
+
+Google Docs:
+
+- Full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- The older 71-page document is retained only as compressed/staging snapshot:
+  <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
+
+Evidence:
+
+- full manuscript Markdown contains 109,250 words after structural cleanup;
+- generated DOCX rendered to 437 pages in smoke QA, with no blank/near-blank
+  page PNGs detected;
+- Google Docs readback confirmed the full 7/23 structure marker, Chapter 1,
+  Chapter 13, Chapter 23, appendices, and public companion link;
+- Google Docs readback no longer finds the old `Часть VIII` / Chapter 24
+  structure markers.
+
+Notes:
+
+- This closes the volume gap: the Google Doc is no longer a compressed
+  editorial assembly.
+- This does not close final publisher submission gates: author fields, БХВ
+  styles, export DOCX QA and external proofread remain open.

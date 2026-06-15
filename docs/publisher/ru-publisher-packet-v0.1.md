@@ -3,13 +3,16 @@
 Status: publisher-facing working packet for the Russian edition. This file is
 not part of the public site navigation.
 
-Google Doc sync status: structural manuscript shape synced through
-Introduction, Parts I-VII and appendices. As of 2026-06-15 this is still a
-compressed editorial assembly, not the full publisher manuscript volume.
-Remaining blockers are manuscript expansion from Markdown sources, author
-facts, publisher style files and DOCX/export QA after style application.
+Google Doc sync status: full source-to-print manuscript imported as native
+Google Doc on 2026-06-15. Remaining blockers are author facts, publisher style
+files, DOCX/export QA after style application and final external proofread.
 
 Google Doc manuscript:
+
+- `Архитектура безопасных ИИ-агентов — полная рукопись`
+- <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Compressed/staging snapshot:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
@@ -64,8 +67,8 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 
 1. Позиционирование книги на одну страницу.
 2. Договорная структура русской рукописи: 7 частей / 23 главы.
-3. Статус рукописи: source of truth в репозитории, редакционная сборка в
-   Google Doc; структура рукописи собрана, но объем требует разворота.
+3. Статус рукописи: source of truth в репозитории, полная редакционная сборка
+   импортирована в Google Doc.
 4. Основной sample chapter при коротком первом чтении: Глава 1,
    `docs/book/part-i/chapter-1.md`.
 5. Cover note draft: `docs/publisher/ru-cover-note-draft.md`.
@@ -237,14 +240,14 @@ technical sample по запросу редактора.
 
 ## Следующий практический шаг
 
-До заполнения author/platform note главным шагом является не письмо, а разворот
-сжатой редакционной сборки до полного книжного объема.
+До заполнения author/platform note главным шагом является не письмо, а
+editorial hardening полной рукописи после импорта.
 
-1. развернуть главы из Markdown-источников по `docs/publisher/ru-source-map.md`;
-2. повторить terminology, cross-reference and companion-boundary passes;
-3. заменить `[заполнить]` на фактические авторские данные;
-4. синхронизировать финальную короткую авторскую строку в Google Doc;
-5. применить стилевые файлы БХВ, когда они будут доступны;
-6. выполнить DOCX/export QA после применения стилей;
-7. провести независимую редакторскую вычитку финального экспортного вида;
-8. зафиксировать external packet version для отправки.
+1. повторить terminology, cross-reference and companion-boundary passes по
+   `docs/publisher/ru-manuscript-full.md`;
+2. заменить `[заполнить]` на фактические авторские данные;
+3. синхронизировать финальную короткую авторскую строку в Google Doc;
+4. применить стилевые файлы БХВ, когда они будут доступны;
+5. выполнить DOCX/export QA после применения стилей;
+6. провести независимую редакторскую вычитку финального экспортного вида;
+7. зафиксировать external packet version для отправки.

@@ -1,24 +1,24 @@
 # Редакционная дорожная карта русской рукописи
 
-Status: execution roadmap after discovering the gap between compressed
-structural assembly and full publisher manuscript volume.
+Status: execution roadmap after full source-to-print manuscript import.
 
-Google Doc target:
+Google Doc targets:
 
-- `Архитектура безопасных ИИ-агентов`
+- Full manuscript: `Архитектура безопасных ИИ-агентов — полная рукопись`
+- <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Compressed/staging snapshot: `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 
 ## Current verdict
 
-На 2026-06-15 Google Doc содержит договорную структуру целиком: введение,
-7 частей, 23 главы и приложения. Это не означает готовый книжный объем:
-текущий Google Doc собран из compressed editorial assembly, а не из полного
-развернутого текста Markdown-источников.
+На 2026-06-15 полный source-to-print manuscript собран из Markdown-источников:
+введение, 7 частей, 23 главы и приложения. Локальный Markdown содержит около
+109k слов после структурной чистки, DOCX render smoke QA дал 437 страниц,
+native Google Doc import прошел и контрольные readback-точки подтверждены.
 
-Текущий приоритет - не стили и не письмо издателю, а разворот глав до
-полноформатной рукописи. Остаются блокеры: manuscript expansion, авторские поля,
-стилевые файлы БХВ, DOCX/export QA после применения стилей и финальная внешняя
-вычитка.
+Текущий приоритет - не набор объема, а editorial hardening: авторские поля,
+повторная вычитка после разворота, терминологический/cross-reference polish,
+стили БХВ, DOCX/export QA после применения стилей и финальная внешняя вычитка.
 
 ## Workstream 1. Разделить рукопись и рабочие материалы
 
@@ -62,6 +62,9 @@ Progress:
 
 - 2026-06-15: gap identified by page count and word count: Google Doc has the
   structure, but not the full publisher manuscript volume.
+- 2026-06-15: full source-to-print manuscript built as
+  `docs/publisher/ru-manuscript-full.md`, rendered from DOCX to 437 pages in
+  smoke QA and imported as the native Google Doc full manuscript.
 
 ## Workstream 2. Structural editorial pass
 

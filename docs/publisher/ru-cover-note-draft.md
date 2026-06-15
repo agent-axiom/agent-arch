@@ -15,12 +15,13 @@ email copy until the author fields are filled.
 - **Follow-up technical sample:** Chapter 13, `docs/book/part-v/chapter-13.md`,
   only if the editor asks for deeper material on evals, traces, verifier output,
   regression gates, and release decisions.
-- **Working manuscript:** Google Doc `Архитектура безопасных ИИ-агентов`,
-  <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
-- **Manuscript status:** собраны Введение, части I-VII и приложения как
-  compressed editorial assembly; до внешней отправки нужно развернуть главы до
-  полного книжного объема, заполнить авторские поля, применить стилевые файлы
-  БХВ, выполнить DOCX/export QA и внешнюю вычитку.
+- **Working manuscript:** Google Doc
+  `Архитектура безопасных ИИ-агентов — полная рукопись`,
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>.
+- **Manuscript status:** полнообъемная рукопись собрана из Markdown-источников
+  репозитория и импортирована в native Google Doc; до внешней отправки нужно
+  заполнить авторские поля, применить стилевые файлы БХВ, выполнить DOCX/export
+  QA и внешнюю вычитку.
 - **Online companion:** <https://agent-axiom.github.io/agent-arch/>; source
   repository: <https://github.com/agent-axiom/agent-arch>.
 - **Packet source:** `docs/publisher/ru-publisher-packet-v0.1.md`.
@@ -53,8 +54,8 @@ Variant C:
 
 Репозиторий остается источником правды, а Google Doc используется как
 редакционная рукопись для сборки, правки и согласования. Сейчас в нём собрана
-сжатая структура: Введение, части I-VII и приложения:
-<https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
+полная рукопись: Введение, 7 частей, 23 главы и приложения:
+<https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>.
 
 Для первого чтения предлагаю главу 1 как основной sample chapter. Она показывает
 голос книги, problem-first opening и главную рамку: когда достаточно обычного
