@@ -8,11 +8,12 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Almost ready for trusted editor review, but not ready for
-final publisher submission. Google Doc now contains Introduction, Parts I-VII
-and appendices with structural, terminology, cross-reference, companion-boundary
-and print-readability passes applied. Remaining blockers are author fields,
-publisher styles, DOCX/export QA after styles and final external proofread.**
+Current status: **Structurally assembled, but volume-incomplete. Do not send as
+a trusted editor review package yet. Google Doc contains the 7-part / 23-chapter
+structure and a compressed editorial assembly, but it must be expanded from the
+Markdown source corpus into full manuscript volume before external review.
+Remaining blockers are manuscript expansion, author fields, publisher styles,
+DOCX/export QA after styles and final external proofread.**
 
 ## P0 gates before external submission
 
@@ -59,8 +60,10 @@ publisher styles, DOCX/export QA after styles and final external proofread.**
 - [x] Appendices rough assembly source created:
       `docs/publisher/ru-manuscript-assembly-appendices.md`.
 - [x] Appendices rough assembly completed in Google Doc.
-- [x] Google Doc contains the full manuscript body including appendices, not only
-      skeleton plus chapter rough assembly.
+- [x] Google Doc contains the full 7-part / 23-chapter structure including
+      appendices.
+- [ ] Google Doc contains full manuscript volume expanded from the Markdown
+      source corpus, not only compressed chapter assembly.
 - [x] Introduction and Part I first compression/editorial pass completed in
       local assembly and synced to Google Doc.
 - [x] Part II and Part III first compression/editorial pass completed in local
@@ -103,7 +106,7 @@ publisher styles, DOCX/export QA after styles and final external proofread.**
 
 ## P2 gates before final manuscript delivery
 
-- [x] Full Russian proofread completed for the current manuscript-source pass.
+- [ ] Full Russian proofread completed after manuscript expansion.
 - [x] Cross-references checked after print assembly.
 - [x] Glossary matches the terminology policy.
 - [x] Bibliography/source catalog is curated for book use rather than web completeness.

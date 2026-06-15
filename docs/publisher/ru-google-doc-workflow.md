@@ -25,13 +25,12 @@ Google Doc является рабочей издательской рукопи
 - может содержать временные рабочие блоки перед основным текстом; эти блоки
   не включаются в финальную сдачу, пока явно не перенесены в front matter.
 
-Текущий Google Doc snapshot уже содержит договорную рукопись целиком. На
+Текущий Google Doc snapshot содержит договорную структуру целиком. На
 2026-06-15 он содержит skeleton, publisher packet, введение, Части I-VII и
-приложения после structural, terminology, cross-reference, companion-boundary
-and current-source print-readability passes. Это почти готовая рукопись для
-доверенного редакторского чтения, но не финальная издательская сдача: остаются
-авторские поля, стилевые файлы БХВ, DOCX/export QA после применения стилей и
-финальная внешняя вычитка.
+приложения, но это compressed editorial assembly, а не полный книжный объем.
+Следующий обязательный этап - развернуть главы из Markdown-источников по
+`docs/publisher/ru-source-map.md`, затем повторить terminology,
+cross-reference, companion-boundary, proofread and export QA passes.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

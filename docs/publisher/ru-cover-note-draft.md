@@ -17,9 +17,10 @@ email copy until the author fields are filled.
   regression gates, and release decisions.
 - **Working manuscript:** Google Doc `Архитектура безопасных ИИ-агентов`,
   <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
-- **Manuscript status:** собраны Введение, части I-VII и приложения; до
-  финальной сдачи остаются авторские поля, стилевые файлы БХВ, DOCX/export QA и
-  внешняя вычитка.
+- **Manuscript status:** собраны Введение, части I-VII и приложения как
+  compressed editorial assembly; до внешней отправки нужно развернуть главы до
+  полного книжного объема, заполнить авторские поля, применить стилевые файлы
+  БХВ, выполнить DOCX/export QA и внешнюю вычитку.
 - **Online companion:** <https://agent-axiom.github.io/agent-arch/>; source
   repository: <https://github.com/agent-axiom/agent-arch>.
 - **Packet source:** `docs/publisher/ru-publisher-packet-v0.1.md`.
@@ -51,8 +52,8 @@ Variant C:
 оценками и поэтапным выпуском.
 
 Репозиторий остается источником правды, а Google Doc используется как
-редакционная рукопись для сборки, правки и согласования. Сейчас в нём собраны
-Введение, части I-VII и приложения:
+редакционная рукопись для сборки, правки и согласования. Сейчас в нём собрана
+сжатая структура: Введение, части I-VII и приложения:
 <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>.
 
 Для первого чтения предлагаю главу 1 как основной sample chapter. Она показывает

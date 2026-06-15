@@ -699,3 +699,26 @@ Notes:
 - Publisher style files from БХВ and DOCX/export QA remain deferred until the
   style package arrives.
 - Final external proofread should happen after the export shape is stable.
+
+### 2026-06-15. Volume gap correction
+
+Status: synced to Google Doc status blocks.
+
+Finding:
+
+- Google Doc page count and local word counts show that the document contains a
+  compressed structural assembly, not a full publisher manuscript.
+- Local publisher assembly files contain about 17k words, while the Russian
+  source corpus under `docs/book` and `docs/appendix` contains about 114k words
+  excluding `.en.md` and `.zh.md` variants.
+- The contract map targets 425-497 pages before real layout QA, so a 71-page
+  Google Doc cannot be treated as a near-final manuscript.
+
+Correction:
+
+- Status language must distinguish `7/23 structure is present` from `full book
+  volume is ready`.
+- The next practical workstream is manuscript expansion from Markdown sources,
+  not publisher email preparation.
+- Terminology, cross-reference, companion-boundary and proofread passes must be
+  repeated after expansion.

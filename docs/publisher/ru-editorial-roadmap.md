@@ -1,7 +1,7 @@
 # Редакционная дорожная карта русской рукописи
 
-Status: execution roadmap after structural, terminology, cross-reference,
-companion-boundary and current-source print-readability passes.
+Status: execution roadmap after discovering the gap between compressed
+structural assembly and full publisher manuscript volume.
 
 Google Doc target:
 
@@ -10,13 +10,15 @@ Google Doc target:
 
 ## Current verdict
 
-На 2026-06-15 Google Doc уже содержит договорную рукопись целиком: введение,
-7 частей, 23 главы и приложения. Structural, terminology, cross-reference,
-companion-boundary and current-source print-readability passes завершены.
+На 2026-06-15 Google Doc содержит договорную структуру целиком: введение,
+7 частей, 23 главы и приложения. Это не означает готовый книжный объем:
+текущий Google Doc собран из compressed editorial assembly, а не из полного
+развернутого текста Markdown-источников.
 
-Это почти готовая рукопись для доверенного редакторского чтения, но не финальная
-издательская сдача. Остаются внешние зависимости: авторские поля, стилевые файлы
-БХВ, DOCX/export QA после применения стилей и финальная внешняя вычитка.
+Текущий приоритет - не стили и не письмо издателю, а разворот глав до
+полноформатной рукописи. Остаются блокеры: manuscript expansion, авторские поля,
+стилевые файлы БХВ, DOCX/export QA после применения стилей и финальная внешняя
+вычитка.
 
 ## Workstream 1. Разделить рукопись и рабочие материалы
 
@@ -41,6 +43,25 @@ Progress:
 - 2026-06-15: Google Doc contains `Начало основного текста книги`; working
   blocks are treated as service/front-matter material and excluded from final
   delivery unless explicitly promoted.
+
+## Workstream 1a. Manuscript volume expansion
+
+Задача: заменить compressed chapter assembly полноценными главами, собранными
+из Markdown-источников по `docs/publisher/ru-source-map.md`.
+
+Definition of done:
+
+- каждая из 23 глав имеет развернутый текст, а не только chapter brief;
+- суммарный объем Google Doc сопоставим с исходным русским corpus, а не с
+  17k-word assembly;
+- source-to-print mapping сохранен для каждой главы;
+- после разворота повторяются terminology, cross-reference, companion-boundary
+  and proofread passes.
+
+Progress:
+
+- 2026-06-15: gap identified by page count and word count: Google Doc has the
+  structure, but not the full publisher manuscript volume.
 
 ## Workstream 2. Structural editorial pass
 

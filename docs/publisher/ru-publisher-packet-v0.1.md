@@ -3,11 +3,11 @@
 Status: publisher-facing working packet for the Russian edition. This file is
 not part of the public site navigation.
 
-Google Doc sync status: full manuscript body synced through Introduction,
-Parts I-VII and appendices. Structural, terminology, cross-reference,
-companion-boundary and current-source print-readability passes are complete as
-of 2026-06-15. Remaining external blockers are author facts, publisher style
-files and DOCX/export QA after style application.
+Google Doc sync status: structural manuscript shape synced through
+Introduction, Parts I-VII and appendices. As of 2026-06-15 this is still a
+compressed editorial assembly, not the full publisher manuscript volume.
+Remaining blockers are manuscript expansion from Markdown sources, author
+facts, publisher style files and DOCX/export QA after style application.
 
 Google Doc manuscript:
 
@@ -65,7 +65,7 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 1. Позиционирование книги на одну страницу.
 2. Договорная структура русской рукописи: 7 частей / 23 главы.
 3. Статус рукописи: source of truth в репозитории, редакционная сборка в
-   Google Doc; тело рукописи собрано полностью.
+   Google Doc; структура рукописи собрана, но объем требует разворота.
 4. Основной sample chapter при коротком первом чтении: Глава 1,
    `docs/book/part-i/chapter-1.md`.
 5. Cover note draft: `docs/publisher/ru-cover-note-draft.md`.
@@ -98,7 +98,8 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 процессом, одиночным агентным циклом и многоагентной схемой.
 
 **Текущий статус:** первая русская издательская line edit применена в source и
-синхронизирована в Google Doc как часть полного тела рукописи.
+синхронизирована в Google Doc. При развороте полного объема глава должна быть
+повторно сверена с source.
 
 ### Secondary technical sample: Chapter 13
 
@@ -112,7 +113,8 @@ traces, evals, rollout gates, incident response и lifecycle ownership.
 решениями о выпуске.
 
 **Текущий статус:** первая русская издательская line edit применена в source и
-синхронизирована в Google Doc как часть полного тела рукописи.
+синхронизирована в Google Doc. При развороте полного объема глава должна быть
+повторно сверена с source.
 
 ## Об авторе
 
@@ -235,12 +237,14 @@ technical sample по запросу редактора.
 
 ## Следующий практический шаг
 
-До заполнения author/platform note главным шагом является не письмо, а доведение
-собранной рукописи до внешне читаемого состояния.
+До заполнения author/platform note главным шагом является не письмо, а разворот
+сжатой редакционной сборки до полного книжного объема.
 
-1. заменить `[заполнить]` на фактические авторские данные;
-2. синхронизировать финальную короткую авторскую строку в Google Doc;
-3. применить стилевые файлы БХВ, когда они будут доступны;
-4. выполнить DOCX/export QA после применения стилей;
-5. провести независимую редакторскую вычитку финального экспортного вида;
-6. зафиксировать external packet version для отправки.
+1. развернуть главы из Markdown-источников по `docs/publisher/ru-source-map.md`;
+2. повторить terminology, cross-reference and companion-boundary passes;
+3. заменить `[заполнить]` на фактические авторские данные;
+4. синхронизировать финальную короткую авторскую строку в Google Doc;
+5. применить стилевые файлы БХВ, когда они будут доступны;
+6. выполнить DOCX/export QA после применения стилей;
+7. провести независимую редакторскую вычитку финального экспортного вида;
+8. зафиксировать external packet version для отправки.
