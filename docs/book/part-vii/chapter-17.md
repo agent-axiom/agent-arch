@@ -401,6 +401,115 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 Если большинство этих условий не выполняется, рантайм уже может существовать, но контрактное ядро системы пока не собрано.
 
+### 14.1. Практикум: связать capability contract с SLO, eval gate и golden path
+
+Каталог возможностей становится по-настоящему полезным только тогда, когда он перестает быть перечнем инструментов и начинает связывать разные управленческие плоскости системы. Взрослый контракт возможности должен отвечать не только на вопрос “как вызвать действие”, но и на вопросы “кто отвечает за это действие”, “какое качество мы обещаем”, “какая оценка допускает его к выпуску”, “какие трассы доказывают корректность” и “при каких условиях волна должна быть остановлена”.
+
+Иначе возникает опасный разрыв. В коде есть capability, в документации есть SLO, в eval-отчете есть набор сценариев, в чеклисте выпуска есть условие допуска, но между ними нет одной связующей записи. При первом сбое команда начинает руками выяснять, какая возможность действительно была вызвана, какая политика ее разрешила, какой тест должен был это поймать и кто имеет право остановить выпуск.
+
+Практический прием: для каждой пишущей или высокорисковой возможности добавь в каталог не только технический контракт, но и выпускной контракт. Он может выглядеть так:
+
+```yaml
+capability_release_contract:
+  capability_name: support.order.create_ticket
+  capability_version: 2026-06-01
+  owner_team: customer_ops_platform
+  business_owner: support_operations
+  risk_tier: medium
+  tool_principal: agent_support_ticket_writer
+  allowed_rollout_waves:
+    - internal_shadow
+    - operator_assisted
+    - limited_customer_beta
+  required_policy_decisions:
+    precheck:
+      policy: support_request_scope_policy
+      required_verdict: allow
+    tool_use:
+      policy: support_ticket_write_policy
+      required_verdicts:
+        - allow
+        - require_confirmation
+    data_access:
+      policy: customer_data_minimization_policy
+      required_verdict: allow_with_constraints
+  required_trace_events:
+    - run_start
+    - policy_precheck
+    - capability_selected
+    - tool_policy_decision
+    - tool_execution
+    - verification_result
+    - run_complete
+  slo_bindings:
+    availability: slo.support.ticket_creation.availability
+    correctness: slo.support.ticket_creation.correctness
+    latency: slo.support.ticket_creation.latency
+    human_review_queue: slo.support.confirmation_queue.age
+  eval_gates:
+    before_internal_shadow:
+      suite: eval.support.ticket_creation.regression
+      required_pass_rate: 0.98
+      required_zero_critical_failures: true
+    before_operator_assisted:
+      suite: eval.support.ticket_creation.policy_edges
+      required_pass_rate: 0.99
+      required_zero_critical_failures: true
+    before_customer_beta:
+      suite: eval.support.ticket_creation.production_replay
+      required_pass_rate: 0.995
+      required_zero_critical_failures: true
+  golden_path_requirements:
+    must_support_pause_and_resume: true
+    must_have_idempotency_key: true
+    must_have_unknown_result_path: true
+    must_have_operator_visible_summary: true
+  rollout_blockers:
+    - missing_policy_bundle_version
+    - missing_idempotency_key
+    - unknown_tool_principal
+    - verification_result_absent
+    - confirmation_queue_age_slo_breached
+    - critical_eval_regression
+```
+
+В этой записи нет ничего магического. Ее сила в том, что она делает разрыв между архитектурой, эксплуатацией и выпуском видимым. Если `support.order.create_ticket` проходит через каталог, но не имеет `slo_bindings`, команда не сможет честно сказать, какое качество она обещает. Если нет `eval_gates`, способность к выпуску будет оцениваться по впечатлению. Если отсутствует `required_trace_events`, расследование начнется уже после инцидента. Если не задан `tool_principal`, контроль доступа будет зависеть от инфраструктурной случайности.
+
+Для читателя технической книги важно показать, как такая запись используется в процессе, а не только как она выглядит. Хороший путь внедрения состоит из четырех шагов.
+
+Первый шаг — привязать capability к золотому пути. Возможность не должна быть “доступной вообще”. Она должна быть доступной в конкретных сценариях, ролях и волнах. Если одна и та же возможность используется в разных путях, это не проблема, но каждое использование должно иметь свою выпускную рамку. Создание тикета в сценарии поддержки и создание тикета в сценарии внутренней эскалации могут иметь один адаптер, но разные политики, разные SLO и разные условия подтверждения.
+
+Второй шаг — сделать SLO частью контракта, а не внешним dashboard. SLO полезен только тогда, когда рантайм знает, какие события питают его измерение. Например, задержка создания тикета может считаться от `tool_policy_decision` до `verification_result`, а возраст очереди подтверждений — от `approval_requested` до `approval_resolved`. Если это не зафиксировано, разные команды будут считать разные интервалы и спорить уже во время инцидента.
+
+Третий шаг — связать eval gate с конкретным переходом волны. Одна оценка может быть достаточной для внутренней тени, но недостаточной для customer beta. Внутренняя тень проверяет, что трассы собираются и политика не ломает штатный путь. Операторская волна добавляет подтверждение и качество объяснения. Ограниченная клиентская волна требует production replay, отсутствие критических регрессий и понятный путь неизвестного результата. Это разные вопросы, и их нельзя закрывать одной общей фразой “evals passed”.
+
+Четвертый шаг — сделать блокировщики машинно проверяемыми настолько, насколько возможно. Не все можно автоматизировать сразу, но признаки вроде отсутствующего `idempotency_key`, неизвестного `tool_principal`, пустого `verification_result` или неверной версии policy bundle не должны зависеть от ручного чтения логов. Они должны становиться красным сигналом еще до расширения волны.
+
+Полезно также добавить короткую матрицу владения:
+
+| Поле контракта | Кто владеет | Кто проверяет перед выпуском |
+| --- | --- | --- |
+| `capability_name`, `capability_version` | platform/runtime | release owner |
+| `owner_team`, `business_owner` | продукт и платформа | release owner |
+| `risk_tier` | security/platform governance | security reviewer |
+| `tool_principal` | platform/security | infrastructure owner |
+| `required_policy_decisions` | policy owner | release gate |
+| `slo_bindings` | SRE/operations | on-call owner |
+| `eval_gates` | eval owner | release owner |
+| `rollout_blockers` | совместно | release gate |
+
+Такая матрица не заменяет ответственность, а убирает двусмысленность. Если capability меняет риск, меняется не только строка в каталоге. Должны измениться eval gate, условия волны, ожидания по SLO и, возможно, путь подтверждения. Если это не происходит, каталог начинает врать.
+
+Для собственной системы можно использовать короткий тест: возьми одну высокорисковую возможность и попробуй ответить на пять вопросов без чтения исходного кода:
+
+- В каких golden path она разрешена?
+- Какой policy bundle принял последнее решение о ее использовании?
+- Какие SLO она питает или может нарушить?
+- Какая eval suite блокирует ее следующий выпускной переход?
+- Какой rollback или containment playbook используется, если результат неизвестен?
+
+Если ответы разбросаны по людям, чатам и dashboard, слой возможностей еще не стал контрактным. Он только называется каталогом.
+
 ## 15. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
