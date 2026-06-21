@@ -429,6 +429,155 @@ runtime:
 
 Если большинство этих условий не выполняется, у команды уже может быть реализация, но реального чертежа базовой среды исполнения у нее пока нет.
 
+### 15.1. Практикум: собрать rollout-ready runtime skeleton из golden path
+
+В предыдущих частях книги золотой путь использовался как способ договориться о нормальном сценарии: кто инициирует работу, какие шлюзы проходят запросы, где появляются политики, что делает инструмент, как оператор видит результат и где система может остановиться. На этапе эталонной реализации этот же путь должен перестать быть схемой на стене и стать минимальным исполняемым скелетом.
+
+Практическая цель здесь простая: взять один сквозной сценарий и описать его так, чтобы по нему можно было написать рантайм, тест, трассу и выпускной шлюз. Если сценарий нельзя довести до такого состояния, он пока не является золотым путем. Он остается хорошим описанием намерения, но не становится контрактом системы.
+
+Хорошая проверка выглядит так:
+
+1. Выбери один пользовательский сценарий, который команда готова считать эталонным.
+2. Разложи его на события запуска, политики, выбора возможности, исполнения, проверки результата и завершения.
+3. Назначь каждому событию владельца данных: рантайм, слой политик, каталог возможностей, адаптер инструмента, проверяющий или телеметрия.
+4. Зафиксируй минимальные идентификаторы, без которых сценарий нельзя расследовать после сбоя.
+5. Свяжи этот путь с одной оценкой качества и одной волной поэтапного выпуска.
+
+Для агента поддержки такой сценарий может звучать так: “клиент просит изменить адрес доставки; агент проверяет право на изменение, выбирает возможность обновления заказа, при высоком риске просит подтверждение оператора, выполняет изменение, проверяет состояние заказа и завершает запуск с трассой”. На уровне продукта это выглядит почти бытово. На уровне рантайма это уже цепочка контрактов.
+
+Минимальный контракт скелета можно записать так:
+
+```yaml
+runtime_skeleton_contract:
+  scenario: support_order_address_change
+  entrypoint:
+    event: run_start
+    required_fields:
+      - run_id
+      - tenant_id
+      - user_id
+      - principal_id
+      - trace_id
+      - request_text
+  context:
+    required_fields:
+      - session_id
+      - idempotency_key
+      - risk_profile
+      - data_scope
+      - rollout_wave
+  golden_path_events:
+    - name: policy_precheck
+      owner: policy_layer
+      must_emit:
+        - policy_bundle_version
+        - decision
+        - reason_code
+    - name: capability_selected
+      owner: capability_catalog
+      must_emit:
+        - capability_name
+        - capability_version
+        - owner_team
+        - risk_tier
+    - name: tool_policy_decision
+      owner: policy_layer
+      must_emit:
+        - allowed
+        - confirmation_required
+        - constraints
+    - name: approval_requested
+      owner: runtime
+      condition: confirmation_required == true
+      must_emit:
+        - approval_id
+        - expires_at
+        - resume_token
+    - name: tool_execution
+      owner: tool_adapter
+      must_emit:
+        - tool_call_id
+        - idempotency_key
+        - external_operation_id
+        - result_status
+    - name: verification_result
+      owner: verifier
+      must_emit:
+        - verifier_name
+        - expected_state
+        - observed_state
+        - verdict
+    - name: run_complete
+      owner: runtime
+      must_emit:
+        - final_status
+        - user_visible_summary
+        - operator_notes
+  release_links:
+    eval_gate_ref: eval.support.address_change.v1
+    slo_ref: slo.support.safe_update.v1
+    rollout_wave: internal_shadow
+    rollback_playbook_ref: rollback.support.order_write.v1
+```
+
+Такой фрагмент полезен не потому, что YAML сам по себе делает систему надежной. Он заставляет команду увидеть, какие поля должны появиться до кода, а не после первого инцидента. Например, `trace_id` связывает пользовательский запуск, политическое решение, вызов инструмента и проверку результата. `idempotency_key` делает пишущую операцию управляемой при ретраях. `rollout_wave` позволяет позже отличить проблему первой внутренней волны от проблемы широкого выпуска. `eval_gate_ref` связывает тот же путь с проверкой качества, а не оставляет оценку отдельным отчетом.
+
+Из этого контракта можно собрать первый скелет рантайма:
+
+```python
+def run_support_address_change(request: RunRequest) -> RunResult:
+    context = runtime_context_from(request)
+    trace.emit("run_start", context.public_fields())
+
+    precheck = policy.evaluate_precheck(context, request)
+    trace.emit("policy_precheck", precheck.to_trace())
+    if precheck.is_denied:
+        return runtime.deny(context, precheck)
+
+    capability = catalog.resolve("support.order.update_address", context)
+    trace.emit("capability_selected", capability.to_trace())
+
+    decision = policy.evaluate_tool_use(context, capability, request)
+    trace.emit("tool_policy_decision", decision.to_trace())
+    if decision.requires_confirmation:
+        return runtime.pause_for_approval(context, decision)
+
+    execution = tools.execute(capability, request, context.idempotency_key)
+    trace.emit("tool_execution", execution.to_trace())
+
+    verification = verifier.check_order_address(context, execution)
+    trace.emit("verification_result", verification.to_trace())
+
+    return runtime.complete(context, execution, verification)
+```
+
+Это не промышленный код и не рекомендация свести архитектуру к одной функции. Смысл примера в другом: вся взрослая логика уже видна как путь данных и решений. Команда может заменить синхронный вызов очередью, вынести проверку в отдельный сервис, добавить долговечное состояние или изменить транспорт инструмента, но базовые узлы не исчезают. Если при первой же реализации приходится выбросить половину событий, значит золотой путь был нарисован слишком далеко от исполнимой системы.
+
+В хорошей рукописи технической книги такой практикум нужен еще и как защита от абстрактности. Читатель должен видеть, где именно архитектурный принцип превращается в структуру файла, контракт события, условие допуска и проверку готовности. Поэтому при работе со своей системой полезно не ограничиваться диаграммой. Сделай рядом с ней маленькую таблицу:
+
+| Шаг золотого пути | Событие трассы | Владелец | Минимальное поле для расследования | Связь с выпуском |
+| --- | --- | --- | --- | --- |
+| Старт запуска | `run_start` | runtime | `run_id`, `trace_id` | входит в smoke trace первой волны |
+| Предварительная политика | `policy_precheck` | policy layer | `policy_bundle_version`, `reason_code` | блокирует волну при неизвестной версии |
+| Выбор возможности | `capability_selected` | catalog | `capability_name`, `risk_tier` | ограничивает доступ по волне |
+| Решение по инструменту | `tool_policy_decision` | policy layer | `confirmation_required`, `constraints` | проверяется eval gate |
+| Исполнение | `tool_execution` | adapter | `idempotency_key`, `external_operation_id` | участвует в rollback playbook |
+| Проверка результата | `verification_result` | verifier | `verdict`, `observed_state` | задает критерий расширения |
+| Завершение | `run_complete` | runtime | `final_status` | попадает в SLO и отчет выпуска |
+
+После такой таблицы у команды появляется не просто “пример рантайма”, а минимальная форма операционного договора. Ее можно дать инженеру платформы, владельцу продукта, инженеру безопасности и дежурному. Каждый увидит свою часть, и каждый сможет сказать, какие поля или события пока отсутствуют.
+
+Самая полезная привычка на этом этапе — не расширять скелет сразу на все сценарии. Сначала доведи один путь до состояния, где его можно:
+
+- запустить в тестовой среде;
+- воспроизвести по трассе;
+- остановить на подтверждении и продолжить;
+- проверить оценкой качества;
+- включить в первую волну поэтапного выпуска;
+- откатить или ограничить при неизвестном результате.
+
+Только после этого стоит обобщать каркас. Иначе команда легко построит красивый абстрактный рантайм, в котором ни один реальный пользовательский путь не проходит от начала до конца.
+
 ## 16. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
