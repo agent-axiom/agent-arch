@@ -378,7 +378,353 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
 Если одного-двух пунктов не хватает, система еще может работать. Если не хватает большинства, инструментальный слой пока остается только прототипной обвязкой.
 
-## 15. Что делать сразу после этой главы
+## 15. Практикум: ревью capability contract перед выдачей инструмента модели
+
+В предыдущем практикуме мы собрали контекст так, чтобы было понятно, какие источники попали в подсказку и почему. Но после этого появляется следующий слой риска: модель может не только ответить, но и выбрать действие. Поэтому каталог инструментов нельзя считать набором удобных функций. Его нужно ревьюить как поверхность полномочий.
+
+Capability contract review отвечает на простой вопрос: что именно мы готовы показать модели как доступную возможность в данном запуске? Не вообще в платформе, не в полном внутреннем реестре, а именно в этом сценарии, с этим пользователем, tenant, policy snapshot и уровнем риска.
+
+Если такого review нет, команда обычно узнает о слабом контракте слишком поздно: модель увидела слишком широкий каталог, выбрала похожий, но неверный инструмент, передала неполные аргументы, повторила write-вызов после тайм-аута или получила доступ к действию, которое должно было требовать подтверждения.
+
+Практическая цель этого раздела - дать форму, по которой capability можно проверить до того, как она попадет в prompt или tool selection layer.
+
+### Шаг 1. Начать с карточки capability, а не с функции
+
+Функция в коде отвечает на вопрос: как вызвать интеграцию. Capability отвечает на другой вопрос: какое действие платформа разрешает агенту выполнить и при каких условиях.
+
+Минимальная карточка capability может выглядеть так:
+
+```yaml
+capability:
+  name: create_ticket
+  owner: support_platform
+  mode: write
+  transport: gateway
+  tool_principal: svc-ticket-writer
+  risk_tier: high
+  network_access: brokered
+  allowed_egress:
+    - tickets.internal
+  approval: manager
+  idempotency_key_required: true
+  timeout_seconds: 15
+  lifecycle_status: approved
+```
+
+Такая карточка сразу делает видимыми несколько вещей. У возможности есть владелец. Она является write-действием, а не чтением. Она ходит через gateway, а не напрямую из модели. У нее есть отдельный tool principal. Она требует manager approval и idempotency key. Ее сетевой контур ограничен `tickets.internal`.
+
+Это уже не просто функция `create_ticket`. Это управляемое полномочие.
+
+### Шаг 2. Проверить, кто является владельцем и кто несет операционную ответственность
+
+Если у capability нет owner, ее нельзя безопасно выпускать. Без владельца непонятно:
+
+- кто утверждает изменение схемы;
+- кто отвечает за инцидент;
+- кто решает, можно ли повысить risk tier;
+- кто выключает capability при деградации;
+- кто принимает решение о replacement или retirement.
+
+Для support triage owner может быть `support_platform`. Для knowledge assistant owner может быть `knowledge_platform`. Для incident coordination owner часто должен быть ближе к on-call или incident platform, потому что уведомления и эскалации напрямую влияют на работу реагирования.
+
+Практическое правило: если команда не может назвать владельца capability за 30 секунд, модель не должна видеть эту capability в production-каталоге.
+
+### Шаг 3. Развести read, write и orchestration до выдачи модели
+
+Глава уже показала различие между read tools и write tools. В review это различие нужно сделать механическим.
+
+```yaml
+read_capability:
+  name: search_docs
+  mode: read
+  risk_tier: low
+  approval: none
+  network_access: restricted
+  allowed_egress:
+    - docs.internal
+
+write_capability:
+  name: create_ticket
+  mode: write
+  risk_tier: high
+  approval: manager
+  idempotency_key_required: true
+  network_access: brokered
+  allowed_egress:
+    - tickets.internal
+
+orchestration_capability:
+  name: request_human_approval
+  mode: orchestration
+  risk_tier: medium
+  approval: none
+  creates_control_state: true
+```
+
+Это не косметика. Если capability меняет внешний мир, она не должна проходить тот же путь, что и чтение. Если capability меняет граф выполнения, например создает approval request или handoff, она тоже не является обычным tool call. У нее свой след, свой владелец и свои failure modes.
+
+### Шаг 4. Проверить schema surface и запретить импровизацию аргументов
+
+Контракт capability должен описывать не только название, но и форму входа. Минимальный review проверяет:
+
+- все обязательные поля названы явно;
+- `tenant_id` и `principal_id` не выводятся моделью из текста, а приходят из runtime context;
+- enum ограничивает допустимые очереди, режимы и типы действий;
+- строки имеют `maxLength` там, где они уходят во внешнюю систему;
+- `idempotency_key` обязателен для write-действий;
+- sensitive fields не показываются модели, если они не нужны для выбора действия.
+
+Пример для `create_ticket`:
+
+```yaml
+input_schema:
+  required:
+    - title
+    - queue
+    - requester_id
+    - tenant_id
+    - idempotency_key
+  properties:
+    title:
+      type: string
+      maxLength: 200
+    queue:
+      type: string
+      enum:
+        - support
+        - security
+        - ops
+    requester_id:
+      type: string
+    tenant_id:
+      type: string
+      source: runtime_context
+    idempotency_key:
+      type: string
+      source: runtime_generated
+    description:
+      type: string
+      maxLength: 4000
+```
+
+Важное правило: модель может предложить смысл действия, но не должна сама придумывать `tenant_id`, `tool_principal` или `idempotency_key`. Эти значения должны приходить из контролируемого слоя выполнения.
+
+### Шаг 5. Привязать capability к policy decision
+
+Каталог инструментов без policy layer быстро становится справочником опасных возможностей. Для каждой capability нужно заранее знать решение политики.
+
+```yaml
+policy:
+  run_precheck:
+    require_tenant: true
+    deny_if_principal_missing: true
+  capabilities:
+    search_docs:
+      decision: allow
+    create_ticket:
+      decision: approval_required
+      approver: manager
+    run_shell:
+      decision: deny
+```
+
+Такой policy snapshot помогает не спорить о разрешении в момент вызова. Runtime сначала проверяет tenant и principal, потом смотрит capability decision, и только затем показывает модели допустимый поднабор инструментов или переводит действие в approval flow.
+
+Зрелая система различает как минимум четыре решения:
+
+- `allow`: можно вызвать автоматически при валидных аргументах;
+- `approval_required`: нужен человеческий шлюз;
+- `deny`: capability недоступна в этом сценарии;
+- `hidden`: capability не показывается модели, потому что она не относится к текущему workflow.
+
+Последний статус особенно важен. Опасный инструмент лучше не просто запретить на позднем этапе, а не включать в tool selection set, если он не нужен текущей задаче.
+
+### Шаг 6. Проверить approval gate до write-действия
+
+Если policy говорит `approval_required`, capability review должен проверить не только факт подтверждения, но и форму запроса.
+
+```yaml
+approval_request:
+  approval_id: apr-2026-04-07-001
+  trace_id: trace-support-001
+  session_id: session-support-001
+  tenant_id: tenant-acme
+  principal_id: user-42
+  capability: create_ticket
+  risk_tier: high
+  required_role: manager
+  requested_fields:
+    title: "Access request blocked for three days"
+    queue: support
+    requester_id: user-42
+    idempotency_key: ticket-req-2026-04-07-001
+  status: pending
+```
+
+Человек должен видеть ровно те поля, которые потом уйдут в действие. Если после подтверждения runtime меняет `queue`, `requester_id` или `description` без новой проверки, approval уже не соответствует исполнению.
+
+Для user-delegated сценариев также важны principal binding и scope visibility. Если делегированная область отозвана, действие должно отменяться или требовать повторного подтверждения, а не продолжать выполнение по старому approval.
+
+### Шаг 7. Проверить idempotency и side_effect_unknown
+
+Для write capability недостаточно сказать `idempotent: true`. Review должен проверить, где именно живет ключ и что происходит при неопределенности.
+
+Минимальный контракт:
+
+```yaml
+idempotency:
+  required: true
+  key_source: runtime_generated
+  key_scope: tenant_plus_capability_plus_request
+  replay_policy: reconcile_before_retry
+  on_timeout_after_possible_side_effect: side_effect_unknown
+  on_side_effect_unknown: stop_or_reconcile
+```
+
+Это место отделяет production-систему от демо. Если helpdesk API ответил тайм-аутом, но тикет мог быть создан, модель не должна просто повторить `create_ticket`. Runtime должен сначала сверить состояние по idempotency key или correlation id. Если сверка невозможна, безопасный исход - остановка или ручная проверка.
+
+### Шаг 8. Нормализовать результаты capability
+
+Capability contract должен описывать не только вход, но и выход. Иначе модель получит сырой ответ внешнего API и начнет додумывать состояние.
+
+Хороший output contract:
+
+```yaml
+output_schema:
+  status:
+    enum:
+      - success
+      - validation_failure
+      - permission_denied
+      - approval_required
+      - retryable_failure
+      - side_effect_unknown
+  fields:
+    ticket_id: optional_string
+    external_status: optional_string
+    failure_reason: optional_string
+    retry_after_seconds: optional_integer
+    audit_ref: required_string
+```
+
+Runtime должен возвращать модели не весь ответ helpdesk, а нормализованный результат. Если `status` равен `side_effect_unknown`, модель не должна формулировать пользователю уверенное "тикет создан". Она должна перейти в безопасную ветку: сверка, эскалация или ожидание человека.
+
+### Шаг 9. Собрать tool selection set для конкретного запуска
+
+Полный каталог может содержать десятки или сотни capabilities. Модель не должна видеть их все. Для каждого запуска runtime должен собрать узкий tool selection set.
+
+Пример:
+
+```yaml
+tool_selection_set:
+  trace_id: trace-support-001
+  workflow: support_triage
+  tenant_id: tenant-acme
+  principal_id: user-42
+  visible_capabilities:
+    - check_access_request_status
+    - get_user_profile
+    - request_human_approval
+    - create_ticket
+  hidden_capabilities:
+    - run_shell
+    - execute_remediation
+    - notify_customer_directly
+  reasons:
+    create_ticket: visible_but_approval_required
+    run_shell: policy_denied
+    execute_remediation: outside_workflow
+    notify_customer_directly: requires_incident_workflow
+```
+
+Это снижает риск неверного выбора и делает catalog exposure наблюдаемым. Если во время incident review выясняется, что модель видела опасный инструмент вне workflow, это уже дефект runtime assembly, а не загадочная ошибка модели.
+
+### Шаг 10. Привязать capability к trace и audit trail
+
+Минимальная трасса должна показывать цепочку от выбора инструмента до результата:
+
+```yaml
+events:
+  - kind: tool_selection_set_built
+    trace_id: trace-support-001
+    visible_capabilities:
+      - check_access_request_status
+      - create_ticket
+    hidden_capabilities_count: 3
+  - kind: capability_policy_decision
+    capability: create_ticket
+    decision: approval_required
+    approver: manager
+  - kind: approval_requested
+    approval_id: apr-2026-04-07-001
+    capability: create_ticket
+    idempotency_key: ticket-req-2026-04-07-001
+  - kind: tool_called
+    capability: create_ticket
+    tool_principal: svc-ticket-writer
+    idempotency_key: ticket-req-2026-04-07-001
+  - kind: tool_result_normalized
+    status: success
+    audit_ref: audit-ticket-2026-04-07-001
+```
+
+Для отказов цепочка так же важна. `validation_failure`, `permission_denied` и `side_effect_unknown` должны быть не строками в логах, а нормальными outcome-событиями.
+
+### Шаг 11. Прогнать capability через три канонических сценария
+
+Для support triage:
+
+- `create_ticket` должен быть write capability с approval и idempotency key;
+- `check_access_request_status` должен быть read capability с tenant scope;
+- `side_effect_unknown` должен останавливать слепой retry;
+- approval должен видеть те же поля, которые уйдут в tool call.
+
+Для internal knowledge assistant:
+
+- `search_docs` должен быть read capability с role-scoped и tenant-scoped retrieval;
+- скрытая запись в память не должна появляться через search capability;
+- результат поиска должен возвращать source labels, а не только текст;
+- write capabilities обычно скрыты из tool selection set.
+
+Для incident coordination:
+
+- `notify_team` и `create_incident_thread` являются write capabilities;
+- `execute_remediation` должен быть `disabled_by_default` или `approval_required`;
+- handoff capability должна фиксировать текущего владельца;
+- notification side effects должны иметь idempotency и `audit_ref`.
+
+### Минимальный checklist для capability contract review
+
+Перед тем как capability попадет в tool selection set, нужно ответить на вопросы:
+
+- Есть ли owner и `lifecycle_status`?
+- Ясно ли, это read, write или orchestration capability?
+- Есть ли `risk_tier` и policy decision?
+- Откуда берутся `tenant_id`, `principal_id`, `tool_principal` и `idempotency_key`?
+- Может ли модель увидеть только нужный поднабор capabilities?
+- Требуется ли approval и кто имеет право подтверждать?
+- Видит ли подтверждающий ровно те поля, которые будут исполнены?
+- Что происходит при timeout после возможного side effect?
+- Нормализован ли output до `success`, `validation_failure`, `permission_denied`, `approval_required`, `retryable_failure` или `side_effect_unknown`?
+- Есть ли trace events для selection, policy decision, approval, tool call и normalized result?
+
+### Что должно измениться в реализации после такого ревью
+
+После такого review команда обычно получает конкретный backlog:
+
+- перевести tool catalog из списка функций в capability registry;
+- добавить owner, mode, risk_tier, transport, tool_principal, network_access и allowed_egress;
+- собирать tool selection set на каждый запуск, а не показывать полный каталог;
+- генерировать `idempotency_key` в runtime, а не в модели;
+- вынести policy decision до tool call;
+- связать approval request с конкретными requested_fields;
+- нормализовать результаты инструментов;
+- добавить trace events для capability path;
+- включить `side_effect_unknown` в eval-набор и rollout gate.
+
+Главная мысль проста: модель может предложить действие, но capability contract решает, существует ли такое действие как управляемое полномочие в данном запуске. Если контракт не выдерживает review, инструмент не должен попадать в доступный набор модели.
+
+## 16. Что делать сразу после этой главы
 
 Если хочешь быстро проверить свой слой выполнения, пройди по короткому списку:
 
@@ -403,7 +749,7 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
 
     **Что читать дальше:** переходи к Главе 9, чтобы понять, как изолировать выполнение и сделать MCP границей доверия.
 
-## 16. Что читать дальше
+## 17. Что читать дальше
 
 Следующие естественные темы в этой части: выполнение в песочнице, MCP как контракт интеграции и правила для повторов и границ отката. Именно там становится видно, как тот же агент поддержки не просто вызывает инструменты, а делает это через зрелый слой выполнения.
 
