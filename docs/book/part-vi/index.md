@@ -42,14 +42,14 @@
 
 Редакционная связка с предыдущей частью такая: если в Части V команда научилась доказывать, что произошло и можно ли выпускать изменение дальше, то в Части VI она назначает владельцев этих доказательств. Без этого trace, SLO и eval gate остаются правильными артефактами без операционной ответственности.
 
-## Практический мост от SLO и eval к владельцам и golden path
+## Практический мост от SLO и eval к владельцам и золотому пути
 
 После trace review, SLO-карты и regression gate следующий вопрос уже не технический: кто владеет этим контуром и как сделать его путем по умолчанию для следующих команд.
 
 Минимальная связка ответственности выглядит так:
 
 ```yaml
-ownership_map:
+responsibility_map:
   support_ticket_write_path:
     product_owner:
       owns:
@@ -73,7 +73,7 @@ ownership_map:
         - rollback_or_freeze_execution
 ```
 
-А минимальный golden path для пишущего агента должен уже включать не только runtime template, но и общий tool gateway, idempotency key, `tool_policy_decision`, approval path, trace events, eval gates и staged canary по умолчанию.
+А минимальный золотой путь для пишущего агента должен уже включать не только runtime template, но и общий tool gateway, idempotency key, `tool_policy_decision`, approval path, trace events, eval gates и staged canary по умолчанию.
 
 ```yaml
 golden_path:
@@ -90,10 +90,10 @@ golden_path:
     expansion_requires:
       - offline_eval_passed
       - online_slo_within_budget
-      - ownership_confirmed
+      - responsibility_confirmed
 ```
 
-Этот мост нужен для логической нити рукописи: часть про надежность доказывает, что произошло и можно ли выпускать изменение дальше; организационная часть назначает владельцев этих доказательств; golden path делает безопасный маршрут проще локального обхода.
+Этот мост нужен для логической нити рукописи: часть про надежность доказывает, что произошло и можно ли выпускать изменение дальше; организационная часть назначает владельцев этих доказательств; золотой путь делает безопасный маршрут проще локального обхода.
 
 ## В этой части
 
