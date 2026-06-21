@@ -48,6 +48,55 @@
 
 **Заметка о сквозных сценариях золотого пути:** антизоопарк-стратегия должна давать готовые маршруты для всех трех канонических сценариев. Разбор обращений поддержки получает шаблон агента рабочего процесса с утвержденным шлюзом записи, точками подключения подтверждений, настройками идемпотентности по умолчанию и оценками дублей тикета. Внутренний ассистент знаний получает шаблон агента знаний с политикой извлечения, привязкой к источникам, фильтрами арендатора и защитными ограничениями записи в память. Координация инцидентов получает шаблон агента координации инцидентов со шлюзом эскалации, настройками уведомлений по умолчанию, проверками роли реагирующего и точками подключения регрессий после инцидента.
 
+### 2.1. Практикум: минимальный golden path для пишущего агента
+
+Золотой путь должен быть достаточно конкретным, чтобы команда могла начать с него без архитектурной археологии. Для пишущего агента поддержки минимальный набор выглядит так:
+
+```yaml
+golden_path:
+  name: support_write_agent
+  runtime:
+    template: governed_workflow_agent
+    required_trace_schema: standard_trace_schema_v1
+    required_session_model: session_id_per_user_workflow
+  tool_gateway:
+    required:
+      - capability_contract
+      - idempotency_key
+      - tool_policy_decision
+      - high_risk_approval_path
+  observability:
+    required_events:
+      - run_start
+      - policy_precheck
+      - tool_policy_decision
+      - approval_requested
+      - tool_execution
+      - verification_result
+      - run_complete
+  evals:
+    required_gates:
+      - duplicate_ticket_after_timeout
+      - missing_idempotency_key
+      - unsafe_direct_tool_access
+  rollout:
+    default_mode: staged_canary
+    expansion_requires:
+      - offline_eval_passed
+      - online_slo_within_budget
+      - no_open_side_effect_unknown_incidents
+```
+
+Важная деталь: это не пример “идеальной платформы”. Это минимальный contract surface, который не дает продуктовой команде случайно обойти самые дорогие решения из предыдущих глав.
+
+У хорошего golden path есть три свойства:
+
+1. **Он исполняемый.** В нем есть шаблон рантайма, gateway hooks, eval hooks и rollout defaults, а не только текстовые рекомендации.
+2. **Он ограничивает риск по умолчанию.** Пишущая capability не может появиться без idempotency, policy decision и трассы.
+3. **Он остается расширяемым.** Продукт может менять workflow logic и task success criteria, но не переписывает общий слой доказательств.
+
+Если команда не может описать свой golden path в такой форме, она, скорее всего, все еще продает библиотеку и набор советов, а не платформенный маршрут по умолчанию.
+
 ## 3. Общие шлюзы нужны, чтобы не размножать критичные ошибки по всей организации
 
 Есть несколько слоев, которые особенно опасно оставлять на локальную импровизацию:

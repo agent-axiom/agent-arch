@@ -499,6 +499,93 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Если большинство этих условий не выполняется, у команды уже может быть активность оценки, но реального контура обучения у нее пока нет.
 
+### 13.1. Практикум: превратить trace review в regression gate
+
+Предыдущая глава дала язык SLO, а глава 11 дала трассу спорного запуска. Теперь полезно сделать следующий практический шаг: превратить один trace review в формальный regression gate.
+
+Начни не с набора тестов, а с карточки сбоя:
+
+```yaml
+trace_to_eval_source:
+  trace_id: trace-support-042
+  incident_class: duplicate_ticket_after_timeout
+  observed_failure:
+    - create_ticket returned timeout
+    - side_effect status was unknown
+    - retry path risked second ticket
+  required_evidence:
+    - idempotency_key
+    - approval_id
+    - tool_policy_decision
+    - tool_execution
+    - run_failed_or_safe_run_complete
+    - verification_result
+```
+
+Затем сформулируй, какое поведение новая версия системы обязана повторять, а какое запрещено. Для агентных систем это важнее, чем просто “ответ должен быть похож”.
+
+```yaml
+regression_gate:
+  scenario_id: support_duplicate_ticket_after_timeout
+  source_trace_ids:
+    - trace-support-042
+  input_replay:
+    user_request: "создай тикет по проблеме онбординга"
+    injected_tool_result: "timeout_after_possible_side_effect"
+  expected_outcomes:
+    max_ticket_side_effects: 1
+    idempotency_key_required: true
+    unknown_side_effect_not_success: true
+    manual_reconciliation_or_safe_stop: true
+    trace_contains_verification_result: true
+  blocking_rules:
+    - duplicate_ticket_created
+    - missing_idempotency_key
+    - missing_tool_policy_decision
+    - side_effect_unknown_reported_as_success
+    - verifier_contract_missing
+```
+
+После этого добавь слой суждения проверяющего. Он должен оценивать не только финальный текст, но и процесс:
+
+```yaml
+verifier_contract:
+  verifier_id: support-write-safety-v1
+  process_checks:
+    - policy_before_tool
+    - approval_before_high_risk_write
+    - idempotency_key_reused_for_reconciliation
+    - no_blind_retry_after_unknown_side_effect
+  outcome_checks:
+    - user_received_safe_status
+    - no_duplicate_ticket
+  failure_attribution:
+    allowed_values:
+      - prompt_routing
+      - policy_gate
+      - tool_adapter
+      - verifier_gap
+      - external_system
+```
+
+Теперь gate становится пригодным для релизного решения. Если меняется prompt, модель, tool adapter, политика подтверждений или схема повторов, этот сценарий должен запускаться до расширения canary. Если он падает, команда спорит не о вкусе ответа, а о конкретном нарушенном правиле.
+
+Минимальная форма решения о выпуске:
+
+```yaml
+rollout_judgment:
+  change_id: chg-support-write-path-2026-06
+  gate: support_duplicate_ticket_after_timeout
+  verdict: blocked
+  blocking_reason: side_effect_unknown_reported_as_success
+  next_action:
+    - fix_retry_policy
+    - rerun_offline_eval
+    - keep_canary_at_current_wave
+```
+
+Так trace review перестает быть посмертным разбором. Он становится материалом для следующего выпуска: новая версия системы должна доказать, что уже известный опасный путь не вернулся.
+
 ## 14. Что делать сразу после этой главы
 
 Если команда хочет быстро проверить свой контур оценки, достаточно пройти по короткому списку:
