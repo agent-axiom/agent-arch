@@ -144,6 +144,13 @@ plugins:
             Практические кейсы: Практические кейсы
             Шаблоны политик и проверочные списки по кейсам: Шаблоны политик и проверочные списки по кейсам
             Источники: Источники
+            Online Companion: Online Companion
+            Обзор companion: Обзор companion
+            Runtime Reference: Runtime Reference
+            Runtime configs and MCP boundary: Runtime configs and MCP boundary
+            Runtime CLI: Runtime CLI
+            Eval datasets: Eval datasets
+            Traces and events: Traces and events
         - locale: en
           name: English
           build: true
@@ -232,6 +239,13 @@ plugins:
             Практические кейсы: Practical Case Studies
             Шаблоны политик и проверочные списки по кейсам: Policy Templates and Checklists by Use Case
             Источники: Sources
+            Online Companion: Online Companion
+            Обзор companion: Companion Overview
+            Runtime Reference: Runtime Reference
+            Runtime configs and MCP boundary: Runtime configs and MCP boundary
+            Runtime CLI: Runtime CLI
+            Eval datasets: Eval datasets
+            Traces and events: Traces and events
         - locale: zh
           name: 中文
           build: true
@@ -320,6 +334,13 @@ plugins:
             Практические кейсы: 实战案例
             Шаблоны политик и проверочные списки по кейсам: 按场景组织的策略模板与检查清单
             Источники: 参考来源
+            Online Companion: 在线配套资料
+            Обзор companion: 配套资料概览
+            Runtime Reference: 运行时参考
+            Runtime configs and MCP boundary: 运行时配置与 MCP 边界
+            Runtime CLI: 运行时 CLI
+            Eval datasets: 评测数据集
+            Traces and events: 追踪与事件
   - search
   - glightbox
   - minify:
@@ -370,6 +391,13 @@ nav:
   - Start Here: start-here.md
   - Reference: reference.md
   - "What's New": whats-new.md
+  - Online Companion:
+      - Обзор companion: companion/index.md
+      - Runtime Reference:
+          - Runtime configs and MCP boundary: companion/runtime-reference/configs.md
+          - Runtime CLI: companion/runtime-reference/cli.md
+          - Eval datasets: companion/runtime-reference/eval-datasets.md
+          - Traces and events: companion/runtime-reference/traces-and-events.md
   - Книга:
       - Книга: book/index.md
       - План книги: book/plan.md
