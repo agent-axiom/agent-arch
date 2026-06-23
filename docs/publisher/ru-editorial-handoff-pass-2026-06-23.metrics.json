@@ -1,0 +1,44 @@
+{
+  "date": "2026-06-23",
+  "source_google_doc": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "publisher_docx_derivative": "docs/publisher/artifacts/agent-arch-ru-template2000n-full-2026-06-23.docx",
+  "google_docs_pdf_pages": 647,
+  "publisher_derivative_pdf_pages": 388,
+  "paragraph_count": 7801,
+  "estimated_words": 97759,
+  "characters": 756102,
+  "author_placeholder_paragraphs": [22, 25, 28, 29, 30, 31, 32],
+  "service_front_matter_paragraphs": [3, 4, 5],
+  "broad_url_like_occurrences": 22,
+  "true_public_http_references": 16,
+  "new_handoff_artifacts": [
+    "docs/publisher/ru-author-pass-2026-06-23.md",
+    "docs/publisher/ru-link-restoration-pass-2026-06-23.md",
+    "docs/publisher/ru-front-matter-cleanup-pass-2026-06-23.md",
+    "docs/publisher/ru-submission-packet-v0.2-2026-06-23.md",
+    "docs/publisher/ru-editorial-100-next-iterations-2026-06-23.md"
+  ],
+  "manual_author_actions_required": [
+    "fill_public_author_name",
+    "fill_current_role_or_positioning",
+    "fill_short_bio",
+    "fill_extended_bio",
+    "fill_key_experience",
+    "fill_public_projects",
+    "confirm_public_links",
+    "confirm_publisher_bio",
+    "decide_acknowledgments_or_dedication",
+    "confirm_companion_url",
+    "confirm_errata_route"
+  ],
+  "gates_before_final_submission": [
+    "author_fill",
+    "front_matter_cleanup_in_google_doc",
+    "link_restoration",
+    "human_proofread",
+    "fact_check",
+    "fresh_docx_export",
+    "repeat_template2000n_pass",
+    "repeat_render_qa"
+  ]
+}
