@@ -1,0 +1,76 @@
+{
+  "pdf": "/private/tmp/agent_arch_full_publisher_pass/rendered/agent-arch-ru-template2000n-full-2026-06-23.pdf",
+  "page_count": 388,
+  "png_count": 388,
+  "image_dimensions": {
+    "1547x2002": 388
+  },
+  "blank_like_pages": [],
+  "low_ink_pages_sample": [],
+  "high_ink_pages_sample": [],
+  "edge_risk_count": 0,
+  "edge_risk_sample": [],
+  "marker_pages": {
+    "Аннотация": [
+      1
+    ],
+    "Глава 1": [
+      17,
+      18,
+      20,
+      33,
+      96
+    ],
+    "Глава 10": [
+      18,
+      136,
+      158,
+      172,
+      193
+    ],
+    "Глава 20": [
+      18,
+      251,
+      256,
+      290,
+      379
+    ],
+    "Приложение 1": [
+      363
+    ],
+    "Приложение 2": [
+      369
+    ],
+    "Приложение 3": [
+      376
+    ],
+    "Приложение 4": [
+      384
+    ],
+    "Об авторе": [
+      2
+    ]
+  },
+  "selected_visual_pages": [
+    1,
+    2,
+    3,
+    10,
+    17,
+    18,
+    50,
+    100,
+    150,
+    200,
+    250,
+    300,
+    350,
+    363,
+    369,
+    376,
+    384,
+    388
+  ],
+  "contact_sheet": "/private/tmp/agent_arch_full_publisher_pass/rendered/full_publisher_contact_sheet.png",
+  "heading_numPr_fix": "removed numPr from Heading1-Heading5 in copied Template2000n styles"
+}
