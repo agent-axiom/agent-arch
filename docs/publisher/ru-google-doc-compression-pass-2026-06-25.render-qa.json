@@ -1,0 +1,85 @@
+{
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "tab_id": "t.0",
+    "final_revision_id": "ALtnJHwfjLMG9gKPoabRSq2_KwaI_Lh_jy4cXwLoZUSMsT51PNH3uuUjGGl9hxo4mCOwCQsbwqNfk_EQczbb_sG69syt0RITKh6xXxaXWQU",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI"
+  },
+  "connector_readback": {
+    "new_chapter_12_marker_found": true,
+    "new_trace_marker_found": true,
+    "old_write_intent_marker_found": false,
+    "old_capability_retry_contract_marker_found": false,
+    "old_trace_review_marker_found": false,
+    "old_regression_candidate_marker_found": false
+  },
+  "raw_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-compression-pass-2026-06-25.docx",
+    "size_bytes": 742211,
+    "paragraphs": 9381,
+    "zip_test": null,
+    "pages": 637,
+    "png_size": [1547, 2002],
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "marker_pages": {
+      "Печатный excerpt: intent_id": [300],
+      "Печатный excerpt: incident_question": [324],
+      "Листинг 12.10": [305],
+      "Листинг 15.10": [329],
+      "Минимальный checklist перед production-вызовом": [306],
+      "15.11. Контрольный лист ревью trace": [329]
+    },
+    "text_checks": {
+      "new_chapter_12_marker": true,
+      "new_trace_marker": true,
+      "old_capability_retry_contract": false,
+      "old_trace_review": false,
+      "old_regression_candidate": false,
+      "old_write_intent": false,
+      "listing_12_count": 10,
+      "listing_15_count": 10
+    }
+  },
+  "template2000n_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-compression-pass-2026-06-25.docx",
+    "size_bytes": 749793,
+    "pages": 375,
+    "png_size": [1547, 2002],
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "template_repair": {
+      "excerpt_paragraphs_left_aligned": 20,
+      "reason": "Avoid stretched justification around long snake_case terms in printed excerpts."
+    },
+    "style_counts": {
+      "Style13": 1,
+      "Style14": 1,
+      "Heading1": 78,
+      "BodyText": 4659,
+      "Style16": 1702,
+      "Heading3": 1002,
+      "Style20": 28,
+      "Style18": 2
+    },
+    "marker_pages": {
+      "Печатный excerpt: intent_id": [182],
+      "Листинг 12.10": [186],
+      "Листинг 15.10": [202],
+      "15.11. Контрольный лист ревью trace": [203]
+    }
+  },
+  "visual_spot_checks": [
+    {
+      "artifact": "raw_docx",
+      "pages": [300, 305, 324, 329],
+      "result": "No clipping, no old YAML ladder, edited sections readable as prose."
+    },
+    {
+      "artifact": "template2000n_docx",
+      "pages": [182, 202],
+      "result": "No clipping. Excerpt paragraphs left-aligned after repair; section transition page 202 is low density but not blank."
+    }
+  ]
+}
