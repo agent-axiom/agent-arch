@@ -1,0 +1,52 @@
+{
+  "date": "2026-06-25",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "final_revision_id": "ALtnJHz6nYNEch7_ho1rYJwysGyhX7XtF-6ovMB5cRb8pFUrL83tHEjbf57FAu-QoVftugr0PEmDGaoV6RUxhZEJnAhB0IFLm3p5pwS6sEU"
+  },
+  "raw_google_docx": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-ch12-checklist-pass-2026-06-25.docx",
+    "render_dir": "/private/tmp/agent_arch_ch12_checklist_pass_2026_06_25_render_final",
+    "pdf": "/private/tmp/agent_arch_ch12_checklist_pass_2026_06_25_render_final/agent-arch-ru-ch12-checklist-pass-2026-06-25.pdf",
+    "page_count": 633,
+    "zero_byte_pages": [],
+    "blank_like_pages": [],
+    "docx_bytes": 737542,
+    "pdf_bytes": 4150169,
+    "zip_test": "passed",
+    "marker_pages": {
+      "Проверь пять решений": [306],
+      "Терминологическое правило главы": [308],
+      "Порядок листингов 12.1-12.10": [308],
+      "Companion route для главы 12": [309],
+      "Глава 13. Трассы": [28, 309, 627]
+    },
+    "visual_spot_pages": [306, 307, 308, 309],
+    "visual_spot_result": "passed"
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch12-checklist-pass-2026-06-25.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_ch12_checklist_pass_2026_06_25_render_final",
+    "pdf": "/private/tmp/agent_arch_template2000n_ch12_checklist_pass_2026_06_25_render_final/agent-arch-ru-template2000n-ch12-checklist-pass-2026-06-25.pdf",
+    "page_count": 378,
+    "zero_byte_pages": [],
+    "blank_like_pages": [],
+    "docx_bytes": 763906,
+    "pdf_bytes": 5649663,
+    "zip_test": "passed",
+    "marker_pages": {
+      "Проверь пять решений": [188],
+      "Терминологическое правило главы": [189],
+      "Порядок листингов 12.1-12.10": [189],
+      "Companion route для главы 12": [189],
+      "Глава 13. Трассы": [18, 190, 374]
+    },
+    "visual_spot_pages": [188, 189, 190],
+    "visual_spot_result": "passed",
+    "notes": [
+      "Template2000n derivative uses copied style assets from the previous checked Template2000n proof.",
+      "New long chapter 12 paragraphs were set to left alignment to avoid stretched justification around technical terms."
+    ]
+  }
+}
