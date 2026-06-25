@@ -1,0 +1,168 @@
+{
+  "schema": "agent-arch-render-qa/v1",
+  "date": "2026-06-25",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "tab_id": "t.0",
+    "revision_before_edits": "ALtnJHx8rYGtnrjMg9ktpn0uzJr-ax5Hul3f6SKJI7VX5aIxsDe7J746gD13SmpLfPI1SnBbVGcg6gKOlK_2PGIDqSbk0l8EC62o0F6TztY",
+    "revision_after_edits": "ALtnJHyQo9UCen1Ox6JZo_9gbKZmWFrhdB5sOnlejOOpCxBrUdTOldz9jyx8i9simIl2ZariU18kfwCiPqJx4QXniQ-LEpL66Lqe24qKH5Q"
+  },
+  "google_doc_edits": {
+    "inventory": {
+      "generic_yaml_labels_before": 27,
+      "generic_python_labels_before": 1,
+      "semantic_listing_captions_after": 28
+    },
+    "batch_update": {
+      "initial_large_batch": {
+        "request_items": 56,
+        "result": "HTTP 500 transport error; readback confirmed no partial application"
+      },
+      "applied_small_batches": 5,
+      "strategy": "descending index order with revision guard per batch"
+    }
+  },
+  "raw_google_docs_export": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-listing-caption-pass-2026-06-25.docx",
+    "docx_size_bytes": 750004,
+    "render_dir": "/private/tmp/agent_arch_listing_caption_pass_2026_06_25_render",
+    "pdf_name": "agent-arch-listing-caption-pass-2026-06-25.pdf",
+    "pdf_size_bytes": 4285292,
+    "rendered_pages": 655,
+    "page_image_size": [1547, 2002],
+    "image_dimensions": {
+      "1547x2002": 655
+    },
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "edge_risk_sample": [],
+    "low_ink_pages_sample": [
+      [121, 0.0043805580327881555, 13567, 0],
+      [372, 0.004761883236349946, 14748, 0],
+      [14, 0.014875880422098909, 46072, 0],
+      [530, 0.018646834742503778, 57751, 0],
+      [229, 0.01878890340428802, 58191, 0],
+      [532, 0.019079498394301238, 59091, 0],
+      [531, 0.019125670709381117, 59234, 0],
+      [566, 0.01961031857605872, 60735, 0],
+      [281, 0.01961839065911464, 60760, 0],
+      [305, 0.019765302570732435, 61215, 0],
+      [355, 0.01981599525232363, 61372, 0],
+      [285, 0.020221536705053188, 62628, 0]
+    ],
+    "high_ink_pages_sample": [
+      [423, 0.12113742753691041, 375174, 0],
+      [479, 0.10265364887213627, 317928, 0],
+      [584, 0.09807871507936149, 303759, 0],
+      [102, 0.09697057951744442, 300327, 0],
+      [96, 0.09655115408185867, 299028, 0],
+      [100, 0.09555441326611333, 295941, 0],
+      [459, 0.09536165192273789, 295344, 0],
+      [499, 0.09507363999930257, 294452, 0],
+      [556, 0.09445176672067429, 292526, 0],
+      [72, 0.09379760510982231, 290500, 0],
+      [129, 0.09273305879640721, 287203, 0],
+      [443, 0.09154194222067526, 283514, 0]
+    ],
+    "docx_text_checks": {
+      "paragraphs": 9722,
+      "generic_yaml_labels": 0,
+      "generic_python_labels": 0,
+      "semantic_listing_captions": 28
+    }
+  },
+  "template2000n_derivative": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-template2000n-listing-caption-pass-2026-06-25.docx",
+    "docx_size_bytes": 757138,
+    "render_dir": "/private/tmp/agent_arch_template2000n_listing_caption_pass_2026_06_25_render",
+    "pdf_name": "agent-arch-ru-template2000n-listing-caption-pass-2026-06-25.pdf",
+    "pdf_size_bytes": 5936205,
+    "rendered_pages": 345,
+    "page_image_size": [1547, 2002],
+    "image_dimensions": {
+      "1547x2002": 345
+    },
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "edge_risk_sample": [],
+    "low_ink_pages_sample": [
+      [285, 0.015016657550594201, 46508, 0],
+      [178, 0.02320885320238908, 71880, 0],
+      [159, 0.02370286468541155, 73410, 0],
+      [345, 0.024710260650790707, 76530, 0],
+      [230, 0.027019845054751326, 83683, 0],
+      [117, 0.02811667970039011, 87080, 0],
+      [173, 0.02816963256523696, 87244, 0],
+      [330, 0.028884819123991715, 89459, 0],
+      [158, 0.02897748663747371, 89746, 0],
+      [147, 0.02931393105924457, 90788, 0],
+      [124, 0.029498297436241844, 91359, 0],
+      [177, 0.029839907991168497, 92417, 0]
+    ],
+    "high_ink_pages_sample": [
+      [87, 0.10128365493588506, 313685, 0],
+      [140, 0.09793018875113252, 303299, 0],
+      [247, 0.09536100615609343, 295342, 0],
+      [11, 0.09392901862197273, 290907, 0],
+      [248, 0.09265266084917022, 286954, 0],
+      [221, 0.09134046302759942, 282890, 0],
+      [218, 0.0910611689538645, 282025, 0],
+      [1, 0.08924269008302622, 276393, 0],
+      [49, 0.08843031564427815, 273877, 0],
+      [29, 0.0878517087308296, 272085, 0],
+      [114, 0.0874177535457432, 270741, 0],
+      [30, 0.08657857979124947, 268142, 0]
+    ],
+    "style_metrics": {
+      "paragraphs": 9722,
+      "preserved_lists": 3035,
+      "code_like": 1379,
+      "labels": 28,
+      "demoted_headings": 2358,
+      "style_counts": {
+        "BodyText": 4259,
+        "Style18": 3035,
+        "Style16": 1379,
+        "Heading3": 571,
+        "Heading2": 353,
+        "Heading4": 70,
+        "Style20": 28,
+        "Heading1": 25,
+        "Style13": 1,
+        "Style14": 1
+      }
+    },
+    "marker_pages": {
+      "Листинг 12.1": [171, 177],
+      "Листинг 15.10": [195],
+      "Листинг 21.2": [286],
+      "Листинг 22.1": [304],
+      "Приложение 4": [340]
+    },
+    "visual_spot_check": [
+      "page 1: title/front matter readable; Template2000n boxed title treatment remains for publisher confirmation",
+      "page 87: dense prose page has no clipping, but field-name sequences remain editorial compression debt",
+      "page 286: Python caption and code block render in listing/code style after Template derivative heuristic fix",
+      "page 345: final page contains companion guidance and is not blank"
+    ],
+    "known_issues": [
+      "Dense field-name prose and long reference sequences still need actual editorial compression.",
+      "Full runnable/config material still needs companion route extraction.",
+      "Template2000n boxed title treatment requires publisher/template-owner confirmation."
+    ]
+  },
+  "connector_readback": {
+    "absent_text": [
+      "Листинг (YAML):",
+      "Листинг (Python):"
+    ],
+    "verified_text": [
+      "Листинг 12.1 — write-intent",
+      "Листинг 15.10 — regression candidate",
+      "Листинг 21.2 — Python skeleton",
+      "Листинг 22.1 — rollout decision record"
+    ]
+  }
+}
