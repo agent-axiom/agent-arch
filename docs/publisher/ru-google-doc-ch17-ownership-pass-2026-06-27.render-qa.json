@@ -1,0 +1,127 @@
+{
+  "date": "2026-06-27",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "chapter": "Глава 17. Платформенная команда и продуктовые команды",
+    "revision_after_edit": "ALtnJHyFmRqkbvGG-qsEouswRq4sFXlDcXCEKbMzYNA430Zubk5zUDtm_oAhni8bYiifRnpdcq4Gm3u2Nl_lxPaDpXqJ_OAAOaoMRCTRl-4",
+    "body_ranges": {
+      "chapter_17_start": 466851,
+      "chapter_18_start_after_recovery": 498444,
+      "chapter_19_start_after_recovery": 518826,
+      "notes": "Initial chapter 17 replacement range was bounded by the next body chapter heading, which was chapter 19; chapter 18 was restored as an explicit body chapter before chapter 19."
+    }
+  },
+  "artifacts": {
+    "raw_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-ch17-ownership-pass-2026-06-27.docx",
+      "size_bytes": 683265,
+      "sha256": "7e4d73fc0fa88d8e8f99044eb8dd92e514cbc7b73a7c6819699d52a93158ff5d",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_ch17_ownership_pass_2026_06_27_render/agent-arch-ru-ch17-ownership-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3543936,
+      "page_count": 620,
+      "png_count": 620,
+      "blankish_pages": [],
+      "marker_pages": {
+        "Глава 17. Платформенная команда": [
+          29,
+          378
+        ],
+        "Platform-owned artifacts": [
+          383
+        ],
+        "Owner map для evidence chain": [
+          388
+        ],
+        "Readiness checklist: ownership review": [
+          403
+        ],
+        "Глава 18. Поддерживаемые стандартные пути": [
+          29,
+          406
+        ],
+        "Golden path как продукт платформы": [
+          407
+        ],
+        "Глава 19. От SDLC к ADLC": [
+          29,
+          423
+        ]
+      },
+      "visual_spot_check_pages": [
+        378,
+        383,
+        388,
+        403,
+        406,
+        407,
+        423
+      ],
+      "visual_spot_check_result": "passed"
+    },
+    "template2000n_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch17-ownership-pass-2026-06-27.docx",
+      "size_bytes": 685630,
+      "sha256": "dcd2314a53ae9261c5e49567b1472cc9d5ede555972aaffa120b0ef7a908ef42",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_template2000n_ch17_ownership_pass_2026_06_27_render/agent-arch-ru-template2000n-ch17-ownership-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3564306,
+      "page_count": 331,
+      "png_count": 331,
+      "blankish_pages": [],
+      "marker_pages": {
+        "Глава 17. Платформенная команда": [
+          18,
+          215
+        ],
+        "Platform-owned artifacts": [
+          217
+        ],
+        "Owner map для evidence chain": [
+          220
+        ],
+        "Readiness checklist: ownership review": [
+          226
+        ],
+        "Глава 18. Поддерживаемые стандартные пути": [
+          18,
+          227
+        ],
+        "Golden path как продукт платформы": [
+          228
+        ],
+        "Глава 19. От SDLC к ADLC": [
+          18,
+          236
+        ]
+      },
+      "visual_spot_check_pages": [
+        215,
+        217,
+        220,
+        226,
+        227,
+        228,
+        236
+      ],
+      "visual_spot_check_result": "passed",
+      "style_mapping_notes": {
+        "source_template": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch16-evidence-chain-pass-2026-06-27.docx",
+        "BodyText": 6070,
+        "Heading1": 93,
+        "Heading3": 24,
+        "numPr_removed_from_body": 1899,
+        "chapter_heading_numPr_defect": "not observed in spot check"
+      }
+    }
+  },
+  "qa_result": "passed",
+  "notes": [
+    "Raw Google Docs export renders to 620 pages with zero blank-like pages.",
+    "Template2000n derivative renders to 331 pages with zero blank-like pages.",
+    "Chapter 18 was explicitly restored between chapter 17 and chapter 19 after range verification showed chapter 17 replacement touched the previous combined 17-18 body span.",
+    "Visual spot checks covered the chapter 17/18/19 transition pages in both raw and Template2000n renders; this is render QA plus spot review, not a full human proofread of every page."
+  ]
+}
