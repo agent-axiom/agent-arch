@@ -232,6 +232,9 @@ Progress:
 - 2026-06-28: author query packet, editor-facing brief, companion readiness
   pass, final fact-check backlog and post-author export workflow are prepared.
   Final export remains blocked until the author supplies factual metadata.
+- 2026-06-28: companion templates/checklist promoted to release-candidate
+  headers; executable trace/session/eval companion artifacts generated; source
+  verification packet prepared for the final live fact-check pass.
 
 ## Workstream 7. Book-readiness second pass
 

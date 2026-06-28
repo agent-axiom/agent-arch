@@ -1,8 +1,20 @@
 # Incident record template
 
-Status: skeleton, adapt before publication.
+Status: release candidate template for adaptation.
 
 Related chapters: 13, 16, 20, 23.
+
+Intended user: incident commander, platform owner, security reviewer,
+capability owner and postmortem facilitator investigating an agentic failure or
+near miss.
+
+What to adapt: severity levels, incident roles, evidence retention policy,
+privacy handling, notification paths, legal/compliance escalation and follow-up
+tracking.
+
+Limitations: this is a technical incident record template. It does not replace
+the organization's security incident, privacy incident or legal response
+process.
 
 ## Identity
 

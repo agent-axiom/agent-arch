@@ -2,14 +2,16 @@
 
 Date: 2026-06-28.
 
-Status: ready for editor handoff, not ready for public book release.
+Status: stronger editor-handoff companion package, not ready for public book
+release until author-owned URL/version/license inputs are filled.
 
 ## Verdict
 
 The online companion is strong enough to support editorial review because it has
-the expected routes, runtime reference pages, template skeletons, checklist
-skeletons, changelog and errata policy. It is not yet release-ready because
-public URL/version metadata and template status headers remain open.
+the expected routes, runtime reference pages, release-candidate templates,
+release-candidate checklist, executable example artifacts, changelog and errata
+policy. It is not yet release-ready because public URL/version/license metadata
+remain open.
 
 ## Current companion inventory
 
@@ -28,6 +30,10 @@ Companion docs:
 - `docs/companion/templates/release-decision-record.md`
 - `docs/companion/checklists/index.md`
 - `docs/companion/checklists/production-readiness.md`
+- `docs/companion/artifacts/trace-demo.jsonl`
+- `docs/companion/artifacts/trace-failed-tool-timeout.jsonl`
+- `docs/companion/artifacts/session-failed-tool-timeout.json`
+- `docs/companion/artifacts/eval-failed-run-timeout.json`
 
 Runtime/config anchor:
 
@@ -51,8 +57,11 @@ Runtime/config anchor:
 - Runtime CLI page lists operational command surfaces.
 - Runtime reference has configs, trace/event and eval dataset routes.
 - Template routes exist for capability contract, release decision record and
-  incident record.
-- Checklist route exists for production readiness.
+  incident record, with release-candidate headers.
+- Checklist route exists for production readiness, with owner/use-case/version
+  notes.
+- Example artifacts exist for trace, failed trace, session export and eval
+  dataset review.
 - Changelog defines a book-versioning policy.
 - Errata page defines a correction policy.
 - `agent_runtime_ref` is covered by repository tests and can serve as the
@@ -65,23 +74,6 @@ Runtime/config anchor:
 `docs/companion/errata.md` still says the public companion URL and first book
 release version are not finalized. These must be filled before publication.
 
-### P0: template status
-
-The template pages are still marked as skeleton/adapt before publication. Each
-template needs a release header:
-
-- related chapter;
-- intended user;
-- status: example, draft for adaptation, or recommended structure;
-- what the reader must adapt;
-- limitations and non-goals.
-
-### P0: checklist status
-
-The production readiness checklist is still marked as skeleton/adapt before
-publication. It needs owner/use-case/version notes and a clear relationship to
-chapter 23.
-
 ### P1: companion/source cross-links
 
 The book promises that long YAML/CLI/runtime/reference material lives in the
@@ -89,18 +81,11 @@ companion. Before final submission, high-value references in chapters 21-23 and
 appendices should point to stable companion routes rather than internal source
 paths.
 
-### P1: examples and generated artifacts
+### P1: remaining examples
 
-The companion should include or generate example JSON/JSONL artifacts for:
-
-- trace export;
-- failed-run trace;
-- session export;
-- eval dataset;
-- release decision record;
-- incident record.
-
-These do not need to be printed in the book, but the routes should be stable.
+The companion now includes generated trace/session/eval artifacts. Before
+public release, add example filled records for release decision, incident
+record, capability contract and production readiness checklist.
 
 ## Editor note
 

@@ -1,8 +1,18 @@
 # Capability contract template
 
-Status: skeleton, adapt before publication.
+Status: release candidate template for adaptation.
 
 Related chapters: 5, 6, 10, 22, 23.
+
+Intended user: platform owner, capability owner, security reviewer and product
+team lead preparing a capability for controlled agent use.
+
+What to adapt: risk tiers, approval roles, data classification, tenant
+boundaries, trace fields, metrics, incident channel and lifecycle states.
+
+Limitations: this is an architecture and review aid, not a legal, compliance or
+procurement template. Teams must adapt it to their internal control framework
+and jurisdiction.
 
 ## Identity
 

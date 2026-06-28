@@ -1,0 +1,90 @@
+{
+  "session": {
+    "session_id": "session-demo-001",
+    "tenant_id": "tenant-acme",
+    "principal_id": "user-42",
+    "traces": [
+      "trace-session-001",
+      "trace-session-002"
+    ]
+  },
+  "summary": {
+    "total_runs": 2,
+    "success_runs": 1,
+    "approval_wait_runs": 0,
+    "denied_runs": 0,
+    "failed_runs": 1,
+    "traceable_failed_runs": 1,
+    "trace_ids": [
+      "trace-session-001",
+      "trace-session-002"
+    ],
+    "failed_trace_ids": [
+      "trace-session-001"
+    ],
+    "idempotency_keys": [
+      "trace-session-001"
+    ],
+    "approval_ids": [],
+    "approval_capability_names": [],
+    "pending_approval_ids": [],
+    "pending_approval_capability_names": [],
+    "approval_status_counts": {},
+    "latest_trace_id": "trace-session-002",
+    "latest_status": "success"
+  },
+  "total_runs": 2,
+  "failed_runs": 1,
+  "traceable_failed_runs": 1,
+  "trace_ids": [
+    "trace-session-001",
+    "trace-session-002"
+  ],
+  "failed_trace_ids": [
+    "trace-session-001"
+  ],
+  "idempotency_keys": [
+    "trace-session-001"
+  ],
+  "approval_ids": [],
+  "approval_capability_names": [],
+  "pending_approval_ids": [],
+  "pending_approval_capability_names": [],
+  "approval_status_counts": {},
+  "latest_failure_reason": "tool_timeout",
+  "latest_trace_id": "trace-session-002",
+  "runs": [
+    {
+      "trace_id": "trace-session-001",
+      "status": "failed",
+      "user_input": "Please create a ticket for this onboarding issue. [simulate_failure=tool_timeout]",
+      "output_text": "Runtime halted before side effects completed: create_ticket returned failed (tool_timeout).",
+      "failure_reason": "tool_timeout",
+      "request_agent_id": "support-triage-ref",
+      "capability_session_id": "",
+      "capability_session_status": "failed",
+      "authorization_mode": "platform_owned",
+      "delegated_principal_id": "",
+      "delegated_scope": "",
+      "idempotency_key": "trace-session-001",
+      "approval_id": "",
+      "capability_name": "create_ticket"
+    },
+    {
+      "trace_id": "trace-session-002",
+      "status": "success",
+      "user_input": "What language preference do you remember?",
+      "output_text": "Retrieved profile hint: User usually prefers concise English answers.",
+      "failure_reason": "",
+      "request_agent_id": "support-triage-ref",
+      "capability_session_id": "",
+      "capability_session_status": "",
+      "authorization_mode": "platform_owned",
+      "delegated_principal_id": "",
+      "delegated_scope": "",
+      "idempotency_key": "",
+      "approval_id": "",
+      "capability_name": ""
+    }
+  ]
+}

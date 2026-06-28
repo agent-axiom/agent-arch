@@ -174,8 +174,13 @@ final companion metadata and external proofread.**
       `docs/publisher/ru-editor-facing-brief-2026-06-28.md`.
 - [x] Companion readiness pass created:
       `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`.
+- [x] Companion templates/checklist promoted to release-candidate headers.
+- [x] Companion example artifacts generated for trace, failed trace, session
+      and eval dataset review.
 - [x] Final fact-check backlog created:
       `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`.
+- [x] Source verification packet created:
+      `docs/publisher/ru-source-verification-packet-2026-06-28.md`.
 - [x] Post-author final export workflow created:
       `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`.
 - [ ] Independent external proofread is completed after the export shape is stable.

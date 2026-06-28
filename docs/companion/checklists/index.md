@@ -1,6 +1,6 @@
 # Companion checklists
 
-Status: skeleton for editor handoff.
+Status: release candidate route for editor handoff.
 
 Эти checklists должны быть короткими рабочими инструментами, а не заменой
 главам книги.
@@ -8,6 +8,9 @@ Status: skeleton for editor handoff.
 ## Checklists
 
 - [Production readiness](production-readiness.md)
+
+The production readiness checklist now has owner, use-case, version,
+adaptation and limitation notes for editor handoff.
 
 ## Release rule
 

@@ -38,7 +38,9 @@ Human-readable proof reports:
 - `docs/publisher/ru-author-query-packet-2026-06-28.md`
 - `docs/publisher/ru-editor-facing-brief-2026-06-28.md`
 - `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`
+- `docs/publisher/ru-companion-example-artifacts-plan-2026-06-28.md`
 - `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
+- `docs/publisher/ru-source-verification-packet-2026-06-28.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
 ## What is now stable
@@ -100,6 +102,7 @@ For first serious editor review, send:
 8. Publisher-style pass report.
 9. Companion readiness pass.
 10. Final fact-check backlog.
+11. Source verification packet.
 
 Do not send internal 100-iteration logs unless the editor asks for the
 preparation trail.
@@ -116,9 +119,13 @@ preparation trail.
 - Editor-facing brief: `docs/publisher/ru-editor-facing-brief-2026-06-28.md`
 - Companion readiness pass:
   `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`
+- Companion example artifacts plan:
+  `docs/publisher/ru-companion-example-artifacts-plan-2026-06-28.md`
 - Fact-check backlog:
   `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
+- Source verification packet:
+  `docs/publisher/ru-source-verification-packet-2026-06-28.md`
 - Post-author export workflow:
   `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 - Next 100 goals:
-  `docs/publisher/ru-editorial-100-post-author-export-iterations-2026-06-28.md`
+  `docs/publisher/ru-editorial-100-companion-source-verification-iterations-2026-06-28.md`

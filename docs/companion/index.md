@@ -14,6 +14,11 @@ Online companion хранит материалы, которые должны б
 - [Checklists](checklists/index.md)
 - [Changelog](changelog.md)
 - [Errata](errata.md)
+- Example artifacts:
+  `artifacts/trace-demo.jsonl`,
+  `artifacts/trace-failed-tool-timeout.jsonl`,
+  `artifacts/session-failed-tool-timeout.json`,
+  `artifacts/eval-failed-run-timeout.json`
 - [Полный reference package walkthrough](../appendix/reference-package.md)
 - [Полный список источников](../appendix/sources.md)
 
