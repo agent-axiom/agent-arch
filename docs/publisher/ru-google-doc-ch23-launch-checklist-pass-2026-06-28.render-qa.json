@@ -1,0 +1,117 @@
+{
+  "date": "2026-06-28",
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab_id": "t.0",
+    "final_revision_id": "ALtnJHxlVCIbOSOSLn-MiT6GafWW1h8-G66PHD3nbRpgNgpDHuEWigp6YWF_ZlsmMY52sTbT1nH53CIZFdOFgHpfDXDlkfEKQNqHAgkf5z4"
+  },
+  "raw": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-ch23-launch-checklist-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ch23_launch_checklist_pass_2026_06_28_render_final3",
+    "pdf": "/private/tmp/agent_arch_ch23_launch_checklist_pass_2026_06_28_render_final3/agent-arch-ru-ch23-launch-checklist-pass-2026-06-28.pdf",
+    "png_pages": 579,
+    "pdf_pages": 579,
+    "blank_like_pages": [],
+    "marker_pages": {
+      "Глава 23. Чеклист промышленного запуска": [
+        29,
+        499
+      ],
+      "Trace как первое доказательство": [
+        500
+      ],
+      "Eval gate как условие перехода": [
+        501
+      ],
+      "Практический walkthrough: агент поддержки": [
+        505
+      ],
+      "Readiness checklist для промышленного запуска": [
+        508
+      ],
+      "Короткий вывод": [
+        46,
+        70,
+        144,
+        422,
+        445,
+        469,
+        483,
+        498,
+        513
+      ],
+      "Глоссарий": [
+        512,
+        513,
+        520
+      ]
+    },
+    "contact_sheet": "/private/tmp/agent_arch_ch23_raw_pages_final3.png"
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch23-launch-checklist-pass-2026-06-28.docx",
+    "source_style_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch22-policy-catalog-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_ch23_launch_checklist_pass_2026_06_28_render_final3",
+    "pdf": "/private/tmp/agent_arch_template2000n_ch23_launch_checklist_pass_2026_06_28_render_final3/agent-arch-ru-template2000n-ch23-launch-checklist-pass-2026-06-28.pdf",
+    "png_pages": 315,
+    "pdf_pages": 315,
+    "blank_like_pages": [],
+    "style_metrics": {
+      "paragraphs": 8040,
+      "removed_numPr": 2010,
+      "Body Text": 5787,
+      "Heading 2": 994,
+      "None": 862,
+      "Heading 3": 280,
+      "Heading 1": 117
+    },
+    "marker_pages": {
+      "Глава 23. Чеклист промышленного запуска": [
+        17,
+        265
+      ],
+      "Trace как первое доказательство": [
+        266
+      ],
+      "Eval gate как условие перехода": [
+        266
+      ],
+      "Практический walkthrough: агент поддержки": [
+        269
+      ],
+      "Readiness checklist для промышленного запуска": [
+        270
+      ],
+      "Короткий вывод": [
+        27,
+        38,
+        75,
+        230,
+        238,
+        244,
+        253,
+        264,
+        274
+      ],
+      "Глоссарий": [
+        273,
+        274,
+        280
+      ]
+    },
+    "contact_sheet": "/private/tmp/agent_arch_ch23_template_pages_final3.png"
+  },
+  "visual_qa": {
+    "checked": [
+      "raw pages 499-513: chapter 23 start, trace/eval sections, walkthrough, checklist, glossary transition",
+      "template2000n pages 265-274: chapter 23 start, H3 sections, checklist, companion route, glossary transition",
+      "template2000n page 280: practical cases transition after glossary"
+    ],
+    "notes": [
+      "Initial render exposed inherited list markers before glossary; Google Doc glossary range 675966-692117 was fixed with deleteParagraphBullets and re-exported.",
+      "Final raw and Template2000n renders have 0 blank-like pages.",
+      "The Google Doc remains the manuscript source of truth; Template2000n is a derived publisher proof."
+    ]
+  }
+}
