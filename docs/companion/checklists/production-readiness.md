@@ -1,8 +1,23 @@
 # Production readiness checklist
 
-Status: skeleton, adapt before publication.
+Status: release candidate checklist for adaptation.
 
 Related chapter: 23.
+
+Owner: platform owner or release owner.
+
+Use case: final readiness review before an agentic capability moves beyond a
+limited internal pilot or controlled canary.
+
+Version: `v1.0-book-rc`, to be locked when the public companion URL and first
+book release version are finalized.
+
+What to adapt: organization-specific risk tiers, reviewer roles, evidence
+retention rules, incident channels, rollout waves and compliance gates.
+
+Limitations: this checklist is an engineering readiness aid. It does not
+guarantee safety, regulatory compliance or operational approval without local
+review.
 
 ## Minimum gates
 

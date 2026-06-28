@@ -8,6 +8,10 @@ Status: skeleton for editor handoff.
 - Added first placeholder templates for capability contract, release decision
   record and incident record.
 - Added production readiness checklist skeleton.
+- Promoted companion templates and production readiness checklist to
+  release-candidate form for editor handoff.
+- Added executable example artifacts for trace, failed trace, session export
+  and eval dataset review.
 
 ## Release versioning rule
 
