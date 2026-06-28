@@ -209,3 +209,18 @@ Optional lifecycle differentiator:
 5. Сжать текущую часть VIII в печатные главы 19-20.
 6. Провести terminology pass по sample chapters.
 7. После получения стилей БХВ выполнить DOCX formatting pass.
+
+## Current proof status
+
+2026-06-28 heading-normalization proof:
+
+- canonical working manuscript: Google Doc
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx`;
+- raw render: 504 pages, 0 blank-like pages;
+- Template2000n proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx`;
+- Template2000n render: 315 pages, 0 blank-like pages;
+- long H2 body-style debt: closed;
+- next proof risk: long H3/body-style cleanup before final delivery.

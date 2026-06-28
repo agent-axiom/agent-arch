@@ -54,6 +54,22 @@ Google Doc:
 Следующие этапы после handoff-pass: author-owned поля, global heading
 normalization, повторная вычитка, terminology/cross-reference polish, финальный
 Template2000n/publisher-style pass, DOCX/export QA и внешняя вычитка.
+
+На 2026-06-28 свежий Google Docs export после global heading normalization:
+
+- Google Doc final revision:
+  `ALtnJHzNhgv8hnqRh5oLPZThYvoczugICZiF6hYYJONYVWXqOJNwaqd3-DNNZS0b0vTU3eViqETu4lXKcvyq2eSe4cYMqn8xVAQKc_5Hla4`;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx`;
+- Template2000n proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx`;
+- raw render QA: 504 pages, 0 blank-like pages;
+- Template2000n render QA: 315 pages, 0 blank-like pages;
+- long non-empty `Heading 2` debt: 0.
+
+Следующие этапы после heading-normalization-pass: H3/body-style cleanup,
+author-owned поля, финальная вычитка, terminology/cross-reference polish,
+финальный publisher-style pass, DOCX/export QA и внешняя вычитка.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

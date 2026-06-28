@@ -1053,3 +1053,39 @@ Decision:
   hierarchy.
 - Keep Template2000n as a derived proof route after heading normalization, not
   as the live Google Doc source.
+
+### 2026-06-28. Global heading normalization pass
+
+Status: synced to full Google Doc manuscript.
+
+Google Doc update:
+
+- Applied three guarded style-only Google Docs `batchUpdate` batches to the full
+  manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Demoted 629 long body-like `Heading 2` paragraphs to normal text.
+- Preserved manuscript text and paragraph count.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-heading-normalization-baseline-2026-06-28.docx`
+- `docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx`
+- `docs/publisher/ru-google-doc-heading-normalization-pass-2026-06-28.md`
+- `docs/publisher/ru-google-doc-heading-normalization-pass-2026-06-28.render-qa.json`
+- `docs/publisher/ru-editorial-100-heading-normalization-iterations-2026-06-28.md`
+
+Proof metrics:
+
+- Raw Google Docs export render: 504 pages.
+- Raw blank-like pages: 0.
+- Template2000n render: 315 pages.
+- Template2000n blank-like pages: 0.
+- Non-empty `Heading 2` paragraphs after cleanup: 764.
+- Long non-empty `Heading 2` paragraphs after cleanup: 0.
+
+Decision:
+
+- The H2/body pollution that blocked a credible publisher-style proof is closed.
+- The next formatting pass should target long H3/body-like paragraphs before
+  final publisher-ready DOCX delivery.

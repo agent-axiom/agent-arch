@@ -272,6 +272,12 @@ Progress:
   `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`,
   rendered to 552 pages with 0 blank-like pages, and remaining H2 style debt
   was registered as the next publisher-formatting risk.
+- 2026-06-28: global heading normalization completed in the full Google Doc:
+  629 long body-like `Heading 2` paragraphs were demoted with style-only
+  guarded batch updates, final raw DOCX proof rendered to 504 pages with 0
+  blank-like pages, and Template2000n derivative rendered to 315 pages with 0
+  blank-like pages. Remaining formatting risk moved to long `Heading 3`
+  review.
 
 ## Workstream 8. Editor handoff readiness
 
@@ -289,12 +295,18 @@ Progress:
 - подготовлен companion skeleton для материалов, которые не должны раздувать
   печатную книгу.
 
+Закрыто в следующем pass:
+
+- H2 style debt: 629 длинных body-like `Heading 2` абзацев демотированы до
+  normal text в Google Doc.
+- Fresh raw proof после normalization: 504 pages, 0 blank-like pages.
+- Fresh Template2000n proof после normalization: 315 pages, 0 blank-like pages.
+
 Открытый риск:
 
-- В raw Google Docs export остается H2 style debt: 629 длинных H2-абзацев
-  выглядят как обычный текст, ошибочно оформленный заголовками. Это не ломает
-  H1 outline, но перед финальным publisher-ready DOCX нужен отдельный global
-  heading normalization pass.
+- В raw Google Docs export остается H3 style debt: 65 длинных `Heading 3`
+  абзацев выглядят как обычный текст или расширенные пояснения. Это следующий
+  publisher-formatting pass перед финальным DOCX.
 
 Definition of done:
 
@@ -315,4 +327,4 @@ Definition of done:
 7. Run book-readiness batch 6: runtime, launch checklist and appendices.
 8. Fill author/front matter dependencies.
 9. Apply publisher styles and perform DOCX/export QA.
-10. Run global heading normalization before final publisher-ready export.
+10. Run H3/body-style cleanup before final publisher-ready export.
