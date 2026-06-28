@@ -278,6 +278,11 @@ Progress:
   blank-like pages, and Template2000n derivative rendered to 315 pages with 0
   blank-like pages. Remaining formatting risk moved to long `Heading 3`
   review.
+- 2026-06-28: H3/body-style normalization completed in the full Google Doc:
+  65 long body-like `Heading 3` paragraphs were demoted with style-only guarded
+  batch updates, final raw DOCX proof rendered to 499 pages with 0 blank-like
+  pages, and Template2000n derivative rendered to 315 pages with 0 blank-like
+  pages. Long H2/H3 body-style debt is now closed for the current proof.
 
 ## Workstream 8. Editor handoff readiness
 
@@ -301,12 +306,15 @@ Progress:
   normal text в Google Doc.
 - Fresh raw proof после normalization: 504 pages, 0 blank-like pages.
 - Fresh Template2000n proof после normalization: 315 pages, 0 blank-like pages.
+- H3 style debt: 65 длинных body-like `Heading 3` абзацев демотированы до
+  normal text в Google Doc.
+- Fresh raw proof после H3 cleanup: 499 pages, 0 blank-like pages.
+- Fresh Template2000n proof после H3 cleanup: 315 pages, 0 blank-like pages.
 
 Открытый риск:
 
-- В raw Google Docs export остается H3 style debt: 65 длинных `Heading 3`
-  абзацев выглядят как обычный текст или расширенные пояснения. Это следующий
-  publisher-formatting pass перед финальным DOCX.
+- Long H2/H3 body-style debt закрыт для текущего proof. Открыты авторские поля,
+  финальная вычитка, publisher style application and external proofread.
 
 Definition of done:
 
@@ -327,4 +335,4 @@ Definition of done:
 7. Run book-readiness batch 6: runtime, launch checklist and appendices.
 8. Fill author/front matter dependencies.
 9. Apply publisher styles and perform DOCX/export QA.
-10. Run H3/body-style cleanup before final publisher-ready export.
+10. Run final external proofread and package the publisher handoff artifacts.

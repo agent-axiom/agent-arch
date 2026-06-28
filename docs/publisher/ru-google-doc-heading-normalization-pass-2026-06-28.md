@@ -126,3 +126,6 @@ The next 100 goals are recorded in
 `docs/publisher/ru-editorial-100-heading-normalization-iterations-2026-06-28.md`.
 The highest-value next pass is H3/body-style review, then final second-pass
 proofreading across overloaded late chapters and front matter.
+
+Follow-up completed on 2026-06-28:
+`docs/publisher/ru-google-doc-h3-normalization-pass-2026-06-28.md`.

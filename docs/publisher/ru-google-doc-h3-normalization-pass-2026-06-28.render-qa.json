@@ -1,0 +1,128 @@
+{
+  "date": "2026-06-28",
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab_id": "t.0",
+    "baseline_revision_id": "ALtnJHzNhgv8hnqRh5oLPZThYvoczugICZiF6hYYJONYVWXqOJNwaqd3-DNNZS0b0vTU3eViqETu4lXKcvyq2eSe4cYMqn8xVAQKc_5Hla4",
+    "final_revision_id": "ALtnJHw6vaLfM9UxyXN5JznqrcdZlswujEW24-EA9HTu2x8hawmbTG2yBEi0VVTw7GbNA2i0JzD2IRGuzVA8JHSR9mTbMrYi4MukvIiPr0w"
+  },
+  "operation": {
+    "type": "style_only_batch_update",
+    "requests": 65,
+    "batches": [
+      {
+        "request_count": 65,
+        "first_range": "64151-64381",
+        "last_range": "404613-404880"
+      }
+    ],
+    "paragraphs_changed": 65,
+    "text_changed": false
+  },
+  "style_inventory": {
+    "baseline": {
+      "docx": "docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx",
+      "paragraphs": 8040,
+      "nonempty": 6024,
+      "rough_words": 97665,
+      "style_counts": {
+        "normal": 5502,
+        "Heading 2": 1758,
+        "Heading 3": 702,
+        "Heading 4": 51,
+        "Heading 1": 27
+      },
+      "nonempty_heading_3": 578,
+      "long_heading_2_over_220": 0,
+      "long_heading_3_over_220": 65
+    },
+    "final": {
+      "docx": "docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx",
+      "paragraphs": 8040,
+      "nonempty": 6024,
+      "rough_words": 97665,
+      "style_counts": {
+        "normal": 5567,
+        "Heading 2": 1758,
+        "Heading 3": 637,
+        "Heading 4": 51,
+        "Heading 1": 27
+      },
+      "nonempty_heading_3": 513,
+      "long_heading_2_over_220": 0,
+      "long_heading_3_over_220": 0,
+      "style_diff_count": 65,
+      "style_diff_counter": {
+        "Heading 3 -> normal": 65
+      },
+      "same_paragraph_count": true,
+      "same_text_sequence": true
+    }
+  },
+  "raw": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ru_h3_normalized_2026_06_28_render",
+    "pdf": "/private/tmp/agent_arch_ru_h3_normalized_2026_06_28_render/agent-arch-ru-h3-normalized-2026-06-28.pdf",
+    "png_pages": 499,
+    "pdf_pages": 499,
+    "blank_like_pages": [],
+    "lowest_nonwhite_pages": [
+      62,
+      161,
+      465,
+      125,
+      301
+    ],
+    "visual_spot_pages": [
+      1,
+      62,
+      499
+    ]
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx",
+    "source_mapping_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ru_template2000n_h3_normalized_2026_06_28_render",
+    "pdf": "/private/tmp/agent_arch_ru_template2000n_h3_normalized_2026_06_28_render/agent-arch-ru-template2000n-h3-normalized-2026-06-28.pdf",
+    "png_pages": 315,
+    "pdf_pages": 315,
+    "blank_like_pages": [],
+    "lowest_nonwhite_pages": [
+      301,
+      299,
+      300,
+      197,
+      298
+    ],
+    "style_metrics": {
+      "paragraphs": 8040,
+      "Body Text": 5787,
+      "Heading 1": 117,
+      "Heading 2": 994,
+      "Heading 3": 280,
+      "None": 862
+    },
+    "visual_spot_pages": [
+      1,
+      301,
+      315
+    ],
+    "same_text_as_raw": true
+  },
+  "visual_qa": {
+    "checked": [
+      "raw page 1: title/front matter readable",
+      "raw page 62: low-density page contains text and is not blank",
+      "raw page 499: final page readable",
+      "template2000n page 1: title/front matter readable",
+      "template2000n page 301: low-density page contains text and is not blank",
+      "template2000n page 315: final companion block readable"
+    ],
+    "notes": [
+      "Google Doc remains the source of truth.",
+      "Template2000n derivative is a publisher proof artifact only.",
+      "This pass did not change manuscript text."
+    ]
+  }
+}

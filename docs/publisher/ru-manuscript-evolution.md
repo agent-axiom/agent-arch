@@ -150,8 +150,9 @@ Definition of done:
 
 ### Stage 5. Publisher formatting and external packet
 
-Status: manuscript body exists; publisher formatting is blocked until БХВ
-styles arrive and author fields are filled.
+Status: manuscript body exists; H2/H3 body-style cleanup is complete for the
+current Google Doc proof; publisher formatting is blocked until author fields
+are filled and the final БХВ style application is confirmed.
 
 Goal:
 
@@ -170,11 +171,12 @@ Stop treating the publisher packet as the main artifact.
 
 Next implementation step:
 
-1. run terminology, glossary, cross-reference and companion-boundary passes;
-2. keep working/publisher service blocks outside the final manuscript body;
-3. fill author bio fields and apply БХВ styles when they arrive;
-4. prepare print/readability QA only after style files and export shape are clear;
-5. keep commits local unless explicitly requested to push.
+1. fill author bio/front-matter fields and confirm companion/public metadata;
+2. run final proofread and terminology/cross-reference polish on the current
+   H3-normalized Google Doc proof;
+3. apply final publisher styles and rerun raw/Template2000n render QA;
+4. prepare the clean external packet for editor/publisher handoff;
+5. push proof artifacts and reports when explicitly requested.
 
 ## Assembly checkpoints
 
@@ -1089,3 +1091,39 @@ Decision:
 - The H2/body pollution that blocked a credible publisher-style proof is closed.
 - The next formatting pass should target long H3/body-like paragraphs before
   final publisher-ready DOCX delivery.
+
+### 2026-06-28. H3/body-style normalization pass
+
+Status: synced to full Google Doc manuscript.
+
+Google Doc update:
+
+- Applied one guarded style-only Google Docs `batchUpdate` batch to the full
+  manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Demoted 65 long body-like `Heading 3` paragraphs to normal text.
+- Preserved manuscript text and paragraph count.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`
+- `docs/publisher/ru-google-doc-h3-normalization-pass-2026-06-28.md`
+- `docs/publisher/ru-google-doc-h3-normalization-pass-2026-06-28.render-qa.json`
+- `docs/publisher/ru-editorial-100-h3-normalization-iterations-2026-06-28.md`
+
+Proof metrics:
+
+- Raw Google Docs export render: 499 pages.
+- Raw blank-like pages: 0.
+- Template2000n render: 315 pages.
+- Template2000n blank-like pages: 0.
+- Long non-empty `Heading 2` paragraphs after cleanup: 0.
+- Long non-empty `Heading 3` paragraphs after cleanup: 0.
+
+Decision:
+
+- Long H2/H3 body-style debt is closed for the current proof.
+- Remaining publisher blockers are author-owned fields, final proofread,
+  publisher style application, DOCX/export QA after styles and external
+  proofread.

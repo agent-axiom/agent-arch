@@ -70,6 +70,24 @@ Template2000n/publisher-style pass, DOCX/export QA и внешняя вычит�
 Следующие этапы после heading-normalization-pass: H3/body-style cleanup,
 author-owned поля, финальная вычитка, terminology/cross-reference polish,
 финальный publisher-style pass, DOCX/export QA и внешняя вычитка.
+
+На 2026-06-28 свежий Google Docs export после H3/body-style normalization:
+
+- Google Doc final revision:
+  `ALtnJHw6vaLfM9UxyXN5JznqrcdZlswujEW24-EA9HTu2x8hawmbTG2yBEi0VVTw7GbNA2i0JzD2IRGuzVA8JHSR9mTbMrYi4MukvIiPr0w`;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`;
+- Template2000n proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`;
+- raw render QA: 499 pages, 0 blank-like pages;
+- Template2000n render QA: 315 pages, 0 blank-like pages;
+- long non-empty `Heading 2` debt: 0;
+- long non-empty `Heading 3` debt: 0;
+- paragraph text equality preserved against the previous H2-normalized proof.
+
+Следующие этапы после H3-normalization-pass: author-owned поля, финальная
+вычитка, terminology/cross-reference polish, финальный publisher-style pass,
+DOCX/export QA и внешняя вычитка.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

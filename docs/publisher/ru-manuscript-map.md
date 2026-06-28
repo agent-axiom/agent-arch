@@ -23,15 +23,16 @@ Source map для сборки:
 
 - <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
 
-Текущий handoff proof:
+Текущий H3-normalized proof:
 
 - Google Doc revision:
-  `ALtnJHycqUJOlgHPJs2U9ylHl3Hb3yhnF1EbR9nU-226k7V7gsDB2qhrsoJHyuIcNkupHbgkOOZCTNgLuY7C4PZCthT9URSRwaB0eDeXCSo`
+  `ALtnJHw6vaLfM9UxyXN5JznqrcdZlswujEW24-EA9HTu2x8hawmbTG2yBEi0VVTw7GbNA2i0JzD2IRGuzVA8JHSR9mTbMrYi4MukvIiPr0w`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`
-- Render QA: 552 pages, 0 blank-like pages.
-- Handoff packet:
-  `docs/publisher/ru-editor-handoff-packet-2026-06-28.md`
+  `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`
+- Template2000n DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`
+- Render QA: raw 499 pages, Template2000n 315 pages, 0 blank-like pages.
+- H2/H3 body-style debt: closed for the current proof.
 
 Compressed/staging snapshot:
 
@@ -212,15 +213,17 @@ Optional lifecycle differentiator:
 
 ## Current proof status
 
-2026-06-28 heading-normalization proof:
+2026-06-28 H3/body-style normalized proof:
 
 - canonical working manuscript: Google Doc
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>;
 - raw DOCX proof:
-  `docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx`;
-- raw render: 504 pages, 0 blank-like pages;
+  `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`;
+- raw render: 499 pages, 0 blank-like pages;
 - Template2000n proof:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx`;
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`;
 - Template2000n render: 315 pages, 0 blank-like pages;
 - long H2 body-style debt: closed;
-- next proof risk: long H3/body-style cleanup before final delivery.
+- long H3 body-style debt: closed;
+- next proof risk: author-owned fields, final publisher styles and external
+  proofread before final delivery.

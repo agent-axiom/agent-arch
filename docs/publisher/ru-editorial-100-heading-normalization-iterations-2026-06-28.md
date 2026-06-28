@@ -10,6 +10,11 @@ Context:
 - Long non-empty `Heading 2` debt: 0.
 - Remaining style debt: 65 long `Heading 3` paragraphs over 220 chars.
 
+Follow-up: goals 1901-1905 were implemented in
+`docs/publisher/ru-google-doc-h3-normalization-pass-2026-06-28.md`. The next
+100 goals continue in
+`docs/publisher/ru-editorial-100-h3-normalization-iterations-2026-06-28.md`.
+
 | # | Goal | Done when |
 | --- | --- | --- |
 | 1901 | Audit long `Heading 3` paragraphs globally. | Each long H3 is classified as real subhead or body-like text. |

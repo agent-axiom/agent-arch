@@ -9,10 +9,10 @@ Status: working gate for Russian publisher submission.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
 Current status: **Full manuscript volume assembled and imported to Google Docs.
-It can be handed to a trusted editor as a working Google Doc, but do not send
-as final publisher submission yet: the manuscript still needs global heading
-normalization, author fields, publisher styles, DOCX/export QA after styles and
-final external proofread.**
+H2/H3 body-style cleanup is complete in the working Google Doc proof. It can be
+handed to a trusted editor as a working manuscript, but do not send as final
+publisher submission yet: the manuscript still needs author fields, final
+publisher styles, DOCX/export QA after styles and final external proofread.**
 
 ## P0 gates before external submission
 
@@ -120,7 +120,7 @@ final external proofread.**
       H1 outline cleaned, raw DOCX proof exported, render QA recorded.
 - [x] Global heading normalization pass completed for remaining long H2 body
       paragraphs before final publisher-ready DOCX.
-- [ ] H3/body-style cleanup completed before final publisher-ready DOCX.
+- [x] H3/body-style cleanup completed before final publisher-ready DOCX.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [x] Стилевые файлы БХВ получены и применены или явно отложены.
 
@@ -155,6 +155,10 @@ final external proofread.**
       504 pages, 0 blank-like pages.
 - [x] Current Template2000n proof QA completed after heading normalization:
       315 pages, 0 blank-like pages.
+- [x] Current raw Google Docs export QA completed after H3/body-style cleanup:
+      499 pages, 0 blank-like pages.
+- [x] Current Template2000n proof QA completed after H3/body-style cleanup:
+      315 pages, 0 blank-like pages.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.
@@ -173,8 +177,8 @@ Include:
 7. Companion-site description.
 8. Author bio and platform note.
 9. Status note: public web manuscript exists; full publisher manuscript is now
-   assembled in Google Doc and remains blocked by book-readiness second pass,
-   author fields, publisher styles, export QA and final external proofread.
+   assembled in Google Doc and remains blocked by author fields, final
+   publisher styles, export QA after styles and final external proofread.
 
 Before sending:
 
