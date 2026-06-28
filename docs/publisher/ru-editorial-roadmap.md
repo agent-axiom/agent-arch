@@ -235,6 +235,9 @@ Progress:
 - 2026-06-28: companion templates/checklist promoted to release-candidate
   headers; executable trace/session/eval companion artifacts generated; source
   verification packet prepared for the final live fact-check pass.
+- 2026-06-28: filled companion examples, runtime-reference artifact links,
+  source verification records, editor comment intake workflow and final
+  placeholder/link scan workflow are prepared.
 
 ## Workstream 7. Book-readiness second pass
 

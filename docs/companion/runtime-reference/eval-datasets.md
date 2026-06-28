@@ -115,6 +115,23 @@ rollout_judgment:
 - owner of rubric;
 - last reviewed date.
 
+## Example artifacts
+
+Generated examples:
+
+- `docs/companion/artifacts/session-failed-tool-timeout.json`
+- `docs/companion/artifacts/eval-failed-run-timeout.json`
+
+Verification commands:
+
+```bash
+python3 -m json.tool docs/companion/artifacts/session-failed-tool-timeout.json
+python3 -m json.tool docs/companion/artifacts/eval-failed-run-timeout.json
+```
+
+The eval example keeps the full regression-gate payload online. In print, use
+only the scenario, expected outcome and blocking rule.
+
 ## Связь с печатной книгой
 
 В книге достаточно оставить один короткий пример и вывод:
@@ -125,4 +142,3 @@ rollout_judgment:
 - rollout judgment должен фиксировать выпускное решение.
 
 Полные datasets, scoring scripts, grading rubrics и CLI-команды должны оставаться в companion.
-

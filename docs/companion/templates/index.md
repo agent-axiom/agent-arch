@@ -11,6 +11,12 @@ Status: release candidate route for editor handoff.
 - [Release decision record](release-decision-record.md)
 - [Incident record](incident-record.md)
 
+## Filled examples
+
+- [Support ticket capability contract](../examples/capability-contract-support-ticket.md)
+- [Support ticket release decision record](../examples/release-decision-record-support-ticket.md)
+- [Support ticket timeout incident record](../examples/incident-record-support-ticket-timeout.md)
+
 Each template now has a release-candidate header with related chapters,
 intended user, adaptation notes and limitations.
 

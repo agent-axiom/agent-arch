@@ -74,6 +74,22 @@ uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
   --output artifacts/eval-failed-run.json
 ```
 
+## Example artifacts in this companion
+
+The current companion includes generated examples that can be inspected from
+the repository root:
+
+```bash
+uv run python -m agent_runtime_ref inspect-trace \
+  --input docs/companion/artifacts/trace-demo.jsonl
+
+uv run python -m agent_runtime_ref inspect-trace \
+  --input docs/companion/artifacts/trace-failed-tool-timeout.jsonl
+
+python3 -m json.tool docs/companion/artifacts/session-failed-tool-timeout.json
+python3 -m json.tool docs/companion/artifacts/eval-failed-run-timeout.json
+```
+
 ## Что считать успешной CLI-поверхностью
 
 CLI годится для companion, если команда:
@@ -94,4 +110,3 @@ CLI годится для companion, если команда:
 - eval export делает инцидент материалом для regression gate.
 
 Полные ключи, варианты CLI и ожидаемые payload лучше держать здесь.
-

@@ -119,6 +119,10 @@ Change needed:
 Reviewer:
 ```
 
+Prepared batch records:
+
+- `docs/publisher/ru-source-verification-records-2026-06-28.md`
+
 ## Done definition
 
 The source verification pass is complete only when:

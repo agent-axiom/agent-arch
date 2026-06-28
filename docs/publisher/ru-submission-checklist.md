@@ -181,6 +181,12 @@ final companion metadata and external proofread.**
       `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`.
 - [x] Source verification packet created:
       `docs/publisher/ru-source-verification-packet-2026-06-28.md`.
+- [x] Source verification batch records created:
+      `docs/publisher/ru-source-verification-records-2026-06-28.md`.
+- [x] Editor comment intake workflow created:
+      `docs/publisher/ru-editor-comment-intake-workflow-2026-06-28.md`.
+- [x] Final placeholder/link scan workflow created:
+      `docs/publisher/ru-final-placeholder-link-scan-workflow-2026-06-28.md`.
 - [x] Post-author final export workflow created:
       `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`.
 - [ ] Independent external proofread is completed after the export shape is stable.

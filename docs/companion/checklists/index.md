@@ -9,6 +9,10 @@ Status: release candidate route for editor handoff.
 
 - [Production readiness](production-readiness.md)
 
+## Filled examples
+
+- [Support ticket production readiness](../examples/production-readiness-support-ticket.md)
+
 The production readiness checklist now has owner, use-case, version,
 adaptation and limitation notes for editor handoff.
 

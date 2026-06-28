@@ -67,6 +67,27 @@ trace_core_fields:
   --input artifacts/events-timeout.jsonl
 ```
 
+## Example artifacts
+
+Generated trace examples:
+
+- `docs/companion/artifacts/trace-demo.jsonl`
+- `docs/companion/artifacts/trace-failed-tool-timeout.jsonl`
+
+Verification commands:
+
+```bash
+uv run python -m agent_runtime_ref inspect-trace \
+  --input docs/companion/artifacts/trace-demo.jsonl
+
+uv run python -m agent_runtime_ref inspect-trace \
+  --input docs/companion/artifacts/trace-failed-tool-timeout.jsonl
+```
+
+The failed trace is intentionally part of the companion because the print book
+should explain why failed-run evidence matters without printing the whole JSONL
+surface.
+
 ## Redaction and schema versioning
 
 Trace export должен поддерживать:
@@ -104,4 +125,3 @@ trace_to_release_chain:
 ```
 
 Эта цепочка должна быть видна в companion-материалах и защищена тестами поверхности.
-

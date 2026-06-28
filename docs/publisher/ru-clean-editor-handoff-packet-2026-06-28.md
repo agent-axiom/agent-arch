@@ -125,7 +125,11 @@ preparation trail.
   `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
 - Source verification packet:
   `docs/publisher/ru-source-verification-packet-2026-06-28.md`
+- Editor comment intake workflow:
+  `docs/publisher/ru-editor-comment-intake-workflow-2026-06-28.md`
+- Final placeholder/link scan workflow:
+  `docs/publisher/ru-final-placeholder-link-scan-workflow-2026-06-28.md`
 - Post-author export workflow:
   `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 - Next 100 goals:
-  `docs/publisher/ru-editorial-100-companion-source-verification-iterations-2026-06-28.md`
+  `docs/publisher/ru-editorial-100-final-scan-iterations-2026-06-28.md`
