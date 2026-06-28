@@ -19,6 +19,11 @@ Online companion хранит материалы, которые должны б
   `artifacts/trace-failed-tool-timeout.jsonl`,
   `artifacts/session-failed-tool-timeout.json`,
   `artifacts/eval-failed-run-timeout.json`
+- Filled examples:
+  `examples/capability-contract-support-ticket.md`,
+  `examples/release-decision-record-support-ticket.md`,
+  `examples/incident-record-support-ticket-timeout.md`,
+  `examples/production-readiness-support-ticket.md`
 - [Полный reference package walkthrough](../appendix/reference-package.md)
 - [Полный список источников](../appendix/sources.md)
 
