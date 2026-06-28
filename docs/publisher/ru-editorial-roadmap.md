@@ -16,9 +16,15 @@ Google Doc targets:
 109k слов после структурной чистки, DOCX render smoke QA дал 437 страниц,
 native Google Doc import прошел и контрольные readback-точки подтверждены.
 
-Текущий приоритет - не набор объема, а editorial hardening: авторские поля,
-повторная вычитка после разворота, терминологический/cross-reference polish,
-стили БХВ, DOCX/export QA после применения стилей и финальная внешняя вычитка.
+Текущий приоритет - не набор объема, а book-readiness pass: превратить
+source-to-print assembly в цельную авторскую IT-книгу. Для этого нужен второй
+редакционный проход по читательской дуге, перегруженным главам, дублям,
+границе book/companion, терминологии, стилям БХВ, DOCX/export QA и финальной
+внешней вычитке.
+
+Активный аудит:
+
+- `docs/publisher/ru-book-readiness-audit.md`
 
 ## Workstream 1. Разделить рукопись и рабочие материалы
 
@@ -213,11 +219,100 @@ Progress:
   catalog, figure/code and print-readability gates are complete for the
   assembled manuscript. DOCX/export QA remains blocked until styles are applied.
 
+## Workstream 7. Book-readiness second pass
+
+Задача: превратить полную source-to-print assembly в рукопись, которая читается
+как книга, а не как крупная синхронизированная документационная подборка.
+
+Что проверить:
+
+- введение быстро формулирует обещание книги и маршрут читателя;
+- каждая глава отвечает на один центральный вопрос;
+- повторяющиеся концовки глав компактны и не выглядят механически;
+- перегруженные главы 5, 20, 21 and 22 разведены по ролям;
+- глава 20 больше не несет сразу весь assurance/registry/incident/retirement
+  reference layer;
+- глава 21 объясняет эталонную реализацию как narrative reference
+  implementation, а не как CLI manual;
+- приложения не дублируют поздние главы и online companion.
+
+Definition of done:
+
+- book-readiness audit закрыт по batch 1-6;
+- introduction and Part I read as a strong sample opening;
+- chapters 5, 20, 21 and 22 no longer contain unresolved large-scale
+  duplication;
+- final launch chapter remains the synthesis point of the book;
+- Google Doc and Markdown source are synchronized after each batch.
+
+Progress:
+
+- 2026-06-17: created active book-readiness audit in
+  `docs/publisher/ru-book-readiness-audit.md`; current verdict changed from
+  "almost ready except final dependencies" to "full volume assembled, second
+  editorial pass required before publisher-ready claim".
+- 2026-06-17: Introduction reader-contract rewrite synced to the full Google
+  Doc manuscript from `docs/publisher/ru-book-ready-introduction.md`.
+- 2026-06-18: Chapter 1 sample-chapter line edit synced to the full Google Doc
+  manuscript from `docs/publisher/ru-book-ready-chapter-1.md`.
+- 2026-06-18: Chapter 2 decision-ladder rebuild synced to the full Google Doc
+  manuscript from `docs/publisher/ru-book-ready-chapter-2.md`.
+- 2026-06-18: Chapter 3 compact bridge into Part II synced to the full Google
+  Doc manuscript from `docs/publisher/ru-book-ready-chapter-3-bridge.md`;
+  book-readiness batch 1 is complete.
+- 2026-06-18: Chapter 5 conceptual identity/session/policy/capability rewrite
+  synced to the full Google Doc manuscript from
+  `docs/publisher/ru-book-ready-chapter-5.md`; batch 2 is now in progress.
+- 2026-06-18: Chapter 22 implementation-focused rewrite synced to the full
+  Google Doc manuscript from `docs/publisher/ru-book-ready-chapter-22.md`;
+  chapter 5/22 overlap is resolved.
+- 2026-06-28: editor handoff readiness pass completed in the full Google Doc:
+  two H1-polluted body ranges were normalized, fresh raw DOCX proof was
+  exported as
+  `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`,
+  rendered to 552 pages with 0 blank-like pages, and remaining H2 style debt
+  was registered as the next publisher-formatting risk.
+
+## Workstream 8. Editor handoff readiness
+
+Задача: подготовить рукопись к осмысленной передаче редактору без ложного
+заявления, что финальный publisher-ready DOCX уже закрыт.
+
+Что уже сделано:
+
+- Google Doc остается основной рабочей рукописью;
+- H1 outline очищен от очевидного body-as-heading загрязнения;
+- свежий raw DOCX proof получен из текущего Google Doc;
+- render QA подтвердил 552 страницы и 0 blank-like pages;
+- подготовлен editor handoff packet;
+- подготовлен список author-owned полей;
+- подготовлен companion skeleton для материалов, которые не должны раздувать
+  печатную книгу.
+
+Открытый риск:
+
+- В raw Google Docs export остается H2 style debt: 629 длинных H2-абзацев
+  выглядят как обычный текст, ошибочно оформленный заголовками. Это не ломает
+  H1 outline, но перед финальным publisher-ready DOCX нужен отдельный global
+  heading normalization pass.
+
+Definition of done:
+
+- editor can review the manuscript by link and see the current proof status;
+- author-owned gaps are explicit;
+- companion routes exist for templates, checklists, changelog and errata;
+- next 100 editorial goals are recorded;
+- repository has the current DOCX proof, QA metadata and handoff notes.
+
 ## Recommended execution order
 
-1. Separate working material from the manuscript body.
-2. Run structural editorial pass by parts.
-3. Run terminology and glossary pass.
-4. Run cross-reference and companion-boundary pass.
-5. Fill author/front matter dependencies.
-6. Apply publisher styles and perform export QA.
+1. Keep the full Google Doc as the canonical working manuscript.
+2. Run book-readiness batch 1: introduction and Part I.
+3. Run book-readiness batch 2: safety/control and chapter 5/22 overlap.
+4. Run book-readiness batch 3: memory, execution, sandbox and MCP.
+5. Run book-readiness batch 4: traces, SLO, evals and rollout evidence chain.
+6. Run book-readiness batch 5: organization, ADLC, assurance and chapter 20.
+7. Run book-readiness batch 6: runtime, launch checklist and appendices.
+8. Fill author/front matter dependencies.
+9. Apply publisher styles and perform DOCX/export QA.
+10. Run global heading normalization before final publisher-ready export.

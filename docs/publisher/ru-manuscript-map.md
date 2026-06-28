@@ -15,7 +15,25 @@ Source map для сборки:
 
 - `docs/publisher/ru-source-map.md`
 
-Рабочая Google Doc-рукопись:
+Полная рабочая Google Doc-рукопись:
+
+- <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Редакционная карта book-readiness pass:
+
+- <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
+
+Текущий handoff proof:
+
+- Google Doc revision:
+  `ALtnJHycqUJOlgHPJs2U9ylHl3Hb3yhnF1EbR9nU-226k7V7gsDB2qhrsoJHyuIcNkupHbgkOOZCTNgLuY7C4PZCthT9URSRwaB0eDeXCSo`
+- Raw DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`
+- Render QA: 552 pages, 0 blank-like pages.
+- Handoff packet:
+  `docs/publisher/ru-editor-handoff-packet-2026-06-28.md`
+
+Compressed/staging snapshot:
 
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 

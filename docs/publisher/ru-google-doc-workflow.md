@@ -6,6 +6,9 @@ Google Docs:
 
 - Full manuscript: `Архитектура безопасных ИИ-агентов — полная рукопись`
 - <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Book-readiness editorial map:
+  `Архитектура безопасных ИИ-агентов — редакционная карта готовой книги`
+- <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
 - Compressed/staging snapshot: `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 
@@ -35,13 +38,27 @@ Google Doc:
 Старый 71-страничный Google Doc оставлен как compressed/staging snapshot и
 содержит ссылку на полный документ.
 
-Следующие этапы после полного импорта: авторские поля, повторная вычитка,
-терминологический/cross-reference polish, стили БХВ, DOCX/export QA и финальная
-внешняя вычитка.
+На 2026-06-28 свежий Google Docs export после editor handoff readiness pass:
+
+- Google Doc revision:
+  `ALtnJHycqUJOlgHPJs2U9ylHl3Hb3yhnF1EbR9nU-226k7V7gsDB2qhrsoJHyuIcNkupHbgkOOZCTNgLuY7C4PZCthT9URSRwaB0eDeXCSo`;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`;
+- render QA: 552 pages, 0 blank-like pages;
+- H1 outline normalized: two body ranges in chapter 3 / chapter 20 were
+  returned from `Heading 1` to normal text, with true H2/H3 subheads restored;
+- remaining style risk: 629 long `Heading 2` paragraphs in the raw export need
+  a dedicated global heading normalization pass before final publisher-ready
+  DOCX.
+
+Следующие этапы после handoff-pass: author-owned поля, global heading
+normalization, повторная вычитка, terminology/cross-reference polish, финальный
+Template2000n/publisher-style pass, DOCX/export QA и внешняя вычитка.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`
 - `docs/publisher/ru-editorial-roadmap.md`
+- `docs/publisher/ru-book-readiness-audit.md`
 
 ## Правило изменения текста
 
@@ -86,4 +103,5 @@ Google Doc:
 - `uv run pytest`;
 - `uv run mkdocs build --strict`;
 - чтение Google Doc через Drive API после крупного переноса;
-- DOCX render QA после появления форматированного DOCX-пайплайна.
+- raw DOCX render QA после каждой крупной Google Doc правки;
+- Template2000n/publisher-style render QA после global heading normalization.

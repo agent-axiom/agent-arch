@@ -759,3 +759,297 @@ Notes:
   editorial assembly.
 - This does not close final publisher submission gates: author fields, БХВ
   styles, export DOCX QA and external proofread remain open.
+
+### 2026-06-17. Book-readiness second pass started
+
+Status: active editorial pass after full-volume import.
+
+Local sources updated:
+
+- `docs/publisher/ru-book-readiness-audit.md`
+- `docs/publisher/ru-editorial-roadmap.md`
+- `docs/publisher/ru-submission-checklist.md`
+- `docs/publisher/ru-google-doc-workflow.md`
+- `docs/publisher/ru-manuscript-map.md`
+
+Google Docs:
+
+- Book-readiness editorial map:
+  <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
+- Full manuscript remains:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Finding:
+
+- Full volume is not the same as finished book quality.
+- Current manuscript assembly has about 112.8k words, 23 chapters and 4
+  appendices.
+- Chapter 20 is the largest structural risk: about 15.8k words and 113
+  subheadings.
+- Chapter 21 is the second largest risk: about 10.5k words and too much
+  runtime/manual material for a printed chapter.
+- Chapters 5 and 22 need an overlap pass so conceptual policy/capability
+  material and reference implementation material do not repeat each other.
+- Repeated endings such as `Что сделать сразу`, `Что делать дальше` and
+  `Что читать дальше` need normalization into a compact book rhythm.
+
+Decision:
+
+- Treat the full Google Doc as the canonical working manuscript.
+- Treat `docs/publisher/ru-book-readiness-audit.md` and the Google Docs
+  editorial map as the active control layer for the second editorial pass.
+- Do not claim publisher-ready status until the book-readiness pass, author
+  fields, publisher styles, export QA and external proofread are complete.
+
+### 2026-06-17. Introduction reader-contract rewrite
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-introduction.md`
+
+Google Doc update:
+
+- Replaced the old duplicated introduction block in the full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Verification:
+
+- New text found in Google Docs readback: `Эта книга начинается с различия`.
+- Old duplicated intro marker no longer found:
+  `Введение фиксирует читательский контракт`.
+- Old route duplicate no longer found: `Маршрут на 30 минут`.
+- `Часть I. От demo-агента к платформе` remains immediately after the
+  rewritten introduction.
+
+Notes:
+
+- This starts book-readiness batch 1.
+- Next batch 1 tasks are Chapter 1 sample line edit, Chapter 2 decision-ladder
+  rebuild and Chapter 3 bridge into Part II.
+
+### 2026-06-18. Chapter 1 sample-chapter line edit
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-chapter-1.md`
+
+Google Doc update:
+
+- Replaced the full Chapter 1 body in the full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Editorial intent:
+
+- keep Chapter 1 as the primary sample chapter;
+- remove web/admonition rhythm and repeated proof-model tail sections;
+- make the chapter read as one argument: demo failure -> missing platform
+  layers -> workflow-first decision rule -> practical operating minimum;
+- preserve the support-triage case as the opening running scenario;
+- make the transition into Chapter 2 explicit.
+
+Verification:
+
+- New Chapter 1 marker found in Google Docs readback:
+  `Эта глава нужна, чтобы поставить главный инженерный фильтр`.
+- Old Chapter 1-specific section no longer found:
+  `Что Викулин поставил правильно`.
+- Chapter 2 heading remains after the replaced Chapter 1 range:
+  `Глава 2. Когда нужен агент: рабочий процесс, одиночный агентный цикл,
+  многоагентная схема`.
+
+Notes:
+
+- Next batch 1 task is Chapter 2 decision-ladder rebuild.
+
+### 2026-06-18. Chapter 2 decision-ladder rebuild
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-chapter-2.md`
+
+Google Doc update:
+
+- Replaced the full Chapter 2 body in the full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Editorial intent:
+
+- make Chapter 2 the practical continuation of Chapter 1;
+- rebuild the chapter around the execution-form ladder: direct model call,
+  workflow, single-agent loop, coordinator and handoff;
+- remove the stitched SOP/YAML and coordinator/handoff reference blocks from
+  the main chapter body;
+- make Chapter 3 the next step: platform layers required after the execution
+  form is chosen.
+
+Verification:
+
+- New Chapter 2 marker found in Google Docs readback:
+  `В этой главе мы пройдем лестницу выбора`.
+- Old stitched YAML marker no longer found: `routines:`.
+- Manual insertion typo marker no longer found: `системойой`.
+- Chapter 3 heading remains after the replaced Chapter 2 range:
+  `Глава 3. Референсная архитектура безопасной агентной системы`.
+
+Notes:
+
+- Next batch 1 task is Chapter 3 bridge into Part II.
+
+### 2026-06-18. Chapter 3 bridge into Part II
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-chapter-3-bridge.md`
+
+Google Doc update:
+
+- Replaced the old service/proof tail at the end of Chapter 3 with a compact
+  bridge into Part II:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Editorial intent:
+
+- keep Chapter 3 focused on the platform architecture map;
+- remove stale internal transition text and the repeated proof-model tail;
+- make the transition to safety/control explicit: identity, policy,
+  confirmation, tool gateway, audit and trust boundaries.
+
+Verification:
+
+- New bridge marker found in Google Docs readback:
+  `С этой точки начинается часть II`.
+- Old stale transition no longer found: `переходи к Главе 3`.
+- Part II heading remains immediately after the Chapter 3 bridge:
+  `Часть II. Безопасность и контур управления`.
+
+Notes:
+
+- Book-readiness batch 1 is complete: introduction, Chapter 1, Chapter 2 and
+  Chapter 3 bridge are now synced to the full Google Doc manuscript.
+- Next workstream is batch 2: safety/control and Chapter 5/22 overlap.
+
+### 2026-06-18. Chapter 5 identity/policy/capability rewrite
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-chapter-5.md`
+
+Google Doc update:
+
+- Replaced the overloaded Chapter 5 body in the full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Editorial intent:
+
+- make Chapter 5 the conceptual control-model chapter, not an early runtime
+  implementation reference;
+- separate identity, session, policy decisions and capability model from raw
+  tool/config details;
+- preserve the support-triage, knowledge-assistant and incident-coordination
+  scenarios as the practical spine;
+- leave `policy.yaml`, runnable package inspection and implementation fields
+  for Chapter 22 and the online companion.
+
+Verification:
+
+- New Chapter 5 marker found in Google Docs readback:
+  `Эта глава собирает четыре понятия в один контур`.
+- Chapter 6 heading remains after the replaced Chapter 5 range:
+  `Глава 6. Инструментальный шлюз, подтверждения и журнал аудита`.
+- Old Chapter 22 implementation marker still exists only later in the document,
+  which confirms the conceptual material was not deleted from the implementation
+  part by accident.
+
+Notes:
+
+- Batch 2 is in progress. The next task is to make Chapter 22 explicitly
+  implementation-focused and remove remaining conceptual repetition there.
+
+### 2026-06-18. Chapter 22 implementation-focused rewrite
+
+Status: synced to full Google Doc manuscript.
+
+Local source added:
+
+- `docs/publisher/ru-book-ready-chapter-22.md`
+
+Google Doc update:
+
+- Replaced the full Chapter 22 body in the full manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+
+Editorial intent:
+
+- make Chapter 22 the executable reference-implementation counterpart to the
+  conceptual Chapter 5;
+- focus the chapter on `policy.yaml`, `capabilities.yaml`, runtime inspection,
+  trace evidence and write-path failure behavior;
+- remove the repeated argument that policy/capability form the conceptual right
+  to action;
+- keep long CLI walkthroughs, validation errors, YAML variants and loader
+  internals in the companion.
+
+Verification:
+
+- New Chapter 22 marker found in Google Docs readback:
+  `Глава 22 не должна повторять аргумент о праве на действие`.
+- Chapter 23 heading remains after the replaced Chapter 22 range:
+  `Глава 23. Чеклист промышленного запуска`.
+
+Notes:
+
+- The Chapter 5/22 overlap is resolved. The next second-pass target is the
+  overloaded late-book runtime/lifecycle material in Chapters 20 and 21.
+
+### 2026-06-28. Editor handoff readiness pass
+
+Status: synced to full Google Doc manuscript.
+
+Google Doc update:
+
+- Applied a targeted style-only batchUpdate to the full Google Doc manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Two ordinary body ranges that had inherited `Heading 1` were normalized back
+  to normal text:
+  - chapter 3 bridge/practicum range before `Часть II`;
+  - chapter 20 assurance-loop range before `Часть VII`.
+- True structural subheads in those ranges were restored as H2/H3.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx`
+- `docs/publisher/ru-editor-handoff-packet-2026-06-28.md`
+- `docs/publisher/ru-editor-handoff-readiness-pass-2026-06-28.md`
+- `docs/publisher/ru-editor-handoff-readiness-pass-2026-06-28.render-qa.json`
+- `docs/publisher/ru-author-open-fields-2026-06-28.md`
+- `docs/publisher/ru-editorial-100-editor-handoff-iterations-2026-06-28.md`
+
+Proof metrics:
+
+- Raw Google Docs export render: 552 pages.
+- Blank-like pages: 0.
+- DOCX paragraph count: 8040.
+- Heading 1 paragraphs after cleanup: 26.
+- Heading 2 paragraphs: 1393.
+- Heading 3 paragraphs: 578.
+- Long H2 paragraphs flagged as remaining style debt: 629.
+
+Decision:
+
+- The manuscript is suitable for controlled editor handoff as a working Google
+  Doc, but not for final publisher-ready DOCX delivery.
+- Before final export, run a global heading normalization pass that demotes
+  long body-like H2 paragraphs while preserving the real chapter/section
+  hierarchy.
+- Keep Template2000n as a derived proof route after heading normalization, not
+  as the live Google Doc source.

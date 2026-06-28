@@ -9,9 +9,10 @@ Status: working gate for Russian publisher submission.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
 Current status: **Full manuscript volume assembled and imported to Google Docs.
-Do not send as final publisher submission yet: remaining blockers are author
-fields, publisher styles, DOCX/export QA after styles and final external
-proofread.**
+It can be handed to a trusted editor as a working Google Doc, but do not send
+as final publisher submission yet: the manuscript still needs global heading
+normalization, author fields, publisher styles, DOCX/export QA after styles and
+final external proofread.**
 
 ## P0 gates before external submission
 
@@ -82,6 +83,8 @@ proofread.**
 - [x] Book/reference split is explicit: runtime/schema details moved or marked as companion-only in the manuscript.
 - [x] High-level roadmap for structural, terminology, cross-reference and
       companion-boundary passes is created.
+- [x] Book-readiness audit created after full volume assembly:
+      `docs/publisher/ru-book-readiness-audit.md`.
 - [x] Introduction and Part I structural pass completed and synced to Google
       Doc.
 - [x] Part II and Part III structural pass completed and synced to Google Doc.
@@ -91,6 +94,32 @@ proofread.**
 - [x] First terminology/glossary anchor batch completed for Part VI, Part VII
       and appendices.
 - [x] Second terminology anchor batch completed for Introduction and Parts I-V.
+- [ ] Book-readiness second pass is complete across introduction, all 23
+      chapters and appendices.
+- [x] Introduction reader contract is rewritten and synced to the full Google
+      Doc manuscript from `docs/publisher/ru-book-ready-introduction.md`.
+- [x] Chapter 1 sample chapter is line-edited for book-readiness and synced to
+      the full Google Doc manuscript from
+      `docs/publisher/ru-book-ready-chapter-1.md`.
+- [x] Chapter 2 is rebuilt around the workflow -> agent loop -> coordinator ->
+      handoff decision ladder and synced to the full Google Doc manuscript from
+      `docs/publisher/ru-book-ready-chapter-2.md`.
+- [x] Chapter 3 now has a compact bridge into Part II from
+      `docs/publisher/ru-book-ready-chapter-3-bridge.md`.
+- [x] Chapter 5 is rewritten as a conceptual identity/session/policy/capability
+      chapter and synced to the full Google Doc manuscript from
+      `docs/publisher/ru-book-ready-chapter-5.md`.
+- [x] Chapter 22 is rewritten as the implementation-focused policy/catalog
+      runtime chapter and synced to the full Google Doc manuscript from
+      `docs/publisher/ru-book-ready-chapter-22.md`.
+- [ ] Overloaded chapters 20 and 21 are compressed/restructured after
+      full-volume assembly.
+- [ ] Repeated chapter endings are normalized into a compact book rhythm.
+- [ ] Running practical case is visibly carried through every part.
+- [x] Editor handoff readiness pass completed in the full Google Doc:
+      H1 outline cleaned, raw DOCX proof exported, render QA recorded.
+- [ ] Global heading normalization pass completed for remaining long H2 body
+      paragraphs before final publisher-ready DOCX.
 - [ ] Author bio / credential framing fields are filled by the author.
 - [x] Стилевые файлы БХВ получены и применены или явно отложены.
 
@@ -98,7 +127,8 @@ proofread.**
 
 - [x] Working/publisher service blocks are separated from manuscript body for
       final delivery.
-- [x] Structural editorial pass is complete across all parts.
+- [x] First structural editorial pass is complete across all parts.
+- [ ] Second book-readiness pass is complete across all parts.
 - [x] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
 - [x] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
@@ -118,6 +148,8 @@ proofread.**
 - [x] Code examples have consistent formatting and line length for current manuscript scope.
 - [ ] БХВ style package is applied to the final export shape.
 - [ ] DOCX/export QA is completed after publisher style application.
+- [x] Current raw Google Docs export QA completed for editor handoff proof:
+      552 pages, 0 blank-like pages.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.
@@ -136,8 +168,8 @@ Include:
 7. Companion-site description.
 8. Author bio and platform note.
 9. Status note: public web manuscript exists; full publisher manuscript is now
-   assembled in Google Doc and remains blocked only by author fields, publisher
-   styles, export QA and final external proofread.
+   assembled in Google Doc and remains blocked by book-readiness second pass,
+   author fields, publisher styles, export QA and final external proofread.
 
 Before sending:
 
