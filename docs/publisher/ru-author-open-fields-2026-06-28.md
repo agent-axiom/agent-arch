@@ -4,6 +4,11 @@ Date: 2026-06-28.
 
 Status: must be filled by the author before final publisher submission.
 
+Update on 2026-06-28: the full Google Doc manuscript now contains the expanded
+author-owned front-matter checklist under `Об авторе`:
+`Поля, которые заполняет автор перед внешней редактурой`.
+See `docs/publisher/ru-author-frontmatter-pass-2026-06-28.md`.
+
 ## Front matter
 
 ### Об авторе
@@ -15,6 +20,7 @@ Fill in the Google Doc and keep a synchronized repository note:
 - verified professional experience;
 - public projects;
 - public links: GitHub, website, blog, social profile or company page;
+- public companion URL, release version and errata route;
 - publisher-facing short bio;
 - publisher-facing long bio;
 - preferred Russian wording for the author line.
@@ -86,6 +92,7 @@ Decide:
 - [ ] Approve title/subtitle/cover copy.
 - [ ] Provide public links.
 - [ ] Approve companion URL and release version.
+- [ ] Approve errata route.
 - [ ] Approve AI-use disclosure.
 - [ ] Approve legal/compliance limitations.
 - [ ] Decide acknowledgements.

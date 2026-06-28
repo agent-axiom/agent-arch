@@ -9,10 +9,12 @@ Status: working gate for Russian publisher submission.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
 Current status: **Full manuscript volume assembled and imported to Google Docs.
-H2/H3 body-style cleanup is complete in the working Google Doc proof. It can be
-handed to a trusted editor as a working manuscript, but do not send as final
-publisher submission yet: the manuscript still needs author fields, final
-publisher styles, DOCX/export QA after styles and final external proofread.**
+H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
+and the current proof pair is available: raw Google Docs export at 499 pages and
+Template2000n derivative at 315 pages, both with 0 blank-like pages. It can be
+handed to a trusted editor as a clean working manuscript, but do not send as
+final publisher submission yet: the manuscript still needs author-owned facts,
+final companion metadata and external proofread.**
 
 ## P0 gates before external submission
 
@@ -159,6 +161,13 @@ publisher styles, DOCX/export QA after styles and final external proofread.**
       499 pages, 0 blank-like pages.
 - [x] Current Template2000n proof QA completed after H3/body-style cleanup:
       315 pages, 0 blank-like pages.
+- [x] Author/front-matter fields are isolated in Google Doc and local report.
+- [x] Current raw editorial-ready proof exported after author/front-matter pass:
+      499 pages, 0 blank-like pages.
+- [x] Current Template2000n editorial-ready proof created after author/front-matter pass:
+      315 pages, 0 blank-like pages.
+- [x] Clean editor handoff packet created:
+      `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.

@@ -16,11 +16,13 @@ Google Doc targets:
 109k слов после структурной чистки, DOCX render smoke QA дал 437 страниц,
 native Google Doc import прошел и контрольные readback-точки подтверждены.
 
-Текущий приоритет - не набор объема, а book-readiness pass: превратить
-source-to-print assembly в цельную авторскую IT-книгу. Для этого нужен второй
-редакционный проход по читательской дуге, перегруженным главам, дублям,
-границе book/companion, терминологии, стилям БХВ, DOCX/export QA и финальной
-внешней вычитке.
+Текущий приоритет - не набор объема, а финальная редакционная доводка:
+author-owned факты, внешняя редактура/вычитка, companion metadata, повторный
+export QA после авторских полей и чистый publisher submission packet.
+
+На 2026-06-28 current editorial-ready proof собран: raw Google Docs export
+рендерится в 499 страниц, Template2000n derivative - в 315 страниц, пустых
+страниц не обнаружено, H2/H3 body-style debt закрыт.
 
 Активный аудит:
 
@@ -218,6 +220,15 @@ Progress:
 - 2026-06-15: current-source proofread, cross-reference, glossary, source
   catalog, figure/code and print-readability gates are complete for the
   assembled manuscript. DOCX/export QA remains blocked until styles are applied.
+- 2026-06-28: author/front-matter fields are isolated in the Google Doc and
+  local author-open-fields report.
+- 2026-06-28: current raw editorial-ready proof renders to 499 pages with 0
+  blank-like pages.
+- 2026-06-28: current Template2000n editorial-ready proof renders to 315 pages
+  with 0 blank-like pages and preserves raw proof paragraph text sequence.
+- 2026-06-28: clean editor handoff packet is ready for external editorial
+  review, but final submission is still blocked by author-owned facts and
+  external proofread.
 
 ## Workstream 7. Book-readiness second pass
 

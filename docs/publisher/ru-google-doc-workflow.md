@@ -88,6 +88,25 @@ author-owned поля, финальная вычитка, terminology/cross-refe
 Следующие этапы после H3-normalization-pass: author-owned поля, финальная
 вычитка, terminology/cross-reference polish, финальный publisher-style pass,
 DOCX/export QA и внешняя вычитка.
+
+На 2026-06-28 свежий Google Docs export после author/front-matter и
+publisher-style proof pass:
+
+- Google Doc final revision:
+  `ALtnJHxghK0ux39XZSQMkGfFh_TqFc9QasJFxuerN_vYLBxxWKS036rEaQmQRW9mCVrBIR2uNFtXgg1EbDTdIopzLmiVbROaOd-e0Vj1GTQ`;
+- raw editorial-ready proof:
+  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`;
+- Template2000n editorial-ready proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`;
+- raw render QA: 499 pages, 0 blank-like pages;
+- Template2000n render QA: 315 pages, 0 blank-like pages;
+- paragraph text equality preserved between raw and Template2000n proofs;
+- author-owned front-matter fields are isolated and clearly labelled.
+
+Следующие этапы после clean handoff pass: заполнить author-owned факты,
+провести внешнюю редактуру/вычитку, обновить companion metadata, повторить
+raw/Template2000n export QA after author fields and prepare the final
+publisher submission packet.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

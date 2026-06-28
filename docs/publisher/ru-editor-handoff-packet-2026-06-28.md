@@ -2,7 +2,9 @@
 
 Date: 2026-06-28.
 
-Status: рабочий handoff для редактора. Это не финальный publisher-ready DOCX.
+Status: исторический рабочий handoff для редактора после первичного readiness
+pass. Superseded by the clean packet:
+`docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
 
 ## Главная ссылка
 

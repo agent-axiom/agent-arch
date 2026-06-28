@@ -23,16 +23,17 @@ Source map для сборки:
 
 - <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
 
-Текущий H3-normalized proof:
+Текущий editorial-ready proof:
 
 - Google Doc revision:
-  `ALtnJHw6vaLfM9UxyXN5JznqrcdZlswujEW24-EA9HTu2x8hawmbTG2yBEi0VVTw7GbNA2i0JzD2IRGuzVA8JHSR9mTbMrYi4MukvIiPr0w`
+  `ALtnJHxghK0ux39XZSQMkGfFh_TqFc9QasJFxuerN_vYLBxxWKS036rEaQmQRW9mCVrBIR2uNFtXgg1EbDTdIopzLmiVbROaOd-e0Vj1GTQ`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`
+  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`
 - Render QA: raw 499 pages, Template2000n 315 pages, 0 blank-like pages.
 - H2/H3 body-style debt: closed for the current proof.
+- Text sequence equality: preserved between raw and Template2000n proofs.
 
 Compressed/staging snapshot:
 
@@ -213,17 +214,18 @@ Optional lifecycle differentiator:
 
 ## Current proof status
 
-2026-06-28 H3/body-style normalized proof:
+2026-06-28 editorial-ready proof:
 
 - canonical working manuscript: Google Doc
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>;
 - raw DOCX proof:
-  `docs/publisher/artifacts/agent-arch-ru-h3-normalized-2026-06-28.docx`;
+  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`;
 - raw render: 499 pages, 0 blank-like pages;
 - Template2000n proof:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-h3-normalized-2026-06-28.docx`;
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`;
 - Template2000n render: 315 pages, 0 blank-like pages;
 - long H2 body-style debt: closed;
 - long H3 body-style debt: closed;
-- next proof risk: author-owned fields, final publisher styles and external
+- text sequence equality: preserved between raw and Template2000n proofs;
+- next proof risk: final author-owned facts, companion metadata and external
   proofread before final delivery.

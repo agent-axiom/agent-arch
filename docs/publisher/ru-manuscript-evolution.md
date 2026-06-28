@@ -151,8 +151,10 @@ Definition of done:
 ### Stage 5. Publisher formatting and external packet
 
 Status: manuscript body exists; H2/H3 body-style cleanup is complete for the
-current Google Doc proof; publisher formatting is blocked until author fields
-are filled and the final БХВ style application is confirmed.
+current Google Doc proof; author/front-matter fields are isolated; current raw
+and Template2000n proof candidates render cleanly. Final publisher submission
+is still blocked until author facts, final companion metadata and external
+proofread are closed.
 
 Goal:
 
@@ -167,16 +169,16 @@ Rule:
 
 ## Current next practical step
 
-Stop treating the publisher packet as the main artifact.
+The main artifact is now the full Google Doc manuscript plus the current proof
+pair: raw Google Docs export and Template2000n derivative.
 
 Next implementation step:
 
 1. fill author bio/front-matter fields and confirm companion/public metadata;
-2. run final proofread and terminology/cross-reference polish on the current
-   H3-normalized Google Doc proof;
-3. apply final publisher styles and rerun raw/Template2000n render QA;
-4. prepare the clean external packet for editor/publisher handoff;
-5. push proof artifacts and reports when explicitly requested.
+2. run external editor/proofreader review against the clean handoff packet;
+3. backport any semantic Google Doc edits into Markdown;
+4. re-export raw DOCX and rebuild Template2000n after author fields;
+5. rerun render QA and prepare the final publisher submission packet.
 
 ## Assembly checkpoints
 
