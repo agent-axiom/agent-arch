@@ -10,6 +10,10 @@ Online companion хранит материалы, которые должны б
 - [Runtime CLI](runtime-reference/cli.md)
 - [Eval datasets](runtime-reference/eval-datasets.md)
 - [Traces and events](runtime-reference/traces-and-events.md)
+- [Templates](templates/index.md)
+- [Checklists](checklists/index.md)
+- [Changelog](changelog.md)
+- [Errata](errata.md)
 - [Полный reference package walkthrough](../appendix/reference-package.md)
 - [Полный список источников](../appendix/sources.md)
 
@@ -27,4 +31,3 @@ Online companion хранит материалы, которые должны б
 - Какой риск оно закрывает.
 - Кто владеет действием и доказательствами.
 - Как команда понимает, что runtime, policy, trace, eval gate и rollout готовы.
-
