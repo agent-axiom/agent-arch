@@ -9,6 +9,10 @@ author-owned front-matter checklist under `Об авторе`:
 `Поля, которые заполняет автор перед внешней редактурой`.
 See `docs/publisher/ru-author-frontmatter-pass-2026-06-28.md`.
 
+The fillable author query packet is:
+
+- `docs/publisher/ru-author-query-packet-2026-06-28.md`
+
 ## Front matter
 
 ### Об авторе

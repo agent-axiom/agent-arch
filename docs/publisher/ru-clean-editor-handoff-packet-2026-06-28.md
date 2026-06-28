@@ -35,6 +35,11 @@ Human-readable proof reports:
 - `docs/publisher/ru-author-frontmatter-pass-2026-06-28.md`
 - `docs/publisher/ru-final-editorial-proof-pass-2026-06-28.md`
 - `docs/publisher/ru-publisher-style-pass-2026-06-28.md`
+- `docs/publisher/ru-author-query-packet-2026-06-28.md`
+- `docs/publisher/ru-editor-facing-brief-2026-06-28.md`
+- `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`
+- `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
+- `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
 ## What is now stable
 
@@ -90,7 +95,11 @@ For first serious editor review, send:
 3. Raw Google Docs export as fallback.
 4. This handoff packet.
 5. Author open-fields report.
-6. Publisher-style pass report.
+6. Author query packet.
+7. Editor-facing brief.
+8. Publisher-style pass report.
+9. Companion readiness pass.
+10. Final fact-check backlog.
 
 Do not send internal 100-iteration logs unless the editor asks for the
 preparation trail.
@@ -103,5 +112,13 @@ preparation trail.
 - Manuscript map: `docs/publisher/ru-manuscript-map.md`
 - Submission checklist: `docs/publisher/ru-submission-checklist.md`
 - Author open fields: `docs/publisher/ru-author-open-fields-2026-06-28.md`
+- Author query packet: `docs/publisher/ru-author-query-packet-2026-06-28.md`
+- Editor-facing brief: `docs/publisher/ru-editor-facing-brief-2026-06-28.md`
+- Companion readiness pass:
+  `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`
+- Fact-check backlog:
+  `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
+- Post-author export workflow:
+  `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 - Next 100 goals:
-  `docs/publisher/ru-editorial-100-clean-handoff-iterations-2026-06-28.md`
+  `docs/publisher/ru-editorial-100-post-author-export-iterations-2026-06-28.md`

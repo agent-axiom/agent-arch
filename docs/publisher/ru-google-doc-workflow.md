@@ -107,6 +107,14 @@ publisher-style proof pass:
 провести внешнюю редактуру/вычитку, обновить companion metadata, повторить
 raw/Template2000n export QA after author fields and prepare the final
 publisher submission packet.
+
+На 2026-06-28 подготовлен post-author workflow:
+
+- `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`;
+- финальный Google Doc update, raw export and Template2000n rebuild не
+  выполняются до получения author-owned фактов;
+- новый next-goal ledger:
+  `docs/publisher/ru-editorial-100-post-author-export-iterations-2026-06-28.md`.
 Эволюция рукописи отслеживается отдельно:
 
 - `docs/publisher/ru-manuscript-evolution.md`

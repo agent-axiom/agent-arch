@@ -229,6 +229,9 @@ Progress:
 - 2026-06-28: clean editor handoff packet is ready for external editorial
   review, but final submission is still blocked by author-owned facts and
   external proofread.
+- 2026-06-28: author query packet, editor-facing brief, companion readiness
+  pass, final fact-check backlog and post-author export workflow are prepared.
+  Final export remains blocked until the author supplies factual metadata.
 
 ## Workstream 7. Book-readiness second pass
 

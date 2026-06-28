@@ -168,6 +168,16 @@ final companion metadata and external proofread.**
       315 pages, 0 blank-like pages.
 - [x] Clean editor handoff packet created:
       `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
+- [x] Author query packet created:
+      `docs/publisher/ru-author-query-packet-2026-06-28.md`.
+- [x] Editor-facing brief created:
+      `docs/publisher/ru-editor-facing-brief-2026-06-28.md`.
+- [x] Companion readiness pass created:
+      `docs/publisher/ru-companion-readiness-pass-2026-06-28.md`.
+- [x] Final fact-check backlog created:
+      `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`.
+- [x] Post-author final export workflow created:
+      `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.
