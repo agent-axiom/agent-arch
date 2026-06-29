@@ -17793,7 +17793,7 @@ def test_sources_include_agent_specific_owasp_security_sources() -> None:
     _assert_files_contain_all(("docs/appendix/sources.zh.md",), chinese_markers)
 
 
-def test_fast_moving_chapters_carry_may_17_review_dates() -> None:
+def test_fast_moving_chapters_carry_current_review_dates() -> None:
     chapter_bases = (
         "docs/book/part-iv/chapter-9",
         "docs/book/part-v/chapter-13",
@@ -17805,9 +17805,9 @@ def test_fast_moving_chapters_carry_may_17_review_dates() -> None:
     )
     expected_by_suffix = {
         ".md": (
-            "Последняя редакционная проверка: **17 мая 2026 года**.",
-            "Предыдущая проверка: **14 мая 2026 года**.",
-            "Следующая плановая проверка: **17 июня 2026 года**.",
+            "Последняя редакционная проверка источников и платформенных ссылок: **29 июня 2026 года**.",
+            "Предыдущая полная редакционная проверка: **17 мая 2026 года**.",
+            "Следующая плановая проверка полного каталога: **29 июля 2026 года**.",
         ),
         ".en.md": (
             "Last reviewed: **May 17, 2026**.",
@@ -19724,14 +19724,17 @@ def test_fast_moving_pages_have_may_2026_review_metadata() -> None:
     for path in fast_moving_pages:
         text = _read(path)
         assert not any(marker in text for marker in stale_markers), path
-        assert any(
-            marker in text
-            for marker in (
-                "14 мая 2026 года",
-                "May 14, 2026",
-                "2026 年 5 月 14 日",
-            )
-        ), path
+        if path.endswith(".md") and not path.endswith((".en.md", ".zh.md")):
+            assert "29 июня 2026 года" in text, path
+            assert "29 июля 2026 года" in text, path
+        else:
+            assert any(
+                marker in text
+                for marker in (
+                    "May 14, 2026",
+                    "2026 年 5 月 14 日",
+                )
+            ), path
 
     _assert_files_contain_all(
         (
