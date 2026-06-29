@@ -1,6 +1,7 @@
 # Source verification records
 
-Date: 2026-06-28. Updated with full URL availability pass on 2026-06-29.
+Date: 2026-06-28. Updated with full URL availability pass on 2026-06-29 and
+targeted follow-up on 2026-06-30.
 
 Status: prepared records for live verification, plus a full URL availability
 pass recorded on 2026-06-29. The 2026-06-29 pass verifies URL availability, not
@@ -38,6 +39,32 @@ Manual follow-up remains for:
 Editorial decision: update source appendix wording to record the 2026-06-29
 full URL availability pass, but do not claim full semantic verification until
 manual checks and volatile platform-route wording are closed.
+
+## Targeted source follow-up: 2026-06-30
+
+Evidence:
+
+- `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`
+- `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`
+
+Result:
+
+- Microsoft Research Human-AI Interaction Guidelines: title/body route
+  confirmed; keep source despite HEAD 403.
+- Anthropic Claude Code Security: old docs route redirects to current
+  `https://code.claude.com/docs/en/security`; source catalog and Russian
+  chapter footnote updated.
+- MLCommons AILuminate: HTTP 200 and expected title confirmed; keep source.
+- Air Canada chatbot case: ABA article remains Cloudflare challenge-gated;
+  Russian source catalog and chapter footnote now use official Civil Resolution
+  Tribunal decision as primary source.
+- OpenReview records: public page and API remain challenge-gated; keep as
+  research leads only until manual browser/API metadata verification is done.
+
+Editorial decision: the actionable URL cleanup is complete for the four
+problem URLs from the automated pass. The remaining source gate is OpenReview
+metadata verification plus a final semantic pass over fast-moving platform
+claims before final publisher submission.
 
 ## P0 live-pass summary: 2026-06-29
 

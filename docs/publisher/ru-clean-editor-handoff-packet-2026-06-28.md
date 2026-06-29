@@ -12,7 +12,7 @@ submission until author-owned facts and external proofread are closed.
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Title: `Архитектура безопасных ИИ-агентов - полная рукопись`
 - Current revision after companion/source-status sync:
-  `ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`
+  `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
 
 ## Current proof artifacts
 
@@ -45,13 +45,17 @@ Human-readable proof reports:
 - `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
 - `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`
 - `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`
+- `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`
+- `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`
 - `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`
 - `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
 - `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
 - `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
 - `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`
+- `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
 - `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
 - `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
+- `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`
 - `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`
 - `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
@@ -73,9 +77,10 @@ Human-readable proof reports:
   external packet outline are documented.
 - Google Doc companion/source-status wording is synchronized and recorded.
 - Representative P0 live source pass is complete.
-- Full source catalog URL availability pass is complete: 102 of 106 source URLs
-  returned HTTP 200, while 4 sources and OpenReview challenge-gated records
-  still need manual/semantic follow-up.
+- Full source catalog URL availability pass is complete, and the targeted
+  2026-06-30 follow-up resolved the actionable blocked URL cleanup. OpenReview
+  records remain browser/API-gated research leads until metadata is verified or
+  the records are demoted before final submission.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
 
@@ -188,3 +193,5 @@ preparation trail.
   `docs/publisher/ru-editorial-100-source-author-finalization-iterations-2026-06-29.md`
 - Next 100 final editorial goals:
   `docs/publisher/ru-editorial-100-final-editorial-iterations-2026-06-29.md`
+- Next 100 author/source/export goals:
+  `docs/publisher/ru-editorial-100-author-source-export-iterations-2026-06-30.md`

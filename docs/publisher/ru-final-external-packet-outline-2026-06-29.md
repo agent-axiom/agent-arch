@@ -3,9 +3,9 @@
 Date: 2026-06-29.
 
 Status: outline for final editor/publisher delivery after author-owned fields,
-manual source follow-up and final proof export are closed. Do not treat this as
-a sent packet yet. A full source URL availability pass exists, but it is not a
-full semantic verification.
+OpenReview metadata decisions and final proof export are closed. Do not treat
+this as a sent packet yet. Full source URL availability and targeted URL
+follow-up passes exist, but the final semantic source pass is not complete.
 
 ## Packet goal
 
@@ -24,8 +24,9 @@ internal iteration trail. The packet should show:
    `Об авторе`, public links, role, verified experience, public projects,
    acknowledgements, title/subtitle/cover copy, companion URL and AI-use/legal
    wording.
-2. Complete manual source follow-up after the URL availability pass:
-   `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`.
+2. Complete OpenReview metadata verification or demote those records before the
+   final publisher packet:
+   `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`.
 3. Update `docs/appendix/sources.md` with semantic last-checked wording only
    after gated sources and volatile product claims are manually verified.
 4. Update or remove stale review-date banners from print-facing chapters.
@@ -44,7 +45,7 @@ internal iteration trail. The packet should show:
 | Clean handoff packet | `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md` | Keep as process/status summary. |
 | Author fields status | `docs/publisher/ru-author-open-fields-2026-06-28.md`, `docs/publisher/ru-author-query-packet-2026-06-28.md` and `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md` | Send only if fields remain open; otherwise send a short closure note. |
 | Mechanical scan report | `docs/publisher/ru-mechanical-scan-report-2026-06-29.md` | Send as QA evidence if editor asks how placeholders were controlled. |
-| Source verification record | `docs/publisher/ru-source-verification-records-2026-06-28.md`, `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`, `docs/publisher/ru-full-source-verification-pass-2026-06-29.md` and `docs/publisher/ru-source-url-live-check-2026-06-29.tsv` | Send after records are filled or clearly scoped. |
+| Source verification record | `docs/publisher/ru-source-verification-records-2026-06-28.md`, `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`, `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`, `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`, `docs/publisher/ru-source-follow-up-pass-2026-06-30.md` and `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv` | Send after records are filled or clearly scoped. |
 | Final export readiness | `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md` | Use as the current block list before final DOCX export. |
 | Sendable editor packet state | `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md` | Use for trusted editor handoff before final publisher submission. |
 | Companion readiness note | `docs/publisher/ru-companion-readiness-pass-2026-06-28.md` | Send when public companion URL/version are known. |
@@ -76,8 +77,8 @@ Before sending, the cover note must state:
 
 As of 2026-06-29, the manuscript is suitable for trusted editorial review as a
 clean working package. It is not yet a final publisher submission because
-author-owned fields, manual source follow-up and post-author final export QA
-remain open. The source catalog has a full URL availability pass with four
-manual follow-ups still open. The Google Doc has companion/source-status
-wording synchronized through revision
-`ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`.
+author-owned fields, OpenReview metadata decisions and post-author final export
+QA remain open. The source catalog has a full URL availability pass and
+targeted URL follow-up; OpenReview remains browser/API-gated. The Google Doc
+has companion/source-status wording synchronized through revision
+`ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`.

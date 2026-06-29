@@ -20,6 +20,11 @@ final publisher submission.
 - Source URL availability evidence:
   `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`
   and `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`
+- Targeted source follow-up:
+  `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`
+  and `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`
+- Author closure packet:
+  `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
 - Final export readiness status:
   `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
 
@@ -34,6 +39,5 @@ final publisher submission.
 ## Explain in the cover note
 
 The manuscript is ready for structural/substantive editorial review. The final
-publisher export is intentionally blocked until author-owned fields, manual
-source follow-ups, final DOCX export and post-export render QA are closed.
-
+publisher export is intentionally blocked until author-owned fields, OpenReview
+metadata decisions, final DOCX export and post-export render QA are closed.

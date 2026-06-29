@@ -49,6 +49,8 @@ Updated after the full URL availability pass:
   `ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`
 - After full URL availability status update:
   `ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`
+- After targeted source follow-up status update:
+  `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
 
 ## Connector verification
 
@@ -57,10 +59,15 @@ document. The companion paragraph style was repaired back to body text, and the
 `Как пользоваться источниками` heading was restored to heading style after the
 initial replace operation. The later full URL availability status update
 reported one changed Google Docs occurrence for the source-status warning.
+The 2026-06-30 targeted source follow-up update also reported one changed
+Google Docs occurrence for the source-status warning. A second attempted
+top-note replacement matched 0 occurrences because the imported paragraph is
+not exposed as the exact raw-text span used by repository Markdown.
 
 ## Remaining limits
 
 - This pass did not export a new DOCX proof.
 - This pass did not change author-owned front-matter placeholders.
 - This pass did not claim a full semantic source-catalog verification; it synced
-  the manuscript warning, companion routes and later URL availability status.
+  the manuscript warning, companion routes, URL availability status and the
+  later targeted source follow-up status.

@@ -15286,7 +15286,7 @@ status: open
 
 Исходный репозиторий: https://github.com/agent-axiom/agent-arch.
 
-Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней полной редакционной проверки источников: **17 мая 2026 года**. Полный live URL availability pass по каталогу выполнен **29 июня 2026 года**: 102 из 106 URL вернули HTTP 200, 4 источника требуют ручной или браузерной проверки; смысловая сверка быстро меняющихся claims перед финальной сдачей остается обязательной.
+Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней полной редакционной проверки источников: **17 мая 2026 года**. Полный live URL availability pass по каталогу выполнен **29 июня 2026 года**; ручной follow-up по проблемным URL выполнен **30 июня 2026 года**. Microsoft Research, Anthropic Claude Code Security и MLCommons подтверждены через body/title read, кейс Air Canada переведен на официальный CRT primary source, а OpenReview-записи остаются browser/API-gated research leads до отдельной проверки метаданных.
 
 **Как читать этот список**
 Полезно разделять источники не только по теме, но и по силе опоры:
@@ -15375,7 +15375,7 @@ status: open
 - Microsoft Research, Guidelines for Human-AI Interaction (https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 - LangChain Deep Agents, Human-in-the-loop (https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 - LangGraph, Interrupts (https://docs.langchain.com/oss/python/langgraph/interrupts)
-- OpenReview, The Illusion of Consensus in Human-Centered Interactive AI (https://openreview.net/forum?id=eJtBEBmYGB)
+- OpenReview, The Illusion of Consensus in Human-Centered Interactive AI (https://openreview.net/forum?id=eJtBEBmYGB) (browser/API-gated: проверить метаданные перед финальной сдачей)
 - Microsoft Learn, Agentic AI adoption maturity model (https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 
 ### Управление, безопасность и операционная гарантия
@@ -15387,7 +15387,7 @@ status: open
 - Google Research, Securing the AI Software Supply Chain (https://research.google/pubs/securing-the-ai-software-supply-chain/)
 - Google Research, An Introduction to Google’s Approach for Secure AI Agents (https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
 - Google Research, Identifying and Mitigating the Security Risks of Generative AI (https://research.google/pubs/identifying-and-mitigating-the-security-risks-of-generative-ai/)
-- Anthropic, Claude Code Security (https://docs.anthropic.com/en/docs/claude-code/security)
+- Anthropic, Claude Code Security (https://code.claude.com/docs/en/security)
 - Anthropic, Agentic Misalignment (https://www.anthropic.com/research/agentic-misalignment)
 - Anthropic, Strengthening Red Teams (https://alignment.anthropic.com/2025/strengthening-red-teams/)
 - Anthropic, Introducing Bloom (https://www.anthropic.com/research/bloom)
@@ -15400,9 +15400,11 @@ status: open
 
 ### Инциденты и кейсы
 
-- American Bar Association, BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot (https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
+- Civil Resolution Tribunal, Moffatt v. Air Canada (https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)
 
 ### Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем
+
+Редакционный статус 2026-06-30: OpenReview-ссылки ниже остаются browser/API-gated. Не использовать их как primary evidence в финальном publisher packet, пока не выполнена ручная сверка метаданных через браузер или иной подтвержденный доступ.
 
 - OpenReview, EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems (https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, MemGen: Weaving Generative Latent Memory for Self-Evolving Agents (https://openreview.net/forum?id=vI56m4Iu4e)

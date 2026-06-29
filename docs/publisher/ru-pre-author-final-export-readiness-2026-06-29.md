@@ -9,7 +9,7 @@ Status: ready for pre-author review, not ready for final publisher export.
 - Full Google Doc manuscript is the authoritative working manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Latest Google Doc revision after companion/source-status sync:
-  `ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`
+  `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
 - Latest proof pair remains the 2026-06-28 pair:
   raw Google Docs export at 499 rendered pages and Template2000n derivative at
   315 rendered pages, both with 0 blank-like pages.
@@ -26,8 +26,8 @@ Run the final export only after:
 
 1. author bio, role, links, companion metadata and disclosure/legal text are
    filled or explicitly omitted;
-2. manual/semantic source follow-up is completed or the packet clearly states
-   the remaining source-review boundary;
+2. OpenReview metadata is verified or those records are demoted, and the
+   packet clearly states the remaining source-review boundary;
 3. Google Doc access is checked for the target editor/publisher account.
 
 ## Next export steps after author input

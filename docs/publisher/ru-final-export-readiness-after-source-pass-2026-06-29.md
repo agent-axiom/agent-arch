@@ -4,16 +4,18 @@ Date: 2026-06-29.
 
 Status: final publisher export remains deferred.
 
-The full source URL availability pass is complete and recorded, but it does not
-remove the final export blockers:
+The full source URL availability pass and targeted 2026-06-30 source follow-up
+are complete and recorded, but they do not remove the final export blockers:
 
 - author-owned biography, metadata, public links and legal/AI-use wording are
   still unfilled;
-- four source URLs need manual or browser/API follow-up after automated checks;
+- OpenReview records still need manual browser/API metadata verification or
+  demotion before final publisher submission;
 - several platform documentation routes redirected and should be reflected in
   final source wording;
 - final raw Google Docs DOCX and Template2000n DOCX must be re-exported after
-  the author fields and source follow-ups are closed;
+  author fields, OpenReview metadata decisions and final source-status wording
+  are closed;
 - render QA and blank-like page checks must be repeated on the final export.
 
 Current proof pair remains the 2026-06-28 editor-ready state:
@@ -22,4 +24,3 @@ Current proof pair remains the 2026-06-28 editor-ready state:
 - Template2000n derivative: 315 pages, 0 blank-like pages.
 
 Do not label either proof as the final publisher submission artifact.
-

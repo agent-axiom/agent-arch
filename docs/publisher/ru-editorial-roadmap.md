@@ -26,7 +26,7 @@ export QA после авторских полей и чистый publisher sub
 
 На 2026-06-29 Google Doc обновлен companion/source-status wording через
 connector batchUpdate, текущая revision:
-`ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`.
+`ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`.
 Представительный P0 live-pass по первичным platform/security/protocol
 источникам выполнен. Дополнительно полный live URL availability pass по source
 catalog выполнен 2026-06-29: 106 URL проверены, 102 вернули HTTP 200, 4 требуют
@@ -36,6 +36,12 @@ catalog выполнен 2026-06-29: 106 URL проверены, 102 верну�
 На 2026-06-29 author-intake layer готов: поля автора отделены и готовы к
 заполнению, но биография, byline, публичные ссылки, disclaimer и metadata
 остаются author-owned и не заполнены Codex.
+
+На 2026-06-30 выполнен targeted source follow-up: Anthropic Claude Code
+Security переведен на canonical URL, MLCommons и Microsoft Research
+подтверждены через title/body read, Air Canada case переведен на официальный
+CRT primary source. OpenReview остается browser/API-gated research lead до
+ручной сверки метаданных.
 
 Активный аудит:
 
