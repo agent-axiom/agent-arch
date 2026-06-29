@@ -324,7 +324,7 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 - [Источники](../../appendix/sources.md)
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
-[^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^anthropic-security]: [Anthropic, Claude Code Security](https://code.claude.com/docs/en/security)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
