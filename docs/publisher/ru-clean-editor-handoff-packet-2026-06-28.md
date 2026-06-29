@@ -11,8 +11,8 @@ submission until author-owned facts and external proofread are closed.
 - Google Doc:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Title: `Архитектура безопасных ИИ-агентов - полная рукопись`
-- Current revision after author/front-matter pass:
-  `ALtnJHxghK0ux39XZSQMkGfFh_TqFc9QasJFxuerN_vYLBxxWKS036rEaQmQRW9mCVrBIR2uNFtXgg1EbDTdIopzLmiVbROaOd-e0Vj1GTQ`
+- Current revision after companion/source-status sync:
+  `ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`
 
 ## Current proof artifacts
 
@@ -42,8 +42,13 @@ Human-readable proof reports:
 - `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
 - `docs/publisher/ru-source-verification-packet-2026-06-28.md`
 - `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
+- `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
+- `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`
 - `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
 - `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
+- `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
+- `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
+- `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
 ## What is now stable
@@ -61,6 +66,9 @@ Human-readable proof reports:
   artifacts for the support-ticket case.
 - Mechanical placeholder/link scan, live source verification actions and final
   external packet outline are documented.
+- Google Doc companion/source-status wording is synchronized and recorded.
+- Representative P0 live source pass is complete, with full catalog
+  verification still open.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
 
@@ -110,8 +118,9 @@ For first serious editor review, send:
 9. Companion readiness pass.
 10. Final fact-check backlog.
 11. Source verification packet.
-12. Mechanical scan report.
-13. Final external packet outline.
+12. P0 live source verification pass.
+13. Mechanical scan report.
+14. Final external packet outline.
 
 Do not send internal 100-iteration logs unless the editor asks for the
 preparation trail.
@@ -136,10 +145,20 @@ preparation trail.
   `docs/publisher/ru-source-verification-packet-2026-06-28.md`
 - Live source verification actions:
   `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
+- P0 live source verification pass:
+  `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
+- Google Doc companion/source-status sync:
+  `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`
 - Mechanical scan report:
   `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
 - Final external packet outline:
   `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
+- Author-owned final inputs:
+  `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
+- Pre-author final export readiness:
+  `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
+- External packet readiness pass:
+  `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - Editor comment intake workflow:
   `docs/publisher/ru-editor-comment-intake-workflow-2026-06-28.md`
 - Final placeholder/link scan workflow:
@@ -148,3 +167,5 @@ preparation trail.
   `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 - Next 100 goals:
   `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`
+- Next 100 source/author/finalization goals:
+  `docs/publisher/ru-editorial-100-source-author-finalization-iterations-2026-06-29.md`

@@ -24,6 +24,13 @@ export QA после авторских полей и чистый publisher sub
 рендерится в 499 страниц, Template2000n derivative - в 315 страниц, пустых
 страниц не обнаружено, H2/H3 body-style debt закрыт.
 
+На 2026-06-29 Google Doc обновлен companion/source-status wording через
+connector batchUpdate, текущая revision:
+`ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`.
+Представительный P0 live-pass по первичным platform/security/protocol
+источникам выполнен, но полный source catalog остается отдельным финальным
+проходом.
+
 Активный аудит:
 
 - `docs/publisher/ru-book-readiness-audit.md`

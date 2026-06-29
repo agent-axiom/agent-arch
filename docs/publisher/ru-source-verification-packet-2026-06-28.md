@@ -2,15 +2,18 @@
 
 Date: 2026-06-28.
 
-Status: ready for the final live source-check pass. No live source verification
-is claimed in this packet.
+Status: ready for the final live source-check pass. A representative P0
+live-pass was completed on 2026-06-29, but the full source catalog is not yet
+fully reverified.
 
 ## Context
 
 `docs/appendix/sources.md` currently records **2026-05-17** as the last source
 review date. Several chapter notes planned checks for **2026-06-14** and
-**2026-06-17**. As of **2026-06-28**, the final publication pass must recheck
-fast-changing sources before the manuscript is submitted as final.
+**2026-06-17**. As of **2026-06-29**, a P0 live-pass checked representative
+OpenAI, Anthropic, Google Cloud, Microsoft, OWASP, MCP, NIST and A2A primary
+routes. The final publication pass must still complete all source batches
+before the manuscript is submitted as final.
 
 ## Verification batches
 
@@ -123,6 +126,7 @@ Prepared batch records:
 
 - `docs/publisher/ru-source-verification-records-2026-06-28.md`
 - `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
+- `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
 
 ## Done definition
 

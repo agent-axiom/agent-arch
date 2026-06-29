@@ -1,0 +1,39 @@
+# Author-owned final inputs
+
+Date: 2026-06-29.
+
+Status: author-owned blockers are isolated. These fields must be filled or
+explicitly omitted by the author before final publisher submission.
+
+## Required author fields
+
+| Field | Why it is author-owned | Current action |
+| --- | --- | --- |
+| Public author name | Must match contract, cover and metadata. | Fill final public byline. |
+| Short bio | Used in front matter, cover note and packet. | Fill 2-4 sentence version. |
+| Long bio | Used for publisher metadata and promotion. | Fill longer version with verified facts only. |
+| Role/title | Must be factual and current. | Fill exact preferred wording. |
+| Verified experience | Cannot be inferred safely. | Add specific, checkable experience claims. |
+| Public projects | Must be safe and approved to mention. | Add or explicitly omit. |
+| Public links | Must be stable and intentional. | Add GitHub/site/blog/profile links. |
+| Companion URL | Depends on publication/release decision. | Fill final public URL or release-candidate URL. |
+| Companion version | Must match the book edition. | Fill version/changelog/errata route. |
+| Title/subtitle/cover copy | Publisher-facing positioning. | Approve final wording. |
+| Legal/compliance disclaimer | Depends on author and publisher policy. | Approve exact disclaimer. |
+| AI-use disclosure | Depends on publisher policy. | Approve exact disclosure. |
+| Acknowledgements | Personal/permission-sensitive. | Fill or omit. |
+| Real/composite case policy | Legal and ethical boundary. | Confirm which cases are real, composite or anonymized. |
+| Publisher metadata | Contract and catalog data. | Fill required metadata fields. |
+
+## Current manuscript position
+
+The Google Doc now has the manuscript body, companion/source-status updates and
+editorial handoff structure. These author fields remain outside my authority:
+they require author confirmation and should not be invented.
+
+## Fill-before-export rule
+
+Do not run the final publisher DOCX export as a final artifact until these
+author-owned fields are either filled, explicitly omitted or moved to a
+separate publisher questionnaire.
+

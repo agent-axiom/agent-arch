@@ -10,11 +10,13 @@ Status: working gate for Russian publisher submission.
 
 Current status: **Full manuscript volume assembled and imported to Google Docs.
 H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
-and the current proof pair is available: raw Google Docs export at 499 pages and
-Template2000n derivative at 315 pages, both with 0 blank-like pages. It can be
-handed to a trusted editor as a clean working manuscript, but do not send as
-final publisher submission yet: the manuscript still needs author-owned facts,
-final companion metadata and external proofread.**
+Google Doc companion/source-status wording is synchronized, and a representative
+P0 live source pass is recorded. The current proof pair is still the 2026-06-28
+raw Google Docs export at 499 pages and Template2000n derivative at 315 pages,
+both with 0 blank-like pages. It can be handed to a trusted editor as a clean
+working manuscript, but do not send as final publisher submission yet: the
+manuscript still needs author-owned facts, final companion metadata, full source
+verification, post-author export QA and external proofread.**
 
 ## P0 gates before external submission
 
@@ -187,6 +189,16 @@ final companion metadata and external proofread.**
       `docs/publisher/ru-source-verification-records-2026-06-28.md`.
 - [x] Live source verification action packet created:
       `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`.
+- [x] Representative P0 live source verification pass completed:
+      `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`.
+- [x] Google Doc companion/source-status sync pass completed:
+      `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`.
+- [x] Author-owned final input blockers isolated:
+      `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`.
+- [x] Pre-author final export readiness recorded:
+      `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`.
+- [x] External packet readiness pass recorded:
+      `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`.
 - [x] Mechanical placeholder/link scan report created:
       `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`.
 - [x] Final external packet outline created:
@@ -199,6 +211,9 @@ final companion metadata and external proofread.**
       `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`.
 - [x] Next 100 external-packet readiness goals created:
       `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`.
+- [x] Next 100 source/author/finalization goals created:
+      `docs/publisher/ru-editorial-100-source-author-finalization-iterations-2026-06-29.md`.
+- [ ] Full source catalog verification is complete after the P0 live-pass.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.

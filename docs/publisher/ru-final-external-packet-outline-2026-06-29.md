@@ -3,8 +3,9 @@
 Date: 2026-06-29.
 
 Status: outline for final editor/publisher delivery after author-owned fields,
-live source verification and final proof export are closed. Do not treat this
-as a sent packet yet.
+full source verification and final proof export are closed. Do not treat this
+as a sent packet yet. A representative P0 live source pass exists, but it is
+not a full catalog verification.
 
 ## Packet goal
 
@@ -23,10 +24,11 @@ internal iteration trail. The packet should show:
    `Об авторе`, public links, role, verified experience, public projects,
    acknowledgements, title/subtitle/cover copy, companion URL and AI-use/legal
    wording.
-2. Run live source verification using
-   `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`.
-3. Update `docs/appendix/sources.md` with the current last-checked date only
-   after live verification.
+2. Complete full live source verification using
+   `docs/publisher/ru-live-source-verification-actions-2026-06-29.md` and the
+   P0 pass in `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`.
+3. Update `docs/appendix/sources.md` with the current full last-checked date
+   only after full verification.
 4. Update or remove stale review-date banners from print-facing chapters.
 5. Re-export raw Google Docs DOCX and Template2000n DOCX after the author
    fields are filled.
@@ -43,7 +45,7 @@ internal iteration trail. The packet should show:
 | Clean handoff packet | `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md` | Keep as process/status summary. |
 | Author fields status | `docs/publisher/ru-author-open-fields-2026-06-28.md` and `docs/publisher/ru-author-query-packet-2026-06-28.md` | Send only if fields remain open; otherwise send a short closure note. |
 | Mechanical scan report | `docs/publisher/ru-mechanical-scan-report-2026-06-29.md` | Send as QA evidence if editor asks how placeholders were controlled. |
-| Source verification record | `docs/publisher/ru-source-verification-records-2026-06-28.md` | Send after records are filled. |
+| Source verification record | `docs/publisher/ru-source-verification-records-2026-06-28.md` and `docs/publisher/ru-live-source-verification-pass-2026-06-29.md` | Send after records are filled or clearly scoped. |
 | Companion readiness note | `docs/publisher/ru-companion-readiness-pass-2026-06-28.md` | Send when public companion URL/version are known. |
 | Render QA report | `docs/publisher/ru-publisher-style-pass-2026-06-28.render-qa.json` plus human summary | Replace with post-author render QA before final delivery. |
 
@@ -73,5 +75,7 @@ Before sending, the cover note must state:
 
 As of 2026-06-29, the manuscript is suitable for trusted editorial review as a
 clean working package. It is not yet a final publisher submission because
-author-owned fields, live source verification and post-author final export QA
-remain open.
+author-owned fields, full live source verification and post-author final export
+QA remain open. The Google Doc has companion/source-status wording synchronized
+through revision
+`ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`.

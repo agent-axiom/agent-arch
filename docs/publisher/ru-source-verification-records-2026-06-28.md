@@ -9,6 +9,96 @@ Use these records during the final source-check pass. Fill `Checked on`,
 `Current source title/version`, `Result` and `Change needed` only after opening
 the current primary source.
 
+## P0 live-pass summary: 2026-06-29
+
+Status: representative P0 live-pass completed for key primary platform,
+security, governance and protocol pages. This does not close the full source
+catalog.
+
+```text
+Source group: OpenAI agent platform and API docs
+Representative sources checked: Agents guide, agent evals, structured outputs.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 9, 13, 15, 21-23
+Current source title/version: current OpenAI docs routes resolved live; Agents SDK and agent evals route through developers.openai.com.
+Result: partially verified
+Change needed: record redirects from platform.openai.com and agents-sdk route; keep volatile feature claims generalized until the full OpenAI batch is checked.
+Reviewer: Codex
+```
+
+```text
+Source group: Anthropic agent engineering and safety sources
+Representative sources checked: Building Effective AI Agents.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 2, 13, 18, 20
+Current source title/version: live Anthropic engineering page resolved.
+Result: partially verified
+Change needed: keep as primary engineering reference; full Anthropic safety/evals/research batch remains open.
+Reviewer: Codex
+```
+
+```text
+Source group: Google Cloud agent platform and controls sources
+Representative sources checked: Agent Builder overview route.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 9, 18, 20, 23
+Current source title/version: docs.cloud.google.com/agent-builder/overview redirects to /gemini-enterprise-agent-platform/overview.
+Result: partially verified
+Change needed: update product/page wording during the full source cleanup; avoid brittle Vertex/Agent Builder naming in final text.
+Reviewer: Codex
+```
+
+```text
+Source group: Microsoft agent architecture, observability, registry and security sources
+Representative sources checked: Azure AI agent orchestration/design patterns.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 13, 17-20, 23
+Current source title/version: live Microsoft Learn page resolved.
+Result: partially verified
+Change needed: keep as primary architecture reference; observability, registry and security sub-sources remain open.
+Reviewer: Codex
+```
+
+```text
+Source group: OWASP agentic and GenAI security sources
+Representative sources checked: AI Agent Security Cheat Sheet.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 4, 7, 9, 20, 23
+Current source title/version: live OWASP Cheat Sheet Series page resolved.
+Result: partially verified
+Change needed: keep as primary security reference; full OWASP family remains open.
+Reviewer: Codex
+```
+
+```text
+Source group: NIST/CISA governance and control sources
+Representative sources checked: NIST AI Risk Management Framework page.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapters 4, 17-20, 23
+Current source title/version: live NIST AI RMF page resolved.
+Result: partially verified
+Change needed: keep as governance reference; full NIST/CISA batch remains open.
+Reviewer: Codex
+```
+
+```text
+Source group: MCP and A2A protocol status
+Representative sources checked: MCP security best practices, A2A specification.
+Checked on: 2026-06-29
+Primary/secondary: primary
+Manuscript locations: docs/appendix/sources.md; chapter 9; case studies; glossary
+Current source title/version: live MCP docs and A2A specification page resolved.
+Result: partially verified
+Change needed: keep MCP/A2A maturity wording conservative; full authorization/terminology pass remains open.
+Reviewer: Codex
+```
+
 ## OpenAI batch
 
 ```text
