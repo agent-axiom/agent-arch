@@ -48,6 +48,13 @@
 !!! info "Нужны схемы и артефакты?"
     Рабочие схемы вынесены в companion: [схему трасс и каталог событий](../../appendix/trace-schema.md) и [схему наборов оценок и контракта на проверку](../../appendix/eval-schema.md). В печатной главе важнее не полный контракт, а решения, которые этот контракт заставляет принять.
 
+    Для проверки support-ticket примера рядом с главой можно открыть companion:
+    [trace-failed-tool-timeout.jsonl](../../companion/artifacts/trace-failed-tool-timeout.jsonl),
+    [session-failed-tool-timeout.json](../../companion/artifacts/session-failed-tool-timeout.json) и
+    [eval-failed-run-timeout.json](../../companion/artifacts/eval-failed-run-timeout.json).
+    Эти файлы показывают тот же деградированный путь, но без раздувания
+    печатного текста полным JSON.
+
 ## 2. Офлайн-оценки нужны, чтобы менять систему до выката
 
 Офлайн-оценки отвечают на очень практичный вопрос:

@@ -122,6 +122,7 @@ Reviewer:
 Prepared batch records:
 
 - `docs/publisher/ru-source-verification-records-2026-06-28.md`
+- `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
 
 ## Done definition
 

@@ -303,6 +303,11 @@ Progress:
   batch updates, final raw DOCX proof rendered to 499 pages with 0 blank-like
   pages, and Template2000n derivative rendered to 315 pages with 0 blank-like
   pages. Long H2/H3 body-style debt is now closed for the current proof.
+- 2026-06-29: final QA packet hardening pass added a mechanical
+  placeholder/link scan report, print-to-companion links for the support-ticket
+  trace/eval/examples, a live source verification action packet, a final
+  external packet outline and the next 100 external-packet readiness goals
+  (`2501-2600`).
 
 ## Workstream 8. Editor handoff readiness
 
@@ -319,6 +324,11 @@ Progress:
 - подготовлен список author-owned полей;
 - подготовлен companion skeleton для материалов, которые не должны раздувать
   печатную книгу.
+- подготовлен mechanical scan report для placeholder/link/TODO проверки;
+- подготовлен live source verification action packet;
+- подготовлен final external packet outline;
+- добавлен новый блок 100 целей для author/source/export/editor-packet
+  readiness.
 
 Закрыто в следующем pass:
 

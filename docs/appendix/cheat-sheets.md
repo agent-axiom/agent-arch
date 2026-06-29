@@ -71,6 +71,8 @@
 
 - [Глава 11. Трассы, спаны и структурированные события](../book/part-v/chapter-11.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
+- [Companion: traces and events](../companion/runtime-reference/traces-and-events.md)
+- [Companion: eval datasets](../companion/runtime-reference/eval-datasets.md)
 
 ## Проверка шлюза инструментов
 

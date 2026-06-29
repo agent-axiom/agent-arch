@@ -177,18 +177,28 @@ final companion metadata and external proofread.**
 - [x] Companion templates/checklist promoted to release-candidate headers.
 - [x] Companion example artifacts generated for trace, failed trace, session
       and eval dataset review.
+- [x] Print-facing appendix/chapter routes link to companion examples and
+      trace/eval artifacts for the support-ticket case.
 - [x] Final fact-check backlog created:
       `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`.
 - [x] Source verification packet created:
       `docs/publisher/ru-source-verification-packet-2026-06-28.md`.
 - [x] Source verification batch records created:
       `docs/publisher/ru-source-verification-records-2026-06-28.md`.
+- [x] Live source verification action packet created:
+      `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`.
+- [x] Mechanical placeholder/link scan report created:
+      `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`.
+- [x] Final external packet outline created:
+      `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`.
 - [x] Editor comment intake workflow created:
       `docs/publisher/ru-editor-comment-intake-workflow-2026-06-28.md`.
 - [x] Final placeholder/link scan workflow created:
       `docs/publisher/ru-final-placeholder-link-scan-workflow-2026-06-28.md`.
 - [x] Post-author final export workflow created:
       `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`.
+- [x] Next 100 external-packet readiness goals created:
+      `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.

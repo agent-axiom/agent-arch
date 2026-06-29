@@ -41,6 +41,23 @@
 
 Недавние обновления контрактов делают эту поверхность полезнее для проверки: контекст делегированного разрешения сохраняется через командные демонстрации, сессии, экспорты оценок и повторные прогоны; обезличивание экспорта трасс теперь покрывает сводки команд вместе с артефактами JSONL; инспекция жизненного цикла показывает предположения управления средой выполнения; а защита документации фиксирует стабильные ошибки валидации, задающие эти границы.
 
+## Companion examples and artifacts
+
+Печатная книга оставляет здесь только форму контракта и смысл проверок. Полные
+заполненные примеры живут в online companion:
+
+- [capability-contract-support-ticket.md](../companion/examples/capability-contract-support-ticket.md)
+- [release-decision-record-support-ticket.md](../companion/examples/release-decision-record-support-ticket.md)
+- [incident-record-support-ticket-timeout.md](../companion/examples/incident-record-support-ticket-timeout.md)
+- [production-readiness-support-ticket.md](../companion/examples/production-readiness-support-ticket.md)
+
+Артефакты для проверки той же цепочки:
+
+- [trace-demo.jsonl](../companion/artifacts/trace-demo.jsonl)
+- [trace-failed-tool-timeout.jsonl](../companion/artifacts/trace-failed-tool-timeout.jsonl)
+- [session-failed-tool-timeout.json](../companion/artifacts/session-failed-tool-timeout.json)
+- [eval-failed-run-timeout.json](../companion/artifacts/eval-failed-run-timeout.json)
+
 ## Что внутри
 
 - [runtime.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/runtime.py)

@@ -41,6 +41,9 @@ Human-readable proof reports:
 - `docs/publisher/ru-companion-example-artifacts-plan-2026-06-28.md`
 - `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
 - `docs/publisher/ru-source-verification-packet-2026-06-28.md`
+- `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
+- `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
+- `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
 ## What is now stable
@@ -54,6 +57,10 @@ Human-readable proof reports:
   text sequence.
 - The author/front-matter section now clearly separates author-owned fields
   from missing book content.
+- Print-facing reference pages now link to companion examples and trace/eval
+  artifacts for the support-ticket case.
+- Mechanical placeholder/link scan, live source verification actions and final
+  external packet outline are documented.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
 
@@ -103,6 +110,8 @@ For first serious editor review, send:
 9. Companion readiness pass.
 10. Final fact-check backlog.
 11. Source verification packet.
+12. Mechanical scan report.
+13. Final external packet outline.
 
 Do not send internal 100-iteration logs unless the editor asks for the
 preparation trail.
@@ -125,6 +134,12 @@ preparation trail.
   `docs/publisher/ru-final-fact-check-backlog-2026-06-28.md`
 - Source verification packet:
   `docs/publisher/ru-source-verification-packet-2026-06-28.md`
+- Live source verification actions:
+  `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
+- Mechanical scan report:
+  `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
+- Final external packet outline:
+  `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
 - Editor comment intake workflow:
   `docs/publisher/ru-editor-comment-intake-workflow-2026-06-28.md`
 - Final placeholder/link scan workflow:
@@ -132,4 +147,4 @@ preparation trail.
 - Post-author export workflow:
   `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 - Next 100 goals:
-  `docs/publisher/ru-editorial-100-final-scan-iterations-2026-06-28.md`
+  `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`
