@@ -206,6 +206,9 @@ latest_rollout_decision: pause-canary
 
 Смысл этого примера не в точном наборе полей. Смысл в том, что один подозрительный запуск должен оставлять после себя достаточно связей, чтобы команда могла перейти от поведения среды исполнения к записи подтверждения, оценочному суждению, разбору инцидента и действию по выпуску без ручной реконструкции всей цепочки.
 
+!!! example "Companion trace для этой цепочки"
+    Полные проверяемые артефакты вынесены в companion: [trace-demo.jsonl](../../companion/artifacts/trace-demo.jsonl) показывает успешный путь, [trace-failed-tool-timeout.jsonl](../../companion/artifacts/trace-failed-tool-timeout.jsonl) показывает деградированный путь с `failure_reason`, [session-failed-tool-timeout.json](../../companion/artifacts/session-failed-tool-timeout.json) связывает запуск с сессией, а [eval-failed-run-timeout.json](../../companion/artifacts/eval-failed-run-timeout.json) превращает этот путь в regression gate.
+
 ## Что оператор должен уметь восстановить
 
 Для одного подозрительного запуска оператор должен быстро ответить на все вопросы ниже:
