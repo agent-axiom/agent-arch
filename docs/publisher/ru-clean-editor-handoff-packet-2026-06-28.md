@@ -12,7 +12,7 @@ submission until author-owned facts and external proofread are closed.
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Title: `Архитектура безопасных ИИ-агентов - полная рукопись`
 - Current revision after companion/source-status sync:
-  `ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`
+  `ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`
 
 ## Current proof artifacts
 
@@ -43,11 +43,16 @@ Human-readable proof reports:
 - `docs/publisher/ru-source-verification-packet-2026-06-28.md`
 - `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
 - `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
+- `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`
+- `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`
 - `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`
 - `docs/publisher/ru-mechanical-scan-report-2026-06-29.md`
 - `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
 - `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
+- `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`
 - `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
+- `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
+- `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`
 - `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
@@ -67,8 +72,10 @@ Human-readable proof reports:
 - Mechanical placeholder/link scan, live source verification actions and final
   external packet outline are documented.
 - Google Doc companion/source-status wording is synchronized and recorded.
-- Representative P0 live source pass is complete, with full catalog
-  verification still open.
+- Representative P0 live source pass is complete.
+- Full source catalog URL availability pass is complete: 102 of 106 source URLs
+  returned HTTP 200, while 4 sources and OpenReview challenge-gated records
+  still need manual/semantic follow-up.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
 
@@ -147,6 +154,10 @@ preparation trail.
   `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`
 - P0 live source verification pass:
   `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`
+- Full source URL availability pass:
+  `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`
+- Source URL availability evidence TSV:
+  `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`
 - Google Doc companion/source-status sync:
   `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`
 - Mechanical scan report:
@@ -155,8 +166,14 @@ preparation trail.
   `docs/publisher/ru-final-external-packet-outline-2026-06-29.md`
 - Author-owned final inputs:
   `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
+- Author intake ready pass:
+  `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`
 - Pre-author final export readiness:
   `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
+- Final export readiness after source pass:
+  `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
+- Sendable editor packet state:
+  `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`
 - External packet readiness pass:
   `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - Editor comment intake workflow:
@@ -169,3 +186,5 @@ preparation trail.
   `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`
 - Next 100 source/author/finalization goals:
   `docs/publisher/ru-editorial-100-source-author-finalization-iterations-2026-06-29.md`
+- Next 100 final editorial goals:
+  `docs/publisher/ru-editorial-100-final-editorial-iterations-2026-06-29.md`

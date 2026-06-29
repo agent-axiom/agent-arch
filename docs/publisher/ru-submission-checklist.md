@@ -10,13 +10,14 @@ Status: working gate for Russian publisher submission.
 
 Current status: **Full manuscript volume assembled and imported to Google Docs.
 H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
-Google Doc companion/source-status wording is synchronized, and a representative
-P0 live source pass is recorded. The current proof pair is still the 2026-06-28
-raw Google Docs export at 499 pages and Template2000n derivative at 315 pages,
-both with 0 blank-like pages. It can be handed to a trusted editor as a clean
-working manuscript, but do not send as final publisher submission yet: the
-manuscript still needs author-owned facts, final companion metadata, full source
-verification, post-author export QA and external proofread.**
+Google Doc companion/source-status wording is synchronized, and full source URL
+availability pass evidence is recorded. The current proof pair is still the
+2026-06-28 raw Google Docs export at 499 pages and Template2000n derivative at
+315 pages, both with 0 blank-like pages. It can be handed to a trusted editor
+as a clean working manuscript, but do not send as final publisher submission
+yet: the manuscript still needs author-owned facts, final companion metadata,
+manual/semantic source follow-up, post-author export QA and external
+proofread.**
 
 ## P0 gates before external submission
 
@@ -191,12 +192,22 @@ verification, post-author export QA and external proofread.**
       `docs/publisher/ru-live-source-verification-actions-2026-06-29.md`.
 - [x] Representative P0 live source verification pass completed:
       `docs/publisher/ru-live-source-verification-pass-2026-06-29.md`.
+- [x] Full source catalog URL availability pass completed:
+      `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`.
+- [x] Source URL availability evidence TSV generated:
+      `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`.
 - [x] Google Doc companion/source-status sync pass completed:
       `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`.
 - [x] Author-owned final input blockers isolated:
       `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`.
+- [x] Author intake ready pass recorded:
+      `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`.
 - [x] Pre-author final export readiness recorded:
       `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`.
+- [x] Final export readiness after source pass recorded:
+      `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`.
+- [x] Sendable editor packet state recorded:
+      `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`.
 - [x] External packet readiness pass recorded:
       `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`.
 - [x] Mechanical placeholder/link scan report created:
@@ -213,7 +224,10 @@ verification, post-author export QA and external proofread.**
       `docs/publisher/ru-editorial-100-external-packet-iterations-2026-06-29.md`.
 - [x] Next 100 source/author/finalization goals created:
       `docs/publisher/ru-editorial-100-source-author-finalization-iterations-2026-06-29.md`.
-- [ ] Full source catalog verification is complete after the P0 live-pass.
+- [x] Next 100 final editorial goals created:
+      `docs/publisher/ru-editorial-100-final-editorial-iterations-2026-06-29.md`.
+- [ ] Full source semantic verification and manual follow-up are complete after
+      the 2026-06-29 URL availability pass.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.
@@ -232,8 +246,9 @@ Include:
 7. Companion-site description.
 8. Author bio and platform note.
 9. Status note: public web manuscript exists; full publisher manuscript is now
-   assembled in Google Doc and remains blocked by author fields, final
-   publisher styles, export QA after styles and final external proofread.
+   assembled in Google Doc and remains blocked by author fields, manual source
+   follow-up, final publisher styles, export QA after styles and final external
+   proofread.
 
 Before sending:
 

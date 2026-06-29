@@ -2,9 +2,10 @@
 
 Date: 2026-06-28.
 
-Status: ready for the final live source-check pass. A representative P0
-live-pass was completed on 2026-06-29, but the full source catalog is not yet
-fully reverified.
+Status: ready for the final semantic source-check pass. A representative P0
+live-pass and a full source catalog URL availability pass were completed on
+2026-06-29, but manual follow-up and claim-level semantic verification remain
+open.
 
 ## Context
 
@@ -12,7 +13,9 @@ fully reverified.
 review date. Several chapter notes planned checks for **2026-06-14** and
 **2026-06-17**. As of **2026-06-29**, a P0 live-pass checked representative
 OpenAI, Anthropic, Google Cloud, Microsoft, OWASP, MCP, NIST and A2A primary
-routes. The final publication pass must still complete all source batches
+routes, and a full URL availability pass checked all 106 source URL rows. The
+final publication pass must still complete manual/browser follow-up for blocked
+or challenge-gated sources and semantic checks for fast-moving platform claims
 before the manuscript is submitted as final.
 
 ## Verification batches

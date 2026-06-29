@@ -26,10 +26,16 @@ export QA после авторских полей и чистый publisher sub
 
 На 2026-06-29 Google Doc обновлен companion/source-status wording через
 connector batchUpdate, текущая revision:
-`ALtnJHzjZfOgynVeNrNt6B2heNKnW4Yz5SEWr6GPlCnh2_fq4CMIfLhsDkttY65ciuOYxLTzJic6xE7lqNB426yaiADPWqz2FZoqPcZW1eU`.
+`ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`.
 Представительный P0 live-pass по первичным platform/security/protocol
-источникам выполнен, но полный source catalog остается отдельным финальным
-проходом.
+источникам выполнен. Дополнительно полный live URL availability pass по source
+catalog выполнен 2026-06-29: 106 URL проверены, 102 вернули HTTP 200, 4 требуют
+ручной или браузерной проверки; смысловая сверка быстро меняющихся claims
+остается отдельным финальным проходом.
+
+На 2026-06-29 author-intake layer готов: поля автора отделены и готовы к
+заполнению, но биография, byline, публичные ссылки, disclaimer и metadata
+остаются author-owned и не заполнены Codex.
 
 Активный аудит:
 

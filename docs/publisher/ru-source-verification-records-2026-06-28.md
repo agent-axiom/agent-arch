@@ -1,13 +1,43 @@
 # Source verification records
 
-Date: 2026-06-28.
+Date: 2026-06-28. Updated with full URL availability pass on 2026-06-29.
 
-Status: prepared records for live verification. No source in this file is
-marked as verified on 2026-06-28.
+Status: prepared records for live verification, plus a full URL availability
+pass recorded on 2026-06-29. The 2026-06-29 pass verifies URL availability, not
+full semantic alignment of every source claim.
 
 Use these records during the final source-check pass. Fill `Checked on`,
 `Current source title/version`, `Result` and `Change needed` only after opening
 the current primary source.
+
+## Full source URL availability pass: 2026-06-29
+
+Evidence:
+
+- `docs/publisher/ru-full-source-verification-pass-2026-06-29.md`
+- `docs/publisher/ru-source-url-live-check-2026-06-29.tsv`
+
+Result:
+
+- source URL rows checked: 106;
+- HTTP 200: 102;
+- HTTP 403: 3;
+- HTTP 000 timeout: 1;
+- OpenReview rows returned HTTP 200 but effective challenge URLs, so they
+  require manual/browser or API verification before final semantic closure.
+
+Manual follow-up remains for:
+
+- Microsoft Research Human-AI Interaction Guidelines, blocked by HTTP 403;
+- Anthropic Claude Code Security, timed out in final TSV run after an earlier
+  canonical redirect observation;
+- MLCommons AILuminate release page, blocked by HTTP 403;
+- ABA Business Law Today Air Canada chatbot article, blocked by HTTP 403;
+- OpenReview research links, challenge-gated despite HTTP 200 responses.
+
+Editorial decision: update source appendix wording to record the 2026-06-29
+full URL availability pass, but do not claim full semantic verification until
+manual checks and volatile platform-route wording are closed.
 
 ## P0 live-pass summary: 2026-06-29
 
