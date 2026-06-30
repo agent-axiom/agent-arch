@@ -23,7 +23,8 @@ export.
 Do not label a new DOCX as final publisher export until:
 
 1. the author fills or intentionally omits the author-owned fields;
-2. OpenReview metadata is verified or the OpenReview records are demoted;
+2. OpenReview demotion remains in place unless metadata is verified and the
+   records are deliberately promoted again;
 3. final companion URL/version/changelog/errata values are known;
 4. the final Google Doc source-status note is synchronized;
 5. raw Google Docs DOCX and Template2000n DOCX are exported from that final
@@ -39,4 +40,3 @@ The current proof pair remains the 2026-06-28 editor-ready proof:
 
 These proofs are suitable for trusted structural/substantive review, not final
 publisher submission.
-

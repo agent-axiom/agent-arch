@@ -320,7 +320,7 @@ flowchart LR
 
 Еще одно практическое правило здесь очень важно: если согласованность судьи с человеком низкая, первым шагом обычно должно быть не расширение набора данных, а разбор случаев расхождения и правка рубрики или промпта судьи.
 
-Это хорошо согласуется и с более широкой HCI-дисциплиной: когда AI-система ошибается, человеку нужно понимать пределы автоматизации и иметь возможность корректировать поведение, а не слепо принимать auto-grading.[^amershi][^consensus]
+Это хорошо согласуется и с более широкой HCI-дисциплиной: когда AI-система ошибается, человеку нужно понимать пределы автоматизации и иметь возможность корректировать поведение, а не слепо принимать auto-grading.[^amershi]
 
 Один из полезных сигналов здесь - `Cohen's kappa`, но важнее самого числа обычно форма расхождения: где именно судья недопонимает нарушение политики, неверное использование инструмента или неоднозначный исход.
 
@@ -654,4 +654,3 @@ rollout_judgment:
 [^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
-[^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)

@@ -12,7 +12,7 @@ submission until author-owned facts and external proofread are closed.
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Title: `Архитектура безопасных ИИ-агентов - полная рукопись`
 - Current revision after companion/source-status sync:
-  `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
+  `ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`
 
 ## Current proof artifacts
 
@@ -57,6 +57,7 @@ Human-readable proof reports:
 - `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
 - `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`
 - `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`
+- `docs/publisher/ru-final-editor-packet-skeleton-2026-06-30.md`
 - `docs/publisher/ru-external-packet-readiness-pass-2026-06-29.md`
 - `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`
 
@@ -79,8 +80,8 @@ Human-readable proof reports:
 - Representative P0 live source pass is complete.
 - Full source catalog URL availability pass is complete, and the targeted
   2026-06-30 follow-up resolved the actionable blocked URL cleanup. OpenReview
-  records remain browser/API-gated research leads until metadata is verified or
-  the records are demoted before final submission.
+  records are demoted to non-primary research leads and are not part of the
+  primary evidence set for the final editor packet.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
 
@@ -195,3 +196,5 @@ preparation trail.
   `docs/publisher/ru-editorial-100-final-editorial-iterations-2026-06-29.md`
 - Next 100 author/source/export goals:
   `docs/publisher/ru-editorial-100-author-source-export-iterations-2026-06-30.md`
+- Next 100 final packet goals:
+  `docs/publisher/ru-editorial-100-final-packet-iterations-2026-06-30.md`

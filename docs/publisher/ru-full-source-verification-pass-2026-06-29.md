@@ -101,9 +101,9 @@ or source notes:
 
 Update the source appendix to say that a full live URL availability pass was
 completed on 2026-06-29 and targeted URL follow-up was completed on
-2026-06-30. Do not mark every source claim as semantically verified until
-OpenReview metadata and fast-moving platform claims are manually checked
-against the manuscript text.
+2026-06-30. Do not mark every volatile platform claim as semantically verified
+until fast-moving platform claims are manually checked against the manuscript
+text.
 
 Use conservative wording for volatile product surfaces, especially OpenAI,
 Google, Microsoft, Anthropic/LangGraph and Cloudflare routes that changed.
@@ -115,6 +115,7 @@ The targeted follow-up is recorded in
 
 Result: Microsoft Research, Anthropic Claude Code Security and MLCommons were
 resolved or confirmed; the Air Canada chatbot case now uses the official Civil
-Resolution Tribunal decision as primary source. OpenReview remains
-browser/API-gated and must not be treated as primary evidence until metadata is
-verified outside the challenge page.
+Resolution Tribunal decision as primary source. OpenReview is demoted to
+non-primary research leads and must not be treated as primary evidence unless
+metadata is verified outside the challenge page and the records are deliberately
+promoted again.

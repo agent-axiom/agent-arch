@@ -26,9 +26,9 @@ Evidence:
    `https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do`.
 5. **OpenReview records** remain browser/API-gated. Public page and API access
    returned challenge verification instead of paper metadata. The source
-   appendix now marks these links as research leads that must not be used as
-   primary evidence in the final publisher packet until metadata is verified
-   through browser/API access.
+   appendix now demotes these links to non-primary research leads; they must
+   not be used as primary evidence in the final publisher packet unless
+   metadata is verified later through browser/API access.
 
 ## Manuscript/source updates
 
@@ -44,9 +44,9 @@ Updated:
 The source catalog is cleaner than after the 2026-06-29 URL pass, but final
 publisher submission still requires:
 
-- manual OpenReview metadata verification or removal/demotion of those records;
+- no OpenReview primary-evidence dependency remains; if these records are
+  promoted again later, metadata must be manually verified first;
 - a final semantic pass over fast-moving platform claims after author fields are
   filled and before the final DOCX export;
 - confirmation that source-status wording in the Google Doc matches the
   repository source-of-truth.
-

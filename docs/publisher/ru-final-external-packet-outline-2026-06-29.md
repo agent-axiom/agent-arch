@@ -2,10 +2,11 @@
 
 Date: 2026-06-29.
 
-Status: outline for final editor/publisher delivery after author-owned fields,
-OpenReview metadata decisions and final proof export are closed. Do not treat
-this as a sent packet yet. Full source URL availability and targeted URL
-follow-up passes exist, but the final semantic source pass is not complete.
+Status: outline for final editor/publisher delivery after author-owned fields
+and final proof export are closed. Do not treat this as a sent packet yet. Full
+source URL availability and targeted URL follow-up passes exist; OpenReview is
+demoted out of primary evidence, but the final semantic platform-claim pass is
+not complete.
 
 ## Packet goal
 
@@ -24,9 +25,9 @@ internal iteration trail. The packet should show:
    `Об авторе`, public links, role, verified experience, public projects,
    acknowledgements, title/subtitle/cover copy, companion URL and AI-use/legal
    wording.
-2. Complete OpenReview metadata verification or demote those records before the
-   final publisher packet:
-   `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`.
+2. Keep OpenReview demoted out of primary evidence unless metadata is verified
+   later and the records are deliberately promoted again:
+   `docs/publisher/ru-openreview-demotion-pass-2026-06-30.md`.
 3. Update `docs/appendix/sources.md` with semantic last-checked wording only
    after gated sources and volatile product claims are manually verified.
 4. Update or remove stale review-date banners from print-facing chapters.
@@ -77,8 +78,8 @@ Before sending, the cover note must state:
 
 As of 2026-06-29, the manuscript is suitable for trusted editorial review as a
 clean working package. It is not yet a final publisher submission because
-author-owned fields, OpenReview metadata decisions and post-author final export
-QA remain open. The source catalog has a full URL availability pass and
-targeted URL follow-up; OpenReview remains browser/API-gated. The Google Doc
-has companion/source-status wording synchronized through revision
-`ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`.
+author-owned fields and post-author final export QA remain open. The source
+catalog has a full URL availability pass and targeted URL follow-up; OpenReview
+is demoted out of primary evidence. The Google Doc has companion/source-status
+wording synchronized through revision
+`ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`.

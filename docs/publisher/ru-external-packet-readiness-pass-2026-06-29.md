@@ -30,8 +30,8 @@ manuscript is still in pre-author-finalization state:
 - latest Template2000n proof candidate from 2026-06-28;
 - clean editor handoff packet;
 - author-owned final input list;
-- source URL availability pass, targeted follow-up and remaining OpenReview
-  metadata boundary;
+- source URL availability pass, targeted follow-up and OpenReview demotion
+  record;
 - companion readiness materials.
 
 ## Not ready for final publisher submission
@@ -40,7 +40,8 @@ Do not send as final publisher submission until:
 
 - author-owned fields are closed;
 - companion public URL/version/errata route are final;
-- OpenReview metadata verification/demotion is complete or explicitly scoped;
+- OpenReview remains demoted out of primary evidence unless metadata is
+  verified and the records are deliberately promoted again;
 - final raw and styled DOCX exports are regenerated;
 - render QA is repeated after final author/source changes;
 - external proofread/editorial feedback is triaged.

@@ -11,13 +11,13 @@ Status: working gate for Russian publisher submission.
 Current status: **Full manuscript volume assembled and imported to Google Docs.
 H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
 Google Doc companion/source-status wording is synchronized, full source URL
-availability pass evidence is recorded, and the 2026-06-30 targeted source
-follow-up has resolved the actionable blocked URL cleanup. The current proof
-pair is still the 2026-06-28 raw Google Docs export at 499 pages and
-Template2000n derivative at 315 pages, both with 0 blank-like pages. It can be
-handed to a trusted editor as a clean working manuscript, but do not send as
-final publisher submission yet: the manuscript still needs author-owned facts,
-final companion metadata, OpenReview metadata verification or demotion,
+availability pass evidence is recorded, the 2026-06-30 targeted source
+follow-up has resolved the actionable blocked URL cleanup, and OpenReview has
+been demoted out of primary evidence. The current proof pair is still the
+2026-06-28 raw Google Docs export at 499 pages and Template2000n derivative at
+315 pages, both with 0 blank-like pages. It can be handed to a trusted editor
+as a clean working manuscript, but do not send as final publisher submission
+yet: the manuscript still needs author-owned facts, final companion metadata,
 post-author export QA and external proofread.**
 
 ## P0 gates before external submission
@@ -201,6 +201,8 @@ post-author export QA and external proofread.**
       `docs/publisher/ru-source-follow-up-pass-2026-06-30.md`.
 - [x] Targeted source follow-up evidence TSV generated:
       `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`.
+- [x] OpenReview primary-evidence blocker closed by demotion:
+      `docs/publisher/ru-openreview-demotion-pass-2026-06-30.md`.
 - [x] Google Doc companion/source-status sync pass completed:
       `docs/publisher/ru-google-doc-companion-source-sync-pass-2026-06-29.md`.
 - [x] Author-owned final input blockers isolated:
@@ -215,6 +217,8 @@ post-author export QA and external proofread.**
       `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`.
 - [x] Pre-final export readiness after targeted source follow-up recorded:
       `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`.
+- [x] Final editor packet skeleton prepared:
+      `docs/publisher/ru-final-editor-packet-skeleton-2026-06-30.md`.
 - [x] Sendable editor packet state recorded:
       `docs/publisher/ru-sendable-editor-packet-state-2026-06-29.md`.
 - [x] External packet readiness pass recorded:
@@ -237,7 +241,9 @@ post-author export QA and external proofread.**
       `docs/publisher/ru-editorial-100-final-editorial-iterations-2026-06-29.md`.
 - [x] Next 100 author/source/export goals created:
       `docs/publisher/ru-editorial-100-author-source-export-iterations-2026-06-30.md`.
-- [ ] OpenReview metadata is manually verified or those records are demoted
+- [x] Next 100 final packet goals created:
+      `docs/publisher/ru-editorial-100-final-packet-iterations-2026-06-30.md`.
+- [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
 - [ ] Final semantic source pass over fast-moving platform claims is complete
       after author/source Google Doc sync.
@@ -259,9 +265,8 @@ Include:
 7. Companion-site description.
 8. Author bio and platform note.
 9. Status note: public web manuscript exists; full publisher manuscript is now
-   assembled in Google Doc and remains blocked by author fields, OpenReview
-   metadata verification/demotion, final publisher styles, export QA after
-   styles and final external proofread.
+   assembled in Google Doc and remains blocked by author fields, final
+   publisher styles, export QA after styles and final external proofread.
 
 Before sending:
 

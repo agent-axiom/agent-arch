@@ -53,3 +53,9 @@ The manuscript can continue as a trusted editor working package without these
 fields, but it must not be labeled final publisher submission until the author
 fills, omits or delegates them to the publisher questionnaire.
 
+## 2026-06-30 implementation note
+
+This packet is the only accepted source for author-owned facts in the current
+workflow. Until it is filled, the final editor packet may include an explicit
+author-fields-open note, but it must not invent biography, credentials, client
+claims, public links, acknowledgements or legal/AI-use wording.

@@ -51,6 +51,8 @@ Updated after the full URL availability pass:
   `ALtnJHzPEb_vH_SBUgdtT-z3Ff5FOeVdsravgXzeHJI3aKiVqaQBPEqciARhW3cZed5m8mRBNHLvL5Ls1Z0Fgd5chvymjuUIaniWP_fIyos`
 - After targeted source follow-up status update:
   `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
+- After OpenReview demotion status update:
+  `ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`
 
 ## Connector verification
 
@@ -63,11 +65,13 @@ The 2026-06-30 targeted source follow-up update also reported one changed
 Google Docs occurrence for the source-status warning. A second attempted
 top-note replacement matched 0 occurrences because the imported paragraph is
 not exposed as the exact raw-text span used by repository Markdown.
+The later OpenReview demotion status update reported one changed Google Docs
+occurrence for the same source-status warning.
 
 ## Remaining limits
 
 - This pass did not export a new DOCX proof.
 - This pass did not change author-owned front-matter placeholders.
 - This pass did not claim a full semantic source-catalog verification; it synced
-  the manuscript warning, companion routes, URL availability status and the
-  later targeted source follow-up status.
+  the manuscript warning, companion routes, URL availability status, targeted
+  source follow-up status and OpenReview demotion status.

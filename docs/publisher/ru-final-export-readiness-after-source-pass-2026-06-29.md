@@ -9,13 +9,12 @@ are complete and recorded, but they do not remove the final export blockers:
 
 - author-owned biography, metadata, public links and legal/AI-use wording are
   still unfilled;
-- OpenReview records still need manual browser/API metadata verification or
-  demotion before final publisher submission;
+- OpenReview records are demoted to non-primary research leads and should not
+  be included as primary evidence in the final publisher packet;
 - several platform documentation routes redirected and should be reflected in
   final source wording;
 - final raw Google Docs DOCX and Template2000n DOCX must be re-exported after
-  author fields, OpenReview metadata decisions and final source-status wording
-  are closed;
+  author fields and final source-status wording are closed;
 - render QA and blank-like page checks must be repeated on the final export.
 
 Current proof pair remains the 2026-06-28 editor-ready state:

@@ -58,13 +58,14 @@ Result:
 - Air Canada chatbot case: ABA article remains Cloudflare challenge-gated;
   Russian source catalog and chapter footnote now use official Civil Resolution
   Tribunal decision as primary source.
-- OpenReview records: public page and API remain challenge-gated; keep as
-  research leads only until manual browser/API metadata verification is done.
+- OpenReview records: public page and API remain challenge-gated; records are
+  demoted to non-primary research leads and must not be used as primary
+  evidence unless metadata is manually verified later.
 
 Editorial decision: the actionable URL cleanup is complete for the four
-problem URLs from the automated pass. The remaining source gate is OpenReview
-metadata verification plus a final semantic pass over fast-moving platform
-claims before final publisher submission.
+problem URLs from the automated pass. The OpenReview primary-evidence gate is
+closed by demotion. A final semantic pass over fast-moving platform claims
+still remains before final publisher submission.
 
 ## P0 live-pass summary: 2026-06-29
 

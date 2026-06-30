@@ -39,5 +39,6 @@ final publisher submission.
 ## Explain in the cover note
 
 The manuscript is ready for structural/substantive editorial review. The final
-publisher export is intentionally blocked until author-owned fields, OpenReview
-metadata decisions, final DOCX export and post-export render QA are closed.
+publisher export is intentionally blocked until author-owned fields, final DOCX
+export and post-export render QA are closed. OpenReview is demoted out of
+primary evidence for the editor packet.
