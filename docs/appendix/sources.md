@@ -1,6 +1,6 @@
 # Источники
 
-Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней полной редакционной проверки источников: **17 мая 2026 года**. Полный live URL availability pass по каталогу выполнен **29 июня 2026 года**; ручной follow-up по проблемным URL выполнен **30 июня 2026 года**. Microsoft Research, Anthropic Claude Code Security и MLCommons подтверждены через body/title read, кейс Air Canada переведен на официальный CRT primary source, а OpenReview-записи остаются browser/API-gated research leads до отдельной проверки метаданных.
+Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней полной редакционной проверки источников: **17 мая 2026 года**. Полный live URL availability pass по каталогу выполнен **29 июня 2026 года**; ручной follow-up по проблемным URL выполнен **30 июня 2026 года**. Microsoft Research, Anthropic Claude Code Security и MLCommons подтверждены через body/title read, кейс Air Canada переведен на официальный CRT primary source, а OpenReview-записи демотированы в непервичные research leads и не используются как primary evidence в финальном редакторском пакете.
 
 !!! info "Как читать этот список"
     Полезно разделять источники не только по теме, но и по силе опоры:
@@ -89,7 +89,7 @@
 - Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 - LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 - LangGraph, [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
-- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB) *(browser/API-gated: проверить метаданные перед финальной сдачей)*
+- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB) *(demoted research lead; не primary evidence для финального редакторского пакета)*
 - Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 
 ## Управление, безопасность и операционная гарантия
@@ -116,9 +116,9 @@
 
 - Civil Resolution Tribunal, [Moffatt v. Air Canada](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)
 
-## Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем
+## Исследовательские leads: память, наблюдаемость и надежность многоагентных систем
 
-_Редакционный статус 2026-06-30: OpenReview-ссылки ниже остаются browser/API-gated. Не использовать их как primary evidence в финальном publisher packet, пока не выполнена ручная сверка метаданных через браузер или иной подтвержденный доступ._
+_Редакционный статус 2026-06-30: OpenReview-ссылки ниже демотированы в непервичные research leads. Не использовать их как primary evidence в финальном publisher packet без отдельной ручной сверки метаданных через браузер или иной подтвержденный доступ._
 
 - OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
@@ -155,8 +155,8 @@ _Редакционный статус 2026-06-30: OpenReview-ссылки ни�
 1. Нормативный каркас риска и контроля: NIST, OWASP, CISA.
 2. Архитектурные паттерны и дисциплина среды исполнения: Anthropic, OpenAI, LangGraph, Google Cloud, Microsoft.
 3. Наблюдаемость, оценки и слой проверяющих: OpenAI, Microsoft, arXiv, GitHub.
-4. HCI, HITL и кейсы: Microsoft Research, OpenReview, ABA.
-5. Исследовательский фронтир: память, согласованность поведения, наблюдаемость и режимы отказа многоагентных систем.
+4. HCI, HITL и кейсы: Microsoft Research, LangGraph/LangChain HITL, официальный CRT source по Air Canada.
+5. Исследовательские leads: память, согласованность поведения, наблюдаемость и режимы отказа многоагентных систем; OpenReview использовать только как непервичный lead до отдельной сверки.
 
 Для чтения самой книги полезно держать еще одну развилку:
 
