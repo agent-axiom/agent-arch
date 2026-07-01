@@ -40,3 +40,16 @@ The current proof pair remains the 2026-06-28 editor-ready proof:
 
 These proofs are suitable for trusted structural/substantive review, not final
 publisher submission.
+
+## 2026-07-01 pre-author finalization update
+
+The eight-step finalization plan has been executed in pre-author mode:
+
+- Google Doc status now records that the final publisher DOCX is blocked by
+  author-owned fields rather than by OpenReview/source evidence;
+- repository readiness evidence is recorded in
+  `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`,
+  `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`
+  and `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`;
+- fresh final export, Template2000n final derivative and final render QA remain
+  deferred until author-owned fields are filled or explicitly omitted.

@@ -13,12 +13,16 @@ H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
 Google Doc companion/source-status wording is synchronized, full source URL
 availability pass evidence is recorded, the 2026-06-30 targeted source
 follow-up has resolved the actionable blocked URL cleanup, and OpenReview has
-been demoted out of primary evidence. The current proof pair is still the
-2026-06-28 raw Google Docs export at 499 pages and Template2000n derivative at
-315 pages, both with 0 blank-like pages. It can be handed to a trusted editor
-as a clean working manuscript, but do not send as final publisher submission
-yet: the manuscript still needs author-owned facts, final companion metadata,
-post-author export QA and external proofread.**
+been demoted out of primary evidence. On 2026-07-01 the eight-step
+finalization plan was executed in pre-author mode and the Google Doc status was
+updated through revision
+`ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`.
+The current proof pair is still the 2026-06-28 raw Google Docs export at 499
+pages and Template2000n derivative at 315 pages, both with 0 blank-like pages.
+It can be handed to a trusted editor as a clean working manuscript, but do not
+send as final publisher submission yet: the manuscript still needs
+author-owned facts, final companion metadata, post-author export QA and
+external proofread.**
 
 ## P0 gates before external submission
 
@@ -211,6 +215,12 @@ post-author export QA and external proofread.**
       `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`.
 - [x] Author input closure packet prepared:
       `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`.
+- [x] Pre-author finalization pass recorded:
+      `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`.
+- [x] Final placeholder/source readiness pass recorded:
+      `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`.
+- [x] Pre-author export gate recorded:
+      `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`.
 - [x] Pre-author final export readiness recorded:
       `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`.
 - [x] Final export readiness after source pass recorded:
@@ -243,6 +253,8 @@ post-author export QA and external proofread.**
       `docs/publisher/ru-editorial-100-author-source-export-iterations-2026-06-30.md`.
 - [x] Next 100 final packet goals created:
       `docs/publisher/ru-editorial-100-final-packet-iterations-2026-06-30.md`.
+- [x] Next 100 pre-author-to-final goals created:
+      `docs/publisher/ru-editorial-100-pre-author-finalization-iterations-2026-07-01.md`.
 - [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
 - [ ] Final semantic source pass over fast-moving platform claims is complete

@@ -53,6 +53,8 @@ Updated after the full URL availability pass:
   `ALtnJHzrSoSQuiJCnRBZeYOE9smBowRGwNdNy2LlzC4ufXG_96_REjYpK5gO864gFg2heFYpfXd956sFwovgi6RFlJyaHt3KOleN5nuTmSQ`
 - After OpenReview demotion status update:
   `ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`
+- After 2026-07-01 pre-author finalization gate update:
+  `ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`
 
 ## Connector verification
 
@@ -67,6 +69,10 @@ top-note replacement matched 0 occurrences because the imported paragraph is
 not exposed as the exact raw-text span used by repository Markdown.
 The later OpenReview demotion status update reported one changed Google Docs
 occurrence for the same source-status warning.
+The 2026-07-01 pre-author finalization update also reported one changed Google
+Docs occurrence for the same source-status warning. Text export readback
+confirmed that the warning now states the final publisher DOCX is blocked by
+author-owned fields rather than by OpenReview/source evidence.
 
 ## Remaining limits
 
@@ -74,4 +80,5 @@ occurrence for the same source-status warning.
 - This pass did not change author-owned front-matter placeholders.
 - This pass did not claim a full semantic source-catalog verification; it synced
   the manuscript warning, companion routes, URL availability status, targeted
-  source follow-up status and OpenReview demotion status.
+  source follow-up status, OpenReview demotion status and the 2026-07-01
+  pre-author finalization gate.

@@ -8,8 +8,8 @@ Status: ready for pre-author review, not ready for final publisher export.
 
 - Full Google Doc manuscript is the authoritative working manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
-- Latest Google Doc revision after companion/source-status sync:
-  `ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`
+- Latest Google Doc revision after 2026-07-01 pre-author finalization sync:
+  `ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`
 - Latest proof pair remains the 2026-06-28 pair:
   raw Google Docs export at 499 rendered pages and Template2000n derivative at
   315 rendered pages, both with 0 blank-like pages.
@@ -29,6 +29,13 @@ Run the final export only after:
 2. OpenReview remains demoted out of primary evidence unless metadata is
    verified and the records are deliberately promoted again;
 3. Google Doc access is checked for the target editor/publisher account.
+
+## 2026-07-01 gate update
+
+The pre-author finalization pass is recorded in
+`docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`. The export
+decision remains unchanged: final raw DOCX, Template2000n final derivative and
+final render QA are deferred until author-owned fields are closed.
 
 ## Next export steps after author input
 

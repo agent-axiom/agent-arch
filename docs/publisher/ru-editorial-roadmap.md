@@ -25,8 +25,9 @@ export QA после авторских полей и чистый publisher sub
 страниц не обнаружено, H2/H3 body-style debt закрыт.
 
 На 2026-06-29 Google Doc обновлен companion/source-status wording через
-connector batchUpdate, текущая revision:
-`ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`.
+connector batchUpdate; later 2026-07-01 pre-author gate sync moved the current
+revision to
+`ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`.
 Представительный P0 live-pass по первичным platform/security/protocol
 источникам выполнен. Дополнительно полный live URL availability pass по source
 catalog выполнен 2026-06-29: 106 URL проверены, 102 вернули HTTP 200, 4 требуют
@@ -42,6 +43,13 @@ Security переведен на canonical URL, MLCommons и Microsoft Research
 подтверждены через title/body read, Air Canada case переведен на официальный
 CRT primary source. OpenReview демотирован из primary evidence в непервичные
 research leads для финального редакторского пакета.
+
+На 2026-07-01 выполнена pre-author finalization iteration: Google Doc status
+обновлен через connector batchUpdate до revision
+`ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`,
+placeholder/source readiness pass записан, а final DOCX export/Template2000n
+final derivative/render QA намеренно отложены до заполнения author-owned
+полей.
 
 Активный аудит:
 

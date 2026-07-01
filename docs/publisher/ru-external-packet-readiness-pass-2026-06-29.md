@@ -20,6 +20,8 @@ submission.
   availability pass.
 - Author-owned final inputs were isolated in a separate file.
 - Pre-author final export readiness was recorded.
+- 2026-07-01 pre-author finalization gate was recorded and synchronized to the
+  Google Doc status paragraph.
 
 ## Ready to send to a trusted editor
 
@@ -32,6 +34,7 @@ manuscript is still in pre-author-finalization state:
 - author-owned final input list;
 - source URL availability pass, targeted follow-up and OpenReview demotion
   record;
+- pre-author finalization and export-gate notes;
 - companion readiness materials.
 
 ## Not ready for final publisher submission

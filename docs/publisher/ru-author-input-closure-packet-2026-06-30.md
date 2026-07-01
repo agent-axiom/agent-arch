@@ -59,3 +59,11 @@ This packet is the only accepted source for author-owned facts in the current
 workflow. Until it is filled, the final editor packet may include an explicit
 author-fields-open note, but it must not invent biography, credentials, client
 claims, public links, acknowledgements or legal/AI-use wording.
+
+## 2026-07-01 pre-author finalization note
+
+The current eight-step finalization plan was executed in pre-author mode:
+repository packet status and Google Doc status are synchronized, but the
+author-owned fields above remain open. Final DOCX export, Template2000n final
+derivative and final render QA are intentionally deferred until these fields
+are filled or explicitly omitted.

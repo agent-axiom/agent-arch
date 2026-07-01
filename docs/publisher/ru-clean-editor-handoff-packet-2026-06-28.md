@@ -12,7 +12,7 @@ submission until author-owned facts and external proofread are closed.
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Title: `Архитектура безопасных ИИ-агентов - полная рукопись`
 - Current revision after companion/source-status sync:
-  `ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`
+  `ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`
 
 ## Current proof artifacts
 
@@ -53,6 +53,9 @@ Human-readable proof reports:
 - `docs/publisher/ru-author-owned-final-inputs-2026-06-29.md`
 - `docs/publisher/ru-author-intake-ready-pass-2026-06-29.md`
 - `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
+- `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`
+- `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`
+- `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`
 - `docs/publisher/ru-pre-author-final-export-readiness-2026-06-29.md`
 - `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
 - `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`
@@ -84,6 +87,9 @@ Human-readable proof reports:
   primary evidence set for the final editor packet.
 - Internal iteration reports are not part of the clean external packet unless
   the editor explicitly asks for process evidence.
+- The 2026-07-01 pre-author finalization gate is recorded: final DOCX export,
+  Template2000n final derivative and final render QA are intentionally deferred
+  until author-owned fields are filled or explicitly omitted.
 
 ## What the editor should review first
 

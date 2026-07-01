@@ -23,3 +23,10 @@ Current proof pair remains the 2026-06-28 editor-ready state:
 - Template2000n derivative: 315 pages, 0 blank-like pages.
 
 Do not label either proof as the final publisher submission artifact.
+
+## 2026-07-01 update
+
+The pre-author finalization gate has been recorded and synchronized to the
+Google Doc. This does not change the export decision: final export remains
+deferred until author-owned fields are filled or explicitly omitted, companion
+metadata is final and final source-status wording is synchronized.

@@ -76,10 +76,10 @@ Before sending, the cover note must state:
 
 ## Current state
 
-As of 2026-06-29, the manuscript is suitable for trusted editorial review as a
+As of 2026-07-01, the manuscript is suitable for trusted editorial review as a
 clean working package. It is not yet a final publisher submission because
 author-owned fields and post-author final export QA remain open. The source
 catalog has a full URL availability pass and targeted URL follow-up; OpenReview
 is demoted out of primary evidence. The Google Doc has companion/source-status
-wording synchronized through revision
-`ALtnJHx_KvuCwu7qDU5-N5YUYmfskiW5ddELWWQPz0n380yG0Q2pGZTp6yYIUoeN4q2lNKC6oKcUfFUE_2Qtw6Xe_gtqSnxAW2QRj2aYwlE`.
+and pre-author finalization gate wording synchronized through revision
+`ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`.

@@ -2,8 +2,9 @@
 
 Date: 2026-06-30.
 
-Status: packet skeleton ready; final publisher submission is still blocked by
-author-owned fields and fresh final export QA.
+Status: packet skeleton ready; 2026-07-01 pre-author finalization gate is
+recorded. Final publisher submission is still blocked by author-owned fields
+and fresh final export QA.
 
 ## Current sendable working packet
 
@@ -23,6 +24,12 @@ This packet is suitable for trusted structural/substantive editorial review:
   `docs/publisher/ru-openreview-demotion-pass-2026-06-30.md`
 - Author input closure packet:
   `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
+- Pre-author finalization pass:
+  `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`
+- Placeholder/source readiness pass:
+  `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`
+- Pre-author export gate:
+  `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`
 - Pre-final export readiness:
   `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`
 

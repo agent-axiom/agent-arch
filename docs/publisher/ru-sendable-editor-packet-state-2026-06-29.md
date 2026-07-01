@@ -25,6 +25,11 @@ final publisher submission.
   and `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`
 - Author closure packet:
   `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
+- Pre-author finalization gate:
+  `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`
+  and `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`
+- Placeholder/source readiness:
+  `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`
 - Final export readiness status:
   `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
 
@@ -41,4 +46,6 @@ final publisher submission.
 The manuscript is ready for structural/substantive editorial review. The final
 publisher export is intentionally blocked until author-owned fields, final DOCX
 export and post-export render QA are closed. OpenReview is demoted out of
-primary evidence for the editor packet.
+primary evidence for the editor packet. The 2026-07-01 Google Doc status sync
+explicitly records that the remaining final-DOCX blocker is author-owned data,
+not OpenReview/source evidence.
