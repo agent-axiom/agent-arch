@@ -335,6 +335,14 @@ Progress:
   trace/eval/examples, a live source verification action packet, a final
   external packet outline and the next 100 external-packet readiness goals
   (`2501-2600`).
+- 2026-07-01: latest-practices sync pass aligned the publisher manuscript with
+  the new practical sections in `docs/book/**`: 13 practice headings are now
+  present exactly once in `docs/publisher/ru-manuscript-full.md`, eight missing
+  print-oriented practice blocks were added to the full Google Doc, and the
+  fresh Google Doc readback reports 101,584 approximate words. The pass is
+  recorded in
+  `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`; next goals are
+  `2701-2800`.
 
 ## Workstream 8. Editor handoff readiness
 
@@ -356,6 +364,8 @@ Progress:
 - подготовлен final external packet outline;
 - добавлен новый блок 100 целей для author/source/export/editor-packet
   readiness.
+- добавлен latest-practices sync report и новый блок 100 целей для
+  practice-sync/editorial-readiness follow-up.
 
 Закрыто в следующем pass:
 
@@ -367,11 +377,15 @@ Progress:
   normal text в Google Doc.
 - Fresh raw proof после H3 cleanup: 499 pages, 0 blank-like pages.
 - Fresh Template2000n proof после H3 cleanup: 315 pages, 0 blank-like pages.
+- Latest-practices content sync: 13 source practice sections added to
+  `ru-manuscript-full.md`; eight late Google Doc practice blocks added and
+  verified by text readback.
 
 Открытый риск:
 
 - Long H2/H3 body-style debt закрыт для текущего proof. Открыты авторские поля,
-  финальная вычитка, publisher style application and external proofread.
+  финальная вычитка, publisher style application, fresh DOCX/export QA after
+  the 2026-07-01 content sync and external proofread.
 
 Definition of done:
 

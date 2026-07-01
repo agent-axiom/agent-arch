@@ -32,6 +32,8 @@ final publisher submission.
   `docs/publisher/ru-final-placeholder-source-readiness-pass-2026-07-01.md`
 - Final export readiness status:
   `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
+- Latest practice sync:
+  `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`
 
 ## Do not include by default
 
@@ -49,3 +51,9 @@ export and post-export render QA are closed. OpenReview is demoted out of
 primary evidence for the editor packet. The 2026-07-01 Google Doc status sync
 explicitly records that the remaining final-DOCX blocker is author-owned data,
 not OpenReview/source evidence.
+
+The 2026-07-01 latest-practices sync added eight missing practical blocks to the
+full Google Doc and 13 source practice sections to the local full manuscript.
+The current Google Doc is the best working manuscript for editor review, while
+the 2026-06-28 DOCX proofs should be treated as previous proof snapshots until a
+fresh post-author/style DOCX export and render QA are run.

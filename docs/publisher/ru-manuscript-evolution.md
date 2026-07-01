@@ -1129,3 +1129,40 @@ Decision:
 - Remaining publisher blockers are author-owned fields, final proofread,
   publisher style application, DOCX/export QA after styles and external
   proofread.
+
+### 2026-07-01. Latest practices sync pass
+
+Status: synced to local full manuscript and full Google Doc working manuscript.
+
+Local manuscript update:
+
+- Added 13 late practical sections from `docs/book/**` to
+  `docs/publisher/ru-manuscript-full.md`.
+- Verified that each of the 13 control practice headings appears exactly once
+  in the local full manuscript.
+- Inserted source volume: 2360 lines, with heading levels demoted one level for
+  publisher-manuscript hierarchy.
+
+Google Doc update:
+
+- Added eight missing late practice blocks in print-oriented form to the full
+  Google Doc manuscript:
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
+- Fresh plain-text readback: 1,266,284 bytes, 766,889 characters and 101,584
+  approximate words.
+- Each of the eight newly inserted Google Doc practice headings appears exactly
+  once in the readback export.
+
+Artifacts added:
+
+- `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`
+- `docs/publisher/ru-editorial-100-latest-practices-sync-iterations-2026-07-01.md`
+
+Decision:
+
+- The working manuscript is materially stronger for substantive/editorial
+  review because late source practices are now represented in both local and
+  Google Doc manuscript layers.
+- The pass is not a final publisher export. The 2026-06-28 DOCX proofs are now
+  previous proof snapshots; a fresh DOCX/export QA pass is needed after
+  author-owned fields, publisher style application and final proofread.

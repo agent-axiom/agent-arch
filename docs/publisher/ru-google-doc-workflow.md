@@ -121,6 +121,22 @@ publisher submission packet.
 - `docs/publisher/ru-editorial-roadmap.md`
 - `docs/publisher/ru-book-readiness-audit.md`
 
+На 2026-07-01 выполнен latest-practices sync pass:
+
+- `docs/publisher/ru-manuscript-full.md` получил 13 late-practice sections из
+  `docs/book/**`;
+- полный Google Doc получил восемь недостающих print-oriented practice blocks;
+- свежий plain-text readback Google Doc подтвердил 101,584 approximate words
+  and each of the eight newly inserted practice headings exactly once;
+- отчет прохода: `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`;
+- следующий блок целей:
+  `docs/publisher/ru-editorial-100-latest-practices-sync-iterations-2026-07-01.md`.
+
+Этот проход усиливает содержание рукописи, но не заменяет финальный
+publisher-style DOCX export. Старые proof artifacts от 2026-06-28 нужно считать
+предыдущими proof snapshots до нового export/render QA после author-owned fields
+and style application.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.
