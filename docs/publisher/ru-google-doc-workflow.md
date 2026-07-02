@@ -158,6 +158,27 @@ layout/style cleanup. Он не является финальной publisher-re
 author-owned поля, внешняя вычитка, publisher-approved style application and
 final raw/Template2000n render QA остаются открытыми.
 
+На 2026-07-03 выполнен legacy outline/style cleanup в существующем Google Doc:
+
+- Google Doc revision after cleanup:
+  `ALtnJHwG2y0y6xdziVEBWf1jHm7r6i_bkXLaj0f_p_1raU2fzYu7XbniNYm86oBYvk_aFiwhUgAkAa8LnjW7E-hl6iMi5fJR-77zzvllovI`;
+- raw DOCX working proof:
+  `docs/publisher/artifacts/agent-arch-ru-legacy-outline-style-pass-2026-07-03.docx`;
+- Template2000n working proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.docx`;
+- render QA: raw 489 pages and Template2000n 351 pages, 0 blank-like pages;
+- report:
+  `docs/publisher/ru-google-doc-legacy-outline-style-pass-2026-07-03.md`;
+- render QA metadata:
+  `docs/publisher/ru-google-doc-legacy-outline-style-pass-2026-07-03.render-qa.json`;
+- next-goal ledger:
+  `docs/publisher/ru-editorial-100-legacy-outline-style-iterations-2026-07-03.md`.
+
+Этот proof сокращает ложный outline noise: heading paragraphs reduced from
+1352 to 1152 without changing the 6105 non-empty paragraph text sequence.
+Google Doc remains the manuscript source of truth; local DOCX files are proof
+and publisher-style derivative artifacts.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.

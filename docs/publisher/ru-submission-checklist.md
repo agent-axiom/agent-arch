@@ -181,6 +181,12 @@ external proofread.**
 - [x] Known page-338 checklist carryover fixed in the current working proof.
 - [x] Late-practice heading/body style cleanup completed for the current
       working proof.
+- [x] Current raw Google Docs export QA completed after legacy outline cleanup:
+      489 pages, 0 blank-like pages.
+- [x] Current Template2000n proof QA completed after legacy outline cleanup:
+      351 pages, 0 blank-like pages.
+- [x] Legacy false outline noise reduced in the current working proof:
+      heading paragraphs reduced from 1352 to 1152 without text loss.
 - [x] Clean editor handoff packet created:
       `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
 - [x] Author query packet created:

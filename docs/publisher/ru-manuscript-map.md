@@ -26,15 +26,15 @@ Source map для сборки:
 Текущий editorial-ready proof:
 
 - Google Doc revision:
-  `ALtnJHwIVs8gJyJyrGPDctcgdF7ErhiFjFyvH-7E7UDpz7uFhzRhtfVmGsJgSN1xJRlyDTnkL9l8xz6mXFF5DhkyL_Tlw4vPeghlejfY9yc`
+  `ALtnJHwG2y0y6xdziVEBWf1jHm7r6i_bkXLaj0f_p_1raU2fzYu7XbniNYm86oBYvk_aFiwhUgAkAa8LnjW7E-hl6iMi5fJR-77zzvllovI`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx`
+  `docs/publisher/artifacts/agent-arch-ru-legacy-outline-style-pass-2026-07-03.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx`
-- Render QA: raw 507 pages, Template2000n 371 pages, 0 blank-like pages.
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.docx`
+- Render QA: raw 489 pages, Template2000n 351 pages, 0 blank-like pages.
 - Late-practice layout/style debt: closed for the current proof.
-- Legacy long H2/H3 body-like paragraphs: still require a separate outline
-  audit before final publisher export.
+- Legacy long H2/H3 body-like paragraphs: reduced by 200 false outline
+  entries; remaining long-heading candidates require final human TOC review.
 - Text sequence equality: preserved between raw and Template2000n proofs.
 
 Compressed/staging snapshot:
@@ -231,3 +231,19 @@ Optional lifecycle differentiator:
 - text sequence equality: preserved between raw and Template2000n proofs;
 - next proof risk: final author-owned facts, companion metadata and external
   proofread before final delivery.
+
+2026-07-03 legacy outline/style proof:
+
+- canonical working manuscript: Google Doc
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-legacy-outline-style-pass-2026-07-03.docx`;
+- raw render: 489 pages, 0 blank-like pages;
+- Template2000n proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.docx`;
+- Template2000n render: 351 pages, 0 blank-like pages;
+- heading paragraphs reduced from 1352 to 1152 while preserving 6105
+  non-empty paragraphs and 99587 words;
+- text sequence equality: preserved between raw and Template2000n proofs;
+- next proof risk: author-owned fields, external proofread, publisher-approved
+  style requirements and final export QA.
