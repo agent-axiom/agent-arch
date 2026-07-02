@@ -356,6 +356,15 @@ Progress:
   rendered it to 513 pages with 0 blank-like pages, and recorded next goals
   `3101-3200` in
   `docs/publisher/ru-editorial-100-practice-polish-proof-iterations-2026-07-02.md`.
+- 2026-07-03: layout/style proof pass fixed the known page-338 carryover,
+  checked late-practice page breaks, cleaned practice heading/body styles,
+  exported
+  `docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx`,
+  rebuilt
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx`,
+  rendered raw to 507 pages and Template2000n to 371 pages with 0 blank-like
+  pages, and recorded next goals `3201-3300` in
+  `docs/publisher/ru-editorial-100-layout-style-proof-iterations-2026-07-03.md`.
 
 ## Workstream 8. Editor handoff readiness
 
@@ -397,12 +406,18 @@ Progress:
   polished in the full Google Doc; fresh raw DOCX working proof rendered to
   513 pages with 0 blank-like pages; page 338 orphan/layout issue recorded for
   the next publisher-style pass.
+- Layout/style proof pass: page-338 orphan fixed, SLO practice orphan risk
+  removed, all 14 practice headings are navigable, raw proof rendered to 507
+  pages with 0 blank-like pages, and Template2000n derivative rendered to 371
+  pages with 0 blank-like pages.
 
 Открытый риск:
 
-- Long H2/H3 body-style debt закрыт для текущего proof. Открыты авторские поля,
-  финальная вычитка, publisher style application, page-level layout cleanup and
-  final raw/Template2000n DOCX/export QA after author/style closure.
+- Late-practice layout/style debt is closed for the current proof. A separate
+  older-outline audit still remains for legacy long H2/H3 body-like paragraphs.
+  Открыты авторские поля, финальная вычитка, publisher-approved style
+  application and final raw/Template2000n DOCX/export QA after author/style
+  closure.
 
 Definition of done:
 

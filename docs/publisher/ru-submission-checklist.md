@@ -174,6 +174,13 @@ external proofread.**
       499 pages, 0 blank-like pages.
 - [x] Current Template2000n editorial-ready proof created after author/front-matter pass:
       315 pages, 0 blank-like pages.
+- [x] Current raw Google Docs export QA completed after layout/style cleanup:
+      507 pages, 0 blank-like pages.
+- [x] Current Template2000n proof QA completed after layout/style cleanup:
+      371 pages, 0 blank-like pages.
+- [x] Known page-338 checklist carryover fixed in the current working proof.
+- [x] Late-practice heading/body style cleanup completed for the current
+      working proof.
 - [x] Clean editor handoff packet created:
       `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
 - [x] Author query packet created:

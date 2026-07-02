@@ -26,13 +26,15 @@ Source map для сборки:
 Текущий editorial-ready proof:
 
 - Google Doc revision:
-  `ALtnJHxghK0ux39XZSQMkGfFh_TqFc9QasJFxuerN_vYLBxxWKS036rEaQmQRW9mCVrBIR2uNFtXgg1EbDTdIopzLmiVbROaOd-e0Vj1GTQ`
+  `ALtnJHwIVs8gJyJyrGPDctcgdF7ErhiFjFyvH-7E7UDpz7uFhzRhtfVmGsJgSN1xJRlyDTnkL9l8xz6mXFF5DhkyL_Tlw4vPeghlejfY9yc`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`
+  `docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`
-- Render QA: raw 499 pages, Template2000n 315 pages, 0 blank-like pages.
-- H2/H3 body-style debt: closed for the current proof.
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx`
+- Render QA: raw 507 pages, Template2000n 371 pages, 0 blank-like pages.
+- Late-practice layout/style debt: closed for the current proof.
+- Legacy long H2/H3 body-like paragraphs: still require a separate outline
+  audit before final publisher export.
 - Text sequence equality: preserved between raw and Template2000n proofs.
 
 Compressed/staging snapshot:

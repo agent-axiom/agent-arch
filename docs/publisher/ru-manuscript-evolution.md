@@ -1206,3 +1206,40 @@ Decision:
 - Final publisher submission remains blocked until author-owned fields,
   external proofread, publisher styles, page-level layout cleanup and final
   raw/Template2000n render QA are complete.
+
+### 2026-07-03. Layout/style proof pass
+
+Status: synced to full Google Doc working manuscript and recorded as fresh raw
+and Template2000n working proofs.
+
+Google Doc update:
+
+- Fixed the known page-338 checklist carryover from the practice-polish proof.
+- Added a page break before the SLO practice that previously risked an orphan
+  heading.
+- Demoted five late-practice body ranges from heading styles to normal text.
+- Promoted three late practice headings to `Heading 2` so all 14 practice
+  sections are navigable.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx`
+- `docs/publisher/ru-google-doc-layout-style-pass-2026-07-03.md`
+- `docs/publisher/ru-google-doc-layout-style-pass-2026-07-03.render-qa.json`
+- `docs/publisher/ru-editorial-100-layout-style-proof-iterations-2026-07-03.md`
+
+Proof metrics:
+
+- Raw proof render: 507 pages, 0 blank-like pages.
+- Template2000n derivative render: 371 pages, 0 blank-like pages.
+- Raw non-empty text equals the previous practice-polish proof non-empty text.
+- Raw paragraph text equals the Template2000n derivative paragraph text.
+
+Decision:
+
+- The current Google Doc and the two 2026-07-02 DOCX proofs are the best
+  working layout/style proof artifacts for editorial review.
+- Final publisher submission remains blocked until author-owned fields,
+  external proofread, publisher-approved style requirements and final export QA
+  are closed.

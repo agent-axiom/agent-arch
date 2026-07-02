@@ -9,14 +9,14 @@ final publisher submission.
 
 - Full Google Doc manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
-- Current raw Google Docs DOCX working proof after practice polish:
-  `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`
+- Current raw Google Docs DOCX working proof after layout/style cleanup:
+  `docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx`
+- Current Template2000n/publisher-style derivative:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx`
 - Current proof report and render QA:
-  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`
+  `docs/publisher/ru-google-doc-layout-style-pass-2026-07-03.md`
   and
-  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.render-qa.json`
-- Previous Template2000n proof, for style-reference only until rebuilt:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`
+  `docs/publisher/ru-google-doc-layout-style-pass-2026-07-03.render-qa.json`
 - Clean editor handoff:
   `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`
 - Author intake status:
@@ -42,6 +42,8 @@ final publisher submission.
   `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`
 - Practice-polish proof pass:
   `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`
+- Layout/style proof pass:
+  `docs/publisher/ru-google-doc-layout-style-pass-2026-07-03.md`
 
 ## Do not include by default
 
@@ -62,12 +64,9 @@ not OpenReview/source evidence.
 
 The 2026-07-01 latest-practices sync added eight missing practical blocks to the
 full Google Doc and 13 source practice sections to the local full manuscript.
-The current Google Doc is the best working manuscript for editor review, while
-the 2026-07-02 raw DOCX proof is the current working proof after practice
-polish. It renders to 513 pages with 0 blank-like pages. The 2026-06-28 DOCX
-proofs should be treated as previous proof/style-reference snapshots until a
-fresh post-author/style raw and Template2000n export and render QA are run.
-
-Known current proof issue: page 338 has a one-line checklist carryover with a
-large blank area. This should be fixed during publisher-style/layout cleanup and
-does not make the working proof unusable for substantive editor review.
+The 2026-07-03 layout/style proof pass fixed the known page-338 checklist
+carryover, removed the SLO practice orphan risk, cleaned late practice
+heading/body styles, and rebuilt both raw and Template2000n working proofs.
+The raw proof renders to 507 pages with 0 blank-like pages. The Template2000n
+derivative renders to 371 pages with 0 blank-like pages. These are working
+editorial proof artifacts, not final publisher-ready delivery files.
