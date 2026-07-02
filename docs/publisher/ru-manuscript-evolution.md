@@ -1166,3 +1166,43 @@ Decision:
 - The pass is not a final publisher export. The 2026-06-28 DOCX proofs are now
   previous proof snapshots; a fresh DOCX/export QA pass is needed after
   author-owned fields, publisher style application and final proofread.
+
+### 2026-07-02. Practice-polish working proof pass
+
+Status: synced to full Google Doc working manuscript and recorded as a fresh
+raw DOCX proof.
+
+Google Doc update:
+
+- Polished wording in the late practice blocks that were added during the
+  2026-07-01 latest-practices sync.
+- Replaced arrow-heavy or hybrid headings with print-readable headings:
+  `trace, SLO, eval и rollout`; `золотой путь (golden path)`; `trace, eval
+  gate, rollout wave и containment`.
+- Preserved the deliberate distinction between the complete local source
+  assembly and the more print-oriented Google Doc practice blocks.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`
+- `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`
+- `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.render-qa.json`
+- `docs/publisher/ru-author-fields-after-practice-polish-2026-07-02.md`
+- `docs/publisher/ru-editorial-100-practice-polish-proof-iterations-2026-07-02.md`
+
+Proof metrics:
+
+- Google Doc readback: approximately 101,715 words.
+- Local full manuscript: approximately 123,082 words.
+- Raw Google Docs export render: 513 pages.
+- Raw blank-like pages: 0.
+- Known layout issue: page 338 contains a one-line checklist carryover with a
+  large blank area and should be fixed in the next publisher-style/layout pass.
+
+Decision:
+
+- The current Google Doc and 2026-07-02 raw DOCX proof are the best working
+  editor-review artifacts after practice polish.
+- Final publisher submission remains blocked until author-owned fields,
+  external proofread, publisher styles, page-level layout cleanup and final
+  raw/Template2000n render QA are complete.

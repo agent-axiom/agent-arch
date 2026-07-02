@@ -51,6 +51,13 @@ placeholder/source readiness pass записан, а final DOCX export/Template2
 final derivative/render QA намеренно отложены до заполнения author-owned
 полей.
 
+На 2026-07-02 выполнен practice-polish proof pass: поздние практикумы в Google
+Doc вычитаны на уровне печатной формулировки, fresh raw Google Docs DOCX proof
+сохранен как
+`docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`,
+render QA подтвердил 513 страниц и 0 blank-like pages. Это актуальный working
+proof для редакционного чтения, но не final publisher-ready submission.
+
 Активный аудит:
 
 - `docs/publisher/ru-book-readiness-audit.md`
@@ -343,6 +350,12 @@ Progress:
   recorded in
   `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`; next goals are
   `2701-2800`.
+- 2026-07-02: practice-polish proof pass updated the late practice wording in
+  the full Google Doc, exported
+  `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`,
+  rendered it to 513 pages with 0 blank-like pages, and recorded next goals
+  `3101-3200` in
+  `docs/publisher/ru-editorial-100-practice-polish-proof-iterations-2026-07-02.md`.
 
 ## Workstream 8. Editor handoff readiness
 
@@ -380,12 +393,16 @@ Progress:
 - Latest-practices content sync: 13 source practice sections added to
   `ru-manuscript-full.md`; eight late Google Doc practice blocks added and
   verified by text readback.
+- Practice-polish proof pass: late practice headings and result wording
+  polished in the full Google Doc; fresh raw DOCX working proof rendered to
+  513 pages with 0 blank-like pages; page 338 orphan/layout issue recorded for
+  the next publisher-style pass.
 
 Открытый риск:
 
 - Long H2/H3 body-style debt закрыт для текущего proof. Открыты авторские поля,
-  финальная вычитка, publisher style application, fresh DOCX/export QA after
-  the 2026-07-01 content sync and external proofread.
+  финальная вычитка, publisher style application, page-level layout cleanup and
+  final raw/Template2000n DOCX/export QA after author/style closure.
 
 Definition of done:
 

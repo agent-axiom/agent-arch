@@ -137,6 +137,25 @@ publisher-style DOCX export. Старые proof artifacts от 2026-06-28 нуж
 предыдущими proof snapshots до нового export/render QA после author-owned fields
 and style application.
 
+На 2026-07-02 выполнен practice-polish proof pass после latest-practices sync:
+
+- Google Doc revision after polish:
+  `ALtnJHzfp6dC10EFS5o6ohijtZNURxfuA7ekf6CeXSwFg1YCzXmjCNOpESmN9VBBEEvbYrZJzansw1fJ8_TU-zsqxWG4y3Q97gUQtQz-Duk`;
+- raw DOCX working proof:
+  `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`;
+- render QA: 513 pages, 0 blank-like pages;
+- report:
+  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`;
+- render QA metadata:
+  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.render-qa.json`;
+- next-goal ledger:
+  `docs/publisher/ru-editorial-100-practice-polish-proof-iterations-2026-07-02.md`.
+
+Этот proof является актуальным working DOCX для редакционного чтения после
+practice polish. Он не является финальной publisher-ready сдачей: author-owned
+поля, внешняя вычитка, publisher style application, page-level layout cleanup
+and final raw/Template2000n render QA остаются открытыми.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.

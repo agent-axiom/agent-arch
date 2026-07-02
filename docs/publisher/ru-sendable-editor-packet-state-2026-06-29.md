@@ -9,9 +9,13 @@ final publisher submission.
 
 - Full Google Doc manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
-- Raw Google Docs DOCX proof:
-  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`
-- Template2000n proof:
+- Current raw Google Docs DOCX working proof after practice polish:
+  `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`
+- Current proof report and render QA:
+  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`
+  and
+  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.render-qa.json`
+- Previous Template2000n proof, for style-reference only until rebuilt:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`
 - Clean editor handoff:
   `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`
@@ -25,6 +29,8 @@ final publisher submission.
   and `docs/publisher/ru-source-follow-up-live-check-2026-06-30.tsv`
 - Author closure packet:
   `docs/publisher/ru-author-input-closure-packet-2026-06-30.md`
+- Author fields after practice polish:
+  `docs/publisher/ru-author-fields-after-practice-polish-2026-07-02.md`
 - Pre-author finalization gate:
   `docs/publisher/ru-pre-author-finalization-pass-2026-07-01.md`
   and `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`
@@ -34,6 +40,8 @@ final publisher submission.
   `docs/publisher/ru-final-export-readiness-after-source-pass-2026-06-29.md`
 - Latest practice sync:
   `docs/publisher/ru-latest-practices-sync-pass-2026-07-01.md`
+- Practice-polish proof pass:
+  `docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`
 
 ## Do not include by default
 
@@ -55,5 +63,11 @@ not OpenReview/source evidence.
 The 2026-07-01 latest-practices sync added eight missing practical blocks to the
 full Google Doc and 13 source practice sections to the local full manuscript.
 The current Google Doc is the best working manuscript for editor review, while
-the 2026-06-28 DOCX proofs should be treated as previous proof snapshots until a
-fresh post-author/style DOCX export and render QA are run.
+the 2026-07-02 raw DOCX proof is the current working proof after practice
+polish. It renders to 513 pages with 0 blank-like pages. The 2026-06-28 DOCX
+proofs should be treated as previous proof/style-reference snapshots until a
+fresh post-author/style raw and Template2000n export and render QA are run.
+
+Known current proof issue: page 338 has a one-line checklist carryover with a
+large blank area. This should be fixed during publisher-style/layout cleanup and
+does not make the working proof unusable for substantive editor review.

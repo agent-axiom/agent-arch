@@ -1,0 +1,44 @@
+{
+  "date": "2026-07-02",
+  "artifact": "docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx",
+  "artifact_size_bytes": 689339,
+  "artifact_sha256": "cdc599126b29928d0e5beaffeee609af090066eb6130f1a2745ca6828621e1b2",
+  "source_google_doc": {
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab": "t.0",
+    "revision_before_polish": "ALtnJHw6WxhO001-I6mNISWhNzNDr7n5YMGTbGYCJgQC70hOmSth96E7ZqoA-Nu2VFfUElLa8JnWk-QcpYhyoU-Zzgu3EUIDi3iKWys1_D4",
+    "revision_after_polish": "ALtnJHzfp6dC10EFS5o6ohijtZNURxfuA7ekf6CeXSwFg1YCzXmjCNOpESmN9VBBEEvbYrZJzansw1fJ8_TU-zsqxWG4y3Q97gUQtQz-Duk"
+  },
+  "render": {
+    "tool": "documents/render_docx.py",
+    "temporary_output_dir": "/tmp/agent-arch-ru-practice-polished-render-2026-07-02",
+    "temporary_pdf": "/tmp/agent-arch-ru-practice-polished-render-2026-07-02/agent-arch-ru-practice-polished-working-proof-2026-07-02.pdf",
+    "temporary_pdf_size_bytes": 3420272,
+    "page_count": 513,
+    "blank_like_pages": 0,
+    "min_nonwhite_ratio_page": "page-338.png",
+    "min_nonwhite_ratio": 0.005578132274964854,
+    "max_nonwhite_ratio_page": "page-423.png",
+    "max_nonwhite_ratio": 0.10684532016141583,
+    "visually_checked_pages": [
+      1,
+      337,
+      338,
+      423,
+      513
+    ]
+  },
+  "readback": {
+    "fresh_plain_text_export": "/tmp/agent-arch-ru-gdoc-polished-2026-07-02.txt",
+    "google_doc_word_count_approx": 101715,
+    "local_full_manuscript_word_count_approx": 123082
+  },
+  "observations": [
+    "All-page automated blank scan found 0 blank-like pages.",
+    "Representative visual pages are readable, including first page, dense body page and final page.",
+    "Page 338 contains a one-line checklist carryover with large blank area; this is a layout/style issue for the next publisher-style pass, not evidence of lost text.",
+    "This artifact is a working proof after practice polish, not the final publisher-ready DOCX."
+  ],
+  "final_publisher_submission_status": "blocked_until_author_owned_fields_external_proofread_publisher_style_and_final_render_qa"
+}

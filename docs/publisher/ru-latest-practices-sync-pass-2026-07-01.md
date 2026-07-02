@@ -112,3 +112,15 @@ Still open before final publisher-ready DOCX:
 - publisher style application;
 - fresh DOCX export and render QA after author fields and style application.
 
+## 2026-07-02 follow-up
+
+The Google Doc practice headings and selected result sentences were polished in
+`docs/publisher/ru-google-doc-practice-polish-proof-pass-2026-07-02.md`.
+
+The current raw working proof after that follow-up is:
+
+- `docs/publisher/artifacts/agent-arch-ru-practice-polished-working-proof-2026-07-02.docx`;
+- render QA: 513 pages, 0 blank-like pages.
+
+The old arrow-heavy Google Doc heading forms in this 2026-07-01 historical
+report should be read as pre-polish state.

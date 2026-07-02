@@ -67,3 +67,12 @@ repository packet status and Google Doc status are synchronized, but the
 author-owned fields above remain open. Final DOCX export, Template2000n final
 derivative and final render QA are intentionally deferred until these fields
 are filled or explicitly omitted.
+
+## 2026-07-02 practice-polish note
+
+The latest practice-polish pass did not change author-owned facts. The refreshed
+author blocker record is
+`docs/publisher/ru-author-fields-after-practice-polish-2026-07-02.md`. The
+manuscript may receive a working DOCX proof for editor review, but final
+publisher-ready export remains blocked until the fields in this packet are
+filled or explicitly omitted.
