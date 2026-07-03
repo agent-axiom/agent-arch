@@ -59,14 +59,14 @@ Template2000n DOCX derivative:
 ## Current artifact pair
 
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
 - QA report:
-  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.md`
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`
 
 Current page counts:
 
 - raw: 489 pages;
-- Template2000n official-style: 357 pages;
+- Template2000n pre-author: 361 pages;
 - blank-like pages: 0 in both render checks.

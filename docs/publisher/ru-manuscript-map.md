@@ -28,10 +28,10 @@ Source map для сборки:
 - Google Doc export modified time:
   `2026-07-02T22:46:03.373Z`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
-- Render QA: raw 489 pages, Template2000n official-style 357 pages, 0
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
+- Render QA: raw 489 pages, Template2000n pre-author 361 pages, 0
   blank-like pages.
 - Late-practice layout/style debt: closed for the current proof.
 - Legacy long H2/H3 body-like paragraphs: reduced by 200 false outline
@@ -43,6 +43,8 @@ Source map для сборки:
   `docs/publisher/ru-final-editorial-handoff-plan-2026-07-03.md`.
 - Current Template2000n acceptance gate:
   `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`.
+- Current pre-author export pass:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`.
 
 Compressed/staging snapshot:
 
@@ -289,3 +291,21 @@ Optional lifecycle differentiator:
 - decision: the current packet is suitable for trusted editor review, but final
   publisher submission remains blocked until author-owned fields, style route
   acceptance, external proofread and post-author export/render QA are closed.
+
+2026-07-03 final pre-author export/render pass:
+
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`;
+- raw render: 489 pages, 0 blank-like pages;
+- Template2000n pre-author proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`;
+- Template2000n render: 361 pages, 0 blank-like pages;
+- export/render report:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`;
+- pre-author publisher packet:
+  `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`;
+- next 100 post-preauthor goals:
+  `docs/publisher/ru-editorial-100-post-preauthor-iterations-2026-07-03.md`;
+- decision: this is the current strongest working editor packet, but it still
+  must not be labelled final publisher submission until the author-owned
+  placeholders are replaced or explicitly omitted.

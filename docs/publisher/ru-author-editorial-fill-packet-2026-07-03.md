@@ -10,8 +10,10 @@ Current proof context:
 
 - Google Doc manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
-- Template2000n official-style proof:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+- Template2000n pre-author proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
+- final pre-author export report:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`
 - style acceptance gate:
   `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`
 

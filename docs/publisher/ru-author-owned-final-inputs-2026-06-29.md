@@ -60,6 +60,19 @@ Current styled proof:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
 
+## 2026-07-03 pre-author export update
+
+The latest pre-author proof pair is:
+
+- raw DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`;
+- Template2000n DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`.
+
+Connector readback of the Google Doc confirmed that the author block still
+contains placeholders. Final publisher submission remains blocked until these
+fields are filled, explicitly omitted or delegated to the publisher/editor.
+
 ## Fill-before-export rule
 
 Do not run the final publisher DOCX export as a final artifact until these

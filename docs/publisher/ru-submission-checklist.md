@@ -14,14 +14,15 @@ Google Doc companion/source-status wording is synchronized, full source URL
 availability pass evidence is recorded, the 2026-06-30 targeted source
 follow-up has resolved the actionable blocked URL cleanup, and OpenReview has
 been demoted out of primary evidence. The current proof pair is the 2026-07-03
-raw Google Docs export at 489 pages and Template2000n official-style derivative
-at 357 pages, both with 0 blank-like pages. The current handoff layer records a
-Template2000n acceptance gate, author fill packet, Google Doc/DOCX policy and
-final editorial handoff plan. It can be handed to a trusted editor as a clean
-working manuscript and style proof candidate, but do not send as final
-publisher submission yet: the manuscript still needs author-owned facts, final
-companion metadata, publisher/editor acceptance of the style route, post-author
-export QA and external proofread.**
+final pre-author raw Google Docs export at 489 pages and Template2000n
+pre-author derivative at 361 pages, both with 0 blank-like pages. The current
+handoff layer records a Template2000n acceptance gate, author fill packet,
+Google Doc/DOCX policy, final editorial handoff plan and pre-author publisher
+packet. It can be handed to a trusted editor as a clean working manuscript and
+style proof candidate, but do not send as final publisher submission yet: the
+manuscript still needs author-owned facts, final companion metadata,
+publisher/editor acceptance of the style route, post-author export QA and
+external proofread.**
 
 ## P0 gates before external submission
 
@@ -202,6 +203,14 @@ export QA and external proofread.**
       style pass: 489 pages, 0 blank-like pages.
 - [x] Current Template2000n official-style proof QA completed:
       357 pages, 0 blank-like pages.
+- [x] Final pre-author raw Google Docs export QA completed:
+      489 pages, 0 blank-like pages.
+- [x] Final pre-author Template2000n proof QA completed:
+      361 pages, 0 blank-like pages.
+- [x] Final pre-author export pass recorded:
+      `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`.
+- [x] Pre-author publisher packet created:
+      `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`.
 - [ ] Publisher/editor acceptance of the macro-free Template2000n style route
       is confirmed.
 - [x] Clean editor handoff packet created:
@@ -287,6 +296,8 @@ export QA and external proofread.**
       `docs/publisher/ru-editorial-100-pre-author-finalization-iterations-2026-07-01.md`.
 - [x] Next 100 final handoff goals created:
       `docs/publisher/ru-editorial-100-final-handoff-iterations-2026-07-03.md`.
+- [x] Next 100 post-preauthor goals created:
+      `docs/publisher/ru-editorial-100-post-preauthor-iterations-2026-07-03.md`.
 - [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
 - [ ] Final semantic source pass over fast-moving platform claims is complete

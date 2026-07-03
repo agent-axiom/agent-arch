@@ -147,3 +147,25 @@ As of 2026-07-03, this workflow is prepared but not executed as final because
 author-owned facts are not filled, publisher/editor acceptance of the
 Template2000n route is not recorded and a post-author final export/render QA
 pass has not been run.
+
+## 2026-07-03 pre-author dry run
+
+The workflow was executed as far as it can be executed without inventing
+author-owned facts:
+
+- current Google Doc front matter was read through the connector;
+- author placeholders were confirmed in `Об авторе`;
+- a fresh raw DOCX was exported:
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`;
+- a fresh Template2000n pre-author derivative was rebuilt:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`;
+- render QA passed for both artifacts: raw 489 pages and Template2000n 361
+  pages, 0 blank-like pages;
+- report:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`;
+- pre-author publisher packet:
+  `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`.
+
+This dry run proves the export/style/render route is operational, but it does
+not close the final workflow. The same steps must be repeated after the author
+fields are filled or explicitly omitted.

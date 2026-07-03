@@ -1,0 +1,97 @@
+{
+  "date": "2026-07-03",
+  "status": "pre-author export QA completed; final publisher submission still blocked",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "revision_id_from_connector": "ALtnJHwG2y0y6xdziVEBWf1jHm7r6i_bkXLaj0f_p_1raU2fzYu7XbniNYm86oBYvk_aFiwhUgAkAa8LnjW7E-hl6iMi5fJR-77zzvllovI",
+    "modified_time_from_connector": "2026-07-02T22:46:03.373Z",
+    "author_placeholders_observed": true
+  },
+  "raw_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx",
+    "bytes": 687813,
+    "sha256": "1e7654ba0dbfa195b691ef2f1c9f8394cbf3463d18061b0c829b30b2ba696b30",
+    "paragraphs": 8179,
+    "non_empty_paragraphs": 6105,
+    "approx_words": 99587,
+    "style_counts": {
+      "Heading1": 27,
+      "Heading2": 1422,
+      "Heading3": 630,
+      "Heading4": 51,
+      "Normal": 0,
+      "BodyText": 0,
+      "NO_STYLE": 6049
+    },
+    "missing_style_refs": [],
+    "render_dir": "/tmp/agent-arch-ru-final-preauthor-raw-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-final-preauthor-raw-render-2026-07-03/agent-arch-ru-final-preauthor-raw-2026-07-03.pdf",
+    "pdf_pages": 489,
+    "png_pages": 489,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      62,
+      125,
+      296,
+      302,
+      41,
+      326,
+      297,
+      327,
+      300,
+      325
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-final-preauthor-raw-contact-2026-07-03.png"
+  },
+  "template2000n_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx",
+    "bytes": 696237,
+    "sha256": "bcaf2fb7bff6d4290528987da0159f9d3d81b6aa477f3d4f7b8f86bfeba5a564",
+    "paragraphs": 8179,
+    "non_empty_paragraphs": 6105,
+    "approx_words": 99587,
+    "style_counts": {
+      "Heading1": 27,
+      "Heading2": 1422,
+      "Heading3": 630,
+      "Heading4": 51,
+      "Normal": 0,
+      "BodyText": 6049,
+      "NO_STYLE": 0
+    },
+    "missing_style_refs": [],
+    "render_dir": "/tmp/agent-arch-ru-template2000n-final-preauthor-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-template2000n-final-preauthor-render-2026-07-03/agent-arch-ru-template2000n-final-preauthor-2026-07-03.pdf",
+    "pdf_pages": 361,
+    "png_pages": 361,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      213,
+      239,
+      241,
+      220,
+      216,
+      208,
+      41,
+      240,
+      242,
+      231
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-template2000n-final-preauthor-contact-2026-07-03.png",
+    "template_route": "macro-free Template2000n.dot -> temporary DOCX style source; styles/theme/fontTable copied; raw numbering preserved; Heading1-Heading5 numPr removed; body/no-style paragraphs mapped to BodyText"
+  },
+  "integrity": {
+    "raw_styled_paragraph_count_equal": true,
+    "raw_styled_paragraph_text_equal": true,
+    "raw_zip_integrity": "passed",
+    "template2000n_zip_integrity": "passed",
+    "render_qa": "passed for automated blank-like checks and targeted contact-sheet visual review"
+  },
+  "known_blockers": [
+    "author-owned front matter fields still contain placeholders",
+    "publisher/editor acceptance of macro-free Template2000n style route is not recorded",
+    "independent external proofread is not recorded",
+    "final post-author export cannot be called final until author fields are filled or explicitly omitted"
+  ]
+}

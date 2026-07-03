@@ -22,17 +22,23 @@ plan after the Template2000n official-style proof.
    `docs/publisher/ru-post-author-final-export-workflow-2026-06-28.md`,
    `docs/publisher/ru-editorial-100-final-handoff-iterations-2026-07-03.md`.
 
-## Current proof state
+## Current proof state after pre-author dry run
 
 - Google Doc:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
-- Template2000n official-style DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`
+- Template2000n pre-author DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
 - raw render: 489 pages, 0 blank-like pages;
-- Template2000n render: 357 pages, 0 blank-like pages;
+- Template2000n render: 361 pages, 0 blank-like pages;
 - raw/styled text equality: preserved.
+
+Related pre-author export packet:
+
+- `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`
+- `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`
+- `docs/publisher/ru-editorial-100-post-preauthor-iterations-2026-07-03.md`
 
 ## Resulting decision
 

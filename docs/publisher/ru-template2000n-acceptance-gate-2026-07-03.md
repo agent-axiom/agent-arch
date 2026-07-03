@@ -16,13 +16,13 @@ Canonical working manuscript:
 Current proof artifacts:
 
 - raw Google Docs DOCX export:
-  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`;
-- Template2000n official-style derivative:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`;
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`;
+- Template2000n pre-author derivative:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`;
 - pass report:
-  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.md`;
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`;
 - render QA metadata:
-  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.render-qa.json`.
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.render-qa.json`.
 
 ## Applied style route
 
@@ -43,7 +43,7 @@ a conservative, macro-free route:
 Measured result:
 
 - raw render: 489 pages, 0 blank-like pages;
-- Template2000n official-style render: 357 pages, 0 blank-like pages;
+- Template2000n pre-author render: 361 pages, 0 blank-like pages;
 - paragraph count: 8179 in both raw and styled proofs;
 - non-empty paragraphs: 6105 in both raw and styled proofs;
 - approximate words: 99587 in both raw and styled proofs;

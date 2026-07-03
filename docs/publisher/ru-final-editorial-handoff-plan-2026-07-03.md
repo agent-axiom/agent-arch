@@ -2,7 +2,7 @@
 
 Date: 2026-07-03.
 
-Status: current handoff plan after Template2000n official-style proof.
+Status: current handoff plan after Template2000n pre-author proof.
 
 ## Purpose
 
@@ -17,9 +17,11 @@ Use this packet for structural/substantive editorial review:
 - Google Doc manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Raw DOCX proof:
-  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
-- Template2000n official-style proof:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`
+- Template2000n pre-author proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
+- Pre-author publisher packet:
+  `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`
 - Style acceptance gate:
   `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`
 - Author fill packet:

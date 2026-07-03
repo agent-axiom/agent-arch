@@ -178,6 +178,10 @@ Current 2026-07-03 packet:
   `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`;
 - Google Doc and DOCX handoff policy:
   `docs/publisher/ru-google-doc-docx-handoff-policy-2026-07-03.md`.
+- final pre-author export/render pass:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`;
+- pre-author publisher packet:
+  `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`.
 
 ## Current next practical step
 
@@ -192,6 +196,14 @@ Next implementation step:
 4. backport any semantic Google Doc edits into Markdown;
 5. re-export raw DOCX and rebuild Template2000n after author fields;
 6. rerun render QA and prepare the final publisher submission packet.
+
+2026-07-03 pre-author dry run:
+
+- fresh raw DOCX exported from the current Google Doc;
+- fresh Template2000n derivative rebuilt;
+- render QA passed: raw 489 pages, Template2000n 361 pages, 0 blank-like pages;
+- author-owned placeholders remain in front matter, so final publisher
+  submission remains blocked.
 
 ## Assembly checkpoints
 

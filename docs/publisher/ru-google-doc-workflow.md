@@ -217,6 +217,27 @@ Policy summary: repository remains the semantic source of truth, Google Doc is
 the working editorial manuscript, raw DOCX is a dated export baseline, and the
 Template2000n DOCX is a regenerated publisher-style proof candidate.
 
+На 2026-07-03 выполнен final pre-author export/render pass:
+
+- raw DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`;
+- Template2000n pre-author DOCX:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`;
+- render QA: raw 489 pages and Template2000n pre-author 361 pages, 0
+  blank-like pages;
+- report:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`;
+- QA metadata:
+  `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.render-qa.json`;
+- pre-author publisher packet:
+  `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`;
+- next 100 post-preauthor goals:
+  `docs/publisher/ru-editorial-100-post-preauthor-iterations-2026-07-03.md`.
+
+Google Doc front matter was checked through connector readback. The `Об авторе`
+block still contains author-owned placeholders, so this pass is intentionally
+pre-author and not final publisher submission.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.
@@ -244,7 +265,7 @@ Template2000n DOCX is a regenerated publisher-style proof candidate.
 До финального подтверждения издательского style route:
 
 - Google Doc использует простой native Google Docs style;
-- Template2000n official-style proof существует как DOCX derivative;
+- Template2000n pre-author proof существует как DOCX derivative;
 - таблицы используются только для настоящих сопоставимых данных;
 - схемы переносятся только если они нужны печатному чтению.
 
