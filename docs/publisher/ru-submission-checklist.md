@@ -13,16 +13,15 @@ H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
 Google Doc companion/source-status wording is synchronized, full source URL
 availability pass evidence is recorded, the 2026-06-30 targeted source
 follow-up has resolved the actionable blocked URL cleanup, and OpenReview has
-been demoted out of primary evidence. On 2026-07-01 the eight-step
-finalization plan was executed in pre-author mode and the Google Doc status was
-updated through revision
-`ALtnJHwQSbMVcXf5UUw3QyuuxPZVGdtR-7yOKUdJM8DtE76ktgR6WhHDA0zngCtIQFMNxPaYHMglaPHowPxYQS8TpcL8wryth-RYjYpT_iQ`.
-The current proof pair is still the 2026-06-28 raw Google Docs export at 499
-pages and Template2000n derivative at 315 pages, both with 0 blank-like pages.
-It can be handed to a trusted editor as a clean working manuscript, but do not
-send as final publisher submission yet: the manuscript still needs
-author-owned facts, final companion metadata, post-author export QA and
-external proofread.**
+been demoted out of primary evidence. The current proof pair is the 2026-07-03
+raw Google Docs export at 489 pages and Template2000n official-style derivative
+at 357 pages, both with 0 blank-like pages. The current handoff layer records a
+Template2000n acceptance gate, author fill packet, Google Doc/DOCX policy and
+final editorial handoff plan. It can be handed to a trusted editor as a clean
+working manuscript and style proof candidate, but do not send as final
+publisher submission yet: the manuscript still needs author-owned facts, final
+companion metadata, publisher/editor acceptance of the style route, post-author
+export QA and external proofread.**
 
 ## P0 gates before external submission
 
@@ -42,6 +41,8 @@ external proofread.**
       `docs/publisher/ru-editorial-roadmap.md`.
 - [x] Зафиксировано правило синхронизации repository -> Google Doc:
       `docs/publisher/ru-google-doc-workflow.md`.
+- [x] Зафиксировано правило Google Doc vs raw DOCX vs Template2000n DOCX:
+      `docs/publisher/ru-google-doc-docx-handoff-policy-2026-07-03.md`.
 - [x] Publisher-facing packet v0.1 drafted:
       `docs/publisher/ru-publisher-packet-v0.1.md`.
 - [x] Publisher-facing packet v0.1 compact block synced to the Google Doc.
@@ -189,6 +190,14 @@ external proofread.**
       heading paragraphs reduced from 1352 to 1152 without text loss.
 - [x] Attached Template2000n.dot style package applied to a fresh Google Docs
       DOCX export through a macro-free DOCX style route.
+- [x] Template2000n acceptance gate created:
+      `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`.
+- [x] Final editorial handoff plan created:
+      `docs/publisher/ru-final-editorial-handoff-plan-2026-07-03.md`.
+- [x] Final handoff implementation pass recorded:
+      `docs/publisher/ru-final-handoff-implementation-pass-2026-07-03.md`.
+- [x] Author editorial fill packet created for current proof:
+      `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`.
 - [x] Current raw Google Docs export QA completed after Template2000n official
       style pass: 489 pages, 0 blank-like pages.
 - [x] Current Template2000n official-style proof QA completed:
@@ -276,6 +285,8 @@ external proofread.**
       `docs/publisher/ru-editorial-100-final-packet-iterations-2026-06-30.md`.
 - [x] Next 100 pre-author-to-final goals created:
       `docs/publisher/ru-editorial-100-pre-author-finalization-iterations-2026-07-01.md`.
+- [x] Next 100 final handoff goals created:
+      `docs/publisher/ru-editorial-100-final-handoff-iterations-2026-07-03.md`.
 - [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
 - [ ] Final semantic source pass over fast-moving platform claims is complete

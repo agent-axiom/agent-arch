@@ -143,6 +143,8 @@ If any real case is used:
 
 - [ ] Answers copied into the Google Doc.
 - [ ] Repository author-open-fields note updated.
+- [ ] 2026-07-03 author editorial fill packet updated:
+      `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`.
 - [ ] Cover note updated.
 - [ ] Clean editor handoff packet updated.
 - [ ] Raw DOCX re-exported after author fields.

@@ -4,10 +4,19 @@ Date: 2026-06-28.
 
 Status: ready-to-run workflow after author-owned fields are filled.
 
+2026-07-03 update: the current style baseline is the Template2000n
+official-style proof created from the attached `Template2000n.dot`. Use the
+acceptance gate before final submission:
+
+- `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+
 ## Preconditions
 
 Do not run this as final submission until all are true:
 
+- publisher/editor accepts the Template2000n macro-free style route or provides
+  a replacement style route;
 - author query packet is filled;
 - short and long author bio are approved;
 - title, subtitle and cover copy are approved;
@@ -63,8 +72,10 @@ Record:
 
 ## Step 4. Rebuild Template2000n proof
 
-Use the latest Template2000n derivative as the style base and replace only the
-text that changed in the raw export.
+Use the latest accepted Template2000n style route as the style base and replace
+only the text that changed in the raw export. If the publisher rejects the
+macro-free route, follow the replacement route supplied by the publisher and
+record it before creating the final proof.
 
 Expected output:
 
@@ -132,5 +143,7 @@ Only after all checks pass, mark the manuscript as one of:
 
 ## Current blocker
 
-As of 2026-06-28, this workflow is prepared but not executed as final because
-author-owned facts are not filled.
+As of 2026-07-03, this workflow is prepared but not executed as final because
+author-owned facts are not filled, publisher/editor acceptance of the
+Template2000n route is not recorded and a post-author final export/render QA
+pass has not been run.

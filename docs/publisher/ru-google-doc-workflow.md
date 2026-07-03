@@ -200,6 +200,23 @@ VBA/macros: the `.dot` was converted to a DOCX style source, then styles/theme
 were applied conservatively while preserving raw manuscript numbering and text
 sequence.
 
+На 2026-07-03 зафиксирован final editorial handoff layer:
+
+- final editorial handoff plan:
+  `docs/publisher/ru-final-editorial-handoff-plan-2026-07-03.md`;
+- Template2000n acceptance gate:
+  `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`;
+- author fill packet for the current proof:
+  `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`;
+- Google Doc and DOCX handoff policy:
+  `docs/publisher/ru-google-doc-docx-handoff-policy-2026-07-03.md`;
+- next 100 final handoff goals:
+  `docs/publisher/ru-editorial-100-final-handoff-iterations-2026-07-03.md`.
+
+Policy summary: repository remains the semantic source of truth, Google Doc is
+the working editorial manuscript, raw DOCX is a dated export baseline, and the
+Template2000n DOCX is a regenerated publisher-style proof candidate.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.
@@ -237,6 +254,13 @@ sequence.
 - принять редакторские правки;
 - повторить свежий raw export, Template2000n style pass and render QA перед
   финальной сдачей.
+
+Если издательство не подтверждает текущий route:
+
+- зафиксировать replacement route в
+  `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`;
+- не использовать текущий styled DOCX как финальную сдачу;
+- повторить style pass and render QA по route, который подтвердит издательство.
 
 ## Проверки перед внешней отправкой
 

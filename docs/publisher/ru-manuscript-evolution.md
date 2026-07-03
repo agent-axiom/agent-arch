@@ -152,9 +152,10 @@ Definition of done:
 
 Status: manuscript body exists; H2/H3 body-style cleanup is complete for the
 current Google Doc proof; author/front-matter fields are isolated; current raw
-and Template2000n proof candidates render cleanly. Final publisher submission
-is still blocked until author facts, final companion metadata and external
-proofread are closed.
+and Template2000n official-style proof candidates render cleanly. Final
+publisher submission is still blocked until author facts, final companion
+metadata, publisher/editor acceptance of the Template2000n route, post-author
+export/render QA and external proofread are closed.
 
 Goal:
 
@@ -167,6 +168,17 @@ Rule:
 - `docs/publisher/ru-cover-note-draft.md` is parked until Stage 2 is complete
   enough to show manuscript volume.
 
+Current 2026-07-03 packet:
+
+- Template2000n acceptance gate:
+  `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`;
+- final editorial handoff plan:
+  `docs/publisher/ru-final-editorial-handoff-plan-2026-07-03.md`;
+- author fill packet:
+  `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`;
+- Google Doc and DOCX handoff policy:
+  `docs/publisher/ru-google-doc-docx-handoff-policy-2026-07-03.md`.
+
 ## Current next practical step
 
 The main artifact is now the full Google Doc manuscript plus the current proof
@@ -175,10 +187,11 @@ pair: raw Google Docs export and Template2000n derivative.
 Next implementation step:
 
 1. fill author bio/front-matter fields and confirm companion/public metadata;
-2. run external editor/proofreader review against the clean handoff packet;
-3. backport any semantic Google Doc edits into Markdown;
-4. re-export raw DOCX and rebuild Template2000n after author fields;
-5. rerun render QA and prepare the final publisher submission packet.
+2. get publisher/editor acceptance of the Template2000n style route;
+3. run external editor/proofreader review against the clean handoff packet;
+4. backport any semantic Google Doc edits into Markdown;
+5. re-export raw DOCX and rebuild Template2000n after author fields;
+6. rerun render QA and prepare the final publisher submission packet.
 
 ## Assembly checkpoints
 

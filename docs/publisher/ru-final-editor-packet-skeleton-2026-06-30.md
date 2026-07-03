@@ -2,9 +2,10 @@
 
 Date: 2026-06-30.
 
-Status: packet skeleton ready; 2026-07-01 pre-author finalization gate is
-recorded. Final publisher submission is still blocked by author-owned fields
-and fresh final export QA.
+Status: packet skeleton updated for the 2026-07-03 Template2000n
+official-style proof. Final publisher submission is still blocked by
+author-owned fields, publisher/editor acceptance of the style route and fresh
+post-author export QA.
 
 ## Current sendable working packet
 
@@ -13,9 +14,17 @@ This packet is suitable for trusted structural/substantive editorial review:
 - Google Doc manuscript:
   <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 - Current raw Google Docs DOCX proof:
-  `docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx`
-- Current Template2000n proof:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx`
+  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
+- Current Template2000n official-style proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+- Final editorial handoff plan:
+  `docs/publisher/ru-final-editorial-handoff-plan-2026-07-03.md`
+- Template2000n acceptance gate:
+  `docs/publisher/ru-template2000n-acceptance-gate-2026-07-03.md`
+- Author editorial fill packet:
+  `docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md`
+- Google Doc and DOCX handoff policy:
+  `docs/publisher/ru-google-doc-docx-handoff-policy-2026-07-03.md`
 - Clean editor handoff:
   `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`
 - Source follow-up report:
@@ -32,6 +41,8 @@ This packet is suitable for trusted structural/substantive editorial review:
   `docs/publisher/ru-pre-author-export-gate-2026-07-01.md`
 - Pre-final export readiness:
   `docs/publisher/ru-pre-final-export-readiness-after-follow-up-2026-06-30.md`
+- Template2000n official-style pass report:
+  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.md`
 
 ## Do not label as final publisher submission until
 
@@ -42,6 +53,8 @@ This packet is suitable for trusted structural/substantive editorial review:
 5. Fresh Template2000n derivative is generated.
 6. Render QA is repeated for both DOCX outputs.
 7. External proofread/editorial triage is recorded.
+8. Publisher/editor accepts the Template2000n style route or supplies a
+   replacement route.
 
 ## Cover note skeleton
 
@@ -63,6 +76,7 @@ Use this only after replacing bracketed fields with author-approved values:
 - Source status: source URL pass completed, OpenReview demoted out of primary evidence
 - Author status: [author fields closed / author fields attached separately]
 - Companion status: [URL/version]
+- Style status: [Template2000n route accepted / style route under review]
 
 Прошу посмотреть прежде всего:
 - цельность аргумента и дугу чтения;
@@ -87,3 +101,11 @@ The author must still provide:
 - acknowledgements or explicit omission;
 - real/composite/anonymized case policy;
 - publisher metadata.
+
+## 2026-07-03 current proof metrics
+
+- raw Google Docs proof: 489 pages, 0 blank-like pages;
+- Template2000n official-style proof: 357 pages, 0 blank-like pages;
+- raw/styled paragraph text equality: preserved;
+- current styled proof is a publisher-style proof candidate, not final
+  publisher submission.

@@ -47,6 +47,19 @@ fill-in packet for the author. It turns the open fields into one answer form so
 the final Google Doc update and DOCX export can happen without guessing author
 facts.
 
+## 2026-07-03 Template2000n proof update
+
+`docs/publisher/ru-author-editorial-fill-packet-2026-07-03.md` is the current
+fill packet to use with the Template2000n official-style proof. It keeps the
+same author-owned boundaries as the 2026-06-30 closure packet, but adds the
+current proof context, publisher-style acceptance dependency and explicit
+fields for companion metadata, case policy, copyright/imprint data and
+publisher/editor delegation.
+
+Current styled proof:
+
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+
 ## Fill-before-export rule
 
 Do not run the final publisher DOCX export as a final artifact until these
