@@ -187,6 +187,14 @@ external proofread.**
       351 pages, 0 blank-like pages.
 - [x] Legacy false outline noise reduced in the current working proof:
       heading paragraphs reduced from 1352 to 1152 without text loss.
+- [x] Attached Template2000n.dot style package applied to a fresh Google Docs
+      DOCX export through a macro-free DOCX style route.
+- [x] Current raw Google Docs export QA completed after Template2000n official
+      style pass: 489 pages, 0 blank-like pages.
+- [x] Current Template2000n official-style proof QA completed:
+      357 pages, 0 blank-like pages.
+- [ ] Publisher/editor acceptance of the macro-free Template2000n style route
+      is confirmed.
 - [x] Clean editor handoff packet created:
       `docs/publisher/ru-clean-editor-handoff-packet-2026-06-28.md`.
 - [x] Author query packet created:

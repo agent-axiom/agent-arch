@@ -179,6 +179,27 @@ final raw/Template2000n render QA остаются открытыми.
 Google Doc remains the manuscript source of truth; local DOCX files are proof
 and publisher-style derivative artifacts.
 
+На 2026-07-03 выполнен Template2000n official-style pass с приложенным
+`Template2000n.dot`:
+
+- raw DOCX working proof:
+  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`;
+- Template2000n official-style working proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`;
+- render QA: raw 489 pages and Template2000n official-style 357 pages, 0
+  blank-like pages;
+- report:
+  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.md`;
+- render QA metadata:
+  `docs/publisher/ru-google-doc-template2000n-official-style-pass-2026-07-03.render-qa.json`;
+- next-goal ledger:
+  `docs/publisher/ru-editorial-100-template2000n-official-style-iterations-2026-07-03.md`.
+
+`Template2000n.dot` is a legacy Word 2000 binary template. The pass did not run
+VBA/macros: the `.dot` was converted to a DOCX style source, then styles/theme
+were applied conservatively while preserving raw manuscript numbering and text
+sequence.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.
@@ -201,20 +222,21 @@ and publisher-style derivative artifacts.
   walkthrough в online companion;
 - применить `docs/publisher/ru-terminology.md`.
 
-## Временный стиль
+## Текущий стиль
 
-До получения стилевых файлов БХВ:
+До финального подтверждения издательского style route:
 
 - Google Doc использует простой native Google Docs style;
-- титул и заголовки оформляются без декоративных линий;
+- Template2000n official-style proof существует как DOCX derivative;
 - таблицы используются только для настоящих сопоставимых данных;
 - схемы переносятся только если они нужны печатному чтению.
 
-После получения стилевых файлов БХВ:
+Если издательство подтверждает текущий Template2000n route:
 
-- обновить DOCX/Google Doc formatting strategy;
-- проверить соответствие требованиям издательства;
-- отдельно проверить экспортный DOCX перед финальной сдачей.
+- закрыть author-owned поля;
+- принять редакторские правки;
+- повторить свежий raw export, Template2000n style pass and render QA перед
+  финальной сдачей.
 
 ## Проверки перед внешней отправкой
 

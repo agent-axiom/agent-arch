@@ -25,16 +25,19 @@ Source map для сборки:
 
 Текущий editorial-ready proof:
 
-- Google Doc revision:
-  `ALtnJHwG2y0y6xdziVEBWf1jHm7r6i_bkXLaj0f_p_1raU2fzYu7XbniNYm86oBYvk_aFiwhUgAkAa8LnjW7E-hl6iMi5fJR-77zzvllovI`
+- Google Doc export modified time:
+  `2026-07-02T22:46:03.373Z`
 - Raw DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-legacy-outline-style-pass-2026-07-03.docx`
+  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.docx`
-- Render QA: raw 489 pages, Template2000n 351 pages, 0 blank-like pages.
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`
+- Render QA: raw 489 pages, Template2000n official-style 357 pages, 0
+  blank-like pages.
 - Late-practice layout/style debt: closed for the current proof.
 - Legacy long H2/H3 body-like paragraphs: reduced by 200 false outline
   entries; remaining long-heading candidates require final human TOC review.
+- Template2000n.dot style package: applied through a conservative macro-free
+  DOCX style route.
 - Text sequence equality: preserved between raw and Template2000n proofs.
 
 Compressed/staging snapshot:
@@ -247,3 +250,22 @@ Optional lifecycle differentiator:
 - text sequence equality: preserved between raw and Template2000n proofs;
 - next proof risk: author-owned fields, external proofread, publisher-approved
   style requirements and final export QA.
+
+2026-07-03 Template2000n official style proof:
+
+- canonical working manuscript: Google Doc
+  <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>;
+- raw DOCX proof:
+  `docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx`;
+- raw render: 489 pages, 0 blank-like pages;
+- Template2000n official-style proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx`;
+- Template2000n official-style render: 357 pages, 0 blank-like pages;
+- source template: `/Users/if/Downloads/Telegram Desktop/Template2000n.dot`;
+- template route: converted `.dot` to DOCX style source without running VBA,
+  copied styles/theme/font table, preserved raw numbering, removed heading
+  `numPr`, and mapped body paragraphs to `BodyText`;
+- text sequence equality: preserved between raw and Template2000n proofs;
+- next proof risk: author-owned fields, full human proofread,
+  publisher/editor acceptance of the macro-free Template2000n route and final
+  export QA.
