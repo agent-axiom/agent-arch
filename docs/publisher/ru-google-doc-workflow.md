@@ -279,6 +279,28 @@ New limitation: the current proof is suitable for editor discussion, but final
 submission still requires author-owned fields, external proofread and a repeat
 post-author export/render cycle.
 
+На 2026-07-05 выполнен visual/edit pass, который добавляет визуальный слой и
+закрывает текущий свежий export/render checkpoint:
+
+- final known Google Doc revision:
+  `ALtnJHxx8GXfQQfPMrGfG7STCXtscwWkhPzWpj1AJa-vee0UADj3vnwYNiZkKG2wGfd2Xkdsizblmxq8xb8YyumfJxKOb8ujAWDn1wNGphY`;
+- fresh raw DOCX export:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-visual-edit-2026-07-05.docx`;
+- Template2000n derivative:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-visual-edit-2026-07-05.docx`;
+- render QA: raw 501 pages, Template2000n 366 pages, 0 blank-like pages in
+  both proofs;
+- visual layer: 12 embedded PNG diagrams, with captions and alt text;
+- report:
+  `docs/publisher/ru-google-doc-visual-edit-pass-2026-07-05.md`;
+- next 100 visual/edit goals:
+  `docs/publisher/ru-editorial-100-visual-edit-iterations-2026-07-05.md`.
+
+New limitation: the current proof is stronger for editor discussion because it
+has visualizations and companion compression, but final submission still
+requires author-owned fields, public companion metadata, external proofread and
+a repeat post-author export/render cycle.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.

@@ -1367,3 +1367,49 @@ Decision:
 - Final publisher submission remains blocked by author-owned fields,
   independent external proofread and any publisher style requirements received
   after this checkpoint.
+
+### 2026-07-05. Visual/edit manuscript pass
+
+Status: synced to the full Google Doc working manuscript and recorded as the
+current visual/edit DOCX proof pair.
+
+Google Doc update:
+
+- Added 12 Russian-language diagrams as an editor-facing visualization block in
+  the Google Doc, with captions and alt text.
+- Updated the Markdown manuscript source with the same diagrams placed at the
+  relevant chapter points.
+- Fixed outdated cross-references to the reference-architecture and launch
+  checklist chapters.
+- Demoted repeated reference-package reset headings and compressed long
+  CLI/API/reference paragraphs into companion routes.
+- Final Google Doc revision for this checkpoint:
+  `ALtnJHxx8GXfQQfPMrGfG7STCXtscwWkhPzWpj1AJa-vee0UADj3vnwYNiZkKG2wGfd2Xkdsizblmxq8xb8YyumfJxKOb8ujAWDn1wNGphY`.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-visual-edit-2026-07-05.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-visual-edit-2026-07-05.docx`
+- `docs/publisher/ru-google-doc-visual-edit-pass-2026-07-05.md`
+- `docs/publisher/ru-google-doc-visual-edit-pass-2026-07-05.render-qa.json`
+- `docs/publisher/ru-template2000n-visual-edit-2026-07-05.metrics.json`
+- `docs/publisher/ru-companion-cli-api-reference-2026-07-05.md`
+- `docs/publisher/ru-editorial-100-visual-edit-iterations-2026-07-05.md`
+- `docs/publisher/visuals/*.png`
+
+Proof metrics:
+
+- Fresh raw Google Docs export: 501 pages, 0 blank-like pages.
+- Template2000n visual/edit derivative: 366 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Approximate words: 100045.
+- Embedded images: 12 PNG files in both DOCX artifacts.
+- Long paragraphs with 250+ words: 0 in both DOCX artifacts.
+
+Decision:
+
+- The best current publisher-facing proof is now
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-visual-edit-2026-07-05.docx`.
+- Final publisher submission remains blocked by author-owned fields, public
+  companion metadata, independent external proofread and publisher/editor
+  acceptance of the final style route.

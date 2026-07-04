@@ -30,9 +30,13 @@ Doc revision and created the next 100 editorial quality goals. The later
 the Google Doc, confirmed by readback that old `online companion`,
 `policy gateway`, `tool gateway` and `incident response` phrases are absent,
 rebuilt a Template2000n quality-sync proof at 357 pages with 0 blank-like
-pages, and recorded the next 100 quality-sync/export goals. A fresh
-post-terminology raw DOCX export is still required before final publisher
-submission.**
+pages, and recorded the next 100 quality-sync/export goals. The 2026-07-05
+visual/edit pass added 12 Russian-language diagrams, compressed remaining long
+CLI/API/reference paragraphs into companion routes, saved a fresh raw Google
+Doc DOCX export at 501 rendered pages and rebuilt a Template2000n proof at 366
+rendered pages, both with 0 blank-like pages. The remaining final-submission
+blockers are author-owned facts, public companion metadata, external proofread
+and publisher/editor acceptance of the final style route.**
 
 ## P0 gates before external submission
 
