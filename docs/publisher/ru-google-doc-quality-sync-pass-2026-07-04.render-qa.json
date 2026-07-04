@@ -1,0 +1,68 @@
+{
+  "date": "2026-07-04",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "revision_before_terminology_update": "ALtnJHynC5_zU9n9cmTvBjPl9UMeD7Uve6QHp3PDDm33ZwWHCfBekh00ktjv4-xnUtiwP6hL7W39I4iTLk77MaTY60Z8DnRkpVQxhi5p46U",
+    "revision_after_terminology_update": "ALtnJHwPMvOVdwcrz2tbGM0rdze_Ped9LzfMOgWtZCTtkIG1K5pXx008c-6ckzYavZt9Wn-LtRrB9r16Q37qcoztxBoKsxdBLmi6LKr_EW4",
+    "terminology_replacements": 293,
+    "grammar_corrections_after_terminology_update": 23,
+    "total_replace_all_text_changes": 316,
+    "readback_absent_exact_terms": [
+      "online companion",
+      "policy gateway",
+      "tool gateway",
+      "incident response"
+    ]
+  },
+  "raw_google_docs_export_baseline": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx",
+    "bytes": 687813,
+    "sha256": "1e7654ba0dbfa195b691ef2f1c9f8394cbf3463d18061b0c829b30b2ba696b30",
+    "render_dir": "/tmp/agent-arch-ru-quality-sync-raw-render-2026-07-04",
+    "pages": 489,
+    "blank_like_pages": [],
+    "lowest_density_pages": [
+      62,
+      125,
+      296,
+      41,
+      302,
+      326,
+      300,
+      297,
+      327,
+      324
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-quality-sync-raw-contact-2026-07-04",
+    "fresh_export_note": "Fresh binary export was attempted but not saved: connector returned an oversized inline DOCX response and direct export URL returned HTTP 401."
+  },
+  "template2000n_quality_sync_derivative": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx",
+    "bytes": 695009,
+    "sha256": "b4f7e8b2ec2d43e27530122e56a4740d28a81a995ed81e4b7748cf9d305c2e9e",
+    "template_source": "/Users/if/Downloads/Telegram Desktop/Template2000n.dot",
+    "converted_template_docx": "/tmp/template2000n_quality_sync_2026_07_04/Template2000n.docx",
+    "paragraphs": 8179,
+    "non_empty_paragraphs": 6105,
+    "approximate_words": 99587,
+    "bodytext_mapped": 4953,
+    "text_equality_with_raw": true,
+    "render_dir": "/tmp/agent-arch-ru-template2000n-quality-sync-render-2026-07-04",
+    "pages": 357,
+    "blank_like_pages": [],
+    "lowest_density_pages": [
+      238,
+      240,
+      219,
+      215,
+      208,
+      342,
+      134,
+      177,
+      31,
+      41
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-template2000n-quality-sync-contact-2026-07-04"
+  },
+  "result": "Google Doc terminology pass applied; Template2000n derivative is renderable and text-equivalent to the latest valid raw DOCX baseline. Fresh post-terminology raw export remains required before final publisher submission."
+}

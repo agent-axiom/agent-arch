@@ -238,6 +238,27 @@ Google Doc front matter was checked through connector readback. The `Об авт
 block still contains author-owned placeholders, so this pass is intentionally
 pre-author and not final publisher submission.
 
+На 2026-07-04 выполнен quality-sync/terminology pass в текущем Google Doc:
+
+- Google Doc revision after terminology cleanup:
+  `ALtnJHwPMvOVdwcrz2tbGM0rdze_Ped9LzfMOgWtZCTtkIG1K5pXx008c-6ckzYavZt9Wn-LtRrB9r16Q37qcoztxBoKsxdBLmi6LKr_EW4`;
+- excessive English editorial terms were reduced with 293 guarded exact
+  replacements, followed by 23 grammatical corrections;
+- readback found no exact `online companion`, `policy gateway`, `tool gateway`
+  or `incident response`;
+- new Template2000n quality-sync proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx`;
+- render QA: raw baseline 489 pages and Template2000n quality-sync 357 pages,
+  0 blank-like pages;
+- report:
+  `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.md`;
+- next 100 quality-sync/export goals:
+  `docs/publisher/ru-editorial-100-quality-sync-export-iterations-2026-07-04.md`.
+
+Important limitation: the current Google Doc changed after the latest saved raw
+DOCX baseline. The next publisher-critical proof cycle must start with a fresh
+authenticated raw DOCX export from the updated Google Doc.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.
@@ -257,7 +278,7 @@ pre-author and not final publisher submission.
 - удалить web-only navigation;
 - превратить admonitions в печатные врезки или обычный prose;
 - оставить длинные schemas, CLI output, validation errors и полный runtime
-  walkthrough в online companion;
+  walkthrough в онлайн-сопровождении;
 - применить `docs/publisher/ru-terminology.md`.
 
 ## Текущий стиль

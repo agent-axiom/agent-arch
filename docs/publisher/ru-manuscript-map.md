@@ -27,12 +27,16 @@ Status: editorial assembly map. Основано на плане-проспек�
 
 - Google Doc export modified time:
   `2026-07-02T22:46:03.373Z`
+- Google Doc revision after 2026-07-04 terminology update:
+  `ALtnJHwPMvOVdwcrz2tbGM0rdze_Ped9LzfMOgWtZCTtkIG1K5pXx008c-6ckzYavZt9Wn-LtRrB9r16Q37qcoztxBoKsxdBLmi6LKr_EW4`
 - Raw DOCX:
   `docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx`
 - Template2000n DOCX:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-final-preauthor-2026-07-03.docx`
-- Render QA: raw 489 pages, Template2000n pre-author 361 pages, 0
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx`
+- Render QA: raw baseline 489 pages, Template2000n quality-sync 357 pages, 0
   blank-like pages.
+- Current quality-sync pass:
+  `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.md`.
 - Late-practice layout/style debt: closed for the current proof.
 - Legacy long H2/H3 body-like paragraphs: reduced by 200 false outline
   entries; remaining long-heading candidates require final human TOC review.
@@ -329,3 +333,23 @@ Compressed/staging snapshot:
 - next proof risk: a fresh raw/Template2000n export has not been created after
   this targeted Google Doc edit, so page counts remain those from 2026-07-03
   until the next export/render QA.
+
+2026-07-04 quality-sync terminology and Template2000n pass:
+
+- Google Doc revision after terminology cleanup:
+  `ALtnJHwPMvOVdwcrz2tbGM0rdze_Ped9LzfMOgWtZCTtkIG1K5pXx008c-6ckzYavZt9Wn-LtRrB9r16Q37qcoztxBoKsxdBLmi6LKr_EW4`;
+- Google Doc exact terminology replacements: 293, followed by 23 grammatical
+  corrections;
+- readback confirmed no exact `online companion`, `policy gateway`,
+  `tool gateway` or `incident response` in the updated Google Doc;
+- Template2000n quality-sync proof:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx`;
+- render QA: raw baseline 489 pages and Template2000n quality-sync 357 pages,
+  0 blank-like pages;
+- report:
+  `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.md`;
+- next 100 quality-sync/export goals:
+  `docs/publisher/ru-editorial-100-quality-sync-export-iterations-2026-07-04.md`;
+- next proof risk: because the Google Doc changed after the latest saved raw
+  DOCX baseline, a fresh authenticated raw DOCX export is required before a
+  final publisher proof can be claimed.

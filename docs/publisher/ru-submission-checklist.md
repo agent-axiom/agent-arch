@@ -25,7 +25,14 @@ publisher/editor acceptance of the style route, post-author export QA and
 external proofread. The 2026-07-04 targeted quality pass added Chapter 20-21
 bridge paragraphs to the full Google Doc and repository manuscript source,
 cleaned excessive anglicisms in manuscript/source maps, recorded the new Google
-Doc revision and created the next 100 editorial quality goals.**
+Doc revision and created the next 100 editorial quality goals. The later
+2026-07-04 quality-sync pass applied 293 guarded terminology replacements in
+the Google Doc, confirmed by readback that old `online companion`,
+`policy gateway`, `tool gateway` and `incident response` phrases are absent,
+rebuilt a Template2000n quality-sync proof at 357 pages with 0 blank-like
+pages, and recorded the next 100 quality-sync/export goals. A fresh
+post-terminology raw DOCX export is still required before final publisher
+submission.**
 
 ## P0 gates before external submission
 
@@ -156,7 +163,7 @@ Doc revision and created the next 100 editorial quality goals.**
       `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`.
 - [x] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
 - [x] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
-- [x] Dense CLI/runtime details are moved to online companion or summarized.
+- [x] Dense CLI/runtime details are moved to онлайн-сопровождение or summarized.
 - [x] All Mermaid diagrams have print-safe fallback prose or captions.
 - [x] Long tables and code blocks are reviewed for PDF/print readability.
 - [x] Public companion links are stable.
@@ -312,8 +319,17 @@ Doc revision and created the next 100 editorial quality goals.**
       `docs/publisher/ru-editorial-100-final-handoff-iterations-2026-07-03.md`.
 - [x] Next 100 post-preauthor goals created:
       `docs/publisher/ru-editorial-100-post-preauthor-iterations-2026-07-03.md`.
+- [x] Next 100 editorial quality goals created:
+      `docs/publisher/ru-editorial-100-editorial-quality-iterations-2026-07-04.md`.
+- [x] Next 100 quality-sync/export goals created:
+      `docs/publisher/ru-editorial-100-quality-sync-export-iterations-2026-07-04.md`.
+- [x] Google Doc quality-sync terminology pass recorded:
+      `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.md`.
+- [x] Template2000n quality-sync proof rendered: 357 pages, 0 blank-like pages.
 - [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
+- [ ] Fresh post-terminology raw DOCX export is saved from the updated Google
+      Doc.
 - [ ] Final semantic source pass over fast-moving platform claims is complete
       after author/source Google Doc sync.
 - [ ] Independent external proofread is completed after the export shape is stable.

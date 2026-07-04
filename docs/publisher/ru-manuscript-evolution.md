@@ -23,7 +23,7 @@ manuscript itself, not the publisher cover materials.
 - first compression/editorial pass Части VI: Chapter 17, Chapter 18, Chapter 19 and Chapter 20;
 - first compression/editorial pass Части VII: Chapter 21, Chapter 22 and Chapter 23;
 - first compression/editorial pass приложений: glossary, checklists, incident/postmortem,
-  curated sources and online companion.
+  curated sources and онлайн-сопровождение.
 
 Поэтому текущий Google Doc уже отражает договорный объем как manuscript
 snapshot после первого compression/editorial pass: skeleton, publisher packet,
@@ -45,7 +45,7 @@ formatting.
 
 Этот объем нельзя просто скопировать в Google Doc один к одному. Web-рукопись
 надо собрать в печатную рукопись: сжать, убрать web-only navigation, вынести
-runtime/schema-heavy материал в online companion и привести главы к книжному
+runtime/schema-heavy материал в онлайн-сопровождении и привести главы к книжному
 ритму.
 
 ## Evolution stages
@@ -108,7 +108,7 @@ Batch order:
 4. Часть VI + Часть VII: print chapters 17-23. Status: rough assembly synced to
    Google Doc on 2026-06-13.
 5. Приложения: glossary, checklists, incident/postmortem, curated sources and
-   online companion. Status: rough assembly synced to Google Doc on 2026-06-13.
+   онлайн-сопровождение. Status: rough assembly synced to Google Doc on 2026-06-13.
 
 Definition of done:
 
@@ -304,7 +304,7 @@ Notes:
 - This batch adds execution/integration and reliability/evaluation body, not
   final line edits.
 - Long schemas, YAML examples, CLI/runtime details and full event catalogs stay
-  in online companion for now.
+  in онлайн-сопровождение for now.
 - Google Doc status text now points to the next batch: Part VI + Part VII.
 - Connector readback verified target document identity, inserted headings,
   final Chapter 16 paragraph and updated top status text.
@@ -323,7 +323,7 @@ Google Doc content added:
 - `Глава 17. Платформенная команда и продуктовые команды`;
 - `Глава 18. Golden paths, общие шлюзы и борьба с агентным зоопарком`;
 - `Глава 19. От SDLC к ADLC: жизненный цикл агентной системы`;
-- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Глава 20. Assurance loop, реагирование на инциденты, registry и retirement`;
 - `Часть VII. Эталонная реализация и промышленный запуск`;
 - `Глава 21. Базовая схема runtime`;
 - `Глава 22. Слой политик и каталог возможностей`;
@@ -355,7 +355,7 @@ Google Doc content added:
 - `Приложение 1. Глоссарий`;
 - `Приложение 2. Чеклисты`;
 - `Приложение 3. Шаблон incident/postmortem`;
-- `Приложение 4. Источники и online companion`.
+- `Приложение 4. Источники и онлайн-сопровождение`.
 
 Notes:
 
@@ -363,7 +363,7 @@ Notes:
   catalog.
 - Full trace/eval/approval/policy/memory/lifecycle/change/incident schemas,
   registry operations, long YAML examples, CLI walkthrough and source catalog
-  remain in online companion.
+  remain in онлайн-сопровождение.
 - Google Doc status text now points to compression/editorial pass.
 - Connector readback verified target document identity, inserted appendix
   headings, final companion rule paragraph and updated top status text.
@@ -392,7 +392,7 @@ Notes:
 - Chapter 2 now reads as a decision ladder from direct model calls to workflow,
   single-agent loops, coordinator patterns and explicit handoff.
 - Chapter 3 now emphasizes failure-oriented architecture checks: identity,
-  policy, context boundary, tool gateway, trace evidence and rollout ownership.
+  policy, context boundary, шлюз инструментов, trace evidence and rollout ownership.
 - Google Doc stale service status was updated from the old Part IV/V next step
   to the current Part II/III editorial pass.
 
@@ -421,7 +421,7 @@ Notes:
   right to convert intent into action.
 - Chapter 5 now gives Russian explanations for policy layer and capability
   model while keeping the contract terms.
-- Chapter 6 now emphasizes the tool gateway as the central contract for turning
+- Chapter 6 now emphasizes the шлюз инструментов as the central contract for turning
   model intent into a managed side effect.
 - Part III now frames memory as durable state that requires provenance, TTL,
   trust level, read/write policy and rollback.
@@ -472,7 +472,7 @@ Google Doc content updated:
 - `Глава 17. Платформенная команда и продуктовые команды`;
 - `Глава 18. Golden paths, общие шлюзы и борьба с агентным зоопарком`;
 - `Глава 19. От SDLC к ADLC: жизненный цикл агентной системы`;
-- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Глава 20. Assurance loop, реагирование на инциденты, registry и retirement`;
 - `Часть VII. Эталонная реализация и промышленный запуск`;
 - `Глава 21. Базовая схема runtime`;
 - `Глава 22. Слой политик и каталог возможностей`;
@@ -501,7 +501,7 @@ Google Doc content updated:
 - `Приложение 1. Глоссарий`;
 - `Приложение 2. Чеклисты`;
 - `Приложение 3. Шаблон incident/postmortem`;
-- `Приложение 4. Источники и online companion`.
+- `Приложение 4. Источники и онлайн-сопровождение`.
 
 Notes:
 
@@ -624,11 +624,11 @@ Local assembly sources:
 Google Doc content updated:
 
 - `Часть VI. Организационная модель и жизненный цикл`;
-- `Глава 20. Assurance loop, incident response, registry и retirement`;
+- `Глава 20. Assurance loop, реагирование на инциденты, registry и retirement`;
 - `Часть VII. Эталонная реализация и промышленный запуск`;
 - `Глава 23. Чеклист промышленного запуска`;
 - `Приложения`;
-- `Приложение 4. Источники и online companion`.
+- `Приложение 4. Источники и онлайн-сопровождение`.
 
 Notes:
 
@@ -655,7 +655,7 @@ Google Doc content updated:
 - Part VI and Part VII headings and body anchors now prefer reader-facing
   Russian forms for runtime, inventory, registry discipline and retirement;
 - appendix glossary anchors now define capability, principal, tenant,
-  lifecycle and tool gateway in Russian-first form.
+  lifecycle and шлюз инструментов in Russian-first form.
 
 Notes:
 
@@ -676,10 +676,10 @@ Local sources updated:
 Google Doc content updated:
 
 - Introduction and Part I now prefer Russian-first forms for environment,
-  workflow, policy layer, tool gateway, rollout gates and trace;
+  workflow, policy layer, шлюз инструментов, rollout gates and trace;
 - Parts II-III now prefer Russian-first forms for identity, session, policy
-  layer, capability model, tool gateway and audit record;
-- Parts IV-V now prefer Russian-first forms for execution layer, tool gateway,
+  layer, capability model, шлюз инструментов and audit record;
+- Parts IV-V now prefer Russian-first forms for execution layer, шлюз инструментов,
   trace, span, rollout decision and evidence chain.
 
 Notes:
@@ -702,7 +702,7 @@ Local sources updated:
 Google Doc content updated:
 
 - Parts VI-VII now use Russian-first reader-facing language for ADLC artifacts,
-  supported paths, assurance loop, incident response, registry, retirement,
+  supported paths, assurance loop, реагирование на инциденты, registry, retirement,
   reference runtime and launch checklist;
 - appendices now use the same vocabulary in glossary entries, review
   checklists, incident/postmortem template and companion map;
@@ -968,7 +968,7 @@ Editorial intent:
 - keep Chapter 3 focused on the platform architecture map;
 - remove stale internal transition text and the repeated proof-model tail;
 - make the transition to safety/control explicit: identity, policy,
-  confirmation, tool gateway, audit and trust boundaries.
+  confirmation, шлюз инструментов, audit and trust boundaries.
 
 Verification:
 
@@ -1006,7 +1006,7 @@ Editorial intent:
 - preserve the support-triage, knowledge-assistant and incident-coordination
   scenarios as the practical spine;
 - leave `policy.yaml`, runnable package inspection and implementation fields
-  for Chapter 22 and the online companion.
+  for Chapter 22 and the онлайн-сопровождение.
 
 Verification:
 
@@ -1287,3 +1287,44 @@ Decision:
 - Final publisher submission remains blocked until author-owned fields,
   external proofread, publisher-approved style requirements and final export QA
   are closed.
+
+### 2026-07-04. Quality-sync terminology and Template2000n pass
+
+Status: synced to the full Google Doc working manuscript for terminology
+cleanup and recorded as a new styled DOCX proof from the latest valid raw DOCX
+baseline.
+
+Google Doc update:
+
+- Applied 293 guarded exact terminology replacements to reduce excessive
+  English editorial terms in ordinary prose, then 23 grammatical corrections
+  for broad `tool call`/`human review` replacements.
+- Kept code identifiers, protocol names and accepted technical terms intact.
+- Readback found no exact `online companion`, `policy gateway`, `tool gateway`
+  or `incident response`.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx`
+- `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.md`
+- `docs/publisher/ru-google-doc-quality-sync-pass-2026-07-04.render-qa.json`
+- `docs/publisher/ru-template2000n-quality-sync-2026-07-04.metrics.json`
+- `docs/publisher/ru-editorial-100-quality-sync-export-iterations-2026-07-04.md`
+- `docs/publisher/tools/build_template2000n_derivative.py`
+- `docs/publisher/tools/render_qa_metrics.py`
+- `docs/publisher/tools/apply_ru_terminology_replacements.py`
+
+Proof metrics:
+
+- Raw baseline render: 489 pages, 0 blank-like pages.
+- Template2000n quality-sync render: 357 pages, 0 blank-like pages.
+- Raw paragraph text equals the Template2000n derivative paragraph text.
+- Body paragraphs mapped to `Body Text`: 4953.
+
+Decision:
+
+- The Google Doc is cleaner after terminology cleanup, and the repository has a
+  fresh styled proof for editor discussion.
+- Final publisher submission remains blocked until a fresh authenticated raw
+  DOCX export is saved from the updated Google Doc, author-owned fields are
+  filled or explicitly omitted, and external proofread is complete.
