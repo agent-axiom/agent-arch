@@ -1,10 +1,10 @@
 {
-  "approximate_words": 100553,
+  "approximate_words": 100554,
   "bodytext_mapped": 4994,
   "non_empty_paragraphs": 6152,
-  "output_bytes": 1283102,
+  "output_bytes": 1283158,
   "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx",
-  "output_sha256": "c188f5da5bc65fbd39777f1b37c00e3206134f882f4d8682bebf3cb630eda431",
+  "output_sha256": "9e341a8450c2c3b605ef6fb19277da828adba8a0dc79d393be6dc3ba46406914",
   "output_style_counts": {
     "<none>": 1126,
     "Body Text": 4994,

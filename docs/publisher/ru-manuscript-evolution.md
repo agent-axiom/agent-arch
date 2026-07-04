@@ -1428,14 +1428,17 @@ Google Doc update:
 - Replaced the Drive file content with a cleaned raw DOCX while preserving the
   same Google Doc URL.
 - Final Google Doc revision for this checkpoint:
-  `ALtnJHzYid6rwhx4UpSk-cAiIK_d3SqBepdzI2xl1cH0Y1MlJCCMM3YV_KJFmmwv1W_INwt-7V6WeVu7AiyzoMFBWNpN-UxFHrbSkuvnLGM`.
+  `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`.
 
 Repository/source update:
 
-- `docs/publisher/ru-manuscript-full.md` now has 109002 words and 0 exact
+- `docs/publisher/ru-manuscript-full.md` now has 108948 words and 0 exact
   duplicate paragraph groups with 35+ words after removing large repeated
   reference/package,
   policy/catalog, incident-template and checklist sections.
+- Integrity follow-up corrected stale cross-references to the renumbered
+  chapters and removed visible mixed suffix forms from the current DOCX/Google
+  Doc proof.
 - `docs/publisher/ru-source-map.md` now records the Chapter 24/25 source
   contributions.
 
@@ -1453,7 +1456,7 @@ Proof metrics:
 - Raw Google Doc DOCX: 503 pages, 0 blank-like pages.
 - Template2000n derivative: 366 pages, 0 blank-like pages.
 - Raw/styled paragraph text equality: preserved.
-- Approximate words: 100553.
+- Approximate words: 100554.
 - Long paragraphs with 250+ words: 0 in raw DOCX.
 
 Decision:

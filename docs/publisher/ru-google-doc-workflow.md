@@ -305,12 +305,14 @@ a repeat post-author export/render cycle.
 рукописи:
 
 - final known Google Doc revision:
-  `ALtnJHzYid6rwhx4UpSk-cAiIK_d3SqBepdzI2xl1cH0Y1MlJCCMM3YV_KJFmmwv1W_INwt-7V6WeVu7AiyzoMFBWNpN-UxFHrbSkuvnLGM`;
+  `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`;
 - Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
   automated adversarial testing and Chapter 20 agentic goal misalignment /
   insider-style risk;
 - local full Markdown assembly reduced from 92 to 0 exact duplicate paragraph
   groups with 35+ words;
+- integrity follow-up corrected stale chapter cross-references and removed
+  visible mixed suffix forms from the current DOCX/Google Doc proof;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:

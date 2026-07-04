@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHzYid6rwhx4UpSk-cAiIK_d3SqBepdzI2xl1cH0Y1MlJCCMM3YV_KJFmmwv1W_INwt-7V6WeVu7AiyzoMFBWNpN-UxFHrbSkuvnLGM`
+- `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`
 
 ## Implemented changes
 
@@ -33,6 +33,11 @@ Final known Google Doc revision for this pass:
    equality.
 7. Removed 15 trailing empty DOCX paragraphs that caused a blank trailing page
    in the first Template2000n render.
+8. Completed an integrity follow-up: corrected stale cross-references to the
+   renumbered chapters and removed visible mixed suffix forms such as
+   `шлюз выпускаs`, `шлюз оценкиs`, `регрессионный шлюзs`,
+   `человеческой проверкиer`, `волна поэтапного выпускаs` and
+   `production-контроля` from the current DOCX/Google Doc proof.
 
 ## Duplicate checks
 
@@ -40,7 +45,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current word count: 109002.
+- current word count: 108948.
 
 Drive/raw DOCX working manuscript:
 
@@ -54,14 +59,14 @@ Raw Google Doc DOCX uploaded to Drive:
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
 - paragraphs: 8256
 - non-empty paragraphs: 6152
-- approximate words: 100553
+- approximate words: 100554
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
 - paragraphs: 8256
 - non-empty paragraphs: 6152
-- approximate words: 100553
+- approximate words: 100554
 - raw/styled paragraph text equality: preserved
 - body paragraphs mapped to `Body Text`: 4994
 
@@ -78,14 +83,14 @@ Raw Google Doc DOCX:
 - pages: 503;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_dedup_source_sync_2026_07_05_render_v2/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
 - pages: 366;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_dedup_source_sync_2026_07_05_render_v2/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_final_integrity_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 

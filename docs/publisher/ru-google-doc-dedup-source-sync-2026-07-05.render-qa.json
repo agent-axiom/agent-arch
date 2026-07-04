@@ -1,6 +1,6 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/tmp/agent_arch_ru_google_doc_dedup_source_sync_2026_07_05_render_v2/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.003936626386149182,
@@ -44,5 +44,5 @@
     }
   ],
   "pages": 503,
-  "render_dir": "/tmp/agent_arch_ru_google_doc_dedup_source_sync_2026_07_05_render_v2"
+  "render_dir": "/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render"
 }
