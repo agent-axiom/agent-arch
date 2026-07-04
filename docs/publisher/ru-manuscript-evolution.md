@@ -1328,3 +1328,42 @@ Decision:
 - Final publisher submission remains blocked until a fresh authenticated raw
   DOCX export is saved from the updated Google Doc, author-owned fields are
   filled or explicitly omitted, and external proofread is complete.
+
+### 2026-07-04. Post-terminology raw export and Template2000n proof
+
+Status: the previous fresh-export blocker is closed for the current Google Doc
+revision.
+
+Google Doc update:
+
+- Added a follow-up direct cleanup after the broad terminology pass: fixed
+  `rollout wave`, broken `вызов инструментаing` forms, remaining
+  `Online companion` / `Companion route` wording and several online-support
+  падежные errors.
+- Final Google Doc revision for this checkpoint:
+  `ALtnJHzZWz2-IJ7JpxskwAFAeTHIK5wTRmKA_MrDjFTgOlPIbOMvFgV7Go8Trlwx1WPtElObAQ1OmEI0Tbg7i8I4NJ5RyfZdmR8apePtOyc`.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-post-terminology-raw-2026-07-04.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-post-terminology-2026-07-04.docx`
+- `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.md`
+- `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.render-qa.json`
+- `docs/publisher/ru-template2000n-post-terminology-2026-07-04.metrics.json`
+- `docs/publisher/ru-editorial-100-post-terminology-export-iterations-2026-07-04.md`
+
+Proof metrics:
+
+- Fresh raw Google Docs export: 493 pages, 0 blank-like pages.
+- Template2000n post-terminology derivative: 359 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Approximate words: 99884.
+- Body paragraphs mapped to `Body Text`: 4957.
+
+Decision:
+
+- The best current publisher-facing proof is now
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-post-terminology-2026-07-04.docx`.
+- Final publisher submission remains blocked by author-owned fields,
+  independent external proofread and any publisher style requirements received
+  after this checkpoint.

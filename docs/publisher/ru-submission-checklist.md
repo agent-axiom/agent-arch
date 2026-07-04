@@ -328,8 +328,12 @@ submission.**
 - [x] Template2000n quality-sync proof rendered: 357 pages, 0 blank-like pages.
 - [x] OpenReview metadata is manually verified or those records are demoted
       before final publisher submission.
-- [ ] Fresh post-terminology raw DOCX export is saved from the updated Google
+- [x] Fresh post-terminology raw DOCX export is saved from the updated Google
       Doc.
+- [x] Template2000n post-terminology proof rendered: 359 pages, 0 blank-like
+      pages.
+- [x] Post-terminology render QA report created:
+      `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.render-qa.json`.
 - [ ] Final semantic source pass over fast-moving platform claims is complete
       after author/source Google Doc sync.
 - [ ] Independent external proofread is completed after the export shape is stable.

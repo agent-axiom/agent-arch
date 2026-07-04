@@ -1,0 +1,76 @@
+{
+  "date": "2026-07-04",
+  "google_doc_url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "google_doc_revision": "ALtnJHzZWz2-IJ7JpxskwAFAeTHIK5wTRmKA_MrDjFTgOlPIbOMvFgV7Go8Trlwx1WPtElObAQ1OmEI0Tbg7i8I4NJ5RyfZdmR8apePtOyc",
+  "raw_export": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-post-terminology-raw-2026-07-04.docx",
+    "bytes": 689758,
+    "sha256": "089e419c83a79685f8be99da04e3edf4638ec0d3b0edde592ba94bfadeb1310a",
+    "paragraphs": 8187,
+    "non_empty_paragraphs": 6109,
+    "approximate_words": 99884,
+    "render_dir": "/tmp/agent-arch-ru-post-terminology-final3-raw-render-2026-07-04",
+    "contact_sheet": "/tmp/agent-arch-ru-post-terminology-final3-raw-contact-2026-07-04.png",
+    "pages": 493,
+    "blank_like_pages": [],
+    "lowest_density_pages": [
+      { "page": 359, "density": 0.0022147542053241893 },
+      { "page": 62, "density": 0.00510121714730255 },
+      { "page": 125, "density": 0.005539811722556313 },
+      { "page": 297, "density": 0.007827900960719699 },
+      { "page": 41, "density": 0.008763411702686961 },
+      { "page": 303, "density": 0.008944459345615283 },
+      { "page": 327, "density": 0.012564600564144273 },
+      { "page": 298, "density": 0.013255265717336519 },
+      { "page": 301, "density": 0.01353150442849671 },
+      { "page": 325, "density": 0.013950644967033424 }
+    ]
+  },
+  "template2000n_derivative": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-post-terminology-2026-07-04.docx",
+    "bytes": 697015,
+    "sha256": "2db2a5e3eafb1ca9afdef9d5f89ef21b8c71f0df4e2aeb42dc4a77fa33e93e00",
+    "paragraphs": 8187,
+    "non_empty_paragraphs": 6109,
+    "approximate_words": 99884,
+    "bodytext_mapped": 4957,
+    "text_equality": true,
+    "render_dir": "/tmp/agent-arch-ru-template2000n-post-terminology-final3-render-2026-07-04",
+    "contact_sheet": "/tmp/agent-arch-ru-template2000n-post-terminology-final3-contact-2026-07-04.png",
+    "pages": 359,
+    "blank_like_pages": [],
+    "lowest_density_pages": [
+      { "page": 238, "density": 0.004525697251656414 },
+      { "page": 240, "density": 0.006653179260502733 },
+      { "page": 215, "density": 0.010146716029068971 },
+      { "page": 208, "density": 0.010894580912452314 },
+      { "page": 219, "density": 0.013671306575979758 },
+      { "page": 258, "density": 0.0142913869025128 },
+      { "page": 134, "density": 0.017252114274814757 },
+      { "page": 177, "density": 0.01759937971961243 },
+      { "page": 31, "density": 0.017715082109165534 },
+      { "page": 239, "density": 0.018511459262058143 }
+    ]
+  },
+  "visual_spot_checks": [
+    "Raw contact sheet inspected; no obvious blank, clipping or overlap in sampled pages.",
+    "Template2000n contact sheet inspected; no obvious blank, clipping or overlap in sampled pages.",
+    "Raw page 359 inspected as a short paragraph tail.",
+    "Template2000n pages 238 and 240 inspected as short headed sections."
+  ],
+  "bad_marker_counts": {
+    "вызов инструментаing": 0,
+    "Online companion": 0,
+    "Companion route": 0,
+    "Companion должен": 0,
+    "Структура репозитория companion": 0,
+    "Чеклист готовности companion": 0,
+    "Как устроен онлайн-сопровождение": 0,
+    "Зачем нужен онлайн-сопровождение": 0,
+    "Адрес онлайн-сопровождение": 0,
+    "материаловs": 0,
+    "Product docs and": 0,
+    "migration and communication": 0,
+    "Публичная версия онлайн-сопровождения: онлайн-сопровождение.": 0
+  }
+}

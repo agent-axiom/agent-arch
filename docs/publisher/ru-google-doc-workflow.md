@@ -259,6 +259,26 @@ Important limitation: the current Google Doc changed after the latest saved raw
 DOCX baseline. The next publisher-critical proof cycle must start with a fresh
 authenticated raw DOCX export from the updated Google Doc.
 
+На 2026-07-04 выполнен post-terminology export pass, который закрывает это
+ограничение для текущей ревизии Google Doc:
+
+- final Google Doc revision:
+  `ALtnJHzZWz2-IJ7JpxskwAFAeTHIK5wTRmKA_MrDjFTgOlPIbOMvFgV7Go8Trlwx1WPtElObAQ1OmEI0Tbg7i8I4NJ5RyfZdmR8apePtOyc`;
+- fresh raw DOCX export:
+  `docs/publisher/artifacts/agent-arch-ru-post-terminology-raw-2026-07-04.docx`;
+- Template2000n derivative:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-post-terminology-2026-07-04.docx`;
+- render QA: raw 493 pages, Template2000n 359 pages, 0 blank-like pages in
+  both proofs;
+- report:
+  `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.md`;
+- next 100 post-terminology/export goals:
+  `docs/publisher/ru-editorial-100-post-terminology-export-iterations-2026-07-04.md`.
+
+New limitation: the current proof is suitable for editor discussion, but final
+submission still requires author-owned fields, external proofread and a repeat
+post-author export/render cycle.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.

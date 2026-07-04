@@ -1,0 +1,27 @@
+{
+  "approximate_words": 99884,
+  "bodytext_mapped": 4957,
+  "non_empty_paragraphs": 6109,
+  "output_bytes": 697015,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-post-terminology-2026-07-04.docx",
+  "output_sha256": "2db2a5e3eafb1ca9afdef9d5f89ef21b8c71f0df4e2aeb42dc4a77fa33e93e00",
+  "output_style_counts": {
+    "<none>": 1100,
+    "Body Text": 4957,
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 630,
+    "Heading 4": 51
+  },
+  "paragraphs": 8187,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-post-terminology-raw-2026-07-04.docx",
+  "raw_style_counts": {
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 630,
+    "Heading 4": 51,
+    "normal": 6057
+  },
+  "template_docx": "/tmp/template2000n_post_terminology_final_2026_07_04/Template2000n.docx",
+  "text_equality": true
+}
