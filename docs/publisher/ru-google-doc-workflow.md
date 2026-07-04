@@ -301,6 +301,30 @@ has visualizations and companion compression, but final submission still
 requires author-owned fields, public companion metadata, external proofread and
 a repeat post-author export/render cycle.
 
+На 2026-07-05 выполнен dedup/source sync pass после проверки репозитория и
+рукописи:
+
+- final known Google Doc revision:
+  `ALtnJHzYid6rwhx4UpSk-cAiIK_d3SqBepdzI2xl1cH0Y1MlJCCMM3YV_KJFmmwv1W_INwt-7V6WeVu7AiyzoMFBWNpN-UxFHrbSkuvnLGM`;
+- Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
+  automated adversarial testing and Chapter 20 agentic goal misalignment /
+  insider-style risk;
+- local full Markdown assembly reduced from 92 to 0 exact duplicate paragraph
+  groups with 35+ words;
+- raw DOCX uploaded back to the same Drive file:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
+- Template2000n derivative:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`;
+- render QA: raw 503 pages, Template2000n 366 pages, 0 blank-like pages in
+  both proofs;
+- report:
+  `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
+
+New limitation: this checkpoint improves source coverage and duplicate hygiene,
+but it is still a working manuscript proof. Final submission still requires
+author-owned fields, public companion metadata, external proofread and a repeat
+post-author export/render cycle.
+
 ## Правило изменения текста
 
 1. Смысловая правка сначала делается или фиксируется в Markdown.

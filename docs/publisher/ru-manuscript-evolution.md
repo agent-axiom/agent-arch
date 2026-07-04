@@ -1413,3 +1413,53 @@ Decision:
 - Final publisher submission remains blocked by author-owned fields, public
   companion metadata, independent external proofread and publisher/editor
   acceptance of the final style route.
+
+### 2026-07-05. Dedup/source sync pass
+
+Status: synced to the working Google Doc and recorded as the current
+dedup/source-sync proof pair.
+
+Google Doc update:
+
+- Added the Chapter 15 control-evaluation block based on
+  `docs/book/part-viii/chapter-25.md`.
+- Added the Chapter 20 agentic goal-misalignment / insider-risk block based on
+  `docs/book/part-viii/chapter-24.md`.
+- Replaced the Drive file content with a cleaned raw DOCX while preserving the
+  same Google Doc URL.
+- Final Google Doc revision for this checkpoint:
+  `ALtnJHzYid6rwhx4UpSk-cAiIK_d3SqBepdzI2xl1cH0Y1MlJCCMM3YV_KJFmmwv1W_INwt-7V6WeVu7AiyzoMFBWNpN-UxFHrbSkuvnLGM`.
+
+Repository/source update:
+
+- `docs/publisher/ru-manuscript-full.md` now has 109002 words and 0 exact
+  duplicate paragraph groups with 35+ words after removing large repeated
+  reference/package,
+  policy/catalog, incident-template and checklist sections.
+- `docs/publisher/ru-source-map.md` now records the Chapter 24/25 source
+  contributions.
+
+Artifacts added:
+
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
+- `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`
+- `docs/publisher/ru-google-doc-dedup-source-sync-2026-07-05.render-qa.json`
+- `docs/publisher/ru-template2000n-dedup-source-sync-2026-07-05.render-qa.json`
+- `docs/publisher/ru-template2000n-dedup-source-sync-2026-07-05.metrics.json`
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 503 pages, 0 blank-like pages.
+- Template2000n derivative: 366 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Approximate words: 100553.
+- Long paragraphs with 250+ words: 0 in raw DOCX.
+
+Decision:
+
+- The best current publisher-facing proof is now
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`.
+- Final publisher submission remains blocked by author-owned fields, public
+  companion metadata, independent external proofread and publisher/editor
+  acceptance of the final style route.
