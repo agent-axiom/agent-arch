@@ -22,7 +22,10 @@ packet. It can be handed to a trusted editor as a clean working manuscript and
 style proof candidate, but do not send as final publisher submission yet: the
 manuscript still needs author-owned facts, final companion metadata,
 publisher/editor acceptance of the style route, post-author export QA and
-external proofread.**
+external proofread. The 2026-07-04 targeted quality pass added Chapter 20-21
+bridge paragraphs to the full Google Doc and repository manuscript source,
+cleaned excessive anglicisms in manuscript/source maps, recorded the new Google
+Doc revision and created the next 100 editorial quality goals.**
 
 ## P0 gates before external submission
 
@@ -126,7 +129,12 @@ external proofread.**
       `docs/publisher/ru-book-ready-chapter-22.md`.
 - [ ] Overloaded chapters 20 and 21 are compressed/restructured after
       full-volume assembly.
+- [x] Chapters 20 and 21 received a first density/bridge pass in the full
+      Google Doc and repository manuscript source:
+      `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`.
 - [ ] Repeated chapter endings are normalized into a compact book rhythm.
+- [x] Repeated chapter-ending pattern scan completed and recorded:
+      `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`.
 - [ ] Running practical case is visibly carried through every part.
 - [x] Editor handoff readiness pass completed in the full Google Doc:
       H1 outline cleaned, raw DOCX proof exported, render QA recorded.
@@ -144,6 +152,8 @@ external proofread.**
 - [ ] Second book-readiness pass is complete across all parts.
 - [x] `case-spine note` and `canonical cases` are removed from Russian reader-facing prose or turned into Russian reader-facing labels.
 - [x] Russian headings avoid unnecessary English terms.
+- [x] Excessive anglicism pass completed for manuscript/source maps:
+      `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`.
 - [x] `tools`, `agents`, `rollout`, `runtime`, `review`, `registry`, `inventory`, `assurance`, `retirement`, and `end-of-life` follow the terminology policy.
 - [x] Repeated maturity-check endings are intentionally templated rather than accidentally repetitive.
 - [x] Dense CLI/runtime details are moved to online companion or summarized.
@@ -211,6 +221,10 @@ external proofread.**
       `docs/publisher/ru-final-preauthor-export-pass-2026-07-03.md`.
 - [x] Pre-author publisher packet created:
       `docs/publisher/ru-preauthor-publisher-submission-packet-2026-07-03.md`.
+- [x] 2026-07-04 editorial quality pass recorded with Google Doc readback:
+      `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`.
+- [x] Next 100 editorial quality goals created:
+      `docs/publisher/ru-editorial-100-editorial-quality-iterations-2026-07-04.md`.
 - [ ] Publisher/editor acceptance of the macro-free Template2000n style route
       is confirmed.
 - [x] Clean editor handoff packet created:

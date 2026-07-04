@@ -5,13 +5,13 @@ Status: editorial assembly map. Основано на плане-проспек�
 
 ## Назначение
 
-Публичная версия в репозитории остается широкой web-версией: 8 частей, 27 глав,
-практические страницы, справочные приложения и исполняемый reference package.
+Публичная версия в репозитории остается широкой веб-версией: 8 частей, 27 глав,
+практические страницы, справочные приложения и исполняемый эталонный пакет.
 Издательская рукопись собирается как отдельный слой: 7 частей, 23 главы,
 введение и приложения. Google Doc используется как рабочая издательская
 рукопись, но смысловые изменения должны возвращаться в Markdown.
 
-Source map для сборки:
+Карта источников для сборки:
 
 - `docs/publisher/ru-source-map.md`
 
@@ -19,11 +19,11 @@ Source map для сборки:
 
 - <https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI>
 
-Редакционная карта book-readiness pass:
+Редакционная карта проверки книжной готовности:
 
 - <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
 
-Текущий editorial-ready proof:
+Текущий редакционный proof:
 
 - Google Doc export modified time:
   `2026-07-02T22:46:03.373Z`
@@ -73,19 +73,19 @@ Compressed/staging snapshot:
 - как читать книгу;
 - чем книга отличается от фреймворк-туториалов.
 
-### Часть I. От demo-агента к платформе
+### Часть I. От демо-агента к платформе
 
 Диапазон: 55-85 стр.
 
 1. Почему агенту нужна платформа, а не магия.
-2. Когда нужен агент: workflow, single-agent, multi-agent.
+2. Когда нужен агент: рабочий процесс, одиночный агентный цикл, многоагентная схема.
 3. Референсная архитектура безопасной агентной системы.
 
 Редакторский фокус:
 
-- сохранить сильный opening argument;
-- сделать главу 1 первым sample chapter;
-- развести выбор формы исполнения и архитектурный blueprint по разным главам.
+- сохранить сильный открывающий тезис;
+- сделать главу 1 первой примерной главой;
+- развести выбор формы исполнения и архитектурную схему по разным главам.
 
 ### Часть II. Безопасность и контур управления
 
@@ -124,8 +124,8 @@ Compressed/staging snapshot:
 
 Редакторский фокус:
 
-- показать side effects и tool gateway через decision model;
-- оставить protocol detail в online companion.
+- показать побочные эффекты и инструментальный шлюз через модель решения;
+- оставить детали протокола в онлайн-приложении.
 
 ### Часть V. Надежность, наблюдаемость и оценки
 
@@ -133,13 +133,14 @@ Compressed/staging snapshot:
 
 13. Трассы, спаны и структурированные события.
 14. SLO для агентных систем.
-15. Offline/online evals и регрессионные шлюзы.
-16. Сквозная цепочка доказательств: от запроса к rollout.
+15. Офлайн- и онлайн-оценки и регрессионные шлюзы.
+16. Сквозная цепочка доказательств: от запроса к поэтапному выпуску.
 
 Редакторский фокус:
 
-- использовать главу 15 как технический sample при необходимости;
-- держать trace/eval/rollout как один evidence model, а не три справочника.
+- использовать главу 15 как технический образец при необходимости;
+- держать трассы, оценки и поэтапный выпуск как единую доказательную модель, а
+  не три справочника.
 
 ### Часть VI. Организационная модель и жизненный цикл
 
@@ -148,25 +149,27 @@ Compressed/staging snapshot:
 17. Платформенная команда и продуктовые команды.
 18. Golden paths, общие шлюзы и борьба с агентным зоопарком.
 19. От SDLC к ADLC: жизненный цикл агентной системы.
-20. Assurance loop, incident response, registry и retirement.
+20. Контур заверения, реагирование на инциденты, реестр и вывод из эксплуатации.
 
 Редакторский фокус:
 
-- сжать текущий поздний web-материал в управляемый lifecycle arc;
-- не тащить в печать весь registry/incident/reference detail.
+- сжать текущий поздний веб-материал в управляемую дугу жизненного цикла;
+- не тащить в печать все подробности реестра, инцидентов и справочных
+  материалов.
 
 ### Часть VII. Эталонная реализация и промышленный запуск
 
 Диапазон: 40-50 стр.
 
-21. Базовая схема runtime.
+21. Базовая схема среды исполнения.
 22. Слой политик и каталог возможностей.
 23. Чеклист промышленного запуска.
 
 Редакторский фокус:
 
-- дать исполнимую структуру без CLI manual;
-- оставить команды, config contracts и runtime internals в companion.
+- дать исполнимую структуру без руководства по командной строке;
+- оставить команды, контракты конфигурации и внутренние детали среды исполнения
+  в онлайн-приложении.
 
 ### Приложения
 
@@ -175,52 +178,54 @@ Compressed/staging snapshot:
 1. Глоссарий.
 2. Чеклисты.
 3. Шаблон incident/postmortem.
-4. Источники и online companion.
+4. Источники и онлайн-приложение.
 
-## Online companion boundary
+## Граница онлайн-приложения
 
-Оставить преимущественно online:
+Оставить преимущественно в онлайн-приложении:
 
-- runnable `agent_runtime_ref` package и CLI walkthrough;
-- schema appendices for trace/eval/approval/policy/memory/lifecycle/change/incident;
-- long CLI outputs;
-- validation error catalogs;
-- full YAML/JSON examples;
-- source catalog beyond curated print bibliography;
-- community roadmap;
-- detailed policy templates and worksheets.
+- исполняемый пакет `agent_runtime_ref` и пошаговый разбор командного запуска;
+- приложения со схемами трасс, оценок, подтверждений, политик, памяти,
+  жизненного цикла, изменений и инцидентов;
+- длинные выводы командной строки;
+- каталоги ошибок валидации;
+- полные YAML/JSON-примеры;
+- каталог источников за пределами отобранной печатной библиографии;
+- дорожная карта сообщества;
+- подробные шаблоны политик и рабочие листы.
 
-## Sample chapters
+## Примерные главы
 
-Primary sample:
+Основной образец:
 
-- source path: `docs/book/part-i/chapter-1.md`;
-- print role: глава 1;
-- reason: strongest thesis chapter and opening failure story.
+- путь источника: `docs/book/part-i/chapter-1.md`;
+- печатная роль: глава 1;
+- причина: самая сильная тезисная глава и открывающая история отказа.
 
-Secondary technical sample:
+Второй технический образец:
 
-- source path: `docs/book/part-v/chapter-13.md`;
-- print role: глава 15;
-- reason: evals, traces, verifier outputs, regression gates and release judgment.
+- путь источника: `docs/book/part-v/chapter-13.md`;
+- печатная роль: глава 15;
+- причина: оценки, трассы, выводы проверяющего, регрессионные шлюзы и релизное
+  суждение.
 
-Optional lifecycle differentiator:
+Дополнительное отличие по жизненному циклу:
 
-- source paths: `docs/book/part-viii/chapter-21.md`,
+- пути источников: `docs/book/part-viii/chapter-21.md`,
   `docs/book/part-viii/chapter-23.md`, `docs/book/part-viii/chapter-26.md`,
   `docs/book/part-viii/chapter-27.md`;
-- print role: глава 20;
-- reason: assurance, registry, retirement and accountability are less covered in
-  competing books.
+- печатная роль: глава 20;
+- причина: заверение, реестр, вывод из эксплуатации и подотчетность обычно
+  хуже раскрыты в конкурирующих книгах.
 
 ## First editorial pass order
 
-1. Синхронизировать source map с договорной структурой.
+1. Синхронизировать карту источников с договорной структурой.
 2. Подготовить главу 1 в Google Doc.
 3. Вернуть редакционные изменения главы 1 в Markdown.
-4. Подготовить технический sample из текущей главы 13 как печатную главу 15.
+4. Подготовить технический образец из текущей главы 13 как печатную главу 15.
 5. Сжать текущую часть VIII в печатные главы 19-20.
-6. Провести terminology pass по sample chapters.
+6. Провести терминологический проход по примерным главам.
 7. После получения стилей БХВ выполнить DOCX formatting pass.
 
 ## Current proof status
@@ -309,3 +314,18 @@ Optional lifecycle differentiator:
 - decision: this is the current strongest working editor packet, but it still
   must not be labelled final publisher submission until the author-owned
   placeholders are replaced or explicitly omitted.
+
+2026-07-04 targeted editorial quality pass:
+
+- quality pass report:
+  `docs/publisher/ru-editorial-quality-pass-2026-07-04.md`;
+- next 100 editorial quality goals:
+  `docs/publisher/ru-editorial-100-editorial-quality-iterations-2026-07-04.md`;
+- Google Doc revision after targeted Chapter 20-21 bridge insertion:
+  `ALtnJHynC5_zU9n9cmTvBjPl9UMeD7Uve6QHp3PDDm33ZwWHCfBekh00ktjv4-xnUtiwP6hL7W39I4iTLk77MaTY60Z8DnRkpVQxhi5p46U`;
+- repository changes: Chapter 20-21 bridge paragraphs added to
+  `docs/publisher/ru-manuscript-full.md`; excessive anglicisms reduced in
+  `docs/publisher/ru-source-map.md` and this map;
+- next proof risk: a fresh raw/Template2000n export has not been created after
+  this targeted Google Doc edit, so page counts remain those from 2026-07-03
+  until the next export/render QA.

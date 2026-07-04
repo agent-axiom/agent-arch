@@ -205,6 +205,25 @@ Next implementation step:
 - author-owned placeholders remain in front matter, so final publisher
   submission remains blocked.
 
+2026-07-04 targeted editorial quality pass:
+
+- Chapter 20 and Chapter 21 received short book-role bridge paragraphs in the
+  full Google Doc and in `docs/publisher/ru-manuscript-full.md`;
+- Google Doc readback verified both inserted paragraph anchors in the full
+  manuscript, revision
+  `ALtnJHynC5_zU9n9cmTvBjPl9UMeD7Uve6QHp3PDDm33ZwWHCfBekh00ktjv4-xnUtiwP6hL7W39I4iTLk77MaTY60Z8DnRkpVQxhi5p46U`;
+- excessive anglicisms in `docs/publisher/ru-source-map.md` and
+  `docs/publisher/ru-manuscript-map.md` were reduced where the English wording
+  was an editorial label rather than a file name, protocol name or code field;
+- first-page manuscript phrasing was also cleaned in `ru-manuscript-full.md` and
+  synced to the Google Doc where exact text matches existed;
+- repeated chapter-ending scan was recorded without pretending that full
+  normalization is complete;
+- next 100 editorial quality goals were recorded in
+  `docs/publisher/ru-editorial-100-editorial-quality-iterations-2026-07-04.md`;
+- no fresh DOCX export/render QA was produced in this pass, so the current page
+  counts remain the 2026-07-03 pre-author proof counts until the next export.
+
 ## Assembly checkpoints
 
 ### 2026-06-13. Introduction and Part I rough assembly
