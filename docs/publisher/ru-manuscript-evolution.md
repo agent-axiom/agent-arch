@@ -1497,3 +1497,36 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-reader-recommendability-pass-2026-07-05.md`
+
+
+### 2026-07-05. Three reader profiles recommendability pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- added explicit reader routes for technical leads/architects, engineering
+  managers/CTOs and practicing developers;
+- added seven part-level profile outcome blocks, one for each major part;
+- added 23 chapter forwarding hooks that explain why a chapter is worth
+  sending to a team;
+- restored the short book-structure section after moving profile blocks to the
+  real part headings;
+- added the missing Part V Heading 1 in the raw DOCX proof before Chapter 13;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-three-reader-profiles-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 516 pages, 0 blank-like pages.
+- Template2000n derivative: 375 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 104217.
+- Structural DOCX word-token count: 105370.
+- Final known Google Doc revision:
+  `ALtnJHyZy1LMv4XzR_qTR0FPFlSJ4unAgE-dDg43jHDi7XQoDGg0pXZh6Yx8pPMYboRV2KnwARZezcDLxlbWlO8ccbxfz1FKybyFJZ2Zu7k`.
+
+Report:
+
+- `docs/publisher/ru-three-reader-profiles-recommendability-pass-2026-07-05.md`

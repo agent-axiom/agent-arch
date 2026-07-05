@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`
+- `ALtnJHyZy1LMv4XzR_qTR0FPFlSJ4unAgE-dDg43jHDi7XQoDGg0pXZh6Yx8pPMYboRV2KnwARZezcDLxlbWlO8ccbxfz1FKybyFJZ2Zu7k`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 513 rendered pages
+- 516 rendered pages
 - 0 blank-like pages
-- 8395 paragraphs
-- 6293 non-empty paragraphs
-- approximately 103124 words
+- 8457 paragraphs
+- 6355 non-empty paragraphs
+- approximately 104217 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 370 rendered pages
+- 375 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8395 paragraphs
-- 6293 non-empty paragraphs
-- approximately 103124 words
-- 5088 body paragraphs mapped to `Body Text`
+- 8457 paragraphs
+- 6355 non-empty paragraphs
+- approximately 104217 words
+- 5144 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -64,6 +64,9 @@ Machine-readable QA:
 - Reader-recommendability follow-up added six production scenes, continuity
   bridges, maturity bridges, final assembly framing and 23 chapter takeaway
   blocks to the current proof.
+- Three-reader-profiles follow-up added explicit routes for architects,
+  engineering managers/CTOs and developers, seven part-level profile outcome
+  blocks and 23 chapter forwarding hooks to the current proof.
 
 ## Editor review focus
 

@@ -1,26 +1,26 @@
 {
-  "approximate_words": 103124,
-  "bodytext_mapped": 5088,
-  "non_empty_paragraphs": 6293,
-  "output_bytes": 1293396,
+  "approximate_words": 104217,
+  "bodytext_mapped": 5144,
+  "non_empty_paragraphs": 6355,
+  "output_bytes": 1297633,
   "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx",
-  "output_sha256": "a02a0888a5b8102c91923c5ceb59aaa6f8075ae52534e350a7cdf3258853c7df",
+  "output_sha256": "86dd873f42f29066a94fd07c5004fe7d05295cf1dc5f7bf79b6d7e35eebadbe1",
   "output_style_counts": {
     "<none>": 1125,
-    "Body Text": 5088,
-    "Heading 1": 27,
-    "Heading 2": 1421,
-    "Heading 3": 683,
+    "Body Text": 5144,
+    "Heading 1": 28,
+    "Heading 2": 1423,
+    "Heading 3": 686,
     "Heading 4": 51
   },
-  "paragraphs": 8395,
+  "paragraphs": 8457,
   "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx",
   "raw_style_counts": {
-    "Heading 1": 27,
-    "Heading 2": 1421,
-    "Heading 3": 683,
+    "Heading 1": 28,
+    "Heading 2": 1423,
+    "Heading 3": 686,
     "Heading 4": 51,
-    "normal": 6213
+    "normal": 6269
   },
   "template_docx": "/tmp/Template2000n.docx",
   "text_equality": true

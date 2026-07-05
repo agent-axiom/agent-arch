@@ -1,48 +1,48 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/tmp/agent_arch_ru_template2000n_reader_recommendability_2026_07_05_render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_template2000n_three_profiles_2026_07_05_render/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.004786099485517715,
-      "page": 240
+      "page": 245
     },
     {
       "density": 0.006653179260502733,
-      "page": 242
+      "page": 247
     },
     {
       "density": 0.010146716029068971,
-      "page": 217
-    },
-    {
-      "density": 0.013671306575979758,
       "page": 221
     },
     {
+      "density": 0.011648379251710177,
+      "page": 116
+    },
+    {
+      "density": 0.013671306575979758,
+      "page": 225
+    },
+    {
+      "density": 0.016586739116112855,
+      "page": 214
+    },
+    {
       "density": 0.017715082109165534,
-      "page": 31
+      "page": 32
     },
     {
       "density": 0.017835119998700365,
-      "page": 179
+      "page": 182
     },
     {
       "density": 0.018511459262058143,
-      "page": 241
+      "page": 246
     },
     {
       "density": 0.01883661289722357,
-      "page": 349
-    },
-    {
-      "density": 0.018896862925152975,
-      "page": 41
-    },
-    {
-      "density": 0.01924943125368997,
-      "page": 46
+      "page": 354
     }
   ],
-  "pages": 370,
-  "render_dir": "/tmp/agent_arch_ru_template2000n_reader_recommendability_2026_07_05_render"
+  "pages": 375,
+  "render_dir": "/tmp/agent_arch_ru_template2000n_three_profiles_2026_07_05_render"
 }

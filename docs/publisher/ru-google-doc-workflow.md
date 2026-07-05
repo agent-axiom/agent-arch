@@ -305,7 +305,7 @@ a repeat post-author export/render cycle.
 рукописи:
 
 - final known Google Doc revision:
-  `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`;
+  `ALtnJHyZy1LMv4XzR_qTR0FPFlSJ4unAgE-dDg43jHDi7XQoDGg0pXZh6Yx8pPMYboRV2KnwARZezcDLxlbWlO8ccbxfz1FKybyFJZ2Zu7k`;
 - Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
   automated adversarial testing and Chapter 20 agentic goal misalignment /
   insider-style risk;
@@ -315,11 +315,14 @@ a repeat post-author export/render cycle.
   visible mixed suffix forms from the current DOCX/Google Doc proof;
 - reader-recommendability follow-up added production scenes, continuity
   bridges, maturity bridges and chapter takeaways;
+- three-reader-profiles follow-up added explicit architect, manager/CTO and
+  developer reading routes plus part-level outcomes and chapter forwarding
+  hooks;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`;
-- render QA: raw 513 pages, Template2000n 370 pages, 0 blank-like pages in
+- render QA: raw 516 pages, Template2000n 375 pages, 0 blank-like pages in
   both proofs;
 - report:
   `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
