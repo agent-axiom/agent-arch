@@ -326,18 +326,22 @@ a repeat post-author export/render cycle.
 - skeptic-response follow-up added a constructive objection/answer layer:
   `С кем спорит эта книга`, seven `Типичное возражение` blocks and 23
   `Что ответить скептику` chapter responses;
+- mindset-shift follow-up added the reader-transformation layer:
+  `Как изменится ваше мышление после книги`, seven
+  `До этой части / После этой части` blocks and 23 `Смена мышления`
+  chapter responses;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`;
-- render QA: raw 525 pages, Template2000n 379 pages, 0 blank-like pages in
+- render QA: raw 528 pages, Template2000n 382 pages, 0 blank-like pages in
   both proofs;
 - report:
   `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
 - latest follow-up report:
-  `docs/publisher/ru-skeptic-response-pass-2026-07-05.md`.
+  `docs/publisher/ru-mindset-shift-pass-2026-07-05.md`.
 - latest 100-goal ledger:
-  `docs/publisher/ru-editorial-100-skeptic-response-iterations-2026-07-05.md`.
+  `docs/publisher/ru-editorial-100-mindset-shift-iterations-2026-07-05.md`.
 
 New limitation: this checkpoint improves source coverage and duplicate hygiene,
 but it is still a working manuscript proof. Final submission still requires

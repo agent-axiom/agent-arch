@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHyKPoEL5XDwXyqfgL2sILc_-RIQ9xR63ygk_d-R7C8YnZawqrJCyP3_rwneb23SCZJhRxPPeCYvWaiyyaDlNYaxZVt95Y5PJZhwFTc`
+- `ALtnJHxrm9Lz5_KVTxgVu1rd4I8eRo4ogBBZeZ86-vzl9YMxYGtRZQOjb-_hrGWKrSYh9_GWLhF8aE1LeXRTHMipWROizAGGFNOdCD7XaqE`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 525 rendered pages
+- 528 rendered pages
 - 0 blank-like pages
-- 8605 paragraphs
-- 6503 non-empty paragraphs
-- approximately 106615 words
+- 8652 paragraphs
+- 6550 non-empty paragraphs
+- approximately 107312 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 379 rendered pages
+- 382 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8605 paragraphs
-- 6503 non-empty paragraphs
-- approximately 106615 words
-- 5289 body paragraphs mapped to `Body Text`
+- 8652 paragraphs
+- 6550 non-empty paragraphs
+- approximately 107312 words
+- 5335 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -76,6 +76,9 @@ Machine-readable QA:
 - Skeptic-response follow-up added `С кем спорит эта книга`, seven part-level
   `Типичное возражение` blocks and 23 chapter-level
   `Что ответить скептику` responses.
+- Mindset-shift follow-up added `Как изменится ваше мышление после книги`,
+  seven part-level `До этой части / После этой части` blocks and 23
+  chapter-level `Смена мышления` responses.
 
 ## Editor review focus
 
@@ -98,7 +101,10 @@ Machine-readable QA:
 8. Review the seven `Типичное возражение` blocks and 23
    `Что ответить скептику` responses for tone: they should help readers answer
    plausible objections without making the manuscript combative.
-9. Re-run export/render QA after author fields and editor changes are applied.
+9. Review the seven `До этой части / После этой части` blocks and 23
+   `Смена мышления` responses for pacing: they should clarify the reader's
+   shift in judgment without restating the chapter takeaway.
+10. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

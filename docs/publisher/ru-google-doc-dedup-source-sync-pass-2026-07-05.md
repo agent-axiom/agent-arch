@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHyKPoEL5XDwXyqfgL2sILc_-RIQ9xR63ygk_d-R7C8YnZawqrJCyP3_rwneb23SCZJhRxPPeCYvWaiyyaDlNYaxZVt95Y5PJZhwFTc`
+- `ALtnJHxrm9Lz5_KVTxgVu1rd4I8eRo4ogBBZeZ86-vzl9YMxYGtRZQOjb-_hrGWKrSYh9_GWLhF8aE1LeXRTHMipWROizAGGFNOdCD7XaqE`
 
 ## Implemented changes
 
@@ -56,6 +56,10 @@ Final known Google Doc revision for this pass:
    seven part-level `Типичное возражение` blocks and 23 chapter-level
    `Что ответить скептику` responses, then uploaded the updated raw DOCX to
    the same Google Doc.
+14. Completed a mindset-shift follow-up: added `Как изменится ваше мышление
+   после книги`, seven part-level `До этой части / После этой части` blocks
+   and 23 chapter-level `Смена мышления` lines, then uploaded the updated raw
+   DOCX to the same Google Doc.
 
 ## Duplicate checks
 
@@ -63,7 +67,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current Markdown word-token count: 115986.
+- current Markdown word-token count: 116676.
 
 Drive/raw DOCX working manuscript:
 
@@ -75,18 +79,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8605
-- non-empty paragraphs: 6503
-- approximate words: 106615
+- paragraphs: 8652
+- non-empty paragraphs: 6550
+- approximate words: 107312
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8605
-- non-empty paragraphs: 6503
-- approximate words: 106615
+- paragraphs: 8652
+- non-empty paragraphs: 6550
+- approximate words: 107312
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 5289
+- body paragraphs mapped to `Body Text`: 5335
 
 Machine-readable QA:
 
@@ -98,17 +102,17 @@ Machine-readable QA:
 
 Raw Google Doc DOCX:
 
-- pages: 525;
+- pages: 528;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_skeptic_response_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_mindset_shift_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
-- pages: 379;
+- pages: 382;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_skeptic_response_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_mindset_shift_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 

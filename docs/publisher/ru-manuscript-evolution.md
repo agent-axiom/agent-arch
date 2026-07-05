@@ -1626,3 +1626,36 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-skeptic-response-pass-2026-07-05.md`
+
+
+### 2026-07-05. Mindset shift pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- added `Как изменится ваше мышление после книги` after the skeptic framing
+  block in the introduction;
+- added seven `До этой части / После этой части` blocks, one per main part;
+- added 23 `Смена мышления` lines inside chapter takeaway blocks;
+- checked the new mindset layer against existing takeaway, quote,
+  skeptic-response, forwarding-hook and next-action layers for repetition;
+- rebuilt the Template2000n derivative from the current raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-mindset-shift-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 528 pages, 0 blank-like pages.
+- Template2000n derivative: 382 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 107312.
+- Local Markdown word-token count: 116676.
+- Final known Google Doc revision:
+  `ALtnJHxrm9Lz5_KVTxgVu1rd4I8eRo4ogBBZeZ86-vzl9YMxYGtRZQOjb-_hrGWKrSYh9_GWLhF8aE1LeXRTHMipWROizAGGFNOdCD7XaqE`.
+
+Report:
+
+- `docs/publisher/ru-mindset-shift-pass-2026-07-05.md`
