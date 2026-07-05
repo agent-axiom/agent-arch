@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHzDDo0-WoZ_Tzj_JPnk4GkxKpxtZZ6XGYVPp1qNx9jNzOmJzeQxUxlLtAi29eTJYnQ1MHIyHouDx9ufBBlUXzBnOZ-DY3bgnQXPlXc`
+- `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 519 rendered pages
+- 522 rendered pages
 - 0 blank-like pages
-- 8518 paragraphs
-- 6416 non-empty paragraphs
-- approximately 105103 words
+- 8558 paragraphs
+- 6456 non-empty paragraphs
+- approximately 105808 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 377 rendered pages
+- 379 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8518 paragraphs
-- 6416 non-empty paragraphs
-- approximately 105103 words
-- 5204 body paragraphs mapped to `Body Text`
+- 8558 paragraphs
+- 6456 non-empty paragraphs
+- approximately 105808 words
+- 5243 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -70,6 +70,9 @@ Machine-readable QA:
 - Page-turner/workshop follow-up added one through-line block, seven
   part-level team workshop blocks and 23 concrete next actions after chapter
   forwarding hooks.
+- Case/thesis follow-up made the support-agent storyline the explicit
+  recurring production case, added seven part-level case episodes and 23
+  quotable chapter theses.
 
 ## Editor review focus
 
@@ -87,7 +90,9 @@ Machine-readable QA:
    editor may choose stronger Russian phrasing in narrative prose.
 6. Review the seven new team workshop blocks as possible recurring boxed
    material or part-closing exercises.
-7. Re-run export/render QA after author fields and editor changes are applied.
+7. Review the 23 `Фраза для пересказа` lines for tone: each should be sharp
+   enough to quote but not more absolute than the chapter evidence supports.
+8. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

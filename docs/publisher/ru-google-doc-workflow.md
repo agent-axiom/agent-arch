@@ -305,7 +305,7 @@ a repeat post-author export/render cycle.
 рукописи:
 
 - final known Google Doc revision:
-  `ALtnJHzDDo0-WoZ_Tzj_JPnk4GkxKpxtZZ6XGYVPp1qNx9jNzOmJzeQxUxlLtAi29eTJYnQ1MHIyHouDx9ufBBlUXzBnOZ-DY3bgnQXPlXc`;
+  `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`;
 - Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
   automated adversarial testing and Chapter 20 agentic goal misalignment /
   insider-style risk;
@@ -320,16 +320,19 @@ a repeat post-author export/render cycle.
   hooks;
 - page-turner/workshop follow-up added a through-line block, seven part-level
   team workshop blocks and 23 concrete next actions after chapters;
+- case/thesis follow-up made the support-agent storyline explicit, added seven
+  part-level case episodes and 23 short phrases for readers to quote or
+  forward;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`;
-- render QA: raw 519 pages, Template2000n 377 pages, 0 blank-like pages in
+- render QA: raw 522 pages, Template2000n 379 pages, 0 blank-like pages in
   both proofs;
 - report:
   `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
 - latest follow-up report:
-  `docs/publisher/ru-page-turner-workshop-pass-2026-07-05.md`.
+  `docs/publisher/ru-case-thesis-pass-2026-07-05.md`.
 
 New limitation: this checkpoint improves source coverage and duplicate hygiene,
 but it is still a working manuscript proof. Final submission still requires

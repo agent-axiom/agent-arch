@@ -1562,3 +1562,34 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-page-turner-workshop-pass-2026-07-05.md`
+
+
+### 2026-07-05. Case thesis pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- added `Сквозной производственный кейс` to make the support-agent story the
+  explicit recurring case of the book;
+- added seven `Эпизод сквозного кейса` blocks, one per main part;
+- added 23 `Фраза для пересказа` lines inside chapter takeaway blocks;
+- rebuilt the Template2000n derivative from the updated raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-case-thesis-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 522 pages, 0 blank-like pages.
+- Template2000n derivative: 379 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 105808.
+- Local Markdown word-token count: 114574.
+- Final known Google Doc revision:
+  `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`.
+
+Report:
+
+- `docs/publisher/ru-case-thesis-pass-2026-07-05.md`
