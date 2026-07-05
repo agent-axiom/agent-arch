@@ -305,7 +305,7 @@ a repeat post-author export/render cycle.
 рукописи:
 
 - final known Google Doc revision:
-  `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`;
+  `ALtnJHxPfoLV8Xo2Bi9Tjzkn9e4ANu0le4z32bKytX-eSe9EQsghl9yz1iYpWetbvzg-cctjMEpJM-iOrrJ7nePO-B5PQO3FAkM1b7tKqJ0`;
 - Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
   automated adversarial testing and Chapter 20 agentic goal misalignment /
   insider-style risk;
@@ -333,6 +333,10 @@ a repeat post-author export/render cycle.
 - narrative-flow follow-up added 23 natural chapter opening paragraphs and 23
   natural closing bridges after `Что сделать после чтения`, without adding a
   new repeated rubric;
+- reader-delight polish follow-up added 13 short natural prose paragraphs:
+  one introduction recommendation-language paragraph, seven part-level
+  conflict paragraphs and five selected chapter `aha` pivots, without adding a
+  new repeated rubric;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:
@@ -342,9 +346,9 @@ a repeat post-author export/render cycle.
 - report:
   `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
 - latest follow-up report:
-  `docs/publisher/ru-narrative-flow-pass-2026-07-05.md`.
+  `docs/publisher/ru-reader-delight-polish-pass-2026-07-06.md`.
 - latest 100-goal ledger:
-  `docs/publisher/ru-editorial-100-narrative-flow-iterations-2026-07-05.md`.
+  `docs/publisher/ru-editorial-100-reader-delight-polish-iterations-2026-07-06.md`.
 
 New limitation: this checkpoint improves source coverage and duplicate hygiene,
 but it is still a working manuscript proof. Final submission still requires

@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`
+- `ALtnJHxPfoLV8Xo2Bi9Tjzkn9e4ANu0le4z32bKytX-eSe9EQsghl9yz1iYpWetbvzg-cctjMEpJM-iOrrJ7nePO-B5PQO3FAkM1b7tKqJ0`
 
 ## Current proof files
 
@@ -21,9 +21,9 @@ Raw Google Doc DOCX uploaded to Drive:
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
 - 529 rendered pages
 - 0 blank-like pages
-- 8698 paragraphs
-- 6596 non-empty paragraphs
-- approximately 108388 words
+- 8711 paragraphs
+- 6609 non-empty paragraphs
+- approximately 108797 words
 
 Template2000n derivative:
 
@@ -31,10 +31,10 @@ Template2000n derivative:
 - 384 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8698 paragraphs
-- 6596 non-empty paragraphs
-- approximately 108388 words
-- 5381 body paragraphs mapped to `Body Text`
+- 8711 paragraphs
+- 6609 non-empty paragraphs
+- approximately 108797 words
+- 5394 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -82,6 +82,10 @@ Machine-readable QA:
 - Narrative-flow follow-up added 23 natural opening paragraphs and 23 closing
   bridges after `Что сделать после чтения`, without adding a new repeated
   rubric; Google Doc readback confirmed Chapter 1 and Chapter 23 samples.
+- Reader-delight polish follow-up added 13 short natural prose paragraphs:
+  one introduction recommendation-language paragraph, seven part-level conflict
+  paragraphs and five selected chapter `aha` pivots, without adding a new
+  repeated rubric.
 
 ## Editor review focus
 
@@ -110,7 +114,10 @@ Machine-readable QA:
 10. Review the 23 new natural opening paragraphs and 23 closing bridges for
    narrative momentum: they should make the chapter order feel inevitable
    without sounding like another service rubric.
-11. Re-run export/render QA after author fields and editor changes are applied.
+11. Review the 13 reader-delight polish paragraphs for tone: they should make
+   the book easier to quote and recommend without becoming promotional or
+   repeating existing `Фраза для пересказа` / `Смена мышления` blocks.
+12. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

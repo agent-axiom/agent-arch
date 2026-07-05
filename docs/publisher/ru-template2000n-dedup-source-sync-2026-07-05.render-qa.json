@@ -1,6 +1,6 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/tmp/agent_arch_ru_template2000n_narrative_flow_2026_07_05_render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_template2000n_reader_delight_2026_07_06_render/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.004786099485517715,
@@ -15,16 +15,16 @@
       "page": 120
     },
     {
-      "density": 0.008426477257991765,
-      "page": 41
-    },
-    {
       "density": 0.010146716029068971,
       "page": 227
     },
     {
       "density": 0.010894580912452314,
       "page": 220
+    },
+    {
+      "density": 0.012696556013792411,
+      "page": 41
     },
     {
       "density": 0.013671306575979758,
@@ -44,5 +44,5 @@
     }
   ],
   "pages": 384,
-  "render_dir": "/tmp/agent_arch_ru_template2000n_narrative_flow_2026_07_05_render"
+  "render_dir": "/tmp/agent_arch_ru_template2000n_reader_delight_2026_07_06_render"
 }

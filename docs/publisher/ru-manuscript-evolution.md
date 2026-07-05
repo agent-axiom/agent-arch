@@ -1693,3 +1693,37 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-narrative-flow-pass-2026-07-05.md`
+
+
+### 2026-07-06. Reader delight polish pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- audited reader fatigue and high-leverage polish points;
+- added one introduction paragraph that gives readers language for
+  recommending the book inside a team;
+- added seven short part-level conflict paragraphs after the existing
+  `До этой части / После этой части` blocks;
+- added five selected chapter `aha` pivots in Chapters 2, 5, 12, 16 and 23;
+- avoided adding a new repeated rubric or another 23-item layer;
+- rebuilt the Template2000n derivative from the current raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-reader-delight-polish-iterations-2026-07-06.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 529 pages, 0 blank-like pages.
+- Template2000n derivative: 384 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 108797.
+- Local Markdown word-token count: 117549.
+- Final known Google Doc revision:
+  `ALtnJHxPfoLV8Xo2Bi9Tjzkn9e4ANu0le4z32bKytX-eSe9EQsghl9yz1iYpWetbvzg-cctjMEpJM-iOrrJ7nePO-B5PQO3FAkM1b7tKqJ0`.
+
+Report:
+
+- `docs/publisher/ru-reader-delight-polish-pass-2026-07-06.md`

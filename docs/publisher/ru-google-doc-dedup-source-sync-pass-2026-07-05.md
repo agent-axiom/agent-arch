@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`
+- `ALtnJHxPfoLV8Xo2Bi9Tjzkn9e4ANu0le4z32bKytX-eSe9EQsghl9yz1iYpWetbvzg-cctjMEpJM-iOrrJ7nePO-B5PQO3FAkM1b7tKqJ0`
 
 ## Implemented changes
 
@@ -65,6 +65,11 @@ Final known Google Doc revision for this pass:
    without adding a new repeated rubric, reduced avoidable English terms in the
    new prose, rebuilt Template2000n and uploaded the updated raw DOCX to the
    same Google Doc.
+16. Completed a reader-delight polish follow-up: audited reader fatigue,
+   added 13 short natural prose paragraphs for introduction, part-level
+   conflicts and selected chapter `aha` pivots, avoided a new repeated rubric,
+   rebuilt Template2000n and uploaded the updated raw DOCX to the same Google
+   Doc.
 
 ## Duplicate checks
 
@@ -72,7 +77,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current Markdown word-token count: 117140.
+- current Markdown word-token count: 117549.
 
 Drive/raw DOCX working manuscript:
 
@@ -84,18 +89,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8698
-- non-empty paragraphs: 6596
-- approximate words: 108388
+- paragraphs: 8711
+- non-empty paragraphs: 6609
+- approximate words: 108797
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8698
-- non-empty paragraphs: 6596
-- approximate words: 108388
+- paragraphs: 8711
+- non-empty paragraphs: 6609
+- approximate words: 108797
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 5381
+- body paragraphs mapped to `Body Text`: 5394
 
 Machine-readable QA:
 
@@ -110,14 +115,14 @@ Raw Google Doc DOCX:
 - pages: 529;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_narrative_flow_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_reader_delight_2026_07_06_render/contact-sheet.png`.
 
 Template2000n derivative:
 
 - pages: 384;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_narrative_flow_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_reader_delight_2026_07_06_render/contact-sheet.png`.
 
 DOCX archive integrity:
 
