@@ -1428,11 +1428,11 @@ Google Doc update:
 - Replaced the Drive file content with a cleaned raw DOCX while preserving the
   same Google Doc URL.
 - Final Google Doc revision for this checkpoint:
-  `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`.
+  `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`.
 
 Repository/source update:
 
-- `docs/publisher/ru-manuscript-full.md` now has 108948 words and 0 exact
+- `docs/publisher/ru-manuscript-full.md` now has 111785 words and 0 exact
   duplicate paragraph groups with 35+ words after removing large repeated
   reference/package,
   policy/catalog, incident-template and checklist sections.
@@ -1453,10 +1453,10 @@ Artifacts added:
 
 Proof metrics:
 
-- Raw Google Doc DOCX: 503 pages, 0 blank-like pages.
-- Template2000n derivative: 366 pages, 0 blank-like pages.
+- Raw Google Doc DOCX: 513 pages, 0 blank-like pages.
+- Template2000n derivative: 370 pages, 0 blank-like pages.
 - Raw/styled paragraph text equality: preserved.
-- Approximate words: 100554.
+- Approximate words: 103124.
 - Long paragraphs with 250+ words: 0 in raw DOCX.
 
 Decision:
@@ -1466,3 +1466,34 @@ Decision:
 - Final publisher submission remains blocked by author-owned fields, public
   companion metadata, independent external proofread and publisher/editor
   acceptance of the final style route.
+
+### 2026-07-05. Reader recommendability pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- strengthened the opening reader promise;
+- added part-level story checkpoints where the compressed DOCX structure
+  exposes the part heading;
+- added 6 production failure scenes to Chapters 1-6;
+- added 10 continuity bridges across Chapters 7-16;
+- added 6 maturity bridges across Chapters 17-22 and a final assembly block in
+  Chapter 23;
+- added 23 chapter takeaway blocks;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-reader-recommendability-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 513 pages, 0 blank-like pages.
+- Template2000n derivative: 370 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Approximate words: 103124.
+- Final known Google Doc revision:
+  `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`.
+
+Report:
+
+- `docs/publisher/ru-reader-recommendability-pass-2026-07-05.md`

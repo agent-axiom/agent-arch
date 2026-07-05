@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`
+- `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`
 
 ## Implemented changes
 
@@ -38,6 +38,10 @@ Final known Google Doc revision for this pass:
    `шлюз выпускаs`, `шлюз оценкиs`, `регрессионный шлюзs`,
    `человеческой проверкиer`, `волна поэтапного выпускаs` and
    `production-контроля` from the current DOCX/Google Doc proof.
+9. Completed a reader-recommendability follow-up: strengthened the opening
+   promise, added production scenes, continuity bridges, maturity bridges and
+   chapter takeaway blocks, then uploaded the updated raw DOCX back to the
+   same Google Doc.
 
 ## Duplicate checks
 
@@ -45,7 +49,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current word count: 108948.
+- current word count: 111785.
 
 Drive/raw DOCX working manuscript:
 
@@ -57,18 +61,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8256
-- non-empty paragraphs: 6152
-- approximate words: 100554
+- paragraphs: 8395
+- non-empty paragraphs: 6293
+- approximate words: 103124
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8256
-- non-empty paragraphs: 6152
-- approximate words: 100554
+- paragraphs: 8395
+- non-empty paragraphs: 6293
+- approximate words: 103124
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 4994
+- body paragraphs mapped to `Body Text`: 5088
 
 Machine-readable QA:
 
@@ -80,17 +84,17 @@ Machine-readable QA:
 
 Raw Google Doc DOCX:
 
-- pages: 503;
+- pages: 513;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_reader_recommendability_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
-- pages: 366;
+- pages: 370;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_final_integrity_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_reader_recommendability_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 

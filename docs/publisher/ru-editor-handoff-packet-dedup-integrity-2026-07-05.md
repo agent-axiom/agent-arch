@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHzR-1LigYfO-zDsU2VTPBvOxH_tMhFWOYLw7G6p94OwOJTrGjQVrFoqZZ_UohQ5DTMQE90XdNsZpz0fQbVaB1hNJju1ZzV_7qoe-_M`
+- `ALtnJHwGtFDgVCf6_JsoFEjMfHn75ueCJlj2C8HpZzRnob5wivqplwPUQFb9RaPzwK16ayiEdl36eAkPEbYcOhGd7FuUd0sIj_W2fBRp6tw`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 503 rendered pages
+- 513 rendered pages
 - 0 blank-like pages
-- 8256 paragraphs
-- 6152 non-empty paragraphs
-- approximately 100554 words
+- 8395 paragraphs
+- 6293 non-empty paragraphs
+- approximately 103124 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 366 rendered pages
+- 370 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8256 paragraphs
-- 6152 non-empty paragraphs
-- approximately 100554 words
-- 4994 body paragraphs mapped to `Body Text`
+- 8395 paragraphs
+- 6293 non-empty paragraphs
+- approximately 103124 words
+- 5088 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -61,6 +61,9 @@ Machine-readable QA:
   `шлюз подтвержденияs`, `production-контроля`.
 - Current chapter cross-references were checked for the known stale numbering
   patterns from the compressed assembly and corrected in the local source.
+- Reader-recommendability follow-up added six production scenes, continuity
+  bridges, maturity bridges, final assembly framing and 23 chapter takeaway
+  blocks to the current proof.
 
 ## Editor review focus
 

@@ -1,48 +1,48 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_google_doc_reader_recommendability_2026_07_05_render/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.003936626386149182,
-      "page": 503
+      "page": 513
     },
     {
       "density": 0.0042162040907240345,
-      "page": 359
+      "page": 366
     },
     {
       "density": 0.00510121714730255,
-      "page": 62
+      "page": 64
     },
     {
       "density": 0.005539811722556313,
-      "page": 125
+      "page": 128
     },
     {
       "density": 0.007827900960719699,
-      "page": 296
+      "page": 303
     },
     {
       "density": 0.008763411702686961,
-      "page": 41
+      "page": 42
     },
     {
       "density": 0.008944459345615283,
-      "page": 302
+      "page": 309
     },
     {
       "density": 0.011827442744968126,
-      "page": 242
+      "page": 248
     },
     {
       "density": 0.012341459065669112,
-      "page": 314
+      "page": 321
     },
     {
       "density": 0.012564600564144273,
-      "page": 327
+      "page": 334
     }
   ],
-  "pages": 503,
-  "render_dir": "/tmp/agent_arch_ru_google_doc_final_integrity_2026_07_05_render"
+  "pages": 513,
+  "render_dir": "/tmp/agent_arch_ru_google_doc_reader_recommendability_2026_07_05_render"
 }
