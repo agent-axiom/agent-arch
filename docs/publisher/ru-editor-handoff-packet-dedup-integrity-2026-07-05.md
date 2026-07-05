@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHyZy1LMv4XzR_qTR0FPFlSJ4unAgE-dDg43jHDi7XQoDGg0pXZh6Yx8pPMYboRV2KnwARZezcDLxlbWlO8ccbxfz1FKybyFJZ2Zu7k`
+- `ALtnJHzDDo0-WoZ_Tzj_JPnk4GkxKpxtZZ6XGYVPp1qNx9jNzOmJzeQxUxlLtAi29eTJYnQ1MHIyHouDx9ufBBlUXzBnOZ-DY3bgnQXPlXc`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 516 rendered pages
+- 519 rendered pages
 - 0 blank-like pages
-- 8457 paragraphs
-- 6355 non-empty paragraphs
-- approximately 104217 words
+- 8518 paragraphs
+- 6416 non-empty paragraphs
+- approximately 105103 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 375 rendered pages
+- 377 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8457 paragraphs
-- 6355 non-empty paragraphs
-- approximately 104217 words
-- 5144 body paragraphs mapped to `Body Text`
+- 8518 paragraphs
+- 6416 non-empty paragraphs
+- approximately 105103 words
+- 5204 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -67,6 +67,9 @@ Machine-readable QA:
 - Three-reader-profiles follow-up added explicit routes for architects,
   engineering managers/CTOs and developers, seven part-level profile outcome
   blocks and 23 chapter forwarding hooks to the current proof.
+- Page-turner/workshop follow-up added one through-line block, seven
+  part-level team workshop blocks and 23 concrete next actions after chapter
+  forwarding hooks.
 
 ## Editor review focus
 
@@ -82,7 +85,9 @@ Machine-readable QA:
    `observability`, `eval`, `SLO`, `prompt injection`, `red team` and `ADLC`
    are intentionally retained where they function as industry terms, but the
    editor may choose stronger Russian phrasing in narrative prose.
-6. Re-run export/render QA after author fields and editor changes are applied.
+6. Review the seven new team workshop blocks as possible recurring boxed
+   material or part-closing exercises.
+7. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

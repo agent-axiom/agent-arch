@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHyZy1LMv4XzR_qTR0FPFlSJ4unAgE-dDg43jHDi7XQoDGg0pXZh6Yx8pPMYboRV2KnwARZezcDLxlbWlO8ccbxfz1FKybyFJZ2Zu7k`
+- `ALtnJHzDDo0-WoZ_Tzj_JPnk4GkxKpxtZZ6XGYVPp1qNx9jNzOmJzeQxUxlLtAi29eTJYnQ1MHIyHouDx9ufBBlUXzBnOZ-DY3bgnQXPlXc`
 
 ## Implemented changes
 
@@ -46,6 +46,9 @@ Final known Google Doc revision for this pass:
    part-level outcomes for technical leads/architects, engineering
    managers/CTOs and practicing developers, then added 23 chapter forwarding
    hooks.
+11. Completed a page-turner/workshop follow-up: added a through-line block,
+   seven part-level team workshop blocks and 23 concrete next actions after
+   the chapter forwarding hooks.
 
 ## Duplicate checks
 
@@ -53,7 +56,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current word count: 113625.
+- current word count: 113868.
 
 Drive/raw DOCX working manuscript:
 
@@ -65,18 +68,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8457
-- non-empty paragraphs: 6355
-- approximate words: 104217
+- paragraphs: 8518
+- non-empty paragraphs: 6416
+- approximate words: 105103
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8457
-- non-empty paragraphs: 6355
-- approximate words: 104217
+- paragraphs: 8518
+- non-empty paragraphs: 6416
+- approximate words: 105103
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 5144
+- body paragraphs mapped to `Body Text`: 5204
 
 Machine-readable QA:
 
@@ -88,17 +91,17 @@ Machine-readable QA:
 
 Raw Google Doc DOCX:
 
-- pages: 516;
+- pages: 519;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_three_profiles_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_page_turner_workshop_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
-- pages: 375;
+- pages: 377;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_three_profiles_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_page_turner_workshop_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 

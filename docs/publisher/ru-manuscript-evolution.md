@@ -1530,3 +1530,35 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-three-reader-profiles-recommendability-pass-2026-07-05.md`
+
+
+### 2026-07-05. Page-turner workshop pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- added the introduction block `Сквозная дуга книги`, which frames the book as
+  one engineering story from a useful demo to a governed system of actions;
+- added seven `Командная сессия части` blocks with workshop format, artifact,
+  success signal and red flag;
+- added 23 `Что сделать после чтения` actions after chapter forwarding hooks;
+- rebuilt the Template2000n derivative from the updated raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-page-turner-workshop-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 519 pages, 0 blank-like pages.
+- Template2000n derivative: 377 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 105103.
+- Local Markdown word-token count: 113868.
+- Final known Google Doc revision:
+  `ALtnJHzDDo0-WoZ_Tzj_JPnk4GkxKpxtZZ6XGYVPp1qNx9jNzOmJzeQxUxlLtAi29eTJYnQ1MHIyHouDx9ufBBlUXzBnOZ-DY3bgnQXPlXc`.
+
+Report:
+
+- `docs/publisher/ru-page-turner-workshop-pass-2026-07-05.md`

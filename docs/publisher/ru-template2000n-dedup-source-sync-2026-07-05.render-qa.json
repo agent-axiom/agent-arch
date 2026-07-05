@@ -1,6 +1,6 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/tmp/agent_arch_ru_template2000n_three_profiles_2026_07_05_render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_template2000n_page_turner_workshop_2026_07_05_render/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.004786099485517715,
@@ -19,30 +19,30 @@
       "page": 116
     },
     {
+      "density": 0.013664865370253408,
+      "page": 377
+    },
+    {
       "density": 0.013671306575979758,
       "page": 225
+    },
+    {
+      "density": 0.0142913869025128,
+      "page": 266
     },
     {
       "density": 0.016586739116112855,
       "page": 214
     },
     {
-      "density": 0.017715082109165534,
-      "page": 32
+      "density": 0.016589389291773414,
+      "page": 183
     },
     {
-      "density": 0.017835119998700365,
-      "page": 182
-    },
-    {
-      "density": 0.018511459262058143,
-      "page": 246
-    },
-    {
-      "density": 0.01883661289722357,
-      "page": 354
+      "density": 0.016899350950075314,
+      "page": 355
     }
   ],
-  "pages": 375,
-  "render_dir": "/tmp/agent_arch_ru_template2000n_three_profiles_2026_07_05_render"
+  "pages": 377,
+  "render_dir": "/tmp/agent_arch_ru_template2000n_page_turner_workshop_2026_07_05_render"
 }
