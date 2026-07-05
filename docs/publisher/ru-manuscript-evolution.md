@@ -1659,3 +1659,37 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-mindset-shift-pass-2026-07-05.md`
+
+
+### 2026-07-05. Narrative flow pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- audited all 23 chapter starts and endings for reading momentum;
+- added 23 natural opening paragraphs after chapter headings, without adding a
+  new repeated rubric;
+- added 23 natural closing bridge paragraphs after `Что сделать после чтения`
+  blocks, so each chapter now carries the reader into the next topic;
+- reduced avoidable English terms in the newly added prose where Russian
+  wording preserved technical precision;
+- rebuilt the Template2000n derivative from the current raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-narrative-flow-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 529 pages, 0 blank-like pages.
+- Template2000n derivative: 384 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 108388.
+- Local Markdown word-token count: 117140.
+- Final known Google Doc revision:
+  `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`.
+
+Report:
+
+- `docs/publisher/ru-narrative-flow-pass-2026-07-05.md`

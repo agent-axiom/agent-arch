@@ -305,7 +305,7 @@ a repeat post-author export/render cycle.
 рукописи:
 
 - final known Google Doc revision:
-  `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`;
+  `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`;
 - Google Doc дополнен двумя блоками: Chapter 15 control evaluations /
   automated adversarial testing and Chapter 20 agentic goal misalignment /
   insider-style risk;
@@ -330,18 +330,21 @@ a repeat post-author export/render cycle.
   `Как изменится ваше мышление после книги`, seven
   `До этой части / После этой части` blocks and 23 `Смена мышления`
   chapter responses;
+- narrative-flow follow-up added 23 natural chapter opening paragraphs and 23
+  natural closing bridges after `Что сделать после чтения`, without adding a
+  new repeated rubric;
 - raw DOCX uploaded back to the same Drive file:
   `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`;
 - Template2000n derivative:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`;
-- render QA: raw 528 pages, Template2000n 382 pages, 0 blank-like pages in
+- render QA: raw 529 pages, Template2000n 384 pages, 0 blank-like pages in
   both proofs;
 - report:
   `docs/publisher/ru-google-doc-dedup-source-sync-pass-2026-07-05.md`.
 - latest follow-up report:
-  `docs/publisher/ru-mindset-shift-pass-2026-07-05.md`.
+  `docs/publisher/ru-narrative-flow-pass-2026-07-05.md`.
 - latest 100-goal ledger:
-  `docs/publisher/ru-editorial-100-mindset-shift-iterations-2026-07-05.md`.
+  `docs/publisher/ru-editorial-100-narrative-flow-iterations-2026-07-05.md`.
 
 New limitation: this checkpoint improves source coverage and duplicate hygiene,
 but it is still a working manuscript proof. Final submission still requires

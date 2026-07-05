@@ -12,29 +12,29 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHxrm9Lz5_KVTxgVu1rd4I8eRo4ogBBZeZ86-vzl9YMxYGtRZQOjb-_hrGWKrSYh9_GWLhF8aE1LeXRTHMipWROizAGGFNOdCD7XaqE`
+- `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 528 rendered pages
+- 529 rendered pages
 - 0 blank-like pages
-- 8652 paragraphs
-- 6550 non-empty paragraphs
-- approximately 107312 words
+- 8698 paragraphs
+- 6596 non-empty paragraphs
+- approximately 108388 words
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- 382 rendered pages
+- 384 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8652 paragraphs
-- 6550 non-empty paragraphs
-- approximately 107312 words
-- 5335 body paragraphs mapped to `Body Text`
+- 8698 paragraphs
+- 6596 non-empty paragraphs
+- approximately 108388 words
+- 5381 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -79,6 +79,9 @@ Machine-readable QA:
 - Mindset-shift follow-up added `Как изменится ваше мышление после книги`,
   seven part-level `До этой части / После этой части` blocks and 23
   chapter-level `Смена мышления` responses.
+- Narrative-flow follow-up added 23 natural opening paragraphs and 23 closing
+  bridges after `Что сделать после чтения`, without adding a new repeated
+  rubric; Google Doc readback confirmed Chapter 1 and Chapter 23 samples.
 
 ## Editor review focus
 
@@ -104,7 +107,10 @@ Machine-readable QA:
 9. Review the seven `До этой части / После этой части` blocks and 23
    `Смена мышления` responses for pacing: they should clarify the reader's
    shift in judgment without restating the chapter takeaway.
-10. Re-run export/render QA after author fields and editor changes are applied.
+10. Review the 23 new natural opening paragraphs and 23 closing bridges for
+   narrative momentum: they should make the chapter order feel inevitable
+   without sounding like another service rubric.
+11. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

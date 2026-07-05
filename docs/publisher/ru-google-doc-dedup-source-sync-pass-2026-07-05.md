@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHxrm9Lz5_KVTxgVu1rd4I8eRo4ogBBZeZ86-vzl9YMxYGtRZQOjb-_hrGWKrSYh9_GWLhF8aE1LeXRTHMipWROizAGGFNOdCD7XaqE`
+- `ALtnJHyYmvc0DNBG3DsCu0b3ZJGroROB9YOU0y9ABHXwicj9f1Ordm3aldjp6sJyf--dtyyp6RCLeh6-gnyRoJdhuZX_M9wE-82ZKjMVmSg`
 
 ## Implemented changes
 
@@ -60,6 +60,11 @@ Final known Google Doc revision for this pass:
    после книги`, seven part-level `До этой части / После этой части` blocks
    and 23 chapter-level `Смена мышления` lines, then uploaded the updated raw
    DOCX to the same Google Doc.
+15. Completed a narrative-flow follow-up: audited all 23 chapter openings and
+   endings, added 23 natural opening paragraphs and 23 natural closing bridges
+   without adding a new repeated rubric, reduced avoidable English terms in the
+   new prose, rebuilt Template2000n and uploaded the updated raw DOCX to the
+   same Google Doc.
 
 ## Duplicate checks
 
@@ -67,7 +72,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current Markdown word-token count: 116676.
+- current Markdown word-token count: 117140.
 
 Drive/raw DOCX working manuscript:
 
@@ -79,18 +84,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8652
-- non-empty paragraphs: 6550
-- approximate words: 107312
+- paragraphs: 8698
+- non-empty paragraphs: 6596
+- approximate words: 108388
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8652
-- non-empty paragraphs: 6550
-- approximate words: 107312
+- paragraphs: 8698
+- non-empty paragraphs: 6596
+- approximate words: 108388
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 5335
+- body paragraphs mapped to `Body Text`: 5381
 
 Machine-readable QA:
 
@@ -102,17 +107,17 @@ Machine-readable QA:
 
 Raw Google Doc DOCX:
 
-- pages: 528;
+- pages: 529;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_mindset_shift_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_narrative_flow_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
-- pages: 382;
+- pages: 384;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_mindset_shift_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_narrative_flow_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 
