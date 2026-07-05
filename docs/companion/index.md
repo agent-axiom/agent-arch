@@ -27,6 +27,10 @@ Online companion хранит материалы, которые должны б
 - [Полный reference package walkthrough](../appendix/reference-package.md)
 - [Полный список источников](../appendix/sources.md)
 
+## Практика по безопасному агенту
+
+Если читатель хочет не только читать, но и повторять материал руками, основной вход — [полный reference package walkthrough](../appendix/reference-package.md). Там главы связаны с файлами `agent_runtime_ref`, командами CLI, companion artifacts и тестами. Минимальная линия практики: `inspect-agent` для инвентаря, `simulate-run` для управляемого запуска, `dump-events`/`inspect-trace` для доказательств, `inspect-approvals` для человеческого шлюза, `export-eval-dataset` для оценок и `check-rollout`/`check-controls` для решения о выпуске.
+
 ## Что должно жить здесь
 
 - Полные YAML-конфиги и review forms.
