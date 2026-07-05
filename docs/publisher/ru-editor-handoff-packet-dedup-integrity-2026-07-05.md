@@ -12,18 +12,18 @@ Google Doc:
 
 Final known Google Doc revision:
 
-- `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`
+- `ALtnJHyKPoEL5XDwXyqfgL2sILc_-RIQ9xR63ygk_d-R7C8YnZawqrJCyP3_rwneb23SCZJhRxPPeCYvWaiyyaDlNYaxZVt95Y5PJZhwFTc`
 
 ## Current proof files
 
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- 522 rendered pages
+- 525 rendered pages
 - 0 blank-like pages
-- 8558 paragraphs
-- 6456 non-empty paragraphs
-- approximately 105808 words
+- 8605 paragraphs
+- 6503 non-empty paragraphs
+- approximately 106615 words
 
 Template2000n derivative:
 
@@ -31,10 +31,10 @@ Template2000n derivative:
 - 379 rendered pages
 - 0 blank-like pages
 - raw/styled paragraph text equality preserved
-- 8558 paragraphs
-- 6456 non-empty paragraphs
-- approximately 105808 words
-- 5243 body paragraphs mapped to `Body Text`
+- 8605 paragraphs
+- 6503 non-empty paragraphs
+- approximately 106615 words
+- 5289 body paragraphs mapped to `Body Text`
 
 Machine-readable QA:
 
@@ -73,6 +73,9 @@ Machine-readable QA:
 - Case/thesis follow-up made the support-agent storyline the explicit
   recurring production case, added seven part-level case episodes and 23
   quotable chapter theses.
+- Skeptic-response follow-up added `С кем спорит эта книга`, seven part-level
+  `Типичное возражение` blocks and 23 chapter-level
+  `Что ответить скептику` responses.
 
 ## Editor review focus
 
@@ -92,7 +95,10 @@ Machine-readable QA:
    material or part-closing exercises.
 7. Review the 23 `Фраза для пересказа` lines for tone: each should be sharp
    enough to quote but not more absolute than the chapter evidence supports.
-8. Re-run export/render QA after author fields and editor changes are applied.
+8. Review the seven `Типичное возражение` blocks and 23
+   `Что ответить скептику` responses for tone: they should help readers answer
+   plausible objections without making the manuscript combative.
+9. Re-run export/render QA after author fields and editor changes are applied.
 
 ## Author-owned fields still required
 

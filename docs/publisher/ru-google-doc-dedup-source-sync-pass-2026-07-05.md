@@ -12,7 +12,7 @@ Google Doc:
 
 Final known Google Doc revision for this pass:
 
-- `ALtnJHyYapbkiUC6iu1GxFan0C6cwyoMIHWVI320Wi1XqXC0-S6pZYCU543zoWAUmarcQdnT2TyRrpBWXhpeyd74AxV5wI19jHeRRlqYp9U`
+- `ALtnJHyKPoEL5XDwXyqfgL2sILc_-RIQ9xR63ygk_d-R7C8YnZawqrJCyP3_rwneb23SCZJhRxPPeCYvWaiyyaDlNYaxZVt95Y5PJZhwFTc`
 
 ## Implemented changes
 
@@ -52,6 +52,10 @@ Final known Google Doc revision for this pass:
 12. Completed a case/thesis follow-up: made the support-agent story the
    explicit recurring production case, added seven part-level case episodes
    and added 23 quotable chapter theses.
+13. Completed a skeptic-response follow-up: added `С кем спорит эта книга`,
+   seven part-level `Типичное возражение` blocks and 23 chapter-level
+   `Что ответить скептику` responses, then uploaded the updated raw DOCX to
+   the same Google Doc.
 
 ## Duplicate checks
 
@@ -59,7 +63,7 @@ Local Markdown assembly:
 
 - before this pass: 92 exact duplicate paragraph groups with 35+ words;
 - after this pass: 0 exact duplicate paragraph groups with 35+ words;
-- current word count: 114574.
+- current Markdown word-token count: 115986.
 
 Drive/raw DOCX working manuscript:
 
@@ -71,18 +75,18 @@ Drive/raw DOCX working manuscript:
 Raw Google Doc DOCX uploaded to Drive:
 
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8558
-- non-empty paragraphs: 6456
-- approximate words: 105808
+- paragraphs: 8605
+- non-empty paragraphs: 6503
+- approximate words: 106615
 
 Template2000n derivative:
 
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx`
-- paragraphs: 8558
-- non-empty paragraphs: 6456
-- approximate words: 105808
+- paragraphs: 8605
+- non-empty paragraphs: 6503
+- approximate words: 106615
 - raw/styled paragraph text equality: preserved
-- body paragraphs mapped to `Body Text`: 5243
+- body paragraphs mapped to `Body Text`: 5289
 
 Machine-readable QA:
 
@@ -94,17 +98,17 @@ Machine-readable QA:
 
 Raw Google Doc DOCX:
 
-- pages: 522;
+- pages: 525;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_google_doc_case_thesis_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_google_doc_skeptic_response_2026_07_05_render/contact-sheet.png`.
 
 Template2000n derivative:
 
 - pages: 379;
 - blank-like pages: 0;
 - contact sheet:
-  `/tmp/agent_arch_ru_template2000n_case_thesis_2026_07_05_render/contact-sheet.png`.
+  `/tmp/agent_arch_ru_template2000n_skeptic_response_2026_07_05_render/contact-sheet.png`.
 
 DOCX archive integrity:
 

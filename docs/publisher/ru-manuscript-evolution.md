@@ -1593,3 +1593,36 @@ Proof metrics:
 Report:
 
 - `docs/publisher/ru-case-thesis-pass-2026-07-05.md`
+
+
+### 2026-07-05. Skeptic response pass
+
+Status: synced to the working Google Doc and recorded as the current
+reader-facing proof pair.
+
+Implemented changes:
+
+- added `С кем спорит эта книга` after the recurring production case in the
+  introduction;
+- added seven `Типичное возражение` blocks, one per main part;
+- added 23 `Что ответить скептику` responses inside chapter takeaway blocks;
+- removed one local Markdown-only duplicate of the minimal sandbox profile
+  from appendix-level source material;
+- rebuilt the Template2000n derivative from the current raw DOCX;
+- uploaded the updated raw DOCX back to the same Google Doc ID;
+- recorded 100 controlled editorial micro-iterations in
+  `docs/publisher/ru-editorial-100-skeptic-response-iterations-2026-07-05.md`.
+
+Proof metrics:
+
+- Raw Google Doc DOCX: 525 pages, 0 blank-like pages.
+- Template2000n derivative: 379 pages, 0 blank-like pages.
+- Raw/styled paragraph text equality: preserved.
+- Builder approximate words: 106615.
+- Local Markdown word-token count: 115986.
+- Final known Google Doc revision:
+  `ALtnJHyKPoEL5XDwXyqfgL2sILc_-RIQ9xR63ygk_d-R7C8YnZawqrJCyP3_rwneb23SCZJhRxPPeCYvWaiyyaDlNYaxZVt95Y5PJZhwFTc`.
+
+Report:
+
+- `docs/publisher/ru-skeptic-response-pass-2026-07-05.md`

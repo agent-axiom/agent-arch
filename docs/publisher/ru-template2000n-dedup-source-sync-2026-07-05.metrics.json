@@ -1,26 +1,26 @@
 {
-  "approximate_words": 105808,
-  "bodytext_mapped": 5243,
-  "non_empty_paragraphs": 6456,
-  "output_bytes": 1303701,
+  "approximate_words": 106615,
+  "bodytext_mapped": 5289,
+  "non_empty_paragraphs": 6503,
+  "output_bytes": 1306804,
   "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-dedup-source-sync-2026-07-05.docx",
-  "output_sha256": "0b92d75dad3188c36d217008affe3268f4951463479939d3dd627238cd117bbe",
+  "output_sha256": "4fe4f9641c86d4f3ca09d24f62d75000d80495348ba2835472474571b7d6c754",
   "output_style_counts": {
     "<none>": 1125,
-    "Body Text": 5243,
+    "Body Text": 5289,
     "Heading 1": 28,
     "Heading 2": 1423,
-    "Heading 3": 688,
+    "Heading 3": 689,
     "Heading 4": 51
   },
-  "paragraphs": 8558,
+  "paragraphs": 8605,
   "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-dedup-source-sync-2026-07-05.docx",
   "raw_style_counts": {
     "Heading 1": 28,
     "Heading 2": 1423,
-    "Heading 3": 688,
+    "Heading 3": 689,
     "Heading 4": 51,
-    "normal": 6368
+    "normal": 6414
   },
   "template_docx": "/tmp/Template2000n.docx",
   "text_equality": true
