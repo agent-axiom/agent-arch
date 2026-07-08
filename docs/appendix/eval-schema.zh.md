@@ -110,10 +110,19 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 - `sandbox_profile_review`
+- `stop_condition_verified`
+- `delegation_budget_respected`
+- `single_vs_multi_agent_regression`
 
 `failed_run_traceable` 会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
 
 `sandbox_profile_review` 对由沙箱（sandbox）支撑的路径很重要：它检查工作区物化（workspace materialization）、shell/文件系统权限（shell/filesystem permissions）、网络/密钥姿态（network/secrets posture）与快照/恢复策略（snapshot/resume policy）是否被显式表示成可评审证据，而不是停留为隐含的运行时设置（runtime settings）。
+
+`stop_condition_verified` 用于那些不能只靠自由文本“完成”来接受结果的 agent-run paths。它检查场景是否带有明确 stop condition、verification mechanism、verification result、verifier actor，以及测试输出、trace、screenshot、diff 或其他 artifact 等 evidence link。
+
+`delegation_budget_respected` 用于 manager/subagent paths。它检查 fanout 是否通过明确 gate，`subagent_count` 是否未超限，`context_handoff_size` 和 `token_budget` 是否仍在场景边界内，以及 `delegation_reason` 是否解释了为什么 single-agent path 不够。
+
+`single_vs_multi_agent_regression` 用于比较模式。它检查 multi-agent 是否真的在 read-heavy breadth-first 工作中胜出，并且在 write-heavy shared-state 工作中因冲突动作、approvals、上下文丢失或 `merge_conflict_risk` 增长而失败或被拦截。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 

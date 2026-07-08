@@ -161,6 +161,25 @@ Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropi
 
 因此，capability catalog 最好包含 `execution_profile`、`sandbox_profile_id`、`egress_profile`、`credential_scope`、`debug_surface` 和 `rollback_boundary`。这样，policy decision 就不只是 `allow`，而是一条 route：哪个 harness 可以继续，哪些 hands 可用，必须记录哪些 session evidence，以及 blast-radius boundary 在哪里。
 
+### 5.2. 分析智能体是受治理的 query engine，不是自由 SQL autopilot
+
+还有一类能力需要单独处理，因为它常常看起来“只是读数据”，风险似乎很低：回答业务问题、生成 SQL、选择指标，或通过 semantic layer 工作的分析智能体。实际上，这不只是 `query_database`。它是一个受治理的 query engine，必须有契约来约束指标含义、数据范围、允许的聚合、查询成本和结果可见性。
+
+现代分析平台已经在朝这个方向走。Snowflake Cortex Analyst 依赖 semantic views、verified query suggestions、访问角色，并在 Snowflake 的 governance boundary 内执行生成的 SQL。[^snowflake-cortex-analyst] Databricks Genie Spaces 围绕 trusted assets 和 space instructions 构建对话式分析体验，而 Power BI Copilot 则运行在 semantic model 和现有 workspace permissions 之上。[^databricks-genie][^power-bi-copilot]
+
+本书关心的不是具体 vendor 产品，而是架构结论：分析智能体应该以 `analytics_query`、`metric_explain` 或 `semantic_model_lookup` 的形式进入 capability catalog，而不是作为通用 SQL hand。它的契约应该固定：
+
+- `semantic_model_id` 或允许使用的 semantic views；
+- `dataset_scope` 和 tenant boundary；
+- 允许的 metrics、dimensions 和 grain；
+- 是否可以生成 raw SQL，还是只能生成 parameterized query plan；
+- 最大成本、行数限制和 timeout；
+- masking rules、suppressed columns 和 small-cell suppression；
+- 新指标、跨域 join 或对外 export 是否需要 human review；
+- 哪些 query plan、generated SQL、source tables 和 policy decision 会进入 trace。
+
+否则，一个“read-only”智能体仍然可能泄露敏感切片、在没有 owner 的情况下连接不同数据域、编造未经批准的 KPI，或运行昂贵查询。成熟的策略层不应该只会说“可以读 warehouse”，而应该能说：“这个分析问题可以通过这个 semantic model、以这个角色、在这些限制下回答，并留下这条证据记录。”
+
 
 ## 6. 审批应该表现成可中断运行时路径，而不是旁路的人类对话
 
@@ -213,6 +232,20 @@ Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropi
 - 必要时还包括审批或恢复要求。
 
 这会大幅提升可解释性，也让遥测更有价值。
+
+### 7.1. 策略不只应该治理许可，也应该治理控制响应
+
+DeepMind 的 AI Control Roadmap 很好地指出了策略层的另一项职责：control system 不只要决定某个动作是否允许，还要选择响应模式。[^deepmind-ai-control] 在它的模型里，control 建立在 threat modeling、对 agent actions/plans 的 monitoring、supervisor systems、prevention/response gates，以及 coverage、recall 和 time-to-response 等指标之上。
+
+对参考运行时来说，这意味着 policy decision 不应该只返回 `allow` 或 `deny`，还应该能够返回 control response：
+
+- `allow_with_monitoring`，用于低风险且可逆的动作；
+- `pause_for_supervisor`，用于需要人工或 classifier-mediated review 的动作；
+- `block_synchronously`，用于在触达外部世界前必须拦截的高风险动作；
+- `quarantine_session`，用于看起来像 misinterpretation、overeagerness 或 boundary probing 的行为；
+- `escalate_incident`，用于 control 已经发现可能造成损害的事件。
+
+这是一条重要边界：并非所有危险都长得像 adversarial misuse。有时 agent 只是过度优化局部目标、误解任务，或者沿着一条产品上看似有用但系统层面有破坏性的路径继续执行。因此，策略层应该把决策和响应、负责人、证据、expected response time 与 audit trail 绑定在一起。
 
 ## 8. 一个策略契约示例
 
@@ -444,6 +477,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 [^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
 
 ## 17. 值得配套阅读的参考页
 
@@ -458,4 +492,8 @@ def get_capability(name: str) -> CapabilitySpec | None:
 - [第七部分：参考实现](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+[^anthropic-managed-agents]: Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents).
+[^snowflake-cortex-analyst]: Snowflake Documentation, [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst).
+[^databricks-genie]: Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/).
+[^power-bi-copilot]: Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction).

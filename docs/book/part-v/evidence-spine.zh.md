@@ -242,4 +242,4 @@ latest_rollout_decision: pause-canary
 - [第 21 章：保障闭环：红队测试、检测与响应](../part-viii/chapter-21.zh.md)
 - [第 22 章：供应链、来源追踪与已批准工件](../part-viii/chapter-22.zh.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

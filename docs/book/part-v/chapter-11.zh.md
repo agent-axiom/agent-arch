@@ -169,6 +169,24 @@ flowchart LR
 - 如果发生工具调用，则有 `tool_name`
 - 如果有 gate，则有 `policy_decision_id`
 
+### 8.1. 生产可观测性需要可搜索 span，而不只是漂亮 trace
+
+AWS AgentCore AgentOps 和 Microsoft Foundry 最近的材料说明，生产可观测性很快会超出“打开一条 trace 看看”的范围。[^aws-agentops][^microsoft-ai-observability][^microsoft-foundry-observability-kit] 团队需要可以按模型、工具、错误、延迟、成本、策略状态和隐私状态过滤的 searchable spans。否则 trace 虽然适合手工调试，但很难支撑 regression review、值班和成本评估。
+
+AWS 关于用 AgentCore Observability 调试生产智能体的材料又补了一条实用门槛：trace 不只要能调查显式异常，还要能调查 silent failure、infinite loop 和 tool invocation failure。[^aws-agentcore-observability-debugging] 这意味着 span 不能只有泛泛的 `status`，还要能看到 reasoning step、被选中的 tool selection、工具结果、latency/retry context，以及 workflow break 发生的位置。这样 debugging workflow 才能从症状走到具体 decision/tool span，而不是停在“模型不知为何循环了”。
+
+最小 production span contract 应该扩展出这些字段：
+
+- `span_type`：`model_call`、`tool_call`、`retrieval`、`policy_gate`、`approval_wait`、`handoff`、`memory_write`；
+- `input_ref` 和 `output_ref`：链接、哈希或 redacted artifact pointers，而不是原始 prompt/output 正文；
+- `latency_ms`、`retry_count`、`error_class` 和 `result_class`；
+- `token_input_count`、`token_output_count`、`token_cost` 和 `model_name`；
+- `tool_name`、`tool_principal`、`approval_state` 和 `policy_decision_id`；
+- `pii_redacted`、`redaction_policy_id` 和 `retention_class`；
+- `trace_search_tags`：owner、scenario、release、eval dataset 或 incident id。
+
+这样的契约让 trace 不只回答“发生了什么”，还可以回答“这个 release 后有哪些相似 runs”、“cost 为什么上涨”、“哪个 tool 开始退化”、“哪些 span 可以在不带 PII 的情况下交给 verifier”，以及“哪些 traces 应进入 regression review”。
+
 对于这个支持事故，这些字段已经足够把运行时、工具网关和具体外部副作用串起来。
 
 在更成熟的评估程序里，还应该保留足够的验证器感知的审查链接，不只记录运行里发生了什么，也记录哪些追踪与截图后来支撑了 `process_score`、`outcome_score` 或 `failure_attribution`。
@@ -329,3 +347,11 @@ Observability 不应该变成数据泄漏渠道。
 - [第 13 章：离线评测、在线评测与回归门禁](chapter-13.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-observability-debugging]: AWS, [Debugging production agents with Amazon Bedrock AgentCore Observability](https://aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability/)
+
+[^microsoft-ai-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
+
+[^microsoft-foundry-observability-kit]: Microsoft Azure AI Foundry Blog, [AI Observability Starter Kit for Microsoft Foundry agents](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/ai-observability-starter-kit-for-microsoft-foundry-agents/4522751)

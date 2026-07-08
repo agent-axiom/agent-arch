@@ -152,6 +152,21 @@ flowchart LR
 
 Именно поэтому эта глава держится на границе захвата: что обязательно записывать, как это структурировать и что должно пережить последующий ревью. Более поздняя глава про наблюдаемость уже про доказательства на масштабе estate и обнаружение, а не про переопределение того, что такое trace.
 
+### 7.1. Reasoning privacy против observability
+
+У современных API появляется важный паттерн: модель может возвращать не только финальный `model_output`, но и краткий `reasoning_summary`, ссылку на reasoning artifact или encrypted reasoning item. Это полезно для расследований, но опасно, если команда начинает сохранять сырой chain-of-thought как обычный лог.
+
+Практическое правило такое: trace должен быть расследуемым, но не обязан раскрывать полное внутреннее рассуждение модели. Для большинства production-разборов достаточно разделять четыре сущности:
+
+- `model_output` — текст или structured output, который реально увидел пользователь или следующий runtime step;
+- `reasoning_summary` — краткое объяснение высокого уровня, пригодное для triage и eval;
+- `reasoning_reference` или `encrypted_reasoning_item` — ссылка на приватный artifact, если provider/runtime поддерживает его безопасное хранение;
+- `tool_evidence` — фактические вызовы, результаты, approvals, retrieval sources и verifier evidence.
+
+Такой дизайн сохраняет observability без превращения reasoning в бесконтрольный sensitive log. Оператор может увидеть, что модель опиралась на retrieval и policy evidence, но доступ к полному encrypted artifact должен идти через отдельный governance path: audit purpose, retention rule, access approval и redaction/DLP checks.
+
+В маленьком reference runtime это выражается событием `model_reasoning_evidence`: оно может хранить summary/reference/encrypted item pointer и preview финального ответа, но не хранит raw reasoning. Для расследования это менее “любопытно”, зато намного безопаснее и устойчивее к будущим требованиям приватности.
+
 ## 8. Минимальный набор полей для trace и span
 
 Чтобы система действительно была пригодна для расследований, полезно иметь как минимум:
@@ -169,7 +184,35 @@ flowchart LR
 - `tool_name`, если был вызов инструмента
 - `policy_decision_id`, если был шлюз
 
+### 8.1. Production observability требует searchable spans, а не только красивый trace
+
+Свежие материалы AWS AgentCore AgentOps и Microsoft Foundry показывают, что промышленный слой наблюдаемости быстро выходит за пределы “посмотреть один trace”.[^aws-agentops][^microsoft-ai-observability][^microsoft-foundry-observability-kit] Команде нужны searchable spans, которые можно фильтровать по модели, инструменту, ошибке, задержке, стоимости, policy state и privacy state. Иначе trace полезен для ручного разбора, но слаб для regression review, дежурства и оценки стоимости.
+
+Материал AWS про debugging production agents with AgentCore Observability добавляет к этому важную практическую планку: trace должен помогать расследовать не только явный exception, но и silent failure, infinite loop и tool invocation failure.[^aws-agentcore-observability-debugging] Для этого в span недостаточно хранить общий `status`: нужен видимый reasoning step, выбранный tool selection, результат вызова, latency/retry context и точка, где произошел workflow break. Тогда debugging workflow идет от симптома к конкретному decision/tool span, а не к пересказу “модель почему-то зациклилась”.
+
+Минимальный production span contract стоит расширять такими полями:
+
+- `span_type`: `model_call`, `tool_call`, `retrieval`, `policy_gate`, `approval_wait`, `handoff`, `memory_write`;
+- `input_ref` и `output_ref`: ссылки, хэши или redacted artifact pointers вместо сырых prompt/output тел;
+- `latency_ms`, `retry_count`, `error_class` и `result_class`;
+- `token_input_count`, `token_output_count`, `token_cost` и `model_name`;
+- `tool_name`, `tool_principal`, `approval_state` и `policy_decision_id`;
+- `pii_redacted`, `redaction_policy_id` и `retention_class`;
+- `trace_search_tags`: owner, scenario, release, eval dataset или incident id.
+
+Такой контракт делает трассу пригодной не только для “что произошло?”, но и для “найди все похожие runs после релиза”, “почему вырос cost”, “какой tool начал деградировать”, “какие span можно передать verifier без PII” и “какие traces должны попасть в regression review”.
+
 Для расследования инцидента поддержки этого уже достаточно, чтобы связать между собой рантайм, шлюз инструментов и конкретный внешний побочный эффект.
+
+Если агент реализован как durable named instance, к этому минимуму нужно добавить поля, которые отличают долгоживущий actor от одного request handler:
+
+- `agent_instance_id`;
+- `durable_state_version`;
+- `scheduled_wakeup_id`, если запуск продолжился по расписанию;
+- `resumable_stream_id` или `connection_id`, если пользовательский поток пережил reconnect;
+- `state_transition`, если run загрузил, изменил, усыпил или разбудил экземпляр.
+
+Иначе trace показывает только отдельный run и скрывает самый важный вопрос: это было продолжение того же named agent state или новая stateless реконструкция, которая просто выглядит похоже?
 
 В более зрелой программе оценки полезно сохранять и достаточно связей для ревью с учетом verifier: не только что произошло в запуске, но и какие трассы и скриншоты потом легли в основу `process_score`, `outcome_score` или `failure_attribution`.
 
@@ -340,3 +383,11 @@ def emit_span(result: SpanResult) -> None:
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](chapter-13.md)
 - [Часть V. Надежность и наблюдаемость](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-observability-debugging]: AWS, [Debugging production agents with Amazon Bedrock AgentCore Observability](https://aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability/)
+
+[^microsoft-ai-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
+
+[^microsoft-foundry-observability-kit]: Microsoft Azure AI Foundry Blog, [AI Observability Starter Kit for Microsoft Foundry agents](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/ai-observability-starter-kit-for-microsoft-foundry-agents/4522751)

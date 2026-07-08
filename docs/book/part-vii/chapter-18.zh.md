@@ -171,6 +171,14 @@ flowchart LR
 - 回归门禁已经文档化；
 - 在线监控已经为第一波上线做好准备。
 
+DeepMind 的 AI Control Roadmap 在这里补了一组三个有用的控制指标：coverage、recall 和 time-to-response。[^deepmind-ai-control] 在扩大 rollout 前，团队不应该只知道“有没有监控”，还应该知道它覆盖了多少相关 actions/plans，supervisor 实际上能多频繁地抓住危险事件，以及系统能够多快 block、pause、remediate 或 escalate 问题。
+
+这项检查对 agent paths 尤其重要，因为失败不一定长得像攻击。Misinterpretation、overeagerness，以及对局部任务的过度优化，只要可能造成真实 side effect，就应该被视为 rollout signals。如果控制层没有覆盖这些轨迹，第一波 rollout 测到的就不是就绪性，而是盲点。
+
+OpenAI Deployment Simulation 在这里又补了一个有用的 pre-deployment signal：发布前不只跑手写的高难度任务，还用 candidate model 重新播放接近未来真实部署的上下文。[^openai-deployment-simulation] 对 agent platform 来说，这意味着 readiness gate 可以要求一份 `deployment_simulation_report`：使用了哪种 prompt/session distribution、测量了哪些 undesired behaviors、真实上线后如何校准估计，以及哪些地方的 simulation fidelity 还不足以支撑扩大 rollout。它不能替代 adversarial evals 和 tail-risk red teaming，因为低于抽样频率的罕见事件可能根本不会出现；但它补上的是另一类缺口：模型或 agent 在接近 production 的分布上会怎样表现，而不只是能否通过一个容易被识别成测试的集合。
+
+对于 tool-heavy agent trajectories，这个信号尤其重要。OpenAI 也指出，预发布模拟里的 live tool calls 可能危险或不真实，所以工具环境需要高 fidelity 模拟：原始轨迹发生时的 repository state、过去 tool-call/response pairs 的数据库、read-only connectors，以及和真实 rollouts 的显式对比。用本书的话说，这会变成一条发布要求：如果 canary 依赖 tools、files、network 或外部系统，rollout gate 不应该只看 `offline_eval_pass`，还应该看到 `simulation_environment_fidelity`、`tool_simulator_scope`、`representative_prefix_window`、`post_release_calibration_plan`，以及 simulation 还不足以提供信心的 behaviors 列表。
+
 否则第一个事故就会变成盲查。
 
 对于这个支持智能体，这一点尤其重要，因为第一批金丝雀租户几乎一定会带来不完美输入。如果团队看不到：
@@ -408,4 +416,6 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/)
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

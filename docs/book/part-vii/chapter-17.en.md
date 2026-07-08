@@ -161,6 +161,25 @@ The same logical action can have different profiles:
 
 So the capability catalog is stronger when it includes `execution_profile`, `sandbox_profile_id`, `egress_profile`, `credential_scope`, `debug_surface`, and `rollback_boundary`. The policy decision then becomes not just `allow`, but a route: which harness may continue, which hands are available, which session evidence must be recorded, and where the blast-radius boundary sits.
 
+### 5.2. An analytics agent is a governed query engine, not a free SQL autopilot
+
+One capability class deserves special treatment because it often looks harmless: an analytics agent that answers business questions, writes SQL, chooses metrics, or works through a semantic layer. In practice, this is not merely `query_database`. It is a governed query engine with a contract for metric meaning, data scope, allowed aggregations, query cost, and result visibility.
+
+Modern analytics platforms are already moving in that direction. Snowflake Cortex Analyst relies on semantic views, verified query suggestions, access roles, and generated SQL executed inside Snowflake's governance boundary.[^snowflake-cortex-analyst] Databricks Genie Spaces build conversational analytics around trusted assets and space instructions, while Power BI Copilot operates over a semantic model and existing workspace permissions.[^databricks-genie][^power-bi-copilot]
+
+The book does not need the vendor-specific product detail. The architectural lesson is that an analytics agent should enter the capability catalog as `analytics_query`, `metric_explain`, or `semantic_model_lookup`, not as a general SQL hand. Its contract should specify:
+
+- `semantic_model_id` or the allowed semantic views;
+- `dataset_scope` and tenant boundary;
+- allowed metrics, dimensions, and grain;
+- whether the capability may emit raw SQL or only a parameterized query plan;
+- maximum cost, row limit, and timeout;
+- masking rules, suppressed columns, and small-cell suppression;
+- whether human review is required for new metrics, cross-domain joins, or external export;
+- which query plan, generated SQL, source tables, and policy decision land in the trace.
+
+Otherwise a "read-only" agent can still reveal sensitive slices, join domains without an owner, invent unapproved KPIs, or run expensive queries. A mature policy layer should be able to say not just "this warehouse can be read", but "this analytics question may be answered through this semantic model, under this role, with these limits and this evidence record."
+
 
 ## 6. Approval Should Look Like an Interruptible Runtime Path, Not a Side Conversation
 
@@ -213,6 +232,20 @@ And additionally:
 - optional approval or resume requirements.
 
 That greatly improves explainability and makes telemetry far more useful.
+
+### 7.1. Policy Should Govern Not Only Permission, But Also Control Response
+
+DeepMind's AI Control Roadmap usefully names one more responsibility for the policy layer: a control system should not only decide whether an action is allowed, but also select the response mode.[^deepmind-ai-control] In their model, control is built on threat modeling, monitoring agent actions/plans, supervisor systems, prevention/response gates, and metrics such as coverage, recall, and time-to-response.
+
+For a reference runtime, that means a policy decision should be able to return not only `allow` or `deny`, but also a control response:
+
+- `allow_with_monitoring` for low-risk and reversible actions;
+- `pause_for_supervisor` for actions that need human or classifier-mediated review;
+- `block_synchronously` for high-risk actions before they reach the outside world;
+- `quarantine_session` for behavior that looks like misinterpretation, overeagerness, or boundary probing;
+- `escalate_incident` for events where control has already detected possible harm.
+
+This is an important boundary: not every danger looks like adversarial misuse. Sometimes an agent simply over-optimizes a local goal, misunderstands the task, or continues down a path that looks productively useful but is systemically destructive. The policy layer should therefore bind the decision to a response, owner, evidence, expected response time, and audit trail.
 
 ## 8. Example Policy Contract
 
@@ -444,6 +477,7 @@ The next logical step in the reference implementation is to assemble a productio
 [^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
 
 ## 17. Useful Reference Pages
 
@@ -458,4 +492,8 @@ This chapter is the contract hinge for the rest of the runtime-control cluster. 
 - [Part VII. Reference Implementation](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+[^anthropic-managed-agents]: Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents).
+[^snowflake-cortex-analyst]: Snowflake Documentation, [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst).
+[^databricks-genie]: Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/).
+[^power-bi-copilot]: Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction).

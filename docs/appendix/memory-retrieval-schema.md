@@ -59,6 +59,22 @@ retention: long_term
 - `trust_level` помогает не ставить все записи в один ряд.
 
 Для проверки отравления памяти запись или кандидат на запись полезно дополнительно описывать через поля проверки отравления памяти как проверяемый объект безопасности, а не только как данные для извлечения:
+Если память используется несколькими агентными поверхностями, например coding agent, CLI и code review, базовую запись лучше расширять без превращения схемы в vendor-specific объект:
+
+```yaml
+producer_surface: coding_agent
+consumer_surfaces:
+  - cli
+  - code_review
+scope: repository
+conflict_policy: require_review_on_conflict
+expires_at: 2026-10-01T00:00:00Z
+export_delete_policy: user_visible
+```
+
+Эти поля отвечают на вопрос, кто имел право создать запись, какие агенты могут ее читать, где проходит область действия и как запись устаревает или оспаривается. Без этого cross-agent memory быстро становится общим скрытым state, который влияет на разные workflows, но не имеет понятного владельца.
+
+Для memory poisoning review запись или candidate write полезно дополнительно описывать через memory poisoning review fields как проверяемый security object, а не только как retrieval payload:
 
 ```yaml
 write_trust_boundary: untrusted_write

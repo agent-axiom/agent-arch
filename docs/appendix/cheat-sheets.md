@@ -56,6 +56,26 @@
 - [Глава 18. Чеклист промышленного запуска](../book/part-vii/chapter-18.md)
 
 ## Проверка наблюдаемости
+## Runtime durability checklist
+
+- Есть ли стабильный `agent_instance_id`, если агент привязан к делу, комнате, проекту, устройству или tenant workspace?
+- Разделены ли `agent_instance_id`, `run_id`, `session_id`, `trace_id` и connection/websocket state?
+- Хранится ли `durable_state_version`, чтобы resume не продолжал устаревшее или “похожее” состояние?
+- Есть ли idempotency/correlation key для webhook, email, Slack command и других programmatic turns?
+- Можно ли увидеть, какие scheduled tasks могут разбудить agent instance, с каким payload schema, timezone и overlap policy?
+- Проверен ли recovery path для прерванного tool call, background run или recoverable internal task?
+- Есть ли inspect/cancel/status API для фоновой работы, а не только progress-сообщения пользователю?
+- Пишутся ли lifecycle events: accept, sleep/hibernate, wake, resume, cancel, recover, state migration?
+- Не превращается ли local durable state в скрытую profile memory, tenant knowledge, secrets или audit log?
+- Есть ли migration/deletion/export story для durable state, если меняется версия агента или закрывается workspace?
+
+Читать дальше:
+
+- [Глава 16. Базовая схема среды исполнения](../book/part-vii/chapter-16.md)
+- [Глава 10. Идемпотентность, повторы, лимиты запросов и границы отката](../book/part-iv/chapter-10.md)
+- [Схема трассировки](trace-schema.md)
+
+## Observability checklist
 
 - Есть ли `trace_id` у каждого запуска?
 - Есть ли базовые спаны для извлечения, шага модели, выполнения инструмента, подтверждения и записи в память?
@@ -73,6 +93,24 @@
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
 
 ## Проверка шлюза инструментов
+## Orchestration pattern checklist
+
+- Можно ли решить задачу прямым вызовом модели вместо agent loop?
+- Если нужен agent loop, достаточно ли одного агента с инструментами и лимитами итераций?
+- Что именно оправдывает multi-agent: доменная граница, параллельные независимые ветки или отдельная security boundary?
+- Для `sequential` понятны ли порядок, зависимость шагов и rollback при ошибке раннего шага?
+- Для `concurrent` есть ли budget, aggregation policy и conflict-resolution rule?
+- Для `group chat` понятно ли, кто owner результата и как ограничивается transcript/context growth?
+- Для `handoff` есть ли transfer packet с goal, constraints, owner, policy context и trace link?
+- Для `magentic`/динамической оркестрации есть ли hard limits, route trace, stop condition и отдельное eval coverage?
+- Зафиксированы ли latency/cost/security/debuggability trade-offs до запуска?
+
+Читать дальше:
+
+- [Практика. Координатор и передача управления](../book/part-i/practical-manager-handoffs.md)
+- [Глава 15. Золотые пути, общие шлюзы и антизоопарк-подходы](../book/part-vi/chapter-15.md)
+
+## Tool gateway checklist
 
 - У каждой возможности есть владелец, уровень риска и утвержденный статус в инвентаре?
 - Ясно ли, читает инструмент данные или выполняет запись?

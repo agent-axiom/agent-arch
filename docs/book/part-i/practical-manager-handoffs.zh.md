@@ -163,6 +163,21 @@ handoffs 常见问题：
 
 这不是教条，而是防止过早复杂化的好方法。
 
+### 9.2. 什么时候不要启动 subagents
+
+Anthropic 对 Research 系统的生产复盘很有价值，因为它同时讲清了收益和代价：当任务足够有价值、需要广度优先搜索、依赖大量工具，并且信息超过单个上下文窗口时，多智能体研究可能明显胜出；但它也可能比普通聊天式交互消耗约一个数量级更多的 token。[^anthropic-multi-agent-research] 因此，subagent fanout 是经济性与可靠性决策，不是架构先进性的徽章。
+
+启动 subagents 前，先过一个短 gate：
+
+- **independence：** 分支真的可以在没有共享可变状态的情况下独立推进；
+- **shared-context need：** 结果不依赖那些无法安全压缩进 transfer packet 的细节；
+- **write-risk：** subagent 不会在没有 policy/approval boundary 的情况下获得独立 high-risk write path；
+- **expected value：** 质量或速度收益要大于 coordination overhead 和成本增长；
+- **token/tool budget：** fanout、tool calls、context handoff 和 retry 都有明确上限；
+- **merge risk：** 有人负责 synthesis，并能发现冲突结论。
+
+如果其中两三项都很模糊，通常应该留在 single-agent 或 manager-led 模式。Subagent spawn 不是“思维加速器”，而是用协调、遥测和合并纪律换取更多 context windows。
+
 ## 10. 代码草图：Manager Pattern
 
 ```python
@@ -232,3 +247,4 @@ def handoff(state: dict, next_agent: callable) -> dict:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
