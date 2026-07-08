@@ -169,6 +169,24 @@ To make the system genuinely investigation-friendly, it helps to have at least:
 - `tool_name` if there was a tool call
 - `policy_decision_id` if there was a gate
 
+### 8.1. Production Observability Needs Searchable Spans, Not Just a Pretty Trace
+
+Recent AWS AgentCore AgentOps and Microsoft Foundry materials show that production observability quickly goes beyond “open one trace.”[^aws-agentops][^microsoft-ai-observability][^microsoft-foundry-observability-kit] Teams need searchable spans that can be filtered by model, tool, error, latency, cost, policy state, and privacy state. Otherwise a trace is useful for manual debugging, but weak for regression review, on-call work, and cost evaluation.
+
+AWS's guidance on debugging production agents with AgentCore Observability adds a useful operational bar: the trace should support investigation not only for explicit exceptions, but also for a silent failure, an infinite loop, and a tool invocation failure.[^aws-agentcore-observability-debugging] That means a span needs more than a generic `status`: it should expose the reasoning step, the chosen tool selection, the tool result, latency/retry context, and the point where the workflow break occurred. Then the debugging workflow can move from symptom to a specific decision/tool span instead of stopping at “the model looped somehow.”
+
+A minimal production span contract should grow to include:
+
+- `span_type`: `model_call`, `tool_call`, `retrieval`, `policy_gate`, `approval_wait`, `handoff`, `memory_write`;
+- `input_ref` and `output_ref`: links, hashes, or redacted artifact pointers instead of raw prompt/output bodies;
+- `latency_ms`, `retry_count`, `error_class`, and `result_class`;
+- `token_input_count`, `token_output_count`, `token_cost`, and `model_name`;
+- `tool_name`, `tool_principal`, `approval_state`, and `policy_decision_id`;
+- `pii_redacted`, `redaction_policy_id`, and `retention_class`;
+- `trace_search_tags`: owner, scenario, release, eval dataset, or incident id.
+
+That contract makes the trace useful not only for “what happened?”, but also for “find similar runs after this release”, “why did cost grow”, “which tool started degrading”, “which spans can be handed to a verifier without PII”, and “which traces should enter regression review”.
+
 For the support incident, that is already enough to tie together the runtime, the tool gateway, and the specific external side effect.
 
 In a more mature eval program, it also becomes useful to preserve enough linkage for verifier-aware review: not only what happened in the run, but which trace and screenshots later supported a `process_score`, `outcome_score`, or `failure_attribution` judgment.
@@ -329,3 +347,11 @@ The next step in the same story is straightforward: once the team can reconstruc
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](chapter-13.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-observability-debugging]: AWS, [Debugging production agents with Amazon Bedrock AgentCore Observability](https://aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability/)
+
+[^microsoft-ai-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
+
+[^microsoft-foundry-observability-kit]: Microsoft Azure AI Foundry Blog, [AI Observability Starter Kit for Microsoft Foundry agents](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/ai-observability-starter-kit-for-microsoft-foundry-agents/4522751)

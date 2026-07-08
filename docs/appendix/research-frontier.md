@@ -102,6 +102,8 @@
 
 Практический пост Anthropic о multi-agent research system важен как production-контрапункт к этому research-блоку. Он показывает, что multi-agent может давать сильный выигрыш на open-ended research, особенно для breadth-first запросов с независимыми ветками, но этот выигрыш связан с экономикой: больше токенов, больше вызовов инструментов, больше параллельных контекстов и больше требований к координации. Поэтому его стоит читать не как универсальный аргумент за multi-agent, а как критерий отбора задач: высокая ценность результата, независимые направления исследования, явные бюджеты и eval-gates.
 
+Отдельная линия вроде Symphony показывает другую сторону frontier: попытку уйти от централизованного orchestrator к capability ledger, динамическому выбору координатора и голосованию результатов.[^symphony-decentralized] Родственная работа SYMPHONY для heterogeneous planning идет через пул разных LLM-агентов, чтобы увеличить разнообразие rollout-веток в MCTS-планировании.[^symphony-heterogeneous] Для книги это полезно не как готовый шаблон runtime, а как warning label: чем больше распределенности, тем важнее доказуемые capability records, quorum/retry semantics, provenance для голосов, cost ceiling и диагностика конфликтов.
+
 Что уже можно уверенно брать в практику:
 
 - skepticism к premature multi-agent decomposition;
@@ -146,6 +148,20 @@
 
 Именно на стыке этих трех тем, скорее всего, и появятся следующие по-настоящему сильные design shifts.
 
+## Production lessons: data analytics agents
+
+Разбор GitHub про Qubot полезен как практический кейс внутреннего analytics agent, где ценность создают не “магические SQL prompts”, а управляемая связка интерфейса, context layer, query engine и eval loop.[^github-qubot] Агент доступен через Slack, VS Code и Copilot CLI; контекст собирается федеративно по слоям данных (bronze/silver/gold), загружается через GitHub MCP Server, а изменения context layer проходят offline evals с known prompts, ground-truth SQL, metadata, multiple trials и отчетами по completion, accuracy и duration.
+
+Архитектурный вывод для этой книги: internal knowledge assistant должен считать query review, source attribution, access boundaries и dataset ownership частью runtime contract. Если агент отвечает на аналитический вопрос, trace должен показывать, какой context layer был использован, какие mandatory filters применены, какой query engine выбран, почему доступ разрешен или отказан и какой eval case защищает этот путь от регрессии.
+
+## Production lessons: multi-agent research
+
+Разбор Anthropic про production Research полезен держать рядом с research taxonomy: он показывает, когда multi-agent оправдан практически, а не только концептуально.[^anthropic-multi-agent-research] Сильный сигнал — breadth-first задачи с независимыми ветками, большим corpus, сложными инструментами и ценностью, которая окупает дополнительный token/tool budget. Слабый сигнал — coding-like или incident-like работа с плотным общим состоянием, где coordination и merge risk быстро съедают выигрыш.
+
+Свежая рамка LangChain по выбору multi-agent architecture дополняет этот вывод более прикладным decision table: subagents, skills, handoffs и routers решают разные задачи, а single-agent with good tools остается стартовой точкой, пока команда не уперлась в контекст, параллельность или распределенное владение capabilities.[^langchain-multi-agent-architecture]
+
+Инженерный вывод для этой книги: multi-agent frontier надо оценивать через delegation contract, effort budget, stop condition, source quality, tool efficiency, checkpoint/resume и traceability. Иначе команда будет сравнивать только красивый финальный ответ и не увидит, что процесс стал дороже, менее воспроизводимым или хуже управляемым.
+
 ## Рекомендуемые research readings
 
 - EVOLVE-MEM, [A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
@@ -153,7 +169,11 @@
 - AgentTrace, [A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+- Symphony, [A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019)
+- SYMPHONY, [Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623)
 - Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
+- LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)
+- GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/)
 
 ## Что делать дальше
 
@@ -163,3 +183,9 @@
 - [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](../book/part-iii/chapter-7.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
 - [Практика. MCP для инструментов, A2A для агентов](../book/part-iv/practical-mcp-a2a.md)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^langchain-multi-agent-architecture]: LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^symphony-decentralized]: Ji Wang, Kashing Chen, Xinyuan Song, Ke Zhang, Lynn Ai, Eric Yang, Bill Shi, [Symphony: A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019).
+[^symphony-heterogeneous]: Wei Zhu, Zhiwen Tang, Kun Yue, [SYMPHONY: Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623).

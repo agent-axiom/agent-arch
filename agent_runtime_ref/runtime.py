@@ -54,6 +54,15 @@ def _read_model_output(value: object) -> ModelOutput:
         raise TypeError("Model step must return ModelOutput")
     if not isinstance(value.text, str):
         raise TypeError("Model output text must be a string")
+    if not isinstance(value.reasoning_summary, str):
+        raise TypeError("Model output reasoning_summary must be a string")
+    if not isinstance(value.reasoning_reference, str):
+        raise TypeError("Model output reasoning_reference must be a string")
+    if not isinstance(value.encrypted_reasoning_item, str):
+        raise TypeError("Model output encrypted_reasoning_item must be a string")
+    value.reasoning_summary = value.reasoning_summary.strip()
+    value.reasoning_reference = value.reasoning_reference.strip()
+    value.encrypted_reasoning_item = value.encrypted_reasoning_item.strip()
     if value.tool_request is not None and not isinstance(value.tool_request, ToolRequest):
         raise TypeError("Model output tool_request must be ToolRequest")
     return value
@@ -269,6 +278,7 @@ class AgentRuntime:
                 lambda: _read_model_output(self._call_model(request, context)),
             ),
         )
+        self._emit_model_reasoning_evidence(request, model_output)
 
         if model_output.tool_request is not None:
             self._handle_tool_request(context, request, model_output.tool_request)
@@ -344,6 +354,7 @@ class AgentRuntime:
             model_output = _read_model_output(
                 self._call_model(request, context, second_pass=True)
             )
+            self._emit_model_reasoning_evidence(request, model_output)
 
         self._schedule_background_updates(request, context, model_output)
         result = RunResult(output_text=model_output.text, status="success")
@@ -377,6 +388,28 @@ class AgentRuntime:
             delegated_scope=delegated_scope,
         )
         return result
+
+    def _emit_model_reasoning_evidence(
+        self,
+        request: RunRequest,
+        model_output: ModelOutput,
+    ) -> None:
+        if not (
+            model_output.reasoning_summary
+            or model_output.reasoning_reference
+            or model_output.encrypted_reasoning_item
+        ):
+            return
+        self.telemetry.emit(
+            "model_reasoning_evidence",
+            request.trace_id,
+            session_id=request.session_id,
+            agent_id=request.agent_id,
+            reasoning_summary=model_output.reasoning_summary,
+            reasoning_reference=model_output.reasoning_reference,
+            encrypted_reasoning_item=model_output.encrypted_reasoning_item,
+            model_output_preview=model_output.text[:80],
+        )
 
     def _retrieve_context(self, context: RunContext, request: RunRequest) -> list[str]:
         static_layer = [

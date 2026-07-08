@@ -35,6 +35,8 @@
 - отправлять опасные операции на подтверждение человеком;
 - журналировать и решение, и факт исполнения.
 
+Кейс Microsoft “When prompts become shells” хорошо проверяет gateway, потому что превращает prompt injection в путь **prompt-to-tool-to-execution**.[^microsoft-prompts-shells] Модель не является security boundary: каждый аргумент, полученный от модели, остается attacker-controlled input, пока gateway его не провалидировал. Для execution-adjacent tools базовый минимум — deny-by-default, строгая type/path validation, запрет interpolation в shell/eval/template sinks, per-tool sandbox и audit event с redacted parameters, validation result, policy decision и sandbox profile.
+
 Ниже очень практичный шаблон политики для исполнения инструментов:
 
 ```yaml
@@ -198,6 +200,26 @@ sequenceDiagram
 
 Тогда audit trail отвечает не только на вопрос «кто разрешил действие?», но и на более важный вопрос: «почему даже разрешенное действие не могло выйти за заданный blast radius?»
 
+### 5.3. Blast radius budget должен быть частью разрешения
+
+Свежая практика containment у Anthropic полезна еще одним выводом: разрешение не должно отвечать только "можно ли это действие". Оно должно отвечать "какой максимальный ущерб это действие может причинить, если модель, пользователь или внешний контент поведут себя хуже ожиданий".[^anthropic-containment]
+
+Поэтому для высокорисковых возможностей полезно держать явный `blast_radius_budget` рядом с policy decision:
+
+- какие файлы, tenants, APIs и секреты физически недоступны для этого запуска;
+- какие операции доступны только на чтение, а какие могут писать;
+- какой egress считается не просто разрешенным доменом, а отдельным capability grant;
+- где проходит workspace boundary и можно ли удалять, перезаписывать или только читать;
+- какой emergency narrowing переводит capability, sandbox profile или rollout wave в более узкий режим.
+
+Тогда approval перестает быть единственной защитой. Пользователь или operator может ошибиться, но среда исполнения все равно не получает полномочия, которые не нужны для текущей задачи.
+
+### 5.4. Конфигурация и egress тоже являются capability
+
+Containment ломается, если рантайм загружает конфигурацию до того, как решил, чему можно доверять. Поэтому опасный класс стоит называть прямо: `pre_trust_config_loading`. Сюда попадают config files, workspace hooks, project metadata и startup scripts, которые агент успевает прочитать или выполнить раньше policy gate. Для файлового пути порядок должен быть скучным и проверяемым: сначала canonicalization, затем symlink resolution before path validation, затем проверка scope, и только потом чтение или исполнение.
+
+То же правило относится к сети. Одного allowlist домена недостаточно, если capability внутри этого домена шире задачи. `approved-domain exfiltration` возможна, когда агенту разрешили общаться с "правильным" сервисом, а он использует разрешенный канал для лишнего вывода данных, например через Files API, uploads, paste endpoints или search/indexing side effects. Более безопасная форма - `egress_capability_proxy`: прокси проверяет не только hostname, но и метод, endpoint, tenant, объем, MIME type, redaction и связь с текущим `policy_decision_id`.
+
 
 ## 6. Контур безопасности как набор привычек
 
@@ -263,3 +285,5 @@ sequenceDiagram
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)

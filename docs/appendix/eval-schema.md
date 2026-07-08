@@ -111,12 +111,18 @@
 - `failed_run_traceable`
 - `sandbox_profile_review`
 - `stop_condition_verified`
+- `delegation_budget_respected`
+- `single_vs_multi_agent_regression`
 
 `failed_run_traceable` становится важным, как только release review начинает требовать failed-run drills. Оно проверяет, что деградировавший path не просто завершился неуспешно, а сохранил inspectable status, конкретную причину сбоя, например в поле `failure_reason`, trace linkage и управляемую release identity.
 
 `sandbox_profile_review` нужен для sandbox-backed paths: он проверяет, что workspace materialization, shell/filesystem permissions, network/secrets posture и snapshot/resume policy были явно представлены как reviewable evidence, а не остались неявными runtime settings.
 
 `stop_condition_verified` нужен для agent-run paths, где результат нельзя принимать по свободному тексту “готово”. Он проверяет, что у сценария есть явное условие завершения, механизм проверки, результат проверки, actor проверки и ссылки на evidence: вывод теста, трассу, снимок экрана, diff или другой артефакт.
+
+`delegation_budget_respected` нужен для manager/subagent paths. Он проверяет, что fanout был разрешен явным gate, `subagent_count` не превысил лимит, `context_handoff_size` и `token_budget` остались в пределах сценария, а `delegation_reason` объясняет, почему single-agent path был недостаточен.
+
+`single_vs_multi_agent_regression` нужен для сравнения режимов. Он проверяет, что multi-agent действительно выигрывает на read-heavy breadth-first сценарии и не проходит write-heavy shared-state сценарий, если растут конфликтующие действия, approvals, потеря контекста или `merge_conflict_risk`.
 
 То есть правила проверки лучше строить не только вокруг текста ответа, но и вокруг поведения системы.
 
@@ -148,6 +154,10 @@
 Bundled export contract намеренно конкретный. Session eval config validation также отделяет malformed eval specs от failed eval results через `Session eval specs must be a mapping`, `Session eval spec must be a mapping`, `Session eval spec key must be a string`, `Session eval spec key must not be empty` и `Session eval spec keys must be unique`.
 
 Export contract намеренно конкретный: default `dataset_name` — `agent-runtime-ref-eval-seed`; top-level summary включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; approval-backed scenarios также несут `approval_status_counts` в `expected_outcomes`; built-in scenarios включают `failed_run_timeout` с label `duplicate_ticket_eval_passed`, `max_ticket_side_effects: 1` и blocking `duplicate_ticket_guard` grading rule, `profile_memory` с labels `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с labels `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как expected outcome, а также `support_ticket` с label `sandbox_profile_review`, expected outcome `sandbox_profile_reviewed` и blocking `sandbox_profile_review` grading rule.
+
+Для будущего fanout-сценария тот же export должен сохранять per-run поля `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget` и `merge_conflict_risk`, даже если маленький reference runtime пока заполняет их пустыми строками. Это важно: downstream eval tooling должно видеть, что отсутствие делегирования — тоже измеримое состояние, а не пропуск поля.
+
+Для durable named-agent сценариев export должен так же сохранять `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`. Это позволяет eval сравнивать не только качество ответа, но и корректность resume/wakeup behavior: продолжился ли тот же actor instance, не была ли потеряна state version и не появился ли незаметный stateless replay вместо durable continuation.
 
 !!! example "Eval gate для duplicate-ticket thread"
     Для сквозного support-triage кейса отдельный eval должен воспроизводить timeout после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один ticket side effect или `side_effect_unknown` stop, и блокировать rollout, если новая prompt/model/adapter версия снова делает blind retry и создает второй тикет.
@@ -190,6 +200,15 @@ Export contract намеренно конкретный: default `dataset_name` 
 - `verification_result`
 - `verifier_actor`
 - `evidence_refs`
+- `subagent_count`
+- `delegation_reason`
+- `context_handoff_size`
+- `token_budget`
+- `merge_conflict_risk`
+- `agent_instance_id`
+- `durable_state_version`
+- `scheduled_wakeup_id`
+- `resumable_stream_id`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
 

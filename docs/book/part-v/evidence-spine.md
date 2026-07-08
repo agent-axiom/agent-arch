@@ -242,4 +242,4 @@ latest_rollout_decision: pause-canary
 - [Глава 21. Контур заверения: соревновательное тестирование, обнаружение и реагирование](../part-viii/chapter-21.md)
 - [Глава 22. Цепочка поставки, происхождение и доверенные артефакты](../part-viii/chapter-22.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

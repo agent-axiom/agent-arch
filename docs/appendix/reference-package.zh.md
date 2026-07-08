@@ -290,6 +290,32 @@ sandbox_profile:
 
 这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由沙箱（sandbox）支撑的运行时（runtime）暴露出来的契约表面：清单（manifest）、权限（permissions）、工作区物化（workspace materialization）、会话状态（session state），以及快照/恢复策略（snapshot/resume policy）都应该可以被复核（review）。
 
+### Polymorphic schema registry pattern
+
+对于高基数 tool/API domain，reference package 应该保留一个 `polymorphic_schema_registry` 示例，而不是把 structural rules 分散进 prompt text。最小记录可以是：
+
+```yaml
+polymorphic_schema_registry:
+  schema_descriptor_id: travel_expense.v3
+  schema_version: "3.2"
+  source_of_truth: registry://schemas/travel_expense.v3
+  fields:
+    amount:
+      type: float
+      description: Total transaction amount in local currency
+      validation_hook: check_positive_bounds
+  validated_tool_call:
+    capability_name: submit_expense
+    validation_boundary: before_tool_execution
+    validation_error_code: invalid_amount_bounds
+    trace_fields:
+      - schema_descriptor_id
+      - schema_version
+      - validation_hook
+```
+
+这个例子展示了 Chapter 9 的 contract surface：agent 可以围绕 intent 推理，但 runtime 负责加载 descriptor、调用 validator，并在 side effect 前记录 schema evidence。
+
 ### Durable agent actor 模式
 
 未来的 reference-runtime 示例还应该建模 Chapter 16 中的 durable-agent-actor 边界。Runtime 不需要 vendor-specific 的 Durable Object 实现，但应该有一个可见契约，用来表达 stable agent identity、instance-local state、resumable sessions、scheduled wake-ups，以及到 governed stores 的 handoff。
@@ -304,6 +330,21 @@ sandbox_profile:
 - `schedule_records`，包含 owner instance、idempotency key、overlap policy、next fire time 和 trace linkage；
 - `connection_scope`，用于 WebSocket/streaming fan-out 和 approval UI visibility；
 - `export_ref`、`delete_ref` 和 `audit_refs`，避免 hidden durable memory。
+
+### Recoverable internal fiber pattern
+
+在简单 background task 和完整 durable workflow 之间，还值得预留一层 contract surface：recoverable internal fiber。这类工作仍然属于 agent 自己的循环，但具备 durable acceptance、checkpoint/stash、recovery hook、inspection 和 cancellation。
+
+这类示例的最小 contract surface 包括：
+
+- `fiber_id`、`fiber_name`、`fiber_status` 和 `owner_agent_instance_id`；
+- 用于去重重复 webhook/request deliveries 的 `fiber_idempotency_key`；
+- 表示最后安全中间状态的 `fiber_checkpoint_ref` 或 `stash_snapshot`；
+- `recovery_handler` 和 `recovery_reason`，让 resume 成为显式过程，而不是隐式 retry；
+- `cancellation_status`、`last_safe_step` 和 `evidence_refs`；
+- 一条 policy rule，禁止把 checkpoint 当作 profile memory、tenant knowledge 或 system of record。
+
+这个模式适合那些比 simple in-memory loop 更重要、但还不需要带 external events 和 HITL gates 的完整 workflow spine 的 agent work。
 
 ### Agent shell + durable workflow spine 模式
 

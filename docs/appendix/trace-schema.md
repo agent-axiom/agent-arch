@@ -63,6 +63,22 @@
 - `span_id`
 - `parent_span_id`
 
+Для production observability поверх этого почти всегда нужны поля, которые делают spans searchable и пригодными для regression review:
+
+- `span_type`
+- `input_ref`
+- `output_ref`
+- `latency_ms`
+- `retry_count`
+- `token_input_count`
+- `token_output_count`
+- `token_cost`
+- `approval_state`
+- `pii_redacted`
+- `redaction_policy_id`
+- `retention_class`
+- `trace_search_tags`
+
 В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Event loader явно проверяет эту форму: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty` и `Telemetry redact field is not present in events: {missing}`.
 
 ## Как связаны трасса и сессия
@@ -96,10 +112,14 @@ Trace replay валидирует эти evidence до того, как они �
 | `agent_threat_evidence` | когда threat-model control оставляет доказательство | связывает threat class с trace/evidence identifiers |
 | `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
+| `model_reasoning_evidence` | после model step, если provider/runtime вернул privacy-preserving reasoning evidence | связывает model output с summary/reference/encrypted artifact без хранения raw reasoning |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
 | `mcp_tool_risk_review` | при review MCP tool/server риска | связывает threat class, registry evidence, scope review и quarantine state |
 | `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
 | `a2a_handoff` | когда один agent делегирует работу другому agent | фиксирует delegation chain, authorization и failure-attribution context |
+| `subagent_delegation_decision` | когда manager решает запускать или не запускать subagents | фиксирует fanout gate, budget и причину делегирования |
+| `durable_agent_instance_state` | когда named agent instance загружается, засыпает, просыпается или сохраняет durable state | фиксирует owner instance, state version, wakeup и resumable stream linkage |
+| `resumable_agent_recovery` | когда run продолжается после deploy/eviction/connection churn | фиксирует `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist` |
 | `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
 | `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
 | `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена candidate memory write |
@@ -190,7 +210,17 @@ Trace replay валидирует эти evidence до того, как они �
 - `quarantine_state`
 - `evidence_refs`
 
-`threat_class` лучше держать в словаре из MCP threat model: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
+`threat_class` лучше держать в словаре из MCP threat model: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`, `local control-plane crossing`.
+
+`local control-plane crossing` нужен для сценария AutoJack-класса: недоверенный web content попадает в browser/tool agent, использует его локальную сетевую позицию, обращается к `localhost` MCP/debug/control socket и пытается превратить control-plane параметр в host command execution. Для такого события trace должен сохранять хотя бы:
+
+- `untrusted_content_origin`
+- `browser_tool_identity`
+- `local_control_channel`
+- `loopback_auth_result`
+- `mcp_server_params_source`
+- `executable_allowlist_result`
+- `containment_action`
 
 Для `a2a_handoff` payload должен сохранять A2A handoff trust contract, а не только текст делегированного сообщения:
 
@@ -201,6 +231,42 @@ Trace replay валидирует эти evidence до того, как они �
 - `policy_inheritance`
 - `non_repudiation`
 - `failure_attribution`
+
+Для `subagent_delegation_decision` payload должен сохранять не только факт fanout, но и экономику решения:
+
+- `subagent_count`
+- `delegation_reason`
+- `independence_assessment`
+- `shared_context_need`
+- `write_risk`
+- `context_handoff_size`
+- `token_budget`
+- `tool_budget`
+- `merge_conflict_risk`
+- `fanout_decision`
+
+Для `model_reasoning_evidence` payload должен различать наблюдаемость и приватность reasoning:
+
+- `model_output_preview`
+- `reasoning_summary`
+- `reasoning_reference`
+- `encrypted_reasoning_item`
+- `tool_evidence_refs`
+- `governance_access_path`
+
+Сырой chain-of-thought или полный reasoning transcript не должен попадать в обычный trace export. Если расследованию нужен доступ к encrypted artifact, этот доступ должен идти через отдельный governance path с purpose, approval, retention и redaction/DLP checks.
+
+Для `durable_agent_instance_state` payload должен показывать, что long-lived agent не является безымянным request handler:
+
+- `agent_instance_id`
+- `durable_state_version`
+- `state_store`
+- `scheduled_wakeup_id`
+- `wakeup_reason`
+- `resumable_stream_id`
+- `connection_id`
+- `idempotency_key`
+- `state_transition`
 
 !!! example "Trace для duplicate-ticket thread"
     В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.
@@ -268,7 +334,7 @@ Trace replay валидирует эти evidence до того, как они �
 - `provenance`
 - `revision`
 
-Текущие reference payloads также используют operational metadata fields: `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`. Tool request/result model validation относится к той же trace boundary: malformed tool calls падают с `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, а malformed tool results падают с `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique` и `Tool result payload value must be a string: {payload_key}`.
+Текущие reference payloads также используют operational metadata fields: `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `model_output_preview`, `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, `duration_ms`, `span_type`, `input_ref`, `output_ref`, `latency_ms`, `retry_count`, `token_input_count`, `token_output_count`, `token_cost`, `approval_state`, `pii_redacted`, `redaction_policy_id`, `retention_class`, `trace_search_tags`, `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `merge_conflict_risk`, `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` and `resumable_stream_id`. Tool request/result/model validation относится к той же trace boundary: malformed model outputs падают с `Model output reasoning_summary must be a string`, `Model output reasoning_reference must be a string` или `Model output encrypted_reasoning_item must be a string`; malformed tool calls падают с `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, а malformed tool results падают с `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique` и `Tool result payload value must be a string: {payload_key}`.
 
 ## Что уже умеет пакет
 
@@ -304,6 +370,10 @@ Trace replay валидирует эти evidence до того, как они �
 - стабильный способ фиксировать, какая версия verifier contract породила grading output;
 - sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot;
 - event или linked payload для `sandbox_profile_reviewed`, чтобы rollout/eval evidence по workspace, permissions и snapshot/resume policy была traceable.
+- fanout fields для subagent delegation: `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `tool_budget` и `merge_conflict_risk`.
+- privacy-preserving reasoning fields: `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item` и `model_output_preview`, но не raw reasoning transcript.
+- durable named-agent fields: `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`, чтобы session export связывал run с long-lived actor state.
+- recovery fields: `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist`, чтобы deploy/eviction/connection churn не превращались в потерянный run или неявно расширенную делегацию.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 
@@ -319,6 +389,9 @@ Trace replay валидирует эти evidence до того, как они �
 - Можно ли связать трассу с verifier evidence, которое использовалось для grading или rollout review?
 - Есть ли событие или payload, где видно, какое условие завершения проверялось, кем и с каким результатом?
 - Если rollout требует `sandbox_profile_review`, есть ли trace evidence для workspace entries, permissions и snapshot/resume policy?
+- Если manager запускает subagents, видно ли по traces, почему fanout был разрешен, каким был budget и насколько рискован merge?
+- Если trace содержит reasoning evidence, хранится ли только summary/reference/encrypted pointer, а не сырой chain-of-thought?
+- Если агент является durable named instance, видно ли по trace/session export, какое состояние было загружено, чем оно изменилось и какой wake/resume path продолжил работу?
 - Можно ли понять, какая версия verifier contract породила этот grading output?
 - Есть ли план по маскированию данных и версионированию схемы?
 

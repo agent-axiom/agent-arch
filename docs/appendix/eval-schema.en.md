@@ -110,10 +110,19 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `failure_attribution_valid`
 - `failed_run_traceable`
 - `sandbox_profile_review`
+- `stop_condition_verified`
+- `delegation_budget_respected`
+- `single_vs_multi_agent_regression`
 
 `failed_run_traceable` becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, a concrete failure reason such as `failure_reason`, trace linkage, and governed release identity.
 
 `sandbox_profile_review` matters for sandbox-backed paths: it checks that workspace materialization, shell/filesystem permissions, network/secrets posture, and snapshot/resume policy were explicitly represented as reviewable evidence instead of remaining implicit runtime settings.
+
+`stop_condition_verified` matters for agent-run paths where a free-text “done” is not enough. It checks that the scenario carries an explicit stop condition, verification mechanism, verification result, verifier actor, and evidence link such as test output, trace, screenshot, diff, or artifact.
+
+`delegation_budget_respected` matters for manager/subagent paths. It checks that fanout passed an explicit gate, `subagent_count` stayed within limit, `context_handoff_size` and `token_budget` remained within scenario bounds, and `delegation_reason` explains why the single-agent path was insufficient.
+
+`single_vs_multi_agent_regression` compares modes. It checks that multi-agent genuinely wins on read-heavy breadth-first work and fails or blocks on write-heavy shared-state work when conflicting actions, approvals, context loss, or `merge_conflict_risk` increase.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 

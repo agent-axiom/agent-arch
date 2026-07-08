@@ -183,6 +183,51 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 静态评测集很适合比较已知案例。用户模拟器更适合检查行为动态，而不只是看一个预设样例上的分数。
 
+### 4.1.1. Deployment simulation 增加了发布前真实分布回放
+
+OpenAI 描述了一个位于静态评测集和线上 rollout 之间的有用层级：deployment simulation。[^openai-deployment-simulation] 它不是只检查人工编写或 adversarial prompts，而是取真实历史上下文，做隐私过滤，移除旧模型的 assistant completion，再用候选模型在发布前重放同一段前缀。对 agentic settings 来说，这不只是 transcript replay；它还需要可信的 tool environment simulation，因为一次智能体轨迹可能依赖数百次工具调用、仓库状态、网络响应和临时故障。
+
+本书里的架构结论很直接：发布前门禁不应该只会回放 curated incidents，也应该能回放真实任务分布的一小段。最小 replay contract 包括：
+
+- `source_window` 和 privacy-filtering 规则；
+- `candidate_model` 或新的 policy/runtime 版本；
+- 不含旧 assistant completion 的 `conversation_prefix`；
+- simulated 或 read-only 的 `tool_environment_ref`；
+- 针对新 failure modes、behavior delta 和 tool-use regression 的 verdict；
+- post-release validation hook，用来把预测和真实 rollout traffic 对比。
+
+Deployment simulation 不能替代 red team 和 targeted tail-risk evals。它填补的是另一个缺口：在新 model、runtime 或 policy 进入大范围用户流量之前，先在 deployment-like contexts 中发现常见或新出现的失败模式。
+
+### 4.1.2. ToolSimulator 展示了独立的工具模拟契约
+
+AWS ToolSimulator 适合作为 deployment simulation 旁边更窄但很重要的一层：它是面向依赖外部工具的智能体的 LLM-powered tool simulation。[^aws-toolsimulator] 它避免直接使用可能泄露 PII、触发真实副作用或遇到 rate limits 的 live API calls，也避免只靠很难支撑 multi-turn workflows 的 static mocks；模拟器会基于注册的 schema 生成工具响应，并支持 stateful tool simulations。
+
+对本书来说，重点不是“必须使用 Strands Evals”。重点是任何 agent-eval 平台都需要一个明确的 tool simulator contract：
+
+- 哪些工具可以被模拟，哪些工具必须保持 read-only 或直接禁止；
+- `simulated_tool_state`、初始状态，以及每个 case run 之间的 reset 规则；
+- 对 tool responses 和错误的 schema enforcement；
+- 覆盖 recovery path 的 fault、latency 和 empty-result cases，而不只是 happy path；
+- fidelity boundaries：模拟器能模仿什么，哪里必须使用真实 sandbox 或 canary；
+- tool simulator fidelity 指标，避免团队把看似合理的 mock 当成 production evidence。
+
+实践结论很简单：tool-heavy evals 必须单独审查工具模拟器质量。如果智能体通过测试只是因为 simulator 总是返回方便的答案，即使最终文本看起来正确，rollout gate 也应该把这个信号视为弱证据。
+
+### 4.1.3. Analytics-agent evals 应该检查 query path，而不只是答案
+
+GitHub 的 Qubot 案例展示了 internal analytics agent 的一个好用生产模式：context layer 和 agent configuration 的变更通过 pull request 进入，再用 known prompts、ground-truth SQL、metadata、multiple trials，以及 completion、accuracy、duration 报告进行 offline evals。[^github-qubot]
+
+对本书来说，重点不是 SQL agent 本身，而是 eval contract 的形状。internal knowledge/data agent 不应该只按最终答案文本来评测，还应该检查生成答案的路径：
+
+- 加载了哪个 context layer；
+- 应用了哪些 mandatory filters 和 ownership rules；
+- 选择了哪个 query engine，为什么；
+- source attribution 是否指向 dataset 或 metric definition；
+- 权限不足或 grain/filter 有歧义时发生了什么；
+- 哪条 trace 证明 query review 和 access boundary 没有被绕过。
+
+这种 eval 更能捕捉真实 production regressions：agent 可能生成看似合理的答案，却选错 grain、跳过 mandatory filter、引用过期 metric definition，或者在本该拒绝时执行 query。
+
 ### 4.2. 持续评测闭环应该反过来影响发布决策
 
 当你已经有了在线评测、追踪分级和模拟对话，下一步就很关键：这些结果不能只是被记录下来，它们应该真正影响发布流程。
@@ -199,6 +244,10 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 这个边界很重要，因为评测不应该被塞进生命周期里的所有职责。它们的任务是产出 rollout 可以消费的判断，而不是替代事故响应、遥测设计或全域负责人归属。
 
 这也意味着评测不拥有遏制。它们不会冻结路由、禁用能力，也不会分配紧急响应。它们告诉团队，这个变更是否值得被信任、regression risk 在哪里，以及 rollout 是否应该继续。
+
+另一个 lifecycle risk 是把 eval discipline 和某个 hosted eval product 混为一谈。OpenAI 在 2026 年 6 月宣布 Evals platform 和 Agent Builder deprecation：现有 evals 计划在 2026 年 10 月 31 日变成 read-only，Evals dashboard/API 和 Agent Builder 计划在 2026 年 11 月 30 日关闭。[^openai-deprecations] 对本章的实践结论很简单：hosted dashboard 可以是有用界面，但持久基础应该是 portable datasets、verifier contracts、traces、grading rules、export paths 和 release-gate decisions，这些东西应该能在产品替换或迁移后继续存在。如果 workflow 需要活得比一个 UI 产品更久，迁移目标应该偏向 Agents SDK 或另一个 code-owned runtime，让 eval artifacts 和代码一起版本化。
+
+LangChain 的 State of Agent Engineering 补上了一个有用的 production-readiness baseline。[^langchain-state-agent-engineering] 在它的调查中，57.3% 的受访者已经把 agents 放进 production，但最大的 production barrier 仍然是 quality：32% 把它列为首要 blocker。同时，observability 已经接近基础设施默认项：89% 的组织已经实现某种 observability layer，而 offline evals 只有 52.4%。对本章来说，这个差距很关键：agent maturity 不能只靠 traces 证明。Release gate 应该显式看到 `quality blocker`、`observability baseline` 和 `eval adoption gap`：团队能解释哪些 failures，能在发布前抓住哪些 failures，又有哪些 failures 仍然只能在 exposure 之后发现。
 
 这还意味着，发布纪律必须谨慎决定自己在奖励什么。单一的最终状态分数往往太弱，因为它会掩盖部分成功、被阻断但正确的行为，或者通过糟糕控制路径获得的侥幸成功。成熟的评测回路会使用更丰富的验证器输出，让 rollout 决策反映的不只是最后一个屏幕看起来是否正常，而是系统到底如何行动的。
 
@@ -263,6 +312,30 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 - 协作失效能否从追踪中被定位。
 
 因此，多智能体可靠性研究在这里的价值，不是鼓励默认把运行时做得更复杂，而是在提醒我们：编排越复杂，评测设计就必须越丰富。
+
+Anthropic 对 Research 系统的生产复盘还给这里补了一道经济性评测门：如果 multi-agent path 之所以胜出，是因为消耗了更多 token、tool calls 和并行 context windows，那么 release gate 不只要判断答案质量，还要判断这笔预算是否合理。[^anthropic-multi-agent-research] 对广度优先研究来说，这可能是正确权衡；但对共享状态很强的紧密任务，同样的成本增长应该算作架构回归，即使少数样例的最终答案看起来更好。
+
+这个选择的最小 eval 应该在两类任务上比较 single-agent 与 multi-agent 模式：
+
+- **read-heavy breadth-first：** 多个独立来源、分开的 retrieval branches、最终 synthesis；如果质量提升、`token_budget` 可接受，并且 trace 清晰，multi-agent 可以通过；
+- **write-heavy shared-state：** 多个步骤修改同一个对象或同一条 incident record；如果出现冲突动作、上下文丢失、额外 approvals 或较高 `merge_conflict_risk`，multi-agent 应该失败或被拦截。
+
+这道 gate 用来防止那个很诱人但错误的结论：“multi-agent 在 research demo 里更好，所以应该到处打开”。
+
+### 5.2.1. Vulnerability harness 是 validation funnel，不是单个 scanner
+
+Cloudflare 描述了同一原则在 security 场景里的一个好版本：vulnerability discovery 只有在 raw findings 经过独立 validation system 后才有用，而不是直接把候选结果当作“bugs”丢给工程团队。[^cloudflare-vulnerability-harness] 它们把 VDH（Vulnerability Discovery Harness）和 VVS（Vulnerability Validation System）分开：VDH 激进地寻找 candidates，VVS 负责 deduplication、judgment 和 fixing。Discovery 可以有噪声、可以受模型波动影响；validation 必须更严格、可复现，并且独立。
+
+对 eval architecture 来说，这个模式几乎可以直接迁移：
+
+- 没有 threat model、affected boundary 和 working PoC/test 的 finding 只能是 candidate，不是 verified issue；
+- deterministic checks 应该验证 schema、files、functions、paths、patch/test parseability，并确认原始源码没有被修改来制造 exploit；
+- independent validator 不应该有权创建自己的 findings，而应该尝试推翻 hunter；
+- triage 应该区分 real-but-latent、wrong-repo、duplicate 和 production-reachable findings；
+- fixing gate 应该要求 targeted fail→pass flip，阻止 post-patch failure，并把 branch 留给 human review；
+- harness health 应该检测 shallow runs：如果 hunt 异常快速结束，且没有 findings、sibling tasks 或 gapfill work，这更像 tool failure，而不是“没有 bug”的证据。
+
+核心结论是：好的 eval loop 不只是计算 score。它把廉价的模型噪声变成可验证工件，让团队能够 deduplicate、replay、challenge、绑定 owner，并安全地进入 patch review。
 
 ### 5.3. 多轮一致性也值得单独检查
 
@@ -370,6 +443,22 @@ Google 最近的材料还强调了一个很实用的层次：评测闭环最好�
 
 这样发布决策就不会只依赖改动作者的直觉。
 
+### 7.1. Harness 也应该作为系统的一部分被评测
+
+GitHub Copilot agentic harness 给了一个很有用的生产信号：agent quality 不能被简化成 model quality。[^github-copilot-agentic-harness] Harness 负责 tools、context 和 workflow，因此也应该作为独立层来比较：same model、same benchmark task、归一化的 context window、reasoning effort、tool selection 和 MCP servers，然后再与 model-vendor harness 对照。
+
+对 release gate 来说，这会改变指标集合。除了 task resolution，团队还应该显式观察：
+
+- token efficiency；
+- run-to-run variance；
+- wall-clock duration；
+- tool-call count 和 retry budget；
+- 不同任务类别的 cost profile；
+- Auto model selection 或其他 model router 的质量；
+- memory、context handling 和 skill triggering 的退化。
+
+实际结论是：如果团队改动 harness、context strategy 或 model routing，就需要 harness-level release gate。否则团队很容易误判成“模型变好了”或“模型变差了”，而真正原因其实在 orchestration layer。
+
 ## 8. 评测回路的实用规则
 
 如果要把工程规则压缩成一小组，通常这些就够了：
@@ -459,6 +548,22 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - 回退质量；
 - 策略敏感轮次。
 
+### 11.2. Production evals 应该把闭环带回开发
+
+AWS Agent-EvalKit 展示了同一模式的一个实践版本：agent evaluation 不应该只是上线前的一次性 benchmark。[^aws-agent-evalkit] 完整闭环更像一个 pipeline：根据代码和 risk areas 规划评测，生成或导入测试用例，插入 trace instrumentation，让 agent 跑过这些场景，基于 traces 计算指标，并产出带有具体 code-level recommendations 的报告。
+
+这里重要的不是某个具体 toolkit，而是闭环形状。Production traces 不应该只变成 dashboards；它们还应该变成新的 test cases、regression thresholds 和 code-level fixes。如果真实流量显示 agent 在空 tool output 之上仍然给出漂亮答案，这不只是 observability signal。它也是未来针对 faithfulness、tool-use discipline 和 fallback behavior 的 eval case。
+
+在成熟闭环里，每次有意义的变更之后，团队都应该能做到：
+
+- 复用已有 test cases 和 instrumentation；
+- 从 production logs 或人工复盘里补充场景；
+- 比较不同 agent versions 的报告；
+- 把 failed metric 绑定到具体 trace 和 code location；
+- 在 sampled production traces 上跑质量检查，而不只依赖合成数据。
+
+这样 eval loop 才会变成 release discipline：它接收来自开发、生产、事故和专家复盘的信号，再返回的不是“分数变差了”，而是下一次变更可以审查、可以执行的工作。
+
 ## 12. 评测文化最常见的崩坏点
 
 这些问题很常见：
@@ -533,3 +638,13 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^github-copilot-agentic-harness]: GitHub Blog, [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/).
+[^langchain-state-agent-engineering]: LangChain, [State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering).
+[^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
+[^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
+[^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
+[^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).

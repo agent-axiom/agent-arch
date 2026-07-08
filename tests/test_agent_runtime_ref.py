@@ -1261,6 +1261,15 @@ class TestFailurePaths:
             "idempotency_key": "",
             "approval_id": "",
             "capability_name": "create_ticket",
+            "subagent_count": "",
+            "delegation_reason": "",
+            "context_handoff_size": "",
+            "token_budget": "",
+            "merge_conflict_risk": "",
+            "agent_instance_id": "",
+            "durable_state_version": "",
+            "scheduled_wakeup_id": "",
+            "resumable_stream_id": "",
         }
         event_types = [event.event_type for event in runtime.telemetry.events]
         assert event_types == [
@@ -4320,6 +4329,49 @@ class TestRuntimeCore:
         )
         assert result.status == "success"
         assert result.output_text == expected_output
+
+    def test_runtime_emits_private_reasoning_evidence_without_raw_reasoning(self) -> None:
+        class ReasoningRuntime(AgentRuntime):
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                return ModelOutput(
+                    text="Reasoning evidence was captured without raw chain-of-thought.",
+                    reasoning_summary=" Checked policy and retrieval evidence. ",
+                    reasoning_reference=" resp_reasoning_ref_001 ",
+                    encrypted_reasoning_item=" enc_reasoning_item_001 ",
+                )
+
+        runtime = ReasoningRuntime()
+        result = runtime.run(
+            RunRequest(
+                user_input="Summarize the current architecture.",
+                tenant_id="tenant-acme",
+                principal_id="user-1",
+                trace_id="trace-reasoning-evidence-001",
+                agent_id="agent-runtime-ref",
+            ),
+        )
+
+        assert result.status == "success"
+        event = next(
+            item
+            for item in runtime.telemetry.events
+            if item.event_type == "model_reasoning_evidence"
+        )
+        assert event.payload == {
+            "session_id": "session-demo-001",
+            "agent_id": "agent-runtime-ref",
+            "reasoning_summary": "Checked policy and retrieval evidence.",
+            "reasoning_reference": "resp_reasoning_ref_001",
+            "encrypted_reasoning_item": "enc_reasoning_item_001",
+            "model_output_preview": "Reasoning evidence was captured without raw chain-of-thought.",
+        }
+        assert "raw_reasoning" not in event.payload
 
     def test_runtime_rejects_blank_user_input(self) -> None:
         runtime = AgentRuntime()
@@ -7591,11 +7643,29 @@ class TestRuntimeControlPaths:
             authorization_mode=" user_delegated ",
             delegated_principal_id=" user-1 ",
             delegated_scope=" tickets.write ",
+            subagent_count=" 2 ",
+            delegation_reason=" independent_research_branches ",
+            context_handoff_size=" 1200 ",
+            token_budget=" 8000 ",
+            merge_conflict_risk=" low ",
+            agent_instance_id=" support-thread-17 ",
+            durable_state_version=" 4 ",
+            scheduled_wakeup_id=" wakeup-001 ",
+            resumable_stream_id=" stream-001 ",
         )
         assert direct_record.status == "failed"
         assert direct_record.failure_reason == "tool_timeout"
         assert direct_record.authorization_mode == "user_delegated"
         assert direct_record.delegated_scope == "tickets.write"
+        assert direct_record.subagent_count == "2"
+        assert direct_record.delegation_reason == "independent_research_branches"
+        assert direct_record.context_handoff_size == "1200"
+        assert direct_record.token_budget == "8000"
+        assert direct_record.merge_conflict_risk == "low"
+        assert direct_record.agent_instance_id == "support-thread-17"
+        assert direct_record.durable_state_version == "4"
+        assert direct_record.scheduled_wakeup_id == "wakeup-001"
+        assert direct_record.resumable_stream_id == "stream-001"
         summary = summarize_session(
             " session-direct-normalized-001 ",
             (direct_record,),
@@ -13124,6 +13194,15 @@ class TestCli:
             "idempotency_key",
             "approval_id",
             "capability_name",
+            "subagent_count",
+            "delegation_reason",
+            "context_handoff_size",
+            "token_budget",
+            "merge_conflict_risk",
+            "agent_instance_id",
+            "durable_state_version",
+            "scheduled_wakeup_id",
+            "resumable_stream_id",
         }
 
     @staticmethod

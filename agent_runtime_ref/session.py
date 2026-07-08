@@ -23,6 +23,15 @@ class RunPayload(TypedDict):
     idempotency_key: str
     approval_id: str
     capability_name: str
+    subagent_count: str
+    delegation_reason: str
+    context_handoff_size: str
+    token_budget: str
+    merge_conflict_risk: str
+    agent_instance_id: str
+    durable_state_version: str
+    scheduled_wakeup_id: str
+    resumable_stream_id: str
 
 
 class SessionMetadataPayload(TypedDict):
@@ -88,6 +97,15 @@ class RunRecord:
     idempotency_key: str = ""
     approval_id: str = ""
     capability_name: str = ""
+    subagent_count: str = ""
+    delegation_reason: str = ""
+    context_handoff_size: str = ""
+    token_budget: str = ""
+    merge_conflict_risk: str = ""
+    agent_instance_id: str = ""
+    durable_state_version: str = ""
+    scheduled_wakeup_id: str = ""
+    resumable_stream_id: str = ""
 
     def __post_init__(self) -> None:
         self.trace_id = _read_required_string(self.trace_id, field="trace_id")
@@ -131,6 +149,42 @@ class RunRecord:
         self.capability_name = _read_optional_string(
             self.capability_name,
             field="capability_name",
+        )
+        self.subagent_count = _read_optional_string(
+            self.subagent_count,
+            field="subagent_count",
+        )
+        self.delegation_reason = _read_optional_string(
+            self.delegation_reason,
+            field="delegation_reason",
+        )
+        self.context_handoff_size = _read_optional_string(
+            self.context_handoff_size,
+            field="context_handoff_size",
+        )
+        self.token_budget = _read_optional_string(
+            self.token_budget,
+            field="token_budget",
+        )
+        self.merge_conflict_risk = _read_optional_string(
+            self.merge_conflict_risk,
+            field="merge_conflict_risk",
+        )
+        self.agent_instance_id = _read_optional_string(
+            self.agent_instance_id,
+            field="agent_instance_id",
+        )
+        self.durable_state_version = _read_optional_string(
+            self.durable_state_version,
+            field="durable_state_version",
+        )
+        self.scheduled_wakeup_id = _read_optional_string(
+            self.scheduled_wakeup_id,
+            field="scheduled_wakeup_id",
+        )
+        self.resumable_stream_id = _read_optional_string(
+            self.resumable_stream_id,
+            field="resumable_stream_id",
         )
         status = self.status
         if status not in {"success", "denied", "failed", "approval_required"}:
@@ -294,6 +348,15 @@ class SessionStore:
         idempotency_key: str = "",
         approval_id: str = "",
         capability_name: str = "",
+        subagent_count: str = "",
+        delegation_reason: str = "",
+        context_handoff_size: str = "",
+        token_budget: str = "",
+        merge_conflict_risk: str = "",
+        agent_instance_id: str = "",
+        durable_state_version: str = "",
+        scheduled_wakeup_id: str = "",
+        resumable_stream_id: str = "",
     ) -> RunRecord:
         session_id = _read_required_string(session_id, field="session_id")
         status = _read_required_string(status, field="status")
@@ -332,6 +395,36 @@ class SessionStore:
         idempotency_key = _read_optional_string(idempotency_key, field="idempotency_key")
         approval_id = _read_optional_string(approval_id, field="approval_id")
         capability_name = _read_optional_string(capability_name, field="capability_name")
+        subagent_count = _read_optional_string(subagent_count, field="subagent_count")
+        delegation_reason = _read_optional_string(
+            delegation_reason,
+            field="delegation_reason",
+        )
+        context_handoff_size = _read_optional_string(
+            context_handoff_size,
+            field="context_handoff_size",
+        )
+        token_budget = _read_optional_string(token_budget, field="token_budget")
+        merge_conflict_risk = _read_optional_string(
+            merge_conflict_risk,
+            field="merge_conflict_risk",
+        )
+        agent_instance_id = _read_optional_string(
+            agent_instance_id,
+            field="agent_instance_id",
+        )
+        durable_state_version = _read_optional_string(
+            durable_state_version,
+            field="durable_state_version",
+        )
+        scheduled_wakeup_id = _read_optional_string(
+            scheduled_wakeup_id,
+            field="scheduled_wakeup_id",
+        )
+        resumable_stream_id = _read_optional_string(
+            resumable_stream_id,
+            field="resumable_stream_id",
+        )
         if status not in {"success", "denied", "failed", "approval_required"}:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
@@ -373,6 +466,15 @@ class SessionStore:
             idempotency_key=idempotency_key,
             approval_id=approval_id,
             capability_name=capability_name,
+            subagent_count=subagent_count,
+            delegation_reason=delegation_reason,
+            context_handoff_size=context_handoff_size,
+            token_budget=token_budget,
+            merge_conflict_risk=merge_conflict_risk,
+            agent_instance_id=agent_instance_id,
+            durable_state_version=durable_state_version,
+            scheduled_wakeup_id=scheduled_wakeup_id,
+            resumable_stream_id=resumable_stream_id,
         )
         self._runs.append(record)
         return record
@@ -587,6 +689,15 @@ class SessionStore:
                     "idempotency_key": run.idempotency_key,
                     "approval_id": run.approval_id,
                     "capability_name": run.capability_name,
+                    "subagent_count": run.subagent_count,
+                    "delegation_reason": run.delegation_reason,
+                    "context_handoff_size": run.context_handoff_size,
+                    "token_budget": run.token_budget,
+                    "merge_conflict_risk": run.merge_conflict_risk,
+                    "agent_instance_id": run.agent_instance_id,
+                    "durable_state_version": run.durable_state_version,
+                    "scheduled_wakeup_id": run.scheduled_wakeup_id,
+                    "resumable_stream_id": run.resumable_stream_id,
                 }
                 for run in runs
             ],
