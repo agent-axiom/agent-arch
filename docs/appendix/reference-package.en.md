@@ -290,6 +290,32 @@ sandbox_profile:
 
 This example does not turn the reference runtime into a full sandbox orchestrator. It fixes the contract surface that Chapters 9 and 16 require from a real sandbox-backed runtime: manifest, permissions, workspace materialization, session state, and snapshot/resume policy should be visible to review.
 
+### Polymorphic Schema Registry Pattern
+
+For high-cardinality tool/API domains, the reference package should keep an example `polymorphic_schema_registry` instead of spreading structural rules through prompt text. A minimal record could look like this:
+
+```yaml
+polymorphic_schema_registry:
+  schema_descriptor_id: travel_expense.v3
+  schema_version: "3.2"
+  source_of_truth: registry://schemas/travel_expense.v3
+  fields:
+    amount:
+      type: float
+      description: Total transaction amount in local currency
+      validation_hook: check_positive_bounds
+  validated_tool_call:
+    capability_name: submit_expense
+    validation_boundary: before_tool_execution
+    validation_error_code: invalid_amount_bounds
+    trace_fields:
+      - schema_descriptor_id
+      - schema_version
+      - validation_hook
+```
+
+This example shows the contract surface from Chapter 9: the agent can reason over intent, but the runtime loads the descriptor, calls the validator, and records schema evidence before the side effect.
+
 ### Durable Agent Actor Pattern
 
 A future reference-runtime example should also model the durable-agent-actor boundary from Chapter 16. The runtime does not need a vendor-specific Durable Object implementation, but it should have a visible contract for stable agent identity, instance-local state, resumable sessions, scheduled wake-ups, and handoff to governed stores.
@@ -304,6 +330,21 @@ A minimal config surface would include:
 - `schedule_records` with owner instance, idempotency key, overlap policy, next fire time, and trace linkage;
 - `connection_scope` for WebSocket/streaming fan-out and approval UI visibility;
 - `export_ref`, `delete_ref`, and `audit_refs` so hidden durable memory is not possible.
+
+### Recoverable Internal Fiber Pattern
+
+Between a simple background task and a full durable workflow, it is useful to reserve one more contract surface: a recoverable internal fiber. This is work that remains part of the agent's own loop, but has durable acceptance, checkpoint/stash, recovery hook, inspection, and cancellation.
+
+A minimal contract surface for that example would include:
+
+- `fiber_id`, `fiber_name`, `fiber_status`, and `owner_agent_instance_id`;
+- `fiber_idempotency_key` for deduplicating repeated webhook/request deliveries;
+- `fiber_checkpoint_ref` or `stash_snapshot` for the last safe intermediate state;
+- `recovery_handler` and `recovery_reason`, so resume is an explicit procedure rather than an implicit retry;
+- `cancellation_status`, `last_safe_step`, and `evidence_refs`;
+- a policy rule that forbids using the checkpoint as profile memory, tenant knowledge, or system of record.
+
+This pattern fits agent work that is too important for a simple in-memory loop, but does not yet need a full workflow spine with external events and HITL gates.
 
 ### Agent Shell + Durable Workflow Spine Pattern
 

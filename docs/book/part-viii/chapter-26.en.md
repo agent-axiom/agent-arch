@@ -231,6 +231,8 @@ Then telemetry stops being only a dashboard signal. It becomes input to a review
 
 Telemetry then stops being only evidence after the fact. It becomes an operational input to the governance loop: observe → policy decision → containment or rollout action → new evidence about the result.
 
+Azure agentic cloud operations shows the same shift in the infrastructure control loop: observability signals should not stop at a dashboard once an agent is helping investigate, optimize, and prepare actions.[^azure-agentic-cloud-ops] The useful pattern for this book is: telemetry and topology provide context, an MCP resource server exposes standardized access to cost, usage, and resource data, the agent produces a recommendation or guided action, and the policy, approval, and audit layer decides whether that action can proceed. This does not remove the human from the loop. It makes human approval a reviewable part of closed-loop operations rather than a manual step outside the system.
+
 That framing also keeps this chapter separate from the assurance chapter and the registry chapter. Assurance is about containment and response. Registry is about estate accountability. Observability is the shared substrate that makes both of those functions auditable.
 
 It should also stay separate from the provenance chapter. Observability asks whether the system emitted enough evidence, coverage, and correlation to investigate or detect. Provenance asks which approved artifact set, contract version, or governed bundle later justified the decision.
@@ -440,5 +442,6 @@ This chapter should be read as an evidence-readiness layer, not as a logging che
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
+[^azure-agentic-cloud-ops]: Microsoft Azure Blog, [From insight to action: The next phase of agentic cloud operations](https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/)
 
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)

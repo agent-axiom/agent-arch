@@ -63,6 +63,22 @@ In production, this usually needs to grow to include:
 - `span_id`
 - `parent_span_id`
 
+For production observability, this usually also needs fields that make spans searchable and useful for regression review:
+
+- `span_type`
+- `input_ref`
+- `output_ref`
+- `latency_ms`
+- `retry_count`
+- `token_input_count`
+- `token_output_count`
+- `token_cost`
+- `approval_state`
+- `pii_redacted`
+- `redaction_policy_id`
+- `retention_class`
+- `trace_search_tags`
+
 In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version` and `redacted_fields`, and the export path supports redaction for selected fields. The event loader validates this shape explicitly: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty`, and `Telemetry redact field is not present in events: {missing}`.
 
 ## How trace and session relate
@@ -100,12 +116,16 @@ Below is the current minimal event catalog.
 | `mcp_tool_risk_review` | during MCP tool/server risk review | links threat class, registry evidence, scope review, and quarantine state |
 | `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
 | `a2a_handoff` | when one agent delegates work to another agent | records delegation chain, authorization, and failure-attribution context |
+| `subagent_delegation_decision` | when a manager decides whether to spawn subagents | records the fanout gate, budget, and delegation reason |
+| `durable_agent_instance_state` | when a named agent instance loads, sleeps, wakes, or saves durable state | records owner instance, state version, wakeup, and resumable stream linkage |
+| `resumable_agent_recovery` | when a run continues after deploy/eviction/connection churn | records `continuation_id`, `last_durable_checkpoint`, `recovery_reason`, and `client_tool_allowlist` |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
 | `sandbox_profile_reviewed` | when a sandbox-backed path is reviewed | records workspace, permissions, and snapshot/resume evidence review |
 | `memory_write_decision` | before background memory persistence | records whether a candidate memory write was allowed or denied |
 | `memory_persisted` | after a background write | records provenance and revision of a memory record |
 | `background_compaction` | after background memory maintenance | records tenant-level compaction results |
 | `background_update_scheduled` | after background work is queued or completed | records background update status for the run |
+| `verification_result` | when a run verifies its stop condition | records stop condition, verifier actor, verification mechanism, pass/fail/warning/blocked result, and evidence links |
 | `run_failed` | when a tool failure becomes the run outcome | preserves explicit failed-run traceability |
 | `governance_action` | when a telemetry signal triggers a policy, containment, rollout, or registry decision | links a governance action record to trace evidence |
 | `run_complete` | at the end of a run | closes the run-level outcome |
@@ -189,7 +209,17 @@ For `mcp_tool_risk_review`, production traces should record MCP threat-model evi
 - `quarantine_state`
 - `evidence_refs`
 
-Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
+Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`, `local control-plane crossing`.
+
+`local control-plane crossing` covers AutoJack-class scenarios: untrusted web content reaches a browser/tool agent, uses its local network position, calls a `localhost` MCP/debug/control socket, and attempts to turn a control-plane parameter into host command execution. For that event, the trace should record at least:
+
+- `untrusted_content_origin`
+- `browser_tool_identity`
+- `local_control_channel`
+- `loopback_auth_result`
+- `mcp_server_params_source`
+- `executable_allowlist_result`
+- `containment_action`
 
 For `a2a_handoff`, the payload should preserve the A2A handoff trust contract, not only the delegated message text:
 
@@ -200,6 +230,19 @@ For `a2a_handoff`, the payload should preserve the A2A handoff trust contract, n
 - `policy_inheritance`
 - `non_repudiation`
 - `failure_attribution`
+
+For `subagent_delegation_decision`, the payload should preserve not only the fact of fanout, but also the economics of the decision:
+
+- `subagent_count`
+- `delegation_reason`
+- `independence_assessment`
+- `shared_context_need`
+- `write_risk`
+- `context_handoff_size`
+- `token_budget`
+- `tool_budget`
+- `merge_conflict_risk`
+- `fanout_decision`
 
 !!! example "Trace for the duplicate-ticket thread"
     In the support-triage case, `tool_policy_decision`, `approval_requested`, `tool_execution`, and the final outcome should be tied by one `trace_id`, `session_id`, `approval_id`, `tool_principal`, and `idempotency_key`. If `create_ticket` times out and the side-effect status is unknown, the trace should show `side_effect_unknown` instead of masking the run as successful or repeating the write without reconciliation.
@@ -267,7 +310,7 @@ And `memory_persisted` should usually include:
 - `provenance`
 - `revision`
 
-The current reference payloads also use operational metadata fields such as `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`. Tool request/result model validation is part of the same trace boundary: malformed tool calls fail with `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, and malformed tool results fail with `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique`, and `Tool result payload value must be a string: {payload_key}`.
+The current reference payloads also use operational metadata fields such as `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `model_output_preview`, `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, `duration_ms`, `span_type`, `input_ref`, `output_ref`, `latency_ms`, `retry_count`, `token_input_count`, `token_output_count`, `token_cost`, `approval_state`, `pii_redacted`, `redaction_policy_id`, `retention_class`, `trace_search_tags`, `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `merge_conflict_risk`, `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id`, and `resumable_stream_id`. Tool request/result/model validation is part of the same trace boundary: malformed model outputs fail with `Model output reasoning_summary must be a string`, `Model output reasoning_reference must be a string`, or `Model output encrypted_reasoning_item must be a string`; malformed tool calls fail with `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, and malformed tool results fail with `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique`, and `Tool result payload value must be a string: {payload_key}`.
 
 ## What the package already supports
 

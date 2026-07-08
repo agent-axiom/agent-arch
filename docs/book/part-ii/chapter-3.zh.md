@@ -139,6 +139,8 @@ flowchart LR
 
 Anthropic 最近的生产经验在这里很有价值，因为它给出了一条工程不变量：agent 越有能力，风险就不只是“出错概率”，还包括可能的 blast radius。单靠权限提示守不住这条边界。用户如果看到几十个确认提示，就会开始机械地点“同意”；human-in-the-loop 很容易从控制变成仪式。[^anthropic-containment]
 
+成熟 runtime 的实用公式更硬：**contain capability before supervising behavior**。换句话说，确定性环境必须先遏制 capability，然后才轮到 model、user 或外部内容争论某一步是否可以接受。如果 agent 看不到 network route、secret、file、tenant 或 write endpoint，它就不能在 approval path 疲劳时意外或故意绕过去使用它们。
+
 因此，上面的威胁清单应该用一个更硬的问题来读：**如果模型错了，或者用户已经确认疲劳，agent 在物理上到底还能做什么？** 每个高风险能力不仅需要 approval rules，还需要架构层面的边界：
 
 - egress controls：执行环境可以连接到哪里；
@@ -318,6 +320,7 @@ Google 的一个有用提醒很直接：在智能体系统里，身份不能只�
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

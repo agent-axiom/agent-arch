@@ -186,6 +186,51 @@ For the support agent, a user simulator is especially useful in scenarios like:
 
 A static eval set is great for comparing known cases. A user simulator is useful when you care about the dynamics of behavior, not only the score on one prepared example.
 
+### 4.1.1. Deployment Simulation Adds Pre-Release Replay of the Real Distribution
+
+OpenAI describes another useful layer between a static eval set and live rollout: deployment simulation.[^openai-deployment-simulation] Instead of checking only hand-written or adversarial prompts, the team takes realistic historical contexts, applies privacy filtering, removes the older assistant completion, and replays the same prefix on the candidate model before release. For agentic settings, that requires more than transcript replay: it needs a plausible tool environment, because one agent trajectory can depend on hundreds of tool calls, repository state, network responses, and transient failures.
+
+The architecture lesson for this book is straightforward: a pre-release gate should be able to replay not only curated incidents, but also a slice of the real task distribution. A minimal replay contract includes:
+
+- `source_window` and privacy-filtering rules;
+- `candidate_model` or the new policy/runtime version;
+- replayed `conversation_prefix` without the old assistant completion;
+- simulated or read-only `tool_environment_ref`;
+- verdicts for new failure modes, behavior deltas, and tool-use regressions;
+- a post-release validation hook comparing the forecast with actual rollout traffic.
+
+Deployment simulation does not replace red teaming or targeted tail-risk evals. It closes a different gap: it helps surface frequent or emerging failures in deployment-like contexts before a new model, runtime, or policy reaches broad user traffic.
+
+### 4.1.2. ToolSimulator Shows a Separate Contract for Tool Simulation
+
+AWS ToolSimulator is useful as a narrower, but important, layer beside deployment simulation: it is LLM-powered tool simulation for agents that depend on external tools.[^aws-toolsimulator] Instead of live API calls that may expose PII, trigger real side effects, or hit rate limits, and instead of static mocks that do not hold up well across multi-turn workflows, the simulator generates tool responses from registered schemas and supports stateful tool simulations.
+
+For this book, the lesson is not "use Strands Evals specifically." It is the missing tool simulator contract for any agent-eval platform:
+
+- which tools may be simulated, and which must remain read-only or forbidden;
+- `simulated_tool_state`, initial state, and reset rules between case runs;
+- schema enforcement for tool responses and errors;
+- fault, latency, and empty-result cases that cover the recovery path, not only the happy path;
+- fidelity boundaries: what the simulator can imitate and where a real sandbox or canary is required;
+- tool simulator fidelity metrics, so the team does not confuse a plausible mock with production evidence.
+
+The practical takeaway is simple: tool-heavy evals need a separate review of simulator quality. If the agent passes only because the simulator always returns a convenient answer, the rollout gate should treat that as a weak signal even when the final text looks correct.
+
+### 4.1.3. Analytics-Agent Evals Should Check the Query Path, Not Only the Answer
+
+GitHub's Qubot case shows a useful production pattern for an internal analytics agent: context-layer and agent-configuration changes move through pull requests and then pass offline evals with known prompts, ground-truth SQL, metadata, multiple trials, and completion, accuracy, and duration reports.[^github-qubot]
+
+The important lesson for this book is not the SQL agent itself; it is the shape of the eval contract. An internal knowledge or data agent should be evaluated not only on final answer text, but also on the path that produced the answer:
+
+- which context layer was loaded;
+- which mandatory filters and ownership rules applied;
+- which query engine was selected and why;
+- whether source attribution points to the dataset or metric definition;
+- what happened when permissions were insufficient or the grain/filter was ambiguous;
+- which trace proves that query review and the access boundary were not bypassed.
+
+That eval catches real production regressions better: an agent can produce a plausible answer while choosing the wrong grain, skipping a mandatory filter, citing a stale metric definition, or running a query where it should have refused.
+
 ### 4.2. The Continuous Eval Loop Should Feed Rollout Decisions
 
 Once you already have online evals, trace grading, and simulated conversations, the next important step is simple: the results should not just be collected. They should influence the release process.
@@ -202,6 +247,10 @@ That means the eval loop is better treated not as a separate analytics activity,
 This boundary matters because evals should not be overloaded with every other job in the lifecycle. Their job is to produce judgments that rollout can consume, not to replace incident response, telemetry design, or estate ownership.
 
 That also means evals do not own containment. They do not freeze the route, disable the capability, or assign emergency response. They tell the team whether the change deserves trust, where regression risk sits, and whether rollout should proceed.
+
+One separate lifecycle risk is confusing eval discipline with a specific hosted eval product. In June 2026, OpenAI announced deprecation for the Evals platform and Agent Builder: existing evals are scheduled to become read-only on 31 October 2026, and the Evals dashboard/API and Agent Builder are scheduled to shut down on 30 November 2026.[^openai-deprecations] The practical lesson for this chapter is simple: a hosted dashboard can be a useful interface, but the durable base should be portable datasets, verifier contracts, traces, grading rules, export paths, and release-gate decisions that survive a product replacement or migration. If the workflow needs to outlive one UI product, design the migration toward the Agents SDK or another code-owned runtime where eval artifacts are versioned beside the code.
+
+LangChain's State of Agent Engineering adds a useful production-readiness baseline.[^langchain-state-agent-engineering] In its survey, 57.3% of respondents already have agents in production, but quality remains the main production barrier: 32% name it as the top blocker. At the same time, observability has become nearly baseline practice: 89% of organizations have implemented some observability layer, while offline evals are present for only 52.4%. For this chapter, that gap matters: agent maturity cannot be proven by traces alone. A release gate should explicitly see the `quality blocker`, the `observability baseline`, and the `eval adoption gap`: which failures the team can explain, which it can catch before release, and which it only discovers after exposure.
 
 This also means release discipline should be careful about what it rewards. A single end-state score is often too weak: it can hide partial success, blocked-but-correct behavior, or lucky success through a bad control path. Mature eval loops use richer verifier outputs so rollout decisions can reflect how the system behaved, not only whether the last screen looked acceptable.
 
@@ -266,6 +315,30 @@ You also need to look at:
 - whether coordination failures can be localized from traces.
 
 That is why multi-agent reliability research matters here not as an invitation to make the runtime more complex by default, but as a reminder: the more complex the orchestration, the richer the eval design must be.
+
+Anthropic's Research production report adds an economic eval gate to this point: if a multi-agent path wins because it spends more tokens, tool calls, and parallel context windows, the release gate should judge not only answer quality but whether that budget was justified.[^anthropic-multi-agent-research] For breadth-first research, that may be the right trade-off. For a tight task with shared state, the same cost increase should count as an architecture regression, even if a few examples look better.
+
+A minimal eval for this choice should compare single-agent and multi-agent modes on two task classes:
+
+- **read-heavy breadth-first:** several independent sources, separate retrieval branches, final synthesis; multi-agent can pass if quality improves within an acceptable `token_budget` and a legible trace;
+- **write-heavy shared-state:** several steps mutate one object or one incident record; multi-agent should lose or be blocked if it creates conflicting actions, context loss, extra approvals, or high `merge_conflict_risk`.
+
+That gate protects against the attractive but wrong conclusion that “multi-agent improved the research demo, so enable it everywhere.”
+
+### 5.2.1. Vulnerability Harnesses Are Validation Funnels, Not One Scanner
+
+Cloudflare describes a useful security version of the same principle: vulnerability discovery is useful only when raw findings pass through an independent validation system instead of going straight to engineers as “bugs.”[^cloudflare-vulnerability-harness] Their architecture separates the VDH (Vulnerability Discovery Harness), which aggressively searches for candidates, from the VVS (Vulnerability Validation System), which handles deduplication, judgment, and fixing. Discovery can be noisy and model-volatile; validation must be stricter, reproducible, and independent.
+
+For eval architecture, the pattern transfers almost directly:
+
+- a finding without a threat model, affected boundary, and working PoC/test stays a candidate, not a verified issue;
+- deterministic checks should validate schema, files, functions, paths, patch/test parseability, and that the original source was not modified to make the exploit work;
+- the independent validator should not be allowed to create findings of its own and should try to disprove the hunter;
+- triage should separate real-but-latent, wrong-repo, duplicate, and production-reachable findings;
+- the fixing gate should require a targeted fail→pass flip, block post-patch failures, and leave the branch for human review;
+- harness health should detect shallow runs: a suspiciously fast hunt with no findings, sibling tasks, or gapfill work looks more like tool failure than proof that no bugs exist.
+
+The core lesson is that a good eval loop does not merely count a score. It turns cheap model noise into verifiable artifacts that can be deduplicated, replayed, challenged, assigned to an owner, and safely carried into patch review.
 
 ### 5.3. Multi-Turn Consistency Also Deserves Its Own Checks
 
@@ -373,6 +446,22 @@ For the support agent, that means a regression is not only “the agent became l
 
 Then rollout stops depending only on the intuition of whoever made the change.
 
+### 7.1. The Harness Should Also Be Evaluated as Part of the System
+
+GitHub Copilot agentic harness gives a useful production signal: agent quality cannot be reduced to model quality.[^github-copilot-agentic-harness] The harness controls tools, context, and workflow, so it should be compared as its own layer: same model, same benchmark task, normalized context window, reasoning effort, tool selection, and MCP servers, followed by comparison with the model-vendor harness.
+
+For a release gate, that changes the metric set. In addition to task resolution, teams should explicitly watch:
+
+- token efficiency;
+- run-to-run variance;
+- wall-clock duration;
+- tool-call count and retry budget;
+- cost profile across task classes;
+- quality of Auto model selection or another model router;
+- memory, context-handling, and skill-triggering regressions.
+
+The practical lesson: when a team changes the harness, context strategy, or model routing, it needs a harness-level release gate. Otherwise it can wrongly conclude that "the model got better" or "the model got worse" when the real cause sits in the orchestration layer.
+
 ## 8. Practical Rules for the Eval Loop
 
 If you need a short engineering frame, rules like these are usually enough:
@@ -464,6 +553,22 @@ But it is very useful as an intermediate layer between an offline dataset and li
 - fallback quality;
 - policy-sensitive turns.
 
+### 11.2. Production Evals Should Close the Loop Back Into Development
+
+AWS Agent-EvalKit shows a practical version of the same pattern: agent evaluation should not remain a one-time benchmark before launch.[^aws-agent-evalkit] The full loop looks like a pipeline: plan evals from the code and risk areas, generate or import test cases, instrument traces, run the agent against scenarios, compute metrics over the traces, and produce a report with concrete code-level recommendations.
+
+The important part is not the specific toolkit, but the shape of the loop. Production traces should become more than dashboards; they should become new test cases, regression thresholds, and code-level fixes. If real traffic shows that an agent gives polished answers over empty tool output, that is not only an observability signal. It is a future eval case for faithfulness, tool-use discipline, and fallback behavior.
+
+In a mature loop, after each meaningful change the team should be able to:
+
+- reuse existing test cases and instrumentation;
+- add scenarios from production logs or manual review;
+- compare reports across agent versions;
+- tie a failed metric to a specific trace and code location;
+- run quality checks on sampled production traces, not only synthetic data.
+
+That is how the eval loop becomes release discipline: it receives signals from development, production, incidents, and expert review, then returns not “the score got worse,” but reviewable work for the next change.
+
 ## 12. What Usually Breaks in Eval Culture
 
 These failures are very typical:
@@ -541,3 +646,13 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^github-copilot-agentic-harness]: GitHub Blog, [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/).
+[^langchain-state-agent-engineering]: LangChain, [State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering).
+[^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
+[^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
+[^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
+[^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).

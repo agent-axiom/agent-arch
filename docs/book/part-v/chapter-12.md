@@ -216,6 +216,36 @@ flowchart LR
 Если задача не является исследованием вширь, ветки не независимы или ценность результата не покрывает дополнительный бюджет, SLO должны подталкивать систему обратно к одноагентной форме или форме с координатором, а не поощрять дорогую оркестрацию ради архитектурной красоты.
 
 ## 8. SLO эскалации защищает не систему, а людей вокруг нее
+### 7.2. Стоимость агента становится многомерной
+
+Переход GitHub Copilot к usage-based billing хорошо показывает операционный сдвиг: agentic usage уже считается не только “сколько запросов к модели было сделано”, а через несколько счетчиков одновременно.[^github-copilot-usage-billing] Для Copilot code review GitHub отдельно указывает, что с 1 июня 2026 года review расходует и AI Credits, и GitHub Actions minutes.[^github-copilot-actions-minutes]
+
+Для архитектуры агента это важный урок. Cost SLO должен видеть не только model tokens, но и:
+
+- input, output и cached tokens;
+- tool calls и retry amplification;
+- runner minutes, sandbox time или workflow duration;
+- parallel branch count и idle wait в long-running tasks;
+- review loops, которые повторно прогоняют тот же артефакт;
+- storage, trace export и eval replay там, где они заметны в счете.
+
+Иначе продуктовая метрика покажет “один пользовательский запрос”, а инфраструктура увидит несколько моделей, десятки tool calls, минуты runner runtime и повторные проверки. Production agent должен иметь budget gate до fanout и после recovery branch: не только “можно ли сделать это безопасно”, но и “не превращает ли этот путь полезный исход в экономически неуправляемый”.
+
+Cloudflare AI Gateway spend limits показывают, что такой budget gate может жить не только в billing dashboard, но и прямо на runtime path.[^cloudflare-ai-gateway-spend-limits] Если лимит исчерпан, gateway возвращает `429`, а агентная платформа должна трактовать это как нормальный runtime outcome: `budget_exhausted`, а не как таинственный provider failure. В budget-aware gateway SLO должны покрывать retry/backoff, fallback policy, provider/model choice, per-agent spend limits и trace attribution, чтобы оператор видел, какая capability, tenant, run или automation потратила бюджет. Тогда cost SLO становится control plane, а не отчетом задним числом.
+
+### 7.3. Sandbox is part of the agent contract
+
+LangChain хорошо формулирует практичный sandbox checklist: песочница для агента — это не просто место, где “можно запускать код”, а часть SLO и risk budget.[^langchain-agent-sandbox] Если агент умеет писать и исполнять программы, SLO безопасности и стоимости должны видеть сам профиль исполнения:
+
+- `isolated filesystem`: в рабочую область попадает только нужный набор файлов, mounts и данных;
+- `limited network access`: egress описан как allowlist или brokered proxy, а не как общий интернет;
+- `resource limits`: CPU, memory, wall-clock и process lifetime имеют бюджет до запуска;
+- `controlled reusability`: reuse/snapshot разрешены только там, где риск persistent compromise принят явно;
+- `kernel-level isolation`: execution boundary не полагается только на контейнерную дисциплину host kernel.
+
+Такой список полезен именно как SLO-объект. Если sandbox time растет, resource limits регулярно срабатывают, egress deny становится частым outcome или reuse profile меняется без review, это не “низкоуровневый шум”, а сигнал, что агентный путь стал менее управляемым. В mature release gate sandbox profile должен входить в ту же бюджетную карту, что tokens, approval load и duplicate-write risk.
+
+## 8. Escalation SLO защищает не систему, а людей вокруг нее
 
 Человек в контуре не является бесплатной страховкой.
 
@@ -380,3 +410,8 @@ def classify_run_health(run: RunHealth) -> str:
 - [Источники](../../appendix/sources.md)
 
 [^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^github-copilot-usage-billing]: GitHub Blog, [GitHub Copilot is moving to usage-based billing](https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/).
+[^github-copilot-actions-minutes]: GitHub Changelog, [GitHub Copilot code review will start consuming GitHub Actions minutes on June 1, 2026](https://github.blog/changelog/2026-04-27-github-copilot-code-review-will-start-consuming-github-actions-minutes-on-june-1-2026/).
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^langchain-agent-sandbox]: LangChain, [How to Choose the Right Sandbox for AI Agents](https://www.langchain.com/blog/how-to-choose-the-right-sandbox-for-your-agent).

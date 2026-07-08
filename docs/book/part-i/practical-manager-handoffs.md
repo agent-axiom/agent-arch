@@ -78,6 +78,16 @@
 
 То есть вопрос не "что современнее", а "где у нас должна жить ответственность".
 
+Microsoft Azure Architecture Center хорошо формулирует еще более ранний gate: прежде чем выбирать многоагентный паттерн, надо выбрать уровень сложности.[^microsoft-orchestration-patterns]
+
+| Уровень | Когда достаточно | Что проверить перед усложнением |
+| --- | --- | --- |
+| Прямой вызов модели | Одношаговая классификация, summary, перевод, простое извлечение | Prompt решает задачу без tool loop и без долговременного состояния |
+| Один агент с инструментами | Один домен, динамический выбор tools, контролируемый run loop | Итерационные лимиты, policy gate, трасса и понятный stop condition |
+| Многоагентная оркестрация | Разные домены, параллельные независимые ветки или разные security boundaries | Цена координации, задержка, потеря контекста, ownership и eval coverage |
+
+Практическое правило: multi-agent — не дефолтная форма агента, а исключение, которое нужно оправдать доменными границами, параллелизмом или изоляцией прав.
+
 ## 5. Когда паттерн координатора почти всегда уместен
 
 Паттерн координатора обычно хорошо работает, если:
@@ -153,6 +163,18 @@
 
 Эта таблица не заменяет дизайн, но очень хорошо снимает часть лишней романтики.
 
+Для более широкой оркестрации удобно держать рядом еще одну матрицу:
+
+| Паттерн | Когда выбирать | Главный операционный риск |
+| --- | --- | --- |
+| `sequential` / pipeline | Шаги зависят друг от друга и порядок заранее понятен | Ошибка раннего шага заражает весь downstream |
+| `concurrent` / fan-out-fan-in | Независимые ветки дают скорость или разные перспективы | Нужны aggregation policy, конфликт-резолюция и бюджет параллелизма |
+| `group chat` | Несколько ролей реально обсуждают общий вопрос | Дорогие длинные transcripts, размытая ответственность, слабая воспроизводимость |
+| `handoff` | Работа переходит через доменную или accountable-role границу | Потеря intent, policy constraints или owner при передаче |
+| `magentic` / динамическая оркестрация | Нужен адаптивный planner, который сам выбирает агентов и путь | Труднее проверять, ограничивать, трассировать и объяснять маршрут |
+
+Если паттерн нельзя связать с trace fields, policy boundary, owner и eval scenario, он пока не готов для production, даже если демо выглядит убедительно.
+
 ## 9. Как не ошибиться слишком рано
 
 Самая здоровая стратегия обычно выглядит так:
@@ -174,6 +196,21 @@
 - **нет:** дешевые рутинные запросы, простая запись во внешнюю систему, сценарии, где добавленные агенты только увеличивают задержку, бюджет и поверхность отказа.
 
 Отсюда следует неприятный, но полезный вывод: многоагентный режим часто повышает качество не магией кооперации, а тем, что разрешает системе потратить больше токенов, инструментальных вызовов и параллельных контекстов. Поэтому паттерн координатора должен держать бюджеты, лимиты, условия остановки и оценочные шлюзы так же явно, как он держит план работы. Иначе “исследовательская глубина” быстро превращается в неконтролируемую стоимость и рваную трассу.
+
+### 9.2. Когда НЕ запускать subagents
+
+Cognition формулирует полезный контрвес: не надо строить multi-agent там, где задача требует плотного общего контекста, последовательного редактирования одного состояния или долгой непрерывной нити решений.[^cognition-dont-build-multi-agents] LangChain-синтез говорит почти то же самое более операционно: multi-agent полезен, когда нужны specialization, parallelism или изоляция контекста, но вреден, когда handoff cost выше выигрыша от разделения.[^langchain-multi-agent]
+
+Перед запуском subagents полезно пройти короткий gate:
+
+- **independence:** ветки действительно можно выполнить независимо, без общего mutable state;
+- **shared-context need:** итог не зависит от нюансов, которые нельзя безопасно сжать в transfer packet;
+- **write-risk:** subagent не получает самостоятельный high-risk write path без policy/approval boundary;
+- **expected value:** качество или скорость должны вырасти больше, чем latency, coordination overhead и стоимость;
+- **token/tool budget:** есть явный ceiling на fanout, tool calls, context handoff и retry;
+- **merge risk:** есть план, кто объединяет результаты и как обнаруживаются конфликтующие выводы.
+
+Если два-три пункта выглядят мутно, почти всегда лучше остаться в single-agent или manager-led режиме. Subagent spawn — это не “ускоритель мышления”, а покупка дополнительных context windows ценой координации, телеметрии и merge-дисциплины.
 
 ## 10. Кодовый эскиз: паттерн координатора
 
@@ -244,4 +281,7 @@ def handoff(state: dict, next_agent: callable) -> dict:
 - [Источники](../../appendix/sources.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^microsoft-orchestration-patterns]: Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns), updated 2026-05-12.
 [^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^cognition-dont-build-multi-agents]: Cognition, [Don’t Build Multi-Agents](https://cognition.ai/blog/dont-build-multi-agents).
+[^langchain-multi-agent]: LangChain, [How and when to build multi-agent systems](https://blog.langchain.com/how-and-when-to-build-multi-agent-systems/).

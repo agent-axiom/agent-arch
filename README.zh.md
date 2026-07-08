@@ -30,6 +30,7 @@
 - 一本关于安全 AI 智能体架构的多语言书籍
 - 一个基于 `MkDocs` 和 `Material for MkDocs` 的 GitHub Pages 文档站点
 - 位于 `agent_runtime_ref/` 的可运行参考运行时（runtime）
+- 位于 `skills/safe-agent-architecture/` 的可安装智能体 skill
 - 一组实用的模式、检查清单与运维工件
 - 一个基于 `uv` 的现代 Python-first 工具链
 
@@ -57,6 +58,22 @@ uv run mkdocs serve
 ```
 
 本地站点会运行在 `http://127.0.0.1:8000/`。
+
+## 智能体 skill（agent skill）
+
+仓库包含 `safe-agent-architecture`，这是一个用于设计、构建和审查安全智能体系统的可安装 skill。
+
+从本地 checkout 安装：
+
+```bash
+npx skills add /path/to/agent-arch --skill safe-agent-architecture --agent codex
+```
+
+仓库发布到 GitHub 后，可以这样安装同一个 skill：
+
+```bash
+npx skills add agent-axiom/agent-arch --skill safe-agent-architecture --agent codex
+```
 
 ## 检查（checks）
 

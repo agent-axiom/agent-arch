@@ -139,6 +139,8 @@ The practical rule is simple: high-stakes decisions should not be left to uncons
 
 Anthropic's recent production lesson is useful here as an engineering invariant: as an agent becomes more capable, the relevant risk is not only the chance of a mistake, but also the possible blast radius. Permission prompts alone do not hold that boundary. If users see dozens of prompts, they start approving mechanically; human-in-the-loop control can degrade into ritual.[^anthropic-containment]
 
+The practical formula for a mature runtime is stricter: **contain capability before supervising behavior**. In other words, the deterministic environment must contain capability before the model, user, or external content start arguing about whether a specific step is acceptable. If the agent cannot see a network route, secret, file, tenant, or write endpoint, it cannot accidentally or deliberately use it around a tired approval path.
+
 So the threat list above should be read through a harder question: **what can the agent physically do if the model is wrong or the user is tired?** Every risky capability needs not only approval rules, but architectural limits:
 
 - egress controls: where the execution environment can connect;
@@ -318,6 +320,7 @@ Now it makes sense to move to the next logical layer: what happens when the same
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

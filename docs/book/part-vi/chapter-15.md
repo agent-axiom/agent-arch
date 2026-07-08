@@ -113,6 +113,9 @@ flowchart LR
 Это лучше, чем либо один гигантский шаблон для всего мира, либо полный хаос.
 
 ## 6. Антизоопарк-подход начинается с ограничения свободы в правильных местах
+Полезно также явно разделять уровни сложности в registry: `direct_model_call`, `single_agent_with_tools`, `multiagent_orchestration`. Такой реестр не дает команде начинать с multi-agent просто потому, что это выглядит современнее. Для каждого approved runtime pattern стоит хранить не только пример кода, но и причину допуска: latency profile, cost ceiling, security boundary, trace requirements, eval coverage и owner. Если команда хочет `sequential`, `concurrent`, `group_chat`, `handoff` или `magentic` orchestration, это уже не просто “вариант реализации”, а reviewable runtime-control choice.
+
+## 6. Anti-zoo pattern начинается с ограничения свободы в правильных местах
 
 Термин “зоопарк платформ” обычно означает одно и то же:
 
@@ -159,12 +162,19 @@ platform_defaults:
     - policy_hooks
     - eval_gate_in_ci
   supported_templates:
-    - qa_agent
+    - direct_model_call
+    - single_agent_with_tools
     - workflow_agent
     - approval_agent
+  approved_orchestration_patterns:
+    - sequential
+    - concurrent
+    - controlled_handoff
   deviations_require_review:
     - custom_runtime
     - direct_tool_access
+    - group_chat_orchestration
+    - magentic_orchestration
     - custom_telemetry_schema
     - bypass_of_policy_layer
 ```

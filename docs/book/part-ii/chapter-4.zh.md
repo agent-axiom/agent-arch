@@ -35,6 +35,8 @@
 - 把危险操作送去人工审批；
 - 同时记录决策和执行事实。
 
+Microsoft 的 “When prompts become shells” 案例很适合测试 gateway，因为它把 prompt injection 变成 **prompt-to-tool-to-execution** 路径。[^microsoft-prompts-shells] 模型不是 security boundary：任何模型派生出来的参数，在 gateway 校验之前都还是 attacker-controlled input。对 execution-adjacent tools，最低基线是 deny-by-default、严格的 type/path validation、禁止插入 shell/eval/template sinks、per-tool sandbox，以及记录 redacted parameters、validation result、policy decision 和 sandbox profile 的 audit event。
+
 下面是一个很实用的工具执行策略模板：
 
 ```yaml
@@ -198,6 +200,24 @@ sequenceDiagram
 
 这样，audit trail 回答的就不只是“谁允许了这个动作？”，还包括更重要的问题：“为什么即便动作被允许，也不能越过预期的 blast radius？”
 
+### 5.3. Blast-radius budget 应该进入权限决策
+
+Anthropic 的 containment 实践还给出一个有用结论：权限不应该只回答“这个动作能不能执行”，还应该回答“如果模型、用户或外部内容的行为比预期更糟，这个动作最大能造成多大损害”。[^anthropic-containment]
+
+如果 runtime 在决定信任边界之前就加载配置，containment 就会失效。这个危险类别应该直接命名为 `pre_trust_config_loading`。它包括 agent 在 policy gate 之前就能读取或执行的 config files、workspace hooks、project metadata 和 startup scripts。对文件路径来说，顺序应该无聊且可测试：先 canonicalization，再 symlink resolution before path validation，然后检查 scope，最后才读取或执行。
+
+网络访问也遵循同一条规则。如果某个域名内部的 capability 超过当前任务，单纯的 domain allowlist 就不够。`approved-domain exfiltration` 会发生在 agent 被允许访问“正确”服务，却用这个允许的通道做不必要的数据外流时，例如通过 Files API、uploads、paste endpoints 或 search/indexing side effects。更安全的形状是 `egress_capability_proxy`：proxy 不只检查 hostname，还检查 method、endpoint、tenant、volume、MIME type、redaction，以及它和当前 `policy_decision_id` 的关联。
+
+因此，对高风险能力来说，最好把显式的 `blast_radius_budget` 放在 policy decision 旁边：
+
+- 这次运行物理上碰不到哪些文件、tenants、APIs 和 secrets；
+- 哪些操作只能读，哪些可以写；
+- 哪些 egress 不只是被允许的域名，而是独立的 capability grant；
+- workspace boundary 在哪里，是否允许删除、覆盖，还是只能读取；
+- 哪个 emergency narrowing 会把 capability、sandbox profile 或 rollout wave 收窄到更小模式。
+
+这样，approval 就不再是唯一防线。用户或 operator 可能判断错，但执行环境仍然拿不到当前任务不需要的权限。
+
 
 ## 6. 安全边界本质上是一组习惯
 
@@ -252,3 +272,5 @@ sequenceDiagram
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)

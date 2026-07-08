@@ -35,6 +35,8 @@ Minimal requirements:
 - route dangerous operations to human approval;
 - log both the decision and the fact of execution.
 
+Microsoft's “When prompts become shells” case is a useful gateway test because it turns prompt injection into a **prompt-to-tool-to-execution** path.[^microsoft-prompts-shells] The model is not the security boundary; every model-derived argument is attacker-controlled input until the gateway validates it. For execution-adjacent tools, the practical baseline is deny-by-default, strict type and path validation, no interpolation into shell/eval/template sinks, a per-tool sandbox, and an audit event that records the redacted parameters, validation result, policy decision, and sandbox profile.
+
 Here is a very practical policy template for tool execution:
 
 ```yaml
@@ -198,6 +200,24 @@ The minimum useful links are:
 
 Then the audit trail answers not only “who allowed the action?” but also the more important question: “why could even an allowed action not exceed the intended blast radius?”
 
+### 5.3. The Blast-Radius Budget Should Be Part of Permissioning
+
+Anthropic's containment practice adds one more useful lesson: permission should not only answer "may this action happen?" It should answer "what is the maximum damage this action could cause if the model, the user, or external content behaves worse than expected?"[^anthropic-containment]
+
+Containment breaks when the runtime loads configuration before it decides what is trusted. Name that class directly: `pre_trust_config_loading`. It includes config files, workspace hooks, project metadata, and startup scripts that the agent can read or execute before the policy gate. For paths, the order should be boring and testable: canonicalization first, then symlink resolution before path validation, then scope checking, and only then read or execute.
+
+The same rule applies to network access. A domain allowlist is not enough when the capability inside that domain is broader than the task. `approved-domain exfiltration` is possible when the agent may talk to the "right" service but uses that allowed channel for unnecessary data movement, for example through Files API, uploads, paste endpoints, or search/indexing side effects. The safer shape is an `egress_capability_proxy`: the proxy checks not only hostname, but method, endpoint, tenant, volume, MIME type, redaction, and linkage to the current `policy_decision_id`.
+
+For high-risk capabilities, keep an explicit `blast_radius_budget` next to the policy decision:
+
+- which files, tenants, APIs, and secrets are physically unreachable in this run;
+- which operations are read-only and which can write;
+- which egress is not merely an allowed domain, but a separate capability grant;
+- where the workspace boundary sits and whether delete, overwrite, or read-only behavior is allowed;
+- which emergency narrowing moves a capability, sandbox profile, or rollout wave into a smaller mode.
+
+Then approval is no longer the only defense. The user or operator can make a mistake, while the execution environment still lacks powers that are unnecessary for the current task.
+
 
 ## 6. The Security Perimeter as a Set of Habits
 
@@ -252,3 +272,5 @@ First map the real execution boundaries and approval points, then carry that sam
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)

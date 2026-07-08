@@ -100,6 +100,15 @@
 - на рабочий процесс;
 - на класс риска.
 
+Для multi-agent режима нужен отдельный fanout budget. Один пользовательский запрос может превратиться не в один run, а в дерево subagent runs, retrieval calls и tool calls. Поэтому лимит должен включать не только `max_attempts`, но и `subagent_count`, `token_budget`, `context_handoff_size`, максимальное число параллельных веток и stop condition для manager. Иначе команда будет видеть “один запрос” в продуктовой метрике и лавину работы в инфраструктуре.
+
+Хороший runtime поэтому блокирует fanout до запуска, если:
+
+- задача write-heavy и ветки будут менять один объект;
+- нет явного `delegation_reason`;
+- budget не покрывает worst-case merge/retry;
+- high-risk capability может быть вызвана несколькими subagents без единого approval boundary.
+
 ## 6. Граница отката должна быть определена заранее
 
 Очень опасно обнаруживать только в инциденте, что операция “вообще-то неоткатываемая”.
@@ -180,6 +189,27 @@ tools:
 Cloudflare Agents SDK полезно разделяет работу, которая остается внутри агента, и работу, которую лучше вынести в Workflows: агент отвечает за живую коммуникацию и состояние границы взаимодействия, а рабочий процесс — за долговечное многошаговое выполнение, автоматические повторы, ожидание внешних событий и восстановление.[^cloudflare-workflows]
 
 Для этой главы это важная граница. **Долговечный шаг** должен иметь устойчивый идентификатор, ключ идемпотентности, политику воспроизведения, политику повторов, тайм-аут и связь с аудитом. **Сообщение о прогрессе** — WebSocket-сообщение, потоковое обновление или состояние интерфейса — не должно само становиться источником истины. Если прогресс был отправлен, но долговечный шаг не был зафиксирован, рантайм обязан вернуться к последней долговечной контрольной точке, а не “доверять” последнему видимому сообщению пользователю.
+
+Для durable named agent instance это правило становится еще конкретнее: `agent_instance_id` и `durable_state_version` должны переживать retry, wakeup и reconnect, а `scheduled_wakeup_id` и `resumable_stream_id` должны связываться с тем же idempotency/replay contract. Иначе система легко реконструирует “похожую” сессию из stateless handler и незаметно повторяет write step или теряет уже принятое approval decision.
+
+То же правило относится к webhook, email, Slack command и другим programmatic turns. Внешний submit не должен быть просто “новым сообщением в чат”. У него нужен `submission_id` или correlation key, actor identity, accepted-at timestamp, дедупликация, replay policy и trace link к тому же `agent_instance_id`. Иначе повтор доставки, retry провайдера или восстановление после deploy создаст второй run, который выглядит легитимно, но на самом деле повторяет уже принятый вход.
+
+### 7.2. Production runtime это контракт, а не только цикл вызовов
+
+Свежая практика LangChain вокруг production deep agents формулирует ту же границу с другой стороны: длинный агентный горизонт требует runtime, который держит долговечное выполнение, память, human-in-the-loop, observability и изоляцию рабочих сред как инфраструктурные свойства, а не как набор локальных helper-функций.[^langchain-production-runtime]
+
+Для этой главы полезно записать это как runtime contract. Production runtime должен отвечать на вопросы, которые простой agent loop обычно оставляет неявными:
+
+- какой `run_id`, `step_id` и `agent_instance_id` переживают crash, deploy и reconnect;
+- где хранится checkpoint перед внешним side effect;
+- какие шаги можно replay, а какие требуют reconciliation;
+- как approval pause/resume связывается с той же сессией и capability session;
+- какие traces доказывают, что восстановление не повторило побочный эффект;
+- где tenant boundary, sandbox boundary и budget boundary проверяются до запуска, а не после инцидента.
+
+Microsoft Foundry похожим образом описывает проблему governance: written policy сама по себе не превращается в runtime control, если контрольные точки не стоят там, где агент реально может ошибиться.[^microsoft-open-trust-stack] Поэтому policy для повторов, approvals, budget и tool access должна компилироваться в hooks около конкретных переходов: `before_tool_call`, `before_side_effect_commit`, `on_approval_pause`, `on_resume`, `on_retry`, `on_budget_exhausted` и `on_trace_export`.
+
+Практический тест простой: если после рестарта процесса нельзя доказать, какой шаг был committed, какой только показал progress, какое approval решение было живым и почему повтор не создаст новый side effect, это еще не production runtime. Это только цикл выполнения, который пока надеется на удачный день.
 
 ## 8. Простой кодовый пример логики решений для повторов
 
@@ -291,3 +321,5 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+[^langchain-production-runtime]: LangChain, [The Runtime Behind Production Deep Agents](https://www.langchain.com/blog/runtime-behind-production-deep-agents).
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).

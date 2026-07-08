@@ -63,6 +63,22 @@
 - `span_id`
 - `parent_span_id`
 
+到了 production observability，通常还需要让 spans 可搜索、可用于 regression review 的字段：
+
+- `span_type`
+- `input_ref`
+- `output_ref`
+- `latency_ms`
+- `retry_count`
+- `token_input_count`
+- `token_output_count`
+- `token_cost`
+- `approval_state`
+- `pii_redacted`
+- `redaction_policy_id`
+- `retention_class`
+- `trace_search_tags`
+
 在参考运行时里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。同时，序列化后的事件现在会带上 `schema_version` 和 `redacted_fields`，导出路径也支持按字段做脱敏。Event loader 会显式校验这个 shape：`Telemetry path must be a string or path-like object`、`Telemetry event line is not valid JSON: {line_number}`、`Telemetry event must be a mapping`、`Telemetry event is missing required field: {required_field}`、`Telemetry event field must be a string: {field}`、`Telemetry event field must not be empty: {field}`、`Telemetry schema version is not supported: {schema_version}`、`Telemetry event payload must be a mapping`、`Telemetry event payload key must be a string`、`Telemetry event payload key must not be empty`、`Telemetry event payload keys must be unique`、`Telemetry event payload value must be a string: {payload_key}`、`Telemetry event redacted_fields must be a tuple`、`Telemetry event redacted_fields must be a list`、`Telemetry event redacted_fields entries must be strings`、`Telemetry redact field must not be empty` 和 `Telemetry redact field is not present in events: {missing}`。
 
 ## 追踪和会话的关系
@@ -100,12 +116,16 @@
 | `mcp_tool_risk_review` | MCP tool/server risk review 期间 | 连接 threat class、registry evidence、scope review 与 quarantine state |
 | `tool_execution` | capability call 或 approval handoff 后 | 记录 capability status 与 tool-principal context |
 | `a2a_handoff` | 一个 agent 将工作委派给另一个 agent 时 | 记录 delegation chain、authorization 与 failure-attribution context |
+| `subagent_delegation_decision` | manager 决定是否启动 subagents 时 | 记录 fanout gate、budget 与 delegation reason |
+| `durable_agent_instance_state` | named agent instance 加载、休眠、唤醒或保存 durable state 时 | 记录 owner instance、state version、wakeup 与 resumable stream linkage |
+| `resumable_agent_recovery` | run 在 deploy/eviction/connection churn 后继续时 | 记录 `continuation_id`、`last_durable_checkpoint`、`recovery_reason` 和 `client_tool_allowlist` |
 | `approval_requested` | 高风险写入路径上 | 表示执行已经进入人工评审队列 |
 | `sandbox_profile_reviewed` | 由沙箱（sandbox）支撑的路径被评审时 | 记录工作区（workspace）、权限（permissions）与快照/恢复证据复核（snapshot/resume evidence review） |
 | `memory_write_decision` | 后台写入记忆前 | 记录 candidate memory write 被允许还是拒绝 |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `background_compaction` | background memory maintenance 后 | 记录 tenant-level compaction results |
 | `background_update_scheduled` | background work 排队或完成后 | 记录该运行的 background update status |
+| `verification_result` | 运行验证停止条件时 | 记录 stop condition、verifier actor、verification mechanism、pass/fail/warning/blocked result 与 evidence links |
 | `run_failed` | 工具失败成为运行结果时 | 保留明确的 failed-run traceability |
 | `governance_action` | telemetry signal 触发 policy、containment、rollout 或 registry decision 时 | 将 governance action record 连接到 trace evidence |
 | `run_complete` | 运行结束时 | 闭合运行级结果 |
@@ -189,7 +209,17 @@
 - `quarantine_state`
 - `evidence_refs`
 
-`threat_class` 应保持在 MCP 威胁模型（MCP threat model）词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`。
+`threat_class` 应保持在 MCP 威胁模型（MCP threat model）词汇表内：`tool poisoning`、`rug pull attack`、`tool shadowing`、`confused deputy`、`over-scoped tokens`、`data exfiltration through legitimate channels`、`supply-chain attack`、`replay/tampering`、`sandbox escape`、`local control-plane crossing`。
+
+`local control-plane crossing` 覆盖 AutoJack 这类场景：不可信 web content 进入 browser/tool agent，利用它的本地网络位置，调用 `localhost` 上的 MCP/debug/control socket，并试图把 control-plane 参数变成 host command execution。对这类事件，trace 至少应记录：
+
+- `untrusted_content_origin`
+- `browser_tool_identity`
+- `local_control_channel`
+- `loopback_auth_result`
+- `mcp_server_params_source`
+- `executable_allowlist_result`
+- `containment_action`
 
 对于 `a2a_handoff`，载荷（payload）应保留 A2A 交接信任契约（A2A handoff trust contract），而不只是委派消息文本：
 
@@ -200,6 +230,19 @@
 - `policy_inheritance`
 - `non_repudiation`
 - `failure_attribution`
+
+对于 `subagent_delegation_decision`，载荷不仅要保存 fanout 事实，还要保存这次决策的经济性：
+
+- `subagent_count`
+- `delegation_reason`
+- `independence_assessment`
+- `shared_context_need`
+- `write_risk`
+- `context_handoff_size`
+- `token_budget`
+- `tool_budget`
+- `merge_conflict_risk`
+- `fanout_decision`
 
 !!! example "重复工单线索的 trace"
     在支持分流（support-triage）案例里，`tool_policy_decision`、`approval_requested`、`tool_execution` 和最终结果（outcome）应该由同一个 `trace_id`、`session_id`、`approval_id`、`tool_principal` 与 `idempotency_key` 连接起来。如果 `create_ticket` 超时且副作用状态未知，追踪（trace）应显示 `side_effect_unknown`，而不是把运行伪装成成功，或在没有调和（reconciliation）的情况下重复写入。
@@ -267,7 +310,7 @@
 - `provenance`
 - `revision`
 
-当前参考载荷（reference payloads）也使用这些操作元数据字段（operational metadata fields）：`runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name` 和 `duration_ms`。工具请求/结果模型校验（Tool request/result model validation）也属于同一条追踪边界（trace boundary）：畸形工具调用（malformed tool calls）会以 `Tool request capability name must be a string`、`Tool request capability name must not be empty`、`Tool request arguments must be a mapping`、`Tool request argument key must be a string`、`Tool request argument key must not be empty`、`Tool request argument keys must be unique`、`Tool request argument value must be a string: {argument_key}` 失败；畸形工具结果（malformed tool results）会以 `Tool result status must be a string`、`Tool result status must not be empty`、`Tool result payload must be a mapping`、`Tool result payload key must be a string`、`Tool result payload key must not be empty`、`Tool result payload keys must be unique` 和 `Tool result payload value must be a string: {payload_key}` 失败。
+当前参考载荷（reference payloads）也使用这些操作元数据字段（operational metadata fields）：`runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `model_output_preview`, `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name` 和 `duration_ms`，以及 `span_type`, `input_ref`, `output_ref`, `latency_ms`, `retry_count`, `token_input_count`, `token_output_count`, `token_cost`, `approval_state`, `pii_redacted`, `redaction_policy_id`, `retention_class`, `trace_search_tags`, `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `merge_conflict_risk`, `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` 和 `resumable_stream_id`。工具请求/结果模型校验（Tool request/result model validation）也属于同一条追踪边界（trace boundary）：畸形模型输出（malformed model outputs）会以 `Model output reasoning_summary must be a string`、`Model output reasoning_reference must be a string` 或 `Model output encrypted_reasoning_item must be a string` 失败；畸形工具调用（malformed tool calls）会以 `Tool request capability name must be a string`、`Tool request capability name must not be empty`、`Tool request arguments must be a mapping`、`Tool request argument key must be a string`、`Tool request argument key must not be empty`、`Tool request argument keys must be unique`、`Tool request argument value must be a string: {argument_key}` 失败；畸形工具结果（malformed tool results）会以 `Tool result status must be a string`、`Tool result status must not be empty`、`Tool result payload must be a mapping`、`Tool result payload key must be a string`、`Tool result payload key must not be empty`、`Tool result payload keys must be unique` 和 `Tool result payload value must be a string: {payload_key}` 失败。
 
 ## 参考包现在已经支持什么
 
