@@ -149,6 +149,8 @@ flowchart LR
 
 Это не отменяет подтверждения. Оно ставит подтверждение на правильное место: approval решает, можно ли выполнить действие; containment ограничивает ущерб, если решение оказалось ошибочным, неполным или атакованным.
 
+Практическая формула для зрелого рантайма звучит жестко: **contain capability before supervising behavior**. То есть детерминированная среда обязана сдерживать capability до того, как модель, пользователь или внешний контент начнут спорить о допустимости конкретного шага. Если агент не видит сеть, секрет, файл, tenant или write endpoint, он не может случайно или намеренно использовать их в обход уставшего approval path.
+
 
 ## 6. Защитные правила работают слоями, а не одним фильтром
 
@@ -329,6 +331,7 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 [^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

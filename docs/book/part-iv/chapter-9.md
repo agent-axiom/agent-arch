@@ -100,6 +100,8 @@ MCP удобен не потому, что это модное слово, а п
 
 Как только через MCP проходит доступ к данным, инструментам записи или средам выполнения, он становится границей безопасности. Через нее могут прийти не только полезные tool results, но и вредные инструкции, подмененные описания инструментов, избыточные OAuth scopes, confused-deputy сценарии и supply-chain риск самого сервера.
 
+Кейс Microsoft с MCP tool poisoning хорошо уточняет эту границу: **tool descriptions as system prompts**.[^microsoft-tools-acting] Если ранее одобренный server незаметно меняет description при прежнем имени tool, runtime может снова доверить ему действие без нового human review — это silent re-trust, а не просто metadata update. Поэтому review должен смотреть description diff, owner/provenance, imperative language внутри документационного поля, new endpoints, расширенные параметры и необычные query patterns. Контроль здесь — не только least privilege, но и **least agency**: запретить `Allow all tool access`, требовать approval для high-impact actions и алертить на drift поведения агента после изменения tool metadata.
+
 Практический контракт для этой границы должен отвечать минимум на пять вопросов:
 
 - кто владеет MCP-сервером и его жизненным циклом;
@@ -153,7 +155,37 @@ mcp_server:
 
 Эти поля нужны не ради бюрократии. `schema_hash` и `tool_definition_hash` ловят tool schema injection и post-approval rug pulls. `token_scope`, `token_ttl` и `user_delegation_required` ограничивают confused-deputy paths. `return_value_filtering` считает tool results недоверенным содержимым, включая prompt injection через tool return values. `server_isolation_profile` и `replay_protection` делают sandbox escapes, replay и tampering достаточно видимыми для containment.
 
-### 4.4. Полезно не путать MCP host, client и server
+Отсюда следует короткое правило: **tool output is an attack surface**. remote tool может измениться после approval: владелец сервера меняет schema, результат, redirect, resource body или hidden instruction, а host продолжает считать интеграцию уже согласованной. Поэтому onboarding remote tools лучше начинать с fake data first: сначала подключить synthetic tenant, synthetic secrets и безопасные fixtures, записать реальные traces и только после validation давать tool живые credentials или production data.
+
+Еще один полезный паттерн из Google ADK — **metadata registry + runtime schema injection**.[^google-adk-static-prompts] Анти-паттерн называется прямо: **Static Prompting**, когда все JSON schemas, Pydantic classes и tool definitions заранее кладутся в system prompt. В высококардинальных доменах это дает context bloat и **Attention Diffusion**: модель начинает смешивать поля dormant schemas с активным payload.
+
+В переносимом runtime contract структурные правила должны жить не в промпте, а в registry entry с `schema_descriptor_id`, `schema_version`, field metadata, mapping rules и `validation_hook`. Agent сначала делает lightweight discovery, затем runtime загружает нужный descriptor, вызывает **Polymorphic Validator** на boundary перед tool/API call и пишет в trace выбранный schema source of truth, runtime validation boundary, validation result и failure mode. Так один reasoning agent может работать с разными domain forms, но не становится носителем всех структурных правил сразу.
+
+### 4.4. Localhost не является trust boundary для браузерных агентов
+
+AutoJack, описанный Microsoft Defender Security Research, полезен как короткая проверка зрелости этой главы: недоверенная веб-страница, которую открыл browsing-agent, смогла пересечь loopback boundary, обратиться к локальному MCP WebSocket и превратить параметры подключения в запуск процесса на host.[^microsoft-autojack] Конкретная уязвимость была закрыта до PyPI-релиза затронутой MCP-поверхности, но паттерн важнее бага.
+
+Архитектурный вывод простой: `localhost`, `127.0.0.1` и Origin allowlist не являются достаточным контролем, если на той же машине работает агент с browser tool, Playwright-backed surfer, code execution tool или любым механизмом, который может открыть WebSocket/HTTP-запрос от имени локального процесса. Для такой системы внешний HTML/JavaScript уже не “где-то в интернете”; он может стать confused deputy, который пользуется локальной сетевой позицией агента.
+
+Минимальный hardening для локальных MCP/debug/control каналов:
+
+- не считать loopback authentication boundary;
+- требовать authn/authz на MCP/control-plane endpoints, включая WebSocket paths;
+- проверять purpose binding и policy decision перед запуском любого subprocess-backed MCP server;
+- хранить параметры запуска server-side или в подписанном nonce-bound artifact, а не принимать command/args из query string;
+- allowlist-ить исполняемые MCP-серверы и профили аргументов;
+- запускать browser tools с отдельной process/network identity, которой запрещен доступ к privileged local services;
+- писать trace event для попыток crossing: внешняя страница, локальный канал, policy result, executable decision и containment action.
+
+Если local MCP нужен только для прототипа, это должно быть прямо отражено в capability registry: низкие привилегии, отдельный OS user/container, короткоживущие credentials и запрет на совместное размещение с агентом, который рендерит недоверенный web content.
+
+### 4.5. Prompt-to-tool-to-execution требует отдельного hardening
+
+Кейс Microsoft “When prompts become shells” добавляет соседний failure mode: prompt injection не обязан дотягиваться до `localhost`, если agent framework уже открыл tool, который может интерпретировать model-controlled parameters как paths, code, templates или commands.[^microsoft-prompts-shells] Форма атаки — **prompt-to-tool-to-execution**: недоверенное содержимое направляет модель, модель выдает attacker-controlled input, framework разбирает его как tool arguments, а слабый adapter превращает это в host execution.
+
+Правило execution layer совпадает с правилом этой главы для MCP: model output не является authority. Execution-adjacent tools должны быть deny-by-default, зарегистрированы через capability contract, защищены typed validation, canonical path checks, operation allowlists и per-tool sandbox. Им также нужен audit event до побочного эффекта, а не только после него, чтобы расследование видело prompt source, redacted arguments, validation result, selected sandbox profile и policy decision.
+
+### 4.6. Полезно не путать MCP host, client и server
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 
@@ -234,6 +266,8 @@ flowchart LR
 
 Эта же модель помогает понять, где **локальный MCP** все еще уместен: прототипирование, изолированные эксперименты или очень узкие локальные для команды рабочие процессы. Но вариант по умолчанию для общих бизнес-возможностей обычно должен быть таким: **удаленный, управляемый, обнаруживаемый и аудируемый**.
 
+Рамка AWS MCP Gateway and Registry делает этот контур управления более конкретным.[^aws-mcp-gateway-registry] Она рассматривает MCP servers, AI agents, skills, workflows и другие AI assets как каталожные сущности, а не как разрозненные endpoints. Полезный вывод для этой главы не в конкретном стеке реализации, а в разделении ответственности: registry управляет discovery, ownership, security scanning, fine-grained access control и federation; gateway маршрутизирует MCP tool calls и пишет audit log. Это более чистый платформенный контракт, чем ситуация, где каждый агент или desktop client хранит собственный приватный список серверов.
+
 ### 5.2. Теневой MCP — это новая версия проблемы теневых API
 
 Когда MCP становится слишком легко подключать, у команды появляется новый вариант теневого IT: неучтенные MCP-серверы, через которые уже проходят реальные бизнес-действия, но владение, ревью и модель управления у них остаются неоформленными.[^cloudflare-mcp]
@@ -265,7 +299,64 @@ flowchart LR
 
 Если эта цепочка не восстанавливается, аудируемость у платформы слабее, чем кажется по одной поверхности протокола.
 
-### 5.3. Эфемерные песочницы лучше постоянных сред почти во всем
+### 5.3. MCP как управляемый путь доступа к cloud API
+
+Свежая рекомендация AWS Security Blog полезна тем, что формулирует MCP не как удобный протокол интеграции, а как **управляемый путь доступа к облачным ресурсам**.[^aws-secure-mcp-access] Важная деталь: AI coding assistants и агенты часто могут обращаться к cloud API напрямую через shell, SDK или произвольное выполнение кода. Если такой путь остается открытым, MCP-сервер с хорошими IAM-политиками становится только одной из дорог, а не реальной границей контроля.
+
+Поэтому для production-агентов полезно явно разделять:
+
+- `mcp_brokered_action`: действие проходит через зарегистрированный MCP/tool gateway, получает scoped credentials, пишет audit event и несет policy decision;
+- `direct_cloud_api_action`: агент вызывает SDK, CLI или HTTP API напрямую из shell/code environment;
+- `human_initiated_action`: человек запускает действие сам, а агент только готовит план, diff или evidence packet;
+- `delegated_agent_action`: человек или policy layer делегирует агенту ограниченную область действия с TTL, scope и trace correlation.
+
+Архитектурный вывод жесткий: direct cloud API access должен считаться bypass path, если он не проходит через тот же catalog, identity, policy и audit слой. Для runtime это добавляет несколько обязательных полей в trace/control record: `actor_type`, `delegation_source`, `credential_scope`, `credential_ttl`, `access_path`, `mcp_server_id`, `policy_decision_id` и `called_via_gateway`. Тогда организация может отличить human-initiated action от AI-driven action и применить least privilege, org role governance и отдельные approval rules к агентному пути, а не только к человеческому IAM.
+
+Если команда не может запретить shell/SDK полностью, минимумом становится явный контроль обхода: restricted shell profile, denylist/allowlist для cloud CLIs, сетевой egress через proxy, detection для прямых вызовов cloud API и release gate, который блокирует агентную возможность, пока критичные writes не идут через brokered gateway.
+
+### 5.4. Cloudflare AI traffic controls показывают, что web access тоже стал policy surface
+
+Cloudflare AI traffic controls добавляют к этой главе соседнюю, но важную границу: не только как агент вызывает MCP или cloud API, но и как внешний сайт решает, какой AI-трафик вообще имеет право использовать его контент.[^cloudflare-ai-traffic-controls] Разделение Search / Agent / Training полезно именно как governance-сигнал. Search crawler, interactive Agent и Training crawler несут разные цели, разные ожидания владельца ресурса и разные требования к аудиту.
+
+Практический вывод для runtime такой: outbound identity нельзя сводить к user-agent string или IP allowlist. Агент, который ходит в web, должен уметь объявлять declared purpose, сохранять audit trail и различать как минимум:
+
+- поиск/индексацию, где владелец сайта ожидает discoverability;
+- interactive agent access, где агент действует по поручению пользователя;
+- training или dataset collection, где использование контента меняет экономику согласия.
+
+Cloudflare также показывает важную деталь для будущих контрактов доступа: Content-Signal может передавать более тонкие условия, например `use=reference`, а статусы Verified и Forwarded отделяют проверенную идентичность от транзитивной передачи trust через downstream service. Для архитектуры агента это означает, что transitive trust нужно моделировать явно: если браузерный или retrieval-agent получает доступ через посредника, trace должен показывать исходную identity, forwarded identity, declared purpose и policy decision, а не только конечный HTTP request.
+
+Минимальный policy matrix для web-capable agent должен поэтому содержать хотя бы четыре решения: allow, block, monetize или audit-only. И каждое решение должно быть связано с целью доступа: Search / Agent / Training. Иначе web access policy быстро превращается в хрупкий список строк, а не в контракт между владельцем ресурса, пользователем и агентной платформой.
+
+### 5.5. Browser as an action surface
+
+GitHub Copilot browser tools в VS Code показывают следующий шаг: live browser становится штатной средой действия агента, а не только внешним способом ручной проверки.[^github-copilot-browser-tools] Если агент может открывать страницы, click/type/hover/drag, читать page content, собирать console errors, делать screenshot и запускать scripted flows, то browser надо считать отдельной execution surface.
+
+Практический контракт для такой поверхности должен учитывать stale DOM refs, auth/session state, non-deterministic UI и evidence snapshot. Агент не должен просто сказать “страница работает”: он должен оставить проверяемый след — screenshot, DOM assertion, console errors, network trace или другой artifact, привязанный к run/trace id. Иначе browser automation быстро превращается в еще один непрозрачный tool call.
+
+Контрольный слой тоже должен быть явным. Для пользовательских вкладок нужен механизм share/revoke, для agent-owned tabs — отдельная сессия без cookies/storage обычного браузера, для чувствительных permission prompts — человеческое подтверждение, а для enterprise среды — network domain controls и workspace trust. Тогда browser tool становится управляемой capability, а не прямым доступом агентного процесса ко всему web state.
+
+### 5.6. Secure MCP Tunnel делает приватную достижимость явной
+
+OpenAI Secure MCP Tunnel добавляет полезный deployment pattern для private MCP server: приватная сторона сама открывает outbound-only соединение, вместо того чтобы принимать inbound traffic из публичного интернета.[^openai-secure-mcp-tunnel] `tunnel-client` запускается внутри сети, которая уже может достучаться до private MCP server, long-poll-ит OpenAI-hosted endpoint для queued MCP work, локально пересылает JSON-RPC requests и возвращает responses тем же путем. У этой формы есть естественная точка backpressure: client запрашивает только тот объем работы, который готов обработать.
+
+Архитектурный вывод уже, чем “tunnels make private systems safe”. Tunnel должен быть управляемым механизмом достижимости, not a general-purpose network bridge. Private MCP server все равно требует owner records, schema hashes, scoped authorization, output filtering, request correlation и audit events. Tunnel record должен говорить, какая product surface может его вызывать, к какому private MCP server он ведет, какая identity аутентифицировала tunnel-client и какая policy решает, разрешен ли request. Иными словами, Secure MCP Tunnel полезен, когда держит narrow path: product endpoint -> tunnel service -> authenticated tunnel-client -> private MCP server -> filtered response.
+
+### 5.7. Code Mode превращает MCP portal в слой progressive disclosure
+
+Cloudflare отдельно показывает полезный паттерн для больших MCP estate: не отдавать модели все tool schemas заранее, а прятать широкую API-поверхность за порталом с двумя узкими операциями поиска и исполнения.[^cloudflare-code-mode] В их формулировке Code Mode позволяет модели сначала написать код для поиска нужных endpoint definitions, а затем написать код для вызова найденных операций; сам код исполняется на стороне MCP server portal в песочнице, а не внутри основной агентной сессии.
+
+Архитектурно это важно не только из-за token cost. Это меняет модель видимости tools:
+
+- модель получает не весь каталог возможностей upfront, а механизм поиска;
+- портал становится точкой audit, DLP и identity enforcement;
+- контекст агента не раздувается тысячами schema tokens;
+- discovery превращается в управляемое действие, а не в неявную загрузку всего мира;
+- sandbox на стороне portal ограничивает, что может сделать сгенерированный код.
+
+Но такой паттерн должен оставаться управляемым. `search/execute` portal не должен становиться обходом capability governance. Для него нужны те же поля, что и для обычного MCP endpoint: owner, allowed upstream servers, scope policy, sandbox profile, output filtering, trace correlation и правила review для risky writes. Иначе команда просто заменит “слишком много tools в prompt” на “слишком широкий programmable portal”.
+
+### 5.8. Эфемерные песочницы лучше постоянных сред почти во всем
 
 Еще одна полезная мысль из Google: для рискованных возможностей очень выгодно проектировать краткоживущие среды выполнения.[^google-sandbox]
 
@@ -473,6 +564,17 @@ capability request → policy → contained execution → telemetry → incident
 
 Эта цепочка делает containment проверяемым: политика выбирает профиль исполнения, hands исполняют внутри ограниченной среды, telemetry фиксирует границы, а assurance/eval контуры используют результат для следующего решения.
 
+### 9.4. Loop engineering связывает песочницу с harness-дизайном
+
+LangChain называет это `loop engineering`: надежность агента появляется не только из одного model-tool цикла, а из стека циклов вокруг него.[^langchain-loop-engineering] Для этой главы полезны четыре уровня:
+
+- `agent loop`: модель получает контекст и вызывает tools до завершения задачи;
+- `verification loop`: grader, тест или человек проверяет артефакт и возвращает feedback до принятия результата;
+- `event-driven loop`: внешний trigger, cron, webhook или channel запускает агент как часть системы, а не как ручной чат;
+- `hill-climbing loop`: traces и eval outcomes становятся входом для изменения harness config, prompts, tools, rubrics или memory/context.
+
+Эта рамка не отменяет MCP и песочницу, а делает их местом в системе более ясным. Песочница ограничивает `hands`, MCP описывает контракт внешней возможности, а loop engineering говорит, где именно нужны policy decision, grader, human review и rollout gate. Без такого разделения команда часто усиливает только agent loop: добавляет tools и контекст, но не строит verification loop, не ограничивает event-driven triggers и не проверяет, какие harness changes может делать hill-climbing контур.
+
 
 ## 10. Простой кодовый пример диспетчеризации возможностей
 
@@ -553,10 +655,29 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 - [Часть IV. Инструменты и выполнение](index.md)
 - [Источники](../../appendix/sources.md)
 
-[^cloudflare-mcp]: [Cloudflare, Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
+[^cloudflare-mcp]: Cloudflare, [Scaling MCP adoption: Our reference architecture for simpler, safer and cheaper enterprise deployments of MCP](https://blog.cloudflare.com/enterprise-mcp/)
+
+[^cloudflare-code-mode]: Cloudflare, [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/)
+
+[^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
+
+[^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
+
+[^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
+
+[^aws-mcp-gateway-registry]: AWS Open Source Blog, [Governing AI Assets at Scale with MCP Gateway and Registry](https://aws.amazon.com/blogs/opensource/governing-ai-assets-at-scale-with-mcp-gateway-and-registry/)
+
+[^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) и [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^langchain-loop-engineering]: LangChain, [The Art of Loop Engineering](https://www.langchain.com/blog/the-art-of-loop-engineering).
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) и [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+
+[^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
+[^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
+[^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)

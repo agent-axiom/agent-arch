@@ -200,6 +200,8 @@ That is why cost SLO should at least look at:
 
 Without that, the team notices degradation too late: when the agent still “helps,” but now costs materially more.
 
+Cloudflare AI Gateway spend limits show that this budget gate can live on the runtime path, not only in a billing dashboard.[^cloudflare-ai-gateway-spend-limits] When the limit is exhausted, the gateway returns `429`, and the agent platform should treat it as an ordinary runtime outcome: `budget_exhausted`, not a mysterious provider failure. In a budget-aware gateway, SLO should cover retry/backoff, fallback policy, provider/model choice, per-agent spend limits, and trace attribution, so an operator can see which capability, tenant, run, or automation spent the budget. Then cost SLO becomes a control plane, not an after-the-fact report.
+
 ## 8. Escalation SLO Protect the Humans Around the System
 
 Human-in-the-loop is not a free safety net.
@@ -352,3 +354,5 @@ After SLO, the next step in the same story is the eval loop: offline evals, onli
 - [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

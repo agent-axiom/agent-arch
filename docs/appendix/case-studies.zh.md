@@ -33,13 +33,73 @@
 
 Cloudflare Agents SDK 展示了一种模式：智能体不只是围绕模型的一次性循环，而是运行在 Durable Object 之上的可寻址 `Agent` 实例。它有稳定名称、持久 SQL/key-value 状态、WebSocket 连接、定时任务、唤醒和休眠。对本书来说，架构结论很简单：当智能体绑定到真实实体——客户案例、租户工作区、事故房间、设备、项目或研究档案——运行时就应该明确展示谁拥有状态、哪些运行修改过它、哪些定时任务可以唤醒实例，以及哪些追踪证明可以安全恢复。
 
-这里的实践契约是：**稳定名称 → 持久状态 → 唤醒/休眠 → 定时/后台工作 → 审批门禁 → 追踪证据**。这把记忆、后台更新、执行、追踪和发布章节连成一个形状：schedule 不应该是不可见 callback，WebSocket UI 不应该暴露智能体的全部状态，approval 应该位于真正发生 side effect 的边界。
+这里的实践契约是：**稳定名称 → 持久状态 → 唤醒/休眠 → 定时/后台工作 → 审批门禁 → 追踪证据**。这把记忆、后台更新、执行、追踪和发布章节连成一个形状：schedule 不应该是不可见 callback，WebSocket UI 不应该暴露智能体的全部状态，approval 应该位于真正发生 side effect 的边界。更新的 long-running agents pattern 还补了一句关键话：agent identity 比 process 活得更久，因此 pause 或 approval 之后的任何 side effect 都应该强制拥有 durable log、idempotency key 和 replay boundary。
+
+### Cloudflare vulnerability harness：VDH、VVS 与噪声过滤
+
+Cloudflare 另外描述了一个 vulnerability harness：它从 `security-audit` skill 起步，后来变成 fleet-wide pipeline。Recon 构建 threat model，Hunters 按 bug class 攻击代码，Validate 尝试推翻 finding，Gapfill 补齐薄弱 coverage cells，Dedup 合并重复项，Trace 把问题追到 consumer repos，Feedback 改写后续任务，Report 则在没有模型的情况下渲染。这里的架构教训是：harness 不应该是“一个大 agent 读取整个仓库”。每个 stage 都把状态写入以 `run_id`、`repo` 和 `stage` 为 key 的数据库，可以 resume/retry，并留下可审查 findings，所以五小时运行不会因为一次 transient failure 全部丢失。
+
+第二个教训是把 discovery 和 validation 分开。Vulnerability Discovery Harness (VDH) 故意生成许多 candidates，而 Vulnerability Validation System (VVS) 把它们放入独立队列，执行 deduplication、judgment 和 fixing。另一个 model/provider 和另一条逻辑路径会重新检查 finding、production reachability，以及 latest main 上是否仍然存在。对本书来说，这不仅是 security case，也是 agent eval architecture 的工业案例：模型可以替换，真正持久的资产是 orchestration layer，它带有 independent verifier、deterministic bookkeeping，以及任何 production-impacting change 前的人类 review。
+
+最小可移植契约是：**recon → hunt → validate → dedup/judgment → fail→pass patch gate → human review**。Finding 应该包含 threat model、affected boundary、evidence refs、针对未修改源码的 working PoC/test、proposed patch、mechanical schema/path validation、independent validator verdict、duplicate key、reachability judgment 和 remediation status。还需要 shallow runs 的 health signal：如果 hunt 异常快速结束，且没有 findings、sub-hunts 或 gap tasks，这不是“仓库很干净”，而是应该 requeue 并检查 harness failure。
+
+### Cloudflare enterprise MCP：gateway 和 portal 作为 policy choke point
+
+Cloudflare 的 **enterprise MCP** reference architecture 很有用，因为它把 MCP 当成受治理的平台表面，而不只是方便的工具协议。这个模式组合了 remote MCP servers、Cloudflare Access、**MCP server portals**、**AI Gateway**，以及用于 **Shadow MCP** detection 的 Cloudflare Gateway。对本书来说，关键动作是把 MCP gateway 和 portal 变成 policy choke point：工具通过已批准表面发现，授权由中心身份层中介，未批准的 remote MCP servers 也会变得可检测，而不是藏在本地配置里。
+
+可移植契约是：**approved MCP portal → progressive tool disclosure → identity-bound authorization → gateway policy and DLP → audit trail → Shadow MCP detection**。Progressive tool disclosure 很重要，因为大型工具目录既是 token-cost problem，也是 safety problem：agent 应该拿到任务所需的 capability slice，而不是企业拥有的全部工具。Shadow MCP detection 也很重要，否则团队会把旧的 shadow API 问题悄悄重建到 agent tools 上。
+
+Cloudflare Code Mode 给这里补了一个实践性反模式：不要把每个 API operation 都作为单独 tool 塞进 prompt。与其做 tool-list stuffing，server 可以只暴露很小的 `search()` 和 `execute()` surface：前者查询 typed API/spec catalog，后者在带显式 permission scopes 的 sandboxed isolate 中执行生成代码。对 enterprise MCP 来说，这会改变治理形态：catalog 留在 gateway 后面，discovery 变成可审计 operation，execute 则经过与 privileged tool call 相同的 policy、DLP、rate-limit 和 approval boundary。
+
+### Google DeepMind AI Control Roadmap：作为运行时基础设施的控制
+
+Google DeepMind 把 AI Control Roadmap 描述成内部智能体的 defense-in-depth 层：传统 security hygiene 和 alignment 仍然是基础，但系统还要谨慎假设，一个能力足够强的 agent 可能 misaligned，也可能只是以出乎意料的方式行动。实践上，能访问内部系统的 agent 应该被建模为潜在 insider threat，而不只是带有 prompt injection 风险的聊天界面。因此，control 被塑造成 runtime contract：基于 MITRE ATT&CK 的 threat modeling、对 actions 和 plans 的 monitoring、supervisor systems、prevention/response gates，以及对 coverage、recall 和 time-to-response 的持续度量。
+
+对本书有用的不是某个供应商自己的 safety claim，而是这种 operational control 形态。Agent system 应该区分 adversarial misuse 和善意但过度的 task optimization：DeepMind 明确指出，coding-agent trajectories 里许多 flagged events 并不是 hostile intent，而是 misinterpretation 或 overeagerness。架构结论是：policy layer、rollout gate 和 assurance loop 不只要捕捉“攻击”，还要捕捉局部看似有用、系统层面却有破坏性的行为。
+
+最小可移植契约是：**threat model → monitored coverage → supervisor judgment → synchronous block/asynchronous response → escalation → audit trail**。低风险且可逆的动作可能只需要 delayed review 和 remediation；高风险动作则需要 synchronous prevention path。控制指标应该承载发布意义：如果 coverage 下降、verifier recall 没有被证明，或者 time-to-response 不匹配动作风险，就不应该扩大 rollout。
+
+### OpenAI internal coding-agent monitoring：runtime behavioral monitoring 作为 evidence
+
+OpenAI 的 [How we monitor internal coding agents for misalignment](https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/) 给 DeepMind control pattern 补了一个实践层：**runtime behavioral monitoring** 不只是 observability，也是未来 **safety case** 的 evidence。Monitor 会查看真实的 coding-agent sessions，包括 chains of thought and actions，并把看起来不符合用户 intent 或内部 security/compliance policy 的行为升级处理。
+
+对本书来说，有用的是这条 feedback loop：**agent trajectory → monitor classification → severity → human review → safeguard update → control eval**。Monitoring 不能被说成保证。它依赖 monitorability、保护隐私的 trace access、明确 latency，以及被度量的 coverage, recall, and time-to-response。架构也必须说明哪里 asynchronous review 足够，哪里 high-risk actions 需要在执行前 synchronous blocking。
+
+### OpenAI Tax AI for Crete：把 practitioner correction 变成 eval fuel
+
+OpenAI 和 Thrive Holdings 把面向 Crete firm network 的 Tax AI 描述成 self-improving agent case，关键不在于模型含糊地“自己修复自己”，而在于产品环境把专家工作变成可度量的改进回路。Practitioners 准备并复核 tax forms，系统保存从 source documents 到 extracted fields、citations、tax-engine mapping 和 filed return 的路径，重复出现的 practitioner corrections 会变成 structured findings、tailored evals 和 bounded Codex tasks。
+
+对本书来说，这是对 evals、traces 和 ADLC 章节的重要补充：human review 不应该是 filing 之后就消失的终端人工修改。如果人类修正了一个字段，架构应该保存 expected value、predicted value、provenance、review status、grouping key，以及这个差异是 actionable product failure 还是 expected workflow noise 的判断。只有重复出现并经过复核的模式才应该变成 eval target；含糊的 tax judgment 和 unsupported product behavior 应该回到 product/engineering review，而不是被强行塞进 loop。
+
+最小可移植契约是：**expert correction → production trace → reviewed finding → targeted eval → scoped Codex task → regression gate → engineering review → shipped improvement**。对 high-stakes domains 来说，这既是 HCI pattern，也是 assurance pattern：practitioners steer direction，production traces preserve evidence，Codex 在带 read-only production context 的 bounded worktree 中调查，真正的 product changes 在 rollout 前仍由 engineers 负责。
+
+### Microsoft AutoJack：localhost 不再是信任边界
+
+Microsoft Defender Security Research 把 AutoJack 描述为 AutoGen Studio 中的一条 exploit chain：由 browsing agent 渲染的不可信网页可以触达本地 MCP WebSocket，并在 host 上启动进程。这个具体问题在受影响的 MCP surface 进入 PyPI release 之前已经修复，但架构教训并不限于某个项目：如果 agent 既能浏览 open web，又能访问有特权的本地服务，`localhost` 就会变成 attack surface 的一部分。
+
+对本书来说，AutoJack 是 agent harness 中 confused deputy 的一个实践案例。`127.0.0.1` 或 `localhost` 的 origin allowlist 并不能证明信任，因为请求可能来自同一台机器上 agent 的 headless browser 或代码工具。MCP server 的 auth、policy 和 executable allowlist 必须位于 control-plane endpoint，而不是依赖“loopback 只有人类开发者能访问”的假设。
+
+最小可移植契约是：**untrusted web content → browser/tool agent → local control channel → authenticated MCP/control plane → allowlisted execution boundary → audit trail**。任何本地 MCP/debug/control socket 都应该要求 authn/authz、purpose binding、policy gate、启动参数 allowlist 和 isolation profile。Browser tools 最好使用独立的网络与进程身份运行，避免外部内容继承 developer workstation 或 agent host 的信任。
+
+### Microsoft prompts become shells：从 prompt injection 到 host execution
+
+Microsoft 的 “When prompts become shells” 是和 AutoJack 不同的独立案例。AutoJack 展示 browser-agent 如何跨过 local control channel；这个案例展示的是 agent framework 内部的 **prompt injection -> tool parameters -> host execution**。在 Semantic Kernel 示例里，模型按设计工作：把自然语言映射成 tool calls。不安全的边界在 framework/tool layer：它信任 parsed, model-controlled parameters，并让这些参数到达 execution primitive。
+
+可移植的教训很直接：**AI models are not security boundaries**。任何来自模型的值，在 gateway、tool wrapper 或 sandbox 证明安全之前，都应该被当作 attacker-controlled input。也就是说，`tool exposure review` 不只要检查有哪些 tools，还要检查 argument schemas 是否能触达 paths、commands、templates、dynamic code、file writes、deserialization、reflection 或 query/expression languages。`path validation` 不是细节；它是“模型选择了文档”和“模型交出了 filesystem primitive”之间的边界。
+
+最小可移植契约是：**untrusted prompt/content → model-controlled parameters → typed validation → allowlisted operation → per-tool sandbox → audit trail**。对 execution-adjacent tools 来说，默认应该是 deny-by-default tools，禁止把模型参数 string interpolation 到 shells 或 evaluators，执行 canonical path validation、read/write scope checks、per-tool sandbox，并写入包含 redacted model parameters、validation result、sandbox profile 和 policy decision 的 audit event。
 
 ### GitHub Copilot cloud agent：云端编码智能体契约
 
 GitHub Copilot cloud agent 展示了另一种生产形态：智能体从 GitHub、IDE、CLI、API 或集成入口接收任务，研究仓库，规划修改，把代码推送到独立分支，暴露 session logs，然后打开 pull request 供人工 review。关键点不只是“智能体会写代码”，而是自治被包装进了熟悉的工程生命周期。
 
 对本书有用的契约是：**request/issue → isolated task session → branch → commits/logs → validation/security checks → human review → pull request**。分支成为变更边界，session logs 成为可观测性表面，PR 成为审批门禁，而是否允许 GitHub Actions 在智能体分支上运行则是独立风险决策，因为 workflow 可能接触 secrets 或 write permissions。这个模式也应该迁移到其他 cloud coding agents：自治 worker 可以做准备性工作，但 merge、privileged workflows 和 production impact 必须保持为可 review 的控制点。
+
+[Security validation for third-party coding agents](https://github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents/) 进一步加强了这个模式：GitHub 会把用于 Copilot cloud agent 的同一套自动控制应用到第三方 coding agents 生成的代码上：CodeQL、基于 GitHub Advisory Database 的新增依赖检查，以及 secret scanning。对本书来说，这是重要的 control-plane signal。Agent-generated PR 不应该只因为 agent 完成了任务就被视为“ready for review”；platform-owned gates 应该先检查 vulnerabilities、dependency risk 和 leaked secrets，再让 pull request 进入最终状态。如果 gate 发现问题，agent 可以尝试修复，但规则属于平台，而不是 agent。
+
+[Secret scanning with GitHub MCP Server](https://github.blog/changelog/2026-05-05-secret-scanning-with-github-mcp-server-is-now-generally-available/) 把其中一个检查提前到循环更早的位置：MCP-compatible coding agent 或 IDE 可以在当前变更里扫描 exposed secrets，做到 **before you commit**。因此更强的 agentic SDLC contract 是：scan before you commit or open a pull request，让 bypass behavior 与 repository push protection 保持一致，并把 leaked secrets 的修复纳入 agent task closure，而不是等到仓库后置报警。
+
+更新的 Copilot 变化让这个案例更加 repo-native。Copilot code review 现在会读取 `AGENTS.md`，因此仓库里的 instruction file 变成 living agent contract，而不只是本地 CLI 提示。Copilot cloud agent automations 又增加了从 repository events 或 scheduled triggers 进入 cloud-agent session 的 unattended path；所以 automations 也需要 owner、trigger schema、branch policy、approval boundary 和 trace linkage。Copilot app 的 BYOK 则补齐了这一层：model keys 和 provider routing 变成 provider-neutral control plane 的一部分，而不是单个开发者偏好。
 
 ## 案例 1：支持分诊智能体
 

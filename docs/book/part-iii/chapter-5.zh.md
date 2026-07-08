@@ -130,6 +130,8 @@ flowchart TD
 
 所以即使是很强的智能体，也最好遵循一个很朴素的原则：默认情况下，写入长期记忆要么被策略明确允许，要么被移到后台流水线。
 
+长期状态还有一个单独风险：**persistent memory poisoning**。如果恶意记录已经进入 profile、summary store、retrieval index 或 workspace state，它攻击的就不只是一个 prompt，而是每个后来信任这份状态的运行。因此 mature runtime 不应该只从加载记忆开始，还应该先做 `startup_persistent_state_scan`：在记录进入 prompt 或 policy context 前检查 provenance、tenant scope、freshness、write policy version、quarantine flag，以及类似指令的文本迹象。
+
 下面是一个简单例子：
 
 ```python

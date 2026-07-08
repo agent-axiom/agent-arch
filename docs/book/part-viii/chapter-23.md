@@ -342,4 +342,4 @@ def ready_for_replacement(state: ReplacementState) -> bool:
 - [Часть VIII. Жизненный цикл агентной системы](index.md)
 - [Источники](../../appendix/sources.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

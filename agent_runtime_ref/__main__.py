@@ -1676,6 +1676,15 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "idempotency_key": run.idempotency_key,
                 "approval_id": run.approval_id,
                 "capability_name": run.capability_name,
+                "subagent_count": run.subagent_count,
+                "delegation_reason": run.delegation_reason,
+                "context_handoff_size": run.context_handoff_size,
+                "token_budget": run.token_budget,
+                "merge_conflict_risk": run.merge_conflict_risk,
+                "agent_instance_id": run.agent_instance_id,
+                "durable_state_version": run.durable_state_version,
+                "scheduled_wakeup_id": run.scheduled_wakeup_id,
+                "resumable_stream_id": run.resumable_stream_id,
             }
             for run in runs
         ],
@@ -1796,6 +1805,15 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "idempotency_key": run.idempotency_key,
                 "approval_id": run.approval_id,
                 "capability_name": run.capability_name,
+                "subagent_count": run.subagent_count,
+                "delegation_reason": run.delegation_reason,
+                "context_handoff_size": run.context_handoff_size,
+                "token_budget": run.token_budget,
+                "merge_conflict_risk": run.merge_conflict_risk,
+                "agent_instance_id": run.agent_instance_id,
+                "durable_state_version": run.durable_state_version,
+                "scheduled_wakeup_id": run.scheduled_wakeup_id,
+                "resumable_stream_id": run.resumable_stream_id,
             }
             for run in runs
         ],

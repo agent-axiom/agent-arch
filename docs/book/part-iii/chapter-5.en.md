@@ -130,6 +130,8 @@ Why this path is systemically dangerous:
 
 That is why even for very capable agents it is useful to follow a boring rule: by default, writing to long-term memory should either be explicitly allowed by policy, or moved into a background pipeline.
 
+Long-term state also has a separate risk: **persistent memory poisoning**. If a malicious record has already entered a profile, summary store, retrieval index, or workspace state, it attacks not one prompt but every later run that trusts that state. A mature runtime should therefore start with more than memory loading: run a `startup_persistent_state_scan` that checks provenance, tenant scope, freshness, write policy version, quarantine flag, and instruction-like text before the record reaches the prompt or policy context.
+
 Here is a simple example of that logic:
 
 ```python
