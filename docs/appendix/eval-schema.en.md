@@ -29,6 +29,21 @@ That is a problem for three reasons:
 
 That is why it helps to treat an eval dataset as a contract.
 
+## Eval integrity as a first-class control
+
+OpenAI's SWE-Bench Pro audit shows why that contract is not enough by itself: even a realistic benchmark can produce noisy signal when the tasks are broken. [OpenAI found](https://openai.com/index/separating-signal-from-noise-coding-evaluations/) that an automated pipeline flagged 200 of 731 public-split tasks as broken, while a campaign with five experienced engineers per task identified 249. In the language of this book, the eval artifact itself needs quality assurance because it shapes deployment safety, research priorities, and safety-case claims.
+
+A minimal defect taxonomy is useful directly in the schema:
+
+- `overly_strict_tests`: hidden tests require a specific implementation that the prompt did not require;
+- `underspecified_prompt`: the prompt omits requirements that the oracle later enforces;
+- `low_coverage_tests`: tests allow incomplete solutions to pass;
+- `misleading_prompt`: the prompt points toward behavior that conflicts with tests or the gold patch.
+
+That means `verifier_outputs` should sit beside a separate `eval_audit_record`. This record describes not how the agent performed on a scenario, but whether the measurement artifact is trustworthy: `source_task_id`, `oracle_type`, `defect_labels`, `agent_audit_refs`, `human_reviewer_count`, `human_agreement`, `reviewer_confidence`, and `decision_impact`.
+
+The practical pattern is not "let an agent grade the eval." The stronger shape is **agent-assisted eval audit + independent human adjudication**: agents help inspect prompts, tests, traces, and patches at scale, while the final label, confidence, and release impact remain a separate human-reviewed artifact.
+
 ## Minimal eval artifact shape
 
 For agent systems, it is very useful for one dataset item to contain at least:
@@ -191,6 +206,14 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `eval_audit_record`
+- `oracle_type`
+- `defect_labels`
+- `agent_audit_refs`
+- `human_reviewer_count`
+- `human_agreement`
+- `reviewer_confidence`
+- `decision_impact`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
 
@@ -268,6 +291,7 @@ Several mistakes are very common:
 - not declaring expected outcomes explicitly;
 - grading only the final answer and ignoring policy or tool behavior;
 - not versioning the dataset;
+- not auditing the quality of tasks, oracles, and hidden tests;
 - not linking dataset items to trace evidence or incident history;
 - collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution;
 - requiring `sandbox_profile_review` in rollout, but having no grading rule that checks workspace, permissions, and snapshot/resume evidence.
@@ -282,6 +306,7 @@ Start with this short list and mark every "no" explicitly:
 - Are labels separate from expected outcomes?
 - Do you have grading rules, not just reviewer prose?
 - Can you evaluate behavior, not only text?
+- Do you have an `eval_audit_record` that captures defect labels, oracle type, reviewer confidence, and decision impact?
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Can you tell which verifier identity and contract version produced that grading output?
 - Is there a dedicated rule for sandbox-backed paths that checks sandbox profile contract, workspace entries, permissions, and snapshot/resume evidence?

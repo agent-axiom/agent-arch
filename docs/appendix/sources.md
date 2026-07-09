@@ -103,6 +103,7 @@
 ## Наблюдаемость, оценки и дизайн проверяющих
 
 - OpenAI, [Agent evals](https://platform.openai.com/docs/guides/agent-evals)
+- OpenAI, [Separating signal from noise in coding evaluations](https://openai.com/index/separating-signal-from-noise-coding-evaluations/)
 - OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations)
 - OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/)
 - OpenAI, [How we monitor internal coding agents for misalignment](https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/)
