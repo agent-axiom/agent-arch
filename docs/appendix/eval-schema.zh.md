@@ -29,6 +29,21 @@
 
 所以最好把评测数据集当成一种契约。
 
+## 把评测完整性作为一等控制
+
+OpenAI 对 SWE-Bench Pro 的审计说明了为什么只有这个契约还不够：即使是很真实的 benchmark，如果任务本身坏了，也会产生噪声信号。[OpenAI 发现](https://openai.com/index/separating-signal-from-noise-coding-evaluations/)，自动管线把 731 个 public split 任务中的 200 个标为损坏，而每个任务由五位资深工程师参与的人类标注活动识别出 249 个损坏任务。用本书的语言说，eval artifact 本身也需要质量保证，因为它会影响部署安全、研究优先级和 safety case 的论证。
+
+最小缺陷分类可以直接进入 schema：
+
+- `overly_strict_tests`：隐藏测试要求 prompt 没有要求的特定实现；
+- `underspecified_prompt`：prompt 漏掉了 oracle 后续强制检查的要求；
+- `low_coverage_tests`：测试覆盖不足，让不完整解法也能通过；
+- `misleading_prompt`：prompt 指向的行为与测试或 gold patch 冲突。
+
+因此，`verifier_outputs` 旁边还应该有独立的 `eval_audit_record`。它描述的不是智能体在某个场景里的表现，而是这个测量工件本身是否可靠：`source_task_id`、`oracle_type`、`defect_labels`、`agent_audit_refs`、`human_reviewer_count`、`human_agreement`、`reviewer_confidence` 和 `decision_impact`。
+
+这里的实用模式不是“让 agent 给 eval 打分”。更可靠的形态是 **agent-assisted eval audit + independent human adjudication**：agent 帮助规模化检查 prompt、tests、traces 和 patches，但最终标签、置信度和对发布决策的影响仍然是一个独立的人类审查工件。
+
 ## 最小评测工件结构
 
 对智能体系统来说，一个数据集条目至少最好包含：
@@ -191,6 +206,14 @@
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `eval_audit_record`
+- `oracle_type`
+- `defect_labels`
+- `agent_audit_refs`
+- `human_reviewer_count`
+- `human_agreement`
+- `reviewer_confidence`
+- `decision_impact`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
 
@@ -268,6 +291,7 @@ verifier_outputs:
 - 不显式声明期望结果；
 - 只评最终答案，不看策略或工具行为；
 - 不给数据集做版本管理；
+- 不审计任务、oracle 和 hidden tests 本身的质量；
 - 不把数据集条目和追踪证据或事故历史关联起来；
 - 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因；
 - 在发布（rollout）中要求 `sandbox_profile_review`，却没有打分规则（grading rule）去检查工作区（workspace）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）。
@@ -282,6 +306,7 @@ verifier_outputs:
 - 标签和期望结果是否分开？
 - 有没有分级规则，而不只是人工描述？
 - 能不能评估行为，而不只是文本？
+- 是否有 `eval_audit_record`，记录 defect labels、oracle type、reviewer confidence 和 decision impact？
 - 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
 - 是否有专门面向由沙箱（sandbox）支撑的路径的规则，用来检查沙箱配置文件契约（sandbox profile contract）、工作区条目（workspace entries）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）？
