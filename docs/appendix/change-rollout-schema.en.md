@@ -115,6 +115,40 @@ That becomes even more important when rollout depends on richer verifier outputs
 
 Once approval and stateful capability sessions are part of the runtime, the gate should also say whether interruption behavior was reviewed explicitly, not assumed.
 
+### 4.1. Versioned Risk Posture
+
+Anthropic's latest Responsible Scaling Policy update is a useful governance pattern: risk posture should be a versioned artifact, not a background team sentiment. In version 3.4, Anthropic explicitly records an effective date, changes the automated R&D risk threshold, allows a Risk Report to analyze risks as of a separate coverage date, requires public reports to indicate redacted material, and clarifies external review for different parts of the full report.[^anthropic-rsp][^anthropic-roadmap]
+
+For an agent system, that maps cleanly into `rollout_gate_record` as a separate block:
+
+```yaml
+risk_posture:
+  policy_version: rsp-v3.4
+  coverage_date: 2026-07-08
+  assessed_capabilities:
+    - autonomous_rd
+    - tool_use_with_external_side_effects
+  redactions:
+    public_summary_redactions_marked: true
+    internal_unredacted_report_ref: risk-report-internal-2026-07
+  reviewers:
+    internal_reviewers:
+      - safety_owner
+      - runtime_owner
+    external_review_refs:
+      - external-review-section-a
+      - external-review-section-b
+  release_decision: approve_canary
+risk_report_lifecycle:
+  - draft
+  - internal_review
+  - external_review
+  - public_summary
+  - post_release_monitoring
+```
+
+The point is not to copy Anthropic's policy. The point is that a high-risk agent capability should be admitted only with a policy version, coverage date, assessed capability list, public-redaction status, reviewers, and an explicit release decision. The risk report then stops being post-hoc documentation and becomes part of admitting an agent to new tools, autonomy, or blast radius.
+
 ## 5. How change review differs from the rollout gate
 
 These two layers are often confused, but they solve different questions:
@@ -134,6 +168,7 @@ In practice, that usually means the gate should also make explicit:
 - whether delegated authorization continuity was checked across run traces, approval records, and session export;
 - whether orchestration-pattern changes were reviewed as runtime-control changes before rollout;
 - whether the sandbox profile contract, including workspace materialization, permissions, and snapshot/resume policy, was included in review when the change touches sandbox-backed execution;
+- which `policy_version` and `coverage_date` justify the risk posture for high-risk capabilities;
 - who owns emergency freeze if interruption semantics start drifting after release.
 
 ## 6. How this connects to the eval schema
@@ -197,6 +232,7 @@ At minimum, a healthy change-rollout layer should enforce:
 - verifier quality and evidence linkage are checked before rollout when release control depends on graded outcomes;
 - orchestration-pattern changes are reviewed before rollout, especially when they add routing, parallelization, or delegated worker surfaces;
 - sandbox profile changes are reviewed before rollout, especially when they change workspace entries, shell/filesystem permissions, or snapshot/resume behavior;
+- the risk posture for a high-risk capability is versioned, has a coverage date, and links to a risk report instead of being reconstructed from team memory;
 - the rollback plan does not live only in people’s heads.
 
 ## 10. What usually breaks
@@ -208,6 +244,7 @@ The common failure modes are familiar:
 - telemetry readiness is judged informally;
 - safety findings are not treated as blockers;
 - verifier quality or evidence linkage is assumed rather than checked;
+- risk reports are written after the fact and do not affect capability admission;
 - capability-session expiry or re-init behavior is left unmodeled;
 - orchestration-pattern changes slip through as “implementation detail” without explicit review;
 - the rollout wave is described too vaguely;
@@ -222,6 +259,7 @@ Start with this short list and mark every "no" explicitly:
 - Is it clear which checks must pass before rollout?
 - Is there a visible `change_id -> bundle_id -> rollout_wave` link?
 - Are verifier quality and evidence-linkage checks visible when graded outcomes affect release?
+- Is there a `policy_version`, `coverage_date`, redaction status, and reviewer set for high-risk risk posture?
 - Are blocking findings and decision owners retained?
 - Can incident review reconstruct which gate allowed the change through?
 
@@ -235,3 +273,6 @@ If the answer is “no” several times in a row, you may already have a change 
 - [Reference Package](reference-package.en.md)
 - [Chapter 18. Production Rollout Checklist](../book/part-vii/chapter-18.en.md)
 - [Chapter 20. Change Management for Agent Systems](../book/part-viii/chapter-20.en.md)
+
+[^anthropic-rsp]: Anthropic, [Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy).
+[^anthropic-roadmap]: Anthropic, [Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap).
