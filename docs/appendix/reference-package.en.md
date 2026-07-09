@@ -6,6 +6,8 @@ Its job is not to become a production framework. It exists as a minimal code anc
 
 This package is intentionally an implementation anchor, not a parallel product. Its value is that it lets the reader inspect runnable structure behind the book's argument without turning the project into a framework manual.
 
+Managed Agents add a short **Brain / Hands / Session** map to this page. Brain is the model/harness control loop; Session is the durable append-only log exposed through `wake(sessionId)`, `getEvents()`, and `emitEvent(id, event)`; Hands are the sandbox/tool layer that executes `execute(name, input)` and issues resources through `provision({resources})`. If a sandbox or tool fails on the hands side, the reference package should show it as a managed failed run or tool-call failure, not as a lost process. Secrets stay behind the proxy/vault boundary: the executor receives a brokered capability and scoped resource, not a raw token.
+
 What this page does **not** promise:
 
 - it does not replace the book's explanation of why the layers exist;

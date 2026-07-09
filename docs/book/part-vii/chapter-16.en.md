@@ -474,6 +474,15 @@ For the reference package, that means:
 
 This fits the earlier sections of the chapter: background execution, resumable runs, and capability sessions stop being “a long request inside a container” and become a governed binding between session state, control loop, and contained execution surface. The maturity test is simple: can the platform replace the model, harness, sandbox, or a specific hand capability without losing session history, audit trail, or the operator's ability to explain what happened?
 
+The practical contract is stricter than “keep the history.” **The session is not the context window**: it is an external log and state API from which the harness assembles the next prompt, but it does not need to fit entirely inside the model. A minimum runtime interface looks like this:
+
+- session API: `wake(sessionId)`, `getEvents()`, and `emitEvent(id, event)` for reading the durable log and writing new decisions;
+- hands API: `execute(name, input)` for invoking a concrete capability and `provision({resources})` for issuing sandbox/tool resources under a policy profile;
+- failure contract: sandbox, tool executor, policy proxy, or resource-provisioning failure should return to the harness as an ordinary `tool-call error`, not as a hidden process crash;
+- secret boundary: tokens are never reachable from the sandbox; the sandbox receives a brokered capability, not raw credentials.
+
+Then the brain can make a mistake, the hands can fail, the session can survive both events, and replay can see a specific boundary: resource exhaustion, policy denial, sandbox startup failure, or a managed tool error. That makes the managed-agent split not only scalable, but investigable.
+
 
 ## 13. Example Runtime Configuration
 

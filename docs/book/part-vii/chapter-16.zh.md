@@ -474,6 +474,15 @@ def continue_run(run_id: str):
 
 这也和本章前面的内容相配：background execution、resumable runs 和 capability sessions 不再是“容器里的长请求”，而是 session state、control loop 和 contained execution surface 之间受治理的绑定。成熟度测试很简单：平台能不能替换 model、harness、sandbox 或某个 hand capability，同时不丢失 session history、audit trail，以及 operator 解释发生了什么的能力。
 
+这里的实用契约比“保留历史”更严格。**session 不是 context window**：它是外部日志和状态 API，harness 从中组装下一轮 prompt，但它本身不需要完整塞进模型上下文。最小 runtime 接口可以是：
+
+- session API：`wake(sessionId)`、`getEvents()` 和 `emitEvent(id, event)`，用于读取 durable log 并写入新的决策；
+- hands API：`execute(name, input)` 用于调用具体 capability，`provision({resources})` 用于按 policy profile 发放 sandbox/tool 资源；
+- failure contract：sandbox、tool executor、policy proxy 或 resource provision 的失败，应该作为普通 `tool-call error` 返回给 harness，而不是隐藏的进程崩溃；
+- secret boundary：tokens 永远不应该被 sandbox 直接拿到；sandbox 拿到的是 brokered capability，而不是 raw credentials。
+
+这样，brain 可以犯错，hands 可以失败，session 可以同时幸存，而 replay 看到的不是“模型失败”这种笼统结论，而是具体边界：资源不足、policy 拒绝 capability、sandbox 没启动，或者 tool 返回了受控错误。这让 managed-agent 拆分不仅可扩展，也可调查。
+
 
 ## 13. 一个运行时配置示例
 
