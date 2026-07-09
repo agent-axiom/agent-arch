@@ -64,7 +64,7 @@
 - `parent_span_id`
 
 В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Загрузчик событий явно проверяет эту форму: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty` и `Telemetry redact field is not present in events: {missing}`.
-Для production observability поверх этого почти всегда нужны поля, которые делают spans searchable и пригодными для regression review:
+Для промышленной наблюдаемости поверх этого почти всегда нужны поля, которые делают спаны пригодными для поиска и регрессионного разбора:
 
 - `span_type`
 - `input_ref`
@@ -79,8 +79,6 @@
 - `redaction_policy_id`
 - `retention_class`
 - `trace_search_tags`
-
-В справочном рантайме часть этих полей пока живет внутри `payload`, чтобы схема оставалась компактной и читаемой. При этом сериализованное событие уже несет `schema_version` и `redacted_fields`, а экспорт умеет маскировать выбранные поля. Event loader явно проверяет эту форму: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty` и `Telemetry redact field is not present in events: {missing}`.
 
 ## Как связаны трасса и сессия
 
@@ -120,21 +118,10 @@
 | `approval_requested` | при высокорисковом пути записи | показывает, что система ушла в очередь человеческой проверки |
 | `sandbox_profile_reviewed` | при проверке пути на базе песочницы | фиксирует проверенное рабочее пространство, профиль разрешений и доказательства по снимкам и возобновлению |
 | `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена кандидатная запись в память |
-| `policy_precheck` | сразу после допуска запуска | фиксирует policy precheck action, reason и policy ID |
-| `agent_threat_evidence` | когда threat-model control оставляет доказательство | связывает threat class с trace/evidence identifiers |
-| `retrieval` | при извлечении memory context | фиксирует source и число retrieved records |
-| `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; internally `RunContext` хранит `retrieved_context` и `retrieved_records` до обработки `tool_request` |
-| `model_reasoning_evidence` | после model step, если provider/runtime вернул privacy-preserving reasoning evidence | связывает model output с summary/reference/encrypted artifact без хранения raw reasoning |
-| `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину allow/deny/approval |
-| `mcp_tool_risk_review` | при review MCP tool/server риска | связывает threat class, registry evidence, scope review и quarantine state |
-| `tool_execution` | после capability call или approval handoff | фиксирует capability status и tool-principal context |
-| `a2a_handoff` | когда один agent делегирует работу другому agent | фиксирует delegation chain, authorization и failure-attribution context |
-| `subagent_delegation_decision` | когда manager решает запускать или не запускать subagents | фиксирует fanout gate, budget и причину делегирования |
-| `durable_agent_instance_state` | когда named agent instance загружается, засыпает, просыпается или сохраняет durable state | фиксирует owner instance, state version, wakeup и resumable stream linkage |
-| `resumable_agent_recovery` | когда run продолжается после deploy/eviction/connection churn | фиксирует `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist` |
-| `approval_requested` | при high-risk write path | показывает, что система ушла в очередь человеческой проверки |
-| `sandbox_profile_reviewed` | при проверке sandbox-backed path | фиксирует review workspace, permissions и snapshot/resume evidence |
-| `memory_write_decision` | перед фоновой записью памяти | фиксирует, разрешена или запрещена candidate memory write |
+| `model_reasoning_evidence` | после шага модели, если поставщик или среда исполнения вернули приватно-безопасное доказательство рассуждения | связывает вывод модели с резюме, ссылкой или зашифрованным артефактом без хранения сырой цепочки рассуждений |
+| `subagent_delegation_decision` | когда управляющий агент решает запускать или не запускать подагентов | фиксирует шлюз разветвления, бюджет и причину делегирования |
+| `durable_agent_instance_state` | когда именованный экземпляр агента загружается, засыпает, просыпается или сохраняет долговечное состояние | фиксирует владельца экземпляра, версию состояния, пробуждение и связь с возобновляемым потоком |
+| `resumable_agent_recovery` | когда запуск продолжается после выкладки, вытеснения или смены соединения | фиксирует `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist` |
 | `memory_persisted` | после фоновой записи | фиксирует происхождение и ревизию записи памяти |
 | `background_compaction` | после фонового обслуживания памяти | фиксирует результаты уплотнения на уровне арендатора |
 | `background_update_scheduled` | после постановки или завершения фоновой работы | фиксирует статус фонового обновления для запуска |
@@ -222,10 +209,9 @@
 - `quarantine_state`
 - `evidence_refs`
 
-`threat_class` лучше держать в словаре модели угроз MCP (MCP threat model): `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
-`threat_class` лучше держать в словаре из MCP threat model: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`, `local control-plane crossing`.
+`threat_class` лучше держать в словаре модели угроз MCP (MCP threat model): `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`, `local control-plane crossing`.
 
-`local control-plane crossing` нужен для сценария AutoJack-класса: недоверенный web content попадает в browser/tool agent, использует его локальную сетевую позицию, обращается к `localhost` MCP/debug/control socket и пытается превратить control-plane параметр в host command execution. Для такого события trace должен сохранять хотя бы:
+`local control-plane crossing` нужен для сценария AutoJack-класса: недоверенный веб-контент попадает в браузерный или инструментальный агент, использует его локальную сетевую позицию, обращается к `localhost` MCP/debug/control socket и пытается превратить параметр плоскости управления в выполнение команды на узле. Для такого события трасса должна сохранять хотя бы:
 
 - `untrusted_content_origin`
 - `browser_tool_identity`
@@ -247,7 +233,7 @@
 
 !!! example "Трасса для цепочки дубля тикета"
     В кейсе разбора обращений поддержки события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный исход должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с тайм-аутом и статус побочного эффекта неизвестен, трасса должна показать `side_effect_unknown`, а не маскировать запуск как успешный или повторять запись без сверки.
-Для `subagent_delegation_decision` payload должен сохранять не только факт fanout, но и экономику решения:
+Для `subagent_delegation_decision` payload должен сохранять не только факт разветвления, но и экономику решения:
 
 - `subagent_count`
 - `delegation_reason`
@@ -260,7 +246,7 @@
 - `merge_conflict_risk`
 - `fanout_decision`
 
-Для `model_reasoning_evidence` payload должен различать наблюдаемость и приватность reasoning:
+Для `model_reasoning_evidence` payload должен различать наблюдаемость и приватность рассуждения:
 
 - `model_output_preview`
 - `reasoning_summary`
@@ -269,9 +255,9 @@
 - `tool_evidence_refs`
 - `governance_access_path`
 
-Сырой chain-of-thought или полный reasoning transcript не должен попадать в обычный trace export. Если расследованию нужен доступ к encrypted artifact, этот доступ должен идти через отдельный governance path с purpose, approval, retention и redaction/DLP checks.
+Сырая цепочка рассуждений или полный transcript рассуждения не должны попадать в обычный экспорт трассы. Если расследованию нужен доступ к зашифрованному артефакту, этот доступ должен идти через отдельный управленческий путь с целью, подтверждением, сроком хранения и проверками маскирования/DLP.
 
-Для `durable_agent_instance_state` payload должен показывать, что long-lived agent не является безымянным request handler:
+Для `durable_agent_instance_state` payload должен показывать, что долговечный агент не является безымянным обработчиком запроса:
 
 - `agent_instance_id`
 - `durable_state_version`
@@ -282,9 +268,6 @@
 - `connection_id`
 - `idempotency_key`
 - `state_transition`
-
-!!! example "Trace для duplicate-ticket thread"
-    В support-triage кейсе события `tool_policy_decision`, `approval_requested`, `tool_execution` и финальный outcome должны связываться через один `trace_id`, `session_id`, `approval_id`, `tool_principal` и `idempotency_key`. Если `create_ticket` вернулся с timeout и статус side effect неизвестен, trace должен показать `side_effect_unknown`, а не маскировать run как успешный или повторять write без reconciliation.
 
 !!! note "Канонические сценарии трассировки"
     Три канонических сценария требуют разных акцентов трассировки. **Триаж обращений поддержки** связывает события подтверждений, `idempotency_key`, побочные эффекты инструментов и доказательства восстановления после дубля тикета. **Внутренний ассистент знаний** должен сохранять спаны поиска, доступ к памяти, привязку к источникам, проверки свежести и решения контроля доступа. **Координация инцидентов** должна показывать линию времени эскалации, побочные эффекты уведомлений, владение ответом, события передачи управления и обучение после инцидента.
@@ -387,12 +370,12 @@
 - поля состояния песочницы для запусков, которые материализуют рабочую область, используют возможности оболочки или файловой системы либо продолжаются из снимка состояния;
 - событие или связанная полезная нагрузка для `sandbox_profile_reviewed`, чтобы доказательства раскатки и оценки по рабочей области, правам и политике снимков/возобновления были прослеживаемыми.
 - стабильный способ фиксировать, какая версия verifier contract породила grading output;
-- sandbox state fields для runs, которые материализуют workspace, используют shell/filesystem capabilities или продолжаются из snapshot;
-- event или linked payload для `sandbox_profile_reviewed`, чтобы rollout/eval evidence по workspace, permissions и snapshot/resume policy была traceable.
-- fanout fields для subagent delegation: `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `tool_budget` и `merge_conflict_risk`.
-- privacy-preserving reasoning fields: `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item` и `model_output_preview`, но не raw reasoning transcript.
-- durable named-agent fields: `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`, чтобы session export связывал run с long-lived actor state.
-- recovery fields: `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist`, чтобы deploy/eviction/connection churn не превращались в потерянный run или неявно расширенную делегацию.
+- поля состояния песочницы для запусков, которые материализуют рабочее пространство, используют возможности shell/filesystem или продолжаются из снимка;
+- событие или связанный payload для `sandbox_profile_reviewed`, чтобы доказательства раскатки или оценки по рабочему пространству, правам и политике снимков/возобновления были трассируемыми;
+- поля разветвления для делегирования подагентам: `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `tool_budget` и `merge_conflict_risk`;
+- приватно-безопасные поля рассуждения: `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item` и `model_output_preview`, но не сырой transcript рассуждения;
+- поля долговечного именованного агента: `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`, чтобы экспорт сессии связывал запуск с долговечным состоянием исполнителя;
+- поля восстановления: `continuation_id`, `last_durable_checkpoint`, `recovery_reason` и `client_tool_allowlist`, чтобы выкладка, вытеснение или смена соединения не превращались в потерянный запуск или неявно расширенную делегацию.
 
 Именно эти вещи превращают поток событий из отладочного вывода в полноценный артефакт платформы.
 
@@ -409,11 +392,11 @@
 - Есть ли событие или payload, где видно, какое условие завершения проверялось, кем и с каким результатом?
 - Если раскатка требует `sandbox_profile_review`, есть ли доказательства в трассе для записей рабочей области, прав и политики снимков/возобновления?
 - Можно ли понять, какая версия контракта проверяющего породила этот результат оценивания?
-- Если rollout требует `sandbox_profile_review`, есть ли trace evidence для workspace entries, permissions и snapshot/resume policy?
-- Если manager запускает subagents, видно ли по traces, почему fanout был разрешен, каким был budget и насколько рискован merge?
-- Если trace содержит reasoning evidence, хранится ли только summary/reference/encrypted pointer, а не сырой chain-of-thought?
-- Если агент является durable named instance, видно ли по trace/session export, какое состояние было загружено, чем оно изменилось и какой wake/resume path продолжил работу?
-- Можно ли понять, какая версия verifier contract породила этот grading output?
+- Если раскатка требует `sandbox_profile_review`, есть ли доказательства трассы для записей рабочей области, прав и политики снимков/возобновления?
+- Если управляющий агент запускает подагентов, видно ли по трассам, почему разветвление было разрешено, каким был бюджет и насколько рискованно слияние?
+- Если трасса содержит доказательства рассуждения, хранится ли только резюме, ссылка или зашифрованный указатель, а не сырая цепочка рассуждений?
+- Если агент является долговечным именованным экземпляром, видно ли по экспорту трассы или сессии, какое состояние было загружено, чем оно изменилось и какой путь пробуждения/возобновления продолжил работу?
+- Можно ли понять, какая версия контракта проверяющего породила этот результат оценки?
 - Есть ли план по маскированию данных и версионированию схемы?
 
 Если на несколько вопросов подряд ответ «нет», значит у тебя пока есть логирование, но еще нет полноценной схемы трасс.
