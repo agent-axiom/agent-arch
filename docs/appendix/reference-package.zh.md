@@ -6,6 +6,8 @@
 
 这个包被有意定位成实现锚点，而不是一个平行产品。它的价值在于，让读者能够看到本书论证背后的可运行结构，而不会把整个项目重新变成框架手册。
 
+Managed Agents 给这一页补了一张简短的 **Brain / Hands / Session** 地图。Brain 是 model/harness control loop；Session 是 durable append-only log，通过 `wake(sessionId)`、`getEvents()` 和 `emitEvent(id, event)` 暴露；Hands 是 sandbox/tool 层，执行 `execute(name, input)` 并通过 `provision({resources})` 发放资源。如果 sandbox 或 tool 在 hands 侧失败，reference package 应该把它展示成受控的 failed run 或 tool-call failure，而不是丢失的进程。Secrets 留在 proxy/vault boundary 后面：executor 拿到的是 brokered capability 和 scoped resource，而不是 raw token。
+
 这一页**不**承诺的事情是：
 
 - 它不会取代本书对这些层为何存在的解释；
