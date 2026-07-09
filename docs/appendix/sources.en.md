@@ -145,6 +145,8 @@ Below is the main set of primary sources used by the current version of the book
 - Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
 - Google Research, [Identifying and Mitigating the Security Risks of Generative AI](https://research.google/pubs/identifying-and-mitigating-the-security-risks-of-generative-ai/)
 - Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+- Anthropic, [Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy)
+- Anthropic, [Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
 - Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 - Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 - Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
