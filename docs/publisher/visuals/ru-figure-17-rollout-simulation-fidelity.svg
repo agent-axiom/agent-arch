@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b" />
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937" text-anchor="start" dominant-baseline="middle">Реалистичность тестовой среды перед первой волной</text>
+<text x="72" y="126.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569" text-anchor="start" dominant-baseline="middle">Перед расширением выпуска проверьте не только успешный путь, но и режимы отказа</text>
+<text x="70" y="863.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b" text-anchor="start" dominant-baseline="middle">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+<rect x="105" y="245" width="390" height="210" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="300.0" y="285.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">1. Заглушка</text>
+<text x="300.0" y="336.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">быстро</text>
+<text x="300.0" y="362.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">дёшево</text>
+<text x="300.0" y="388.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">проверяет форму вызова</text>
+<line x1="495" y1="350" x2="605" y2="350" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="550.0" y="332.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">больше правды</text>
+<rect x="605" y="245" width="390" height="210" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800.0" y="285.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">2. Имитация</text>
+<text x="800.0" y="319.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">отказов</text>
+<text x="800.0" y="336.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">тайм-аут</text>
+<text x="800.0" y="362.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">частичная ошибка</text>
+<text x="800.0" y="388.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">потерянное подтверждение</text>
+<line x1="995" y1="350" x2="1105" y2="350" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="1050.0" y="332.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">больше правды</text>
+<rect x="1105" y="245" width="390" height="210" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1300.0" y="285.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">3. Песочница</text>
+<text x="1300.0" y="336.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">реальный API</text>
+<text x="1300.0" y="362.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">запрещённые эффекты</text>
+<text x="1300.0" y="388.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">проверка идемпотентности</text>
+<rect x="250" y="600" width="1100" height="115" rx="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800.0" y="641.3" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Выпускной шлюз: продолжить волну / удержать / заблокировать</text>
+<text x="800.0" y="673.7" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">расширение</text>
+<path d="M300,455 Q300,535 470,600" fill="none" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="800" y1="455" x2="800" y2="600" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<path d="M1300,455 Q1300,535 1130,600" fill="none" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="500" y="750" width="600" height="76" rx="38.0" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800.0" y="788.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">`side_effect_unknown` ведёт к сверке, а не к</text>
+<text x="800.0" y="814.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">повтору вслепую</text>
+</svg>

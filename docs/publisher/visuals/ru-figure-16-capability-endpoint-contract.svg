@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b" />
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937" text-anchor="start" dominant-baseline="middle">Контракт возможности как управляемая точка доступа</text>
+<text x="72" y="126.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569" text-anchor="start" dominant-baseline="middle">Модель получает разрешённую поверхность, а не прямой доступ к сырому инструменту</text>
+<text x="70" y="863.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b" text-anchor="start" dominant-baseline="middle">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+<rect x="90" y="300" width="260" height="122" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="220.0" y="361.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Намерение модели</text>
+<rect x="440" y="238" width="330" height="246" rx="20" fill="#fce7f3" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="605.0" y="278.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Контракт</text>
+<text x="605.0" y="308.7" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">возможности</text>
+<text x="605.0" y="329.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">имя и версия</text>
+<text x="605.0" y="351.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">область доступа</text>
+<text x="605.0" y="374.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">tenant / субъект</text>
+<text x="605.0" y="396.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">режим чтения или записи</text>
+<rect x="875" y="300" width="250" height="122" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1000.0" y="361.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Шлюз политик</text>
+<rect x="1220" y="300" width="270" height="122" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1355.0" y="347.6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Адаптер</text>
+<text x="1355.0" y="374.4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">инструмента</text>
+<line x1="350" y1="361" x2="440" y2="361" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="770" y1="361" x2="875" y2="361" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1125" y1="361" x2="1220" y2="361" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="440" y="590" width="330" height="105" rx="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="605.0" y="629.1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Владелец / риск /</text>
+<text x="605.0" y="655.9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">откат</text>
+<rect x="875" y="590" width="250" height="105" rx="20" fill="#ede9fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1000.0" y="642.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Подтверждение</text>
+<rect x="1220" y="590" width="270" height="105" rx="20" fill="#e0f2fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1355.0" y="642.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Аудит и трасса</text>
+<line x1="605" y1="484" x2="605" y2="590" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="605.0" y="519.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">обязанности</text>
+<line x1="1000" y1="422" x2="1000" y2="590" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="1000.0" y="488.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">если запись</text>
+<line x1="1355" y1="422" x2="1355" y2="590" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="1355.0" y="488.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">доказательства</text>
+<text x="95" y="756.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#475569" text-anchor="start" dominant-baseline="middle">Правило: расширение возможности проходит как изменение контракта, а не как незаметная</text>
+<text x="95" y="784.3" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#475569" text-anchor="start" dominant-baseline="middle">правка промпта</text>
+</svg>
