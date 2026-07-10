@@ -268,6 +268,18 @@ If rollout or eval requires `sandbox_profile_review`, the trace should also be a
 - `reviewed_by`
 - `review_evidence_refs`
 
+For a **governed agent execution loop**, the trace should connect sandbox boundary, policy-mediated tools/network, staged output, and validation gates into one reviewable path:
+
+- `execution_loop_id`
+- `bounded_workspace_ref`
+- `tool_policy_ref`
+- `network_policy_decision`
+- `approval_decision_id`
+- `staged_output_ref`
+- `validation_gate_results`
+- `monitoring_signal_id`
+- `constraint_bypass_attempt`
+
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for a verifier verdict record:
 
 - `verdict_id`
@@ -345,6 +357,7 @@ The reference runtime is intentionally small, so a more mature system should qui
 - a stable way to record which verifier contract version produced the grading output;
 - sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot;
 - an event or linked payload for `sandbox_profile_reviewed`, so rollout/eval evidence for workspace, permissions, and snapshot/resume policy is traceable.
+- a `governed_execution_loop_step` event that shows bounded workspace, Agent Workflow Firewall or another network gate, approval decision, staged output, Safe Outputs / validation gates, and audit/monitoring signal;
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -359,6 +372,9 @@ Start with this short list and mark every "no" explicitly:
 - Can you build an eval dataset from a session export?
 - Can you link a trace to verifier evidence used in grading or rollout review?
 - If rollout requires `sandbox_profile_review`, is there trace evidence for workspace entries, permissions, and snapshot/resume policy?
+- For an agent-generated patch/PR, is there a governed agent execution loop path: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation, and audit/monitoring?
+- Does the trace show that Safe Outputs, CodeQL, secret scanning, dependency risk, or another validation gate checked staged output before an external write?
+- Is there a separate failure mode for `constraint_bypass_attempt` when an agent tries to route around a network allow/deny, approval gate, or staged output boundary?
 - Can you tell which verifier contract version produced that grading output?
 - Do you have a plan for redaction and schema versioning?
 
