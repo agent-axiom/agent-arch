@@ -8,37 +8,37 @@
 </filter>
 </defs>
 <rect width="1600" height="900" fill="#f5f7fb"/>
-<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Localhost не является trust boundary</text>
-<text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569">Browser/code agent может стать посредником между web-контентом и локальной плоскостью управления</text>
+<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Локальный интерфейс не является границей доверия</text>
+<text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#475569">Браузер или кодовый агент может связать веб-контент с локальной плоскостью управления</text>
 
 <rect x="95" y="255" width="270" height="150" rx="20" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="230" y="305" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Недоверенная</text>
-<text x="230" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">web-страница</text>
-<text x="230" y="374" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">HTML / JS / prompt injection</text>
+<text x="230" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">веб-страница</text>
+<text x="230" y="374" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">HTML / JS / инъекция инструкций</text>
 
 <rect x="485" y="255" width="280" height="150" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="625" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">Browser / code</text>
-<text x="625" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">agent</text>
+<text x="625" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">Браузер / кодовый</text>
+<text x="625" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">агент</text>
 <text x="625" y="376" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">локальная сетевая позиция</text>
 
 <rect x="885" y="255" width="290" height="150" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="1030" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">localhost</text>
-<text x="1030" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">MCP/debug socket</text>
-<text x="1030" y="374" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">control channel</text>
+<text x="1030" y="304" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">локальный</text>
+<text x="1030" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">MCP/debug сокет</text>
+<text x="1030" y="374" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">канал управления</text>
 
 <rect x="1295" y="255" width="240" height="150" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="1415" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Host</text>
-<text x="1415" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">execution</text>
-<text x="1415" y="376" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">process / files / secrets</text>
+<text x="1415" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Исполнение</text>
+<text x="1415" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">на хосте</text>
+<text x="1415" y="376" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">процессы / файлы / секреты</text>
 
 <line x1="365" y1="330" x2="465" y2="330" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <line x1="765" y1="330" x2="865" y2="330" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <line x1="1175" y1="330" x2="1275" y2="330" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 
 <rect x="130" y="525" width="1340" height="172" rx="22" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="800" y="575" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="27" font-weight="800" fill="#1f2937" text-anchor="middle">Контрольная точка должна быть на local control plane, а не в предположении “это же localhost”</text>
-<text x="800" y="628" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">authn/authz • purpose binding • executable allowlist • signed nonce • separate browser identity • trace event</text>
-<text x="800" y="668" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">contain capability before supervising behavior</text>
+<text x="800" y="575" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="#1f2937" text-anchor="middle">Контрольная точка должна жить в локальной плоскости управления</text>
+<text x="800" y="628" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle">аутентификация • авторизация • привязка цели • allowlist исполняемых файлов • подписанный nonce • трасса</text>
+<text x="800" y="668" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">сначала ограничьте способность, потом наблюдайте поведение</text>
 
 <text x="70" y="863" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
 </svg>

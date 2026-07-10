@@ -8,28 +8,28 @@
 </filter>
 </defs>
 <rect width="1600" height="900" fill="#f5f7fb"/>
-<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Deployment simulation и целостность оценки</text>
+<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Симуляция развертывания и целостность оценки</text>
 <text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569">Перед релизом нужно проверять и поведение агента, и надежность самого измерителя</text>
 
 <rect x="80" y="240" width="250" height="135" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="205" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Исторические</text>
 <text x="205" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">контексты</text>
-<text x="205" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">privacy filtered</text>
+<text x="205" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">с фильтром приватности</text>
 
 <rect x="430" y="240" width="250" height="135" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="555" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Candidate</text>
-<text x="555" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">model/runtime</text>
-<text x="555" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">new policy/tool surface</text>
+<text x="555" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Кандидатная</text>
+<text x="555" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">модель/runtime</text>
+<text x="555" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">новая политика/инструменты</text>
 
 <rect x="780" y="240" width="250" height="135" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="905" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Tool</text>
-<text x="905" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">simulation</text>
-<text x="905" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">faults, latency, state</text>
+<text x="905" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Симулятор</text>
+<text x="905" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">инструментов</text>
+<text x="905" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">сбои, задержки, состояние</text>
 
 <rect x="1130" y="240" width="300" height="135" rx="20" fill="#ede9fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="1280" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Behavior delta</text>
-<text x="1280" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">и rollout gate</text>
-<text x="1280" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">block / warn / expand</text>
+<text x="1280" y="292" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Дельта</text>
+<text x="1280" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">поведения</text>
+<text x="1280" y="352" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle">блокировать / предупредить / расширить</text>
 
 <line x1="330" y1="307" x2="410" y2="307" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <line x1="680" y1="307" x2="760" y2="307" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
