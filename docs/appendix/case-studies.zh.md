@@ -107,6 +107,12 @@ GitHub Copilot in VS Code 的 6 月更新展示了另一个转变：IDE 不再�
 
 可移植契约是：**work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**。对 runtime 来说，`session_id`、`work_item_id`、`model_policy`、`usage_accounting`、`browser_context`、`tool_permissions`、`human_feedback_refs` 和 `artifact_refs` 应该是一等字段，而不是 UI 旁路日志。OpenAI 关于 Codex 在不同业务职能中采用增长的材料也强化了同一个结论：当 agents 承接更长、更并行的任务时，组织需要一个能展示队列、成本、人类负责人、状态和干预点的 operator loop。
 
+### Governed agent execution loop：把执行安全做成产品回路
+
+OpenAI 的 [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/) 和 GitHub Agentic Workflows 架构展示了同一个 production pattern：coding 或 infrastructure agent 的安全不只是“放进 sandbox 运行”。它需要 **governed agent execution loop**：bounded workspace、policy-mediated tools/network、approval gates、staged output、automated validation 和 audit/monitoring 应该作为一条链运行。GitHub 还补上了 defense in depth 词汇：substrate-level isolation、configuration-level trust、planning-level trust、Agent Workflow Firewall、Safe Outputs、staged writes 和 log everything。
+
+可移植契约是：**bounded workspace → policy-mediated tools/network → approval gates → staged output → automated validation → audit/monitoring**。Agent 可以读取并准备变更，但写入外部状态应该经过 staged output 和 validation gates：CodeQL、dependency risk、secret scanning、content sanitization、operation filtering，以及风险需要时的 human review。Trace 不应该只显示最终 PR 或 patch，还应该显示 sandbox boundary、network allow/deny、approval decision、staged artifact、validation gate result、monitoring signal，以及试图绕过限制的行为。
+
 ## 案例 1：支持分诊智能体
 
 ### 系统做什么

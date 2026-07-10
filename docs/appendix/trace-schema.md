@@ -290,6 +290,18 @@
 - `reviewed_by`
 - `review_evidence_refs`
 
+Для **governed agent execution loop** трасса должна связывать sandbox boundary, policy-mediated tools/network, staged output и validation gates в один проверяемый путь:
+
+- `execution_loop_id`
+- `bounded_workspace_ref`
+- `tool_policy_ref`
+- `network_policy_decision`
+- `approval_decision_id`
+- `staged_output_ref`
+- `validation_gate_results`
+- `monitoring_signal_id`
+- `constraint_bypass_attempt`
+
 Если система опирается на оценки с учетом проверяющего, полезно отдельно определить событие, контракт данных или связанный payload для записи вердикта проверяющего (verifier verdict record):
 
 - `verdict_id`
@@ -372,6 +384,7 @@
 - стабильный способ фиксировать, какая версия verifier contract породила grading output;
 - поля состояния песочницы для запусков, которые материализуют рабочее пространство, используют возможности shell/filesystem или продолжаются из снимка;
 - событие или связанный payload для `sandbox_profile_reviewed`, чтобы доказательства раскатки или оценки по рабочему пространству, правам и политике снимков/возобновления были трассируемыми;
+- событие `governed_execution_loop_step`, где видны bounded workspace, Agent Workflow Firewall или другой network gate, approval decision, staged output, Safe Outputs / validation gates и audit/monitoring signal;
 - поля разветвления для делегирования подагентам: `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `tool_budget` и `merge_conflict_risk`;
 - приватно-безопасные поля рассуждения: `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item` и `model_output_preview`, но не сырой transcript рассуждения;
 - поля долговечного именованного агента: `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`, чтобы экспорт сессии связывал запуск с долговечным состоянием исполнителя;
@@ -393,6 +406,9 @@
 - Если раскатка требует `sandbox_profile_review`, есть ли доказательства в трассе для записей рабочей области, прав и политики снимков/возобновления?
 - Можно ли понять, какая версия контракта проверяющего породила этот результат оценивания?
 - Если раскатка требует `sandbox_profile_review`, есть ли доказательства трассы для записей рабочей области, прав и политики снимков/возобновления?
+- Есть ли для agent-generated patch/PR путь governed agent execution loop: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation и audit/monitoring?
+- Видно ли в трассе, что Safe Outputs, CodeQL, secret scanning, dependency risk или другой validation gate проверили staged output до внешней записи?
+- Есть ли отдельный failure mode для `constraint_bypass_attempt`, когда агент пытается обойти network allow/deny, approval gate или staged output boundary?
 - Если управляющий агент запускает подагентов, видно ли по трассам, почему разветвление было разрешено, каким был бюджет и насколько рискованно слияние?
 - Если трасса содержит доказательства рассуждения, хранится ли только резюме, ссылка или зашифрованный указатель, а не сырая цепочка рассуждений?
 - Если агент является долговечным именованным экземпляром, видно ли по экспорту трассы или сессии, какое состояние было загружено, чем оно изменилось и какой путь пробуждения/возобновления продолжил работу?

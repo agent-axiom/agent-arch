@@ -107,6 +107,12 @@ The June GitHub Copilot in VS Code updates show another shift: the IDE is becomi
 
 The portable contract is: **work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**. For a runtime, that means `session_id`, `work_item_id`, `model_policy`, `usage_accounting`, `browser_context`, `tool_permissions`, `human_feedback_refs`, and `artifact_refs` should be first-class fields rather than incidental UI logs. OpenAI's material on Codex adoption across different business functions reinforces the same conclusion: when agents take on long and parallel tasks, organizations need an operator loop that shows queue, cost, human owner, status, and intervention point.
 
+### Governed agent execution loop: execution safety as a product loop
+
+OpenAI's [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/) and the GitHub Agentic Workflows architecture show the same production pattern: coding or infrastructure agent safety is not only "run it in a sandbox." It needs a **governed agent execution loop**: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation, and audit/monitoring should operate as one chain. GitHub adds a defense-in-depth vocabulary: substrate-level isolation, configuration-level trust, planning-level trust, Agent Workflow Firewall, Safe Outputs, staged writes, and log everything.
+
+The portable contract is: **bounded workspace → policy-mediated tools/network → approval gates → staged output → automated validation → audit/monitoring**. The agent may read and prepare changes, but writes to external state should pass through staged output and validation gates: CodeQL, dependency risk, secret scanning, content sanitization, operation filtering, and human review where the risk requires a person. A trace should show not only the final PR or patch, but also the sandbox boundary, network allow/deny, approval decision, staged artifact, validation gate result, monitoring signal, and attempts to bypass constraints.
+
 ## Case 1. Support triage
 
 ### What the system does

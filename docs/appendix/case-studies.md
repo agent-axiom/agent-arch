@@ -108,6 +108,12 @@ Microsoft Defender Security Research описывает AutoJack как exploit 
 
 Переносимый контракт: **work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**. Для runtime это означает, что `session_id`, `work_item_id`, `model_policy`, `usage_accounting`, `browser_context`, `tool_permissions`, `human_feedback_refs` и `artifact_refs` должны быть первоклассными полями, а не побочными логами UI. Материал OpenAI про рост Codex внутри разных функций усиливает тот же вывод: когда агенты берут длинные и параллельные задачи, организациям нужен операторский контур (operator loop), который показывает очередь, стоимость, ответственного человека, статус и точку вмешательства.
 
+### Governed agent execution loop: безопасность выполнения как продуктовый контур
+
+Материал OpenAI [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/) и архитектура GitHub Agentic Workflows показывают один и тот же production pattern: безопасность coding/infra agent не сводится к "запустили в sandbox". Нужен **governed agent execution loop**: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation и audit/monitoring должны работать как единая цепочка. GitHub добавляет к этому язык defense in depth: substrate-level isolation, configuration-level trust, planning-level trust, Agent Workflow Firewall, Safe Outputs, staged writes и log everything.
+
+Переносимый контракт: **bounded workspace → policy-mediated tools/network → approval gates → staged output → automated validation → audit/monitoring**. Агент может читать и готовить изменения, но записи во внешнее состояние должны проходить через staged output и validation gates: CodeQL, dependency risk, secret scanning, content sanitization, operation filtering и human review там, где риск требует человека. В трассе нужно видеть не только итоговый PR или patch, но и sandbox boundary, network allow/deny, approval decision, staged artifact, validation gate result, monitoring signal и попытки обойти ограничения.
+
 ## Кейс 1. Агент разбора обращений поддержки
 
 ### Что делает система

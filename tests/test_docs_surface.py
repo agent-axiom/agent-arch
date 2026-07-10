@@ -18922,6 +18922,61 @@ def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> N
     )
 
 
+def test_governed_agent_execution_loop_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "governed agent execution loop",
+            "bounded workspace",
+            "policy-mediated tools/network",
+            "approval gates",
+            "staged output",
+            "automated validation",
+            "audit/monitoring",
+            "Agent Workflow Firewall",
+            "Safe Outputs",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "governed agent execution loop",
+            "execution_loop_id",
+            "bounded_workspace_ref",
+            "network_policy_decision",
+            "approval_decision_id",
+            "staged_output_ref",
+            "validation_gate_results",
+            "constraint_bypass_attempt",
+            "governed_execution_loop_step",
+            "Safe Outputs",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Running Codex safely at OpenAI",
+            "running-codex-safely",
+            "Security architecture of GitHub Agentic Workflows",
+            "github.github.com/gh-aw/introduction/architecture",
+        ),
+    )
+
+
 def test_openai_deployment_simulation_is_documented() -> None:
     _assert_files_contain_all(
         (
