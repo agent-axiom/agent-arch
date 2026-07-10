@@ -180,6 +180,11 @@
 - `cost_budget_event`
 - `rate_limit_decision`
 - `circuit_breaker_state`
+- `agent_identity_mode`
+- `agent_registry_record`
+- `capability_loading_mode`
+- `semantic_policy_decision`
+- `agent_gateway_audit_event`
 - `handoff_id`
 - `containment_state`
 - `verifier_verdict`
@@ -279,6 +284,15 @@
 - `validation_gate_results`
 - `monitoring_signal_id`
 - `constraint_bypass_attempt`
+
+对于 **agentic enterprise control plane**，也应该记录智能体不是带有隐式权限的本地脚本，而是经过受治理的控制路径：
+
+- `agent_identity_mode`
+- `agent_registry_record`
+- `agent_gateway_audit_event`
+- `semantic_policy_decision`
+- `capability_loading_mode`
+- `cost_control_signal`
 
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器裁决记录（verifier verdict record）：
 

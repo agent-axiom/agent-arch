@@ -16,6 +16,27 @@
 !!! note "Канонические сценарии Google-интеграции"
     Дорожная карта Google-интеграции полезнее, если проверять идеи платформенного уровня на трех канонических сценариях. **Триаж обращений поддержки** проверяет идентичность агента, минимальные привилегии, связь подтверждений и аудита, профиль песочницы, инструменты высокого риска и контроль дублей тикетов. **Внутренний ассистент знаний** проверяет слои контекста, управление памятью, политику поиска, происхождение источников и доступ с учетом арендатора. **Координация инцидентов** проверяет управление реестром, границы A2A, непрерывные проверки, шлюзы поэтапного выпуска, трассы эскалации и владение ответом.
 
+## Чеклист control plane для agentic enterprise
+
+Свежий чеклист Google Cloud **20 questions for the Agentic Enterprise** полезен не отдельными названиями продуктов, а формой управленческого вопросника. Его лучше читать как vendor-neutral проверку: есть ли у предприятия единая плоскость управления агентами, а не набор разрозненных harness, tools и dashboards.
+
+Минимальный переносимый чеклист:
+
+1. Кто строит агента: инженерная команда, low-code команда или бизнес-владелец?
+2. Для кого он строится: для человека, для другого агента или для фоновой цепочки задач?
+3. Есть ли у агента стабильная identity model: собственная identity, user-delegated authority или platform-owned runtime principal?
+4. Есть ли утвержденный agent registry с владельцем, назначением, наборами данных, разрешенными tools и сроком пересмотра?
+5. Проходят ли tool/data calls через agent gateway, а не через локальные неучтенные коннекторы?
+6. Разделены ли MCP для tools/data и A2A для межагентной делегации?
+7. Загружает ли агент только task-specific capabilities, а не весь каталог tools в контекст?
+8. Требует ли sandbox путь для browser, scripts, code execution и других risky tools?
+9. Есть ли semantic policy gate, который проверяет intent и planned action до выполнения?
+10. Есть ли eval loop, который проверяет результат, а не только успешность вызова инструмента?
+11. Есть ли cost controls: model tiering, context trimming, hard iteration stop и budget telemetry?
+12. Пишет ли gateway audit event для каждого user-agent-tool interaction, включая deny, sanitize, prompt-injection block и anomaly signal?
+
+Главный вывод для книги: control plane должен связывать **identity → registry → gateway → policy → sandbox → evals → cost controls → audit trail**. Если хотя бы один из этих узлов остается локальной настройкой команды, агентная система быстро превращается в shadow AI уже на уровне execution paths.
+
 ## План по шагам
 
 ### Шаг 1. Пять опор агентной платформы и слои контекста
@@ -146,3 +167,4 @@
 - Google Cloud, [Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 - Google Cloud, [Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 - Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+- Google Cloud, [20 questions for the Agentic Enterprise](https://cloud.google.com/blog/products/ai-machine-learning/20-questions-for-the-agentic-enterprise)

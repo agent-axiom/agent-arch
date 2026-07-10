@@ -16824,6 +16824,57 @@ def test_multilingual_google_integration_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_google_agentic_enterprise_control_plane_checklist_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/google-integration-roadmap.md",
+            "docs/appendix/google-integration-roadmap.en.md",
+            "docs/appendix/google-integration-roadmap.zh.md",
+        ),
+        (
+            "20 questions for the Agentic Enterprise",
+            "control plane",
+            "agent registry",
+            "agent gateway",
+            "semantic policy gate",
+            "cost controls",
+            "budget telemetry",
+            "MCP",
+            "A2A",
+            "identity → registry → gateway → policy → sandbox → evals → cost controls → audit trail",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "agentic enterprise control plane",
+            "agent_identity_mode",
+            "agent_registry_record",
+            "agent_gateway_audit_event",
+            "semantic_policy_decision",
+            "capability_loading_mode",
+            "cost_control_signal",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "20 questions for the Agentic Enterprise",
+            "20-questions-for-the-agentic-enterprise",
+        ),
+    )
+
+
 def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
     english_markers = (
         "Canonical frontier cases",
