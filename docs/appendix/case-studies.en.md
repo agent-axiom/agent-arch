@@ -101,6 +101,12 @@ For this book, the useful contract is: **request/issue → isolated task session
 
 Newer Copilot changes make this case even more repo-native. Copilot code review now reads `AGENTS.md`, so the repository instruction file becomes a living agent contract, not only a local CLI hint. Copilot cloud agent automations add an unattended path from repository events or scheduled triggers into a cloud-agent session; those automations therefore need an owner, trigger schema, branch policy, approval boundary, and trace linkage. BYOK in the Copilot app completes the pattern: model keys and provider routing become part of a provider-neutral control plane, not an individual developer preference.
 
+### IDE agents as managed work queues
+
+The June GitHub Copilot in VS Code updates show another shift: the IDE is becoming not only a place where a person writes a prompt, but an operator console for multiple agent work items. One window now includes parallel sessions, multiple chats inside a session, an integrated browser for agent-driven validation, session and subagent cost visibility, model/provider choice through the Marketplace, synced session history, gutter feedback, and a more independent Autopilot. These are not isolated interface conveniences; they are an emerging control-plane pattern: agent work becomes an observable task queue, not one endless chat.
+
+The portable contract is: **work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**. For a runtime, that means `session_id`, `work_item_id`, `model_policy`, `usage_accounting`, `browser_context`, `tool_permissions`, `human_feedback_refs`, and `artifact_refs` should be first-class fields rather than incidental UI logs. OpenAI's material on Codex adoption across different business functions reinforces the same conclusion: when agents take on long and parallel tasks, organizations need an operator loop that shows queue, cost, human owner, status, and intervention point.
+
 ## Case 1. Support triage
 
 ### What the system does

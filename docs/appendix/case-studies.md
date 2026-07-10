@@ -102,6 +102,12 @@ Microsoft Defender Security Research описывает AutoJack как exploit 
 
 Свежие изменения Copilot делают этот кейс еще более repo-native. Copilot code review теперь читает `AGENTS.md`, значит репозиторный файл инструкций становится living agent contract, а не только подсказкой для локального CLI. Copilot cloud agent automations добавляют unattended path от repository events или scheduled triggers к cloud-agent session; поэтому automations должны иметь owner, trigger schema, branch policy, approval boundary и trace linkage. BYOK в Copilot app дополняет эту картину: model keys и provider routing становятся частью provider-neutral control plane, а не личной настройкой разработчика.
 
+### IDE agents как управляемая очередь работ (managed work queues)
+
+Июньские изменения GitHub Copilot in VS Code показывают еще один сдвиг: IDE становится не только местом, где человек пишет prompt, а операторской консолью для нескольких agent work items. В одном окне появляются parallel sessions, несколько chats внутри session, встроенный browser для agent-driven validation, видимость стоимости по session и subagent, выбор model/provider через Marketplace, synced session history, gutter feedback и более самостоятельный Autopilot. Это не отдельные удобства интерфейса, а emerging control-plane pattern: агентная работа превращается в очередь наблюдаемых задач, а не в один бесконечный чат.
+
+Переносимый контракт: **work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**. Для runtime это означает, что `session_id`, `work_item_id`, `model_policy`, `usage_accounting`, `browser_context`, `tool_permissions`, `human_feedback_refs` и `artifact_refs` должны быть первоклассными полями, а не побочными логами UI. Материал OpenAI про рост Codex внутри разных функций усиливает тот же вывод: когда агенты берут длинные и параллельные задачи, организациям нужен операторский контур (operator loop), который показывает очередь, стоимость, ответственного человека, статус и точку вмешательства.
+
 ## Кейс 1. Агент разбора обращений поддержки
 
 ### Что делает система

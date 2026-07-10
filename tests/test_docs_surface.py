@@ -18870,6 +18870,23 @@ def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> N
 
     _assert_files_contain_all(
         (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "IDE agents",
+            "managed work queues",
+            "parallel sessions",
+            "usage_accounting",
+            "model_policy",
+            "human_feedback_refs",
+            "operator loop",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
             "docs/book/part-v/chapter-12.md",
             "docs/book/part-v/chapter-12.en.md",
             "docs/book/part-v/chapter-12.zh.md",
@@ -18897,6 +18914,8 @@ def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> N
             "2026-06-02-schedule-and-automate-tasks-with-copilot-cloud-agent",
             "2026-06-18-copilot-code-review-agents-md-support-and-ui-improvements",
             "2026-06-23-github-copilot-app-support-for-byok",
+            "2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases",
+            "openai.com/index/how-agents-are-transforming-work",
             "2026-06-05-spend-limits",
             "ai-gateway/features/spend-limits",
         ),

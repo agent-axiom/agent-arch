@@ -101,6 +101,12 @@ GitHub Copilot cloud agent 展示了另一种生产形态：智能体从 GitHub�
 
 更新的 Copilot 变化让这个案例更加 repo-native。Copilot code review 现在会读取 `AGENTS.md`，因此仓库里的 instruction file 变成 living agent contract，而不只是本地 CLI 提示。Copilot cloud agent automations 又增加了从 repository events 或 scheduled triggers 进入 cloud-agent session 的 unattended path；所以 automations 也需要 owner、trigger schema、branch policy、approval boundary 和 trace linkage。Copilot app 的 BYOK 则补齐了这一层：model keys 和 provider routing 变成 provider-neutral control plane 的一部分，而不是单个开发者偏好。
 
+### IDE agents 作为受管理的工作队列（managed work queues）
+
+GitHub Copilot in VS Code 的 6 月更新展示了另一个转变：IDE 不再只是人类写 prompt 的地方，也在变成多个 agent work items 的操作员控制台。同一个窗口里出现了 parallel sessions、一个 session 内的多个 chats、用于 agent-driven validation 的 integrated browser、session 与 subagent cost visibility、通过 Marketplace 选择 model/provider、同步的 session history、gutter feedback，以及更能独立推进的 Autopilot。这些不是孤立的界面便利，而是正在形成的 control-plane pattern：agent work 变成可观察的 task queue，而不是一条无限延伸的 chat。
+
+可移植契约是：**work item → isolated/resumable session → visible status and cost → model/provider policy → browser/tool isolation → human feedback → reviewable artifact**。对 runtime 来说，`session_id`、`work_item_id`、`model_policy`、`usage_accounting`、`browser_context`、`tool_permissions`、`human_feedback_refs` 和 `artifact_refs` 应该是一等字段，而不是 UI 旁路日志。OpenAI 关于 Codex 在不同业务职能中采用增长的材料也强化了同一个结论：当 agents 承接更长、更并行的任务时，组织需要一个能展示队列、成本、人类负责人、状态和干预点的 operator loop。
+
 ## 案例 1：支持分诊智能体
 
 ### 系统做什么
