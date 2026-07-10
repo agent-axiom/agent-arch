@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b"/>
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Durable workflow spine + recoverable fiber</text>
+<text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569">Долгая агентная работа должна иметь durable backbone и явные точки восстановления</text>
+
+<rect x="80" y="245" width="250" height="130" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="205" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">User event</text>
+<text x="205" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">run / trigger / reconnect</text>
+
+<rect x="420" y="245" width="290" height="130" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="565" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Durable step</text>
+<text x="565" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">idempotency + retry</text>
+
+<rect x="800" y="245" width="300" height="130" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="950" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Wait / approval</text>
+<text x="950" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">sleep, event, human gate</text>
+
+<rect x="1190" y="245" width="300" height="130" rx="20" fill="#ede9fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1340" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="23" font-weight="800" fill="#1f2937" text-anchor="middle">Side effect</text>
+<text x="1340" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">evidence + rollback ref</text>
+
+<line x1="330" y1="310" x2="400" y2="310" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="710" y1="310" x2="780" y2="310" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1100" y1="310" x2="1170" y2="310" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+
+<rect x="300" y="500" width="1000" height="145" rx="22" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="545" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="27" font-weight="800" fill="#1f2937" text-anchor="middle">Recoverable internal fiber</text>
+<text x="800" y="590" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">fiber_id • checkpoint_ref • recovery_handler • last_safe_step • cancellation_status</text>
+<text x="800" y="625" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">checkpoint помогает продолжить expensive task, но не становится скрытой памятью</text>
+
+<line x1="565" y1="375" x2="565" y2="500" stroke="#64748b" stroke-width="4" stroke-dasharray="10 10" marker-end="url(#arrow)"/>
+<line x1="950" y1="500" x2="950" y2="375" stroke="#64748b" stroke-width="4" stroke-dasharray="10 10" marker-end="url(#arrow)"/>
+
+<rect x="175" y="710" width="1250" height="70" rx="18" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="753" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle">Все, что может повторить побочный эффект после паузы или сбоя, требует durable log, idempotency key и replay boundary.</text>
+
+<text x="70" y="863" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+</svg>

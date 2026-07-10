@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b"/>
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">Framework / Harness / Runtime</text>
+<text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569">Три слоя production agent нельзя смешивать в один “агентный SDK”</text>
+
+<rect x="105" y="205" width="390" height="450" rx="22" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="300" y="260" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="800" fill="#1f2937" text-anchor="middle">Framework</text>
+<text x="300" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">структура проекта</text>
+<text x="300" y="355" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">интеграции и CLI</text>
+<text x="300" y="395" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">developer experience</text>
+<text x="300" y="500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Вопрос слоя</text>
+<text x="300" y="540" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle">как собрать и подключить?</text>
+
+<rect x="605" y="205" width="390" height="450" rx="22" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="260" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="800" fill="#1f2937" text-anchor="middle">Harness</text>
+<text x="800" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">агентный цикл</text>
+<text x="800" y="355" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">контекст и tool calls</text>
+<text x="800" y="395" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">движение к результату</text>
+<text x="800" y="500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Вопрос слоя</text>
+<text x="800" y="540" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle">как агент думает и действует?</text>
+
+<rect x="1105" y="205" width="390" height="450" rx="22" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1300" y="260" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="800" fill="#1f2937" text-anchor="middle">Runtime</text>
+<text x="1300" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">durable execution</text>
+<text x="1300" y="355" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">state, sandbox, storage</text>
+<text x="1300" y="395" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">recovery и evidence</text>
+<text x="1300" y="500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="800" fill="#1f2937" text-anchor="middle">Вопрос слоя</text>
+<text x="1300" y="540" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle">как пережить сбой и выпуск?</text>
+
+<line x1="495" y1="430" x2="585" y2="430" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="995" y1="430" x2="1085" y2="430" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+
+<rect x="210" y="715" width="1180" height="74" rx="18" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="748" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle">Prompt, tools и skills отвечают за способности; runtime отвечает за управляемость, возобновление и расследование.</text>
+<text x="70" y="863" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+</svg>

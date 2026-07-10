@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b"/>
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937">MCP gateway и progressive disclosure</text>
+<text x="72" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569">Агент получает не весь каталог инструментов, а управляемый срез возможностей</text>
+
+<rect x="90" y="250" width="250" height="150" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="215" y="305" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">Agent</text>
+<text x="215" y="342" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">intent + trace id</text>
+
+<rect x="460" y="220" width="310" height="210" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="615" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="27" font-weight="800" fill="#1f2937" text-anchor="middle">MCP portal</text>
+<text x="615" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">search()</text>
+<text x="615" y="350" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">execute()</text>
+<text x="615" y="385" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">sandboxed code mode</text>
+
+<rect x="890" y="220" width="310" height="210" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1045" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="27" font-weight="800" fill="#1f2937" text-anchor="middle">Gateway policy</text>
+<text x="1045" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">identity / DLP / rate limit</text>
+<text x="1045" y="350" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">approval boundary</text>
+<text x="1045" y="385" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="650" fill="#475569" text-anchor="middle">audit evidence</text>
+
+<rect x="1320" y="250" width="210" height="150" rx="20" fill="#ede9fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1425" y="305" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">MCP</text>
+<text x="1425" y="338" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="800" fill="#1f2937" text-anchor="middle">servers</text>
+<text x="1425" y="372" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="650" fill="#475569" text-anchor="middle">approved slice</text>
+
+<line x1="340" y1="325" x2="440" y2="325" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="770" y1="325" x2="870" y2="325" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="1200" y1="325" x2="1300" y2="325" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+
+<rect x="160" y="550" width="1280" height="140" rx="22" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="595" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="#1f2937" text-anchor="middle">Private reachability должна быть narrow path, а не general-purpose network bridge</text>
+<text x="800" y="642" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="650" fill="#475569" text-anchor="middle">product endpoint → tunnel service → authenticated tunnel-client → private MCP server → filtered response</text>
+
+<text x="70" y="863" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+</svg>
