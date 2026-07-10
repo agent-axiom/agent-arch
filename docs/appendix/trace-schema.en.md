@@ -180,6 +180,11 @@ For `agent_threat_evidence`, preserve the evidence markers from the unified agen
 - `cost_budget_event`
 - `rate_limit_decision`
 - `circuit_breaker_state`
+- `agent_identity_mode`
+- `agent_registry_record`
+- `capability_loading_mode`
+- `semantic_policy_decision`
+- `agent_gateway_audit_event`
 - `handoff_id`
 - `containment_state`
 - `verifier_verdict`
@@ -279,6 +284,15 @@ For a **governed agent execution loop**, the trace should connect sandbox bounda
 - `validation_gate_results`
 - `monitoring_signal_id`
 - `constraint_bypass_attempt`
+
+For an **agentic enterprise control plane**, record that the agent is not a local script with implicit authority, but is passing through a governed control path:
+
+- `agent_identity_mode`
+- `agent_registry_record`
+- `agent_gateway_audit_event`
+- `semantic_policy_decision`
+- `capability_loading_mode`
+- `cost_control_signal`
 
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for a verifier verdict record:
 

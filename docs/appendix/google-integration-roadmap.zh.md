@@ -16,6 +16,27 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 !!! note "规范 Google 集成案例（Canonical Google integration cases）"
     Google 集成路线图（Google integration roadmap）在用三个规范案例（canonical cases）检查平台级想法（platform-grade ideas）时更有用。**支持分流（Support triage）** 检查智能体身份（agent identity）、最小权限（least privilege）、审批/审计链接（approval/audit linkage）、沙箱配置（sandbox profile）、高风险工具（high-risk tools）和重复工单控制（duplicate-ticket controls）。**内部知识助手（Internal knowledge assistant）** 检查上下文层（context layers）、记忆治理（memory governance）、检索策略（retrieval policy）、来源证明（source provenance）和租户感知访问（tenant-aware access）。**事件协调（Incident coordination）** 检查注册表治理（registry governance）、A2A 边界（A2A boundaries）、持续控制（continuous controls）、发布门禁（rollout gates）、升级追踪（escalation traces）和响应归属（response ownership）。
 
+## 智能体企业控制平面检查清单（agentic enterprise control-plane checklist）
+
+Google Cloud 最近的 **20 questions for the Agentic Enterprise** 更适合作为运行问卷，而不是产品清单来读。它的问题可以抽象成一个 vendor-neutral 检查：企业是否有统一的智能体控制平面（agent control plane），还是只有分散的 harness、tools 和 dashboards。
+
+一个最小可移植检查清单：
+
+1. 谁在构建这个智能体：工程团队、low-code 团队，还是业务负责人？
+2. 它面向谁：人类用户、另一个智能体，还是后台任务链？
+3. 智能体是否有稳定身份模型：自己的 identity、user-delegated authority，还是 platform-owned runtime principal？
+4. 是否有已批准的 agent registry，记录 owner、purpose、datasets、permitted tools 和 review cadence？
+5. tool/data calls 是否经过 agent gateway，而不是本地未登记的 connectors？
+6. 是否清楚地区分 MCP for tools/data 与 A2A for agent-to-agent delegation？
+7. 智能体是否只加载 task-specific capabilities，而不是把整个 tool catalog 塞进上下文？
+8. browser、scripts、code execution 和其他 risky tools 是否必须走 sandbox？
+9. 是否有 semantic policy gate，在执行前检查 intent 和 planned action？
+10. 是否有 eval loop 检查结果质量，而不只是检查 tool call 成功？
+11. 是否有 cost controls：model tiering、context trimming、hard iteration stop 和 budget telemetry？
+12. gateway 是否为每一次 user-agent-tool interaction 写入 audit event，包括 deny、sanitize、prompt-injection block 和 anomaly signal？
+
+对本书的关键结论是：control plane 应该把 **identity → registry → gateway → policy → sandbox → evals → cost controls → audit trail** 连成一条线。只要其中任何一个节点仍然只是团队本地设置，系统就会在 execution paths 层面滑向 shadow AI。
+
 ## 分步计划
 
 ### 步骤 1：平台五大支柱与上下文层
@@ -146,3 +167,4 @@ Google 最近真正有价值的内容，不是泛泛而谈“AI 智能体”，�
 - Google Cloud, [Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 - Google Cloud, [Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 - Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+- Google Cloud, [20 questions for the Agentic Enterprise](https://cloud.google.com/blog/products/ai-machine-learning/20-questions-for-the-agentic-enterprise)

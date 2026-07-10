@@ -180,6 +180,11 @@
 - `cost_budget_event`
 - `rate_limit_decision`
 - `circuit_breaker_state`
+- `agent_identity_mode`
+- `agent_registry_record`
+- `capability_loading_mode`
+- `semantic_policy_decision`
+- `agent_gateway_audit_event`
 - `handoff_id`
 - `containment_state`
 - `verifier_verdict`
@@ -301,6 +306,15 @@
 - `validation_gate_results`
 - `monitoring_signal_id`
 - `constraint_bypass_attempt`
+
+Для **agentic enterprise control plane** полезно отдельно фиксировать, что агент не является локальным скриптом с неявными правами, а проходит через управляемый контур:
+
+- `agent_identity_mode`
+- `agent_registry_record`
+- `agent_gateway_audit_event`
+- `semantic_policy_decision`
+- `capability_loading_mode`
+- `cost_control_signal`
 
 Если система опирается на оценки с учетом проверяющего, полезно отдельно определить событие, контракт данных или связанный payload для записи вердикта проверяющего (verifier verdict record):
 
