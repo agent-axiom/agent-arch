@@ -9,7 +9,7 @@
 </defs>
 <rect width="1600" height="900" fill="#f5f7fb"/>
 <text x="70" y="90.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937" text-anchor="start" dominant-baseline="middle">Поток записи оценки и аудита</text>
-<text x="72" y="126.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569" text-anchor="start" dominant-baseline="middle">`eval_audit_record` связывает запуск, трассу, оценку и решение о выпуске</text>
+<text x="72" y="126.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569" text-anchor="start" dominant-baseline="middle">eval_audit_record связывает запуск, трассу, оценку и решение о выпуске</text>
 <text x="70" y="863.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b" text-anchor="start" dominant-baseline="middle">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
 <rect x="82" y="304" width="207" height="118" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="185.5" y="363.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Запуск агента</text>
@@ -32,9 +32,9 @@
 <text x="1425.5" y="351.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Решение о</text>
 <text x="1425.5" y="374.8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">выпуске</text>
 <rect x="545" y="552" width="510" height="148" rx="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="800" y="590.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">`run_id` `trace_id` `case_id`</text>
-<text x="800" y="626.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">`policy_version` `verdict`</text>
-<text x="800" y="662.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">`rollback_ready` `owner`</text>
+<text x="800" y="590.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">run_id • trace_id • case_id</text>
+<text x="800" y="626.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">policy_version • verdict</text>
+<text x="800" y="662.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">rollback_ready • owner</text>
 <line x1="840" y1="422" x2="800" y2="552" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <text x="820.0" y="469.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">поля записи</text>
 <rect x="1160" y="552" width="282" height="118" rx="20" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>

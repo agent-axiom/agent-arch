@@ -17,7 +17,7 @@
 <text x="300.0" y="362.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">дёшево</text>
 <text x="300.0" y="388.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">проверяет форму вызова</text>
 <line x1="495" y1="350" x2="605" y2="350" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
-<text x="550.0" y="332.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">больше правды</text>
+<text x="550.0" y="226.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">реалистичнее</text>
 <rect x="605" y="245" width="390" height="210" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="800.0" y="285.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">2. Имитация</text>
 <text x="800.0" y="319.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">отказов</text>
@@ -25,7 +25,7 @@
 <text x="800.0" y="362.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">частичная ошибка</text>
 <text x="800.0" y="388.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">потерянное подтверждение</text>
 <line x1="995" y1="350" x2="1105" y2="350" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
-<text x="1050.0" y="332.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">больше правды</text>
+<text x="1050.0" y="226.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">реалистичнее</text>
 <rect x="1105" y="245" width="390" height="210" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="1300.0" y="285.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="29" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">3. Песочница</text>
 <text x="1300.0" y="336.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">реальный API</text>
@@ -38,6 +38,6 @@
 <line x1="800" y1="455" x2="800" y2="600" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <path d="M1300,455 Q1300,535 1130,600" fill="none" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
 <rect x="500" y="750" width="600" height="76" rx="38.0" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
-<text x="800.0" y="788.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">`side_effect_unknown` ведёт к сверке, а не к</text>
+<text x="800.0" y="788.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">side_effect_unknown ведёт к сверке, а не к</text>
 <text x="800.0" y="814.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">повтору вслепую</text>
 </svg>

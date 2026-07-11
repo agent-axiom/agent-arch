@@ -35,7 +35,7 @@
 <text x="1087.5" y="510.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">подтверждения</text>
 <text x="1087.5" y="530.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">идемпотентность</text>
 <line x1="1215" y1="463" x2="1245" y2="373" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
-<rect x="1245" y="307" width="255" height="128" rx="20" fill="#fce7f3" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<rect x="1245" y="307" width="255" height="145" rx="20" fill="#fce7f3" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
 <text x="1372.5" y="347.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">5. Автономный</text>
 <text x="1372.5" y="373.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="800" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">контур</text>
 <text x="1372.5" y="398.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="16" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">политики</text>
