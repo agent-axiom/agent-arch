@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/agent-arch-google-pdf-render-20260711-v2/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0010638936947327952,
+      "page": 381
+    },
+    {
+      "density": 0.0045616742686379365,
+      "page": 37
+    },
+    {
+      "density": 0.006750080825556603,
+      "page": 386
+    },
+    {
+      "density": 0.009320187893933568,
+      "page": 257
+    },
+    {
+      "density": 0.011016905648177274,
+      "page": 49
+    },
+    {
+      "density": 0.011310207758088381,
+      "page": 379
+    },
+    {
+      "density": 0.011336002761175771,
+      "page": 177
+    },
+    {
+      "density": 0.011710421690958024,
+      "page": 366
+    },
+    {
+      "density": 0.012432863816946861,
+      "page": 197
+    },
+    {
+      "density": 0.012571122849020773,
+      "page": 361
+    }
+  ],
+  "pages": 425,
+  "render_dir": "/tmp/agent-arch-google-pdf-render-20260711-v2"
+}
