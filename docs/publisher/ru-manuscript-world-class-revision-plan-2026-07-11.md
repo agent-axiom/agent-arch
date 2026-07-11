@@ -48,7 +48,7 @@
 - [x] Run the complete Python test suite and strict MkDocs build.
 - [x] Read back the final Google Docs revision and verify structure and counts.
 - [x] Export DOCX/PDF, apply Template2000n styles, render, and inspect changed pages.
-- [ ] Commit and push the source, artifacts, and final report.
+- [x] Commit and push the source, artifacts, and final report.
 
 ## Definition of done
 
