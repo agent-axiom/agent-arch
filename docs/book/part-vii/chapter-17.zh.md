@@ -247,6 +247,8 @@ DeepMind 的 AI Control Roadmap 很好地指出了策略层的另一项职责：
 
 这是一条重要边界：并非所有危险都长得像 adversarial misuse。有时 agent 只是过度优化局部目标、误解任务，或者沿着一条产品上看似有用但系统层面有破坏性的路径继续执行。因此，策略层应该把决策和响应、负责人、证据、expected response time 与 audit trail 绑定在一起。
 
+AWS AgentCore Gateway 展示了围绕 MCP tools 建立这类层的实践版本：policy 和 Lambda interceptors 位于 model loop 之外，所以 control path 不依赖 agent 怎样解释自己的下一次调用。[^aws-agentcore-policy-interceptors] Cedar policy 基于 principal、action、resource 和 context 给出 deterministic allow/deny decision；request/response interceptors 则处理动态部分：bearer token validation、act-on-behalf token exchange、context injection、tool authorization、payload transformation 和 response filtering。对参考运行时来说，有用的结论是：tool call 应该经过 pre-call decision point、downstream call 和 post-call response filter，而 trace 应该保存 policy decision、denial reason、sanitized request/response、interceptor version 和 audit event。
+
 ## 8. 一个策略契约示例
 
 下面是一个非常简单但实用的模板：
@@ -478,6 +480,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
+[^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
 
 ## 17. 值得配套阅读的参考页
 

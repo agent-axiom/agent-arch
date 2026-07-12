@@ -247,6 +247,8 @@ DeepMind AI Control Roadmap полезно формулирует еще одн�
 
 Это важная граница: не всякая опасность выглядит как adversarial misuse. Иногда агент просто слишком рьяно оптимизирует локальную цель, неправильно понял задачу или продолжает путь, который продуктово выглядит полезным, но системно разрушителен. Поэтому слой политик должен связывать решение с реакцией, ответственным владельцем, доказательствами, expected response time и audit trail.
 
+AWS AgentCore Gateway показывает практический вариант такого слоя вокруг MCP tools: policy и Lambda interceptors стоят вне model loop, поэтому control path не зависит от того, как агент объясняет свой следующий вызов.[^aws-agentcore-policy-interceptors] Policy на Cedar дает deterministic allow/deny decision по principal, action, resource и context, а request/response interceptors закрывают динамическую часть: проверку bearer token, act-on-behalf token exchange, context injection, tool authorization, payload transformation и response filtering. Для эталонного runtime это полезная подсказка: tool call должен проходить через pre-call decision point, downstream call и post-call response filter, а trace должен хранить policy decision, denial reason, sanitized request/response, interceptor version и audit event.
+
 ## 8. Пример контракта политики
 
 Ниже очень простой, но практичный шаблон:
@@ -489,6 +491,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
+[^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
 
 ## 17. Полезные справочные страницы
 

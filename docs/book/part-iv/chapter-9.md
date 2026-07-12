@@ -186,7 +186,7 @@ AutoJack, описанный Microsoft Defender Security Research, полезе�
 
 Правило execution layer совпадает с правилом этой главы для MCP: model output не является authority. Execution-adjacent tools должны быть deny-by-default, зарегистрированы через capability contract, защищены typed validation, canonical path checks, operation allowlists и per-tool sandbox. Им также нужен audit event до побочного эффекта, а не только после него, чтобы расследование видело prompt source, redacted arguments, validation result, selected sandbox profile и policy decision.
 
-### 4.6. Полезно не путать MCP host, client и server
+### 4.6. Полезно не путать узел, клиент и сервер MCP
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 
@@ -266,6 +266,8 @@ flowchart LR
 - платформа может отозвать или ротировать доступ без переписывания каждого адаптера.
 
 Эта же модель помогает понять, где **локальный MCP** все еще уместен: прототипирование, изолированные эксперименты или очень узкие локальные для команды рабочие процессы. Но вариант по умолчанию для общих бизнес-возможностей обычно должен быть таким: **удаленный, управляемый, обнаруживаемый и аудируемый**.
+
+Материал Google Cloud про Gemini Enterprise Agent Platform remote MCP server показывает ту же границу в более managed-виде.[^google-gemini-enterprise-mcp] Внешний агент или IDE-клиент не получает произвольный набор облачных секретов; он подключается к стандартизированной удаленной MCP-точке внутри Google Cloud, видит toolsets вроде generation, prediction, notebooks, endpoints, models, tuning, evaluation и prompts, а discovery идет через Agent Registry. Архитектурный вывод: управляемая удаленная MCP-точка подключения может быть **capability boundary**, если discovery, IAM Deny policies, tenant/data boundary, observability и lifecycle ownership живут на стороне платформы, а не в локальном конфиге клиента.
 
 Рамка AWS MCP Gateway and Registry делает этот контур управления более конкретным.[^aws-mcp-gateway-registry] Она рассматривает MCP servers, AI agents, skills, workflows и другие AI assets как каталожные сущности, а не как разрозненные endpoints. Полезный вывод для этой главы не в конкретном стеке реализации, а в разделении ответственности: registry управляет discovery, ownership, security scanning, fine-grained access control и federation; gateway маршрутизирует MCP tool calls и пишет audit log. Это более чистый платформенный контракт, чем ситуация, где каждый агент или desktop client хранит собственный приватный список серверов.
 
@@ -667,6 +669,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 
 [^aws-mcp-gateway-registry]: AWS Open Source Blog, [Governing AI Assets at Scale with MCP Gateway and Registry](https://aws.amazon.com/blogs/opensource/governing-ai-assets-at-scale-with-mcp-gateway-and-registry/)
+
+[^google-gemini-enterprise-mcp]: Google Cloud, [Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server](https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server)
 
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) и [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 

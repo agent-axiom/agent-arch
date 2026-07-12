@@ -266,6 +266,8 @@ flowchart LR
 
 同一套模型也能解释 **本地 MCP** 什么时候仍然合理：原型验证、隔离实验，或者非常窄的团队本地工作流。但对共享业务能力来说，更合理的默认值通常应是：**远程、受治理、可发现、可审计**。
 
+Google Cloud 的 Gemini Enterprise Agent Platform remote MCP server 展示了同一边界的 managed 版本。[^google-gemini-enterprise-mcp] 外部 agent 或 IDE client 不需要拿到一组任意 cloud secrets；它连接的是 Google Cloud 内部的标准化 remote MCP endpoint，可以看到 generation、prediction、notebooks、endpoints、models、tuning、evaluation 和 prompts 等 toolsets，并通过 Agent Registry 做 discovery。架构结论是：如果 discovery、IAM Deny policies、tenant/data boundary、observability 和 lifecycle ownership 都在平台侧，而不是散落在客户端本地配置里，那么 managed remote MCP endpoint 就可以成为 **capability boundary**。
+
 AWS MCP Gateway and Registry 的框架让这类控制平面更具体。[^aws-mcp-gateway-registry] 它把 MCP servers、AI agents、skills、workflows 和其他 AI assets 当成目录化实体，而不是散落的 endpoints。对本章有用的结论不是某个具体实现栈，而是职责划分：registry 管 discovery、ownership、security scanning、fine-grained access control 和 federation；gateway 路由 MCP tool calls，并写入 audit log。这比让每个 agent 或 desktop client 维护自己的私有服务器列表更像一个清晰的平台契约。
 
 ### 5.2. Shadow MCP 是影子 API 问题的新版本
@@ -642,6 +644,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 
 [^aws-mcp-gateway-registry]: AWS Open Source Blog, [Governing AI Assets at Scale with MCP Gateway and Registry](https://aws.amazon.com/blogs/opensource/governing-ai-assets-at-scale-with-mcp-gateway-and-registry/)
+
+[^google-gemini-enterprise-mcp]: Google Cloud, [Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server](https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server)
 
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) 与 [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 

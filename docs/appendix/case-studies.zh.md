@@ -33,7 +33,9 @@
 
 Cloudflare Agents SDK 展示了一种模式：智能体不只是围绕模型的一次性循环，而是运行在 Durable Object 之上的可寻址 `Agent` 实例。它有稳定名称、持久 SQL/key-value 状态、WebSocket 连接、定时任务、唤醒和休眠。对本书来说，架构结论很简单：当智能体绑定到真实实体——客户案例、租户工作区、事故房间、设备、项目或研究档案——运行时就应该明确展示谁拥有状态、哪些运行修改过它、哪些定时任务可以唤醒实例，以及哪些追踪证明可以安全恢复。
 
-这里的实践契约是：**稳定名称 → 持久状态 → 唤醒/休眠 → 定时/后台工作 → 审批门禁 → 追踪证据**。这把记忆、后台更新、执行、追踪和发布章节连成一个形状：schedule 不应该是不可见 callback，WebSocket UI 不应该暴露智能体的全部状态，approval 应该位于真正发生 side effect 的边界。更新的 long-running agents pattern 还补了一句关键话：agent identity 比 process 活得更久，因此 pause 或 approval 之后的任何 side effect 都应该强制拥有 durable log、idempotency key 和 replay boundary。
+这里的实践契约是：**稳定名称 → 持久状态 → 唤醒/休眠 → 定时/后台工作 → 审批门禁 → 追踪证据**。这把记忆、后台更新、执行、追踪和发布章节连成一个形状：schedule 不应该是不可见 callback，WebSocket UI 不应该暴露智能体的全部状态，approval 应该位于真正发生 side effect 的边界。
+
+更新的 long-running agents pattern 会让这条契约更硬：agent identity 比 process 活得更久，一部分工作也可能是 agent 内部的 **recoverable internal task**。可移植规则是：**durable log → checkpointed work unit → stash snapshot → deploy/reconnect recovery → tool-call replay → bounded side-effect replay**。如果执行停在 approval、eviction、deployment 或 connection churn 上，runtime 应该从 last safe checkpoint 继续，保留 replay boundary 和 idempotency key，而不是从 transcript memory 重建动作并重复外部 side effect。
 
 ### Cloudflare vulnerability harness：VDH、VVS 与噪声过滤
 
@@ -50,6 +52,10 @@ Cloudflare 的 **enterprise MCP** reference architecture 很有用，因为它�
 可移植契约是：**approved MCP portal → progressive tool disclosure → identity-bound authorization → gateway policy and DLP → audit trail → Shadow MCP detection**。Progressive tool disclosure 很重要，因为大型工具目录既是 token-cost problem，也是 safety problem：agent 应该拿到任务所需的 capability slice，而不是企业拥有的全部工具。Shadow MCP detection 也很重要，否则团队会把旧的 shadow API 问题悄悄重建到 agent tools 上。
 
 Cloudflare Code Mode 给这里补了一个实践性反模式：不要把每个 API operation 都作为单独 tool 塞进 prompt。与其做 tool-list stuffing，server 可以只暴露很小的 `search()` 和 `execute()` surface：前者查询 typed API/spec catalog，后者在带显式 permission scopes 的 sandboxed isolate 中执行生成代码。对 enterprise MCP 来说，这会改变治理形态：catalog 留在 gateway 后面，discovery 变成可审计 operation，execute 则经过与 privileged tool call 相同的 policy、DLP、rate-limit 和 approval boundary。
+
+Google Gemini Enterprise Agent Platform remote MCP server 给同一模式补了 managed-cloud 版本：external agents and IDEs 连接到 Google Cloud 内部的标准化 remote MCP endpoint，而 Agent Registry、IAM Deny policies 和 toolset endpoints 定义 discovery 与 authorization。可移植契约是：**managed remote MCP endpoint → agent registry discovery → IAM-scoped toolsets → tenant/data boundary → audit and lifecycle ownership**。这不是替代 Cloudflare-style gateway/portal，而是展示另一种 deployment shape：capability boundary 属于 cloud platform，而不是本地 MCP config。
+
+AWS Bedrock AgentCore Gateway Policy and Lambda interceptors 则给 MCP governance 补上了具体的 tool-call enforcement path。Cedar policy 给出 deterministic allow/deny decision 和 audit log；request interceptors 在调用 MCP server 前执行 token validation、act-on-behalf exchange、context injection 和 tool authorization；response interceptors 在结果回到 agent 前过滤 tool lists 或 sensitive output。可移植契约是：**agent tool call → request interceptor → policy decision → downstream tool → response interceptor → audit event**。最小 trace 字段包括 `policy_decision`、`denial_reason`、`sanitized_request`、`sanitized_response`、`interceptor_version`、`principal`、`resource` 和 `context`。
 
 ### Google DeepMind AI Control Roadmap：作为运行时基础设施的控制
 
