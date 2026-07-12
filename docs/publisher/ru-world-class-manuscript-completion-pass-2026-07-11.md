@@ -44,9 +44,11 @@
   последовательность, содержит 25 изображений и не содержит макросов, OLE или
   вложений.
 
-Самостоятельный визуальный рендер производной Template2000n не завершен:
-LibreOffice в среде отсутствует, а экспорт через Pages завис. Поэтому визуально
-проверен исходный Google PDF, а производная Template2000n проверена структурно.
+12 июля 2026 года визуальная проверка производной Template2000n закрыта без
+локального Word: Microsoft Word Online и независимый рендер дали одинаковые
+365 страниц. Просмотрены все страницы; пустых листов, обрезки, наложений,
+пропавших рисунков и содержимого за полями не найдено. Подробности зафиксированы
+в `docs/publisher/ru-template2000n-cross-render-qa-2026-07-12.md`.
 
 ## Финальные артефакты
 
@@ -58,6 +60,10 @@ LibreOffice в среде отсутствует, а экспорт через P
   `docs/publisher/artifacts/agent-arch-ru-google-doc-final-2026-07-11.pdf`;
 - DOCX со стилями Template2000n:
   `docs/publisher/artifacts/agent-arch-ru-template2000n-final-2026-07-11.docx`.
+- проверочный PDF производной Template2000n:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-cross-render-verified-2026-07-12.pdf`;
+- протокол облачной и независимой проверки:
+  `docs/publisher/ru-template2000n-cross-render-qa-2026-07-12.md`.
 
 ## Что заполняет автор
 
