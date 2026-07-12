@@ -57,6 +57,10 @@ Google Gemini Enterprise Agent Platform remote MCP server 给同一模式补了 
 
 AWS Bedrock AgentCore Gateway Policy and Lambda interceptors 则给 MCP governance 补上了具体的 tool-call enforcement path。Cedar policy 给出 deterministic allow/deny decision 和 audit log；request interceptors 在调用 MCP server 前执行 token validation、act-on-behalf exchange、context injection 和 tool authorization；response interceptors 在结果回到 agent 前过滤 tool lists 或 sensitive output。可移植契约是：**agent tool call → request interceptor → policy decision → downstream tool → response interceptor → audit event**。最小 trace 字段包括 `policy_decision`、`denial_reason`、`sanitized_request`、`sanitized_response`、`interceptor_version`、`principal`、`resource` 和 `context`。
 
+Microsoft Foundry Open Trust Stack 可以作为 **policy-driven eval → portable control checkpoint → production observability** 的案例。ASSERT 把 policies and requirements 作为 targeted eval scenarios 的输入；Agent Control Specification (ACS) 则定义可以跨 framework stacks 迁移的 control checkpoints。可移植契约是：**policy requirement → generated eval scenario → failing trace → ACS checkpoint → re-run eval → observed production signal**。没有这条链路，eval 只是报告，control 则仍然只是散落在 prompt、gateway 或 application code 里的规则。
+
+Anthropic Fable 5 redeployment 给 jailbreak findings 提供了实用 severity rubric。它的 Cyber Jailbreak Severity frame 不只看 bypass 本身，还看 `capability_gain`、`breadth_of_capability_gain`、`ease_of_weaponization` 和 `discoverability`。面向 agent assurance 的可移植契约是：**finding → severity record → response path → mitigation → regression eval → monitoring update**。这能帮助团队区分 minor safety-margin bypass 和真正打开 dangerous-tool path、需要 emergency disable 或 hot policy/classifier mitigation 的 failure。
+
 ### Google DeepMind AI Control Roadmap：作为运行时基础设施的控制
 
 Google DeepMind 把 AI Control Roadmap 描述成内部智能体的 defense-in-depth 层：传统 security hygiene 和 alignment 仍然是基础，但系统还要谨慎假设，一个能力足够强的 agent 可能 misaligned，也可能只是以出乎意料的方式行动。实践上，能访问内部系统的 agent 应该被建模为潜在 insider threat，而不只是带有 prompt injection 风险的聊天界面。因此，control 被塑造成 runtime contract：基于 MITRE ATT&CK 的 threat modeling、对 actions 和 plans 的 monitoring、supervisor systems、prevention/response gates，以及对 coverage、recall 和 time-to-response 的持续度量。

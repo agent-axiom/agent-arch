@@ -557,6 +557,8 @@ But it is very useful as an intermediate layer between an offline dataset and li
 
 AWS Agent-EvalKit shows a practical version of the same pattern: agent evaluation should not remain a one-time benchmark before launch.[^aws-agent-evalkit] The full loop looks like a pipeline: plan evals from the code and risk areas, generate or import test cases, instrument traces, run the agent against scenarios, compute metrics over the traces, and produce a report with concrete code-level recommendations.
 
+Microsoft Foundry's Open Trust Stack adds a useful link between policies, evals, and runtime controls.[^microsoft-open-trust-stack] ASSERT is a reminder that eval cases should be generated from organizational policies and requirements, not only from ad hoc regression prompts. Agent Control Specification (ACS) complements that with portable control checkpoints: if an eval shows that an agent fails a policy requirement, the fix should not only be a prompt change, but also a control point before a tool call, after a tool result, or before an external action.
+
 The important part is not the specific toolkit, but the shape of the loop. Production traces should become more than dashboards; they should become new test cases, regression thresholds, and code-level fixes. If real traffic shows that an agent gives polished answers over empty tool output, that is not only an observability signal. It is a future eval case for faithfulness, tool-use discipline, and fallback behavior.
 
 In a mature loop, after each meaningful change the team should be able to:
@@ -655,4 +657,5 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 [^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 [^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).

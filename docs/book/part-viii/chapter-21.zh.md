@@ -272,6 +272,10 @@ flowchart LR
 
 这一点和本书的组织模型部分完全一致：安全纪律最容易坏在负责人不清楚的地方。
 
+Anthropic 关于 Fable 5 重新上线的说明给 jailbreak finding severity 补了一个实用评分方式。[^anthropic-fable-5] 对本书有用的不是产品事件本身，而是 triage 形状：finding 会按 `capability_gain`、`breadth_of_capability_gain`、`ease_of_weaponization` 和 `discoverability` 评分。对 agent system 来说，这个 rubric 不只适用于 cyber：同一框架可以区分低风险的 safety-margin bypass，和真正打开 dangerous-tool path、能跨多类任务泛化、且可以用一个 prompt 轻易复现的 finding。
+
+因此 red-team finding 不应该只有“发现 jailbreak”这句话，还需要 severity record：绕过了哪个 control，新增了什么 capability，failure 覆盖面有多宽，是否容易变成 harmful workflow，技术是否公开可发现，以及会启动哪条 response path。低 severity 可以进入 queue + monitoring；高 severity 则需要 hot mitigation、emergency disable、classifier/policy update，并在下一次 rollout 前加入 regression eval。
+
 ## 10. 一个保障策略示例
 
 下面这个骨架很实用：
@@ -418,3 +422,4 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-assurance]: [Google Research, Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
+[^anthropic-fable-5]: Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)

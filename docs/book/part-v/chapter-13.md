@@ -577,6 +577,8 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Отдельный практический паттерн хорошо виден в AWS Agent-EvalKit: оценка агента не должна оставаться разовым benchmark перед запуском.[^aws-agent-evalkit] Полный цикл выглядит как pipeline: план оценки по коду и risk areas, генерация или импорт тестовых случаев, инструментирование трасс, запуск агента по сценариям, вычисление метрик по трассам и отчет с конкретными рекомендациями к коду.
 
+Microsoft Foundry Open Trust Stack добавляет к этому удобную связку между политиками, evals и runtime controls.[^microsoft-open-trust-stack] ASSERT полезен как напоминание, что eval cases должны выводиться из organizational policies and requirements, а не только из случайных regression prompts. Agent Control Specification (ACS) дополняет это переносимыми control checkpoints: если eval показывает, что агент проваливает policy requirement, исправление должно выражаться не только в prompt change, но и в контрольной точке до tool call, после tool result или перед external action.
+
 Самое важное здесь не конкретный toolkit, а форма контура. Production traces нужно превращать не только в dashboards, но и в новые тестовые случаи, regression thresholds и code-level fixes. Если реальный трафик показывает, что агент красиво отвечает поверх пустого tool output, это не просто observability signal. Это будущий eval case на faithfulness, tool-use discipline и fallback behavior.
 
 В зрелом контуре после каждого значимого изменения команда должна уметь:
@@ -684,6 +686,7 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 [^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 [^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
