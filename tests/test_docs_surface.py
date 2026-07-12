@@ -18781,6 +18781,78 @@ def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
     )
 
 
+def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
+    chapter_13_files = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+    chapter_21_files = (
+        "docs/book/part-viii/chapter-21.md",
+        "docs/book/part-viii/chapter-21.en.md",
+        "docs/book/part-viii/chapter-21.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_13_files,
+        (
+            "Microsoft Foundry",
+            "Open Trust Stack",
+            "ASSERT",
+            "Agent Control Specification (ACS)",
+            "policy requirement",
+            "tool call",
+            "tool result",
+            "external action",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_21_files,
+        (
+            "Fable 5",
+            "capability_gain",
+            "breadth_of_capability_gain",
+            "ease_of_weaponization",
+            "discoverability",
+            "severity record",
+            "dangerous-tool path",
+            "regression eval",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "policy-driven eval → portable control checkpoint → production observability",
+            "policy requirement → generated eval scenario → failing trace",
+            "Cyber Jailbreak Severity",
+            "finding → severity record → response path",
+            "hot policy/classifier mitigation",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Build agents you can trust across any framework with open evals and a control standard",
+            "devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents",
+            "Redeploying Fable 5",
+            "anthropic.com/news/redeploying-fable-5",
+        ),
+    )
+
+
 def test_tax_ai_practitioner_correction_eval_loop_is_documented() -> None:
     case_files = (
         "docs/appendix/case-studies.md",

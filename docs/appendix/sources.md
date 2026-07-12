@@ -163,6 +163,7 @@
 - Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
 - Anthropic, [Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy)
 - Anthropic, [Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
+- Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)
 - Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 - Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 - Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)

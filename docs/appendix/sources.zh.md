@@ -154,6 +154,7 @@
 - Anthropic, [Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
 - Anthropic, [Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy)
 - Anthropic, [Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap)
+- Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)
 - Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 - Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 - Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
@@ -163,6 +164,7 @@
 - Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)
 - Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
 - Microsoft Learn, [Agent Registry convergence with Microsoft Agent 365](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-registry-convergence)
+- Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/)
 
 ## 事故与案例
 
