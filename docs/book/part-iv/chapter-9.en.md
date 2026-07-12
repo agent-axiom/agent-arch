@@ -266,6 +266,8 @@ That usually means:
 
 That same model also clarifies when **local MCP** is still appropriate: prototyping, isolated experiments, or narrow team-local workflows. But the default for shared business capabilities should usually be: **remote, governed, discoverable, and auditable**.
 
+Google Cloud's Gemini Enterprise Agent Platform remote MCP server shows the same boundary in a more managed form.[^google-gemini-enterprise-mcp] An external agent or IDE client does not receive an arbitrary bundle of cloud secrets; it connects to a standardized remote MCP endpoint inside Google Cloud, sees toolsets such as generation, prediction, notebooks, endpoints, models, tuning, evaluation, and prompts, and discovers assets through Agent Registry. The architectural lesson is that a managed remote MCP endpoint can be a **capability boundary** if discovery, IAM Deny policies, tenant/data boundaries, observability, and lifecycle ownership live on the platform side rather than in the client's local config.
+
 The AWS MCP Gateway and Registry frame makes that control-plane shape more concrete.[^aws-mcp-gateway-registry] It treats MCP servers, AI agents, skills, workflows, and other AI assets as cataloged entities rather than scattered endpoints. The useful lesson for this chapter is not the specific implementation stack, but the split of responsibilities: the registry governs discovery, ownership, security scanning, fine-grained access control, and federation; the gateway routes MCP tool calls and records an audit log. That is a cleaner platform contract than letting every agent or desktop client maintain its own private list of servers.
 
 ### 5.2. Shadow MCP Is the New Shadow API Problem
@@ -642,6 +644,8 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 
 [^aws-mcp-gateway-registry]: AWS Open Source Blog, [Governing AI Assets at Scale with MCP Gateway and Registry](https://aws.amazon.com/blogs/opensource/governing-ai-assets-at-scale-with-mcp-gateway-and-registry/)
+
+[^google-gemini-enterprise-mcp]: Google Cloud, [Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server](https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server)
 
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 

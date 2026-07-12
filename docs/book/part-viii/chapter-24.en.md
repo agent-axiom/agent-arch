@@ -3,7 +3,7 @@
 !!! info "Freshness note"
     Last reviewed: **May 17, 2026**. Previous review: **May 14, 2026**. Next scheduled review: **June 17, 2026**.
 
-    What changed since the previous review: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry, and print-readiness concerns now have concrete contract coverage and docs-surface guards.
+    What changed since the previous review: MCP/A2A security surfaces, verifier contracts, governance-aware telemetry, and print-readiness concerns now have concrete contract coverage and docs-surface guards. Also connected the AI Control Roadmap, runtime monitoring for internal coding agents, and release-bearing control metrics to the insider-risk model.
 
     What changes fastest here:
 
@@ -107,6 +107,8 @@ That is why the most effective mitigations look similar to mature insider-risk c
 
 Google Research compresses this into three practical principles: human controllers, limited powers, and observable actions. [^google-secure-agents]
 
+Google DeepMind and OpenAI add an operational layer to that frame: an internal agent with access to working systems should be treated as a potential insider threat, and monitoring its trajectories is part of runtime control rather than a normal observability dashboard.[^deepmind-ai-control][^openai-agent-monitoring] Control therefore needs measurable thresholds: what fraction of traffic is actually monitored, what fraction of misalignment-relevant behavior the verifier catches, how long response takes, and which actions move from asynchronous review to synchronous blocking. If those numbers are unknown, “we have monitoring” should not count as safety evidence.
+
 ## 5. Transition periods are especially risky
 
 In practice, the most interesting failure modes often appear in transitions rather than in steady state:
@@ -165,6 +167,7 @@ The most reliable measures here are not magical. They are boring and explicit:
 - immutable linkage between `trace_id`, `approval_id`, `tool_principal`, `contract_version`, and `artifact_bundle`;
 - emergency stop for a capability family;
 - behavioral evals that test sabotage, concealment, oversight evasion, and orchestration-pattern misuse.
+- release-bearing control metrics: monitored coverage, verifier recall, time-to-response, and the boundary where action risk requires synchronous blocking instead of delayed review.
 
 <div class="diagram-card">
 <p>Misalignment risk is easier to reason about as tension between autonomy and control surfaces</p>
@@ -287,4 +290,6 @@ The next logical step after this chapter is not just “more security,” but le
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-agent-monitoring]: OpenAI, [How we monitor internal coding agents for misalignment](https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

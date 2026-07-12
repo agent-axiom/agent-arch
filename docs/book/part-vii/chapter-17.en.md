@@ -247,6 +247,8 @@ For a reference runtime, that means a policy decision should be able to return n
 
 This is an important boundary: not every danger looks like adversarial misuse. Sometimes an agent simply over-optimizes a local goal, misunderstands the task, or continues down a path that looks productively useful but is systemically destructive. The policy layer should therefore bind the decision to a response, owner, evidence, expected response time, and audit trail.
 
+AWS AgentCore Gateway shows a practical version of this layer around MCP tools: policy and Lambda interceptors sit outside the model loop, so the control path does not depend on how the agent explains its next call.[^aws-agentcore-policy-interceptors] Cedar policy provides a deterministic allow/deny decision over principal, action, resource, and context, while request/response interceptors handle the dynamic part: bearer-token validation, act-on-behalf token exchange, context injection, tool authorization, payload transformation, and response filtering. For a reference runtime, the useful lesson is that a tool call should pass through a pre-call decision point, downstream call, and post-call response filter, while the trace stores the policy decision, denial reason, sanitized request/response, interceptor version, and audit event.
+
 ## 8. Example Policy Contract
 
 Here is a very simple but practical template:
@@ -478,6 +480,7 @@ The next logical step in the reference implementation is to assemble a productio
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
+[^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
 
 ## 17. Useful Reference Pages
 

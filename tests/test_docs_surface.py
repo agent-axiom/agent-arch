@@ -5627,6 +5627,52 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
+def test_chapter_24_ai_control_metrics_are_release_bearing() -> None:
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-24.md": (
+            "AI Control Roadmap",
+            "runtime monitoring внутренних coding agents",
+            "release-bearing control metrics",
+            "потенциальной insider threat",
+            "какая доля трафика реально покрыта мониторингом",
+            "misalignment-relevant behavior",
+            "asynchronous review в synchronous block",
+            "monitored coverage, verifier recall, time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+        "docs/book/part-viii/chapter-24.en.md": (
+            "AI Control Roadmap",
+            "runtime monitoring for internal coding agents",
+            "release-bearing control metrics",
+            "potential insider threat",
+            "what fraction of traffic is actually monitored",
+            "misalignment-relevant behavior",
+            "asynchronous review to synchronous blocking",
+            "monitored coverage, verifier recall, time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "AI Control Roadmap",
+            "内部 coding agents 的 runtime monitoring",
+            "承载发布意义的控制指标",
+            "潜在内部人威胁",
+            "到底有多少 traffic 被监控",
+            "misalignment-relevant behavior",
+            "asynchronous review 升级为 synchronous blocking",
+            "monitored coverage",
+            "verifier recall",
+            "time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+    }
+
+    for path, expected_markers in expected_markers_by_file.items():
+        _assert_files_contain_all((path,), expected_markers)
+
+
 def test_chapter_24_chinese_risk_surface_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
@@ -18649,6 +18695,92 @@ def test_runtime_monitoring_enterprise_mcp_and_secret_scanning_cases_are_documen
     )
 
 
+def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    chapter_17_files = (
+        "docs/book/part-vii/chapter-17.md",
+        "docs/book/part-vii/chapter-17.en.md",
+        "docs/book/part-vii/chapter-17.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        ("docs/book/part-iv/chapter-9.md",),
+        (
+            "Gemini Enterprise Agent Platform remote MCP server",
+            "управляемая удаленная MCP-точка подключения",
+            "capability boundary",
+            "Agent Registry",
+            "IAM Deny policies",
+            "tenant/data boundary",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Gemini Enterprise Agent Platform remote MCP server",
+            "managed remote MCP endpoint",
+            "capability boundary",
+            "Agent Registry",
+            "IAM Deny policies",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_17_files,
+        (
+            "AWS AgentCore Gateway",
+            "Policy and Lambda interceptors",
+            "Cedar",
+            "pre-call decision point",
+            "post-call response filter",
+            "denial reason",
+            "sanitized request/response",
+            "interceptor version",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "managed remote MCP endpoint → agent registry discovery",
+            "IAM-scoped toolsets",
+            "AWS Bedrock AgentCore Gateway Policy and Lambda interceptors",
+            "agent tool call → request interceptor → policy decision",
+            "sanitized_request",
+            "sanitized_response",
+            "interceptor_version",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server",
+            "cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server",
+            "Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway",
+            "aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway",
+        ),
+    )
+
+
 def test_tax_ai_practitioner_correction_eval_loop_is_documented() -> None:
     case_files = (
         "docs/appendix/case-studies.md",
@@ -18712,6 +18844,26 @@ def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
         (
             "Project Think: building the next generation of AI agents on Cloudflare",
             "blog.cloudflare.com/project-think",
+        ),
+    )
+
+
+def test_cloudflare_agents_case_study_surfaces_recoverable_execution_contract() -> None:
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "recoverable internal task",
+            "checkpointed work unit",
+            "stash snapshot",
+            "deploy/reconnect recovery",
+            "tool-call replay",
+            "bounded side-effect replay",
         ),
     )
 
