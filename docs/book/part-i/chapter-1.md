@@ -298,5 +298,5 @@ flowchart LR
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^langgraph-durable]: [LangGraph, Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
-[^openai-sdk]: [OpenAI, Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
+[^openai-sdk]: [OpenAI, Agents SDK](https://openai.github.io/openai-agents-python/)
 [^openai-evals]: [OpenAI, Agent evals](https://platform.openai.com/docs/guides/agent-evals)

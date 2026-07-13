@@ -338,6 +338,12 @@ and publisher/editor acceptance of the final style route.**
       pages.
 - [x] Post-terminology render QA report created:
       `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.render-qa.json`.
+- [x] Current 2026-07-13 Google Docs proof exported: 434 pages, 27 chapters,
+      49 images.
+- [x] Current 2026-07-13 Template2000n proof rendered: 359 pages, 0 blank-like
+      pages, no clipped page content.
+- [x] Template2000n semantic styles, image alt text and print-safe PNG media
+      verified for the current editorial proof.
 - [ ] Final semantic source pass over fast-moving platform claims is complete
       after author/source Google Doc sync.
 - [ ] Independent external proofread is completed after the export shape is stable.
@@ -350,16 +356,16 @@ and publisher/editor acceptance of the final style route.**
 Include:
 
 1. One-page Russian positioning memo.
-2. Договорная структура 7 частей / 23 главы.
+2. Договорная структура 7 частей / 27 глав.
 3. Source map from repository Markdown to publisher manuscript chapters.
 4. Cover note draft from `docs/publisher/ru-cover-note-draft.md`.
 5. Chapter 1 sample from `docs/book/part-i/chapter-1.md`.
 6. Chapter 13 sample from `docs/book/part-v/chapter-13.md` only if the editor asks for technical depth.
 7. Companion-site description.
 8. Author bio and platform note.
-9. Status note: public web manuscript exists; full publisher manuscript is now
-   assembled in Google Doc and remains blocked by author fields, final
-   publisher styles, export QA after styles and final external proofread.
+9. Status note: public web manuscript exists; full publisher manuscript is
+   updated in Google Doc; pre-author Template2000n and export QA are complete;
+   author fields, post-author final export and external proofread remain open.
 
 Before sending:
 

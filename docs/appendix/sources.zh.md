@@ -45,7 +45,7 @@
 - Anthropic, [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents)
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
-- OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
+- OpenAI, [Agents SDK](https://openai.github.io/openai-agents-python/)
 - OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
 - OpenAI, [Safety in building agents](https://platform.openai.com/docs/guides/agent-builder-safety)
