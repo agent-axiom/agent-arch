@@ -23,8 +23,8 @@ def test_revision_is_reproducible(tmp_path: Path) -> None:
 
     assert output.read_bytes() == EXPECTED.read_bytes()
     data = json.loads(manifest.read_text(encoding="utf-8"))
-    assert len(data["diagrams"]) == 24
-    assert [item["number"] for item in data["diagrams"]] == list(range(1, 25))
+    assert len(data["diagrams"]) == 29
+    assert [item["number"] for item in data["diagrams"]] == list(range(1, 30))
 
 
 def test_revision_has_clean_reader_facing_structure() -> None:
@@ -54,12 +54,12 @@ def test_revision_has_clean_reader_facing_structure() -> None:
         if match:
             headings.append((len(match.group(1)), match.group(2)))
 
-    assert len(headings) == 695
+    assert len(headings) == 723
     assert not any(not title.strip(" *_") for _, title in headings)
     assert not any(
         current[0] > previous[0] + 1 for previous, current in zip(headings, headings[1:])
     )
-    assert len(re.findall(r"^## Глава \d+", text, re.MULTILINE)) == 27
+    assert len(re.findall(r"^## Глава \d+", text, re.MULTILINE)) == 28
     assert len(re.findall(r"Рисунок \d+\\?\.", text)) == 25
     assert len(re.findall(r"Лабораторная работа \d+\\?\.", text)) == 7
 

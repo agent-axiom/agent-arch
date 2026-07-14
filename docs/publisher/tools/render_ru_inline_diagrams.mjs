@@ -80,8 +80,8 @@ async function main() {
   const outputDir = path.resolve(args["--output-dir"]);
   await fs.mkdir(outputDir, { recursive: true });
 
-  if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== 24) {
-    throw new Error("The manuscript diagram manifest must contain exactly 24 diagrams");
+  if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== 29) {
+    throw new Error("The manuscript diagram manifest must contain exactly 29 diagrams");
   }
 
   const browser = await chromium.launch({

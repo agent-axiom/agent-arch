@@ -73,8 +73,8 @@ INTRODUCTION = r"""## Введение. Зачем эта книга нужна
 эталонную реализацию. Каждая часть заканчивается лабораторной работой, а весь
 маршрут — сквозным проектом и решением о первой волне выпуска.
 
-Для быстрого архитектурного знакомства прочитайте главы 1, 3, 4, 10, 13, 16 и
-27. Для практического маршрута выполняйте лабораторные работы по порядку и
+Для быстрого архитектурного знакомства прочитайте главы 1, 3, 4, 10, 13, 16, 20 и
+28. Для практического маршрута выполняйте лабораторные работы по порядку и
 сохраняйте полученные артефакты: контракт возможности, решение политики,
 трассу, запись оценки и решение о выпуске. Руководителю полезно сначала читать
 выводы частей и проверочные списки, а затем возвращаться к техническим главам,
@@ -407,8 +407,8 @@ def replace_mermaid_blocks(text: str, visual_dir: str) -> tuple[str, list[dict[s
             }
         )
 
-    if index != 24:
-        raise ValueError(f"Expected 24 Mermaid blocks, found {index}")
+    if index != 29:
+        raise ValueError(f"Expected 29 Mermaid blocks, found {index}")
     return "\n".join(output).rstrip() + "\n", manifest
 
 
@@ -495,7 +495,7 @@ def link_source_list(text: str) -> str:
         label = match.group(2).strip()
         if label.startswith("OpenReview,"):
             label = label.replace("OpenReview,", "OpenReview (препринт),", 1)
-        return f"{match.group(1)}[{label}]({match.group(3)}), дата обращения: 13 июля 2026 года."
+        return f"{match.group(1)}[{label}]({match.group(3)}), дата обращения: 14 июля 2026 года."
 
     return pattern.sub(replacement, text)
 
