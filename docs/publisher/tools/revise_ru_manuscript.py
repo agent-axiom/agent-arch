@@ -350,6 +350,8 @@ def is_mermaid_statement(line: str) -> bool:
         (
             "flowchart ",
             "graph ",
+            "block-beta",
+            "columns ",
             "subgraph ",
             "direction ",
             "style ",
@@ -363,6 +365,11 @@ def is_mermaid_statement(line: str) -> bool:
         return True
     if value == "end":
         return True
+    if value == "space" or re.fullmatch(
+        r"[A-Za-z_][A-Za-z0-9_-]*\s*(?:\[[^\]]*\]|\([^)]*\)|\{\{.*\}\})(?::\d+)?",
+        value,
+    ):
+        return True
     return any(token in value for token in ("-->", "--\\>", "-.->", "-.\\->", "==>"))
 
 
@@ -374,7 +381,7 @@ def replace_mermaid_blocks(text: str, visual_dir: str) -> tuple[str, list[dict[s
     i = 0
 
     while i < len(lines):
-        if not re.match(r"^(?:flowchart|graph)\s+", lines[i].strip()):
+        if not re.match(r"^(?:(?:flowchart|graph)\s+|block-beta$)", lines[i].strip()):
             output.append(lines[i])
             i += 1
             continue

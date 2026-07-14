@@ -6,7 +6,7 @@ import struct
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from docs.publisher.tools.revise_ru_manuscript import revise
+from docs.publisher.tools.revise_ru_manuscript import replace_mermaid_blocks, revise
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs/publisher/ru-manuscript-google-doc-final-2026-07-11.md"
@@ -64,8 +64,75 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     assert len(re.findall(r"Лабораторная работа \d+\\?\.", text)) == 7
 
 
+def test_revision_keeps_new_chapter_numbering_and_control_examples_consistent() -> None:
+    source = SOURCE.read_text(encoding="utf-8")
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "* Глава 20\\. Агентное несоответствие целей и внутренний риск." in source
+    assert "главы 1, 3, 4, 10, 13, 16 и 23\\." not in source
+    assert "create\\_support\\_ticket" not in source
+
+    for stale_reference in (
+        "Если запуск выявил серьезную проблему, в игру вступает глава 22\\.",
+        "глава 22 по-прежнему отвечает за реагирование в контуре заверения",
+        "глава 23 по-прежнему отвечает за происхождение",
+        "Главы 24 и 24",
+        "из глав 25 и 26",
+        "глав 19-24",
+        "из глав 25 и 26",
+        "create_support_ticket",
+        "create\\_support\\_ticket",
+    ):
+        assert stale_reference not in text
+
+    assert "в игру вступает глава 21\\." in text
+    assert "Глава 20\\. Агентное несоответствие целей и внутренний риск" in text
+    assert "Главы 24 и 25 добавят" in text
+    assert "из глав 26 и 27" in text
+    assert "главы 19–25" in text
+
+    assert "Покрытие обязательным подтверждением и трассировкой" in text
+    assert "все высокорисковые внешние эффекты" in text
+    assert "Цель для обеих долей — 100%" in text
+    assert "занятые минуты проверяющих" in text
+
+    causal_record = text[text.index("causal\\_case:") : text.index("#### Три сквозных сценария")]
+    assert "edges:" in causal_record
+    assert causal_record.count("evidence\\_ref") == 3
+
+    interceptor_example = text[
+        text.index("request, request\\_meta") : text.index("Каждая ветка обязана вернуть")
+    ]
+    assert "except RequestInterceptorFailure" in interceptor_example
+    assert "except PolicyEvaluationFailure" in interceptor_example
+    assert "except GatewayTimeout" in interceptor_example
+    assert "except ResponseInterceptorFailure" in interceptor_example
+    assert 'status="side_effect_unknown"' in interceptor_example
+
+
+def test_block_beta_diagram_is_replaced_with_a_publisher_image() -> None:
+    blocks = [
+        f"""Readable control path {number}
+
+block-beta
+columns 2
+A["Policy"]
+B["Gateway"]
+A --> B"""
+        for number in range(1, 30)
+    ]
+    source = "\n\nFollowing paragraph.\n\n".join(blocks)
+
+    output, manifest = replace_mermaid_blocks(source, "visuals")
+
+    assert "block-beta" not in output
+    assert "![Readable control path 1](visuals/ru-inline-diagram-01.png)" in output
+    assert manifest[0]["mermaid"].startswith("block-beta\ncolumns 2")
+
+
 def test_inline_diagrams_are_publisher_ready() -> None:
     diagrams = json.loads(MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    multirow_diagrams = {1, 8, 13, 14, 20, 23, 28}
 
     for diagram in diagrams:
         stem = Path(diagram["filename"]).stem
@@ -80,10 +147,16 @@ def test_inline_diagrams_are_publisher_ready() -> None:
         title = root.find("svg:title", namespace)
         assert title is not None
         assert title.text == diagram["caption"]
-        assert any((node.text or "").strip() for node in root.findall(".//xhtml:p", namespace))
+        html_labels = root.findall(".//xhtml:p", namespace)
+        svg_labels = root.findall(".//svg:text", namespace)
+        assert any(
+            "".join(node.itertext()).strip() for node in [*html_labels, *svg_labels]
+        )
 
         png = png_path.read_bytes()
         assert png[:8] == b"\x89PNG\r\n\x1a\n"
         width, height = struct.unpack(">II", png[16:24])
         assert (width, height) == (1600, 900)
         assert png[25] == 2  # Truecolor RGB without an alpha channel.
+        if diagram["number"] in multirow_diagrams:
+            assert diagram["mermaid"].startswith("block-beta\n")
