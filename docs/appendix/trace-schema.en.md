@@ -78,6 +78,13 @@ For production observability, this usually also needs fields that make spans sea
 - `redaction_policy_id`
 - `retention_class`
 - `trace_search_tags`
+- `workspace_id`
+- `workspace_persistence`
+- `credential_scope`
+- `egress_profile`
+- `security_validation_status`
+- `validation_gate_results`
+- `human_review_artifact_ref`
 
 In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version` and `redacted_fields`, and the export path supports redaction for selected fields. The event loader validates this shape explicitly: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty`, and `Telemetry redact field is not present in events: {missing}`.
 
@@ -372,6 +379,7 @@ The reference runtime is intentionally small, so a more mature system should qui
 - sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot;
 - an event or linked payload for `sandbox_profile_reviewed`, so rollout/eval evidence for workspace, permissions, and snapshot/resume policy is traceable.
 - a `governed_execution_loop_step` event that shows bounded workspace, Agent Workflow Firewall or another network gate, approval decision, staged output, Safe Outputs / validation gates, and audit/monitoring signal;
+- production runtime contract fields: `workspace_id`, `workspace_persistence`, `credential_scope`, `egress_profile`, `cost_ledger_ref`, `security_validation_status`, `validation_gate_results`, and `human_review_artifact_ref`;
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -388,6 +396,7 @@ Start with this short list and mark every "no" explicitly:
 - If rollout requires `sandbox_profile_review`, is there trace evidence for workspace entries, permissions, and snapshot/resume policy?
 - For an agent-generated patch/PR, is there a governed agent execution loop path: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation, and audit/monitoring?
 - Does the trace show that Safe Outputs, CodeQL, secret scanning, dependency risk, or another validation gate checked staged output before an external write?
+- Does the trace show which isolated session and durable workspace were used, which scoped credentials and egress/tool boundaries applied, and which `human_review_artifact_ref` closes the work?
 - Is there a separate failure mode for `constraint_bypass_attempt` when an agent tries to route around a network allow/deny, approval gate, or staged output boundary?
 - Can you tell which verifier contract version produced that grading output?
 - Do you have a plan for redaction and schema versioning?

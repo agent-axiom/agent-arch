@@ -78,6 +78,13 @@
 - `redaction_policy_id`
 - `retention_class`
 - `trace_search_tags`
+- `workspace_id`
+- `workspace_persistence`
+- `credential_scope`
+- `egress_profile`
+- `security_validation_status`
+- `validation_gate_results`
+- `human_review_artifact_ref`
 
 在参考运行时里，其中一些字段暂时放在 `payload` 里，这样结构更小，也更方便阅读。同时，序列化后的事件现在会带上 `schema_version` 和 `redacted_fields`，导出路径也支持按字段做脱敏。Event loader 会显式校验这个 shape：`Telemetry path must be a string or path-like object`、`Telemetry event line is not valid JSON: {line_number}`、`Telemetry event must be a mapping`、`Telemetry event is missing required field: {required_field}`、`Telemetry event field must be a string: {field}`、`Telemetry event field must not be empty: {field}`、`Telemetry schema version is not supported: {schema_version}`、`Telemetry event payload must be a mapping`、`Telemetry event payload key must be a string`、`Telemetry event payload key must not be empty`、`Telemetry event payload keys must be unique`、`Telemetry event payload value must be a string: {payload_key}`、`Telemetry event redacted_fields must be a tuple`、`Telemetry event redacted_fields must be a list`、`Telemetry event redacted_fields entries must be strings`、`Telemetry redact field must not be empty` 和 `Telemetry redact field is not present in events: {missing}`。
 
@@ -372,6 +379,7 @@
 - 沙箱状态字段（sandbox state fields），用于那些会物化工作区（workspace）、使用 shell/文件系统能力（shell/filesystem capabilities），或从快照（snapshot）继续的运行（runs）；
 - 用于 `sandbox_profile_reviewed` 的事件（event）或关联载荷（linked payload），确保工作区（workspace）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的发布/评测证据（rollout/eval evidence）可以被追踪。
 - `governed_execution_loop_step` 事件，用来展示 bounded workspace、Agent Workflow Firewall 或其他 network gate、approval decision、staged output、Safe Outputs / validation gates 和 audit/monitoring signal；
+- production runtime contract 字段：`workspace_id`、`workspace_persistence`、`credential_scope`、`egress_profile`、`cost_ledger_ref`、`security_validation_status`、`validation_gate_results` 和 `human_review_artifact_ref`；
 
 只有这样，事件流才会从调试输出变成真正的平台工件。
 
@@ -388,6 +396,7 @@
 - 如果发布（rollout）要求 `sandbox_profile_review`，是否有关于工作区条目（workspace entries）、权限（permissions）与快照/恢复策略（snapshot/resume policy）的追踪证据（trace evidence）？
 - 对 agent-generated patch/PR，是否存在 governed agent execution loop 路径：bounded workspace、policy-mediated tools/network、approval gates、staged output、automated validation 和 audit/monitoring？
 - Trace 是否显示 Safe Outputs、CodeQL、secret scanning、dependency risk 或其他 validation gate 已在外部写入前检查 staged output？
+- Trace 是否显示使用了哪个 isolated session 和 durable workspace，哪些 scoped credentials 与 egress/tool boundaries 生效，以及哪个 `human_review_artifact_ref` 关闭这项工作？
 - 当 agent 试图绕过 network allow/deny、approval gate 或 staged output boundary 时，是否有单独的 `constraint_bypass_attempt` failure mode？
 - 能不能看出是哪一个验证器契约版本产出了这份打分输出？
 - 有没有脱敏与模式版本化的计划？

@@ -18781,6 +18781,118 @@ def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
     )
 
 
+def test_mcp_tool_surface_design_is_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "tool-surface contract",
+            "context bloat",
+            "tool confusion",
+            "tool_taxonomy",
+            "tool_visibility_mode",
+            "server_side_introspection",
+            "schema_constraints",
+            "agent_as_tool_policy",
+            "tool_evaluation",
+            "wrong-tool selection",
+            "schema confusion",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "AWS MCP tool design",
+            "context bloat",
+            "tool confusion",
+            "tool taxonomy → lazy disclosure → schema constraints",
+            "server-side introspection",
+            "tool evaluation",
+            "agent-as-tool",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "MCP tool design: practical approaches and tradeoffs",
+            "aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs",
+            "Design tools for AI agents",
+            "docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html",
+        ),
+    )
+
+
+def test_cloudflare_agent_memory_bounded_service_is_documented() -> None:
+    chapter_5_files = (
+        "docs/book/part-iii/chapter-5.md",
+        "docs/book/part-iii/chapter-5.en.md",
+        "docs/book/part-iii/chapter-5.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_5_files,
+        (
+            "Cloudflare Agent Memory",
+            "bounded memory service",
+            "ingest",
+            "remember",
+            "recall",
+            "forget",
+            "supersession",
+            "export",
+            "filesystem/database interface",
+            "stale or conflicting memories",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Cloudflare Agent Memory",
+            "database/filesystem interface",
+            "compaction ingest → classified memory",
+            "constrained recall/remember/forget/list API",
+            "supersession and export",
+            "stale or conflicting memories",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Agents that remember: introducing Agent Memory",
+            "blog.cloudflare.com/introducing-agent-memory",
+        ),
+    )
+
+
 def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
     chapter_13_files = (
         "docs/book/part-v/chapter-13.md",
@@ -18796,6 +18908,11 @@ def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
         "docs/appendix/case-studies.md",
         "docs/appendix/case-studies.en.md",
         "docs/appendix/case-studies.zh.md",
+    )
+    policy_files = (
+        "docs/appendix/policy-bundle-schema.md",
+        "docs/appendix/policy-bundle-schema.en.md",
+        "docs/appendix/policy-bundle-schema.zh.md",
     )
     source_files = (
         "docs/appendix/sources.md",
@@ -18814,6 +18931,26 @@ def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
             "tool call",
             "tool result",
             "external action",
+        ),
+    )
+
+    _assert_files_contain_all(
+        policy_files,
+        (
+            "control_checkpoints",
+            "policy_requirement",
+            "predicate",
+            "control_version",
+            "eval_case_id",
+            "observed_signal",
+            "input",
+            "llm",
+            "state",
+            "tool_execution",
+            "output",
+            "runtime hook",
+            "audit event",
+            "regression case",
         ),
     )
 
@@ -18916,6 +19053,10 @@ def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
         (
             "Project Think: building the next generation of AI agents on Cloudflare",
             "blog.cloudflare.com/project-think",
+            "Run Workflows",
+            "developers.cloudflare.com/agents/runtime/execution/run-workflows",
+            "Introducing Dynamic Workflows: durable execution that follows the user, not the other way around",
+            "blog.cloudflare.com/dynamic-workflows",
         ),
     )
 
@@ -19377,6 +19518,63 @@ def test_aws_agentcore_observability_debugging_is_documented() -> None:
         (
             "Debugging production agents with Amazon Bedrock AgentCore Observability",
             "aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability",
+        ),
+    )
+
+
+def test_production_agent_runtime_contract_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "isolated session",
+            "durable workspace",
+            "scoped credentials",
+            "egress/tool boundary",
+            "trace and cost ledger",
+            "PII redaction",
+            "platform security validation",
+            "human review artifact",
+            "CodeQL",
+            "dependency risk",
+            "secret scanning",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "workspace_id",
+            "workspace_persistence",
+            "credential_scope",
+            "egress_profile",
+            "cost_ledger_ref",
+            "security_validation_status",
+            "validation_gate_results",
+            "human_review_artifact_ref",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore",
+            "It’s safe to close your laptop now: Hosting coding agents on Amazon Bedrock AgentCore",
+            "Security validation for third-party coding agents",
         ),
     )
 
@@ -19993,6 +20191,26 @@ def test_russian_practical_a2a_diagram_uses_localized_labels() -> None:
 
 
 def test_microsoft_mcp_tool_description_poisoning_case_is_documented() -> None:
+    case_study_markers = (
+        "Microsoft reading to acting",
+        "metadata poisoning",
+        "supply-chain risk",
+        "tool metadata diff",
+        "re-attestation",
+        "least-agency disclosure",
+        "behavior-drift monitoring",
+        "quarantine path",
+        "read-only → write/action",
+    )
+    checked_case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    for path in checked_case_files:
+        _assert_files_contain_all((path,), case_study_markers)
+
     chapter_markers = {
         "docs/book/part-iv/chapter-9.md": (
             "tool descriptions as system prompts",

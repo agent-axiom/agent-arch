@@ -208,6 +208,10 @@ A minimal requirements table looks like this:
 
 The short version: the prompt/tool/skill layer defines **what the agent can do**, and the runtime layer defines **how that execution stays governable, resumable, and investigable**. Without that boundary, teams often call the whole thing an “agent harness” and only later discover that crash recovery, multi-tenancy, approval sleep/resume, and observability live in separate places with no shared contract.
 
+AWS AgentCore and GitHub security validation for third-party coding agents are useful recent production references for that same contract.[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps makes traces, latency, token/cost metrics, session history, PII redaction, and governance signals visible; the coding-agent hosting example adds isolated session, persistent workspace, scoped credentials, and the ability to close the laptop while the agent continues inside a managed environment; GitHub validation shows that agent-generated code should pass platform-owned CodeQL, dependency risk, and secret scanning gates before the result is treated as ready for review.
+
+The portable production runtime contract is therefore: **isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**. For the reference runtime, this is not a requirement to use AWS or GitHub. It is a checklist: the runtime should know where the workspace lives, which credentials were available, which network/tool boundaries applied, how much the run cost, which sensitive fields were redacted, which security gates checked the staged output, and which artifact a human later reviews.
+
 Cloudflare's vulnerability harness adds a useful applied example to this boundary.[^cloudflare-vulnerability-harness] Their security-audit skill did not become one large agent; it became a pipeline with Recon, Hunt, Validate, Gapfill, Dedup, Trace, Feedback, and Report stages. The important runtime detail is that every stage writes state into a SQLite database keyed by `run_id`, `repo`, and `stage`, so a stage can resume, retry, or be pulled into a later run without losing already discovered findings. That is a runtime boundary: the model performs narrow work, while the harness owns durable state, queues, coverage cells, validation status, and evidence.
 
 In a vendor-neutral contract, that harness should carry:
@@ -570,6 +574,12 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^anthropic]: Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents).
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-coding-agents]: AWS, [It’s safe to close your laptop now: Hosting coding agents on Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/its-safe-to-close-your-laptop-now-hosting-coding-agents-on-amazon-bedrock-agentcore/)
+
+[^github-third-party-coding-agent-validation]: GitHub Changelog, [Security validation for third-party coding agents](https://github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents/)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 

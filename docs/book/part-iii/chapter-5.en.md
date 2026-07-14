@@ -249,6 +249,20 @@ A minimal memory poisoning scenario should test the same memory poisoning review
 
 The practical rule is simple: memory that can outlive a run needs not only data-quality review, but also threat-model review. Otherwise the system gains a long-lived attack channel that looks like ordinary personalization.
 
+### 8.4. Managed Memory Should Be a Bounded Service, Not a Raw Database
+
+Cloudflare Agent Memory frames the next practical step well: production agent memory should not look like "the model can access a database or filesystem and invent its own retrieval strategy."[^cloudflare-agent-memory] The safer shape is a **bounded memory service** with a small API: `ingest`, `remember`, `recall`, `list`, and `forget`.
+
+That shifts the architectural responsibility:
+
+- `ingest` runs at the compaction boundary and extracts facts, events, instructions, and tasks from history;
+- `remember` stores an explicitly important record, but still passes write rules;
+- `recall` returns a synthesized answer through a retrieval pipeline instead of handing the model the whole storage layer;
+- `forget` and supersession chains let the system mark a record as no longer current instead of silently arguing with it in the prompt;
+- `list` and exportability make memory an inspectable asset, not an invisible side effect.
+
+The portable contract is: **compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**. The important anti-pattern is giving the agent a raw filesystem/database interface as "memory": the model burns context on storage strategy, mixes retrieval with durable writes, and receives a much broader surface for memory poisoning.
+
 ## 9. Practical Rules for Memory Design
 
 If you need a short frame for the first design decisions, it usually looks like this:
@@ -313,3 +327,4 @@ For now, the main takeaway is simple: memory is useful only when it is designed 
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^cloudflare-agent-memory]: Cloudflare Blog, [Agents that remember: introducing Agent Memory](https://blog.cloudflare.com/introducing-agent-memory/)

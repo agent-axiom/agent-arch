@@ -208,6 +208,10 @@ Project Think 把同一条经验整理成一条实用框架：**primitive -> fai
 
 简短说法是：prompt/tool/skill layer 负责定义 **agent 能做什么**，runtime layer 负责定义 **这次执行如何保持可治理、可恢复、可调查**。如果没有这条边界，团队通常会把整个系统都叫作 “agent harness”，然后很晚才发现 crash recovery、multi-tenancy、approval sleep/resume 和 observability 分散在不同地方，没有共同 contract。
 
+AWS AgentCore 和 GitHub security validation for third-party coding agents 可以作为同一个 contract 的新 production reference。[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps 把 traces、latency、token/cost metrics、session history、PII redaction 和 governance signals 变成可见对象；hosting coding agents 的例子补上 isolated session、persistent workspace、scoped credentials，以及用户关掉 laptop 后 agent 仍在 managed environment 里继续任务；GitHub validation 则说明，agent-generated code 在被视为 ready for review 之前，应该先经过 platform-owned CodeQL、dependency risk 和 secret scanning gates。
+
+因此，可移植的 production runtime contract 可以写成：**isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**。对参考运行时来说，这不是“必须用 AWS”或“必须用 GitHub”，而是一份 checklist：runtime 应该知道 workspace 在哪里、哪些 credentials 可用、哪些 network/tool boundaries 生效、这次 run 花费多少、哪些 sensitive fields 被 redacted、哪些 security gates 检查过 staged output，以及人类之后会 review 哪个 artifact。
+
 Cloudflare 的 vulnerability harness 给这条边界补了一个很好的应用案例。[^cloudflare-vulnerability-harness] 它们的 security-audit skill 没有变成一个“大 agent”，而是变成了由 Recon、Hunt、Validate、Gapfill、Dedup、Trace、Feedback 和 Report 组成的 pipeline。关键的 runtime 细节是：每个 stage 都把状态写入 SQLite database，并用 `run_id`、`repo` 和 `stage` 做 key，因此 stage 可以 resume、retry，或者被后续 run 继续使用，而不会丢掉已经发现的 findings。这就是 runtime boundary：模型做窄任务，harness 拥有 durable state、queues、coverage cells、validation status 和 evidence。
 
 在 vendor-neutral contract 中，这类 harness 应该携带：
@@ -570,6 +574,12 @@ runtime:
 [^anthropic]: Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents).
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-coding-agents]: AWS, [It’s safe to close your laptop now: Hosting coding agents on Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/its-safe-to-close-your-laptop-now-hosting-coding-agents-on-amazon-bedrock-agentcore/)
+
+[^github-third-party-coding-agent-validation]: GitHub Changelog, [Security validation for third-party coding agents](https://github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents/)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 

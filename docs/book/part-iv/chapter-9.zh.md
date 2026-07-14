@@ -358,7 +358,25 @@ Cloudflare 还展示了一个适合大型 MCP estate 的模式：不要把所有
 
 但这个模式仍然必须受治理。`search/execute` portal 不应该变成绕过 capability governance 的通道。它需要和普通 MCP endpoint 一样拥有 owner、allowed upstream servers、scope policy、sandbox profile、output filtering、trace correlation，以及 risky writes 的 review rules。否则团队只是把“prompt 里工具太多”换成了“可编程 portal 权限太宽”。
 
-### 5.8. 短生命周期沙箱通常比常驻环境更好
+### 5.8. Tool surface design 是 safety contract 的一部分
+
+AWS 关于 MCP tool design 的实践框架给 Cloudflare Code Mode 补上了另一层：问题不只是 gateway 放在哪里，而是 agent 到底看见了哪种 **tool surface**。[^aws-mcp-tool-design] 如果 prompt 里预先塞进几十个相似工具、宽 schema 和含糊名称，平台会同时遇到 context bloat 和 tool confusion。模型可能选错操作、把相邻 schema 的字段混在一起，或者把通用工具当成绕过高风险动作的路径。
+
+因此，好的 tool-surface contract 至少应该记录：
+
+- `tool_taxonomy`：read、write、execution、orchestration、introspection；
+- `tool_visibility_mode`：eager、lazy、search_then_execute 或 server_side_introspection；
+- `max_active_tools`：单步中同时可见工具的实践上限；
+- `schema_constraints`：必填字段、用 enum 代替自由文本、短描述，并禁止把隐藏策略写进 description；
+- `argument_budget`：模型在 active context 中真正需要持有多少参数；
+- `agent_as_tool_policy`：什么时候把复杂 sub-agent 发布成一个工具，而不是暴露所有内部操作；
+- `tool_evaluation`：覆盖 wrong-tool selection、schema confusion、unsafe default 和 noisy catalog 的测试。
+
+一个简单启发是：如果一个工具无法被解释成单一操作、窄 schema 和明确 risk tier，它可能更适合作为 workflow、sub-agent 或 portal search path。反过来，如果五个工具只差一个不明显参数，差异更应该进入 enum、taxonomy 或 server-side discovery，而不是让模型靠长描述猜。
+
+对 runtime 来说，这会变成可审查 trace：哪些工具可见，为什么这些工具被披露，是哪个 taxonomy node 或 search result 激活了它们，哪个 schema version 验证了参数，以及哪个 evaluation pack 证明模型不会混淆相似 tools。没有这条证据，“我们有 MCP gateway” 仍然留下盲区：gateway 管住了调用，却没有解释模型为什么一开始看见的是这组 tool surface。
+
+### 5.9. 短生命周期沙箱通常比常驻环境更好
 
 Google 还有一个很有价值的提醒：对高风险能力来说，短生命周期的执行环境往往比常驻 worker 更健康。[^google-sandbox]
 
@@ -650,6 +668,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) 与 [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) 与 AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
