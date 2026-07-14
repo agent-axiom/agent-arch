@@ -1,13 +1,14 @@
+import re
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
-FINAL_TEMPLATE_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-final-2026-07-11.docx"
+RAW_EDITORIAL_DOCX = (
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-14.docx"
 )
 EDITORIAL_TEMPLATE_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-13.docx"
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-14.docx"
 )
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
@@ -17,7 +18,7 @@ DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDra
 
 
 def test_template2000n_final_preserves_embedded_font_registrations() -> None:
-    with ZipFile(FINAL_TEMPLATE_DOCX) as archive:
+    with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
         names = set(archive.namelist())
         font_table = ET.fromstring(archive.read("word/fontTable.xml"))
         relationships = ET.fromstring(archive.read("word/_rels/fontTable.xml.rels"))
@@ -79,7 +80,7 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert unstyled_non_empty == []
 
     image_properties = document.findall(f".//{{{DRAWING_NS}}}docPr")
-    assert len(image_properties) == 49
+    assert len(image_properties) == 54
     assert all(node.attrib.get("descr", "").strip() for node in image_properties)
 
     hyperlinks = [
@@ -102,3 +103,31 @@ def test_template2000n_editorial_images_have_no_alpha_channel() -> None:
                 alpha_images.append(name)
 
     assert alpha_images == []
+
+
+def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraph_nodes = document.findall(f".//{{{WORD_NS}}}p")
+        paragraphs = [
+            "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+            for paragraph in paragraph_nodes
+        ]
+        chapter_numbers = [
+            int(match.group(1))
+            for paragraph, paragraph_node in zip(paragraphs, paragraph_nodes)
+            if (
+                (style := paragraph_node.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle"))
+                is not None
+                and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
+                and (match := re.fullmatch(r"Глава (\d+)\. .+", paragraph.strip()))
+            )
+        ]
+        text = "\n".join(paragraphs)
+
+        assert chapter_numbers == list(range(1, 29))
+        assert "create_support_ticket" not in text
+        assert "Покрытие обязательным подтверждением и трассировкой" in text
+        assert "except GatewayTimeout" in text

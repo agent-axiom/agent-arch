@@ -20,14 +20,17 @@ Status: актуальная карта полнообъемной сборки 
 - 25 пронумерованных рисунков и 29 встроенных схем;
 - 7 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 99 000 слов и 450 страниц в контрольном PDF-экспорте.
+- около 98 260 слов;
+- 462 страницы в проверочном PDF Google Docs и 379 страниц в производной
+  Template2000n; разница вызвана плотностью издательских стилей, текстовый слой
+  сохранен полностью.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHzL0f6tTsOAY50Mhd0Hr1pNaPWvxuuo7s1-QOFI03ZzuUpJxeI4lCsPlD2iLhkbkA6iNgHuYF70NJe2MnZuLQ8gkV6Ef6Qey7Cjw_s`.
+  `ALtnJHzvtsCG0eT_3bT0M01Er0g4aEVzFKOu9czWuWQKeHNGsXBZeBTJFr_PVXoSZrsnBKQfEZ9xSdfWt2TKlI5qAzHwvlYhbzJ4JzIS-XU`.
 
 ## Правило чтения карты
 

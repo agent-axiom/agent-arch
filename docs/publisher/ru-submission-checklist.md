@@ -8,35 +8,17 @@ Status: working gate for Russian publisher submission.
 - **Almost ready:** можно показывать доверенному редактору/агенту как предварительный пакет.
 - **Not ready:** не отправлять как готовую рукопись; сначала закрыть блокеры.
 
-Current status: **Full manuscript volume assembled and imported to Google Docs.
-H2/H3 body-style cleanup is complete, author/front-matter fields are isolated,
-Google Doc companion/source-status wording is synchronized, full source URL
-availability pass evidence is recorded, the 2026-06-30 targeted source
-follow-up has resolved the actionable blocked URL cleanup, and OpenReview has
-been demoted out of primary evidence. The current proof pair is the 2026-07-03
-final pre-author raw Google Docs export at 489 pages and Template2000n
-pre-author derivative at 361 pages, both with 0 blank-like pages. The current
-handoff layer records a Template2000n acceptance gate, author fill packet,
-Google Doc/DOCX policy, final editorial handoff plan and pre-author publisher
-packet. It can be handed to a trusted editor as a clean working manuscript and
-style proof candidate, but do not send as final publisher submission yet: the
-manuscript still needs author-owned facts, final companion metadata,
-publisher/editor acceptance of the style route, post-author export QA and
-external proofread. The 2026-07-04 targeted quality pass added Chapter 20-21
-bridge paragraphs to the full Google Doc and repository manuscript source,
-cleaned excessive anglicisms in manuscript/source maps, recorded the new Google
-Doc revision and created the next 100 editorial quality goals. The later
-2026-07-04 quality-sync pass applied 293 guarded terminology replacements in
-the Google Doc, confirmed by readback that old `online companion`,
-`policy gateway`, `tool gateway` and `incident response` phrases are absent,
-rebuilt a Template2000n quality-sync proof at 357 pages with 0 blank-like
-pages, and recorded the next 100 quality-sync/export goals. The 2026-07-05
-visual/edit pass added 12 Russian-language diagrams, compressed remaining long
-CLI/API/reference paragraphs into companion routes, saved a fresh raw Google
-Doc DOCX export at 501 rendered pages and rebuilt a Template2000n proof at 366
-rendered pages, both with 0 blank-like pages. The remaining final-submission
-blockers are author-owned facts, public companion metadata, external proofread
-and publisher/editor acceptance of the final style route.**
+Current status: **The 2026-07-14 editorial proof is synchronized between the
+repository and the working Google Doc. It contains 7 parts, 28 chapters,
+7 laboratory exercises, a final project and 54 images. The verified raw Google
+Docs proof is 462 Letter pages; page 41 is an intentional recto transition
+between Parts I and II. The macro-free Template2000n derivative is 379 Letter
+pages with no blank-like pages. Text equality, image completeness, embedded
+font registrations, chapter order, cross-references, fail-closed examples and
+current tool identifiers are covered by automated checks. The package is ready
+for publisher/editor review as a working manuscript. Final submission remains
+blocked by author-owned fields, publisher decisions on format and illustrations,
+and an independent external proofread after those fields are filled.**
 
 ## P0 gates before external submission
 
@@ -338,14 +320,18 @@ and publisher/editor acceptance of the final style route.**
       pages.
 - [x] Post-terminology render QA report created:
       `docs/publisher/ru-google-doc-post-terminology-export-pass-2026-07-04.render-qa.json`.
-- [x] Current 2026-07-13 Google Docs proof exported: 434 pages, 27 chapters,
-      49 images.
-- [x] Current 2026-07-13 Template2000n proof rendered: 359 pages, 0 blank-like
+- [x] Current 2026-07-14 Google Docs proof exported: 462 pages, 28 chapters,
+      54 images; page 41 is an intentional recto transition.
+- [x] Current 2026-07-14 Template2000n proof rendered: 379 pages, 0 blank-like
       pages, no clipped page content.
 - [x] Template2000n semantic styles, image alt text and print-safe PNG media
       verified for the current editorial proof.
-- [ ] Final semantic source pass over fast-moving platform claims is complete
-      after author/source Google Doc sync.
+- [x] Current semantic source pass over the electronic book additions is
+      synchronized to the repository manuscript and Google Doc.
+- [x] Font audit completed: Template2000n requests Times New Roman and Courier
+      New; the headless LibreOffice proof uses metric-compatible Liberation
+      substitutes, while six embedded Roboto Mono/Noto symbol registrations are
+      preserved in both DOCX files.
 - [ ] Independent external proofread is completed after the export shape is stable.
 - [x] Final `mkdocs build --strict` passes.
 - [x] Final docs surface tests pass.
@@ -356,7 +342,8 @@ and publisher/editor acceptance of the final style route.**
 Include:
 
 1. One-page Russian positioning memo.
-2. Договорная структура 7 частей / 27 глав.
+2. Актуальная структура 7 частей / 28 глав и пояснение расхождения с исходным
+   планом-проспектом на 23 главы.
 3. Source map from repository Markdown to publisher manuscript chapters.
 4. Cover note draft from `docs/publisher/ru-cover-note-draft.md`.
 5. Chapter 1 sample from `docs/book/part-i/chapter-1.md`.

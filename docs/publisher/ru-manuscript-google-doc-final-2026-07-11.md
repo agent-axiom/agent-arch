@@ -14727,71 +14727,42 @@ G --> I
 Сами перехватчики являются привилегированным кодом и требуют минимальных полномочий, ограничения времени, запрета произвольного исходящего доступа, версионирования и отрицательных тестов. Сбой перехватчика запроса должен закрывать вызов до инструмента; сбой перехватчика ответа не должен выпускать необработанный результат как резервный путь.
 
 try:
-
     request, request\_meta \= request\_interceptor.apply(
-
         raw\_request=model\_output.tool\_request,
-
         authenticated\_principal=context.principal,
-
     )
-
 except RequestInterceptorFailure as error:
-
     trace.emit("request\_interceptor\_failed", error\_class=error.safe\_code)
-
     return ToolResult(status="blocked", reason="request\_interceptor\_failed", side\_effect="not\_started")
 
 try:
-
     decision \= policy.evaluate(
-
         principal=request.principal,
-
         action=request.capability\_name,
-
         resource=request.resource,
-
         context=request.policy\_context,
-
     )
-
 except PolicyEvaluationFailure as error:
-
     trace.emit("policy\_evaluation\_failed", error\_class=error.safe\_code)
-
     return ToolResult(status="denied", reason="policy\_unavailable", side\_effect="not\_started")
 
 trace.emit("tool\_policy\_decision", decision=decision.action)
-
 if decision.action \=\= "deny":
-
     return ToolResult(status="denied", reason=decision.reason)
-
 if decision.action \=\= "approval\_required":
-
     return pause\_for\_approval(request, decision, context)
 
 try:
-
     raw\_result \= gateway.invoke(request, credential\_ref=request.scoped\_credential\_ref)
-
 except GatewayTimeout:
-
     return ToolResult(status="side_effect_unknown", reason="tool\_timeout", reconciliation\_required=True)
-
 except GatewayFailure as error:
-
     return ToolResult(status="failed", reason=error.safe\_code, side\_effect="not\_committed")
 
 try:
-
     safe\_result, response\_meta \= response\_interceptor.apply(raw\_result, principal=request.principal)
-
 except ResponseInterceptorFailure as error:
-
     trace.emit("response\_interceptor\_failed", error\_class=error.safe\_code)
-
     return ToolResult(status="blocked\_response", reason="response\_interceptor\_failed", side\_effect="may\_have\_committed")
 
 return safe\_result
