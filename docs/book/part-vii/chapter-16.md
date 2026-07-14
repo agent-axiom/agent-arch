@@ -209,6 +209,10 @@ Project Think собирает ту же мысль в практичную ра
 
 Короткая формула: prompt/tool/skill layer отвечает за **что агент умеет делать**, а runtime layer отвечает за **как это исполнение остается управляемым, возобновляемым и расследуемым**. Если этой границы нет, команда обычно называет runtime “agent harness” и поздно обнаруживает, что crash recovery, multi-tenancy, approval sleep/resume и observability живут в разных местах и не имеют общего contract.
 
+AWS AgentCore и GitHub security validation for third-party coding agents полезны как свежий production reference для того же contract.[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps делает видимыми traces, latency, token/cost metrics, session history, PII redaction и governance signals; пример hosting coding agents добавляет isolated session, persistent workspace, scoped credentials и возможность закрыть laptop, пока agent продолжает задачу в управляемой среде; GitHub validation показывает, что agent-generated code должен проходить platform-owned CodeQL, dependency risk и secret scanning gates до того, как результат считается готовым к review.
+
+Переносимый production runtime contract поэтому стоит формулировать так: **isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**. Для эталонного рантайма это не требование “использовать AWS” или “использовать GitHub”, а checklist: среда исполнения должна знать, где живет рабочее пространство, какие credentials были доступны, какие network/tool boundaries действовали, сколько стоил run, какие sensitive fields были отредактированы, какие security gates проверили staged output и какой artifact человек потом review-ит.
+
 Cloudflare vulnerability harness добавляет к этой границе хороший прикладной пример.[^cloudflare-vulnerability-harness] Их security-audit skill стал не “большим агентом”, а pipeline со стадиями Recon, Hunt, Validate, Gapfill, Dedup, Trace, Feedback и Report. Важная runtime-деталь: каждая стадия пишет состояние в SQLite database, keyed by `run_id`, `repo` и `stage`, поэтому stage можно resume, retry или включить в более поздний run без потери уже найденных findings. Это именно runtime boundary: модель выполняет узкую работу, а harness хранит долговечный state, очереди, coverage cells, validation status и evidence.
 
 В vendor-neutral contract такой harness должен иметь:
@@ -612,6 +616,12 @@ runtime:
 [^anthropic]: Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents).
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+
+[^aws-agentcore-coding-agents]: AWS, [It’s safe to close your laptop now: Hosting coding agents on Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/its-safe-to-close-your-laptop-now-hosting-coding-agents-on-amazon-bedrock-agentcore/)
+
+[^github-third-party-coding-agent-validation]: GitHub Changelog, [Security validation for third-party coding agents](https://github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents/)
 
 [^openai-background]: [OpenAI, Background mode](https://developers.openai.com/api/docs/guides/background)
 

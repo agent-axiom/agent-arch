@@ -358,7 +358,25 @@ Architecturally, this matters for more than token cost. It changes tool visibili
 
 The pattern still has to remain governed. A `search/execute` portal should not become a bypass around capability governance. It needs the same fields as any other MCP endpoint: owner, allowed upstream servers, scope policy, sandbox profile, output filtering, trace correlation, and review rules for risky writes. Otherwise the team only replaces "too many tools in the prompt" with "too broad a programmable portal."
 
-### 5.8. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
+### 5.8. Tool Surface Design Is Part of the Safety Contract
+
+AWS's practical guidance on MCP tool design adds another layer to the Cloudflare Code Mode pattern: the problem is not only where the gateway sits, but which **tool surface** the agent sees at all.[^aws-mcp-tool-design] If a prompt receives dozens of similar tools, broad schemas, and ambiguous names upfront, the platform gets two failures at once: context bloat and tool confusion. The model may choose the wrong operation, mix fields from neighboring schemas, or use a generic tool as a path around a riskier action.
+
+A good tool-surface contract should therefore record:
+
+- `tool_taxonomy`: read, write, execution, orchestration, introspection;
+- `tool_visibility_mode`: eager, lazy, search_then_execute, or server_side_introspection;
+- `max_active_tools`: a practical limit on simultaneously visible tools for one step;
+- `schema_constraints`: required fields, enums instead of free text, short descriptions, and no hidden policy inside descriptions;
+- `argument_budget`: how many parameters the model actually has to hold in active context;
+- `agent_as_tool_policy`: when a complex sub-agent is published as one tool instead of exposing every internal operation;
+- `tool_evaluation`: tests for wrong-tool selection, schema confusion, unsafe defaults, and noisy catalogs.
+
+The useful heuristic is simple: if a tool cannot be explained as one operation with a narrow schema and a clear risk tier, it may be a workflow, sub-agent, or portal search path rather than a tool. Conversely, if five tools differ only by one non-obvious parameter, the difference probably belongs in an enum, taxonomy, or server-side discovery flow rather than in long descriptions the model has to compare.
+
+For the runtime, this becomes reviewable trace data: which tools were visible, why those tools were disclosed, which taxonomy node or search result activated them, which schema version validated the arguments, and which evaluation pack proves the model does not confuse similar tools. Without that trail, "we have an MCP gateway" still leaves a blind spot: the gateway governs the call, but it does not explain why the model saw that tool surface in the first place.
+
+### 5.9. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
 
 Another useful Google idea is that risky capabilities are often better served by short-lived execution environments.[^google-sandbox]
 
@@ -650,6 +668,8 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) and AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 

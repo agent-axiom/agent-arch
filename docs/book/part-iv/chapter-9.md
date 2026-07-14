@@ -359,7 +359,25 @@ Cloudflare отдельно показывает полезный паттерн
 
 Но такой паттерн должен оставаться управляемым. Портал `search/execute` не должен становиться обходом управления возможностями. Для него нужны те же поля, что и для обычной точки подключения MCP: владелец, разрешенные upstream-серверы, политика областей доступа, профиль песочницы, фильтрация результатов, корреляция трасс и правила проверки рискованных записей. Иначе команда просто заменит “слишком много инструментов в prompt” на “слишком широкий программируемый портал”.
 
-### 5.8. Эфемерные песочницы лучше постоянных сред почти во всем
+### 5.8. Дизайн поверхности инструментов — это часть safety contract
+
+Практическая рамка AWS по дизайну MCP tools добавляет к Cloudflare Code Mode еще один важный слой: проблема не только в том, где стоит gateway, а в том, какую **поверхность инструментов** вообще видит агент.[^aws-mcp-tool-design] Если в prompt заранее попадают десятки похожих инструментов, широкие схемы и неясные имена, платформа получает сразу два отказа: context bloat и tool confusion. Модель начинает выбирать не ту операцию, смешивать поля соседних схем или использовать общий инструмент как обходной путь к более рискованному действию.
+
+Хороший tool-surface contract должен поэтому фиксировать:
+
+- `tool_taxonomy`: read, write, execution, orchestration, introspection;
+- `tool_visibility_mode`: eager, lazy, search_then_execute или server_side_introspection;
+- `max_active_tools`: практический лимит одновременно видимых инструментов для одного шага;
+- `schema_constraints`: обязательные поля, enum вместо свободного текста, короткие описания, запрет скрытой политики в description;
+- `argument_budget`: сколько параметров модель реально должна держать в активном контексте;
+- `agent_as_tool_policy`: когда сложный sub-agent публикуется как один инструмент, а не раскрывает весь внутренний набор операций;
+- `tool_evaluation`: тесты на wrong-tool selection, schema confusion, unsafe default и noisy catalog.
+
+Здесь полезна простая эвристика: если инструмент нельзя объяснить одной операцией, с узкой схемой и понятным risk tier, это, возможно, не tool, а workflow, sub-agent или portal search path. И наоборот: если пять инструментов отличаются только одним неочевидным параметром, лучше вынести различие в enum, taxonomy или server-side discovery, чем заставлять модель угадывать по длинным описаниям.
+
+Для runtime это превращается в проверяемый trace: какие инструменты были видимы, почему именно они были раскрыты, какой taxonomy node или search result их активировал, какая schema version валидировала аргументы, и какой evaluation pack проверяет, что модель не путает похожие tools. Без такого следа “у нас есть MCP gateway” все еще оставляет слепую зону: gateway управляет вызовом, но не объясняет, почему модель вообще увидела именно этот tool surface.
+
+### 5.9. Эфемерные песочницы лучше постоянных сред почти во всем
 
 Еще одна полезная мысль из Google: для рискованных возможностей очень выгодно проектировать краткоживущие среды выполнения.[^google-sandbox]
 
@@ -675,6 +693,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) и [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) и AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
 [^langchain-loop-engineering]: LangChain, [The Art of Loop Engineering](https://www.langchain.com/blog/the-art-of-loop-engineering).
 
