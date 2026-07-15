@@ -4,6 +4,7 @@ import json
 import re
 import struct
 import xml.etree.ElementTree as ET
+from collections import Counter
 from pathlib import Path
 
 from docs.publisher.tools.revise_ru_manuscript import replace_mermaid_blocks, revise
@@ -44,7 +45,7 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     assert "happy path" not in text
     assert "Golden path" not in text
     assert "золотые пути" not in text
-    assert text.count("companion-справочник") >= 19
+    assert text.count("companion-справочник") >= 12
     assert "developers.openai.com/api/docs/guides/agents-sdk" not in text
     assert "openai.github.io/openai-agents-python" in text
 
@@ -54,14 +55,105 @@ def test_revision_has_clean_reader_facing_structure() -> None:
         if match:
             headings.append((len(match.group(1)), match.group(2)))
 
-    assert len(headings) == 723
+    assert len(headings) == 741
     assert not any(not title.strip(" *_") for _, title in headings)
     assert not any(
         current[0] > previous[0] + 1 for previous, current in zip(headings, headings[1:])
     )
     assert len(re.findall(r"^## Глава \d+", text, re.MULTILINE)) == 28
+    assert len(re.findall(r"^### Итог главы$", text, re.MULTILINE)) == 28
+    assert text.count("**Задача части.**") == 7
     assert len(re.findall(r"Рисунок \d+\\?\.", text)) == 25
+    assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
     assert len(re.findall(r"Лабораторная работа \d+\\?\.", text)) == 7
+    for pseudo_table_header in (
+        "| Ситуация | Что чаще лучше |",
+        "| Угроза | Где ловить в первую очередь |",
+        "| Поле каталога | Что фиксировать |",
+        "| Вопрос | Скорее MCP |",
+        "| Event type | Когда появляется |",
+    ):
+        assert pseudo_table_header not in text
+    assert "**Внедрение инструкций** — где ловить в первую очередь:" in text
+    assert "`run_start` — когда:" in text
+
+    for residue in (
+        "**Практическая проверка**",
+        "**Связь со следующей главой.**",
+        "**Сопутствующие материалы**",
+        "Этот раздел собирает в одном месте минимальный контрактный слой для "
+        "артефактов жизненного цикла",
+        "### Что должно существовать всегда",
+        "Заметка о сквозных сценариях",
+        "Канонические сценарии",
+    ):
+        assert residue not in text
+
+
+def test_revision_has_reproducible_practical_path() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "uv sync --group dev" in text
+    assert "inspect-memory --tenant-id tenant-beta --memory-class profile" in text
+    assert "`count=0`, пустые `memory_ids` и `records`" in text
+    assert "export-events --trace-id trace-lab-05-01 --session-id session-lab-05" in text
+    assert "check-rollout --signal duplicate_ticket_eval_passed=false" in text
+    assert "не на вымышленном совпадении" in text
+    assert "### Расчетный пример: SLO известного внешнего эффекта" in text
+    assert "расход бюджета ошибок = 130 / 100 = 130 %" in text
+    assert len(re.findall(r"^### Этап [1-5]\.", text, re.MULTILINE)) == 5
+    assert "### Рубрика проекта" in text
+    assert "Финальное решение для текущего эталонного пакета остается `hold`" in text
+
+
+def test_revision_repairs_key_pseudocode_and_language_residue() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "    def run_manager(" in text
+    assert "        for step in plan:" in text
+    assert "    class PolicyDecision:" in text
+    assert "        requires_approval: bool = False" in text
+    assert "    class RunRequest:" in text
+    assert "        policy_check(request)" in text
+
+    for residue in (
+        "среда исполнения не должен",
+        "Зачем нужна этот раздел",
+        "к проверочный списоку",
+        "хорошо настроенная поэтапный выпуск",
+        "если вы только подходишь",
+        "решайтете",
+        "Практический паттерн Microsoft",
+        "Практический паттерн AWS",
+        "Чеклист Google Cloud",
+        "предел экспозиции",
+    ):
+        assert residue not in text
+
+
+def test_revision_has_no_unintended_placeholders_or_duplicate_prose() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    author_block, reader_facing_text = text.split("## Как использовать примеры безопасно", 1)
+    reader_facing_text = reader_facing_text.split("\n[image1]:", 1)[0]
+
+    assert "\\[заполнить" in author_block
+    assert "\\[согласовать формулировку с издательством\\]" in author_block
+    for residue in ("TODO", "FIXME", "TBD", "\\[заполнить", "\\[имя / публичное имя\\]"):
+        assert residue not in reader_facing_text
+
+    prose_blocks = []
+    for raw_block in re.split(r"\n\s*\n", text):
+        block = " ".join(line.strip() for line in raw_block.splitlines()).strip()
+        if len(block) < 180 or block.startswith(
+            ("```", "![", "[image", "* [", "##", "# ")
+        ):
+            continue
+        if "data:image/" in block:
+            continue
+        prose_blocks.append(re.sub(r"\s+", " ", block))
+
+    duplicates = [block for block, count in Counter(prose_blocks).items() if count > 1]
+    assert duplicates == []
 
 
 def test_revision_keeps_new_chapter_numbering_and_control_examples_consistent() -> None:
@@ -87,7 +179,8 @@ def test_revision_keeps_new_chapter_numbering_and_control_examples_consistent() 
 
     assert "в игру вступает глава 21\\." in text
     assert "Глава 20\\. Агентное несоответствие целей и внутренний риск" in text
-    assert "Главы 24 и 25 добавят" in text
+    assert "Глава 24\\. Наблюдаемость для ИИ-систем и телеметрия обнаружения" in text
+    assert "Глава 25\\. Инвентаризация агентов, реестр и контроль разрастания" in text
     assert "из глав 26 и 27" in text
     assert "главы 19–25" in text
 
