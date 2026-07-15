@@ -12,17 +12,18 @@ Status: current-state pointer plus historical contractual baseline. План-п�
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
 - издательская рукопись: <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4/edit>;
 - ревизия Google Doc:
-  `ALtnJHzvtsCG0eT_3bT0M01Er0g4aEVzFKOu9czWuWQKeHNGsXBZeBTJFr_PVXoSZrsnBKQfEZ9xSdfWt2TKlI5qAzHwvlYhbzJ4JzIS-XU`;
+  `ALtnJHwKqPwZHu-1M5KwMdbfCmxv1pO2njNgVOZx6N9cEpcrm82RCYgucs_k85PMudnNfALZtFjfa2S9h-bJ47eQBc1zgrvHDwMY0iYYBng`;
 - структура: 7 частей, 28 глав, приложения;
 - учебный контур: 7 лабораторных работ и итоговый проект;
 - визуальный контур: 25 пронумерованных рисунков, 29 встроенных схем и две нативные таблицы Google Docs;
-- объем контрольного экспорта: около 98 260 слов;
-- проверочный raw-PDF Google Docs: 462 страницы Letter, включая осознанный
-  переход на правую полосу на странице 41;
-- проверочная производная Template2000n: 379 страниц Letter, пустых технических
+- объем контрольного экспорта: около 88 000 слов;
+- проверочный raw-PDF Google Docs: 437 страниц Letter;
+- проверочная производная Template2000n: 353 страницы Letter, пустых технических
   страниц нет;
 - финальные артефакты: исходный DOCX, PDF и макросвободная производная DOCX
-  со стилями Template2000n в `docs/publisher/artifacts/`.
+  со стилями Template2000n в `docs/publisher/artifacts/`;
+- итог редакторской переработки и проверки:
+  `docs/publisher/ru-technical-book-revision-pass-2026-07-15.md`.
 
 Смысловые изменения возвращаются из Google Doc в канонический Markdown. Старые
 Google Docs, DOCX-артефакты и показатели страниц ниже являются историческими

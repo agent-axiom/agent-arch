@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъемной сборки на 2026-07-14. Репозиторий
+Status: актуальная карта полнообъемной сборки на 2026-07-15. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -20,17 +20,25 @@ Status: актуальная карта полнообъемной сборки 
 - 25 пронумерованных рисунков и 29 встроенных схем;
 - 7 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 98 260 слов;
-- 462 страницы в проверочном PDF Google Docs и 379 страниц в производной
+- около 88 000 слов по финальному текстовому слою Google Docs;
+- 437 страниц в проверочном PDF Google Docs и 353 страницы в производной
   Template2000n; разница вызвана плотностью издательских стилей, текстовый слой
-  сохранен полностью.
+  сохранен полностью, пустых технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHzvtsCG0eT_3bT0M01Er0g4aEVzFKOu9czWuWQKeHNGsXBZeBTJFr_PVXoSZrsnBKQfEZ9xSdfWt2TKlI5qAzHwvlYhbzJ4JzIS-XU`.
+  `ALtnJHwKqPwZHu-1M5KwMdbfCmxv1pO2njNgVOZx6N9cEpcrm82RCYgucs_k85PMudnNfALZtFjfa2S9h-bJ47eQBc1zgrvHDwMY0iYYBng`.
+
+Контрольная точка редакторской переработки:
+
+- `docs/publisher/ru-technical-book-revision-pass-2026-07-15.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.pdf`.
 
 ## Правило чтения карты
 

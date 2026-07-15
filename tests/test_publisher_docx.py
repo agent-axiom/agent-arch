@@ -5,10 +5,10 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_EDITORIAL_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-14.docx"
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx"
 )
 EDITORIAL_TEMPLATE_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-14.docx"
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx"
 )
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
@@ -131,3 +131,34 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
         assert "create_support_ticket" not in text
         assert "Покрытие обязательным подтверждением и трассировкой" in text
         assert "except GatewayTimeout" in text
+        assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
+        assert "дата доступа зафиксированы 15 июля 2026 года" in text
+        assert "дата доступа зафиксированы 14 июля 2026 года" not in text
+
+
+def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+        page_breaks = []
+        previous_text = None
+        for paragraph in paragraphs:
+            text = "".join(
+                node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            page_break = paragraph.find(
+                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pageBreakBefore"
+            )
+            if page_break is not None:
+                value = page_break.attrib.get(f"{{{WORD_NS}}}val", "true")
+                if value not in {"false", "0", "off"}:
+                    style = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
+                    page_breaks.append((text, style.attrib.get(f"{{{WORD_NS}}}val")))
+                    assert text
+                    assert previous_text
+            previous_text = text
+
+        assert len(page_breaks) == 30
+        assert all(style in {"Heading1", "Heading2"} for _, style in page_breaks)
