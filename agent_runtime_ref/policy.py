@@ -288,10 +288,7 @@ class PolicyEngine:
                 return PolicyDecision("deny", "network_access_not_allowed", "cap_405")
             if capability.network_access != "none" and not capability.allowed_egress:
                 return PolicyDecision("deny", "egress_policy_missing", "cap_406")
-        simulate_failure = tool_arguments.get("simulate_failure")
         if capability_name == "create_ticket":
-            if simulate_failure in {"tool_timeout", "upstream_unavailable"}:
-                return PolicyDecision("allow", "failure_drill_execution", "cap_120")
             if tool_arguments.get("idempotency_key") in {None, ""}:
                 return PolicyDecision("allow", "validation_drill_execution", "cap_121")
 

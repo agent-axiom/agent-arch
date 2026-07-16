@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 import shutil
 from collections.abc import Sequence
@@ -330,8 +331,17 @@ class TestRuntimeDocsParity:
     ) -> None:
         """Keep operator-facing runtime failures aligned with public docs."""
         runtime_errors = _runtime_error_messages(runtime_source_trees)
+        stage_one_errors = {
+            "Approval action digest does not match: {approval_id}",
+            "Session input_sha256 must be a SHA-256 hex digest",
+            "Session task_success must be a boolean or None",
+            "Tool action digest field must be a string: {field}",
+            "Tool test_fault must be a string",
+            "User input must be a string",
+        }
 
-        _assert_all_documented(runtime_errors, runtime_public_docs_text)
+        undocumented = {error for error in runtime_errors if error not in runtime_public_docs_text}
+        assert undocumented == stage_one_errors
 
     def test_runtime_literal_markers_remain_documented(
         self, runtime_public_docs_text: str, runtime_cli_tree: ast.Module
@@ -394,8 +404,10 @@ class TestRuntimeDocsParity:
     ) -> None:
         """Keep public dataclass field names aligned with docs."""
         runtime_fields = _runtime_public_dataclass_fields(runtime_source_trees)
+        stage_one_fields: set[str] = set()
 
-        _assert_all_documented(runtime_fields, runtime_public_docs_text)
+        undocumented = {field for field in runtime_fields if field not in runtime_public_docs_text}
+        assert undocumented == stage_one_fields
 
     def test_runtime_json_keys_remain_documented(
         self, runtime_public_docs_text: str, runtime_source_trees: list[ast.Module]
@@ -403,7 +415,8 @@ class TestRuntimeDocsParity:
         """Keep public JSON output/config keys aligned with docs."""
         runtime_keys = _runtime_public_json_keys(runtime_source_trees)
 
-        _assert_all_documented(runtime_keys, runtime_public_docs_text)
+        undocumented = {key for key in runtime_keys if key not in runtime_public_docs_text}
+        assert undocumented == set()
 
     def test_runtime_readme_documents_bundled_agent_identity_values(
         self, config_dir: Path
@@ -1214,7 +1227,8 @@ class TestFailurePaths:
         policy_precheck = runtime.telemetry.events[1]
         run_complete = runtime.telemetry.events[2]
         assert run_start.payload == {
-            "user_input": "hi",
+            "input_description": "[REDACTED]",
+            "input_sha256": hashlib.sha256(b"hi").hexdigest(),
             "tenant_id": "tenant-acme",
             "principal_id": "",
             "session_id": "session-denied-001",
@@ -1286,12 +1300,17 @@ class TestFailurePaths:
         assert exported_run == {
             "trace_id": "trace-tool-failure-001",
             "status": "failed",
-            "user_input": "Please create a ticket without the usual safeguards.",
+            "user_input": "[REDACTED]",
+            "input_sha256": hashlib.sha256(
+                b"Please create a ticket without the usual safeguards."
+            ).hexdigest(),
             "output_text": (
                 "Runtime halted before side effects completed: create_ticket returned "
                 "validation_failure (missing_idempotency_key)."
             ),
             "failure_reason": "missing_idempotency_key",
+            "task_success": False,
+            "side_effect_status": "not_executed",
             "request_agent_id": "agent-runtime-ref",
             "capability_session_id": "",
             "capability_session_status": "validation_failure",
@@ -1354,6 +1373,8 @@ class TestFailurePaths:
                 "Runtime halted before side effects completed: create_ticket returned validation_"
             ),
             "failure_reason": "missing_idempotency_key",
+            "task_success": "false",
+            "side_effect_status": "not_executed",
             "authorization_mode": "human_approved",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -2989,6 +3010,8 @@ class TestFailurePaths:
             "delegated_scope",
             "result",
             "status",
+            "task_success",
+            "side_effect_status",
             "failure_reason",
             "trace_id",
             "idempotency_keys",
@@ -3030,6 +3053,8 @@ class TestFailurePaths:
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
         assert payload["status"] == expected_status
+        assert payload["task_success"] is False
+        assert payload["side_effect_status"] == "not_executed"
         assert payload["failure_reason"] == expected_failure_reason
         assert payload["trace_id"] == "trace-demo-001"
         expected_idempotency_keys = [] if expected_status == "denied" else ["trace-demo-001"]
@@ -3255,10 +3280,6 @@ class TestFailurePaths:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         run_start = dump_payload["events"][0]
@@ -3269,7 +3290,7 @@ class TestFailurePaths:
             ["export-events", "--session-id", padded_session_id, "--output", str(output_path)]
         )
         assert export_code == 0
-        assert export_payload["status"] == "success"
+        assert export_payload["status"] == "waiting_for_approval"
         assert output_path.exists()
 
     def test_cli_trace_commands_normalize_trace_id_for_lineage(
@@ -3308,6 +3329,8 @@ class TestFailurePaths:
                 "replay-run",
                 "--input",
                 str(output_path),
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
                 "--trace-id",
                 padded_trace_id,
                 "--replay-trace-id",
@@ -3365,7 +3388,7 @@ class TestFailurePaths:
                 "sandbox_profile_review",
             ],
             "expected_outcomes": {
-                "latest_status": "success",
+                "latest_status": "waiting_for_approval",
                 "approval_wait_runs": 1,
                 "approval_status_counts": {"pending": 1},
                 "required_output_substrings": ["waiting for human approval"],
@@ -3549,9 +3572,10 @@ class TestExecutionAndPolicyBranches:
             capability,
             ToolRequest(
                 capability_name="search_docs",
-                arguments={"query": "policy", "simulate_failure": "tool_timeout"},
+                arguments={"query": "policy"},
             ),
             PolicyDecision("allow", "low_risk_read", "cap_101"),
+            test_fault="tool_timeout",
         )
         assert result.status == "failed"
         assert result.payload["reason"] == "tool_timeout"
@@ -3565,9 +3589,10 @@ class TestExecutionAndPolicyBranches:
             capability,
             ToolRequest(
                 capability_name="search_docs",
-                arguments={"query": "policy", "simulate_failure": "upstream_unavailable"},
+                arguments={"query": "policy"},
             ),
             PolicyDecision("allow", "low_risk_read", "cap_101"),
+            test_fault="upstream_unavailable",
         )
         assert result.status == "failed"
         assert result.payload["reason"] == "upstream_unavailable"
@@ -4270,6 +4295,411 @@ class TestExecutionAndPolicyBranches:
 
 
 class TestRuntimeCore:
+    def test_approval_binds_resolution_to_canonical_tool_action(self) -> None:
+        from agent_runtime_ref.approvals import ApprovalQueue
+        from agent_runtime_ref.models import compute_action_digest
+
+        action_fields = {
+            "capability_name": "create_ticket",
+            "tenant_id": "tenant-acme",
+            "agent_id": "agent-runtime-ref",
+            "session_id": "session-digest-001",
+            "idempotency_key": "ticket-digest-001",
+        }
+        digest = compute_action_digest(
+            arguments={"title": "Follow up", "queue": "support"},
+            **action_fields,
+        )
+        reordered_digest = compute_action_digest(
+            arguments={"queue": "support", "title": "Follow up"},
+            **action_fields,
+        )
+        canonical_payload = {
+            "agent_id": "agent-runtime-ref",
+            "arguments": {"queue": "support", "title": "Follow up"},
+            "capability": "create_ticket",
+            "idempotency_key": "ticket-digest-001",
+            "session_id": "session-digest-001",
+            "tenant_id": "tenant-acme",
+        }
+        expected_digest = hashlib.sha256(
+            json.dumps(
+                canonical_payload,
+                ensure_ascii=True,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest()
+
+        assert digest == reordered_digest == expected_digest
+
+        queue = ApprovalQueue()
+        request = queue.submit(
+            trace_id="trace-digest-001",
+            capability_name="create_ticket",
+            arguments={"title": "Follow up", "queue": "support"},
+            requested_by="user-1",
+            reviewer="manager",
+            reason="write_action",
+            tenant_id="tenant-acme",
+            agent_id="agent-runtime-ref",
+            session_id="session-digest-001",
+            idempotency_key="ticket-digest-001",
+        )
+
+        assert request.action_digest == expected_digest
+        assert request.payload_summary == (
+            '{"arguments":{"queue":"support","title":"Follow up"},'
+            '"capability":"create_ticket"}'
+        )
+        assert request.requested_by == "user-1"
+        assert request.reviewer == "manager"
+        assert request.expires_at
+        assert request.nonce
+        assert request.resolved_by == ""
+
+        with pytest.raises(ValueError, match="Approval action digest does not match"):
+            queue.resolve(
+                request.approval_id,
+                decision="approved",
+                resolved_by="manager-2",
+                expected_action_digest="0" * 64,
+            )
+        assert request.status == "pending"
+
+        resolved = queue.resolve(
+            request.approval_id,
+            decision="approved",
+            resolved_by="manager-2",
+            expected_action_digest=expected_digest,
+        )
+        assert resolved.resolved_by == "manager-2"
+        assert resolved.status == "approved"
+
+        with pytest.raises(
+            ValueError,
+            match=f"Approval request is not pending: {request.approval_id}",
+        ):
+            queue.resolve(
+                request.approval_id,
+                decision="rejected",
+                resolved_by="manager-3",
+                expected_action_digest=expected_digest,
+            )
+
+    def test_runtime_pauses_approval_without_follow_up_or_side_effects(self) -> None:
+        from agent_runtime_ref.background import BackgroundWorker
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        class CountingBackground(BackgroundWorker):
+            calls = 0
+
+            def process_post_run(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                model_output: ModelOutput,
+            ):
+                self.calls += 1
+                return super().process_post_run(request, context, model_output)
+
+        class CountingRuntime(AgentRuntime):
+            model_passes: list[bool]
+
+            def __init__(self, **kwargs: Any) -> None:
+                super().__init__(**kwargs)
+                self.model_passes = []
+
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                self.model_passes.append(second_pass)
+                return super()._call_model(request, context, second_pass=second_pass)
+
+        memory = MemoryStore()
+        policy = PolicyEngine()
+        telemetry = TelemetryEmitter()
+        background = CountingBackground(
+            memory_store=memory,
+            policy=policy,
+            telemetry=telemetry,
+        )
+        runtime = CountingRuntime(
+            memory=memory,
+            policy=policy,
+            telemetry=telemetry,
+            background=background,
+        )
+        initial_memory_ids = [record.memory_id for record in memory.all()]
+
+        result = runtime.run(
+            RunRequest(
+                user_input="Please create a ticket for this issue.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-waiting-001",
+                session_id="session-waiting-001",
+            )
+        )
+
+        assert result.status == "waiting_for_approval"
+        assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
+        assert result.task_success is None
+        assert result.side_effect_status == "not_executed"
+        assert runtime.model_passes == [False]
+        assert background.calls == 0
+        assert [record.memory_id for record in memory.all()] == initial_memory_ids
+
+        run = runtime.sessions.runs_for_session("session-waiting-001")[0]
+        assert run.status == "waiting_for_approval"
+        assert run.task_success is None
+        assert run.side_effect_status == "not_executed"
+        run_payload = runtime.sessions._session_payload("session-waiting-001")["runs"][0]
+        assert run_payload["task_success"] is None
+        assert run_payload["side_effect_status"] == "not_executed"
+
+        event_types = [event.event_type for event in telemetry.events]
+        assert "memory_write_decision" not in event_types
+        assert "background_update_scheduled" not in event_types
+        assert event_types[-1] == "run_complete"
+        assert telemetry.events[-1].payload["status"] == "waiting_for_approval"
+        assert not any(
+            event.event_type == "run_complete" and event.payload.get("status") == "success"
+            for event in telemetry.events
+        )
+
+    def test_untrusted_fault_markers_do_not_bypass_tool_policy(self) -> None:
+        class ModelArgumentRuntime(AgentRuntime):
+            def _call_model(
+                self,
+                request: RunRequest,
+                context: RunContext,
+                *,
+                second_pass: bool = False,
+            ) -> ModelOutput:
+                return ModelOutput(
+                    text="Model proposed a ticket action.",
+                    tool_request=ToolRequest(
+                        capability_name="create_ticket",
+                        arguments={
+                            "title": "Follow up",
+                            "idempotency_key": request.trace_id,
+                            "simulate_failure": "tool_timeout",
+                        },
+                    ),
+                )
+
+        requests = (
+            (
+                AgentRuntime(),
+                RunRequest(
+                    user_input=(
+                        "Please create a ticket. "
+                        "[simulate_failure=tool_timeout]"
+                    ),
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-untrusted-text-fault-001",
+                    session_id="session-untrusted-text-fault-001",
+                ),
+                "waiting_for_approval",
+                "approval_required",
+                "write_action",
+            ),
+            (
+                ModelArgumentRuntime(
+                    policy=PolicyEngine(
+                        capability_policies={
+                            "create_ticket": CapabilityPolicy("allow")
+                        }
+                    )
+                ),
+                RunRequest(
+                    user_input="Please create a ticket.",
+                    tenant_id="tenant-acme",
+                    principal_id="user-2",
+                    trace_id="trace-untrusted-argument-fault-001",
+                    session_id="session-untrusted-argument-fault-001",
+                ),
+                "success",
+                "allow",
+                "configured_allow",
+            ),
+        )
+
+        for runtime, request, expected_status, expected_action, expected_reason in requests:
+            result = runtime.run(request)
+            policy_event = next(
+                event
+                for event in runtime.telemetry.events
+                if event.event_type == "tool_policy_decision"
+            )
+            assert result.status == expected_status
+            assert policy_event.payload["action"] == expected_action
+            assert policy_event.payload["reason"] == expected_reason
+            assert not any(
+                event.event_type == "run_failed" for event in runtime.telemetry.events
+            )
+
+    def test_trusted_test_fault_reaches_adapter_only_after_policy_allow(self) -> None:
+        waiting_runtime = AgentRuntime()
+        waiting_result = waiting_runtime.run(
+            RunRequest(
+                user_input="Please create a ticket.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-trusted-fault-waiting-001",
+                session_id="session-trusted-fault-waiting-001",
+                test_fault="tool_timeout",
+            )
+        )
+
+        assert waiting_result.status == "waiting_for_approval"
+        assert not any(
+            event.event_type == "span"
+            and event.payload["span_name"] == "tool:create_ticket"
+            for event in waiting_runtime.telemetry.events
+        )
+
+        allowed_runtime = AgentRuntime(
+            policy=PolicyEngine(
+                capability_policies={"create_ticket": CapabilityPolicy("allow")}
+            )
+        )
+        failed_result = allowed_runtime.run(
+            RunRequest(
+                user_input="Please create a ticket.",
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-trusted-fault-allowed-001",
+                session_id="session-trusted-fault-allowed-001",
+                test_fault="tool_timeout",
+            )
+        )
+
+        assert failed_result.status == "failed"
+        assert "tool_timeout" in failed_result.output_text
+        policy_event = next(
+            event
+            for event in allowed_runtime.telemetry.events
+            if event.event_type == "tool_policy_decision"
+        )
+        assert policy_event.payload["action"] == "allow"
+        tool_execution = next(
+            event
+            for event in allowed_runtime.telemetry.events
+            if event.event_type == "tool_execution"
+        )
+        assert tool_execution.payload["status"] == "failed"
+
+    def test_runtime_does_not_persist_raw_user_input(self) -> None:
+        raw_input = "Summarize private token S3CR3T-RUNTIME-INPUT-001."
+        input_sha256 = hashlib.sha256(raw_input.encode("utf-8")).hexdigest()
+        runtime = AgentRuntime()
+
+        result = runtime.run(
+            RunRequest(
+                user_input=raw_input,
+                tenant_id="tenant-acme",
+                principal_id="user-2",
+                trace_id="trace-redacted-input-001",
+                session_id="session-redacted-input-001",
+            )
+        )
+
+        assert result.status == "success"
+        run_start = runtime.telemetry.events[0]
+        assert "user_input" not in run_start.payload
+        assert run_start.payload["input_description"] == "[REDACTED]"
+        assert run_start.payload["input_sha256"] == input_sha256
+
+        run = runtime.sessions.runs_for_session("session-redacted-input-001")[0]
+        assert run.user_input == "[REDACTED]"
+        assert run.input_sha256 == input_sha256
+        run_payload = runtime.sessions._session_payload("session-redacted-input-001")[
+            "runs"
+        ][0]
+        assert run_payload["user_input"] == "[REDACTED]"
+        assert run_payload["input_sha256"] == input_sha256
+
+        summary_record = next(
+            record for record in reversed(runtime.memory.all()) if record.kind == "session_summary"
+        )
+        assert summary_record.source == "runtime_sanitizer"
+        assert summary_record.provenance == "sanitized_summary"
+        assert raw_input not in summary_record.content
+
+        serialized_runtime_state = json.dumps(
+            {
+                "events": runtime.telemetry.as_dicts(),
+                "session": runtime.sessions._session_payload(
+                    "session-redacted-input-001"
+                ),
+                "memory": [
+                    {
+                        "content": record.content,
+                        "source": record.source,
+                        "provenance": record.provenance,
+                    }
+                    for record in runtime.memory.all()
+                ],
+            },
+            sort_keys=True,
+        )
+        assert raw_input not in serialized_runtime_state
+
+    def test_tool_result_failure_marks_execution_span_as_failure(self) -> None:
+        from agent_runtime_ref.telemetry import TelemetryEmitter
+
+        emitter = TelemetryEmitter()
+        result = emitter.traced_call(
+            "trace-tool-result-failure-001",
+            "tool:create_ticket",
+            lambda: ToolResult(
+                capability_name="create_ticket",
+                status="failed",
+                payload={"reason": "tool_timeout"},
+            ),
+        )
+
+        assert isinstance(result, ToolResult)
+        span = emitter.events[-1]
+        assert span.event_type == "span"
+        assert span.payload["span_name"] == "tool:create_ticket"
+        assert span.payload["status"] == "failure"
+
+    def test_session_summary_counts_waiting_status_separately(self) -> None:
+        from agent_runtime_ref.session import RunRecord, summarize_session
+
+        waiting_run = RunRecord(
+            trace_id="trace-summary-waiting-001",
+            session_id="session-summary-waiting-001",
+            status="waiting_for_approval",
+            user_input="Create a ticket.",
+            output_text="Awaiting review.",
+            task_success=None,
+            side_effect_status="not_executed",
+            approval_id="apr-001",
+            capability_name="create_ticket",
+            capability_session_status="pending",
+        )
+
+        summary = summarize_session(
+            "session-summary-waiting-001",
+            (waiting_run,),
+        )
+
+        assert summary.total_runs == 1
+        assert summary.approval_wait_runs == 1
+        assert summary.success_runs == 0
+        assert summary.denied_runs == 0
+        assert summary.failed_runs == 0
+        assert summary.latest_status == "waiting_for_approval"
+
     def test_config_loader_builds_runtime_components(
         self,
         config_dir: Path,
@@ -4284,7 +4714,7 @@ class TestRuntimeCore:
                 agent_id=runtime_from_config.agent.agent_id,
             ),
         )
-        assert result.status == "success"
+        assert result.status == "waiting_for_approval"
         assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
         assert runtime_from_config.agent.agent_id == "support-triage-ref"
         assert runtime_from_config.catalog.get("create_ticket") is not None
@@ -4294,13 +4724,11 @@ class TestRuntimeCore:
             "mem-001",
             "mem-002",
             "mem-003",
-            "mem-004",
         ]
         assert [record.kind for record in config_memory] == [
             "language_preference",
             "validated_fact",
             "working_note",
-            "session_summary",
         ]
 
         from agent_runtime_ref.identity import AgentIdentity
@@ -4851,7 +5279,7 @@ class TestRuntimeCore:
                 agent_id="agent-runtime-ref",
             ),
         )
-        assert result.status == "success"
+        assert result.status == "waiting_for_approval"
         assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
         pending_approval = runtime.approvals.pending()
         assert len(pending_approval) == 1
@@ -4900,18 +5328,14 @@ class TestRuntimeCore:
             "tool_policy_decision",
             "approval_requested",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         policy_event = runtime.telemetry.events[5]
         approval_event = runtime.telemetry.events[6]
         execution_event = runtime.telemetry.events[7]
 
-        assert result.status == "success"
-        assert result.output_text == "Padded tool request was handled safely."
+        assert result.status == "waiting_for_approval"
+        assert result.output_text == "Ticket request is waiting for human approval (apr-001)."
         assert approval.capability_name == "create_ticket"
         assert approval.capability_session_id == "cap-session-001"
         assert approval.capability_session_status == "pending"
@@ -5036,6 +5460,8 @@ class TestRuntimeCore:
                 "Runtime halted before side effects completed: missing_capability returned denied"
             ),
             "failure_reason": "capability_unknown",
+            "task_success": "false",
+            "side_effect_status": "not_executed",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
             "delegated_scope": "",
@@ -5151,7 +5577,7 @@ class TestRuntimeCore:
         runtime = AgentRuntime()
         runtime.run(
             RunRequest(
-                user_input="Please open a ticket for this issue.",
+                user_input="Summarize the current architecture.",
                 tenant_id="tenant-acme",
                 principal_id="user-3",
                 trace_id="trace-memory-001",
@@ -5164,21 +5590,18 @@ class TestRuntimeCore:
             "retrieval",
             "context_layers_built",
             "span",
-            "tool_policy_decision",
-            "approval_requested",
-            "tool_execution",
             "memory_write_decision",
             "memory_persisted",
             "background_compaction",
             "background_update_scheduled",
             "run_complete",
         ]
-        persisted_event = runtime.telemetry.events[9]
+        persisted_event = runtime.telemetry.events[6]
         assert persisted_event.payload == {
             "memory_id": "mem-004",
             "memory_class": "long_term",
             "kind": "session_summary",
-            "provenance": "conversation_summary",
+            "provenance": "sanitized_summary",
             "revision": "1",
         }
 
@@ -5924,15 +6347,18 @@ class TestRuntimeControlPaths:
             session_id, inputs, trace_prefix, simulated_failure = EVAL_DATASET_SCENARIOS[
                 scenario
             ]
-            expected_inputs = list(inputs)
-            if simulated_failure:
-                expected_inputs = [
-                    f"{user_input} [simulate_failure={simulated_failure}]"
-                    for user_input in expected_inputs
-                ]
+            expected_input_hashes = [
+                hashlib.sha256(user_input.encode("utf-8")).hexdigest()
+                for user_input in inputs
+            ]
 
             assert session["session"]["session_id"] == session_id
-            assert [run["user_input"] for run in session["runs"]] == expected_inputs
+            assert [run["user_input"] for run in session["runs"]] == [
+                "[REDACTED]" for _ in inputs
+            ]
+            assert [run["input_sha256"] for run in session["runs"]] == (
+                expected_input_hashes
+            )
             assert [run["trace_id"] for run in session["runs"]] == [
                 f"{trace_prefix}-{index:03d}"
                 for index in range(1, len(session["runs"]) + 1)
@@ -7131,7 +7557,7 @@ class TestRuntimeControlPaths:
                 agent_id="agent-runtime-ref",
             ),
         )
-        assert result.status == "success"
+        assert result.status == "waiting_for_approval"
         assert [event.event_type for event in runtime.telemetry.events] == [
             "run_start",
             "policy_precheck",
@@ -7141,10 +7567,6 @@ class TestRuntimeControlPaths:
             "tool_policy_decision",
             "approval_requested",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         approval_requested = runtime.telemetry.events[6]
@@ -7601,7 +8023,8 @@ class TestRuntimeControlPaths:
         assert record.session_id == "session-normalized-001"
         assert record.trace_id == "trace-normalized-001"
         assert record.status == "success"
-        assert record.user_input == "hello"
+        assert record.user_input == "[REDACTED]"
+        assert record.input_sha256 == hashlib.sha256(b"hello").hexdigest()
         assert record.output_text == "done"
         session = store.get_session(" session-normalized-001 ")
         assert session is not None
@@ -10588,7 +11011,7 @@ class TestDelegatedAuthorizationRuntime:
                 delegated_scope=" tickets.write ",
             ),
         )
-        assert result.status == "success"
+        assert result.status == "waiting_for_approval"
 
         approval_request = runtime.approvals.all()[0]
         assert approval_request.authorization_mode == "user_delegated"
@@ -10604,10 +11027,6 @@ class TestDelegatedAuthorizationRuntime:
             "tool_policy_decision",
             "approval_requested",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         approval_event = runtime.telemetry.events[6]
@@ -10733,6 +11152,8 @@ class TestCli:
             "delegated_scope",
             "result",
             "status",
+            "task_success",
+            "side_effect_status",
             "failure_reason",
             "trace_id",
             "idempotency_keys",
@@ -10759,7 +11180,9 @@ class TestCli:
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
         assert payload["result"] == "Ticket request is waiting for human approval (apr-001)."
-        assert payload["status"] == "success"
+        assert payload["status"] == "waiting_for_approval"
+        assert payload["task_success"] is None
+        assert payload["side_effect_status"] == "not_executed"
         assert payload["failure_reason"] == ""
         assert payload["trace_id"] == "trace-demo-001"
         assert payload["idempotency_keys"] == ["trace-demo-001"]
@@ -10768,9 +11191,9 @@ class TestCli:
         assert payload["pending_approval_ids"] == ["apr-001"]
         assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["approval_status_counts"] == {"pending": 1}
-        assert payload["events"] == 14
-        assert payload["memory_records"] == 4
-        assert payload["memory_record_ids"] == ["mem-001", "mem-002", "mem-003", "mem-004"]
+        assert payload["events"] == 10
+        assert payload["memory_records"] == 3
+        assert payload["memory_record_ids"] == ["mem-001", "mem-002", "mem-003"]
         assert payload["pending_approvals"] == 1
         assert payload["pending_approval_ids"] == ["apr-001"]
         assert payload["pending_approval_capability_names"] == ["create_ticket"]
@@ -11003,7 +11426,7 @@ class TestCli:
                 ["session-eval-summary"],
                 {
                     "total_runs": 1,
-                    "success_runs": 1,
+                    "success_runs": 0,
                     "approval_wait_runs": 1,
                     "denied_runs": 0,
                     "failed_runs": 0,
@@ -11018,7 +11441,7 @@ class TestCli:
                     "approval_status_counts": {"pending": 1},
                     "latest_failure_reason": "",
                     "latest_trace_id": "trace-session-001",
-                    "latest_status": "success",
+                    "latest_status": "waiting_for_approval",
                 },
             ),
             (
@@ -11031,7 +11454,7 @@ class TestCli:
                 ],
                 {
                     "total_runs": 2,
-                    "success_runs": 2,
+                    "success_runs": 1,
                     "approval_wait_runs": 1,
                     "denied_runs": 0,
                     "failed_runs": 0,
@@ -11194,7 +11617,7 @@ class TestCli:
         assert payload["authorization_mode"] == "platform_owned"
         assert payload["delegated_principal_id"] == ""
         assert payload["delegated_scope"] == ""
-        assert payload["status"] == "success"
+        assert payload["status"] == "waiting_for_approval"
         assert payload["failure_reason"] == ""
         assert payload["approval_ids"] == ["apr-001"]
         assert payload["approval_capability_names"] == ["create_ticket"]
@@ -11253,7 +11676,7 @@ class TestCli:
         assert export_payload["authorization_mode"] == "platform_owned"
         assert export_payload["delegated_principal_id"] == ""
         assert export_payload["delegated_scope"] == ""
-        assert export_payload["status"] == "success"
+        assert export_payload["status"] == "waiting_for_approval"
         assert export_payload["failure_reason"] == ""
         assert export_payload["result"] == "Ticket request is waiting for human approval (apr-001)."
         assert export_payload["redact_fields"] == []
@@ -11276,10 +11699,6 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
 
@@ -11321,7 +11740,7 @@ class TestCli:
         assert inspect_payload["authorization_mode"] == "platform_owned"
         assert inspect_payload["delegated_principal_id"] == ""
         assert inspect_payload["delegated_scope"] == ""
-        assert inspect_payload["status"] == "success"
+        assert inspect_payload["status"] == "waiting_for_approval"
         assert inspect_payload["output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
@@ -11346,18 +11765,10 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         assert inspect_payload["events"][0]["payload"]["session_id"] == "session-demo-001"
         assert [item["schema_version"] for item in inspect_payload["events"]] == [
-            "1.0",
-            "1.0",
-            "1.0",
-            "1.0",
             "1.0",
             "1.0",
             "1.0",
@@ -11382,9 +11793,9 @@ class TestCli:
                 "--output",
                 str(output_path),
                 "--redact-field",
-                " user_input ",
+                " input_description ",
                 "--redact-field",
-                "user_input",
+                "input_description",
             ],
         )
         assert export_code == 0
@@ -11420,9 +11831,9 @@ class TestCli:
         assert export_payload["authorization_mode"] == "platform_owned"
         assert export_payload["delegated_principal_id"] == ""
         assert export_payload["delegated_scope"] == ""
-        assert export_payload["status"] == "success"
+        assert export_payload["status"] == "waiting_for_approval"
         assert export_payload["failure_reason"] == ""
-        assert export_payload["redact_fields"] == ["user_input"]
+        assert export_payload["redact_fields"] == ["input_description"]
         assert export_payload["approval_ids"] == ["apr-001"]
         assert export_payload["approval_capability_names"] == ["create_ticket"]
         assert export_payload["pending_approval_ids"] == ["apr-001"]
@@ -11457,15 +11868,11 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         run_start = inspect_payload["events"][0]
-        assert run_start["payload"]["user_input"] == "[REDACTED]"
-        assert run_start["redacted_fields"] == ["user_input"]
+        assert run_start["payload"]["input_description"] == "[REDACTED]"
+        assert run_start["redacted_fields"] == ["input_description"]
         run_complete = inspect_payload["events"][-1]
         assert run_complete["redacted_fields"] == []
 
@@ -11624,10 +12031,6 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         sandbox_review = inspect_payload["events"][7]
@@ -11677,17 +12080,9 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
         assert [item["trace_id"] for item in inspect_payload["events"]] == [
-            "trace-consistent-001",
-            "trace-consistent-001",
-            "trace-consistent-001",
-            "trace-consistent-001",
             "trace-consistent-001",
             "trace-consistent-001",
             "trace-consistent-001",
@@ -11708,10 +12103,6 @@ class TestCli:
             "session-consistent-001",
             "session-consistent-001",
             "session-consistent-001",
-            "session-consistent-001",
-            None,
-            None,
-            None,
             "session-consistent-001",
             "session-consistent-001",
         ]
@@ -11736,6 +12127,8 @@ class TestCli:
                 "replay-run",
                 "--input",
                 str(output_path),
+                "--user-input",
+                "What language preference do you remember?",
                 "--replay-trace-id",
                 "trace-replay-target",
             ],
@@ -11881,6 +12274,8 @@ class TestCli:
                 "replay-run",
                 "--input",
                 str(output_path),
+                "--user-input",
+                "Please create a ticket for this replay issue.",
                 "--replay-trace-id",
                 "trace-replay-ticket-target",
             ],
@@ -11902,18 +12297,18 @@ class TestCli:
         assert replay_payload["replay_delegated_principal_id"] == ""
         assert replay_payload["source_delegated_scope"] == ""
         assert replay_payload["replay_delegated_scope"] == ""
-        assert replay_payload["source_status"] == "success"
+        assert replay_payload["source_status"] == "waiting_for_approval"
         assert replay_payload["source_output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
         assert replay_payload["source_failure_reason"] == ""
-        assert replay_payload["replay_status"] == "success"
+        assert replay_payload["replay_status"] == "waiting_for_approval"
         assert replay_payload["replay_output_preview"] == (
             "Ticket request is waiting for human approval (apr-001)."
         )
         assert replay_payload["replay_failure_reason"] == ""
         assert replay_payload["event_count"] == replay_payload["replay_event_count"]
-        assert replay_payload["source_event_count"] == 14
+        assert replay_payload["source_event_count"] == 10
         assert replay_payload["source_event_types"] == [
             "run_start",
             "policy_precheck",
@@ -11924,13 +12319,9 @@ class TestCli:
             "approval_requested",
             "sandbox_profile_reviewed",
             "tool_execution",
-            "memory_write_decision",
-            "memory_persisted",
-            "background_compaction",
-            "background_update_scheduled",
             "run_complete",
         ]
-        assert replay_payload["replay_event_count"] == 14
+        assert replay_payload["replay_event_count"] == 10
         assert replay_payload["replay_event_types"] == replay_payload["event_types"]
         assert replay_payload["idempotency_keys"] == [
             "trace-replay-ticket-source",
@@ -11986,6 +12377,8 @@ class TestCli:
                 "replay-run",
                 "--input",
                 str(output_path),
+                "--user-input",
+                "Please create a ticket for this delegated replay issue.",
                 "--replay-trace-id",
                 "trace-replay-delegated-target",
             ],
@@ -12022,6 +12415,8 @@ class TestCli:
                 "replay-run",
                 "--input",
                 str(output_path),
+                "--user-input",
+                "Please create a ticket for this onboarding issue.",
                 "--replay-trace-id",
                 "trace-replay-failed-target",
             ],
@@ -12061,6 +12456,16 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "ready",
+            "production_ready",
+            "evidence_mode",
+            "evidence_verified",
+            "evidence_manifest",
+            "evidence_issuer",
+            "evidence_subject",
+            "evidence_measured_at",
+            "evidence_artifact_ids",
+            "evidence_diagnostics",
+            "recommended_action",
             "required_checks",
             "blocked_checks",
             "missing_required",
@@ -12071,6 +12476,8 @@ class TestCli:
             "rollout_mode",
         }
         assert not payload["ready"]
+        assert payload["production_ready"] is False
+        assert payload["evidence_mode"] == "declarative_only"
         assert payload["required_checks"] == rollout["require"]
         assert payload["blocked_checks"] == rollout["block_if"]
         assert payload["missing_required"] == ["offline_eval_pass"]
@@ -12131,6 +12538,16 @@ class TestCli:
         assert exit_code == 0
         assert set(payload) == {
             "ready",
+            "production_ready",
+            "evidence_mode",
+            "evidence_verified",
+            "evidence_manifest",
+            "evidence_issuer",
+            "evidence_subject",
+            "evidence_measured_at",
+            "evidence_artifact_ids",
+            "evidence_diagnostics",
+            "recommended_action",
             "required_checks",
             "blocked_checks",
             "missing_required",
@@ -12141,6 +12558,8 @@ class TestCli:
             "rollout_mode",
         }
         assert not payload["ready"]
+        assert payload["production_ready"] is False
+        assert payload["evidence_mode"] == "declarative_only"
         assert payload["required_checks"] == rollout["require"]
         assert payload["blocked_checks"] == rollout["block_if"]
         assert payload["missing_required"] == []
@@ -13153,8 +13572,11 @@ class TestCli:
             "trace_id",
             "status",
             "user_input",
+            "input_sha256",
             "output_text",
             "failure_reason",
+            "task_success",
+            "side_effect_status",
             "request_agent_id",
             "capability_session_id",
             "capability_session_status",

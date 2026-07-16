@@ -1,7 +1,17 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
+
+REDACTED_INPUT_DESCRIPTION = "[REDACTED]"
+
+
+def compute_input_sha256(value: object) -> str:
+    if not isinstance(value, str):
+        raise TypeError("User input must be a string")
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def normalize_tool_capability_name(value: object) -> str:
@@ -31,6 +41,43 @@ def normalize_tool_arguments(value: object) -> dict[str, str]:
             )
         normalized[argument_key] = argument
     return normalized
+
+
+def _normalize_action_digest_field(value: object, *, field: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError(f"Tool action digest field must be a string: {field}")
+    return value.strip()
+
+
+def compute_action_digest(
+    *,
+    capability_name: object,
+    arguments: object,
+    tenant_id: object,
+    agent_id: object,
+    session_id: object,
+    idempotency_key: object,
+) -> str:
+    capability = normalize_tool_capability_name(capability_name)
+    normalized_arguments = normalize_tool_arguments(arguments)
+    canonical_payload = {
+        "agent_id": _normalize_action_digest_field(agent_id, field="agent_id"),
+        "arguments": dict(sorted(normalized_arguments.items())),
+        "capability": capability,
+        "idempotency_key": _normalize_action_digest_field(
+            idempotency_key,
+            field="idempotency_key",
+        ),
+        "session_id": _normalize_action_digest_field(session_id, field="session_id"),
+        "tenant_id": _normalize_action_digest_field(tenant_id, field="tenant_id"),
+    }
+    canonical_json = json.dumps(
+        canonical_payload,
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
 
 
 def normalize_tool_result_status(value: object) -> str:
@@ -76,6 +123,7 @@ class RunRequest:
     authorization_mode: str = "platform_owned"
     delegated_principal_id: str = ""
     delegated_scope: str = ""
+    test_fault: str = ""
 
 
 @dataclass(slots=True)
@@ -119,3 +167,5 @@ class ModelOutput:
 class RunResult:
     output_text: str
     status: str
+    task_success: bool | None = None
+    side_effect_status: str = "not_executed"

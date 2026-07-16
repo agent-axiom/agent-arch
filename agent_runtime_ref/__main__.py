@@ -23,8 +23,10 @@ from agent_runtime_ref.config import (
     load_yaml_file,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.evidence import verify_evidence_manifest
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
-from agent_runtime_ref.models import RunRequest, RunResult
+from agent_runtime_ref.models import RunRequest, RunResult, compute_input_sha256
+from agent_runtime_ref.policy import CapabilityPolicy
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
 from agent_runtime_ref.session import summarize_session
@@ -71,7 +73,7 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
             "sandbox_profile_review",
         ],
         "expected_outcomes": {
-            "latest_status": "success",
+            "latest_status": "waiting_for_approval",
             "approval_wait_runs": 1,
             "approval_status_counts": {"pending": 1},
             "required_output_substrings": ["waiting for human approval"],
@@ -377,8 +379,11 @@ def _run_on_runtime(
     delegated_scope: str = "",
     simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
-    if simulate_failure and "ticket" in user_input.lower():
-        user_input = f"{user_input} [simulate_failure={simulate_failure}]"
+    if simulate_failure:
+        # The CLI fault drill is a trusted harness path. It forces the demo adapter
+        # through an explicit allow decision, while the adapter itself guarantees
+        # that the selected fault cannot produce an external side effect.
+        runtime.policy.capability_policies["create_ticket"] = CapabilityPolicy("allow")
     result = runtime.run(
         RunRequest(
             user_input=user_input,
@@ -390,6 +395,7 @@ def _run_on_runtime(
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            test_fault=simulate_failure or "",
         ),
     )
     return runtime, result
@@ -498,6 +504,8 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "result": result.output_text,
         "status": result.status,
+        "task_success": result.task_success,
+        "side_effect_status": result.side_effect_status,
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
@@ -958,8 +966,9 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if len(run_start_events) > 1:
         raise ValueError("Trace file contains multiple run_start events")
     run_start = run_start_events[0]
-    required_payload_keys = ("user_input", "tenant_id", "principal_id")
+    required_payload_keys = ("tenant_id", "principal_id")
     replay_payload_keys = (
+        "user_input",
         *required_payload_keys,
         "session_id",
         "agent_id",
@@ -967,7 +976,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "delegated_principal_id",
         "delegated_scope",
     )
-    missing_payload_keys = [key for key in required_payload_keys if key not in run_start.payload]
+    missing_payload_keys = []
+    if "user_input" not in run_start.payload and args.user_input is None:
+        missing_payload_keys.append("user_input")
+    missing_payload_keys.extend(
+        key for key in required_payload_keys if key not in run_start.payload
+    )
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
         raise ValueError(f"Trace run_start event is missing replay fields: {missing_keys}")
@@ -977,7 +991,28 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if redacted_payload_keys:
         redacted_keys = ", ".join(redacted_payload_keys)
         raise ValueError(f"Trace run_start event has redacted replay fields: {redacted_keys}")
-    user_input = _read_replay_payload_string(run_start.payload, "user_input")
+    stored_user_input = (
+        _read_replay_payload_string(run_start.payload, "user_input")
+        if "user_input" in run_start.payload
+        else None
+    )
+    supplied_user_input = (
+        _read_required_cli_string(args.user_input, field="user_input")
+        if args.user_input is not None
+        else None
+    )
+    user_input = supplied_user_input or stored_user_input
+    if not user_input:
+        raise ValueError(
+            "Trace does not retain raw user input; pass --user-input to perform "
+            "a controlled diagnostic replay"
+        )
+    source_input_sha256 = _read_replay_payload_optional_string(
+        run_start.payload,
+        "input_sha256",
+    )
+    if source_input_sha256 and compute_input_sha256(user_input) != source_input_sha256:
+        raise ValueError("Replay user input does not match trace input_sha256")
     tenant_id = _read_replay_payload_string(run_start.payload, "tenant_id")
     principal_id = _read_replay_payload_string(run_start.payload, "principal_id")
     session_id = _read_replay_payload_string(run_start.payload, "session_id")
@@ -1001,6 +1036,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         if args.replay_trace_id is not None
         else f"{source_trace_id}-replay"
     )
+    source_failure_reason = _failure_reason_from_events(source_events)
+    replay_test_fault = (
+        source_failure_reason
+        if source_failure_reason in {"tool_timeout", "upstream_unavailable"}
+        else None
+    )
     runtime, result = _run_runtime(
         config_dir,
         user_input=cast(str, user_input),
@@ -1012,13 +1053,13 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         authorization_mode=authorization_mode,
         delegated_principal_id=delegated_principal_id,
         delegated_scope=delegated_scope,
+        simulate_failure=replay_test_fault,
     )
     source_status = _run_complete_field_from_events(source_events, "status")
     source_output_preview = _run_complete_field_from_events(
         source_events,
         "output_preview",
     )
-    source_failure_reason = _failure_reason_from_events(source_events)
     replay_failure_reason = _failure_reason_from_events(runtime.telemetry.events)
     replay_events = runtime.telemetry.events
     source_session_id = _run_start_field_from_events(source_events, "session_id")
@@ -1142,11 +1183,56 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
 
 def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     policy = load_rollout_policy(args.config)
-    observed = {name: True for name in policy.required_checks}
-    observed.update({name: False for name in policy.blocked_checks})
+    evidence_manifest = args.evidence_manifest
+    evidence_diagnostics: list[dict[str, str]] = []
+    evidence_verified = False
+    evidence_issuer: str | None = None
+    evidence_subject: str | None = None
+    evidence_measured_at: str | None = None
+    evidence_artifact_ids: list[str] = []
+
+    if evidence_manifest is None:
+        observed = {name: True for name in policy.required_checks}
+        observed.update({name: False for name in policy.blocked_checks})
+        evidence_mode = "declarative_only"
+    else:
+        verification = verify_evidence_manifest(evidence_manifest)
+        evidence_verified = verification.verified
+        evidence_issuer = verification.issuer
+        evidence_subject = verification.subject
+        evidence_measured_at = verification.measured_at
+        evidence_artifact_ids = list(verification.artifact_ids)
+        evidence_diagnostics = [
+            {
+                "code": diagnostic.code,
+                "location": diagnostic.location,
+                "message": diagnostic.message,
+            }
+            for diagnostic in verification.diagnostics
+        ]
+        observed = {name: False for name in policy.required_checks}
+        observed.update({name: False for name in policy.blocked_checks})
+        if evidence_verified:
+            for name, value in verification.signals.items():
+                if isinstance(value, bool):
+                    observed[name] = value
+                    continue
+                if name in {*policy.required_checks, *policy.blocked_checks}:
+                    evidence_verified = False
+                    evidence_diagnostics.append(
+                        {
+                            "code": "invalid_signal_value",
+                            "location": f"signals.{name}.value",
+                            "message": "Rollout gate signal value must be a boolean",
+                        }
+                    )
+        evidence_mode = "verified" if evidence_verified else "invalid"
+
     for raw_signal in args.signal:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
+    if evidence_manifest is not None and args.signal and evidence_verified:
+        evidence_mode = "verified_with_overrides"
     assessment = assess_rollout(policy, observed)
     support_duplicate_required = [
         signal
@@ -1158,8 +1244,33 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
         for signal in assessment.missing_required
         if signal in support_duplicate_required
     ]
+    production_ready = (
+        evidence_verified
+        and not args.signal
+        and assessment.ready
+    )
+    if evidence_manifest is None:
+        recommended_action = "attach_verified_evidence"
+    elif not evidence_verified:
+        recommended_action = "repair_evidence_manifest"
+    elif args.signal:
+        recommended_action = "remove_manual_overrides"
+    elif not assessment.ready:
+        recommended_action = "collect_missing_evidence"
+    else:
+        recommended_action = "proceed_to_canary"
     return {
         "ready": assessment.ready,
+        "production_ready": production_ready,
+        "evidence_mode": evidence_mode,
+        "evidence_verified": evidence_verified,
+        "evidence_manifest": evidence_manifest,
+        "evidence_issuer": evidence_issuer,
+        "evidence_subject": evidence_subject,
+        "evidence_measured_at": evidence_measured_at,
+        "evidence_artifact_ids": evidence_artifact_ids,
+        "evidence_diagnostics": evidence_diagnostics,
+        "recommended_action": recommended_action,
         "required_checks": list(policy.required_checks),
         "blocked_checks": list(policy.blocked_checks),
         "missing_required": list(assessment.missing_required),
@@ -1665,8 +1776,11 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "trace_id": run.trace_id,
                 "status": run.status,
                 "user_input": run.user_input,
+                "input_sha256": run.input_sha256,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "task_success": run.task_success,
+                "side_effect_status": run.side_effect_status,
                 "request_agent_id": run.request_agent_id,
                 "capability_session_id": run.capability_session_id,
                 "capability_session_status": run.capability_session_status,
@@ -1785,8 +1899,11 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "trace_id": run.trace_id,
                 "status": run.status,
                 "user_input": run.user_input,
+                "input_sha256": run.input_sha256,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "task_success": run.task_success,
+                "side_effect_status": run.side_effect_status,
                 "request_agent_id": run.request_agent_id,
                 "capability_session_id": run.capability_session_id,
                 "capability_session_status": run.capability_session_status,
@@ -2119,6 +2236,13 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Optional override for the replay trace ID",
     )
+    replay_run.add_argument(
+        "--user-input",
+        default=None,
+        help=(
+            "Original input supplied out of band when the trace retains only its SHA-256"
+        ),
+    )
 
     rollout = subparsers.add_parser("check-rollout", help="Evaluate rollout readiness")
     rollout.add_argument(
@@ -2131,6 +2255,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         help="Override an observed signal, e.g. trace_coverage=true",
+    )
+    rollout.add_argument(
+        "--evidence-manifest",
+        default=None,
+        help="Path to a SHA-256-bound release evidence manifest",
     )
 
     controls = subparsers.add_parser(
