@@ -8,15 +8,22 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
 
+import pytest
 import yaml
 
-from docs.publisher.tools.revise_ru_manuscript import replace_mermaid_blocks, revise
+from docs.publisher.tools.revise_ru_manuscript import (
+    remove_duplicate_evidence_boundary,
+    replace_mermaid_blocks,
+    revise,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs/publisher/ru-manuscript-google-doc-final-2026-07-11.md"
 EXPECTED = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
 MANIFEST = ROOT / "docs/publisher/ru-inline-diagrams-2026-07-13.json"
 NUMBERED_MANIFEST = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
+EDITORIAL_MANIFEST = ROOT / "docs/publisher/ru-editorial-diagrams-2026-07-16.json"
+VISUAL_AUDIT = ROOT / "docs/publisher/ru-visual-audit-2026-07-16.json"
 VISUALS = ROOT / "docs/publisher/visuals"
 
 NUMBERED_FIGURE_PATHS = [
@@ -45,6 +52,11 @@ NUMBERED_FIGURE_PATHS = [
     "visuals/ru-figure-17-rollout-simulation-fidelity.png",
     "visuals/ru-figure-12-launch-readiness.png",
     "visuals/ru-figure-24-capstone-evidence-package.png",
+]
+
+EDITORIAL_DIAGRAM_PATHS = [
+    "visuals/ru-editorial-diagram-01-execution-form-decision.png",
+    "visuals/ru-editorial-diagram-02-registry-reconciliation.png",
 ]
 
 
@@ -235,6 +247,116 @@ def test_chapters_have_a_consistent_learning_contract_and_sources() -> None:
     assert len(re.findall(r"^### Ключевые выводы$", text, re.MULTILINE)) == 28
     assert len(re.findall(r"^### Источники главы$", text, re.MULTILINE)) == 28
     assert "От наблюдаемого отклонения к внутреннему риску" in text
+
+
+def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert text.count("**Маршрут части.**") == 8
+    for marker in (
+        "#### Полномочия и идентичность",
+        "#### Контракт сервера и граница доверия",
+        "#### Два взаимодополняющих контура",
+        "#### Долговечное состояние запуска",
+        "#### От событий к причинной гипотезе",
+    ):
+        assert marker in text
+
+    chapter_one = text.split("## Глава 1\\.", 1)[1].split("## Глава 2\\.", 1)[0]
+    assert chapter_one.count("**Граница доказательств**") == 1
+
+    chapter_twenty_three = text.split("## Глава 23\\.", 1)[1].split(
+        "## Глава 24\\.", 1
+    )[0]
+    assert "В 09:07" in chapter_twenty_three[:800]
+    assert "Предыдущая глава определила" not in chapter_twenty_three[:800]
+
+
+def test_duplicate_evidence_cleanup_refuses_to_delete_edited_prose() -> None:
+    text = (
+        "## Глава 1\\. Первая\n\n"
+        "**Граница доказательств**\n\n"
+        "Эта глава доказывает не то, что агенты всегда нужны. Наоборот: она "
+        "показывает, что полезная агентность начинается с ограничения.\n\n"
+        "Если путь можно заранее описать, лучше начать с рабочего процесса. Если "
+        "нужна гибкость, ее стоит добавлять только вместе с владением, границами "
+        "политики, подтверждениями, следами выполнения и оценочными сигналами. "
+        "Поэтому главный вывод главы такой: агент — не замена инженерной дисциплине, "
+        "а усиленная нагрузка на нее.\n\n"
+        "### Что подтверждают материалы главы\n\n"
+        "Сохранить этот текст.\n\n"
+        "**Граница доказательств**\n\n"
+        "Сохранить основной блок.\n\n"
+        "## Глава 2\\. Вторая\n"
+    )
+
+    with pytest.raises(ValueError, match="duplicate evidence-boundary block changed"):
+        remove_duplicate_evidence_boundary(text)
+
+
+def test_every_chapter_has_a_traceable_source_set() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    high_evidence_chapters = {4, 5, 6, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 28}
+
+    for number in range(1, 29):
+        chapter = text.split(f"## Глава {number}\\.", 1)[1]
+        if number < 28:
+            chapter = chapter.split(f"## Глава {number + 1}\\.", 1)[0]
+        sources = chapter.split("### Источники главы", 1)[1].split("**Дальше.**", 1)[0]
+        urls = re.findall(r"\]\((https?://[^)]+)\)", sources)
+        minimum = 3 if number in high_evidence_chapters else 2
+        assert len(urls) >= minimum, f"Chapter {number} has only {len(urls)} sources"
+        assert "**Как читать источники.**" in sources
+
+
+def test_long_technical_blocks_are_introduced_as_teaching_material() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    inside = False
+    start = 0
+    block: list[str] = []
+    missing: list[int] = []
+
+    for index, line in enumerate(lines):
+        if not line.startswith("```"):
+            if inside:
+                block.append(line)
+            continue
+        if not inside:
+            inside = True
+            start = index
+            block = []
+            continue
+
+        if len(block) > 20:
+            nearby = [item.strip() for item in lines[max(0, start - 8) : start] if item.strip()]
+            if not any(
+                re.search(r"(?:Листинг|Пример|Конфигурация)", item, re.IGNORECASE)
+                for item in nearby[-4:]
+            ):
+                missing.append(start + 1)
+        inside = False
+
+    assert missing == []
+
+
+def test_appendix_gives_self_study_feedback_and_clean_bibliography() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix_five = text.split("## Приложение 5\\.", 1)[1]
+    assert "### Критерии самопроверки по частям" in appendix_five
+    assert appendix_five.count("**Сильный ответ.**") == 8
+    assert appendix_five.count("**Недостаточный ответ.**") == 8
+    assert appendix_five.count("**Проверяемый артефакт.**") == 8
+
+    bibliography = text.split("## Приложение 4\\.", 1)[1].split(
+        "## Приложение 5\\.", 1
+    )[0]
+    assert not re.search(r"\[[^\]]*https?://", bibliography)
+    source_lines = [
+        line for line in bibliography.splitlines() if line.startswith("* ") and "http" in line
+    ]
+    assert source_lines
+    assert all("дата обращения:" in line for line in source_lines)
 
 
 def test_labs_have_prerequisites_timing_and_negative_paths() -> None:
@@ -641,7 +763,12 @@ A --> B"""
 
 
 def test_inline_diagrams_are_publisher_ready() -> None:
-    diagrams = json.loads(MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    diagrams = data["diagrams"]
+
+    assert data["line_basis"] == "transformed manuscript before Mermaid replacement"
+    assert all("transformed_line" in diagram for diagram in diagrams)
+    assert all("source_line" not in diagram for diagram in diagrams)
 
     for diagram in diagrams:
         stem = Path(diagram["filename"]).stem
@@ -674,8 +801,8 @@ def test_revision_uses_explicit_unique_visual_assets_and_caption_order() -> None
     text = EXPECTED.read_text(encoding="utf-8")
     image_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", text, re.MULTILINE)
 
-    assert len(image_paths) == 54
-    assert len(set(image_paths)) == 54
+    assert len(image_paths) == 56
+    assert len(set(image_paths)) == 56
     assert [path for path in image_paths if "/ru-figure-" in path] == NUMBERED_FIGURE_PATHS
     assert [path for path in image_paths if "/ru-inline-diagram-" in path] == [
         f"visuals/ru-inline-diagram-{number:02d}.png" for number in range(1, 30)
@@ -694,6 +821,9 @@ def test_revision_uses_explicit_unique_visual_assets_and_caption_order() -> None
         assert non_empty_lines[index - 1].startswith("![")
         assert NUMBERED_FIGURE_PATHS[int(match.group(1)) - 1] in non_empty_lines[index - 1]
     assert captions == 25
+    assert [path for path in image_paths if "/ru-editorial-diagram-" in path] == (
+        EDITORIAL_DIAGRAM_PATHS
+    )
 
 
 def test_diagram_semantics_preserve_safety_invariants_and_russian_terminology() -> None:
@@ -751,3 +881,38 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     assert "Работа и наблюдение" in diagrams[17]["mermaid"]
     assert "Логическое И" in diagrams[24]["mermaid"]
     assert "РАСШИРИТЬ / УДЕРЖАТЬ" in diagrams[25]["mermaid"]
+
+
+def test_targeted_editorial_diagrams_cover_the_two_missing_decisions() -> None:
+    data = json.loads(EDITORIAL_MANIFEST.read_text(encoding="utf-8"))
+    diagrams = {item["number"]: item for item in data["diagrams"]}
+
+    assert data["expected_count"] == 2
+    assert set(diagrams) == {1, 2}
+    assert "Обычный рабочий процесс" in diagrams[1]["mermaid"]
+    assert "Многоагентная схема" in diagrams[1]["mermaid"]
+    assert "Фактическое исполнение" in diagrams[2]["mermaid"]
+    assert "Карантин или исправление" in diagrams[2]["mermaid"]
+    assert [f"visuals/{diagrams[number]['filename']}" for number in (1, 2)] == (
+        EDITORIAL_DIAGRAM_PATHS
+    )
+
+
+def test_targeted_editorial_diagrams_keep_text_at_least_eight_points_in_print() -> None:
+    audit = json.loads(VISUAL_AUDIT.read_text(encoding="utf-8"))
+    placements = audit["pdf"]["placements"]
+
+    for relative_path in EDITORIAL_DIAGRAM_PATHS:
+        asset = next(
+            item
+            for item in audit["assets"]
+            if item["path"].endswith(relative_path.removeprefix("visuals/"))
+        )
+        placement = placements[asset["index"] - 1]
+        svg = (VISUALS / Path(relative_path).with_suffix(".svg").name).read_text(
+            encoding="utf-8"
+        )
+        font_pixels = [int(value) for value in re.findall(r"font:\s*(\d+)px", svg)]
+        minimum_points = min(font_pixels) * placement["width_inches"] * 72 / asset["width_px"]
+
+        assert minimum_points >= 8.0, relative_path

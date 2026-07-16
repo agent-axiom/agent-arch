@@ -6,13 +6,17 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
+import pytest
+
+from docs.publisher.tools import sync_ru_docx_visuals
+
 ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
 RAW_EDITORIAL_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx"
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.docx"
 )
 EDITORIAL_TEMPLATE_DOCX = (
-    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx"
+    ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.docx"
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
 
@@ -21,6 +25,19 @@ OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relations
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
 DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+
+
+def test_visual_audit_accepts_every_current_manuscript_image() -> None:
+    assert len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT)) == 56
+
+
+def test_visual_audit_uses_the_parsed_manuscript_count_for_docx_validation() -> None:
+    validate = getattr(sync_ru_docx_visuals, "validate_docx_image_counts", None)
+
+    assert validate is not None
+    validate(56, 56, 56)
+    with pytest.raises(ValueError, match="raw=55, template=56, expected=56"):
+        validate(55, 56, 56)
 
 
 def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
@@ -34,7 +51,7 @@ def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
             for target in node.targets
         )
     )
-    assert ast.literal_eval(assignment.value) == {1, 3, 7, 10, 13, 17, 22, 26}
+    assert ast.literal_eval(assignment.value) == {1, 4, 7, 10, 13, 17, 22, 26}
 
 
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
@@ -117,7 +134,7 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert unstyled_non_empty == []
 
     image_properties = document.findall(f".//{{{DRAWING_NS}}}docPr")
-    assert len(image_properties) == 54
+    assert len(image_properties) == 56
     assert all(node.attrib.get("descr", "").strip() for node in image_properties)
 
     hyperlinks = [
@@ -221,7 +238,7 @@ def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
     raw_targets, raw_hashes = ordered_embedded_images(RAW_EDITORIAL_DOCX)
     template_targets, _ = ordered_embedded_images(EDITORIAL_TEMPLATE_DOCX)
 
-    assert len(relative_paths) == 54
+    assert len(relative_paths) == 56
     assert raw_hashes == expected_hashes
     assert template_targets == raw_targets
 
