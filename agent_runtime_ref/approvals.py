@@ -1,7 +1,17 @@
 from __future__ import annotations
 
+import hashlib
+import hmac
+import json
 from dataclasses import dataclass, field
+from datetime import UTC, datetime, timedelta
 from typing import Any, Mapping
+
+from agent_runtime_ref.models import (
+    compute_action_digest,
+    normalize_tool_arguments,
+    normalize_tool_capability_name,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -143,8 +153,13 @@ class ApprovalRequest:
     delegated_principal_id: str = ""
     delegated_scope: str = ""
     idempotency_key: str = ""
+    action_digest: str = ""
+    payload_summary: str = ""
+    expires_at: str = ""
+    nonce: str = ""
     status: str = "pending"
     resolution_note: str = ""
+    resolved_by: str = ""
 
     def __post_init__(self) -> None:
         self.approval_id = _read_required_approval_string(
@@ -195,6 +210,34 @@ class ApprovalRequest:
             self.idempotency_key,
             field="idempotency_key",
         )
+        self.action_digest = _read_optional_approval_string(
+            self.action_digest,
+            field="action_digest",
+        )
+        if not self.action_digest:
+            self.action_digest = compute_action_digest(
+                capability_name=self.capability_name,
+                arguments={},
+                tenant_id=self.tenant_id,
+                agent_id=self.agent_id,
+                session_id=self.session_id,
+                idempotency_key=self.idempotency_key,
+            )
+        self.payload_summary = _read_optional_approval_string(
+            self.payload_summary,
+            field="payload_summary",
+        )
+        if not self.payload_summary:
+            self.payload_summary = _tool_payload_summary(self.capability_name, {})
+        self.expires_at = _read_optional_approval_string(
+            self.expires_at,
+            field="expires_at",
+        )
+        if not self.expires_at:
+            self.expires_at = "2030-01-01T00:30:00Z"
+        self.nonce = _read_optional_approval_string(self.nonce, field="nonce")
+        if not self.nonce:
+            self.nonce = _approval_nonce(self.approval_id, self.action_digest)
         if self.authorization_mode == "user_delegated":
             self.delegated_principal_id = _read_required_approval_string(
                 self.delegated_principal_id,
@@ -209,6 +252,26 @@ class ApprovalRequest:
             self.resolution_note,
             field="resolution_note",
         )
+        self.resolved_by = _read_optional_approval_string(
+            self.resolved_by,
+            field="resolved_by",
+        )
+
+
+def _tool_payload_summary(capability_name: str, arguments: dict[str, str]) -> str:
+    return json.dumps(
+        {
+            "arguments": dict(sorted(arguments.items())),
+            "capability": normalize_tool_capability_name(capability_name),
+        },
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+
+
+def _approval_nonce(approval_id: str, action_digest: str) -> str:
+    return hashlib.sha256(f"{approval_id}:{action_digest}".encode("utf-8")).hexdigest()
 
 
 class ApprovalQueue:
@@ -229,6 +292,7 @@ class ApprovalQueue:
         *,
         trace_id: str,
         capability_name: str,
+        arguments: dict[str, str] | None = None,
         requested_by: str,
         tenant_id: str = "",
         agent_id: str = "",
@@ -263,6 +327,9 @@ class ApprovalQueue:
             idempotency_key,
             field="idempotency_key",
         )
+        normalized_arguments = normalize_tool_arguments(
+            {} if arguments is None else arguments
+        )
         if reviewer is None and authorization_mode == "user_delegated":
             reviewer = (
                 self.policy.delegated_authorization.reviewer_required_for_user_delegation
@@ -281,8 +348,21 @@ class ApprovalQueue:
                 field="delegated_scope",
             )
         self._counter += 1
+        approval_id = f"apr-{self._counter:03d}"
+        action_digest = compute_action_digest(
+            capability_name=capability_name,
+            arguments=normalized_arguments,
+            tenant_id=tenant_id,
+            agent_id=agent_id,
+            session_id=session_id,
+            idempotency_key=idempotency_key,
+        )
+        issued_at = datetime(2030, 1, 1, tzinfo=UTC) + timedelta(
+            seconds=self._counter
+        )
+        expires_at = issued_at + timedelta(minutes=self.policy.escalation_sla_minutes)
         request = ApprovalRequest(
-            approval_id=f"apr-{self._counter:03d}",
+            approval_id=approval_id,
             trace_id=trace_id,
             tenant_id=tenant_id,
             agent_id=agent_id,
@@ -296,6 +376,13 @@ class ApprovalQueue:
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
             idempotency_key=idempotency_key,
+            action_digest=action_digest,
+            payload_summary=_tool_payload_summary(
+                capability_name,
+                normalized_arguments,
+            ),
+            expires_at=expires_at.isoformat().replace("+00:00", "Z"),
+            nonce=_approval_nonce(approval_id, action_digest),
         )
         self._items.append(request)
         return request
@@ -306,7 +393,15 @@ class ApprovalQueue:
     def pending(self) -> tuple[ApprovalRequest, ...]:
         return tuple(item for item in self._items if item.status == "pending")
 
-    def resolve(self, approval_id: str, *, decision: str, note: str = "") -> ApprovalRequest:
+    def resolve(
+        self,
+        approval_id: str,
+        *,
+        decision: str,
+        note: str = "",
+        resolved_by: str | None = None,
+        expected_action_digest: str | None = None,
+    ) -> ApprovalRequest:
         approval_id = _read_required_approval_string(approval_id, field="approval_id")
         decision = _read_required_approval_string(decision, field="decision")
         if decision not in {"approved", "rejected"}:
@@ -316,8 +411,29 @@ class ApprovalQueue:
             if item.approval_id == approval_id:
                 if item.status != "pending":
                     raise ValueError(f"Approval request is not pending: {approval_id}")
+                resolution_actor = (
+                    item.reviewer
+                    if resolved_by is None
+                    else _read_required_approval_string(
+                        resolved_by,
+                        field="resolved_by",
+                    )
+                )
+                expected_digest = (
+                    item.action_digest
+                    if expected_action_digest is None
+                    else _read_required_approval_string(
+                        expected_action_digest,
+                        field="expected_action_digest",
+                    )
+                )
+                if not hmac.compare_digest(expected_digest, item.action_digest):
+                    raise ValueError(
+                        f"Approval action digest does not match: {approval_id}"
+                    )
                 item.status = decision
                 item.capability_session_status = decision
                 item.resolution_note = resolution_note
+                item.resolved_by = resolution_actor
                 return item
         raise ValueError(f"Approval request not found: {approval_id}")

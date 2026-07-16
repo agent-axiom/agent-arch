@@ -975,12 +975,17 @@ def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
         "Reference Package CLI / YAML blocks",
         "Chapter 26 telemetry lists",
         "Chapter 27 registry records",
-        "Chapter 1, Chapter 2, and the Reference page keep their main decision/list/layer-map blocks readable after plain text extraction",
+        "Chapter 1, Chapter 2, and the Reference page keep their main "
+        "decision/list/layer-map blocks readable after plain text extraction",
         "print CSS keeps tables, Mermaid wrappers, YAML/code blocks, and diagram cards",
-        "status: refreshed for Chapter 1 decision-frame prose, Chapter 2 layer-map fallback prose, Reference final rule prose, print CSS guardrails, and fallback static QA",
+        "status: refreshed for Chapter 1 decision-frame prose, Chapter 2 layer-map "
+        "fallback prose, Reference final rule prose, print CSS guardrails, and "
+        "fallback static QA",
         "live browser/PDF proof remains required",
-        "local tests, strict MkDocs build, static redirect artifact checks, targeted plain-text checks, and print-CSS guardrails",
-        "live browser/PDF visual proof, independent human copy-edit, and final print proof remain required",
+        "local tests, strict MkDocs build, static redirect artifact checks, targeted "
+        "plain-text checks, and print-CSS guardrails",
+        "live browser/PDF visual proof, independent human copy-edit, and final print "
+        "proof remain required",
         "not a public book page",
     )
 
@@ -17805,7 +17810,8 @@ def test_fast_moving_chapters_carry_current_review_dates() -> None:
     )
     expected_by_suffix = {
         ".md": (
-            "Последняя редакционная проверка источников и платформенных ссылок: **29 июня 2026 года**.",
+            "Последняя редакционная проверка источников и платформенных ссылок: "
+            "**29 июня 2026 года**.",
             "Предыдущая полная редакционная проверка: **17 мая 2026 года**.",
             "Следующая плановая проверка полного каталога: **29 июля 2026 года**.",
         ),

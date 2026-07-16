@@ -23,6 +23,8 @@ def execute_tool(
     capability: CapabilitySpec,
     tool_request: ToolRequest,
     decision: PolicyDecision,
+    *,
+    test_fault: str = "",
 ) -> ToolResult:
     if not isinstance(capability, CapabilitySpec):
         raise TypeError("Tool capability must be CapabilitySpec")
@@ -30,6 +32,9 @@ def execute_tool(
         raise TypeError("Tool request must be ToolRequest")
     if not isinstance(decision, PolicyDecision):
         raise TypeError("Tool policy decision must be PolicyDecision")
+    if not isinstance(test_fault, str):
+        raise TypeError("Tool test_fault must be a string")
+    test_fault = test_fault.strip()
     capability_name = normalize_tool_capability_name(tool_request.capability_name)
     arguments = normalize_tool_arguments(tool_request.arguments)
     if capability_name != capability.name:
@@ -56,19 +61,18 @@ def execute_tool(
             status="validation_failure",
             payload={"reason": "missing_idempotency_key"},
         )
-    if arguments.get("simulate_failure") == "tool_timeout":
+    if test_fault == "tool_timeout":
         return ToolResult(
             capability_name=capability_name,
             status="failed",
             payload={"reason": "tool_timeout"},
         )
-    if arguments.get("simulate_failure") == "upstream_unavailable":
+    if test_fault == "upstream_unavailable":
         return ToolResult(
             capability_name=capability_name,
             status="failed",
             payload={"reason": "upstream_unavailable"},
         )
-
     payload = {
         "transport": capability.transport,
         "mode": capability.mode,

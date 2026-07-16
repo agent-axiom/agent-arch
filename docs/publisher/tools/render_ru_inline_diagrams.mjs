@@ -32,11 +32,13 @@ function escapeXml(value) {
 
 
 async function renderDiagram(page, diagram, outputDir) {
-  const rendered = await page.evaluate(async ({ number, source }) => {
-    const id = `ru-inline-diagram-${String(number).padStart(2, "0")}`;
+  const rendered = await page.evaluate(async ({ id, source }) => {
     const result = await window.mermaid.render(id, source);
     return result.svg;
-  }, { number: diagram.number, source: diagram.mermaid });
+  }, {
+    id: path.parse(diagram.filename).name.replaceAll(/[^A-Za-z0-9_-]/g, "-"),
+    source: diagram.mermaid,
+  });
 
   const title = `<title>${escapeXml(diagram.caption)}</title>`;
   const svg = rendered.replace(/<svg([^>]*)>/, `<svg$1>${title}`);
@@ -58,8 +60,28 @@ async function renderDiagram(page, diagram, outputDir) {
     animations: "disabled",
     omitBackground: false,
   });
-  await sharp(screenshot)
-    .resize({ width: 1600, height: 900, fit: "contain", background: "#ffffff" })
+
+  const trimmed = await sharp(screenshot)
+    .flatten({ background: "#ffffff" })
+    .removeAlpha()
+    .trim({ background: "#ffffff", threshold: 8 })
+    .toBuffer();
+  const resized = await sharp(trimmed)
+    .resize({
+      width: 1560,
+      height: 1080,
+      fit: "inside",
+      withoutEnlargement: false,
+    })
+    .toBuffer();
+  await sharp(resized)
+    .extend({
+      top: 32,
+      bottom: 32,
+      left: 32,
+      right: 32,
+      background: "#ffffff",
+    })
     .flatten({ background: "#ffffff" })
     .removeAlpha()
     .png({ compressionLevel: 9, adaptiveFiltering: true })
@@ -67,7 +89,13 @@ async function renderDiagram(page, diagram, outputDir) {
     .toFile(pngPath);
 
   const metadata = await sharp(pngPath).metadata();
-  if (metadata.width !== 1600 || metadata.height !== 900 || metadata.hasAlpha) {
+  if (
+    !metadata.width
+    || !metadata.height
+    || metadata.width > 1624
+    || metadata.height > 1144
+    || metadata.hasAlpha
+  ) {
     throw new Error(`Invalid PNG output for ${diagram.filename}: ${JSON.stringify(metadata)}`);
   }
   return { number: diagram.number, svg: svgPath, png: pngPath };
@@ -80,8 +108,9 @@ async function main() {
   const outputDir = path.resolve(args["--output-dir"]);
   await fs.mkdir(outputDir, { recursive: true });
 
-  if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== 29) {
-    throw new Error("The manuscript diagram manifest must contain exactly 29 diagrams");
+  const expectedCount = manifest.expected_count ?? 29;
+  if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== expectedCount) {
+    throw new Error(`The diagram manifest must contain exactly ${expectedCount} diagrams`);
   }
 
   const browser = await chromium.launch({
@@ -97,11 +126,18 @@ async function main() {
         startOnLoad: false,
         securityLevel: "strict",
         theme: "base",
-        flowchart: { curve: "basis", htmlLabels: false, useMaxWidth: false },
+        flowchart: {
+          curve: "basis",
+          htmlLabels: false,
+          useMaxWidth: false,
+          nodeSpacing: 36,
+          rankSpacing: 44,
+          padding: 14,
+        },
         themeVariables: {
           background: "#ffffff",
           fontFamily: "Arial, sans-serif",
-          fontSize: "18px",
+          fontSize: "26px",
           primaryColor: "#edf7f1",
           primaryTextColor: "#17201b",
           primaryBorderColor: "#2f6f4e",

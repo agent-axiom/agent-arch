@@ -1,20 +1,57 @@
+import ast
+import hashlib
+import posixpath
 import re
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
+EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
 RAW_EDITORIAL_DOCX = (
     ROOT / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx"
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT / "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx"
 )
+EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+
+
+def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
+    tree = ast.parse(EDITORIAL_BUILDER.read_text(encoding="utf-8"))
+    assignment = next(
+        node
+        for node in tree.body
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(target, ast.Name) and target.id == "FIRST_CHAPTERS_IN_PART"
+            for target in node.targets
+        )
+    )
+    assert ast.literal_eval(assignment.value) == {1, 3, 7, 10, 13, 17, 22, 26}
+
+
+def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
+    with ZipFile(path) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+        relationships = ET.fromstring(archive.read("word/_rels/document.xml.rels"))
+        targets = {
+            node.attrib["Id"]: posixpath.normpath(f"word/{node.attrib['Target']}")
+            for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
+            if node.attrib.get("Type", "").endswith("/image")
+        }
+        ordered_targets = [
+            targets[blip.attrib[f"{{{OFFICE_REL_NS}}}embed"]]
+            for blip in document.findall(f".//{{{DRAWINGML_NS}}}blip")
+        ]
+        hashes = [hashlib.sha256(archive.read(target)).hexdigest() for target in ordered_targets]
+    return ordered_targets, hashes
 
 
 def test_template2000n_final_preserves_embedded_font_registrations() -> None:
@@ -88,7 +125,8 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
         for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
         if node.attrib.get("Type", "").endswith("/hyperlink")
     ]
-    assert len(hyperlinks) >= 100
+    assert len(document.findall(f".//{{{WORD_NS}}}hyperlink")) >= 120
+    assert len(hyperlinks) >= 90
 
 
 def test_template2000n_editorial_images_have_no_alpha_channel() -> None:
@@ -134,6 +172,13 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
         assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
         assert "дата доступа зафиксированы 15 июля 2026 года" in text
         assert "дата доступа зафиксированы 14 июля 2026 года" not in text
+        assert text.count("После главы вы сможете:") == 28
+        assert text.count("Артефакт главы:") == 28
+        assert text.count("Предварительные условия.") == 8
+        assert text.count("Отрицательная проверка.") == 8
+        assert len(re.findall(r"Листинг \d+\.", text)) >= 30
+        assert "agentic_internal_risk:" in text
+        assert "control_plane_readiness:" in text
 
 
 def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
@@ -162,3 +207,60 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
 
         assert len(page_breaks) == 30
         assert all(style in {"Heading1", "Heading2"} for _, style in page_breaks)
+
+
+def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
+    manuscript = EDITORIAL_MANUSCRIPT.read_text(encoding="utf-8")
+    relative_paths = re.findall(
+        r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE
+    )
+    expected_hashes = [
+        hashlib.sha256((EDITORIAL_MANUSCRIPT.parent / path).read_bytes()).hexdigest()
+        for path in relative_paths
+    ]
+    raw_targets, raw_hashes = ordered_embedded_images(RAW_EDITORIAL_DOCX)
+    template_targets, _ = ordered_embedded_images(EDITORIAL_TEMPLATE_DOCX)
+
+    assert len(relative_paths) == 54
+    assert raw_hashes == expected_hashes
+    assert template_targets == raw_targets
+
+
+def test_numbered_figure_captions_follow_images_and_stay_with_them() -> None:
+    with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+    numbered_pairs = 0
+    for index, paragraph in enumerate(paragraphs):
+        if paragraph.find(f".//{{{DRAWING_NS}}}docPr") is None:
+            continue
+        next_paragraph = next(
+            (
+                candidate
+                for candidate in paragraphs[index + 1 :]
+                if "".join(
+                    node.text or ""
+                    for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                ).strip()
+            ),
+            None,
+        )
+        assert next_paragraph is not None
+        next_text = "".join(
+            node.text or "" for node in next_paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).strip()
+        if re.fullmatch(r"Рисунок \d+\. .+", next_text) is None:
+            continue
+
+        numbered_pairs += 1
+        image_style = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
+        caption_style = next_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
+        assert image_style is not None
+        assert image_style.attrib[f"{{{WORD_NS}}}val"] == "Style28"
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+        assert caption_style is not None
+        assert caption_style.attrib[f"{{{WORD_NS}}}val"] == "Style17"
+        assert next_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
+
+    assert numbered_pairs == 25

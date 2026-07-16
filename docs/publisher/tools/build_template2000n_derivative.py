@@ -174,6 +174,15 @@ def set_paragraph_style(paragraph: ET.Element, style_id: str) -> None:
     pstyle.set(f"{{{NS['w']}}}val", style_id)
 
 
+def set_paragraph_flag(paragraph: ET.Element, name: str) -> None:
+    ppr = paragraph.find("w:pPr", NS)
+    if ppr is None:
+        ppr = ET.Element(f"{{{NS['w']}}}pPr")
+        paragraph.insert(0, ppr)
+    if ppr.find(f"w:{name}", NS) is None:
+        ppr.append(ET.Element(f"{{{NS['w']}}}{name}"))
+
+
 def paragraph_is_monospace(paragraph: ET.Element) -> bool:
     styled_characters = 0
     monospace_characters = 0
@@ -194,6 +203,7 @@ def paragraph_is_monospace(paragraph: ET.Element) -> bool:
 
 def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
     root = ET.fromstring(document_xml)
+    paragraphs = root.findall(".//w:p", NS)
     mappings: Counter[str] = Counter()
     table_styles: dict[ET.Element, str] = {}
     for table in root.findall(".//w:tbl", NS):
@@ -214,7 +224,7 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
     last_text = "Схема архитектуры безопасного ИИ-агента"
     style_attribute = f"{{{NS['w']}}}val"
 
-    for paragraph in root.findall(".//w:p", NS):
+    for index, paragraph in enumerate(paragraphs):
         text = paragraph_text(paragraph)
         current_style = paragraph.find("w:pPr/w:pStyle", NS)
         current_style_id = current_style.get(style_attribute) if current_style is not None else None
@@ -226,10 +236,22 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
         if has_image:
             set_paragraph_style(paragraph, "Style28")
             mappings["picture"] += 1
-            description = last_text[:250]
+            following_text = next(
+                (
+                    candidate_text
+                    for candidate in paragraphs[index + 1 :]
+                    if (candidate_text := paragraph_text(candidate))
+                ),
+                "",
+            )
+            if re.match(r"^Рисунок \d+\.", following_text):
+                set_paragraph_flag(paragraph, "keepNext")
+                mappings["picture_kept_with_caption"] += 1
+            fallback_description = (following_text or last_text)[:250]
             for properties in paragraph.findall(".//wp:docPr", NS):
                 properties.set("title", "Иллюстрация к рукописи")
-                properties.set("descr", description)
+                if not properties.get("descr", "").strip():
+                    properties.set("descr", fallback_description)
                 mappings["image_alt_text"] += 1
             pending_callout_body = False
             continue
@@ -262,6 +284,7 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
             pending_callout_body = False
         elif re.match(r"^Рисунок \d+\.", text):
             target_style = "Style17"
+            set_paragraph_flag(paragraph, "keepLines")
             mappings["figure_caption"] += 1
         elif paragraph_is_monospace(paragraph):
             target_style = "Style16"

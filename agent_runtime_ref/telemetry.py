@@ -7,6 +7,8 @@ from pathlib import Path
 from time import monotonic
 from typing import Any, Mapping, cast
 
+from agent_runtime_ref.models import ToolResult
+
 SCHEMA_VERSION = "1.0"
 REDACTED_VALUE = "[REDACTED]"
 
@@ -217,7 +219,10 @@ class TelemetryEmitter:
         started = monotonic()
         status = "success"
         try:
-            return fn()
+            result = fn()
+            if isinstance(result, ToolResult) and result.status != "success":
+                status = "failure"
+            return result
         except Exception:
             status = "failure"
             raise
