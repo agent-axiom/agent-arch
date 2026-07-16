@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1040" viewBox="0 0 1600 1040">
+  <title>Дерево выбора минимальной формы исполнения</title>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#3f4b45"/>
+    </marker>
+    <style>
+      .box { fill: #edf7f1; stroke: #2f6f4e; stroke-width: 2; }
+      .decision { fill: #f3f5f4; stroke: #2f6f4e; stroke-width: 2; }
+      .line { fill: none; stroke: #3f4b45; stroke-width: 2.2; marker-end: url(#arrow); }
+      .label { font: 34px Arial, sans-serif; fill: #17201b; text-anchor: middle; }
+      .edge { font: 34px Arial, sans-serif; fill: #17201b; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect width="1600" height="1040" fill="#ffffff"/>
+
+  <rect class="box" x="600" y="20" width="400" height="115" rx="4"/>
+  <text class="label" x="800" y="62"><tspan x="800">Рабочая задача</tspan><tspan x="800" dy="42">и ожидаемый результат</tspan></text>
+
+  <polygon class="decision" points="800,155 1050,255 800,355 550,255"/>
+  <text class="label" x="800" y="229"><tspan x="800">Путь и правила</tspan><tspan x="800" dy="42">заранее известны?</tspan></text>
+
+  <rect class="box" x="20" y="370" width="480" height="220" rx="4"/>
+  <text class="label" x="260" y="402"><tspan x="260">Обычный рабочий</tspan><tspan x="260" dy="42">процесс</tspan><tspan x="260" dy="42">Фиксированные шаги</tspan><tspan x="260" dy="42">Владелец и остановка</tspan><tspan x="260" dy="42">Ожидаемый результат</tspan></text>
+
+  <polygon class="decision" points="800,390 1040,480 800,570 560,480"/>
+  <text class="label" x="800" y="454"><tspan x="800">Нужен выбор модели</tspan><tspan x="800" dy="42">между шагами?</tspan></text>
+
+  <polygon class="decision" points="800,605 1045,695 800,785 555,695"/>
+  <text class="label" x="800" y="648"><tspan x="800">Один агент</tspan><tspan x="800" dy="42">удерживает контекст</tspan><tspan x="800" dy="42">и ответственность?</tspan></text>
+
+  <rect class="box" x="1100" y="610" width="470" height="180" rx="4"/>
+  <text class="label" x="1335" y="642"><tspan x="1335">Одиночный агентный</tspan><tspan x="1335" dy="42">цикл</tspan><tspan x="1335" dy="42">Бюджет, трасса, политика</tspan><tspan x="1335" dy="42">и условие остановки</tspan></text>
+
+  <polygon class="decision" points="800,820 1045,910 800,1000 555,910"/>
+  <text class="label" x="800" y="872"><tspan x="800">Есть независимые</tspan><tspan x="800" dy="42">домены, роли</tspan><tspan x="800" dy="42">или ветки?</tspan></text>
+
+  <rect class="box" x="1100" y="830" width="470" height="190" rx="4"/>
+  <text class="label" x="1335" y="858"><tspan x="1335">Многоагентная схема</tspan><tspan x="1335" dy="42">Пакет передачи</tspan><tspan x="1335" dy="42">границы полномочий</tspan><tspan x="1335" dy="42">и проверка слияния</tspan></text>
+
+  <rect class="box" x="30" y="830" width="480" height="190" rx="4"/>
+  <text class="label" x="270" y="878"><tspan x="270">Сузить задачу</tspan><tspan x="270" dy="42">или вернуть явный</tspan><tspan x="270" dy="42">рабочий процесс</tspan></text>
+
+  <path class="line" d="M800 135 L800 153"/>
+  <path class="line" d="M550 255 L260 255 L260 368"/>
+  <text class="edge" x="505" y="238">Да</text>
+  <path class="line" d="M800 355 L800 388"/>
+  <text class="edge" x="840" y="380">Нет</text>
+  <path class="line" d="M560 480 L502 480"/>
+  <text class="edge" x="530" y="460">Нет</text>
+  <path class="line" d="M800 570 L800 603"/>
+  <text class="edge" x="840" y="595">Да</text>
+  <path class="line" d="M1045 695 L1098 695"/>
+  <text class="edge" x="1090" y="678">Да</text>
+  <path class="line" d="M800 785 L800 818"/>
+  <text class="edge" x="840" y="810">Нет</text>
+  <path class="line" d="M1045 910 L1098 910"/>
+  <text class="edge" x="1085" y="893">Да</text>
+  <path class="line" d="M555 910 L512 910"/>
+  <text class="edge" x="510" y="893">Нет</text>
+</svg>

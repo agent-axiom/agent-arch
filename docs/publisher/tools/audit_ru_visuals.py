@@ -22,6 +22,7 @@ if __package__:
         PACKAGE_REL_NS,
         paragraph_text,
         parse_manuscript_visuals,
+        validate_docx_image_counts,
     )
 else:
     from sync_ru_docx_visuals import (  # type: ignore[no-redef]
@@ -30,6 +31,7 @@ else:
         PACKAGE_REL_NS,
         paragraph_text,
         parse_manuscript_visuals,
+        validate_docx_image_counts,
     )
 
 
@@ -128,8 +130,7 @@ def audit_docx(
 ) -> dict[str, object]:
     raw, _, _ = ordered_docx_images(raw_docx)
     template, template_paragraphs, template_document = ordered_docx_images(template_docx)
-    if len(raw) != 54 or len(template) != 54:
-        raise ValueError(f"Unexpected DOCX image counts: raw={len(raw)}, template={len(template)}")
+    validate_docx_image_counts(len(raw), len(template), len(visuals))
 
     expected_hashes = [payload_hash(Path(item["path"]).read_bytes()) for item in visuals]
     if [item["sha256"] for item in raw] != expected_hashes:

@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/ru-template-2026-07-16-review-final2-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0049913494493136305,
+      "page": 298
+    },
+    {
+      "density": 0.0059852438269868595,
+      "page": 200
+    },
+    {
+      "density": 0.0065630618921618585,
+      "page": 167
+    },
+    {
+      "density": 0.009259426328516408,
+      "page": 330
+    },
+    {
+      "density": 0.0098497355465301,
+      "page": 263
+    },
+    {
+      "density": 0.012393064684026319,
+      "page": 136
+    },
+    {
+      "density": 0.01242113907234254,
+      "page": 191
+    },
+    {
+      "density": 0.013331865037253074,
+      "page": 84
+    },
+    {
+      "density": 0.013346693612102943,
+      "page": 67
+    },
+    {
+      "density": 0.014580292769577534,
+      "page": 31
+    }
+  ],
+  "pages": 330,
+  "render_dir": "/private/tmp/ru-template-2026-07-16-review-final2-render"
+}

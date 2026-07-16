@@ -44,6 +44,18 @@ def png_dimensions(path: Path) -> tuple[int, int]:
     return struct.unpack(">II", payload[16:24])
 
 
+def validate_docx_image_counts(
+    raw_count: int,
+    template_count: int,
+    expected_count: int,
+) -> None:
+    if raw_count != expected_count or template_count != expected_count:
+        raise ValueError(
+            "Unexpected DOCX image counts: "
+            f"raw={raw_count}, template={template_count}, expected={expected_count}"
+        )
+
+
 def parse_manuscript_visuals(manuscript: Path) -> list[dict[str, object]]:
     lines = manuscript.read_text(encoding="utf-8").splitlines()
     visuals: list[dict[str, object]] = []
@@ -73,8 +85,8 @@ def parse_manuscript_visuals(manuscript: Path) -> list[dict[str, object]]:
             }
         )
 
-    if len(visuals) != 54:
-        raise ValueError(f"Expected 54 manuscript visuals, found {len(visuals)}")
+    if len(visuals) != 56:
+        raise ValueError(f"Expected 56 manuscript visuals, found {len(visuals)}")
     numbered = [item["figure_number"] for item in visuals if item["figure_number"]]
     if numbered != list(range(1, 26)):
         raise ValueError(f"Unexpected numbered figures: {numbered}")

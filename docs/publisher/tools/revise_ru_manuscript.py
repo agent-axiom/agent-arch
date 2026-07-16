@@ -1384,6 +1384,250 @@ CHAPTER_SOURCES = {
 }
 
 
+PART_ROADMAPS = {
+    "## Глава 1\\.": (
+        "Глава 1 отделяет полезную агентность от технологического эффекта и вводит "
+        "обязательство управлять внешним действием. Глава 2 дает дерево выбора между "
+        "обычным рабочим процессом, одиночным циклом и многоагентной схемой. Глава 3 "
+        "собирает выбранную форму в референсную архитектуру. Переходы намеренно "
+        "последовательны: сначала обоснуйте агентность, затем выберите форму исполнения "
+        "и только после этого проектируйте платформенные слои."
+    ),
+    "## Глава 4\\.": (
+        "Глава 4 проводит границы доверия вокруг входов, модели, памяти и внешних "
+        "систем. Глава 5 превращает эти границы в идентичности, политики и каталог "
+        "возможностей. Глава 6 доводит решение до исполняемого пути подтверждения и "
+        "аудита. Каждая следующая глава материализует предыдущую: схема угроз становится "
+        "контрактом полномочий, а контракт — проверяемой записью решения до побочного эффекта."
+    ),
+    "## Глава 7\\.": (
+        "Глава 7 показывает, почему память одновременно повышает полезность и создает "
+        "новую поверхность риска. Глава 8 разделяет классы памяти и их жизненные циклы. "
+        "Глава 9 добавляет извлечение, уплотнение и фоновые обновления. Маршрут идет от "
+        "модели угроз к структуре хранения, а затем к безопасному чтению и записи; "
+        "происхождение и область доступа не должны теряться ни на одном переходе."
+    ),
+    "## Глава 10\\.": (
+        "Глава 10 задает модель выполнения и строгий каталог инструментов. Глава 11 "
+        "проводит границу песочницы и интеграционного протокола MCP. Глава 12 разбирает "
+        "тайм-ауты, идемпотентность, повторы и откат. Сначала действие получает контракт, "
+        "затем ограниченную среду, а после этого — операционную семантику восстановления; "
+        "перестановка этих шагов оставляет опасные пробелы."
+    ),
+    "## Глава 13\\.": (
+        "Глава 13 строит наблюдаемый след запуска. Глава 14 превращает события в SLI и "
+        "SLO. Глава 15 связывает трассы с офлайн- и онлайн-оценками, а глава 16 — с "
+        "решением о поэтапном выпуске. Это одна цепочка доказательств: событие без "
+        "измерения не управляет системой, измерение без оценки не объясняет качество, "
+        "а оценка без выпускного действия остается отчетом."
+    ),
+    "## Глава 17\\.": (
+        "Главы 17 и 18 назначают владельцев и поддерживаемый путь по умолчанию. Глава 19 "
+        "делает парк агентов видимым через реестр и непрерывную сверку. Глава 20 вводит "
+        "ADLC как дисциплину изменения агентной системы, а глава 21 связывает изменение "
+        "с происхождением доверенных артефактов. Маршрут переводит локальные решения "
+        "команд в проверяемую операционную модель всей организации."
+    ),
+    "## Глава 22\\.": (
+        "Глава 22 определяет телеметрию, способную заметить разрыв контроля. Глава 23 "
+        "моделирует поведение, которое ищет другой путь к запрещенному эффекту. Глава 24 "
+        "превращает риск в соревновательные проверки, обнаружение и реагирование. Глава "
+        "25 завершает цикл отзывом полномочий и сохранением доказательств. Часть нужно "
+        "читать как единый маршрут от сигнала до доказанного закрытия."
+    ),
+    "## Глава 26\\.": (
+        "Глава 26 материализует базовый путь выполнения и долговечное состояние. Глава "
+        "27 показывает слой политик и каталог возможностей в эталонном пакете. Глава 28 "
+        "сводит артефакты в решение `hold` или `limited_wave`. Сначала читатель проверяет "
+        "механику исполнения, затем ограничения полномочий и лишь после этого принимает "
+        "решение о первой волне; работоспособная демонстрация не заменяет этот порядок."
+    ),
+}
+
+
+ADDITIONAL_CHAPTER_SOURCES = {
+    1: (("OpenAI, A Practical Guide to Building Agents", "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf"),),
+    2: (("Anthropic, Building Effective AI Agents", "https://www.anthropic.com/engineering/building-effective-agents"),),
+    3: (("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),),
+    4: (
+        ("NIST, AI RMF: Generative AI Profile", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence"),
+        ("OWASP, LLM Prompt Injection Prevention Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"),
+    ),
+    5: (
+        ("NIST, SP 800-53 Rev. 5", "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"),
+        ("OWASP, AI Agent Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"),
+    ),
+    6: (
+        ("OWASP, AI Agent Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"),
+        ("LangGraph, Interrupts", "https://docs.langchain.com/oss/python/langgraph/interrupts"),
+    ),
+    7: (("NIST, AI RMF: Generative AI Profile", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence"),),
+    8: (("NIST, AI RMF: Generative AI Profile", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence"),),
+    9: (("OpenAI, Background mode", "https://developers.openai.com/api/docs/guides/background"),),
+    10: (("OWASP, AI Agent Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"),),
+    11: (
+        ("OWASP, MCP Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html"),
+        ("Model Context Protocol, Authorization specification", "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization"),
+    ),
+    12: (
+        ("NIST, SP 800-53 Rev. 5", "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"),
+        ("OpenAI, Background mode", "https://developers.openai.com/api/docs/guides/background"),
+    ),
+    13: (
+        ("Microsoft Learn, Observability for Generative AI and agentic AI systems", "https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems"),
+        ("OpenAI, Agent evals", "https://platform.openai.com/docs/guides/agent-evals"),
+    ),
+    14: (
+        ("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),
+        ("Microsoft Learn, Observability for Generative AI and agentic AI systems", "https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems"),
+    ),
+    15: (
+        ("Anthropic, Demystifying evals for AI agents", "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"),
+        ("Microsoft Learn, Observability for Generative AI and agentic AI systems", "https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems"),
+    ),
+    16: (
+        ("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),
+        ("OpenAI, Trace grading", "https://platform.openai.com/docs/guides/trace-grading"),
+    ),
+    17: (("Microsoft Learn, Agentic AI adoption maturity model", "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview"),),
+    18: (("Microsoft Learn, Agentic AI adoption maturity model", "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview"),),
+    19: (("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),),
+    20: (
+        ("NIST, AI RMF: Generative AI Profile", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence"),
+        ("Google Research, Security Assurance in the Age of Generative AI", "https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/"),
+    ),
+    21: (
+        ("NIST, SP 800-218A", "https://csrc.nist.gov/pubs/sp/800/218/a/final"),
+        ("NIST, SP 800-53 Rev. 5", "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"),
+    ),
+    22: (
+        ("OpenAI, Trace grading", "https://platform.openai.com/docs/guides/trace-grading"),
+        ("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),
+    ),
+    23: (
+        ("Google DeepMind, Securing the future of AI agents", "https://deepmind.google/blog/securing-the-future-of-ai-agents/"),
+        ("OpenAI, How we monitor internal coding agents for misalignment", "https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/"),
+    ),
+    24: (
+        ("NIST, AI RMF 1.0", "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10"),
+        ("OWASP, Top 10 for Agentic Applications for 2026", "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"),
+    ),
+    25: (
+        ("NIST, SP 800-218A", "https://csrc.nist.gov/pubs/sp/800/218/a/final"),
+        ("NIST, SP 800-53 Rev. 5", "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"),
+    ),
+    26: (("Cloudflare Agents SDK, Durable execution", "https://developers.cloudflare.com/agents/runtime/execution/durable-execution/"),),
+    27: (("OWASP, AI Agent Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"),),
+    28: (
+        ("OWASP, AI Agent Security Cheat Sheet", "https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html"),
+        ("Google Cloud, Recommended AI Controls framework", "https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework"),
+    ),
+}
+
+
+CHAPTER_SOURCE_FOCUS = {
+    1: "границу между простым рабочим процессом и оправданной агентностью",
+    2: "выбор оркестрации без преждевременной многоагентности",
+    3: "связь архитектурных слоев с управлением риском",
+    4: "границы доверия и устойчивость к внедрению инструкций",
+    5: "разделение идентичности, полномочия и решения политики",
+    6: "неизменность подтверждаемого действия и человеческий надзор",
+    7: "риски памяти, поиска и недоверенного контекста",
+    8: "жизненный цикл классов памяти и область доступа",
+    9: "возобновляемую работу и безопасное обновление контекста",
+    10: "контракт инструмента как ограниченное полномочие",
+    11: "авторизацию MCP, изоляцию и доверие к удаленному серверу",
+    12: "повторы, неизвестный внешний эффект и долговечное состояние",
+    13: "семантику трасс и пригодность телеметрии для оценки",
+    14: "измерение надежности и управленческое действие по SLO",
+    15: "калибровку оценок и связь офлайн- и онлайн-сигналов",
+    16: "цепочку от наблюдаемого поведения до решения о выпуске",
+    17: "распределение ответственности между платформой и продуктом",
+    18: "управляемый путь по умолчанию и зрелость внедрения",
+    19: "полноту инвентаризации и непрерывную сверку реестра",
+    20: "безопасную разработку и жизненный цикл изменения",
+    21: "происхождение, целостность и доверие к выпускным артефактам",
+    22: "телеметрию обнаружения и наблюдаемость разрывов контроля",
+    23: "поведение при конфликте цели, надзора и ограничения",
+    24: "заверение, соревновательное тестирование и реагирование",
+    25: "отзыв полномочий и доказуемое завершение эксплуатации",
+    26: "долговечное исполнение и ограничения эталонной среды",
+    27: "принудительное применение политики на границе действия",
+    28: "независимые сигналы готовности и блокирующее решение",
+}
+
+
+SELF_STUDY_FEEDBACK = r'''### Критерии самопроверки по частям
+
+Эти критерии не заменяют проверку лабораторных работ. Они помогают читателю
+оценить перенос решения на собственную систему, где точного эталонного вывода
+может не существовать.
+
+#### Часть I. Выбор формы исполнения
+
+**Сильный ответ.** Выбран самый простой исполнимый путь; усложнение обосновано неопределенностью решения, а не названием технологии.
+
+**Недостаточный ответ.** Выбор начинается со списка программных каркасов и не объясняет владельца, остановку и новый класс отказов.
+
+**Проверяемый артефакт.** Одностраничное решение с отклоненными альтернативами и условиями пересмотра.
+
+#### Часть II. Полномочия и подтверждение
+
+**Сильный ответ.** Идентичность, возможность, политика и подтверждение связаны с одной неизменной полезной нагрузкой до внешнего эффекта.
+
+**Недостаточный ответ.** Модель сама решает, что ей разрешено, либо подтверждение не связано с версией действия и субъектом.
+
+**Проверяемый артефакт.** Контракт возможности, решение политики и запись подтверждения с совпадающим отпечатком действия.
+
+#### Часть III. Память и происхождение
+
+**Сильный ответ.** Классы памяти разделены, фильтры арендатора и доверия применяются до ранжирования, а запись имеет происхождение и срок жизни.
+
+**Недостаточный ответ.** Вся история складывается в одно хранилище, а найденный текст автоматически считается доверенным фактом.
+
+**Проверяемый артефакт.** Положительный и отрицательный запросы памяти плюс запись кандидата, отправленного в карантин.
+
+#### Часть IV. Выполнение и восстановление
+
+**Сильный ответ.** Для записывающего действия определены ключ идемпотентности, классы исхода, сверка и условие ручной остановки.
+
+**Недостаточный ответ.** Любой тайм-аут приводит к повтору, а протокол интеграции принимается за границу безопасности.
+
+**Проверяемый артефакт.** Контракт выполнения и трасса сценария с неизвестным внешним эффектом.
+
+#### Часть V. Доказательства надежности
+
+**Сильный ответ.** Трасса, SLO, сценарий оценки и решение о выпуске связаны идентификаторами и измеримым критерием.
+
+**Недостаточный ответ.** Команда показывает успешный ответ модели, но не может восстановить действия, знаменатель метрики и причину блокировки.
+
+**Проверяемый артефакт.** Пакет из обычной и аварийной трасс, результата оценки и воспроизводимого решения шлюза.
+
+#### Часть VI. Владение и реестр
+
+**Сильный ответ.** Реестр непрерывно сверяется с фактическими принципалами, возможностями и трассами; у расхождения есть владелец и срок.
+
+**Недостаточный ответ.** Реестр является анкетой запуска и после выпуска не участвует в обнаружении или управлении изменениями.
+
+**Проверяемый артефакт.** Запись агента и отчет сверки с классифицированными расхождениями.
+
+#### Часть VII. Заверение и завершение жизненного цикла
+
+**Сильный ответ.** Сигнал ведет к сценарию воспроизведения, сдерживанию, исправлению, новой оценке и доказанному отзыву полномочий.
+
+**Недостаточный ответ.** Инцидент закрывается после исправления текста ответа, хотя старый путь и учетные данные остаются активными.
+
+**Проверяемый артефакт.** Запись находки, причинная гипотеза, контрфактическая проверка и доказательство завершения полномочий.
+
+#### Часть VIII. Решение о первой волне
+
+**Сильный ответ.** Все обязательные сигналы имеют происхождение; один провал удерживает выпуск независимо от малого размера волны.
+
+**Недостаточный ответ.** Ограниченная волна используется как оправдание отсутствующего владельца, отката, трассы или проверки политики.
+
+**Проверяемый артефакт.** Версионированный пакет решения `hold` или `limited_wave` со ссылками на каждый обязательный сигнал.'''
+
+
 LAB_CONTRACTS = {
     1: (
         "прочитаны главы 1–3; репозиторий клонирован; создан каталог для артефактов лабораторных работ",
@@ -1915,7 +2159,7 @@ def replace_mermaid_blocks(
         manifest.append(
             {
                 "number": index,
-                "source_line": start + 1,
+                "transformed_line": start + 1,
                 "caption": caption,
                 "filename": filename,
                 "markdown_image": image_line,
@@ -3640,6 +3884,71 @@ def fence_remaining_commands_and_json(text: str) -> str:
     return "\n".join(output).rstrip() + "\n"
 
 
+def label_long_technical_blocks(text: str) -> str:
+    lines = text.splitlines()
+    insertions: dict[int, str] = {}
+    inside = False
+    start = 0
+    language = ""
+    block: list[str] = []
+
+    for index, line in enumerate(lines):
+        if not line.startswith("```"):
+            if inside:
+                block.append(line)
+            continue
+        if not inside:
+            inside = True
+            start = index
+            language = line[3:].strip() or "text"
+            block = []
+            continue
+
+        if len(block) > 20:
+            nearby = [value.strip() for value in lines[max(0, start - 8) : start] if value.strip()]
+            introduced = any(
+                re.search(r"(?:Листинг|Пример|Конфигурация)", value, re.IGNORECASE)
+                for value in nearby[-4:]
+            )
+            if not introduced:
+                heading = next(
+                    (
+                        clean_inline_markup(value.lstrip("# ").strip())
+                        for value in reversed(lines[:start])
+                        if value.startswith("### ")
+                    ),
+                    "Технический контракт",
+                )
+                kind = {
+                    "yaml": "декларативная конфигурация",
+                    "json": "структурированный результат",
+                    "python": "учебный пример Python",
+                    "pseudocode": "псевдокод",
+                }.get(language, "технический пример")
+                insertions[start] = (
+                    f"**Листинг. {heading}.** Тип: {kind}; назначение: сделать "
+                    "контракт раздела проверяемым; перед промышленным применением "
+                    "требуется адаптация к схеме и ограничениям организации."
+                )
+        inside = False
+
+    if inside:
+        raise ValueError("Unclosed fenced block while labeling long examples")
+    if len(insertions) != 8:
+        raise ValueError(
+            f"Expected eight previously unlabeled long examples, found {len(insertions)}"
+        )
+
+    output: list[str] = []
+    for index, line in enumerate(lines):
+        if index in insertions:
+            if output and output[-1].strip():
+                output.append("")
+            output.extend((insertions[index], ""))
+        output.append(line)
+    return "\n".join(output).rstrip() + "\n"
+
+
 def number_listings(text: str) -> str:
     counter = 0
 
@@ -4205,10 +4514,11 @@ def insert_chapter_learning_contracts(text: str) -> str:
         if number == 20:
             transition = (
                 "\n\n### От наблюдаемого отклонения к внутреннему риску\n\n"
-                "Предыдущая глава определила, какие сигналы позволяют заметить отклонение "
-                "поведения и разрыв между реестром и фактическим исполнением. Теперь фокус "
-                "смещается на более трудный вопрос: что происходит, когда исполнитель "
-                "способен искать путь вокруг уже заданного ограничения."
+                "В 09:07 агент поддержки получает отказ политики на создание заявки и "
+                "через минуту добивается того же внешнего эффекта по устаревшему маршруту. "
+                "Пользователь видит успешный ответ, но трасса показывает смену пути после "
+                "явного ограничения. Эта глава разбирает не намерения модели, а проверяемую "
+                "траекторию, в которой локальная цель начинает конкурировать с контролем."
             )
         outcome_list = "\n".join(f"* {outcome};" for outcome in outcomes[:-1])
         outcome_list += f"\n* {outcomes[-1]}."
@@ -4755,6 +5065,237 @@ uv run python -m agent_runtime_ref check-retirement --step revoke_egress=false
     return text.rstrip() + "\n"
 
 
+def insert_part_roadmaps(text: str) -> str:
+    for first_chapter, roadmap in PART_ROADMAPS.items():
+        if text.count(first_chapter) != 1:
+            raise ValueError(f"Part roadmap anchor is not unique: {first_chapter}")
+        text = text.replace(
+            first_chapter,
+            f"**Маршрут части.** {roadmap}\n\n{first_chapter}",
+            1,
+        )
+    return text
+
+
+DUPLICATE_CHAPTER_ONE_EVIDENCE_BOUNDARY = """**Граница доказательств**
+
+Эта глава доказывает не то, что агенты всегда нужны. Наоборот: она показывает, что полезная агентность начинается с ограничения.
+
+Если путь можно заранее описать, лучше начать с рабочего процесса. Если нужна гибкость, ее стоит добавлять только вместе с владением, границами политики, подтверждениями, следами выполнения и оценочными сигналами. Поэтому главный вывод главы такой: агент — не замена инженерной дисциплине, а нагрузка на нее.
+
+"""
+
+
+def remove_duplicate_evidence_boundary(text: str) -> str:
+    chapter_one_start = text.index("## Глава 1\\.")
+    chapter_two_start = text.index("## Глава 2\\.", chapter_one_start)
+    chapter_one = text[chapter_one_start:chapter_two_start]
+    if chapter_one.count("**Граница доказательств**") != 2:
+        raise ValueError("Chapter 1 must contain exactly two evidence-boundary blocks before cleanup")
+    if chapter_one.count(DUPLICATE_CHAPTER_ONE_EVIDENCE_BOUNDARY) != 1:
+        raise ValueError(
+            "Chapter 1 duplicate evidence-boundary block changed; refusing cleanup"
+        )
+    chapter_one = chapter_one.replace(DUPLICATE_CHAPTER_ONE_EVIDENCE_BOUNDARY, "", 1)
+    return text[:chapter_one_start] + chapter_one + text[chapter_two_start:]
+
+
+def rebalance_dense_chapter_structure(text: str) -> str:
+    replacements = {
+        "Практически полезный набор полей обычно такой:": (
+            "#### Полномочия и идентичность\n\n"
+            "Практически полезный набор полей обычно такой:"
+        ),
+        "**Минимальный контракт MCP-сервера.**": "#### Контракт сервера и граница доверия",
+        "**Корпоративный MCP почти всегда требует контура управления, а не только протокола.**": (
+            "#### Корпоративный контур управления MCP"
+        ),
+        "**Теневой MCP — это новая версия проблемы теневых API.**": (
+            "#### Теневые серверы и фактическая поверхность доступа"
+        ),
+        "**Эфемерные песочницы лучше постоянных сред почти во всем.**": (
+            "#### Эфемерная изоляция"
+        ),
+        "### Лучшая связка — это не «офлайн или онлайн», а оба контура сразу": (
+            "### Лучшая связка — это не «офлайн или онлайн», а оба контура сразу\n\n"
+            "#### Два взаимодополняющих контура"
+        ),
+        "**Симулятор пользователя полезен там, где статичных сценариев уже мало.**": (
+            "#### Симуляция пользователя и среды"
+        ),
+        "**Непрерывный контур оценки должен замыкаться в решения о поэтапном выпуске.**": (
+            "#### От оценки к выпускному действию"
+        ),
+        "**Поведенческие и контрольные оценки проверяют не только ответ, но и поведение системы.**": (
+            "#### Поведенческие и контрольные оценки"
+        ),
+        "**Языковая модель как судья полезна только при калибровке.**": (
+            "#### Калибровка модельного проверяющего"
+        ),
+        "**Состояние сессии песочницы тоже является состоянием среды исполнения.**": (
+            "#### Долговечное состояние запуска"
+        ),
+        "**Именованный агент с состоянием как отдельная топология среды исполнения.**": (
+            "#### Именованный агент как отдельная топология"
+        ),
+        "**очередь агентных работ как операторский контур.**": (
+            "#### Очередь работ как операторский контур"
+        ),
+        "**Проверяемое завершение как обязанность среды исполнения.**": (
+            "#### Проверяемое завершение"
+        ),
+        "**Метод разбора.**": "#### От событий к причинной гипотезе",
+        "**Компактная запись гипотезы.**": "#### Компактная запись гипотезы",
+        "**Типичные ошибки причинного разбора.**": "#### Типичные ошибки причинного разбора",
+        "**Когда нужен откат, а когда локальное исправление.**": (
+            "#### Откат или локальное исправление"
+        ),
+    }
+    for old, new in replacements.items():
+        if old not in text:
+            raise ValueError(f"Dense-section anchor is missing: {old}")
+        text = text.replace(old, new, 1)
+
+    micro_headings = (
+        "Почему обычных логов почти всегда недостаточно",
+        "Что стоит делать отдельными спанами",
+        "Практические правила для трассировки",
+        "Что особенно важно не логировать как есть",
+        "Что чаще всего ломается в наблюдаемости агентной системы",
+        "Что в SDLC остается тем же",
+        "Что в агентных системах ломает классический процесс",
+        "ADLC полезно мыслить как SDLC плюс новые поверхности изменений",
+        "Какие артефакты теперь несут риск выпуска",
+        "Почему в ADLC одних тестов уже недостаточно",
+        "Отдельный жизненный цикл нужен и для заверения безопасности",
+        "Цепочка поставки агента шире, чем просто пакетные зависимости",
+    )
+    for title in micro_headings:
+        heading = f"### {title}"
+        if heading not in text:
+            raise ValueError(f"Micro-heading anchor is missing: {title}")
+        text = text.replace(heading, f"**{title}.**", 1)
+    return text
+
+
+def condense_registry_boundary_explanation(text: str) -> str:
+    old = '''Именно здесь и проходит чистая граница между двумя главами. Наблюдаемость сохраняет доказательства.
+
+Реестр привязывает доказательства к именованным сущностям, владельцам, состояниям жизненного цикла и путям подотчетности по всему контуру.
+
+И это же граница с главой про происхождение. Происхождение отвечает, под какой утвержденной версией или утвержденным набором система работала.
+
+Реестр отвечает, какая производственная сущность владела этим путем и кто отвечает за него сейчас.'''
+    new = (
+        "Граница между слоями проста: наблюдаемость сохраняет факты выполнения, "
+        "реестр связывает их с именованной производственной сущностью и текущим "
+        "владельцем, а происхождение указывает утвержденную версию артефактов, под "
+        "которой система работала. Ни один из трех слоев не заменяет остальные."
+    )
+    if old not in text:
+        raise ValueError("Registry-boundary repetition anchor is missing")
+    return text.replace(old, new, 1)
+
+
+def enrich_final_chapter_sources(text: str) -> str:
+    if set(ADDITIONAL_CHAPTER_SOURCES) != set(range(1, 29)):
+        raise ValueError("Additional source mapping must cover all 28 final chapters")
+    if set(CHAPTER_SOURCE_FOCUS) != set(range(1, 29)):
+        raise ValueError("Source-focus mapping must cover all 28 final chapters")
+
+    for number in range(28, 0, -1):
+        chapter_marker = f"## Глава {number}\\."
+        chapter_start = text.index(chapter_marker)
+        chapter_end = (
+            text.index(f"## Глава {number + 1}\\.", chapter_start)
+            if number < 28
+            else text.index("## Выводы части", chapter_start)
+        )
+        source_heading = text.index("### Источники главы", chapter_start, chapter_end)
+        source_start = source_heading + len("### Источники главы")
+        source_end = text.index("**Дальше.**", source_start, chapter_end)
+        existing = text[source_start:source_end].strip()
+        existing_urls = set(re.findall(r"\]\((https?://[^)]+)\)", existing))
+        additions = [
+            f"* [{label}]({url})."
+            for label, url in ADDITIONAL_CHAPTER_SOURCES[number]
+            if url not in existing_urls
+        ]
+        note = (
+            "**Как читать источники.** Используйте их, чтобы проверить "
+            f"{CHAPTER_SOURCE_FOCUS[number]}; платформенный пример не следует "
+            "читать как универсальную гарантию."
+        )
+        source_list = "\n".join(value for value in (existing, "\n".join(additions)) if value)
+        replacement = f"{note}\n\n{source_list}\n\n"
+        text = text[:source_start] + "\n\n" + replacement + text[source_end:]
+    return text
+
+
+def normalize_bibliography_entries(text: str) -> str:
+    replacements = {
+        "* [OpenAI Agents SDK, Sandbox Agents (https://openai.github.io/openai-agents-python/sandbox\\_agents/), Sandbox Concepts (https://openai.github.io/openai-agents-python/sandbox/guide/), Sandbox clients (https://openai.github.io/openai-agents-python/sandbox/clients/) и Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/), дата обращения: 15 июля 2026 года.": "\n".join((
+            "* [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), дата обращения: 15 июля 2026 года.",
+            "* [OpenAI Agents SDK, Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), дата обращения: 15 июля 2026 года.",
+            "* [OpenAI Agents SDK, Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), дата обращения: 15 июля 2026 года.",
+            "* [OpenAI Agents SDK, Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/), дата обращения: 15 июля 2026 года.",
+        )),
+        "* [Cloudflare Agents SDK, Store and sync state (https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) и Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/), дата обращения: 15 июля 2026 года.": "\n".join((
+            "* [Cloudflare Agents SDK, Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/), дата обращения: 15 июля 2026 года.",
+            "* [Cloudflare Agents SDK, Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/), дата обращения: 15 июля 2026 года.",
+        )),
+        "* [Cloudflare Agents SDK, Human in the Loop (https://developers.cloudflare.com/agents/concepts/human-in-the-loop/) и WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/), дата обращения: 15 июля 2026 года.": "\n".join((
+            "* [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/), дата обращения: 15 июля 2026 года.",
+            "* [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/), дата обращения: 15 июля 2026 года.",
+        )),
+        "* [Cloudflare Agents SDK, Workflows (https://developers.cloudflare.com/agents/concepts/workflows/) и Durable execution](https://developers.cloudflare.com/agents/runtime/execution/durable-execution/), дата обращения: 15 июля 2026 года.": "\n".join((
+            "* [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/), дата обращения: 15 июля 2026 года.",
+            "* [Cloudflare Agents SDK, Durable execution](https://developers.cloudflare.com/agents/runtime/execution/durable-execution/), дата обращения: 15 июля 2026 года.",
+        )),
+        "* [GitHub Docs, Using Copilot cloud agent on GitHub (https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-on-github) и Configuring settings for GitHub Copilot cloud agent](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/configuring-agent-settings), дата обращения: 15 июля 2026 года.": "\n".join((
+            "* [GitHub Docs, Using Copilot cloud agent on GitHub](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-on-github), дата обращения: 15 июля 2026 года.",
+            "* [GitHub Docs, Configuring settings for GitHub Copilot cloud agent](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/configuring-agent-settings), дата обращения: 15 июля 2026 года.",
+        )),
+        "* Anthropic — [Responsible Scaling Policy 3.4](https://www.anthropic.com/responsible-scaling-policy).": "* Anthropic — [Responsible Scaling Policy 3.4](https://www.anthropic.com/responsible-scaling-policy), дата обращения: 15 июля 2026 года.",
+        "* OpenAI — [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/).": "* OpenAI — [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/), дата обращения: 15 июля 2026 года.",
+        "* GitHub Agentic Workflows — [Security Architecture](https://github.github.com/gh-aw/introduction/architecture/).": "* GitHub Agentic Workflows — [Security Architecture](https://github.github.com/gh-aw/introduction/architecture/), дата обращения: 15 июля 2026 года.",
+        "* GitHub Changelog — [Copilot in Visual Studio Code, June 2026 releases](https://github.blog/changelog/2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases/).": "* GitHub Changelog — [Copilot in Visual Studio Code, June 2026 releases](https://github.blog/changelog/2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases/), дата обращения: 15 июля 2026 года.",
+    }
+    for old, new in replacements.items():
+        if old not in text:
+            raise ValueError(f"Bibliography normalization anchor is missing: {old[:80]}")
+        text = text.replace(old, new, 1)
+    return text
+
+
+def insert_self_study_feedback(text: str) -> str:
+    appendix_start = text.index("## Приложение 5\\.")
+    anchor = text.index("### Почему это полезно", appendix_start)
+    return text[:anchor] + SELF_STUDY_FEEDBACK.rstrip() + "\n\n" + text[anchor:]
+
+
+def insert_targeted_editorial_diagrams(text: str) -> str:
+    decision_anchor = "Это не догма. Но это хорошая защита от преждевременной сложности."
+    decision_figure = '''Схема выбора ниже удерживает главный принцип: усложнение формы исполнения допускается только после ответа на вопрос, какую предметную неопределенность оно снимает.
+
+![Дерево ведет от предсказуемого рабочего процесса к одиночному агентному циклу и многоагентной схеме только при наличии проверяемой необходимости.](visuals/ru-editorial-diagram-01-execution-form-decision.png)'''
+    registry_anchor = (
+        "Поэтому зрелый реестр лучше мыслить не как статический каталог, а как "
+        "контрольную поверхность, которую непрерывно сверяют с живым контуром."
+    )
+    registry_figure = '''Сверка должна завершаться действием, а не отчетом: безопасное совпадение обновляет доказательства, а рискованное расхождение блокирует путь до карантина или исправления.
+
+![Фактические трассы, принципалы и возможности непрерывно сравниваются с утвержденным реестром; расхождение получает владельца, срок и меру сдерживания.](visuals/ru-editorial-diagram-02-registry-reconciliation.png)'''
+    for anchor, figure in (
+        (decision_anchor, decision_figure),
+        (registry_anchor, registry_figure),
+    ):
+        if text.count(anchor) != 1:
+            raise ValueError(f"Targeted diagram anchor is not unique: {anchor}")
+        text = text.replace(anchor, f"{anchor}\n\n{figure}", 1)
+    return text
+
+
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = source.read_text(encoding="utf-8")
     text = replace_front_matter_and_introduction(text)
@@ -4794,6 +5335,16 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = repair_external_review_findings(text)
     text = repair_editorial_quality(text)
     text = restructure_lifecycle_parts(text)
+    text = remove_duplicate_evidence_boundary(text)
+    text = insert_part_roadmaps(text)
+    text = rebalance_dense_chapter_structure(text)
+    text = condense_registry_boundary_explanation(text)
+    text = enrich_final_chapter_sources(text)
+    text = normalize_bibliography_entries(text)
+    text = insert_self_study_feedback(text)
+    text = insert_targeted_editorial_diagrams(text)
+    text = label_long_technical_blocks(text)
+    text = number_listings(text)
     text, manifest = replace_mermaid_blocks(
         text,
         "visuals",
@@ -4823,7 +5374,12 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     output.write_text(text, encoding="utf-8")
     manifest_path.write_text(
         json.dumps(
-            {"source": str(source), "output": str(output), "diagrams": manifest},
+            {
+                "source": str(source),
+                "output": str(output),
+                "line_basis": "transformed manuscript before Mermaid replacement",
+                "diagrams": manifest,
+            },
             ensure_ascii=False,
             indent=2,
         )

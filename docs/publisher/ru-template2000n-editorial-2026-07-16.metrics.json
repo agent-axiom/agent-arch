@@ -1,0 +1,51 @@
+{
+  "alpha_images_flattened": 0,
+  "approximate_words": 92770,
+  "bodytext_mapped": 2665,
+  "document_text_equality": true,
+  "document_text_nodes": 12408,
+  "embedded_font_registrations_preserved": 6,
+  "media_byte_equality": true,
+  "media_equality": true,
+  "media_files": 56,
+  "non_empty_paragraphs": 9409,
+  "numbering_font_attributes_normalized": 4,
+  "output_bytes": 8991890,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.docx",
+  "output_sha256": "2875f8159183c76994ac5c5e30955dd2f5f48acb07cec6177de40157ebeac85b",
+  "output_style_counts": {
+    "<none>": 115,
+    "Body Text": 2665,
+    "Heading 1": 10,
+    "Heading 2": 56,
+    "Heading 3": 458,
+    "Heading 4": 26,
+    "Программа": 2539,
+    "Рис_подпись": 25,
+    "Рисунок": 56,
+    "список": 3630
+  },
+  "paragraphs": 9580,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.docx",
+  "raw_style_counts": {
+    "Heading 1": 10,
+    "Heading 2": 56,
+    "Heading 3": 458,
+    "Heading 4": 26,
+    "normal": 9030
+  },
+  "semantic_style_mappings": {
+    "body_text": 2665,
+    "figure_caption": 25,
+    "image_alt_text": 56,
+    "list": 3630,
+    "picture": 56,
+    "picture_kept_with_caption": 25,
+    "program": 2539,
+    "table_body": 96,
+    "table_header": 19
+  },
+  "template_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx",
+  "text_equality": true,
+  "title_styles_preserved": 0
+}

@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъемной сборки на 2026-07-15. Репозиторий
+Status: актуальная карта полнообъемной сборки на 2026-07-16. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -12,33 +12,36 @@ Status: актуальная карта полнообъемной сборки 
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
 - сборщик и манифест схем:
   `docs/publisher/tools/revise_ru_manuscript.py` и
-  `docs/publisher/ru-inline-diagrams-2026-07-13.json`.
+  `docs/publisher/ru-inline-diagrams-2026-07-13.json`;
+- манифест двух дополнительных редакционных схем:
+  `docs/publisher/ru-editorial-diagrams-2026-07-16.json`.
 
 Текущее покрытие рукописи:
 
-- 7 частей и 28 глав;
-- 25 пронумерованных рисунков и 29 встроенных схем;
-- 7 лабораторных работ и итоговый проект;
+- 8 частей и 28 глав;
+- 25 пронумерованных рисунков, 29 встроенных схем и 2 дополнительные
+  редакционные схемы, всего 56 изображений;
+- 8 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 88 000 слов по финальному текстовому слою Google Docs;
-- 437 страниц в проверочном PDF Google Docs и 353 страницы в производной
-  Template2000n; разница вызвана плотностью издательских стилей, текстовый слой
-  сохранен полностью, пустых технических страниц нет.
+- около 92 770 слов по метрике издательской сборки;
+- 463 страницы в raw-производной и 330 страниц в производной Template2000n;
+  разница вызвана плотностью издательских стилей, текстовый слой сохранен
+  полностью, пустых технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHwKqPwZHu-1M5KwMdbfCmxv1pO2njNgVOZx6N9cEpcrm82RCYgucs_k85PMudnNfALZtFjfa2S9h-bJ47eQBc1zgrvHDwMY0iYYBng`.
+  `ALtnJHxUN-Xew7E0UvuwTEMs4CB5YSca-CnXM-9a-gKmoAmmCW0iKzgimn3l_8xio6GSPhcFMn8q6itdqaKAhU8Wp-J3hrI3v8Gdj9Hgje0`.
 
 Контрольная точка редакторской переработки:
 
-- `docs/publisher/ru-technical-book-revision-pass-2026-07-15.md`;
-- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx`;
-- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.pdf`;
-- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.docx`;
-- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-15.pdf`.
+- `docs/publisher/ru-technical-book-best-practices-pass-2026-07-16.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.pdf`.
 
 ## Правило чтения карты
 

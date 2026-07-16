@@ -18,7 +18,7 @@ from docx.shared import Inches, Pt, RGBColor
 from lxml import html
 from PIL import Image
 
-FIRST_CHAPTERS_IN_PART = {1, 3, 7, 10, 13, 17, 22, 26}
+FIRST_CHAPTERS_IN_PART = {1, 4, 7, 10, 13, 17, 22, 26}
 CODE_FONT = "Roboto Mono"
 
 
