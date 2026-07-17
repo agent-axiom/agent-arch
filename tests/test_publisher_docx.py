@@ -16,14 +16,14 @@ RAW_EDITORIAL_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-editorial-technical-standards-2026-07-17.docx"
+        "agent-arch-ru-google-doc-editorial-bookcraft-2026-07-17.docx"
     )
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-editorial-technical-standards-2026-07-17.docx"
+        "agent-arch-ru-template2000n-editorial-bookcraft-2026-07-17.docx"
     )
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"

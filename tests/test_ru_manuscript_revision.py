@@ -234,6 +234,36 @@ def test_technical_book_editorial_standards_pass_removes_scaffolding() -> None:
     assert "Expected seven previously unlabeled long examples" not in text
 
 
+def test_bookcraft_readability_pass_removes_markdown_heading_artifacts() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert not re.search(r"(?m)^#{2,3} \*\*.+\*\*$", text)
+
+    for expected in (
+        "### Когда подсказка становится архитектурой",
+        "### Где заканчиваются инструкции и начинается контроль",
+        "### Координатор без потери ответственности",
+        "### Долговечное состояние запуска",
+        "### Именованный агент как отдельная топология",
+        "### Очередь работ как операторский контур",
+        "### Проверяемое завершение",
+        "**Что изменилось после этой главы.** Выбор формы исполнения теперь можно защитить",
+        "**Что изменилось после этой главы.** У читателя теперь есть не просто список модулей",
+    ):
+        assert expected in text
+
+    for residue in (
+        "### **От инструкций к исполняемому сценарию**",
+        "### **Координатор и передача управления**",
+        "## **Последовательность внедрения**",
+        "## **Главный критерий**",
+    ):
+        assert residue not in text
+
+    assert "eval_набор данных" not in text
+    assert "process_оценка" not in text
+
+
 def test_reader_facing_text_has_no_editorial_navigation_residue() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -628,7 +658,7 @@ def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
         "#### Полномочия и идентичность",
         "#### Контракт сервера и граница доверия",
         "#### Два взаимодополняющих контура",
-        "#### Долговечное состояние запуска",
+        "### Долговечное состояние запуска",
         "#### От событий к причинной гипотезе",
     ):
         assert marker in text
@@ -948,8 +978,14 @@ def test_chapter_transitions_are_folded_into_practical_steps() -> None:
         chapter = text.split(f"## Глава {number}\\.", 1)[1]
         if number < 28:
             chapter = chapter.split(f"## Глава {number + 1}\\.", 1)[0]
+        action_label = (
+            r"(?:Практический шаг|Практическая проверка|"
+            r"Проверка на своей системе|Финальный рывок практики)"
+        )
         practical_steps = re.findall(
-            r"^\*\*Практический шаг\.\*\* .+$", chapter, re.MULTILINE
+            rf"^\*\*{action_label}\.\*\* .+$",
+            chapter,
+            re.MULTILINE,
         )
         assert len(practical_steps) == 1, number
         assert len(re.findall(r"[.!?]", practical_steps[0])) >= 2, number
