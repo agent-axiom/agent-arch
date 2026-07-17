@@ -14,13 +14,16 @@ ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
 RAW_EDITORIAL_DOCX = (
     ROOT
-    / "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-reader-journey-2026-07-17.docx"
+    / (
+        "docs/publisher/artifacts/"
+        "agent-arch-ru-google-doc-editorial-technical-standards-2026-07-17.docx"
+    )
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-editorial-reader-journey-2026-07-17.docx"
+        "agent-arch-ru-template2000n-editorial-technical-standards-2026-07-17.docx"
     )
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"

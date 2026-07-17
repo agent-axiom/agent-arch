@@ -205,6 +205,35 @@ def test_reader_journey_best_practices_pass_is_applied_without_identifier_damage
         assert bullets / words * 1000 < 50
 
 
+def test_technical_book_editorial_standards_pass_removes_scaffolding() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for residue in (
+        "Быстрее всего здесь меняются:",
+        "Медленнее меняются:",
+        "Уникальный артефакт:",
+        "Граница с соседними главами:",
+        "Что эта глава не покрывает:",
+        "verifiercontractrequiredforhigh_risk",
+        "onuntrustedverifier_contract",
+        "mcpauth_mode",
+    ):
+        assert residue not in text
+
+    for expected in (
+        "**Практический ориентир.** Перед проектированием долговременной памяти",
+        "**Таблица решений для владельцев.**",
+        "**До и после стандартного пути.**",
+        "**Практический маршрут главы.** Читайте эту главу рядом с эталонным пакетом.",
+        "**Порядок первичного разбора.**",
+        "В 2026 году быстрее всего меняется поверхность заверения",
+    ):
+        assert expected in text
+
+    assert text.count("**Как читать листинг.**") == 37
+    assert "Expected seven previously unlabeled long examples" not in text
+
+
 def test_reader_facing_text_has_no_editorial_navigation_residue() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -409,7 +438,7 @@ def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
     ):
         assert residue not in prose
 
-    assert "жизненный цикл активной сессии" in prose
+    assert "долгий запуск, сессия или делегирование не выпадают из контроля" in prose
     assert "Поля `status`, `result` и `failure_reason` остаются раздельными" in prose
 
     for anglicism in ("fallback", "stateful", "stateless", "assurance", "governance"):
@@ -495,9 +524,9 @@ def test_listing_introductions_set_a_specific_reading_task() -> None:
     )
 
     assert generic not in text
-    assert len(re.findall(r"^\*\*Листинг \d+\.", text, re.MULTILINE)) == 38
-    assert len(guides) == 38
-    assert len(set(guides)) == 38
+    assert len(re.findall(r"^\*\*Листинг \d+\.", text, re.MULTILINE)) == 37
+    assert len(guides) == 37
+    assert len(set(guides)) == 37
     assert all(len(guide.split()) >= 12 for guide in guides)
 
 
