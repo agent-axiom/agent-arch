@@ -220,6 +220,7 @@ class DocxRenderer:
             "page_breaks": 0,
         }
         self.is_first_element = True
+        self.in_chapter_sources = False
 
     def render(self, root) -> None:
         for element in root:
@@ -245,6 +246,8 @@ class DocxRenderer:
                     self.render_title(paragraph, element)
                 else:
                     render_inline(paragraph, element)
+                    if self.in_chapter_sources:
+                        set_keep_next(paragraph)
                 self.is_first_element = False
         elif tag in {"ul", "ol"}:
             self.render_list(element, list_level)
@@ -285,6 +288,10 @@ class DocxRenderer:
         render_inline(paragraph, element)
         self.metrics["headings"] += 1
         text = paragraph.text.strip()
+        if self.in_chapter_sources and text != "Источники главы":
+            self.in_chapter_sources = False
+        if text == "Источники главы":
+            self.in_chapter_sources = True
         page_break = level == 1
         if level == 2:
             match = re.fullmatch(r"Глава (\d+)\. .+", text)
@@ -299,14 +306,19 @@ class DocxRenderer:
         kind = "bullet" if element.tag.lower() == "ul" else "decimal"
         number_id = self.numbering.new_list(kind)
         self.metrics["lists"] += 1
-        for item in element.findall("li"):
+        items = element.findall("li")
+        for index, item in enumerate(items):
             paragraph = self.add_paragraph()
             self.numbering.apply(paragraph, number_id, level)
             render_inline(paragraph, item)
+            if self.in_chapter_sources and index < len(items) - 1:
+                set_keep_next(paragraph)
             self.metrics["list_items"] += 1
             for nested in item:
                 if isinstance(nested.tag, str) and nested.tag.lower() in {"ul", "ol"}:
                     self.render_list(nested, level + 1)
+        if self.in_chapter_sources:
+            self.in_chapter_sources = False
 
     def render_code_block(self, element) -> None:
         code = element.find("code")

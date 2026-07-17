@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъемной сборки на 2026-07-16. Репозиторий
+Status: актуальная карта полнообъемной сборки на 2026-07-17. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -23,8 +23,8 @@ Status: актуальная карта полнообъемной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 92 770 слов по метрике издательской сборки;
-- 463 страницы в raw-производной и 330 страниц в производной Template2000n;
+- около 89 185 слов по метрике издательской сборки;
+- 440 страниц в raw-производной и 316 страниц в производной Template2000n;
   разница вызвана плотностью издательских стилей, текстовый слой сохранен
   полностью, пустых технических страниц нет.
 
@@ -33,15 +33,15 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHxUN-Xew7E0UvuwTEMs4CB5YSca-CnXM-9a-gKmoAmmCW0iKzgimn3l_8xio6GSPhcFMn8q6itdqaKAhU8Wp-J3hrI3v8Gdj9Hgje0`.
+  `ALtnJHx7DKxIEV3RyDbx2Z783QBjR3DVefa2MAwwK9uq4Et6MNSJIhdhrf6M9Sm6KH7bxO1ipwWS96ayIoFjxuTWM54lhmohOh7mSJ-HrOY`.
 
 Контрольная точка редакторской переработки:
 
-- `docs/publisher/ru-technical-book-best-practices-pass-2026-07-16.md`;
-- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.docx`;
-- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-16.pdf`;
-- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.docx`;
-- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-16.pdf`.
+- `docs/publisher/ru-technical-book-best-practices-pass-2026-07-17.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-17.pdf`.
 
 ## Правило чтения карты
 

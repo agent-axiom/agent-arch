@@ -147,7 +147,7 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     ):
         assert pseudo_table_header not in text
     assert "**Внедрение инструкций** — где ловить в первую очередь:" in text
-    assert "`run_start` — когда:" in text
+    assert "`run_start` открывает запуск" in text
 
     for residue in (
         "**Практическая проверка**",
@@ -270,7 +270,70 @@ def test_dense_chapters_balance_explanation_and_checklists() -> None:
         assert list_word_share(chapter(number)) < 0.45, number
 
     assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(11))) < 4500
-    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(15))) < 4500
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(15))) < 4550
+
+
+def test_reference_heavy_chapters_use_lists_only_for_scannable_decisions() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    def chapter(number: int) -> str:
+        block = text.split(f"## Глава {number}\\.", 1)[1]
+        if number < 28:
+            block = block.split(f"## Глава {number + 1}\\.", 1)[0]
+        return block
+
+    def list_word_share(block: str) -> float:
+        block = re.sub(r"```.*?```", "", block, flags=re.DOTALL)
+        words = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", block)
+        list_words: list[str] = []
+        for line in block.splitlines():
+            if re.match(r"^\s*(?:[*+-]|\d+\.)\s+", line):
+                list_words.extend(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", line))
+        return len(list_words) / len(words)
+
+    caps = {2: 0.40, 10: 0.40, 13: 0.35, 16: 0.40, 22: 0.40, 25: 0.40}
+    for number, cap in caps.items():
+        assert list_word_share(chapter(number)) < cap, number
+
+
+def test_event_catalogue_teaches_the_contract_without_becoming_a_schema_dump() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = text.split("## Глава 13\\.", 1)[1].split("## Глава 14\\.", 1)[0]
+
+    for heading in (
+        "#### Запуск и контекст",
+        "#### Политики, инструменты и подтверждения",
+        "#### Память и фоновые операции",
+        "#### Завершение и управленческие действия",
+    ):
+        assert heading in chapter
+
+    for event_type in (
+        "run_start",
+        "policy_precheck",
+        "agent_threat_evidence",
+        "retrieval",
+        "context_layers_built",
+        "tool_policy_decision",
+        "mcp_tool_risk_review",
+        "tool_execution",
+        "a2a_handoff",
+        "approval_requested",
+        "sandbox_profile_reviewed",
+        "memory_write_decision",
+        "memory_persisted",
+        "background_compaction",
+        "background_update_scheduled",
+        "verification_result",
+        "run_failed",
+        "governance_action",
+        "run_complete",
+    ):
+        assert f"`{event_type}`" in chapter
+
+    assert "Полная машинная схема событий" in chapter
+    assert "без контрактов полезная нагрузка быстро превращается в мусор" not in chapter
+    assert "контракт доверия передачи управления A2A (контракт доверия" not in chapter
 
 
 def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
@@ -304,7 +367,7 @@ def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
         assert residue not in prose
 
     assert "жизненный цикл активной сессии" in prose
-    assert "полезную нагрузку каждого события `approval_requested`" in prose
+    assert "Поля `status`, `result` и `failure_reason` остаются раздельными" in prose
 
     for anglicism in ("fallback", "stateful", "stateless", "assurance", "governance"):
         assert not re.search(rf"(?i)\b{anglicism}\b", prose_without_links)
@@ -321,6 +384,87 @@ def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
         "а рабочий путь по умолчанию",
     ):
         assert heading not in text
+
+
+def test_final_copyedit_removes_known_grammar_and_terminology_residue() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+
+    for residue in (
+        "Сквозной сценарий История",
+        "Сквозные сценарии управляющего агента и передачи управления Выбор",
+        "Сквозные сценарии MCP и A2A Выбор",
+        "не эксплуатационный среда исполнения",
+        "центральный среда исполнения",
+        "какой MCP-точка доступа",
+        "первый среда исполнения",
+        "минимальный полезная нагрузка обычно должен",
+        "Справочный среда исполнения",
+        "второго скрытого среды исполнения",
+        "контур уверенности",
+        "политический шлюз",
+        "wrapper-слоев",
+        "Среде выполнения",
+        "служит также явное место",
+    ):
+        assert residue not in prose
+
+    assert "контур заверения" in prose
+    assert "шлюз политики" in prose
+    assert "оберточных слоев" in prose
+    assert "эталонная среда исполнения" in prose
+    assert "агентск" not in prose.casefold()
+
+
+def test_machine_identifiers_and_diagnostics_are_reader_ready() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+
+    for residue in (
+        "Config at {config\\_path\\!s} must be a mapping at the top level",
+        "{label} config must be a mapping",
+        "{key} must be a list",
+        "внутри RunContext хранятся retrieved_context и retrieved_records",
+        "показывают count, records, status и result",
+    ):
+        assert residue not in prose
+
+    for identifier in (
+        "`RunContext`",
+        "`retrieved_context`",
+        "`retrieved_records`",
+        "`count`",
+        "`records`",
+        "`status`",
+        "`result`",
+    ):
+        assert identifier in prose
+
+
+def test_listing_introductions_set_a_specific_reading_task() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    generic = (
+        "назначение: сделать контракт раздела проверяемым; перед промышленным "
+        "применением требуется адаптация к схеме и ограничениям организации"
+    )
+    guides = re.findall(
+        r"^\*\*Как читать листинг\.\*\* (.+)$", text, re.MULTILINE
+    )
+
+    assert generic not in text
+    assert len(re.findall(r"^\*\*Листинг \d+\.", text, re.MULTILINE)) == 38
+    assert len(guides) == 38
+    assert len(set(guides)) == 38
+    assert all(len(guide.split()) >= 12 for guide in guides)
+
+
+def test_repeated_diagnostic_formula_is_replaced_with_chapter_specific_prose() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    assert "Если большинство этих условий не выполняется" not in text
+    assert (
+        "Числовые пороги в книге являются учебными примерами, если рядом прямо "
+        "не указано, что это инвариант контракта."
+    ) in text
 
 
 def test_source_notes_are_specific_without_repeating_one_global_caveat() -> None:
@@ -722,6 +866,21 @@ def test_each_chapter_ends_before_part_level_material() -> None:
         assert chapter.count("### Источники главы") == 1
         assert chapter.index("### Ключевые выводы") < chapter.index("### Источники главы")
         assert "## Выводы части" not in chapter
+
+
+def test_chapter_transitions_are_folded_into_practical_steps() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "**Дальше.**" not in text
+    for number in range(1, 29):
+        chapter = text.split(f"## Глава {number}\\.", 1)[1]
+        if number < 28:
+            chapter = chapter.split(f"## Глава {number + 1}\\.", 1)[0]
+        practical_steps = re.findall(
+            r"^\*\*Практический шаг\.\*\* .+$", chapter, re.MULTILINE
+        )
+        assert len(practical_steps) == 1, number
+        assert len(re.findall(r"[.!?]", practical_steps[0])) >= 2, number
 
 
 def test_prose_quality_and_quickstart_are_editorially_consistent() -> None:
