@@ -1,0 +1,15 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-bookcraft-2026-07-17.docx",
+  "code_lines": 1666,
+  "headings": 579,
+  "images": 56,
+  "list_items": 3616,
+  "lists": 776,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8978429,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-final-polish-2026-07-17.docx",
+  "output_sha256": "374dc474566caeb8dc98718ae8fe672169ed854567237f705bc8e9c79038149c",
+  "page_breaks": 30,
+  "paragraphs": 8310,
+  "tables": 8
+}

@@ -6808,6 +6808,230 @@ def apply_bookcraft_readability_pass(text: str) -> str:
     return text.rstrip() + "\n"
 
 
+def apply_advanced_bookcraft_pass(text: str) -> str:
+    """Improve chapter rhythm, learning bridges, and reference navigation."""
+
+    def replace_once(old: str, new: str, *, label: str) -> None:
+        nonlocal text
+        count = text.count(old)
+        if count != 1:
+            raise ValueError(f"Expected one {label} anchor, found {count}")
+        text = text.replace(old, new, 1)
+
+    structural_replacements = {
+        "**MCP — это граница безопасности, а не просто удобный соединитель.**": (
+            "### MCP как граница безопасности"
+        ),
+        "**Матрица угроз для MCP.**": "### Матрица угроз MCP",
+        (
+            "Режим кода (Code Mode) для больших API предлагает другую схему:"
+        ): (
+            "### Сокращенная поверхность инструментов для больших API\n\n"
+            "Режим кода (Code Mode) для больших API предлагает другую схему:"
+        ),
+        (
+            "Как только MCP перестает быть одной-двумя вручную подключенными "
+            "интеграциями, возникает следующий вопрос:"
+        ): (
+            "### Управляемая MCP-поверхность платформы\n\n"
+            "Как только MCP перестает быть одной-двумя вручную подключенными "
+            "интеграциями, возникает следующий вопрос:"
+        ),
+        "#### Корпоративный контур управления MCP": (
+            "### Корпоративный контур управления MCP"
+        ),
+        "#### Теневые серверы и фактическая поверхность доступа": (
+            "### Теневые серверы и фактическая поверхность доступа"
+        ),
+        "#### Симуляция пользователя и среды": "### Симуляция пользователя и среды",
+        "#### От оценки к выпускному действию": (
+            "### От оценки к выпускному действию"
+        ),
+        "**Условия завершения запуска должны быть проверяемыми.**": (
+            "### Проверяемые условия завершения запуска"
+        ),
+        "**Что в SDLC остается тем же.**": (
+            "### Что сохраняется из классического SDLC"
+        ),
+        "**Что в агентных системах ломает классический процесс.**": (
+            "### Где классический процесс становится недостаточным"
+        ),
+        "**ADLC полезно мыслить как SDLC плюс новые поверхности изменений.**": (
+            "### ADLC как расширение инженерного цикла"
+        ),
+        "**Отдельный жизненный цикл нужен и для заверения безопасности.**": (
+            "### Заверение безопасности и цепочка поставки"
+        ),
+        "#### От событий к причинной гипотезе": (
+            "### От событий к причинной гипотезе"
+        ),
+        "**Три сквозных сценария.**": "### Три сквозных сценария инцидентов",
+        "**Что должно попасть в разбор инцидента.**": (
+            "### Содержание разбора инцидента"
+        ),
+        (
+            "**программный каркас, испытательный контур и среда исполнения — "
+            "разные слои.**"
+        ): (
+            "### Разделение программного каркаса, испытательного контура и "
+            "среды исполнения"
+        ),
+        "**управляемый контур исполнения агента.**": (
+            "### Управляемый контур исполнения агента"
+        ),
+        (
+            "Именованный агент с состоянием полезно понимать как долговечную "
+            "идентичность, а не как постоянно работающий процесс."
+        ): (
+            "### Долговечная идентичность и восстанавливаемая работа\n\n"
+            "Именованный агент с состоянием полезно понимать как долговечную "
+            "идентичность, а не как постоянно работающий процесс."
+        ),
+        (
+            "Следующий полезный паттерн Cloudflare — не складывать всю долгую "
+            "работу в один цикл событий агента."
+        ): (
+            "### Агент и рабочий процесс как разные границы\n\n"
+            "Следующий полезный паттерн Cloudflare — не складывать всю долгую "
+            "работу в один цикл событий агента."
+        ),
+    }
+    for old, new in structural_replacements.items():
+        replace_once(old, new, label=f"structural split {old!r}")
+
+    chapter_bridges = {
+        5: (
+            "Возможность теперь рассматривается не как имя функции, а как "
+            "управляемый контракт: идентичность, область действия, политика, "
+            "подтверждение и аудит встречаются до исполнения."
+        ),
+        11: (
+            "MCP, песочница и A2A теперь образуют разные границы: возможность "
+            "подключается через контракт, исполнение ограничивается средой, а "
+            "задача передается другому агенту только вместе с полномочиями и "
+            "ответственностью."
+        ),
+        15: (
+            "Оценивание теперь связано с выпуском и эксплуатацией: офлайн-"
+            "сценарий защищает изменение до выкладки, онлайн-сигнал обнаруживает "
+            "новый режим отказа, а трасса превращает его в следующую регрессионную "
+            "проверку."
+        ),
+        16: (
+            "Цепочка доказательств теперь проходит от пользовательского запроса "
+            "через решения политики и внешние эффекты до оценки, инцидента и "
+            "выпускного решения без потери происхождения."
+        ),
+        20: (
+            "ADLC теперь выглядит не как новое название SDLC, а как его расширение "
+            "для изменчивых подсказок, моделей, политик, наборов оценок, "
+            "проверяющих и агентной цепочки поставки."
+        ),
+        24: (
+            "Инцидент теперь заканчивается не отчетом, а изменением системы: "
+            "причинная гипотеза связывается с владельцем, исправлением, "
+            "регрессионным сценарием и условием безопасного возврата."
+        ),
+        28: (
+            "Готовность к запуску теперь можно доказать единым пакетом: "
+            "контракты, отрицательные проверки, трассы, выпускные сигналы, "
+            "владельцы и план остановки подтверждают один и тот же путь действия."
+        ),
+    }
+    for number, body in chapter_bridges.items():
+        chapter = _extract_chapter(text, number)
+        if "**Что изменилось после этой главы.**" in chapter:
+            raise ValueError(f"Chapter {number} already has a reader bridge")
+        anchor = "### Ключевые выводы"
+        if chapter.count(anchor) != 1:
+            raise ValueError(f"Chapter {number} lacks one key-takeaways anchor")
+        revised = chapter.replace(
+            anchor,
+            f"**Что изменилось после этой главы.** {body}\n\n{anchor}",
+            1,
+        )
+        text = text.replace(chapter, revised, 1)
+
+    source_group_anchors = {
+        "* [Дмитрий Викулин, «Архитектура надежных AI-агентов»]": (
+            "#### Основные архитектурные руководства\n\n"
+            "* [Дмитрий Викулин, «Архитектура надежных AI-агентов»]"
+        ),
+        "* [OpenAI, Agents SDK]": (
+            "#### Протоколы и программные каркасы\n\n* [OpenAI, Agents SDK]"
+        ),
+        "* [LangGraph, Overview]": (
+            "#### Графовые среды и память\n\n* [LangGraph, Overview]"
+        ),
+        "* [Google Cloud, Achieve agentic productivity": (
+            "#### Облачные платформы и долговечное исполнение\n\n"
+            "* [Google Cloud, Achieve agentic productivity"
+        ),
+        "* [Cloudflare, Build Agents on Cloudflare]": (
+            "#### Долговечное исполнение и управляемый MCP\n\n"
+            "* [Cloudflare, Build Agents on Cloudflare]"
+        ),
+        "* [GitHub Docs, GitHub Copilot cloud agent]": (
+            "#### Облачные агенты разработки\n\n"
+            "* [GitHub Docs, GitHub Copilot cloud agent]"
+        ),
+        "* [Google Cloud, How Google secures AI Agents]": (
+            "#### Управление и заверение\n\n"
+            "* [Google Cloud, How Google secures AI Agents]"
+        ),
+        "* [Anthropic, Claude Code Security]": (
+            "#### Исследования автономии и красные команды\n\n"
+            "* [Anthropic, Claude Code Security]"
+        ),
+        "* [Microsoft Learn, Secure autonomous agentic AI systems]": (
+            "#### Промышленное управление и реестры\n\n"
+            "* [Microsoft Learn, Secure autonomous agentic AI systems]"
+        ),
+        "* [Google DeepMind, Securing the future of AI agents]": (
+            "#### Наблюдение за отклонениями и автономией\n\n"
+            "* [Google DeepMind, Securing the future of AI agents]"
+        ),
+    }
+    appendix_start = text.index("## Приложение 4\\.")
+    appendix_end = text.index("## Приложение 5\\.", appendix_start)
+    source_appendix = text[appendix_start:appendix_end]
+    for old, new in source_group_anchors.items():
+        count = source_appendix.count(old)
+        if count != 1:
+            raise ValueError(
+                f"Expected one source-group {old!r} anchor in appendix, found {count}"
+            )
+        source_appendix = source_appendix.replace(old, new, 1)
+    text = text[:appendix_start] + source_appendix + text[appendix_end:]
+
+    quickstart_anchors = {
+        "### Как запустить\n\nТребования:": (
+            "### Как запустить\n\n#### Быстрый запуск и ожидаемое состояние\n\n"
+            "Требования:"
+        ),
+        "Явный запуск среды исполнения через подкоманду:": (
+            "#### Проверка отдельных контрактов\n\n"
+            "Явный запуск среды исполнения через подкоманду:"
+        ),
+        "Просмотр записей памяти:": (
+            "#### Память, трассы и повторный прогон\n\nПросмотр записей памяти:"
+        ),
+        "Проверка политики выкладки с переопределением сигналов:": (
+            "#### Выпуск, непрерывные контроли и сессии\n\n"
+            "Проверка политики выкладки с переопределением сигналов:"
+        ),
+    }
+    for old, new in quickstart_anchors.items():
+        replace_once(old, new, label=f"quickstart {old!r}")
+
+    text = text.replace(
+        "проверьте transport=mcp, owner=`knowledge_platform`",
+        "проверьте `transport=mcp`, `owner=knowledge_platform`",
+        1,
+    )
+    return text.rstrip() + "\n"
+
+
 def apply_bookcraft_final_label_variety(text: str) -> str:
     """Vary several end-of-chapter action labels after transition folding."""
 
@@ -6920,6 +7144,7 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_reader_journey_best_practices_pass(text)
     text = apply_technical_book_editorial_standards_pass(text)
     text = apply_bookcraft_readability_pass(text)
+    text = apply_advanced_bookcraft_pass(text)
     text = fold_chapter_transitions_into_practical_steps(text)
     text = apply_bookcraft_final_label_variety(text)
     text = insert_targeted_editorial_diagrams(text)

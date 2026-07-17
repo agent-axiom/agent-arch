@@ -23,8 +23,8 @@ Status: актуальная карта полнообъемной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 90 320 слов по метрике издательской сборки;
-- 441 страница в raw-производной и 316 страниц в производной Template2000n;
+- около 90 575 слов по метрике издательской сборки;
+- 442 страницы в raw-производной и 317 страниц в производной Template2000n;
   разница вызвана плотностью издательских стилей, текстовый слой сохранен
   полностью, пустых технических страниц нет.
 
@@ -33,7 +33,7 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHxiD3RSXVrDliO0mNBn4l3ytKQE4XfOoPRRnEciTbpWCqsraiBnzQlAVfWDpSHOOJOU2L0K-r_I07pNm9gl4cxq-jlZzONuROX52K4`.
+  `ALtnJHzP64vDAJRFRIPWJUnzqh7KSlQgUCNYax7g3h7ICy8B-jQ59obEFsMmHjbHAA8TFRLd1RiI59oAdxmG0DwNaQZvVOweX69OdUupEBc`.
 
 Контрольная точка редакторской переработки:
 
@@ -67,6 +67,14 @@ Google Doc:
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-bookcraft-2026-07-17.pdf`;
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-bookcraft-2026-07-17.docx`;
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-bookcraft-2026-07-17.pdf`.
+
+Контрольная точка финальной проходки по читательской архитектуре:
+
+- `docs/publisher/ru-advanced-bookcraft-final-polish-2026-07-17.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-final-polish-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-final-polish-2026-07-17.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-final-polish-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-final-polish-2026-07-17.pdf`.
 
 ## Правило чтения карты
 

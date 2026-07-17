@@ -264,6 +264,128 @@ def test_bookcraft_readability_pass_removes_markdown_heading_artifacts() -> None
     assert "process_оценка" not in text
 
 
+def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_sections() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    chapter_bridges = {
+        5: "Возможность теперь рассматривается не как имя функции",
+        11: "MCP, песочница и A2A теперь образуют разные",
+        15: "Оценивание теперь связано с выпуском",
+        16: "Цепочка доказательств теперь проходит",
+        20: "ADLC теперь выглядит не как новое название",
+        24: "Инцидент теперь заканчивается не отчетом",
+        28: "Готовность к запуску теперь можно доказать",
+    }
+    for number, expected in chapter_bridges.items():
+        chapter = text.split(f"## Глава {number}\\.", 1)[1]
+        if number < 28:
+            chapter = chapter.split(f"## Глава {number + 1}\\.", 1)[0]
+        assert chapter.count("**Что изменилось после этой главы.**") == 1
+        assert expected in chapter
+
+    for heading in (
+        "### MCP как граница безопасности",
+        "### Матрица угроз MCP",
+        "### Сокращенная поверхность инструментов для больших API",
+        "### Управляемая MCP-поверхность платформы",
+        "### Корпоративный контур управления MCP",
+        "### Теневые серверы и фактическая поверхность доступа",
+        "### Симуляция пользователя и среды",
+        "### От оценки к выпускному действию",
+        "### Проверяемые условия завершения запуска",
+        "### Что сохраняется из классического SDLC",
+        "### Где классический процесс становится недостаточным",
+        "### ADLC как расширение инженерного цикла",
+        "### Заверение безопасности и цепочка поставки",
+        "### От событий к причинной гипотезе",
+        "### Три сквозных сценария инцидентов",
+        "### Содержание разбора инцидента",
+        "### Разделение программного каркаса, испытательного контура и среды исполнения",
+        "### Управляемый контур исполнения агента",
+        "### Долговечная идентичность и восстанавливаемая работа",
+        "### Агент и рабочий процесс как разные границы",
+    ):
+        assert heading in text
+
+    dense_headings = (
+        "MCP как граница безопасности",
+        "Матрица угроз MCP",
+        "Управляемая MCP-поверхность платформы",
+        "Корпоративный контур управления MCP",
+        "Теневые серверы и фактическая поверхность доступа",
+        "Симуляция пользователя и среды",
+        "От оценки к выпускному действию",
+        "Проверяемые условия завершения запуска",
+        "Именованный агент как отдельная топология",
+        "Управляемый контур исполнения агента",
+        "Долговечная идентичность и восстанавливаемая работа",
+        "Агент и рабочий процесс как разные границы",
+    )
+    heading_matches = list(re.finditer(r"(?m)^### (.+)$", text))
+    section_words: dict[str, int] = {}
+    for index, match in enumerate(heading_matches):
+        heading = match.group(1)
+        if heading not in dense_headings:
+            continue
+        end = (
+            heading_matches[index + 1].start()
+            if index + 1 < len(heading_matches)
+            else len(text)
+        )
+        section_words[heading] = len(
+            re.findall(r"[A-Za-zА-Яа-яЁё0-9_]+", text[match.end() : end])
+        )
+
+    assert set(section_words) == set(dense_headings)
+    assert max(section_words.values()) <= 750
+
+
+def test_source_appendix_is_grouped_into_reader_sized_runs() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 4\\.", 1)[1].split(
+        "## Приложение 5\\.", 1
+    )[0]
+
+    for heading in (
+        "#### Основные архитектурные руководства",
+        "#### Протоколы и программные каркасы",
+        "#### Облачные платформы и долговечное исполнение",
+        "#### Облачные агенты разработки",
+        "#### Управление и заверение",
+        "#### Наблюдение за отклонениями и автономией",
+    ):
+        assert heading in appendix
+
+    source_runs: list[int] = []
+    current_run = 0
+    for line in appendix.splitlines():
+        if re.match(r"^\* (?:\[|[A-ZА-Я])", line):
+            current_run += 1
+            continue
+        if current_run:
+            source_runs.append(current_run)
+            current_run = 0
+    source_runs.append(current_run)
+
+    assert max(source_runs) <= 12
+
+
+def test_reference_package_quickstart_has_task_oriented_subsections() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 5\\.", 1)[1]
+    quickstart = appendix.split("### Как запустить", 1)[1].split(
+        "### Карта модулей", 1
+    )[0]
+
+    for heading in (
+        "#### Быстрый запуск и ожидаемое состояние",
+        "#### Проверка отдельных контрактов",
+        "#### Память, трассы и повторный прогон",
+        "#### Выпуск, непрерывные контроли и сессии",
+    ):
+        assert heading in quickstart
+
+
 def test_reader_facing_text_has_no_editorial_navigation_residue() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -371,8 +493,8 @@ def test_dense_chapters_balance_explanation_and_checklists() -> None:
     for number in (4, 19, 22, 25):
         assert list_word_share(chapter(number)) < 0.45, number
 
-    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(11))) < 4500
-    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(15))) < 4550
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(11))) < 4600
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(15))) < 4625
 
 
 def test_reference_heavy_chapters_use_lists_only_for_scannable_decisions() -> None:
@@ -659,7 +781,7 @@ def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
         "#### Контракт сервера и граница доверия",
         "#### Два взаимодополняющих контура",
         "### Долговечное состояние запуска",
-        "#### От событий к причинной гипотезе",
+        "### От событий к причинной гипотезе",
     ):
         assert marker in text
 
@@ -1149,7 +1271,9 @@ def test_revision_keeps_new_chapter_numbering_and_control_examples_consistent() 
     assert "занятые минуты проверяющих" in text
 
     causal_record = text[
-        text.index("causal_case:\n") : text.index("**Три сквозных сценария.**")
+        text.index("causal_case:\n") : text.index(
+            "### Три сквозных сценария инцидентов"
+        )
     ]
     assert "edges:" in causal_record
     assert causal_record.count("evidence_ref:") == 3
