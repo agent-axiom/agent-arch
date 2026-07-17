@@ -6732,6 +6732,101 @@ def apply_technical_book_editorial_standards_pass(text: str) -> str:
     return text.rstrip() + "\n"
 
 
+def apply_bookcraft_readability_pass(text: str) -> str:
+    """Apply a focused O'Reilly/Manning-style readability polish pass."""
+
+    text = re.sub(r"(?m)^(#{2,3}) \*\*(.+?)\*\*$", r"\1 \2", text)
+
+    replacements = {
+        "детерминированный runtime": "детерминированная среда исполнения",
+        "полный runtime": "полная среда исполнения",
+        "production runtime": "промышленная среда исполнения",
+        "human review": "человеческая проверка",
+        "data-quality review": "проверка качества данных",
+        "threat-model review": "проверка модели угроз",
+        "code review": "проверка кода",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+
+    chapter_2_splits = {
+        "**Плохой запах: когда вся логика живет в одной подсказке.**": (
+            "### Когда подсказка становится архитектурой\n\n"
+            "**Плохой запах: когда вся логика живет в одной подсказке.**"
+        ),
+        "**Инструкции должны быть короткими и жесткими.**": (
+            "### Где заканчиваются инструкции и начинается контроль\n\n"
+            "**Инструкции должны быть короткими и жесткими.**"
+        ),
+        "**Что такое паттерн координатора.**": (
+            "### Координатор без потери ответственности\n\n"
+            "**Что такое паттерн координатора.**"
+        ),
+    }
+    for old, new in chapter_2_splits.items():
+        text = text.replace(old, new, 1)
+
+    chapter_26_splits = {
+        "#### Долговечное состояние запуска": "### Долговечное состояние запуска",
+        "#### Именованный агент как отдельная топология": (
+            "### Именованный агент как отдельная топология"
+        ),
+        "#### Очередь работ как операторский контур": (
+            "### Очередь работ как операторский контур"
+        ),
+        "#### Проверяемое завершение": "### Проверяемое завершение",
+    }
+    for old, new in chapter_26_splits.items():
+        text = text.replace(old, new, 1)
+
+    chapter_26_bridge = (
+        "**Что изменилось после этой главы.** У читателя теперь есть не просто "
+        "список модулей среды исполнения, а карта долгой работы: где хранится "
+        "состояние, где продолжается запуск, где проверяется завершение и почему "
+        "долговечная сессия не должна превращаться в скрытую память."
+    )
+    text = text.replace(
+        "### Что важно встроить в базовый контур с самого начала",
+        f"{chapter_26_bridge}\n\n### Что важно встроить в базовый контур с самого начала",
+        1,
+    )
+
+    chapter_2_bridge = (
+        "**Что изменилось после этой главы.** Выбор формы исполнения теперь можно "
+        "защитить как инженерное решение: сценарий, координатор, передача управления "
+        "и границы ответственности становятся видимыми до выбора программного каркаса."
+    )
+    text = text.replace(
+        "### Ключевые выводы\n\n* Детерминированный процесс остается лучшим выбором для известной последовательности.",
+        (
+            f"{chapter_2_bridge}\n\n### Ключевые выводы\n\n"
+            "* Детерминированный процесс остается лучшим выбором для известной последовательности."
+        ),
+        1,
+    )
+
+    return text.rstrip() + "\n"
+
+
+def apply_bookcraft_final_label_variety(text: str) -> str:
+    """Vary several end-of-chapter action labels after transition folding."""
+
+    replacements = {
+        "Практический шаг.** Разметьте свой процесс: детерминированные шаги, агентные решения, границы передачи и условия остановки.": (
+            "Практическая проверка.** Разметьте свой процесс: детерминированные шаги, агентные решения, границы передачи и условия остановки."
+        ),
+        "Практический шаг.** Сопоставьте модули эталонного пакета с контрольными точками пути одного запуска.": (
+            "Проверка на своей системе.** Сопоставьте модули эталонного пакета с контрольными точками пути одного запуска."
+        ),
+        "Практический шаг.** Выполните лабораторную работу 8 и соберите итоговый аудит готовности по этапам ниже.": (
+            "Финальный рывок практики.** Выполните лабораторную работу 8 и соберите итоговый аудит готовности по этапам ниже."
+        ),
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new, 1)
+    return text.rstrip() + "\n"
+
+
 def fold_chapter_transitions_into_practical_steps(text: str) -> str:
     for number in range(28, 0, -1):
         chapter = _extract_chapter(text, number)
@@ -6824,7 +6919,9 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_final_technical_book_copyedit(text)
     text = apply_reader_journey_best_practices_pass(text)
     text = apply_technical_book_editorial_standards_pass(text)
+    text = apply_bookcraft_readability_pass(text)
     text = fold_chapter_transitions_into_practical_steps(text)
+    text = apply_bookcraft_final_label_variety(text)
     text = insert_targeted_editorial_diagrams(text)
     text = label_long_technical_blocks(text)
     text = number_listings(text)
