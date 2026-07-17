@@ -177,6 +177,161 @@ def test_reader_facing_text_has_no_editorial_navigation_residue() -> None:
         assert residue not in text
 
 
+def test_print_manuscript_uses_book_native_navigation() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for residue in (
+        "отдельная страница",
+        "отдельную страницу",
+        "навигации по сайту",
+        "живой навигации сайта",
+        "после этой страницы",
+        "со страницей",
+        "первый экран",
+        "Доказательный каркас",
+    ):
+        assert residue not in text
+
+    assert text.count("главе 16") >= 3
+    assert "главе 16 «Сквозная цепочка доказательств»" in text
+
+
+def test_chapters_16_and_27_have_one_reader_contract_and_direct_openings() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_sixteen = text.split("## Глава 16\\.", 1)[1].split(
+        "## Выводы части", 1
+    )[0]
+    chapter_twenty_seven = text.split("## Глава 27\\.", 1)[1].split(
+        "## Глава 28\\.", 1
+    )[0]
+
+    assert "Что вы должны уметь после этой страницы" not in chapter_sixteen
+    assert "Зачем нужен этот раздел" not in chapter_sixteen
+    assert "Заметка о сквозной цепочке доказательств" not in chapter_sixteen
+    assert "разрешил расширение выпуска" in chapter_sixteen[:1800]
+    assert "не может восстановить основание решения" in chapter_sixteen[:1800]
+
+    assert "Что унести из главы" not in chapter_twenty_seven
+    assert "Мост зрелости" not in chapter_twenty_seven
+    assert "### От правила к исполняемому решению" in chapter_twenty_seven
+
+
+def test_reference_appendix_is_stable_and_has_one_learning_route() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 5\\.", 1)[1]
+
+    headings = (
+        "### Границы эталона",
+        "### Как запустить",
+        "### Карта модулей",
+        "### Воспроизводимые проверки",
+        "### Контрактные примеры",
+        "### Критерии самопроверки по частям",
+    )
+    positions = [appendix.index(heading) for heading in headings]
+    assert positions == sorted(positions)
+
+    for changelog_marker in (
+        "Недавние обновления",
+        "теперь возвращает",
+        "теперь показывает",
+        "теперь помогает",
+        "теперь задуман",
+        "теперь появляется",
+        "Теперь в нем",
+        "теперь он уже",
+        "пакет стал",
+        "книга теперь",
+        "Книга теперь",
+        "теперь пакет",
+    ):
+        assert changelog_marker not in appendix
+
+
+def test_dense_chapters_balance_explanation_and_checklists() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    def chapter(number: int) -> str:
+        block = text.split(f"## Глава {number}\\.", 1)[1]
+        if number < 28:
+            block = block.split(f"## Глава {number + 1}\\.", 1)[0]
+        return block
+
+    def list_word_share(block: str) -> float:
+        block = re.sub(r"```.*?```", "", block, flags=re.DOTALL)
+        words = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", block)
+        list_words = []
+        for line in block.splitlines():
+            if re.match(r"^\s*(?:[*+-]|\d+\.)\s+", line):
+                list_words.extend(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", line))
+        return len(list_words) / len(words)
+
+    for number in (4, 19, 22, 25):
+        assert list_word_share(chapter(number)) < 0.45, number
+
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(11))) < 4500
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter(15))) < 4500
+
+
+def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+    prose_without_identifiers = re.sub(r"`[^`]+`", "", prose)
+    prose_without_links = re.sub(
+        r"!?\[[^\]]+\]\([^)]+\)", "", prose_without_identifiers
+    )
+    prose_without_links = re.sub(r"https?://[^)\s]+", "", prose_without_links)
+
+    for residue in (
+        "приемы подсказкаинга",
+        "страницы политик",
+        "среда исполнения вообще обязан отслеживать",
+        "что сделал среда исполнения",
+        "между подтверждение и возобновление",
+        "среда исполнения не обязан реализовывать",
+        "Минимально зрелый среда исполнения",
+        "Эталонная среда исполнения полезен",
+        "не проектируй память",
+        "если уже строишь",
+        "если вы правда борешься",
+        "живой жизненный цикл сессии",
+        "контекста арендатора/субъект",
+        "телеметрия помогает и разбора инцидента",
+        "телеметрический выхлоп",
+        "надежной сырая история",
+        "`tool_execution` полезная нагрузка",
+    ):
+        assert residue not in prose
+
+    assert "жизненный цикл активной сессии" in prose
+    assert "полезную нагрузку каждого события `approval_requested`" in prose
+
+    for anglicism in ("fallback", "stateful", "stateless", "assurance", "governance"):
+        assert not re.search(rf"(?i)\b{anglicism}\b", prose_without_links)
+    for identifier_term in ("principal", "payload"):
+        assert not re.search(rf"(?i)\b{identifier_term}\b", prose_without_links)
+
+    assert "среда выполнения" not in prose_without_links
+    for heading in (
+        "### Поверхность инструментов это не то же самое, что управляемая поверхность возможностей",
+        "### Каталог инструментов это интерфейс платформы, а не список случайных функций",
+        "### Песочница это не обязательно контейнер, а прежде всего режим ограничений",
+        "### Самый неприятный статус это `side_effect_unknown`",
+        "### Поддерживаемый стандартный путь это не «документ с набором советов», "
+        "а рабочий путь по умолчанию",
+    ):
+        assert heading not in text
+
+
+def test_source_notes_are_specific_without_repeating_one_global_caveat() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    caveat = "платформенный пример не следует читать как универсальную гарантию"
+
+    assert text.count(caveat) == 1
+    assert text.count("**Как читать источники.**") == 28
+    assert "**Граница переносимости источников.**" in text
+
+
 def test_python_listings_are_fenced_and_syntax_checked() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     outside_fence: list[str] = []
