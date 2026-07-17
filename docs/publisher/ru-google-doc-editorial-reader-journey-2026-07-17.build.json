@@ -1,0 +1,15 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.docx",
+  "code_lines": 1666,
+  "headings": 547,
+  "images": 56,
+  "list_items": 3650,
+  "lists": 773,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8969438,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-reader-journey-2026-07-17.docx",
+  "output_sha256": "8846f42ec5e3116ceb5e938a78923b410d0a385d36dd62a872e225dd39508234",
+  "page_breaks": 30,
+  "paragraphs": 8348,
+  "tables": 7
+}

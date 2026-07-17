@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/ru-editorial-reader-journey-2026-07-17-raw-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.006985549021367874,
+      "page": 398
+    },
+    {
+      "density": 0.010943317300973487,
+      "page": 276
+    },
+    {
+      "density": 0.011203434637785755,
+      "page": 215
+    },
+    {
+      "density": 0.01155115465165277,
+      "page": 303
+    },
+    {
+      "density": 0.011649131379919624,
+      "page": 81
+    },
+    {
+      "density": 0.012067421025936559,
+      "page": 289
+    },
+    {
+      "density": 0.012320851512455756,
+      "page": 104
+    },
+    {
+      "density": 0.0126259509277875,
+      "page": 6
+    },
+    {
+      "density": 0.012692391452040108,
+      "page": 197
+    },
+    {
+      "density": 0.012972061589879758,
+      "page": 18
+    }
+  ],
+  "pages": 441,
+  "render_dir": "/tmp/ru-editorial-reader-journey-2026-07-17-raw-render"
+}

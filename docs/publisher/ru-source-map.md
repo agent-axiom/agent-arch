@@ -23,8 +23,8 @@ Status: актуальная карта полнообъемной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - две нативные таблицы Google Docs в главах 2 и 26;
-- около 89 185 слов по метрике издательской сборки;
-- 440 страниц в raw-производной и 316 страниц в производной Template2000n;
+- около 89 945 слов по метрике издательской сборки;
+- 441 страница в raw-производной и 316 страниц в производной Template2000n;
   разница вызвана плотностью издательских стилей, текстовый слой сохранен
   полностью, пустых технических страниц нет.
 
@@ -33,7 +33,7 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHx7DKxIEV3RyDbx2Z783QBjR3DVefa2MAwwK9uq4Et6MNSJIhdhrf6M9Sm6KH7bxO1ipwWS96ayIoFjxuTWM54lhmohOh7mSJ-HrOY`.
+  `ALtnJHxRCJM4z1a9Kv0YBiU0OCfvFOzUh1Ss1ejjYP_jxTI9gxlFv2kXuV85mnR7WpG3TxH8XYisogPaIDkf_-lxhQOw2jxgBs9P9gjZMQU`.
 
 Контрольная точка редакторской переработки:
 
@@ -42,6 +42,15 @@ Google Doc:
 - `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.pdf`;
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-17.docx`;
 - `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-2026-07-17.pdf`.
+
+Контрольная точка проходки по читательскому маршруту:
+
+- `docs/publisher/ru-technical-book-best-practices-audit-2026-07-17.md`;
+- `docs/publisher/ru-reader-journey-best-practices-pass-2026-07-17.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-reader-journey-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-reader-journey-2026-07-17.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-reader-journey-2026-07-17.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-reader-journey-2026-07-17.pdf`.
 
 ## Правило чтения карты
 

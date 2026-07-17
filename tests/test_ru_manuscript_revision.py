@@ -162,6 +162,49 @@ def test_revision_has_clean_reader_facing_structure() -> None:
         assert residue not in text
 
 
+def test_reader_journey_best_practices_pass_is_applied_without_identifier_damage() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "**Шаблон первого артефакта: архитектурный бриф безопасного агента.**" in text
+    assert "Пример для агента поддержки:" in text
+    assert "первая волна остается в режиме `hold`" in text
+    assert text.count("Мини-кейс:") == 5
+    assert "### Диагностический вопрос для операционной модели платформы" in text
+    assert "### Порог готовности поддерживаемого стандартного пути" in text
+    assert "### Диагностический вопрос для дисциплины изменений" in text
+    assert "### Порог готовности к поэтапному выпуску" in text
+    assert "## Как пользоваться приложениями" in text
+    assert "### Сквозные источники и источники глав" in text
+
+    assert "workflow_logic" in text
+    assert "workflow_runtime_v2" in text
+    assert "workflow_agent" in text
+    assert "рабочий процесс_logic" not in text
+    assert "рабочий процесс_runtime" not in text
+    assert "рабочий процесс_agent" not in text
+    assert "скрипт или конвейер блокирует завершение" in text
+    assert "скрипт или pipeline блокирует завершение" not in text
+
+    assert text.count("### Конфигурация (YAML): управления для агентной платформы") == 1
+    assert (
+        text.count(
+            "**Реестр утвержденных шаблонов нужен не только для контроля, но и для скорости.**"
+        )
+        == 1
+    )
+    assert "Хорошая антизоопарк-работа делает обходы менее выгодными" in text
+    assert "обходи менее выгодными" not in text
+    assert "типовых золотых пути" not in text
+    assert "2-4 типовых поддерживаемых пути" in text
+
+    chapter_17 = text[text.index("## Глава 17") : text.index("## Глава 18")]
+    chapter_18 = text[text.index("## Глава 18") : text.index("## Глава 19")]
+    for chapter in (chapter_17, chapter_18):
+        words = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9_]+", chapter))
+        bullets = len(re.findall(r"(?m)^\s*[*-]\s+", chapter))
+        assert bullets / words * 1000 < 50
+
+
 def test_reader_facing_text_has_no_editorial_navigation_residue() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
