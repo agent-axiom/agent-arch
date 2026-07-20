@@ -309,6 +309,8 @@ Vendor-neutral 的结论是：baseline runtime 至少应该区分四层长时间
 
 Cloudflare Agents SDK changelog 又给这条边界补了一层更运营化的形态：通过 `runAgentTool` 启动 **detached sub-agent run**、记录 **durable milestones**、用统一入口 `runTurn` 接收 turn，并在 `deploy/eviction/reconnect` 后恢复。[^cloudflare-agents-background-subagents] 这实际上命名了一个 failure class：deploy、Durable Object eviction、connection churn 或 hung stream 发生在 agent run 中途。只要有 durable backbone、`continuation_id`、`last_durable_checkpoint`、idempotency key 和 bounded reconcile path，runtime 就不应该把工作简单标成 `interrupted` 后丢掉。
 
+Cloudflare 关于 outbound connections 的另一条 changelog 说明，即使是“活着的”stream 也是 runtime contract，而不只是网络细节。[^cloudflare-outbound-connections] Durable Object 现在会在存在 active outbound connection 或 outbound WebSocket 时保持活跃，但只在明确的 keepalive window 内成立。对架构来说，long-running LLM stream 需要 `stream_id`、`connection_keepalive_deadline`、`last_emitted_offset`、`resume_strategy` 和 fallback checkpoint。否则团队可能把 stream 当成 durable，而实际上超过限制或连接关闭后，普通 eviction model 会重新生效。
+
 Delegated tools 还有相邻规则。当 sub-agent 通过 `clientTools` 和 `onClientToolCall` 获得 **client-provided tools** 时，这不只是 callback convenience。[^cloudflare-agents-recovery] Parent runtime 应该保存这些 tools 的 allowlist、owner/caller identity、argument schema、expiration 和 trace evidence。否则 delegated sub-agent 会拿到隐式 capability leaks。Recovery path 也应该修复未完成的 tool calls：stream stall watchdog 和 interrupted tool-call repair 应该让 run 回到 last durable checkpoint，而不是从 transcript memory 重复 side effect。
 
 ### 8.5. Agent shell + durable workflow spine
@@ -331,6 +333,8 @@ flowchart LR
 </div>
 
 在参考形态里，agent shell 可以报告进度、接收新消息并展示审批界面，但 durable workflow 应该拥有不能丢失的东西：step id、idempotency key、retry/timeout policy、external-event wait、approval decision 和 evidence refs。这样，agent 重启或 WebSocket 断开就不会把长时间工作变成只靠半截用户对话记住的状态。
+
+在 Cloudflare HITL API 中，这表现为 workflow 里的 `waitForApproval()`：等待可以持续 **months or longer**，而不需要 live agent process；agent shell 则提供 `approveWorkflow()` 和 `rejectWorkflow()` 来接收 human decision。对本书来说，重点不是 API 名称，而是边界：pending approval、timeout、escalation 和 audit trail 必须是 durable execution state。
 
 Cloudflare Agents SDK v0.16.1 在 Codemode runtime 侧展示了同一个契约：模型只拿到一个 `codemode` tool，对 typed globals 写代码，而 runtime 保存 durable execution log。[^cloudflare-agents-sdk-0161] 当代码到达 approval-gated action 时，execution pauses 并返回 pending approval；审批通过后，已经完成的 calls 从 durable log replay，approved action 被执行，同一段代码继续运行。用 vendor-neutral 的说法，这是 approval gate 的一个有用最小契约：
 
@@ -606,6 +610,8 @@ runtime:
 [^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 
 [^cloudflare-fibers]: [Cloudflare Agents SDK, Durable execution with fibers](https://developers.cloudflare.com/agents/runtime/execution/durable-execution/)
+
+[^cloudflare-outbound-connections]: Cloudflare Changelog, [Outbound connections keep Durable Objects alive](https://developers.cloudflare.com/changelog/post/2026-06-19-outbound-connections-keep-dos-alive/)
 
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 

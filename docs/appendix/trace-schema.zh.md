@@ -301,6 +301,24 @@
 - `capability_loading_mode`
 - `cost_control_signal`
 
+对于 **model_tool_gateway_boundary**，trace 应该说明一个 gateway/control-plane 回路如何同时连接 tool side effects、model/provider routing、cost 和 capacity：
+
+- `provider_route_decision`
+- `cost_capacity_signal`
+- `capacity_backpressure_decision`
+- `budget_exhausted`
+
+对于 **networked_agent_message**，trace 应该说明来自另一个 agent 的消息为什么仍然是数据，而没有变成 authority：
+
+- `source_agent_id`
+- `principal_id`
+- `message_provenance_chain`
+- `peer_originated_instruction`
+- `propagation_depth`
+- `fanout_anomaly_score`
+- `sybil_independence_check`
+- `quarantine_event`
+
 如果系统依赖验证器感知评测，也很适合单独定义一个事件或关联载荷契约来承载验证器裁决记录（verifier verdict record）：
 
 - `verdict_id`

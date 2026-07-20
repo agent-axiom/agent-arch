@@ -309,9 +309,11 @@ In the [reference package](../../appendix/reference-package.en.md), durable name
 
 The Cloudflare Agents SDK changelog adds a more operational layer to that boundary: a **detached sub-agent run** through `runAgentTool`, **durable milestones**, a single `runTurn` entry point, and recovery after `deploy/eviction/reconnect`.[^cloudflare-agents-background-subagents] This names a practical failure class: deploy, Durable Object eviction, connection churn, or a hung stream happens during an agent run. The runtime should not abandon the work as `interrupted` if it has a durable backbone, `continuation_id`, `last_durable_checkpoint`, idempotency key, and bounded reconcile path.
 
+Cloudflare's separate changelog about outbound connections shows that even a "live" stream is a runtime contract, not just a network detail.[^cloudflare-outbound-connections] A Durable Object now stays active while it has an active outbound connection or outbound WebSocket, but only within the stated keepalive window. Architecturally, a long-running LLM stream needs `stream_id`, `connection_keepalive_deadline`, `last_emitted_offset`, `resume_strategy`, and a fallback checkpoint. Otherwise the team may treat the stream as durable even though the usual eviction model returns after the limit or connection close.
+
 Delegated tools add a neighboring rule. When a sub-agent receives **client-provided tools** through `clientTools` and `onClientToolCall`, that is not only callback convenience.[^cloudflare-agents-recovery] The parent runtime should store the allowlist for those tools, owner/caller identity, argument schema, expiration, and trace evidence. Otherwise the delegated sub-agent receives implicit capability leaks. The recovery path should also repair unfinished tool calls: the stream stall watchdog and interrupted tool-call repair should return the run to the last durable checkpoint, not repeat a side effect from transcript memory.
 
-### 8.5. Agent Shell + Durable Workflow Spine
+### 8.5. Agent shell + durable workflow spine
 
 The next useful Cloudflare pattern is to avoid putting all long work into one agent event loop. The agent can be the **stateful interaction boundary**: it owns instance identity, WebSocket/HTTP session, local state, user callbacks, and the current conversation view. The workflow then becomes the **durable execution boundary**: it owns steps, retries, waiting for external events, long approval gates, and recovery after failure.[^cloudflare-workflows]
 
@@ -331,6 +333,8 @@ flowchart LR
 </div>
 
 In the reference shape, the agent shell may report progress, accept new messages, and show approval UI, but the durable workflow should own what cannot be lost: step id, idempotency key, retry/timeout policy, external-event wait, approval decision, and evidence refs. Then agent restart or WebSocket disconnect does not turn long work into a half-remembered user conversation.
+
+In Cloudflare's HITL API, that appears as `waitForApproval()` inside the workflow: the wait can last **months or longer** without a live agent process, while the agent shell exposes `approveWorkflow()` and `rejectWorkflow()` for the human decision. For this book, the important part is the boundary, not the API name: pending approval, timeout, escalation, and audit trail must be durable execution state.
 
 Cloudflare Agents SDK v0.16.1 shows the same contract on the Codemode runtime side: the model gets one `codemode` tool, writes code against typed globals, and the runtime keeps a durable execution log.[^cloudflare-agents-sdk-0161] When code reaches an approval-gated action, execution pauses and returns a pending approval; after approval, completed calls replay from the durable log, the approved action runs, and the same code continues. In vendor-neutral terms, that is a useful minimal contract for an approval gate:
 
@@ -606,6 +610,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^cloudflare-websockets]: [Cloudflare Agents SDK, WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)
 
 [^cloudflare-fibers]: [Cloudflare Agents SDK, Durable execution with fibers](https://developers.cloudflare.com/agents/runtime/execution/durable-execution/)
+
+[^cloudflare-outbound-connections]: Cloudflare Changelog, [Outbound connections keep Durable Objects alive](https://developers.cloudflare.com/changelog/post/2026-06-19-outbound-connections-keep-dos-alive/)
 
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 

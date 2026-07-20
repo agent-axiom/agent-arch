@@ -462,6 +462,14 @@ GitHub Copilot agentic harness 给了一个很有用的生产信号：agent qual
 
 实际结论是：如果团队改动 harness、context strategy 或 model routing，就需要 harness-level release gate。否则团队很容易误判成“模型变好了”或“模型变差了”，而真正原因其实在 orchestration layer。
 
+### 7.2. 质量回归也可能在产品 harness 里
+
+Anthropic 关于 Claude Code quality reports 的复盘，把同一个问题展示得更直接。[^anthropic-claude-code-quality-reports] 用户感受到 Claude Code、Claude Agent SDK 和 Claude Cowork 的质量下降，但 API 和 inference layer 并不是原因。三个变化都在产品 harness 层：为了 latency 降低 default reasoning effort；stale-session optimization 反复裁掉 older thinking；为了降低 verbosity 加入的 system prompt instruction 又伤害了 coding quality。
+
+对 release gate 来说，这是一个单独的 failure pattern：**model unchanged → harness/config/prompt/context change → quality regression → user reports before eval reproduction**。所以发布检查应该显式版本化 `model_id`、`effort_default`、`context_pruning_policy`、`prompt_bundle_version`、`cache_header_behavior`、`harness_version` 和 `rollout_slice`。否则团队会把问题当成“模型变差”，而真正的回归来自 latency optimization、cache policy 或 prompt hygiene。
+
+这类事故之后的实践契约很具体：prompt changes 要有 per-model eval suite 和 ablation；intelligence/latency tradeoff 要有 soak period 和 gradual rollout；context-pruning changes 要有 stale-session regression cases；dogfooding 要使用 public build，而不只是 internal testing build。User feedback 也应该进入 gate signal，但必须绑定到具体 version slices，否则广泛抱怨会被 normal variance 稀释掉。
+
 ## 8. 评测回路的实用规则
 
 如果要把工程规则压缩成一小组，通常这些就够了：
@@ -651,6 +659,7 @@ Microsoft Foundry 的 Open Trust Stack 给 policy、evals 和 runtime controls �
 [^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/).
 [^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
 [^github-copilot-agentic-harness]: GitHub Blog, [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/).
+[^anthropic-claude-code-quality-reports]: Anthropic, [An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), 23 April 2026.
 [^langchain-state-agent-engineering]: LangChain, [State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering).
 [^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).

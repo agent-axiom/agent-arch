@@ -18691,6 +18691,8 @@ def test_runtime_monitoring_enterprise_mcp_and_secret_scanning_cases_are_documen
             "github.blog/changelog/2026-05-05-secret-scanning-with-github-mcp-server-is-now-generally-available",
             "Code Mode: give agents an entire API in 1,000 tokens",
             "blog.cloudflare.com/code-mode-mcp",
+            "Connect your AI agents to MCP servers with Cloudflare Access",
+            "blog.cloudflare.com/zero-trust-mcp-server-portals",
         ),
     )
 
@@ -18835,6 +18837,112 @@ def test_mcp_tool_surface_design_is_documented() -> None:
             "aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs",
             "Design tools for AI agents",
             "docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html",
+        ),
+    )
+
+
+def test_smartsheet_remote_mcp_facade_on_aws_is_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "Smartsheet remote MCP server on AWS",
+            "production remote MCP facade",
+            "one MCP layer serves internal and external agents",
+            "AI-optimized interface",
+            "token cost",
+            "schema-driven tool contracts",
+            "access tiers",
+            "OpenTelemetry",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Smartsheet remote MCP server on AWS",
+            "single production MCP facade",
+            "Smart Assist",
+            "external AI clients",
+            "Amazon ECS on AWS Fargate",
+            "Amazon Kinesis Data Streams",
+            "Amazon Managed Service for Apache Flink",
+            "Amazon Neptune",
+            "governed domain facade",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "How Smartsheet built a remote MCP server on AWS",
+            "aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws",
+        ),
+    )
+
+
+def test_cloudflare_durable_object_rules_are_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "Rules of Durable Objects",
+            "Durable Agent Identity",
+            "atom of coordination",
+            "deterministic IDs",
+            "input and output gates",
+            "idempotent alarms",
+            "unexpected shutdowns",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Rules of Durable Objects",
+            "Durable Agent Identity",
+            "agent identity is the coordination atom",
+            "persistent state, not process memory",
+            "request → durable agent instance → persistent state → recovered fiber/job",
+            "in-memory timers, closures, or open fetches",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Rules of Durable Objects",
+            "developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects",
         ),
     )
 
@@ -19057,6 +19165,84 @@ def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
             "developers.cloudflare.com/agents/runtime/execution/run-workflows",
             "Introducing Dynamic Workflows: durable execution that follows the user, not the other way around",
             "blog.cloudflare.com/dynamic-workflows",
+        ),
+    )
+
+
+def test_cloudflare_agents_workflows_hitl_boundary_is_documented() -> None:
+    chapter_4_files = (
+        "docs/book/part-ii/chapter-4.md",
+        "docs/book/part-ii/chapter-4.en.md",
+        "docs/book/part-ii/chapter-4.zh.md",
+    )
+    chapter_16_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+    reference_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_4_files,
+        (
+            "durable workflow approval",
+            "MCP elicitation",
+            "Code Mode approval",
+            "waitForApproval()",
+            "approveWorkflow()",
+            "rejectWorkflow()",
+            "timeout",
+            "escalation",
+            "audit trail",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_16_files,
+        (
+            "Agent shell + durable workflow spine",
+            "stateful interaction boundary",
+            "durable execution boundary",
+            "waitForApproval()",
+            "approveWorkflow()",
+            "rejectWorkflow()",
+            "months or longer",
+            "step.waitForEvent()",
+            "approval_id",
+            "resume_cursor",
+        ),
+    )
+
+    _assert_files_contain_all(
+        reference_files,
+        (
+            "Agent shell + durable workflow spine",
+            "workflow_instance_id",
+            "waiting_for",
+            "approval_id",
+            "approval_decision_ref",
+            "progress_event_id",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Human-in-the-loop patterns",
+            "developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop",
+            "Long-running agents",
+            "developers.cloudflare.com/agents/concepts/agentic-patterns/long-running-agents",
+            "Using Agents with Workflows",
+            "developers.cloudflare.com/agents/concepts/workflows",
         ),
     )
 
@@ -19812,6 +19998,39 @@ def test_chapter_3_defense_in_depth_map_covers_control_layers() -> None:
     _assert_files_contain_all(checked_files, required_markers)
 
 
+def test_chapter_4_gateway_boundary_covers_model_cost_and_capacity_controls() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-ii/chapter-4.md",
+            "docs/book/part-ii/chapter-4.en.md",
+            "docs/book/part-ii/chapter-4.zh.md",
+        ),
+        (
+            "gateway is a control-plane boundary",
+            "model/tool gateway boundary",
+            "provider_route_decision",
+            "cost_capacity_signal",
+            "capacity/backpressure decision",
+            "budget_exhausted",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "model_tool_gateway_boundary",
+            "provider_route_decision",
+            "cost_capacity_signal",
+            "capacity_backpressure_decision",
+            "budget_exhausted",
+        ),
+    )
+
+
 def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
     expected_links_by_file = {
         "docs/book/part-ii/chapter-3.md": "../../appendix/trace-schema.md",
@@ -20251,6 +20470,79 @@ def test_microsoft_mcp_tool_description_poisoning_case_is_documented() -> None:
             "Microsoft Security Blog",
             "Securing AI agents: When AI tools move from reading to acting",
             "securing-ai-agents-ai-tools-move-from-reading-acting",
+        ),
+    )
+
+
+def test_microsoft_networked_agent_red_team_case_is_documented() -> None:
+    chapter_markers = (
+        "networked-agent threat model",
+        "peer message is data, not authority",
+        "propagation",
+        "amplification",
+        "trust capture",
+        "invisibility",
+        "Sybil resistance",
+        "hop and rate limits",
+        "cross-agent tracing",
+        "provenance logs",
+        "quarantine",
+    )
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        chapter_markers,
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "networked_agent_message",
+            "source_agent_id",
+            "principal_id",
+            "message_provenance_chain",
+            "peer_originated_instruction",
+            "propagation_depth",
+            "fanout_anomaly_score",
+            "sybil_independence_check",
+            "quarantine_event",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "Microsoft networked-agent red team",
+            "agent worms",
+            "propagation",
+            "amplification",
+            "trust capture",
+            "invisibility",
+            "peer message is data, not authority",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Microsoft Research",
+            "Red-teaming a network of agents",
+            "red-teaming-a-network-of-agents",
         ),
     )
 

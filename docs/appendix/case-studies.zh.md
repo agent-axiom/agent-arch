@@ -37,6 +37,8 @@ Cloudflare Agents SDK 展示了一种模式：智能体不只是围绕模型的�
 
 更新的 long-running agents pattern 会让这条契约更硬：agent identity 比 process 活得更久，一部分工作也可能是 agent 内部的 **recoverable internal task**。可移植规则是：**durable log → checkpointed work unit → stash snapshot → deploy/reconnect recovery → tool-call replay → bounded side-effect replay**。如果执行停在 approval、eviction、deployment 或 connection churn 上，runtime 应该从 last safe checkpoint 继续，保留 replay boundary 和 idempotency key，而不是从 transcript memory 重建动作并重复外部 side effect。
 
+Rules of Durable Objects 把这个案例进一步收紧成 **Durable Agent Identity**：agent identity is the coordination atom，durable instance 应该持有 persistent state, not process memory。实践路径是：**request → durable agent instance → persistent state → recovered fiber/job**。反模式是依赖 in-memory timers, closures, or open fetches 去承载必须跨 eviction、deploy 或网络中断存活的工作。
+
 Cloudflare Agent Memory 在这个模式上补了一层受治理的长期记忆：agent 不会拿到原始 database/filesystem interface，而是通过一个有边界的服务使用 `ingest`、`remember`、`recall`、`list` 和 `forget`。实践契约是：**compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**。对本书来说，重要的反模式是把“memory”当成模型背后的隐藏 SQL/key-value 访问。否则 retrieval strategy、durable writes、forgetting 和 conflict resolution 都会被塞进 prompt，而不是留在受管理的 runtime layer。
 
 ### Cloudflare vulnerability harness：VDH、VVS 与噪声过滤
@@ -60,6 +62,10 @@ Google Gemini Enterprise Agent Platform remote MCP server 给同一模式补了 
 AWS Bedrock AgentCore Gateway Policy and Lambda interceptors 则给 MCP governance 补上了具体的 tool-call enforcement path。Cedar policy 给出 deterministic allow/deny decision 和 audit log；request interceptors 在调用 MCP server 前执行 token validation、act-on-behalf exchange、context injection 和 tool authorization；response interceptors 在结果回到 agent 前过滤 tool lists 或 sensitive output。可移植契约是：**agent tool call → request interceptor → policy decision → downstream tool → response interceptor → audit event**。最小 trace 字段包括 `policy_decision`、`denial_reason`、`sanitized_request`、`sanitized_response`、`interceptor_version`、`principal`、`resource` 和 `context`。
 
 AWS MCP tool design 给这些 gateway case 补上了 tool-surface 层。问题不只是 security enforcement，还包括 context bloat 和 tool confusion：相似工具太多、schema 太宽、description 不清，会让模型选错操作或混用字段。可移植契约是：**tool taxonomy → lazy disclosure → schema constraints → server-side introspection → tool evaluation**。如果某个操作太宽，它可能更适合作为 workflow 或 agent-as-tool；如果 catalog 太大，agent 需要按任务搜索和披露，而不是一开始拿到完整列表。
+
+Smartsheet remote MCP server on AWS 补上了 production-grade remote MCP facade 示例。Smartsheet 用 single production MCP facade 同时服务产品内 Smart Assist 和 external AI clients：MCP server 运行在 Amazon ECS on AWS Fargate 上，位于 API gateway path 后面，并连接 domain services 和 intelligence layer。Amazon Kinesis Data Streams 与 Amazon Managed Service for Apache Flink 把 change events 送入 analytics/intelligence path，Amazon Neptune 支持 graph-backed insights。
+
+可移植契约是：**single production MCP facade → shared internal/external tool contract → AI-optimized responses → schema-driven validation → access tiers → OpenTelemetry/audit → production canaries → usage feedback loop**。关键教训不是每家公司都要复制同一套 AWS stack，而是 enterprise MCP 应该成为 governed domain facade：Smart Assist、external AI clients、security controls、observability、cost control 和 product feedback 共用一个 surface，而不是分裂成多套 agent integrations。
 
 AWS AgentCore AgentOps 和 hosting coding agents 给出了更宽的 production runtime pattern：agent task 应该活在 isolated session 中，带有 durable workspace，使用 scoped credentials，留下 searchable traces，记录 cost/tokens，执行 PII redaction，并发出 explicit governance signals。与 GitHub security validation for third-party coding agents 结合后，它变成可移植契约：**isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**。关键细节是：CodeQL、dependency risk 和 secret scanning 是 platform-owned gates，而不是 agent 对“我检查过自己”的承诺。
 
@@ -110,6 +116,12 @@ Microsoft 的 “When prompts become shells” 是和 AutoJack 不同的独立�
 Microsoft 的 “When AI tools move from reading to acting” 补齐了同一张威胁图的第三个角：agent 可能从 read-only tool access 起步，但真正的风险出现在它开始 acting 时，因为 MCP descriptions 会近似成为 tool choice 的 system prompts。如果一个已经受信任的 MCP server 在初次 approval 后改变 tool description、schema、scope 或 endpoint，host 可能在没有 fresh review 的情况下再次把更高 agency 交给它。这不再只是本地 prompt bug，而是 supply-chain risk：metadata、registry entry 和 published tool contract 都成了 trusted computing base 的一部分。
 
 可移植契约是：**approved MCP server → tool metadata diff → re-attestation → least-agency disclosure → high-impact approval → behavior-drift monitoring → quarantine path**。Review 应该覆盖 description diff、documentation fields 里的 imperative language、新增或扩大的参数、read-only → write/action transition、异常 query patterns，以及 owner/provenance 变化。Least privilege 限制 token scopes，但这里还需要 **least agency**：agent 不应该仅仅因为类似的 read-only tool 已经被批准，就能看到或自动使用 action tool。
+
+### Microsoft networked-agent red team：agent 间信任作为攻击面
+
+Microsoft networked-agent red team 给 MCP/A2A 威胁图增加了网络层：在多 agent 系统里，风险可以通过 peer messages、shared summaries、delegated tasks 和互相背书传播。重点不只是想象中的 **agent worms**，也包括更普通的失效：恶意指令的 propagation、通过 fan-out 产生的 amplification、多个 agent 从同一来源互相确认时的 trust capture，以及本地 traces 看不到完整 cross-agent path 时的 invisibility。
+
+可移植契约是：**peer message is data, not authority → signed provenance → hop and rate limits → capability scoping per edge → cross-agent trace → Sybil resistance → quarantine**。Runtime 应该保存 original author、message path、delegation depth、fan-out、policy decision 和 quarantine reason。否则 agent 间协调会把旧的 prompt-injection 问题变成网络 failure mode，让一个 agent 可以通过另一个 agent 清洗指令。
 
 ### GitHub Copilot cloud agent：云端编码智能体契约
 

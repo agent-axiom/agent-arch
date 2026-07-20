@@ -348,7 +348,7 @@ A minimal contract surface for that example would include:
 
 This pattern fits agent work that is too important for a simple in-memory loop, but does not yet need a full workflow spine with external events and HITL gates.
 
-### Agent Shell + Durable Workflow Spine Pattern
+### Agent shell + durable workflow spine pattern
 
 A future reference-runtime extension should keep one pattern separate: the agent does not need to own all long-running work. It can be the interaction shell — `agent_instance_id`, session state, user-facing stream, connection-scoped authorization, and approval UI. Beside it, the durable workflow spine should own steps, retries, waiting for external events, durable approval records, idempotency keys, and evidence refs.
 
