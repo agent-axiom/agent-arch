@@ -301,6 +301,24 @@ For an **agentic enterprise control plane**, record that the agent is not a loca
 - `capability_loading_mode`
 - `cost_control_signal`
 
+For **model_tool_gateway_boundary**, the trace should show how one gateway/control-plane loop connected tool side effects, model/provider routing, cost, and capacity:
+
+- `provider_route_decision`
+- `cost_capacity_signal`
+- `capacity_backpressure_decision`
+- `budget_exhausted`
+
+For **networked_agent_message**, the trace should show why a message from another agent remained data instead of becoming authority:
+
+- `source_agent_id`
+- `principal_id`
+- `message_provenance_chain`
+- `peer_originated_instruction`
+- `propagation_depth`
+- `fanout_anomaly_score`
+- `sybil_independence_check`
+- `quarantine_event`
+
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for a verifier verdict record:
 
 - `verdict_id`

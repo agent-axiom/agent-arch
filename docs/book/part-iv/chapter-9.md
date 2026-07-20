@@ -186,7 +186,20 @@ AutoJack, описанный Microsoft Defender Security Research, полезе�
 
 Правило execution layer совпадает с правилом этой главы для MCP: model output не является authority. Execution-adjacent tools должны быть deny-by-default, зарегистрированы через capability contract, защищены typed validation, canonical path checks, operation allowlists и per-tool sandbox. Им также нужен audit event до побочного эффекта, а не только после него, чтобы расследование видело prompt source, redacted arguments, validation result, selected sandbox profile и policy decision.
 
-### 4.6. Полезно не путать узел, клиент и сервер MCP
+### 4.6. Сетевая модель угроз для агентов
+
+Microsoft Research отдельно показывает, что риск меняется, когда один агент превращается в сеть агентов: уязвимость может жить не в одном tool wrapper, а в том, как агенты доверяют сообщениям друг друга.[^microsoft-networked-agents] Практическое правило для такой системы: **peer message is data, not authority**. Сообщение от соседнего агента не должно повышать полномочия, менять цель, запускать запись или становиться системной инструкцией, пока runtime, policy layer или human approval явно не повысили его доверие.
+
+Такой **networked-agent threat model** полезно держать рядом с MCP и A2A. Он добавляет четыре failure modes:
+
+- **propagation** — вредная инструкция, poisoned summary или ложная задача передается дальше как обычный контекст;
+- **amplification** — один слабый сигнал превращается в массовый fan-out, повторные tool calls или каскадное уведомление;
+- **trust capture** — группа агентов начинает подтверждать друг друга, хотя все они зависят от одного недоверенного источника;
+- **invisibility** — оператор видит отдельные локальные traces, но не видит межагентный путь, по которому риск перешел границы.
+
+Минимальные controls похожи на network security, но применяются к агентной семантике: Sybil resistance для независимости голосов, hop and rate limits для передачи задач, capability scoping на каждом ребре графа, cross-agent tracing для пути сообщения, provenance logs для исходного автора и quarantine для peer-originated instructions, которые пытаются стать authority. В eval это должно выглядеть как сценарий, где соседний агент просит превысить полномочия, переупаковывает prompt injection или запускает слишком широкий fan-out, а система доказывает, что instruction осталась данными.
+
+### 4.7. Полезно не путать узел, клиент и сервер MCP
 
 Вокруг MCP часто возникает лишняя путаница, потому что слова кажутся знакомыми, а роли у них довольно конкретные.
 
@@ -377,7 +390,23 @@ Cloudflare отдельно показывает полезный паттерн
 
 Для runtime это превращается в проверяемый trace: какие инструменты были видимы, почему именно они были раскрыты, какой taxonomy node или search result их активировал, какая schema version валидировала аргументы, и какой evaluation pack проверяет, что модель не путает похожие tools. Без такого следа “у нас есть MCP gateway” все еще оставляет слепую зону: gateway управляет вызовом, но не объясняет, почему модель вообще увидела именно этот tool surface.
 
-### 5.9. Эфемерные песочницы лучше постоянных сред почти во всем
+### 5.9. Smartsheet remote MCP server on AWS: production remote MCP facade
+
+Smartsheet remote MCP server on AWS дает хороший production remote MCP facade кейс: one MCP layer serves internal and external agents, а не две разные поверхности для in-product Smart Assist и внешних AI clients.[^aws-smartsheet-remote-mcp] Архитектурный урок здесь в том, что MCP server становится не тонким proxy к API, а AI-optimized interface над доменными сервисами и intelligence layer.
+
+Для такой поверхности важны четыре свойства. Во-первых, capability parity: internal Smart Assist и внешние clients получают один governed contract. Во-вторых, schema-driven tool contracts: строгие JSON schemas, проверка имен колонок и structured errors удерживают модель от hallucinated parameters. В-третьих, token cost становится production control: progressive disclosure, response budgets и компактная сериализация ограничивают стоимость и context pressure. В-четвертых, access tiers, OpenTelemetry, audit events, per-user rate limits и production canaries превращают remote MCP в управляемую платформенную границу.
+
+Переносимый contract: **single MCP facade → API gateway and OAuth validation → domain services and intelligence layer → schema-driven tools → token-budgeted responses → access tiers → OpenTelemetry and audit → canary workflow tests**. Это полезно держать рядом с Cloudflare portal и AWS tool design: gateway говорит, кто может вызвать tool, tool-surface contract говорит, что видит модель, а production facade говорит, как один MCP слой выдерживает реальные agent bursts, governance и cost constraints.
+
+### 5.10. Rules of Durable Objects: Durable Agent Identity
+
+Cloudflare Rules of Durable Objects добавляет нижележащий runtime-паттерн, который полезен и вне Cloudflare: **Durable Agent Identity**. Если агент имеет стабильное имя, это имя должно быть **atom of coordination**, а не просто label в логах.[^cloudflare-durable-object-rules] Все запросы, таймеры, wakeups и recovery paths должны сходиться к одному durable instance через deterministic IDs, иначе платформа получит два "одинаковых" агента, которые независимо меняют одно состояние.
+
+Для агентной архитектуры важны пять правил. Первое: deterministic IDs должны строиться из устойчивой сущности вроде tenant/workspace/case/thread, а не из случайного run. Второе: durable state является источником правды для progress, leases, cursors и idempotency; process memory остается только кэшем. Третье: input and output gates должны защищать порядок операций: новая работа не должна видеть полузаписанное состояние, а external side effect не должен уходить до durable commit/evidence. Четвертое: idempotent alarms нужны для отложенных действий, потому что alarm может сработать повторно после сбоя. Пятое: unexpected shutdowns являются нормальной частью модели; recoverable work должен продолжаться из durable checkpoint, а не из in-memory timers, closures, or open fetches.
+
+Переносимый contract: **request → deterministic agent instance → durable state gate → idempotent alarm/fiber/workflow → recovered execution → audited output gate**. Это не заменяет MCP gateway: MCP управляет capability boundary, а Durable Agent Identity управляет тем, какой named agent instance владеет состоянием и как он переживает restart.
+
+### 5.11. Эфемерные песочницы лучше постоянных сред почти во всем
 
 Еще одна полезная мысль из Google: для рискованных возможностей очень выгодно проектировать краткоживущие среды выполнения.[^google-sandbox]
 
@@ -696,6 +725,10 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 [^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) и AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
+[^aws-smartsheet-remote-mcp]: AWS Machine Learning Blog, [How Smartsheet built a remote MCP server on AWS](https://aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws/)
+
+[^cloudflare-durable-object-rules]: Cloudflare, [Rules of Durable Objects](https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/)
+
 [^langchain-loop-engineering]: LangChain, [The Art of Loop Engineering](https://www.langchain.com/blog/the-art-of-loop-engineering).
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
@@ -705,4 +738,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
+[^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)

@@ -323,6 +323,24 @@
 - `capability_loading_mode`
 - `cost_control_signal`
 
+Для **model_tool_gateway_boundary** трасса должна показывать, как один gateway/control-plane контур связал tool side effects, model/provider routing, cost и capacity:
+
+- `provider_route_decision`
+- `cost_capacity_signal`
+- `capacity_backpressure_decision`
+- `budget_exhausted`
+
+Для **networked_agent_message** трасса должна показывать, почему сообщение от другого агента осталось данными, а не стало полномочием:
+
+- `source_agent_id`
+- `principal_id`
+- `message_provenance_chain`
+- `peer_originated_instruction`
+- `propagation_depth`
+- `fanout_anomaly_score`
+- `sybil_independence_check`
+- `quarantine_event`
+
 Если система опирается на оценки с учетом проверяющего, полезно отдельно определить событие, контракт данных или связанный payload для записи вердикта проверяющего (verifier verdict record):
 
 - `verdict_id`

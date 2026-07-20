@@ -37,6 +37,8 @@ Minimal requirements:
 
 Microsoft's “When prompts become shells” case is a useful gateway test because it turns prompt injection into a **prompt-to-tool-to-execution** path.[^microsoft-prompts-shells] The model is not the security boundary; every model-derived argument is attacker-controlled input until the gateway validates it. For execution-adjacent tools, the practical baseline is deny-by-default, strict type and path validation, no interpolation into shell/eval/template sinks, a per-tool sandbox, and an audit event that records the redacted parameters, validation result, policy decision, and sandbox profile.
 
+The next layer is easy to miss: gateway is a control-plane boundary not only for tools, but also for model/provider routing, spend limits, and capacity. A practical **model/tool gateway boundary** should record `provider_route_decision`, `cost_capacity_signal`, capacity/backpressure decision, and an ordinary outcome such as `budget_exhausted` when a limit fires before or during a run.[^cloudflare-ai-gateway-spend-limits] Otherwise the team gets two incomplete loops: the tool gateway prevents side effects, while the model gateway, rate limits, and cost telemetry live separately as billing or reliability details. For safety, that split is dangerous: rising cost, provider-path overload, or fallback to a weaker model can be the same kind of degradation signal as a policy denial.
+
 Here is a very practical policy template for tool execution:
 
 ```yaml
@@ -114,9 +116,11 @@ sequenceDiagram
 
 </div>
 
-Different products will implement this differently, but a useful platform usually needs more than one approval pattern. Cloudflare Agents SDK explicitly separates durable workflow approval, approval for AI chat tools, client-side tool confirmation, MCP elicitation, and lightweight confirmations through state/WebSocket.[^cloudflare-hitl] That is a good practical hint: the approval boundary should match where the side effect actually lives.
+Different products will implement this differently, but a useful platform usually needs more than one approval pattern. Cloudflare Agents SDK explicitly separates durable workflow approval, approval for AI chat tools, client-side tool confirmation, MCP elicitation, Code Mode approval, and lightweight confirmations through state/WebSocket.[^cloudflare-hitl] That is a good practical hint: the approval boundary should match where the side effect actually lives.
 
 If approval belongs to a long-running workflow, it needs timeout, escalation, and durable resume. If it is a browser/client-side tool, the runtime must recognize that part of the check and result came from the client boundary. If it is MCP elicitation, the approval is less like a yes/no switch and more like a structured input request with its own schema.
+
+In the Cloudflare pattern, `waitForApproval()` creates the durable workflow approval gate, while agent-side `approveWorkflow()` and `rejectWorkflow()` resume or reject the waiting workflow. That keeps timeout, escalation, and audit trail in the execution system rather than in a UI callback.
 
 It is also useful to distinguish **quick chat approval** from **durable workflow approval**. Quick approval fits an action that can safely be decided inside the current interaction loop. Durable approval belongs in a durable workflow: it may wait for hours or days, survive runtime restart, carry a separate `approval_id`, expiration, escalation path, and trace evidence showing which step paused and which step resumed after the decision.[^cloudflare-workflows]
 
@@ -267,10 +271,11 @@ First map the real execution boundaries and approval points, then carry that sam
 - [Part II. Security Perimeter](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
-[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human-in-the-loop patterns](https://developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Using Agents with Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
 [^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

@@ -185,7 +185,20 @@ Microsoft's “When prompts become shells” case adds the adjacent failure mode
 
 The execution-layer rule is the same one this chapter uses for MCP: model output is not authority. Execution-adjacent tools should be deny-by-default, registered through a capability contract, protected by typed validation, canonical path checks, operation allowlists, and a per-tool sandbox. They also need an audit event before the side effect, not only after it, so an investigator can see the prompt source, redacted arguments, validation result, selected sandbox profile, and policy decision.
 
-### 4.6. It Helps Not to Confuse the MCP Host, Client, and Server
+### 4.6. Networked-Agent Threat Model
+
+Microsoft Research makes a separate point about what changes when one agent becomes a network of agents: the vulnerability may sit not in one tool wrapper, but in how agents trust each other's messages.[^microsoft-networked-agents] The practical rule is: **peer message is data, not authority**. A message from another agent should not escalate permissions, change the goal, trigger a write, or become a system instruction unless the runtime, policy layer, or human approval explicitly promotes it.
+
+This **networked-agent threat model** belongs next to MCP and A2A. It adds four failure modes:
+
+- **propagation** — a malicious instruction, poisoned summary, or false task moves onward as ordinary context;
+- **amplification** — one weak signal turns into broad fan-out, repeated tool calls, or cascading notifications;
+- **trust capture** — agents start endorsing one another even though they all depend on the same untrusted source;
+- **invisibility** — the operator can see local traces but not the cross-agent path by which risk crossed boundaries.
+
+The minimum controls look like network security applied to agent semantics: Sybil resistance for independent votes, hop and rate limits for task propagation, capability scoping on every graph edge, cross-agent tracing for the message path, provenance logs for the original author, and quarantine for peer-originated instructions that try to become authority. In evals, this should appear as a scenario where a neighboring agent asks for excess privilege, repackages a prompt injection, or triggers too-wide fan-out, while the system proves the instruction remained data.
+
+### 4.7. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 
@@ -376,7 +389,23 @@ The useful heuristic is simple: if a tool cannot be explained as one operation w
 
 For the runtime, this becomes reviewable trace data: which tools were visible, why those tools were disclosed, which taxonomy node or search result activated them, which schema version validated the arguments, and which evaluation pack proves the model does not confuse similar tools. Without that trail, "we have an MCP gateway" still leaves a blind spot: the gateway governs the call, but it does not explain why the model saw that tool surface in the first place.
 
-### 5.9. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
+### 5.9. Smartsheet remote MCP server on AWS: production remote MCP facade
+
+Smartsheet remote MCP server on AWS is a useful production remote MCP facade case: one MCP layer serves internal and external agents instead of exposing separate surfaces for the in-product Smart Assist experience and external AI clients.[^aws-smartsheet-remote-mcp] The architectural lesson is that the MCP server becomes an AI-optimized interface over domain services and an intelligence layer, not a thin proxy to existing APIs.
+
+Four properties matter for that surface. First, capability parity: internal Smart Assist and external clients receive one governed contract. Second, schema-driven tool contracts: strict JSON schemas, column-name validation, and structured errors keep the model away from hallucinated parameters. Third, token cost becomes a production control: progressive disclosure, response budgets, and compact serialization reduce cost and context pressure. Fourth, access tiers, OpenTelemetry, audit events, per-user rate limits, and production canaries turn remote MCP into a governed platform boundary.
+
+The portable contract is: **single MCP facade → API gateway and OAuth validation → domain services and intelligence layer → schema-driven tools → token-budgeted responses → access tiers → OpenTelemetry and audit → canary workflow tests**. This belongs next to the Cloudflare portal and AWS tool design patterns: the gateway says who may call a tool, the tool-surface contract says what the model can see, and the production facade says how one MCP layer survives real agent bursts, governance, and cost constraints.
+
+### 5.10. Rules of Durable Objects: Durable Agent Identity
+
+Cloudflare Rules of Durable Objects adds a lower-level runtime pattern that is useful beyond Cloudflare: **Durable Agent Identity**. If an agent has a stable name, that name should be the **atom of coordination**, not only a label in logs.[^cloudflare-durable-object-rules] Requests, timers, wakeups, and recovery paths should converge on one durable instance through deterministic IDs; otherwise the platform can create two "same" agents that independently mutate one state boundary.
+
+Five rules matter for agent architecture. First, deterministic IDs should derive from a stable entity such as tenant/workspace/case/thread, not from a random run. Second, durable state is the source of truth for progress, leases, cursors, and idempotency; process memory is only a cache. Third, input and output gates should protect operation order: new work should not observe half-written state, and an external side effect should not leave before durable commit/evidence. Fourth, idempotent alarms are required for delayed actions because an alarm may fire again after a failure. Fifth, unexpected shutdowns are part of the model; recoverable work should continue from a durable checkpoint, not from in-memory timers, closures, or open fetches.
+
+The portable contract is: **request → deterministic agent instance → durable state gate → idempotent alarm/fiber/workflow → recovered execution → audited output gate**. This does not replace the MCP gateway: MCP governs the capability boundary, while Durable Agent Identity governs which named agent instance owns state and how it survives restart.
+
+### 5.11. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
 
 Another useful Google idea is that risky capabilities are often better served by short-lived execution environments.[^google-sandbox]
 
@@ -671,6 +700,10 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 
 [^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) and AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
+[^aws-smartsheet-remote-mcp]: AWS Machine Learning Blog, [How Smartsheet built a remote MCP server on AWS](https://aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws/)
+
+[^cloudflare-durable-object-rules]: Cloudflare, [Rules of Durable Objects](https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/)
+
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
 [^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
@@ -678,4 +711,5 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
+[^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)

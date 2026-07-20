@@ -37,6 +37,8 @@
 
 Microsoft 的 “When prompts become shells” 案例很适合测试 gateway，因为它把 prompt injection 变成 **prompt-to-tool-to-execution** 路径。[^microsoft-prompts-shells] 模型不是 security boundary：任何模型派生出来的参数，在 gateway 校验之前都还是 attacker-controlled input。对 execution-adjacent tools，最低基线是 deny-by-default、严格的 type/path validation、禁止插入 shell/eval/template sinks、per-tool sandbox，以及记录 redacted parameters、validation result、policy decision 和 sandbox profile 的 audit event。
 
+下一层很容易被漏掉：gateway is a control-plane boundary 不只针对 tools，也针对 model/provider routing、spend limits 和 capacity。一个实用的 **model/tool gateway boundary** 应该记录 `provider_route_decision`、`cost_capacity_signal`、capacity/backpressure decision，以及当限制在 run 前或 run 中触发时的普通 outcome，例如 `budget_exhausted`。[^cloudflare-ai-gateway-spend-limits] 否则团队会得到两个不完整的回路：tool gateway 防止副作用，而 model gateway、rate limits 和 cost telemetry 被放在 billing 或 reliability 细节里。对 safety 来说，这种拆分很危险：成本上升、provider path 过载，或 fallback 到更弱模型，都可能和 policy denial 一样，是退化信号。
+
 下面是一个很实用的工具执行策略模板：
 
 ```yaml
@@ -114,9 +116,11 @@ sequenceDiagram
 
 </div>
 
-不同产品会用不同方式实现这一点，但有用的平台通常不应该只有一种 approval pattern。Cloudflare Agents SDK 明确区分 durable workflow approval、AI chat tools 的 approval、client-side tool confirmation、MCP elicitation，以及通过 state/WebSocket 完成的轻量确认。[^cloudflare-hitl] 这是一个很好的实践提示：approval boundary 应该和 side effect 真正发生的位置一致。
+不同产品会用不同方式实现这一点，但有用的平台通常不应该只有一种 approval pattern。Cloudflare Agents SDK 明确区分 durable workflow approval、AI chat tools 的 approval、client-side tool confirmation、MCP elicitation、Code Mode approval，以及通过 state/WebSocket 完成的轻量确认。[^cloudflare-hitl] 这是一个很好的实践提示：approval boundary 应该和 side effect 真正发生的位置一致。
 
 如果 approval 属于 long-running workflow，它需要 timeout、escalation 和 durable resume。如果它是 browser/client-side tool，运行时必须知道一部分检查和结果来自 client boundary。如果它是 MCP elicitation，approval 就不只是 yes/no 开关，而更像带有自己 schema 的 structured input request。
+
+在 Cloudflare pattern 里，`waitForApproval()` 创建 durable workflow approval gate，而 agent-side `approveWorkflow()` 和 `rejectWorkflow()` 继续或拒绝等待中的 workflow。这样 timeout、escalation 和 audit trail 属于执行系统，而不是 UI callback。
 
 这里还应该明确区分 **quick chat approval** 和 **durable workflow approval**。前者适合能在当前 interaction loop 内安全决策的动作；后者应该属于 durable workflow：它可能等待数小时或数天，跨运行时重启继续存在，带有独立的 `approval_id`、过期时间、escalation path，以及能说明哪个步骤暂停、哪个步骤在审批后恢复的 trace evidence。[^cloudflare-workflows]
 
@@ -267,10 +271,11 @@ Anthropic 的 containment 实践还给出一个有用结论：权限不应该只
 - [第二部分：安全边界](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
 
-[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
-[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human-in-the-loop patterns](https://developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Using Agents with Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
 [^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

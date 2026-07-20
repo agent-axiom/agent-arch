@@ -462,6 +462,14 @@ For a release gate, that changes the metric set. In addition to task resolution,
 
 The practical lesson: when a team changes the harness, context strategy, or model routing, it needs a harness-level release gate. Otherwise it can wrongly conclude that "the model got better" or "the model got worse" when the real cause sits in the orchestration layer.
 
+### 7.2. Quality Regression Can Live in the Product Harness
+
+Anthropic's postmortem on Claude Code quality reports shows the same issue in a more painful form.[^anthropic-claude-code-quality-reports] Users experienced degraded Claude Code, Claude Agent SDK, and Claude Cowork behavior even though the API and inference layer were not the cause. The three changes lived in the product harness: the default reasoning effort was lowered for latency, stale-session optimization repeatedly pruned older thinking, and a system-prompt instruction meant to reduce verbosity hurt coding quality.
+
+For a release gate, this is its own failure pattern: **model unchanged → harness/config/prompt/context change → quality regression → user reports before eval reproduction**. Release checks should therefore version `model_id`, `effort_default`, `context_pruning_policy`, `prompt_bundle_version`, `cache_header_behavior`, `harness_version`, and `rollout_slice`. Otherwise the team may search for "model degradation" when the regression was created by latency optimization, cache policy, or prompt hygiene.
+
+The practical contract after this kind of incident is concrete: prompt changes get per-model eval suites and ablations; intelligence/latency tradeoffs get soak periods and gradual rollout; context-pruning changes get stale-session regression cases; dogfooding uses the public build, not only an internal testing build. User feedback also becomes a gate signal, but it has to be linked to specific version slices so broad complaints do not disappear into normal variance.
+
 ## 8. Practical Rules for the Eval Loop
 
 If you need a short engineering frame, rules like these are usually enough:
@@ -653,6 +661,7 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 [^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/).
 [^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
 [^github-copilot-agentic-harness]: GitHub Blog, [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/).
+[^anthropic-claude-code-quality-reports]: Anthropic, [An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), 23 April 2026.
 [^langchain-state-agent-engineering]: LangChain, [State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering).
 [^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).

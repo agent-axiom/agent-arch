@@ -484,6 +484,14 @@ GitHub Copilot agentic harness дает хороший практический 
 
 Практический вывод: если команда меняет harness, context strategy или model routing, ей нужен harness-level release gate. Иначе можно ошибочно решить, что "модель стала лучше" или "модель стала хуже", хотя реальная причина лежит в orchestration layer.
 
+### 7.2. Quality regression может жить в продуктовой обвязке
+
+Постмортем Anthropic по Claude Code quality reports показывает ту же проблему в более болезненном виде.[^anthropic-claude-code-quality-reports] Пользователи видели деградацию Claude Code, Claude Agent SDK и Claude Cowork, хотя API и inference layer не были причиной. Три изменения лежали в продуктовой обвязке: default reasoning effort был снижен ради latency, stale-session optimization начала repeatedly pruning older thinking, а system prompt instruction для меньшей verbose output ухудшила coding quality.
+
+Для release gate это отдельный failure pattern: **model unchanged → harness/config/prompt/context change → quality regression → user reports before eval reproduction**. Значит, проверка релиза должна явно версионировать `model_id`, `effort_default`, `context_pruning_policy`, `prompt_bundle_version`, `cache_header_behavior`, `harness_version` и `rollout_slice`. Иначе команда будет искать "ухудшение модели" там, где регресс создали latency optimization, cache policy или prompt hygiene.
+
+Практический контракт после такого инцидента: prompt changes получают per-model eval suite and ablation; intelligence/latency tradeoffs получают soak period and gradual rollout; context-pruning changes получают stale-session regression cases; dogfooding должно использовать public build, а не только internal testing build. User feedback тоже становится сигналом gate, но его нужно связывать с конкретными version slices, чтобы broad complaint не растворялся в normal variance.
+
 ## 8. Практические правила для контура оценки
 
 Если нужен короткий инженерный каркас, обычно достаточно таких правил:
@@ -579,7 +587,11 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 
 Microsoft Foundry Open Trust Stack добавляет к этому удобную связку между политиками, evals и runtime controls.[^microsoft-open-trust-stack] ASSERT полезен как напоминание, что eval cases должны выводиться из organizational policies and requirements, а не только из случайных regression prompts. Agent Control Specification (ACS) дополняет это переносимыми control checkpoints: если eval показывает, что агент проваливает policy requirement, исправление должно выражаться не только в prompt change, но и в контрольной точке до tool call, после tool result или перед external action.
 
+Новый слой Foundry делает этот контур еще более прикладным: production traces можно превращать в curated, versioned evaluation datasets.[^microsoft-traces-to-dataset] Это важная граница между observability и learning system. Трасса сама по себе еще не тест: ее нужно отобрать, очистить, привязать к expected outcome, версии агента, evaluator version и privacy policy. Но когда такая запись становится dataset item, реальное поведение пользователя возвращается в offline regression gate, а не остается только строкой в dashboard.
+
 Самое важное здесь не конкретный toolkit, а форма контура. Production traces нужно превращать не только в dashboards, но и в новые тестовые случаи, regression thresholds и code-level fixes. Если реальный трафик показывает, что агент красиво отвечает поверх пустого tool output, это не просто observability signal. Это будущий eval case на faithfulness, tool-use discipline и fallback behavior.
+
+Anthropic хорошо формулирует соседний риск: агентные evals часто требуют экспертного суждения, но эксперт не должен превращаться в бесконечный ручной grader.[^anthropic-agent-evals][^anthropic-expertise] Правильный контракт — **expert review → rubric update → representative dataset item → automated or sampled regression**. Эксперт нужен, чтобы определить, что считается хорошим исходом в неоднозначной задаче, отличить допустимый альтернативный путь от ошибки и отбраковать хрупкие path-based проверки. После этого система должна сохранять критерий, пример, причину решения и границу применимости, иначе expertise остается устной традицией команды.
 
 В зрелом контуре после каждого значимого изменения команда должна уметь:
 
@@ -687,6 +699,10 @@ Microsoft Foundry Open Trust Stack добавляет к этому удобну
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 [^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
 [^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
+[^microsoft-traces-to-dataset]: Microsoft Learn, [Convert agent traces into evaluation datasets](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-to-dataset).
+[^anthropic-agent-evals]: Anthropic, [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents).
+[^anthropic-expertise]: Anthropic, [Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise).
+[^anthropic-claude-code-quality-reports]: Anthropic, [An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), 23 April 2026.
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^consensus]: OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
