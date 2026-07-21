@@ -140,6 +140,7 @@ And once capability-session governance is explicit, the bundle should usually ma
 - revoke behavior for paused or in-flight actions;
 - verifier contract version, grading rubric, and evidence-linkage expectations when rollout or assurance depends on verifier judgments;
 - sandbox profile review evidence, including the `sandbox_profile_reviewed` trace event, `workspace_manifest_ref`, and links to eval/rollout evidence when release identity includes sandbox-backed execution.
+- continuity contract version and evidence: the [Context Continuity Envelope](continuity-envelope-schema.en.md), `context_compaction`/`context_rehydration` event contracts, full-history-versus-compacted-history eval results, and the rule that every resumed capability call is reauthorized.
 
 ## 5. Retirement plan
 

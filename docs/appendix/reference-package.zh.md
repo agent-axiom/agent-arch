@@ -69,6 +69,8 @@ Managed Agents 给这一页补了一张简短的 **Brain / Hands / Session** 地
   用于已批准注册表的持续控制与清单漂移检查。
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
   用于高风险动作的审批门禁、暂停/恢复语义、简单人工评审队列，以及审批状态必须与能力会话状态保持一致的那层控制表面。
+- [continuity.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/continuity.py)
+  失败关闭的 `ContinuityEnvelope` 验证器：把派生摘要绑定到持久状态，检测身份、策略、能力和审批漂移，阻断状态未知的外部副作用，并始终要求重新授权。
 
 同一层运行时控制表面也天然适合承载委派授权假设：是谁委托了访问，这份授权能否跨过暂停/恢复继续有效，以及如果委派访问在动作完成前被撤销，运行时应该如何处理。
 
@@ -93,6 +95,17 @@ Managed Agents 给这一页补了一张简短的 **Brain / Hands / Session** 地
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+演练上下文压缩与重置安全：
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-continuity
+.venv/bin/python -m agent_runtime_ref inspect-continuity --tamper-summary
+.venv/bin/python -m agent_runtime_ref inspect-continuity --current-policy-version policy-v5
+.venv/bin/python -m agent_runtime_ref inspect-continuity --side-effect-status side_effect_unknown
+```
+
+正常路径发出 `context_compaction` 与 `context_rehydration`，但返回 `authorized: false` 和 `reauthorization_required`。摘要篡改或策略漂移会发出 `continuity_validation_failed`。未知副作用会发出同一停止事件，并把状态设为 `blocked_on_reconciliation`；核对成功前不会发出恢复事件。这是确定性的教学实现，不是生产级持久执行器：生产系统必须把事件日志、检查点、策略、审批和副作用状态保存在模型上下文之外的受治理存储中。完整字段与评测契约见[上下文连续性信封 Schema](continuity-envelope-schema.zh.md)。
 
 第二种形式是一个刻意保持很小的失败丰富场景。它让这个参考包能够展示，一条本来被允许的能力也可能以受治理的失败运行收尾，并留下明确的遥测，而不是被泛化成成功路径。`simulate-run` 会返回 `agent_id`、`request_agent_id`、`config_dir`、`trace_id`、`idempotency_keys`、`approval_ids`、`approval_capability_names`、`pending_approval_ids`、`pending_approval_capability_names`、`approval_status_counts`、`event_types`、`session_id`、`tenant_id`、`principal_id`、`authorization_mode`、`delegated_principal_id`、`delegated_scope`、`status`、`result`、`events`、`memory_records`、`memory_record_ids`、`pending_approvals`、`pending_approval_ids`、`pending_approval_capability_names` 和可选的 `failure_reason`。Common identity and trace overrides 包括 `--config-dir`、`--agent-id`、`--tenant-id`、`--principal-id`、`--trace-id` 和 `--session-id`，这样 examples 不需要修改 configs 也能保持 deterministic。更专门的 selectors 包括用于 memory inspection 的 `--limit`、用于 approval closure 的 `--approval-id`、用于 trace replay 的 `--replay-trace-id`、用于 session commands 的 `--trace-prefix`，以及用于 eval dataset exports 的 `--session-prefix`。
 

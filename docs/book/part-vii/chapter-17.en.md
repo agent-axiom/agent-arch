@@ -122,7 +122,7 @@ Without those fields, the policy layer can approve a capability in principle but
 
 Anthropic's workflow taxonomy adds one more missing governance dimension here.[^anthropic] The policy layer should not only decide whether a capability is allowed in isolation. It should also decide which orchestration patterns are allowed to invoke it.
 
-Their later harness work adds a closely related lesson: once a system uses planner, generator, and evaluator roles over long-running work, policy has to govern not just a tool call, but the **role contract** around that tool call.[^anthropic-harness] If a generator proposes the sprint, an evaluator grades it, and a planner reshapes scope, the platform needs explicit rules about who may define done-ness, who may grade quality, who may trigger a reset, and which handoff artifact is authoritative after a context reset.
+Their later harness work adds a closely related lesson: once a system uses planner, generator, and evaluator roles over long-running work, policy has to govern not just a tool call, but the **role contract** around that tool call.[^anthropic-harness] If a generator proposes the sprint, an evaluator grades it, and a planner reshapes scope, the platform needs explicit rules about who may define done-ness, who may grade quality, who may trigger a reset, and which handoff artifact the runtime recognizes as continuity input after a context reset. That artifact remains a derived, untrusted view and cannot carry authority. The [Context Continuity Envelope](../../appendix/continuity-envelope-schema.en.md) binds it to durable control state and requires a new policy decision before execution resumes.
 
 For example, a policy contract may need to express whether a capability is:
 

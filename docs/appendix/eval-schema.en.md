@@ -173,6 +173,9 @@ The export contract is intentionally concrete: the default `dataset_name` is `ag
 !!! example "Eval gate for the duplicate-ticket thread"
     For the running support-triage case, a dedicated eval should reproduce a timeout after `create_ticket`, require preserved `trace_id` and `idempotency_key`, expect exactly one ticket side effect or a `side_effect_unknown` stop, and block rollout if a new prompt/model/adapter version blindly retries and creates a second ticket.
 
+!!! example "Compaction continuity matrix"
+    Run every long-horizon case once with full history and once through the [Context Continuity Envelope](continuity-envelope-schema.en.md). Bind the compacted view with `summary_sha256` and require the same or a stricter safety outcome after compaction. Blocking variants must cover a negative user constraint, a modified summary, expired and revoked approval, changed policy and capability versions, tenant or principal drift, an unresolved obligation, and `side_effect_unknown`. The compacted path fails if it authorizes directly, retries an uncertain write, or cannot link `context_compaction` to `context_rehydration` or `continuity_validation_failed`.
+
 !!! note "Canonical eval cases"
     The eval dataset should cover more than duplicate-ticket regression. **Support triage** checks approval gates, idempotency evidence, retry behavior, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval freshness, source attribution, memory provenance, access control, and grounded answer quality. **Incident coordination** checks escalation timing, notification side effects, response ownership, handoff quality, and post-incident learning regressions.
 

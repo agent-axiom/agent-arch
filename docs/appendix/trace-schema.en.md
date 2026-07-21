@@ -131,6 +131,9 @@ Below is the current minimal event catalog.
 | `memory_write_decision` | before background memory persistence | records whether a candidate memory write was allowed or denied |
 | `memory_persisted` | after a background write | records provenance and revision of a memory record |
 | `background_compaction` | after background memory maintenance | records tenant-level compaction results |
+| `context_compaction` | when a live context view is replaced by a shorter derived view | binds `envelope_id`, source event range, and `summary_sha256` without transferring authority |
+| `context_rehydration` | after durable state has been validated and a context view rebuilt | records checkpoint, validation outcome, and `requires_reauthorization=true` |
+| `continuity_validation_failed` | when summary, identity, policy, capability, approval, event lineage, or side-effect state does not permit safe continuation | stops continuation with a stable reason and may carry `blocked_on_reconciliation` when an external effect is unknown |
 | `background_update_scheduled` | after background work is queued or completed | records background update status for the run |
 | `verification_result` | when a run verifies its stop condition | records stop condition, verifier actor, verification mechanism, pass/fail/warning/blocked result, and evidence links |
 | `run_failed` | when a tool failure becomes the run outcome | preserves explicit failed-run traceability |
@@ -139,6 +142,8 @@ Below is the current minimal event catalog.
 | `span` | around individual calls | provides simple latency and status telemetry |
 
 This is not meant to be a universal perfect catalog. It is a compact operational vocabulary that is already enough to support:
+
+`background_compaction` describes maintenance of stored memory records. It is not interchangeable with `context_compaction`, which marks a live execution boundary and must follow the [Context Continuity Envelope Schema](continuity-envelope-schema.en.md).
 
 A stronger production vocabulary should also make room for verifier-aware evidence, so traces can later explain not only what the runtime did, but also what evidence a verifier used to judge process quality, outcome quality, or failure attribution.
 

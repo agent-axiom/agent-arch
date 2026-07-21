@@ -173,6 +173,9 @@ OpenAI 对 SWE-Bench Pro 的审计说明了为什么只有这个契约还不够�
 !!! example "重复工单线索的评测门禁（eval gate）"
     对于贯穿的支持分诊（support-triage）案例，应该有一个专门评测（eval）复现 `create_ticket` 之后的超时，要求保留 `trace_id` 与 `idempotency_key`，期望恰好一个工单副作用或一次 `side_effect_unknown` 停止；如果新的提示词/模型/适配器（prompt/model/adapter）版本盲目重试并创建第二个工单，就阻断发布（rollout）。
 
+!!! example "上下文压缩连续性矩阵"
+    每个长程场景都运行两次：一次使用完整历史，一次通过[上下文连续性信封](continuity-envelope-schema.zh.md)。用 `summary_sha256` 绑定压缩视图，并要求压缩后的安全判断相同或更严格。阻断变体必须覆盖用户否定约束、被修改的摘要、过期或撤销的审批、策略与能力版本变化、租户或主体漂移、未完成义务以及 `side_effect_unknown`。如果压缩路径直接授权、重试结果未知的写入，或无法把 `context_compaction` 关联到 `context_rehydration` 或 `continuity_validation_failed`，评测即失败。
+
 !!! note "规范评测案例（Canonical eval cases）"
     评测数据集（eval dataset）不应该只覆盖重复工单回归（duplicate-ticket regression）。**支持分流（Support triage）** 检查审批门禁（approval gates）、幂等证据（idempotency evidence）、重试行为（retry behavior）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 检查检索新鲜度（retrieval freshness）、来源归因（source attribution）、记忆来源（memory provenance）、访问控制（access control）和有依据回答质量（grounded answer quality）。**事件协调（Incident coordination）** 检查升级时序（escalation timing）、通知副作用（notification side effects）、响应归属（response ownership）、交接质量（handoff quality）和事件后学习回归（post-incident learning regressions）。
 

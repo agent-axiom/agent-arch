@@ -234,6 +234,16 @@ Google Agent Executor expresses a similar layer as a distributed runtime primiti
 
 Their later harness work adds one more practical runtime lesson: long-running application work often needs an explicit distinction between **compaction** and **context reset**.[^anthropic-harness] Compaction keeps the same agent alive on a shortened history, which preserves continuity but may keep the same context anxiety and drift. A reset starts a fresh agent and depends on a structured handoff artifact that carries state, next steps, and evaluation context forward. That is not just a prompt trick. It is runtime architecture, because once resets are part of the harness, the platform must decide what state is durable enough to survive them and what review artifact the next agent inherits.
 
+The handoff artifact still does not become an authorization artifact. The runtime should persist a [Context Continuity Envelope](../../appendix/continuity-envelope-schema.en.md), validate its digest and lineage, reconcile any unknown external effect, reload identity and contract versions from their systems of record, and then authorize the next capability call again. A successful rehydration means only that continuity was reconstructed; it never means that the summary approved an action.
+
+A baseline implementation can make the boundary explicit with this sequence:
+
+1. Before compaction, stop at a safe boundary, flush the append-only session log, checkpoint the workflow cursor, and persist unresolved obligations.
+2. Persist control fields without summarization, create the derived summary, bind it to its source event range with `summary_sha256`, and emit `context_compaction`.
+3. After reset, load the envelope from governed storage and validate schema, digest, event lineage, tenant, principal, delegated scope, policy, capability, approval, budget, sandbox, and checkpoint state.
+4. If an external effect is unknown, return `blocked_on_reconciliation`; if any binding changed, emit `continuity_validation_failed` and stop.
+5. Only after validation and any required reconciliation succeed, rebuild the disposable context view, emit `context_rehydration`, and run policy plus authorization again before the next capability call.
+
 So bounded autonomy is not only a policy issue. It is also a runtime-state design issue: every allowed execution pattern implies its own pause, resume, reset, and completion semantics.
 
 If the runtime has no explicit shape for those cases, long-running work usually leaks into ad hoc retries, duplicated requests, and hidden state transitions.
