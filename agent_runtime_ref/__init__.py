@@ -2,6 +2,13 @@
 
 from agent_runtime_ref.approvals import ApprovalPolicy, ApprovalQueue, ApprovalRequest
 from agent_runtime_ref.catalog import CapabilityCatalog, CapabilitySpec
+from agent_runtime_ref.continuity import (
+    ContinuityDecision,
+    ContinuityEnvelope,
+    ContinuityState,
+    summary_sha256,
+    validate_rehydration,
+)
 from agent_runtime_ref.controls import ControlsAssessment, ControlsPolicy
 from agent_runtime_ref.identity import AgentIdentity, ApprovedInventory
 from agent_runtime_ref.models import (
@@ -34,6 +41,9 @@ __all__ = [
     "CapabilitySpec",
     "ControlsAssessment",
     "ControlsPolicy",
+    "ContinuityDecision",
+    "ContinuityEnvelope",
+    "ContinuityState",
     "ModelOutput",
     "PolicyDecision",
     "PolicyEngine",
@@ -48,5 +58,7 @@ __all__ = [
     "ToolRequest",
     "ToolResult",
     "ready_for_rollout",
+    "summary_sha256",
     "summarize_session",
+    "validate_rehydration",
 ]

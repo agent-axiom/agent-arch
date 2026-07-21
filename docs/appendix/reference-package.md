@@ -69,6 +69,8 @@ Managed Agents добавляют к этой странице короткую 
   Проверка непрерывных контролей и расхождения инвентаря с утвержденным реестром.
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
   Шлюзы подтверждения, семантика паузы/возобновления, простая очередь человеческой проверки для действий высокого риска и та поверхность управления, где состояние подтверждения должно оставаться синхронизированным с состоянием сессии возможности.
+- [continuity.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/continuity.py)
+  Отказоустойчивый валидатор `ContinuityEnvelope`: связывает производную сводку с долговечным состоянием, обнаруживает дрейф идентичности, политики, возможности и подтверждения, блокирует неизвестные внешние эффекты и всегда требует повторной авторизации.
 
 Эта же поверхность управления средой выполнения естественно расширяется и на предположения делегированного разрешения: какой субъект делегировал доступ, переживает ли такая авторизация паузу/возобновление и что делает среда выполнения, если делегированный доступ отозвали до завершения действия.
 
@@ -93,6 +95,17 @@ Managed Agents добавляют к этой странице короткую 
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+Проверьте безопасность сжатия и сброса контекста:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-continuity
+.venv/bin/python -m agent_runtime_ref inspect-continuity --tamper-summary
+.venv/bin/python -m agent_runtime_ref inspect-continuity --current-policy-version policy-v5
+.venv/bin/python -m agent_runtime_ref inspect-continuity --side-effect-status side_effect_unknown
+```
+
+Штатный путь записывает `context_compaction` и `context_rehydration`, но возвращает `authorized: false` и `reauthorization_required`. Подмена или дрейф политики дают `continuity_validation_failed`. Неизвестный эффект записывает то же событие остановки со статусом `blocked_on_reconciliation`; до успешной сверки событие восстановления не появляется. Это детерминированная учебная реализация, а не промышленный долговечный исполнитель: журнал событий, контрольные точки, политика, подтверждения и состояние внешних эффектов должны жить в управляемых хранилищах вне контекста модели. Полный контракт полей и оценок описан в [схеме непрерывности контекста](continuity-envelope-schema.md).
 
 Второй вариант специально добавлен как сценарий с явным отказом. Он позволяет пакету показать, что даже разрешенная возможность может завершиться как управляемый неудачный запуск с явной телеметрией, а не раствориться за общим успешным путем. `simulate-run` возвращает `agent_id`, `request_agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `event_types`, `session_id`, `tenant_id`, `principal_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, `pending_approval_capability_names` и опциональный `failure_reason`. Общие переопределения идентичности и трассы включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы примеры можно было сделать детерминированными без редактирования конфигураций. Более специальные переключатели включают `--limit` для инспекции памяти, `--approval-id` для закрытия подтверждения, `--replay-trace-id` для повторного прогона трассы, `--trace-prefix` для команд сессий и `--session-prefix` для экспортов оценочных наборов.
 

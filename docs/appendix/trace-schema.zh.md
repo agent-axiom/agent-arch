@@ -131,6 +131,9 @@
 | `memory_write_decision` | 后台写入记忆前 | 记录 candidate memory write 被允许还是拒绝 |
 | `memory_persisted` | 后台写入后 | 记录记忆记录的来源和修订 |
 | `background_compaction` | background memory maintenance 后 | 记录 tenant-level compaction results |
+| `context_compaction` | 当前上下文视图被更短的派生摘要替换时 | 绑定 `envelope_id`、源事件范围与 `summary_sha256`，但不转移权限 |
+| `context_rehydration` | 持久状态通过验证且上下文视图重建后 | 记录检查点、验证结果与 `requires_reauthorization=true` |
+| `continuity_validation_failed` | 摘要、身份、策略、能力、审批、事件沿袭或副作用状态不允许安全继续时 | 用稳定原因停止继续执行；外部效果未知时可携带 `blocked_on_reconciliation` |
 | `background_update_scheduled` | background work 排队或完成后 | 记录该运行的 background update status |
 | `verification_result` | 运行验证停止条件时 | 记录 stop condition、verifier actor、verification mechanism、pass/fail/warning/blocked result 与 evidence links |
 | `run_failed` | 工具失败成为运行结果时 | 保留明确的 failed-run traceability |
@@ -139,6 +142,8 @@
 | `span` | 单个调用周围 | 提供基础延迟与状态遥测 |
 
 这不是所谓“完美通用目录”。它只是一个紧凑但已经有实际价值的运行词汇表，足以支持：
+
+`background_compaction` 描述已存储记忆记录的维护，不能与 `context_compaction` 混用。后者标记实时执行边界，必须遵循[上下文连续性信封 Schema](continuity-envelope-schema.zh.md)。
 
 在更成熟的生产词汇表里，也应该预留验证器感知证据的位置，让追踪不只解释运行时做了什么，还能解释验证器依据什么来判断过程质量、结果质量或失败归因。
 

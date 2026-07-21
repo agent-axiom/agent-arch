@@ -21626,6 +21626,84 @@ def test_anthropic_managed_agents_contract_is_integrated() -> None:
         _assert_files_contain_all((path,), markers)
 
 
+def test_compaction_continuity_contract_is_localized_and_cross_linked() -> None:
+    localized_contracts = {
+        "en": {
+            "schema": "docs/appendix/continuity-envelope-schema.en.md",
+            "invariant": (
+                "A compacted summary is a derived, untrusted view. "
+                "It carries no authority."
+            ),
+        },
+        "ru": {
+            "schema": "docs/appendix/continuity-envelope-schema.md",
+            "invariant": (
+                "Сжатая сводка — производное недоверенное представление. "
+                "Она не переносит полномочия."
+            ),
+        },
+        "zh": {
+            "schema": "docs/appendix/continuity-envelope-schema.zh.md",
+            "invariant": "压缩摘要是派生的、不受信任的视图，不能携带任何权限。",
+        },
+    }
+
+    for locale, contract in localized_contracts.items():
+        schema = contract["schema"]
+        assert (ROOT / schema).is_file(), schema
+        schema_text = _read(schema)
+        assert contract["invariant"] in schema_text, schema
+        for field in (
+            "policy_version",
+            "approval_id",
+            "action_digest",
+            "idempotency_key",
+            "side_effect_status",
+            "checkpoint_ref",
+            "summary_sha256",
+        ):
+            assert f"`{field}`" in schema_text, (schema, field)
+
+        suffix = ".md" if locale == "ru" else f".{locale}.md"
+        for chapter in (
+            f"docs/book/part-iii/chapter-7{suffix}",
+            f"docs/book/part-vii/chapter-16{suffix}",
+            f"docs/book/part-vii/chapter-17{suffix}",
+        ):
+            assert "continuity-envelope-schema" in _read(chapter), chapter
+
+        trace_schema = _read(f"docs/appendix/trace-schema{suffix}")
+        for event_type in (
+            "context_compaction",
+            "context_rehydration",
+            "continuity_validation_failed",
+        ):
+            assert f"`{event_type}`" in trace_schema, (locale, event_type)
+
+        eval_schema = _read(f"docs/appendix/eval-schema{suffix}")
+        for eval_marker in (
+            "summary_sha256",
+            "side_effect_unknown",
+            "continuity_validation_failed",
+        ):
+            assert f"`{eval_marker}`" in eval_schema, (locale, eval_marker)
+
+        reference_package = _read(f"docs/appendix/reference-package{suffix}")
+        assert "continuity.py" in reference_package, locale
+        assert "inspect-continuity" in reference_package, locale
+        lifecycle_schema = _read(f"docs/appendix/lifecycle-artifact-schema{suffix}")
+        assert "continuity-envelope-schema" in lifecycle_schema, locale
+
+    mkdocs = _read("mkdocs.yml")
+    assert "appendix/continuity-envelope-schema.md" in mkdocs
+    for title in (
+        "Схема непрерывности контекста",
+        "Context Continuity Envelope Schema",
+        "上下文连续性信封 Schema",
+    ):
+        assert title in mkdocs
+
+
 def test_markdown_rendering_regression_patterns_are_absent() -> None:
     checked_files = [
         "docs/book/part-i/chapter-1.en.md",

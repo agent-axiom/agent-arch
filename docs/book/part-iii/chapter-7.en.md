@@ -90,6 +90,15 @@ A useful practical rule:
 
 If the memory layer only grows, sooner or later prompt assembly starts behaving like a garbage collector with no rules. That is why compaction should be part of the architecture, not a one-time cleanup project.
 
+Compaction also creates a security boundary. A summary is a derived, untrusted view of durable session state; it cannot carry authority. Identity, policy and capability versions, approval bindings, idempotency keys, side-effect status, checkpoints, budgets, and exact references to user constraints must survive outside prose and be validated before execution continues. The [Context Continuity Envelope](../../appendix/continuity-envelope-schema.en.md) defines that contract and the required fail-closed recovery protocol.
+
+Treat the boundary as two different data planes:
+
+- **Disposable context view:** conversational history, retrieved excerpts, working notes, and the compacted summary. It may be regenerated or discarded.
+- **Durable control state:** tenant and principal identity, delegated scope, policy and capability versions, `approval_id` plus `action_digest` and expiry, `idempotency_key`, `side_effect_status`, `checkpoint_ref`, remaining budget, unresolved obligations, exact constraint references, and evidence lineage. It must remain structured and must not depend on a model-written summary.
+
+This distinction prevents a common category error: a good summary can improve orientation, but no degree of fluency turns it into a policy database, approval registry, side-effect ledger, or event log.
+
 Compaction can mean different things:
 
 - compress several records into a summary;

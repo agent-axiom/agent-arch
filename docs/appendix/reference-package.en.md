@@ -69,6 +69,8 @@ Recent contract updates make that surface more useful for review: delegated auth
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
   Approval gates, pause/resume semantics, simple human review queues for high-risk actions, and the control surface where approval state has to stay aligned with capability session state.
+- [continuity.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/continuity.py)
+  A fail-closed `ContinuityEnvelope` validator that binds a derived summary to durable state, detects identity, policy, capability, and approval drift, blocks unknown side effects, and always requires reauthorization.
 
 That same runtime-control surface is also the natural place to keep delegated authorization assumptions explicit: which principal delegated access, whether that authorization may survive pause/resume, and what the runtime does if delegated access is revoked before the action completes.
 
@@ -93,6 +95,17 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+Exercise context compaction and reset safety:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-continuity
+.venv/bin/python -m agent_runtime_ref inspect-continuity --tamper-summary
+.venv/bin/python -m agent_runtime_ref inspect-continuity --current-policy-version policy-v5
+.venv/bin/python -m agent_runtime_ref inspect-continuity --side-effect-status side_effect_unknown
+```
+
+The valid path emits `context_compaction` and `context_rehydration` but returns `authorized: false` with `reauthorization_required`. Tampering or policy drift emits `continuity_validation_failed`. An unknown effect emits the same stop event with status `blocked_on_reconciliation`; no rehydration event is emitted until reconciliation succeeds. This is a deterministic teaching implementation, not a durable production executor: production systems must keep their event log, checkpoint, policy, approval, and side-effect state in governed stores outside model context. The complete field and eval contract is in the [Context Continuity Envelope Schema](continuity-envelope-schema.en.md).
 
 The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `request_agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `event_types`, `session_id`, `tenant_id`, `principal_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, `pending_approval_capability_names`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
 

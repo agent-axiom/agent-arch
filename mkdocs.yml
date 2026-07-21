@@ -116,6 +116,7 @@ plugins:
             Приложения: Приложения
             Concepts: Обзорные страницы
             Schemas: Схемы
+            Схема непрерывности контекста: Схема непрерывности контекста
             Practical Assets: Практические артефакты
             Project Meta: О проекте
             Выбор стека публикации: Выбор стека публикации
@@ -204,6 +205,7 @@ plugins:
             Приложения: Appendix
             Concepts: Concepts
             Schemas: Schemas
+            Схема непрерывности контекста: Context Continuity Envelope Schema
             Practical Assets: Practical Assets
             Project Meta: Project Meta
             Выбор стека публикации: Publishing Stack
@@ -292,6 +294,7 @@ plugins:
             Приложения: 附录
             Concepts: 概念页
             Schemas: 模式与契约
+            Схема непрерывности контекста: 上下文连续性信封 Schema
             Practical Assets: 实践资产
             Project Meta: 项目信息
             Выбор стека публикации: 发布技术栈
@@ -425,6 +428,7 @@ nav:
           - Rust vs Python и TypeScript для платформы агентных систем: appendix/rust-vs-python-typescript.md
           - "Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем": appendix/research-frontier.md
       - Schemas:
+          - Схема непрерывности контекста: appendix/continuity-envelope-schema.md
           - Схема трасс и каталог событий: appendix/trace-schema.md
           - Схема наборов для оценки и правил проверки: appendix/eval-schema.md
           - Схема набора политик и контракта подтверждения: appendix/policy-bundle-schema.md

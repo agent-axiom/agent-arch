@@ -122,7 +122,7 @@ OpenAI 最近关于工具使用的材料有一个很有用的区分，而很多�
 
 Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropic] 策略层不应该只决定某个能力单独看来能不能用，它还应该决定这个能力可以出现在什么编排模式里。
 
-他们后续关于 harness 设计的工作又补上一层密切相关的经验：一旦系统通过 planner、generator、evaluator 这些角色在长时间任务上协作，策略要治理的就不再只是某一次 tool call，而是这个工具调用周围的 **角色契约**。[^anthropic-harness] 如果 generator 提出 sprint，evaluator 负责打分，而 planner 重新塑造 scope，那么平台就需要明确规则，规定谁可以定义完成标准，谁可以评估质量，谁有权触发 reset，以及在上下文重置之后哪份交接工件才算权威。
+他们后续关于 harness 设计的工作又补上一层密切相关的经验：一旦系统通过 planner、generator、evaluator 这些角色在长时间任务上协作，策略要治理的就不再只是某一次 tool call，而是这个工具调用周围的 **角色契约**。[^anthropic-harness] 如果 generator 提出 sprint，evaluator 负责打分，而 planner 重新塑造 scope，那么平台就需要明确规则，规定谁可以定义完成标准，谁可以评估质量，谁有权触发 reset，以及上下文重置后运行时把哪份交接工件识别为连续性输入。该工件仍是派生的、不受信任的视图，不能携带权限。[上下文连续性信封](../../appendix/continuity-envelope-schema.zh.md)把它绑定到持久控制状态，并要求执行恢复前产生新的策略决策。
 
 例如，策略契约可能需要明确说明一个 capability：
 
