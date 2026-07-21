@@ -57,6 +57,14 @@ def compute_action_digest(
     agent_id: object,
     session_id: object,
     idempotency_key: object,
+    principal_id: object = "",
+    authorization_mode: object = "",
+    delegated_principal_id: object = "",
+    delegated_scope: object = "",
+    policy_version: object = "",
+    capability_version: object = "",
+    expires_at: object = "",
+    nonce: object = "",
 ) -> str:
     capability = normalize_tool_capability_name(capability_name)
     normalized_arguments = normalize_tool_arguments(arguments)
@@ -68,6 +76,35 @@ def compute_action_digest(
             idempotency_key,
             field="idempotency_key",
         ),
+        "principal_id": _normalize_action_digest_field(
+            principal_id,
+            field="principal_id",
+        ),
+        "authorization_mode": _normalize_action_digest_field(
+            authorization_mode,
+            field="authorization_mode",
+        ),
+        "delegated_principal_id": _normalize_action_digest_field(
+            delegated_principal_id,
+            field="delegated_principal_id",
+        ),
+        "delegated_scope": _normalize_action_digest_field(
+            delegated_scope,
+            field="delegated_scope",
+        ),
+        "policy_version": _normalize_action_digest_field(
+            policy_version,
+            field="policy_version",
+        ),
+        "capability_version": _normalize_action_digest_field(
+            capability_version,
+            field="capability_version",
+        ),
+        "expires_at": _normalize_action_digest_field(
+            expires_at,
+            field="expires_at",
+        ),
+        "nonce": _normalize_action_digest_field(nonce, field="nonce"),
         "session_id": _normalize_action_digest_field(session_id, field="session_id"),
         "tenant_id": _normalize_action_digest_field(tenant_id, field="tenant_id"),
     }
@@ -123,6 +160,7 @@ class RunRequest:
     authorization_mode: str = "platform_owned"
     delegated_principal_id: str = ""
     delegated_scope: str = ""
+    intent_id: str = ""
     test_fault: str = ""
 
 

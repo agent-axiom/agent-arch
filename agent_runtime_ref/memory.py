@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from math import isfinite
 from typing import Any, Mapping
 
@@ -70,6 +71,28 @@ def _read_record_revision(value: int) -> int:
     return value
 
 
+def _read_trust_state(value: str) -> str:
+    trust_state = _read_record_string(value, field="trust_state")
+    if trust_state not in {"trusted", "untrusted", "quarantined"}:
+        raise ValueError(f"Memory trust state is not supported: {trust_state}")
+    return trust_state
+
+
+def _read_expires_at(value: str) -> str:
+    if not isinstance(value, str):
+        raise TypeError("Memory record field must be a string: expires_at")
+    expires_at = value.strip()
+    if not expires_at:
+        return ""
+    try:
+        parsed = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("Memory record expires_at must be an ISO-8601 timestamp") from error
+    if parsed.tzinfo is None:
+        raise ValueError("Memory record expires_at must include a timezone")
+    return parsed.isoformat().replace("+00:00", "Z")
+
+
 def _read_candidate_confidence(value: float) -> float:
     if not isinstance(value, int | float) or isinstance(value, bool):
         raise TypeError("Memory candidate confidence must be a number")
@@ -122,6 +145,8 @@ class MemoryRecord:
     confidence: float
     provenance: str = "unknown"
     revision: int = 1
+    trust_state: str = "trusted"
+    expires_at: str = ""
 
     def __post_init__(self) -> None:
         for field in (
@@ -140,6 +165,8 @@ class MemoryRecord:
             )
         object.__setattr__(self, "confidence", _read_record_confidence(self.confidence))
         object.__setattr__(self, "revision", _read_record_revision(self.revision))
+        object.__setattr__(self, "trust_state", _read_trust_state(self.trust_state))
+        object.__setattr__(self, "expires_at", _read_expires_at(self.expires_at))
 
 
 @dataclass(frozen=True, slots=True)
@@ -229,6 +256,16 @@ class MemoryStore:
                         idx=idx,
                     ),
                     revision=_read_revision(record, idx=idx),
+                    trust_state=_read_optional_seed_string(
+                        record.get("trust_state", "trusted"),
+                        field="trust_state",
+                        idx=idx,
+                    ),
+                    expires_at=_read_optional_seed_string(
+                        record.get("expires_at", ""),
+                        field="expires_at",
+                        idx=idx,
+                    ),
                 ),
             )
         return cls(records=records)
@@ -241,7 +278,20 @@ class MemoryStore:
         tenant_id = _read_lookup_string(tenant_id, field="tenant_id")
         limit = _read_lookup_limit(limit)
         query_tokens = {token for token in query.lower().split() if token}
-        scoped = [record for record in self._records if record.tenant_id == tenant_id]
+        now = datetime.now(UTC)
+        scoped = [
+            record
+            for record in self._records
+            if record.tenant_id == tenant_id
+            and record.trust_state == "trusted"
+            and (
+                not record.expires_at
+                or datetime.fromisoformat(
+                    record.expires_at.replace("Z", "+00:00")
+                )
+                > now
+            )
+        ]
         ranked = sorted(
             scoped,
             key=lambda record: self._score(record, query_tokens),

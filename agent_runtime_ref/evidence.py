@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -37,6 +37,7 @@ def verify_evidence_manifest(
     manifest_path: str | Path,
     *,
     root: str | Path | None = None,
+    required_artifact_ids: Sequence[str] = (),
 ) -> EvidenceVerificationResult:
     """Validate an evidence manifest and every artifact it references."""
 
@@ -133,6 +134,11 @@ def verify_evidence_manifest(
     subject = _validate_required_text(payload, "subject", diagnostics)
     measured_at = _validate_measured_at(payload, diagnostics)
     artifact_ids = _validate_artifacts(payload, resolved_root, diagnostics)
+    _validate_required_artifact_ids(
+        artifact_ids,
+        required_artifact_ids,
+        diagnostics,
+    )
     signals = _validate_signals(payload, set(artifact_ids), diagnostics)
 
     return _result(
@@ -144,6 +150,37 @@ def verify_evidence_manifest(
         artifact_ids=artifact_ids,
         signals=signals,
     )
+
+
+def _validate_required_artifact_ids(
+    artifact_ids: tuple[str, ...],
+    required_artifact_ids: Sequence[str],
+    diagnostics: list[EvidenceDiagnostic],
+) -> None:
+    if isinstance(required_artifact_ids, str) or not isinstance(
+        required_artifact_ids, Sequence
+    ):
+        raise TypeError("Required artifact ids must be a sequence")
+    normalized: list[str] = []
+    for raw_id in required_artifact_ids:
+        if not isinstance(raw_id, str):
+            raise TypeError("Required artifact ids must be strings")
+        artifact_id = raw_id.strip()
+        if not artifact_id:
+            raise ValueError("Required artifact id must not be empty")
+        if artifact_id in normalized:
+            raise ValueError(f"Required artifact ids must be unique: {artifact_id}")
+        normalized.append(artifact_id)
+    present = set(artifact_ids)
+    for artifact_id in normalized:
+        if artifact_id not in present:
+            diagnostics.append(
+                EvidenceDiagnostic(
+                    code="missing_required_artifact",
+                    location=f"artifacts.{artifact_id}",
+                    message=f"Required artifact is missing: {artifact_id}",
+                )
+            )
 
 
 def _validate_version(

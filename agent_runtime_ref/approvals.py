@@ -3,8 +3,10 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime, timedelta
+from os import PathLike
+from pathlib import Path
 from typing import Any, Mapping
 
 from agent_runtime_ref.models import (
@@ -152,6 +154,9 @@ class ApprovalRequest:
     authorization_mode: str = "platform_owned"
     delegated_principal_id: str = ""
     delegated_scope: str = ""
+    principal_id: str = ""
+    policy_version: str = "policy-v1"
+    capability_version: str = "catalog-v1"
     idempotency_key: str = ""
     action_digest: str = ""
     payload_summary: str = ""
@@ -206,6 +211,18 @@ class ApprovalRequest:
             self.delegated_scope,
             field="delegated_scope",
         )
+        self.principal_id = _read_optional_approval_string(
+            self.principal_id,
+            field="principal_id",
+        ) or self.requested_by
+        self.policy_version = _read_required_approval_string(
+            self.policy_version,
+            field="policy_version",
+        )
+        self.capability_version = _read_required_approval_string(
+            self.capability_version,
+            field="capability_version",
+        )
         self.idempotency_key = _read_optional_approval_string(
             self.idempotency_key,
             field="idempotency_key",
@@ -222,6 +239,14 @@ class ApprovalRequest:
                 agent_id=self.agent_id,
                 session_id=self.session_id,
                 idempotency_key=self.idempotency_key,
+                principal_id=self.principal_id,
+                authorization_mode=self.authorization_mode,
+                delegated_principal_id=self.delegated_principal_id,
+                delegated_scope=self.delegated_scope,
+                policy_version=self.policy_version,
+                capability_version=self.capability_version,
+                expires_at=self.expires_at,
+                nonce=self.nonce,
             )
         self.payload_summary = _read_optional_approval_string(
             self.payload_summary,
@@ -275,7 +300,12 @@ def _approval_nonce(approval_id: str, action_digest: str) -> str:
 
 
 class ApprovalQueue:
-    def __init__(self, policy: ApprovalPolicy | None = None) -> None:
+    def __init__(
+        self,
+        policy: ApprovalPolicy | None = None,
+        *,
+        storage_path: str | PathLike[str] | None = None,
+    ) -> None:
         if policy is None:
             policy = ApprovalPolicy(
                 default_reviewer="manager",
@@ -284,8 +314,55 @@ class ApprovalQueue:
         if not isinstance(policy, ApprovalPolicy):
             raise TypeError("Approval queue policy must be ApprovalPolicy")
         self.policy = policy
+        if storage_path is not None and not isinstance(storage_path, (str, PathLike)):
+            raise TypeError("Approval storage path must be a string or path-like object")
+        self.storage_path = Path(storage_path) if storage_path is not None else None
         self._items: list[ApprovalRequest] = []
         self._counter = 0
+        self._load()
+
+    def _load(self) -> None:
+        if self.storage_path is None or not self.storage_path.exists():
+            return
+        payload = json.loads(self.storage_path.read_text(encoding="utf-8"))
+        if not isinstance(payload, Mapping):
+            raise TypeError("Approval storage must be a mapping")
+        items = payload.get("items", [])
+        if not isinstance(items, list):
+            raise TypeError("Approval storage items must be a list")
+        restored: list[ApprovalRequest] = []
+        for item in items:
+            if not isinstance(item, Mapping):
+                raise TypeError("Approval storage item must be a mapping")
+            restored.append(ApprovalRequest(**dict(item)))
+        self._items = restored
+        counters = [
+            int(item.approval_id.removeprefix("apr-"))
+            for item in restored
+            if item.approval_id.startswith("apr-")
+            and item.approval_id.removeprefix("apr-").isdigit()
+        ]
+        self._counter = max(counters, default=0)
+
+    def _persist(self) -> None:
+        if self.storage_path is None:
+            return
+        self.storage_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.storage_path.with_name(f"{self.storage_path.name}.tmp")
+        temporary.write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "items": [asdict(item) for item in self._items],
+                },
+                ensure_ascii=True,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        temporary.replace(self.storage_path)
 
     def submit(
         self,
@@ -303,6 +380,8 @@ class ApprovalQueue:
         delegated_principal_id: str = "",
         delegated_scope: str = "",
         idempotency_key: str = "",
+        policy_version: str = "policy-v1",
+        capability_version: str = "catalog-v1",
     ) -> ApprovalRequest:
         trace_id = _read_required_approval_string(trace_id, field="trace_id")
         capability_name = _read_required_approval_string(
@@ -349,6 +428,14 @@ class ApprovalQueue:
             )
         self._counter += 1
         approval_id = f"apr-{self._counter:03d}"
+        issued_at = datetime(2030, 1, 1, tzinfo=UTC) + timedelta(
+            seconds=self._counter
+        )
+        expires_at = issued_at + timedelta(minutes=self.policy.escalation_sla_minutes)
+        expires_at_text = expires_at.isoformat().replace("+00:00", "Z")
+        nonce = hashlib.sha256(
+            f"{approval_id}:{trace_id}:{idempotency_key}".encode("utf-8")
+        ).hexdigest()
         action_digest = compute_action_digest(
             capability_name=capability_name,
             arguments=normalized_arguments,
@@ -356,11 +443,15 @@ class ApprovalQueue:
             agent_id=agent_id,
             session_id=session_id,
             idempotency_key=idempotency_key,
+            principal_id=requested_by,
+            authorization_mode=authorization_mode,
+            delegated_principal_id=delegated_principal_id,
+            delegated_scope=delegated_scope,
+            policy_version=policy_version,
+            capability_version=capability_version,
+            expires_at=expires_at_text,
+            nonce=nonce,
         )
-        issued_at = datetime(2030, 1, 1, tzinfo=UTC) + timedelta(
-            seconds=self._counter
-        )
-        expires_at = issued_at + timedelta(minutes=self.policy.escalation_sla_minutes)
         request = ApprovalRequest(
             approval_id=approval_id,
             trace_id=trace_id,
@@ -375,16 +466,20 @@ class ApprovalQueue:
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            principal_id=requested_by,
+            policy_version=policy_version,
+            capability_version=capability_version,
             idempotency_key=idempotency_key,
             action_digest=action_digest,
             payload_summary=_tool_payload_summary(
                 capability_name,
                 normalized_arguments,
             ),
-            expires_at=expires_at.isoformat().replace("+00:00", "Z"),
-            nonce=_approval_nonce(approval_id, action_digest),
+            expires_at=expires_at_text,
+            nonce=nonce,
         )
         self._items.append(request)
+        self._persist()
         return request
 
     def all(self) -> tuple[ApprovalRequest, ...]:
@@ -419,6 +514,15 @@ class ApprovalQueue:
                         field="resolved_by",
                     )
                 )
+                if resolution_actor == item.requested_by:
+                    raise ValueError(
+                        f"Approval requester cannot approve their own request: {approval_id}"
+                    )
+                expires_at = datetime.fromisoformat(
+                    item.expires_at.replace("Z", "+00:00")
+                )
+                if expires_at <= datetime.now(UTC):
+                    raise ValueError(f"Approval request expired: {approval_id}")
                 expected_digest = (
                     item.action_digest
                     if expected_action_digest is None
@@ -435,5 +539,6 @@ class ApprovalQueue:
                 item.capability_session_status = decision
                 item.resolution_note = resolution_note
                 item.resolved_by = resolution_actor
+                self._persist()
                 return item
         raise ValueError(f"Approval request not found: {approval_id}")

@@ -157,6 +157,7 @@ class RunRecord:
             "failed",
             "approval_required",
             "waiting_for_approval",
+            "blocked_on_reconciliation",
         }:
             raise ValueError(f"Session status is not supported: {status}")
         if self.task_success is None and status == "success":
@@ -390,6 +391,7 @@ class SessionStore:
             "failed",
             "approval_required",
             "waiting_for_approval",
+            "blocked_on_reconciliation",
         }:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":

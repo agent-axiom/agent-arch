@@ -171,6 +171,10 @@ class AgentRuntime:
             request.delegated_scope,
             field="delegated_scope",
         )
+        request.intent_id = _read_optional_request_string(
+            request.intent_id,
+            field="intent_id",
+        )
         request.test_fault = _read_optional_request_string(
             request.test_fault,
             field="test_fault",
@@ -346,6 +350,64 @@ class AgentRuntime:
                         delegated_scope=delegated_scope,
                     )
                     return result
+                if latest_tool.status == "side_effect_unknown":
+                    failure_reason = latest_tool.payload.get(
+                        "reason", "post_dispatch_timeout"
+                    )
+                    result = RunResult(
+                        output_text=(
+                            "Runtime blocked the write path until the external effect "
+                            "is reconciled."
+                        ),
+                        status="blocked_on_reconciliation",
+                        task_success=None,
+                        side_effect_status="side_effect_unknown",
+                    )
+                    self.sessions.register_run(
+                        session_id=request.session_id,
+                        tenant_id=request.tenant_id,
+                        principal_id=request.principal_id,
+                        trace_id=request.trace_id,
+                        status=result.status,
+                        user_input=request.user_input,
+                        output_text=result.output_text,
+                        failure_reason=str(failure_reason),
+                        task_success=result.task_success,
+                        side_effect_status=result.side_effect_status,
+                        request_agent_id=request.agent_id,
+                        capability_session_id=capability_session_id,
+                        capability_session_status=capability_session_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                        idempotency_key=idempotency_key,
+                        approval_id=approval_id,
+                        capability_name=capability_name,
+                    )
+                    self.telemetry.emit(
+                        "effect_reconciliation_required",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        capability=latest_tool.capability_name,
+                        intent_id=request.intent_id,
+                        idempotency_key=idempotency_key,
+                        failure_reason=str(failure_reason),
+                        effect_state=result.side_effect_status,
+                    )
+                    self.telemetry.emit(
+                        "run_complete",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        status=result.status,
+                        output_preview=result.output_text[:80],
+                        failure_reason=str(failure_reason),
+                        task_success="null",
+                        side_effect_status=result.side_effect_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    return result
                 if latest_tool.status in {"denied", "validation_failure", "failed"}:
                     failure_reason = latest_tool.payload.get("reason", latest_tool.status)
                     result = RunResult(
@@ -511,7 +573,7 @@ class AgentRuntime:
                 "requester_id": request.principal_id,
             }
             if "without the usual safeguards" not in lowered:
-                arguments["idempotency_key"] = request.trace_id
+                arguments["idempotency_key"] = request.intent_id or request.trace_id
             return ModelOutput(
                 text="I need to create a ticket before I can answer fully.",
                 tool_request=ToolRequest(
