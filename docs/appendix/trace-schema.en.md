@@ -313,6 +313,23 @@ For **model_tool_gateway_boundary**, the trace should show how one gateway/contr
 - `capacity_backpressure_decision`
 - `budget_exhausted`
 
+For a **gateway-ready runtime**, extend that same loop so the AI gateway is not only a billing proxy, but an auditable runtime boundary:
+
+- `gateway_id`
+- `gateway_policy_version`
+- `client_user_agent`
+- `provider_name`
+- `model_name`
+- `retry_count`
+- `fallback_reason`
+- `dlp_result`
+- `pii_redaction_policy_id`
+- `cache_policy`
+- `rate_limit_decision`
+- `token_input_count`
+- `token_output_count`
+- `cost_attribution_ref`
+
 For **networked_agent_message**, the trace should show why a message from another agent remained data instead of becoming authority:
 
 - `source_agent_id`

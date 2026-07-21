@@ -371,6 +371,8 @@ Architecturally, this matters for more than token cost. It changes tool visibili
 
 The pattern still has to remain governed. A `search/execute` portal should not become a bypass around capability governance. It needs the same fields as any other MCP endpoint: owner, allowed upstream servers, scope policy, sandbox profile, output filtering, trace correlation, and review rules for risky writes. Otherwise the team only replaces "too many tools in the prompt" with "too broad a programmable portal."
 
+GitHub's Agent Finder points in the same direction from the client side: capability discovery becomes a runtime operation instead of a prompt assembly habit.[^github-agent-finder] An agent should be able to search an approved registry of MCP servers, skills, canvases, agents, and tools, receive ranked task-specific matches, and load only the resource it actually needs. The safety detail is that discovery is scoped by managed settings and does not silently install or connect new resources. In a production architecture, that means the trace should preserve `capability_search_query`, `registry_scope`, ranked candidates, selected resource, policy decision, and human or platform approval state.
+
 ### 5.8. Tool Surface Design Is Part of the Safety Contract
 
 AWS's practical guidance on MCP tool design adds another layer to the Cloudflare Code Mode pattern: the problem is not only where the gateway sits, but which **tool surface** the agent sees at all.[^aws-mcp-tool-design] If a prompt receives dozens of similar tools, broad schemas, and ambiguous names upfront, the platform gets two failures at once: context bloat and tool confusion. The model may choose the wrong operation, mix fields from neighboring schemas, or use a generic tool as a path around a riskier action.
@@ -687,6 +689,8 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
 
 [^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
+
+[^github-agent-finder]: GitHub Changelog, [Agent finder for GitHub Copilot now available](https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/)
 
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 

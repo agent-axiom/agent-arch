@@ -335,6 +335,23 @@
 - `capacity_backpressure_decision`
 - `budget_exhausted`
 
+Для **gateway-ready runtime** полезно расширить этот же контур так, чтобы AI gateway был не billing proxy, а проверяемый runtime boundary:
+
+- `gateway_id`
+- `gateway_policy_version`
+- `client_user_agent`
+- `provider_name`
+- `model_name`
+- `retry_count`
+- `fallback_reason`
+- `dlp_result`
+- `pii_redaction_policy_id`
+- `cache_policy`
+- `rate_limit_decision`
+- `token_input_count`
+- `token_output_count`
+- `cost_attribution_ref`
+
 Для **networked_agent_message** трасса должна показывать, почему сообщение от другого агента осталось данными, а не стало полномочием:
 
 - `source_agent_id`
