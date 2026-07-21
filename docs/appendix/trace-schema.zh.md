@@ -313,6 +313,23 @@
 - `capacity_backpressure_decision`
 - `budget_exhausted`
 
+对于 **gateway-ready runtime**，应该扩展同一个回路，让 AI gateway 不只是 billing proxy，而是可审计的 runtime boundary：
+
+- `gateway_id`
+- `gateway_policy_version`
+- `client_user_agent`
+- `provider_name`
+- `model_name`
+- `retry_count`
+- `fallback_reason`
+- `dlp_result`
+- `pii_redaction_policy_id`
+- `cache_policy`
+- `rate_limit_decision`
+- `token_input_count`
+- `token_output_count`
+- `cost_attribution_ref`
+
 对于 **networked_agent_message**，trace 应该说明来自另一个 agent 的消息为什么仍然是数据，而没有变成 authority：
 
 - `source_agent_id`

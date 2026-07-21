@@ -372,6 +372,8 @@ Cloudflare отдельно показывает полезный паттерн
 
 Но такой паттерн должен оставаться управляемым. Портал `search/execute` не должен становиться обходом управления возможностями. Для него нужны те же поля, что и для обычной точки подключения MCP: владелец, разрешенные upstream-серверы, политика областей доступа, профиль песочницы, фильтрация результатов, корреляция трасс и правила проверки рискованных записей. Иначе команда просто заменит “слишком много инструментов в prompt” на “слишком широкий программируемый портал”.
 
+GitHub Agent Finder показывает тот же сдвиг со стороны клиента: discovery возможностей становится операцией runtime, а не привычкой сборки prompt.[^github-agent-finder] Агент должен уметь искать по утвержденному registry MCP servers, skills, canvases, agents и tools, получать ranked matches под задачу и подгружать только тот ресурс, который действительно нужен. Важная safety-деталь: discovery ограничивается managed settings и не означает тихую установку или подключение новых ресурсов. В production architecture trace должен поэтому сохранять `capability_search_query`, `registry_scope`, ranked candidates, selected resource, policy decision и состояние human/platform approval.
+
 ### 5.8. Дизайн поверхности инструментов — это часть safety contract
 
 Практическая рамка AWS по дизайну MCP tools добавляет к Cloudflare Code Mode еще один важный слой: проблема не только в том, где стоит gateway, а в том, какую **поверхность инструментов** вообще видит агент.[^aws-mcp-tool-design] Если в prompt заранее попадают десятки похожих инструментов, широкие схемы и неясные имена, платформа получает сразу два отказа: context bloat и tool confusion. Модель начинает выбирать не ту операцию, смешивать поля соседних схем или использовать общий инструмент как обходной путь к более рискованному действию.
@@ -712,6 +714,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
 
 [^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
+
+[^github-agent-finder]: GitHub Changelog, [Agent finder for GitHub Copilot now available](https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/)
 
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 

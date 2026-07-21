@@ -371,6 +371,8 @@ Cloudflare 还展示了一个适合大型 MCP estate 的模式：不要把所有
 
 但这个模式仍然必须受治理。`search/execute` portal 不应该变成绕过 capability governance 的通道。它需要和普通 MCP endpoint 一样拥有 owner、allowed upstream servers、scope policy、sandbox profile、output filtering、trace correlation，以及 risky writes 的 review rules。否则团队只是把“prompt 里工具太多”换成了“可编程 portal 权限太宽”。
 
+GitHub Agent Finder 从客户端侧展示了同一个转向：capability discovery 应该成为 runtime operation，而不是 prompt assembly 的习惯。[^github-agent-finder] Agent 应该能够在批准的 MCP servers、skills、canvases、agents 和 tools registry 中搜索，拿到针对任务的 ranked matches，并只加载实际需要的资源。关键 safety 细节是 discovery 受 managed settings 限制，而且不会悄悄安装或连接新资源。因此在 production architecture 中，trace 应该保存 `capability_search_query`、`registry_scope`、ranked candidates、selected resource、policy decision，以及 human/platform approval state。
+
 ### 5.8. Tool surface design 是 safety contract 的一部分
 
 AWS 关于 MCP tool design 的实践框架给 Cloudflare Code Mode 补上了另一层：问题不只是 gateway 放在哪里，而是 agent 到底看见了哪种 **tool surface**。[^aws-mcp-tool-design] 如果 prompt 里预先塞进几十个相似工具、宽 schema 和含糊名称，平台会同时遇到 context bloat 和 tool confusion。模型可能选错操作、把相邻 schema 的字段混在一起，或者把通用工具当成绕过高风险动作的路径。
@@ -687,6 +689,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
 
 [^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
+
+[^github-agent-finder]: GitHub Changelog, [Agent finder for GitHub Copilot now available](https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/)
 
 [^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
 

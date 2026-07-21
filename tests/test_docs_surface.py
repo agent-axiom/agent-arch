@@ -21620,6 +21620,185 @@ def test_anthropic_managed_agents_contract_is_integrated() -> None:
             "failed sandbox/tool",
             "proxy/vault",
         ),
+        "docs/book/part-vii/chapter-16.en.md": (
+            "The session is not the context window",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "managed tool error",
+            "tokens are never reachable from the sandbox",
+        ),
+        "docs/appendix/reference-package.en.md": (
+            "Brain / Hands / Session",
+            "`wake(sessionId)`",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "sandbox or tool fails",
+            "proxy/vault",
+        ),
+        "docs/book/part-vii/chapter-16.zh.md": (
+            "session 不是 context window",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "tool 返回了受控错误",
+            "raw credentials",
+        ),
+        "docs/appendix/reference-package.zh.md": (
+            "Brain / Hands / Session",
+            "`wake(sessionId)`",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "sandbox 或 tool",
+            "proxy/vault",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_cloudflare_enterprise_mcp_contract_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/appendix/case-studies.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/case-studies.en.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/case-studies.zh.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/sources.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+        "docs/appendix/sources.en.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_commercial_control_plane_convergence_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-vi/chapter-15.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/book/part-vi/chapter-15.en.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/book/part-vi/chapter-15.zh.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/appendix/trace-schema.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/trace-schema.en.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/trace-schema.zh.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/sources.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+        "docs/appendix/sources.en.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_agent_finder_capability_discovery_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-iv/chapter-9.md": (
+            "GitHub Agent Finder",
+            "discovery возможностей",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human/platform approval",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "GitHub's Agent Finder",
+            "capability discovery",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human or platform approval",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "GitHub Agent Finder",
+            "capability discovery",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human/platform approval state",
+        ),
+        "docs/appendix/sources.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
+        "docs/appendix/sources.en.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
     }
 
     for path, markers in required_markers_by_file.items():

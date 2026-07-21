@@ -63,6 +63,12 @@
 
 Поэтому общий шлюз — это не бюрократия. Это способ централизованно решить самые дорогие и чувствительные задачи один раз и хорошо.
 
+### 3.1. Commercial control-plane convergence
+
+Коммерческие платформы в 2026 году сходятся к одному и тому же паттерну: **shared AI gateway** перестает быть только proxy к моделям и становится рабочей поверхностью control plane. AWS AgentCore AgentOps делает видимыми traces, latency, token and cost accounting, PII redaction и governance signals; Cloudflare AI Gateway for coding agents добавляет единый путь для client routing, caching, limits и provider mediation; Microsoft Foundry observability связывает agent traces, quality signals и operational views.[^aws-agentops][^cloudflare-ai-gateway-coding-agents][^microsoft-foundry-observability-operations]
+
+Для антизоопарк-стратегии вывод прямой: model/provider routing, cache policy, rate limits, DLP/redaction, retry/fallback policy и cost attribution должны жить в общей платформенной поверхности, а не в локальной обвязке каждого агента. Иначе организация получает новый зоопарк: одни команды используют gateway как billing proxy, другие как observability hook, третьи как policy point, и ни один контур не видит полный risk/cost path.
+
 <div class="diagram-card">
 <p>Golden path должен снижать число локальных реализаций критичных слоев</p>
 
@@ -289,3 +295,7 @@ platform_defaults:
 - [Глава 16. Базовая схема среды исполнения](../part-vii/chapter-16.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+[^cloudflare-ai-gateway-coding-agents]: Cloudflare Docs, [AI Gateway: Coding Agents](https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/)
+[^microsoft-foundry-observability-operations]: Microsoft Azure AI Foundry Blog, [Monitoring & Observability in Microsoft Foundry, Part 2: Configuration and Operations](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674)

@@ -63,6 +63,12 @@ If every team implements them alone, the organization almost certainly reproduce
 
 That is why a shared gateway is not bureaucracy. It is a way to solve the most expensive and sensitive problems once, centrally, and well.
 
+### 3.1. Commercial control-plane convergence
+
+Commercial platforms in 2026 are converging on the same pattern: a **shared AI gateway** is no longer only a model proxy, but an operational control-plane surface. AWS AgentCore AgentOps makes traces, latency, token and cost accounting, PII redaction, and governance signals visible; Cloudflare AI Gateway for coding agents adds a common path for client routing, caching, limits, and provider mediation; Microsoft Foundry observability connects agent traces, quality signals, and operational views.[^aws-agentops][^cloudflare-ai-gateway-coding-agents][^microsoft-foundry-observability-operations]
+
+For an anti-zoo strategy, the lesson is direct: model/provider routing, cache policy, rate limits, DLP/redaction, retry/fallback policy, and cost attribution should live in one shared platform surface, not in each agent's local wrapper. Otherwise the organization gets a new zoo: one team uses the gateway as a billing proxy, another as an observability hook, another as a policy point, and no loop sees the full risk/cost path.
+
 <div class="diagram-card">
 <p>The golden path should reduce the number of local implementations of critical layers</p>
 
@@ -270,3 +276,7 @@ The next step after this chapter is no longer another org chart. It is the code 
 - [Chapter 16. Baseline Runtime Blueprint](../part-vii/chapter-16.en.md)
 - [Part VI. Operating Model](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+[^cloudflare-ai-gateway-coding-agents]: Cloudflare Docs, [AI Gateway: Coding Agents](https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/)
+[^microsoft-foundry-observability-operations]: Microsoft Azure AI Foundry Blog, [Monitoring & Observability in Microsoft Foundry, Part 2: Configuration and Operations](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674)
