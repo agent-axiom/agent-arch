@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": null,
+  "lowest_density_pages": [
+    {
+      "density": 0.0034590325704056263,
+      "page": 6
+    },
+    {
+      "density": 0.00496886537420398,
+      "page": 156
+    },
+    {
+      "density": 0.008390483997921543,
+      "page": 249
+    },
+    {
+      "density": 0.008998118755143737,
+      "page": 48
+    },
+    {
+      "density": 0.009221038667025207,
+      "page": 88
+    },
+    {
+      "density": 0.009991383826890882,
+      "page": 456
+    },
+    {
+      "density": 0.010286056010228032,
+      "page": 466
+    },
+    {
+      "density": 0.010879599126300522,
+      "page": 269
+    },
+    {
+      "density": 0.012206980061271099,
+      "page": 214
+    },
+    {
+      "density": 0.012880923656998793,
+      "page": 412
+    }
+  ],
+  "pages": 488,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-synced-developmental-edit-2026-07-20-render-final2"
+}

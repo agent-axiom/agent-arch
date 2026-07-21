@@ -1,34 +1,34 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/private/tmp/agent-arch-ru-template2000n-editorial-final-polish-2026-07-17-render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_final_template_render_20260717/contact-sheet.png",
   "lowest_density_pages": [
+    {
+      "density": 0.0035792236712423793,
+      "page": 187
+    },
+    {
+      "density": 0.00414976230026232,
+      "page": 218
+    },
     {
       "density": 0.004244141728456721,
       "page": 143
     },
     {
-      "density": 0.006812708945869902,
+      "density": 0.0098497355465301,
       "page": 250
     },
     {
-      "density": 0.006863729575619762,
-      "page": 187
+      "density": 0.010755299176912167,
+      "page": 264
     },
     {
-      "density": 0.009404578209475734,
-      "page": 286
-    },
-    {
-      "density": 0.011387008367882165,
-      "page": 67
-    },
-    {
-      "density": 0.011731702141983902,
-      "page": 218
-    },
-    {
-      "density": 0.013675326789893884,
+      "density": 0.012776500658169163,
       "page": 84
+    },
+    {
+      "density": 0.013346693612102943,
+      "page": 67
     },
     {
       "density": 0.014577255133930293,
@@ -44,5 +44,5 @@
     }
   ],
   "pages": 317,
-  "render_dir": "/private/tmp/agent-arch-ru-template2000n-editorial-final-polish-2026-07-17-render"
+  "render_dir": "/tmp/agent_arch_ru_final_template_render_20260717"
 }

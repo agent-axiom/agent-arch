@@ -3014,6 +3014,7 @@ class TestFailurePaths:
             "side_effect_status",
             "failure_reason",
             "trace_id",
+            "intent_id",
             "idempotency_keys",
             "approval_ids",
             "approval_capability_names",
@@ -4317,8 +4318,16 @@ class TestRuntimeCore:
         canonical_payload = {
             "agent_id": "agent-runtime-ref",
             "arguments": {"queue": "support", "title": "Follow up"},
+            "authorization_mode": "",
             "capability": "create_ticket",
+            "capability_version": "",
+            "delegated_principal_id": "",
+            "delegated_scope": "",
+            "expires_at": "",
             "idempotency_key": "ticket-digest-001",
+            "nonce": "",
+            "policy_version": "",
+            "principal_id": "",
             "session_id": "session-digest-001",
             "tenant_id": "tenant-acme",
         }
@@ -4347,7 +4356,19 @@ class TestRuntimeCore:
             idempotency_key="ticket-digest-001",
         )
 
-        assert request.action_digest == expected_digest
+        expected_request_digest = compute_action_digest(
+            arguments={"title": "Follow up", "queue": "support"},
+            principal_id="user-1",
+            authorization_mode="platform_owned",
+            delegated_principal_id="",
+            delegated_scope="",
+            policy_version=request.policy_version,
+            capability_version=request.capability_version,
+            expires_at=request.expires_at,
+            nonce=request.nonce,
+            **action_fields,
+        )
+        assert request.action_digest == expected_request_digest
         assert request.payload_summary == (
             '{"arguments":{"queue":"support","title":"Follow up"},'
             '"capability":"create_ticket"}'
@@ -4371,7 +4392,7 @@ class TestRuntimeCore:
             request.approval_id,
             decision="approved",
             resolved_by="manager-2",
-            expected_action_digest=expected_digest,
+            expected_action_digest=expected_request_digest,
         )
         assert resolved.resolved_by == "manager-2"
         assert resolved.status == "approved"
@@ -4384,7 +4405,7 @@ class TestRuntimeCore:
                 request.approval_id,
                 decision="rejected",
                 resolved_by="manager-3",
-                expected_action_digest=expected_digest,
+                expected_action_digest=expected_request_digest,
             )
 
     def test_runtime_pauses_approval_without_follow_up_or_side_effects(self) -> None:
@@ -8583,6 +8604,7 @@ class TestRuntimeControlPaths:
         assert set(payload) == {
             "system_id",
             "ready",
+            "evidence_mode",
             "triggers",
             "missing_steps",
             "required_steps",
@@ -8593,10 +8615,8 @@ class TestRuntimeControlPaths:
         }
         assert payload["system_id"] == "support-triage-ref"
         assert not payload["ready"]
-        assert payload["missing_steps"] == [
-            "expire_paused_runs",
-            "stop_background_routes",
-        ]
+        assert payload["evidence_mode"] == "declared"
+        assert payload["missing_steps"] == payload["required_steps"]
         assert payload["archive_targets"] == [
             "telemetry_jsonl",
             "session_exports",
@@ -11156,6 +11176,7 @@ class TestCli:
             "side_effect_status",
             "failure_reason",
             "trace_id",
+            "intent_id",
             "idempotency_keys",
             "approval_ids",
             "approval_capability_names",
@@ -12457,6 +12478,8 @@ class TestCli:
         assert set(payload) == {
             "ready",
             "production_ready",
+            "manifest_integrity_verified",
+            "trusted_attestation_verified",
             "evidence_mode",
             "evidence_verified",
             "evidence_manifest",
@@ -12539,6 +12562,8 @@ class TestCli:
         assert set(payload) == {
             "ready",
             "production_ready",
+            "manifest_integrity_verified",
+            "trusted_attestation_verified",
             "evidence_mode",
             "evidence_verified",
             "evidence_manifest",
@@ -12956,7 +12981,13 @@ class TestCli:
         assert exit_code == 0
         assert not payload["ready"]
         missing = payload.get("missing_signals", payload.get("missing_steps", []))
-        assert missing == [expected_missing]
+        if command[0] == "check-retirement":
+            from agent_runtime_ref.config import load_yaml_file
+
+            retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
+            assert missing == retirement["required_steps"]
+        else:
+            assert missing == [expected_missing]
         if expected_missing == "duplicate_ticket_eval_passed":
             from agent_runtime_ref.config import load_yaml_file
 
@@ -13169,6 +13200,7 @@ class TestCli:
         assert set(payload) == {
             "system_id",
             "ready",
+            "evidence_mode",
             "triggers",
             "missing_steps",
             "required_steps",
@@ -13178,9 +13210,10 @@ class TestCli:
             "replacement_mode",
         }
         assert payload["system_id"] == retirement["system_id"]
-        assert payload["ready"] is True
+        assert payload["ready"] is False
+        assert payload["evidence_mode"] == "unknown"
         assert payload["triggers"] == retirement["triggers"]
-        assert payload["missing_steps"] == []
+        assert payload["missing_steps"] == retirement["required_steps"]
         assert payload["required_steps"] == retirement["required_steps"]
         assert payload["archive_targets"] == retirement["archive_targets"]
         assert payload["failed_run_archive_targets"] == expected_failed_run_archive_targets
@@ -13232,7 +13265,22 @@ class TestCli:
                     "authorization_mode": "platform_owned",
                     "delegated_principal_id": "",
                     "delegated_scope": "",
+                    "principal_id": "user-42",
+                    "policy_version": "policy-v1",
+                    "capability_version": "catalog-v1",
                     "idempotency_key": "trace-approval-001",
+                    "action_digest": (
+                        "23f9f79fa99f07d09b9405ca945822581edf7969ff008715d"
+                        "fefb407808c44b4"
+                    ),
+                    "payload_summary": (
+                        '{"arguments":{"idempotency_key":"trace-approval-001",'
+                        '"queue":"support","requester_id":"user-42",'
+                        '"title":"Agent follow-up"},"capability":"create_ticket"}'
+                    ),
+                    "expires_at": "2030-01-01T00:30:01Z",
+                    "nonce": "44a55a331d59d104e7b02a4feb276061cc31555338ee952c67e557ddfe0fb3c0",
+                    "resolved_by": "",
                 }
             ],
         }
@@ -13300,7 +13348,22 @@ class TestCli:
                     "authorization_mode": "user_delegated",
                     "delegated_principal_id": "customer-17",
                     "delegated_scope": "ticket:create",
+                    "principal_id": "manager-1",
+                    "policy_version": "policy-v1",
+                    "capability_version": "catalog-v1",
                     "idempotency_key": "trace-approval-authz-001",
+                    "action_digest": (
+                        "d0afdb061303035f8be1cecf9f0a0fe5db1220adf94ddad3d"
+                        "d8dae787ee663d0"
+                    ),
+                    "payload_summary": (
+                        '{"arguments":{"idempotency_key":"trace-approval-authz-001",'
+                        '"queue":"support","requester_id":"manager-1",'
+                        '"title":"Agent follow-up"},"capability":"create_ticket"}'
+                    ),
+                    "expires_at": "2030-01-01T00:30:01Z",
+                    "nonce": "06727e49a2e817ed5d67384812f8d743446ab22a78b4e56d03a23c6091541134",
+                    "resolved_by": "",
                 }
             ],
         }
@@ -13391,13 +13454,21 @@ class TestCli:
             "requested_by",
             "status",
             "reviewer",
+            "resolved_by",
             "resolution_note",
             "capability_session_id",
             "capability_session_status",
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "principal_id",
+            "policy_version",
+            "capability_version",
             "idempotency_key",
+            "action_digest",
+            "payload_summary",
+            "expires_at",
+            "nonce",
             "idempotency_keys",
             "approval_status_counts",
         }
@@ -13449,13 +13520,21 @@ class TestCli:
             "requested_by",
             "status",
             "reviewer",
+            "resolved_by",
             "resolution_note",
             "capability_session_id",
             "capability_session_status",
             "authorization_mode",
             "delegated_principal_id",
             "delegated_scope",
+            "principal_id",
+            "policy_version",
+            "capability_version",
             "idempotency_key",
+            "action_digest",
+            "payload_summary",
+            "expires_at",
+            "nonce",
             "idempotency_keys",
             "approval_status_counts",
         }
@@ -13533,13 +13612,25 @@ class TestCli:
             "requested_by": "user-42",
             "status": "approved",
             "reviewer": "manager",
+            "resolved_by": "manager",
             "resolution_note": "manager approved delegated request",
             "capability_session_id": "cap-session-001",
             "capability_session_status": "approved",
             "authorization_mode": "user_delegated",
             "delegated_principal_id": "customer-17",
             "delegated_scope": "ticket:create",
+            "principal_id": "user-42",
+            "policy_version": "policy-v1",
+            "capability_version": "catalog-v1",
             "idempotency_key": "trace-approval-001",
+            "action_digest": "ffcc094677e79cac84198960e568576c4da13b9bf4b82064b0233e07936b9700",
+            "payload_summary": (
+                '{"arguments":{"idempotency_key":"trace-approval-001",'
+                '"queue":"support","requester_id":"user-42",'
+                '"title":"Agent follow-up"},"capability":"create_ticket"}'
+            ),
+            "expires_at": "2030-01-01T00:30:01Z",
+            "nonce": "44a55a331d59d104e7b02a4feb276061cc31555338ee952c67e557ddfe0fb3c0",
             "idempotency_keys": ["trace-approval-001"],
             "approval_status_counts": {"approved": 1},
         }

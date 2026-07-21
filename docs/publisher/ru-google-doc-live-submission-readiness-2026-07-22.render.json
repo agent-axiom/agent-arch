@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": ".tmp/render-google-doc-live-submission-readiness-2026-07-22-v2/qa-contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.005828394706298808,
+      "page": 14
+    },
+    {
+      "density": 0.008998118755143737,
+      "page": 48
+    },
+    {
+      "density": 0.009221038667025207,
+      "page": 89
+    },
+    {
+      "density": 0.009991383826890882,
+      "page": 453
+    },
+    {
+      "density": 0.010286056010228032,
+      "page": 463
+    },
+    {
+      "density": 0.010879599126300522,
+      "page": 267
+    },
+    {
+      "density": 0.011316529902787935,
+      "page": 398
+    },
+    {
+      "density": 0.012206980061271099,
+      "page": 213
+    },
+    {
+      "density": 0.012538759768692466,
+      "page": 381
+    },
+    {
+      "density": 0.012880923656998793,
+      "page": 409
+    }
+  ],
+  "pages": 485,
+  "render_dir": ".tmp/render-google-doc-live-submission-readiness-2026-07-22-v2"
+}

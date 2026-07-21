@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/agent_arch_ru_editorial_readiness_template_20260718_r6/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0025059164570172595,
+      "page": 292
+    },
+    {
+      "density": 0.003881474116083797,
+      "page": 194
+    },
+    {
+      "density": 0.0043395949019737,
+      "page": 24
+    },
+    {
+      "density": 0.004480003563618911,
+      "page": 139
+    },
+    {
+      "density": 0.004779470880843556,
+      "page": 161
+    },
+    {
+      "density": 0.004843205516234909,
+      "page": 148
+    },
+    {
+      "density": 0.005581218026558154,
+      "page": 2
+    },
+    {
+      "density": 0.011018658009037872,
+      "page": 95
+    },
+    {
+      "density": 0.012334454396890232,
+      "page": 224
+    },
+    {
+      "density": 0.014125866781861306,
+      "page": 269
+    }
+  ],
+  "pages": 323,
+  "render_dir": "/tmp/agent_arch_ru_editorial_readiness_template_20260718_r6"
+}

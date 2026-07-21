@@ -276,9 +276,20 @@ class PolicyEngine:
             raise TypeError("Policy tool request must be ToolRequest")
         if capability is not None and not isinstance(capability, CapabilitySpec):
             raise TypeError("Policy capability must be CapabilitySpec")
-        del context
         capability_name = normalize_tool_capability_name(tool_request.capability_name)
         tool_arguments = normalize_tool_arguments(tool_request.arguments)
+        if not context.tenant_id:
+            return PolicyDecision("deny", "tenant_missing", "cap_401")
+        if not context.principal_id:
+            return PolicyDecision("deny", "principal_missing", "cap_402")
+        if capability_name == "create_ticket":
+            requester_id = tool_arguments.get("requester_id", "")
+            if requester_id and requester_id != context.principal_id:
+                return PolicyDecision(
+                    "deny",
+                    "requester_principal_mismatch",
+                    "cap_407",
+                )
         if self.approved_inventory is not None and not self.approved_inventory.allows(
             capability_name,
         ):

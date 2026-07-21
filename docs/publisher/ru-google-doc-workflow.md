@@ -9,7 +9,7 @@ Google Docs:
 - Book-readiness editorial map:
   `Архитектура безопасных ИИ-агентов — редакционная карта готовой книги`
 - <https://docs.google.com/document/d/1XoU_nWZkpKGU7SxZ0pgmE_dfcNNggQokZsbzind7kXc>
-- Compressed/staging snapshot: `Архитектура безопасных ИИ-агентов`
+- Current publisher manuscript: `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 
 ## Source of truth
@@ -354,6 +354,50 @@ New limitation: this checkpoint improves source coverage and duplicate hygiene,
 but it is still a working manuscript proof. Final submission still requires
 author-owned fields, public companion metadata, external proofread and a repeat
 post-author export/render cycle.
+
+На 2026-07-20 выполнена развивающая редактура с адресной синхронизацией
+существующего Google Doc:
+
+- целевой файл и вкладка `t.0` подтверждены доверенным чтением до записи;
+- пакет из 782 операций применён атомарно с контролем исходной ревизии;
+- 172 из 172 изменённых целевых абзацев подтверждены итоговым выравниванием;
+- сохранены 28 глав, 8 лабораторных работ, 39 именованных шагов и 56
+  встроенных изображений;
+- у трёх итоговых абзацев лабораторий снят случайно унаследованный
+  `pageBreakBefore`;
+- финальная ревизия Google Doc:
+  `ALtnJHyvucObEw3NQ_K_IpvncJvfdH6V1pUAx_E8-DwKKk_frxdhOOafSA4S2E-P104DRv5E-g_mRx8IWg4cNo9ir3wEI-YUhiexXHuXvvM`;
+- свежий DOCX-экспорт:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-synced-developmental-edit-2026-07-20.docx`;
+- локальная PDF-проверка экспорта: 488 страниц, без пустых технических страниц,
+  обрезки и наложений;
+- отчёт:
+  `docs/publisher/ru-developmental-editing-pass-2026-07-20.md`.
+
+Прямой нативный PDF-экспорт Google вернул HTTP 403 для этого крупного
+документа, поэтому контрольная PDF получена из свежего DOCX-экспорта той же
+ревизии. Это ограничение транспорта экспорта, а не рукописи.
+
+На 2026-07-22 выполнен проход готовности к издательской передаче:
+
+- канонический Markdown и обе локальные издательские производные пересобраны
+  детерминированно;
+- во введении восстановлена учебная последовательность, добавлена
+  самопроверка, исправлены ссылки на главы и терминология;
+- в главе 21 добавлена матрица поверхностей доверия и доказательств выпуска;
+- в Google Doc исправлены пять повреждённых склеек, снят стиль заголовка с 40
+  пустых абзацев и удалены пустые абзацы перед главами и в конце документа;
+- итоговая доверенная проверка сохранила 56 встроенных изображений и не нашла
+  защищённых элементов, требующих специального маршрута редактирования;
+- финальная ревизия Google Doc:
+  `AIroW34T21uKswdfPb9meuhJEG_xfKqHE4_Whg2C4JbnXWmjD51Iz_ORM6K9ZIwXmVGreawtWYjW_b5rP-aApsKSwzTPfFmi2xBrRxQ4Lhw`;
+- свежий DOCX-экспорт:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-live-submission-readiness-2026-07-22.docx`;
+- локальная PDF-проверка свежего экспорта: 485 страниц Letter, пустых
+  технических страниц нет;
+- Google-ориентированная производная: 436 страниц, производная
+  `Template2000n`: 317 страниц, пустых технических страниц нет;
+- отчёт: `docs/publisher/ru-submission-readiness-pass-2026-07-22.md`.
 
 ## Правило изменения текста
 

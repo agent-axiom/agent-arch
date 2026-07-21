@@ -282,6 +282,11 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
             target_style = "Style23"
             mappings["callout_body"] += 1
             pending_callout_body = False
+        elif re.match(r"^Таблица \d+\.", text):
+            target_style = "Style17"
+            set_paragraph_flag(paragraph, "keepNext")
+            set_paragraph_flag(paragraph, "keepLines")
+            mappings["table_caption"] += 1
         elif re.match(r"^Рисунок \d+\.", text):
             target_style = "Style17"
             set_paragraph_flag(paragraph, "keepLines")

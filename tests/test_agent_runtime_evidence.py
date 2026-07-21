@@ -267,7 +267,7 @@ def test_check_rollout_without_manifest_is_declarative_only(cli_json) -> None:
     assert payload["recommended_action"] == "attach_verified_evidence"
 
 
-def test_check_rollout_accepts_only_verified_manifest_for_production(
+def test_check_rollout_treats_verified_manifest_as_structural_evidence_only(
     cli_json,
     config_dir: Path,
     tmp_path: Path,
@@ -290,12 +290,14 @@ def test_check_rollout_accepts_only_verified_manifest_for_production(
 
     assert exit_code == 0
     assert result["ready"] is True
-    assert result["production_ready"] is True
+    assert result["manifest_integrity_verified"] is True
+    assert result["trusted_attestation_verified"] is False
+    assert result["production_ready"] is False
     assert result["evidence_mode"] == "verified"
     assert result["evidence_verified"] is True
     assert result["evidence_artifact_ids"] == ["evaluation-report"]
     assert result["evidence_diagnostics"] == []
-    assert result["recommended_action"] == "proceed_to_canary"
+    assert result["recommended_action"] == "attach_trusted_attestation"
 
 
 def test_check_rollout_invalid_manifest_fails_closed(cli_json, tmp_path: Path) -> None:

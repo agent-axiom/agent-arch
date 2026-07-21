@@ -1,22 +1,18 @@
 {
   "blank_like_pages": [],
-  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-editorial-final-polish-2026-07-17-render/contact-sheet.png",
+  "contact_sheet": "/tmp/agent_arch_ru_final_raw_render_20260717/contact-sheet.png",
   "lowest_density_pages": [
     {
       "density": 0.005562578162296783,
       "page": 241
     },
     {
+      "density": 0.005572662251623429,
+      "page": 304
+    },
+    {
       "density": 0.006004585171093404,
       "page": 156
-    },
-    {
-      "density": 0.006985549021367874,
-      "page": 399
-    },
-    {
-      "density": 0.01155115465165277,
-      "page": 304
     },
     {
       "density": 0.012067421025936559,
@@ -39,10 +35,14 @@
       "page": 277
     },
     {
+      "density": 0.014044100062579851,
+      "page": 260
+    },
+    {
       "density": 0.014803779943138853,
       "page": 215
     }
   ],
   "pages": 442,
-  "render_dir": "/private/tmp/agent-arch-ru-google-doc-editorial-final-polish-2026-07-17-render"
+  "render_dir": "/tmp/agent_arch_ru_final_raw_render_20260717"
 }

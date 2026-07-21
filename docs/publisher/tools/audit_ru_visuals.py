@@ -190,6 +190,19 @@ def make_contact_sheets(
             if not page.images:
                 continue
             page_path = render_dir / f"page-{page_number}.png"
+            if not page_path.exists():
+                candidates = [
+                    path
+                    for path in render_dir.glob("page-*.png")
+                    if path.stem.rsplit("-", 1)[-1].isdigit()
+                    and int(path.stem.rsplit("-", 1)[-1]) == page_number
+                ]
+                if len(candidates) != 1:
+                    raise FileNotFoundError(
+                        f"Expected one rendered image for page {page_number}, "
+                        f"found {len(candidates)}"
+                    )
+                page_path = candidates[0]
             with Image.open(page_path).convert("RGB") as page_image:
                 scale_x = page_image.width / page.width
                 scale_y = page_image.height / page.height

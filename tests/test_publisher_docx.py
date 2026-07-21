@@ -1,7 +1,9 @@
 import ast
 import hashlib
+import os
 import posixpath
 import re
+import subprocess
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
@@ -16,14 +18,14 @@ RAW_EDITORIAL_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-editorial-final-polish-2026-07-17.docx"
+        "agent-arch-ru-google-doc-developmental-edit-2026-07-20.docx"
     )
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-editorial-final-polish-2026-07-17.docx"
+        "agent-arch-ru-template2000n-developmental-edit-2026-07-20.docx"
     )
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
@@ -33,6 +35,8 @@ OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relations
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
 DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+DC_NS = "http://purl.org/dc/elements/1.1/"
+CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
 
 
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
@@ -60,6 +64,80 @@ def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
         )
     )
     assert ast.literal_eval(assignment.value) == {1, 4, 7, 10, 13, 17, 22, 26}
+
+
+def test_editorial_renderer_adds_resolvable_internal_bookmarks_and_links(
+    tmp_path: Path,
+) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "internal-links.docx"
+    script = r'''
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    """
+    <h2>Глава 1. Начало</h2>
+    <p>Продолжение находится в главе 16; см. рисунок 3, таблицу 4 и листинг 12.</p>
+    <h2>Глава 16. Доказательства</h2>
+    <p>Рисунок 3. Цепочка доказательств</p>
+    <p>Таблица 4. Выпускные сигналы</p>
+    <p><strong>Листинг 12. Проверка решения.</strong></p>
+    """,
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+'''
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    bookmarks = document.findall(f".//{{{WORD_NS}}}bookmarkStart")
+    names = [node.attrib[f"{{{WORD_NS}}}name"] for node in bookmarks]
+    identifiers = [node.attrib[f"{{{WORD_NS}}}id"] for node in bookmarks]
+    assert names == ["ch_1", "ch_16", "fig_3", "table_4", "listing_12"]
+    assert len(identifiers) == len(set(identifiers))
+
+    hyperlinks = document.findall(f".//{{{WORD_NS}}}hyperlink")
+    anchors = [
+        node.attrib[f"{{{WORD_NS}}}anchor"]
+        for node in hyperlinks
+        if f"{{{WORD_NS}}}anchor" in node.attrib
+    ]
+    assert anchors == ["ch_16", "fig_3", "table_4", "listing_12"]
+    assert set(anchors) <= set(names)
+
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        )
+        if re.match(r"^(?:Рисунок 3|Таблица 4|Листинг 12)\.", value):
+            assert paragraph.find(f"{{{WORD_NS}}}hyperlink") is None
 
 
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
@@ -150,8 +228,8 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
         for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
         if node.attrib.get("Type", "").endswith("/hyperlink")
     ]
-    assert len(document.findall(f".//{{{WORD_NS}}}hyperlink")) >= 120
-    assert len(hyperlinks) >= 90
+    assert len(document.findall(f".//{{{WORD_NS}}}hyperlink")) >= 104
+    assert len(hyperlinks) >= 104
 
 
 def test_template2000n_editorial_images_have_no_alpha_channel() -> None:
@@ -166,6 +244,152 @@ def test_template2000n_editorial_images_have_no_alpha_channel() -> None:
                 alpha_images.append(name)
 
     assert alpha_images == []
+
+
+def test_editorial_tables_repeat_headers_and_keep_rows_together() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        tables = document.findall(f".//{{{WORD_NS}}}tbl")
+        assert tables
+        for table in tables:
+            rows = table.findall(f"{{{WORD_NS}}}tr")
+            assert rows[0].find(
+                f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader"
+            ) is not None
+            assert all(
+                row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None
+                for row in rows
+            )
+
+
+def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+            settings = ET.fromstring(archive.read("word/settings.xml"))
+            styles = ET.fromstring(archive.read("word/styles.xml"))
+            core = ET.fromstring(archive.read("docProps/core.xml"))
+            footer_names = [
+                name
+                for name in archive.namelist()
+                if re.fullmatch(r"word/footer\d+\.xml", name)
+            ]
+            footer_xml = b"\n".join(archive.read(name) for name in footer_names)
+
+        instructions = " ".join(
+            node.text or ""
+            for node in document.findall(f".//{{{WORD_NS}}}instrText")
+        )
+        document_text = "\n".join(
+            node.text or "" for node in document.findall(f".//{{{WORD_NS}}}t")
+        )
+        style_languages = {
+            node.attrib.get(f"{{{WORD_NS}}}val")
+            for node in styles.findall(f".//{{{WORD_NS}}}lang")
+        }
+
+        assert 'TOC \\o "1-2"' in instructions
+        assert settings.find(f"{{{WORD_NS}}}updateFields") is not None
+        assert b"PAGE" in footer_xml
+        assert "ru-RU" in style_languages
+        assert core.findtext(f"{{{DC_NS}}}title") == "Архитектура безопасных ИИ-агентов"
+        assert core.findtext(f"{{{DC_NS}}}language") == "ru-RU"
+        assert core.findtext(f"{{{DC_NS}}}subject")
+        assert core.findtext(f"{{{CP_NS}}}keywords")
+        assert len(re.findall(r"^Таблица \d+\. .+$", document_text, re.MULTILINE)) == 9
+
+
+def test_editorial_heading_styles_define_pdf_outline_levels() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            styles = ET.fromstring(archive.read("word/styles.xml"))
+
+        for level in range(1, 5):
+            style = styles.find(
+                f".//{{{WORD_NS}}}style"
+                f"[@{{{WORD_NS}}}styleId='Heading{level}']"
+            )
+            assert style is not None
+            outline_level = style.find(
+                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}outlineLvl"
+            )
+            assert outline_level is not None
+            assert outline_level.attrib.get(f"{{{WORD_NS}}}val") == str(level - 1)
+
+
+def test_editorial_toc_has_a_readable_static_result_before_word_updates_it() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+        paragraph_texts = [
+            "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+            for paragraph in paragraphs
+        ]
+        text = "\n".join(paragraph_texts)
+        first_body_heading = next(
+            index
+            for index, (paragraph, value) in enumerate(zip(paragraphs, paragraph_texts))
+            if value == "Об авторе"
+            and (
+                style := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
+            )
+            is not None
+            and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
+        )
+        toc_text = "\n".join(paragraph_texts[:first_body_heading])
+        assert "Оглавление обновится при открытии документа." not in text
+        assert "Часть I. От демо-агента к платформе" in toc_text
+        assert "Глава 1. Почему агенту нужна платформа, а не магия" in toc_text
+        assert "Глава 28. Проверочный список промышленного запуска" in toc_text
+        assert "Приложение 5. Эталонный пакет и воспроизводимые упражнения" in toc_text
+
+
+def test_template2000n_table_captions_use_caption_style_and_stay_with_tables() -> None:
+    with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    captions = []
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).strip()
+        if re.fullmatch(r"Таблица \d+\. .+", value):
+            captions.append(paragraph)
+
+    assert len(captions) == 9
+    for paragraph in captions:
+        properties = paragraph.find(f"{{{WORD_NS}}}pPr")
+        assert properties is not None
+        style = properties.find(f"{{{WORD_NS}}}pStyle")
+        assert style is not None
+        assert style.attrib[f"{{{WORD_NS}}}val"] == "Style17"
+        assert properties.find(f"{{{WORD_NS}}}keepNext") is not None
+        assert properties.find(f"{{{WORD_NS}}}keepLines") is not None
+
+
+def test_editorial_table_columns_have_readable_minimum_width() -> None:
+    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        tables = document.findall(f".//{{{WORD_NS}}}tbl")
+        assert len(tables) == 9
+        for table_index, table in enumerate(tables, start=1):
+            widths = [
+                int(column.attrib[f"{{{WORD_NS}}}w"])
+                for column in table.findall(
+                    f"{{{WORD_NS}}}tblGrid/{{{WORD_NS}}}gridCol"
+                )
+            ]
+            total_width = sum(widths)
+            assert min(widths) / total_width >= 0.14, (
+                f"table {table_index} in {docx_path.name} has a column narrower "
+                "than 14% of the table width"
+            )
 
 
 def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:

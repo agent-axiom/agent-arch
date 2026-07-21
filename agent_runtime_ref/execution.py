@@ -65,7 +65,20 @@ def execute_tool(
         return ToolResult(
             capability_name=capability_name,
             status="failed",
-            payload={"reason": "tool_timeout"},
+            payload={
+                "reason": "tool_timeout",
+                "effect_state": "not_executed",
+            },
+        )
+    if test_fault == "post_dispatch_timeout":
+        return ToolResult(
+            capability_name=capability_name,
+            status="side_effect_unknown",
+            payload={
+                "reason": "post_dispatch_timeout",
+                "effect_state": "side_effect_unknown",
+                "reconciliation_required": "true",
+            },
         )
     if test_fault == "upstream_unavailable":
         return ToolResult(

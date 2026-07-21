@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.docx",
+  "bookmarks": 108,
+  "code_lines": 1671,
+  "headings": 620,
+  "images": 56,
+  "internal_hyperlinks": 175,
+  "list_items": 3391,
+  "lists": 739,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8988761,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-submission-readiness-2026-07-22.docx",
+  "output_sha256": "bd4d587fd1a1dd2e8ab0334c6ecf7249ceae1fd98879e05b8dba1dca00b951e1",
+  "page_breaks": 30,
+  "paragraphs": 8136,
+  "tables": 10
+}

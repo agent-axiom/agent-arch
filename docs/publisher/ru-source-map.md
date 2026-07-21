@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъемной сборки на 2026-07-17. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-07-22. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -22,18 +22,40 @@ Status: актуальная карта полнообъемной сборки 
 - 25 пронумерованных рисунков, 29 встроенных схем и 2 дополнительные
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
-- две нативные таблицы Google Docs в главах 2 и 26;
-- около 90 575 слов по метрике издательской сборки;
-- 442 страницы в raw-производной и 317 страниц в производной Template2000n;
-  разница вызвана плотностью издательских стилей, текстовый слой сохранен
-  полностью, пустых технических страниц нет.
+- 10 нумерованных таблиц в канонической и локальных издательских производных;
+- около 91 661 слова по метрике издательской сборки;
+- 436 страниц в Google-ориентированной производной, 317 страниц в производной
+  `Template2000n` и 485 страниц в свежем экспорте существующего Google Doc;
+  разница вызвана параметрами страницы и плотностью стилей, а не сокращением
+  содержания; пустых технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `ALtnJHzP64vDAJRFRIPWJUnzqh7KSlQgUCNYax7g3h7ICy8B-jQ59obEFsMmHjbHAA8TFRLd1RiI59oAdxmG0DwNaQZvVOweX69OdUupEBc`.
+  `AIroW34T21uKswdfPb9meuhJEG_xfKqHE4_Whg2C4JbnXWmjD51Iz_ORM6K9ZIwXmVGreawtWYjW_b5rP-aApsKSwzTPfFmi2xBrRxQ4Lhw`.
+
+Контрольная точка готовности к издательской передаче:
+
+- `docs/publisher/ru-submission-readiness-pass-2026-07-22.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-submission-readiness-2026-07-22.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-submission-readiness-2026-07-22.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-submission-readiness-2026-07-22.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-submission-readiness-2026-07-22.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-submission-readiness-2026-07-22.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-submission-readiness-2026-07-22.pdf`;
+- `docs/publisher/ru-google-doc-live-submission-readiness-visual-audit-2026-07-22.json`.
+
+Контрольная точка развивающей редактуры:
+
+- `docs/publisher/ru-developmental-editing-pass-2026-07-20.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-developmental-edit-2026-07-20.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-developmental-edit-2026-07-20.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-developmental-edit-2026-07-20.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-developmental-edit-2026-07-20.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-synced-developmental-edit-2026-07-20.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-synced-developmental-edit-2026-07-20.pdf`.
 
 Контрольная точка редакторской переработки:
 

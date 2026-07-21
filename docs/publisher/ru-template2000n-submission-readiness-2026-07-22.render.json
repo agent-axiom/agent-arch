@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": ".tmp/render-template2000n-submission-readiness-2026-07-22-v2/low-density-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.002938953640501228,
+      "page": 240
+    },
+    {
+      "density": 0.0029835014092970667,
+      "page": 156
+    },
+    {
+      "density": 0.005020744493728258,
+      "page": 262
+    },
+    {
+      "density": 0.005053816609389064,
+      "page": 285
+    },
+    {
+      "density": 0.005581218026558154,
+      "page": 2
+    },
+    {
+      "density": 0.009914286886795347,
+      "page": 248
+    },
+    {
+      "density": 0.010359274551829402,
+      "page": 216
+    },
+    {
+      "density": 0.012310773754174645,
+      "page": 180
+    },
+    {
+      "density": 0.01542181407575529,
+      "page": 84
+    },
+    {
+      "density": 0.015765427773488914,
+      "page": 42
+    }
+  ],
+  "pages": 317,
+  "render_dir": ".tmp/render-template2000n-submission-readiness-2026-07-22-v2"
+}
