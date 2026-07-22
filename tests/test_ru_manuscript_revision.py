@@ -1943,6 +1943,103 @@ def test_multi_agent_review_remediations_are_reflected_in_practice() -> None:
     assert "нуле по любому из двух критериев-блокеров" not in text
 
 
+def test_capability_discovery_is_a_governed_runtime_operation() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = revision_tool.extract_chapter(text, 11)
+
+    assert "#### Обнаружение возможности не выдает полномочие" in chapter
+    for field in (
+        "capability_search_query",
+        "registry_scope",
+        "ranked_candidates",
+        "selected_resource",
+        "policy_decision_id",
+        "approval_state",
+    ):
+        assert f"`{field}`" in chapter
+
+    assert "не устанавливает и не подключает найденный ресурс" in chapter
+    assert "обнаружение → выбор → подключение → исполнение" in chapter
+    assert "* **S105.** GitHub Changelog, Agent finder for GitHub Copilot." in chapter
+
+
+def test_shared_ai_gateway_contract_is_reader_sized_and_traceable() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_thirteen = revision_tool.extract_chapter(text, 13)
+    chapter_eighteen = revision_tool.extract_chapter(text, 18)
+
+    assert "#### Решение общего шлюза ИИ" in chapter_thirteen
+    for field in (
+        "gateway_id",
+        "gateway_policy_version",
+        "client_user_agent",
+        "provider_name",
+        "model_name",
+        "retry_count",
+        "fallback_reason",
+        "dlp_result",
+        "pii_redaction_policy_id",
+        "cache_policy",
+        "rate_limit_decision",
+        "token_input_count",
+        "token_output_count",
+        "cost_attribution_ref",
+    ):
+        assert f"`{field}`" in chapter_thirteen
+
+    assert "### Общий шлюз ИИ как контур управления" in chapter_eighteen
+    assert "техническим посредником для учета затрат" in chapter_eighteen
+    assert "единый путь риска и стоимости" in chapter_eighteen
+    for source_id in ("S106", "S107", "S108"):
+        assert f"**{source_id}.**" in chapter_eighteen
+
+    assert "Commercial control-plane convergence" not in text
+    assert "shared AI gateway" not in text
+    assert "billing proxy" not in text
+    assert "control-plane" not in chapter_thirteen + chapter_eighteen
+
+
+def test_gateway_discovery_sync_has_practice_sources_and_density_guards() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    lab_five = text.split("### Лабораторная работа 5", 1)[1].split(
+        "# Часть VI", 1
+    )[0]
+    appendix = text.split("## Приложение 4\\.", 1)[1].split(
+        "## Приложение 5\\.", 1
+    )[0]
+
+    assert "artifacts/lab-05/gateway-decision.yaml" in lab_five
+    assert "отсутствующий результат DLP" in lab_five
+    for source_id, url in (
+        (
+            "S105",
+            "https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/",
+        ),
+        (
+            "S106",
+            "https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/",
+        ),
+        (
+            "S107",
+            "https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/",
+        ),
+        (
+            "S108",
+            "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674",
+        ),
+    ):
+        assert f"* **{source_id}.**" in appendix
+        assert url in appendix
+
+    chapter_eleven_words = len(
+        re.findall(
+            r"[A-Za-zА-Яа-яЁё0-9]+",
+            revision_tool.extract_chapter(text, 11),
+        )
+    )
+    assert chapter_eleven_words < 4600
+
+
 def test_every_manuscript_table_has_a_numbered_caption() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     captions = re.findall(r"^Таблица (\d+)\. .+$", text, re.MULTILINE)

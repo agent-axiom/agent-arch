@@ -23,9 +23,9 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 10 нумерованных таблиц в канонической и локальных издательских производных;
-- около 91 661 слова по метрике издательской сборки;
-- 436 страниц в Google-ориентированной производной, 317 страниц в производной
-  `Template2000n` и 485 страниц в свежем экспорте существующего Google Doc;
+- около 92 372 слов по метрике издательской сборки;
+- 441 страница в Google-ориентированной производной, 318 страниц в производной
+  `Template2000n` и 457 страниц в текущем интерфейсе существующего Google Doc;
   разница вызвана параметрами страницы и плотностью стилей, а не сокращением
   содержания; пустых технических страниц нет.
 
@@ -34,7 +34,18 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW34T21uKswdfPb9meuhJEG_xfKqHE4_Whg2C4JbnXWmjD51Iz_ORM6K9ZIwXmVGreawtWYjW_b5rP-aApsKSwzTPfFmi2xBrRxQ4Lhw`.
+  `AIroW37hZDyH1m2B77saeTt6XX9rQOT4Czb5wl8gJtjzQuwkTwixCHIODn1GSgViWoemddyoe3zmPoeZSTnUstkc2fZ722bVd3KTjsMtEOE`.
+
+Контрольная точка синхронизации управляемого поиска возможностей и общего
+шлюза ИИ:
+
+- `docs/publisher/ru-gateway-discovery-sync-pass-2026-07-22.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-22.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-22.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-22.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-22.pdf`;
+- `docs/publisher/ru-google-doc-online-sync-visual-audit-2026-07-22.json`;
+- `docs/publisher/ru-template2000n-online-sync-visual-audit-2026-07-22.json`.
 
 Контрольная точка готовности к издательской передаче:
 

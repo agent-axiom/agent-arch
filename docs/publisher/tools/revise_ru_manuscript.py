@@ -9497,6 +9497,154 @@ def apply_submission_readiness_pass_2026_07_22(text: str) -> str:
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
+def apply_online_gateway_discovery_pass_2026_07_22(text: str) -> str:
+    """Integrate governed capability discovery and the shared AI gateway contract."""
+    chapter_eleven_anchor = """Свежие практики MCP показывают, что управлять нужно не только отдельным сервером, а всей поверхностью доступа. Зрелая форма включает одобренный портал MCP, постепенное раскрытие инструментов, привязанную к идентичности авторизацию, политику шлюза и защиту от утечек данных, журнал аудита и обнаружение теневых серверов MCP. Большой каталог инструментов нельзя целиком помещать в подсказку. Агент должен получать только нужный для задачи поднабор возможностей, а поиск новых инструментов должен быть отдельным аудируемым действием."""
+    chapter_eleven_lead = """Управлять нужно всей поверхностью MCP: порталом, авторизацией, политикой шлюза, защитой от утечек, аудитом и теневыми серверами. Каталог нельзя целиком помещать в подсказку; агент получает поднабор, а поиск аудируется."""
+    chapter_eleven_addition = r'''
+
+#### Обнаружение возможности не выдает полномочие
+
+Тогда обнаружение становится операцией среды исполнения. GitHub Agent Finder ищет без автоматического подключения (см. источник **S105**). Поиск сужает выбор, но не права.
+
+Зрелый путь выглядит так: **обнаружение → выбор → подключение → исполнение**.
+
+1. Обнаружение ищет в реестре, разрешенном управляемыми настройками.
+2. Выбор сохраняет кандидатов, но не предоставляет доступ.
+3. Подключение проверяет владельца, версию и риск и при необходимости требует отдельного подтверждения.
+4. Исполнение снова применяет идентичность, политику и песочницу.
+
+Поиск не устанавливает и не подключает найденный ресурс. Трасса сохраняет `capability_search_query`, `registry_scope`, `ranked_candidates`, `selected_resource`, `policy_decision_id` и `approval_state`. Она объясняет выбор `create_ticket` и решение о подключении; глава 13 включает их в общий след.'''
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eleven_anchor,
+        chapter_eleven_lead + chapter_eleven_addition,
+        "chapter 11 governed capability discovery",
+    )
+
+    chapter_thirteen_anchor = """* `trace_search_tags`: `owner`, `scenario`, `release`, `eval_dataset`, `incident_id`."""
+    chapter_thirteen_addition = r'''
+
+#### Решение общего шлюза ИИ
+
+Вызов модели также проходит отдельную границу управления. Если общий шлюз выбирает поставщика, применяет ограничение частоты, проверяет данные или меняет маршрут после отказа, одной записи `model_call` недостаточно: расследование должно восстановить, какое правило преобразовало исходный запрос в фактический вызов.
+
+Чтобы не превращать главу в выгрузку схемы, поля полезно читать четырьмя группами:
+
+* идентичность и версия решения: `gateway_id`, `gateway_policy_version`, `client_user_agent`;
+* маршрут и надежность: `provider_name`, `model_name`, `retry_count`, `fallback_reason`;
+* защита данных и ограничения: `dlp_result`, `pii_redaction_policy_id`, `cache_policy`, `rate_limit_decision`;
+* потребление и стоимость: `token_input_count`, `token_output_count`, `cost_attribution_ref`.
+
+Вместе они образуют событие решения шлюза, связанное с соответствующим спаном модели. Поля не должны копировать подсказку, секреты или платежные данные: достаточно нормализованной идентичности клиента, версий политики и ссылок на управляемые записи. Отсутствующий результат проверки DLP нельзя трактовать как разрешение, а резервный маршрут без `fallback_reason` и версии политики нельзя выдавать за обычный успешный вызов.
+
+В сценарии поддержки основной поставщик может вернуть ограничение частоты, после чего шлюз выберет резервную модель. Трасса должна показать исходное решение, причину смены маршрута, примененное решение защиты данных, расход токенов и ссылку для отнесения стоимости. Тогда оператор отличит управляемое переключение от скрытого изменения поведения. Глава 18 закрепит, почему такой контракт должен принадлежать общей платформенной поверхности.'''
+    text = _replace_editorial_anchor(
+        text,
+        chapter_thirteen_anchor,
+        chapter_thirteen_anchor + chapter_thirteen_addition,
+        "chapter 13 shared AI gateway trace contract",
+    )
+
+    chapter_eighteen_anchor = """Поэтому общий шлюз — это не бюрократия. Это способ централизованно решить самые дорогие и чувствительные задачи один раз и хорошо."""
+    chapter_eighteen_addition = r'''
+
+### Общий шлюз ИИ как контур управления
+
+Общий шлюз ИИ не должен оставаться только техническим посредником для учета затрат. Как только через него идут запросы к нескольким моделям и поставщикам, он становится точкой, где организация может последовательно применить маршрутизацию, кэширование, ограничения частоты, защиту от утечек, обезличивание, правила повторов и резервных маршрутов, а также отнесение стоимости. Современные платформенные реализации демонстрируют разные части этой поверхности: Cloudflare связывает маршрутизацию с наблюдаемостью, кэшированием, ограничениями и DLP; AWS — общий шлюз и реестр с эксплуатационными доказательствами; Microsoft — трассы и операционные представления (см. источники **S106**, **S107**, **S108**). Эти продукты служат примерами, но контракт главы остается независимым от поставщика.
+
+Главный инвариант борьбы с разрастанием состоит не в том, что все команды обязаны выбрать одну модель. Они должны использовать одну семантику платформенного решения. Для каждого вызова должны одинаково определяться допустимые поставщики, версия политики, условия кэширования, бюджет, ограничение частоты, правила обработки чувствительных данных и основания переключения на резервный маршрут. Продуктовая команда по-прежнему владеет требованием к качеству и допустимой задержкой, но не изобретает локальную трактовку отказа, DLP или стоимости.
+
+Вернемся к агенту поддержки. Основная модель недоступна, и локальная обертка команды незаметно отправляет запрос другому поставщику. Ответ может быть правильным, но организация уже не знает, применялась ли та же политика обезличивания, разрешен ли резервный поставщик и к какому продукту отнести расход. В поддерживаемом пути общий шлюз принимает явное решение, а контракт главы 13 связывает его с трассой. Так появляется единый путь риска и стоимости от клиентского агента до фактической модели.
+
+Общий шлюз не отменяет исключения. Он делает их видимыми: нестандартный маршрут получает владельца, срок, компенсирующий контроль и условие возврата. Если команда обходит шлюз, поэтапный выпуск должен видеть не просто «другой URL», а разрыв обязательной цепочки доказательств.'''
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eighteen_anchor,
+        chapter_eighteen_anchor + chapter_eighteen_addition,
+        "chapter 18 shared AI gateway control surface",
+    )
+
+    lab_five_old = """**Дополнительное задание.** Добавьте собственный отрицательный сценарий и сформулируйте, какой новый выпускной сигнал он должен блокировать."""
+    lab_five_new = r'''**Дополнительное задание.** Смоделируйте недоступность основного поставщика модели и сохраните `artifacts/lab-05/gateway-decision.yaml` с идентификатором шлюза, версией политики, исходным и выбранным маршрутами, причиной переключения, результатом DLP и ссылкой на отнесение стоимости. Свяжите запись с трассой упражнения. Считайте отсутствующий результат DLP или неизвестную политику резервного маршрута блокером и сформулируйте, какой новый выпускной сигнал должен удержать расширение волны.'''
+    text = _replace_editorial_anchor(
+        text,
+        lab_five_old,
+        lab_five_new,
+        "lab 5 shared gateway negative exercise",
+    )
+
+    chapter_eleven_sources = """* **S029.** Model Context Protocol, Security Best Practices.
+* **S003.** OWASP, MCP Security Cheat Sheet.
+* **S030.** Model Context Protocol, Authorization specification."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eleven_sources,
+        chapter_eleven_sources
+        + "\n* **S105.** GitHub Changelog, Agent finder for GitHub Copilot.",
+        "chapter 11 capability discovery source",
+    )
+
+    chapter_thirteen_sources = """* **S056.** OpenAI, Trace grading.
+* **S060.** Microsoft Learn, Observability for Generative AI and agentic AI systems.
+* **S055.** OpenAI, Agent evals."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_thirteen_sources,
+        chapter_thirteen_sources
+        + "\n* **S106.** Cloudflare Docs, AI Gateway: Coding agents."
+        + "\n* **S107.** AWS, AgentOps with Amazon Bedrock AgentCore."
+        + "\n* **S108.** Microsoft Foundry, Monitoring and observability operations.",
+        "chapter 13 shared gateway sources",
+    )
+
+    chapter_eighteen_sources = """* **S040.** Google Cloud, 20 questions for the Agentic Enterprise.
+* **S070.** Microsoft Learn, Agentic AI adoption maturity model."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eighteen_sources,
+        chapter_eighteen_sources
+        + "\n* **S106.** Cloudflare Docs, AI Gateway: Coding agents."
+        + "\n* **S107.** AWS, AgentOps with Amazon Bedrock AgentCore."
+        + "\n* **S108.** Microsoft Foundry, Monitoring and observability operations.",
+        "chapter 18 shared gateway sources",
+    )
+
+    source_intro_anchor = """Ниже собраны основные первоисточники этого издания. Набор ссылок и дата доступа зафиксированы 15 июля 2026 года. Перед печатью и каждым переизданием проверяйте доступность URL, актуальность версий спецификаций и продуктовых утверждений; при расхождении приоритет имеет действующая официальная документация."""
+    source_intro_addition = """
+
+Четыре дополнения о поиске возможностей и общем шлюзе ИИ проверены отдельно 22 июля 2026 года и перечислены в конце приложения как датированный срез платформенной практики."""
+    text = _replace_editorial_anchor(
+        text,
+        source_intro_anchor,
+        source_intro_anchor + source_intro_addition,
+        "supplemental source access date",
+    )
+
+    appendix_anchor = r'''* **S104.** [OpenReview (препринт), Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI), дата обращения: 15 июля 2026 года.
+
+
+### Как использовать этот список'''
+    appendix_addition = r'''* **S104.** [OpenReview (препринт), Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI), дата обращения: 15 июля 2026 года.
+
+### Дополнения платформенной практики от 22 июля 2026 года
+
+* **S105.** [GitHub Changelog, Agent finder for GitHub Copilot now available](https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/), дата обращения: 22 июля 2026 года.
+* **S106.** [Cloudflare Docs, AI Gateway: Coding agents](https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/), дата обращения: 22 июля 2026 года.
+* **S107.** [AWS, AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/), дата обращения: 22 июля 2026 года.
+* **S108.** [Microsoft Foundry, Monitoring and Observability, Part 2: Configuration and Operations](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674), дата обращения: 22 июля 2026 года.
+
+### Как использовать этот список'''
+    text = _replace_editorial_anchor(
+        text,
+        appendix_anchor,
+        appendix_addition,
+        "supplemental gateway and discovery bibliography",
+    )
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = source.read_text(encoding="utf-8")
     text = replace_front_matter_and_introduction(text)
@@ -9602,6 +9750,7 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_final_book_standards_pass_2026_07_21(text)
     text = apply_compaction_continuity_pass_2026_07_21(text)
     text = apply_submission_readiness_pass_2026_07_22(text)
+    text = apply_online_gateway_discovery_pass_2026_07_22(text)
     text = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
     output.parent.mkdir(parents=True, exist_ok=True)
