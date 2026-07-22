@@ -19169,6 +19169,38 @@ def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
     )
 
 
+def test_responses_api_computer_environment_runtime_contract_is_documented() -> None:
+    chapter_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "Responses API computer-environment",
+            "bounded tool-output cap",
+            "concurrent tool session",
+            "streamed observation",
+            "filesystem/artifact persistence",
+            "restricted network access",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "From model to agent: Equipping the Responses API with a computer environment",
+            "openai.com/index/equip-responses-api-computer-environment",
+        ),
+    )
+
+
 def test_cloudflare_agents_workflows_hitl_boundary_is_documented() -> None:
     chapter_4_files = (
         "docs/book/part-ii/chapter-4.md",

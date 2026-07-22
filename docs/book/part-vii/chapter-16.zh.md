@@ -252,7 +252,9 @@ Google Agent Executor 把相似的层描述成分布式 runtime primitive：agen
 
 OpenAI Agents SDK 的 Sandbox Agents 做了一个很有用的区分，应该进入基线运行时设计：`Manifest` 描述 fresh workspace contract，而一次具体运行可以拿到 live sandbox session、序列化的 `session_state`，也可以从 `snapshot` 启动。[^openai-sandbox-agents]
 
-OpenAI 关于 Responses API computer environment 的文章把同一层描述成 agent computer：模型提出一个动作，平台在隔离容器里执行 shell command，把 streamed observation 返回给模型，然后下一个 model turn 决定是否继续。[^openai-computer-environment] 关键架构边界是：model decision 和 command execution 不是同一件事。模型提出动作；runtime 拥有 isolation、filesystem/artifact persistence、可选 structured storage、restricted network access、timeout/cancellation，以及可观测的 tool output。
+OpenAI 关于 Responses API computer-environment 的文章把同一层描述成 agent computer：模型提出一个动作，平台在隔离容器里执行 shell command，把 streamed observation 返回给模型，然后下一个 model turn 决定是否继续。[^openai-computer-environment] 关键架构边界是：model decision 和 command execution 不是同一件事。模型提出动作；runtime 拥有 isolation、filesystem/artifact persistence、可选 structured storage、restricted network access、timeout/cancellation，以及可观测的 tool output。
+
+更强的版本还应该记录每一个 **bounded tool-output cap** 和每一个 **concurrent tool session**。输出上限不是表面上的截断，而是 context budget 控制：保留有用 evidence，同时避免原始日志淹没下一轮模型上下文。并发会话也不只是更快执行；它们需要独立的 session ids、timeout/cancellation 状态、output envelopes 和 failure attribution，避免某个 shell、browser 或 data-processing 分支悄悄覆盖另一个分支的 observation。
 
 对参考运行时来说，这意味着沙箱状态不应该消失在 tool adapter 里面。一个最小有用模型，至少应该在 `run_id` 和 `trace_id` 旁边追踪：
 
