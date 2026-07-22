@@ -343,6 +343,8 @@ Cloudflare 还展示了未来访问契约中的一个关键细节：Content-Sign
 
 因此，web-capable agent 的最小 policy matrix 至少应该包含四类决策：allow、block、monetize 或 audit-only。每个决策都应该绑定访问目的：Search / Agent / Training。否则 web access policy 很快会退化成脆弱的字符串列表，而不是资源所有者、用户和 agent platform 之间的契约。
 
+Cloudflare Monetization Gateway 让 monetize 分支更具体，尤其是面向 **agent-facing resource** 的场景：web page、dataset、API 或 MCP tool 都可以成为带 x402-style payment flow 的 **payment-gated resource**。[^cloudflare-monetization-gateway] 对 agent architecture 来说，这不只是 billing feature。在发起 MCP tool call 或访问付费 retrieval resource 之前，runtime 需要先做 policy decision before the tool call：是否允许 spend、谁是 payer、哪个 spending cap 生效、payment proof 存在哪里，以及哪个 metering record 进入 audit trail。否则 agent 的 web/tool access 会悄悄变成缺少业务上下文的不可审查支出。
+
 ### 5.5. Browser as an action surface
 
 GitHub Copilot browser tools in VS Code 展示了下一步：live browser 正在成为 agent 的常规行动环境，而不只是人工检查结果的外部工具。[^github-copilot-browser-tools] 如果 agent 可以打开页面、click/type/hover/drag、读取 page content、收集 console errors、生成 screenshot 并运行 scripted flows，那么 browser 就应该被视为独立 execution surface。
@@ -687,6 +689,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^cloudflare-code-mode]: Cloudflare, [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/)
 
 [^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
+
+[^cloudflare-monetization-gateway]: Cloudflare Blog, [Announcing the Monetization Gateway](https://blog.cloudflare.com/monetization-gateway/)
 
 [^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
 
